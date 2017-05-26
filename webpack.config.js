@@ -21,6 +21,10 @@ module.exports = {
         exclude: /node_modules/, 
         loader: "awesome-typescript-loader" 
       },
+      {
+        test: /\.scss$/,
+        loaders: ["style-loader", "css-loader", "sass-loader"]
+      },
 
       // All output '.js' files will have any sourcemaps re-processed by 'source-map-loader'.
       { 
