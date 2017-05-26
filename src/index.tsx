@@ -1,9 +1,9 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
-import { Hello } from "./components/Hello";
+import TakeEditor from "./components/TakeEditor";
 
 ReactDOM.render(
-    <Hello compiler="TypeScript" framework="React" />,
+    <TakeEditor />,
     document.getElementById("app")
 );
