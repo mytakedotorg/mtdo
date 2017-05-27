@@ -4,6 +4,7 @@
   "description": "What's your take?",
   "main": "src/index.tsx",
   "scripts": {
+    "start": "gulp",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",

@@ -12,6 +12,6 @@ Here's what we have so far:
  From root folder:
 
  - `npm install`
- - `gulp`
+ - `npm start`
 
 This opens a browser which will refresh when you make any changes, and it will also write the compiled changes into the `docs` folder.  The `docs` folder gets served at https://nedtwigg.github.io/mytake/
