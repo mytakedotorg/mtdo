@@ -7,5 +7,5 @@ require('./stylesheets/main.scss');
 
 ReactDOM.render(
     <TakeEditor />,
-    document.getElementById("app")
+    document.getElementById("app") as HTMLElement
 );

@@ -1,17 +1,23 @@
 interface ITakeEditorProps {
-  
+  //no props
 }
 
 interface ITakeEditorState {
   editorState: any,
-  schema: Object,
+  schema: any,
 }
 
 interface ITakeEditor__OnChange {
-  editorState: any 
+  editorState: {
+    nodes: Array<object>,
+  } 
 }
 
 interface ITakeEditor__TitleNode {
-  attributes: Object,
-  children: Object,
+  //See slate@0.20.1/lib/components/content.js:931
+  attributes: {
+    'data-key': string,  //data-key
+    onDragStart: (event: any) => void,
+  },
+  children: Array<object>,
 }
