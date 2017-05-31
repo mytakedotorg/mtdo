@@ -1,4 +1,5 @@
 import * as React from "react";
+import config from "./config";
 const { Editor, Raw } = require('slate');
 
 // Define a React component renderer for our code blocks.
@@ -6,30 +7,7 @@ function TitleNode(props: ITakeEditor__TitleNode) {
   return <h1 className="editor__title" {...props.attributes}>{props.children}</h1>
 }
 
-const initialState = Raw.deserialize({
-  nodes: [
-    {
-      kind: 'block',
-      type: 'title',
-      nodes: [
-        {
-          kind: 'text',
-          text: 'The title'
-        }
-      ]
-    },
-    {
-      kind: 'block',
-      type: 'paragraph',
-      nodes: [
-        {
-          kind: 'text',
-          text: 'A line of text in a paragraph.'
-        }
-      ]
-    }
-  ]
-}, { terse: true })
+const initialState = Raw.deserialize(config.initialState, { terse: true })
 
 class TakeEditor extends React.Component<ITakeEditorProps, ITakeEditorState> {
   constructor(props: ITakeEditorProps){
