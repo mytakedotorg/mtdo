@@ -1,11 +1,11 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
-import TakeEditor from "./components/TakeEditor";
+import MyTake from "./components/MyTake";
 
 require('./stylesheets/main.scss');
 
 ReactDOM.render(
-    <TakeEditor />,
+    <MyTake />,
     document.getElementById("app") as HTMLElement
 );
