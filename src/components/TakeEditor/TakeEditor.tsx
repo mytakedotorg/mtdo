@@ -20,20 +20,32 @@ function TitleNode(props: any): JSX.Element {
     </h1>
   );
 }
+
+function onDragOver(ev: DragEvent) {
+  ev.preventDefault(); //Allow drop event
+}
+function onDrop(ev: DragEvent) {
+  ev.preventDefault(); //Allow drop event
+  let data = ev.dataTransfer.getData('text');
+  console.log('dropped ' + data);
+}
+
 function ParagraphNode(props: any): JSX.Element {
   return (
-    <p className="editor__title" {...props.attributes}>
-      <Placeholder
-        parent={props.node}
-        node={props.node}
-        state={props.state}
-        firstOnly={false}
-        className="editor__placeholder"
-      >
-        <span>I believe...</span> {/*Take placeholder text*/}
-      </Placeholder>
-      {props.children}
-    </p>
+    <div className="dragMe" onDragOver={onDragOver} onDrop={onDrop}>
+      <p className="editor__title" {...props.attributes}>
+        <Placeholder
+          parent={props.node}
+          node={props.node}
+          state={props.state}
+          firstOnly={false}
+          className="editor__placeholder"
+        >
+          <span>I believe...</span> {/*Take placeholder text*/}
+        </Placeholder>
+        {props.children}
+      </p>
+    </div>
   );
 }
 
