@@ -3,5 +3,11 @@
 }
 
 .editor__title {
-  text-align: center;
+  text-align: left;
+  margin-top: 0;
+  position: relative;
+}
+
+.editor__placeholder {
+  opacity: 0.3;
 }
