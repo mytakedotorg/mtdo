@@ -7,7 +7,7 @@ export default {
         nodes: [
           {
             kind: 'text',
-            text: 'The title'
+            text: ''
           }
         ]
       },
@@ -17,7 +17,8 @@ export default {
         nodes: [
           {
             kind: 'text',
-            text: 'The take'
+            text: '',
+           
           }
         ]
       }

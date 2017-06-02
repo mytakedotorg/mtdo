@@ -1,13 +1,56 @@
 import * as React from "react";
 import config from "./config";
-const { Editor, Raw } = require('slate');
+const { Editor, Placeholder, Raw } = require('slate');
+import * as key from "keycode";
 
-// Define a React component renderer for our code blocks.
-function TitleNode(props: ITakeEditor__TitleNode) {
-  return <h1 className="editor__title" {...props.attributes}>{props.children}</h1>
+// Define a React component renderer for each of our text blocks.
+function TitleNode(props: any): JSX.Element {
+  return (
+    <h1 className="editor__title" {...props.attributes}>
+      <Placeholder
+        parent={props.node}
+        node={props.node}
+        state={props.state}
+        firstOnly={false}
+        className="editor__placeholder"
+      >
+        <span>My Take</span> {/*Title placeholder text*/}
+      </Placeholder>
+      {props.children}
+    </h1>
+  );
+}
+function ParagraphNode(props: any): JSX.Element {
+  return (
+    <p className="editor__title" {...props.attributes}>
+      <Placeholder
+        parent={props.node}
+        node={props.node}
+        state={props.state}
+        firstOnly={false}
+        className="editor__placeholder"
+      >
+        <span>I believe...</span> {/*Take placeholder text*/}
+      </Placeholder>
+      {props.children}
+    </p>
+  );
 }
 
-const initialState = Raw.deserialize(config.initialState, { terse: true })
+function TitlePlaceHolder(props: any): JSX.Element {
+  console.log("titleplaceholder props: " + props);
+  return (
+    <Placeholder
+      node={TitleNode}
+      parent={TitleNode}
+    >
+      Placehodler text
+      {props.children}
+    </Placeholder>
+  );
+}
+
+const initialState: any = Raw.deserialize(config.initialState, { terse: true })
 
 class TakeEditor extends React.Component<ITakeEditorProps, ITakeEditorState> {
   constructor(props: ITakeEditorProps){
@@ -16,7 +59,8 @@ class TakeEditor extends React.Component<ITakeEditorProps, ITakeEditorState> {
       editorState: initialState,
       schema: {
         nodes: {
-          title: TitleNode
+          title: TitleNode,
+          paragraph: ParagraphNode,
         }
       }
     }
@@ -26,14 +70,28 @@ class TakeEditor extends React.Component<ITakeEditorProps, ITakeEditorState> {
   onChange(editorState: ITakeEditor__OnChange): void {
     this.setState({ editorState })
   }
+  onKeyDown(event: KeyboardEvent, data: any, state: any): any{
+    // Determine whether cursor is in title block
+    const isTitle = state.blocks.some((block: any) => block.type == 'title')
+    
+    // If enter is pressed in title block, don't insert newline
+    if (event.which == key('Enter') && isTitle) {
+      return state;
+    }
+
+    return;
+  }
   render(){
     return (
       <Editor
         schema={this.state.schema}
         state={this.state.editorState}
         onChange={this.onChange}
+        onKeyDown={this.onKeyDown}
+        placeholder={'placeholder text'}
         className="editor"
-      />
+      >
+      </Editor>
     )
   }
 }
