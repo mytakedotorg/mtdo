@@ -3,21 +3,10 @@ interface ITakeEditorProps {
 }
 
 interface ITakeEditorState {
-  editorState: any,
-  schema: any,
+  editorState: any,         //Defined by slate
+  schema: any,              //Defined by slate
 }
 
 interface ITakeEditor__OnChange {
-  editorState: {
-    nodes: Array<object>,
-  } 
-}
-
-interface ITakeEditor__TitleNode {
-  //See slate@0.20.1/lib/components/content.js:931
-  attributes: {
-    'data-key': string,  //data-key
-    onDragStart: (event: any) => void,
-  },
-  children: Array<object>,
+  editorState: any,         //Defined by slate
 }
