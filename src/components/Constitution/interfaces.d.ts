@@ -3,7 +3,8 @@ interface ConstitutionProps {
 }
 
 interface ConstitutionState {
-  constitution: object,
+  constitutionStructure: object,
+  constitutionText: string
 }
 
 interface EventObject {
@@ -14,4 +15,9 @@ interface EventObject {
 
 interface MyDragEvent extends DragEvent {
   drag?: (event: EventObject) => void
+}
+
+interface rangeData {
+  start: number,
+  end: number
 }
