@@ -21,18 +21,19 @@ function TitleNode(props: any): JSX.Element {
   );
 }
 
-function onDragOver(ev: DragEvent) {
+function onDragOver(ev: React.DragEvent<HTMLDivElement>) {
   ev.preventDefault(); //Allow drop event
 }
-function onDrop(ev: DragEvent) {
+function onDrop(ev: React.DragEvent<HTMLDivElement>) {
   ev.preventDefault(); //Allow drop event
   let data = ev.dataTransfer.getData('text');
   console.log('dropped ' + data);
+ // (ev.target as HTMLDivElement).appendChild(data);
 }
 
 function ParagraphNode(props: any): JSX.Element {
   return (
-    <div className="dragMe" onDragOver={onDragOver} onDrop={onDrop}>
+    <div className="droppable" onDragOver={onDragOver} onDrop={onDrop}>
       <p className="editor__title" {...props.attributes}>
         <Placeholder
           parent={props.node}
