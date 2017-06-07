@@ -32,6 +32,14 @@ module.exports = {
         test: /\.js$/,
         exclude: /node_modules/,
         loader: "source-map-loader" 
+      },
+
+      // All files with a '.html' extension will be handled by 'html-loader'.
+      {
+        test: /\.html/,
+        use: [{
+          loader: 'html-loader'
+        }]
       }
     ]
   },
