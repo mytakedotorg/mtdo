@@ -12,7 +12,9 @@ module.exports = {
     // Add '.ts' and '.tsx' as resolvable extensions.
     extensions: [".ts", ".tsx", ".js", ".json"]
   },
-
+  resolveLoader: {
+    modules: ['node_modules', __dirname + '/loaders'],
+  },
   module: {
     rules: [
       // All files with a '.ts' or '.tsx' extension will be handled by 'awesome-typescript-loader'.
@@ -23,7 +25,7 @@ module.exports = {
       },
       {
         test: /\.scss$/,
-        loaders: ["style-loader", "css-loader", "sass-loader"]
+        loaders: ["style-loader", "css-loader", "sass-loader"]  
       },
 
       // All output '.js' files will have any sourcemaps re-processed by 'source-map-loader'.
@@ -36,10 +38,8 @@ module.exports = {
 
       // All files with a '.html' extension will be handled by 'html-loader'.
       {
-        test: /\.html/,
-        use: [{
-          loader: 'html-loader'
-        }]
+        test: /\.foundation\.html$/,
+        loaders: ['html-loader', 'foundation-loader']
       }
     ]
   },
