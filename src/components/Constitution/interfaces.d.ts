@@ -3,8 +3,9 @@ interface ConstitutionProps {
 }
 
 interface ConstitutionState {
-  constitutionStructure: object,
-  constitutionText: string
+  constitutionStructure: object, 
+  constitutionNodes: Array<React.ReactNode>,
+  textIsHighlighted: boolean
 }
 
 interface EventObject {
