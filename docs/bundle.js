@@ -6801,7 +6801,7 @@ function getPooledWarningPropertyDefinition(propName, getVal) {
  * Expose `debug()` as the module.
  */
 
-exports = module.exports = __webpack_require__(409);
+exports = module.exports = __webpack_require__(408);
 exports.log = log;
 exports.formatArgs = formatArgs;
 exports.save = save;
@@ -10019,7 +10019,7 @@ var _mark = __webpack_require__(29);
 
 var _mark2 = _interopRequireDefault(_mark);
 
-var _range = __webpack_require__(168);
+var _range = __webpack_require__(169);
 
 var _range2 = _interopRequireDefault(_range);
 
@@ -15524,7 +15524,7 @@ var _react = __webpack_require__(8);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _isReactComponent = __webpack_require__(404);
+var _isReactComponent = __webpack_require__(403);
 
 var _isReactComponent2 = _interopRequireDefault(_isReactComponent);
 
@@ -15868,7 +15868,7 @@ var _selection = __webpack_require__(54);
 
 var _selection2 = _interopRequireDefault(_selection);
 
-var _transform = __webpack_require__(388);
+var _transform = __webpack_require__(387);
 
 var _transform2 = _interopRequireDefault(_transform);
 
@@ -24720,7 +24720,7 @@ util.inherits = __webpack_require__(13);
 
 /*<replacement>*/
 var internalUtil = {
-  deprecate: __webpack_require__(415)
+  deprecate: __webpack_require__(414)
 };
 /*</replacement>*/
 
@@ -25235,7 +25235,7 @@ function CorkedRequest(state) {
     }
   };
 }
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0), __webpack_require__(414).setImmediate))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0), __webpack_require__(413).setImmediate))
 
 /***/ }),
 /* 105 */
@@ -25307,7 +25307,7 @@ var _generateKey = __webpack_require__(35);
 
 var _generateKey2 = _interopRequireDefault(_generateKey);
 
-var _isInRange = __webpack_require__(403);
+var _isInRange = __webpack_require__(402);
 
 var _isInRange2 = _interopRequireDefault(_isInRange);
 
@@ -27942,11 +27942,11 @@ Object.defineProperty(exports, "__esModule", {
 
 var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
-var _normalizeNodeAndOffset = __webpack_require__(406);
+var _normalizeNodeAndOffset = __webpack_require__(405);
 
 var _normalizeNodeAndOffset2 = _interopRequireDefault(_normalizeNodeAndOffset);
 
-var _findClosestNode = __webpack_require__(171);
+var _findClosestNode = __webpack_require__(172);
 
 var _findClosestNode2 = _interopRequireDefault(_findClosestNode);
 
@@ -30255,7 +30255,7 @@ Tokenizer.prototype._emitPartial = function(value){
 module.exports = Stream;
 
 var Parser = __webpack_require__(128),
-    WritableStream = __webpack_require__(411).Writable || __webpack_require__(416).Writable,
+    WritableStream = __webpack_require__(410).Writable || __webpack_require__(415).Writable,
     StringDecoder = __webpack_require__(82).StringDecoder,
     Buffer = __webpack_require__(19).Buffer;
 
@@ -34770,7 +34770,7 @@ util.inherits = __webpack_require__(13);
 /*</replacement>*/
 
 /*<replacement>*/
-var debugUtil = __webpack_require__(417);
+var debugUtil = __webpack_require__(416);
 var debug = void 0;
 if (debugUtil && debugUtil.debuglog) {
   debug = debugUtil.debuglog('stream');
@@ -35894,7 +35894,7 @@ var _offsetKey = __webpack_require__(110);
 
 var _offsetKey2 = _interopRequireDefault(_offsetKey);
 
-var _findDeepestNode = __webpack_require__(172);
+var _findDeepestNode = __webpack_require__(173);
 
 var _findDeepestNode2 = _interopRequireDefault(_findDeepestNode);
 
@@ -36330,6 +36330,170 @@ exports.default = IS_DEV;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.setKeyGenerator = exports.resetKeyGenerator = exports.findDOMNode = exports.Transforms = exports.Text = exports.State = exports.Stack = exports.Selection = exports.Schema = exports.Raw = exports.Range = exports.Plain = exports.Placeholder = exports.Mark = exports.Inline = exports.Html = exports.Editor = exports.Document = exports.Data = exports.Character = exports.Block = undefined;
+
+var _editor = __webpack_require__(384);
+
+var _editor2 = _interopRequireDefault(_editor);
+
+var _placeholder = __webpack_require__(166);
+
+var _placeholder2 = _interopRequireDefault(_placeholder);
+
+var _block = __webpack_require__(51);
+
+var _block2 = _interopRequireDefault(_block);
+
+var _character = __webpack_require__(52);
+
+var _character2 = _interopRequireDefault(_character);
+
+var _data = __webpack_require__(33);
+
+var _data2 = _interopRequireDefault(_data);
+
+var _document = __webpack_require__(28);
+
+var _document2 = _interopRequireDefault(_document);
+
+var _inline = __webpack_require__(53);
+
+var _inline2 = _interopRequireDefault(_inline);
+
+var _mark = __webpack_require__(29);
+
+var _mark2 = _interopRequireDefault(_mark);
+
+var _schema = __webpack_require__(67);
+
+var _schema2 = _interopRequireDefault(_schema);
+
+var _selection = __webpack_require__(54);
+
+var _selection2 = _interopRequireDefault(_selection);
+
+var _stack = __webpack_require__(170);
+
+var _stack2 = _interopRequireDefault(_stack);
+
+var _state = __webpack_require__(68);
+
+var _state2 = _interopRequireDefault(_state);
+
+var _text = __webpack_require__(34);
+
+var _text2 = _interopRequireDefault(_text);
+
+var _range = __webpack_require__(169);
+
+var _range2 = _interopRequireDefault(_range);
+
+var _html = __webpack_require__(389);
+
+var _html2 = _interopRequireDefault(_html);
+
+var _plain = __webpack_require__(390);
+
+var _plain2 = _interopRequireDefault(_plain);
+
+var _raw = __webpack_require__(70);
+
+var _raw2 = _interopRequireDefault(_raw);
+
+var _transforms = __webpack_require__(171);
+
+var _transforms2 = _interopRequireDefault(_transforms);
+
+var _findDomNode = __webpack_require__(174);
+
+var _findDomNode2 = _interopRequireDefault(_findDomNode);
+
+var _generateKey = __webpack_require__(35);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/**
+ * Export.
+ *
+ * @type {Object}
+ */
+
+/**
+ * Utils.
+ */
+
+/**
+ * Serializers.
+ */
+
+/**
+ * Models.
+ */
+
+/**
+ * Components.
+ */
+
+exports.Block = _block2.default;
+exports.Character = _character2.default;
+exports.Data = _data2.default;
+exports.Document = _document2.default;
+exports.Editor = _editor2.default;
+exports.Html = _html2.default;
+exports.Inline = _inline2.default;
+exports.Mark = _mark2.default;
+exports.Placeholder = _placeholder2.default;
+exports.Plain = _plain2.default;
+exports.Range = _range2.default;
+exports.Raw = _raw2.default;
+exports.Schema = _schema2.default;
+exports.Selection = _selection2.default;
+exports.Stack = _stack2.default;
+exports.State = _state2.default;
+exports.Text = _text2.default;
+exports.Transforms = _transforms2.default;
+exports.findDOMNode = _findDomNode2.default;
+exports.resetKeyGenerator = _generateKey.resetKeyGenerator;
+exports.setKeyGenerator = _generateKey.setKeyGenerator;
+
+/**
+ * Transforms.
+ */
+
+exports.default = {
+  Block: _block2.default,
+  Character: _character2.default,
+  Data: _data2.default,
+  Document: _document2.default,
+  Editor: _editor2.default,
+  Html: _html2.default,
+  Inline: _inline2.default,
+  Mark: _mark2.default,
+  Placeholder: _placeholder2.default,
+  Plain: _plain2.default,
+  Range: _range2.default,
+  Raw: _raw2.default,
+  Schema: _schema2.default,
+  Selection: _selection2.default,
+  Stack: _stack2.default,
+  State: _state2.default,
+  Text: _text2.default,
+  Transforms: _transforms2.default,
+  findDOMNode: _findDomNode2.default,
+  resetKeyGenerator: _generateKey.resetKeyGenerator,
+  setKeyGenerator: _generateKey.setKeyGenerator
+};
+
+/***/ }),
+/* 169 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -36444,7 +36608,7 @@ var Range = function (_ref) {
 exports.default = Range;
 
 /***/ }),
-/* 169 */
+/* 170 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -36456,7 +36620,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _core = __webpack_require__(389);
+var _core = __webpack_require__(388);
 
 var _core2 = _interopRequireDefault(_core);
 
@@ -36907,7 +37071,7 @@ function resolvePlugins(props) {
 exports.default = Stack;
 
 /***/ }),
-/* 170 */
+/* 171 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -36919,39 +37083,39 @@ Object.defineProperty(exports, "__esModule", {
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-var _applyOperation = __webpack_require__(392);
+var _applyOperation = __webpack_require__(391);
 
 var _applyOperation2 = _interopRequireDefault(_applyOperation);
 
-var _atCurrentRange = __webpack_require__(393);
+var _atCurrentRange = __webpack_require__(392);
 
 var _atCurrentRange2 = _interopRequireDefault(_atCurrentRange);
 
-var _atRange = __webpack_require__(394);
+var _atRange = __webpack_require__(393);
 
 var _atRange2 = _interopRequireDefault(_atRange);
 
-var _byKey = __webpack_require__(395);
+var _byKey = __webpack_require__(394);
 
 var _byKey2 = _interopRequireDefault(_byKey);
 
-var _call = __webpack_require__(396);
+var _call = __webpack_require__(395);
 
 var _call2 = _interopRequireDefault(_call);
 
-var _normalize = __webpack_require__(397);
+var _normalize = __webpack_require__(396);
 
 var _normalize2 = _interopRequireDefault(_normalize);
 
-var _onHistory = __webpack_require__(398);
+var _onHistory = __webpack_require__(397);
 
 var _onHistory2 = _interopRequireDefault(_onHistory);
 
-var _onSelection = __webpack_require__(399);
+var _onSelection = __webpack_require__(398);
 
 var _onSelection2 = _interopRequireDefault(_onSelection);
 
-var _operations = __webpack_require__(400);
+var _operations = __webpack_require__(399);
 
 var _operations2 = _interopRequireDefault(_operations);
 
@@ -36966,7 +37130,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _extends({}, _applyOperation2.default, _atCurrentRange2.default, _atRange2.default, _byKey2.default, _call2.default, _normalize2.default, _onHistory2.default, _onSelection2.default, _operations2.default);
 
 /***/ }),
-/* 171 */
+/* 172 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37008,7 +37172,7 @@ function findClosestNode(node, selector) {
 exports.default = findClosestNode;
 
 /***/ }),
-/* 172 */
+/* 173 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37038,7 +37202,7 @@ function findDeepestNode(element) {
 exports.default = findDeepestNode;
 
 /***/ }),
-/* 173 */
+/* 174 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37074,7 +37238,7 @@ function findDOMNode(node) {
 exports.default = findDOMNode;
 
 /***/ }),
-/* 174 */
+/* 175 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37132,7 +37296,7 @@ function getPoint(element, offset, state, editor) {
 exports.default = getPoint;
 
 /***/ }),
-/* 175 */
+/* 176 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37143,7 +37307,7 @@ exports.default = MyTake_1.default;
 
 
 /***/ }),
-/* 176 */
+/* 177 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
@@ -37157,7 +37321,7 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(412)(content, options);
+var update = __webpack_require__(411)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -37174,7 +37338,7 @@ if(false) {
 }
 
 /***/ }),
-/* 177 */
+/* 178 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37191,140 +37355,16 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(8);
-var ReactDOM = __webpack_require__(38);
-var config_1 = __webpack_require__(178);
-var getNodeArray_1 = __webpack_require__(185);
-var constitutionText = __webpack_require__(273);
 var Constitution = (function (_super) {
     __extends(Constitution, _super);
     function Constitution(props) {
-        var _this = _super.call(this, props) || this;
-        _this.state = {
-            constitutionStructure: config_1.default.constitution,
-            constitutionNodes: _this.getInitialText(),
-            textIsHighlighted: false
-        };
-        _this.handleDragStart = _this.handleDragStart.bind(_this);
-        _this.handleMouseUp = _this.handleMouseUp.bind(_this);
-        _this.handleClick = _this.handleClick.bind(_this);
-        return _this;
+        return _super.call(this, props) || this;
     }
-    Constitution.prototype.clearSelection = function () {
-        if (window.getSelection) {
-            if (window.getSelection().empty) {
-                window.getSelection().empty();
-            }
-            else if (window.getSelection().removeAllRanges) {
-                window.getSelection().removeAllRanges();
-            }
-        }
-        else {
-            // pre IE 9
-        }
-    };
-    Constitution.prototype.getInitialText = function () {
-        var initialText = getNodeArray_1.default(constitutionText);
-        return initialText;
-    };
-    Constitution.prototype.highlightText = function (range) {
-        var _this = this;
-        var indexOfStartContainer = Array.prototype.indexOf.call(range.startContainer.parentElement.parentNode.childNodes, //Arrange siblings into an array
-        range.startContainer.parentNode); //Find indexOf current Node
-        var indexOfSelectionStart = range.startOffset;
-        var indexOfEndContainer = Array.prototype.indexOf.call(range.endContainer.parentElement.parentNode.childNodes, //Arrange siblings into an array
-        range.endContainer.parentNode); //Find indexOf current Node
-        var indexOfSelectionEnd = range.endOffset;
-        //Need to find a way not to hardcode this index ~~~~~~~~~~~~~~~~---v
-        var startContainer = ReactDOM.findDOMNode(this).childNodes[2].childNodes[indexOfStartContainer];
-        var endContainer = ReactDOM.findDOMNode(this).childNodes[2].childNodes[indexOfEndContainer];
-        if (startContainer === endContainer) {
-            // Create a new Span element with the contents of the highlighted text
-            var newSpan = React.createElement('span', { className: 'constitution__text--selected', key: 'startSpan' }, startContainer.textContent.substring(indexOfSelectionStart, indexOfSelectionEnd));
-            // Modify state array immutably
-            var newNode_1 = Object.assign({}, this.state.constitutionNodes[indexOfStartContainer]);
-            newNode_1.innerHTML = [
-                startContainer.textContent.substring(0, indexOfSelectionStart),
-                newSpan,
-                startContainer.textContent.substring(indexOfSelectionEnd, startContainer.textContent.length)
-            ];
-            this.setState(function (prevState) { return ({
-                constitutionNodes: prevState.constitutionNodes.slice(0, indexOfStartContainer).concat([
-                    newNode_1
-                ], prevState.constitutionNodes.slice(indexOfEndContainer + 1, _this.state.constitutionNodes.length)),
-                textIsHighlighted: true
-            }); });
-        }
-        else {
-            // Create a new Span element with the contents of the highlighted text
-            var firstNewSpan = React.createElement('span', { className: 'constitution__text--selected', key: 'startSpan' }, startContainer.textContent.substring(indexOfSelectionStart, startContainer.textContent.length));
-            // Modify state array immutably
-            var firstNewNode = Object.assign({}, this.state.constitutionNodes[indexOfStartContainer]);
-            firstNewNode.innerHTML = [
-                startContainer.textContent.substring(0, indexOfSelectionStart),
-                firstNewSpan
-            ];
-            // Create a new Span element with the contents of the highlighted text
-            var lastNewSpan = React.createElement('span', { className: 'constitution__text--selected', key: 'endSpan' }, endContainer.textContent.substring(0, indexOfSelectionEnd));
-            // Modify state array immutably
-            var lastNewNode = Object.assign({}, this.state.constitutionNodes[indexOfEndContainer]);
-            lastNewNode.innerHTML = [
-                lastNewSpan,
-                endContainer.textContent.substring(indexOfSelectionEnd, endContainer.textContent.length),
-            ];
-            var newNodes_1 = [];
-            newNodes_1.push(firstNewNode);
-            for (var index = indexOfStartContainer + 1; index < indexOfEndContainer; index++) {
-                console.log('in for loop now');
-                var nextNewNode = Object.assign({}, this.state.constitutionNodes[index]);
-                var key = 'middleSpan-' + index.toString();
-                var nextNewSpan = React.createElement('span', { className: 'constitution__text--selected', key: key }, nextNewNode.innerHTML);
-                nextNewNode.innerHTML = [nextNewSpan];
-                newNodes_1.push(nextNewNode);
-            }
-            newNodes_1.push(lastNewNode);
-            this.setState(function (prevState) { return ({
-                constitutionNodes: prevState.constitutionNodes.slice(0, indexOfStartContainer).concat(newNodes_1, prevState.constitutionNodes.slice(indexOfEndContainer + 1, _this.state.constitutionNodes.length)),
-                textIsHighlighted: true
-            }); });
-        }
-        this.clearSelection();
-    };
-    Constitution.prototype.handleClick = function () {
-        this.setState({
-            constitutionNodes: this.getInitialText(),
-            textIsHighlighted: false
-        });
-    };
-    Constitution.prototype.handleMouseUp = function (ev) {
-        if (window.getSelection && !this.state.textIsHighlighted) {
-            var selection = window.getSelection();
-            if (selection.toString().length) {
-                var range = selection.getRangeAt(0);
-                this.highlightText(range);
-            }
-        }
-    };
-    Constitution.prototype.handleDragStart = function (ev) {
-        try {
-            // ev.dataTransfer.setData('text', DATA_TO_SEND);
-        }
-        catch (err) {
-            console.error(err);
-        }
-    };
     Constitution.prototype.render = function () {
-        /**
-         * Might use this later
-         */
-        // <ul className="constitution__sections">
-        // {Object.keys(this.state.constitutionStructure).map(function(key: string, index: number){
-        //   return (<li id={key} key={index} className="constitution__section">{key}</li>);
-        // })}
-        // </ul>
         return (React.createElement("div", { className: "constitution" },
             React.createElement("h2", { className: "constitution__heading" }, "Constitution"),
-            React.createElement("button", { onClick: this.handleClick }, "Clear Selection"),
-            React.createElement("div", { className: "constitution__text", onMouseUp: this.handleMouseUp }, this.state.constitutionNodes.map(function (element, index) {
+            React.createElement("button", { onClick: this.props.onClick }, "Clear Selection"),
+            React.createElement("div", { className: "constitution__text", onMouseUp: this.props.onMouseUp }, this.props.constitutionNodes.map(function (element, index) {
                 element.props['key'] = index.toString();
                 return (React.createElement(element.component, element.props, element.innerHTML));
             }))));
@@ -37335,99 +37375,18 @@ exports.default = Constitution;
 
 
 /***/ }),
-/* 178 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.default = {
-    constitution: {
-        preamble: { start: 0, end: 352 },
-        articleI: { start: 353, end: 1000,
-            section1: { start: 372, end: 550 },
-            section2: { start: 551, end: 2405 },
-            section3: { start: 2406, end: 4467 },
-            section4: { start: 4468, end: 4928 },
-            section5: { start: 4929, end: 5973 },
-            section6: { start: 5974, end: 6850 },
-            section7: { start: 6851, end: 8641 },
-            section8: { start: 8642, end: 11376 },
-            section9: { start: 11377, end: 12878 },
-            section10: { start: 12879, end: 13956 },
-        },
-        articleII: {
-            section1: { start: 0, end: 0 },
-            section2: { start: 0, end: 0 },
-            section3: { start: 0, end: 0 },
-            section4: { start: 0, end: 0 },
-        },
-        articleIII: {
-            section1: { start: 0, end: 0 },
-            section2: { start: 0, end: 0 },
-            section3: { start: 0, end: 0 },
-        },
-        articleIV: {
-            section1: { start: 0, end: 0 },
-            section2: { start: 0, end: 0 },
-            section3: { start: 0, end: 0 },
-            section4: { start: 0, end: 0 },
-        },
-        articleV: { start: 0, end: 0 },
-        articleVI: { start: 0, end: 0 },
-        articleVII: { start: 0, end: 0 }
-    }
-};
-
-
-/***/ }),
 /* 179 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var Constitution_1 = __webpack_require__(177);
+var Constitution_1 = __webpack_require__(178);
 exports.default = Constitution_1.default;
 
 
 /***/ }),
 /* 180 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-var React = __webpack_require__(8);
-var TakeEditor_1 = __webpack_require__(183);
-var Constitution_1 = __webpack_require__(179);
-var MyTake = (function (_super) {
-    __extends(MyTake, _super);
-    function MyTake(props) {
-        return _super.call(this, props) || this;
-    }
-    MyTake.prototype.render = function () {
-        return (React.createElement("div", null,
-            React.createElement(Constitution_1.default, null),
-            React.createElement(TakeEditor_1.default, null)));
-    };
-    return MyTake;
-}(React.Component));
-exports.default = MyTake;
-
-
-/***/ }),
-/* 181 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37452,9 +37411,14 @@ var __assign = (this && this.__assign) || Object.assign || function(t) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(8);
-var config_1 = __webpack_require__(182);
-var _a = __webpack_require__(387), Editor = _a.Editor, Placeholder = _a.Placeholder, Raw = _a.Raw;
+var ReactDOM = __webpack_require__(38);
+var TakeEditor_1 = __webpack_require__(183);
+var Constitution_1 = __webpack_require__(179);
+var _a = __webpack_require__(168), Placeholder = _a.Placeholder, Raw = _a.Raw;
 var key = __webpack_require__(132);
+var getNodeArray_1 = __webpack_require__(185);
+var constitutionText = __webpack_require__(273);
+var config_1 = __webpack_require__(181);
 // Define a React component renderer for each of our text blocks.
 function TitleNode(props) {
     return (React.createElement("h1", __assign({ className: "editor__title" }, props.attributes),
@@ -37463,17 +37427,9 @@ function TitleNode(props) {
             " "),
         props.children));
 }
-function onDragOver(ev) {
-    ev.preventDefault(); //Allow drop event
-}
-function onDrop(ev) {
-    ev.preventDefault(); //Allow drop event
-    var data = ev.dataTransfer.getData('text');
-    console.log('dropped ' + data);
-    // (ev.target as HTMLDivElement).appendChild(data);
-}
 function ParagraphNode(props) {
-    return (React.createElement("div", { className: "droppable", onDragOver: onDragOver, onDrop: onDrop },
+    //<div className="droppable" onDragOver={onDragOver} onDrop={onDrop}>
+    return (React.createElement("div", { className: "droppable" },
         React.createElement("p", __assign({ className: "editor__title" }, props.attributes),
             React.createElement(Placeholder, { parent: props.node, node: props.node, state: props.state, firstOnly: false, className: "editor__placeholder" },
                 React.createElement("span", null, "I believe..."),
@@ -37487,11 +37443,14 @@ function TitlePlaceHolder(props) {
         props.children));
 }
 var initialState = Raw.deserialize(config_1.default.initialState, { terse: true });
-var TakeEditor = (function (_super) {
-    __extends(TakeEditor, _super);
-    function TakeEditor(props) {
+var MyTake = (function (_super) {
+    __extends(MyTake, _super);
+    function MyTake(props) {
         var _this = _super.call(this, props) || this;
         _this.state = {
+            constitutionNodes: _this.getInitialText(),
+            textIsHighlighted: false,
+            dragData: '',
             editorState: initialState,
             schema: {
                 nodes: {
@@ -37500,32 +37459,176 @@ var TakeEditor = (function (_super) {
                 }
             }
         };
-        _this.onChange = _this.onChange.bind(_this);
+        _this.handleDragStart = _this.handleDragStart.bind(_this);
+        _this.handleConstitutionMouseUp = _this.handleConstitutionMouseUp.bind(_this);
+        _this.handleConstitutionClick = _this.handleConstitutionClick.bind(_this);
+        _this.handleEditorChange = _this.handleEditorChange.bind(_this);
         return _this;
     }
+    MyTake.prototype.getInitialText = function () {
+        var initialText = getNodeArray_1.default(constitutionText);
+        return initialText;
+    };
+    MyTake.prototype.clearDefaultDOMSelection = function () {
+        if (window.getSelection) {
+            if (window.getSelection().empty) {
+                window.getSelection().empty();
+            }
+            else if (window.getSelection().removeAllRanges) {
+                window.getSelection().removeAllRanges();
+            }
+        }
+        else {
+            // pre IE 9, unsupported
+        }
+    };
+    MyTake.prototype.handleConstitutionClick = function () {
+        this.setState({
+            constitutionNodes: this.getInitialText(),
+            textIsHighlighted: false
+        });
+    };
+    MyTake.prototype.handleConstitutionMouseUp = function () {
+        if (window.getSelection && !this.state.textIsHighlighted) {
+            var selection = window.getSelection();
+            if (selection.toString().length) {
+                var range = selection.getRangeAt(0);
+                this.highlightText(range);
+            }
+        }
+    };
+    MyTake.prototype.handleDragStart = function (ev) {
+        try {
+            //Use ev.dataTransfer.setDragImage for multi-span selections
+            ev.dataTransfer.setData('text', JSON.stringify(this.state.dragData));
+        }
+        catch (err) {
+            console.error(err);
+        }
+    };
+    MyTake.prototype.highlightText = function (range) {
+        var indexOfStartContainer = Array.prototype.indexOf.call(range.startContainer.parentElement.parentNode.childNodes, //Arrange siblings into an array
+        range.startContainer.parentNode); //Find indexOf current Node
+        var indexOfSelectionStart = range.startOffset;
+        var indexOfEndContainer = Array.prototype.indexOf.call(range.endContainer.parentElement.parentNode.childNodes, //Arrange siblings into an array
+        range.endContainer.parentNode); //Find indexOf current Node
+        var indexOfSelectionEnd = range.endOffset;
+        //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|~~~~~~~~~~~~~|
+        //Need to find a way not to hardcode these indices ----------------v-------------v
+        var startContainer = ReactDOM.findDOMNode(this).childNodes[0].childNodes[2].childNodes[indexOfStartContainer];
+        var endContainer = ReactDOM.findDOMNode(this).childNodes[0].childNodes[2].childNodes[indexOfEndContainer];
+        var startOffset = parseInt(startContainer
+            .parentElement
+            .children[indexOfStartContainer]
+            .getAttribute('data-offset')) + range.startOffset;
+        var endOffset = parseInt(endContainer
+            .parentElement
+            .children[indexOfEndContainer]
+            .getAttribute('data-offset')) + range.endOffset;
+        var dragData = {
+            startOffset: startOffset,
+            endOffset: endOffset
+        };
+        var constitutionNodes = this.state.constitutionNodes;
+        var newNodes = constitutionNodes.slice(0, indexOfStartContainer).slice();
+        if (startContainer === endContainer) {
+            // Create a new Span element with the contents of the highlighted text
+            var newSpan = React.createElement('span', {
+                className: 'constitution__text--selected',
+                key: 'startSpan',
+                draggable: 'true',
+            }, startContainer.textContent.substring(indexOfSelectionStart, indexOfSelectionEnd));
+            // Modify state array immutably
+            var newNode = Object.assign({}, this.state.constitutionNodes[indexOfStartContainer]);
+            newNode.innerHTML = [
+                startContainer.textContent.substring(0, indexOfSelectionStart),
+                newSpan,
+                startContainer.textContent.substring(indexOfSelectionEnd, startContainer.textContent.length)
+            ];
+            newNodes.push(newNode);
+        }
+        else {
+            // Create a new Span element with the contents of the highlighted text
+            var firstNewSpan = React.createElement('span', {
+                className: 'constitution__text--selected',
+                key: 'startSpan',
+                draggable: 'true',
+            }, startContainer.textContent.substring(indexOfSelectionStart, startContainer.textContent.length));
+            // Modify state array immutably
+            var firstNewNode = Object.assign({}, this.state.constitutionNodes[indexOfStartContainer]);
+            firstNewNode.innerHTML = [
+                startContainer.textContent.substring(0, indexOfSelectionStart),
+                firstNewSpan
+            ];
+            // Create a new Span element with the contents of the highlighted text
+            var lastNewSpan = React.createElement('span', {
+                className: 'constitution__text--selected',
+                key: 'endSpan',
+                draggable: 'true',
+            }, endContainer.textContent.substring(0, indexOfSelectionEnd));
+            // Modify state array immutably
+            var lastNewNode = Object.assign({}, this.state.constitutionNodes[indexOfEndContainer]);
+            lastNewNode.innerHTML = [
+                lastNewSpan,
+                endContainer.textContent.substring(indexOfSelectionEnd, endContainer.textContent.length),
+            ];
+            newNodes.push(firstNewNode);
+            for (var index = indexOfStartContainer + 1; index < indexOfEndContainer; index++) {
+                var nextNewNode = Object.assign({}, this.state.constitutionNodes[index]);
+                var key_1 = 'middleSpan-' + index.toString();
+                var nextNewSpan = React.createElement('span', {
+                    className: 'constitution__text--selected',
+                    key: key_1,
+                    draggable: 'true',
+                }, nextNewNode.innerHTML);
+                nextNewNode.innerHTML = [nextNewSpan];
+                newNodes.push(nextNewNode);
+            }
+            newNodes.push(lastNewNode);
+        }
+        newNodes = newNodes.concat(constitutionNodes.slice(indexOfEndContainer + 1, this.state.constitutionNodes.length));
+        this.setState(function (prevState) { return ({
+            constitutionNodes: newNodes.slice(),
+            textIsHighlighted: true,
+            dragData: dragData
+        }); });
+        this.clearDefaultDOMSelection();
+    };
     // On change, update the app's React state with the new editor state.
-    TakeEditor.prototype.onChange = function (editorState) {
+    MyTake.prototype.handleEditorChange = function (editorState) {
         this.setState({ editorState: editorState });
     };
-    TakeEditor.prototype.onKeyDown = function (event, data, state) {
+    MyTake.prototype.handleEditorKeyDown = function (event, data, state) {
         // Determine whether cursor is in title block
         var isTitle = state.blocks.some(function (block) { return block.type == 'title'; });
-        // If enter is pressed in title block, don't insert newline
+        // If enter is pressed in title block, move cursor to beginning of next block
         if (event.which == key('Enter') && isTitle) {
-            return state;
+            var selection = {
+                anchorKey: "2",
+                anchorOffset: 0,
+                focusKey: "2",
+                focusOffset: 0
+            };
+            var newState = state
+                .transform()
+                .select(selection)
+                .apply();
+            return newState;
         }
         return;
     };
-    TakeEditor.prototype.render = function () {
-        return (React.createElement(Editor, { schema: this.state.schema, state: this.state.editorState, onChange: this.onChange, onKeyDown: this.onKeyDown, placeholder: 'placeholder text', className: "editor" }));
+    MyTake.prototype.render = function () {
+        return (React.createElement("div", null,
+            React.createElement(Constitution_1.default, { onClick: this.handleConstitutionClick, onMouseUp: this.handleConstitutionMouseUp, constitutionNodes: this.state.constitutionNodes }),
+            React.createElement(TakeEditor_1.default, { schema: this.state.schema, editorState: this.state.editorState, onChange: this.handleEditorChange, onKeyDown: this.handleEditorKeyDown })));
     };
-    return TakeEditor;
+    return MyTake;
 }(React.Component));
-exports.default = TakeEditor;
+exports.default = MyTake;
 
 
 /***/ }),
-/* 182 */
+/* 181 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37560,13 +37663,64 @@ exports.default = {
 
 
 /***/ }),
+/* 182 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var React = __webpack_require__(8);
+var Editor = __webpack_require__(168).Editor;
+var TakeEditor = (function (_super) {
+    __extends(TakeEditor, _super);
+    function TakeEditor(props) {
+        return _super.call(this, props) || this;
+    }
+    TakeEditor.prototype.render = function () {
+        var props = this.props;
+        return (React.createElement(Editor, { schema: props.schema, state: props.editorState, onChange: props.onChange, onKeyDown: props.onKeyDown, className: "editor" }));
+    };
+    return TakeEditor;
+}(React.Component));
+exports.default = TakeEditor;
+function onDragOver(ev) {
+    ev.preventDefault(); //Allow drop event
+}
+function onDrop(ev) {
+    ev.preventDefault(); //Allow drop event
+    console.log(ev.target);
+    // let data = ev.dataTransfer.getData('text');
+    // console.log('dropped: ' + data);
+    // console.log('effectAllowed: ' + ev.dataTransfer.effectAllowed);
+    // /**
+    //  * Spec says to do appendChild to ev.target, but not necessary. Don't know why???
+    //  * (ev.target as HTMLDivElement).appendChild(data); 
+    //  */
+    // console.log(ev.target);
+    // let newP = document.createElement("p");
+    // newP.innerHTML = "something else";
+    // (ev.target as HTMLDivElement).appendChild(newP);
+}
+
+
+/***/ }),
 /* 183 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var TakeEditor_1 = __webpack_require__(181);
+var TakeEditor_1 = __webpack_require__(182);
 exports.default = TakeEditor_1.default;
 
 
@@ -37579,8 +37733,8 @@ exports.default = TakeEditor_1.default;
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(8);
 var ReactDOM = __webpack_require__(38);
-var MyTake_1 = __webpack_require__(175);
-__webpack_require__(176);
+var MyTake_1 = __webpack_require__(176);
+__webpack_require__(177);
 ReactDOM.render(React.createElement(MyTake_1.default, null), document.getElementById("app"));
 
 
@@ -70507,23 +70661,23 @@ var _selection = __webpack_require__(54);
 
 var _selection2 = _interopRequireDefault(_selection);
 
-var _extendSelection = __webpack_require__(401);
+var _extendSelection = __webpack_require__(400);
 
 var _extendSelection2 = _interopRequireDefault(_extendSelection);
 
-var _findClosestNode = __webpack_require__(171);
+var _findClosestNode = __webpack_require__(172);
 
 var _findClosestNode2 = _interopRequireDefault(_findClosestNode);
 
-var _findDeepestNode = __webpack_require__(172);
+var _findDeepestNode = __webpack_require__(173);
 
 var _findDeepestNode2 = _interopRequireDefault(_findDeepestNode);
 
-var _getPoint = __webpack_require__(174);
+var _getPoint = __webpack_require__(175);
 
 var _getPoint2 = _interopRequireDefault(_getPoint);
 
-var _getTransferData = __webpack_require__(402);
+var _getTransferData = __webpack_require__(401);
 
 var _getTransferData2 = _interopRequireDefault(_getTransferData);
 
@@ -71486,7 +71640,7 @@ var _propTypes = __webpack_require__(23);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _stack = __webpack_require__(169);
+var _stack = __webpack_require__(170);
 
 var _stack2 = _interopRequireDefault(_stack);
 
@@ -71494,7 +71648,7 @@ var _state = __webpack_require__(68);
 
 var _state2 = _interopRequireDefault(_state);
 
-var _noop = __webpack_require__(405);
+var _noop = __webpack_require__(404);
 
 var _noop2 = _interopRequireDefault(_noop);
 
@@ -71901,7 +72055,7 @@ var _getWindow = __webpack_require__(60);
 
 var _getWindow2 = _interopRequireDefault(_getWindow);
 
-var _scrollToSelection = __webpack_require__(407);
+var _scrollToSelection = __webpack_require__(406);
 
 var _scrollToSelection2 = _interopRequireDefault(_scrollToSelection);
 
@@ -72582,170 +72736,6 @@ exports.default = Void;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.setKeyGenerator = exports.resetKeyGenerator = exports.findDOMNode = exports.Transforms = exports.Text = exports.State = exports.Stack = exports.Selection = exports.Schema = exports.Raw = exports.Range = exports.Plain = exports.Placeholder = exports.Mark = exports.Inline = exports.Html = exports.Editor = exports.Document = exports.Data = exports.Character = exports.Block = undefined;
-
-var _editor = __webpack_require__(384);
-
-var _editor2 = _interopRequireDefault(_editor);
-
-var _placeholder = __webpack_require__(166);
-
-var _placeholder2 = _interopRequireDefault(_placeholder);
-
-var _block = __webpack_require__(51);
-
-var _block2 = _interopRequireDefault(_block);
-
-var _character = __webpack_require__(52);
-
-var _character2 = _interopRequireDefault(_character);
-
-var _data = __webpack_require__(33);
-
-var _data2 = _interopRequireDefault(_data);
-
-var _document = __webpack_require__(28);
-
-var _document2 = _interopRequireDefault(_document);
-
-var _inline = __webpack_require__(53);
-
-var _inline2 = _interopRequireDefault(_inline);
-
-var _mark = __webpack_require__(29);
-
-var _mark2 = _interopRequireDefault(_mark);
-
-var _schema = __webpack_require__(67);
-
-var _schema2 = _interopRequireDefault(_schema);
-
-var _selection = __webpack_require__(54);
-
-var _selection2 = _interopRequireDefault(_selection);
-
-var _stack = __webpack_require__(169);
-
-var _stack2 = _interopRequireDefault(_stack);
-
-var _state = __webpack_require__(68);
-
-var _state2 = _interopRequireDefault(_state);
-
-var _text = __webpack_require__(34);
-
-var _text2 = _interopRequireDefault(_text);
-
-var _range = __webpack_require__(168);
-
-var _range2 = _interopRequireDefault(_range);
-
-var _html = __webpack_require__(390);
-
-var _html2 = _interopRequireDefault(_html);
-
-var _plain = __webpack_require__(391);
-
-var _plain2 = _interopRequireDefault(_plain);
-
-var _raw = __webpack_require__(70);
-
-var _raw2 = _interopRequireDefault(_raw);
-
-var _transforms = __webpack_require__(170);
-
-var _transforms2 = _interopRequireDefault(_transforms);
-
-var _findDomNode = __webpack_require__(173);
-
-var _findDomNode2 = _interopRequireDefault(_findDomNode);
-
-var _generateKey = __webpack_require__(35);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-/**
- * Export.
- *
- * @type {Object}
- */
-
-/**
- * Utils.
- */
-
-/**
- * Serializers.
- */
-
-/**
- * Models.
- */
-
-/**
- * Components.
- */
-
-exports.Block = _block2.default;
-exports.Character = _character2.default;
-exports.Data = _data2.default;
-exports.Document = _document2.default;
-exports.Editor = _editor2.default;
-exports.Html = _html2.default;
-exports.Inline = _inline2.default;
-exports.Mark = _mark2.default;
-exports.Placeholder = _placeholder2.default;
-exports.Plain = _plain2.default;
-exports.Range = _range2.default;
-exports.Raw = _raw2.default;
-exports.Schema = _schema2.default;
-exports.Selection = _selection2.default;
-exports.Stack = _stack2.default;
-exports.State = _state2.default;
-exports.Text = _text2.default;
-exports.Transforms = _transforms2.default;
-exports.findDOMNode = _findDomNode2.default;
-exports.resetKeyGenerator = _generateKey.resetKeyGenerator;
-exports.setKeyGenerator = _generateKey.setKeyGenerator;
-
-/**
- * Transforms.
- */
-
-exports.default = {
-  Block: _block2.default,
-  Character: _character2.default,
-  Data: _data2.default,
-  Document: _document2.default,
-  Editor: _editor2.default,
-  Html: _html2.default,
-  Inline: _inline2.default,
-  Mark: _mark2.default,
-  Placeholder: _placeholder2.default,
-  Plain: _plain2.default,
-  Range: _range2.default,
-  Raw: _raw2.default,
-  Schema: _schema2.default,
-  Selection: _selection2.default,
-  Stack: _stack2.default,
-  State: _state2.default,
-  Text: _text2.default,
-  Transforms: _transforms2.default,
-  findDOMNode: _findDomNode2.default,
-  resetKeyGenerator: _generateKey.resetKeyGenerator,
-  setKeyGenerator: _generateKey.setKeyGenerator
-};
-
-/***/ }),
-/* 388 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -72753,7 +72743,7 @@ var _debug = __webpack_require__(18);
 
 var _debug2 = _interopRequireDefault(_debug);
 
-var _transforms = __webpack_require__(170);
+var _transforms = __webpack_require__(171);
 
 var _transforms2 = _interopRequireDefault(_transforms);
 
@@ -72967,7 +72957,7 @@ function isContiguousRemoves(operations, previous) {
 exports.default = Transform;
 
 /***/ }),
-/* 389 */
+/* 388 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -72995,7 +72985,7 @@ var _debug = __webpack_require__(18);
 
 var _debug2 = _interopRequireDefault(_debug);
 
-var _getPoint = __webpack_require__(174);
+var _getPoint = __webpack_require__(175);
 
 var _getPoint2 = _interopRequireDefault(_getPoint);
 
@@ -73011,7 +73001,7 @@ var _getWindow = __webpack_require__(60);
 
 var _getWindow2 = _interopRequireDefault(_getWindow);
 
-var _findDomNode = __webpack_require__(173);
+var _findDomNode = __webpack_require__(174);
 
 var _findDomNode2 = _interopRequireDefault(_findDomNode);
 
@@ -73955,7 +73945,7 @@ function Plugin() {
 exports.default = Plugin;
 
 /***/ }),
-/* 390 */
+/* 389 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -74432,7 +74422,7 @@ function addKey(element) {
 exports.default = Html;
 
 /***/ }),
-/* 391 */
+/* 390 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -74508,7 +74498,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 392 */
+/* 391 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -75086,7 +75076,7 @@ function splitNode(state, operation) {
 exports.default = Transforms;
 
 /***/ }),
-/* 393 */
+/* 392 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -75620,7 +75610,7 @@ Transforms.wrapText = function (transform, prefix) {
 exports.default = Transforms;
 
 /***/ }),
-/* 394 */
+/* 393 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -75634,7 +75624,7 @@ var _normalize = __webpack_require__(36);
 
 var _normalize2 = _interopRequireDefault(_normalize);
 
-var _string = __webpack_require__(408);
+var _string = __webpack_require__(407);
 
 var _string2 = _interopRequireDefault(_string);
 
@@ -77040,7 +77030,7 @@ Transforms.wrapTextAtRange = function (transform, range, prefix) {
 exports.default = Transforms;
 
 /***/ }),
-/* 395 */
+/* 394 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -77541,7 +77531,7 @@ Transforms.wrapBlockByKey = function (transform, key, block, options) {
 exports.default = Transforms;
 
 /***/ }),
-/* 396 */
+/* 395 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -77586,7 +77576,7 @@ Transforms.call = function (transform, fn) {
 exports.default = Transforms;
 
 /***/ }),
-/* 397 */
+/* 396 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -77860,7 +77850,7 @@ function assertSchema(schema) {
 exports.default = Transforms;
 
 /***/ }),
-/* 398 */
+/* 397 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -78008,7 +77998,7 @@ Transforms.undo = function (transform) {
 exports.default = Transforms;
 
 /***/ }),
-/* 399 */
+/* 398 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -78219,7 +78209,7 @@ DEPRECATED_TRANSFORMS.forEach(function (_ref) {
 exports.default = Transforms;
 
 /***/ }),
-/* 400 */
+/* 399 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -78739,7 +78729,7 @@ Transforms.splitNodeOperation = function (transform, path, count) {
 exports.default = Transforms;
 
 /***/ }),
-/* 401 */
+/* 400 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -78796,7 +78786,7 @@ function extendSelection(selection, el, offset) {
 exports.default = extendSelection;
 
 /***/ }),
-/* 402 */
+/* 401 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -78908,7 +78898,7 @@ function getTransferType(data) {
 exports.default = getTransferData;
 
 /***/ }),
-/* 403 */
+/* 402 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -78954,7 +78944,7 @@ function isInRange(index, text, range) {
 exports.default = isInRange;
 
 /***/ }),
-/* 404 */
+/* 403 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -78984,7 +78974,7 @@ function isReactComponent(object) {
 exports.default = isReactComponent;
 
 /***/ }),
-/* 405 */
+/* 404 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -79011,7 +79001,7 @@ function noop() {}
 exports.default = noop;
 
 /***/ }),
-/* 406 */
+/* 405 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -79108,7 +79098,7 @@ function getEditableChild(parent, index, direction) {
 exports.default = normalizeNodeAndOffset;
 
 /***/ }),
-/* 407 */
+/* 406 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -79165,7 +79155,7 @@ function scrollToSelection(selection) {
 exports.default = scrollToSelection;
 
 /***/ }),
-/* 408 */
+/* 407 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -79372,7 +79362,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 409 */
+/* 408 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
@@ -79388,7 +79378,7 @@ exports.coerce = coerce;
 exports.disable = disable;
 exports.enable = enable;
 exports.enabled = enabled;
-exports.humanize = __webpack_require__(410);
+exports.humanize = __webpack_require__(409);
 
 /**
  * The currently active debug mode names, and names to skip.
@@ -79580,7 +79570,7 @@ function coerce(val) {
 
 
 /***/ }),
-/* 410 */
+/* 409 */
 /***/ (function(module, exports) {
 
 /**
@@ -79738,7 +79728,7 @@ function plural(ms, n, name) {
 
 
 /***/ }),
-/* 411 */
+/* 410 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Copyright Joyent, Inc. and other Node contributors.
@@ -79871,7 +79861,7 @@ Stream.prototype.pipe = function(dest, options) {
 
 
 /***/ }),
-/* 412 */
+/* 411 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -79917,7 +79907,7 @@ var singleton = null;
 var	singletonCounter = 0;
 var	stylesInsertedAtTop = [];
 
-var	fixUrls = __webpack_require__(413);
+var	fixUrls = __webpack_require__(412);
 
 module.exports = function(list, options) {
 	if (typeof DEBUG !== "undefined" && DEBUG) {
@@ -80230,7 +80220,7 @@ function updateLink (link, options, obj) {
 
 
 /***/ }),
-/* 413 */
+/* 412 */
 /***/ (function(module, exports) {
 
 
@@ -80325,7 +80315,7 @@ module.exports = function (css) {
 
 
 /***/ }),
-/* 414 */
+/* 413 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var apply = Function.prototype.apply;
@@ -80384,7 +80374,7 @@ exports.clearImmediate = clearImmediate;
 
 
 /***/ }),
-/* 415 */
+/* 414 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {
@@ -80458,13 +80448,13 @@ function config (name) {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9)))
 
 /***/ }),
-/* 416 */
+/* 415 */
 /***/ (function(module, exports) {
 
 /* (ignored) */
 
 /***/ }),
-/* 417 */
+/* 416 */
 /***/ (function(module, exports) {
 
 /* (ignored) */
