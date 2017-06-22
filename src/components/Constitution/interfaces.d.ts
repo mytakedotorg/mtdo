@@ -1,11 +1,11 @@
 interface ConstitutionProps {
-  //no props
+  constitutionNodes: Array<MyReactComponentObject>,
+  onClick: () => void,
+  onMouseUp: () => void,
 }
 
 interface ConstitutionState {
-  constitutionStructure: object, 
-  constitutionNodes: Array<React.ReactNode>,
-  textIsHighlighted: boolean
+
 }
 
 interface EventObject {
