@@ -1,14 +1,22 @@
-interface ITakeEditorProps {
-  //no props
-}
-
-interface ITakeEditorState {
+interface TakeEditorProps {
   editorState: any,         //Defined by slate
   schema: any,              //Defined by slate
+  onChange: (editorState: TakeEditorOnChange) => void,
+  onKeyDown: (event: KeyboardEvent, data: any, state: any) => any
 }
 
-interface ITakeEditor__OnChange {
+interface TakeEditorState {
+}
+
+interface TakeEditorOnChange {
   editorState: any,         //Defined by slate
+}
+
+interface TakeEditorSelection {
+  anchorKey: string,
+  anchorOffset: number,
+  focusKey: string,
+  focusOffset: number
 }
 
 interface MyReactComponentObject {  //Remame this
