@@ -17,6 +17,11 @@
 }
 
 .constitution__text {
-  height: 100px;
+  height: 300px;
   overflow-y: scroll;
+}
+
+.constitution__text--selected {
+  color: yellow;
+  background-color: black;
 }
