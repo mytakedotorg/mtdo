@@ -15,6 +15,7 @@ class Constitution extends React.Component<ConstitutionProps, ConstitutionState>
     }
     this.handleDragStart = this.handleDragStart.bind(this);
     this.handleMouseUp = this.handleMouseUp.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
   clearSelection() {
     if (window.getSelection) {
@@ -32,20 +33,21 @@ class Constitution extends React.Component<ConstitutionProps, ConstitutionState>
     return initialText;
   }
   highlightText(range: Range): any {
-    let indexOfStartContainer: number = Array.prototype.indexOf.call(
+    const indexOfStartContainer: number = Array.prototype.indexOf.call(
       range.startContainer.parentElement.parentNode.childNodes, //Arrange siblings into an array
       range.startContainer.parentNode);                         //Find indexOf current Node
     
-    let indexOfSelectionStart: number = range.startOffset;
+    const indexOfSelectionStart: number = range.startOffset;
 
-    let indexOfEndContainer: number = Array.prototype.indexOf.call(
+    const indexOfEndContainer: number = Array.prototype.indexOf.call(
       range.endContainer.parentElement.parentNode.childNodes, //Arrange siblings into an array
       range.endContainer.parentNode);                        //Find indexOf current Node
 
-    let indexOfSelectionEnd: number = range.endOffset;
+    const indexOfSelectionEnd: number = range.endOffset;
 
-    let startContainer: Node = ReactDOM.findDOMNode(this).childNodes[1].childNodes[indexOfStartContainer];
-    let endContainer: Node = ReactDOM.findDOMNode(this).childNodes[1].childNodes[indexOfEndContainer];
+    //Need to find a way not to hardcode this index ~~~~~~~~~~~~~~~~---v
+    const startContainer: Node = ReactDOM.findDOMNode(this).childNodes[2].childNodes[indexOfStartContainer];
+    const endContainer: Node = ReactDOM.findDOMNode(this).childNodes[2].childNodes[indexOfEndContainer];
     
     if (startContainer === endContainer) {
       // Create a new Span element with the contents of the highlighted text
@@ -126,14 +128,19 @@ class Constitution extends React.Component<ConstitutionProps, ConstitutionState>
     }
     this.clearSelection();
   }
+  handleClick(): void {
+    this.setState({
+      constitutionNodes: this.getInitialText(),  //Clear existing highlights
+      textIsHighlighted: false
+    });
+
+  }
   handleMouseUp(ev: React.MouseEvent<HTMLDivElement>): void {
-    if (window.getSelection) { // Pre IE9 will always be false
+    if (window.getSelection && !this.state.textIsHighlighted) { // Pre IE9 will always be false
       let selection: Selection = window.getSelection();
       if (selection.toString().length) {  //Some text is selected
         let range: Range = selection.getRangeAt(0);
-        this.setState({
-          constitutionNodes: this.getInitialText()  //Clear existing highlights
-        }, ()=>{this.highlightText(range)});
+        this.highlightText(range);
       }
     }    
   }
@@ -154,6 +161,9 @@ class Constitution extends React.Component<ConstitutionProps, ConstitutionState>
     return (
       <div className="constitution">
         <h2 className="constitution__heading">Constitution</h2>
+        <button onClick={this.handleClick}>
+          Clear Selection
+        </button>
         <div className="constitution__text" onMouseUp={this.handleMouseUp}>
           {this.state.constitutionNodes.map(function(element: MyReactComponentObject, index: number){
             element.props['key'] = index.toString();

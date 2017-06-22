@@ -37206,6 +37206,7 @@ var Constitution = (function (_super) {
         };
         _this.handleDragStart = _this.handleDragStart.bind(_this);
         _this.handleMouseUp = _this.handleMouseUp.bind(_this);
+        _this.handleClick = _this.handleClick.bind(_this);
         return _this;
     }
     Constitution.prototype.clearSelection = function () {
@@ -37233,8 +37234,9 @@ var Constitution = (function (_super) {
         var indexOfEndContainer = Array.prototype.indexOf.call(range.endContainer.parentElement.parentNode.childNodes, //Arrange siblings into an array
         range.endContainer.parentNode); //Find indexOf current Node
         var indexOfSelectionEnd = range.endOffset;
-        var startContainer = ReactDOM.findDOMNode(this).childNodes[1].childNodes[indexOfStartContainer];
-        var endContainer = ReactDOM.findDOMNode(this).childNodes[1].childNodes[indexOfEndContainer];
+        //Need to find a way not to hardcode this index ~~~~~~~~~~~~~~~~---v
+        var startContainer = ReactDOM.findDOMNode(this).childNodes[2].childNodes[indexOfStartContainer];
+        var endContainer = ReactDOM.findDOMNode(this).childNodes[2].childNodes[indexOfEndContainer];
         if (startContainer === endContainer) {
             // Create a new Span element with the contents of the highlighted text
             var newSpan = React.createElement('span', { className: 'constitution__text--selected', key: 'startSpan' }, startContainer.textContent.substring(indexOfSelectionStart, indexOfSelectionEnd));
@@ -37287,15 +37289,18 @@ var Constitution = (function (_super) {
         }
         this.clearSelection();
     };
+    Constitution.prototype.handleClick = function () {
+        this.setState({
+            constitutionNodes: this.getInitialText(),
+            textIsHighlighted: false
+        });
+    };
     Constitution.prototype.handleMouseUp = function (ev) {
-        var _this = this;
-        if (window.getSelection) {
+        if (window.getSelection && !this.state.textIsHighlighted) {
             var selection = window.getSelection();
             if (selection.toString().length) {
-                var range_1 = selection.getRangeAt(0);
-                this.setState({
-                    constitutionNodes: this.getInitialText() //Clear existing highlights
-                }, function () { _this.highlightText(range_1); });
+                var range = selection.getRangeAt(0);
+                this.highlightText(range);
             }
         }
     };
@@ -37318,6 +37323,7 @@ var Constitution = (function (_super) {
         // </ul>
         return (React.createElement("div", { className: "constitution" },
             React.createElement("h2", { className: "constitution__heading" }, "Constitution"),
+            React.createElement("button", { onClick: this.handleClick }, "Clear Selection"),
             React.createElement("div", { className: "constitution__text", onMouseUp: this.handleMouseUp }, this.state.constitutionNodes.map(function (element, index) {
                 element.props['key'] = index.toString();
                 return (React.createElement(element.component, element.props, element.innerHTML));
