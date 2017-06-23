@@ -1,63 +1,13 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import TakeEditor from '../TakeEditor';
+import TakeEditor, { TitleNode, ParagraphNode} from '../TakeEditor';
 import Constitution from '../Constitution';
-const { Placeholder, Raw } = require('slate');
+const { Raw } = require('slate');
 import * as key from "keycode";
 import getNodeArray from "../../utils/getNodeArray";
 const constitutionText = require('../../foundation/constitution.foundation.html');
 import config from "./config";
 
-// Define a React component renderer for each of our text blocks.
-function TitleNode(props: any): JSX.Element {
-  return (
-    <h1 className="editor__title" {...props.attributes}>
-      <Placeholder
-        parent={props.node}
-        node={props.node}
-        state={props.state}
-        firstOnly={false}
-        className="editor__placeholder"
-      >
-        <span>My Take</span> {/*Title placeholder text*/}
-      </Placeholder>
-      {props.children}
-    </h1>
-  );
-}
-
-function ParagraphNode(props: any): JSX.Element {
-  //<div className="droppable" onDragOver={onDragOver} onDrop={onDrop}>
-  return (
-    <div className="droppable" >
-      <p className="editor__title" {...props.attributes}>
-        <Placeholder
-          parent={props.node}
-          node={props.node}
-          state={props.state}
-          firstOnly={false}
-          className="editor__placeholder"
-        >
-          <span>I believe...</span> {/*Take placeholder text*/}
-        </Placeholder>
-        {props.children}
-      </p>
-    </div>
-  );
-}
-
-function TitlePlaceHolder(props: any): JSX.Element {
-  console.log("titleplaceholder props: " + props);
-  return (
-    <Placeholder
-      node={TitleNode}
-      parent={TitleNode}
-    >
-      Placehodler text
-      {props.children}
-    </Placeholder>
-  );
-}
 
 const initialState: any = Raw.deserialize(config.initialState, { terse: true })
 

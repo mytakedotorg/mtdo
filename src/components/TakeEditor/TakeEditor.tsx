@@ -1,6 +1,44 @@
 import * as React from "react";
-const { Editor } = require('slate');
+const { Editor, Placeholder } = require('slate');
 import * as key from "keycode";
+
+// Define a React component renderer for each of our text blocks.
+export function TitleNode(props: any): JSX.Element {
+  return (
+    <h1 className="editor__title" {...props.attributes}>
+      <Placeholder
+        parent={props.node}
+        node={props.node}
+        state={props.state}
+        firstOnly={false}
+        className="editor__placeholder"
+      >
+        <span>My Take</span> {/*Title placeholder text*/}
+      </Placeholder>
+      {props.children}
+    </h1>
+  );
+}
+
+export function ParagraphNode(props: any): JSX.Element {
+  //<div className="droppable" onDragOver={onDragOver} onDrop={onDrop}>
+  return (
+    <div className="droppable" >
+      <p className="editor__title" {...props.attributes}>
+        <Placeholder
+          parent={props.node}
+          node={props.node}
+          state={props.state}
+          firstOnly={false}
+          className="editor__placeholder"
+        >
+          <span>I believe...</span> {/*Take placeholder text*/}
+        </Placeholder>
+        {props.children}
+      </p>
+    </div>
+  );
+}
 
 class TakeEditor extends React.Component<TakeEditorProps, TakeEditorState> {
   constructor(props: TakeEditorProps){
