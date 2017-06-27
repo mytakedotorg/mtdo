@@ -12,7 +12,6 @@
   "dependencies": {
     "@types/react": "^15.0.25",
     "@types/react-dom": "^15.5.0",
-    "immutable": "^3.8.1",
     "keycode": "^2.1.9",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
