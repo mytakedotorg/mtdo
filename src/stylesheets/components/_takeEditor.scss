@@ -7,7 +7,21 @@
   margin-top: 0;
   position: relative;
 }
-
-.editor__placeholder {
+.editor__title--placeholder {
   opacity: 0.3;
+}
+
+.editor__paragraph--placeholder {
+  opacity: 0.3;
+}
+
+.editor__paragraph {
+  text-align: left;
+  margin-top: 0;
+  position: relative;
+  line-height: 0.3em;
+}
+
+.editor__constitution {
+  background-color: aqua;
 }
