@@ -1,13 +1,13 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import TakeEditor, { TitleNode, ParagraphNode} from '../TakeEditor';
+import TakeEditor, { TitleNode, ParagraphNode, ConstitutionNode } from '../TakeEditor';
 import Constitution from '../Constitution';
-const { Raw } = require('slate');
+const { Block, Character, Html, Raw, Selection, Text } = require('slate');
+const { List, Map } = require('immutable');
 import * as key from "keycode";
 import getNodeArray from "../../utils/getNodeArray";
 const constitutionText = require('../../foundation/constitution.foundation.html');
 import config from "./config";
-
 
 const initialState: any = Raw.deserialize(config.initialState, { terse: true })
 
@@ -18,19 +18,23 @@ class MyTake extends React.Component<MyTakeProps, MyTakeState> {
     this.state = {
       constitutionNodes: this.getInitialText(),
       textIsHighlighted: false,
-      dragData: '',
+      highlightedNodes: [],
       editorState: initialState,
       schema: {
         nodes: {
           title: TitleNode,
           paragraph: ParagraphNode,
+          constitution: ConstitutionNode,
+          // p: (props: any) => <p {...props.attributes}>{props.children}</p>,
+          // h2: (props: any) => <h2 {...props.attributes}>{props.children}</h2>,
+          // h3: (props: any) => <h3 {...props.attributes}>{props.children}</h3>
         }
       }
     }
 
-    this.handleDragStart = this.handleDragStart.bind(this);
     this.handleConstitutionMouseUp = this.handleConstitutionMouseUp.bind(this);
-    this.handleConstitutionClick = this.handleConstitutionClick.bind(this);
+    this.handleConstitutionClearClick = this.handleConstitutionClearClick.bind(this);
+    this.handleConstitutionSetClick = this.handleConstitutionSetClick.bind(this);
     this.handleEditorChange = this.handleEditorChange.bind(this);
   }
   getInitialText(): Array<MyReactComponentObject> {
@@ -48,12 +52,47 @@ class MyTake extends React.Component<MyTakeProps, MyTakeState> {
       // pre IE 9, unsupported
     }
   }
-  handleConstitutionClick(): void {
+  handleConstitutionClearClick(): void {
     this.setState({
       constitutionNodes: this.getInitialText(),  //Clear existing highlights
       textIsHighlighted: false
     });
+  }
+  handleConstitutionSetClick(): void {
+    /**
+       * TO-DO: Insert constitution after current selection.
+       */
+    let selection = Selection.create({
+        anchorKey: "2",
+        anchorOffset: 0,
+        focusKey: "2",
+        focusOffset: 0
+      });
+    
+    console.log('highlighted nodes: ' + JSON.stringify(this.state.highlightedNodes));
+    let newObject = {array: this.state.highlightedNodes};
+    const properties = {
+      data: Map(newObject),
+      key: 'uniqueness',
+      type: 'constitution'
+    }
 
+    const constitutionNode = Block.create(properties);
+    const newState = this.state.editorState
+      .transform()
+      .insertBlockAtRange(selection, constitutionNode)
+      .apply();
+
+    /**
+    * TO-DO: insert 'constitution' block with `document` fragment as child
+    */
+    // const { document } = serializer.deserialize("<p>html string</p><h2>heading2</h2><h3>heading3</h3>");
+    // const newState = this.state.editorState
+    //   .transform()
+    //   .insertFragmentAtRange(selection, document)
+    //   .apply();
+
+    this.setState({editorState: newState});
   }
   handleConstitutionMouseUp(): void {
     if (window.getSelection && !this.state.textIsHighlighted) { // Pre IE9 will always be false
@@ -63,12 +102,6 @@ class MyTake extends React.Component<MyTakeProps, MyTakeState> {
         this.highlightText(range);
       }
     }    
-  }
-  handleDragStart(ev: React.DragEvent<HTMLDivElement>): void{
-    try {
-      //Use ev.dataTransfer.setDragImage for multi-span selections
-      ev.dataTransfer.setData('text', JSON.stringify(this.state.dragData));
-    } catch(err){ console.error(err)}
   }
   highlightText(range: Range): void {
     const indexOfStartContainer: number = Array.prototype.indexOf.call(
@@ -87,25 +120,6 @@ class MyTake extends React.Component<MyTakeProps, MyTakeState> {
     //Need to find a way not to hardcode these indices ----------------v-------------v
     const startContainer: Node = ReactDOM.findDOMNode(this).childNodes[0].childNodes[2].childNodes[indexOfStartContainer];
     const endContainer: Node = ReactDOM.findDOMNode(this).childNodes[0].childNodes[2].childNodes[indexOfEndContainer];
-    
-    const startOffset: number = parseInt(
-        startContainer
-          .parentElement
-          .children[indexOfStartContainer]
-          .getAttribute('data-offset')
-      ) + range.startOffset;
-
-    const endOffset: number = parseInt(
-        endContainer
-          .parentElement
-          .children[indexOfEndContainer]
-          .getAttribute('data-offset')
-      ) + range.endOffset;
-
-    const dragData = {
-      startOffset: startOffset,
-      endOffset: endOffset
-    }
 
     const { constitutionNodes } = this.state; 
     let newNodes: Array<MyReactComponentObject> = [...constitutionNodes.slice(0, indexOfStartContainer)];
@@ -117,8 +131,7 @@ class MyTake extends React.Component<MyTakeProps, MyTakeState> {
         {
           className: 'constitution__text--selected', 
           key: 'startSpan',
-          draggable: 'true',
-//          onDragStart: this.handleDragStart
+          onClick: this.handleConstitutionSetClick
         }, 
         startContainer.textContent.substring(indexOfSelectionStart, indexOfSelectionEnd)
       );
@@ -140,8 +153,7 @@ class MyTake extends React.Component<MyTakeProps, MyTakeState> {
         {
           className: 'constitution__text--selected', 
           key: 'startSpan',
-          draggable: 'true',
-//          onDragStart: this.handleDragStart
+          onClick: this.handleConstitutionSetClick
         }, 
         startContainer.textContent.substring(indexOfSelectionStart, startContainer.textContent.length)
       );
@@ -153,24 +165,6 @@ class MyTake extends React.Component<MyTakeProps, MyTakeState> {
         firstNewSpan
       ];
       
-      // Create a new Span element with the contents of the highlighted text
-      let lastNewSpan: React.ReactNode = React.createElement(
-        'span', 
-        {
-          className: 'constitution__text--selected', 
-          key: 'endSpan',
-          draggable: 'true',
-//          onDragStart: this.handleDragStart
-        }, 
-        endContainer.textContent.substring(0, indexOfSelectionEnd)
-      );
-      // Modify state array immutably
-      let lastNewNode: MyReactComponentObject = (Object as any).assign({}, this.state.constitutionNodes[indexOfEndContainer]);
-      lastNewNode.innerHTML = [
-        lastNewSpan,
-        endContainer.textContent.substring(indexOfSelectionEnd, endContainer.textContent.length),
-      ];
-
       newNodes.push(firstNewNode);
 
       for(let index: number = indexOfStartContainer + 1; index < indexOfEndContainer ; index++){
@@ -181,25 +175,43 @@ class MyTake extends React.Component<MyTakeProps, MyTakeState> {
           {
             className: 'constitution__text--selected', 
             key: key,
-            draggable: 'true',
-//            onDragStart: this.handleDragStart
+            onClick: this.handleConstitutionSetClick
           },
           nextNewNode.innerHTML
         )
         nextNewNode.innerHTML = [nextNewSpan];
 
         newNodes.push(nextNewNode);
-      }
+      }    
+
+      // Create a new Span element with the contents of the highlighted text
+      let lastNewSpan: React.ReactNode = React.createElement(
+        'span', 
+        {
+          className: 'constitution__text--selected', 
+          key: 'endSpan',
+          onClick: this.handleConstitutionSetClick
+        }, 
+        endContainer.textContent.substring(0, indexOfSelectionEnd)
+      );
+      // Modify state array immutably
+      let lastNewNode: MyReactComponentObject = (Object as any).assign({}, this.state.constitutionNodes[indexOfEndContainer]);
+      lastNewNode.innerHTML = [
+        lastNewSpan,
+        endContainer.textContent.substring(indexOfSelectionEnd, endContainer.textContent.length),
+      ];
+
       newNodes.push(lastNewNode);
     }
-    newNodes = [
+    
+    let newConstitutionFull: Array<MyReactComponentObject> = [
       ...newNodes,
       ...constitutionNodes.slice(indexOfEndContainer + 1, this.state.constitutionNodes.length)
     ]
     this.setState( prevState => ({
-      constitutionNodes: [...newNodes],
+      constitutionNodes: [...newConstitutionFull],
       textIsHighlighted: true,
-      dragData: dragData
+      highlightedNodes: [...newNodes]
     }));
 
     this.clearDefaultDOMSelection();
@@ -212,20 +224,33 @@ class MyTake extends React.Component<MyTakeProps, MyTakeState> {
     // Determine whether cursor is in title block
     const isTitle = state.blocks.some((block: any) => block.type == 'title')
     
-    // If enter is pressed in title block, move cursor to beginning of next block
-    if (event.which == key('Enter') && isTitle) {
-      let selection: any = {
+    let firstCharacterAfterTitle: TakeEditorSelection = Selection.create({
         anchorKey: "2",
         anchorOffset: 0,
         focusKey: "2",
-        focusOffset: 0
-      }
+        focusOffset: 0,
+        isBackward: false,
+        isFocused: true
+      });
+
+    // If enter is pressed in title block, move cursor to beginning of next block
+    if (event.which == key('Enter') && isTitle) {
+      
       const newState = state
         .transform()
-        .select(selection)
+        .select(firstCharacterAfterTitle)
         .apply();
       
       return newState;
+    }
+    if (event.which == key('Backspace')){
+      /**
+       * TO-DO: Don't allow first paragaph to be deleted from editor. Should remain empty, 
+       * but not be removed from DOM.
+       */
+
+      // console.log(state.selection.hasStartAtStartOf(findDOMNode(state.block.nodes)) == firstCharacterAfterTitle);
+      //console.log(state.startBlock.getPreviousSibling(state.startBlock.key));
     }
 
     return;
@@ -234,9 +259,10 @@ class MyTake extends React.Component<MyTakeProps, MyTakeState> {
     return (
       <div>
         <Constitution 
-          onClick={this.handleConstitutionClick} 
+          onClearClick={this.handleConstitutionClearClick}
+          onSetClick={this.handleConstitutionSetClick}
           onMouseUp={this.handleConstitutionMouseUp} 
-          constitutionNodes={this.state.constitutionNodes} 
+          constitutionNodes={this.state.constitutionNodes}
         />
         <TakeEditor 
           schema={this.state.schema}
