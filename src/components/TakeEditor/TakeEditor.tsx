@@ -11,7 +11,7 @@ export function TitleNode(props: any): JSX.Element {
         node={props.node}
         state={props.state}
         firstOnly={false}
-        className="editor__placeholder"
+        className="editor__title--placeholder"
       >
         <span>My Take</span> {/*Title placeholder text*/}
       </Placeholder>
@@ -21,26 +21,32 @@ export function TitleNode(props: any): JSX.Element {
 }
 
 export function ParagraphNode(props: any): JSX.Element {
-  //<div className="droppable" onDragOver={onDragOver} onDrop={onDrop}>
   return (
-    <div className="droppable" >
-      <p className="editor__title" {...props.attributes}>
+      <p className="editor__paragraph" {...props.attributes}>
         <Placeholder
           parent={props.node}
           node={props.node}
           state={props.state}
           firstOnly={false}
-          className="editor__placeholder"
+          className="editor__paragraph--placeholder"
         >
           <span>I believe...</span> {/*Take placeholder text*/}
         </Placeholder>
         {props.children}
       </p>
-    </div>
   );
 }
 
-class TakeEditor extends React.Component<TakeEditorProps, TakeEditorState> {
+export function ConstitutionNode(props: any): JSX.Element {
+  console.log(props);
+  return (
+    <p className="editor__constitution" {...props.attributes}>
+      {props.children}
+    </p>
+  )
+}
+
+export default class TakeEditor extends React.Component<TakeEditorProps, TakeEditorState> {
   constructor(props: TakeEditorProps){
     super(props);
   }
@@ -58,25 +64,4 @@ class TakeEditor extends React.Component<TakeEditorProps, TakeEditorState> {
       </Editor>
     )
   }
-}
-
-export default TakeEditor;
-
-function onDragOver(ev: React.DragEvent<HTMLDivElement>) {
-  ev.preventDefault(); //Allow drop event
-}
-function onDrop(ev: React.DragEvent<HTMLDivElement>) {
-  ev.preventDefault(); //Allow drop event
-  console.log(ev.target);
-  // let data = ev.dataTransfer.getData('text');
-  // console.log('dropped: ' + data);
-  // console.log('effectAllowed: ' + ev.dataTransfer.effectAllowed);
-  // /**
-  //  * Spec says to do appendChild to ev.target, but not necessary. Don't know why???
-  //  * (ev.target as HTMLDivElement).appendChild(data); 
-  //  */
-  // console.log(ev.target);
-  // let newP = document.createElement("p");
-  // newP.innerHTML = "something else";
-  // (ev.target as HTMLDivElement).appendChild(newP);
 }

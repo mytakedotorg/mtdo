@@ -37363,7 +37363,7 @@ var Constitution = (function (_super) {
     Constitution.prototype.render = function () {
         return (React.createElement("div", { className: "constitution" },
             React.createElement("h2", { className: "constitution__heading" }, "Constitution"),
-            React.createElement("button", { onClick: this.props.onClick }, "Clear Selection"),
+            React.createElement("button", { onClick: this.props.onClearClick }, "Clear Selection"),
             React.createElement("div", { className: "constitution__text", onMouseUp: this.props.onMouseUp }, this.props.constitutionNodes.map(function (element, index) {
                 element.props['key'] = index.toString();
                 return (React.createElement(element.component, element.props, element.innerHTML));
@@ -37414,35 +37414,27 @@ var React = __webpack_require__(8);
 var ReactDOM = __webpack_require__(38);
 var TakeEditor_1 = __webpack_require__(183);
 var Constitution_1 = __webpack_require__(179);
-var _a = __webpack_require__(168), Placeholder = _a.Placeholder, Raw = _a.Raw;
+var _a = __webpack_require__(168), Block = _a.Block, Character = _a.Character, Html = _a.Html, Raw = _a.Raw, Selection = _a.Selection, Text = _a.Text;
 var key = __webpack_require__(132);
 var getNodeArray_1 = __webpack_require__(185);
 var constitutionText = __webpack_require__(273);
 var config_1 = __webpack_require__(181);
-// Define a React component renderer for each of our text blocks.
-function TitleNode(props) {
-    return (React.createElement("h1", __assign({ className: "editor__title" }, props.attributes),
-        React.createElement(Placeholder, { parent: props.node, node: props.node, state: props.state, firstOnly: false, className: "editor__placeholder" },
-            React.createElement("span", null, "My Take"),
-            " "),
-        props.children));
-}
-function ParagraphNode(props) {
-    //<div className="droppable" onDragOver={onDragOver} onDrop={onDrop}>
-    return (React.createElement("div", { className: "droppable" },
-        React.createElement("p", __assign({ className: "editor__title" }, props.attributes),
-            React.createElement(Placeholder, { parent: props.node, node: props.node, state: props.state, firstOnly: false, className: "editor__placeholder" },
-                React.createElement("span", null, "I believe..."),
-                " "),
-            props.children)));
-}
-function TitlePlaceHolder(props) {
-    console.log("titleplaceholder props: " + props);
-    return (React.createElement(Placeholder, { node: TitleNode, parent: TitleNode },
-        "Placehodler text",
-        props.children));
-}
 var initialState = Raw.deserialize(config_1.default.initialState, { terse: true });
+var RULES = [
+    {
+        deserialize: function (el, next) {
+            var block = el.tagName;
+            if (!block)
+                return;
+            return {
+                kind: 'block',
+                type: block,
+                nodes: next(el.children)
+            };
+        }
+    }
+];
+var serializer = new Html({ rules: RULES });
 var MyTake = (function (_super) {
     __extends(MyTake, _super);
     function MyTake(props) {
@@ -37450,18 +37442,22 @@ var MyTake = (function (_super) {
         _this.state = {
             constitutionNodes: _this.getInitialText(),
             textIsHighlighted: false,
-            dragData: '',
+            highlightedNodes: [],
             editorState: initialState,
             schema: {
                 nodes: {
-                    title: TitleNode,
-                    paragraph: ParagraphNode,
+                    title: TakeEditor_1.TitleNode,
+                    paragraph: TakeEditor_1.ParagraphNode,
+                    constitution: TakeEditor_1.ConstitutionNode,
+                    p: function (props) { return React.createElement("p", __assign({}, props.attributes), props.children); },
+                    h2: function (props) { return React.createElement("h2", __assign({}, props.attributes), props.children); },
+                    h3: function (props) { return React.createElement("h3", __assign({}, props.attributes), props.children); }
                 }
             }
         };
-        _this.handleDragStart = _this.handleDragStart.bind(_this);
         _this.handleConstitutionMouseUp = _this.handleConstitutionMouseUp.bind(_this);
-        _this.handleConstitutionClick = _this.handleConstitutionClick.bind(_this);
+        _this.handleConstitutionClearClick = _this.handleConstitutionClearClick.bind(_this);
+        _this.handleConstitutionSetClick = _this.handleConstitutionSetClick.bind(_this);
         _this.handleEditorChange = _this.handleEditorChange.bind(_this);
         return _this;
     }
@@ -37482,11 +37478,44 @@ var MyTake = (function (_super) {
             // pre IE 9, unsupported
         }
     };
-    MyTake.prototype.handleConstitutionClick = function () {
+    MyTake.prototype.handleConstitutionClearClick = function () {
         this.setState({
             constitutionNodes: this.getInitialText(),
             textIsHighlighted: false
         });
+    };
+    MyTake.prototype.handleConstitutionSetClick = function () {
+        /**
+           * TO-DO: Insert constitution after current selection.
+           */
+        var selection = Selection.create({
+            anchorKey: "2",
+            anchorOffset: 0,
+            focusKey: "2",
+            focusOffset: 0
+        });
+        var document = serializer.deserialize("<p>html string</p><h2>heading2</h2><h3>heading3</h3>").document;
+        //console.log(this.state.highlightedNodes[0].innerHTML);
+        var newBlock = Block.create({
+            type: 'constitution',
+            nodes: Text.createList([
+                {
+                    characters: Character.createList([
+                        { text: 'c' },
+                        { text: 'u' },
+                        { text: 's' }
+                    ])
+                }
+            ])
+        });
+        /**
+         * TO-DO: insert 'constitution' block with `document` fragment as child
+         */
+        var newState = this.state.editorState
+            .transform()
+            .insertFragmentAtRange(selection, document)
+            .apply();
+        this.setState({ editorState: newState });
     };
     MyTake.prototype.handleConstitutionMouseUp = function () {
         if (window.getSelection && !this.state.textIsHighlighted) {
@@ -37495,15 +37524,6 @@ var MyTake = (function (_super) {
                 var range = selection.getRangeAt(0);
                 this.highlightText(range);
             }
-        }
-    };
-    MyTake.prototype.handleDragStart = function (ev) {
-        try {
-            //Use ev.dataTransfer.setDragImage for multi-span selections
-            ev.dataTransfer.setData('text', JSON.stringify(this.state.dragData));
-        }
-        catch (err) {
-            console.error(err);
         }
     };
     MyTake.prototype.highlightText = function (range) {
@@ -37517,18 +37537,6 @@ var MyTake = (function (_super) {
         //Need to find a way not to hardcode these indices ----------------v-------------v
         var startContainer = ReactDOM.findDOMNode(this).childNodes[0].childNodes[2].childNodes[indexOfStartContainer];
         var endContainer = ReactDOM.findDOMNode(this).childNodes[0].childNodes[2].childNodes[indexOfEndContainer];
-        var startOffset = parseInt(startContainer
-            .parentElement
-            .children[indexOfStartContainer]
-            .getAttribute('data-offset')) + range.startOffset;
-        var endOffset = parseInt(endContainer
-            .parentElement
-            .children[indexOfEndContainer]
-            .getAttribute('data-offset')) + range.endOffset;
-        var dragData = {
-            startOffset: startOffset,
-            endOffset: endOffset
-        };
         var constitutionNodes = this.state.constitutionNodes;
         var newNodes = constitutionNodes.slice(0, indexOfStartContainer).slice();
         if (startContainer === endContainer) {
@@ -37536,7 +37544,7 @@ var MyTake = (function (_super) {
             var newSpan = React.createElement('span', {
                 className: 'constitution__text--selected',
                 key: 'startSpan',
-                draggable: 'true',
+                onClick: this.handleConstitutionSetClick
             }, startContainer.textContent.substring(indexOfSelectionStart, indexOfSelectionEnd));
             // Modify state array immutably
             var newNode = Object.assign({}, this.state.constitutionNodes[indexOfStartContainer]);
@@ -37552,25 +37560,13 @@ var MyTake = (function (_super) {
             var firstNewSpan = React.createElement('span', {
                 className: 'constitution__text--selected',
                 key: 'startSpan',
-                draggable: 'true',
+                onClick: this.handleConstitutionSetClick
             }, startContainer.textContent.substring(indexOfSelectionStart, startContainer.textContent.length));
             // Modify state array immutably
             var firstNewNode = Object.assign({}, this.state.constitutionNodes[indexOfStartContainer]);
             firstNewNode.innerHTML = [
                 startContainer.textContent.substring(0, indexOfSelectionStart),
                 firstNewSpan
-            ];
-            // Create a new Span element with the contents of the highlighted text
-            var lastNewSpan = React.createElement('span', {
-                className: 'constitution__text--selected',
-                key: 'endSpan',
-                draggable: 'true',
-            }, endContainer.textContent.substring(0, indexOfSelectionEnd));
-            // Modify state array immutably
-            var lastNewNode = Object.assign({}, this.state.constitutionNodes[indexOfEndContainer]);
-            lastNewNode.innerHTML = [
-                lastNewSpan,
-                endContainer.textContent.substring(indexOfSelectionEnd, endContainer.textContent.length),
             ];
             newNodes.push(firstNewNode);
             for (var index = indexOfStartContainer + 1; index < indexOfEndContainer; index++) {
@@ -37579,18 +37575,30 @@ var MyTake = (function (_super) {
                 var nextNewSpan = React.createElement('span', {
                     className: 'constitution__text--selected',
                     key: key_1,
-                    draggable: 'true',
+                    onClick: this.handleConstitutionSetClick
                 }, nextNewNode.innerHTML);
                 nextNewNode.innerHTML = [nextNewSpan];
                 newNodes.push(nextNewNode);
             }
+            // Create a new Span element with the contents of the highlighted text
+            var lastNewSpan = React.createElement('span', {
+                className: 'constitution__text--selected',
+                key: 'endSpan',
+                onClick: this.handleConstitutionSetClick
+            }, endContainer.textContent.substring(0, indexOfSelectionEnd));
+            // Modify state array immutably
+            var lastNewNode = Object.assign({}, this.state.constitutionNodes[indexOfEndContainer]);
+            lastNewNode.innerHTML = [
+                lastNewSpan,
+                endContainer.textContent.substring(indexOfSelectionEnd, endContainer.textContent.length),
+            ];
             newNodes.push(lastNewNode);
         }
-        newNodes = newNodes.concat(constitutionNodes.slice(indexOfEndContainer + 1, this.state.constitutionNodes.length));
+        var newConstitutionFull = newNodes.concat(constitutionNodes.slice(indexOfEndContainer + 1, this.state.constitutionNodes.length));
         this.setState(function (prevState) { return ({
-            constitutionNodes: newNodes.slice(),
+            constitutionNodes: newConstitutionFull.slice(),
             textIsHighlighted: true,
-            dragData: dragData
+            highlightedNodes: newNodes.slice()
         }); });
         this.clearDefaultDOMSelection();
     };
@@ -37601,25 +37609,35 @@ var MyTake = (function (_super) {
     MyTake.prototype.handleEditorKeyDown = function (event, data, state) {
         // Determine whether cursor is in title block
         var isTitle = state.blocks.some(function (block) { return block.type == 'title'; });
+        var firstCharacterAfterTitle = Selection.create({
+            anchorKey: "2",
+            anchorOffset: 0,
+            focusKey: "2",
+            focusOffset: 0,
+            isBackward: false,
+            isFocused: true
+        });
         // If enter is pressed in title block, move cursor to beginning of next block
         if (event.which == key('Enter') && isTitle) {
-            var selection = {
-                anchorKey: "2",
-                anchorOffset: 0,
-                focusKey: "2",
-                focusOffset: 0
-            };
             var newState = state
                 .transform()
-                .select(selection)
+                .select(firstCharacterAfterTitle)
                 .apply();
             return newState;
+        }
+        if (event.which == key('Backspace')) {
+            /**
+             * TO-DO: Don't allow first paragaph to be deleted from editor. Should remain empty,
+             * but not be removed from DOM.
+             */
+            // console.log(state.selection.hasStartAtStartOf(findDOMNode(state.block.nodes)) == firstCharacterAfterTitle);
+            //console.log(state.startBlock.getPreviousSibling(state.startBlock.key));
         }
         return;
     };
     MyTake.prototype.render = function () {
         return (React.createElement("div", null,
-            React.createElement(Constitution_1.default, { onClick: this.handleConstitutionClick, onMouseUp: this.handleConstitutionMouseUp, constitutionNodes: this.state.constitutionNodes }),
+            React.createElement(Constitution_1.default, { onClearClick: this.handleConstitutionClearClick, onSetClick: this.handleConstitutionSetClick, onMouseUp: this.handleConstitutionMouseUp, constitutionNodes: this.state.constitutionNodes }),
             React.createElement(TakeEditor_1.default, { schema: this.state.schema, editorState: this.state.editorState, onChange: this.handleEditorChange, onKeyDown: this.handleEditorKeyDown })));
     };
     return MyTake;
@@ -37678,9 +37696,39 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
+var __assign = (this && this.__assign) || Object.assign || function(t) {
+    for (var s, i = 1, n = arguments.length; i < n; i++) {
+        s = arguments[i];
+        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+            t[p] = s[p];
+    }
+    return t;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(8);
-var Editor = __webpack_require__(168).Editor;
+var _a = __webpack_require__(168), Editor = _a.Editor, Placeholder = _a.Placeholder;
+// Define a React component renderer for each of our text blocks.
+function TitleNode(props) {
+    return (React.createElement("h1", __assign({ className: "editor__title" }, props.attributes),
+        React.createElement(Placeholder, { parent: props.node, node: props.node, state: props.state, firstOnly: false, className: "editor__title--placeholder" },
+            React.createElement("span", null, "My Take"),
+            " "),
+        props.children));
+}
+exports.TitleNode = TitleNode;
+function ParagraphNode(props) {
+    return (React.createElement("p", __assign({ className: "editor__paragraph" }, props.attributes),
+        React.createElement(Placeholder, { parent: props.node, node: props.node, state: props.state, firstOnly: false, className: "editor__paragraph--placeholder" },
+            React.createElement("span", null, "I believe..."),
+            " "),
+        props.children));
+}
+exports.ParagraphNode = ParagraphNode;
+function ConstitutionNode(props) {
+    console.log(props);
+    return (React.createElement("p", __assign({ className: "editor__constitution" }, props.attributes), props.children));
+}
+exports.ConstitutionNode = ConstitutionNode;
 var TakeEditor = (function (_super) {
     __extends(TakeEditor, _super);
     function TakeEditor(props) {
@@ -37693,24 +37741,6 @@ var TakeEditor = (function (_super) {
     return TakeEditor;
 }(React.Component));
 exports.default = TakeEditor;
-function onDragOver(ev) {
-    ev.preventDefault(); //Allow drop event
-}
-function onDrop(ev) {
-    ev.preventDefault(); //Allow drop event
-    console.log(ev.target);
-    // let data = ev.dataTransfer.getData('text');
-    // console.log('dropped: ' + data);
-    // console.log('effectAllowed: ' + ev.dataTransfer.effectAllowed);
-    // /**
-    //  * Spec says to do appendChild to ev.target, but not necessary. Don't know why???
-    //  * (ev.target as HTMLDivElement).appendChild(data); 
-    //  */
-    // console.log(ev.target);
-    // let newP = document.createElement("p");
-    // newP.innerHTML = "something else";
-    // (ev.target as HTMLDivElement).appendChild(newP);
-}
 
 
 /***/ }),
@@ -37721,6 +37751,9 @@ function onDrop(ev) {
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var TakeEditor_1 = __webpack_require__(182);
+exports.TitleNode = TakeEditor_1.TitleNode;
+exports.ParagraphNode = TakeEditor_1.ParagraphNode;
+exports.ConstitutionNode = TakeEditor_1.ConstitutionNode;
 exports.default = TakeEditor_1.default;
 
 
@@ -39645,7 +39678,7 @@ exports = module.exports = __webpack_require__(195)(undefined);
 
 
 // module
-exports.push([module.i, ".editor {\n  border: 1px solid red; }\n\n.editor__title {\n  text-align: left;\n  margin-top: 0;\n  position: relative; }\n\n.editor__placeholder {\n  opacity: 0.3; }\n\n.constitution__sections {\n  list-style: none;\n  margin: 0;\n  padding: 0; }\n\n.constitution__text {\n  height: 300px;\n  overflow-y: scroll; }\n\n.constitution__text--selected {\n  color: yellow;\n  background-color: black; }\n", ""]);
+exports.push([module.i, ".editor {\n  border: 1px solid red; }\n\n.editor__title {\n  text-align: left;\n  margin-top: 0;\n  position: relative; }\n\n.editor__title--placeholder {\n  opacity: 0.3; }\n\n.editor__paragraph--placeholder {\n  opacity: 0.3; }\n\n.editor__paragraph {\n  text-align: left;\n  margin-top: 0;\n  position: relative;\n  line-height: 0.3em; }\n\n.editor__constitution {\n  background-color: aqua; }\n\n.constitution__sections {\n  list-style: none;\n  margin: 0;\n  padding: 0; }\n\n.constitution__text {\n  height: 300px;\n  overflow-y: scroll; }\n\n.constitution__text--selected {\n  color: yellow;\n  background-color: black;\n  cursor: pointer; }\n", ""]);
 
 // exports
 

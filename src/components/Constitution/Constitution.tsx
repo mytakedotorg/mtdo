@@ -9,7 +9,7 @@ class Constitution extends React.Component<ConstitutionProps, ConstitutionState>
     return (
       <div className="constitution">
         <h2 className="constitution__heading">Constitution</h2>
-        <button onClick={this.props.onClick}>
+        <button onClick={this.props.onClearClick}>
           Clear Selection
         </button>
         <div className="constitution__text" onMouseUp={this.props.onMouseUp}>
