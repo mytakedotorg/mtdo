@@ -1,5 +1,6 @@
 import * as React from "react";
 const { Editor, Placeholder } = require('slate');
+const { List, Map } = require('immutable');
 import * as key from "keycode";
 
 // Define a React component renderer for each of our text blocks.
@@ -38,11 +39,24 @@ export function ParagraphNode(props: any): JSX.Element {
 }
 
 export function ConstitutionNode(props: any): JSX.Element {
-  console.log(props);
+  console.log('In Render');
+  let nodes: Array<MyReactComponentObject> = [];
+
+  props.node.data.map(function(value: Array<MyReactComponentObject> ) {
+    nodes = value;
+  });
+  
+  
   return (
-    <p className="editor__constitution" {...props.attributes}>
+    <div className="editor__constitution" {...props.attributes}>
+      {nodes.map(function(element: MyReactComponentObject, index: number){
+        element.props['key'] = index.toString();
+        return(
+          React.createElement(element.component, element.props, element.innerHTML)
+        );
+      })}
       {props.children}
-    </p>
+    </div>
   )
 }
 
