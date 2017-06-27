@@ -1,7 +1,8 @@
 interface ConstitutionProps {
   constitutionNodes: Array<MyReactComponentObject>,
-  onClick: () => void,
-  onMouseUp: () => void,
+  onClearClick: () => void,
+  onSetClick: () => void,
+  onMouseUp: () => void
 }
 
 interface ConstitutionState {
