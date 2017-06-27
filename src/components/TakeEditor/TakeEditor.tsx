@@ -1,10 +1,9 @@
 import * as React from "react";
 const { Editor, Placeholder } = require('slate');
-const { List, Map } = require('immutable');
 import * as key from "keycode";
 
 // Define a React component renderer for each of our text blocks.
-export function TitleNode(props: any): JSX.Element {
+export function TitleNode(props: SlateProps): JSX.Element {
   return (
     <h1 className="editor__title" {...props.attributes}>
       <Placeholder
@@ -21,7 +20,7 @@ export function TitleNode(props: any): JSX.Element {
   );
 }
 
-export function ParagraphNode(props: any): JSX.Element {
+export function ParagraphNode(props: SlateProps): JSX.Element {
   return (
       <p className="editor__paragraph" {...props.attributes}>
         <Placeholder
@@ -38,14 +37,12 @@ export function ParagraphNode(props: any): JSX.Element {
   );
 }
 
-export function ConstitutionNode(props: any): JSX.Element {
-  console.log('In Render');
+export function ConstitutionNode(props: SlateProps): JSX.Element {
   let nodes: Array<MyReactComponentObject> = [];
 
   props.node.data.map(function(value: Array<MyReactComponentObject> ) {
     nodes = value;
   });
-  
   
   return (
     <div className="editor__constitution" {...props.attributes}>
@@ -60,7 +57,7 @@ export function ConstitutionNode(props: any): JSX.Element {
   )
 }
 
-export default class TakeEditor extends React.Component<TakeEditorProps, TakeEditorState> {
+export default class TakeEditor extends React.Component<TakeEditorProps, void> {
   constructor(props: TakeEditorProps){
     super(props);
   }
