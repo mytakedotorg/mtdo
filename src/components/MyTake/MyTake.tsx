@@ -2,8 +2,7 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import TakeEditor, { TitleNode, ParagraphNode, ConstitutionNode } from '../TakeEditor';
 import Constitution from '../Constitution';
-const { Block, Character, Html, Raw, Selection, Text } = require('slate');
-const { List, Map } = require('immutable');
+const { Block, Data, Raw, Selection } = require('slate');
 import * as key from "keycode";
 import getNodeArray from "../../utils/getNodeArray";
 const constitutionText = require('../../foundation/constitution.foundation.html');
@@ -24,10 +23,7 @@ class MyTake extends React.Component<MyTakeProps, MyTakeState> {
         nodes: {
           title: TitleNode,
           paragraph: ParagraphNode,
-          constitution: ConstitutionNode,
-          // p: (props: any) => <p {...props.attributes}>{props.children}</p>,
-          // h2: (props: any) => <h2 {...props.attributes}>{props.children}</h2>,
-          // h3: (props: any) => <h3 {...props.attributes}>{props.children}</h3>
+          constitution: ConstitutionNode
         }
       }
     }
@@ -59,9 +55,6 @@ class MyTake extends React.Component<MyTakeProps, MyTakeState> {
     });
   }
   handleConstitutionSetClick(): void {
-    /**
-       * TO-DO: Insert constitution after current selection.
-       */
     let selection = Selection.create({
         anchorKey: "2",
         anchorOffset: 0,
@@ -69,10 +62,9 @@ class MyTake extends React.Component<MyTakeProps, MyTakeState> {
         focusOffset: 0
       });
     
-    console.log('highlighted nodes: ' + JSON.stringify(this.state.highlightedNodes));
     let newObject = {array: this.state.highlightedNodes};
     const properties = {
-      data: Map(newObject),
+      data: Data.create(newObject),
       key: 'uniqueness',
       type: 'constitution'
     }
@@ -82,15 +74,6 @@ class MyTake extends React.Component<MyTakeProps, MyTakeState> {
       .transform()
       .insertBlockAtRange(selection, constitutionNode)
       .apply();
-
-    /**
-    * TO-DO: insert 'constitution' block with `document` fragment as child
-    */
-    // const { document } = serializer.deserialize("<p>html string</p><h2>heading2</h2><h3>heading3</h3>");
-    // const newState = this.state.editorState
-    //   .transform()
-    //   .insertFragmentAtRange(selection, document)
-    //   .apply();
 
     this.setState({editorState: newState});
   }
@@ -217,14 +200,14 @@ class MyTake extends React.Component<MyTakeProps, MyTakeState> {
     this.clearDefaultDOMSelection();
   }
   // On change, update the app's React state with the new editor state.
-  handleEditorChange(editorState: TakeEditorOnChange): void {
+  handleEditorChange(editorState: SlateEditorState): void {
     this.setState({ editorState })
   }
   handleEditorKeyDown(event: KeyboardEvent, data: any, state: any): any{
     // Determine whether cursor is in title block
     const isTitle = state.blocks.some((block: any) => block.type == 'title')
     
-    let firstCharacterAfterTitle: TakeEditorSelection = Selection.create({
+    let firstCharacterAfterTitle: SlateSelection = Selection.create({
         anchorKey: "2",
         anchorOffset: 0,
         focusKey: "2",
