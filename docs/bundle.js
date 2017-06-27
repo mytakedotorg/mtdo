@@ -37401,40 +37401,18 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-var __assign = (this && this.__assign) || Object.assign || function(t) {
-    for (var s, i = 1, n = arguments.length; i < n; i++) {
-        s = arguments[i];
-        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
-            t[p] = s[p];
-    }
-    return t;
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(8);
 var ReactDOM = __webpack_require__(38);
 var TakeEditor_1 = __webpack_require__(183);
 var Constitution_1 = __webpack_require__(179);
 var _a = __webpack_require__(168), Block = _a.Block, Character = _a.Character, Html = _a.Html, Raw = _a.Raw, Selection = _a.Selection, Text = _a.Text;
+var _b = __webpack_require__(5), List = _b.List, Map = _b.Map;
 var key = __webpack_require__(132);
 var getNodeArray_1 = __webpack_require__(185);
 var constitutionText = __webpack_require__(273);
 var config_1 = __webpack_require__(181);
 var initialState = Raw.deserialize(config_1.default.initialState, { terse: true });
-var RULES = [
-    {
-        deserialize: function (el, next) {
-            var block = el.tagName;
-            if (!block)
-                return;
-            return {
-                kind: 'block',
-                type: block,
-                nodes: next(el.children)
-            };
-        }
-    }
-];
-var serializer = new Html({ rules: RULES });
 var MyTake = (function (_super) {
     __extends(MyTake, _super);
     function MyTake(props) {
@@ -37449,9 +37427,6 @@ var MyTake = (function (_super) {
                     title: TakeEditor_1.TitleNode,
                     paragraph: TakeEditor_1.ParagraphNode,
                     constitution: TakeEditor_1.ConstitutionNode,
-                    p: function (props) { return React.createElement("p", __assign({}, props.attributes), props.children); },
-                    h2: function (props) { return React.createElement("h2", __assign({}, props.attributes), props.children); },
-                    h3: function (props) { return React.createElement("h3", __assign({}, props.attributes), props.children); }
                 }
             }
         };
@@ -37494,27 +37469,26 @@ var MyTake = (function (_super) {
             focusKey: "2",
             focusOffset: 0
         });
-        var document = serializer.deserialize("<p>html string</p><h2>heading2</h2><h3>heading3</h3>").document;
-        //console.log(this.state.highlightedNodes[0].innerHTML);
-        var newBlock = Block.create({
-            type: 'constitution',
-            nodes: Text.createList([
-                {
-                    characters: Character.createList([
-                        { text: 'c' },
-                        { text: 'u' },
-                        { text: 's' }
-                    ])
-                }
-            ])
-        });
-        /**
-         * TO-DO: insert 'constitution' block with `document` fragment as child
-         */
+        console.log('highlighted nodes: ' + JSON.stringify(this.state.highlightedNodes));
+        var newObject = { array: this.state.highlightedNodes };
+        var properties = {
+            data: Map(newObject),
+            key: 'uniqueness',
+            type: 'constitution'
+        };
+        var constitutionNode = Block.create(properties);
         var newState = this.state.editorState
             .transform()
-            .insertFragmentAtRange(selection, document)
+            .insertBlockAtRange(selection, constitutionNode)
             .apply();
+        /**
+        * TO-DO: insert 'constitution' block with `document` fragment as child
+        */
+        // const { document } = serializer.deserialize("<p>html string</p><h2>heading2</h2><h3>heading3</h3>");
+        // const newState = this.state.editorState
+        //   .transform()
+        //   .insertFragmentAtRange(selection, document)
+        //   .apply();
         this.setState({ editorState: newState });
     };
     MyTake.prototype.handleConstitutionMouseUp = function () {
@@ -37707,6 +37681,7 @@ var __assign = (this && this.__assign) || Object.assign || function(t) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(8);
 var _a = __webpack_require__(168), Editor = _a.Editor, Placeholder = _a.Placeholder;
+var _b = __webpack_require__(5), List = _b.List, Map = _b.Map;
 // Define a React component renderer for each of our text blocks.
 function TitleNode(props) {
     return (React.createElement("h1", __assign({ className: "editor__title" }, props.attributes),
@@ -37725,8 +37700,17 @@ function ParagraphNode(props) {
 }
 exports.ParagraphNode = ParagraphNode;
 function ConstitutionNode(props) {
-    console.log(props);
-    return (React.createElement("p", __assign({ className: "editor__constitution" }, props.attributes), props.children));
+    console.log('In Render');
+    var nodes = [];
+    props.node.data.map(function (value) {
+        nodes = value;
+    });
+    return (React.createElement("div", __assign({ className: "editor__constitution" }, props.attributes),
+        nodes.map(function (element, index) {
+            element.props['key'] = index.toString();
+            return (React.createElement(element.component, element.props, element.innerHTML));
+        }),
+        props.children));
 }
 exports.ConstitutionNode = ConstitutionNode;
 var TakeEditor = (function (_super) {
