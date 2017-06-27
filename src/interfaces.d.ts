@@ -16,7 +16,9 @@ interface TakeEditorSelection {
   anchorKey: string,
   anchorOffset: number,
   focusKey: string,
-  focusOffset: number
+  focusOffset: number,
+  isBackward: boolean,
+  isFocues: boolean
 }
 
 interface MyReactComponentObject {  //Remame this
