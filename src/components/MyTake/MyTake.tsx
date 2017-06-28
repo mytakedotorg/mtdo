@@ -55,18 +55,28 @@ class MyTake extends React.Component<MyTakeProps, MyTakeState> {
     });
   }
   handleConstitutionSetClick(): void {
-    let selection = Selection.create({
-        anchorKey: "2",
+    const currentSelection = this.state.editorState.selection;
+    let selection: SlateSelection;
+    if (currentSelection.anchorKey === "0" || currentSelection.focusKey === "0") {
+      //Cursor is in title, insert constitution node immediately after
+      let key = this.state.editorState.document.nodes.rest().first().getFirstText().key;
+
+      selection = Selection.create({
+        anchorKey: key,
         anchorOffset: 0,
-        focusKey: "2",
+        focusKey: key,
         focusOffset: 0
       });
+    } else {
+      selection = currentSelection;
+    }
     
     let newObject = {array: this.state.highlightedNodes};
     const properties = {
       data: Data.create(newObject),
       key: 'uniqueness',
-      type: 'constitution'
+      type: 'constitution',
+      isVoid: true
     }
 
     const constitutionNode = Block.create(properties);
@@ -75,6 +85,7 @@ class MyTake extends React.Component<MyTakeProps, MyTakeState> {
       .insertBlockAtRange(selection, constitutionNode)
       .apply();
 
+      
     this.setState({editorState: newState});
   }
   handleConstitutionMouseUp(): void {
@@ -105,7 +116,8 @@ class MyTake extends React.Component<MyTakeProps, MyTakeState> {
     const endContainer: Node = ReactDOM.findDOMNode(this).childNodes[0].childNodes[2].childNodes[indexOfEndContainer];
 
     const { constitutionNodes } = this.state; 
-    let newNodes: Array<MyReactComponentObject> = [...constitutionNodes.slice(0, indexOfStartContainer)];
+    let newConstitutionFull: Array<MyReactComponentObject> = [...constitutionNodes.slice(0, indexOfStartContainer)];
+    let newNodes: Array<MyReactComponentObject> = [];
 
     if (startContainer === endContainer) {
       // Create a new Span element with the contents of the highlighted text
@@ -187,10 +199,12 @@ class MyTake extends React.Component<MyTakeProps, MyTakeState> {
       newNodes.push(lastNewNode);
     }
     
-    let newConstitutionFull: Array<MyReactComponentObject> = [
+    newConstitutionFull = [
+      ...newConstitutionFull,
       ...newNodes,
       ...constitutionNodes.slice(indexOfEndContainer + 1, this.state.constitutionNodes.length)
     ]
+    
     this.setState( prevState => ({
       constitutionNodes: [...newConstitutionFull],
       textIsHighlighted: true,
@@ -203,25 +217,39 @@ class MyTake extends React.Component<MyTakeProps, MyTakeState> {
   handleEditorChange(editorState: SlateEditorState): void {
     this.setState({ editorState })
   }
-  handleEditorKeyDown(event: KeyboardEvent, data: any, state: any): any{
+  handleEditorKeyDown(event: KeyboardEvent, data: any, state: SlateEditorState): SlateEditorState {
     // Determine whether cursor is in title block
-    const isTitle = state.blocks.some((block: any) => block.type == 'title')
+    const isTitle = state.blocks.some((block: SlateBlock) => block.type == 'title')
+    const isConstitution = state.blocks.some((block: SlateBlock) => block.type == 'constitution')
     
-    let firstCharacterAfterTitle: SlateSelection = Selection.create({
-        anchorKey: "2",
+    // If enter is pressed in title block, move cursor to beginning of next block
+    if (event.which == key('Enter') && isTitle) {
+      // Get the key of the first Text block after title.
+      let key = state.document.nodes.rest().first().getFirstText().key;
+
+      // Move selection (cursor) to beginning of first Text block after title.
+      let cursorAfterTitle: SlateSelection = Selection.create({
+        anchorKey: key,
         anchorOffset: 0,
-        focusKey: "2",
+        focusKey: key,
         focusOffset: 0,
         isBackward: false,
         isFocused: true
       });
-
-    // If enter is pressed in title block, move cursor to beginning of next block
-    if (event.which == key('Enter') && isTitle) {
       
       const newState = state
         .transform()
-        .select(firstCharacterAfterTitle)
+        .select(cursorAfterTitle)
+        .insertBlock('paragraph')
+        .apply();
+      
+      return newState;
+    }
+
+    if (event.which == key('Enter')) {
+      const newState = state
+        .transform()
+        .insertBlock('paragraph')
         .apply();
       
       return newState;

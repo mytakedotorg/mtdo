@@ -37406,8 +37406,7 @@ var React = __webpack_require__(8);
 var ReactDOM = __webpack_require__(38);
 var TakeEditor_1 = __webpack_require__(183);
 var Constitution_1 = __webpack_require__(179);
-var _a = __webpack_require__(168), Block = _a.Block, Character = _a.Character, Html = _a.Html, Raw = _a.Raw, Selection = _a.Selection, Text = _a.Text;
-var _b = __webpack_require__(5), List = _b.List, Map = _b.Map;
+var _a = __webpack_require__(168), Block = _a.Block, Data = _a.Data, Raw = _a.Raw, Selection = _a.Selection;
 var key = __webpack_require__(132);
 var getNodeArray_1 = __webpack_require__(185);
 var constitutionText = __webpack_require__(273);
@@ -37426,7 +37425,7 @@ var MyTake = (function (_super) {
                 nodes: {
                     title: TakeEditor_1.TitleNode,
                     paragraph: TakeEditor_1.ParagraphNode,
-                    constitution: TakeEditor_1.ConstitutionNode,
+                    constitution: TakeEditor_1.ConstitutionNode
                 }
             }
         };
@@ -37460,35 +37459,33 @@ var MyTake = (function (_super) {
         });
     };
     MyTake.prototype.handleConstitutionSetClick = function () {
-        /**
-           * TO-DO: Insert constitution after current selection.
-           */
-        var selection = Selection.create({
-            anchorKey: "2",
-            anchorOffset: 0,
-            focusKey: "2",
-            focusOffset: 0
-        });
-        console.log('highlighted nodes: ' + JSON.stringify(this.state.highlightedNodes));
+        var currentSelection = this.state.editorState.selection;
+        var selection;
+        if (currentSelection.anchorKey === "0" || currentSelection.focusKey === "0") {
+            //Cursor is in title, insert constitution node immediately after
+            var key_1 = this.state.editorState.document.nodes.rest().first().getFirstText().key;
+            selection = Selection.create({
+                anchorKey: key_1,
+                anchorOffset: 0,
+                focusKey: key_1,
+                focusOffset: 0
+            });
+        }
+        else {
+            selection = currentSelection;
+        }
         var newObject = { array: this.state.highlightedNodes };
         var properties = {
-            data: Map(newObject),
+            data: Data.create(newObject),
             key: 'uniqueness',
-            type: 'constitution'
+            type: 'constitution',
+            isVoid: true
         };
         var constitutionNode = Block.create(properties);
         var newState = this.state.editorState
             .transform()
             .insertBlockAtRange(selection, constitutionNode)
             .apply();
-        /**
-        * TO-DO: insert 'constitution' block with `document` fragment as child
-        */
-        // const { document } = serializer.deserialize("<p>html string</p><h2>heading2</h2><h3>heading3</h3>");
-        // const newState = this.state.editorState
-        //   .transform()
-        //   .insertFragmentAtRange(selection, document)
-        //   .apply();
         this.setState({ editorState: newState });
     };
     MyTake.prototype.handleConstitutionMouseUp = function () {
@@ -37512,7 +37509,8 @@ var MyTake = (function (_super) {
         var startContainer = ReactDOM.findDOMNode(this).childNodes[0].childNodes[2].childNodes[indexOfStartContainer];
         var endContainer = ReactDOM.findDOMNode(this).childNodes[0].childNodes[2].childNodes[indexOfEndContainer];
         var constitutionNodes = this.state.constitutionNodes;
-        var newNodes = constitutionNodes.slice(0, indexOfStartContainer).slice();
+        var newConstitutionFull = constitutionNodes.slice(0, indexOfStartContainer).slice();
+        var newNodes = [];
         if (startContainer === endContainer) {
             // Create a new Span element with the contents of the highlighted text
             var newSpan = React.createElement('span', {
@@ -37545,10 +37543,10 @@ var MyTake = (function (_super) {
             newNodes.push(firstNewNode);
             for (var index = indexOfStartContainer + 1; index < indexOfEndContainer; index++) {
                 var nextNewNode = Object.assign({}, this.state.constitutionNodes[index]);
-                var key_1 = 'middleSpan-' + index.toString();
+                var key_2 = 'middleSpan-' + index.toString();
                 var nextNewSpan = React.createElement('span', {
                     className: 'constitution__text--selected',
-                    key: key_1,
+                    key: key_2,
                     onClick: this.handleConstitutionSetClick
                 }, nextNewNode.innerHTML);
                 nextNewNode.innerHTML = [nextNewSpan];
@@ -37568,7 +37566,7 @@ var MyTake = (function (_super) {
             ];
             newNodes.push(lastNewNode);
         }
-        var newConstitutionFull = newNodes.concat(constitutionNodes.slice(indexOfEndContainer + 1, this.state.constitutionNodes.length));
+        newConstitutionFull = newConstitutionFull.concat(newNodes, constitutionNodes.slice(indexOfEndContainer + 1, this.state.constitutionNodes.length));
         this.setState(function (prevState) { return ({
             constitutionNodes: newConstitutionFull.slice(),
             textIsHighlighted: true,
@@ -37583,19 +37581,31 @@ var MyTake = (function (_super) {
     MyTake.prototype.handleEditorKeyDown = function (event, data, state) {
         // Determine whether cursor is in title block
         var isTitle = state.blocks.some(function (block) { return block.type == 'title'; });
-        var firstCharacterAfterTitle = Selection.create({
-            anchorKey: "2",
-            anchorOffset: 0,
-            focusKey: "2",
-            focusOffset: 0,
-            isBackward: false,
-            isFocused: true
-        });
+        var isConstitution = state.blocks.some(function (block) { return block.type == 'constitution'; });
         // If enter is pressed in title block, move cursor to beginning of next block
         if (event.which == key('Enter') && isTitle) {
+            // Get the key of the first Text block after title.
+            var key_3 = state.document.nodes.rest().first().getFirstText().key;
+            // Move selection (cursor) to beginning of first Text block after title.
+            var cursorAfterTitle = Selection.create({
+                anchorKey: key_3,
+                anchorOffset: 0,
+                focusKey: key_3,
+                focusOffset: 0,
+                isBackward: false,
+                isFocused: true
+            });
             var newState = state
                 .transform()
-                .select(firstCharacterAfterTitle)
+                .select(cursorAfterTitle)
+                .insertBlock('paragraph')
+                .apply();
+            return newState;
+        }
+        if (event.which == key('Enter')) {
+            var newState = state
+                .transform()
+                .insertBlock('paragraph')
                 .apply();
             return newState;
         }
@@ -37681,7 +37691,6 @@ var __assign = (this && this.__assign) || Object.assign || function(t) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(8);
 var _a = __webpack_require__(168), Editor = _a.Editor, Placeholder = _a.Placeholder;
-var _b = __webpack_require__(5), List = _b.List, Map = _b.Map;
 // Define a React component renderer for each of our text blocks.
 function TitleNode(props) {
     return (React.createElement("h1", __assign({ className: "editor__title" }, props.attributes),
@@ -37700,7 +37709,6 @@ function ParagraphNode(props) {
 }
 exports.ParagraphNode = ParagraphNode;
 function ConstitutionNode(props) {
-    console.log('In Render');
     var nodes = [];
     props.node.data.map(function (value) {
         nodes = value;
