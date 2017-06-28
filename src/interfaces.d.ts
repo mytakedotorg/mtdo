@@ -26,7 +26,10 @@ interface SlateSelection {
   focusKey: string,
   focusOffset: number,
   isBackward: boolean,
-  isFocues: boolean
+  isFocused: boolean
+  isCollapsed: boolean,
+  hasEdgeAtStartOf: (node: SlateNode) => boolean,
+  hasEdgeIn: (node: SlateNode) => boolean
 }
 
 interface SlateProps {

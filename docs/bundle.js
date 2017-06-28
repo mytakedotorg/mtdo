@@ -37427,7 +37427,8 @@ var MyTake = (function (_super) {
                     paragraph: TakeEditor_1.ParagraphNode,
                     constitution: TakeEditor_1.ConstitutionNode
                 }
-            }
+            },
+            uniqueKey: 'aa' // Only works 26^2 times. I think that'll be enough.
         };
         _this.handleConstitutionMouseUp = _this.handleConstitutionMouseUp.bind(_this);
         _this.handleConstitutionClearClick = _this.handleConstitutionClearClick.bind(_this);
@@ -37450,6 +37451,14 @@ var MyTake = (function (_super) {
         }
         else {
             // pre IE 9, unsupported
+        }
+    };
+    MyTake.prototype.incrKey = function (letter) {
+        if (letter[1] === 'z') {
+            return String.fromCharCode(letter[0].charCodeAt(0) + 1) + 'a';
+        }
+        else {
+            return letter[0] + String.fromCharCode(letter[1].charCodeAt(0) + 1);
         }
     };
     MyTake.prototype.handleConstitutionClearClick = function () {
@@ -37475,18 +37484,23 @@ var MyTake = (function (_super) {
             selection = currentSelection;
         }
         var newObject = { array: this.state.highlightedNodes };
+        var newKey = this.state.uniqueKey;
         var properties = {
             data: Data.create(newObject),
-            key: 'uniqueness',
+            key: this.state.uniqueKey,
             type: 'constitution',
             isVoid: true
         };
+        newKey = this.incrKey(newKey);
         var constitutionNode = Block.create(properties);
         var newState = this.state.editorState
             .transform()
             .insertBlockAtRange(selection, constitutionNode)
             .apply();
-        this.setState({ editorState: newState });
+        this.setState({
+            editorState: newState,
+            uniqueKey: newKey
+        });
     };
     MyTake.prototype.handleConstitutionMouseUp = function () {
         if (window.getSelection && !this.state.textIsHighlighted) {
@@ -37610,12 +37624,27 @@ var MyTake = (function (_super) {
             return newState;
         }
         if (event.which == key('Backspace')) {
-            /**
-             * TO-DO: Don't allow first paragaph to be deleted from editor. Should remain empty,
-             * but not be removed from DOM.
-             */
-            // console.log(state.selection.hasStartAtStartOf(findDOMNode(state.block.nodes)) == firstCharacterAfterTitle);
-            //console.log(state.startBlock.getPreviousSibling(state.startBlock.key));
+            var selection = state.selection;
+            if (selection.isCollapsed && selection.hasEdgeAtStartOf(state.document.nodes.rest().first())) {
+                //Don't allow first paragraph to be deleted from editor. Should remain empty, but not removed from DOM
+                return state;
+            }
+            if (selection.hasEdgeIn(state.document.nodes.rest().first()) && isConstitution) {
+                if (state.document.nodes.first().getFirstText().text || state.document.nodes.size > 2) {
+                    //There is a title, or there is text after the constitution
+                    var newState = state
+                        .transform()
+                        .removeNodeByKey(state.document.nodes.rest().first().key)
+                        .insertBlock('paragraph')
+                        .apply();
+                    return newState;
+                }
+                else {
+                    //There is no title nor anything else in the take
+                    var newState = initialState;
+                    return newState;
+                }
+            }
         }
         return;
     };

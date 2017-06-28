@@ -25,7 +25,8 @@ class MyTake extends React.Component<MyTakeProps, MyTakeState> {
           paragraph: ParagraphNode,
           constitution: ConstitutionNode
         }
-      }
+      },
+      uniqueKey: 'aa' // Only works 26^2 times. I think that'll be enough.
     }
 
     this.handleConstitutionMouseUp = this.handleConstitutionMouseUp.bind(this);
@@ -46,6 +47,13 @@ class MyTake extends React.Component<MyTakeProps, MyTakeState> {
       }
     } else { 
       // pre IE 9, unsupported
+    }
+  }
+  incrKey(letter: string): string {
+    if( letter[1] === 'z') {
+      return String.fromCharCode(letter[0].charCodeAt(0) + 1) + 'a';
+    } else {
+      return letter[0] + String.fromCharCode(letter[1].charCodeAt(0) + 1);
     }
   }
   handleConstitutionClearClick(): void {
@@ -72,12 +80,15 @@ class MyTake extends React.Component<MyTakeProps, MyTakeState> {
     }
     
     let newObject = {array: this.state.highlightedNodes};
+    let newKey = this.state.uniqueKey;
     const properties = {
       data: Data.create(newObject),
-      key: 'uniqueness',
+      key: this.state.uniqueKey,
       type: 'constitution',
       isVoid: true
     }
+
+    newKey = this.incrKey(newKey);
 
     const constitutionNode = Block.create(properties);
     const newState = this.state.editorState
@@ -86,7 +97,10 @@ class MyTake extends React.Component<MyTakeProps, MyTakeState> {
       .apply();
 
       
-    this.setState({editorState: newState});
+    this.setState({
+      editorState: newState,
+      uniqueKey: newKey
+    });
   }
   handleConstitutionMouseUp(): void {
     if (window.getSelection && !this.state.textIsHighlighted) { // Pre IE9 will always be false
@@ -221,7 +235,7 @@ class MyTake extends React.Component<MyTakeProps, MyTakeState> {
     // Determine whether cursor is in title block
     const isTitle = state.blocks.some((block: SlateBlock) => block.type == 'title')
     const isConstitution = state.blocks.some((block: SlateBlock) => block.type == 'constitution')
-    
+
     // If enter is pressed in title block, move cursor to beginning of next block
     if (event.which == key('Enter') && isTitle) {
       // Get the key of the first Text block after title.
@@ -255,13 +269,28 @@ class MyTake extends React.Component<MyTakeProps, MyTakeState> {
       return newState;
     }
     if (event.which == key('Backspace')){
-      /**
-       * TO-DO: Don't allow first paragaph to be deleted from editor. Should remain empty, 
-       * but not be removed from DOM.
-       */
+      let selection: SlateSelection = state.selection;
+      if (selection.isCollapsed && selection.hasEdgeAtStartOf(state.document.nodes.rest().first())) {
+        //Don't allow first paragraph to be deleted from editor. Should remain empty, but not removed from DOM
+        return state;
+      }
+      if (selection.hasEdgeIn(state.document.nodes.rest().first()) && isConstitution) {
+        if (state.document.nodes.first().getFirstText().text || state.document.nodes.size > 2) {
+          //There is a title, or there is text after the constitution
+          const newState = state
+            .transform()
+            .removeNodeByKey(state.document.nodes.rest().first().key)
+            .insertBlock('paragraph')
+            .apply();
 
-      // console.log(state.selection.hasStartAtStartOf(findDOMNode(state.block.nodes)) == firstCharacterAfterTitle);
-      //console.log(state.startBlock.getPreviousSibling(state.startBlock.key));
+          return newState;
+        } else {
+          //There is no title nor anything else in the take
+          const newState = initialState;
+          return newState;
+        }
+        
+      }
     }
 
     return;
