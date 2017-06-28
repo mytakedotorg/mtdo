@@ -6,8 +6,12 @@ interface TakeEditorProps {
 }
 
 interface SlateEditorState {
-  document: Document,
-  selection: SlateSelection
+  document: SlateDocument,
+  selection: SlateSelection,
+  transform: any, //function
+  blocks: any, //Immutable.List<SlateBlock>
+  nodes: any, //Immutable.List<SlateNode>
+  endBlock: SlateBlock
 }
 
 interface SlateSchema {
@@ -28,22 +32,27 @@ interface SlateSelection {
 interface SlateProps {
   attributes: any,
   children: any,
-  node: SlateNode,
+  node: SlateBlock,
   state: SlateEditorState
 }
 
-interface SlateNode extends SlateBlock {
+interface SlateNode {
   kind: string,
   length: number,
   text: string
 }
 
-interface SlateBlock {
+interface SlateBlock extends SlateNode {
   data: any, //Slate.Data
   isVoid: boolean,
   key: string,
   nodes: any, //Immutable.List<Slade.Node>
   type: string
+}
+
+interface SlateDocument {
+  data: any, //Slate.Data
+  nodes: any, //Immutable.List<Slate.Node>
 }
 interface MyReactComponentObject {
   component: string,
