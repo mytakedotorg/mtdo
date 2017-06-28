@@ -37525,11 +37525,13 @@ var MyTake = (function (_super) {
         var constitutionNodes = this.state.constitutionNodes;
         var newConstitutionFull = constitutionNodes.slice(0, indexOfStartContainer).slice();
         var newNodes = [];
+        var highlightedNodes = []; //Will not be rendered yet, will be sent to TakeEditor
+        var newKey = this.state.uniqueKey;
         if (startContainer === endContainer) {
             // Create a new Span element with the contents of the highlighted text
             var newSpan = React.createElement('span', {
                 className: 'constitution__text--selected',
-                key: 'startSpan',
+                key: 'startSpan' + newKey,
                 onClick: this.handleConstitutionSetClick
             }, startContainer.textContent.substring(indexOfSelectionStart, indexOfSelectionEnd));
             // Modify state array immutably
@@ -37540,12 +37542,25 @@ var MyTake = (function (_super) {
                 startContainer.textContent.substring(indexOfSelectionEnd, startContainer.textContent.length)
             ];
             newNodes.push(newNode);
+            // Create a new Span element with the contents of the highlighted text
+            var newSpan2 = React.createElement('span', {
+                className: 'editor__constitution--highlighted',
+                key: 'startSpan2' + newKey
+            }, startContainer.textContent.substring(indexOfSelectionStart, indexOfSelectionEnd));
+            // Modify state array immutably
+            var newNode2 = Object.assign({}, this.state.constitutionNodes[indexOfStartContainer]);
+            newNode2.innerHTML = [
+                startContainer.textContent.substring(0, indexOfSelectionStart),
+                newSpan2,
+                startContainer.textContent.substring(indexOfSelectionEnd, startContainer.textContent.length)
+            ];
+            highlightedNodes.push(newNode2);
         }
         else {
             // Create a new Span element with the contents of the highlighted text
             var firstNewSpan = React.createElement('span', {
                 className: 'constitution__text--selected',
-                key: 'startSpan',
+                key: 'startSpan' + newKey,
                 onClick: this.handleConstitutionSetClick
             }, startContainer.textContent.substring(indexOfSelectionStart, startContainer.textContent.length));
             // Modify state array immutably
@@ -37555,6 +37570,18 @@ var MyTake = (function (_super) {
                 firstNewSpan
             ];
             newNodes.push(firstNewNode);
+            // Create a new Span element with the contents of the highlighted text
+            var firstNewSpan2 = React.createElement('span', {
+                className: 'editor__constitution--highlighted',
+                key: 'startSpan2' + newKey
+            }, startContainer.textContent.substring(indexOfSelectionStart, startContainer.textContent.length));
+            // Modify state array immutably
+            var firstNewNode2 = Object.assign({}, this.state.constitutionNodes[indexOfStartContainer]);
+            firstNewNode2.innerHTML = [
+                startContainer.textContent.substring(0, indexOfSelectionStart),
+                firstNewSpan2
+            ];
+            highlightedNodes.push(firstNewNode2);
             for (var index = indexOfStartContainer + 1; index < indexOfEndContainer; index++) {
                 var nextNewNode = Object.assign({}, this.state.constitutionNodes[index]);
                 var key_2 = 'middleSpan-' + index.toString();
@@ -37565,11 +37592,19 @@ var MyTake = (function (_super) {
                 }, nextNewNode.innerHTML);
                 nextNewNode.innerHTML = [nextNewSpan];
                 newNodes.push(nextNewNode);
+                var nextNewNode2 = Object.assign({}, this.state.constitutionNodes[index]);
+                var key2 = 'middleSpan2-' + index.toString();
+                var nextNewSpan2 = React.createElement('span', {
+                    className: 'editor__constitution--highlighted',
+                    key: key2
+                }, nextNewNode2.innerHTML);
+                nextNewNode2.innerHTML = [nextNewSpan2];
+                highlightedNodes.push(nextNewNode2);
             }
             // Create a new Span element with the contents of the highlighted text
             var lastNewSpan = React.createElement('span', {
                 className: 'constitution__text--selected',
-                key: 'endSpan',
+                key: 'endSpan' + newKey,
                 onClick: this.handleConstitutionSetClick
             }, endContainer.textContent.substring(0, indexOfSelectionEnd));
             // Modify state array immutably
@@ -37579,12 +37614,26 @@ var MyTake = (function (_super) {
                 endContainer.textContent.substring(indexOfSelectionEnd, endContainer.textContent.length),
             ];
             newNodes.push(lastNewNode);
+            // Create a new Span element with the contents of the highlighted text
+            var lastNewSpan2 = React.createElement('span', {
+                className: 'editor__constitution--highlighted',
+                key: 'endSpan' + newKey
+            }, endContainer.textContent.substring(0, indexOfSelectionEnd));
+            // Modify state array immutably
+            var lastNewNode2 = Object.assign({}, this.state.constitutionNodes[indexOfEndContainer]);
+            lastNewNode2.innerHTML = [
+                lastNewSpan2,
+                endContainer.textContent.substring(indexOfSelectionEnd, endContainer.textContent.length),
+            ];
+            highlightedNodes.push(lastNewNode2);
         }
         newConstitutionFull = newConstitutionFull.concat(newNodes, constitutionNodes.slice(indexOfEndContainer + 1, this.state.constitutionNodes.length));
+        newKey = this.incrKey(newKey);
         this.setState(function (prevState) { return ({
             constitutionNodes: newConstitutionFull.slice(),
             textIsHighlighted: true,
-            highlightedNodes: newNodes.slice()
+            highlightedNodes: highlightedNodes.slice(),
+            uniqueKey: newKey
         }); });
         this.clearDefaultDOMSelection();
     };
@@ -39699,7 +39748,7 @@ exports = module.exports = __webpack_require__(195)(undefined);
 
 
 // module
-exports.push([module.i, ".editor {\n  border: 1px solid red; }\n\n.editor__title {\n  text-align: left;\n  margin-top: 0;\n  position: relative; }\n\n.editor__title--placeholder {\n  opacity: 0.3; }\n\n.editor__paragraph--placeholder {\n  opacity: 0.3; }\n\n.editor__paragraph {\n  text-align: left;\n  margin-top: 0;\n  position: relative;\n  line-height: 0.3em; }\n\n.editor__constitution {\n  background-color: aqua; }\n\n.constitution__sections {\n  list-style: none;\n  margin: 0;\n  padding: 0; }\n\n.constitution__text {\n  height: 300px;\n  overflow-y: scroll; }\n\n.constitution__text--selected {\n  color: yellow;\n  background-color: black;\n  cursor: pointer; }\n", ""]);
+exports.push([module.i, ".editor {\n  border: 1px solid red; }\n\n.editor__title {\n  text-align: left;\n  margin-top: 0;\n  position: relative; }\n\n.editor__title--placeholder {\n  opacity: 0.3; }\n\n.editor__paragraph--placeholder {\n  opacity: 0.3; }\n\n.editor__paragraph {\n  text-align: left;\n  margin-top: 0;\n  position: relative;\n  line-height: 0.3em; }\n\n.editor__constitution {\n  background-color: aqua; }\n\n.editor__constitution--highlighted {\n  background-color: yellow;\n  color: black; }\n\n.constitution__sections {\n  list-style: none;\n  margin: 0;\n  padding: 0; }\n\n.constitution__text {\n  height: 300px;\n  overflow-y: scroll; }\n\n.constitution__text--selected {\n  color: yellow;\n  background-color: black;\n  cursor: pointer; }\n", ""]);
 
 // exports
 

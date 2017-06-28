@@ -132,6 +132,8 @@ class MyTake extends React.Component<MyTakeProps, MyTakeState> {
     const { constitutionNodes } = this.state; 
     let newConstitutionFull: Array<MyReactComponentObject> = [...constitutionNodes.slice(0, indexOfStartContainer)];
     let newNodes: Array<MyReactComponentObject> = [];
+    let highlightedNodes: Array<MyReactComponentObject> = []; //Will not be rendered yet, will be sent to TakeEditor
+    let newKey = this.state.uniqueKey;
 
     if (startContainer === endContainer) {
       // Create a new Span element with the contents of the highlighted text
@@ -139,7 +141,7 @@ class MyTake extends React.Component<MyTakeProps, MyTakeState> {
         'span', 
         {
           className: 'constitution__text--selected', 
-          key: 'startSpan',
+          key: 'startSpan' + newKey,
           onClick: this.handleConstitutionSetClick
         }, 
         startContainer.textContent.substring(indexOfSelectionStart, indexOfSelectionEnd)
@@ -155,13 +157,32 @@ class MyTake extends React.Component<MyTakeProps, MyTakeState> {
 
       newNodes.push(newNode);
 
+      // Create a new Span element with the contents of the highlighted text
+      let newSpan2: React.ReactNode = React.createElement(
+        'span', 
+        {
+          className: 'editor__constitution--highlighted', 
+          key: 'startSpan2' + newKey
+        }, 
+        startContainer.textContent.substring(indexOfSelectionStart, indexOfSelectionEnd)
+      );
+
+      // Modify state array immutably
+      let newNode2: MyReactComponentObject = (Object as any).assign({}, this.state.constitutionNodes[indexOfStartContainer]);
+      newNode2.innerHTML = [
+        startContainer.textContent.substring(0, indexOfSelectionStart),
+        newSpan2,
+        startContainer.textContent.substring(indexOfSelectionEnd, startContainer.textContent.length)
+      ];
+
+      highlightedNodes.push(newNode2);
     } else {
       // Create a new Span element with the contents of the highlighted text
       let firstNewSpan: React.ReactNode = React.createElement(
         'span', 
         {
           className: 'constitution__text--selected', 
-          key: 'startSpan',
+          key: 'startSpan' + newKey,
           onClick: this.handleConstitutionSetClick
         }, 
         startContainer.textContent.substring(indexOfSelectionStart, startContainer.textContent.length)
@@ -175,6 +196,25 @@ class MyTake extends React.Component<MyTakeProps, MyTakeState> {
       ];
       
       newNodes.push(firstNewNode);
+
+      // Create a new Span element with the contents of the highlighted text
+      let firstNewSpan2: React.ReactNode = React.createElement(
+        'span', 
+        {
+          className: 'editor__constitution--highlighted', 
+          key: 'startSpan2' + newKey
+        }, 
+        startContainer.textContent.substring(indexOfSelectionStart, startContainer.textContent.length)
+      );
+      
+      // Modify state array immutably
+      let firstNewNode2: MyReactComponentObject = (Object as any).assign({}, this.state.constitutionNodes[indexOfStartContainer]);
+      firstNewNode2.innerHTML = [
+        startContainer.textContent.substring(0, indexOfSelectionStart),
+        firstNewSpan2
+      ];
+      
+      highlightedNodes.push(firstNewNode2);
 
       for(let index: number = indexOfStartContainer + 1; index < indexOfEndContainer ; index++){
         let nextNewNode: MyReactComponentObject = (Object as any).assign({}, this.state.constitutionNodes[index]);
@@ -191,6 +231,20 @@ class MyTake extends React.Component<MyTakeProps, MyTakeState> {
         nextNewNode.innerHTML = [nextNewSpan];
 
         newNodes.push(nextNewNode);
+
+        let nextNewNode2: MyReactComponentObject = (Object as any).assign({}, this.state.constitutionNodes[index]);
+        let key2: string = 'middleSpan2-' + index.toString();
+        let nextNewSpan2: React.ReactNode = React.createElement(
+          'span',
+          {
+            className: 'editor__constitution--highlighted', 
+            key: key2
+          },
+          nextNewNode2.innerHTML
+        )
+        nextNewNode2.innerHTML = [nextNewSpan2];
+
+        highlightedNodes.push(nextNewNode2);
       }    
 
       // Create a new Span element with the contents of the highlighted text
@@ -198,7 +252,7 @@ class MyTake extends React.Component<MyTakeProps, MyTakeState> {
         'span', 
         {
           className: 'constitution__text--selected', 
-          key: 'endSpan',
+          key: 'endSpan' + newKey,
           onClick: this.handleConstitutionSetClick
         }, 
         endContainer.textContent.substring(0, indexOfSelectionEnd)
@@ -211,6 +265,24 @@ class MyTake extends React.Component<MyTakeProps, MyTakeState> {
       ];
 
       newNodes.push(lastNewNode);
+    
+      // Create a new Span element with the contents of the highlighted text
+      let lastNewSpan2: React.ReactNode = React.createElement(
+        'span', 
+        {
+          className: 'editor__constitution--highlighted', 
+          key: 'endSpan' + newKey
+        }, 
+        endContainer.textContent.substring(0, indexOfSelectionEnd)
+      );
+      // Modify state array immutably
+      let lastNewNode2: MyReactComponentObject = (Object as any).assign({}, this.state.constitutionNodes[indexOfEndContainer]);
+      lastNewNode2.innerHTML = [
+        lastNewSpan2,
+        endContainer.textContent.substring(indexOfSelectionEnd, endContainer.textContent.length),
+      ];
+
+      highlightedNodes.push(lastNewNode2);
     }
     
     newConstitutionFull = [
@@ -219,10 +291,12 @@ class MyTake extends React.Component<MyTakeProps, MyTakeState> {
       ...constitutionNodes.slice(indexOfEndContainer + 1, this.state.constitutionNodes.length)
     ]
     
+    newKey = this.incrKey(newKey);
     this.setState( prevState => ({
       constitutionNodes: [...newConstitutionFull],
       textIsHighlighted: true,
-      highlightedNodes: [...newNodes]
+      highlightedNodes: [...highlightedNodes],
+      uniqueKey: newKey
     }));
 
     this.clearDefaultDOMSelection();
@@ -268,6 +342,7 @@ class MyTake extends React.Component<MyTakeProps, MyTakeState> {
       
       return newState;
     }
+    
     if (event.which == key('Backspace')){
       let selection: SlateSelection = state.selection;
       if (selection.isCollapsed && selection.hasEdgeAtStartOf(state.document.nodes.rest().first())) {
