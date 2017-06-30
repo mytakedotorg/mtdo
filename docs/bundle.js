@@ -37327,8 +37327,8 @@ if(content.locals) module.exports = content.locals;
 if(false) {
 	// When the styles change, update the <style> tags
 	if(!content.locals) {
-		module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/sass-loader/lib/loader.js!./main.scss", function() {
-			var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/sass-loader/lib/loader.js!./main.scss");
+		module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/postcss-loader/lib/index.js!../../node_modules/sass-loader/lib/loader.js!./main.scss", function() {
+			var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/postcss-loader/lib/index.js!../../node_modules/sass-loader/lib/loader.js!./main.scss");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
@@ -37520,8 +37520,8 @@ var MyTake = (function (_super) {
         var indexOfSelectionEnd = range.endOffset;
         //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|~~~~~~~~~~~~~|
         //Need to find a way not to hardcode these indices ----------------v-------------v
-        var startContainer = ReactDOM.findDOMNode(this).childNodes[0].childNodes[2].childNodes[indexOfStartContainer];
-        var endContainer = ReactDOM.findDOMNode(this).childNodes[0].childNodes[2].childNodes[indexOfEndContainer];
+        var startContainer = ReactDOM.findDOMNode(this).childNodes[1].childNodes[2].childNodes[indexOfStartContainer];
+        var endContainer = ReactDOM.findDOMNode(this).childNodes[1].childNodes[2].childNodes[indexOfEndContainer];
         var constitutionNodes = this.state.constitutionNodes;
         var newConstitutionFull = constitutionNodes.slice(0, indexOfStartContainer).slice();
         var newNodes = [];
@@ -37699,8 +37699,8 @@ var MyTake = (function (_super) {
     };
     MyTake.prototype.render = function () {
         return (React.createElement("div", null,
-            React.createElement(Constitution_1.default, { onClearClick: this.handleConstitutionClearClick, onSetClick: this.handleConstitutionSetClick, onMouseUp: this.handleConstitutionMouseUp, constitutionNodes: this.state.constitutionNodes }),
-            React.createElement(TakeEditor_1.default, { schema: this.state.schema, editorState: this.state.editorState, onChange: this.handleEditorChange, onKeyDown: this.handleEditorKeyDown })));
+            React.createElement(TakeEditor_1.default, { schema: this.state.schema, editorState: this.state.editorState, onChange: this.handleEditorChange, onKeyDown: this.handleEditorKeyDown }),
+            React.createElement(Constitution_1.default, { onClearClick: this.handleConstitutionClearClick, onSetClick: this.handleConstitutionSetClick, onMouseUp: this.handleConstitutionMouseUp, constitutionNodes: this.state.constitutionNodes })));
     };
     return MyTake;
 }(React.Component));
@@ -39748,7 +39748,7 @@ exports = module.exports = __webpack_require__(195)(undefined);
 
 
 // module
-exports.push([module.i, ".editor {\n  border: 1px solid red; }\n\n.editor__title {\n  text-align: left;\n  margin-top: 0;\n  position: relative; }\n\n.editor__title--placeholder {\n  opacity: 0.3; }\n\n.editor__paragraph--placeholder {\n  opacity: 0.3; }\n\n.editor__paragraph {\n  text-align: left;\n  margin-top: 0;\n  position: relative;\n  line-height: 0.3em; }\n\n.editor__constitution {\n  background-color: aqua; }\n\n.editor__constitution--highlighted {\n  background-color: yellow;\n  color: black; }\n\n.constitution__sections {\n  list-style: none;\n  margin: 0;\n  padding: 0; }\n\n.constitution__text {\n  height: 300px;\n  overflow-y: scroll; }\n\n.constitution__text--selected {\n  color: yellow;\n  background-color: black;\n  cursor: pointer; }\n", ""]);
+exports.push([module.i, "/**\n* Colors taken from pictures of original document.\n*/\n/**\n* Colors taken from Pantone Fall 2017 fashion report.\n*/\n.editor {\n  padding: 5px 5px 0 5px; }\n\n.editor__title {\n  text-align: left;\n  margin-top: 0;\n  position: relative;\n  font-family: \"Georgia\", serif; }\n\n.editor__title--placeholder {\n  opacity: 0.3; }\n\n.editor__paragraph--placeholder {\n  opacity: 0.3; }\n\n.editor__paragraph {\n  font-family: \"Georgia\", serif;\n  text-align: left;\n  margin-top: 0;\n  position: relative;\n  line-height: 1.7em; }\n\n.editor__constitution {\n  background: radial-gradient(at bottom right, #9B9740, #E9E69F);\n  color: #9B9740;\n  padding: 5px 15px;\n  font-family: \"Georgia\", serif; }\n\n.editor__constitution--highlighted {\n  color: darkslategray;\n  background-color: yellow; }\n\n.constitution__text {\n  background: radial-gradient(at right 60%, #9B9740, #E9E69F);\n  color: #1C0A03;\n  padding: 30px 15px;\n  font-family: \"Georgia\", serif;\n  height: 300px;\n  overflow-y: scroll; }\n  .constitution__text::-webkit-scrollbar {\n    -webkit-appearance: none;\n    width: 10px; }\n  .constitution__text::-webkit-scrollbar-thumb {\n    border-radius: 2px;\n    background-color: #E9E69F;\n    -webkit-box-shadow: 0 0 1px rgba(255, 255, 255, 0.5); }\n  .constitution__text::-webkit-scrollbar-track {\n    background-color: #9B9740; }\n\n.constitution__text--selected {\n  color: darkslategray;\n  background-color: yellow;\n  cursor: pointer; }\n\n#app {\n  width: 95%;\n  margin: auto; }\n", ""]);
 
 // exports
 
