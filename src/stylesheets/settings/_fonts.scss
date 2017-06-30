@@ -1,17 +1,22 @@
 $georgia: 'Georgia' , serif;
+$tangerine: 'Tangerine', cursive;
 
 // FONTS
 $fonts: (
-	constitution: $georgia,
-	take__title: $georgia,
-	take__text: $georgia,
-	take__constitution: $georgia,
+	constitution: $tangerine,
+	editor__title: $georgia,
+	editor__text: $georgia,
+	editor__constitution: $tangerine,
 );
 
 // FONT SIZES
 $fontsize: (
 	constitution: (
 		h1: 80px,
+		text: 22px
+	),
+	editor: (
 		text: 22px,
+		constitution: 22px
 	)
 );

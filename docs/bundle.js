@@ -37362,7 +37362,10 @@ var Constitution = (function (_super) {
     }
     Constitution.prototype.render = function () {
         return (React.createElement("div", { className: "constitution" },
-            React.createElement("h2", { className: "constitution__heading" }, "Constitution"),
+            React.createElement("h2", { className: "constitution__heading" }, "Constitution for the United States of America"),
+            React.createElement("p", { className: "constitution__instructions" }, this.props.textIsHighlighted ?
+                'Click your selection to send it to the Take.'
+                : 'Highlight some text from the Constitution below.'),
             React.createElement("button", { onClick: this.props.onClearClick }, "Clear Selection"),
             React.createElement("div", { className: "constitution__text", onMouseUp: this.props.onMouseUp }, this.props.constitutionNodes.map(function (element, index) {
                 element.props['key'] = index.toString();
@@ -37499,7 +37502,9 @@ var MyTake = (function (_super) {
             .apply();
         this.setState({
             editorState: newState,
-            uniqueKey: newKey
+            uniqueKey: newKey,
+            constitutionNodes: this.getInitialText(),
+            textIsHighlighted: false
         });
     };
     MyTake.prototype.handleConstitutionMouseUp = function () {
@@ -37518,10 +37523,34 @@ var MyTake = (function (_super) {
         var indexOfEndContainer = Array.prototype.indexOf.call(range.endContainer.parentElement.parentNode.childNodes, //Arrange siblings into an array
         range.endContainer.parentNode); //Find indexOf current Node
         var indexOfSelectionEnd = range.endOffset;
-        //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|~~~~~~~~~~~~~|
-        //Need to find a way not to hardcode these indices ----------------v-------------v
-        var startContainer = ReactDOM.findDOMNode(this).childNodes[1].childNodes[2].childNodes[indexOfStartContainer];
-        var endContainer = ReactDOM.findDOMNode(this).childNodes[1].childNodes[2].childNodes[indexOfEndContainer];
+        var constitutionIndex;
+        var firstNodeList = ReactDOM.findDOMNode(this).childNodes;
+        for (var i = 0; i < firstNodeList.length; i++) {
+            for (var j = 0; j < firstNodeList[i].attributes.length; j++) {
+                if (firstNodeList[i].attributes.item(j).value == 'constitution') {
+                    constitutionIndex = i;
+                    break;
+                }
+            }
+            if (constitutionIndex !== undefined) {
+                break;
+            }
+        }
+        var constitutionTextIndex;
+        var secondNodeList = firstNodeList[constitutionIndex].childNodes;
+        for (var i = 0; i < secondNodeList.length; i++) {
+            for (var j = 0; j < secondNodeList[i].attributes.length; j++) {
+                if (secondNodeList[i].attributes.item(j).value == 'constitution__text') {
+                    constitutionTextIndex = i;
+                    break;
+                }
+            }
+            if (constitutionTextIndex !== undefined) {
+                break;
+            }
+        }
+        var startContainer = firstNodeList[constitutionIndex].childNodes[constitutionTextIndex].childNodes[indexOfStartContainer];
+        var endContainer = firstNodeList[constitutionIndex].childNodes[constitutionTextIndex].childNodes[indexOfEndContainer];
         var constitutionNodes = this.state.constitutionNodes;
         var newConstitutionFull = constitutionNodes.slice(0, indexOfStartContainer).slice();
         var newNodes = [];
@@ -37700,7 +37729,7 @@ var MyTake = (function (_super) {
     MyTake.prototype.render = function () {
         return (React.createElement("div", null,
             React.createElement(TakeEditor_1.default, { schema: this.state.schema, editorState: this.state.editorState, onChange: this.handleEditorChange, onKeyDown: this.handleEditorKeyDown }),
-            React.createElement(Constitution_1.default, { onClearClick: this.handleConstitutionClearClick, onSetClick: this.handleConstitutionSetClick, onMouseUp: this.handleConstitutionMouseUp, constitutionNodes: this.state.constitutionNodes })));
+            React.createElement(Constitution_1.default, { onClearClick: this.handleConstitutionClearClick, onSetClick: this.handleConstitutionSetClick, onMouseUp: this.handleConstitutionMouseUp, constitutionNodes: this.state.constitutionNodes, textIsHighlighted: this.state.textIsHighlighted })));
     };
     return MyTake;
 }(React.Component));
@@ -39748,7 +39777,7 @@ exports = module.exports = __webpack_require__(195)(undefined);
 
 
 // module
-exports.push([module.i, "/**\n* Colors taken from pictures of original document.\n*/\n/**\n* Colors taken from Pantone Fall 2017 fashion report.\n*/\n.editor {\n  padding: 5px 5px 0 5px; }\n\n.editor__title {\n  text-align: left;\n  margin-top: 0;\n  position: relative;\n  font-family: \"Georgia\", serif; }\n\n.editor__title--placeholder {\n  opacity: 0.3; }\n\n.editor__paragraph--placeholder {\n  opacity: 0.3; }\n\n.editor__paragraph {\n  font-family: \"Georgia\", serif;\n  text-align: left;\n  margin-top: 0;\n  position: relative;\n  line-height: 1.7em; }\n\n.editor__constitution {\n  background: radial-gradient(at bottom right, #9B9740, #E9E69F);\n  color: #9B9740;\n  padding: 5px 15px;\n  font-family: \"Georgia\", serif; }\n\n.editor__constitution--highlighted {\n  color: darkslategray;\n  background-color: yellow; }\n\n.constitution__text {\n  background: radial-gradient(at right 60%, #9B9740, #E9E69F);\n  color: #1C0A03;\n  padding: 30px 15px;\n  font-family: \"Georgia\", serif;\n  height: 300px;\n  overflow-y: scroll; }\n  .constitution__text::-webkit-scrollbar {\n    -webkit-appearance: none;\n    width: 10px; }\n  .constitution__text::-webkit-scrollbar-thumb {\n    border-radius: 2px;\n    background-color: #E9E69F;\n    -webkit-box-shadow: 0 0 1px rgba(255, 255, 255, 0.5); }\n  .constitution__text::-webkit-scrollbar-track {\n    background-color: #9B9740; }\n\n.constitution__text--selected {\n  color: darkslategray;\n  background-color: yellow;\n  cursor: pointer; }\n\n#app {\n  width: 95%;\n  margin: auto; }\n", ""]);
+exports.push([module.i, "/**\n* Colors taken from pictures of original document.\n*/\n/**\n* Colors taken from Pantone Fall 2017 fashion report.\n*/\n.editor {\n  padding: 5px 5px 0 5px; }\n\n.editor__title {\n  text-align: left;\n  margin-top: 0;\n  position: relative;\n  font-family: \"Georgia\", serif; }\n\n.editor__title--placeholder {\n  opacity: 0.3; }\n\n.editor__paragraph--placeholder {\n  opacity: 0.3; }\n\n.editor__paragraph {\n  font-family: \"Georgia\", serif;\n  text-align: left;\n  margin-top: 0;\n  position: relative;\n  line-height: 1.7em; }\n\n.editor__constitution {\n  background: radial-gradient(at bottom right, #eeedc0, #fffff9);\n  color: #d8d670;\n  padding: 5px 15px;\n  font-family: \"Tangerine\", cursive;\n  font-size: 22px; }\n\n.editor__constitution--highlighted {\n  color: darkslategray;\n  background-color: yellow; }\n\n.constitution__text {\n  background: radial-gradient(at right 60%, #eeedc0, #fffff9);\n  color: #1C0A03;\n  padding: 30px 15px;\n  font-family: \"Tangerine\", cursive;\n  font-size: 22px;\n  height: 300px;\n  overflow-y: scroll; }\n  .constitution__text::-webkit-scrollbar {\n    -webkit-appearance: none;\n    width: 10px; }\n  .constitution__text::-webkit-scrollbar-thumb {\n    border-radius: 2px;\n    background-color: #fffff9;\n    -webkit-box-shadow: 0 0 1px rgba(255, 255, 255, 0.5); }\n  .constitution__text::-webkit-scrollbar-track {\n    background-color: #eeedc0; }\n\n.constitution__text--selected {\n  color: darkslategray;\n  background-color: yellow;\n  cursor: pointer; }\n\n#app {\n  width: 95%;\n  margin: auto; }\n", ""]);
 
 // exports
 
