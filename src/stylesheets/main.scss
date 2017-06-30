@@ -1,1 +1,21 @@
+// ------------------------------------
+//     GLOBAL IMPORTS
+// ------------------------------------
+
+// Global mixins, functions
+// @import "tools/bourbon/_bourbon.scss";
+// @import "tools/neat/_neat.scss";
+@import "tools/_mixins.scss";
+
+// Global settings, mostly variables
+@import "settings/_fonts.scss";
+@import "settings/_mediaQueries.scss";
+@import "settings/_colors.scss";
+
+// Components styles
 @import 'components/all';
+
+#app {
+  width: 95%;
+  margin: auto;
+}

@@ -1,0 +1,49 @@
+//     COLOR
+// 
+//     Where all color's variables are defined
+// 
+//     Thanks to SASS Map, we can define all colors at one place.
+//     We also respect our BEM like notation and files architecture.
+
+/**
+* Colors taken from pictures of original document.
+*/
+//$paper--dark: rgb(184,155, 123);
+//$paper--light: rgb(255,241,225);
+
+/**
+* Colors taken from Pantone Fall 2017 fashion report.
+*/
+$blue: #140D3C;
+$purple: #876E9D;
+$paper--dark: #9B9740;
+//$paper--light: lighten(#9B9740, 10%);
+$paper--light: #E9E69F;
+$ink: #1C0A03;
+$ink--highlight: darkslategray;
+$paper--highlight: yellow;
+
+
+$palettes: (
+	constitution: (
+		background--linear-gradient-vertical: 
+      linear-gradient($paper--dark, $paper--light 1%, $paper--light 99%, $paper--dark),
+    background--linear-gradient-horizontal: 
+      linear-gradient(-90deg, $paper--dark, rgba(255,255,255,0) 1%, rgba(255,255,255,0) 99%, $paper--dark),
+    background--radial-gradient:
+      //-webkit-radial-gradient(right 60%, $paper--dark, $paper--light),
+      radial-gradient(at right 60%, $paper--dark, $paper--light),
+    background--scrollbar-track: $paper--dark,
+    background--scrollbar-thumb: $paper--light,
+		color: $ink,
+    text-background--highlight: $paper--highlight,
+    text--highlight: $ink--highlight,
+	),
+  editor: (
+    constitution__background: 
+      radial-gradient(at bottom right, $paper--dark, $paper--light),
+    constitution__text: $paper--dark,
+    constitution__text--highlight: $ink--highlight,
+    constitution__text-background--highlight: $paper--highlight,
+  )
+);

@@ -1,11 +1,12 @@
 .editor {
-  border: 1px solid red;
+  padding: 5px 5px 0 5px;
 }
 
 .editor__title {
   text-align: left;
   margin-top: 0;
   position: relative;
+  font-family: font(take__title);
 }
 .editor__title--placeholder {
   opacity: 0.3;
@@ -16,17 +17,21 @@
 }
 
 .editor__paragraph {
+  font-family: font(take__text);
   text-align: left;
   margin-top: 0;
   position: relative;
-  line-height: 0.3em;
+  line-height: 1.7em;
 }
 
 .editor__constitution {
-  background-color: aqua;
+  background: palette(editor, constitution__background);
+  color: palette(editor, constitution__text);
+  padding: 5px 15px;
+  font-family: font(take__constitution);
 }
 
 .editor__constitution--highlighted {
-  background-color: yellow;
-  color: black;
+  color: palette(editor, constitution__text--highlight);
+  background-color: palette(editor, constitution__text-background--highlight);
 }

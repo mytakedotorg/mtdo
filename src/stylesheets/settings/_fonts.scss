@@ -1,0 +1,17 @@
+$georgia: 'Georgia' , serif;
+
+// FONTS
+$fonts: (
+	constitution: $georgia,
+	take__title: $georgia,
+	take__text: $georgia,
+	take__constitution: $georgia,
+);
+
+// FONT SIZES
+$fontsize: (
+	constitution: (
+		h1: 80px,
+		text: 22px,
+	)
+);
