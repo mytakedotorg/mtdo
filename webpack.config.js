@@ -25,7 +25,7 @@ module.exports = {
       },
       {
         test: /\.scss$/,
-        loaders: ["style-loader", "css-loader", "sass-loader"]  
+        loaders: ["style-loader", "css-loader", 'postcss-loader', "sass-loader"]  
       },
 
       // All output '.js' files will have any sourcemaps re-processed by 'source-map-loader'.
