@@ -126,8 +126,8 @@ class MyTake extends React.Component<MyTakeProps, MyTakeState> {
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|~~~~~~~~~~~~~|
     //Need to find a way not to hardcode these indices ----------------v-------------v
-    const startContainer: Node = ReactDOM.findDOMNode(this).childNodes[0].childNodes[2].childNodes[indexOfStartContainer];
-    const endContainer: Node = ReactDOM.findDOMNode(this).childNodes[0].childNodes[2].childNodes[indexOfEndContainer];
+    const startContainer: Node = ReactDOM.findDOMNode(this).childNodes[1].childNodes[2].childNodes[indexOfStartContainer];
+    const endContainer: Node = ReactDOM.findDOMNode(this).childNodes[1].childNodes[2].childNodes[indexOfEndContainer];
 
     const { constitutionNodes } = this.state; 
     let newConstitutionFull: Array<MyReactComponentObject> = [...constitutionNodes.slice(0, indexOfStartContainer)];
@@ -373,17 +373,17 @@ class MyTake extends React.Component<MyTakeProps, MyTakeState> {
   render(){
     return (
       <div>
-        <Constitution 
-          onClearClick={this.handleConstitutionClearClick}
-          onSetClick={this.handleConstitutionSetClick}
-          onMouseUp={this.handleConstitutionMouseUp} 
-          constitutionNodes={this.state.constitutionNodes}
-        />
         <TakeEditor 
           schema={this.state.schema}
           editorState={this.state.editorState}
           onChange={this.handleEditorChange}
           onKeyDown={this.handleEditorKeyDown}
+        />
+        <Constitution 
+          onClearClick={this.handleConstitutionClearClick}
+          onSetClick={this.handleConstitutionSetClick}
+          onMouseUp={this.handleConstitutionMouseUp} 
+          constitutionNodes={this.state.constitutionNodes}
         />
       </div>
     )
