@@ -1,5 +1,6 @@
 interface ConstitutionProps {
   constitutionNodes: Array<MyReactComponentObject>,
+  textIsHighlighted: boolean,
   onClearClick: () => void,
   onSetClick: () => void,
   onMouseUp: () => void

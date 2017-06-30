@@ -412,6 +412,7 @@ class MyTake extends React.Component<MyTakeProps, MyTakeState> {
           onSetClick={this.handleConstitutionSetClick}
           onMouseUp={this.handleConstitutionMouseUp} 
           constitutionNodes={this.state.constitutionNodes}
+          textIsHighlighted={this.state.textIsHighlighted}
         />
       </div>
     )
