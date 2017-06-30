@@ -10,7 +10,7 @@ class Constitution extends React.Component<ConstitutionProps, ConstitutionState>
       <div className="constitution">
         <h2 className="constitution__heading">Constitution for the United States of America</h2>
         <p className="constitution__instructions">{ this.props.textIsHighlighted ? 
-          'Click your selection to insert it into your Take.'
+          'Click your selection to send it to the Take.'
           : 'Highlight some text from the Constitution below.'}</p>
         <button onClick={this.props.onClearClick}>
           Clear Selection
