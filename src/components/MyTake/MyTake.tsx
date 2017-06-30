@@ -99,7 +99,9 @@ class MyTake extends React.Component<MyTakeProps, MyTakeState> {
       
     this.setState({
       editorState: newState,
-      uniqueKey: newKey
+      uniqueKey: newKey,
+      constitutionNodes: this.getInitialText(),  //Clear existing highlights
+      textIsHighlighted: false
     });
   }
   handleConstitutionMouseUp(): void {
