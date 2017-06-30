@@ -109,7 +109,7 @@ class MyTake extends React.Component<MyTakeProps, MyTakeState> {
         let range: Range = selection.getRangeAt(0);
         this.highlightText(range);
       }
-    }    
+    }
   }
   highlightText(range: Range): void {
     const indexOfStartContainer: number = Array.prototype.indexOf.call(
@@ -124,10 +124,36 @@ class MyTake extends React.Component<MyTakeProps, MyTakeState> {
 
     const indexOfSelectionEnd: number = range.endOffset;
 
-    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|~~~~~~~~~~~~~|
-    //Need to find a way not to hardcode these indices ----------------v-------------v
-    const startContainer: Node = ReactDOM.findDOMNode(this).childNodes[1].childNodes[2].childNodes[indexOfStartContainer];
-    const endContainer: Node = ReactDOM.findDOMNode(this).childNodes[1].childNodes[2].childNodes[indexOfEndContainer];
+    let constitutionIndex;
+    let firstNodeList = ReactDOM.findDOMNode(this).childNodes;
+    for(let i=0; i < firstNodeList.length; i++){
+      for(let j=0; j < firstNodeList[i].attributes.length; j++){
+        if(firstNodeList[i].attributes.item(j).value == 'constitution'){
+          constitutionIndex = i;
+          break;
+        }
+      }
+      if(constitutionIndex !== undefined){
+        break;
+      }
+    }
+    
+    let constitutionTextIndex;
+    let secondNodeList = firstNodeList[constitutionIndex].childNodes;
+    for(let i=0; i < secondNodeList.length; i++){
+      for(let j=0; j < secondNodeList[i].attributes.length; j++){
+        if(secondNodeList[i].attributes.item(j).value == 'constitution__text'){
+          constitutionTextIndex = i;
+          break;
+        }
+      }
+      if(constitutionTextIndex !== undefined){
+        break;
+      }
+    }
+
+    const startContainer: Node = firstNodeList[constitutionIndex].childNodes[constitutionTextIndex].childNodes[indexOfStartContainer];
+    const endContainer: Node = firstNodeList[constitutionIndex].childNodes[constitutionTextIndex].childNodes[indexOfEndContainer];
 
     const { constitutionNodes } = this.state; 
     let newConstitutionFull: Array<MyReactComponentObject> = [...constitutionNodes.slice(0, indexOfStartContainer)];
