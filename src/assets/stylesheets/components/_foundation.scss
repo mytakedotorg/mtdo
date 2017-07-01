@@ -1,0 +1,46 @@
+.foundation {
+  @include foundationanimation;
+  @include clearfix;
+  padding: 15px 2.5%;
+}
+
+.foundation__heading {
+  margin-top: 0;
+  margin-bottom: 15px;
+  color: palette(foundation, text);
+  text-shadow: 1px 1px 5px palette(foundation, text-shadow);
+}
+
+.foundation__instructions {
+  margin-top: 0;
+  margin-bottom: 15px;
+  color: palette(foundation, text);
+  text-shadow: 1px 1px 5px palette(foundation, text-shadow);
+}
+
+.foundation__card {
+  width: 220px;
+  height: 313px;
+  border-radius: 10px;
+  position: relative;
+  overflow: hidden;
+  float: left;
+  margin-left: 15px;
+}
+
+.foundation__card-title {
+  position: absolute;
+  width: 100%;
+  top: 145px;
+  text-align: center;
+}
+
+.foundation__card-title--debates {
+  color: palette(foundation, card-title--debates);
+}
+
+.foundation__placeholder {
+  width: 220px;
+  height: 313px;
+  background-color: grey;
+}
