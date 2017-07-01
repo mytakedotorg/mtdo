@@ -1,0 +1,48 @@
+.constitution__heading {
+  margin-top: 0;
+  margin-bottom: 15px;
+  color: palette(constitution, heading-color);
+  text-shadow: 1px 1px 5px palette(constitution, heading-shadow);
+}
+
+.constitution__instructions {
+  margin-top: 0;
+  margin-bottom: 15px;
+  color: palette(constitution, heading-color);
+  text-shadow: 1px 1px 5px palette(constitution, heading-shadow);
+}
+
+.constitution__text {
+  background: palette(constitution, background--radial-gradient);
+  color: palette(constitution, color);
+  margin-left: 15px;
+  margin-right: 15px;
+  border-radius: 10px;
+  padding: 0 15px;
+  font-family: font(constitution);
+  font-size: fontsize(constitution, text);
+  
+  height: 313px;
+  overflow-y: scroll;
+  &::-webkit-scrollbar {
+    -webkit-appearance: none;
+    width: 10px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: 2px;
+    //background-color: rgba(0,0,0,.5);
+    background-color: palette(constitution, background--scrollbar-thumb);
+    -webkit-box-shadow: 0 0 1px rgba(255,255,255,.5);
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: palette(constitution, background--scrollbar-track);
+  }
+}
+
+.constitution__text--selected {
+  color: palette(constitution, text--highlight);
+  background-color: palette(constitution, text-background--highlight);
+  cursor: pointer;
+}

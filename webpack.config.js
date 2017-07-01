@@ -6,13 +6,15 @@ module.exports = {
   },
 
   // Enable sourcemaps for debugging webpack's output.
-  devtool: "source-map",
+  //devtool: "source-map",
 
   resolve: {
     // Add '.ts' and '.tsx' as resolvable extensions.
-    extensions: [".ts", ".tsx", ".js", ".json"]
+    extensions: [".ts", ".tsx", ".js", ".json", ".jpg"]
   },
-
+  resolveLoader: {
+    modules: ['node_modules', __dirname + '/loaders'],
+  },
   module: {
     rules: [
       // All files with a '.ts' or '.tsx' extension will be handled by 'awesome-typescript-loader'.
@@ -21,6 +23,10 @@ module.exports = {
         exclude: /node_modules/, 
         loader: "awesome-typescript-loader" 
       },
+      {
+        test: /\.scss$/,
+        loaders: ["style-loader", "css-loader", 'postcss-loader', "sass-loader"]  
+      },
 
       // All output '.js' files will have any sourcemaps re-processed by 'source-map-loader'.
       { 
@@ -28,7 +34,17 @@ module.exports = {
         test: /\.js$/,
         exclude: /node_modules/,
         loader: "source-map-loader" 
-      }
+      },
+
+      // All files with a '.html' extension will be handled by 'html-loader'.
+      {
+        test: /\.foundation\.html$/,
+        loaders: ['html-loader', 'foundation-loader']
+      },
+      { 
+        test: /\.(png|jpg)$/, 
+        loader: 'url-loader?limit=8192' 
+      } // inline base64 URLs for <=8k images, direct URLs for the rest
     ]
   },
 
