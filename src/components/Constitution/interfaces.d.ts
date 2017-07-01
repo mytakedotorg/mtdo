@@ -1,13 +1,10 @@
 interface ConstitutionProps {
   constitutionNodes: Array<MyReactComponentObject>,
   textIsHighlighted: boolean,
+  onBackClick: () => void,
   onClearClick: () => void,
   onSetClick: () => void,
   onMouseUp: () => void
-}
-
-interface ConstitutionState {
-
 }
 
 interface EventObject {
