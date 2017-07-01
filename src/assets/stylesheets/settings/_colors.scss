@@ -25,6 +25,9 @@ $ink: #1C0A03;
 $ink--highlight: darkslategray;
 $paper--highlight: yellow;
 
+$white: #FFF;
+$black: #000;
+
 
 $palettes: (
 	constitution: (
@@ -35,11 +38,13 @@ $palettes: (
     background--radial-gradient:
       //-webkit-radial-gradient(right 60%, $paper--dark, $paper--light),
       radial-gradient(at right 60%, $paper--dark, $paper--light),
-    background--scrollbar-track: $paper--dark,
-    background--scrollbar-thumb: $paper--light,
+    background--scrollbar-track: $ink--highlight,
+    background--scrollbar-thumb: $paper--dark,
 		color: $ink,
     text-background--highlight: $paper--highlight,
     text--highlight: $ink--highlight,
+    heading-color: $white,
+    heading-shadow: $black,
 	),
   editor: (
     constitution__background: 
@@ -47,5 +52,11 @@ $palettes: (
     constitution__text: darken($paper--dark, 20%),
     constitution__text--highlight: $ink--highlight,
     constitution__text-background--highlight: $paper--highlight,
+  ),
+  foundation: (
+    background: linear-gradient(-90deg, red, blue),
+    text: $white,
+    text-shadow: $black,
+    card-title--debates: $white,
   )
 );

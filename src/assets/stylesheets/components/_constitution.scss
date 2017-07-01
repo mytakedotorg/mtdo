@@ -1,12 +1,28 @@
+.constitution__heading {
+  margin-top: 0;
+  margin-bottom: 15px;
+  color: palette(constitution, heading-color);
+  text-shadow: 1px 1px 5px palette(constitution, heading-shadow);
+}
+
+.constitution__instructions {
+  margin-top: 0;
+  margin-bottom: 15px;
+  color: palette(constitution, heading-color);
+  text-shadow: 1px 1px 5px palette(constitution, heading-shadow);
+}
+
 .constitution__text {
-  //background: palette(constitution, background--linear-gradient-vertical);
   background: palette(constitution, background--radial-gradient);
   color: palette(constitution, color);
-  padding: 30px 15px;
+  margin-left: 15px;
+  margin-right: 15px;
+  border-radius: 10px;
+  padding: 0 15px;
   font-family: font(constitution);
   font-size: fontsize(constitution, text);
   
-  height: 300px;
+  height: 313px;
   overflow-y: scroll;
   &::-webkit-scrollbar {
     -webkit-appearance: none;
