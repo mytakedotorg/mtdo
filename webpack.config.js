@@ -10,7 +10,7 @@ module.exports = {
 
   resolve: {
     // Add '.ts' and '.tsx' as resolvable extensions.
-    extensions: [".ts", ".tsx", ".js", ".json"]
+    extensions: [".ts", ".tsx", ".js", ".json", ".jpg"]
   },
   resolveLoader: {
     modules: ['node_modules', __dirname + '/loaders'],
@@ -40,7 +40,11 @@ module.exports = {
       {
         test: /\.foundation\.html$/,
         loaders: ['html-loader', 'foundation-loader']
-      }
+      },
+      { 
+        test: /\.(png|jpg)$/, 
+        loader: 'url-loader?limit=8192' 
+      } // inline base64 URLs for <=8k images, direct URLs for the rest
     ]
   },
 
