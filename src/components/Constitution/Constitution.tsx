@@ -1,6 +1,6 @@
 import * as React from "react";
 
-class Constitution extends React.Component<ConstitutionProps, ConstitutionState> {
+class Constitution extends React.Component<ConstitutionProps, void> {
   constructor(props: ConstitutionProps){
     super(props);
   }
@@ -12,6 +12,9 @@ class Constitution extends React.Component<ConstitutionProps, ConstitutionState>
         <p className="constitution__instructions">{ this.props.textIsHighlighted ? 
           'Click your selection to send it to the Take.'
           : 'Highlight some text from the Constitution below.'}</p>
+        <button onClick={this.props.onBackClick}>
+          Back to Foundation
+        </button>
         <button onClick={this.props.onClearClick}>
           Clear Selection
         </button>
