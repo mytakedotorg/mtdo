@@ -69,3 +69,25 @@ interface MyComponentPropsObject {
   ref: any,
   children?: React.ReactNode
 }
+
+interface FoundationProps {
+  constitutionNodes: Array<MyReactComponentObject>,
+  textIsHighlighted: boolean,
+  onConstitutionClearClick: () => void,
+  onConstitutionSetClick: () => void,
+  onConstitutionMouseUp: () => void
+}
+
+interface FoundationState {
+  view: FoundationView
+}
+
+type FoundationView = "INITIAL" | "CONSTITUTION" | "DEBATES";
+
+interface FoundationCardProps {
+  onClick: () => void,
+}
+
+interface DebatesProps {
+  onBackClick: () => void,
+}
