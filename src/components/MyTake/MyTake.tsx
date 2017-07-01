@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import TakeEditor, { TitleNode, ParagraphNode, ConstitutionNode } from '../TakeEditor';
-import Constitution from '../Constitution';
+import Foundation from '../Foundation';
 const { Block, Data, Raw, Selection } = require('slate');
 import * as key from "keycode";
 import getNodeArray from "../../utils/getNodeArray";
@@ -126,11 +126,25 @@ class MyTake extends React.Component<MyTakeProps, MyTakeState> {
 
     const indexOfSelectionEnd: number = range.endOffset;
 
-    let constitutionIndex;
+    let foundationIndex;
     let firstNodeList = ReactDOM.findDOMNode(this).childNodes;
     for(let i=0; i < firstNodeList.length; i++){
       for(let j=0; j < firstNodeList[i].attributes.length; j++){
-        if(firstNodeList[i].attributes.item(j).value == 'constitution'){
+        if(firstNodeList[i].attributes.item(j).value == 'foundation'){
+          foundationIndex = i;
+          break;
+        }
+      }
+      if(foundationIndex !== undefined){
+        break;
+      }
+    }
+
+    let constitutionIndex;
+    let secondNodeList = firstNodeList[foundationIndex].childNodes;
+    for(let i=0; i < secondNodeList.length; i++){
+      for(let j=0; j < secondNodeList[i].attributes.length; j++){
+        if(secondNodeList[i].attributes.item(j).value == 'constitution'){
           constitutionIndex = i;
           break;
         }
@@ -141,10 +155,10 @@ class MyTake extends React.Component<MyTakeProps, MyTakeState> {
     }
     
     let constitutionTextIndex;
-    let secondNodeList = firstNodeList[constitutionIndex].childNodes;
-    for(let i=0; i < secondNodeList.length; i++){
-      for(let j=0; j < secondNodeList[i].attributes.length; j++){
-        if(secondNodeList[i].attributes.item(j).value == 'constitution__text'){
+    let thirdNodeList = secondNodeList[constitutionIndex].childNodes;
+    for(let i=0; i < thirdNodeList.length; i++){
+      for(let j=0; j < thirdNodeList[i].attributes.length; j++){
+        if(thirdNodeList[i].attributes.item(j).value == 'constitution__text'){
           constitutionTextIndex = i;
           break;
         }
@@ -154,8 +168,14 @@ class MyTake extends React.Component<MyTakeProps, MyTakeState> {
       }
     }
 
-    const startContainer: Node = firstNodeList[constitutionIndex].childNodes[constitutionTextIndex].childNodes[indexOfStartContainer];
-    const endContainer: Node = firstNodeList[constitutionIndex].childNodes[constitutionTextIndex].childNodes[indexOfEndContainer];
+    const startContainer: Node = firstNodeList[foundationIndex]
+      .childNodes[constitutionIndex]
+      .childNodes[constitutionTextIndex]
+      .childNodes[indexOfStartContainer];
+    const endContainer: Node = firstNodeList[foundationIndex]
+      .childNodes[constitutionIndex]
+      .childNodes[constitutionTextIndex]
+      .childNodes[indexOfEndContainer];
 
     const { constitutionNodes } = this.state; 
     let newConstitutionFull: Array<MyReactComponentObject> = [...constitutionNodes.slice(0, indexOfStartContainer)];
@@ -407,10 +427,10 @@ class MyTake extends React.Component<MyTakeProps, MyTakeState> {
           onChange={this.handleEditorChange}
           onKeyDown={this.handleEditorKeyDown}
         />
-        <Constitution 
-          onClearClick={this.handleConstitutionClearClick}
-          onSetClick={this.handleConstitutionSetClick}
-          onMouseUp={this.handleConstitutionMouseUp} 
+        <Foundation 
+          onConstitutionClearClick={this.handleConstitutionClearClick}
+          onConstitutionSetClick={this.handleConstitutionSetClick}
+          onConstitutionMouseUp={this.handleConstitutionMouseUp} 
           constitutionNodes={this.state.constitutionNodes}
           textIsHighlighted={this.state.textIsHighlighted}
         />
