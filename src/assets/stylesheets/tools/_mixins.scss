@@ -11,21 +11,6 @@
 	-moz-box-sizing: border-box;
 	-webkit-box-sizing: border-box;
 }
-@function fontsize($block, $size) {
-    @if not map-has-key($fontsize, $block) {
-      @warn "No palette found for `#{$block}` in $styleguide map. Property omitted.";
-    }
-
-    @return map-get(map-get($fontsize, $block), $size);
-}
-
-@function font($font) {
-    @if not map-has-key($fonts, $font) {
-      @warn "No font found for `#{$font}` in $fonts map. Property omitted.";
-    }
-
-    @return map-get($fonts, $font);
-}
 
 @function palette($palette, $tone) {
     @if not map-has-key($palettes, $palette) {

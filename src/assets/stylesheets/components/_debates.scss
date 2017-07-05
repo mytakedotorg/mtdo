@@ -1,18 +1,19 @@
 .debates__heading {
   margin-top: 0;
   margin-bottom: 15px;
-  color: palette(foundation, text);
-  text-shadow: 1px 1px 5px palette(foundation, text-shadow);
+  color: palette(debates, text);
+  @include heading2;
 }
 
 .debates__instructions {
   margin-top: 0;
   margin-bottom: 15px;
-  color: palette(foundation, text);
-  text-shadow: 1px 1px 5px palette(foundation, text-shadow);
+  color: palette(debates, text);
+  @include body--lead;
 }
 
 .debates__placeholder {
   border-radius: 5px;
   height: 313px;
+  @include body;
 }

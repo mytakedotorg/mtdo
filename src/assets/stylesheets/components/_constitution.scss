@@ -1,29 +1,43 @@
+.constitution {
+  
+}
 .constitution__heading {
   margin-top: 0;
   margin-bottom: 15px;
-  color: palette(constitution, heading-color);
-  text-shadow: 1px 1px 5px palette(constitution, heading-shadow);
+  color: palette(constitution, text);
+  @include heading2;
 }
 
 .constitution__instructions {
   margin-top: 0;
   margin-bottom: 15px;
-  color: palette(constitution, heading-color);
-  text-shadow: 1px 1px 5px palette(constitution, heading-shadow);
+  color: palette(constitution, text);
+  @include body--lead;
 }
-
+.constitution__row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+.constitution__sections{
+  @include body--lead;
+  width: 100%;
+  @media #{$mq-medium} {
+    width: 48%;
+  }
+}
 .constitution__text {
-  background: palette(constitution, background--radial-gradient);
+  border: 1px solid palette(constitution, border);
+  box-shadow: 1px 1px 2px palette(constitution, shadow);
   color: palette(constitution, color);
-  margin-left: 15px;
-  margin-right: 15px;
-  border-radius: 10px;
   padding: 0 15px;
-  font-family: font(constitution);
-  font-size: fontsize(constitution, text);
-  
+  @include body;
   height: 313px;
   overflow-y: scroll;
+  width: 100%;
+  @media #{$mq-large} {
+    width: 48%;
+  }
   &::-webkit-scrollbar {
     -webkit-appearance: none;
     width: 10px;
@@ -43,6 +57,6 @@
 
 .constitution__text--selected {
   color: palette(constitution, text--highlight);
-  background-color: palette(constitution, text-background--highlight);
+  background-color: palette(constitution, background--highlight);
   cursor: pointer;
 }

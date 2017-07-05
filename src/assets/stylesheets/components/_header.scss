@@ -1,0 +1,69 @@
+.header {
+  width: 100%;
+  @include clearfix;
+}
+.header__skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0px;
+  padding: 2px 5px;
+  @include body;
+  color: palette(header, skip-text);
+  transition: top .1s ease-in, background .5s linear;
+  &:focus {
+    top: 0px;
+    background-color: palette(header, skip-bg);
+    transition: top .1s ease-in, background .5s linear;
+  }
+}
+.header__logo {
+  @include display2;
+  font-style: normal;
+  margin-left: $page-margin;
+  line-height: 8rem;
+}
+.header__logo-link {
+  text-decoration: none;
+  color: palette(header, text);
+  &:hover {
+    color: palette(header, text--hover);
+  }
+}
+.header__button-list {
+  float: right;
+  //line-height: 8rem;
+}
+.header__button {
+  @include body--lead;
+  line-height: 8rem;
+  margin-right: $page-margin;
+  color: palette(header, text);
+  &:hover {
+    color: palette(header, text--hover);
+  }
+}
+.header__button--github {
+  font-size: 4rem;
+}
+.header__nav {
+  @include clearfix;
+  border-top: 1px solid palette(header, border);
+  border-bottom: 2px solid palette(header, border);
+  line-height: 1rem;
+}
+.nav__list {
+  list-style: none;
+}
+.nav__list-item {
+  margin-right: 3rem;
+  display: inline-block;
+}
+.nav__link {
+  @include heading6;
+  color: palette(nav, text);
+  text-decoration: none;
+  &:hover {
+    color: palette(nav, text--hover);
+    //text-decoration: underline;
+  }
+}

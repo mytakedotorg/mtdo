@@ -1,41 +1,40 @@
-.editor {
-  padding: 5px 5px 0 5px;
-  max-width: 95%;
+.editor__wrapper {
+  margin: 2rem auto;
   width: 768px;
-  margin: 30px auto;
+  max-width: 100%;
 }
-
+.editor {
+  padding: 0 3rem;
+  min-height: 300px;
+}
 .editor__title {
   text-align: left;
   margin-top: 0;
   position: relative;
-  font-family: font(editor__title);
+  @include heading1;
 }
 .editor__title--placeholder {
   opacity: 0.3;
 }
-
 .editor__paragraph--placeholder {
   opacity: 0.3;
 }
-
 .editor__paragraph {
-  font-family: font(editor__text);
   text-align: left;
   margin-top: 0;
   position: relative;
-  line-height: 1.7em;
+  @include body--lead;
 }
-
 .editor__constitution {
   background: palette(editor, constitution__background);
+  border: palette(editor, constitution__border);
+  box-shadow: 1px 1px 2px palette(editor, constitution__shadow);
   color: palette(editor, constitution__text);
   padding: 5px 15px;
-  font-family: font(editor__constitution);
-  font-size: fontsize(editor, constitution);
+  margin-bottom: 2rem;
+  @include body--italic;
 }
-
 .editor__constitution--highlighted {
   color: palette(editor, constitution__text--highlight);
-  background-color: palette(editor, constitution__text-background--highlight);
+  background-color: palette(editor, constitution__background--highlight);
 }

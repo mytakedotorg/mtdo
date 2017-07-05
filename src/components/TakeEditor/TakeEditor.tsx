@@ -13,7 +13,7 @@ export function TitleNode(props: SlateProps): JSX.Element {
         firstOnly={false}
         className="editor__title--placeholder"
       >
-        <span>My Take</span> {/*Title placeholder text*/}
+        <span>Title</span> {/*Title placeholder text*/}
       </Placeholder>
       {props.children}
     </h1>
@@ -30,7 +30,7 @@ export function ParagraphNode(props: SlateProps): JSX.Element {
           firstOnly={false}
           className="editor__paragraph--placeholder"
         >
-          <span>I believe...</span> {/*Take placeholder text*/}
+          <span>Use your voice here.</span> {/*Take placeholder text*/}
         </Placeholder>
         {props.children}
       </p>
@@ -65,14 +65,16 @@ export default class TakeEditor extends React.Component<TakeEditorProps, void> {
   render(){
     let { props } = this;
     return (
-      <Editor
-        schema={props.schema}
-        state={props.editorState}
-        onChange={props.onChange}
-        onKeyDown={props.onKeyDown}
-        className="editor"
-      >
-      </Editor>
+      <div className="editor__wrapper">
+        <Editor
+          schema={props.schema}
+          state={props.editorState}
+          onChange={props.onChange}
+          onKeyDown={props.onKeyDown}
+          className="editor"
+        >
+        </Editor>
+      </div>
     )
   }
 }
