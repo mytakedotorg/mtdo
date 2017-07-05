@@ -1,46 +1,71 @@
 .foundation {
-  @include foundationanimation;
   @include clearfix;
-  padding: 15px 2.5%;
+  margin-left: 3rem;
+  margin-right: 3rem;
 }
 
 .foundation__heading {
   margin-top: 0;
   margin-bottom: 15px;
   color: palette(foundation, text);
-  text-shadow: 1px 1px 5px palette(foundation, text-shadow);
+  @include heading2;
 }
 
 .foundation__instructions {
   margin-top: 0;
   margin-bottom: 15px;
   color: palette(foundation, text);
-  text-shadow: 1px 1px 5px palette(foundation, text-shadow);
+  @include body--lead;
 }
-
+.foundation__card-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
 .foundation__card {
-  width: 220px;
-  height: 313px;
-  border-radius: 10px;
-  position: relative;
-  overflow: hidden;
-  float: left;
-  margin-left: 15px;
-}
-
-.foundation__card-title {
-  position: absolute;
+  border: 1px solid palette(foundation, card-border);
+  box-shadow: 1px 1px 2px palette(foundation, shadow);
   width: 100%;
-  top: 145px;
-  text-align: center;
+  display: flex;
+  margin-bottom: 2rem;
+  &:nth-of-type(2n){
+    margin-right: 0;
+  }
+  &:hover {
+    cursor: pointer;
+  }
+  @media #{$mq-large} {
+    width: 48.75%;
+  }
 }
-
-.foundation__card-title--debates {
-  color: palette(foundation, card-title--debates);
+.foundation__image-container {
+  
 }
-
-.foundation__placeholder {
-  width: 220px;
-  height: 313px;
-  background-color: grey;
+.foundation__image {
+  display: block;
+  width: 110px;
+  height: 156px;
+  @media #{$mq-small}{
+    width: 220px;
+    height: 313px;
+  }
+}
+.foundation__info-container {
+  flex: 1;
+}
+.foundation__card-title {
+  @include heading3;
+  margin: 0;
+  padding: 1rem;
+  @media #{$mq-small}{
+    padding: 2rem;
+  }
+}
+.foundation__description {
+  @include body;
+  float: left;
+  padding: 0 1rem;
+  @media #{$mq-small}{
+    padding: 2rem;
+  }
 }

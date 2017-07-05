@@ -6,57 +6,83 @@
 //     We also respect our BEM like notation and files architecture.
 
 /**
-* Colors taken from pictures of original document.
+* Colors to be adjusted
 */
-//$paper--dark: rgb(184,155, 123);
-//$paper--light: rgb(255,241,225);
-
-/**
-* Colors taken from Pantone Fall 2017 fashion report.
-*/
-$blue: #140D3C;
-$purple: #876E9D;
-// $paper--dark: lighten(#9B9740, 20%);
-// $paper--light: lighten(#E9E69F, 20%);
 $paper--dark: lighten(#D8D670, 20%);
 $paper--light: lighten(#FFFEAC, 15%);
 
 $ink: #1C0A03;
 $ink--highlight: darkslategray;
 $paper--highlight: yellow;
+/**
+* end adjusted
+*/
+$base: #2C4770;
+$base-dark: #142F54;
+$base-darkest: #051A38;
+$base-light: #4C678C;
+$base-lightest: #758AA8;
+
+$secondary: #4A9130;
+$secondary-dark: #2B6D12;
+$secondary-darkest: #134800;
+$secondary-light: #73B55A;
+$secondary-lightest: #A4D990;
+
+$tertiary: #AAA538;
+$tertiary-dark: #7F7B15;
+$tertiary-darkest: #555100;
+$tertiary-light: #D4CF69;
+$tertiary-lightest: #FFFBA9;
+
+$action: #A03546;
+$action-dark: #781424;
+$action-darkest: #50000D;
+$action-light: #C86373;
+$action-lightest: #F0A0AD;
 
 $white: #FFF;
 $black: #000;
 
 
 $palettes: (
+  header: (
+    border: $base-darkest,
+    text: $base,
+    text--hover: $base-lightest,
+    skip-bg: $action,
+    skip-text: $white
+  ),
+  nav: (
+    text: $base,
+    text--hover: $base-lightest,
+    active: $secondary,
+    active--hover: $secondary-light,
+  ),
 	constitution: (
-		background--linear-gradient-vertical: 
-      linear-gradient($paper--dark, $paper--light 1%, $paper--light 99%, $paper--dark),
-    background--linear-gradient-horizontal: 
-      linear-gradient(-90deg, $paper--dark, rgba(255,255,255,0) 1%, rgba(255,255,255,0) 99%, $paper--dark),
-    background--radial-gradient:
-      //-webkit-radial-gradient(right 60%, $paper--dark, $paper--light),
-      radial-gradient(at right 60%, $paper--dark, $paper--light),
-    background--scrollbar-track: $ink--highlight,
-    background--scrollbar-thumb: $paper--dark,
-		color: $ink,
-    text-background--highlight: $paper--highlight,
-    text--highlight: $ink--highlight,
-    heading-color: $white,
-    heading-shadow: $black,
+    background--highlight: $tertiary-light,
+    background--scrollbar-track: $base-lightest,
+    background--scrollbar-thumb: $tertiary-light,
+    border: $base-lightest,
+    shadow: $base-darkest,
+    text: $base-darkest,
+    text--highlight: $base-darkest,
 	),
+  debates: (
+    text: $base-darkest,
+  ),
   editor: (
-    constitution__background: 
-      radial-gradient(at bottom right, $paper--dark, $paper--light),
-    constitution__text: darken($paper--dark, 20%),
-    constitution__text--highlight: $ink--highlight,
-    constitution__text-background--highlight: $paper--highlight,
+    constitution__background--highlight: $tertiary-light,
+    constitution__border: $base-lightest,
+    constitution__shadow: $base-darkest,
+    constitution__text: $base-darkest,
+    constitution__text--highlight: $base-darkest,
+    
   ),
   foundation: (
-    background: linear-gradient(-90deg, red, blue),
-    text: $white,
-    text-shadow: $black,
+    text: $base-darkest,
     card-title--debates: $white,
+    card-border: $base-lightest,
+    shadow: $base-darkest,
   )
 );

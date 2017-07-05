@@ -18,13 +18,18 @@ class Constitution extends React.Component<ConstitutionProps, void> {
         <button onClick={this.props.onClearClick}>
           Clear Selection
         </button>
-        <div className="constitution__text" onMouseUp={this.props.onMouseUp}>
-          {this.props.constitutionNodes.map(function(element: MyReactComponentObject, index: number){
-            element.props['key'] = index.toString();
-            return(
-              React.createElement(element.component, element.props, element.innerHTML)
-            );
-          })}
+        <div className="constitution__row">
+          <div className="constitution__sections">
+            <p>&lt;This is just a placeholder block for section links to autoscroll to particular parts of the constitution&gt;</p>
+          </div>
+          <div className="constitution__text" onMouseUp={this.props.onMouseUp}>
+            {this.props.constitutionNodes.map(function(element: MyReactComponentObject, index: number){
+              element.props['key'] = index.toString();
+              return(
+                React.createElement(element.component, element.props, element.innerHTML)
+              );
+            })}
+          </div>
         </div>
       </div>
     )

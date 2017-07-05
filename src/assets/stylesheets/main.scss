@@ -5,6 +5,7 @@
 // Global mixins, functions
 // @import "tools/bourbon/_bourbon.scss";
 // @import "tools/neat/_neat.scss";
+@import "tools/_variables.scss";
 @import "tools/_mixins.scss";
 
 // Global settings, mostly variables
@@ -18,4 +19,9 @@
 body {
   margin: 0;
   padding: 0;
+}
+
+html {
+  font-size: 10px; // For easy rem units
+  box-sizing: border-box;
 }

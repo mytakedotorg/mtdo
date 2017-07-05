@@ -154,11 +154,25 @@ class MyTake extends React.Component<MyTakeProps, MyTakeState> {
       }
     }
     
-    let constitutionTextIndex;
+    let constitutionRowIndex;
     let thirdNodeList = secondNodeList[constitutionIndex].childNodes;
     for(let i=0; i < thirdNodeList.length; i++){
       for(let j=0; j < thirdNodeList[i].attributes.length; j++){
-        if(thirdNodeList[i].attributes.item(j).value == 'constitution__text'){
+        if(thirdNodeList[i].attributes.item(j).value == 'constitution__row'){
+          constitutionRowIndex = i;
+          break;
+        }
+      }
+      if(constitutionRowIndex !== undefined){
+        break;
+      }
+    }
+
+    let constitutionTextIndex;
+    let fourthNodeList = thirdNodeList[constitutionRowIndex].childNodes;
+    for(let i=0; i < fourthNodeList.length; i++){
+      for(let j=0; j < fourthNodeList[i].attributes.length; j++){
+        if(fourthNodeList[i].attributes.item(j).value == 'constitution__text'){
           constitutionTextIndex = i;
           break;
         }
@@ -170,10 +184,12 @@ class MyTake extends React.Component<MyTakeProps, MyTakeState> {
 
     const startContainer: Node = firstNodeList[foundationIndex]
       .childNodes[constitutionIndex]
+      .childNodes[constitutionRowIndex]
       .childNodes[constitutionTextIndex]
       .childNodes[indexOfStartContainer];
     const endContainer: Node = firstNodeList[foundationIndex]
       .childNodes[constitutionIndex]
+      .childNodes[constitutionRowIndex]
       .childNodes[constitutionTextIndex]
       .childNodes[indexOfEndContainer];
 
