@@ -1,3 +1,12 @@
+interface AmendmentsProps {
+  amendmentsNodes: Array<MyReactComponentObject>,
+  textIsHighlighted: boolean,
+  onBackClick: () => void,
+  onClearClick: () => void,
+  onSetClick: () => void,
+  onMouseUp: () => void
+}
+
 interface TakeEditorProps {
   editorState: SlateEditorState,
   schema: SlateSchema,
@@ -72,17 +81,23 @@ interface MyComponentPropsObject {
 
 interface FoundationProps {
   constitutionNodes: Array<MyReactComponentObject>,
+  amendmentsNodes: Array<MyReactComponentObject>,
   textIsHighlighted: boolean,
+  amendmentsTextIsHighlighted: boolean,
   onConstitutionClearClick: () => void,
   onConstitutionSetClick: () => void,
-  onConstitutionMouseUp: () => void
+  onConstitutionMouseUp: () => void,
+  onAmendmentsClearClick: () => void,
+  onAmendmentsSetClick: () => void,
+  onAmendmentsMouseUp: () => void
 }
 
 interface FoundationState {
   view: FoundationView
 }
 
-type FoundationView = "INITIAL" | "CONSTITUTION" | "DEBATES";
+type FoundationTextTypes = "CONSTITUTION" | "AMENDMENTS";
+type FoundationView = "INITIAL" | "DEBATES" | FoundationTextTypes;
 
 interface FoundationCardProps {
   onClick: () => void,

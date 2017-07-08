@@ -4,8 +4,11 @@ interface MyTakeProps {
 
 interface MyTakeState {
   constitutionNodes: Array<MyReactComponentObject>,
-  highlightedNodes: Array<MyReactComponentObject>,
-  textIsHighlighted: boolean,
+  amendmentsNodes: Array<MyReactComponentObject>,
+  highlightedConstitutionNodes: Array<MyReactComponentObject>,
+  highlightedAmendmentsNodes: Array<MyReactComponentObject>,
+  constitutionTextIsHighlighted: boolean,
+  amendmentsTextIsHighlighted: boolean,
   editorState: any,         //Defined by slate. No it's not. You got this.
   schema: any,              //Defined by slate. No it's not. You got this.
   uniqueKey: string
