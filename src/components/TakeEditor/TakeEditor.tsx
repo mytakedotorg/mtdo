@@ -57,6 +57,26 @@ export function ConstitutionNode(props: SlateProps): JSX.Element {
   )
 }
 
+export function AmendmentsNode(props: SlateProps): JSX.Element {
+  let nodes: Array<MyReactComponentObject> = [];
+
+  props.node.data.map(function(value: Array<MyReactComponentObject> ) {
+    nodes = value;
+  });
+  
+  return (
+    <div className="editor__amendments" {...props.attributes}>
+      {nodes.map(function(element: MyReactComponentObject, index: number){
+        element.props['key'] = index.toString();
+        return(
+          React.createElement(element.component, element.props, element.innerHTML)
+        );
+      })}
+      {props.children}
+    </div>
+  )
+}
+
 export default class TakeEditor extends React.Component<TakeEditorProps, void> {
   constructor(props: TakeEditorProps){
     super(props);

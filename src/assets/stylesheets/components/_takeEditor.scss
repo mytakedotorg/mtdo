@@ -38,3 +38,16 @@
   color: palette(editor, constitution__text--highlight);
   background-color: palette(editor, constitution__background--highlight);
 }
+.editor__amendments {
+  background: palette(editor, amendments__background);
+  border: palette(editor, amendments__border);
+  box-shadow: 1px 1px 2px palette(editor, amendments__shadow);
+  color: palette(editor, amendments__text);
+  padding: 5px 15px;
+  margin-bottom: 2rem;
+  @include body--italic;
+}
+.editor__amendments--highlighted {
+  color: palette(editor, amendments__text--highlight);
+  background-color: palette(editor, amendments__background--highlight);
+}

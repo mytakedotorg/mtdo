@@ -1,4 +1,4 @@
-import TakeEditor, { TitleNode, ParagraphNode, ConstitutionNode } from './TakeEditor';
+import TakeEditor, { AmendmentsNode, TitleNode, ParagraphNode, ConstitutionNode } from './TakeEditor';
 
-export { TitleNode, ParagraphNode, ConstitutionNode }
+export { AmendmentsNode, TitleNode, ParagraphNode, ConstitutionNode }
 export default TakeEditor;

@@ -59,6 +59,15 @@ $palettes: (
     active: $secondary,
     active--hover: $secondary-light,
   ),
+  amendments: (
+    background--highlight: $tertiary-light,
+    background--scrollbar-track: $base-lightest,
+    background--scrollbar-thumb: $tertiary-light,
+    border: $base-lightest,
+    shadow: $base-darkest,
+    text: $base-darkest,
+    text--highlight: $base-darkest,
+	),
 	constitution: (
     background--highlight: $tertiary-light,
     background--scrollbar-track: $base-lightest,
@@ -72,12 +81,16 @@ $palettes: (
     text: $base-darkest,
   ),
   editor: (
+    amendments__background--highlight: $tertiary-light,
+    amendments__border: $base-lightest,
+    amendments__shadow: $base-darkest,
+    amendments__text: $base-darkest,
+    amendments__text--highlight: $base-darkest,
     constitution__background--highlight: $tertiary-light,
     constitution__border: $base-lightest,
     constitution__shadow: $base-darkest,
     constitution__text: $base-darkest,
     constitution__text--highlight: $base-darkest,
-    
   ),
   foundation: (
     text: $base-darkest,
