@@ -1,7 +1,7 @@
 module.exports = {
   entry: __dirname + "/src/index.tsx",
   output: {
-    filename: "bundle-0.0.1.js",  // There are more stable cache busting solutions for the long term
+    filename: "bundle-0.0.2.js",  // There are more stable cache busting solutions for the long term
     path: __dirname + "/docs"
   },
 
