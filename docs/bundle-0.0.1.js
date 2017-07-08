@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 188);
+/******/ 	return __webpack_require__(__webpack_require__.s = 190);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -534,6 +534,12 @@ module.exports = shouldUseNative() ? Object.assign : function (target, source) {
 
 /***/ }),
 /* 5 */
+/***/ (function(module, exports) {
+
+module.exports = React;
+
+/***/ }),
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -5517,7 +5523,7 @@ module.exports = shouldUseNative() ? Object.assign : function (target, source) {
 }));
 
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5718,12 +5724,6 @@ module.exports = ReactDOMComponentTree;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 7 */
-/***/ (function(module, exports) {
-
-module.exports = React;
-
-/***/ }),
 /* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -5858,7 +5858,7 @@ module.exports = emptyFunction;
 var debugTool = null;
 
 if (process.env.NODE_ENV !== 'production') {
-  var ReactDebugTool = __webpack_require__(322);
+  var ReactDebugTool = __webpack_require__(325);
   debugTool = ReactDebugTool;
 }
 
@@ -6282,7 +6282,7 @@ var _prodInvariant = __webpack_require__(3),
 
 var CallbackQueue = __webpack_require__(138);
 var PooledClass = __webpack_require__(24);
-var ReactFeatureFlags = __webpack_require__(327);
+var ReactFeatureFlags = __webpack_require__(330);
 var ReactReconciler = __webpack_require__(48);
 var Transaction = __webpack_require__(63);
 
@@ -6801,7 +6801,7 @@ function getPooledWarningPropertyDefinition(propName, getVal) {
  * Expose `debug()` as the module.
  */
 
-exports = module.exports = __webpack_require__(412);
+exports = module.exports = __webpack_require__(415);
 exports.log = log;
 exports.formatArgs = formatArgs;
 exports.save = save;
@@ -6998,8 +6998,8 @@ function localstorage() {
 
 
 
-var base64 = __webpack_require__(190)
-var ieee754 = __webpack_require__(282)
+var base64 = __webpack_require__(192)
+var ieee754 = __webpack_require__(285)
 var isArray = __webpack_require__(131)
 
 exports.Buffer = Buffer
@@ -8825,7 +8825,7 @@ module.exports = ReactCurrentOwner;
 
 var assign        = __webpack_require__(78)
   , normalizeOpts = __webpack_require__(120)
-  , isCallable    = __webpack_require__(235)
+  , isCallable    = __webpack_require__(237)
   , contains      = __webpack_require__(123)
 
   , d;
@@ -8891,7 +8891,7 @@ d.gs = function (dscr, get, set/*, options*/) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var Parser = __webpack_require__(128),
-    DomHandler = __webpack_require__(207);
+    DomHandler = __webpack_require__(209);
 
 function defineProp(name, value){
 	delete module.exports[name];
@@ -8905,22 +8905,22 @@ module.exports = {
 	ElementType: __webpack_require__(42),
 	DomHandler: DomHandler,
 	get FeedHandler(){
-		return defineProp("FeedHandler", __webpack_require__(279));
+		return defineProp("FeedHandler", __webpack_require__(282));
 	},
 	get Stream(){
-		return defineProp("Stream", __webpack_require__(281));
+		return defineProp("Stream", __webpack_require__(284));
 	},
 	get WritableStream(){
 		return defineProp("WritableStream", __webpack_require__(130));
 	},
 	get ProxyHandler(){
-		return defineProp("ProxyHandler", __webpack_require__(280));
+		return defineProp("ProxyHandler", __webpack_require__(283));
 	},
 	get DomUtils(){
 		return defineProp("DomUtils", __webpack_require__(31));
 	},
 	get CollectingHandler(){
-		return defineProp("CollectingHandler", __webpack_require__(278));
+		return defineProp("CollectingHandler", __webpack_require__(281));
 	},
 	// For legacy support
 	DefaultHandler: DomHandler,
@@ -8992,7 +8992,7 @@ if (process.env.NODE_ENV !== 'production') {
 } else {
   // By explicitly using `prop-types` you are opting into new production behavior.
   // http://fb.me/prop-types-in-prod
-  module.exports = __webpack_require__(297)();
+  module.exports = __webpack_require__(300)();
 }
 
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
@@ -9618,7 +9618,7 @@ var _generateKey = __webpack_require__(35);
 
 var _generateKey2 = _interopRequireDefault(_generateKey);
 
-var _immutable = __webpack_require__(5);
+var _immutable = __webpack_require__(6);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -9775,7 +9775,7 @@ var _memoize = __webpack_require__(109);
 
 var _memoize2 = _interopRequireDefault(_memoize);
 
-var _immutable = __webpack_require__(5);
+var _immutable = __webpack_require__(6);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -9929,12 +9929,12 @@ module.exports = function(module) {
 var DomUtils = module.exports;
 
 [
+	__webpack_require__(215),
+	__webpack_require__(216),
 	__webpack_require__(213),
 	__webpack_require__(214),
-	__webpack_require__(211),
 	__webpack_require__(212),
-	__webpack_require__(210),
-	__webpack_require__(209)
+	__webpack_require__(211)
 ].forEach(function(ext){
 	Object.keys(ext).forEach(function(key){
 		DomUtils[key] = ext[key].bind(DomUtils);
@@ -9949,7 +9949,7 @@ var DomUtils = module.exports;
 "use strict";
 
 
-module.exports = __webpack_require__(255)() ? Symbol : __webpack_require__(257);
+module.exports = __webpack_require__(257)() ? Symbol : __webpack_require__(259);
 
 
 /***/ }),
@@ -9963,7 +9963,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _immutable = __webpack_require__(5);
+var _immutable = __webpack_require__(6);
 
 /**
  * Data.
@@ -10031,7 +10031,7 @@ var _generateKey = __webpack_require__(35);
 
 var _generateKey2 = _interopRequireDefault(_generateKey);
 
-var _immutable = __webpack_require__(5);
+var _immutable = __webpack_require__(6);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -11991,7 +11991,7 @@ module.exports = EventPropagators;
 
 
 
-var ReactRef = __webpack_require__(337);
+var ReactRef = __webpack_require__(340);
 var ReactInstrumentation = __webpack_require__(11);
 
 var warning = __webpack_require__(2);
@@ -12231,16 +12231,16 @@ module.exports = SyntheticUIEvent;
 
 var _assign = __webpack_require__(4);
 
-var ReactChildren = __webpack_require__(368);
+var ReactChildren = __webpack_require__(371);
 var ReactComponent = __webpack_require__(102);
-var ReactPureComponent = __webpack_require__(373);
-var ReactClass = __webpack_require__(369);
-var ReactDOMFactories = __webpack_require__(370);
+var ReactPureComponent = __webpack_require__(376);
+var ReactClass = __webpack_require__(372);
+var ReactDOMFactories = __webpack_require__(373);
 var ReactElement = __webpack_require__(25);
-var ReactPropTypes = __webpack_require__(371);
-var ReactVersion = __webpack_require__(374);
+var ReactPropTypes = __webpack_require__(374);
+var ReactVersion = __webpack_require__(377);
 
-var onlyChild = __webpack_require__(377);
+var onlyChild = __webpack_require__(380);
 var warning = __webpack_require__(2);
 
 var createElement = ReactElement.createElement;
@@ -12357,7 +12357,7 @@ var _generateKey = __webpack_require__(35);
 
 var _generateKey2 = _interopRequireDefault(_generateKey);
 
-var _immutable = __webpack_require__(5);
+var _immutable = __webpack_require__(6);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -12536,7 +12536,7 @@ var _mark = __webpack_require__(29);
 
 var _mark2 = _interopRequireDefault(_mark);
 
-var _immutable = __webpack_require__(5);
+var _immutable = __webpack_require__(6);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -12685,7 +12685,7 @@ var _generateKey = __webpack_require__(35);
 
 var _generateKey2 = _interopRequireDefault(_generateKey);
 
-var _immutable = __webpack_require__(5);
+var _immutable = __webpack_require__(6);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -12866,7 +12866,7 @@ var _warn = __webpack_require__(37);
 
 var _warn2 = _interopRequireDefault(_warn);
 
-var _immutable = __webpack_require__(5);
+var _immutable = __webpack_require__(6);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -14284,7 +14284,7 @@ function isUndefined(arg) {
  * Module dependencies.
  */
 
-var getDocument = __webpack_require__(275);
+var getDocument = __webpack_require__(277);
 
 /**
  * Module exports.
@@ -14292,7 +14292,7 @@ var getDocument = __webpack_require__(275);
 
 module.exports = getWindow;
 
-var needsIEFallback = __webpack_require__(276);
+var needsIEFallback = __webpack_require__(278);
 
 /**
  * Returns `true` if `w` is a Window object, or `false` otherwise.
@@ -15393,7 +15393,7 @@ exports.IS_WINDOWS = exports.IS_MAC = exports.IS_SAFARI = exports.IS_FIREFOX = e
 
 var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
-var _isInBrowser = __webpack_require__(284);
+var _isInBrowser = __webpack_require__(287);
 
 var _isInBrowser2 = _interopRequireDefault(_isInBrowser);
 
@@ -15520,11 +15520,11 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _react = __webpack_require__(7);
+var _react = __webpack_require__(5);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _isReactComponent = __webpack_require__(407);
+var _isReactComponent = __webpack_require__(410);
 
 var _isReactComponent2 = _interopRequireDefault(_isReactComponent);
 
@@ -15532,7 +15532,7 @@ var _typeOf = __webpack_require__(111);
 
 var _typeOf2 = _interopRequireDefault(_typeOf);
 
-var _immutable = __webpack_require__(5);
+var _immutable = __webpack_require__(6);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -15868,11 +15868,11 @@ var _selection = __webpack_require__(54);
 
 var _selection2 = _interopRequireDefault(_selection);
 
-var _transform = __webpack_require__(391);
+var _transform = __webpack_require__(394);
 
 var _transform2 = _interopRequireDefault(_transform);
 
-var _immutable = __webpack_require__(5);
+var _immutable = __webpack_require__(6);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -16554,7 +16554,7 @@ var _text = __webpack_require__(34);
 
 var _text2 = _interopRequireDefault(_text);
 
-var _isEmpty = __webpack_require__(283);
+var _isEmpty = __webpack_require__(286);
 
 var _isEmpty2 = _interopRequireDefault(_isEmpty);
 
@@ -17458,11 +17458,11 @@ var parse = __webpack_require__(55),
  */
 
 var api = [
-  __webpack_require__(192),
-  __webpack_require__(196),
+  __webpack_require__(194),
+  __webpack_require__(198),
+  __webpack_require__(197),
   __webpack_require__(195),
-  __webpack_require__(193),
-  __webpack_require__(194)
+  __webpack_require__(196)
 ];
 
 /*
@@ -17602,7 +17602,7 @@ var serialize = __webpack_require__(75),
     select = __webpack_require__(112),
     parse = __webpack_require__(55),
     _ = {
-      merge: __webpack_require__(288),
+      merge: __webpack_require__(291),
       defaults: __webpack_require__(134)
     };
 
@@ -17809,7 +17809,7 @@ var DomUtils    = __webpack_require__(31),
     hasAttrib   = DomUtils.hasAttrib,
     getName     = DomUtils.getName,
     getAttribute= DomUtils.getAttributeValue,
-    getNCheck   = __webpack_require__(294),
+    getNCheck   = __webpack_require__(297),
     checkAttrib = __webpack_require__(113).rules.equals,
     BaseFuncs   = __webpack_require__(39),
     trueFunc    = BaseFuncs.trueFunc,
@@ -18189,8 +18189,8 @@ module.exports = {
 /*
   Module dependencies
 */
-var ElementType = __webpack_require__(206);
-var entities = __webpack_require__(215);
+var ElementType = __webpack_require__(208);
+var entities = __webpack_require__(217);
 
 /*
   Boolean Attributes
@@ -20517,9 +20517,9 @@ module.exports = {
 "use strict";
 
 
-module.exports = __webpack_require__(230)()
+module.exports = __webpack_require__(232)()
 	? Object.assign
-	: __webpack_require__(231);
+	: __webpack_require__(233);
 
 
 /***/ }),
@@ -20534,7 +20534,7 @@ var clear    = __webpack_require__(118)
   , callable = __webpack_require__(15)
   , value    = __webpack_require__(12)
   , d        = __webpack_require__(21)
-  , autoBind = __webpack_require__(204)
+  , autoBind = __webpack_require__(206)
   , Symbol   = __webpack_require__(32)
 
   , defineProperty = Object.defineProperty
@@ -22270,8 +22270,8 @@ module.exports = ReactPropTypesSecret;
 
 
 var DOMLazyTree = __webpack_require__(44);
-var Danger = __webpack_require__(303);
-var ReactDOMComponentTree = __webpack_require__(6);
+var Danger = __webpack_require__(306);
+var ReactDOMComponentTree = __webpack_require__(7);
 var ReactInstrumentation = __webpack_require__(11);
 
 var createMicrosoftUnsafeLocalFunction = __webpack_require__(95);
@@ -23229,10 +23229,10 @@ module.exports = LinkedValueUtils;
 var _assign = __webpack_require__(4);
 
 var EventPluginRegistry = __webpack_require__(87);
-var ReactEventEmitterMixin = __webpack_require__(325);
+var ReactEventEmitterMixin = __webpack_require__(328);
 var ViewportMetrics = __webpack_require__(149);
 
-var getVendorPrefixedEventName = __webpack_require__(362);
+var getVendorPrefixedEventName = __webpack_require__(365);
 var isEventSupported = __webpack_require__(99);
 
 /**
@@ -24720,7 +24720,7 @@ util.inherits = __webpack_require__(13);
 
 /*<replacement>*/
 var internalUtil = {
-  deprecate: __webpack_require__(420)
+  deprecate: __webpack_require__(424)
 };
 /*</replacement>*/
 
@@ -25235,7 +25235,7 @@ function CorkedRequest(state) {
     }
   };
 }
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0), __webpack_require__(417).setImmediate))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0), __webpack_require__(420).setImmediate))
 
 /***/ }),
 /* 105 */
@@ -25247,7 +25247,7 @@ exports.Readable = exports;
 exports.Writable = __webpack_require__(104);
 exports.Duplex = __webpack_require__(27);
 exports.Transform = __webpack_require__(163);
-exports.PassThrough = __webpack_require__(380);
+exports.PassThrough = __webpack_require__(383);
 
 
 /***/ }),
@@ -25299,7 +25299,7 @@ var _normalize = __webpack_require__(36);
 
 var _normalize2 = _interopRequireDefault(_normalize);
 
-var _direction = __webpack_require__(205);
+var _direction = __webpack_require__(207);
 
 var _direction2 = _interopRequireDefault(_direction);
 
@@ -25307,7 +25307,7 @@ var _generateKey = __webpack_require__(35);
 
 var _generateKey2 = _interopRequireDefault(_generateKey);
 
-var _isInRange = __webpack_require__(406);
+var _isInRange = __webpack_require__(409);
 
 var _isInRange2 = _interopRequireDefault(_isInRange);
 
@@ -25319,7 +25319,7 @@ var _warn = __webpack_require__(37);
 
 var _warn2 = _interopRequireDefault(_warn);
 
-var _immutable = __webpack_require__(5);
+var _immutable = __webpack_require__(6);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -27328,7 +27328,7 @@ var _text = __webpack_require__(34);
 
 var _text2 = _interopRequireDefault(_text);
 
-var _immutable = __webpack_require__(5);
+var _immutable = __webpack_require__(6);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -27654,7 +27654,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.__enable = exports.__clear = exports.default = undefined;
 
-var _es6Map = __webpack_require__(249);
+var _es6Map = __webpack_require__(251);
 
 var _es6Map2 = _interopRequireDefault(_es6Map);
 
@@ -27942,7 +27942,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
-var _normalizeNodeAndOffset = __webpack_require__(409);
+var _normalizeNodeAndOffset = __webpack_require__(412);
 
 var _normalizeNodeAndOffset2 = _interopRequireDefault(_normalizeNodeAndOffset);
 
@@ -28181,7 +28181,7 @@ var Pseudos       = __webpack_require__(74),
     getChildren   = DomUtils.getChildren,
     removeSubsets = DomUtils.removeSubsets,
     falseFunc     = __webpack_require__(39).falseFunc,
-    compile       = __webpack_require__(200),
+    compile       = __webpack_require__(202),
     compileUnsafe = compile.compileUnsafe,
     compileToken  = compile.compileToken;
 
@@ -28488,7 +28488,7 @@ Object.keys(domLvl1).forEach(function(key) {
 /* 116 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var decodeMap = __webpack_require__(218);
+var decodeMap = __webpack_require__(220);
 
 module.exports = decodeCodePoint;
 
@@ -28655,7 +28655,7 @@ module.exports = function () {
 "use strict";
 
 
-var toInteger = __webpack_require__(228)
+var toInteger = __webpack_require__(230)
 
   , max = Math.max;
 
@@ -28714,7 +28714,7 @@ module.exports = function (/*customCreate*/) {
 
 
 
-var isObject      = __webpack_require__(236)
+var isObject      = __webpack_require__(238)
   , value         = __webpack_require__(12)
 
   , isPrototypeOf = Object.prototype.isPrototypeOf
@@ -28781,7 +28781,7 @@ module.exports = (function (status) {
 	return false;
 }())));
 
-__webpack_require__(233);
+__webpack_require__(235);
 
 
 /***/ }),
@@ -28791,9 +28791,9 @@ __webpack_require__(233);
 "use strict";
 
 
-module.exports = __webpack_require__(242)()
+module.exports = __webpack_require__(244)()
 	? String.prototype.contains
-	: __webpack_require__(243);
+	: __webpack_require__(245);
 
 
 /***/ }),
@@ -28803,7 +28803,7 @@ module.exports = __webpack_require__(242)()
 "use strict";
 
 
-var isIterable = __webpack_require__(247);
+var isIterable = __webpack_require__(249);
 
 module.exports = function (value) {
 	if (!isIterable(value)) throw new TypeError(value + " is not iterable");
@@ -30255,7 +30255,7 @@ Tokenizer.prototype._emitPartial = function(value){
 module.exports = Stream;
 
 var Parser = __webpack_require__(128),
-    WritableStream = __webpack_require__(414).Writable || __webpack_require__(421).Writable,
+    WritableStream = __webpack_require__(417).Writable || __webpack_require__(425).Writable,
     StringDecoder = __webpack_require__(82).StringDecoder,
     Buffer = __webpack_require__(19).Buffer;
 
@@ -31796,7 +31796,7 @@ var invariant = __webpack_require__(1);
 var warning = __webpack_require__(2);
 
 var ReactPropTypesSecret = __webpack_require__(84);
-var checkPropTypes = __webpack_require__(296);
+var checkPropTypes = __webpack_require__(299);
 
 module.exports = function(isValidElement, throwOnDirectAccess) {
   /* global Symbol */
@@ -32591,10 +32591,10 @@ module.exports = PooledClass.addPoolingTo(CallbackQueue);
 
 
 var DOMProperty = __webpack_require__(45);
-var ReactDOMComponentTree = __webpack_require__(6);
+var ReactDOMComponentTree = __webpack_require__(7);
 var ReactInstrumentation = __webpack_require__(11);
 
-var quoteAttributeValueForBrowser = __webpack_require__(363);
+var quoteAttributeValueForBrowser = __webpack_require__(366);
 var warning = __webpack_require__(2);
 
 var VALID_ATTRIBUTE_NAME_REGEX = new RegExp('^[' + DOMProperty.ATTRIBUTE_NAME_START_CHAR + '][' + DOMProperty.ATTRIBUTE_NAME_CHAR + ']*$');
@@ -32859,7 +32859,7 @@ module.exports = ReactDOMComponentFlags;
 var _assign = __webpack_require__(4);
 
 var LinkedValueUtils = __webpack_require__(90);
-var ReactDOMComponentTree = __webpack_require__(6);
+var ReactDOMComponentTree = __webpack_require__(7);
 var ReactUpdates = __webpack_require__(16);
 
 var warning = __webpack_require__(2);
@@ -33244,9 +33244,9 @@ module.exports = ReactHostComponent;
 
 
 
-var ReactDOMSelection = __webpack_require__(317);
+var ReactDOMSelection = __webpack_require__(320);
 
-var containsNode = __webpack_require__(263);
+var containsNode = __webpack_require__(265);
 var focusNode = __webpack_require__(126);
 var getActiveElement = __webpack_require__(127);
 
@@ -33400,7 +33400,7 @@ var _assign = __webpack_require__(4);
 var PooledClass = __webpack_require__(24);
 var Transaction = __webpack_require__(63);
 var ReactInstrumentation = __webpack_require__(11);
-var ReactServerUpdateQueue = __webpack_require__(340);
+var ReactServerUpdateQueue = __webpack_require__(343);
 
 /**
  * Executed within the scope of the `Transaction` instance. Consider these as
@@ -33906,11 +33906,11 @@ module.exports = getTextContentAccessor;
 var _prodInvariant = __webpack_require__(3),
     _assign = __webpack_require__(4);
 
-var ReactCompositeComponent = __webpack_require__(310);
+var ReactCompositeComponent = __webpack_require__(313);
 var ReactEmptyComponent = __webpack_require__(143);
 var ReactHostComponent = __webpack_require__(144);
 
-var getNextDebugID = __webpack_require__(376);
+var getNextDebugID = __webpack_require__(379);
 var invariant = __webpack_require__(1);
 var warning = __webpack_require__(2);
 
@@ -34201,9 +34201,9 @@ module.exports = shouldUpdateReactComponent;
 var _prodInvariant = __webpack_require__(3);
 
 var ReactCurrentOwner = __webpack_require__(20);
-var REACT_ELEMENT_TYPE = __webpack_require__(324);
+var REACT_ELEMENT_TYPE = __webpack_require__(327);
 
-var getIteratorFn = __webpack_require__(360);
+var getIteratorFn = __webpack_require__(363);
 var invariant = __webpack_require__(1);
 var KeyEscapeUtils = __webpack_require__(89);
 var warning = __webpack_require__(2);
@@ -34416,7 +34416,7 @@ var ReactCurrentOwner = __webpack_require__(20);
 var ReactComponentTreeHook = __webpack_require__(14);
 var ReactElement = __webpack_require__(25);
 
-var checkReactTypeSpec = __webpack_require__(375);
+var checkReactTypeSpec = __webpack_require__(378);
 
 var canDefineProperty = __webpack_require__(65);
 var getIteratorFn = __webpack_require__(161);
@@ -34770,7 +34770,7 @@ util.inherits = __webpack_require__(13);
 /*</replacement>*/
 
 /*<replacement>*/
-var debugUtil = __webpack_require__(422);
+var debugUtil = __webpack_require__(426);
 var debug = void 0;
 if (debugUtil && debugUtil.debuglog) {
   debug = debugUtil.debuglog('stream');
@@ -34779,7 +34779,7 @@ if (debugUtil && debugUtil.debuglog) {
 }
 /*</replacement>*/
 
-var BufferList = __webpack_require__(381);
+var BufferList = __webpack_require__(384);
 var StringDecoder;
 
 util.inherits(Readable, Stream);
@@ -35878,7 +35878,7 @@ var _debug = __webpack_require__(18);
 
 var _debug2 = _interopRequireDefault(_debug);
 
-var _react = __webpack_require__(7);
+var _react = __webpack_require__(5);
 
 var _react2 = _interopRequireDefault(_react);
 
@@ -36148,7 +36148,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-var _react = __webpack_require__(7);
+var _react = __webpack_require__(5);
 
 var _react2 = _interopRequireDefault(_react);
 
@@ -36332,7 +36332,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.setKeyGenerator = exports.resetKeyGenerator = exports.findDOMNode = exports.Transforms = exports.Text = exports.State = exports.Stack = exports.Selection = exports.Schema = exports.Raw = exports.Range = exports.Plain = exports.Placeholder = exports.Mark = exports.Inline = exports.Html = exports.Editor = exports.Document = exports.Data = exports.Character = exports.Block = undefined;
 
-var _editor = __webpack_require__(388);
+var _editor = __webpack_require__(391);
 
 var _editor2 = _interopRequireDefault(_editor);
 
@@ -36388,11 +36388,11 @@ var _range = __webpack_require__(169);
 
 var _range2 = _interopRequireDefault(_range);
 
-var _html = __webpack_require__(393);
+var _html = __webpack_require__(396);
 
 var _html2 = _interopRequireDefault(_html);
 
-var _plain = __webpack_require__(394);
+var _plain = __webpack_require__(397);
 
 var _plain2 = _interopRequireDefault(_plain);
 
@@ -36505,7 +36505,7 @@ var _mark = __webpack_require__(29);
 
 var _mark2 = _interopRequireDefault(_mark);
 
-var _immutable = __webpack_require__(5);
+var _immutable = __webpack_require__(6);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -36620,7 +36620,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _core = __webpack_require__(392);
+var _core = __webpack_require__(395);
 
 var _core2 = _interopRequireDefault(_core);
 
@@ -36636,7 +36636,7 @@ var _state = __webpack_require__(68);
 
 var _state2 = _interopRequireDefault(_state);
 
-var _immutable = __webpack_require__(5);
+var _immutable = __webpack_require__(6);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -37083,39 +37083,39 @@ Object.defineProperty(exports, "__esModule", {
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-var _applyOperation = __webpack_require__(395);
+var _applyOperation = __webpack_require__(398);
 
 var _applyOperation2 = _interopRequireDefault(_applyOperation);
 
-var _atCurrentRange = __webpack_require__(396);
+var _atCurrentRange = __webpack_require__(399);
 
 var _atCurrentRange2 = _interopRequireDefault(_atCurrentRange);
 
-var _atRange = __webpack_require__(397);
+var _atRange = __webpack_require__(400);
 
 var _atRange2 = _interopRequireDefault(_atRange);
 
-var _byKey = __webpack_require__(398);
+var _byKey = __webpack_require__(401);
 
 var _byKey2 = _interopRequireDefault(_byKey);
 
-var _call = __webpack_require__(399);
+var _call = __webpack_require__(402);
 
 var _call2 = _interopRequireDefault(_call);
 
-var _normalize = __webpack_require__(400);
+var _normalize = __webpack_require__(403);
 
 var _normalize2 = _interopRequireDefault(_normalize);
 
-var _onHistory = __webpack_require__(401);
+var _onHistory = __webpack_require__(404);
 
 var _onHistory2 = _interopRequireDefault(_onHistory);
 
-var _onSelection = __webpack_require__(402);
+var _onSelection = __webpack_require__(405);
 
 var _onSelection2 = _interopRequireDefault(_onSelection);
 
-var _operations = __webpack_require__(403);
+var _operations = __webpack_require__(406);
 
 var _operations2 = _interopRequireDefault(_operations);
 
@@ -37302,7 +37302,7 @@ exports.default = getPoint;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var MyTake_1 = __webpack_require__(184);
+var MyTake_1 = __webpack_require__(186);
 exports.default = MyTake_1.default;
 
 
@@ -37313,7 +37313,7 @@ exports.default = MyTake_1.default;
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(198);
+var content = __webpack_require__(200);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -37321,7 +37321,7 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(415)(content, options);
+var update = __webpack_require__(418)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -37354,7 +37354,62 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var React = __webpack_require__(7);
+var React = __webpack_require__(5);
+var Amendments = (function (_super) {
+    __extends(Amendments, _super);
+    function Amendments(props) {
+        return _super.call(this, props) || this;
+    }
+    Amendments.prototype.render = function () {
+        return (React.createElement("div", { className: "amendments" },
+            React.createElement("h2", { className: "amendments__heading" }, "Amendments to the Constitution"),
+            React.createElement("p", { className: "constitution__instructions" }, this.props.textIsHighlighted ?
+                'Click your selection to send it to the Take.'
+                : 'Highlight some text from the Amendments below.'),
+            React.createElement("button", { onClick: this.props.onBackClick }, "Back to Foundation"),
+            React.createElement("button", { onClick: this.props.onClearClick }, "Clear Selection"),
+            React.createElement("div", { className: "amendments__row" },
+                React.createElement("div", { className: "amendments__sections" },
+                    React.createElement("p", null, "<This is just a placeholder block for section links to autoscroll to particular parts of the amendments>")),
+                React.createElement("div", { className: "amendments__text", onMouseUp: this.props.onMouseUp }, this.props.amendmentsNodes.map(function (element, index) {
+                    element.props['key'] = index.toString();
+                    return (React.createElement(element.component, element.props, element.innerHTML));
+                })))));
+    };
+    return Amendments;
+}(React.Component));
+exports.default = Amendments;
+
+
+/***/ }),
+/* 179 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var Amendments_1 = __webpack_require__(178);
+exports.default = Amendments_1.default;
+
+
+/***/ }),
+/* 180 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var React = __webpack_require__(5);
 var Constitution = (function (_super) {
     __extends(Constitution, _super);
     function Constitution(props) {
@@ -37382,60 +37437,14 @@ exports.default = Constitution;
 
 
 /***/ }),
-/* 179 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var Constitution_1 = __webpack_require__(178);
-exports.default = Constitution_1.default;
-
-
-/***/ }),
-/* 180 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-var React = __webpack_require__(7);
-var Debates = (function (_super) {
-    __extends(Debates, _super);
-    function Debates(props) {
-        return _super.call(this, props) || this;
-    }
-    Debates.prototype.render = function () {
-        return (React.createElement("div", { className: "debates" },
-            React.createElement("h2", { className: "debates__heading" }, "Debates"),
-            React.createElement("p", { className: "debates__instructions" }, "Coming soon"),
-            React.createElement("button", { onClick: this.props.onBackClick }, "Back to Foundation"),
-            React.createElement("div", { className: "debates__placeholder" })));
-    };
-    return Debates;
-}(React.Component));
-exports.default = Debates;
-
-
-/***/ }),
 /* 181 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var Debates_1 = __webpack_require__(180);
-exports.default = Debates_1.default;
+var Constitution_1 = __webpack_require__(180);
+exports.default = Constitution_1.default;
 
 
 /***/ }),
@@ -37455,68 +37464,22 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var React = __webpack_require__(7);
-var Constitution_1 = __webpack_require__(179);
-var Debates_1 = __webpack_require__(181);
-function ConstitutionCard(props) {
-    return (React.createElement("div", { className: "foundation__card foundation__card--constitution", onClick: props.onClick },
-        React.createElement("div", { className: "foundation__image-container" },
-            React.createElement("img", { src: __webpack_require__(418), className: "foundation__image foundation__image--constitution", width: "220", height: "313" })),
-        React.createElement("div", { className: "foundation__info-container" },
-            React.createElement("h3", { className: "foundation__card-title foundation__card-title--constitution" }, "The Constitution"),
-            React.createElement("p", { className: "foundation__description foundation__description--constitution" }, "The full text of the U.S. Constitution, as it was originally penned in 1787."))));
-}
-function DebatesCard(props) {
-    return (React.createElement("div", { className: "foundation__card foundation__card--debates", onClick: props.onClick },
-        React.createElement("div", { className: "foundation__image-container" },
-            React.createElement("img", { src: __webpack_require__(419), className: "foundation__image foundation__image--debates", width: "220", height: "313" })),
-        React.createElement("div", { className: "foundation__info-container" },
-            React.createElement("h3", { className: "foundation__card-title foundation__card-title--debates" }, "The Debates"),
-            React.createElement("p", { className: "foundation__description foundation__description--debates" }, "Full videos and transcripts of all presidential debates since 1976."))));
-}
-var Foundation = (function (_super) {
-    __extends(Foundation, _super);
-    function Foundation(props) {
-        var _this = _super.call(this, props) || this;
-        _this.state = {
-            view: 'INITIAL'
-        };
-        _this.handleConstitutionCardClick = _this.handleConstitutionCardClick.bind(_this);
-        _this.handleDebatesCardClick = _this.handleDebatesCardClick.bind(_this);
-        _this.handleBackClick = _this.handleBackClick.bind(_this);
-        return _this;
+var React = __webpack_require__(5);
+var Debates = (function (_super) {
+    __extends(Debates, _super);
+    function Debates(props) {
+        return _super.call(this, props) || this;
     }
-    Foundation.prototype.handleConstitutionCardClick = function () {
-        this.setState({ view: 'CONSTITUTION' });
+    Debates.prototype.render = function () {
+        return (React.createElement("div", { className: "debates" },
+            React.createElement("h2", { className: "debates__heading" }, "Debates"),
+            React.createElement("p", { className: "debates__instructions" }, "Coming soon"),
+            React.createElement("button", { onClick: this.props.onBackClick }, "Back to Foundation"),
+            React.createElement("div", { className: "debates__placeholder" })));
     };
-    Foundation.prototype.handleDebatesCardClick = function () {
-        this.setState({ view: 'DEBATES' });
-    };
-    Foundation.prototype.handleBackClick = function () {
-        this.setState({ view: 'INITIAL' });
-    };
-    Foundation.prototype.render = function () {
-        var props = this.props;
-        switch (this.state.view) {
-            case 'INITIAL':
-                return (React.createElement("div", { className: "foundation" },
-                    React.createElement("h2", { className: "foundation__heading" }, "The Foundation"),
-                    React.createElement("p", { className: "foundation__instructions" }, "Browse the Foundation to support your take with Facts."),
-                    React.createElement("div", { className: "foundation__card-list" },
-                        React.createElement(ConstitutionCard, { onClick: this.handleConstitutionCardClick }),
-                        React.createElement(DebatesCard, { onClick: this.handleDebatesCardClick }))));
-            case 'CONSTITUTION':
-                return (React.createElement("div", { className: "foundation" },
-                    React.createElement(Constitution_1.default, { onBackClick: this.handleBackClick, onClearClick: props.onConstitutionClearClick, onSetClick: props.onConstitutionSetClick, onMouseUp: props.onConstitutionMouseUp, constitutionNodes: props.constitutionNodes, textIsHighlighted: props.textIsHighlighted })));
-            case 'DEBATES':
-                return (React.createElement("div", { className: "foundation" },
-                    React.createElement(Debates_1.default, { onBackClick: this.handleBackClick })));
-            default:
-        }
-    };
-    return Foundation;
+    return Debates;
 }(React.Component));
-exports.default = Foundation;
+exports.default = Debates;
 
 
 /***/ }),
@@ -37526,8 +37489,8 @@ exports.default = Foundation;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var Foundation_1 = __webpack_require__(182);
-exports.default = Foundation_1.default;
+var Debates_1 = __webpack_require__(182);
+exports.default = Debates_1.default;
 
 
 /***/ }),
@@ -37547,30 +37510,144 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var React = __webpack_require__(7);
+var React = __webpack_require__(5);
+var Constitution_1 = __webpack_require__(181);
+var Debates_1 = __webpack_require__(183);
+var Amendments_1 = __webpack_require__(179);
+function AmendmentsCard(props) {
+    return (React.createElement("div", { className: "foundation__card foundation__card--amendments", onClick: props.onClick },
+        React.createElement("div", { className: "foundation__image-container" },
+            React.createElement("img", { src: __webpack_require__(423), className: "foundation__image foundation__image--amendments", width: "220", height: "313" })),
+        React.createElement("div", { className: "foundation__info-container" },
+            React.createElement("h3", { className: "foundation__card-title foundation__card-title--amendments" }, "The Amendments"),
+            React.createElement("p", { className: "foundation__description foundation__description--amendments" }, "The full text of the Amendments to the U.S. Constitution."))));
+}
+function ConstitutionCard(props) {
+    return (React.createElement("div", { className: "foundation__card foundation__card--constitution", onClick: props.onClick },
+        React.createElement("div", { className: "foundation__image-container" },
+            React.createElement("img", { src: __webpack_require__(421), className: "foundation__image foundation__image--constitution", width: "220", height: "313" })),
+        React.createElement("div", { className: "foundation__info-container" },
+            React.createElement("h3", { className: "foundation__card-title foundation__card-title--constitution" }, "The Constitution"),
+            React.createElement("p", { className: "foundation__description foundation__description--constitution" }, "The full text of the U.S. Constitution, as it was originally penned in 1787."))));
+}
+function DebatesCard(props) {
+    return (React.createElement("div", { className: "foundation__card foundation__card--debates", onClick: props.onClick },
+        React.createElement("div", { className: "foundation__image-container" },
+            React.createElement("img", { src: __webpack_require__(422), className: "foundation__image foundation__image--debates", width: "220", height: "313" })),
+        React.createElement("div", { className: "foundation__info-container" },
+            React.createElement("h3", { className: "foundation__card-title foundation__card-title--debates" }, "The Debates"),
+            React.createElement("p", { className: "foundation__description foundation__description--debates" }, "Full videos and transcripts of all presidential debates since 1976."))));
+}
+var Foundation = (function (_super) {
+    __extends(Foundation, _super);
+    function Foundation(props) {
+        var _this = _super.call(this, props) || this;
+        _this.state = {
+            view: 'INITIAL'
+        };
+        _this.handleAmendmentsCardClick = _this.handleAmendmentsCardClick.bind(_this);
+        _this.handleConstitutionCardClick = _this.handleConstitutionCardClick.bind(_this);
+        _this.handleDebatesCardClick = _this.handleDebatesCardClick.bind(_this);
+        _this.handleBackClick = _this.handleBackClick.bind(_this);
+        return _this;
+    }
+    Foundation.prototype.handleAmendmentsCardClick = function () {
+        this.setState({ view: 'AMENDMENTS' });
+    };
+    Foundation.prototype.handleConstitutionCardClick = function () {
+        this.setState({ view: 'CONSTITUTION' });
+    };
+    Foundation.prototype.handleDebatesCardClick = function () {
+        this.setState({ view: 'DEBATES' });
+    };
+    Foundation.prototype.handleBackClick = function () {
+        this.setState({ view: 'INITIAL' });
+    };
+    Foundation.prototype.render = function () {
+        var props = this.props;
+        switch (this.state.view) {
+            case 'INITIAL':
+                return (React.createElement("div", { className: "foundation" },
+                    React.createElement("h2", { className: "foundation__heading" }, "The Foundation"),
+                    React.createElement("p", { className: "foundation__instructions" }, "Browse the Foundation to support your take with Facts."),
+                    React.createElement("div", { className: "foundation__card-list" },
+                        React.createElement(AmendmentsCard, { onClick: this.handleAmendmentsCardClick }),
+                        React.createElement(ConstitutionCard, { onClick: this.handleConstitutionCardClick }),
+                        React.createElement(DebatesCard, { onClick: this.handleDebatesCardClick }))));
+            case 'AMENDMENTS':
+                return (React.createElement("div", { className: "foundation" },
+                    React.createElement(Amendments_1.default, { onBackClick: this.handleBackClick, onClearClick: props.onAmendmentsClearClick, onSetClick: props.onAmendmentsSetClick, onMouseUp: props.onAmendmentsMouseUp, amendmentsNodes: props.amendmentsNodes, textIsHighlighted: props.amendmentsTextIsHighlighted })));
+            case 'CONSTITUTION':
+                return (React.createElement("div", { className: "foundation" },
+                    React.createElement(Constitution_1.default, { onBackClick: this.handleBackClick, onClearClick: props.onConstitutionClearClick, onSetClick: props.onConstitutionSetClick, onMouseUp: props.onConstitutionMouseUp, constitutionNodes: props.constitutionNodes, textIsHighlighted: props.textIsHighlighted })));
+            case 'DEBATES':
+                return (React.createElement("div", { className: "foundation" },
+                    React.createElement(Debates_1.default, { onBackClick: this.handleBackClick })));
+            default:
+        }
+    };
+    return Foundation;
+}(React.Component));
+exports.default = Foundation;
+
+
+/***/ }),
+/* 185 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var Foundation_1 = __webpack_require__(184);
+exports.default = Foundation_1.default;
+
+
+/***/ }),
+/* 186 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var React = __webpack_require__(5);
 var ReactDOM = __webpack_require__(38);
-var TakeEditor_1 = __webpack_require__(187);
-var Foundation_1 = __webpack_require__(183);
+var TakeEditor_1 = __webpack_require__(189);
+var Foundation_1 = __webpack_require__(185);
 var _a = __webpack_require__(168), Block = _a.Block, Data = _a.Data, Raw = _a.Raw, Selection = _a.Selection;
 var key = __webpack_require__(132);
-var getNodeArray_1 = __webpack_require__(189);
-var constitutionText = __webpack_require__(277);
-var config_1 = __webpack_require__(185);
+var getNodeArray_1 = __webpack_require__(191);
+var constitutionText = __webpack_require__(280);
+var amendmentsText = __webpack_require__(279);
+var config_1 = __webpack_require__(187);
 var initialState = Raw.deserialize(config_1.default.initialState, { terse: true });
 var MyTake = (function (_super) {
     __extends(MyTake, _super);
     function MyTake(props) {
         var _this = _super.call(this, props) || this;
         _this.state = {
-            constitutionNodes: _this.getInitialText(),
-            textIsHighlighted: false,
-            highlightedNodes: [],
+            constitutionNodes: _this.getInitialText('CONSTITUTION'),
+            amendmentsNodes: _this.getInitialText('AMENDMENTS'),
+            constitutionTextIsHighlighted: false,
+            amendmentsTextIsHighlighted: false,
+            highlightedConstitutionNodes: [],
+            highlightedAmendmentsNodes: [],
             editorState: initialState,
             schema: {
                 nodes: {
                     title: TakeEditor_1.TitleNode,
                     paragraph: TakeEditor_1.ParagraphNode,
-                    constitution: TakeEditor_1.ConstitutionNode
+                    constitution: TakeEditor_1.ConstitutionNode,
+                    amendments: TakeEditor_1.AmendmentsNode
                 }
             },
             uniqueKey: 'aa' // Only works 26^2 times. I think that'll be enough.
@@ -37578,12 +37655,24 @@ var MyTake = (function (_super) {
         _this.handleConstitutionMouseUp = _this.handleConstitutionMouseUp.bind(_this);
         _this.handleConstitutionClearClick = _this.handleConstitutionClearClick.bind(_this);
         _this.handleConstitutionSetClick = _this.handleConstitutionSetClick.bind(_this);
+        _this.handleAmendmentsMouseUp = _this.handleAmendmentsMouseUp.bind(_this);
+        _this.handleAmendmentsClearClick = _this.handleAmendmentsClearClick.bind(_this);
+        _this.handleAmendmentsSetClick = _this.handleAmendmentsSetClick.bind(_this);
         _this.handleEditorChange = _this.handleEditorChange.bind(_this);
         return _this;
     }
-    MyTake.prototype.getInitialText = function () {
-        var initialText = getNodeArray_1.default(constitutionText);
-        return initialText;
+    MyTake.prototype.getInitialText = function (type) {
+        var initialText;
+        switch (type) {
+            case 'AMENDMENTS':
+                initialText = getNodeArray_1.default(amendmentsText);
+                return initialText;
+            case 'CONSTITUTION':
+                initialText = getNodeArray_1.default(constitutionText);
+                return initialText;
+            default:
+                break;
+        }
     };
     MyTake.prototype.clearDefaultDOMSelection = function () {
         if (window.getSelection) {
@@ -37608,15 +37697,21 @@ var MyTake = (function (_super) {
     };
     MyTake.prototype.handleConstitutionClearClick = function () {
         this.setState({
-            constitutionNodes: this.getInitialText(),
-            textIsHighlighted: false
+            constitutionNodes: this.getInitialText('CONSTITUTION'),
+            constitutionTextIsHighlighted: false
         });
     };
-    MyTake.prototype.handleConstitutionSetClick = function () {
+    MyTake.prototype.handleAmendmentsClearClick = function () {
+        this.setState({
+            constitutionNodes: this.getInitialText('AMENDMENTS'),
+            amendmentsTextIsHighlighted: false
+        });
+    };
+    MyTake.prototype.handleAmendmentsSetClick = function () {
         var currentSelection = this.state.editorState.selection;
         var selection;
         if (currentSelection.anchorKey === "0" || currentSelection.focusKey === "0") {
-            //Cursor is in title, insert constitution node immediately after
+            //Cursor is in title, insert this node immediately after
             var key_1 = this.state.editorState.document.nodes.rest().first().getFirstText().key;
             selection = Selection.create({
                 anchorKey: key_1,
@@ -37628,7 +37723,44 @@ var MyTake = (function (_super) {
         else {
             selection = currentSelection;
         }
-        var newObject = { array: this.state.highlightedNodes };
+        var newObject = { array: this.state.highlightedAmendmentsNodes };
+        var newKey = this.state.uniqueKey;
+        var properties = {
+            data: Data.create(newObject),
+            key: this.state.uniqueKey,
+            type: 'amendments',
+            isVoid: true
+        };
+        newKey = this.incrKey(newKey);
+        var amendmentsNode = Block.create(properties);
+        var newState = this.state.editorState
+            .transform()
+            .insertBlockAtRange(selection, amendmentsNode)
+            .apply();
+        this.setState({
+            editorState: newState,
+            uniqueKey: newKey,
+            amendmentsNodes: this.getInitialText('AMENDMENTS'),
+            amendmentsTextIsHighlighted: false
+        });
+    };
+    MyTake.prototype.handleConstitutionSetClick = function () {
+        var currentSelection = this.state.editorState.selection;
+        var selection;
+        if (currentSelection.anchorKey === "0" || currentSelection.focusKey === "0") {
+            //Cursor is in title, insert constitution node immediately after
+            var key_2 = this.state.editorState.document.nodes.rest().first().getFirstText().key;
+            selection = Selection.create({
+                anchorKey: key_2,
+                anchorOffset: 0,
+                focusKey: key_2,
+                focusOffset: 0
+            });
+        }
+        else {
+            selection = currentSelection;
+        }
+        var newObject = { array: this.state.highlightedConstitutionNodes };
         var newKey = this.state.uniqueKey;
         var properties = {
             data: Data.create(newObject),
@@ -37645,20 +37777,58 @@ var MyTake = (function (_super) {
         this.setState({
             editorState: newState,
             uniqueKey: newKey,
-            constitutionNodes: this.getInitialText(),
-            textIsHighlighted: false
+            constitutionNodes: this.getInitialText('CONSTITUTION'),
+            constitutionTextIsHighlighted: false
         });
     };
-    MyTake.prototype.handleConstitutionMouseUp = function () {
-        if (window.getSelection && !this.state.textIsHighlighted) {
+    MyTake.prototype.handleAmendmentsMouseUp = function () {
+        if (window.getSelection && !this.state.amendmentsTextIsHighlighted) {
             var selection = window.getSelection();
             if (selection.toString().length) {
                 var range = selection.getRangeAt(0);
-                this.highlightText(range);
+                this.highlightText(range, 'AMENDMENTS');
             }
         }
     };
-    MyTake.prototype.highlightText = function (range) {
+    MyTake.prototype.handleConstitutionMouseUp = function () {
+        if (window.getSelection && !this.state.constitutionTextIsHighlighted) {
+            var selection = window.getSelection();
+            if (selection.toString().length) {
+                var range = selection.getRangeAt(0);
+                this.highlightText(range, 'CONSTITUTION');
+            }
+        }
+    };
+    MyTake.prototype.highlightText = function (range, type) {
+        var secondIndexClassName;
+        var thirdIndexClassName;
+        var fourthIndexClassName;
+        var nodes;
+        var foundationClassName;
+        var editorClassName;
+        var setClick;
+        switch (type) {
+            case 'AMENDMENTS':
+                secondIndexClassName = 'amendments';
+                thirdIndexClassName = 'amendments__row';
+                fourthIndexClassName = 'amendments__text';
+                nodes = this.state.amendmentsNodes;
+                foundationClassName = "amendments__text--selected";
+                editorClassName = "editor__amendments--highlighted";
+                setClick = this.handleAmendmentsSetClick;
+                break;
+            case 'CONSTITUTION':
+                secondIndexClassName = 'constitution';
+                thirdIndexClassName = 'constitution__row';
+                fourthIndexClassName = 'constitution__text';
+                nodes = this.state.constitutionNodes;
+                foundationClassName = "constitution__text--selected";
+                editorClassName = "editor__constitution--highlighted";
+                setClick = this.handleConstitutionSetClick;
+                break;
+            default:
+                break;
+        }
         var indexOfStartContainer = Array.prototype.indexOf.call(range.startContainer.parentElement.parentNode.childNodes, //Arrange siblings into an array
         range.startContainer.parentNode); //Find indexOf current Node
         var indexOfSelectionStart = range.startOffset;
@@ -37678,69 +37848,68 @@ var MyTake = (function (_super) {
                 break;
             }
         }
-        var constitutionIndex;
+        var secondIndex; //constitution | amendments
         var secondNodeList = firstNodeList[foundationIndex].childNodes;
         for (var i = 0; i < secondNodeList.length; i++) {
             for (var j = 0; j < secondNodeList[i].attributes.length; j++) {
-                if (secondNodeList[i].attributes.item(j).value == 'constitution') {
-                    constitutionIndex = i;
+                if (secondNodeList[i].attributes.item(j).value == secondIndexClassName) {
+                    secondIndex = i;
                     break;
                 }
             }
-            if (constitutionIndex !== undefined) {
+            if (secondIndex !== undefined) {
                 break;
             }
         }
-        var constitutionRowIndex;
-        var thirdNodeList = secondNodeList[constitutionIndex].childNodes;
+        var thirdIndex; //constitutionRow | amendmentsRow
+        var thirdNodeList = secondNodeList[secondIndex].childNodes;
         for (var i = 0; i < thirdNodeList.length; i++) {
             for (var j = 0; j < thirdNodeList[i].attributes.length; j++) {
-                if (thirdNodeList[i].attributes.item(j).value == 'constitution__row') {
-                    constitutionRowIndex = i;
+                if (thirdNodeList[i].attributes.item(j).value == thirdIndexClassName) {
+                    thirdIndex = i;
                     break;
                 }
             }
-            if (constitutionRowIndex !== undefined) {
+            if (thirdIndex !== undefined) {
                 break;
             }
         }
-        var constitutionTextIndex;
-        var fourthNodeList = thirdNodeList[constitutionRowIndex].childNodes;
+        var fourthIndex; //constitutionText | amendmentsText
+        var fourthNodeList = thirdNodeList[thirdIndex].childNodes;
         for (var i = 0; i < fourthNodeList.length; i++) {
             for (var j = 0; j < fourthNodeList[i].attributes.length; j++) {
-                if (fourthNodeList[i].attributes.item(j).value == 'constitution__text') {
-                    constitutionTextIndex = i;
+                if (fourthNodeList[i].attributes.item(j).value == fourthIndexClassName) {
+                    fourthIndex = i;
                     break;
                 }
             }
-            if (constitutionTextIndex !== undefined) {
+            if (fourthIndex !== undefined) {
                 break;
             }
         }
         var startContainer = firstNodeList[foundationIndex]
-            .childNodes[constitutionIndex]
-            .childNodes[constitutionRowIndex]
-            .childNodes[constitutionTextIndex]
+            .childNodes[secondIndex]
+            .childNodes[thirdIndex]
+            .childNodes[fourthIndex]
             .childNodes[indexOfStartContainer];
         var endContainer = firstNodeList[foundationIndex]
-            .childNodes[constitutionIndex]
-            .childNodes[constitutionRowIndex]
-            .childNodes[constitutionTextIndex]
+            .childNodes[secondIndex]
+            .childNodes[thirdIndex]
+            .childNodes[fourthIndex]
             .childNodes[indexOfEndContainer];
-        var constitutionNodes = this.state.constitutionNodes;
-        var newConstitutionFull = constitutionNodes.slice(0, indexOfStartContainer).slice();
+        var newNodesFull = nodes.slice(0, indexOfStartContainer).slice();
         var newNodes = [];
         var highlightedNodes = []; //Will not be rendered yet, will be sent to TakeEditor
         var newKey = this.state.uniqueKey;
         if (startContainer === endContainer) {
             // Create a new Span element with the contents of the highlighted text
             var newSpan = React.createElement('span', {
-                className: 'constitution__text--selected',
+                className: foundationClassName,
                 key: 'startSpan' + newKey,
-                onClick: this.handleConstitutionSetClick
+                onClick: setClick
             }, startContainer.textContent.substring(indexOfSelectionStart, indexOfSelectionEnd));
             // Modify state array immutably
-            var newNode = Object.assign({}, this.state.constitutionNodes[indexOfStartContainer]);
+            var newNode = Object.assign({}, nodes[indexOfStartContainer]);
             newNode.innerHTML = [
                 startContainer.textContent.substring(0, indexOfSelectionStart),
                 newSpan,
@@ -37749,11 +37918,11 @@ var MyTake = (function (_super) {
             newNodes.push(newNode);
             // Create a new Span element with the contents of the highlighted text
             var newSpan2 = React.createElement('span', {
-                className: 'editor__constitution--highlighted',
+                className: editorClassName,
                 key: 'startSpan2' + newKey
             }, startContainer.textContent.substring(indexOfSelectionStart, indexOfSelectionEnd));
             // Modify state array immutably
-            var newNode2 = Object.assign({}, this.state.constitutionNodes[indexOfStartContainer]);
+            var newNode2 = Object.assign({}, nodes[indexOfStartContainer]);
             newNode2.innerHTML = [
                 startContainer.textContent.substring(0, indexOfSelectionStart),
                 newSpan2,
@@ -37764,12 +37933,12 @@ var MyTake = (function (_super) {
         else {
             // Create a new Span element with the contents of the highlighted text
             var firstNewSpan = React.createElement('span', {
-                className: 'constitution__text--selected',
+                className: foundationClassName,
                 key: 'startSpan' + newKey,
-                onClick: this.handleConstitutionSetClick
+                onClick: setClick
             }, startContainer.textContent.substring(indexOfSelectionStart, startContainer.textContent.length));
             // Modify state array immutably
-            var firstNewNode = Object.assign({}, this.state.constitutionNodes[indexOfStartContainer]);
+            var firstNewNode = Object.assign({}, nodes[indexOfStartContainer]);
             firstNewNode.innerHTML = [
                 startContainer.textContent.substring(0, indexOfSelectionStart),
                 firstNewSpan
@@ -37777,30 +37946,30 @@ var MyTake = (function (_super) {
             newNodes.push(firstNewNode);
             // Create a new Span element with the contents of the highlighted text
             var firstNewSpan2 = React.createElement('span', {
-                className: 'editor__constitution--highlighted',
+                className: editorClassName,
                 key: 'startSpan2' + newKey
             }, startContainer.textContent.substring(indexOfSelectionStart, startContainer.textContent.length));
             // Modify state array immutably
-            var firstNewNode2 = Object.assign({}, this.state.constitutionNodes[indexOfStartContainer]);
+            var firstNewNode2 = Object.assign({}, nodes[indexOfStartContainer]);
             firstNewNode2.innerHTML = [
                 startContainer.textContent.substring(0, indexOfSelectionStart),
                 firstNewSpan2
             ];
             highlightedNodes.push(firstNewNode2);
             for (var index = indexOfStartContainer + 1; index < indexOfEndContainer; index++) {
-                var nextNewNode = Object.assign({}, this.state.constitutionNodes[index]);
-                var key_2 = 'middleSpan-' + index.toString();
+                var nextNewNode = Object.assign({}, nodes[index]);
+                var key_3 = 'middleSpan-' + index.toString();
                 var nextNewSpan = React.createElement('span', {
-                    className: 'constitution__text--selected',
-                    key: key_2,
-                    onClick: this.handleConstitutionSetClick
+                    className: foundationClassName,
+                    key: key_3,
+                    onClick: setClick
                 }, nextNewNode.innerHTML);
                 nextNewNode.innerHTML = [nextNewSpan];
                 newNodes.push(nextNewNode);
-                var nextNewNode2 = Object.assign({}, this.state.constitutionNodes[index]);
+                var nextNewNode2 = Object.assign({}, nodes[index]);
                 var key2 = 'middleSpan2-' + index.toString();
                 var nextNewSpan2 = React.createElement('span', {
-                    className: 'editor__constitution--highlighted',
+                    className: editorClassName,
                     key: key2
                 }, nextNewNode2.innerHTML);
                 nextNewNode2.innerHTML = [nextNewSpan2];
@@ -37808,12 +37977,12 @@ var MyTake = (function (_super) {
             }
             // Create a new Span element with the contents of the highlighted text
             var lastNewSpan = React.createElement('span', {
-                className: 'constitution__text--selected',
+                className: foundationClassName,
                 key: 'endSpan' + newKey,
-                onClick: this.handleConstitutionSetClick
+                onClick: setClick
             }, endContainer.textContent.substring(0, indexOfSelectionEnd));
             // Modify state array immutably
-            var lastNewNode = Object.assign({}, this.state.constitutionNodes[indexOfEndContainer]);
+            var lastNewNode = Object.assign({}, nodes[indexOfEndContainer]);
             lastNewNode.innerHTML = [
                 lastNewSpan,
                 endContainer.textContent.substring(indexOfSelectionEnd, endContainer.textContent.length),
@@ -37821,25 +37990,39 @@ var MyTake = (function (_super) {
             newNodes.push(lastNewNode);
             // Create a new Span element with the contents of the highlighted text
             var lastNewSpan2 = React.createElement('span', {
-                className: 'editor__constitution--highlighted',
+                className: editorClassName,
                 key: 'endSpan' + newKey
             }, endContainer.textContent.substring(0, indexOfSelectionEnd));
             // Modify state array immutably
-            var lastNewNode2 = Object.assign({}, this.state.constitutionNodes[indexOfEndContainer]);
+            var lastNewNode2 = Object.assign({}, nodes[indexOfEndContainer]);
             lastNewNode2.innerHTML = [
                 lastNewSpan2,
                 endContainer.textContent.substring(indexOfSelectionEnd, endContainer.textContent.length),
             ];
             highlightedNodes.push(lastNewNode2);
         }
-        newConstitutionFull = newConstitutionFull.concat(newNodes, constitutionNodes.slice(indexOfEndContainer + 1, this.state.constitutionNodes.length));
+        newNodesFull = newNodesFull.concat(newNodes, nodes.slice(indexOfEndContainer + 1, nodes.length));
         newKey = this.incrKey(newKey);
-        this.setState(function (prevState) { return ({
-            constitutionNodes: newConstitutionFull.slice(),
-            textIsHighlighted: true,
-            highlightedNodes: highlightedNodes.slice(),
-            uniqueKey: newKey
-        }); });
+        switch (type) {
+            case 'AMENDMENTS':
+                this.setState(function (prevState) { return ({
+                    amendmentsNodes: newNodesFull.slice(),
+                    amendmentsTextIsHighlighted: true,
+                    highlightedAmendmentsNodes: highlightedNodes.slice(),
+                    uniqueKey: newKey
+                }); });
+                break;
+            case 'CONSTITUTION':
+                this.setState(function (prevState) { return ({
+                    constitutionNodes: newNodesFull.slice(),
+                    constitutiontextIsHighlighted: true,
+                    highlightedConstitutionNodes: highlightedNodes.slice(),
+                    uniqueKey: newKey
+                }); });
+                break;
+            default:
+                break;
+        }
         this.clearDefaultDOMSelection();
     };
     // On change, update the app's React state with the new editor state.
@@ -37850,15 +38033,17 @@ var MyTake = (function (_super) {
         // Determine whether cursor is in title block
         var isTitle = state.blocks.some(function (block) { return block.type == 'title'; });
         var isConstitution = state.blocks.some(function (block) { return block.type == 'constitution'; });
+        var isAmendments = state.blocks.some(function (block) { return block.type == 'amendments'; });
+        var isFact = isConstitution || isAmendments;
         // If enter is pressed in title block, move cursor to beginning of next block
         if (event.which == key('Enter') && isTitle) {
             // Get the key of the first Text block after title.
-            var key_3 = state.document.nodes.rest().first().getFirstText().key;
+            var key_4 = state.document.nodes.rest().first().getFirstText().key;
             // Move selection (cursor) to beginning of first Text block after title.
             var cursorAfterTitle = Selection.create({
-                anchorKey: key_3,
+                anchorKey: key_4,
                 anchorOffset: 0,
-                focusKey: key_3,
+                focusKey: key_4,
                 focusOffset: 0,
                 isBackward: false,
                 isFocused: true
@@ -37883,9 +38068,9 @@ var MyTake = (function (_super) {
                 //Don't allow first paragraph to be deleted from editor. Should remain empty, but not removed from DOM
                 return state;
             }
-            if (selection.hasEdgeIn(state.document.nodes.rest().first()) && isConstitution) {
+            if (selection.hasEdgeIn(state.document.nodes.rest().first()) && isFact) {
                 if (state.document.nodes.first().getFirstText().text || state.document.nodes.size > 2) {
-                    //There is a title, or there is text after the constitution
+                    //There is a title, or there is text after the Fact
                     var newState = state
                         .transform()
                         .removeNodeByKey(state.document.nodes.rest().first().key)
@@ -37905,7 +38090,7 @@ var MyTake = (function (_super) {
     MyTake.prototype.render = function () {
         return (React.createElement("div", null,
             React.createElement(TakeEditor_1.default, { schema: this.state.schema, editorState: this.state.editorState, onChange: this.handleEditorChange, onKeyDown: this.handleEditorKeyDown }),
-            React.createElement(Foundation_1.default, { onConstitutionClearClick: this.handleConstitutionClearClick, onConstitutionSetClick: this.handleConstitutionSetClick, onConstitutionMouseUp: this.handleConstitutionMouseUp, constitutionNodes: this.state.constitutionNodes, textIsHighlighted: this.state.textIsHighlighted })));
+            React.createElement(Foundation_1.default, { onConstitutionClearClick: this.handleConstitutionClearClick, onConstitutionSetClick: this.handleConstitutionSetClick, onConstitutionMouseUp: this.handleConstitutionMouseUp, constitutionNodes: this.state.constitutionNodes, textIsHighlighted: this.state.constitutionTextIsHighlighted, onAmendmentsClearClick: this.handleAmendmentsClearClick, onAmendmentsSetClick: this.handleAmendmentsSetClick, onAmendmentsMouseUp: this.handleAmendmentsMouseUp, amendmentsNodes: this.state.amendmentsNodes, amendmentsTextIsHighlighted: this.state.amendmentsTextIsHighlighted })));
     };
     return MyTake;
 }(React.Component));
@@ -37913,7 +38098,7 @@ exports.default = MyTake;
 
 
 /***/ }),
-/* 185 */
+/* 187 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37948,7 +38133,7 @@ exports.default = {
 
 
 /***/ }),
-/* 186 */
+/* 188 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37972,7 +38157,7 @@ var __assign = (this && this.__assign) || Object.assign || function(t) {
     return t;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var React = __webpack_require__(7);
+var React = __webpack_require__(5);
 var _a = __webpack_require__(168), Editor = _a.Editor, Placeholder = _a.Placeholder;
 // Define a React component renderer for each of our text blocks.
 function TitleNode(props) {
@@ -38004,6 +38189,19 @@ function ConstitutionNode(props) {
         props.children));
 }
 exports.ConstitutionNode = ConstitutionNode;
+function AmendmentsNode(props) {
+    var nodes = [];
+    props.node.data.map(function (value) {
+        nodes = value;
+    });
+    return (React.createElement("div", __assign({ className: "editor__amendments" }, props.attributes),
+        nodes.map(function (element, index) {
+            element.props['key'] = index.toString();
+            return (React.createElement(element.component, element.props, element.innerHTML));
+        }),
+        props.children));
+}
+exports.AmendmentsNode = AmendmentsNode;
 var TakeEditor = (function (_super) {
     __extends(TakeEditor, _super);
     function TakeEditor(props) {
@@ -38020,13 +38218,14 @@ exports.default = TakeEditor;
 
 
 /***/ }),
-/* 187 */
+/* 189 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var TakeEditor_1 = __webpack_require__(186);
+var TakeEditor_1 = __webpack_require__(188);
+exports.AmendmentsNode = TakeEditor_1.AmendmentsNode;
 exports.TitleNode = TakeEditor_1.TitleNode;
 exports.ParagraphNode = TakeEditor_1.ParagraphNode;
 exports.ConstitutionNode = TakeEditor_1.ConstitutionNode;
@@ -38034,13 +38233,13 @@ exports.default = TakeEditor_1.default;
 
 
 /***/ }),
-/* 188 */
+/* 190 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var React = __webpack_require__(7);
+var React = __webpack_require__(5);
 var ReactDOM = __webpack_require__(38);
 var MyTake_1 = __webpack_require__(176);
 __webpack_require__(177);
@@ -38048,7 +38247,7 @@ ReactDOM.render(React.createElement(MyTake_1.default, null), document.getElement
 
 
 /***/ }),
-/* 189 */
+/* 191 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38099,7 +38298,7 @@ exports.default = getNodeArray;
 
 
 /***/ }),
-/* 190 */
+/* 192 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38220,7 +38419,7 @@ function fromByteArray (uint8) {
 
 
 /***/ }),
-/* 191 */
+/* 193 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -38233,11 +38432,11 @@ exports = module.exports = __webpack_require__(72);
   Export the version
 */
 
-exports.version = __webpack_require__(197).version;
+exports.version = __webpack_require__(199).version;
 
 
 /***/ }),
-/* 192 */
+/* 194 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var $ = __webpack_require__(73),
@@ -38252,7 +38451,7 @@ var $ = __webpack_require__(73),
     _ = {
       forEach: __webpack_require__(61),
       extend: __webpack_require__(133),
-      some: __webpack_require__(292)
+      some: __webpack_require__(295)
     },
 
   // Lookup table for coercing string data-* attributes to their corresponding
@@ -38738,12 +38937,12 @@ exports.is = function (selector) {
 
 
 /***/ }),
-/* 193 */
+/* 195 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var domEach = __webpack_require__(40).domEach,
     _ = {
-      pick: __webpack_require__(289),
+      pick: __webpack_require__(292),
     };
 
 var toString = Object.prototype.toString;
@@ -38865,7 +39064,7 @@ function parse(styles) {
 
 
 /***/ }),
-/* 194 */
+/* 196 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // https://github.com/jquery/jquery/blob/2.1.3/src/manipulation/var/rcheckableType.js
@@ -38874,7 +39073,7 @@ var submittableSelector = 'input,select,textarea,keygen',
     r20 = /%20/g,
     rCRLF = /\r?\n/g,
     _ = {
-      map: __webpack_require__(287)
+      map: __webpack_require__(290)
     };
 
 exports.serialize = function() {
@@ -38936,7 +39135,7 @@ exports.serializeArray = function() {
 
 
 /***/ }),
-/* 195 */
+/* 197 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var parse = __webpack_require__(55),
@@ -38949,7 +39148,7 @@ var parse = __webpack_require__(55),
     isHtml = utils.isHtml,
     slice = Array.prototype.slice,
     _ = {
-      flatten: __webpack_require__(286),
+      flatten: __webpack_require__(289),
       bind: __webpack_require__(81),
       forEach: __webpack_require__(61)
     };
@@ -39367,7 +39566,7 @@ exports.clone = function() {
 
 
 /***/ }),
-/* 196 */
+/* 198 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var select = __webpack_require__(112),
@@ -39378,9 +39577,9 @@ var select = __webpack_require__(112),
     _ = {
       bind: __webpack_require__(81),
       forEach: __webpack_require__(61),
-      reject: __webpack_require__(291),
-      filter: __webpack_require__(285),
-      reduce: __webpack_require__(290)
+      reject: __webpack_require__(294),
+      filter: __webpack_require__(288),
+      reduce: __webpack_require__(293)
     };
 
 exports.find = function(selectorOrHaystack) {
@@ -39802,7 +40001,7 @@ exports.addBack = function(selector) {
 
 
 /***/ }),
-/* 197 */
+/* 199 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -39946,21 +40145,21 @@ module.exports = {
 };
 
 /***/ }),
-/* 198 */
+/* 200 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(199)(undefined);
+exports = module.exports = __webpack_require__(201)(undefined);
 // imports
 
 
 // module
-exports.push([module.i, "/**\n*\thttps://standards.usa.gov/components/typography/#section-/typography/02-pairing-and-styles\n* Source Sans Pro headings, Merriweather body\n*/\n/**\n* Colors to be adjusted\n*/\n/**\n* end adjusted\n*/\n.editor__wrapper {\n  margin: 2rem auto;\n  width: 768px;\n  max-width: 100%; }\n\n.editor {\n  padding: 0 3rem;\n  min-height: 300px; }\n\n.editor__title {\n  text-align: left;\n  margin-top: 0;\n  position: relative;\n  font-family: \"Source Sans Pro\", sans-serif;\n  font-weight: 700;\n  font-size: 44px;\n  line-height: 1.3em; }\n\n.editor__title--placeholder {\n  opacity: 0.3; }\n\n.editor__paragraph--placeholder {\n  opacity: 0.3; }\n\n.editor__paragraph {\n  text-align: left;\n  margin-top: 0;\n  position: relative;\n  font-family: \"Source Sans Pro\", sans-serif;\n  font-weight: 300;\n  font-size: 22px;\n  line-height: 1.5em; }\n\n.editor__constitution {\n  border: #758AA8;\n  box-shadow: 1px 1px 2px #051A38;\n  color: #051A38;\n  padding: 5px 15px;\n  margin-bottom: 2rem;\n  font-family: \"Merriweather\", serif;\n  font-weight: 400;\n  font-size: 15px;\n  line-height: 1.7em;\n  font-style: italic; }\n\n.editor__constitution--highlighted {\n  color: #051A38;\n  background-color: #D4CF69; }\n\n.foundation {\n  margin-left: 3rem;\n  margin-right: 3rem; }\n  .foundation::after {\n    clear: both;\n    content: \"\";\n    display: table; }\n\n.foundation__heading {\n  margin-top: 0;\n  margin-bottom: 15px;\n  color: #051A38;\n  font-family: \"Source Sans Pro\", sans-serif;\n  font-weight: 700;\n  font-size: 34px;\n  line-height: 1.3em; }\n\n.foundation__instructions {\n  margin-top: 0;\n  margin-bottom: 15px;\n  color: #051A38;\n  font-family: \"Source Sans Pro\", sans-serif;\n  font-weight: 300;\n  font-size: 22px;\n  line-height: 1.5em; }\n\n.foundation__card-list {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -ms-flex-wrap: wrap;\n      flex-wrap: wrap;\n  -webkit-box-pack: justify;\n      -ms-flex-pack: justify;\n          justify-content: space-between; }\n\n.foundation__card {\n  border: 1px solid #758AA8;\n  box-shadow: 1px 1px 2px #051A38;\n  width: 100%;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  margin-bottom: 2rem; }\n  .foundation__card:nth-of-type(2n) {\n    margin-right: 0; }\n  .foundation__card:hover {\n    cursor: pointer; }\n  @media only screen and (min-width: 64em) {\n    .foundation__card {\n      width: 48.75%; } }\n\n.foundation__image {\n  display: block;\n  width: 110px;\n  height: 156px; }\n  @media only screen and (min-width: 30em) {\n    .foundation__image {\n      width: 220px;\n      height: 313px; } }\n\n.foundation__info-container {\n  -webkit-box-flex: 1;\n      -ms-flex: 1;\n          flex: 1; }\n\n.foundation__card-title {\n  font-family: \"Source Sans Pro\", sans-serif;\n  font-weight: 700;\n  font-size: 24px;\n  line-height: 1.3em;\n  margin: 0;\n  padding: 1rem; }\n  @media only screen and (min-width: 30em) {\n    .foundation__card-title {\n      padding: 2rem; } }\n\n.foundation__description {\n  font-family: \"Merriweather\", serif;\n  font-weight: 400;\n  font-size: 15px;\n  line-height: 1.7em;\n  float: left;\n  padding: 0 1rem; }\n  @media only screen and (min-width: 30em) {\n    .foundation__description {\n      padding: 2rem; } }\n\n.constitution__heading {\n  margin-top: 0;\n  margin-bottom: 15px;\n  color: #051A38;\n  font-family: \"Source Sans Pro\", sans-serif;\n  font-weight: 700;\n  font-size: 34px;\n  line-height: 1.3em; }\n\n.constitution__instructions {\n  margin-top: 0;\n  margin-bottom: 15px;\n  color: #051A38;\n  font-family: \"Source Sans Pro\", sans-serif;\n  font-weight: 300;\n  font-size: 22px;\n  line-height: 1.5em; }\n\n.constitution__row {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -ms-flex-wrap: wrap;\n      flex-wrap: wrap;\n  -webkit-box-pack: justify;\n      -ms-flex-pack: justify;\n          justify-content: space-between; }\n\n.constitution__sections {\n  font-family: \"Source Sans Pro\", sans-serif;\n  font-weight: 300;\n  font-size: 22px;\n  line-height: 1.5em;\n  width: 100%; }\n  @media only screen and (min-width: 48em) {\n    .constitution__sections {\n      width: 48%; } }\n\n.constitution__text {\n  border: 1px solid #758AA8;\n  box-shadow: 1px 1px 2px #051A38;\n  padding: 0 15px;\n  font-family: \"Merriweather\", serif;\n  font-weight: 400;\n  font-size: 15px;\n  line-height: 1.7em;\n  height: 313px;\n  overflow-y: scroll;\n  width: 100%; }\n  @media only screen and (min-width: 64em) {\n    .constitution__text {\n      width: 48%; } }\n  .constitution__text::-webkit-scrollbar {\n    -webkit-appearance: none;\n    width: 10px; }\n  .constitution__text::-webkit-scrollbar-thumb {\n    border-radius: 2px;\n    background-color: #D4CF69;\n    -webkit-box-shadow: 0 0 1px rgba(255, 255, 255, 0.5); }\n  .constitution__text::-webkit-scrollbar-track {\n    background-color: #758AA8; }\n\n.constitution__text--selected {\n  color: #051A38;\n  background-color: #D4CF69;\n  cursor: pointer; }\n\n.debates__heading {\n  margin-top: 0;\n  margin-bottom: 15px;\n  color: #051A38;\n  font-family: \"Source Sans Pro\", sans-serif;\n  font-weight: 700;\n  font-size: 34px;\n  line-height: 1.3em; }\n\n.debates__instructions {\n  margin-top: 0;\n  margin-bottom: 15px;\n  color: #051A38;\n  font-family: \"Source Sans Pro\", sans-serif;\n  font-weight: 300;\n  font-size: 22px;\n  line-height: 1.5em; }\n\n.debates__placeholder {\n  border-radius: 5px;\n  height: 313px;\n  font-family: \"Merriweather\", serif;\n  font-weight: 400;\n  font-size: 15px;\n  line-height: 1.7em; }\n\n.header {\n  width: 100%; }\n  .header::after {\n    clear: both;\n    content: \"\";\n    display: table; }\n\n.header__skip-link {\n  position: absolute;\n  top: -40px;\n  left: 0px;\n  padding: 2px 5px;\n  font-family: \"Merriweather\", serif;\n  font-weight: 400;\n  font-size: 15px;\n  line-height: 1.7em;\n  color: #FFF;\n  transition: top .1s ease-in, background .5s linear; }\n  .header__skip-link:focus {\n    top: 0px;\n    background-color: #A03546;\n    transition: top .1s ease-in, background .5s linear; }\n\n.header__logo {\n  font-family: \"Source Sans Pro\", sans-serif;\n  font-weight: 300;\n  font-size: 44px;\n  line-height: 1.3em;\n  font-style: normal;\n  margin-left: 3rem;\n  line-height: 8rem; }\n\n.header__logo-link {\n  text-decoration: none;\n  color: #2C4770; }\n  .header__logo-link:hover {\n    color: #758AA8; }\n\n.header__button-list {\n  float: right; }\n\n.header__button {\n  font-family: \"Source Sans Pro\", sans-serif;\n  font-weight: 300;\n  font-size: 22px;\n  line-height: 1.5em;\n  line-height: 8rem;\n  margin-right: 3rem;\n  color: #2C4770; }\n  .header__button:hover {\n    color: #758AA8; }\n\n.header__button--github {\n  font-size: 4rem; }\n\n.header__nav {\n  border-top: 1px solid #051A38;\n  border-bottom: 2px solid #051A38;\n  line-height: 1rem; }\n  .header__nav::after {\n    clear: both;\n    content: \"\";\n    display: table; }\n\n.nav__list {\n  list-style: none; }\n\n.nav__list-item {\n  margin-right: 3rem;\n  display: inline-block; }\n\n.nav__link {\n  font-family: \"Source Sans Pro\", sans-serif;\n  font-weight: 400;\n  font-size: 13px;\n  line-height: 1.3em;\n  text-transform: uppercase;\n  color: #2C4770;\n  text-decoration: none; }\n  .nav__link:hover {\n    color: #758AA8; }\n\n.footer {\n  margin: 2rem 3rem;\n  border-top: 1px solid #051A38; }\n\nbody {\n  margin: 0;\n  padding: 0; }\n\nhtml {\n  font-size: 10px;\n  box-sizing: border-box; }\n", ""]);
+exports.push([module.i, "/**\n*\thttps://standards.usa.gov/components/typography/#section-/typography/02-pairing-and-styles\n* Source Sans Pro headings, Merriweather body\n*/\n/**\n* Colors to be adjusted\n*/\n/**\n* end adjusted\n*/\n.editor__wrapper {\n  margin: 2rem auto;\n  width: 768px;\n  max-width: 100%; }\n\n.editor {\n  padding: 0 3rem;\n  min-height: 300px; }\n\n.editor__title {\n  text-align: left;\n  margin-top: 0;\n  position: relative;\n  font-family: \"Source Sans Pro\", sans-serif;\n  font-weight: 700;\n  font-size: 44px;\n  line-height: 1.3em; }\n\n.editor__title--placeholder {\n  opacity: 0.3; }\n\n.editor__paragraph--placeholder {\n  opacity: 0.3; }\n\n.editor__paragraph {\n  text-align: left;\n  margin-top: 0;\n  position: relative;\n  font-family: \"Source Sans Pro\", sans-serif;\n  font-weight: 300;\n  font-size: 22px;\n  line-height: 1.5em; }\n\n.editor__constitution {\n  border: #758AA8;\n  box-shadow: 1px 1px 2px #051A38;\n  color: #051A38;\n  padding: 5px 15px;\n  margin-bottom: 2rem;\n  font-family: \"Merriweather\", serif;\n  font-weight: 400;\n  font-size: 15px;\n  line-height: 1.7em;\n  font-style: italic; }\n\n.editor__constitution--highlighted {\n  color: #051A38;\n  background-color: #D4CF69; }\n\n.editor__amendments {\n  border: #758AA8;\n  box-shadow: 1px 1px 2px #051A38;\n  color: #051A38;\n  padding: 5px 15px;\n  margin-bottom: 2rem;\n  font-family: \"Merriweather\", serif;\n  font-weight: 400;\n  font-size: 15px;\n  line-height: 1.7em;\n  font-style: italic; }\n\n.editor__amendments--highlighted {\n  color: #051A38;\n  background-color: #D4CF69; }\n\n.foundation {\n  margin-left: 3rem;\n  margin-right: 3rem; }\n  .foundation::after {\n    clear: both;\n    content: \"\";\n    display: table; }\n\n.foundation__heading {\n  margin-top: 0;\n  margin-bottom: 15px;\n  color: #051A38;\n  font-family: \"Source Sans Pro\", sans-serif;\n  font-weight: 700;\n  font-size: 34px;\n  line-height: 1.3em; }\n\n.foundation__instructions {\n  margin-top: 0;\n  margin-bottom: 15px;\n  color: #051A38;\n  font-family: \"Source Sans Pro\", sans-serif;\n  font-weight: 300;\n  font-size: 22px;\n  line-height: 1.5em; }\n\n.foundation__card-list {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -ms-flex-wrap: wrap;\n      flex-wrap: wrap;\n  -webkit-box-pack: justify;\n      -ms-flex-pack: justify;\n          justify-content: space-between; }\n\n.foundation__card {\n  border: 1px solid #758AA8;\n  box-shadow: 1px 1px 2px #051A38;\n  width: 100%;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  margin-bottom: 2rem; }\n  .foundation__card:nth-of-type(2n) {\n    margin-right: 0; }\n  .foundation__card:hover {\n    cursor: pointer; }\n  @media only screen and (min-width: 64em) {\n    .foundation__card {\n      width: 48.75%; } }\n\n.foundation__image {\n  display: block;\n  width: 110px;\n  height: 156px; }\n  @media only screen and (min-width: 30em) {\n    .foundation__image {\n      width: 220px;\n      height: 313px; } }\n\n.foundation__info-container {\n  -webkit-box-flex: 1;\n      -ms-flex: 1;\n          flex: 1; }\n\n.foundation__card-title {\n  font-family: \"Source Sans Pro\", sans-serif;\n  font-weight: 700;\n  font-size: 24px;\n  line-height: 1.3em;\n  margin: 0;\n  padding: 1rem; }\n  @media only screen and (min-width: 30em) {\n    .foundation__card-title {\n      padding: 2rem; } }\n\n.foundation__description {\n  font-family: \"Merriweather\", serif;\n  font-weight: 400;\n  font-size: 15px;\n  line-height: 1.7em;\n  float: left;\n  padding: 0 1rem; }\n  @media only screen and (min-width: 30em) {\n    .foundation__description {\n      padding: 2rem; } }\n\n.constitution__heading {\n  margin-top: 0;\n  margin-bottom: 15px;\n  color: #051A38;\n  font-family: \"Source Sans Pro\", sans-serif;\n  font-weight: 700;\n  font-size: 34px;\n  line-height: 1.3em; }\n\n.constitution__instructions {\n  margin-top: 0;\n  margin-bottom: 15px;\n  color: #051A38;\n  font-family: \"Source Sans Pro\", sans-serif;\n  font-weight: 300;\n  font-size: 22px;\n  line-height: 1.5em; }\n\n.constitution__row {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -ms-flex-wrap: wrap;\n      flex-wrap: wrap;\n  -webkit-box-pack: justify;\n      -ms-flex-pack: justify;\n          justify-content: space-between; }\n\n.constitution__sections {\n  font-family: \"Source Sans Pro\", sans-serif;\n  font-weight: 300;\n  font-size: 22px;\n  line-height: 1.5em;\n  width: 100%; }\n  @media only screen and (min-width: 48em) {\n    .constitution__sections {\n      width: 48%; } }\n\n.constitution__text {\n  border: 1px solid #758AA8;\n  box-shadow: 1px 1px 2px #051A38;\n  padding: 0 15px;\n  font-family: \"Merriweather\", serif;\n  font-weight: 400;\n  font-size: 15px;\n  line-height: 1.7em;\n  height: 313px;\n  overflow-y: scroll;\n  width: 100%; }\n  @media only screen and (min-width: 64em) {\n    .constitution__text {\n      width: 48%; } }\n  .constitution__text::-webkit-scrollbar {\n    -webkit-appearance: none;\n    width: 10px; }\n  .constitution__text::-webkit-scrollbar-thumb {\n    border-radius: 2px;\n    background-color: #D4CF69;\n    -webkit-box-shadow: 0 0 1px rgba(255, 255, 255, 0.5); }\n  .constitution__text::-webkit-scrollbar-track {\n    background-color: #758AA8; }\n\n.constitution__text--selected {\n  color: #051A38;\n  background-color: #D4CF69;\n  cursor: pointer; }\n\n.amendments__heading {\n  margin-top: 0;\n  margin-bottom: 15px;\n  color: #051A38;\n  font-family: \"Source Sans Pro\", sans-serif;\n  font-weight: 700;\n  font-size: 34px;\n  line-height: 1.3em; }\n\n.amendments__instructions {\n  margin-top: 0;\n  margin-bottom: 15px;\n  color: #051A38;\n  font-family: \"Source Sans Pro\", sans-serif;\n  font-weight: 300;\n  font-size: 22px;\n  line-height: 1.5em; }\n\n.amendments__row {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -ms-flex-wrap: wrap;\n      flex-wrap: wrap;\n  -webkit-box-pack: justify;\n      -ms-flex-pack: justify;\n          justify-content: space-between; }\n\n.amendments__sections {\n  font-family: \"Source Sans Pro\", sans-serif;\n  font-weight: 300;\n  font-size: 22px;\n  line-height: 1.5em;\n  width: 100%; }\n  @media only screen and (min-width: 48em) {\n    .amendments__sections {\n      width: 48%; } }\n\n.amendments__text {\n  border: 1px solid #758AA8;\n  box-shadow: 1px 1px 2px #051A38;\n  padding: 0 15px;\n  font-family: \"Merriweather\", serif;\n  font-weight: 400;\n  font-size: 15px;\n  line-height: 1.7em;\n  height: 313px;\n  overflow-y: scroll;\n  width: 100%; }\n  @media only screen and (min-width: 64em) {\n    .amendments__text {\n      width: 48%; } }\n  .amendments__text::-webkit-scrollbar {\n    -webkit-appearance: none;\n    width: 10px; }\n  .amendments__text::-webkit-scrollbar-thumb {\n    border-radius: 2px;\n    background-color: #D4CF69;\n    -webkit-box-shadow: 0 0 1px rgba(255, 255, 255, 0.5); }\n  .amendments__text::-webkit-scrollbar-track {\n    background-color: #758AA8; }\n\n.amendments__text--selected {\n  color: #051A38;\n  background-color: #D4CF69;\n  cursor: pointer; }\n\n.debates__heading {\n  margin-top: 0;\n  margin-bottom: 15px;\n  color: #051A38;\n  font-family: \"Source Sans Pro\", sans-serif;\n  font-weight: 700;\n  font-size: 34px;\n  line-height: 1.3em; }\n\n.debates__instructions {\n  margin-top: 0;\n  margin-bottom: 15px;\n  color: #051A38;\n  font-family: \"Source Sans Pro\", sans-serif;\n  font-weight: 300;\n  font-size: 22px;\n  line-height: 1.5em; }\n\n.debates__placeholder {\n  border-radius: 5px;\n  height: 313px;\n  font-family: \"Merriweather\", serif;\n  font-weight: 400;\n  font-size: 15px;\n  line-height: 1.7em; }\n\n.header {\n  width: 100%; }\n  .header::after {\n    clear: both;\n    content: \"\";\n    display: table; }\n\n.header__skip-link {\n  position: absolute;\n  top: -40px;\n  left: 0px;\n  padding: 2px 5px;\n  font-family: \"Merriweather\", serif;\n  font-weight: 400;\n  font-size: 15px;\n  line-height: 1.7em;\n  color: #FFF;\n  transition: top .1s ease-in, background .5s linear; }\n  .header__skip-link:focus {\n    top: 0px;\n    background-color: #A03546;\n    transition: top .1s ease-in, background .5s linear; }\n\n.header__logo {\n  font-family: \"Source Sans Pro\", sans-serif;\n  font-weight: 300;\n  font-size: 44px;\n  line-height: 1.3em;\n  font-style: normal;\n  margin-left: 3rem;\n  line-height: 8rem; }\n\n.header__logo-link {\n  text-decoration: none;\n  color: #2C4770; }\n  .header__logo-link:hover {\n    color: #758AA8; }\n\n.header__button-list {\n  float: right; }\n\n.header__button {\n  font-family: \"Source Sans Pro\", sans-serif;\n  font-weight: 300;\n  font-size: 22px;\n  line-height: 1.5em;\n  line-height: 8rem;\n  margin-right: 3rem;\n  color: #2C4770; }\n  .header__button:hover {\n    color: #758AA8; }\n\n.header__button--github {\n  font-size: 4rem; }\n\n.header__nav {\n  border-top: 1px solid #051A38;\n  border-bottom: 2px solid #051A38;\n  line-height: 1rem; }\n  .header__nav::after {\n    clear: both;\n    content: \"\";\n    display: table; }\n\n.nav__list {\n  list-style: none; }\n\n.nav__list-item {\n  margin-right: 3rem;\n  display: inline-block; }\n\n.nav__link {\n  font-family: \"Source Sans Pro\", sans-serif;\n  font-weight: 400;\n  font-size: 13px;\n  line-height: 1.3em;\n  text-transform: uppercase;\n  color: #2C4770;\n  text-decoration: none; }\n  .nav__link:hover {\n    color: #758AA8; }\n\n.footer {\n  margin: 2rem 3rem;\n  border-top: 1px solid #051A38; }\n\nbody {\n  margin: 0;\n  padding: 0; }\n\nhtml {\n  font-size: 10px;\n  box-sizing: border-box; }\n", ""]);
 
 // exports
 
 
 /***/ }),
-/* 199 */
+/* 201 */
 /***/ (function(module, exports) {
 
 /*
@@ -40042,7 +40241,7 @@ function toComment(sourceMap) {
 
 
 /***/ }),
-/* 200 */
+/* 202 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -40053,11 +40252,11 @@ module.exports = compile;
 module.exports.compileUnsafe = compileUnsafe;
 module.exports.compileToken = compileToken;
 
-var parse       = __webpack_require__(203),
+var parse       = __webpack_require__(205),
     DomUtils    = __webpack_require__(31),
     isTag       = DomUtils.isTag,
-    Rules       = __webpack_require__(201),
-    sortRules   = __webpack_require__(202),
+    Rules       = __webpack_require__(203),
+    sortRules   = __webpack_require__(204),
     BaseFuncs   = __webpack_require__(39),
     trueFunc    = BaseFuncs.trueFunc,
     falseFunc   = BaseFuncs.falseFunc,
@@ -40240,7 +40439,7 @@ filters.matches = function(next, token, options, context){
 
 
 /***/ }),
-/* 201 */
+/* 203 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var DomUtils    = __webpack_require__(31),
@@ -40334,7 +40533,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 202 */
+/* 204 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = sortByProcedure;
@@ -40420,7 +40619,7 @@ function getProcedure(token){
 
 
 /***/ }),
-/* 203 */
+/* 205 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -40694,16 +40893,16 @@ function addToken(subselects, tokens){
 
 
 /***/ }),
-/* 204 */
+/* 206 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var copy             = __webpack_require__(232)
+var copy             = __webpack_require__(234)
   , normalizeOptions = __webpack_require__(120)
   , ensureCallable   = __webpack_require__(15)
-  , map              = __webpack_require__(240)
+  , map              = __webpack_require__(242)
   , callable         = __webpack_require__(15)
   , validValue       = __webpack_require__(12)
 
@@ -40733,7 +40932,7 @@ module.exports = function (props/*, options*/) {
 
 
 /***/ }),
-/* 205 */
+/* 207 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -40811,7 +41010,7 @@ module.exports = direction;
 
 
 /***/ }),
-/* 206 */
+/* 208 */
 /***/ (function(module, exports) {
 
 //Types of elements found in the DOM
@@ -40830,14 +41029,14 @@ module.exports = {
 };
 
 /***/ }),
-/* 207 */
+/* 209 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var ElementType = __webpack_require__(42);
 
 var re_whitespace = /\s+/g;
 var NodePrototype = __webpack_require__(115);
-var ElementPrototype = __webpack_require__(208);
+var ElementPrototype = __webpack_require__(210);
 
 function DomHandler(callback, options, elementCB){
 	if(typeof callback === "object"){
@@ -41053,7 +41252,7 @@ module.exports = DomHandler;
 
 
 /***/ }),
-/* 208 */
+/* 210 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // DOM-Level-1-compliant structure
@@ -41079,7 +41278,7 @@ Object.keys(domLvl1).forEach(function(key) {
 
 
 /***/ }),
-/* 209 */
+/* 211 */
 /***/ (function(module, exports) {
 
 // removeSubsets
@@ -41226,7 +41425,7 @@ exports.uniqueSort = function(nodes) {
 
 
 /***/ }),
-/* 210 */
+/* 212 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var ElementType = __webpack_require__(42);
@@ -41319,7 +41518,7 @@ exports.getElementsByTagType = function(type, element, recurse, limit){
 
 
 /***/ }),
-/* 211 */
+/* 213 */
 /***/ (function(module, exports) {
 
 exports.removeElement = function(elem){
@@ -41402,7 +41601,7 @@ exports.prepend = function(elem, prev){
 
 
 /***/ }),
-/* 212 */
+/* 214 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var isTag = __webpack_require__(42).isTag;
@@ -41502,7 +41701,7 @@ function findAll(test, elems){
 
 
 /***/ }),
-/* 213 */
+/* 215 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var ElementType = __webpack_require__(42),
@@ -41530,7 +41729,7 @@ function getText(elem){
 
 
 /***/ }),
-/* 214 */
+/* 216 */
 /***/ (function(module, exports) {
 
 var getChildren = exports.getChildren = function(elem){
@@ -41560,11 +41759,11 @@ exports.getName = function(elem){
 
 
 /***/ }),
-/* 215 */
+/* 217 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var encode = __webpack_require__(217),
-    decode = __webpack_require__(216);
+var encode = __webpack_require__(219),
+    decode = __webpack_require__(218);
 
 exports.decode = function(data, level){
 	return (!level || level <= 0 ? decode.XML : decode.HTML)(data);
@@ -41599,7 +41798,7 @@ exports.escape = encode.escape;
 
 
 /***/ }),
-/* 216 */
+/* 218 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var entityMap = __webpack_require__(76),
@@ -41676,7 +41875,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 217 */
+/* 219 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var inverseXML = getInverseObj(__webpack_require__(77)),
@@ -41755,7 +41954,7 @@ exports.escape = escapeXML;
 
 
 /***/ }),
-/* 218 */
+/* 220 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -41790,7 +41989,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 219 */
+/* 221 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -41826,19 +42025,19 @@ module.exports = function (searchElement/*, fromIndex*/) {
 
 
 /***/ }),
-/* 220 */
+/* 222 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-module.exports = __webpack_require__(221)()
+module.exports = __webpack_require__(223)()
 	? Array.from
-	: __webpack_require__(222);
+	: __webpack_require__(224);
 
 
 /***/ }),
-/* 221 */
+/* 223 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -41854,7 +42053,7 @@ module.exports = function () {
 
 
 /***/ }),
-/* 222 */
+/* 224 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -41862,7 +42061,7 @@ module.exports = function () {
 
 var iteratorSymbol = __webpack_require__(32).iterator
   , isArguments    = __webpack_require__(56)
-  , isFunction     = __webpack_require__(223)
+  , isFunction     = __webpack_require__(225)
   , toPosInt       = __webpack_require__(119)
   , callable       = __webpack_require__(15)
   , validValue     = __webpack_require__(12)
@@ -41967,7 +42166,7 @@ module.exports = function (arrayLike/*, mapFn, thisArg*/) {
 
 
 /***/ }),
-/* 223 */
+/* 225 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -41975,7 +42174,7 @@ module.exports = function (arrayLike/*, mapFn, thisArg*/) {
 
 var toString = Object.prototype.toString
 
-  , id = toString.call(__webpack_require__(224));
+  , id = toString.call(__webpack_require__(226));
 
 module.exports = function (f) {
 	return (typeof f === "function") && (toString.call(f) === id);
@@ -41983,7 +42182,7 @@ module.exports = function (f) {
 
 
 /***/ }),
-/* 224 */
+/* 226 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -41993,19 +42192,19 @@ module.exports = function () {};
 
 
 /***/ }),
-/* 225 */
+/* 227 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-module.exports = __webpack_require__(226)()
+module.exports = __webpack_require__(228)()
 	? Math.sign
-	: __webpack_require__(227);
+	: __webpack_require__(229);
 
 
 /***/ }),
-/* 226 */
+/* 228 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -42019,7 +42218,7 @@ module.exports = function () {
 
 
 /***/ }),
-/* 227 */
+/* 229 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -42033,13 +42232,13 @@ module.exports = function (value) {
 
 
 /***/ }),
-/* 228 */
+/* 230 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var sign = __webpack_require__(225)
+var sign = __webpack_require__(227)
 
   , abs = Math.abs, floor = Math.floor;
 
@@ -42052,7 +42251,7 @@ module.exports = function (value) {
 
 
 /***/ }),
-/* 229 */
+/* 231 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -42088,7 +42287,7 @@ module.exports = function (method, defVal) {
 
 
 /***/ }),
-/* 230 */
+/* 232 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -42104,13 +42303,13 @@ module.exports = function () {
 
 
 /***/ }),
-/* 231 */
+/* 233 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var keys  = __webpack_require__(237)
+var keys  = __webpack_require__(239)
   , value = __webpack_require__(12)
 
   , max = Math.max;
@@ -42133,13 +42332,13 @@ module.exports = function (dest, src/*, …srcn*/) {
 
 
 /***/ }),
-/* 232 */
+/* 234 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var aFrom  = __webpack_require__(220)
+var aFrom  = __webpack_require__(222)
   , assign = __webpack_require__(78)
   , value  = __webpack_require__(12);
 
@@ -42159,7 +42358,7 @@ module.exports = function (obj/*, propertyNames, options*/) {
 
 
 /***/ }),
-/* 233 */
+/* 235 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -42202,17 +42401,17 @@ module.exports = (function () {
 
 
 /***/ }),
-/* 234 */
+/* 236 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-module.exports = __webpack_require__(229)('forEach');
+module.exports = __webpack_require__(231)('forEach');
 
 
 /***/ }),
-/* 235 */
+/* 237 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -42224,7 +42423,7 @@ module.exports = function (obj) { return typeof obj === 'function'; };
 
 
 /***/ }),
-/* 236 */
+/* 238 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -42238,19 +42437,19 @@ module.exports = function (x) {
 
 
 /***/ }),
-/* 237 */
+/* 239 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-module.exports = __webpack_require__(238)()
+module.exports = __webpack_require__(240)()
 	? Object.keys
-	: __webpack_require__(239);
+	: __webpack_require__(241);
 
 
 /***/ }),
-/* 238 */
+/* 240 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -42265,7 +42464,7 @@ module.exports = function () {
 
 
 /***/ }),
-/* 239 */
+/* 241 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -42279,14 +42478,14 @@ module.exports = function (object) {
 
 
 /***/ }),
-/* 240 */
+/* 242 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var callable = __webpack_require__(15)
-  , forEach  = __webpack_require__(234)
+  , forEach  = __webpack_require__(236)
 
   , call = Function.prototype.call;
 
@@ -42301,7 +42500,7 @@ module.exports = function (obj, cb/*, thisArg*/) {
 
 
 /***/ }),
-/* 241 */
+/* 243 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -42317,7 +42516,7 @@ module.exports = function (arg/*, …args*/) {
 
 
 /***/ }),
-/* 242 */
+/* 244 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -42332,7 +42531,7 @@ module.exports = function () {
 
 
 /***/ }),
-/* 243 */
+/* 245 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -42346,7 +42545,7 @@ module.exports = function (searchString/*, position*/) {
 
 
 /***/ }),
-/* 244 */
+/* 246 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -42383,7 +42582,7 @@ ArrayIterator.prototype = Object.create(Iterator.prototype, {
 
 
 /***/ }),
-/* 245 */
+/* 247 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -42392,7 +42591,7 @@ ArrayIterator.prototype = Object.create(Iterator.prototype, {
 var isArguments = __webpack_require__(56)
   , callable    = __webpack_require__(15)
   , isString    = __webpack_require__(58)
-  , get         = __webpack_require__(246)
+  , get         = __webpack_require__(248)
 
   , isArray = Array.isArray, call = Function.prototype.call
   , some = Array.prototype.some;
@@ -42436,7 +42635,7 @@ module.exports = function (iterable, cb/*, thisArg*/) {
 
 
 /***/ }),
-/* 246 */
+/* 248 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -42444,8 +42643,8 @@ module.exports = function (iterable, cb/*, thisArg*/) {
 
 var isArguments    = __webpack_require__(56)
   , isString       = __webpack_require__(58)
-  , ArrayIterator  = __webpack_require__(244)
-  , StringIterator = __webpack_require__(248)
+  , ArrayIterator  = __webpack_require__(246)
+  , StringIterator = __webpack_require__(250)
   , iterable       = __webpack_require__(124)
   , iteratorSymbol = __webpack_require__(32).iterator;
 
@@ -42458,7 +42657,7 @@ module.exports = function (obj) {
 
 
 /***/ }),
-/* 247 */
+/* 249 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -42480,7 +42679,7 @@ module.exports = function (value) {
 
 
 /***/ }),
-/* 248 */
+/* 250 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -42524,17 +42723,17 @@ StringIterator.prototype = Object.create(Iterator.prototype, {
 
 
 /***/ }),
-/* 249 */
+/* 251 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-module.exports = __webpack_require__(250)() ? Map : __webpack_require__(254);
+module.exports = __webpack_require__(252)() ? Map : __webpack_require__(256);
 
 
 /***/ }),
-/* 250 */
+/* 252 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -42573,7 +42772,7 @@ module.exports = function () {
 
 
 /***/ }),
-/* 251 */
+/* 253 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -42589,18 +42788,18 @@ module.exports = (function () {
 
 
 /***/ }),
-/* 252 */
+/* 254 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-module.exports = __webpack_require__(241)('key',
+module.exports = __webpack_require__(243)('key',
 	'value', 'key+value');
 
 
 /***/ }),
-/* 253 */
+/* 255 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -42610,7 +42809,7 @@ var setPrototypeOf    = __webpack_require__(57)
   , d                 = __webpack_require__(21)
   , Iterator          = __webpack_require__(79)
   , toStringTagSymbol = __webpack_require__(32).toStringTag
-  , kinds             = __webpack_require__(252)
+  , kinds             = __webpack_require__(254)
 
   , defineProperties = Object.defineProperties
   , unBind = Iterator.prototype._unBind
@@ -42645,24 +42844,24 @@ Object.defineProperty(MapIterator.prototype, toStringTagSymbol,
 
 
 /***/ }),
-/* 254 */
+/* 256 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var clear          = __webpack_require__(118)
-  , eIndexOf       = __webpack_require__(219)
+  , eIndexOf       = __webpack_require__(221)
   , setPrototypeOf = __webpack_require__(57)
   , callable       = __webpack_require__(15)
   , validValue     = __webpack_require__(12)
   , d              = __webpack_require__(21)
-  , ee             = __webpack_require__(260)
+  , ee             = __webpack_require__(262)
   , Symbol         = __webpack_require__(32)
   , iterator       = __webpack_require__(124)
-  , forOf          = __webpack_require__(245)
-  , Iterator       = __webpack_require__(253)
-  , isNative       = __webpack_require__(251)
+  , forOf          = __webpack_require__(247)
+  , Iterator       = __webpack_require__(255)
+  , isNative       = __webpack_require__(253)
 
   , call = Function.prototype.call
   , defineProperties = Object.defineProperties, getPrototypeOf = Object.getPrototypeOf
@@ -42756,7 +42955,7 @@ Object.defineProperty(MapPoly.prototype, Symbol.toStringTag, d('c', 'Map'));
 
 
 /***/ }),
-/* 255 */
+/* 257 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -42780,7 +42979,7 @@ module.exports = function () {
 
 
 /***/ }),
-/* 256 */
+/* 258 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -42796,7 +42995,7 @@ module.exports = function (x) {
 
 
 /***/ }),
-/* 257 */
+/* 259 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -42805,7 +43004,7 @@ module.exports = function (x) {
 
 
 var d              = __webpack_require__(21)
-  , validateSymbol = __webpack_require__(258)
+  , validateSymbol = __webpack_require__(260)
 
   , create = Object.create, defineProperties = Object.defineProperties
   , defineProperty = Object.defineProperty, objPrototype = Object.prototype
@@ -42921,13 +43120,13 @@ defineProperty(HiddenSymbol.prototype, SymbolPolyfill.toPrimitive,
 
 
 /***/ }),
-/* 258 */
+/* 260 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var isSymbol = __webpack_require__(256);
+var isSymbol = __webpack_require__(258);
 
 module.exports = function (value) {
 	if (!isSymbol(value)) throw new TypeError(value + " is not a symbol");
@@ -42936,7 +43135,7 @@ module.exports = function (value) {
 
 
 /***/ }),
-/* 259 */
+/* 261 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(module, global) {var __WEBPACK_AMD_DEFINE_RESULT__;/*! https://mths.be/esrever v0.2.0 by @mathias */
@@ -43014,7 +43213,7 @@ module.exports = function (value) {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(30)(module), __webpack_require__(9)))
 
 /***/ }),
-/* 260 */
+/* 262 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43153,7 +43352,7 @@ exports.methods = methods;
 
 
 /***/ }),
-/* 261 */
+/* 263 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43190,7 +43389,7 @@ function camelize(string) {
 module.exports = camelize;
 
 /***/ }),
-/* 262 */
+/* 264 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43207,7 +43406,7 @@ module.exports = camelize;
 
 
 
-var camelize = __webpack_require__(261);
+var camelize = __webpack_require__(263);
 
 var msPattern = /^-ms-/;
 
@@ -43235,7 +43434,7 @@ function camelizeStyleName(string) {
 module.exports = camelizeStyleName;
 
 /***/ }),
-/* 263 */
+/* 265 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43252,7 +43451,7 @@ module.exports = camelizeStyleName;
  * 
  */
 
-var isTextNode = __webpack_require__(271);
+var isTextNode = __webpack_require__(273);
 
 /*eslint-disable no-bitwise */
 
@@ -43280,7 +43479,7 @@ function containsNode(outerNode, innerNode) {
 module.exports = containsNode;
 
 /***/ }),
-/* 264 */
+/* 266 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43413,7 +43612,7 @@ module.exports = createArrayFromMixed;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 265 */
+/* 267 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43434,8 +43633,8 @@ module.exports = createArrayFromMixed;
 
 var ExecutionEnvironment = __webpack_require__(8);
 
-var createArrayFromMixed = __webpack_require__(264);
-var getMarkupWrap = __webpack_require__(266);
+var createArrayFromMixed = __webpack_require__(266);
+var getMarkupWrap = __webpack_require__(268);
 var invariant = __webpack_require__(1);
 
 /**
@@ -43503,7 +43702,7 @@ module.exports = createNodesFromMarkup;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 266 */
+/* 268 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43604,7 +43803,7 @@ module.exports = getMarkupWrap;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 267 */
+/* 269 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43648,7 +43847,7 @@ function getUnboundedScrollPosition(scrollable) {
 module.exports = getUnboundedScrollPosition;
 
 /***/ }),
-/* 268 */
+/* 270 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43686,7 +43885,7 @@ function hyphenate(string) {
 module.exports = hyphenate;
 
 /***/ }),
-/* 269 */
+/* 271 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43703,7 +43902,7 @@ module.exports = hyphenate;
 
 
 
-var hyphenate = __webpack_require__(268);
+var hyphenate = __webpack_require__(270);
 
 var msPattern = /^ms-/;
 
@@ -43730,7 +43929,7 @@ function hyphenateStyleName(string) {
 module.exports = hyphenateStyleName;
 
 /***/ }),
-/* 270 */
+/* 272 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43760,7 +43959,7 @@ function isNode(object) {
 module.exports = isNode;
 
 /***/ }),
-/* 271 */
+/* 273 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43777,7 +43976,7 @@ module.exports = isNode;
  * @typechecks
  */
 
-var isNode = __webpack_require__(270);
+var isNode = __webpack_require__(272);
 
 /**
  * @param {*} object The object to check.
@@ -43790,7 +43989,7 @@ function isTextNode(object) {
 module.exports = isTextNode;
 
 /***/ }),
-/* 272 */
+/* 274 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43825,7 +44024,7 @@ function memoizeStringOnly(callback) {
 module.exports = memoizeStringOnly;
 
 /***/ }),
-/* 273 */
+/* 275 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43853,7 +44052,7 @@ if (ExecutionEnvironment.canUseDOM) {
 module.exports = performance || {};
 
 /***/ }),
-/* 274 */
+/* 276 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43870,7 +44069,7 @@ module.exports = performance || {};
  * @typechecks
  */
 
-var performance = __webpack_require__(273);
+var performance = __webpack_require__(275);
 
 var performanceNow;
 
@@ -43892,7 +44091,7 @@ if (performance.now) {
 module.exports = performanceNow;
 
 /***/ }),
-/* 275 */
+/* 277 */
 /***/ (function(module, exports) {
 
 
@@ -43955,7 +44154,7 @@ function getDocument(node) {
 
 
 /***/ }),
-/* 276 */
+/* 278 */
 /***/ (function(module, exports) {
 
 // this is a browser-only module. There is a non-browser equivalent in the same
@@ -43965,13 +44164,19 @@ module.exports =  !!document.attachEvent && window !== document.parentWindow;
 
 
 /***/ }),
-/* 277 */
+/* 279 */
+/***/ (function(module, exports) {
+
+module.exports = "<h2 data-offset=\"22\">Amendment 1</h2> <p data-offset=\"59\">Congress shall make no law respecting an establishment of religion, or prohibiting the free exercise thereof; or abridging the freedom of speech, or of the press; or the right of the people peaceably to assemble, and to petition the Government for a redress of grievances.</p>  <h2 data-offset=\"359\">Amendment 2</h2> <p data-offset=\"397\">A well regulated Militia, being necessary to the security of a free State, the right of the people to keep and bear Arms, shall not be infringed.</p>  <h2 data-offset=\"570\">Amendment 3</h2> <p data-offset=\"608\">No Soldier shall, in time of peace be quartered in any house, without the consent of the Owner, nor in time of war, but in a manner to be prescribed by law.</p>  <h2 data-offset=\"792\">Amendment 4</h2> <p data-offset=\"830\">The right of the people to be secure in their persons, houses, papers, and effects, against unreasonable searches and seizures, shall not be violated, and no Warrants shall issue, but upon probable cause, supported by Oath or affirmation, and particularly describing the place to be searched, and the persons or things to be seized.</p>  <h2 data-offset=\"1191\">Amendment 5</h2> <p data-offset=\"1230\">No person shall be held to answer for a capital, or otherwise infamous crime, unless on a presentment or indictment of a Grand Jury, except in cases arising in the land or naval forces, or in the Militia, when in actual service in time of War or public danger; nor shall any person be subject for the same offence to be twice put in jeopardy of life or limb; nor shall be compelled in any criminal case to be a witness against himself, nor be deprived of life, liberty, or property, without due process of law; nor shall private property be taken for public use, without just compensation.</p>  <h2 data-offset=\"1848\">Amendment 6</h2> <p data-offset=\"1887\">In all criminal prosecutions, the accused shall enjoy the right to a speedy and public trial, by an impartial jury of the State and district wherein the crime shall have been committed, which district shall have been previously ascertained by law, and to be informed of the nature and cause of the accusation; to be confronted with the witnesses against him; to have compulsory process for obtaining witnesses in his favor, and to have the Assistance of Counsel for his defence.</p>  <h2 data-offset=\"2394\">Amendment 7</h2> <p data-offset=\"2433\">In Suits at common law, where the value in controversy shall exceed twenty dollars, the right of trial by jury shall be preserved, and no fact tried by a jury, shall be otherwise re-examined in any Court of the United States, than according to the rules of the common law.</p>  <h2 data-offset=\"2734\">Amendment 8</h2> <p data-offset=\"2773\">Excessive bail shall not be required, nor excessive fines imposed, nor cruel and unusual punishments inflicted.</p>  <h2 data-offset=\"2913\">Amendment 9</h2> <p data-offset=\"2952\">The enumeration in the Constitution, of certain rights, shall not be construed to deny or disparage others retained by the people.</p>  <h2 data-offset=\"3111\">Amendment 10</h2> <p data-offset=\"3151\">The powers not delegated to the United States by the Constitution, nor prohibited by it to the States, are reserved to the States respectively, or to the people.</p>  <h2 data-offset=\"3341\">Amendment 11</h2> <p data-offset=\"3381\">The Judicial power of the United States shall not be construed to extend to any suit in law or equity, commenced or prosecuted against one of the United States by Citizens of another State, or by Citizens or Subjects of any Foreign State.</p>  <h2 data-offset=\"3648\">Amendment 12</h2> <p data-offset=\"3688\">The Electors shall meet in their respective states and vote by ballot for President and Vice-President, one of whom, at least, shall not be an inhabitant of the same state with themselves; they shall name in their ballots the person voted for as President, and in distinct ballots the person voted for as Vice- President, and they shall make distinct lists of all persons voted for as President, and of all persons voted for as Vice-President, and of the number of votes for each, which lists they shall sign and certify, and transmit sealed to the seat of the government of the United States, directed to the President of the Senate;--The President of the Senate shall, in the presence of the Senate and House of Representatives, open all the certificates and the votes shall then be counted;--The person having the greatest Number of votes for President, shall be the President, if such number be a majority of the whole number of Electors appointed; and if no person have such majority, then from the persons having the highest numbers not exceeding three on the list of those voted for as President, the House of Representatives shall choose immediately, by ballot, the President. But in choosing the President, the votes shall be taken by states, the representation from each state having one vote; a quorum for this purpose shall consist of a member or members from two-thirds of the states, and a majority of all the states shall be necessary to a choice. And if the House of Representatives shall not choose a President whenever the right of choice shall devolve upon them, before the fourth day of March next following, then the Vice- President shall act as President, as in the case of the death or other constitutional disability of the President--The person having the greatest number of votes as Vice-President, shall be the Vice-President, if such number be a majority of the whole number of Electors appointed, and if no person have a majority, then from the two highest numbers on the list, the Senate shall choose the Vice-President; a quorum for the purpose shall consist of two-thirds of the whole number of Senators, and a majority of the whole number shall be necessary to a choice. But no person constitutionally ineligible to the office of President shall be eligible to that of Vice-President of the United States.</p>  <h2 data-offset=\"6055\">Amendment 13</h2> <p data-offset=\"6095\">Section 1. Neither slavery nor involuntary servitude, except as a punishment for crime whereof the party shall have been duly convicted, shall exist within the United States, or any place subject to their jurisdiction.</p>  <p data-offset=\"6341\">Section 2. Congress shall have power to enforce this article by appropriate legislation.</p>  <h2 data-offset=\"6458\">Amendment 14</h2> <p data-offset=\"6498\">Section. 1. All persons born or naturalized in the United States and subject to the jurisdiction thereof, are citizens of the United States and of the State wherein they reside. No State shall make or enforce any law which shall abridge the privileges or immunities of citizens of the United States; nor shall any State deprive any person of life, liberty, or property, without due process of law; nor deny to any person within its jurisdiction the equal protection of the laws.</p>  <p data-offset=\"7004\">Section. 2. Representatives shall be apportioned among the several States according to their respective numbers, counting the whole number of persons in each State, excluding Indians not taxed. But when the right to vote at any election for the choice of electors for President and Vice President of the United States, Representatives in Congress, the Executive and Judicial officers of a State, or the members of the Legislature thereof, is denied to any of the male inhabitants of such State, being twenty-one years of age, and citizens of the United States, or in any way abridged, except for participation in rebellion, or other crime, the basis of representation therein shall be reduced in the proportion which the number of such male citizens shall bear to the whole number of male citizens twenty-one years of age in such State.</p>  <p data-offset=\"7868\">Section. 3. No person shall be a Senator or Representative in Congress, or elector of President and Vice President, or hold any office, civil or military, under the United States, or under any State, who, having previously taken an oath, as a member of Congress, or as an officer of the United States, or as a member of any State legislature, or as an executive or judicial officer of any State, to support the Constitution of the United States, shall have engaged in insurrection or rebellion against the same, or given aid or comfort to the enemies thereof. But Congress may by a vote of two-thirds of each House, remove such disability.</p>  <p data-offset=\"8535\">Section. 4. The validity of the public debt of the United States, authorized by law, including debts incurred for payment of pensions and bounties for services in suppressing insurrection or rebellion, shall not be questioned. But neither the United States nor any State shall assume or pay any debt or obligation incurred in aid of insurrection or rebellion against the United States, or any claim for the loss or emancipation of any slave; but all such debts, obligations and claims shall be held illegal and void.</p>  <p data-offset=\"9079\">Section. 5. The Congress shall have power to enforce, by appropriate legislation, the provisions of this article.</p>  <h2 data-offset=\"9221\">Amendment 15</h2> <p data-offset=\"9261\">Section. 1. The right of citizens of the United States to vote shall not be denied or abridged by the United States or by any State on account of race, color, or previous condition of servitude.</p>  <p data-offset=\"9483\">Section. 2. The Congress shall have power to enforce this article by appropriate legislation.</p>  <h2 data-offset=\"9605\">Amendment 16</h2> <p data-offset=\"9645\">The Congress shall have power to lay and collect taxes on incomes, from whatever source derived, without apportionment among the several States, and without regard to any census or enumeration.</p>  <h2 data-offset=\"9867\">Amendment 17</h2> <p data-offset=\"9907\">The Senate of the United States shall be composed of two Senators from each State, elected by the people thereof, for six years; and each Senator shall have one vote. The electors in each State shall have the qualifications requisite for electors of the most numerous branch of the State legislatures.</p>  <p data-offset=\"10237\">When vacancies happen in the representation of any State in the Senate, the executive authority of such State shall issue writs of election to fill such vacancies: Provided, That the legislature of any State may empower the executive thereof to make temporary appointments until the people fill the vacancies by election as the legislature may direct.</p>  <p data-offset=\"10617\">This amendment shall not be so construed as to affect the election or term of any Senator chosen before it becomes valid as part of the Constitution.</p>  <h2 data-offset=\"10796\">Amendment 18</h2> <p data-offset=\"10837\">Section. 1. After one year from the ratification of this article the manufacture, sale, or transportation of intoxicating liquors within, the importation thereof into, or the exportation thereof from the United States and all territory subject to the jurisdiction thereof for beverage purposes is hereby prohibited.</p>  <p data-offset=\"11181\">Sec. 2. The Congress and the several States shall have concurrent power to enforce this article by appropriate legislation.</p>  <p data-offset=\"11333\">Sec. 3. This article shall be inoperative unless it shall have been ratified as an amendment to the Constitution by the legislatures of the several States, as provided in the Constitution, within seven years from the date of the submission hereof to the States by the Congress.</p>  <h2 data-offset=\"11640\">Amendment 19</h2>> <p data-offset=\"11682\">The right of citizens of the United States to vote shall not be denied or abridged by the United States or by any State on account of sex. Congress shall have power to enforce this article by appropriate legislation.</p>  <h2 data-offset=\"11928\">Amendment 20</h2> <p data-offset=\"11969\">Section. 1. The terms of the President and Vice President shall end at noon on the 20th day of January, and the terms of Senators and Representatives at noon on the 3d day of January, of the years in which such terms would have ended if this article had not been ratified; and the terms of their successors shall then begin.</p>  <p data-offset=\"12322\">Sec. 2. The Congress shall assemble at least once in every year, and such meeting shall begin at noon on the 3d day of January, unless they shall by law appoint a different day.</p>  <p data-offset=\"12528\">Sec. 3. If, at the time fixed for the beginning of the term of the President, the President elect shall have died, the Vice President elect shall become President. If a President shall not have been chosen before the time fixed for the beginning of his term, or if the President elect shall have failed to qualify, then the Vice President elect shall act as President until a President shall have qualified; and the Congress may by law provide for the case wherein neither a President elect nor a Vice President elect shall have qualified, declaring who shall then act as President, or the manner in which one who is to act shall be selected, and such person shall act accordingly until a President or Vice President shall have qualified.</p>  <p data-offset=\"13295\">Sec. 4. The Congress may by law provide for the case of the death of any of the persons from whom the House of Representatives may choose a President whenever the right of choice shall have devolved upon them, and for the case of the death of any of the persons from whom the Senate may choose a Vice President whenever the right of choice shall have devolved upon them.</p>  <p data-offset=\"13694\">Sec. 5. Sections 1 and 2 shall take effect on the 15th day of October following the ratification of this article.</p>  <p data-offset=\"13836\">Sec. 6. This article shall be inoperative unless it shall have been ratified as an amendment to the Constitution by the legislatures of three-fourths of the several States within seven years from the date of its submission.</p>  <h2 data-offset=\"14089\">Amendment 21</h2> <p data-offset=\"14130\">Section. 1. The eighteenth article of amendment to the Constitution of the United States is hereby repealed.</p>  <p data-offset=\"14267\">Sec. 2. The transportation or importation into any State, Territory, or possession of the United States for delivery or use therein of intoxicating liquors, in violation of the laws thereof, is hereby prohibited.</p>  <p data-offset=\"14508\">Sec. 3. This article shall be inoperative unless it shall have been ratified as an amendment to the Constitution by conventions in the several States, as provided in the Constitution, within seven years from the date of the submission hereof to the States by the Congress.</p>  <h2 data-offset=\"14810\">Amendment 22</h2> <p data-offset=\"14851\">Section. 1. No person shall be elected to the office of the President more than twice, and no person who has held the office of President, or acted as President, for more than two years of a term to which some other person was elected President shall be elected to the office of the President more than once. But this Article shall not apply to any person holding the office of President, when this Article was proposed by the Congress, and shall not prevent any person who may be holding the office of President, or acting as President, during the term within which this Article becomes operative from holding the office of President or acting as President during the remainder of such term.</p>  <p data-offset=\"15572\">Sec. 2. This article shall be inoperative unless it shall have been ratified as an amendment to the Constitution by the legislatures of three-fourths of the several States within seven years from the date of its submission to the States by the Congress.</p>  <h2 data-offset=\"15855\">Amendment 23</h2> <p data-offset=\"15896\">Section. 1. The District constituting the seat of Government of the United States shall appoint in such manner as the Congress may direct: A number of electors of President and Vice President equal to the whole number of Senators and Representatives in Congress to which the District would be entitled if it were a State, but in no event more than the least populous State; they shall be in addition to those appointed by the States, but they shall be considered, for the purposes of the election of President and Vice President, to be electors appointed by a State; and they shall meet in the District and perform such duties as provided by the twelfth article of amendment.</p>  <p data-offset=\"16600\">Sec. 2. The Congress shall have power to enforce this article by appropriate legislation.</p>  <h2 data-offset=\"16719\">Amendment 24</h2> <p data-offset=\"16760\">Section. 1. The right of citizens of the United States to vote in any primary or other election for President or Vice President, for electors for President or Vice President, or for Senator or Representative in Congress, shall not be denied or abridged by the United States or any State by reason of failure to pay any poll tax or other tax.</p>  <p data-offset=\"17130\">Section. 2. The Congress shall have power to enforce this article by appropriate legislation.</p>  <h2 data-offset=\"17253\">Amendment 25</h2> <p data-offset=\"17294\">Section. 1. In case of the removal of the President from office or of his death or resignation, the Vice President shall become President.</p>  <p data-offset=\"17461\">Section. 2. Whenever there is a vacancy in the office of the Vice President, the President shall nominate a Vice President who shall take office upon confirmation by a majority vote of both Houses of Congress.</p>  <p data-offset=\"17699\">Section. 3. Whenever the President transmits to the President pro tempore of the Senate and the Speaker of the House of Representatives has written declaration that he is unable to discharge the powers and duties of his office, and until he transmits to them a written declaration to the contrary, such powers and duties shall be discharged by the Vice President as Acting President.</p>  <p data-offset=\"18111\">Section. 4. Whenever the Vice President and a majority of either the principal officers of the executive departments or of such other body as Congress may by law provide, transmit to the President pro tempore of the Senate and the Speaker of the House of Representatives their written declaration that the President is unable to discharge the powers and duties of his office, the Vice President shall immediately assume the powers and duties of the office as Acting President.</p>  <p data-offset=\"18616\">Thereafter, when the President transmits to the President pro tempore of the Senate and the Speaker of the House of Representatives has written declaration that no inability exists, he shall resume the powers and duties of his office unless the Vice President and a majority of either the principal officers of the executive department or of such other body as Congress may by law provide, transmit within four days to the President pro tempore of the Senate and the Speaker of the House of Representatives their written declaration that the President is unable to discharge the powers and duties of his office. Thereupon Congress shall decide the issue, assembling within forty-eight hours for that purpose if not in session. If the Congress, within twenty-one days after receipt of the latter written declaration, or, if Congress is not in session, within twenty-one days after Congress is required to assemble, determines by two-thirds vote of both Houses that the President is unable to discharge the powers and duties of his office, the Vice President shall continue to discharge the same as Acting President; otherwise, the President shall resume the powers and duties of his office.</p>  <h2 data-offset=\"19835\">Amendment 26</h2> <p data-offset=\"19876\">Section. 1. The right of citizens of the United States, who are eighteen years of age or older, to vote shall not be denied or abridged by the United States or by any State on account of age.</p>  <p data-offset=\"20096\">Section. 2. The Congress shall have power to enforce this article by appropriate legislation.</p>  <h2 data-offset=\"20219\">Amendment 27</h2> <p data-offset=\"20260\">No law varying the compensation for the services of the Senators and Representatives shall take effect, until an election of Representatives shall have intervened.</p> ";
+
+/***/ }),
+/* 280 */
 /***/ (function(module, exports) {
 
 module.exports = "<p data-offset=\"21\">We the People of the United States, in Order to form a more perfect Union, establish Justice, insure domestic Tranquility, provide for the common defence, promote the general Welfare, and secure the Blessings of Liberty to ourselves and our Posterity, do ordain and establish this Constitution for the United States of America.</p> <h2 data-offset=\"375\">Article. I.</h2> <h3 data-offset=\"414\">Section. 1.</h3> <p data-offset=\"452\">All legislative Powers herein granted shall be vested in a Congress of the United States, which shall consist of a Senate and House of Representatives.</p> <h3 data-offset=\"630\">Section. 2.</h3> <p data-offset=\"668\">The House of Representatives shall be composed of Members chosen every second Year by the People of the several States, and the Electors in each State shall have the Qualifications requisite for Electors of the most numerous Branch of the State Legislature.</p> <p data-offset=\"951\">No Person shall be a Representative who shall not have attained to the Age of twenty five Years, and been seven Years a Citizen of the United States, and who shall not, when elected, be an Inhabitant of that State in which he shall be chosen.</p> <p data-offset=\"1220\">Representatives and direct Taxes shall be apportioned among the several States which may be included within this Union, according to their respective Numbers, which shall be determined by adding to the whole Number of free Persons, including those bound to Service for a Term of Years, and excluding Indians not taxed, three fifths of all other Persons. The actual Enumeration shall be made within three Years after the first Meeting of the Congress of the United States, and within every subsequent Term of ten Years, in such Manner as they shall by Law direct. The Number of Representatives shall not exceed one for every thirty Thousand, but each State shall have at Least one Representative; and until such enumeration shall be made, the State of New Hampshire shall be entitled to chuse three, Massachusetts eight, Rhode-Island and Providence Plantations one, Connecticut five, New-York six, New Jersey four, Pennsylvania eight, Delaware one, Maryland six, Virginia ten, North Carolina five, South Carolina five, and Georgia three.</p> <p data-offset=\"2283\">When vacancies happen in the Representation from any State, the Executive Authority thereof shall issue Writs of Election to fill such Vacancies.</p> <p data-offset=\"2455\">The House of Representatives shall chuse their Speaker and other Officers; and shall have the sole Power of Impeachment.</p> <h3 data-offset=\"2603\">Section. 3.</h3> <p data-offset=\"2642\">The Senate of the United States shall be composed of two Senators from each State, chosen by the Legislature thereof, for six Years; and each Senator shall have one Vote.</p> <p data-offset=\"2839\">Immediately after they shall be assembled in Consequence of the first Election, they shall be divided as equally as may be into three Classes. The Seats of the Senators of the first Class shall be vacated at the Expiration of the second Year, of the second Class at the Expiration of the fourth Year, and of the third Class at the Expiration of the sixth Year, so that one third may be chosen every second Year; and if Vacancies happen by Resignation, or otherwise, during the Recess of the Legislature of any State, the Executive thereof may make temporary Appointments until the next Meeting of the Legislature, which shall then fill such Vacancies.</p> <p data-offset=\"3517\">No Person shall be a Senator who shall not have attained to the Age of thirty Years, and been nine Years a Citizen of the United States, and who shall not, when elected, be an Inhabitant of that State for which he shall be chosen.</p> <p data-offset=\"3774\">The Vice President of the United States shall be President of the Senate, but shall have no Vote, unless they be equally divided.</p> <p data-offset=\"3930\">The Senate shall chuse their other Officers, and also a President pro tempore, in the Absence of the Vice President, or when he shall exercise the Office of President of the United States.</p> <p data-offset=\"4145\">The Senate shall have the sole Power to try all Impeachments. When sitting for that Purpose, they shall be on Oath or Affirmation. When the President of the United States is tried, the Chief Justice shall preside: And no Person shall be convicted without the Concurrence of two thirds of the Members present.</p> <p data-offset=\"4480\">Judgment in Cases of Impeachment shall not extend further than to removal from Office, and disqualification to hold and enjoy any Office of honor, Trust or Profit under the United States: but the Party convicted shall nevertheless be liable and subject to Indictment, Trial, Judgment and Punishment, according to Law.</p> <h3 data-offset=\"4825\">Section. 4.</h3> <p data-offset=\"4864\">The Times, Places and Manner of holding Elections for Senators and Representatives, shall be prescribed in each State by the Legislature thereof; but the Congress may at any time by Law make or alter such Regulations, except as to the Places of chusing Senators.</p> <p data-offset=\"5153\">The Congress shall assemble at least once in every Year, and such Meeting shall be on the first Monday in December, unless they shall by Law appoint a different Day.</p> <h3 data-offset=\"5346\">Section. 5.</h3> <p data-offset=\"5385\">Each House shall be the Judge of the Elections, Returns and Qualifications of its own Members, and a Majority of each shall constitute a Quorum to do Business; but a smaller Number may adjourn from day to day, and may be authorized to compel the Attendance of absent Members, in such Manner, and under such Penalties as each House may provide.</p> <p data-offset=\"5755\">Each House may determine the Rules of its Proceedings, punish its Members for disorderly Behaviour, and, with the Concurrence of two thirds, expel a Member.</p> <p data-offset=\"5938\">Each House shall keep a Journal of its Proceedings, and from time to time publish the same, excepting such Parts as may in their Judgment require Secrecy; and the Yeas and Nays of the Members of either House on any question shall, at the Desire of one fifth of those Present, be entered on the Journal.</p> <p data-offset=\"6267\">Neither House, during the Session of Congress, shall, without the Consent of the other, adjourn for more than three days, nor to any other Place than that in which the two Houses shall be sitting.</p> <h3 data-offset=\"6491\">Section. 6.</h3> <p data-offset=\"6530\">The Senators and Representatives shall receive a Compensation for their Services, to be ascertained by Law, and paid out of the Treasury of the United States. They shall in all Cases, except Treason, Felony and Breach of the Peace, be privileged from Arrest during their Attendance at the Session of their respective Houses, and in going to and returning from the same; and for any Speech or Debate in either House, they shall not be questioned in any other Place.</p> <p data-offset=\"7021\">No Senator or Representative shall, during the Time for which he was elected, be appointed to any civil Office under the Authority of the United States, which shall have been created, or the Emoluments whereof shall have been encreased during such time; and no Person holding any Office under the United States, shall be a Member of either House during his Continuance in Office.</p> <h3 data-offset=\"7428\">Section. 7.</h3> <p data-offset=\"7467\">All Bills for raising Revenue shall originate in the House of Representatives; but the Senate may propose or concur with Amendments as on other Bills.</p> <p data-offset=\"7644\">Every Bill which shall have passed the House of Representatives and the Senate, shall, before it become a Law, be presented to the President of the United States; If he approve he shall sign it, but if not he shall return it, with his Objections to that House in which it shall have originated, who shall enter the Objections at large on their Journal, and proceed to reconsider it. If after such Reconsideration two thirds of that House shall agree to pass the Bill, it shall be sent, together with the Objections, to the other House, by which it shall likewise be reconsidered, and if approved by two thirds of that House, it shall become a Law. But in all such Cases the Votes of both Houses shall be determined by yeas and Nays, and the Names of the Persons voting for and against the Bill shall be entered on the Journal of each House respectively. If any Bill shall not be returned by the President within ten Days (Sundays excepted) after it shall have been presented to him, the Same shall be a Law, in like Manner as if he had signed it, unless the Congress by their Adjournment prevent its Return, in which Case it shall not be a Law.</p> <p data-offset=\"8815\">Every Order, Resolution, or Vote to which the Concurrence of the Senate and House of Representatives may be necessary (except on a question of Adjournment) shall be presented to the President of the United States; and before the Same shall take Effect, shall be approved by him, or being disapproved by him, shall be repassed by two thirds of the Senate and House of Representatives, according to the Rules and Limitations prescribed in the Case of a Bill.</p> <h3 data-offset=\"9299\">Section. 8.</h3> <p data-offset=\"9338\">The Congress shall have Power To lay and collect Taxes, Duties, Imposts and Excises, to pay the Debts and provide for the common Defence and general Welfare of the United States; but all Duties, Imposts and Excises shall be uniform throughout the United States;</p> <p data-offset=\"9626\">To borrow Money on the credit of the United States;</p> <p data-offset=\"9704\">To regulate Commerce with foreign Nations, and among the several States, and with the Indian Tribes;</p> <p data-offset=\"9831\">To establish an uniform Rule of Naturalization, and uniform Laws on the subject of Bankruptcies throughout the United States;</p> <p data-offset=\"9983\">To coin Money, regulate the Value thereof, and of foreign Coin, and fix the Standard of Weights and Measures;</p> <p data-offset=\"10120\">To provide for the Punishment of counterfeiting the Securities and current Coin of the United States;</p> <p data-offset=\"10249\">To establish Post Offices and post Roads;</p> <p data-offset=\"10318\">To promote the Progress of Science and useful Arts, by securing for limited Times to Authors and Inventors the exclusive Right to their respective Writings and Discoveries;</p> <p data-offset=\"10518\">To constitute Tribunals inferior to the supreme Court;</p> <p data-offset=\"10600\">To define and punish Piracies and Felonies committed on the high Seas, and Offences against the Law of Nations;</p> <p data-offset=\"10739\">To declare War, grant Letters of Marque and Reprisal, and make Rules concerning Captures on Land and Water;</p> <p data-offset=\"10874\">To raise and support Armies, but no Appropriation of Money to that Use shall be for a longer Term than two Years;</p> <p data-offset=\"11015\">To provide and maintain a Navy;</p> <p data-offset=\"11074\">To make Rules for the Government and Regulation of the land and naval Forces;</p> <p data-offset=\"11179\">To provide for calling forth the Militia to execute the Laws of the Union, suppress Insurrections and repel Invasions;</p> <p data-offset=\"11325\">To provide for organizing, arming, and disciplining, the Militia, and for governing such Part of them as may be employed in the Service of the United States, reserving to the States respectively, the Appointment of the Officers, and the Authority of training the Militia according to the discipline prescribed by Congress;</p> <p data-offset=\"11675\">To exercise exclusive Legislation in all Cases whatsoever, over such District (not exceeding ten Miles square) as may, by Cession of particular States, and the Acceptance of Congress, become the Seat of the Government of the United States, and to exercise like Authority over all Places purchased by the Consent of the Legislature of the State in which the Same shall be, for the Erection of Forts, Magazines, Arsenals, dock-Yards, and other needful Buildings;—And</p> <p data-offset=\"12167\">To make all Laws which shall be necessary and proper for carrying into Execution the foregoing Powers, and all other Powers vested by this Constitution in the Government of the United States, or in any Department or Officer thereof.</p> <h3 data-offset=\"12428\">Section. 9.</h3> <p data-offset=\"12468\">The Migration or Importation of such Persons as any of the States now existing shall think proper to admit, shall not be prohibited by the Congress prior to the Year one thousand eight hundred and eight, but a Tax or duty may be imposed on such Importation, not exceeding ten dollars for each Person.</p> <p data-offset=\"12796\">The Privilege of the Writ of Habeas Corpus shall not be suspended, unless when in Cases of Rebellion or Invasion the public Safety may require it.</p> <p data-offset=\"12970\">No Bill of Attainder or ex post facto Law shall be passed.</p> <p data-offset=\"13056\">No Capitation, or other direct, Tax shall be laid, unless in Proportion to the Census or enumeration herein before directed to be taken.</p> <p data-offset=\"13220\">No Tax or Duty shall be laid on Articles exported from any State.</p> <p data-offset=\"13313\">No Preference shall be given by any Regulation of Commerce or Revenue to the Ports of one State over those of another: nor shall Vessels bound to, or from, one State, be obliged to enter, clear, or pay Duties in another.</p> <p data-offset=\"13561\">No Money shall be drawn from the Treasury, but in Consequence of Appropriations made by Law; and a regular Statement and Account of the Receipts and Expenditures of all public Money shall be published from time to time.</p> <p data-offset=\"13808\">No Title of Nobility shall be granted by the United States: And no Person holding any Office of Profit or Trust under them, shall, without the Consent of the Congress, accept of any present, Emolument, Office, or Title, of any kind whatever, from any King, Prince, or foreign State.</p> <h3 data-offset=\"14119\">Section. 10.</h3> <p data-offset=\"14160\">No State shall enter into any Treaty, Alliance, or Confederation; grant Letters of Marque and Reprisal; coin Money; emit Bills of Credit; make any Thing but gold and silver Coin a Tender in Payment of Debts; pass any Bill of Attainder, ex post facto Law, or Law impairing the Obligation of Contracts, or grant any Title of Nobility.</p> <p data-offset=\"14520\">No State shall, without the Consent of the Congress, lay any Imposts or Duties on Imports or Exports, except what may be absolutely necessary for executing it's inspection Laws: and the net Produce of all Duties and Imposts, laid by any State on Imports or Exports, shall be for the Use of the Treasury of the United States; and all such Laws shall be subject to the Revision and Controul of the Congress.</p> <p data-offset=\"14953\">No State shall, without the Consent of Congress, lay any Duty of Tonnage, keep Troops, or Ships of War in time of Peace, enter into any Agreement or Compact with another State, or with a foreign Power, or engage in War, unless actually invaded, or in such imminent Danger as will not admit of delay.</p> <h2 data-offset=\"15281\">Article. II.</h2> <h3 data-offset=\"15323\">Section. 1.</h3> <p data-offset=\"15363\">The executive Power shall be vested in a President of the United States of America. He shall hold his Office during the Term of four Years, and, together with the Vice President, chosen for the same Term, be elected, as follows</p> <p data-offset=\"15618\">Each State shall appoint, in such Manner as the Legislature thereof may direct, a Number of Electors, equal to the whole Number of Senators and Representatives to which the State may be entitled in the Congress: but no Senator or Representative, or Person holding an Office of Trust or Profit under the United States, shall be appointed an Elector.</p> <p data-offset=\"15994\">The Electors shall meet in their respective States, and vote by Ballot for two Persons, of whom one at least shall not be an Inhabitant of the same State with themselves. And they shall make a List of all the Persons voted for, and of the Number of Votes for each; which List they shall sign and certify, and transmit sealed to the Seat of the Government of the United States, directed to the President of the Senate. The President of the Senate shall, in the Presence of the Senate and House of Representatives, open all the Certificates, and the Votes shall then be counted. The Person having the greatest Number of Votes shall be the President, if such Number be a Majority of the whole Number of Electors appointed; and if there be more than one who have such Majority, and have an equal Number of Votes, then the House of Representatives shall immediately chuse by Ballot one of them for President; and if no Person have a Majority, then from the five highest on the List the said House shall in like Manner chuse the President. But in chusing the President, the Votes shall be taken by States, the Representation from each State having one Vote; A quorum for this Purpose shall consist of a Member or Members from two thirds of the States, and a Majority of all the States shall be necessary to a Choice. In every Case, after the Choice of the President, the Person having the greatest Number of Votes of the Electors shall be the Vice President. But if there should remain two or more who have equal Votes, the Senate shall chuse from them by Ballot the Vice President.</p> <p data-offset=\"17598\">The Congress may determine the Time of chusing the Electors, and the Day on which they shall give their Votes; which Day shall be the same throughout the United States.</p> <p data-offset=\"17794\">No Person except a natural born Citizen, or a Citizen of the United States, at the time of the Adoption of this Constitution, shall be eligible to the Office of President; neither shall any Person be eligible to that Office who shall not have attained to the Age of thirty five Years, and been fourteen Years a Resident within the United States.</p> <p data-offset=\"18167\">In Case of the Removal of the President from Office, or of his Death, Resignation, or Inability to discharge the Powers and Duties of the said Office, the Same shall devolve on the Vice President, and the Congress may by Law provide for the Case of Removal, Death, Resignation or Inability, both of the President and Vice President, declaring what Officer shall then act as President, and such Officer shall act accordingly, until the Disability be removed, or a President shall be elected.</p> <p data-offset=\"18685\">The President shall, at stated Times, receive for his Services, a Compensation, which shall neither be encreased nor diminished during the Period for which he shall have been elected, and he shall not receive within that Period any other Emolument from the United States, or any of them.</p> <p data-offset=\"19000\">Before he enter on the Execution of his Office, he shall take the following Oath or Affirmation:—\"I do solemnly swear (or affirm) that I will faithfully execute the Office of President of the United States, and will to the best of my Ability, preserve, protect and defend the Constitution of the United States.\"</p> <h3 data-offset=\"19340\">Section. 2.</h3> <p data-offset=\"19380\">The President shall be Commander in Chief of the Army and Navy of the United States, and of the Militia of the several States, when called into the actual Service of the United States; he may require the Opinion, in writing, of the principal Officer in each of the executive Departments, upon any Subject relating to the Duties of their respective Offices, and he shall have Power to grant Reprieves and Pardons for Offences against the United States, except in Cases of Impeachment.</p> <p data-offset=\"19891\">He shall have Power, by and with the Advice and Consent of the Senate, to make Treaties, provided two thirds of the Senators present concur; and he shall nominate, and by and with the Advice and Consent of the Senate, shall appoint Ambassadors, other public Ministers and Consuls, Judges of the supreme Court, and all other Officers of the United States, whose Appointments are not herein otherwise provided for, and which shall be established by Law: but the Congress may by Law vest the Appointment of such inferior Officers, as they think proper, in the President alone, in the Courts of Law, or in the Heads of Departments.</p> <p data-offset=\"20546\">The President shall have Power to fill up all Vacancies that may happen during the Recess of the Senate, by granting Commissions which shall expire at the End of their next Session.</p> <h3 data-offset=\"20756\">Section. 3.</h3> <p data-offset=\"20796\">He shall from time to time give to the Congress Information of the State of the Union, and recommend to their Consideration such Measures as he shall judge necessary and expedient; he may, on extraordinary Occasions, convene both Houses, or either of them, and in Case of Disagreement between them, with Respect to the Time of Adjournment, he may adjourn them to such Time as he shall think proper; he shall receive Ambassadors and other public Ministers; he shall take Care that the Laws be faithfully executed, and shall Commission all the Officers of the United States.</p> <h3 data-offset=\"21397\">Section. 4.</h3> <p data-offset=\"21437\">The President, Vice President and all civil Officers of the United States, shall be removed from Office on Impeachment for, and Conviction of, Treason, Bribery, or other high Crimes and Misdemeanors.</p> <h2 data-offset=\"21665\">Article III.</h2> <h3 data-offset=\"21707\">Section. 1.</h3> <p data-offset=\"21747\">The judicial Power of the United States, shall be vested in one supreme Court, and in such inferior Courts as the Congress may from time to time ordain and establish. The Judges, both of the supreme and inferior Courts, shall hold their Offices during good Behaviour, and shall, at stated Times, receive for their Services, a Compensation, which shall not be diminished during their Continuance in Office.</p> <h3 data-offset=\"22181\">Section. 2.</h3> <p data-offset=\"22221\">The judicial Power shall extend to all Cases, in Law and Equity, arising under this Constitution, the Laws of the United States, and Treaties made, or which shall be made, under their Authority;—to all Cases affecting Ambassadors, other public Ministers and Consuls;—to all Cases of admiralty and maritime Jurisdiction;—to Controversies to which the United States shall be a Party;—to Controversies between two or more States;— between a State and Citizens of another State,—between Citizens of different States,—between Citizens of the same State claiming Lands under Grants of different States, and between a State, or the Citizens thereof, and foreign States, Citizens or Subjects.</p> <p data-offset=\"22933\">In all Cases affecting Ambassadors, other public Ministers and Consuls, and those in which a State shall be Party, the supreme Court shall have original Jurisdiction. In all the other Cases before mentioned, the supreme Court shall have appellate Jurisdiction, both as to Law and Fact, with such Exceptions, and under such Regulations as the Congress shall make.</p> <p data-offset=\"23323\">The Trial of all Crimes, except in Cases of Impeachment, shall be by Jury; and such Trial shall be held in the State where the said Crimes shall have been committed; but when not committed within any State, the Trial shall be at such Place or Places as the Congress may by Law have directed.</p> <h3 data-offset=\"23643\">Section. 3.</h3> <p data-offset=\"23683\">Treason against the United States, shall consist only in levying War against them, or in adhering to their Enemies, giving them Aid and Comfort. No Person shall be convicted of Treason unless on the Testimony of two Witnesses to the same overt Act, or on Confession in open Court.</p> <p data-offset=\"23991\">The Congress shall have Power to declare the Punishment of Treason, but no Attainder of Treason shall work Corruption of Blood, or Forfeiture except during the Life of the Person attainted.</p> <h2 data-offset=\"24209\">Article. IV.</h2> <h3 data-offset=\"24251\">Section. 1.</h3> <p data-offset=\"24291\">Full Faith and Credit shall be given in each State to the public Acts, Records, and judicial Proceedings of every other State. And the Congress may by general Laws prescribe the Manner in which such Acts, Records and Proceedings shall be proved, and the Effect thereof.</p> <h3 data-offset=\"24589\">Section. 2.</h3> <p data-offset=\"24629\">The Citizens of each State shall be entitled to all Privileges and Immunities of Citizens in the several States.</p> <p data-offset=\"24769\">A Person charged in any State with Treason, Felony, or other Crime, who shall flee from Justice, and be found in another State, shall on Demand of the executive Authority of the State from which he fled, be delivered up, to be removed to the State having Jurisdiction of the Crime.</p> <p data-offset=\"25078\">No Person held to Service or Labour in one State, under the Laws thereof, escaping into another, shall, in Consequence of any Law or Regulation therein, be discharged from such Service or Labour, but shall be delivered up on Claim of the Party to whom such Service or Labour may be due.</p> <h3 data-offset=\"25393\">Section. 3.</h3> <p data-offset=\"25433\">New States may be admitted by the Congress into this Union; but no new State shall be formed or erected within the Jurisdiction of any other State; nor any State be formed by the Junction of two or more States, or Parts of States, without the Consent of the Legislatures of the States concerned as well as of the Congress.</p> <p data-offset=\"25783\">The Congress shall have Power to dispose of and make all needful Rules and Regulations respecting the Territory or other Property belonging to the United States; and nothing in this Constitution shall be so construed as to Prejudice any Claims of the United States, or of any particular State.</p> <h3 data-offset=\"26105\">Section. 4.</h3> <p data-offset=\"26145\">The United States shall guarantee to every State in this Union a Republican Form of Government, and shall protect each of them against Invasion; and on Application of the Legislature, or of the Executive (when the Legislature cannot be convened), against domestic Violence.</p> <h2 data-offset=\"26447\">Article. V.</h2> <p data-offset=\"26487\">The Congress, whenever two thirds of both Houses shall deem it necessary, shall propose Amendments to this Constitution, or, on the Application of the Legislatures of two thirds of the several States, shall call a Convention for proposing Amendments, which, in either Case, shall be valid to all Intents and Purposes, as Part of this Constitution, when ratified by the Legislatures of three fourths of the several States, or by Conventions in three fourths thereof, as the one or the other Mode of Ratification may be proposed by the Congress; Provided that no Amendment which may be made prior to the Year One thousand eight hundred and eight shall in any Manner affect the first and fourth Clauses in the Ninth Section of the first Article; and that no State, without its Consent, shall be deprived of its equal Suffrage in the Senate.</p> <h2 data-offset=\"27353\">Article. VI.</h2> <p data-offset=\"27394\">All Debts contracted and Engagements entered into, before the Adoption of this Constitution, shall be as valid against the United States under this Constitution, as under the Confederation.</p> <p data-offset=\"27611\">This Constitution, and the Laws of the United States which shall be made in Pursuance thereof; and all Treaties made, or which shall be made, under the Authority of the United States, shall be the supreme Law of the Land; and the Judges in every State shall be bound thereby, any Thing in the Constitution or Laws of any State to the Contrary notwithstanding.</p> <p data-offset=\"27998\">The Senators and Representatives before mentioned, and the Members of the several State Legislatures, and all executive and judicial Officers, both of the United States and of the several States, shall be bound by Oath or Affirmation, to support this Constitution; but no religious Test shall ever be required as a Qualification to any Office or public Trust under the United States.</p> <h2 data-offset=\"28410\">Article. VII.</h2> <p data-offset=\"28452\">The Ratification of the Conventions of nine States, shall be sufficient for the Establishment of this Constitution between the States so ratifying the Same.</p> <p data-offset=\"28636\">The Word, \"the,\" being interlined between the seventh and eighth Lines of the first Page, The Word \"Thirty\" being partly written on an Erazure in the fifteenth Line of the first Page, The Words \"is tried\" being interlined between the thirty second and thirty third Lines of the first Page and the Word \"the\" being interlined between the forty third and forty fourth Lines of the second Page.</p> <p data-offset=\"29055\">Attest William Jackson Secretary</p> <p data-offset=\"29115\">done in Convention by the Unanimous Consent of the States present the Seventeenth Day of September in the Year of our Lord one thousand seven hundred and Eighty seven and of the Independance of the United States of America the Twelfth In witness whereof We have hereunto subscribed our Names,</p> <p data-offset=\"29435\">G°. Washington</p> <p data-offset=\"29477\">Presidt and deputy from Virginia</p> <h3 data-offset=\"29538\">Delaware</h3> <p data-offset=\"29575\">Geo: Read</p> <p data-offset=\"29612\">Gunning Bedford jun</p> <p data-offset=\"29659\">John Dickinson</p> <p data-offset=\"29701\">Richard Bassett</p> <p data-offset=\"29744\">Jaco: Broom</p> <h3 data-offset=\"29784\">Maryland</h3> <p data-offset=\"29821\">James McHenry</p> <p data-offset=\"29862\">Dan of St Thos. Jenifer</p> <p data-offset=\"29913\">Danl. Carroll</p> <h3 data-offset=\"29955\">Virginia</h3> <p data-offset=\"29992\">John Blair</p> <p data-offset=\"30030\">James Madison Jr.</p> <h3 data-offset=\"30076\">North Carolina</h3> <p data-offset=\"30119\">Wm. Blount</p> <p data-offset=\"30157\">Richd. Dobbs Spaight</p> <p data-offset=\"30205\">Hu Williamson</p> <h3 data-offset=\"30247\">South Carolina</h3> <p data-offset=\"30290\">J. Rutledge</p> <p data-offset=\"30329\">Charles Cotesworth Pinckney</p> <p data-offset=\"30384\">Charles Pinckney</p> <p data-offset=\"30428\">Pierce Butler</p> <h3 data-offset=\"30470\">Georgia</h3> <p data-offset=\"30506\">William Few</p> <p data-offset=\"30545\">Abr Baldwin</p> <h3 data-offset=\"30585\">New Hampshire</h3> <p data-offset=\"30627\">John Langdon</p> <p data-offset=\"30667\">Nicholas Gilman</p> <h3 data-offset=\"30711\">Massachusetts</h3> <p data-offset=\"30753\">Nathaniel Gorham</p> <p data-offset=\"30797\">Rufus King</p> <h3 data-offset=\"30836\">Connecticut</h3> <p data-offset=\"30876\">Wm. Saml. Johnson</p> <p data-offset=\"30921\">Roger Sherman</p> <h3 data-offset=\"30963\">New York</h3> <p data-offset=\"31000\">Alexander Hamilton</p> <h3 data-offset=\"31047\">New Jersey</h3> <p data-offset=\"31086\">Wil: Livingston</p> <p data-offset=\"31129\">David Brearley</p> <p data-offset=\"31171\">Wm. Paterson</p> <p data-offset=\"31211\">Jona: Dayton</p> <h3 data-offset=\"31252\">Pennsylvania</h3> <p data-offset=\"31293\">B Franklin</p> <p data-offset=\"31331\">Thomas Mifflin</p> <p data-offset=\"31373\">Robt. Morris</p> <p data-offset=\"31413\">Geo. Clymer</p> <p data-offset=\"31452\">Thos. FitzSimons</p> <p data-offset=\"31496\">Jared Ingersoll</p> <p data-offset=\"31539\">James Wilson</p> <p data-offset=\"31579\">Gouv Morris</p> ";
 
 /***/ }),
-/* 278 */
+/* 281 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = CollectingHandler;
@@ -44032,7 +44237,7 @@ CollectingHandler.prototype.restart = function(){
 
 
 /***/ }),
-/* 279 */
+/* 282 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var index = __webpack_require__(22),
@@ -44133,7 +44338,7 @@ module.exports = FeedHandler;
 
 
 /***/ }),
-/* 280 */
+/* 283 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = ProxyHandler;
@@ -44165,7 +44370,7 @@ Object.keys(EVENTS).forEach(function(name){
 });
 
 /***/ }),
-/* 281 */
+/* 284 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = Stream;
@@ -44205,7 +44410,7 @@ Object.keys(EVENTS).forEach(function(name){
 });
 
 /***/ }),
-/* 282 */
+/* 285 */
 /***/ (function(module, exports) {
 
 exports.read = function (buffer, offset, isLE, mLen, nBytes) {
@@ -44295,7 +44500,7 @@ exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
 
 
 /***/ }),
-/* 283 */
+/* 286 */
 /***/ (function(module, exports) {
 
 
@@ -44380,7 +44585,7 @@ module.exports = isEmpty
 
 
 /***/ }),
-/* 284 */
+/* 287 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -44394,7 +44599,7 @@ var isBrowser = (typeof window === "undefined" ? "undefined" : _typeof(window)) 
 
 
 /***/ }),
-/* 285 */
+/* 288 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, module) {/**
@@ -46767,7 +46972,7 @@ module.exports = filter;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9), __webpack_require__(30)(module)))
 
 /***/ }),
-/* 286 */
+/* 289 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {/**
@@ -47123,7 +47328,7 @@ module.exports = flatten;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9)))
 
 /***/ }),
-/* 287 */
+/* 290 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, module) {/**
@@ -49496,7 +49701,7 @@ module.exports = map;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9), __webpack_require__(30)(module)))
 
 /***/ }),
-/* 288 */
+/* 291 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, module) {/**
@@ -51710,7 +51915,7 @@ module.exports = merge;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9), __webpack_require__(30)(module)))
 
 /***/ }),
-/* 289 */
+/* 292 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {/**
@@ -52220,7 +52425,7 @@ module.exports = pick;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9)))
 
 /***/ }),
-/* 290 */
+/* 293 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, module) {/**
@@ -54599,7 +54804,7 @@ module.exports = reduce;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9), __webpack_require__(30)(module)))
 
 /***/ }),
-/* 291 */
+/* 294 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, module) {/**
@@ -57004,7 +57209,7 @@ module.exports = reject;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9), __webpack_require__(30)(module)))
 
 /***/ }),
-/* 292 */
+/* 295 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, module) {/**
@@ -59379,7 +59584,7 @@ module.exports = some;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9), __webpack_require__(30)(module)))
 
 /***/ }),
-/* 293 */
+/* 296 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = compile;
@@ -59424,11 +59629,11 @@ function compile(parsed){
 }
 
 /***/ }),
-/* 294 */
+/* 297 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var parse = __webpack_require__(295),
-    compile = __webpack_require__(293);
+var parse = __webpack_require__(298),
+    compile = __webpack_require__(296);
 
 module.exports = function nthCheck(formula){
 	return compile(parse(formula));
@@ -59438,7 +59643,7 @@ module.exports.parse = parse;
 module.exports.compile = compile;
 
 /***/ }),
-/* 295 */
+/* 298 */
 /***/ (function(module, exports) {
 
 module.exports = parse;
@@ -59484,7 +59689,7 @@ function parse(formula){
 
 
 /***/ }),
-/* 296 */
+/* 299 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -59553,7 +59758,7 @@ module.exports = checkPropTypes;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 297 */
+/* 300 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -59619,7 +59824,7 @@ module.exports = function() {
 
 
 /***/ }),
-/* 298 */
+/* 301 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -59698,7 +59903,7 @@ var ARIADOMPropertyConfig = {
 module.exports = ARIADOMPropertyConfig;
 
 /***/ }),
-/* 299 */
+/* 302 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -59714,7 +59919,7 @@ module.exports = ARIADOMPropertyConfig;
 
 
 
-var ReactDOMComponentTree = __webpack_require__(6);
+var ReactDOMComponentTree = __webpack_require__(7);
 
 var focusNode = __webpack_require__(126);
 
@@ -59727,7 +59932,7 @@ var AutoFocusUtils = {
 module.exports = AutoFocusUtils;
 
 /***/ }),
-/* 300 */
+/* 303 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -59745,9 +59950,9 @@ module.exports = AutoFocusUtils;
 
 var EventPropagators = __webpack_require__(47);
 var ExecutionEnvironment = __webpack_require__(8);
-var FallbackCompositionState = __webpack_require__(306);
-var SyntheticCompositionEvent = __webpack_require__(347);
-var SyntheticInputEvent = __webpack_require__(350);
+var FallbackCompositionState = __webpack_require__(309);
+var SyntheticCompositionEvent = __webpack_require__(350);
+var SyntheticInputEvent = __webpack_require__(353);
 
 var END_KEYCODES = [9, 13, 27, 32]; // Tab, Return, Esc, Space
 var START_KEYCODE = 229;
@@ -60117,7 +60322,7 @@ var BeforeInputEventPlugin = {
 module.exports = BeforeInputEventPlugin;
 
 /***/ }),
-/* 301 */
+/* 304 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -60137,10 +60342,10 @@ var CSSProperty = __webpack_require__(137);
 var ExecutionEnvironment = __webpack_require__(8);
 var ReactInstrumentation = __webpack_require__(11);
 
-var camelizeStyleName = __webpack_require__(262);
-var dangerousStyleValue = __webpack_require__(357);
-var hyphenateStyleName = __webpack_require__(269);
-var memoizeStringOnly = __webpack_require__(272);
+var camelizeStyleName = __webpack_require__(264);
+var dangerousStyleValue = __webpack_require__(360);
+var hyphenateStyleName = __webpack_require__(271);
+var memoizeStringOnly = __webpack_require__(274);
 var warning = __webpack_require__(2);
 
 var processStyleName = memoizeStringOnly(function (styleName) {
@@ -60332,7 +60537,7 @@ module.exports = CSSPropertyOperations;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 302 */
+/* 305 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -60351,7 +60556,7 @@ module.exports = CSSPropertyOperations;
 var EventPluginHub = __webpack_require__(46);
 var EventPropagators = __webpack_require__(47);
 var ExecutionEnvironment = __webpack_require__(8);
-var ReactDOMComponentTree = __webpack_require__(6);
+var ReactDOMComponentTree = __webpack_require__(7);
 var ReactUpdates = __webpack_require__(16);
 var SyntheticEvent = __webpack_require__(17);
 
@@ -60683,7 +60888,7 @@ var ChangeEventPlugin = {
 module.exports = ChangeEventPlugin;
 
 /***/ }),
-/* 303 */
+/* 306 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -60704,7 +60909,7 @@ var _prodInvariant = __webpack_require__(3);
 var DOMLazyTree = __webpack_require__(44);
 var ExecutionEnvironment = __webpack_require__(8);
 
-var createNodesFromMarkup = __webpack_require__(265);
+var createNodesFromMarkup = __webpack_require__(267);
 var emptyFunction = __webpack_require__(10);
 var invariant = __webpack_require__(1);
 
@@ -60737,7 +60942,7 @@ module.exports = Danger;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 304 */
+/* 307 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -60768,7 +60973,7 @@ var DefaultEventPluginOrder = ['ResponderEventPlugin', 'SimpleEventPlugin', 'Tap
 module.exports = DefaultEventPluginOrder;
 
 /***/ }),
-/* 305 */
+/* 308 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -60785,7 +60990,7 @@ module.exports = DefaultEventPluginOrder;
 
 
 var EventPropagators = __webpack_require__(47);
-var ReactDOMComponentTree = __webpack_require__(6);
+var ReactDOMComponentTree = __webpack_require__(7);
 var SyntheticMouseEvent = __webpack_require__(62);
 
 var eventTypes = {
@@ -60873,7 +61078,7 @@ var EnterLeaveEventPlugin = {
 module.exports = EnterLeaveEventPlugin;
 
 /***/ }),
-/* 306 */
+/* 309 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -60973,7 +61178,7 @@ PooledClass.addPoolingTo(FallbackCompositionState);
 module.exports = FallbackCompositionState;
 
 /***/ }),
-/* 307 */
+/* 310 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -61214,7 +61419,7 @@ var HTMLDOMPropertyConfig = {
 module.exports = HTMLDOMPropertyConfig;
 
 /***/ }),
-/* 308 */
+/* 311 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -61374,7 +61579,7 @@ module.exports = ReactChildReconciler;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 309 */
+/* 312 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -61391,7 +61596,7 @@ module.exports = ReactChildReconciler;
 
 
 var DOMChildrenOperations = __webpack_require__(85);
-var ReactDOMIDOperations = __webpack_require__(314);
+var ReactDOMIDOperations = __webpack_require__(317);
 
 /**
  * Abstracts away all functionality of the reconciler that requires knowledge of
@@ -61409,7 +61614,7 @@ var ReactComponentBrowserEnvironment = {
 module.exports = ReactComponentBrowserEnvironment;
 
 /***/ }),
-/* 310 */
+/* 313 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -61434,11 +61639,11 @@ var ReactCurrentOwner = __webpack_require__(20);
 var ReactErrorUtils = __webpack_require__(93);
 var ReactInstanceMap = __webpack_require__(94);
 var ReactInstrumentation = __webpack_require__(11);
-var ReactNodeTypes = __webpack_require__(333);
+var ReactNodeTypes = __webpack_require__(336);
 var ReactReconciler = __webpack_require__(48);
 
 if (process.env.NODE_ENV !== 'production') {
-  var checkReactTypeSpec = __webpack_require__(356);
+  var checkReactTypeSpec = __webpack_require__(359);
 }
 
 var emptyObject = __webpack_require__(43);
@@ -62317,7 +62522,7 @@ module.exports = ReactCompositeComponent;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 311 */
+/* 314 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -62338,8 +62543,8 @@ module.exports = ReactCompositeComponent;
 var _prodInvariant = __webpack_require__(3),
     _assign = __webpack_require__(4);
 
-var AutoFocusUtils = __webpack_require__(299);
-var CSSPropertyOperations = __webpack_require__(301);
+var AutoFocusUtils = __webpack_require__(302);
+var CSSPropertyOperations = __webpack_require__(304);
 var DOMLazyTree = __webpack_require__(44);
 var DOMNamespaces = __webpack_require__(86);
 var DOMProperty = __webpack_require__(45);
@@ -62348,13 +62553,13 @@ var EventPluginHub = __webpack_require__(46);
 var EventPluginRegistry = __webpack_require__(87);
 var ReactBrowserEventEmitter = __webpack_require__(91);
 var ReactDOMComponentFlags = __webpack_require__(140);
-var ReactDOMComponentTree = __webpack_require__(6);
-var ReactDOMInput = __webpack_require__(315);
-var ReactDOMOption = __webpack_require__(316);
+var ReactDOMComponentTree = __webpack_require__(7);
+var ReactDOMInput = __webpack_require__(318);
+var ReactDOMOption = __webpack_require__(319);
 var ReactDOMSelect = __webpack_require__(141);
-var ReactDOMTextarea = __webpack_require__(320);
+var ReactDOMTextarea = __webpack_require__(323);
 var ReactInstrumentation = __webpack_require__(11);
-var ReactMultiChild = __webpack_require__(332);
+var ReactMultiChild = __webpack_require__(335);
 var ReactServerRenderingTransaction = __webpack_require__(147);
 
 var emptyFunction = __webpack_require__(10);
@@ -63324,7 +63529,7 @@ module.exports = ReactDOMComponent;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 312 */
+/* 315 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -63363,7 +63568,7 @@ module.exports = ReactDOMContainerInfo;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 313 */
+/* 316 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -63382,7 +63587,7 @@ module.exports = ReactDOMContainerInfo;
 var _assign = __webpack_require__(4);
 
 var DOMLazyTree = __webpack_require__(44);
-var ReactDOMComponentTree = __webpack_require__(6);
+var ReactDOMComponentTree = __webpack_require__(7);
 
 var ReactDOMEmptyComponent = function (instantiate) {
   // ReactCompositeComponent uses this:
@@ -63428,7 +63633,7 @@ _assign(ReactDOMEmptyComponent.prototype, {
 module.exports = ReactDOMEmptyComponent;
 
 /***/ }),
-/* 314 */
+/* 317 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -63445,7 +63650,7 @@ module.exports = ReactDOMEmptyComponent;
 
 
 var DOMChildrenOperations = __webpack_require__(85);
-var ReactDOMComponentTree = __webpack_require__(6);
+var ReactDOMComponentTree = __webpack_require__(7);
 
 /**
  * Operations used to process updates to DOM nodes.
@@ -63467,7 +63672,7 @@ var ReactDOMIDOperations = {
 module.exports = ReactDOMIDOperations;
 
 /***/ }),
-/* 315 */
+/* 318 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -63488,7 +63693,7 @@ var _prodInvariant = __webpack_require__(3),
 
 var DOMPropertyOperations = __webpack_require__(139);
 var LinkedValueUtils = __webpack_require__(90);
-var ReactDOMComponentTree = __webpack_require__(6);
+var ReactDOMComponentTree = __webpack_require__(7);
 var ReactUpdates = __webpack_require__(16);
 
 var invariant = __webpack_require__(1);
@@ -63758,7 +63963,7 @@ module.exports = ReactDOMInput;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 316 */
+/* 319 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -63777,7 +63982,7 @@ module.exports = ReactDOMInput;
 var _assign = __webpack_require__(4);
 
 var React = __webpack_require__(50);
-var ReactDOMComponentTree = __webpack_require__(6);
+var ReactDOMComponentTree = __webpack_require__(7);
 var ReactDOMSelect = __webpack_require__(141);
 
 var warning = __webpack_require__(2);
@@ -63887,7 +64092,7 @@ module.exports = ReactDOMOption;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 317 */
+/* 320 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -63905,7 +64110,7 @@ module.exports = ReactDOMOption;
 
 var ExecutionEnvironment = __webpack_require__(8);
 
-var getNodeForCharacterOffset = __webpack_require__(361);
+var getNodeForCharacterOffset = __webpack_require__(364);
 var getTextContentAccessor = __webpack_require__(152);
 
 /**
@@ -64104,7 +64309,7 @@ var ReactDOMSelection = {
 module.exports = ReactDOMSelection;
 
 /***/ }),
-/* 318 */
+/* 321 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -64120,9 +64325,9 @@ module.exports = ReactDOMSelection;
 
 
 
-var ReactDefaultInjection = __webpack_require__(323);
-var ReactServerRendering = __webpack_require__(339);
-var ReactVersion = __webpack_require__(341);
+var ReactDefaultInjection = __webpack_require__(326);
+var ReactServerRendering = __webpack_require__(342);
+var ReactVersion = __webpack_require__(344);
 
 ReactDefaultInjection.inject();
 
@@ -64135,7 +64340,7 @@ var ReactDOMServer = {
 module.exports = ReactDOMServer;
 
 /***/ }),
-/* 319 */
+/* 322 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -64156,7 +64361,7 @@ var _prodInvariant = __webpack_require__(3),
 
 var DOMChildrenOperations = __webpack_require__(85);
 var DOMLazyTree = __webpack_require__(44);
-var ReactDOMComponentTree = __webpack_require__(6);
+var ReactDOMComponentTree = __webpack_require__(7);
 
 var escapeTextContentForBrowser = __webpack_require__(64);
 var invariant = __webpack_require__(1);
@@ -64305,7 +64510,7 @@ module.exports = ReactDOMTextComponent;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 320 */
+/* 323 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -64325,7 +64530,7 @@ var _prodInvariant = __webpack_require__(3),
     _assign = __webpack_require__(4);
 
 var LinkedValueUtils = __webpack_require__(90);
-var ReactDOMComponentTree = __webpack_require__(6);
+var ReactDOMComponentTree = __webpack_require__(7);
 var ReactUpdates = __webpack_require__(16);
 
 var invariant = __webpack_require__(1);
@@ -64471,7 +64676,7 @@ module.exports = ReactDOMTextarea;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 321 */
+/* 324 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -64613,7 +64818,7 @@ module.exports = {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 322 */
+/* 325 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -64630,12 +64835,12 @@ module.exports = {
 
 
 
-var ReactInvalidSetStateWarningHook = __webpack_require__(330);
-var ReactHostOperationHistoryHook = __webpack_require__(328);
+var ReactInvalidSetStateWarningHook = __webpack_require__(333);
+var ReactHostOperationHistoryHook = __webpack_require__(331);
 var ReactComponentTreeHook = __webpack_require__(14);
 var ExecutionEnvironment = __webpack_require__(8);
 
-var performanceNow = __webpack_require__(274);
+var performanceNow = __webpack_require__(276);
 var warning = __webpack_require__(2);
 
 var hooks = [];
@@ -64978,7 +65183,7 @@ module.exports = ReactDebugTool;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 323 */
+/* 326 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -64994,25 +65199,25 @@ module.exports = ReactDebugTool;
 
 
 
-var ARIADOMPropertyConfig = __webpack_require__(298);
-var BeforeInputEventPlugin = __webpack_require__(300);
-var ChangeEventPlugin = __webpack_require__(302);
-var DefaultEventPluginOrder = __webpack_require__(304);
-var EnterLeaveEventPlugin = __webpack_require__(305);
-var HTMLDOMPropertyConfig = __webpack_require__(307);
-var ReactComponentBrowserEnvironment = __webpack_require__(309);
-var ReactDOMComponent = __webpack_require__(311);
-var ReactDOMComponentTree = __webpack_require__(6);
-var ReactDOMEmptyComponent = __webpack_require__(313);
-var ReactDOMTreeTraversal = __webpack_require__(321);
-var ReactDOMTextComponent = __webpack_require__(319);
+var ARIADOMPropertyConfig = __webpack_require__(301);
+var BeforeInputEventPlugin = __webpack_require__(303);
+var ChangeEventPlugin = __webpack_require__(305);
+var DefaultEventPluginOrder = __webpack_require__(307);
+var EnterLeaveEventPlugin = __webpack_require__(308);
+var HTMLDOMPropertyConfig = __webpack_require__(310);
+var ReactComponentBrowserEnvironment = __webpack_require__(312);
+var ReactDOMComponent = __webpack_require__(314);
+var ReactDOMComponentTree = __webpack_require__(7);
+var ReactDOMEmptyComponent = __webpack_require__(316);
+var ReactDOMTreeTraversal = __webpack_require__(324);
+var ReactDOMTextComponent = __webpack_require__(322);
 var ReactDefaultBatchingStrategy = __webpack_require__(142);
-var ReactEventListener = __webpack_require__(326);
-var ReactInjection = __webpack_require__(329);
-var ReactReconcileTransaction = __webpack_require__(336);
-var SVGDOMPropertyConfig = __webpack_require__(342);
-var SelectEventPlugin = __webpack_require__(343);
-var SimpleEventPlugin = __webpack_require__(344);
+var ReactEventListener = __webpack_require__(329);
+var ReactInjection = __webpack_require__(332);
+var ReactReconcileTransaction = __webpack_require__(339);
+var SVGDOMPropertyConfig = __webpack_require__(345);
+var SelectEventPlugin = __webpack_require__(346);
+var SimpleEventPlugin = __webpack_require__(347);
 
 var alreadyInjected = false;
 
@@ -65069,7 +65274,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 324 */
+/* 327 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -65094,7 +65299,7 @@ var REACT_ELEMENT_TYPE = typeof Symbol === 'function' && Symbol['for'] && Symbol
 module.exports = REACT_ELEMENT_TYPE;
 
 /***/ }),
-/* 325 */
+/* 328 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -65132,7 +65337,7 @@ var ReactEventEmitterMixin = {
 module.exports = ReactEventEmitterMixin;
 
 /***/ }),
-/* 326 */
+/* 329 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -65153,11 +65358,11 @@ var _assign = __webpack_require__(4);
 var EventListener = __webpack_require__(125);
 var ExecutionEnvironment = __webpack_require__(8);
 var PooledClass = __webpack_require__(24);
-var ReactDOMComponentTree = __webpack_require__(6);
+var ReactDOMComponentTree = __webpack_require__(7);
 var ReactUpdates = __webpack_require__(16);
 
 var getEventTarget = __webpack_require__(98);
-var getUnboundedScrollPosition = __webpack_require__(267);
+var getUnboundedScrollPosition = __webpack_require__(269);
 
 /**
  * Find the deepest React component completely containing the root of the
@@ -65292,7 +65497,7 @@ var ReactEventListener = {
 module.exports = ReactEventListener;
 
 /***/ }),
-/* 327 */
+/* 330 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -65319,7 +65524,7 @@ var ReactFeatureFlags = {
 module.exports = ReactFeatureFlags;
 
 /***/ }),
-/* 328 */
+/* 331 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -65358,7 +65563,7 @@ var ReactHostOperationHistoryHook = {
 module.exports = ReactHostOperationHistoryHook;
 
 /***/ }),
-/* 329 */
+/* 332 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -65397,7 +65602,7 @@ var ReactInjection = {
 module.exports = ReactInjection;
 
 /***/ }),
-/* 330 */
+/* 333 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -65440,7 +65645,7 @@ module.exports = ReactInvalidSetStateWarningHook;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 331 */
+/* 334 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -65456,7 +65661,7 @@ module.exports = ReactInvalidSetStateWarningHook;
 
 
 
-var adler32 = __webpack_require__(355);
+var adler32 = __webpack_require__(358);
 
 var TAG_END = /\/?>/;
 var COMMENT_START = /^<\!\-\-/;
@@ -65495,7 +65700,7 @@ var ReactMarkupChecksum = {
 module.exports = ReactMarkupChecksum;
 
 /***/ }),
-/* 332 */
+/* 335 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -65519,10 +65724,10 @@ var ReactInstrumentation = __webpack_require__(11);
 
 var ReactCurrentOwner = __webpack_require__(20);
 var ReactReconciler = __webpack_require__(48);
-var ReactChildReconciler = __webpack_require__(308);
+var ReactChildReconciler = __webpack_require__(311);
 
 var emptyFunction = __webpack_require__(10);
-var flattenChildren = __webpack_require__(358);
+var flattenChildren = __webpack_require__(361);
 var invariant = __webpack_require__(1);
 
 /**
@@ -65951,7 +66156,7 @@ module.exports = ReactMultiChild;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 333 */
+/* 336 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -65997,7 +66202,7 @@ module.exports = ReactNodeTypes;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 334 */
+/* 337 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -66097,7 +66302,7 @@ module.exports = ReactOwner;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 335 */
+/* 338 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -66128,7 +66333,7 @@ module.exports = ReactPropTypeLocationNames;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 336 */
+/* 339 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -66312,7 +66517,7 @@ module.exports = ReactReconcileTransaction;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 337 */
+/* 340 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -66329,7 +66534,7 @@ module.exports = ReactReconcileTransaction;
 
 
 
-var ReactOwner = __webpack_require__(334);
+var ReactOwner = __webpack_require__(337);
 
 var ReactRef = {};
 
@@ -66406,7 +66611,7 @@ ReactRef.detachRefs = function (instance, element) {
 module.exports = ReactRef;
 
 /***/ }),
-/* 338 */
+/* 341 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -66433,7 +66638,7 @@ var ReactServerBatchingStrategy = {
 module.exports = ReactServerBatchingStrategy;
 
 /***/ }),
-/* 339 */
+/* 342 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -66451,12 +66656,12 @@ module.exports = ReactServerBatchingStrategy;
 var _prodInvariant = __webpack_require__(3);
 
 var React = __webpack_require__(50);
-var ReactDOMContainerInfo = __webpack_require__(312);
+var ReactDOMContainerInfo = __webpack_require__(315);
 var ReactDefaultBatchingStrategy = __webpack_require__(142);
 var ReactInstrumentation = __webpack_require__(11);
-var ReactMarkupChecksum = __webpack_require__(331);
+var ReactMarkupChecksum = __webpack_require__(334);
 var ReactReconciler = __webpack_require__(48);
-var ReactServerBatchingStrategy = __webpack_require__(338);
+var ReactServerBatchingStrategy = __webpack_require__(341);
 var ReactServerRenderingTransaction = __webpack_require__(147);
 var ReactUpdates = __webpack_require__(16);
 
@@ -66529,7 +66734,7 @@ module.exports = {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 340 */
+/* 343 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -66674,7 +66879,7 @@ module.exports = ReactServerUpdateQueue;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 341 */
+/* 344 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -66693,7 +66898,7 @@ module.exports = ReactServerUpdateQueue;
 module.exports = '15.5.4';
 
 /***/ }),
-/* 342 */
+/* 345 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -67000,7 +67205,7 @@ Object.keys(ATTRS).forEach(function (key) {
 module.exports = SVGDOMPropertyConfig;
 
 /***/ }),
-/* 343 */
+/* 346 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -67018,7 +67223,7 @@ module.exports = SVGDOMPropertyConfig;
 
 var EventPropagators = __webpack_require__(47);
 var ExecutionEnvironment = __webpack_require__(8);
-var ReactDOMComponentTree = __webpack_require__(6);
+var ReactDOMComponentTree = __webpack_require__(7);
 var ReactInputSelection = __webpack_require__(145);
 var SyntheticEvent = __webpack_require__(17);
 
@@ -67196,7 +67401,7 @@ var SelectEventPlugin = {
 module.exports = SelectEventPlugin;
 
 /***/ }),
-/* 344 */
+/* 347 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -67217,18 +67422,18 @@ var _prodInvariant = __webpack_require__(3);
 
 var EventListener = __webpack_require__(125);
 var EventPropagators = __webpack_require__(47);
-var ReactDOMComponentTree = __webpack_require__(6);
-var SyntheticAnimationEvent = __webpack_require__(345);
-var SyntheticClipboardEvent = __webpack_require__(346);
+var ReactDOMComponentTree = __webpack_require__(7);
+var SyntheticAnimationEvent = __webpack_require__(348);
+var SyntheticClipboardEvent = __webpack_require__(349);
 var SyntheticEvent = __webpack_require__(17);
-var SyntheticFocusEvent = __webpack_require__(349);
-var SyntheticKeyboardEvent = __webpack_require__(351);
+var SyntheticFocusEvent = __webpack_require__(352);
+var SyntheticKeyboardEvent = __webpack_require__(354);
 var SyntheticMouseEvent = __webpack_require__(62);
-var SyntheticDragEvent = __webpack_require__(348);
-var SyntheticTouchEvent = __webpack_require__(352);
-var SyntheticTransitionEvent = __webpack_require__(353);
+var SyntheticDragEvent = __webpack_require__(351);
+var SyntheticTouchEvent = __webpack_require__(355);
+var SyntheticTransitionEvent = __webpack_require__(356);
 var SyntheticUIEvent = __webpack_require__(49);
-var SyntheticWheelEvent = __webpack_require__(354);
+var SyntheticWheelEvent = __webpack_require__(357);
 
 var emptyFunction = __webpack_require__(10);
 var getEventCharCode = __webpack_require__(96);
@@ -67430,7 +67635,7 @@ module.exports = SimpleEventPlugin;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 345 */
+/* 348 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -67474,7 +67679,7 @@ SyntheticEvent.augmentClass(SyntheticAnimationEvent, AnimationEventInterface);
 module.exports = SyntheticAnimationEvent;
 
 /***/ }),
-/* 346 */
+/* 349 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -67517,7 +67722,7 @@ SyntheticEvent.augmentClass(SyntheticClipboardEvent, ClipboardEventInterface);
 module.exports = SyntheticClipboardEvent;
 
 /***/ }),
-/* 347 */
+/* 350 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -67558,7 +67763,7 @@ SyntheticEvent.augmentClass(SyntheticCompositionEvent, CompositionEventInterface
 module.exports = SyntheticCompositionEvent;
 
 /***/ }),
-/* 348 */
+/* 351 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -67599,7 +67804,7 @@ SyntheticMouseEvent.augmentClass(SyntheticDragEvent, DragEventInterface);
 module.exports = SyntheticDragEvent;
 
 /***/ }),
-/* 349 */
+/* 352 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -67640,7 +67845,7 @@ SyntheticUIEvent.augmentClass(SyntheticFocusEvent, FocusEventInterface);
 module.exports = SyntheticFocusEvent;
 
 /***/ }),
-/* 350 */
+/* 353 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -67682,7 +67887,7 @@ SyntheticEvent.augmentClass(SyntheticInputEvent, InputEventInterface);
 module.exports = SyntheticInputEvent;
 
 /***/ }),
-/* 351 */
+/* 354 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -67701,7 +67906,7 @@ module.exports = SyntheticInputEvent;
 var SyntheticUIEvent = __webpack_require__(49);
 
 var getEventCharCode = __webpack_require__(96);
-var getEventKey = __webpack_require__(359);
+var getEventKey = __webpack_require__(362);
 var getEventModifierState = __webpack_require__(97);
 
 /**
@@ -67771,7 +67976,7 @@ SyntheticUIEvent.augmentClass(SyntheticKeyboardEvent, KeyboardEventInterface);
 module.exports = SyntheticKeyboardEvent;
 
 /***/ }),
-/* 352 */
+/* 355 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -67821,7 +68026,7 @@ SyntheticUIEvent.augmentClass(SyntheticTouchEvent, TouchEventInterface);
 module.exports = SyntheticTouchEvent;
 
 /***/ }),
-/* 353 */
+/* 356 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -67865,7 +68070,7 @@ SyntheticEvent.augmentClass(SyntheticTransitionEvent, TransitionEventInterface);
 module.exports = SyntheticTransitionEvent;
 
 /***/ }),
-/* 354 */
+/* 357 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -67924,7 +68129,7 @@ SyntheticMouseEvent.augmentClass(SyntheticWheelEvent, WheelEventInterface);
 module.exports = SyntheticWheelEvent;
 
 /***/ }),
-/* 355 */
+/* 358 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -67973,7 +68178,7 @@ function adler32(data) {
 module.exports = adler32;
 
 /***/ }),
-/* 356 */
+/* 359 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -67991,7 +68196,7 @@ module.exports = adler32;
 
 var _prodInvariant = __webpack_require__(3);
 
-var ReactPropTypeLocationNames = __webpack_require__(335);
+var ReactPropTypeLocationNames = __webpack_require__(338);
 var ReactPropTypesSecret = __webpack_require__(146);
 
 var invariant = __webpack_require__(1);
@@ -68066,7 +68271,7 @@ module.exports = checkReactTypeSpec;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 357 */
+/* 360 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -68151,7 +68356,7 @@ module.exports = dangerousStyleValue;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 358 */
+/* 361 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -68233,7 +68438,7 @@ module.exports = flattenChildren;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 359 */
+/* 362 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -68340,7 +68545,7 @@ function getEventKey(nativeEvent) {
 module.exports = getEventKey;
 
 /***/ }),
-/* 360 */
+/* 363 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -68386,7 +68591,7 @@ function getIteratorFn(maybeIterable) {
 module.exports = getIteratorFn;
 
 /***/ }),
-/* 361 */
+/* 364 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -68465,7 +68670,7 @@ function getNodeForCharacterOffset(root, offset) {
 module.exports = getNodeForCharacterOffset;
 
 /***/ }),
-/* 362 */
+/* 365 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -68571,7 +68776,7 @@ function getVendorPrefixedEventName(eventName) {
 module.exports = getVendorPrefixedEventName;
 
 /***/ }),
-/* 363 */
+/* 366 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -68602,17 +68807,17 @@ function quoteAttributeValueForBrowser(value) {
 module.exports = quoteAttributeValueForBrowser;
 
 /***/ }),
-/* 364 */
+/* 367 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-module.exports = __webpack_require__(318);
+module.exports = __webpack_require__(321);
 
 
 /***/ }),
-/* 365 */
+/* 368 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -68624,7 +68829,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _react = __webpack_require__(7);
+var _react = __webpack_require__(5);
 
 var _react2 = _interopRequireDefault(_react);
 
@@ -68841,7 +69046,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 366 */
+/* 369 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -68905,7 +69110,7 @@ var KeyEscapeUtils = {
 module.exports = KeyEscapeUtils;
 
 /***/ }),
-/* 367 */
+/* 370 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -69023,7 +69228,7 @@ module.exports = PooledClass;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 368 */
+/* 371 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -69039,11 +69244,11 @@ module.exports = PooledClass;
 
 
 
-var PooledClass = __webpack_require__(367);
+var PooledClass = __webpack_require__(370);
 var ReactElement = __webpack_require__(25);
 
 var emptyFunction = __webpack_require__(10);
-var traverseAllChildren = __webpack_require__(378);
+var traverseAllChildren = __webpack_require__(381);
 
 var twoArgumentPooler = PooledClass.twoArgumentPooler;
 var fourArgumentPooler = PooledClass.fourArgumentPooler;
@@ -69219,7 +69424,7 @@ var ReactChildren = {
 module.exports = ReactChildren;
 
 /***/ }),
-/* 369 */
+/* 372 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -69948,7 +70153,7 @@ module.exports = ReactClass;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 370 */
+/* 373 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -70124,7 +70329,7 @@ module.exports = ReactDOMFactories;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 371 */
+/* 374 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -70148,7 +70353,7 @@ var factory = __webpack_require__(135);
 module.exports = factory(isValidElement);
 
 /***/ }),
-/* 372 */
+/* 375 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -70170,7 +70375,7 @@ var ReactPropTypesSecret = 'SECRET_DO_NOT_PASS_THIS_OR_YOU_WILL_BE_FIRED';
 module.exports = ReactPropTypesSecret;
 
 /***/ }),
-/* 373 */
+/* 376 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -70217,7 +70422,7 @@ ReactPureComponent.prototype.isPureReactComponent = true;
 module.exports = ReactPureComponent;
 
 /***/ }),
-/* 374 */
+/* 377 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -70236,7 +70441,7 @@ module.exports = ReactPureComponent;
 module.exports = '15.5.4';
 
 /***/ }),
-/* 375 */
+/* 378 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -70255,7 +70460,7 @@ module.exports = '15.5.4';
 var _prodInvariant = __webpack_require__(26);
 
 var ReactPropTypeLocationNames = __webpack_require__(160);
-var ReactPropTypesSecret = __webpack_require__(372);
+var ReactPropTypesSecret = __webpack_require__(375);
 
 var invariant = __webpack_require__(1);
 var warning = __webpack_require__(2);
@@ -70329,7 +70534,7 @@ module.exports = checkReactTypeSpec;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 376 */
+/* 379 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -70355,7 +70560,7 @@ function getNextDebugID() {
 module.exports = getNextDebugID;
 
 /***/ }),
-/* 377 */
+/* 380 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -70399,7 +70604,7 @@ module.exports = onlyChild;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 378 */
+/* 381 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -70422,7 +70627,7 @@ var REACT_ELEMENT_TYPE = __webpack_require__(158);
 
 var getIteratorFn = __webpack_require__(161);
 var invariant = __webpack_require__(1);
-var KeyEscapeUtils = __webpack_require__(366);
+var KeyEscapeUtils = __webpack_require__(369);
 var warning = __webpack_require__(2);
 
 var SEPARATOR = '.';
@@ -70581,14 +70786,14 @@ module.exports = traverseAllChildren;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 379 */
+/* 382 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(27);
 
 
 /***/ }),
-/* 380 */
+/* 383 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -70620,7 +70825,7 @@ PassThrough.prototype._transform = function (chunk, encoding, cb) {
 };
 
 /***/ }),
-/* 381 */
+/* 384 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -70690,28 +70895,28 @@ BufferList.prototype.concat = function (n) {
 };
 
 /***/ }),
-/* 382 */
+/* 385 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(105).PassThrough
 
 
 /***/ }),
-/* 383 */
+/* 386 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(105).Transform
 
 
 /***/ }),
-/* 384 */
+/* 387 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(104);
 
 
 /***/ }),
-/* 385 */
+/* 388 */
 /***/ (function(module, exports) {
 
 function isBackward(selection) {
@@ -70729,7 +70934,7 @@ module.exports = isBackward;
 
 
 /***/ }),
-/* 386 */
+/* 389 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, process) {(function (global, undefined) {
@@ -70922,7 +71127,7 @@ module.exports = isBackward;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9), __webpack_require__(0)))
 
 /***/ }),
-/* 387 */
+/* 390 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -70938,7 +71143,7 @@ var _debug = __webpack_require__(18);
 
 var _debug2 = _interopRequireDefault(_debug);
 
-var _react = __webpack_require__(7);
+var _react = __webpack_require__(5);
 
 var _react2 = _interopRequireDefault(_react);
 
@@ -70962,7 +71167,7 @@ var _base = __webpack_require__(69);
 
 var _base2 = _interopRequireDefault(_base);
 
-var _node = __webpack_require__(389);
+var _node = __webpack_require__(392);
 
 var _node2 = _interopRequireDefault(_node);
 
@@ -70970,7 +71175,7 @@ var _selection = __webpack_require__(54);
 
 var _selection2 = _interopRequireDefault(_selection);
 
-var _extendSelection = __webpack_require__(404);
+var _extendSelection = __webpack_require__(407);
 
 var _extendSelection2 = _interopRequireDefault(_extendSelection);
 
@@ -70986,7 +71191,7 @@ var _getPoint = __webpack_require__(175);
 
 var _getPoint2 = _interopRequireDefault(_getPoint);
 
-var _getTransferData = __webpack_require__(405);
+var _getTransferData = __webpack_require__(408);
 
 var _getTransferData2 = _interopRequireDefault(_getTransferData);
 
@@ -71921,7 +72126,7 @@ var _initialiseProps = function _initialiseProps() {
 exports.default = Content;
 
 /***/ }),
-/* 388 */
+/* 391 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -71937,11 +72142,11 @@ var _debug = __webpack_require__(18);
 
 var _debug2 = _interopRequireDefault(_debug);
 
-var _reactPortal = __webpack_require__(365);
+var _reactPortal = __webpack_require__(368);
 
 var _reactPortal2 = _interopRequireDefault(_reactPortal);
 
-var _react = __webpack_require__(7);
+var _react = __webpack_require__(5);
 
 var _react2 = _interopRequireDefault(_react);
 
@@ -71957,7 +72162,7 @@ var _state = __webpack_require__(68);
 
 var _state2 = _interopRequireDefault(_state);
 
-var _noop = __webpack_require__(408);
+var _noop = __webpack_require__(411);
 
 var _noop2 = _interopRequireDefault(_noop);
 
@@ -72318,7 +72523,7 @@ try {
 exports.default = Editor;
 
 /***/ }),
-/* 389 */
+/* 392 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -72332,7 +72537,7 @@ var _debug = __webpack_require__(18);
 
 var _debug2 = _interopRequireDefault(_debug);
 
-var _react = __webpack_require__(7);
+var _react = __webpack_require__(5);
 
 var _react2 = _interopRequireDefault(_react);
 
@@ -72356,7 +72561,7 @@ var _leaf = __webpack_require__(165);
 
 var _leaf2 = _interopRequireDefault(_leaf);
 
-var _void = __webpack_require__(390);
+var _void = __webpack_require__(393);
 
 var _void2 = _interopRequireDefault(_void);
 
@@ -72364,7 +72569,7 @@ var _getWindow = __webpack_require__(60);
 
 var _getWindow2 = _interopRequireDefault(_getWindow);
 
-var _scrollToSelection = __webpack_require__(410);
+var _scrollToSelection = __webpack_require__(413);
 
 var _scrollToSelection2 = _interopRequireDefault(_scrollToSelection);
 
@@ -72769,7 +72974,7 @@ var _initialiseProps = function _initialiseProps() {
 exports.default = Node;
 
 /***/ }),
-/* 390 */
+/* 393 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -72783,7 +72988,7 @@ var _debug = __webpack_require__(18);
 
 var _debug2 = _interopRequireDefault(_debug);
 
-var _react = __webpack_require__(7);
+var _react = __webpack_require__(5);
 
 var _react2 = _interopRequireDefault(_react);
 
@@ -73036,7 +73241,7 @@ var _initialiseProps = function _initialiseProps() {
 exports.default = Void;
 
 /***/ }),
-/* 391 */
+/* 394 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -73266,7 +73471,7 @@ function isContiguousRemoves(operations, previous) {
 exports.default = Transform;
 
 /***/ }),
-/* 392 */
+/* 395 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -73282,7 +73487,7 @@ var _base = __webpack_require__(69);
 
 var _base2 = _interopRequireDefault(_base);
 
-var _content = __webpack_require__(387);
+var _content = __webpack_require__(390);
 
 var _content2 = _interopRequireDefault(_content);
 
@@ -73302,7 +73507,7 @@ var _placeholder = __webpack_require__(166);
 
 var _placeholder2 = _interopRequireDefault(_placeholder);
 
-var _react = __webpack_require__(7);
+var _react = __webpack_require__(5);
 
 var _react2 = _interopRequireDefault(_react);
 
@@ -74254,7 +74459,7 @@ function Plugin() {
 exports.default = Plugin;
 
 /***/ }),
-/* 393 */
+/* 396 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -74270,15 +74475,15 @@ var _raw = __webpack_require__(70);
 
 var _raw2 = _interopRequireDefault(_raw);
 
-var _react = __webpack_require__(7);
+var _react = __webpack_require__(5);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _server = __webpack_require__(364);
+var _server = __webpack_require__(367);
 
 var _server2 = _interopRequireDefault(_server);
 
-var _cheerio = __webpack_require__(191);
+var _cheerio = __webpack_require__(193);
 
 var _cheerio2 = _interopRequireDefault(_cheerio);
 
@@ -74286,7 +74491,7 @@ var _typeOf = __webpack_require__(111);
 
 var _typeOf2 = _interopRequireDefault(_typeOf);
 
-var _immutable = __webpack_require__(5);
+var _immutable = __webpack_require__(6);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -74731,7 +74936,7 @@ function addKey(element) {
 exports.default = Html;
 
 /***/ }),
-/* 394 */
+/* 397 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -74807,7 +75012,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 395 */
+/* 398 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -75385,7 +75590,7 @@ function splitNode(state, operation) {
 exports.default = Transforms;
 
 /***/ }),
-/* 396 */
+/* 399 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -75919,7 +76124,7 @@ Transforms.wrapText = function (transform, prefix) {
 exports.default = Transforms;
 
 /***/ }),
-/* 397 */
+/* 400 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -75933,7 +76138,7 @@ var _normalize = __webpack_require__(36);
 
 var _normalize2 = _interopRequireDefault(_normalize);
 
-var _string = __webpack_require__(411);
+var _string = __webpack_require__(414);
 
 var _string2 = _interopRequireDefault(_string);
 
@@ -75941,7 +76146,7 @@ var _core = __webpack_require__(108);
 
 var _core2 = _interopRequireDefault(_core);
 
-var _immutable = __webpack_require__(5);
+var _immutable = __webpack_require__(6);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -77339,7 +77544,7 @@ Transforms.wrapTextAtRange = function (transform, range, prefix) {
 exports.default = Transforms;
 
 /***/ }),
-/* 398 */
+/* 401 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -77840,7 +78045,7 @@ Transforms.wrapBlockByKey = function (transform, key, block, options) {
 exports.default = Transforms;
 
 /***/ }),
-/* 399 */
+/* 402 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -77885,7 +78090,7 @@ Transforms.call = function (transform, fn) {
 exports.default = Transforms;
 
 /***/ }),
-/* 400 */
+/* 403 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -77907,7 +78112,7 @@ var _warn = __webpack_require__(37);
 
 var _warn2 = _interopRequireDefault(_warn);
 
-var _immutable = __webpack_require__(5);
+var _immutable = __webpack_require__(6);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -78159,7 +78364,7 @@ function assertSchema(schema) {
 exports.default = Transforms;
 
 /***/ }),
-/* 401 */
+/* 404 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -78307,7 +78512,7 @@ Transforms.undo = function (transform) {
 exports.default = Transforms;
 
 /***/ }),
-/* 402 */
+/* 405 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -78518,7 +78723,7 @@ DEPRECATED_TRANSFORMS.forEach(function (_ref) {
 exports.default = Transforms;
 
 /***/ }),
-/* 403 */
+/* 406 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -79038,7 +79243,7 @@ Transforms.splitNodeOperation = function (transform, path, count) {
 exports.default = Transforms;
 
 /***/ }),
-/* 404 */
+/* 407 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -79095,7 +79300,7 @@ function extendSelection(selection, el, offset) {
 exports.default = extendSelection;
 
 /***/ }),
-/* 405 */
+/* 408 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -79207,7 +79412,7 @@ function getTransferType(data) {
 exports.default = getTransferData;
 
 /***/ }),
-/* 406 */
+/* 409 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -79253,7 +79458,7 @@ function isInRange(index, text, range) {
 exports.default = isInRange;
 
 /***/ }),
-/* 407 */
+/* 410 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -79283,7 +79488,7 @@ function isReactComponent(object) {
 exports.default = isReactComponent;
 
 /***/ }),
-/* 408 */
+/* 411 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -79310,7 +79515,7 @@ function noop() {}
 exports.default = noop;
 
 /***/ }),
-/* 409 */
+/* 412 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -79407,7 +79612,7 @@ function getEditableChild(parent, index, direction) {
 exports.default = normalizeNodeAndOffset;
 
 /***/ }),
-/* 410 */
+/* 413 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -79421,7 +79626,7 @@ var _getWindow = __webpack_require__(60);
 
 var _getWindow2 = _interopRequireDefault(_getWindow);
 
-var _selectionIsBackward = __webpack_require__(385);
+var _selectionIsBackward = __webpack_require__(388);
 
 var _selectionIsBackward2 = _interopRequireDefault(_selectionIsBackward);
 
@@ -79464,7 +79669,7 @@ function scrollToSelection(selection) {
 exports.default = scrollToSelection;
 
 /***/ }),
-/* 411 */
+/* 414 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -79474,7 +79679,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _esrever = __webpack_require__(259);
+var _esrever = __webpack_require__(261);
 
 /**
  * Surrogate pair start and end points.
@@ -79671,7 +79876,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 412 */
+/* 415 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
@@ -79687,7 +79892,7 @@ exports.coerce = coerce;
 exports.disable = disable;
 exports.enable = enable;
 exports.enabled = enabled;
-exports.humanize = __webpack_require__(413);
+exports.humanize = __webpack_require__(416);
 
 /**
  * The currently active debug mode names, and names to skip.
@@ -79879,7 +80084,7 @@ function coerce(val) {
 
 
 /***/ }),
-/* 413 */
+/* 416 */
 /***/ (function(module, exports) {
 
 /**
@@ -80037,7 +80242,7 @@ function plural(ms, n, name) {
 
 
 /***/ }),
-/* 414 */
+/* 417 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Copyright Joyent, Inc. and other Node contributors.
@@ -80068,10 +80273,10 @@ var inherits = __webpack_require__(13);
 
 inherits(Stream, EE);
 Stream.Readable = __webpack_require__(105);
-Stream.Writable = __webpack_require__(384);
-Stream.Duplex = __webpack_require__(379);
-Stream.Transform = __webpack_require__(383);
-Stream.PassThrough = __webpack_require__(382);
+Stream.Writable = __webpack_require__(387);
+Stream.Duplex = __webpack_require__(382);
+Stream.Transform = __webpack_require__(386);
+Stream.PassThrough = __webpack_require__(385);
 
 // Backwards-compat with node 0.4.x
 Stream.Stream = Stream;
@@ -80170,7 +80375,7 @@ Stream.prototype.pipe = function(dest, options) {
 
 
 /***/ }),
-/* 415 */
+/* 418 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -80216,7 +80421,7 @@ var singleton = null;
 var	singletonCounter = 0;
 var	stylesInsertedAtTop = [];
 
-var	fixUrls = __webpack_require__(416);
+var	fixUrls = __webpack_require__(419);
 
 module.exports = function(list, options) {
 	if (typeof DEBUG !== "undefined" && DEBUG) {
@@ -80529,7 +80734,7 @@ function updateLink (link, options, obj) {
 
 
 /***/ }),
-/* 416 */
+/* 419 */
 /***/ (function(module, exports) {
 
 
@@ -80624,7 +80829,7 @@ module.exports = function (css) {
 
 
 /***/ }),
-/* 417 */
+/* 420 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var apply = Function.prototype.apply;
@@ -80677,25 +80882,31 @@ exports._unrefActive = exports.active = function(item) {
 };
 
 // setimmediate attaches itself to the global object
-__webpack_require__(386);
+__webpack_require__(389);
 exports.setImmediate = setImmediate;
 exports.clearImmediate = clearImmediate;
 
 
 /***/ }),
-/* 418 */
+/* 421 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__.p + "b0537a0f85ed163c6fd9c5d10b4ab484.jpg";
 
 /***/ }),
-/* 419 */
+/* 422 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__.p + "ecb756d2fbec48f66b3a8d321ad6d327.jpg";
 
 /***/ }),
-/* 420 */
+/* 423 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "a6decc2717b5a6bdf7a54198907fe370.jpg";
+
+/***/ }),
+/* 424 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {
@@ -80769,13 +80980,13 @@ function config (name) {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9)))
 
 /***/ }),
-/* 421 */
+/* 425 */
 /***/ (function(module, exports) {
 
 /* (ignored) */
 
 /***/ }),
-/* 422 */
+/* 426 */
 /***/ (function(module, exports) {
 
 /* (ignored) */
