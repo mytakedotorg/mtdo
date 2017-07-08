@@ -1,6 +1,25 @@
 import * as React from "react";
 import Constitution from '../Constitution';
 import Debates from '../Debates';
+import Amendments from '../Amendments';
+
+function AmendmentsCard(props: FoundationCardProps){
+  return (
+    <div className="foundation__card foundation__card--amendments" onClick={props.onClick}>
+      <div className="foundation__image-container">
+        <img src={require('./images/amendments.jpg')} 
+          className="foundation__image foundation__image--amendments"
+          width="220" 
+          height="313" 
+        />
+      </div>
+      <div className="foundation__info-container">
+        <h3 className="foundation__card-title foundation__card-title--amendments">The Amendments</h3>
+        <p className="foundation__description foundation__description--amendments">The full text of the Amendments to the U.S. Constitution.</p>
+      </div>
+    </div>
+  )
+}
 
 function ConstitutionCard(props: FoundationCardProps){
   return (
@@ -46,9 +65,13 @@ export default class Foundation extends React.Component<FoundationProps, Foundat
       view: 'INITIAL'
     }
 
+    this.handleAmendmentsCardClick = this.handleAmendmentsCardClick.bind(this);
     this.handleConstitutionCardClick = this.handleConstitutionCardClick.bind(this);
     this.handleDebatesCardClick = this.handleDebatesCardClick.bind(this);
     this.handleBackClick = this.handleBackClick.bind(this);
+  }
+  handleAmendmentsCardClick(){
+    this.setState({view: 'AMENDMENTS'});
   }
   handleConstitutionCardClick(){
     this.setState({view: 'CONSTITUTION'});
@@ -69,9 +92,23 @@ export default class Foundation extends React.Component<FoundationProps, Foundat
             <h2 className="foundation__heading">The Foundation</h2>
             <p className="foundation__instructions">Browse the Foundation to support your take with Facts.</p>
             <div className="foundation__card-list">
-              <ConstitutionCard onClick={this.handleConstitutionCardClick} />
+              <AmendmentsCard onClick={this.handleAmendmentsCardClick} />
+              <ConstitutionCard onClick={this.handleConstitutionCardClick}  />
               <DebatesCard onClick={this.handleDebatesCardClick} />
             </div>
+          </div>
+        );
+      case 'AMENDMENTS':
+        return (
+          <div className="foundation">
+            <Amendments 
+              onBackClick={this.handleBackClick}
+              onClearClick={props.onAmendmentsClearClick}
+              onSetClick={props.onAmendmentsSetClick}
+              onMouseUp={props.onAmendmentsMouseUp} 
+              amendmentsNodes={props.amendmentsNodes}
+              textIsHighlighted={props.amendmentsTextIsHighlighted}
+            />
           </div>
         );
       case 'CONSTITUTION':
