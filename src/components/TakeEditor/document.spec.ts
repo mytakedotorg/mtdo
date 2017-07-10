@@ -1,6 +1,6 @@
 import * as take from './index';
 
-test('parse a simple document', () => {
+test('convert a simple document to slate', () => {
     let doc: take.TakeDocument = {
         title: "My take title",
         blocks: [
@@ -14,5 +14,8 @@ test('parse a simple document', () => {
             range: [1, 25]
         }
     ]};
-    expect(doc.title).toBe('My take title')
+    let result = take.toSlateDocument(doc);
+    expect(result.document.nodes.get(0).type).toBe('title')
+    expect(result.document.nodes.get(1).type).toBe('paragraph')
+    expect(result.document.nodes.get(2).type).toBe('paragraph')
 })
