@@ -22,7 +22,7 @@ class MyTake extends React.Component<MyTakeProps, MyTakeState> {
       amendmentsTextIsHighlighted: false,
       highlightedConstitutionNodes: [],
       highlightedAmendmentsNodes: [],
-      editorState: initialState,
+      editorState: props.initState,
       schema: {
         nodes: {
           title: TitleNode,

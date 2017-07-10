@@ -1,5 +1,6 @@
 interface MyTakeProps {
   //no props
+  initState: any;
 }
 
 interface MyTakeState {
