@@ -8,13 +8,47 @@
   <meta name="description" content="What's your take?">
   <meta name="author" content="mytake.org">
 
+  <link href="https://fonts.googleapis.com/css?family=Merriweather:400,400i,700|Source+Sans+Pro:300,400,700" rel="stylesheet">
+  <script src="https://use.fontawesome.com/be03d6dcba.js"></script>
   <!--[if lt IE 9]>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
   <![endif]-->
 </head>
 
 <body>
-  <h1>mytake.org editor MVP</h1>
-  <p>Lots work to do...</p>
+  <header class="header" role="banner">
+    <a class="header__skip-link" href="#app" tabindex="1">Skip to main content</a>
+    <em class="header__logo"><a class="header__logo-link" href="/">MyTake.org</a></em>
+    <div class="header__button-list">
+      <a class="header__button header__button--github" href="https://github.com/nedtwigg/mytake"><i class="fa fa-github" aria-hidden="true"></i></a>
+    </div>
+    <div class="header__nav">
+      <nav class="nav" role="navigation">
+        <ul class="nav__list">
+          <li class="nav__list-item"><a class="nav__link" href="/about" tabindex="2">About us</a></li>
+          <li class="nav__list-item"><a class="nav__link" href="/editor" tabindex="3">Editing risk reduction</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  
+  <div id="app"></div>
+
+
+  <footer class="footer">
+    <ul class="nav__list">
+      <li class="nav__list-item"><a class="nav__link" href="/about" tabindex="4">About us</a></li>
+      <li class="nav__list-item"><a class="nav__link" href="/editor" tabindex="5">Editing risk reduction</a></li>
+    </ul>
+  </footer>
+  
+  <!-- Dependencies -->
+  <script src="https://unpkg.com/react@15/dist/react.js"></script>
+  <script src="https://unpkg.com/react-dom@15/dist/react-dom.js"></script>
+
+  <!-- Main -->
+  <script src="/bundle-0.0.2.js"></script>
+
 </body>
 </html>

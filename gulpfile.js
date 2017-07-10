@@ -1,12 +1,23 @@
 const gulp = require('gulp')
-	child = require('child_process')
-	gutil = require('gulp-util')
-	browserSync = require('browser-sync').create();
+  child = require('child_process')
+  gutil = require('gulp-util')
+  nunjucks = require('gulp-nunjucks-html')
+  browserSync = require('browser-sync').create();
 
 const config = {
-	siteRoot: './docs',
-	siteSrc: './src/**/*'
+  siteRoot: './docs',
+  nunjucksTemplates: './nunjucks/templates',
+  nunjucksPages: './nunjucks/pages',
+  siteSrc: './src/**/*'
 }
+
+gulp.task('nunjucks', () => {
+  return gulp.src(config.nunjucksPages + '/**/*.html')
+    .pipe(nunjucks({
+      searchPaths: [config.nunjucksTemplates]
+    }))
+    .pipe(gulp.dest(config.siteRoot))
+});
 
 gulp.task('webpack', () => {
   const webpack = child.spawn('webpack');
@@ -30,7 +41,9 @@ gulp.task('serve', () => {
     }
   });
   
+  gulp.watch([config.nunjucksTemplates + '/**/*.html', 
+              config.nunjucksPages + '/**/*.html'], ['nunjucks'])
   gulp.watch(config.siteSrc, ['webpack']);
 });
 
-gulp.task('default', ['webpack', 'serve']);
+gulp.task('default', ['nunjucks', 'webpack', 'serve']);
