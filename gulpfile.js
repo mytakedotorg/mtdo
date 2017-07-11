@@ -2,14 +2,32 @@ const gulp = require('gulp')
   child = require('child_process')
   gutil = require('gulp-util')
   nunjucks = require('gulp-nunjucks-html')
+  concat = require('gulp-concat')
+  autoprefixer = require('gulp-autoprefixer')
+  sass = require('gulp-sass')
+  notify = require('gulp-notify')
   browserSync = require('browser-sync').create();
 
 const config = {
   siteRoot: './docs',
+  publicDir: './docs/public',
   nunjucksTemplates: './nunjucks/templates',
   nunjucksPages: './nunjucks/pages',
-  siteSrc: './src/**/*'
+  siteSrc: './src/**/*',
+  sassFilter:  './assets/stylesheets/**/*.?(s)css'
 }
+
+gulp.task('css', () => {
+	gulp.src(config.sassFilter)
+		.pipe(sass({
+			style: 'compressed'
+			}).on("error", notify.onError(function (error) {
+				return "Error: " + error.message;
+			})))
+		.pipe(autoprefixer({cascade: false, browsers: ['> 0.25%']}))
+		.pipe(concat('all.css'))
+		.pipe(gulp.dest(config.publicDir))
+});
 
 gulp.task('nunjucks', () => {
   return gulp.src(config.nunjucksPages + '/**/*.html')
@@ -44,6 +62,7 @@ gulp.task('serve', () => {
   gulp.watch([config.nunjucksTemplates + '/**/*.html', 
               config.nunjucksPages + '/**/*.html'], ['nunjucks'])
   gulp.watch(config.siteSrc, ['webpack']);
+  gulp.watch(config.sassFilter, ['css']);
 });
 
-gulp.task('default', ['nunjucks', 'webpack', 'serve']);
+gulp.task('default', ['css', 'nunjucks', 'webpack', 'serve']);
