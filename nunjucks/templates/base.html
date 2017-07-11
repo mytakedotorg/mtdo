@@ -34,9 +34,8 @@
     </div>
   </header>
 
-  
-  <div id="app"></div>
-
+  {% block content %}
+  {% endblock %}
 
   <footer class="footer">
     <ul class="nav__list">
@@ -44,13 +43,6 @@
       <li class="nav__list-item"><a class="nav__link" href="/editor" tabindex="6">Editing risk reduction</a></li>
     </ul>
   </footer>
-  
-  <!-- Dependencies -->
-  <script src="https://unpkg.com/react@15/dist/react.js"></script>
-  <script src="https://unpkg.com/react-dom@15/dist/react-dom.js"></script>
-
-  <!-- Main -->
-  <script src="/bundle-0.0.3.js"></script>
-
+  {% block endbody %}{% endblock %}
 </body>
 </html>

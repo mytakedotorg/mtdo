@@ -22,7 +22,7 @@ class MyTake extends React.Component<MyTakeProps, MyTakeState> {
       amendmentsTextIsHighlighted: false,
       highlightedConstitutionNodes: [],
       highlightedAmendmentsNodes: [],
-      editorState: initialState,
+      editorState: props.initState,
       schema: {
         nodes: {
           title: TitleNode,
@@ -496,6 +496,12 @@ class MyTake extends React.Component<MyTakeProps, MyTakeState> {
     const isAmendments = state.blocks.some((block: SlateBlock) => block.type == 'amendments');
     const isFact = isConstitution || isAmendments;
 
+    if (event.which == key('[')) {
+      console.log('############')
+      console.log('############')
+      console.log('############')
+      console.log(JSON.stringify(Raw.serialize(state, {terse: true})))
+    }
     // If enter is pressed in title block, move cursor to beginning of next block
     if (event.which == key('Enter') && isTitle) {
       // Get the key of the first Text block after title.

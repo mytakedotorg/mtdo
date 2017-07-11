@@ -1,0 +1,407 @@
+/**
+*	https://standards.usa.gov/components/typography/#section-/typography/02-pairing-and-styles
+* Source Sans Pro headings, Merriweather body
+*/
+/**
+* Colors to be adjusted
+*/
+/**
+* end adjusted
+*/
+.editor__wrapper {
+  margin: 2rem auto;
+  width: 768px;
+  max-width: 100%; }
+
+.editor {
+  padding: 0 3rem;
+  min-height: 300px; }
+
+.editor__title {
+  text-align: left;
+  margin-top: 0;
+  position: relative;
+  font-family: "Source Sans Pro", sans-serif;
+  font-weight: 700;
+  font-size: 44px;
+  line-height: 1.3em; }
+
+.editor__title--placeholder {
+  opacity: 0.3; }
+
+.editor__paragraph--placeholder {
+  opacity: 0.3; }
+
+.editor__paragraph {
+  text-align: left;
+  margin-top: 0;
+  position: relative;
+  font-family: "Source Sans Pro", sans-serif;
+  font-weight: 300;
+  font-size: 22px;
+  line-height: 1.5em; }
+
+.editor__constitution {
+  border: #758AA8;
+  box-shadow: 1px 1px 2px #051A38;
+  color: #051A38;
+  padding: 5px 15px;
+  margin-bottom: 2rem;
+  font-family: "Merriweather", serif;
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 1.7em;
+  font-style: italic; }
+
+.editor__constitution--highlighted {
+  color: #051A38;
+  background-color: #D4CF69; }
+
+.editor__amendments {
+  border: #758AA8;
+  box-shadow: 1px 1px 2px #051A38;
+  color: #051A38;
+  padding: 5px 15px;
+  margin-bottom: 2rem;
+  font-family: "Merriweather", serif;
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 1.7em;
+  font-style: italic; }
+
+.editor__amendments--highlighted {
+  color: #051A38;
+  background-color: #D4CF69; }
+
+.foundation {
+  margin-left: 3rem;
+  margin-right: 3rem; }
+  .foundation::after {
+    clear: both;
+    content: "";
+    display: table; }
+
+.foundation__heading {
+  margin-top: 0;
+  margin-bottom: 15px;
+  color: #051A38;
+  font-family: "Source Sans Pro", sans-serif;
+  font-weight: 700;
+  font-size: 34px;
+  line-height: 1.3em; }
+
+.foundation__instructions {
+  margin-top: 0;
+  margin-bottom: 15px;
+  color: #051A38;
+  font-family: "Source Sans Pro", sans-serif;
+  font-weight: 300;
+  font-size: 22px;
+  line-height: 1.5em; }
+
+.foundation__card-list {
+  display: -webkit-box;
+  display: flex;
+  flex-wrap: wrap;
+  -webkit-box-pack: justify;
+  justify-content: space-between; }
+
+.foundation__card {
+  border: 1px solid #758AA8;
+  box-shadow: 1px 1px 2px #051A38;
+  width: 100%;
+  display: -webkit-box;
+  display: flex;
+  margin-bottom: 2rem; }
+  .foundation__card:nth-of-type(2n) {
+    margin-right: 0; }
+  .foundation__card:hover {
+    cursor: pointer; }
+  @media only screen and (min-width: 64em) {
+    .foundation__card {
+      width: 48.75%; } }
+
+.foundation__image {
+  display: block;
+  width: 110px;
+  height: 156px; }
+  @media only screen and (min-width: 30em) {
+    .foundation__image {
+      width: 220px;
+      height: 313px; } }
+
+.foundation__info-container {
+  -webkit-box-flex: 1;
+  flex: 1; }
+
+.foundation__card-title {
+  font-family: "Source Sans Pro", sans-serif;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 1.3em;
+  margin: 0;
+  padding: 1rem; }
+  @media only screen and (min-width: 30em) {
+    .foundation__card-title {
+      padding: 2rem; } }
+
+.foundation__description {
+  font-family: "Merriweather", serif;
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 1.7em;
+  float: left;
+  padding: 0 1rem; }
+  @media only screen and (min-width: 30em) {
+    .foundation__description {
+      padding: 2rem; } }
+
+.constitution__heading {
+  margin-top: 0;
+  margin-bottom: 15px;
+  color: #051A38;
+  font-family: "Source Sans Pro", sans-serif;
+  font-weight: 700;
+  font-size: 34px;
+  line-height: 1.3em; }
+
+.constitution__instructions {
+  margin-top: 0;
+  margin-bottom: 15px;
+  color: #051A38;
+  font-family: "Source Sans Pro", sans-serif;
+  font-weight: 300;
+  font-size: 22px;
+  line-height: 1.5em; }
+
+.constitution__row {
+  display: -webkit-box;
+  display: flex;
+  flex-wrap: wrap;
+  -webkit-box-pack: justify;
+  justify-content: space-between; }
+
+.constitution__sections {
+  font-family: "Source Sans Pro", sans-serif;
+  font-weight: 300;
+  font-size: 22px;
+  line-height: 1.5em;
+  width: 100%; }
+  @media only screen and (min-width: 48em) {
+    .constitution__sections {
+      width: 48%; } }
+
+.constitution__text {
+  border: 1px solid #758AA8;
+  box-shadow: 1px 1px 2px #051A38;
+  padding: 0 15px;
+  font-family: "Merriweather", serif;
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 1.7em;
+  height: 313px;
+  overflow-y: scroll;
+  width: 100%; }
+  @media only screen and (min-width: 64em) {
+    .constitution__text {
+      width: 48%; } }
+  .constitution__text::-webkit-scrollbar {
+    -webkit-appearance: none;
+    width: 10px; }
+  .constitution__text::-webkit-scrollbar-thumb {
+    border-radius: 2px;
+    background-color: #D4CF69;
+    -webkit-box-shadow: 0 0 1px rgba(255, 255, 255, 0.5); }
+  .constitution__text::-webkit-scrollbar-track {
+    background-color: #758AA8; }
+
+.constitution__text--selected {
+  color: #051A38;
+  background-color: #D4CF69;
+  cursor: pointer; }
+
+.amendments__heading {
+  margin-top: 0;
+  margin-bottom: 15px;
+  color: #051A38;
+  font-family: "Source Sans Pro", sans-serif;
+  font-weight: 700;
+  font-size: 34px;
+  line-height: 1.3em; }
+
+.amendments__instructions {
+  margin-top: 0;
+  margin-bottom: 15px;
+  color: #051A38;
+  font-family: "Source Sans Pro", sans-serif;
+  font-weight: 300;
+  font-size: 22px;
+  line-height: 1.5em; }
+
+.amendments__row {
+  display: -webkit-box;
+  display: flex;
+  flex-wrap: wrap;
+  -webkit-box-pack: justify;
+  justify-content: space-between; }
+
+.amendments__sections {
+  font-family: "Source Sans Pro", sans-serif;
+  font-weight: 300;
+  font-size: 22px;
+  line-height: 1.5em;
+  width: 100%; }
+  @media only screen and (min-width: 48em) {
+    .amendments__sections {
+      width: 48%; } }
+
+.amendments__text {
+  border: 1px solid #758AA8;
+  box-shadow: 1px 1px 2px #051A38;
+  padding: 0 15px;
+  font-family: "Merriweather", serif;
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 1.7em;
+  height: 313px;
+  overflow-y: scroll;
+  width: 100%; }
+  @media only screen and (min-width: 64em) {
+    .amendments__text {
+      width: 48%; } }
+  .amendments__text::-webkit-scrollbar {
+    -webkit-appearance: none;
+    width: 10px; }
+  .amendments__text::-webkit-scrollbar-thumb {
+    border-radius: 2px;
+    background-color: #D4CF69;
+    -webkit-box-shadow: 0 0 1px rgba(255, 255, 255, 0.5); }
+  .amendments__text::-webkit-scrollbar-track {
+    background-color: #758AA8; }
+
+.amendments__text--selected {
+  color: #051A38;
+  background-color: #D4CF69;
+  cursor: pointer; }
+
+.debates__heading {
+  margin-top: 0;
+  margin-bottom: 15px;
+  color: #051A38;
+  font-family: "Source Sans Pro", sans-serif;
+  font-weight: 700;
+  font-size: 34px;
+  line-height: 1.3em; }
+
+.debates__instructions {
+  margin-top: 0;
+  margin-bottom: 15px;
+  color: #051A38;
+  font-family: "Source Sans Pro", sans-serif;
+  font-weight: 300;
+  font-size: 22px;
+  line-height: 1.5em; }
+
+.debates__placeholder {
+  border-radius: 5px;
+  height: 313px;
+  font-family: "Merriweather", serif;
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 1.7em; }
+
+.header {
+  width: 100%; }
+  .header::after {
+    clear: both;
+    content: "";
+    display: table; }
+
+.header__skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0px;
+  padding: 2px 5px;
+  font-family: "Merriweather", serif;
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 1.7em;
+  color: #FFF;
+  -webkit-transition: top .1s ease-in, background .5s linear;
+  transition: top .1s ease-in, background .5s linear; }
+  .header__skip-link:focus {
+    top: 0px;
+    background-color: #A03546;
+    -webkit-transition: top .1s ease-in, background .5s linear;
+    transition: top .1s ease-in, background .5s linear; }
+
+.header__logo {
+  font-family: "Source Sans Pro", sans-serif;
+  font-weight: 300;
+  font-size: 44px;
+  line-height: 1.3em;
+  font-style: normal;
+  margin-left: 3rem;
+  line-height: 8rem; }
+
+.header__logo-link {
+  text-decoration: none;
+  color: #2C4770; }
+  .header__logo-link:hover {
+    color: #758AA8; }
+
+.header__button-list {
+  float: right; }
+
+.header__button {
+  font-family: "Source Sans Pro", sans-serif;
+  font-weight: 300;
+  font-size: 22px;
+  line-height: 1.5em;
+  line-height: 8rem;
+  margin-right: 3rem;
+  color: #2C4770; }
+  .header__button:hover {
+    color: #758AA8; }
+
+.header__button--github {
+  font-size: 4rem; }
+
+.header__nav {
+  border-top: 1px solid #051A38;
+  border-bottom: 2px solid #051A38;
+  line-height: 1rem; }
+  .header__nav::after {
+    clear: both;
+    content: "";
+    display: table; }
+
+.nav__list {
+  list-style: none; }
+
+.nav__list-item {
+  margin-right: 3rem;
+  display: inline-block; }
+
+.nav__link {
+  font-family: "Source Sans Pro", sans-serif;
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 1.3em;
+  text-transform: uppercase;
+  color: #2C4770;
+  text-decoration: none; }
+  .nav__link:hover {
+    color: #758AA8; }
+
+.footer {
+  margin: 2rem 3rem;
+  border-top: 1px solid #051A38; }
+
+body {
+  margin: 0;
+  padding: 0; }
+
+html {
+  font-size: 10px;
+  box-sizing: border-box; }

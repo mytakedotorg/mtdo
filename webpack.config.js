@@ -1,7 +1,7 @@
 module.exports = {
   entry: __dirname + "/src/index.tsx",
   output: {
-    filename: "bundle-0.0.2.js",  // There are more stable cache busting solutions for the long term
+    filename: "bundle-0.0.3.js",  // There are more stable cache busting solutions for the long term
     path: __dirname + "/docs"
   },
 
@@ -23,10 +23,6 @@ module.exports = {
         exclude: /node_modules/, 
         loader: "awesome-typescript-loader" 
       },
-      {
-        test: /\.scss$/,
-        loaders: ["style-loader", "css-loader", 'postcss-loader', "sass-loader"]  
-      },
 
       // All output '.js' files will have any sourcemaps re-processed by 'source-map-loader'.
       { 
@@ -41,6 +37,7 @@ module.exports = {
         test: /\.foundation\.html$/,
         loaders: ['html-loader', 'foundation-loader']
       },
+
       { 
         test: /\.(png|jpg)$/, 
         loader: 'url-loader?limit=8192' 
