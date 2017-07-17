@@ -1,0 +1,109 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Simple block editor model 1`] = `
+<div
+  className="blockeditor"
+>
+  <div
+    className="blockcontainer"
+  >
+    <div
+      className="paragraph"
+    >
+      Some text
+    </div>
+  </div>
+  <div
+    className="blockcontainer"
+  >
+    <div
+      className="document"
+    >
+      Constitution
+       range 
+      1,25
+    </div>
+  </div>
+</div>
+`;
+
+exports[`With active 1`] = `
+<div
+  className="blockeditor"
+>
+  <div
+    className="blockcontainer blockcontainer__active"
+  >
+    <div
+      className="paragraph"
+    >
+      Some text
+    </div>
+  </div>
+  <div
+    className="blockcontainer"
+  >
+    <div
+      className="document"
+    >
+      Constitution
+       range 
+      1,25
+    </div>
+  </div>
+</div>
+`;
+
+exports[`With hover 1`] = `
+<div
+  className="blockeditor"
+>
+  <div
+    className="blockcontainer blockcontainer__hover"
+  >
+    <div
+      className="paragraph"
+    >
+      Some text
+    </div>
+  </div>
+  <div
+    className="blockcontainer"
+  >
+    <div
+      className="document"
+    >
+      Constitution
+       range 
+      1,25
+    </div>
+  </div>
+</div>
+`;
+
+exports[`With hover and active 1`] = `
+<div
+  className="blockeditor"
+>
+  <div
+    className="blockcontainer blockcontainer__hover blockcontainer__active"
+  >
+    <div
+      className="paragraph"
+    >
+      Some text
+    </div>
+  </div>
+  <div
+    className="blockcontainer"
+  >
+    <div
+      className="document"
+    >
+      Constitution
+       range 
+      1,25
+    </div>
+  </div>
+</div>
+`;
