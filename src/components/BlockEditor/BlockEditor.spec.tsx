@@ -2,7 +2,6 @@
 
 import * as React from "react";
 import * as renderer from "react-test-renderer";
-import { mount } from 'enzyme';
 import BlockEditor from './BlockEditor';
 import { TakeDocument } from './BlockEditor';
 

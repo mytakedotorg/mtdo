@@ -8,7 +8,7 @@ exports[`Simple block editor model 1`] = `
     className="blockcontainer"
   >
     <div
-      className="paragraph"
+      className="blockcontainer__paragraph"
     >
       Some text
     </div>
@@ -17,7 +17,7 @@ exports[`Simple block editor model 1`] = `
     className="blockcontainer"
   >
     <div
-      className="document"
+      className="blockcontainer__document"
     >
       Constitution
        range 
@@ -32,10 +32,10 @@ exports[`With active 1`] = `
   className="blockeditor"
 >
   <div
-    className="blockcontainer blockcontainer__active"
+    className="blockcontainer blockcontainer--active"
   >
     <div
-      className="paragraph"
+      className="blockcontainer__paragraph"
     >
       Some text
     </div>
@@ -44,7 +44,7 @@ exports[`With active 1`] = `
     className="blockcontainer"
   >
     <div
-      className="document"
+      className="blockcontainer__document"
     >
       Constitution
        range 
@@ -59,10 +59,10 @@ exports[`With hover 1`] = `
   className="blockeditor"
 >
   <div
-    className="blockcontainer blockcontainer__hover"
+    className="blockcontainer blockcontainer--hover"
   >
     <div
-      className="paragraph"
+      className="blockcontainer__paragraph"
     >
       Some text
     </div>
@@ -71,7 +71,7 @@ exports[`With hover 1`] = `
     className="blockcontainer"
   >
     <div
-      className="document"
+      className="blockcontainer__document"
     >
       Constitution
        range 
@@ -86,10 +86,10 @@ exports[`With hover and active 1`] = `
   className="blockeditor"
 >
   <div
-    className="blockcontainer blockcontainer__hover blockcontainer__active"
+    className="blockcontainer blockcontainer--hover blockcontainer--active"
   >
     <div
-      className="paragraph"
+      className="blockcontainer__paragraph"
     >
       Some text
     </div>
@@ -98,7 +98,7 @@ exports[`With hover and active 1`] = `
     className="blockcontainer"
   >
     <div
-      className="document"
+      className="blockcontainer__document"
     >
       Constitution
        range 

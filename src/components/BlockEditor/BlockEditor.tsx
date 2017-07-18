@@ -23,11 +23,11 @@ export interface TakeDocument {
 // React model //
 /////////////////
 function Paragraph(props: ParagraphBlock) {
-    return (<div className="paragraph">{props.text}</div>)
+    return (<div className="blockcontainer__paragraph">{props.text}</div>)
 }
 
 function Document(props: DocumentBlock) {
-    return (<div className="document">{props.document} range {props.range.toString()}</div>)
+    return (<div className="blockcontainer__document">{props.document} range {props.range.toString()}</div>)
 }
 
 export interface BlockContainerProps {
@@ -45,10 +45,10 @@ function BlockContainer(props: BlockContainerProps) {
 
     let classes = 'blockcontainer';
     if (props.hover) {
-        classes += ' blockcontainer__hover'
+        classes += ' blockcontainer--hover'
     }
     if (props.active) {
-        classes += ' blockcontainer__active'
+        classes += ' blockcontainer--active'
     }
     return (
         <div className={classes}>
