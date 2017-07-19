@@ -1,15 +1,28 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import TakeEditor, { AmendmentsNode, TitleNode, ParagraphNode, ConstitutionNode } from '../TakeEditor';
+import BlockEditor, { TakeDocument } from '../BlockEditor';
 import Foundation from '../Foundation';
-const { Block, Data, Raw, Selection } = require('slate');
 import * as key from "keycode";
 import getNodeArray from "../../utils/getNodeArray";
 const constitutionText = require('../../foundation/constitution.foundation.html');
 const amendmentsText = require('../../foundation/amendments.foundation.html');
 import config from "./config";
 
-const initialState: any = Raw.deserialize(config.initialState, { terse: true })
+interface MyTakeProps {
+  initState: SlateEditorState;
+}
+
+interface MyTakeState {
+  constitutionNodes: Array<MyReactComponentObject>,
+  amendmentsNodes: Array<MyReactComponentObject>,
+  highlightedConstitutionNodes: Array<MyReactComponentObject>,
+  highlightedAmendmentsNodes: Array<MyReactComponentObject>,
+  constitutionTextIsHighlighted: boolean,
+  amendmentsTextIsHighlighted: boolean,
+  takeDocument: TakeDocument,
+  uniqueKey: string
+}
+
 
 class MyTake extends React.Component<MyTakeProps, MyTakeState> {
   constructor(props: MyTakeProps){
@@ -22,14 +35,9 @@ class MyTake extends React.Component<MyTakeProps, MyTakeState> {
       amendmentsTextIsHighlighted: false,
       highlightedConstitutionNodes: [],
       highlightedAmendmentsNodes: [],
-      editorState: props.initState,
-      schema: {
-        nodes: {
-          title: TitleNode,
-          paragraph: ParagraphNode,
-          constitution: ConstitutionNode,
-          amendments: AmendmentsNode
-        }
+      takeDocument: {
+        title: 'My Title',
+        blocks: [{kind: 'title', text: ''}]
       },
       uniqueKey: 'aa' // Only works 26^2 times. I think that'll be enough.
     }
@@ -40,7 +48,6 @@ class MyTake extends React.Component<MyTakeProps, MyTakeState> {
     this.handleAmendmentsMouseUp = this.handleAmendmentsMouseUp.bind(this);
     this.handleAmendmentsClearClick = this.handleAmendmentsClearClick.bind(this);
     this.handleAmendmentsSetClick = this.handleAmendmentsSetClick.bind(this);
-    this.handleEditorChange = this.handleEditorChange.bind(this);
   }
   getInitialText(type: FoundationTextTypes): Array<MyReactComponentObject> {
     let initialText;
@@ -82,94 +89,15 @@ class MyTake extends React.Component<MyTakeProps, MyTakeState> {
   }
   handleAmendmentsClearClick(): void {
     this.setState({
-      constitutionNodes: this.getInitialText('AMENDMENTS'),  //Clear existing highlights
+      amendmentsNodes: this.getInitialText('AMENDMENTS'),  //Clear existing highlights
       amendmentsTextIsHighlighted: false
     });
   }
   handleAmendmentsSetClick(): void {
-    const currentSelection = this.state.editorState.selection;
-    let selection: SlateSelection;
-    if (currentSelection.anchorKey === "0" || currentSelection.focusKey === "0") {
-      //Cursor is in title, insert this node immediately after
-      let key = this.state.editorState.document.nodes.rest().first().getFirstText().key;
-
-      selection = Selection.create({
-        anchorKey: key,
-        anchorOffset: 0,
-        focusKey: key,
-        focusOffset: 0
-      });
-    } else {
-      selection = currentSelection;
-    }
-    
-    let newObject = {array: this.state.highlightedAmendmentsNodes};
-    let newKey = this.state.uniqueKey;
-    const properties = {
-      data: Data.create(newObject),
-      key: this.state.uniqueKey,
-      type: 'amendments',
-      isVoid: true
-    }
-
-    newKey = this.incrKey(newKey);
-
-    const amendmentsNode = Block.create(properties);
-    const newState = this.state.editorState
-      .transform()
-      .insertBlockAtRange(selection, amendmentsNode)
-      .apply();
-
-      
-    this.setState({
-      editorState: newState,
-      uniqueKey: newKey,
-      amendmentsNodes: this.getInitialText('AMENDMENTS'),  //Clear existing highlights
-      amendmentsTextIsHighlighted: false
-    });
-
+		//TODO
   }
   handleConstitutionSetClick(): void {
-    const currentSelection = this.state.editorState.selection;
-    let selection: SlateSelection;
-    if (currentSelection.anchorKey === "0" || currentSelection.focusKey === "0") {
-      //Cursor is in title, insert constitution node immediately after
-      let key = this.state.editorState.document.nodes.rest().first().getFirstText().key;
-
-      selection = Selection.create({
-        anchorKey: key,
-        anchorOffset: 0,
-        focusKey: key,
-        focusOffset: 0
-      });
-    } else {
-      selection = currentSelection;
-    }
-    
-    let newObject = {array: this.state.highlightedConstitutionNodes};
-    let newKey = this.state.uniqueKey;
-    const properties = {
-      data: Data.create(newObject),
-      key: this.state.uniqueKey,
-      type: 'constitution',
-      isVoid: true
-    }
-
-    newKey = this.incrKey(newKey);
-
-    const constitutionNode = Block.create(properties);
-    const newState = this.state.editorState
-      .transform()
-      .insertBlockAtRange(selection, constitutionNode)
-      .apply();
-
-      
-    this.setState({
-      editorState: newState,
-      uniqueKey: newKey,
-      constitutionNodes: this.getInitialText('CONSTITUTION'),  //Clear existing highlights
-      constitutionTextIsHighlighted: false
-    });
+		//TODO
   }
   handleAmendmentsMouseUp(): void {
     if (window.getSelection && !this.state.amendmentsTextIsHighlighted) { // Pre IE9 will always be false
@@ -485,91 +413,11 @@ class MyTake extends React.Component<MyTakeProps, MyTakeState> {
 
     this.clearDefaultDOMSelection();
   }
-  // On change, update the app's React state with the new editor state.
-  handleEditorChange(editorState: SlateEditorState): void {
-    this.setState({ editorState })
-  }
-  handleEditorKeyDown(event: KeyboardEvent, data: any, state: SlateEditorState): SlateEditorState {
-    // Determine whether cursor is in title block
-    const isTitle = state.blocks.some((block: SlateBlock) => block.type == 'title');
-    const isConstitution = state.blocks.some((block: SlateBlock) => block.type == 'constitution');
-    const isAmendments = state.blocks.some((block: SlateBlock) => block.type == 'amendments');
-    const isFact = isConstitution || isAmendments;
-
-    if (event.which == key('[')) {
-      console.log('############')
-      console.log('############')
-      console.log('############')
-      console.log(JSON.stringify(Raw.serialize(state, {terse: true})))
-    }
-    // If enter is pressed in title block, move cursor to beginning of next block
-    if (event.which == key('Enter') && isTitle) {
-      // Get the key of the first Text block after title.
-      let key = state.document.nodes.rest().first().getFirstText().key;
-
-      // Move selection (cursor) to beginning of first Text block after title.
-      let cursorAfterTitle: SlateSelection = Selection.create({
-        anchorKey: key,
-        anchorOffset: 0,
-        focusKey: key,
-        focusOffset: 0,
-        isBackward: false,
-        isFocused: true
-      });
-      
-      const newState = state
-        .transform()
-        .select(cursorAfterTitle)
-        .insertBlock('paragraph')
-        .apply();
-      
-      return newState;
-    }
-
-    if (event.which == key('Enter')) {
-      const newState = state
-        .transform()
-        .insertBlock('paragraph')
-        .apply();
-      
-      return newState;
-    }
-    
-    if (event.which == key('Backspace')){
-      let selection: SlateSelection = state.selection;
-      if (selection.isCollapsed && selection.hasEdgeAtStartOf(state.document.nodes.rest().first())) {
-        //Don't allow first paragraph to be deleted from editor. Should remain empty, but not removed from DOM
-        return state;
-      }
-      if (selection.hasEdgeIn(state.document.nodes.rest().first()) && isFact) {
-        if (state.document.nodes.first().getFirstText().text || state.document.nodes.size > 2) {
-          //There is a title, or there is text after the Fact
-          const newState = state
-            .transform()
-            .removeNodeByKey(state.document.nodes.rest().first().key)
-            .insertBlock('paragraph')
-            .apply();
-
-          return newState;
-        } else {
-          //There is no title nor anything else in the take
-          const newState = initialState;
-          return newState;
-        }
-        
-      }
-    }
-
-    return;
-  }
   render(){
     return (
       <div>
-        <TakeEditor 
-          schema={this.state.schema}
-          editorState={this.state.editorState}
-          onChange={this.handleEditorChange}
-          onKeyDown={this.handleEditorKeyDown}
+        <BlockEditor 
+          blocks={this.state.takeDocument.blocks}
         />
         <Foundation 
           onConstitutionClearClick={this.handleConstitutionClearClick}
