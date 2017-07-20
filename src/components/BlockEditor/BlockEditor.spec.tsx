@@ -5,111 +5,48 @@ import * as renderer from "react-test-renderer";
 import BlockEditor from './BlockEditor';
 import { TakeDocument } from './BlockEditor';
 
-const initialDoc: TakeDocument = {
+const doc: TakeDocument = {
     title: "My take title",
     blocks: [
         {
-						id: 0,
             kind: 'paragraph',
 						text: 'Some text',
-						active: false,
-						hover: false
         },
         {
-						id: 1,
-            kind: 'paragraph',
-            text: 'Some other text',
-						active: false,
-						hover: false
+            kind: 'document',
+            document: 'Constitution',
+						range: [1, 25]
         }
-    ]
+		],
+		hover: 0,
+		active: 0
 };
 
 
 test('Simple block editor model', () => {
     const tree = renderer.create(
-        <BlockEditor takeDocument={initialDoc} />
+        <BlockEditor takeDocument={doc} />
     ).toJSON();
     expect(tree).toMatchSnapshot();
 })
-
-const activeDoc: TakeDocument = {
-    title: "My take title",
-    blocks: [
-        {
-						id: 0,
-            kind: 'paragraph',
-						text: 'Some text',
-						active: true,
-						hover: false,
-        },
-        {
-						id: 1,
-            kind: 'paragraph',
-						text: 'Some other text',
-						active: false,
-						hover: false
-        }
-    ]
-};
 
 test('With active', () => {
     const tree = renderer.create(
-        <BlockEditor takeDocument={activeDoc} />
+        <BlockEditor takeDocument={doc} />
     ).toJSON();
     expect(tree).toMatchSnapshot();
 })
-
-const hoverDoc: TakeDocument = {
-    title: "My take title",
-    blocks: [
-        {
-						id: 0,
-            kind: 'paragraph',
-						text: 'Some text',
-						active: false,
-						hover: true,
-        },
-        {
-						id: 1,
-            kind: 'paragraph',
-						text: 'Some other text',
-						active: false,
-						hover: false
-        }
-    ]
-};
 
 test('With hover', () => {
     const tree = renderer.create(
-        <BlockEditor takeDocument={hoverDoc} />
+        <BlockEditor takeDocument={doc} />
     ).toJSON();
     expect(tree).toMatchSnapshot();
 })
 
-const hoverAndActiveDoc: TakeDocument = {
-    title: "My take title",
-    blocks: [
-        {
-						id: 0,
-            kind: 'paragraph',
-						text: 'Some text',
-						active: true,
-						hover: true,
-        },
-        {
-						id: 1,
-            kind: 'paragraph',
-						text: 'Some other text',
-						active: false,
-						hover: false
-        }
-    ]
-};
-
 test('With hover and active', () => {
     const tree = renderer.create(
-        <BlockEditor takeDocument={hoverAndActiveDoc} />
+        <BlockEditor takeDocument={doc} />
     ).toJSON();
     expect(tree).toMatchSnapshot();
 })
