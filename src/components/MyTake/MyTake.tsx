@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import BlockEditor, { TakeDocument } from '../BlockEditor';
+import BlockEditor, { TakeBlock, TakeDocument } from '../BlockEditor';
 import Foundation from '../Foundation';
 import * as key from "keycode";
 import getNodeArray from "../../utils/getNodeArray";
@@ -38,9 +38,11 @@ class MyTake extends React.Component<MyTakeProps, MyTakeState> {
       takeDocument: {
         title: 'My Title',
         blocks: [
-					{id: 0, kind: 'paragraph', text: 'Paragraph 1', hover: false, active: false},
-					{id: 1, kind: 'paragraph', text: 'Paragraph 2', hover: false, active: false},
-				]
+					{kind: 'paragraph', text: 'Use your voice here.'},
+					{kind: 'paragraph', text: 'Use your voice here 2.'},
+				],
+				hover: -1,
+				active: 0,
       },
       uniqueKey: 'aa' // Only works 26^2 times. I think that'll be enough.
     }
@@ -51,7 +53,29 @@ class MyTake extends React.Component<MyTakeProps, MyTakeState> {
     this.handleAmendmentsMouseUp = this.handleAmendmentsMouseUp.bind(this);
     this.handleAmendmentsClearClick = this.handleAmendmentsClearClick.bind(this);
 		this.handleAmendmentsSetClick = this.handleAmendmentsSetClick.bind(this);
-  }
+	}
+	addParagraphAfter = (id: number): void => {
+		// const blocks = this.state.takeDocument.blocks.map(block=> {
+		// 	if (block.id != id) {
+		// 		return {
+		// 			...block,
+		// 		}
+		// 	}
+		// 	[].concat({...block}, {});
+		// 	return [
+		// 		{...block},
+		// 		,{id: 1, kind: 'paragraph', text: '', hover: false, active: false}
+		// 	];
+		// });
+
+		console.log('adding paragraph after', id);
+		// this.setState({
+		// 	takeDocument: {
+		// 		...this.state.takeDocument,
+		// 		blocks: blocks
+		// 	}
+		// });
+	}
   getInitialText(type: FoundationTextTypes): Array<MyReactComponentObject> {
     let initialText;
     switch (type) {
@@ -121,31 +145,31 @@ class MyTake extends React.Component<MyTakeProps, MyTakeState> {
     }
 	}
 	handleTakeBlockChange = (id: number, value: string): void => { 
-		const blocks = this.state.takeDocument.blocks.map(block => {
-			if (block.id !== id) {
-				return block;
-			}
+		// const blocks = this.state.takeDocument.blocks.map(block => {
+		// 	if (block.id !== id) {
+		// 		return block;
+		// 	}
 
-			return {
-				...block,
-				text: value
-			}
-		});
-		this.setState({
-			takeDocument: {
-				...this.state.takeDocument,
-				blocks: blocks
-			}
-		});
+		// 	return {
+		// 		...block,
+		// 		text: value
+		// 	}
+		// });
+		// this.setState({
+		// 	takeDocument: {
+		// 		...this.state.takeDocument,
+		// 		blocks: blocks
+		// 	}
+		// });
 	}
 	handleTakeBlockClick = (id: number): void  => {
 		this.setActive(id);
 	}
 	handleTakeBlockMouseOver = (id: number): void  => {
-		this.setHover(id, true);
+		this.setHover(id);
 	}
 	handleTakeBlockMouseLeave = (id: number): void  => {
-		this.setHover(id, false);
+		this.clearHover();
 	}
   highlightText(range: Range, type: FoundationTextTypes): void {
     let secondIndexClassName;
@@ -443,41 +467,27 @@ class MyTake extends React.Component<MyTakeProps, MyTakeState> {
 
     this.clearDefaultDOMSelection();
 	}
-	setHover = (id: number, hoverState: boolean): void => {
-		const blocks = this.state.takeDocument.blocks.map(block => {
-			if (block.id !== id) {
-				return block;
-			}
-
-			return {
-				...block,
-				hover: hoverState
-			}
-		});
+	setHover = (id: number): void => {
 		this.setState({
 			takeDocument: {
 				...this.state.takeDocument,
-				blocks: blocks
+				hover: id
 			}
 		});
 	}
-	setActive = (id: number): void => {
-		const blocks = this.state.takeDocument.blocks.map(block=> {
-			if (block.id != id) {
-				return {
-					...block,
-					active: false
-				}
-			}
-			return {
-				...block,
-				active: true
-			}
-		});
+	clearHover = (): void => {
 		this.setState({
 			takeDocument: {
 				...this.state.takeDocument,
-				blocks: blocks
+				hover: -1
+			}
+		})
+	}
+	setActive = (id: number): void => {
+		this.setState({
+			takeDocument: {
+				...this.state.takeDocument,
+				active: id
 			}
 		});
 	}

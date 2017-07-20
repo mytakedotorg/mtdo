@@ -1,4 +1,4 @@
-import BlockEditor, { TakeDocument } from './BlockEditor';
+import BlockEditor, { TakeBlock, TakeDocument } from './BlockEditor';
 
-export { TakeDocument };
+export { TakeBlock, TakeDocument };
 export default BlockEditor;
