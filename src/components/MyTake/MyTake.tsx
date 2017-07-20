@@ -9,7 +9,7 @@ const amendmentsText = require('../../foundation/amendments.foundation.html');
 import config from "./config";
 
 interface MyTakeProps {
-  initState: SlateEditorState;
+	//initState: SlateEditorState;
 }
 
 interface MyTakeState {
@@ -37,7 +37,10 @@ class MyTake extends React.Component<MyTakeProps, MyTakeState> {
       highlightedAmendmentsNodes: [],
       takeDocument: {
         title: 'My Title',
-        blocks: [{kind: 'title', text: ''}]
+        blocks: [
+					{id: 0, kind: 'paragraph', text: 'Paragraph 1', hover: false, active: false},
+					{id: 1, kind: 'paragraph', text: 'Paragraph 2', hover: false, active: false},
+				]
       },
       uniqueKey: 'aa' // Only works 26^2 times. I think that'll be enough.
     }
@@ -47,7 +50,7 @@ class MyTake extends React.Component<MyTakeProps, MyTakeState> {
     this.handleConstitutionSetClick = this.handleConstitutionSetClick.bind(this);
     this.handleAmendmentsMouseUp = this.handleAmendmentsMouseUp.bind(this);
     this.handleAmendmentsClearClick = this.handleAmendmentsClearClick.bind(this);
-    this.handleAmendmentsSetClick = this.handleAmendmentsSetClick.bind(this);
+		this.handleAmendmentsSetClick = this.handleAmendmentsSetClick.bind(this);
   }
   getInitialText(type: FoundationTextTypes): Array<MyReactComponentObject> {
     let initialText;
@@ -116,7 +119,34 @@ class MyTake extends React.Component<MyTakeProps, MyTakeState> {
         this.highlightText(range, 'CONSTITUTION');
       }
     }
-  }
+	}
+	handleTakeBlockChange = (id: number, value: string): void => { 
+		const blocks = this.state.takeDocument.blocks.map(block => {
+			if (block.id !== id) {
+				return block;
+			}
+
+			return {
+				...block,
+				text: value
+			}
+		});
+		this.setState({
+			takeDocument: {
+				...this.state.takeDocument,
+				blocks: blocks
+			}
+		});
+	}
+	handleTakeBlockClick = (id: number): void  => {
+		this.setActive(id);
+	}
+	handleTakeBlockMouseOver = (id: number): void  => {
+		this.setHover(id, true);
+	}
+	handleTakeBlockMouseLeave = (id: number): void  => {
+		this.setHover(id, false);
+	}
   highlightText(range: Range, type: FoundationTextTypes): void {
     let secondIndexClassName;
     let thirdIndexClassName;
@@ -412,12 +442,54 @@ class MyTake extends React.Component<MyTakeProps, MyTakeState> {
     }
 
     this.clearDefaultDOMSelection();
-  }
+	}
+	setHover = (id: number, hoverState: boolean): void => {
+		const blocks = this.state.takeDocument.blocks.map(block => {
+			if (block.id !== id) {
+				return block;
+			}
+
+			return {
+				...block,
+				hover: hoverState
+			}
+		});
+		this.setState({
+			takeDocument: {
+				...this.state.takeDocument,
+				blocks: blocks
+			}
+		});
+	}
+	setActive = (id: number): void => {
+		const blocks = this.state.takeDocument.blocks.map(block=> {
+			if (block.id != id) {
+				return {
+					...block,
+					active: false
+				}
+			}
+			return {
+				...block,
+				active: true
+			}
+		});
+		this.setState({
+			takeDocument: {
+				...this.state.takeDocument,
+				blocks: blocks
+			}
+		});
+	}
   render(){
     return (
       <div>
         <BlockEditor 
-          blocks={this.state.takeDocument.blocks}
+					handleChange={this.handleTakeBlockChange}
+					handleClick={this.handleTakeBlockClick}
+					handleMouseOver={this.handleTakeBlockMouseOver}
+					handleMouseLeave={this.handleTakeBlockMouseLeave}
+					takeDocument={this.state.takeDocument}
         />
         <Foundation 
           onConstitutionClearClick={this.handleConstitutionClearClick}
