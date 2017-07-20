@@ -2,26 +2,39 @@
 
 exports[`Simple block editor model 1`] = `
 <div
-  className="blockeditor"
+  className="editor__wrapper"
 >
   <div
-    className="blockcontainer"
+    className="editor"
   >
-    <div
-      className="blockcontainer__paragraph"
+    <h2
+      className="editor__title"
     >
-      Some text
+      My take title
+    </h2>
+    <div
+      className="editor__block"
+    >
+      <textarea
+        className="editor__paragraph"
+        onChange={[Function]}
+        onClick={[Function]}
+        onMouseLeave={[Function]}
+        onMouseOver={[Function]}
+        value="Some text"
+      />
     </div>
-  </div>
-  <div
-    className="blockcontainer"
-  >
     <div
-      className="blockcontainer__document"
+      className="editor__block"
     >
-      Constitution
-       range 
-      1,25
+      <textarea
+        className="editor__paragraph"
+        onChange={[Function]}
+        onClick={[Function]}
+        onMouseLeave={[Function]}
+        onMouseOver={[Function]}
+        value="Some other text"
+      />
     </div>
   </div>
 </div>
@@ -29,26 +42,39 @@ exports[`Simple block editor model 1`] = `
 
 exports[`With active 1`] = `
 <div
-  className="blockeditor"
+  className="editor__wrapper"
 >
   <div
-    className="blockcontainer blockcontainer--active"
+    className="editor"
   >
-    <div
-      className="blockcontainer__paragraph"
+    <h2
+      className="editor__title"
     >
-      Some text
+      My take title
+    </h2>
+    <div
+      className="editor__block editor__block--active"
+    >
+      <textarea
+        className="editor__paragraph"
+        onChange={[Function]}
+        onClick={[Function]}
+        onMouseLeave={[Function]}
+        onMouseOver={[Function]}
+        value="Some text"
+      />
     </div>
-  </div>
-  <div
-    className="blockcontainer"
-  >
     <div
-      className="blockcontainer__document"
+      className="editor__block"
     >
-      Constitution
-       range 
-      1,25
+      <textarea
+        className="editor__paragraph"
+        onChange={[Function]}
+        onClick={[Function]}
+        onMouseLeave={[Function]}
+        onMouseOver={[Function]}
+        value="Some other text"
+      />
     </div>
   </div>
 </div>
@@ -56,26 +82,39 @@ exports[`With active 1`] = `
 
 exports[`With hover 1`] = `
 <div
-  className="blockeditor"
+  className="editor__wrapper"
 >
   <div
-    className="blockcontainer blockcontainer--hover"
+    className="editor"
   >
-    <div
-      className="blockcontainer__paragraph"
+    <h2
+      className="editor__title"
     >
-      Some text
+      My take title
+    </h2>
+    <div
+      className="editor__block editor__block--hover"
+    >
+      <textarea
+        className="editor__paragraph"
+        onChange={[Function]}
+        onClick={[Function]}
+        onMouseLeave={[Function]}
+        onMouseOver={[Function]}
+        value="Some text"
+      />
     </div>
-  </div>
-  <div
-    className="blockcontainer"
-  >
     <div
-      className="blockcontainer__document"
+      className="editor__block"
     >
-      Constitution
-       range 
-      1,25
+      <textarea
+        className="editor__paragraph"
+        onChange={[Function]}
+        onClick={[Function]}
+        onMouseLeave={[Function]}
+        onMouseOver={[Function]}
+        value="Some other text"
+      />
     </div>
   </div>
 </div>
@@ -83,26 +122,39 @@ exports[`With hover 1`] = `
 
 exports[`With hover and active 1`] = `
 <div
-  className="blockeditor"
+  className="editor__wrapper"
 >
   <div
-    className="blockcontainer blockcontainer--hover blockcontainer--active"
+    className="editor"
   >
-    <div
-      className="blockcontainer__paragraph"
+    <h2
+      className="editor__title"
     >
-      Some text
+      My take title
+    </h2>
+    <div
+      className="editor__block editor__block--hover editor__block--active"
+    >
+      <textarea
+        className="editor__paragraph"
+        onChange={[Function]}
+        onClick={[Function]}
+        onMouseLeave={[Function]}
+        onMouseOver={[Function]}
+        value="Some text"
+      />
     </div>
-  </div>
-  <div
-    className="blockcontainer"
-  >
     <div
-      className="blockcontainer__document"
+      className="editor__block"
     >
-      Constitution
-       range 
-      1,25
+      <textarea
+        className="editor__paragraph"
+        onChange={[Function]}
+        onClick={[Function]}
+        onMouseLeave={[Function]}
+        onMouseOver={[Function]}
+        value="Some other text"
+      />
     </div>
   </div>
 </div>
