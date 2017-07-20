@@ -29,6 +29,12 @@
 .editor__title--placeholder {
   opacity: 0.3; }
 
+.editor__block--hover {
+  border: 2px solid red; }
+
+.editor__block--active {
+  border: 2px solid blue; }
+
 .editor__paragraph--placeholder {
   opacity: 0.3; }
 
