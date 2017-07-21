@@ -14,10 +14,11 @@ export interface DocumentBlock {
 	range: [number, number];
 }
 export interface EventHandlers {
-	onClick: (id: number) => void;
-	onEnterPress: () => void;
-	onMouseOver: (id: number) => void;
-	onMouseLeave: (id: number) => void;
+	handleDelete: (id: number) => void;
+	handleEnterPress: () => void;
+	handleFocus: (id: number) => void;
+	handleMouseOver: (id: number) => void;
+	handleMouseLeave: (id: number) => void;
 }
 export interface ParagraphBlockProps {
 	id: number;
@@ -41,44 +42,66 @@ export interface TakeDocument {
 // React model //
 /////////////////
 class Paragraph extends React.Component<ParagraphBlockProps, void> {
-	public refs: {
-		textarea: HTMLTextAreaElement;
-	}
+	private textarea: HTMLTextAreaElement;
 	constructor(props: ParagraphBlockProps){
 		super(props);
+
+		this.componentDidMount = this.componentDidMount.bind(this);
+	}
+	handleBlur = () => {
+		// Paragraph is about to lose focus. If empty, should be removed.
+		if (!this.props.block.text) {
+			this.props.eventHandlers.handleDelete(this.props.id);
+		}
 	}
 	handleKeyDown = (ev: React.KeyboardEvent<HTMLTextAreaElement>) => {
-		if (ev.keyCode === keycode('enter')){
-			ev.preventDefault();
-			this.props.eventHandlers.onEnterPress();
+		switch (ev.keyCode) {
+			case keycode('enter'):
+				ev.preventDefault();
+				this.props.eventHandlers.handleEnterPress();
+				break;
+			case keycode('backspace') || keycode('delete'):
+				if (!this.props.block.text) {
+					this.props.eventHandlers.handleDelete(this.props.id);
+				}
+				break;
+			default:
+				break;
 		}
 	}
 	handleChange = (ev: React.ChangeEvent<HTMLTextAreaElement>) => {
 	 	this.props.onChange(this.props.id, ev.target.value);
 	}
 	handleClick = () => {
-		this.props.eventHandlers.onClick(this.props.id);
+		this.props.eventHandlers.handleFocus(this.props.id);
 	}
 	handleFocus = () => {
-		this.props.eventHandlers.onClick(this.props.id);
+		this.props.eventHandlers.handleFocus(this.props.id);
 	}
 	handleMouseOver = () => {
-		this.props.eventHandlers.onMouseOver(this.props.id);
+		this.props.eventHandlers.handleMouseOver(this.props.id);
 	}
 	handleMouseLeave = () => {
-		this.props.eventHandlers.onMouseLeave(this.props.id);
+		this.props.eventHandlers.handleMouseLeave(this.props.id);
+	}
+	componentDidMount() {
+		//console.log(this.textarea);
+		this.textarea.focus();
 	}
 	render() {
 		return (
 			<textarea 
 				className="editor__paragraph"
+				onBlur={this.handleBlur}
 				onChange={this.handleChange}
 				onClick={this.handleClick}
 				onFocus={this.handleFocus}
 				onKeyDown={this.handleKeyDown}
 				onMouseOver={this.handleMouseOver} 
 				onMouseLeave={this.handleMouseLeave} 
-				value={this.props.block.text}>
+				value={this.props.block.text}
+				ref={(textarea: HTMLTextAreaElement) => this.textarea = textarea}
+			>
 			</textarea>
 		);
 	}
@@ -89,22 +112,28 @@ class Document extends React.Component<DocumentBlockProps, void> {
     super(props);
 	}
 	handleClick = () => {
-		this.props.eventHandlers.onClick(this.props.id);
+		this.props.eventHandlers.handleFocus(this.props.id);
 	}
 	handleFocus = () => {
-		this.props.eventHandlers.onClick(this.props.id);
+		this.props.eventHandlers.handleFocus(this.props.id);
 	}
 	handleKeyDown = (ev: React.KeyboardEvent<HTMLDivElement>) => {
-		if (ev.keyCode === keycode('enter')){
-			ev.preventDefault();
-			this.props.eventHandlers.onEnterPress();
+		switch (ev.keyCode) {
+			case keycode('enter'):
+				this.props.eventHandlers.handleEnterPress();
+				break;
+			case keycode('backspace') || keycode('delete'):
+				this.props.eventHandlers.handleDelete(this.props.id);
+				break;
+			default:
+				break;
 		}
 	}
 	handleMouseOver = () => {
-		this.props.eventHandlers.onMouseOver(this.props.id);
+		this.props.eventHandlers.handleMouseOver(this.props.id);
 	}
 	handleMouseLeave = () => {
-		this.props.eventHandlers.onMouseLeave(this.props.id);
+		this.props.eventHandlers.handleMouseLeave(this.props.id);
 	}
 	render(){
 		return (
@@ -125,8 +154,9 @@ class Document extends React.Component<DocumentBlockProps, void> {
 export interface BlockContainerProps {
 	block: TakeBlock;
 	index: number;
+	handleDelete: (id: number) => void;
 	handleChange: (id: number, value: string) => void;
-	handleClick: (id: number) => void;
+	handleFocus: (id: number) => void;
 	handleEnter: () => void;
 	handleMouseOver: (id: number) => void;
 	handleMouseLeave: (id: number) => void;
@@ -142,10 +172,11 @@ class BlockContainer extends React.Component<BlockContainerProps, void> {
 		let inner;
 		const { props } = this;
 		const eventHandlers: EventHandlers = {
-			onClick: props.handleClick,
-			onEnterPress: props.handleEnter,
-			onMouseOver: props.handleMouseOver,
-			onMouseLeave: props.handleMouseLeave
+			handleDelete: props.handleDelete,
+			handleEnterPress: props.handleEnter,
+			handleFocus: props.handleFocus,
+			handleMouseOver: props.handleMouseOver,
+			handleMouseLeave: props.handleMouseLeave
 		}
 		switch (props.block.kind) {
 			case 'paragraph': 
@@ -182,8 +213,9 @@ class BlockContainer extends React.Component<BlockContainerProps, void> {
 
 export interface BlockEditorProps {
 	handleChange: (id: number, value: string) => void;
-	handleClick: (id: number) => void;
+	handleDelete: (id: number) => void;
 	handleEnter: () => void;
+	handleFocus: (id: number) => void;
 	takeDocument: TakeDocument;
 	active: number;
 }
@@ -227,8 +259,9 @@ class BlockEditor extends React.Component<BlockEditorProps, BlockEditorState> {
 							key={idx.toString()}
 							index={idx}
 							block={block}
+							handleDelete={props.handleDelete}
 							handleChange={props.handleChange}
-							handleClick={props.handleClick}
+							handleFocus={props.handleFocus}
 							handleEnter={props.handleEnter}
 							handleMouseOver={this.handleMouseOver}
 							handleMouseLeave={this.handleMouseLeave}

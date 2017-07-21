@@ -55,9 +55,8 @@ class MyTake extends React.Component<MyTakeProps, MyTakeState> {
 		this.handleAmendmentsSetClick = this.handleAmendmentsSetClick.bind(this);
 	}
 	addParagraph = (): void => {
-		console.log('add paragraph');
 		const blocks = this.state.takeDocument.blocks;
-		const activeBlockIndex = this.state.activeBlockIndex;
+		let activeBlockIndex = this.state.activeBlockIndex;
 
 		const newBlock: ParagraphBlock = {
 			kind: 'paragraph',
@@ -74,8 +73,35 @@ class MyTake extends React.Component<MyTakeProps, MyTakeState> {
 			takeDocument: {
 				...this.state.takeDocument,
 				blocks: newBlocks
-			}
+			},
+			activeBlockIndex: ++activeBlockIndex
 		});
+	}
+	removeParagraph = (id: number): void =>{
+		const blocks = this.state.takeDocument.blocks;
+		if (blocks.length > 1 ) {
+			this.setState({
+				takeDocument:{
+					...this.state.takeDocument,
+					blocks: [
+						...blocks.slice(0, id),
+						...blocks.slice(id + 1)
+					]
+				}
+			})
+		} else {
+			if (blocks[0].kind === 'document'){
+				//User wants a fresh take, so give user an empty paragraph.
+				this.setState({
+					takeDocument:{
+						...this.state.takeDocument,
+						blocks: [
+							{ kind: 'paragraph', text: '' }
+						]
+					}
+				});
+			}
+		}
 	}
   getInitialText(type: FoundationTextTypes): Array<MyReactComponentObject> {
     let initialText;
@@ -164,7 +190,7 @@ class MyTake extends React.Component<MyTakeProps, MyTakeState> {
 			}
 		});
 	}
-	handleTakeBlockClick = (id: number): void  => {
+	handleTakeBlockFocus = (id: number): void  => {
 		this.setActive(id);
 	}
   highlightText(range: Range, type: FoundationTextTypes): void {
@@ -472,8 +498,9 @@ class MyTake extends React.Component<MyTakeProps, MyTakeState> {
     return (
       <div>
         <BlockEditor 
+					handleDelete={this.removeParagraph}
 					handleChange={this.handleTakeBlockChange}
-					handleClick={this.handleTakeBlockClick}
+					handleFocus={this.handleTakeBlockFocus}
 					handleEnter={this.addParagraph}
 					takeDocument={this.state.takeDocument}
 					active={this.state.activeBlockIndex}
