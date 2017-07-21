@@ -13,8 +13,9 @@ export interface DocumentBlock {
   document: string;
 	range: [number, number];
 }
-export interface MouseCallBacks {
+export interface EventHandlers {
 	onClick: (id: number) => void;
+	onEnterPress: () => void;
 	onMouseOver: (id: number) => void;
 	onMouseLeave: (id: number) => void;
 }
@@ -22,12 +23,12 @@ export interface ParagraphBlockProps {
 	id: number;
 	onChange: (id: number, value: string) => void;
 	block: ParagraphBlock;
-	mouseCallBacks: MouseCallBacks;
+	eventHandlers: EventHandlers;
 }
 export interface DocumentBlockProps {
 	id: number;
 	block: DocumentBlock;
-	mouseCallBacks: MouseCallBacks;
+	eventHandlers: EventHandlers;
 }
 export type TakeBlock = ParagraphBlock | DocumentBlock;
 
@@ -48,23 +49,24 @@ class Paragraph extends React.Component<ParagraphBlockProps, void> {
 	}
 	handleKeyDown = (ev: React.KeyboardEvent<HTMLTextAreaElement>) => {
 		if (ev.keyCode === keycode('enter')){
-			console.log('enter pressed');
-
-		}// else {
-		//	this.handleChange();
-		//}
+			ev.preventDefault();
+			this.props.eventHandlers.onEnterPress();
+		}
 	}
 	handleChange = (ev: React.ChangeEvent<HTMLTextAreaElement>) => {
 	 	this.props.onChange(this.props.id, ev.target.value);
 	}
 	handleClick = () => {
-		this.props.mouseCallBacks.onClick(this.props.id);
+		this.props.eventHandlers.onClick(this.props.id);
+	}
+	handleFocus = () => {
+		this.props.eventHandlers.onClick(this.props.id);
 	}
 	handleMouseOver = () => {
-		this.props.mouseCallBacks.onMouseOver(this.props.id);
+		this.props.eventHandlers.onMouseOver(this.props.id);
 	}
 	handleMouseLeave = () => {
-		this.props.mouseCallBacks.onMouseLeave(this.props.id);
+		this.props.eventHandlers.onMouseLeave(this.props.id);
 	}
 	render() {
 		return (
@@ -72,6 +74,8 @@ class Paragraph extends React.Component<ParagraphBlockProps, void> {
 				className="editor__paragraph"
 				onChange={this.handleChange}
 				onClick={this.handleClick}
+				onFocus={this.handleFocus}
+				onKeyDown={this.handleKeyDown}
 				onMouseOver={this.handleMouseOver} 
 				onMouseLeave={this.handleMouseLeave} 
 				value={this.props.block.text}>
@@ -85,19 +89,31 @@ class Document extends React.Component<DocumentBlockProps, void> {
     super(props);
 	}
 	handleClick = () => {
-		this.props.mouseCallBacks.onClick(this.props.id);
+		this.props.eventHandlers.onClick(this.props.id);
+	}
+	handleFocus = () => {
+		this.props.eventHandlers.onClick(this.props.id);
+	}
+	handleKeyDown = (ev: React.KeyboardEvent<HTMLDivElement>) => {
+		if (ev.keyCode === keycode('enter')){
+			ev.preventDefault();
+			this.props.eventHandlers.onEnterPress();
+		}
 	}
 	handleMouseOver = () => {
-		this.props.mouseCallBacks.onMouseOver(this.props.id);
+		this.props.eventHandlers.onMouseOver(this.props.id);
 	}
 	handleMouseLeave = () => {
-		this.props.mouseCallBacks.onMouseLeave(this.props.id);
+		this.props.eventHandlers.onMouseLeave(this.props.id);
 	}
 	render(){
 		return (
 			<div 
+				tabIndex={0}
 				className="editor__document"
 				onClick={this.handleClick}
+				onFocus={this.handleFocus}
+				onKeyDown={this.handleKeyDown}
 				onMouseOver={this.handleMouseOver}
 				onMouseLeave={this.handleMouseLeave}
 			>
@@ -111,6 +127,7 @@ export interface BlockContainerProps {
 	index: number;
 	handleChange: (id: number, value: string) => void;
 	handleClick: (id: number) => void;
+	handleEnter: () => void;
 	handleMouseOver: (id: number) => void;
 	handleMouseLeave: (id: number) => void;
   active: boolean;
@@ -124,8 +141,9 @@ class BlockContainer extends React.Component<BlockContainerProps, void> {
 	render(){
 		let inner;
 		const { props } = this;
-		const mouseCallBacks: MouseCallBacks = {
+		const eventHandlers: EventHandlers = {
 			onClick: props.handleClick,
+			onEnterPress: props.handleEnter,
 			onMouseOver: props.handleMouseOver,
 			onMouseLeave: props.handleMouseLeave
 		}
@@ -135,14 +153,14 @@ class BlockContainer extends React.Component<BlockContainerProps, void> {
 					block={props.block}
 					id={props.index}
 					onChange={props.handleChange}
-					mouseCallBacks={mouseCallBacks}
+					eventHandlers={eventHandlers}
 					/>; 
 				break;
 			case 'document':  
 				inner = <Document
 					block={props.block}
 					id={props.index}
-					mouseCallBacks={mouseCallBacks}
+					eventHandlers={eventHandlers}
 					/>;  
 				break;
 		}
@@ -163,8 +181,9 @@ class BlockContainer extends React.Component<BlockContainerProps, void> {
 }
 
 export interface BlockEditorProps {
-	handleChange?: (id: number, value: string) => void;
-	handleClick?: (id: number) => void;
+	handleChange: (id: number, value: string) => void;
+	handleClick: (id: number) => void;
+	handleEnter: () => void;
 	takeDocument: TakeDocument;
 	active: number;
 }
@@ -210,6 +229,7 @@ class BlockEditor extends React.Component<BlockEditorProps, BlockEditorState> {
 							block={block}
 							handleChange={props.handleChange}
 							handleClick={props.handleClick}
+							handleEnter={props.handleEnter}
 							handleMouseOver={this.handleMouseOver}
 							handleMouseLeave={this.handleMouseLeave}
 							active={idx === props.active}

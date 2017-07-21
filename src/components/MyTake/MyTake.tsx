@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import BlockEditor, { TakeBlock, TakeDocument } from '../BlockEditor';
+import BlockEditor, { ParagraphBlock, TakeBlock, TakeDocument } from '../BlockEditor';
 import Foundation from '../Foundation';
 import * as key from "keycode";
 import getNodeArray from "../../utils/getNodeArray";
@@ -40,7 +40,7 @@ class MyTake extends React.Component<MyTakeProps, MyTakeState> {
 				title: 'My Title',
         blocks: [
 					{ kind: 'paragraph', text: 'Use your voice here.' },
-					{ kind: 'paragraph', text: 'Use your voice here 2.' },
+					{ kind: 'document', document: 'Constitution', range: [1, 24] },
 				]
 			},
 			activeBlockIndex: -1,
@@ -54,27 +54,28 @@ class MyTake extends React.Component<MyTakeProps, MyTakeState> {
     this.handleAmendmentsClearClick = this.handleAmendmentsClearClick.bind(this);
 		this.handleAmendmentsSetClick = this.handleAmendmentsSetClick.bind(this);
 	}
-	addParagraphAfter = (id: number): void => {
-		// const blocks = this.state.takeDocument.blocks.map(block=> {
-		// 	if (block.id != id) {
-		// 		return {
-		// 			...block,
-		// 		}
-		// 	}
-		// 	[].concat({...block}, {});
-		// 	return [
-		// 		{...block},
-		// 		,{id: 1, kind: 'paragraph', text: '', hover: false, active: false}
-		// 	];
-		// });
+	addParagraph = (): void => {
+		console.log('add paragraph');
+		const blocks = this.state.takeDocument.blocks;
+		const activeBlockIndex = this.state.activeBlockIndex;
 
-		console.log('adding paragraph after', id);
-		// this.setState({
-		// 	takeDocument: {
-		// 		...this.state.takeDocument,
-		// 		blocks: blocks
-		// 	}
-		// });
+		const newBlock: ParagraphBlock = {
+			kind: 'paragraph',
+			text: 'new block'
+		}
+
+		const newBlocks = [
+			...blocks.slice(0, activeBlockIndex + 1),
+			newBlock,
+			...blocks.slice(activeBlockIndex + 1)
+		];
+		
+		this.setState({
+			takeDocument: {
+				...this.state.takeDocument,
+				blocks: newBlocks
+			}
+		});
 	}
   getInitialText(type: FoundationTextTypes): Array<MyReactComponentObject> {
     let initialText;
@@ -145,22 +146,23 @@ class MyTake extends React.Component<MyTakeProps, MyTakeState> {
     }
 	}
 	handleTakeBlockChange = (id: number, value: string): void => { 
-		// const blocks = this.state.takeDocument.blocks.map(block => {
-		// 	if (block.id !== id) {
-		// 		return block;
-		// 	}
-
-		// 	return {
-		// 		...block,
-		// 		text: value
-		// 	}
-		// });
-		// this.setState({
-		// 	takeDocument: {
-		// 		...this.state.takeDocument,
-		// 		blocks: blocks
-		// 	}
-		// });
+		const blocks = this.state.takeDocument.blocks;
+		
+		const newBlock = blocks[id] as ParagraphBlock;
+		newBlock.text = value;
+		
+		const newBlocks = [
+			...blocks.slice(0, id),
+			newBlock,
+			...blocks.slice(id + 1)
+		];
+		
+		this.setState({
+			takeDocument: {
+				...this.state.takeDocument,
+				blocks: newBlocks
+			}
+		});
 	}
 	handleTakeBlockClick = (id: number): void  => {
 		this.setActive(id);
@@ -472,6 +474,7 @@ class MyTake extends React.Component<MyTakeProps, MyTakeState> {
         <BlockEditor 
 					handleChange={this.handleTakeBlockChange}
 					handleClick={this.handleTakeBlockClick}
+					handleEnter={this.addParagraph}
 					takeDocument={this.state.takeDocument}
 					active={this.state.activeBlockIndex}
         />
