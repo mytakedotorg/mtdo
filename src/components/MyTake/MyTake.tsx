@@ -40,7 +40,7 @@ class MyTake extends React.Component<MyTakeProps, MyTakeState> {
 				title: 'My Title',
         blocks: [
 					{ kind: 'paragraph', text: 'Use your voice here.' },
-					{ kind: 'document', document: 'CONSTITUTION', range: [1, 364] },
+					{ kind: 'document', document: 'CONSTITUTION', range: [25, 30] },
 				]
 			},
 			activeBlockIndex: -1,
@@ -502,7 +502,6 @@ class MyTake extends React.Component<MyTakeProps, MyTakeState> {
 					handleChange={this.handleTakeBlockChange}
 					handleFocus={this.handleTakeBlockFocus}
 					handleEnter={this.addParagraph}
-					constitutionNodes={this.state.constitutionNodes}
 					takeDocument={this.state.takeDocument}
 					active={this.state.activeBlockIndex}
         />
