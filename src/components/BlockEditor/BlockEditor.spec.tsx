@@ -17,36 +17,45 @@ const doc: TakeDocument = {
             document: 'Constitution',
 						range: [1, 25]
         }
-		],
-		hover: 0,
-		active: 0
+		]
 };
+
+const handleChange = (id: number, value: string): void => {};
+const handleDelete = (id: number): void => {};
+const handleEnter = (): void => {};
+const handleFocus = (id: number): void => {};
+const handlers = {
+	handleChange,
+	handleDelete,
+	handleEnter,
+	handleFocus
+}
 
 
 test('Simple block editor model', () => {
     const tree = renderer.create(
-        <BlockEditor takeDocument={doc} />
+        <BlockEditor takeDocument={doc} active={-1} {...handlers} />
     ).toJSON();
     expect(tree).toMatchSnapshot();
 })
 
 test('With active', () => {
     const tree = renderer.create(
-        <BlockEditor takeDocument={doc} />
+        <BlockEditor takeDocument={doc} active={0} {...handlers} />
     ).toJSON();
     expect(tree).toMatchSnapshot();
 })
 
-test('With hover', () => {
-    const tree = renderer.create(
-        <BlockEditor takeDocument={doc} />
-    ).toJSON();
-    expect(tree).toMatchSnapshot();
-})
+// test('With hover', () => {
+//     const tree = renderer.create(
+//         <BlockEditor takeDocument={doc} active={-1} {...handlers} />
+//     ).toJSON();
+//     expect(tree).toMatchSnapshot();
+// })
 
-test('With hover and active', () => {
-    const tree = renderer.create(
-        <BlockEditor takeDocument={doc} />
-    ).toJSON();
-    expect(tree).toMatchSnapshot();
-})
+// test('With hover and active', () => {
+//     const tree = renderer.create(
+//         <BlockEditor takeDocument={doc} active={-1} {...handlers} />
+//     ).toJSON();
+//     expect(tree).toMatchSnapshot();
+// })
