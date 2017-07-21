@@ -28,7 +28,13 @@
 .editor__paragraph {
   text-align: left;
   margin-top: 0;
-  position: relative;
+	position: relative;
+	width: 100%;
+	border: 0;
+	overflow: auto;
+	outline: none;
+	box-shadow: none;
+	resize: none;
   @include body--lead;
 }
 .editor__constitution {
