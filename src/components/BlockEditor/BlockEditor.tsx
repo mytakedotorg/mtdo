@@ -1,6 +1,9 @@
 import * as React from "react";
 import * as keycode from "keycode";
 import { FoundationNode, FoundationNodeProps, FoundationTextTypes } from '../Foundation';
+import getNodeArray from "../../utils/getNodeArray";
+const constitutionText = require('../../foundation/constitution.foundation.html');
+
 
 ////////////////////
 // Document model //
@@ -29,10 +32,13 @@ export interface ParagraphBlockProps {
 }
 export interface DocumentBlockProps {
 	id: number;
-	constitutionNodes: FoundationNode[];
 	block: DocumentBlock;
 	eventHandlers: EventHandlers;
 }
+export interface DocumentBlockState {
+	constitutionNodes: FoundationNode[];
+}
+
 export type TakeBlock = ParagraphBlock | DocumentBlock;
 
 export interface TakeDocument {
@@ -47,8 +53,6 @@ class Paragraph extends React.Component<ParagraphBlockProps, void> {
 	private textarea: HTMLTextAreaElement;
 	constructor(props: ParagraphBlockProps){
 		super(props);
-
-		this.componentDidMount = this.componentDidMount.bind(this);
 	}
 	handleBlur = () => {
 		// Paragraph is about to lose focus. If empty, should be removed.
@@ -108,9 +112,17 @@ class Paragraph extends React.Component<ParagraphBlockProps, void> {
 	}
 }
 
-class Document extends React.Component<DocumentBlockProps, void> {
+class Document extends React.Component<DocumentBlockProps, DocumentBlockState> {
 	constructor(props: DocumentBlockProps){
-    super(props);
+		super(props);
+		
+		this.state = {
+			constitutionNodes: this.getInitialText()
+		}
+	}
+	getInitialText(): Array<FoundationNode> {
+		let initialText = getNodeArray(constitutionText);
+		return initialText;
 	}
 	handleClick = () => {
 		this.props.eventHandlers.handleFocus(this.props.id);
@@ -138,22 +150,45 @@ class Document extends React.Component<DocumentBlockProps, void> {
 	}
 	render(){
 		const { props } = this;
-		const startIndex = props.block.range[0];
-		const endIndex = props.block.range[1];
+		const startRange = props.block.range[0];
+		const endRange = props.block.range[1];
+		const constitutionNodes: FoundationNode[] = [...this.state.constitutionNodes];
 		let documentNodes: FoundationNode[] = [];
-		const offset: FoundationNodeProps = props.constitutionNodes[0].props;
+		let highlightedNodes: FoundationNode[] = [];
 		switch (props.block.document) {
 			case 'CONSTITUTION':
-				for(let idx = 0; idx < props.constitutionNodes.length; idx++) {
-					if (props.constitutionNodes[idx + 1]) {
-						if (parseInt(props.constitutionNodes[idx + 1].props.data) < startIndex) {
+				for(let idx = 0; idx < constitutionNodes.length; idx++) {
+					if (constitutionNodes[idx + 1]) {
+						if (parseInt(constitutionNodes[idx + 1].props.data) < startRange) {
 							continue;
 						}
 					}
-					if (parseInt(props.constitutionNodes[idx].props.data) > endIndex) {
+					if (parseInt(constitutionNodes[idx].props.data) > endRange) {
 						break;
 					}
-					documentNodes.push(props.constitutionNodes[idx]);
+					documentNodes = [ ...constitutionNodes.slice(idx, idx+1) ];
+				}
+				//documentNodes is array with text to be highlighted
+				if (documentNodes.length === 1) {
+					const offset = parseInt(documentNodes[0].props.data);
+					const startIndex = startRange - offset;
+					const endIndex = endRange - offset;
+					let newSpan: React.ReactNode = React.createElement(
+						'span',
+						{
+							className: 'constitution__text--selected',
+							key: 'somekey'
+						},
+						documentNodes[0].innerHTML.toString().substring(startIndex, endIndex)
+					);
+					let newNode: FoundationNode = (Object as any).assign({}, documentNodes[0]);
+					const length = documentNodes[0].innerHTML.toString().length;
+					newNode.innerHTML = [
+						newNode.innerHTML.toString().substring(0, startIndex),
+						newSpan,
+						newNode.innerHTML.toString().substring(endIndex, length)
+					]
+					highlightedNodes = [newNode];
 				}
 				break;
 			default: 
@@ -170,7 +205,7 @@ class Document extends React.Component<DocumentBlockProps, void> {
 				onMouseLeave={this.handleMouseLeave}
 			>
 				{props.block.document} range {props.block.range.toString()}
-				{documentNodes.map((node, index) => {
+				{highlightedNodes.map((node, index) => {
 					node.props['key'] = index.toString();
 					return (
 						React.createElement(node.component, node.props, node.innerHTML)
@@ -183,7 +218,6 @@ class Document extends React.Component<DocumentBlockProps, void> {
 export interface BlockContainerProps {
 	block: TakeBlock;
 	index: number;
-	constitutionNodes: FoundationNode[];
 	handleDelete: (id: number) => void;
 	handleChange: (id: number, value: string) => void;
 	handleFocus: (id: number) => void;
@@ -220,7 +254,6 @@ class BlockContainer extends React.Component<BlockContainerProps, void> {
 			case 'document':  
 				inner = <Document
 					block={props.block}
-					constitutionNodes={props.constitutionNodes}
 					id={props.index}
 					eventHandlers={eventHandlers}
 					/>;  
@@ -243,7 +276,6 @@ class BlockContainer extends React.Component<BlockContainerProps, void> {
 }
 
 export interface BlockEditorProps {
-	constitutionNodes: FoundationNode[];
 	handleChange: (id: number, value: string) => void;
 	handleDelete: (id: number) => void;
 	handleEnter: () => void;
@@ -291,7 +323,6 @@ class BlockEditor extends React.Component<BlockEditorProps, BlockEditorState> {
 							key={idx.toString()}
 							index={idx}
 							block={block}
-							constitutionNodes={props.constitutionNodes}
 							handleDelete={props.handleDelete}
 							handleChange={props.handleChange}
 							handleFocus={props.handleFocus}
