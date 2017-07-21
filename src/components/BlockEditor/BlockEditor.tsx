@@ -1,5 +1,6 @@
 import * as React from "react";
 import * as keycode from "keycode";
+import { FoundationNode, FoundationNodeProps, FoundationTextTypes } from '../Foundation';
 
 ////////////////////
 // Document model //
@@ -10,7 +11,7 @@ export interface ParagraphBlock {
 }
 export interface DocumentBlock {
 	kind: 'document';
-  document: string;
+  document: FoundationTextTypes;
 	range: [number, number];
 }
 export interface EventHandlers {
@@ -28,6 +29,7 @@ export interface ParagraphBlockProps {
 }
 export interface DocumentBlockProps {
 	id: number;
+	constitutionNodes: FoundationNode[];
 	block: DocumentBlock;
 	eventHandlers: EventHandlers;
 }
@@ -85,7 +87,6 @@ class Paragraph extends React.Component<ParagraphBlockProps, void> {
 		this.props.eventHandlers.handleMouseLeave(this.props.id);
 	}
 	componentDidMount() {
-		//console.log(this.textarea);
 		this.textarea.focus();
 	}
 	render() {
@@ -136,6 +137,28 @@ class Document extends React.Component<DocumentBlockProps, void> {
 		this.props.eventHandlers.handleMouseLeave(this.props.id);
 	}
 	render(){
+		const { props } = this;
+		const startIndex = props.block.range[0];
+		const endIndex = props.block.range[1];
+		let documentNodes: FoundationNode[] = [];
+		const offset: FoundationNodeProps = props.constitutionNodes[0].props;
+		switch (props.block.document) {
+			case 'CONSTITUTION':
+				for(let idx = 0; idx < props.constitutionNodes.length; idx++) {
+					if (props.constitutionNodes[idx + 1]) {
+						if (parseInt(props.constitutionNodes[idx + 1].props.data) < startIndex) {
+							continue;
+						}
+					}
+					if (parseInt(props.constitutionNodes[idx].props.data) > endIndex) {
+						break;
+					}
+					documentNodes.push(props.constitutionNodes[idx]);
+				}
+				break;
+			default: 
+				break;
+		}
 		return (
 			<div 
 				tabIndex={0}
@@ -146,7 +169,13 @@ class Document extends React.Component<DocumentBlockProps, void> {
 				onMouseOver={this.handleMouseOver}
 				onMouseLeave={this.handleMouseLeave}
 			>
-				{this.props.block.document} range {this.props.block.range.toString()}
+				{props.block.document} range {props.block.range.toString()}
+				{documentNodes.map((node, index) => {
+					node.props['key'] = index.toString();
+					return (
+						React.createElement(node.component, node.props, node.innerHTML)
+					)
+				})}
 			</div>)
 	}
 }
@@ -154,6 +183,7 @@ class Document extends React.Component<DocumentBlockProps, void> {
 export interface BlockContainerProps {
 	block: TakeBlock;
 	index: number;
+	constitutionNodes: FoundationNode[];
 	handleDelete: (id: number) => void;
 	handleChange: (id: number, value: string) => void;
 	handleFocus: (id: number) => void;
@@ -190,6 +220,7 @@ class BlockContainer extends React.Component<BlockContainerProps, void> {
 			case 'document':  
 				inner = <Document
 					block={props.block}
+					constitutionNodes={props.constitutionNodes}
 					id={props.index}
 					eventHandlers={eventHandlers}
 					/>;  
@@ -212,6 +243,7 @@ class BlockContainer extends React.Component<BlockContainerProps, void> {
 }
 
 export interface BlockEditorProps {
+	constitutionNodes: FoundationNode[];
 	handleChange: (id: number, value: string) => void;
 	handleDelete: (id: number) => void;
 	handleEnter: () => void;
@@ -259,6 +291,7 @@ class BlockEditor extends React.Component<BlockEditorProps, BlockEditorState> {
 							key={idx.toString()}
 							index={idx}
 							block={block}
+							constitutionNodes={props.constitutionNodes}
 							handleDelete={props.handleDelete}
 							handleChange={props.handleChange}
 							handleFocus={props.handleFocus}

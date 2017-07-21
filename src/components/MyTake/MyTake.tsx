@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import BlockEditor, { ParagraphBlock, TakeBlock, TakeDocument } from '../BlockEditor';
-import Foundation from '../Foundation';
+import Foundation, { FoundationNode, FoundationTextTypes } from '../Foundation';
 import * as key from "keycode";
 import getNodeArray from "../../utils/getNodeArray";
 const constitutionText = require('../../foundation/constitution.foundation.html');
@@ -13,10 +13,10 @@ interface MyTakeProps {
 }
 
 interface MyTakeState {
-  constitutionNodes: Array<MyReactComponentObject>,
-  amendmentsNodes: Array<MyReactComponentObject>,
-  highlightedConstitutionNodes: Array<MyReactComponentObject>,
-  highlightedAmendmentsNodes: Array<MyReactComponentObject>,
+  constitutionNodes: Array<FoundationNode>,
+  amendmentsNodes: Array<FoundationNode>,
+  highlightedConstitutionNodes: Array<FoundationNode>,
+  highlightedAmendmentsNodes: Array<FoundationNode>,
   constitutionTextIsHighlighted: boolean,
   amendmentsTextIsHighlighted: boolean,
   takeDocument: TakeDocument,
@@ -40,7 +40,7 @@ class MyTake extends React.Component<MyTakeProps, MyTakeState> {
 				title: 'My Title',
         blocks: [
 					{ kind: 'paragraph', text: 'Use your voice here.' },
-					{ kind: 'document', document: 'Constitution', range: [1, 24] },
+					{ kind: 'document', document: 'CONSTITUTION', range: [1, 364] },
 				]
 			},
 			activeBlockIndex: -1,
@@ -103,7 +103,7 @@ class MyTake extends React.Component<MyTakeProps, MyTakeState> {
 			}
 		}
 	}
-  getInitialText(type: FoundationTextTypes): Array<MyReactComponentObject> {
+  getInitialText(type: FoundationTextTypes): Array<FoundationNode> {
     let initialText;
     switch (type) {
       case 'AMENDMENTS':
@@ -303,9 +303,9 @@ class MyTake extends React.Component<MyTakeProps, MyTakeState> {
       .childNodes[fourthIndex]
       .childNodes[indexOfEndContainer];
 
-    let newNodesFull: Array<MyReactComponentObject> = [...nodes.slice(0, indexOfStartContainer)];
-    let newNodes: Array<MyReactComponentObject> = [];
-    let highlightedNodes: Array<MyReactComponentObject> = []; //Will not be rendered yet, will be sent to TakeEditor
+    let newNodesFull: Array<FoundationNode> = [...nodes.slice(0, indexOfStartContainer)];
+    let newNodes: Array<FoundationNode> = [];
+    let highlightedNodes: Array<FoundationNode> = []; //Will not be rendered yet, will be sent to TakeEditor
     let newKey = this.state.uniqueKey;
 
     if (startContainer === endContainer) {
@@ -321,7 +321,7 @@ class MyTake extends React.Component<MyTakeProps, MyTakeState> {
       );
 
       // Modify state array immutably
-      let newNode: MyReactComponentObject = (Object as any).assign({}, nodes[indexOfStartContainer]);
+      let newNode: FoundationNode = (Object as any).assign({}, nodes[indexOfStartContainer]);
       newNode.innerHTML = [
         startContainer.textContent.substring(0, indexOfSelectionStart),
         newSpan,
@@ -341,7 +341,7 @@ class MyTake extends React.Component<MyTakeProps, MyTakeState> {
       );
 
       // Modify state array immutably
-      let newNode2: MyReactComponentObject = (Object as any).assign({}, nodes[indexOfStartContainer]);
+      let newNode2: FoundationNode = (Object as any).assign({}, nodes[indexOfStartContainer]);
       newNode2.innerHTML = [
         startContainer.textContent.substring(0, indexOfSelectionStart),
         newSpan2,
@@ -362,7 +362,7 @@ class MyTake extends React.Component<MyTakeProps, MyTakeState> {
       );
       
       // Modify state array immutably
-      let firstNewNode: MyReactComponentObject = (Object as any).assign({}, nodes[indexOfStartContainer]);
+      let firstNewNode: FoundationNode = (Object as any).assign({}, nodes[indexOfStartContainer]);
       firstNewNode.innerHTML = [
         startContainer.textContent.substring(0, indexOfSelectionStart),
         firstNewSpan
@@ -381,7 +381,7 @@ class MyTake extends React.Component<MyTakeProps, MyTakeState> {
       );
       
       // Modify state array immutably
-      let firstNewNode2: MyReactComponentObject = (Object as any).assign({}, nodes[indexOfStartContainer]);
+      let firstNewNode2: FoundationNode = (Object as any).assign({}, nodes[indexOfStartContainer]);
       firstNewNode2.innerHTML = [
         startContainer.textContent.substring(0, indexOfSelectionStart),
         firstNewSpan2
@@ -390,7 +390,7 @@ class MyTake extends React.Component<MyTakeProps, MyTakeState> {
       highlightedNodes.push(firstNewNode2);
 
       for(let index: number = indexOfStartContainer + 1; index < indexOfEndContainer ; index++){
-        let nextNewNode: MyReactComponentObject = (Object as any).assign({}, nodes[index]);
+        let nextNewNode: FoundationNode = (Object as any).assign({}, nodes[index]);
         let key: string = 'middleSpan-' + index.toString();
         let nextNewSpan: React.ReactNode = React.createElement(
           'span',
@@ -405,7 +405,7 @@ class MyTake extends React.Component<MyTakeProps, MyTakeState> {
 
         newNodes.push(nextNewNode);
 
-        let nextNewNode2: MyReactComponentObject = (Object as any).assign({}, nodes[index]);
+        let nextNewNode2: FoundationNode = (Object as any).assign({}, nodes[index]);
         let key2: string = 'middleSpan2-' + index.toString();
         let nextNewSpan2: React.ReactNode = React.createElement(
           'span',
@@ -431,7 +431,7 @@ class MyTake extends React.Component<MyTakeProps, MyTakeState> {
         endContainer.textContent.substring(0, indexOfSelectionEnd)
       );
       // Modify state array immutably
-      let lastNewNode: MyReactComponentObject = (Object as any).assign({}, nodes[indexOfEndContainer]);
+      let lastNewNode: FoundationNode = (Object as any).assign({}, nodes[indexOfEndContainer]);
       lastNewNode.innerHTML = [
         lastNewSpan,
         endContainer.textContent.substring(indexOfSelectionEnd, endContainer.textContent.length),
@@ -449,7 +449,7 @@ class MyTake extends React.Component<MyTakeProps, MyTakeState> {
         endContainer.textContent.substring(0, indexOfSelectionEnd)
       );
       // Modify state array immutably
-      let lastNewNode2: MyReactComponentObject = (Object as any).assign({}, nodes[indexOfEndContainer]);
+      let lastNewNode2: FoundationNode = (Object as any).assign({}, nodes[indexOfEndContainer]);
       lastNewNode2.innerHTML = [
         lastNewSpan2,
         endContainer.textContent.substring(indexOfSelectionEnd, endContainer.textContent.length),
@@ -502,6 +502,7 @@ class MyTake extends React.Component<MyTakeProps, MyTakeState> {
 					handleChange={this.handleTakeBlockChange}
 					handleFocus={this.handleTakeBlockFocus}
 					handleEnter={this.addParagraph}
+					constitutionNodes={this.state.constitutionNodes}
 					takeDocument={this.state.takeDocument}
 					active={this.state.activeBlockIndex}
         />
