@@ -1,4 +1,5 @@
 import * as React from "react";
+import { FoundationNode, FoundationNodeProps } from '../components/Foundation';
 var htmlparser = require('htmlparser2');
 
 /**
@@ -7,19 +8,19 @@ var htmlparser = require('htmlparser2');
  *  Assumes no child nodes in HTML string input.
  */
   
-export default function getNodeArray(source : string): Array<MyReactComponentObject> {
-  let output: Array<MyReactComponentObject> = [];
+export default function getNodeArray(source : string): Array<FoundationNode> {
+  let output: Array<FoundationNode> = [];
   let tagIsOpen: boolean = false;
   let newElementName: string;
-  let newElementProps: MyComponentPropsObject;
+  let newElementProps: FoundationNodeProps;
   let newElemenetText: string;
   let iter = 0;
 
   var parser = new htmlparser.Parser({
-    onopentag: function(name: string, attributes: MyComponentPropsObject) {    
+    onopentag: function(name: string, attributes: FoundationNodeProps) {    
       tagIsOpen = true;
-      newElementName = name;
-      newElementProps = attributes;      
+			newElementName = name;
+			newElementProps = attributes;
     },
     ontext: function(text: string) {
       if ( tagIsOpen ) {
