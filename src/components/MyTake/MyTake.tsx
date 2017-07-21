@@ -20,7 +20,8 @@ interface MyTakeState {
   constitutionTextIsHighlighted: boolean,
   amendmentsTextIsHighlighted: boolean,
   takeDocument: TakeDocument,
-  uniqueKey: string
+	uniqueKey: string,
+	activeBlockIndex: number
 }
 
 
@@ -36,14 +37,13 @@ class MyTake extends React.Component<MyTakeProps, MyTakeState> {
       highlightedConstitutionNodes: [],
       highlightedAmendmentsNodes: [],
       takeDocument: {
-        title: 'My Title',
+				title: 'My Title',
         blocks: [
-					{kind: 'paragraph', text: 'Use your voice here.'},
-					{kind: 'paragraph', text: 'Use your voice here 2.'},
-				],
-				hover: -1,
-				active: 0,
-      },
+					{ kind: 'paragraph', text: 'Use your voice here.' },
+					{ kind: 'paragraph', text: 'Use your voice here 2.' },
+				]
+			},
+			activeBlockIndex: -1,
       uniqueKey: 'aa' // Only works 26^2 times. I think that'll be enough.
     }
 
@@ -164,12 +164,6 @@ class MyTake extends React.Component<MyTakeProps, MyTakeState> {
 	}
 	handleTakeBlockClick = (id: number): void  => {
 		this.setActive(id);
-	}
-	handleTakeBlockMouseOver = (id: number): void  => {
-		this.setHover(id);
-	}
-	handleTakeBlockMouseLeave = (id: number): void  => {
-		this.clearHover();
 	}
   highlightText(range: Range, type: FoundationTextTypes): void {
     let secondIndexClassName;
@@ -467,28 +461,9 @@ class MyTake extends React.Component<MyTakeProps, MyTakeState> {
 
     this.clearDefaultDOMSelection();
 	}
-	setHover = (id: number): void => {
-		this.setState({
-			takeDocument: {
-				...this.state.takeDocument,
-				hover: id
-			}
-		});
-	}
-	clearHover = (): void => {
-		this.setState({
-			takeDocument: {
-				...this.state.takeDocument,
-				hover: -1
-			}
-		})
-	}
 	setActive = (id: number): void => {
 		this.setState({
-			takeDocument: {
-				...this.state.takeDocument,
-				active: id
-			}
+			activeBlockIndex: id
 		});
 	}
   render(){
@@ -497,9 +472,8 @@ class MyTake extends React.Component<MyTakeProps, MyTakeState> {
         <BlockEditor 
 					handleChange={this.handleTakeBlockChange}
 					handleClick={this.handleTakeBlockClick}
-					handleMouseOver={this.handleTakeBlockMouseOver}
-					handleMouseLeave={this.handleTakeBlockMouseLeave}
 					takeDocument={this.state.takeDocument}
+					active={this.state.activeBlockIndex}
         />
         <Foundation 
           onConstitutionClearClick={this.handleConstitutionClearClick}
