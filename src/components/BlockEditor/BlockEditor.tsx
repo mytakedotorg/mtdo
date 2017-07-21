@@ -13,27 +13,27 @@ export interface DocumentBlock {
   document: string;
 	range: [number, number];
 }
-export interface ParagraphBlockProps extends ParagraphBlock {
-	id: number;
-	onChange?: (id: number, value: string) => void;
-	onClick?: (id: number) => void;
-	onMouseOver?: (id: number) => void;
-	onMouseLeave?: (id: number) => void;
-	textarea?: HTMLTextAreaElement;
+export interface MouseCallBacks {
+	onClick: (id: number) => void;
+	onMouseOver: (id: number) => void;
+	onMouseLeave: (id: number) => void;
 }
-export interface DocumentBlockProps extends DocumentBlock {
+export interface ParagraphBlockProps {
 	id: number;
-	onClick?: (id: number) => void;
-	onMouseOver?: (id: number) => void;
-	onMouseLeave?: (id: number) => void;
+	onChange: (id: number, value: string) => void;
+	block: ParagraphBlock;
+	mouseCallBacks: MouseCallBacks;
+}
+export interface DocumentBlockProps {
+	id: number;
+	block: DocumentBlock;
+	mouseCallBacks: MouseCallBacks;
 }
 export type TakeBlock = ParagraphBlock | DocumentBlock;
 
 export interface TakeDocument {
   title: string;
 	blocks: TakeBlock[];
-	hover: number;
-	active: number;
 }
 
 /////////////////
@@ -58,13 +58,13 @@ class Paragraph extends React.Component<ParagraphBlockProps, void> {
 	 	this.props.onChange(this.props.id, ev.target.value);
 	}
 	handleClick = () => {
-		this.props.onClick(this.props.id);
+		this.props.mouseCallBacks.onClick(this.props.id);
 	}
 	handleMouseOver = () => {
-		this.props.onMouseOver(this.props.id);
+		this.props.mouseCallBacks.onMouseOver(this.props.id);
 	}
 	handleMouseLeave = () => {
-		this.props.onMouseLeave(this.props.id);
+		this.props.mouseCallBacks.onMouseLeave(this.props.id);
 	}
 	render() {
 		return (
@@ -74,7 +74,7 @@ class Paragraph extends React.Component<ParagraphBlockProps, void> {
 				onClick={this.handleClick}
 				onMouseOver={this.handleMouseOver} 
 				onMouseLeave={this.handleMouseLeave} 
-				value={this.props.text}>
+				value={this.props.block.text}>
 			</textarea>
 		);
 	}
@@ -85,13 +85,13 @@ class Document extends React.Component<DocumentBlockProps, void> {
     super(props);
 	}
 	handleClick = () => {
-		this.props.onClick(this.props.id);
+		this.props.mouseCallBacks.onClick(this.props.id);
 	}
 	handleMouseOver = () => {
-		this.props.onMouseOver(this.props.id);
+		this.props.mouseCallBacks.onMouseOver(this.props.id);
 	}
 	handleMouseLeave = () => {
-		this.props.onMouseLeave(this.props.id);
+		this.props.mouseCallBacks.onMouseLeave(this.props.id);
 	}
 	render(){
 		return (
@@ -101,7 +101,7 @@ class Document extends React.Component<DocumentBlockProps, void> {
 				onMouseOver={this.handleMouseOver}
 				onMouseLeave={this.handleMouseLeave}
 			>
-				{this.props.document} range {this.props.range.toString()}
+				{this.props.block.document} range {this.props.block.range.toString()}
 			</div>)
 	}
 }
@@ -124,20 +124,27 @@ class BlockContainer extends React.Component<BlockContainerProps, void> {
 	render(){
 		let inner;
 		const { props } = this;
+		const mouseCallBacks = {
+			onClick: props.handleClick,
+			onMouseOver: props.handleMouseOver,
+			onMouseLeave: props.handleMouseLeave
+		}
+		const block = {
+			...props.block
+		}
+
 		switch (props.block.kind) {
 			case 'paragraph': 
 				inner = <Paragraph 
-					{...props.block} 
+					block={block}
 					id={props.index}
 					onChange={props.handleChange}
-					onClick={props.handleClick}
-					onMouseOver={props.handleMouseOver} 
-					onMouseLeave={props.handleMouseLeave}
+					mouseCallBacks={mouseCallBacks}
 					/>; 
 				break;
 			case 'document':  
 				inner = <Document
-					{...props.block}
+					block={block}
 					id={props.index}
 					onClick={props.handleClick}
 					onMouseOver={props.handleMouseOver}
@@ -164,32 +171,61 @@ class BlockContainer extends React.Component<BlockContainerProps, void> {
 export interface BlockEditorProps {
 	handleChange?: (id: number, value: string) => void;
 	handleClick?: (id: number) => void;
-	handleMouseOver?: (id: number) => void;
-	handleMouseLeave?: (id: number) => void;
 	takeDocument: TakeDocument;
+	active: number;
 }
 
-export function BlockEditor(props: BlockEditorProps) {
-	return (
-		<div className="editor__wrapper">
-			<div className="editor">
-				<h2 className="editor__title">{props.takeDocument.title}</h2>
-				{props.takeDocument.blocks.map((block, idx) =>
-					<BlockContainer 
-						key={idx.toString()}
-						index={idx}
-						block={block}
-						handleChange={props.handleChange}
-						handleClick={props.handleClick}
-						handleMouseOver={props.handleMouseOver}
-						handleMouseLeave={props.handleMouseLeave}
-						active={idx === props.takeDocument.active}
-						hover={idx === props.takeDocument.hover}
-					/>
-				)}
+export interface BlockEditorState {
+	hover: number;
+}
+
+class BlockEditor extends React.Component<BlockEditorProps, BlockEditorState> {
+	constructor(props: BlockEditorProps){
+		super(props);
+
+		this.state = {
+			hover: -1
+		}
+	}
+	handleMouseOver = (id: number): void  => {
+		this.setHover(id);
+	}
+	handleMouseLeave = (id: number): void  => {
+		this.clearHover();
+	}
+	setHover = (id: number): void => {
+		this.setState({
+			hover: id
+		});
+	}
+	clearHover = (): void => {
+		this.setState({
+			hover: -1
+		})
+	}
+	render(){
+		const { props } = this;
+		return (
+			<div className="editor__wrapper">
+				<div className="editor">
+					<h2 className="editor__title">{props.takeDocument.title}</h2>
+					{props.takeDocument.blocks.map((block, idx) =>
+						<BlockContainer 
+							key={idx.toString()}
+							index={idx}
+							block={block}
+							handleChange={props.handleChange}
+							handleClick={props.handleClick}
+							handleMouseOver={this.handleMouseOver}
+							handleMouseLeave={this.handleMouseLeave}
+							active={idx === props.active}
+							hover={idx === this.state.hover}
+						/>
+					)}
+				</div>
 			</div>
-		</div>
-	);
+		);
+	}
 }
 
 export default BlockEditor;
