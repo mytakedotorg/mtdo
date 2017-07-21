@@ -1,4 +1,14 @@
 import * as React from "react";
+import { FoundationNode } from '../Foundation';
+
+interface ConstitutionProps {
+  constitutionNodes: Array<FoundationNode>,
+  textIsHighlighted: boolean,
+  onBackClick: () => void,
+  onClearClick: () => void,
+  onSetClick: () => void,
+  onMouseUp: () => void
+}
 
 class Constitution extends React.Component<ConstitutionProps, void> {
   constructor(props: ConstitutionProps){
@@ -23,7 +33,7 @@ class Constitution extends React.Component<ConstitutionProps, void> {
             <p>&lt;This is just a placeholder block for section links to autoscroll to particular parts of the constitution&gt;</p>
           </div>
           <div className="constitution__text" onMouseUp={this.props.onMouseUp}>
-            {this.props.constitutionNodes.map(function(element: MyReactComponentObject, index: number){
+            {this.props.constitutionNodes.map(function(element: FoundationNode, index: number){
               element.props['key'] = index.toString();
               return(
                 React.createElement(element.component, element.props, element.innerHTML)

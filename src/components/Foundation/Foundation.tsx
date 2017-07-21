@@ -3,6 +3,26 @@ import Constitution from '../Constitution';
 import Debates from '../Debates';
 import Amendments from '../Amendments';
 
+export type FoundationTextTypes = "CONSTITUTION" | "AMENDMENTS";
+export type FoundationView = "INITIAL" | "DEBATES" | FoundationTextTypes;
+
+export interface FoundationNode {
+  component: string,
+  props: FoundationNodeProps,
+  innerHTML: Array<string | React.ReactNode>
+}
+
+export interface FoundationNodeProps {
+  key?: string,
+  dataOffset: string,
+	[index: string]: string;
+}
+
+
+interface FoundationCardProps {
+  onClick: () => void,
+}
+
 function AmendmentsCard(props: FoundationCardProps){
   return (
     <div className="foundation__card foundation__card--amendments" onClick={props.onClick}>
@@ -55,6 +75,23 @@ function DebatesCard(props: FoundationCardProps){
       </div>
     </div>
   )
+}
+
+interface FoundationProps {
+  constitutionNodes: Array<FoundationNode>,
+  amendmentsNodes: Array<FoundationNode>,
+  textIsHighlighted: boolean,
+  amendmentsTextIsHighlighted: boolean,
+  onConstitutionClearClick: () => void,
+  onConstitutionSetClick: () => void,
+  onConstitutionMouseUp: () => void,
+  onAmendmentsClearClick: () => void,
+  onAmendmentsSetClick: () => void,
+  onAmendmentsMouseUp: () => void
+}
+
+interface FoundationState {
+  view: FoundationView
 }
 
 export default class Foundation extends React.Component<FoundationProps, FoundationState> {

@@ -1,6 +1,13 @@
 import * as React from "react";
+import { FoundationNode } from '../Foundation';
 const { Editor, Placeholder } = require('slate');
-import * as key from "keycode";
+
+interface TakeEditorProps {
+  editorState: SlateEditorState,
+  schema: SlateSchema,
+  onChange: (editorState: SlateEditorState) => void,
+  onKeyDown: (event: KeyboardEvent, data: any, state: SlateEditorState) => SlateEditorState
+}
 
 // Define a React component renderer for each of our text blocks.
 export function TitleNode(props: SlateProps): JSX.Element {
@@ -38,15 +45,15 @@ export function ParagraphNode(props: SlateProps): JSX.Element {
 }
 
 export function ConstitutionNode(props: SlateProps): JSX.Element {
-  let nodes: Array<MyReactComponentObject> = [];
+  let nodes: Array<FoundationNode> = [];
 
-  props.node.data.map(function(value: Array<MyReactComponentObject> ) {
+  props.node.data.map(function(value: Array<FoundationNode> ) {
     nodes = value;
   });
   
   return (
     <div className="editor__constitution" {...props.attributes}>
-      {nodes.map(function(element: MyReactComponentObject, index: number){
+      {nodes.map(function(element: FoundationNode, index: number){
         element.props['key'] = index.toString();
         return(
           React.createElement(element.component, element.props, element.innerHTML)
@@ -58,15 +65,15 @@ export function ConstitutionNode(props: SlateProps): JSX.Element {
 }
 
 export function AmendmentsNode(props: SlateProps): JSX.Element {
-  let nodes: Array<MyReactComponentObject> = [];
+  let nodes: Array<FoundationNode> = [];
 
-  props.node.data.map(function(value: Array<MyReactComponentObject> ) {
+  props.node.data.map(function(value: Array<FoundationNode> ) {
     nodes = value;
   });
   
   return (
     <div className="editor__amendments" {...props.attributes}>
-      {nodes.map(function(element: MyReactComponentObject, index: number){
+      {nodes.map(function(element: FoundationNode, index: number){
         element.props['key'] = index.toString();
         return(
           React.createElement(element.component, element.props, element.innerHTML)

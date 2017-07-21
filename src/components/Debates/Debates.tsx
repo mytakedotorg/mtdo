@@ -1,5 +1,9 @@
 import * as React from "react";
 
+interface DebatesProps {
+  onBackClick: () => void,
+}
+
 class Debates extends React.Component<DebatesProps, void> {
   constructor(props: DebatesProps){
     super(props);

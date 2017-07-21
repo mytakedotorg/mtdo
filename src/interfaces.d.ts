@@ -1,19 +1,3 @@
-interface AmendmentsProps {
-  amendmentsNodes: Array<MyReactComponentObject>,
-  textIsHighlighted: boolean,
-  onBackClick: () => void,
-  onClearClick: () => void,
-  onSetClick: () => void,
-  onMouseUp: () => void
-}
-
-interface TakeEditorProps {
-  editorState: SlateEditorState,
-  schema: SlateSchema,
-  onChange: (editorState: SlateEditorState) => void,
-  onKeyDown: (event: KeyboardEvent, data: any, state: SlateEditorState) => SlateEditorState
-}
-
 interface SlateEditorState {
   document: SlateDocument,
   selection: SlateSelection,
@@ -65,44 +49,4 @@ interface SlateBlock extends SlateNode {
 interface SlateDocument {
   data: any, //Slate.Data
   nodes: any, //Immutable.List<Slate.Node>
-}
-interface MyReactComponentObject {
-  component: string,
-  props: MyComponentPropsObject,
-  innerHTML: Array<string | React.ReactNode>
-}
-
-interface MyComponentPropsObject {
-  key?: string,
-  dataOffset: string,
-  ref: any,
-  children?: React.ReactNode
-}
-
-interface FoundationProps {
-  constitutionNodes: Array<MyReactComponentObject>,
-  amendmentsNodes: Array<MyReactComponentObject>,
-  textIsHighlighted: boolean,
-  amendmentsTextIsHighlighted: boolean,
-  onConstitutionClearClick: () => void,
-  onConstitutionSetClick: () => void,
-  onConstitutionMouseUp: () => void,
-  onAmendmentsClearClick: () => void,
-  onAmendmentsSetClick: () => void,
-  onAmendmentsMouseUp: () => void
-}
-
-interface FoundationState {
-  view: FoundationView
-}
-
-type FoundationTextTypes = "CONSTITUTION" | "AMENDMENTS";
-type FoundationView = "INITIAL" | "DEBATES" | FoundationTextTypes;
-
-interface FoundationCardProps {
-  onClick: () => void,
-}
-
-interface DebatesProps {
-  onBackClick: () => void,
 }
