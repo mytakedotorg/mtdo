@@ -2,6 +2,8 @@
 
 import * as React from "react";
 import * as renderer from "react-test-renderer";
+import getNodeArray from '../../utils/getNodeArray';
+const constitutionText = require('../../foundation/constitution.foundation.html');
 import BlockEditor from './BlockEditor';
 import { TakeDocument } from './BlockEditor';
 
@@ -14,11 +16,13 @@ const doc: TakeDocument = {
         },
         {
             kind: 'document',
-            document: 'Constitution',
+            document: 'CONSTITUTION',
 						range: [1, 25]
         }
 		]
 };
+
+const constitutionNodes = getNodeArray(constitutionText)
 
 const handleChange = (id: number, value: string): void => {};
 const handleDelete = (id: number): void => {};
@@ -34,28 +38,28 @@ const handlers = {
 
 test('Simple block editor model', () => {
     const tree = renderer.create(
-        <BlockEditor takeDocument={doc} active={-1} {...handlers} />
+        <BlockEditor takeDocument={doc} active={-1} {...handlers} constitutionNodes={constitutionNodes} />
     ).toJSON();
     expect(tree).toMatchSnapshot();
 })
 
 test('With active', () => {
     const tree = renderer.create(
-        <BlockEditor takeDocument={doc} active={0} {...handlers} />
+        <BlockEditor takeDocument={doc} active={0} {...handlers} constitutionNodes={constitutionNodes} />
     ).toJSON();
     expect(tree).toMatchSnapshot();
 })
 
 // test('With hover', () => {
 //     const tree = renderer.create(
-//         <BlockEditor takeDocument={doc} active={-1} {...handlers} />
+//         <BlockEditor takeDocument={doc} active={-1} {...handlers} constitutionNodes={constitutionNodes} />
 //     ).toJSON();
 //     expect(tree).toMatchSnapshot();
 // })
 
 // test('With hover and active', () => {
 //     const tree = renderer.create(
-//         <BlockEditor takeDocument={doc} active={-1} {...handlers} />
+//         <BlockEditor takeDocument={doc} active={-1} {...handlers} constitutionNodes={constitutionNodes} />
 //     ).toJSON();
 //     expect(tree).toMatchSnapshot();
 // })
