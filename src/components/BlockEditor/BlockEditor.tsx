@@ -124,19 +124,15 @@ class BlockContainer extends React.Component<BlockContainerProps, void> {
 	render(){
 		let inner;
 		const { props } = this;
-		const mouseCallBacks = {
+		const mouseCallBacks: MouseCallBacks = {
 			onClick: props.handleClick,
 			onMouseOver: props.handleMouseOver,
 			onMouseLeave: props.handleMouseLeave
 		}
-		const block = {
-			...props.block
-		}
-
 		switch (props.block.kind) {
 			case 'paragraph': 
 				inner = <Paragraph 
-					block={block}
+					block={props.block}
 					id={props.index}
 					onChange={props.handleChange}
 					mouseCallBacks={mouseCallBacks}
@@ -144,11 +140,9 @@ class BlockContainer extends React.Component<BlockContainerProps, void> {
 				break;
 			case 'document':  
 				inner = <Document
-					block={block}
+					block={props.block}
 					id={props.index}
-					onClick={props.handleClick}
-					onMouseOver={props.handleMouseOver}
-					onMouseLeave={props.handleMouseLeave}
+					mouseCallBacks={mouseCallBacks}
 					/>;  
 				break;
 		}
