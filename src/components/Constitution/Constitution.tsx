@@ -2,7 +2,7 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { FoundationTextTypes, FoundationNode } from '../Foundation';
 import getNodeArray from "../../utils/getNodeArray";
-import { getRange, highlightText, HighlightedText } from "../../utils/functions";
+import { highlightText, HighlightedText } from "../../utils/functions";
 const constitutionText = require('../../foundation/constitution.foundation.html');
 
 interface ConstitutionProps {
@@ -42,7 +42,7 @@ class Constitution extends React.Component<ConstitutionProps, ConstitutionState>
 			if (selection.toString().length) {  //Some text is selected
 				let range: Range = selection.getRangeAt(0);
 
-				const highlightedText: HighlightedText = highlightText(range, [...this.state.constitutionNodes], 'CONSTITUTION',ReactDOM.findDOMNode(this).childNodes, this.handleSetClick);
+				const highlightedText: HighlightedText = highlightText(range, [...this.state.constitutionNodes], 'CONSTITUTION', ReactDOM.findDOMNode(this).childNodes, this.handleSetClick);
 
 				this.setState({
 					constitutionNodes: highlightedText.newNodes,
