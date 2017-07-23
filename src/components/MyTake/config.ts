@@ -1,27 +1,11 @@
 export default {
   initialState: {
-    nodes: [
-      {
-        kind: 'block',
-        type: 'title',
-        nodes: [
-          {
-            kind: 'text',
-            text: ''
-          }
-        ]
-      },
-      {
-        kind: 'block',
-        type: 'paragraph',
-        nodes: [
-          {
-            kind: 'text',
-            text: '',
-           
-          }
-        ]
-      }
-    ]
-  }
+		takeDocument: {
+			title: 'Title',
+			blocks: [
+				{ kind: 'paragraph', text: 'Use your voice here.' }
+			]
+		},
+		activeBlockIndex: -1
+	}
 }

@@ -3,7 +3,7 @@ import BlockEditor, { DocumentBlock, ParagraphBlock, TakeDocument } from '../Blo
 import Foundation, { FoundationTextTypes } from '../Foundation';
 
 interface MyTakeProps {
-	//initState: SlateEditorState;
+	initState: MyTakeState;
 }
 
 interface MyTakeState {
@@ -17,13 +17,7 @@ class MyTake extends React.Component<MyTakeProps, MyTakeState> {
     super(props);
 
     this.state = {
-      takeDocument: {
-				title: 'My Title',
-        blocks: [
-					{ kind: 'paragraph', text: 'Use your voice here.' }
-				]
-			},
-			activeBlockIndex: -1
+      ...props.initState,
     }
 	}
 	addDocument = (type: FoundationTextTypes, range: [number, number]): void => {
