@@ -1,12 +1,6 @@
 import * as React from "react";
-import * as ReactDOM from "react-dom";
-import BlockEditor, { DocumentBlock, ParagraphBlock, TakeBlock, TakeDocument } from '../BlockEditor';
-import Foundation, { FoundationNode, FoundationTextTypes } from '../Foundation';
-import * as key from "keycode";
-import getNodeArray from "../../utils/getNodeArray";
-const constitutionText = require('../../foundation/constitution.foundation.html');
-const amendmentsText = require('../../foundation/amendments.foundation.html');
-import config from "./config";
+import BlockEditor, { DocumentBlock, ParagraphBlock, TakeDocument } from '../BlockEditor';
+import Foundation, { FoundationTextTypes } from '../Foundation';
 
 interface MyTakeProps {
 	//initState: SlateEditorState;

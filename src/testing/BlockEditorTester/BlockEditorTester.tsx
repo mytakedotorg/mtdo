@@ -1,6 +1,5 @@
 import * as React from "react";
-import * as ReactDOM from "react-dom";
-import BlockEditor, { ParagraphBlock, TakeBlock, TakeDocument } from '../../components/BlockEditor';
+import BlockEditor, { ParagraphBlock, TakeDocument } from '../../components/BlockEditor';
 
 interface BlockEditorTesterProps {
 
@@ -21,7 +20,7 @@ class BlockEditorTester extends React.Component<BlockEditorTesterProps, BlockEdi
 				title: 'My Title',
         blocks: [
 					{ kind: 'paragraph', text: 'Use your voice here.' },
-					{ kind: 'document', document: 'Constitution', range: [1, 24] },
+					{ kind: 'document', document: 'AMENDMENTS', range: [369, 514] },
 				]
 			},
 			activeBlockIndex: -1,
