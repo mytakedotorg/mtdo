@@ -13,11 +13,7 @@ interface MyTakeProps {
 }
 
 interface MyTakeState {
-  amendmentsNodes: Array<FoundationNode>,
-  highlightedAmendmentsNodes: Array<FoundationNode>,
-  amendmentsTextIsHighlighted: boolean,
   takeDocument: TakeDocument,
-	uniqueKey: string,
 	activeBlockIndex: number
 }
 
@@ -27,23 +23,14 @@ class MyTake extends React.Component<MyTakeProps, MyTakeState> {
     super(props);
 
     this.state = {
-      amendmentsNodes: this.getInitialText('AMENDMENTS'),
-      amendmentsTextIsHighlighted: false,
-      highlightedAmendmentsNodes: [],
       takeDocument: {
 				title: 'My Title',
         blocks: [
 					{ kind: 'paragraph', text: 'Use your voice here.' }
 				]
 			},
-			activeBlockIndex: -1,
-      uniqueKey: 'aa' // Only works 26^2 times. I think that'll be enough.
+			activeBlockIndex: -1
     }
-
-    this.handleConstitutionSetClick = this.handleConstitutionSetClick.bind(this);
-    this.handleAmendmentsMouseUp = this.handleAmendmentsMouseUp.bind(this);
-    this.handleAmendmentsClearClick = this.handleAmendmentsClearClick.bind(this);
-		this.handleAmendmentsSetClick = this.handleAmendmentsSetClick.bind(this);
 	}
 	addDocument = (type: FoundationTextTypes, range: [number, number]): void => {
 		const blocks = this.state.takeDocument.blocks;
@@ -118,47 +105,6 @@ class MyTake extends React.Component<MyTakeProps, MyTakeState> {
 			}
 		}
 	}
-  getInitialText(type: FoundationTextTypes): Array<FoundationNode> {
-    let initialText;
-    switch (type) {
-      case 'AMENDMENTS':
-        initialText = getNodeArray(amendmentsText);
-        return initialText;
-      case 'CONSTITUTION':
-        initialText = getNodeArray(constitutionText);
-        return initialText;
-      default:
-        break;
-    }
-  }
-  incrKey(letter: string): string {
-    if( letter[1] === 'z') {
-      return String.fromCharCode(letter[0].charCodeAt(0) + 1) + 'a';
-    } else {
-      return letter[0] + String.fromCharCode(letter[1].charCodeAt(0) + 1);
-    }
-  }
-  handleAmendmentsClearClick(): void {
-    this.setState({
-      amendmentsNodes: this.getInitialText('AMENDMENTS'),  //Clear existing highlights
-      amendmentsTextIsHighlighted: false
-    });
-  }
-  handleAmendmentsSetClick(): void {
-		//TODO
-  }
-  handleConstitutionSetClick(): void {
-		//TODO
-  }
-  handleAmendmentsMouseUp(): void {
-    if (window.getSelection && !this.state.amendmentsTextIsHighlighted) { // Pre IE9 will always be false
-      let selection: Selection = window.getSelection();
-      if (selection.toString().length) {  //Some text is selected
-        let range: Range = selection.getRangeAt(0);
-        //this.highlightText(range, 'AMENDMENTS');
-      }
-    }
-  }
 	handleTakeBlockChange = (id: number, value: string): void => { 
 		const blocks = this.state.takeDocument.blocks;
 		
@@ -198,11 +144,6 @@ class MyTake extends React.Component<MyTakeProps, MyTakeState> {
 					active={this.state.activeBlockIndex}
         />
         <Foundation 
-          onAmendmentsClearClick={this.handleAmendmentsClearClick}
-          onAmendmentsSetClick={this.handleAmendmentsSetClick}
-          onAmendmentsMouseUp={this.handleAmendmentsMouseUp} 
-          amendmentsNodes={this.state.amendmentsNodes}
-          amendmentsTextIsHighlighted={this.state.amendmentsTextIsHighlighted}
 					handleSetClick={this.addDocument}
         />
       </div>

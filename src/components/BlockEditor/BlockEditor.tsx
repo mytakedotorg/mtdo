@@ -2,8 +2,9 @@ import * as React from "react";
 import * as keycode from "keycode";
 import { FoundationNode, FoundationNodeProps, FoundationTextTypes } from '../Foundation';
 import getNodeArray from "../../utils/getNodeArray";
+import { getHighlightedNodes } from "../../utils/functions";
 const constitutionText = require('../../foundation/constitution.foundation.html');
-
+const amendmentsText = require('../../foundation/amendments.foundation.html');
 
 ////////////////////
 // Document model //
@@ -41,6 +42,7 @@ export interface DocumentBlockProps {
 }
 export interface DocumentBlockState {
 	constitutionNodes: FoundationNode[];
+	amendmentsNodes: FoundationNode[];
 }
 
 export type TakeBlock = ParagraphBlock | DocumentBlock;
@@ -128,13 +130,23 @@ class Document extends React.Component<DocumentBlockProps, DocumentBlockState> {
 		super(props);
 		
 		this.state = {
-			constitutionNodes: this.getInitialText()
+			constitutionNodes: this.getInitialText('CONSTITUTION'),
+			amendmentsNodes: this.getInitialText('AMENDMENTS')
 		}
 	}
-	getInitialText(): Array<FoundationNode> {
-		let initialText = getNodeArray(constitutionText);
-		return initialText;
-	}
+	getInitialText(type: FoundationTextTypes): FoundationNode[] {
+    let initialText;
+    switch (type) {
+      case 'AMENDMENTS':
+        initialText = getNodeArray(amendmentsText);
+        return initialText;
+      case 'CONSTITUTION':
+        initialText = getNodeArray(constitutionText);
+        return initialText;
+      default:
+        break;
+    }
+  }
 	handleClick = () => {
 		this.props.eventHandlers.handleFocus(this.props.id);
 	}
@@ -161,108 +173,15 @@ class Document extends React.Component<DocumentBlockProps, DocumentBlockState> {
 	}
 	render(){
 		const { props } = this;
-		const startRange = props.block.range[0];
-		const endRange = props.block.range[1];
-		const constitutionNodes: FoundationNode[] = [...this.state.constitutionNodes];
-		let documentNodes: FoundationNode[] = [];
 		let highlightedNodes: FoundationNode[] = [];
 		switch (props.block.document) {
 			case 'CONSTITUTION':
-				for(let idx = 0; idx < constitutionNodes.length; idx++) {
-					if (constitutionNodes[idx + 1]) {
-						if (parseInt(constitutionNodes[idx + 1].props.data) < startRange) {
-							continue;
-						}
-					}
-					if (parseInt(constitutionNodes[idx].props.data) > endRange) {
-						break;
-					}
-					documentNodes = [ 
-						...documentNodes,
-						...constitutionNodes.slice(idx, idx+1) ];
-				}
-				// documentNodes is a new array with text to be highlighted
-				if (documentNodes.length === 1) {
-					const offset = parseInt(documentNodes[0].props.data);
-					const startIndex = startRange - offset;
-					const endIndex = endRange - offset;
-					let newSpan: React.ReactNode = React.createElement(
-						'span',
-						{
-							className: 'constitution__text--selected',
-							key: 'somekey'
-						},
-						documentNodes[0].innerHTML.toString().substring(startIndex, endIndex)
-					);
-					let newNode: FoundationNode = (Object as any).assign({}, documentNodes[0]);
-					const length = documentNodes[0].innerHTML.toString().length;
-					newNode.innerHTML = [
-						newNode.innerHTML.toString().substring(0, startIndex),
-						newSpan,
-						newNode.innerHTML.toString().substring(endIndex, length)
-					]
-					highlightedNodes = [newNode];
-				} else {
-					// More than one DOM node highlighted
-					let offset = parseInt(documentNodes[0].props.data);
-					let length = documentNodes[0].innerHTML.toString().length;
-					let startIndex = startRange - offset;
-					let endIndex = length;
-
-					let newSpan: React.ReactNode = React.createElement(
-						'span',
-						{
-							className: 'constitution__text--selected',
-							key: 'somekey'
-						},
-						documentNodes[0].innerHTML.toString().substring(startIndex, endIndex)
-					);
-
-					let newNode: FoundationNode = (Object as any).assign({}, documentNodes[0]);
-					newNode.innerHTML = [
-						newNode.innerHTML.toString().substring(0, startIndex),
-						newSpan
-					]
-
-					highlightedNodes = [newNode];
-					
-					for (let index: number = 1; index < documentNodes.length; index++) {
-						offset = parseInt(documentNodes[index].props.data);
-						length = documentNodes[index].innerHTML.toString().length;
-						startIndex = 0;
-						
-						if (documentNodes[index+1]) {
-							// The selection continues beyond this one
-							endIndex = length;
-						} else {
-							// This is the final node in the selection
-							endIndex = endRange - offset;
-						}
-
-						let newSpan: React.ReactNode = React.createElement(
-							'span',
-							{
-								className: 'constitution__text--selected',
-								key: 'somekey'
-							},
-							documentNodes[index].innerHTML.toString().substring(startIndex, endIndex)
-						);
-
-						let newNode: FoundationNode = (Object as any).assign({}, documentNodes[index]);
-						newNode.innerHTML = [
-							newSpan, 
-							newNode.innerHTML.toString().substring(endIndex, length),
-						]
-
-						highlightedNodes = [
-							...highlightedNodes,
-							newNode
-						];
-					}
-
-				}
+				highlightedNodes = getHighlightedNodes([...this.state.constitutionNodes], props.block.range);
 				break;
-			default: 
+			case 'AMENDMENTS':
+				highlightedNodes = getHighlightedNodes([...this.state.amendmentsNodes], props.block.range);
+				break;
+			default:
 				break;
 		}
 
