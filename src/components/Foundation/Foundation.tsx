@@ -78,16 +78,12 @@ function DebatesCard(props: FoundationCardProps){
 }
 
 interface FoundationProps {
-  constitutionNodes: Array<FoundationNode>,
   amendmentsNodes: Array<FoundationNode>,
-  textIsHighlighted: boolean,
   amendmentsTextIsHighlighted: boolean,
-  onConstitutionClearClick: () => void,
-  onConstitutionSetClick: () => void,
-  onConstitutionMouseUp: () => void,
   onAmendmentsClearClick: () => void,
   onAmendmentsSetClick: () => void,
-  onAmendmentsMouseUp: () => void
+	onAmendmentsMouseUp: () => void
+	handleSetClick: (type: FoundationTextTypes, range: [number, number]) => void;
 }
 
 interface FoundationState {
@@ -153,11 +149,7 @@ export default class Foundation extends React.Component<FoundationProps, Foundat
           <div className="foundation">
             <Constitution 
               onBackClick={this.handleBackClick}
-              onClearClick={props.onConstitutionClearClick}
-              onSetClick={props.onConstitutionSetClick}
-              onMouseUp={props.onConstitutionMouseUp} 
-              constitutionNodes={props.constitutionNodes}
-              textIsHighlighted={props.textIsHighlighted}
+							onSetClick={props.handleSetClick}
             />
           </div>
         );
