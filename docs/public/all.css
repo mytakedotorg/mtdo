@@ -82,35 +82,7 @@
   margin-left: 0;
   margin-right: 0; }
 
-.editor__constitution {
-  border: #758AA8;
-  box-shadow: 1px 1px 2px #051A38;
-  color: #051A38;
-  padding: 5px 15px;
-  margin-bottom: 2rem;
-  font-family: "Merriweather", serif;
-  font-weight: 400;
-  font-size: 15px;
-  line-height: 1.7em;
-  font-style: italic; }
-
-.editor__constitution--highlighted {
-  color: #051A38;
-  background-color: #D4CF69; }
-
-.editor__amendments {
-  border: #758AA8;
-  box-shadow: 1px 1px 2px #051A38;
-  color: #051A38;
-  padding: 5px 15px;
-  margin-bottom: 2rem;
-  font-family: "Merriweather", serif;
-  font-weight: 400;
-  font-size: 15px;
-  line-height: 1.7em;
-  font-style: italic; }
-
-.editor__amendments--highlighted {
+.editor__document-highlight {
   color: #051A38;
   background-color: #D4CF69; }
 

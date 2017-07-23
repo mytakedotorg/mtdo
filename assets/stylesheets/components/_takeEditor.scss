@@ -43,10 +43,10 @@
 	margin-right: 0;
 }
 .editor__document {
-  background: palette(editor, constitution__background);
-  border: palette(editor, constitution__border);
-  box-shadow: 1px 1px 2px palette(editor, constitution__shadow);
-  color: palette(editor, constitution__text);
+  background: palette(editor, background);
+  border: palette(editor, border);
+  box-shadow: 1px 1px 2px palette(editor, shadow);
+  color: palette(editor, text);
 	padding: 5px 15px;
   margin-bottom: 2rem;
 	@include body--italic;
@@ -63,29 +63,7 @@
 	margin-left: 0;
 	margin-right: 0;
 }
-.editor__constitution {
-  background: palette(editor, constitution__background);
-  border: palette(editor, constitution__border);
-  box-shadow: 1px 1px 2px palette(editor, constitution__shadow);
-  color: palette(editor, constitution__text);
-  padding: 5px 15px;
-  margin-bottom: 2rem;
-  @include body--italic;
-}
-.editor__constitution--highlighted {
-  color: palette(editor, constitution__text--highlight);
-  background-color: palette(editor, constitution__background--highlight);
-}
-.editor__amendments {
-  background: palette(editor, amendments__background);
-  border: palette(editor, amendments__border);
-  box-shadow: 1px 1px 2px palette(editor, amendments__shadow);
-  color: palette(editor, amendments__text);
-  padding: 5px 15px;
-  margin-bottom: 2rem;
-  @include body--italic;
-}
-.editor__amendments--highlighted {
-  color: palette(editor, amendments__text--highlight);
-  background-color: palette(editor, amendments__background--highlight);
+.editor__document-highlight {
+	color: palette(editor, text--highlight);
+  background-color: palette(editor, background--highlight);
 }
