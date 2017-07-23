@@ -26,12 +26,16 @@ export interface EventHandlers {
 }
 export interface ParagraphBlockProps {
 	id: number;
+	active: boolean;
+	hover: boolean;
 	onChange: (id: number, value: string) => void;
 	block: ParagraphBlock;
 	eventHandlers: EventHandlers;
 }
 export interface DocumentBlockProps {
 	id: number;
+	active: boolean;
+	hover: boolean;
 	block: DocumentBlock;
 	eventHandlers: EventHandlers;
 }
@@ -94,9 +98,16 @@ class Paragraph extends React.Component<ParagraphBlockProps, void> {
 		this.textarea.focus();
 	}
 	render() {
+		let classes = 'editor__paragraph';
+		if (this.props.hover) {
+			classes += ' editor__paragraph--hover'
+		}
+		if (this.props.active) {
+			classes += ' editor__paragraph--active'
+		}
 		return (
 			<textarea 
-				className="editor__paragraph"
+				className={classes}
 				onBlur={this.handleBlur}
 				onChange={this.handleChange}
 				onClick={this.handleClick}
@@ -166,9 +177,11 @@ class Document extends React.Component<DocumentBlockProps, DocumentBlockState> {
 					if (parseInt(constitutionNodes[idx].props.data) > endRange) {
 						break;
 					}
-					documentNodes = [ ...constitutionNodes.slice(idx, idx+1) ];
+					documentNodes = [ 
+						...documentNodes,
+						...constitutionNodes.slice(idx, idx+1) ];
 				}
-				//documentNodes is array with text to be highlighted
+				// documentNodes is a new array with text to be highlighted
 				if (documentNodes.length === 1) {
 					const offset = parseInt(documentNodes[0].props.data);
 					const startIndex = startRange - offset;
@@ -189,22 +202,87 @@ class Document extends React.Component<DocumentBlockProps, DocumentBlockState> {
 						newNode.innerHTML.toString().substring(endIndex, length)
 					]
 					highlightedNodes = [newNode];
+				} else {
+					// More than one DOM node highlighted
+					let offset = parseInt(documentNodes[0].props.data);
+					let length = documentNodes[0].innerHTML.toString().length;
+					let startIndex = startRange - offset;
+					let endIndex = length;
+
+					let newSpan: React.ReactNode = React.createElement(
+						'span',
+						{
+							className: 'constitution__text--selected',
+							key: 'somekey'
+						},
+						documentNodes[0].innerHTML.toString().substring(startIndex, endIndex)
+					);
+
+					let newNode: FoundationNode = (Object as any).assign({}, documentNodes[0]);
+					newNode.innerHTML = [
+						newNode.innerHTML.toString().substring(0, startIndex),
+						newSpan
+					]
+
+					highlightedNodes = [newNode];
+					
+					for (let index: number = 1; index < documentNodes.length; index++) {
+						offset = parseInt(documentNodes[index].props.data);
+						length = documentNodes[index].innerHTML.toString().length;
+						startIndex = 0;
+						
+						if (documentNodes[index+1]) {
+							// The selection continues beyond this one
+							endIndex = length;
+						} else {
+							// This is the final node in the selection
+							endIndex = endRange - offset;
+						}
+
+						let newSpan: React.ReactNode = React.createElement(
+							'span',
+							{
+								className: 'constitution__text--selected',
+								key: 'somekey'
+							},
+							documentNodes[index].innerHTML.toString().substring(startIndex, endIndex)
+						);
+
+						let newNode: FoundationNode = (Object as any).assign({}, documentNodes[index]);
+						newNode.innerHTML = [
+							newSpan, 
+							newNode.innerHTML.toString().substring(endIndex, length),
+						]
+
+						highlightedNodes = [
+							...highlightedNodes,
+							newNode
+						];
+					}
+
 				}
 				break;
 			default: 
 				break;
 		}
+
+		let classes = 'editor__document';
+		if (this.props.hover) {
+			classes += ' editor__document--hover'
+		}
+		if (this.props.active) {
+			classes += ' editor__document--active'
+		}
 		return (
 			<div 
 				tabIndex={0}
-				className="editor__document"
+				className={classes}
 				onClick={this.handleClick}
 				onFocus={this.handleFocus}
 				onKeyDown={this.handleKeyDown}
 				onMouseOver={this.handleMouseOver}
 				onMouseLeave={this.handleMouseLeave}
 			>
-				{props.block.document} range {props.block.range.toString()}
 				{highlightedNodes.map((node, index) => {
 					node.props['key'] = index.toString();
 					return (
@@ -247,6 +325,8 @@ class BlockContainer extends React.Component<BlockContainerProps, void> {
 				inner = <Paragraph 
 					block={props.block}
 					id={props.index}
+					hover={props.hover}
+					active={props.active}
 					onChange={props.handleChange}
 					eventHandlers={eventHandlers}
 					/>; 
@@ -255,20 +335,15 @@ class BlockContainer extends React.Component<BlockContainerProps, void> {
 				inner = <Document
 					block={props.block}
 					id={props.index}
+					hover={props.hover}
+					active={props.active}
 					eventHandlers={eventHandlers}
 					/>;  
 				break;
 		}
 
-		let classes = 'editor__block';
-		if (props.hover) {
-			classes += ' editor__block--hover'
-		}
-		if (props.active) {
-			classes += ' editor__block--active'
-		}
 		return (
-			<div className={classes}>
+			<div className="editor__block">
 				{inner}
 			</div>
 		)
@@ -318,6 +393,7 @@ class BlockEditor extends React.Component<BlockEditorProps, BlockEditorState> {
 			<div className="editor__wrapper">
 				<div className="editor">
 					<h2 className="editor__title">{props.takeDocument.title}</h2>
+					<div className="editor__block-list">
 					{props.takeDocument.blocks.map((block, idx) =>
 						<BlockContainer 
 							key={idx.toString()}
@@ -333,6 +409,7 @@ class BlockEditor extends React.Component<BlockEditorProps, BlockEditorState> {
 							hover={idx === this.state.hover}
 						/>
 					)}
+					</div>
 				</div>
 			</div>
 		);

@@ -29,18 +29,13 @@
 .editor__title--placeholder {
   opacity: 0.3; }
 
-.editor__block--hover {
-  border: 2px solid red; }
-
-.editor__block--active {
-  border: 2px solid blue; }
-
 .editor__paragraph--placeholder {
   opacity: 0.3; }
 
 .editor__paragraph {
   text-align: left;
-  margin-top: 0;
+  margin-left: 1px;
+  margin-right: 1px;
   position: relative;
   width: 100%;
   border: 0;
@@ -52,6 +47,40 @@
   font-weight: 300;
   font-size: 22px;
   line-height: 1.5em; }
+
+.editor__paragraph--active {
+  border: 1px solid blue;
+  margin-left: 0;
+  margin-right: 0; }
+
+.editor__paragraph--hover {
+  border: 1px solid red;
+  margin-left: 0;
+  margin-right: 0; }
+
+.editor__document {
+  border: #758AA8;
+  box-shadow: 1px 1px 2px #051A38;
+  color: #051A38;
+  padding: 5px 15px;
+  margin-bottom: 2rem;
+  font-family: "Merriweather", serif;
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 1.7em;
+  font-style: italic;
+  margin-left: 1px;
+  margin-right: 1px; }
+
+.editor__document--active {
+  border: 1px solid blue;
+  margin-left: 0;
+  margin-right: 0; }
+
+.editor__document--hover {
+  border: 1px solid red;
+  margin-left: 0;
+  margin-right: 0; }
 
 .editor__constitution {
   border: #758AA8;
