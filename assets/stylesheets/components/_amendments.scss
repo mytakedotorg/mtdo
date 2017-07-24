@@ -16,7 +16,7 @@
   flex-wrap: wrap;
   justify-content: space-between;
 }
-.amendments__sections{
+.amendments__sections {
   @include body--lead;
   width: 100%;
   @media #{$mq-medium} {
@@ -44,7 +44,7 @@
     border-radius: 2px;
     //background-color: rgba(0,0,0,.5);
     background-color: palette(amendments, background--scrollbar-thumb);
-    -webkit-box-shadow: 0 0 1px rgba(255,255,255,.5);
+    -webkit-box-shadow: 0 0 1px rgba(255, 255, 255, .5);
   }
 
   &::-webkit-scrollbar-track {

@@ -59,9 +59,9 @@
   margin-right: 0; }
 
 .editor__document {
-  border: #758AA8;
-  box-shadow: 1px 1px 2px #051A38;
-  color: #051A38;
+  border: #758aa8;
+  box-shadow: 1px 1px 2px #051a38;
+  color: #051a38;
   padding: 5px 15px;
   margin-bottom: 2rem;
   font-family: "Merriweather", serif;
@@ -83,8 +83,8 @@
   margin-right: 0; }
 
 .editor__document-highlight {
-  color: #051A38;
-  background-color: #D4CF69; }
+  color: #051a38;
+  background-color: #d4cf69; }
 
 .foundation {
   margin-left: 3rem;
@@ -97,7 +97,7 @@
 .foundation__heading {
   margin-top: 0;
   margin-bottom: 15px;
-  color: #051A38;
+  color: #051a38;
   font-family: "Source Sans Pro", sans-serif;
   font-weight: 700;
   font-size: 34px;
@@ -106,7 +106,7 @@
 .foundation__instructions {
   margin-top: 0;
   margin-bottom: 15px;
-  color: #051A38;
+  color: #051a38;
   font-family: "Source Sans Pro", sans-serif;
   font-weight: 300;
   font-size: 22px;
@@ -120,8 +120,8 @@
   justify-content: space-between; }
 
 .foundation__card {
-  border: 1px solid #758AA8;
-  box-shadow: 1px 1px 2px #051A38;
+  border: 1px solid #758aa8;
+  box-shadow: 1px 1px 2px #051a38;
   width: 100%;
   display: -webkit-box;
   display: flex;
@@ -172,7 +172,7 @@
 .constitution__heading {
   margin-top: 0;
   margin-bottom: 15px;
-  color: #051A38;
+  color: #051a38;
   font-family: "Source Sans Pro", sans-serif;
   font-weight: 700;
   font-size: 34px;
@@ -181,7 +181,7 @@
 .constitution__instructions {
   margin-top: 0;
   margin-bottom: 15px;
-  color: #051A38;
+  color: #051a38;
   font-family: "Source Sans Pro", sans-serif;
   font-weight: 300;
   font-size: 22px;
@@ -205,8 +205,8 @@
       width: 48%; } }
 
 .constitution__text {
-  border: 1px solid #758AA8;
-  box-shadow: 1px 1px 2px #051A38;
+  border: 1px solid #758aa8;
+  box-shadow: 1px 1px 2px #051a38;
   padding: 0 15px;
   font-family: "Merriweather", serif;
   font-weight: 400;
@@ -223,20 +223,20 @@
     width: 10px; }
   .constitution__text::-webkit-scrollbar-thumb {
     border-radius: 2px;
-    background-color: #D4CF69;
+    background-color: #d4cf69;
     -webkit-box-shadow: 0 0 1px rgba(255, 255, 255, 0.5); }
   .constitution__text::-webkit-scrollbar-track {
-    background-color: #758AA8; }
+    background-color: #758aa8; }
 
 .constitution__text--selected {
-  color: #051A38;
-  background-color: #D4CF69;
+  color: #051a38;
+  background-color: #d4cf69;
   cursor: pointer; }
 
 .amendments__heading {
   margin-top: 0;
   margin-bottom: 15px;
-  color: #051A38;
+  color: #051a38;
   font-family: "Source Sans Pro", sans-serif;
   font-weight: 700;
   font-size: 34px;
@@ -245,7 +245,7 @@
 .amendments__instructions {
   margin-top: 0;
   margin-bottom: 15px;
-  color: #051A38;
+  color: #051a38;
   font-family: "Source Sans Pro", sans-serif;
   font-weight: 300;
   font-size: 22px;
@@ -269,8 +269,8 @@
       width: 48%; } }
 
 .amendments__text {
-  border: 1px solid #758AA8;
-  box-shadow: 1px 1px 2px #051A38;
+  border: 1px solid #758aa8;
+  box-shadow: 1px 1px 2px #051a38;
   padding: 0 15px;
   font-family: "Merriweather", serif;
   font-weight: 400;
@@ -287,20 +287,20 @@
     width: 10px; }
   .amendments__text::-webkit-scrollbar-thumb {
     border-radius: 2px;
-    background-color: #D4CF69;
+    background-color: #d4cf69;
     -webkit-box-shadow: 0 0 1px rgba(255, 255, 255, 0.5); }
   .amendments__text::-webkit-scrollbar-track {
-    background-color: #758AA8; }
+    background-color: #758aa8; }
 
 .amendments__text--selected {
-  color: #051A38;
-  background-color: #D4CF69;
+  color: #051a38;
+  background-color: #d4cf69;
   cursor: pointer; }
 
 .debates__heading {
   margin-top: 0;
   margin-bottom: 15px;
-  color: #051A38;
+  color: #051a38;
   font-family: "Source Sans Pro", sans-serif;
   font-weight: 700;
   font-size: 34px;
@@ -309,7 +309,7 @@
 .debates__instructions {
   margin-top: 0;
   margin-bottom: 15px;
-  color: #051A38;
+  color: #051a38;
   font-family: "Source Sans Pro", sans-serif;
   font-weight: 300;
   font-size: 22px;
@@ -339,12 +339,12 @@
   font-weight: 400;
   font-size: 15px;
   line-height: 1.7em;
-  color: #FFF;
+  color: #fff;
   -webkit-transition: top .1s ease-in, background .5s linear;
   transition: top .1s ease-in, background .5s linear; }
   .header__skip-link:focus {
     top: 0px;
-    background-color: #A03546;
+    background-color: #a03546;
     -webkit-transition: top .1s ease-in, background .5s linear;
     transition: top .1s ease-in, background .5s linear; }
 
@@ -359,9 +359,9 @@
 
 .header__logo-link {
   text-decoration: none;
-  color: #2C4770; }
+  color: #2c4770; }
   .header__logo-link:hover {
-    color: #758AA8; }
+    color: #758aa8; }
 
 .header__button-list {
   float: right; }
@@ -373,16 +373,16 @@
   line-height: 1.5em;
   line-height: 8rem;
   margin-right: 3rem;
-  color: #2C4770; }
+  color: #2c4770; }
   .header__button:hover {
-    color: #758AA8; }
+    color: #758aa8; }
 
 .header__button--github {
   font-size: 4rem; }
 
 .header__nav {
-  border-top: 1px solid #051A38;
-  border-bottom: 2px solid #051A38;
+  border-top: 1px solid #051a38;
+  border-bottom: 2px solid #051a38;
   line-height: 1rem; }
   .header__nav::after {
     clear: both;
@@ -402,14 +402,14 @@
   font-size: 13px;
   line-height: 1.3em;
   text-transform: uppercase;
-  color: #2C4770;
+  color: #2c4770;
   text-decoration: none; }
   .nav__link:hover {
-    color: #758AA8; }
+    color: #758aa8; }
 
 .footer {
   margin: 2rem 3rem;
-  border-top: 1px solid #051A38; }
+  border-top: 1px solid #051a38; }
 
 body {
   margin: 0;

@@ -1,3 +1,3 @@
-import Debates from './Debates';
+import Debates from "./Debates";
 
 export default Debates;

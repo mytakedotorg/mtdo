@@ -1,3 +1,3 @@
-import BlockEditorTester from './BlockEditorTester';
+import BlockEditorTester from "./BlockEditorTester";
 
 export default BlockEditorTester;

@@ -1,23 +1,23 @@
 @mixin clearfix {
-    &::after {
-        clear: both;
-        content: "";
-        display: table;
-    }
+  &::after {
+    clear: both;
+    content: "";
+    display: table;
+  }
 }
 
 @mixin box-sizing {
-	box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	-webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
 }
 
 @function palette($palette, $tone) {
-    @if not map-has-key($palettes, $palette) {
-      @warn "No palette found for `#{$palette}` in $palettes map. Property omitted.";
-    }
+  @if not map-has-key($palettes, $palette) {
+    @warn "No palette found for `#{$palette}` in $palettes map. Property omitted.";
+  }
 
-    @return map-get(map-get($palettes, $palette), $tone);
+  @return map-get(map-get($palettes, $palette), $tone);
 }
 
 @mixin foundationanimation {
@@ -30,23 +30,47 @@
   animation: AnimationName 90s ease infinite;
 
   @-webkit-keyframes AnimationName {
-      0%{background-position:0% 50%}
-      50%{background-position:100% 50%}
-      100%{background-position:0% 50%}
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
   }
   @-moz-keyframes AnimationName {
-      0%{background-position:0% 50%}
-      50%{background-position:100% 50%}
-      100%{background-position:0% 50%}
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
   }
   @-o-keyframes AnimationName {
-      0%{background-position:0% 50%}
-      50%{background-position:100% 50%}
-      100%{background-position:0% 50%}
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
   }
-  @keyframes AnimationName { 
-      0%{background-position:0% 50%}
-      50%{background-position:100% 50%}
-      100%{background-position:0% 50%}
+  @keyframes AnimationName {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
   }
 }

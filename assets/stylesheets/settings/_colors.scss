@@ -1,96 +1,99 @@
 //     COLOR
-// 
+//
 //     Where all color's variables are defined
-// 
+//
 //     Thanks to SASS Map, we can define all colors at one place.
 //     We also respect our BEM like notation and files architecture.
 
 /**
 * Colors to be adjusted
 */
-$paper--dark: lighten(#D8D670, 20%);
-$paper--light: lighten(#FFFEAC, 15%);
+$paper--dark: lighten(#d8d670, 20%);
+$paper--light: lighten(#fffeac, 15%);
 
-$ink: #1C0A03;
+$ink: #1c0a03;
 $ink--highlight: darkslategray;
 $paper--highlight: yellow;
 /**
 * end adjusted
 */
-$base: #2C4770;
-$base-dark: #142F54;
-$base-darkest: #051A38;
-$base-light: #4C678C;
-$base-lightest: #758AA8;
+$base: #2c4770;
+$base-dark: #142f54;
+$base-darkest: #051a38;
+$base-light: #4c678c;
+$base-lightest: #758aa8;
 
-$secondary: #4A9130;
-$secondary-dark: #2B6D12;
+$secondary: #4a9130;
+$secondary-dark: #2b6d12;
 $secondary-darkest: #134800;
-$secondary-light: #73B55A;
-$secondary-lightest: #A4D990;
+$secondary-light: #73b55a;
+$secondary-lightest: #a4d990;
 
-$tertiary: #AAA538;
-$tertiary-dark: #7F7B15;
+$tertiary: #aaa538;
+$tertiary-dark: #7f7b15;
 $tertiary-darkest: #555100;
-$tertiary-light: #D4CF69;
-$tertiary-lightest: #FFFBA9;
+$tertiary-light: #d4cf69;
+$tertiary-lightest: #fffba9;
 
-$action: #A03546;
+$action: #a03546;
 $action-dark: #781424;
-$action-darkest: #50000D;
-$action-light: #C86373;
-$action-lightest: #F0A0AD;
+$action-darkest: #50000d;
+$action-light: #c86373;
+$action-lightest: #f0a0ad;
 
-$white: #FFF;
+$white: #fff;
 $black: #000;
 
-
 $palettes: (
-  header: (
-    border: $base-darkest,
-    text: $base,
-    text--hover: $base-lightest,
-    skip-bg: $action,
-    skip-text: $white
-  ),
-  nav: (
-    text: $base,
-    text--hover: $base-lightest,
-    active: $secondary,
-    active--hover: $secondary-light,
-  ),
-  amendments: (
-    background--highlight: $tertiary-light,
-    background--scrollbar-track: $base-lightest,
-    background--scrollbar-thumb: $tertiary-light,
-    border: $base-lightest,
-    shadow: $base-darkest,
-    text: $base-darkest,
-    text--highlight: $base-darkest,
-	),
-	constitution: (
-    background--highlight: $tertiary-light,
-    background--scrollbar-track: $base-lightest,
-    background--scrollbar-thumb: $tertiary-light,
-    border: $base-lightest,
-    shadow: $base-darkest,
-    text: $base-darkest,
-    text--highlight: $base-darkest,
-	),
-  debates: (
-    text: $base-darkest,
-  ),
-  editor: (
-    background--highlight: $tertiary-light,
-    border: $base-lightest,
-    shadow: $base-darkest,
-    text: $base-darkest,
-    text--highlight: $base-darkest,
-  ),
-  foundation: (
-    text: $base-darkest,
-    card-title--debates: $white,
-    card-border: $base-lightest,
-    shadow: $base-darkest,
-  )
+  header:
+    (
+      border: $base-darkest,
+      text: $base,
+      text--hover: $base-lightest,
+      skip-bg: $action,
+      skip-text: $white
+    ),
+  nav:
+    (
+      text: $base,
+      text--hover: $base-lightest,
+      active: $secondary,
+      active--hover: $secondary-light
+    ),
+  amendments:
+    (
+      background--highlight: $tertiary-light,
+      background--scrollbar-track: $base-lightest,
+      background--scrollbar-thumb: $tertiary-light,
+      border: $base-lightest,
+      shadow: $base-darkest,
+      text: $base-darkest,
+      text--highlight: $base-darkest
+    ),
+  constitution:
+    (
+      background--highlight: $tertiary-light,
+      background--scrollbar-track: $base-lightest,
+      background--scrollbar-thumb: $tertiary-light,
+      border: $base-lightest,
+      shadow: $base-darkest,
+      text: $base-darkest,
+      text--highlight: $base-darkest
+    ),
+  debates: (text: $base-darkest),
+  editor:
+    (
+      background--highlight: $tertiary-light,
+      border: $base-lightest,
+      shadow: $base-darkest,
+      text: $base-darkest,
+      text--highlight: $base-darkest
+    ),
+  foundation:
+    (
+      text: $base-darkest,
+      card-title--debates: $white,
+      card-border: $base-lightest,
+      shadow: $base-darkest
+    )
 );

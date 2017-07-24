@@ -21,49 +21,49 @@
 }
 .editor__paragraph {
   text-align: left;
-	margin-left: 1px;
-	margin-right: 1px;
-	position: relative;
-	width: 100%;
-	border: 0;
-	overflow: auto;
-	outline: none;
-	box-shadow: none;
-	resize: none;
-	@include body--lead;
+  margin-left: 1px;
+  margin-right: 1px;
+  position: relative;
+  width: 100%;
+  border: 0;
+  overflow: auto;
+  outline: none;
+  box-shadow: none;
+  resize: none;
+  @include body--lead;
 }
 .editor__paragraph--active {
-	border: 1px solid blue;
-	margin-left: 0;
-	margin-right: 0;
+  border: 1px solid blue;
+  margin-left: 0;
+  margin-right: 0;
 }
 .editor__paragraph--hover {
-	border: 1px solid red;
-	margin-left: 0;
-	margin-right: 0;
+  border: 1px solid red;
+  margin-left: 0;
+  margin-right: 0;
 }
 .editor__document {
   background: palette(editor, background);
   border: palette(editor, border);
   box-shadow: 1px 1px 2px palette(editor, shadow);
   color: palette(editor, text);
-	padding: 5px 15px;
+  padding: 5px 15px;
   margin-bottom: 2rem;
-	@include body--italic;
-	margin-left: 1px;
-	margin-right: 1px;
+  @include body--italic;
+  margin-left: 1px;
+  margin-right: 1px;
 }
 .editor__document--active {
-	border: 1px solid blue;
-	margin-left: 0;
-	margin-right: 0;
+  border: 1px solid blue;
+  margin-left: 0;
+  margin-right: 0;
 }
 .editor__document--hover {
-	border: 1px solid red;
-	margin-left: 0;
-	margin-right: 0;
+  border: 1px solid red;
+  margin-left: 0;
+  margin-right: 0;
 }
 .editor__document-highlight {
-	color: palette(editor, text--highlight);
+  color: palette(editor, text--highlight);
   background-color: palette(editor, background--highlight);
 }
