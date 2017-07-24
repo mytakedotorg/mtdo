@@ -23,14 +23,14 @@ export interface DocumentBlock {
   range: [number, number];
 }
 export interface EventHandlers {
-  handleDelete: (id: number) => void;
+  handleDelete: (idx: number) => void;
   handleEnterPress: () => void;
-  handleFocus: (id: number) => void;
+  handleFocus: (idx: number) => void;
 }
 export interface ParagraphBlockProps {
-  id: number;
+  idx: number;
   active: boolean;
-  onChange: (id: number, value: string) => void;
+  onChange: (idx: number, value: string) => void;
   block: ParagraphBlock;
   eventHandlers: EventHandlers;
 }
@@ -38,7 +38,7 @@ export interface ParagraphBlockState {
   style: any;
 }
 export interface DocumentBlockProps {
-  id: number;
+  idx: number;
   active: boolean;
   block: DocumentBlock;
   eventHandlers: EventHandlers;
@@ -74,7 +74,7 @@ class Paragraph extends React.Component<
   handleBlur = () => {
     // Paragraph is about to lose focus. If empty, should be removed.
     if (!this.props.block.text) {
-      this.props.eventHandlers.handleDelete(this.props.id);
+      this.props.eventHandlers.handleDelete(this.props.idx);
     }
   };
   handleKeyDown = (ev: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -85,7 +85,7 @@ class Paragraph extends React.Component<
         break;
       case keycode("backspace") || keycode("delete"):
         if (!this.props.block.text) {
-          this.props.eventHandlers.handleDelete(this.props.id);
+          this.props.eventHandlers.handleDelete(this.props.idx);
         }
         break;
       default:
@@ -93,13 +93,13 @@ class Paragraph extends React.Component<
     }
   };
   handleChange = (ev: React.ChangeEvent<HTMLTextAreaElement>) => {
-    this.props.onChange(this.props.id, ev.target.value);
+    this.props.onChange(this.props.idx, ev.target.value);
   };
   handleClick = () => {
-    this.props.eventHandlers.handleFocus(this.props.id);
+    this.props.eventHandlers.handleFocus(this.props.idx);
   };
   handleFocus = () => {
-    this.props.eventHandlers.handleFocus(this.props.id);
+    this.props.eventHandlers.handleFocus(this.props.idx);
   };
   handleKeyUp = (ev: React.KeyboardEvent<HTMLTextAreaElement>) => {
     let content: string = this.props.block.text;
@@ -163,10 +163,10 @@ class Document extends React.Component<DocumentBlockProps, DocumentBlockState> {
     }
   }
   handleClick = () => {
-    this.props.eventHandlers.handleFocus(this.props.id);
+    this.props.eventHandlers.handleFocus(this.props.idx);
   };
   handleFocus = () => {
-    this.props.eventHandlers.handleFocus(this.props.id);
+    this.props.eventHandlers.handleFocus(this.props.idx);
   };
   handleKeyDown = (ev: React.KeyboardEvent<HTMLDivElement>) => {
     switch (ev.keyCode) {
@@ -174,7 +174,7 @@ class Document extends React.Component<DocumentBlockProps, DocumentBlockState> {
         this.props.eventHandlers.handleEnterPress();
         break;
       case keycode("backspace") || keycode("delete"):
-        this.props.eventHandlers.handleDelete(this.props.id);
+        this.props.eventHandlers.handleDelete(this.props.idx);
         break;
       default:
         break;
@@ -252,7 +252,7 @@ class BlockContainer extends React.Component<BlockContainerProps, void> {
         inner = (
           <Paragraph
             block={props.block}
-            id={props.index}
+            idx={props.index}
             active={props.active}
             onChange={props.handleChange}
             eventHandlers={eventHandlers}
@@ -263,7 +263,7 @@ class BlockContainer extends React.Component<BlockContainerProps, void> {
         inner = (
           <Document
             block={props.block}
-            id={props.index}
+            idx={props.index}
             active={props.active}
             eventHandlers={eventHandlers}
           />
