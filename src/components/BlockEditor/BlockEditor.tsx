@@ -127,6 +127,7 @@ class Paragraph extends React.Component<
           onFocus={this.handleFocus}
           onKeyDown={this.handleKeyDown}
           onKeyUp={this.handleKeyUp}
+					placeholder={this.props.idx === 0 ? "Use your voice here." : "..." }
           value={this.props.block.text}
           style={this.state.style}
           ref={(textarea: HTMLTextAreaElement) => (this.textarea = textarea)}
@@ -329,6 +330,7 @@ class BlockEditor extends React.Component<BlockEditorProps, BlockEditorState> {
               onChange={this.handleChange}
               onKeyDown={this.handleKeyDown}
               onKeyUp={this.handleKeyUp}
+							placeholder="Title"
               value={props.takeDocument.title}
               style={this.state.style}
             />

@@ -1,8 +1,8 @@
 export default {
   initialState: {
     takeDocument: {
-      title: "Title",
-      blocks: [{ kind: "paragraph", text: "Use your voice here." }]
+      title: "",
+      blocks: [{ kind: "paragraph", text: "" }]
     },
     activeBlockIndex: -1
   }
