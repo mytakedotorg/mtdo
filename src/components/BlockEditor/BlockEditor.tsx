@@ -26,21 +26,20 @@ export interface EventHandlers {
   handleDelete: (id: number) => void;
   handleEnterPress: () => void;
   handleFocus: (id: number) => void;
-  handleMouseOver: (id: number) => void;
-  handleMouseLeave: (id: number) => void;
 }
 export interface ParagraphBlockProps {
   id: number;
   active: boolean;
-  hover: boolean;
   onChange: (id: number, value: string) => void;
   block: ParagraphBlock;
   eventHandlers: EventHandlers;
 }
+export interface ParagraphBlockState {
+  style: any;
+}
 export interface DocumentBlockProps {
   id: number;
   active: boolean;
-  hover: boolean;
   block: DocumentBlock;
   eventHandlers: EventHandlers;
 }
@@ -59,10 +58,18 @@ export interface TakeDocument {
 /////////////////
 // React model //
 /////////////////
-class Paragraph extends React.Component<ParagraphBlockProps, void> {
+class Paragraph extends React.Component<
+  ParagraphBlockProps,
+  ParagraphBlockState
+> {
   private textarea: HTMLTextAreaElement;
+  private div: HTMLDivElement;
   constructor(props: ParagraphBlockProps) {
     super(props);
+
+    this.state = {
+      style: {}
+    };
   }
   handleBlur = () => {
     // Paragraph is about to lose focus. If empty, should be removed.
@@ -94,36 +101,41 @@ class Paragraph extends React.Component<ParagraphBlockProps, void> {
   handleFocus = () => {
     this.props.eventHandlers.handleFocus(this.props.id);
   };
-  handleMouseOver = () => {
-    this.props.eventHandlers.handleMouseOver(this.props.id);
-  };
-  handleMouseLeave = () => {
-    this.props.eventHandlers.handleMouseLeave(this.props.id);
+  handleKeyUp = (ev: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    let content: string = this.props.block.text;
+    content = content.replace(/\n/g, "<br />");
+    this.div.innerHTML = content + "<br />";
+    this.setState({
+      style: { height: this.div.clientHeight }
+    });
   };
   componentDidMount() {
     this.textarea.focus();
   }
   render() {
     let classes = "editor__paragraph";
-    if (this.props.hover) {
-      classes += " editor__paragraph--hover";
-    }
     if (this.props.active) {
       classes += " editor__paragraph--active";
     }
     return (
-      <textarea
-        className={classes}
-        onBlur={this.handleBlur}
-        onChange={this.handleChange}
-        onClick={this.handleClick}
-        onFocus={this.handleFocus}
-        onKeyDown={this.handleKeyDown}
-        onMouseOver={this.handleMouseOver}
-        onMouseLeave={this.handleMouseLeave}
-        value={this.props.block.text}
-        ref={(textarea: HTMLTextAreaElement) => (this.textarea = textarea)}
-      />
+      <div>
+        <textarea
+          className={classes}
+          onBlur={this.handleBlur}
+          onChange={this.handleChange}
+          onClick={this.handleClick}
+          onFocus={this.handleFocus}
+          onKeyDown={this.handleKeyDown}
+          onKeyUp={this.handleKeyUp}
+          value={this.props.block.text}
+          style={this.state.style}
+          ref={(textarea: HTMLTextAreaElement) => (this.textarea = textarea)}
+        />
+        <div
+          className="editor__paragraph-height-div"
+          ref={(div: HTMLDivElement) => (this.div = div)}
+        />
+      </div>
     );
   }
 }
@@ -168,12 +180,6 @@ class Document extends React.Component<DocumentBlockProps, DocumentBlockState> {
         break;
     }
   };
-  handleMouseOver = () => {
-    this.props.eventHandlers.handleMouseOver(this.props.id);
-  };
-  handleMouseLeave = () => {
-    this.props.eventHandlers.handleMouseLeave(this.props.id);
-  };
   render() {
     const { props } = this;
     let highlightedNodes: FoundationNode[] = [];
@@ -195,9 +201,6 @@ class Document extends React.Component<DocumentBlockProps, DocumentBlockState> {
     }
 
     let classes = "editor__document";
-    if (this.props.hover) {
-      classes += " editor__document--hover";
-    }
     if (this.props.active) {
       classes += " editor__document--active";
     }
@@ -208,8 +211,6 @@ class Document extends React.Component<DocumentBlockProps, DocumentBlockState> {
         onClick={this.handleClick}
         onFocus={this.handleFocus}
         onKeyDown={this.handleKeyDown}
-        onMouseOver={this.handleMouseOver}
-        onMouseLeave={this.handleMouseLeave}
       >
         {highlightedNodes.map((node, index) => {
           node.props["key"] = index.toString();
@@ -231,10 +232,7 @@ export interface BlockContainerProps {
   handleChange: (id: number, value: string) => void;
   handleFocus: (id: number) => void;
   handleEnter: () => void;
-  handleMouseOver: (id: number) => void;
-  handleMouseLeave: (id: number) => void;
   active: boolean;
-  hover: boolean;
 }
 
 class BlockContainer extends React.Component<BlockContainerProps, void> {
@@ -247,9 +245,7 @@ class BlockContainer extends React.Component<BlockContainerProps, void> {
     const eventHandlers: EventHandlers = {
       handleDelete: props.handleDelete,
       handleEnterPress: props.handleEnter,
-      handleFocus: props.handleFocus,
-      handleMouseOver: props.handleMouseOver,
-      handleMouseLeave: props.handleMouseLeave
+      handleFocus: props.handleFocus
     };
     switch (props.block.kind) {
       case "paragraph":
@@ -257,7 +253,6 @@ class BlockContainer extends React.Component<BlockContainerProps, void> {
           <Paragraph
             block={props.block}
             id={props.index}
-            hover={props.hover}
             active={props.active}
             onChange={props.handleChange}
             eventHandlers={eventHandlers}
@@ -269,7 +264,6 @@ class BlockContainer extends React.Component<BlockContainerProps, void> {
           <Document
             block={props.block}
             id={props.index}
-            hover={props.hover}
             active={props.active}
             eventHandlers={eventHandlers}
           />
@@ -286,40 +280,42 @@ class BlockContainer extends React.Component<BlockContainerProps, void> {
 }
 
 export interface BlockEditorProps {
-  handleChange: (id: number, value: string) => void;
-  handleDelete: (id: number) => void;
-  handleEnter: () => void;
-  handleFocus: (id: number) => void;
+  handleChange: (idx: number, value: string, isTitle?: boolean) => void;
+  handleDelete: (idx: number) => void;
+  handleEnter: (isTitle?: boolean) => void;
+  handleFocus: (idx: number) => void;
   takeDocument: TakeDocument;
   active: number;
 }
 
 export interface BlockEditorState {
-  hover: number;
+  style: any;
 }
 
 class BlockEditor extends React.Component<BlockEditorProps, BlockEditorState> {
+  private div: HTMLDivElement;
   constructor(props: BlockEditorProps) {
     super(props);
 
     this.state = {
-      hover: -1
+      style: {}
     };
   }
-  handleMouseOver = (id: number): void => {
-    this.setHover(id);
+  handleChange = (ev: React.ChangeEvent<HTMLTextAreaElement>) => {
+    this.props.handleChange(0, ev.target.value, true);
   };
-  handleMouseLeave = (id: number): void => {
-    this.clearHover();
+  handleKeyDown = (ev: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (ev.keyCode === keycode("enter")) {
+      ev.preventDefault();
+      this.props.handleEnter(true);
+    }
   };
-  setHover = (id: number): void => {
+  handleKeyUp = (ev: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    let content: string = this.props.takeDocument.title;
+    content = content.replace(/\n/g, "<br />");
+    this.div.innerHTML = content + "<br />";
     this.setState({
-      hover: id
-    });
-  };
-  clearHover = (): void => {
-    this.setState({
-      hover: -1
+      style: { height: this.div.clientHeight }
     });
   };
   render() {
@@ -327,25 +323,33 @@ class BlockEditor extends React.Component<BlockEditorProps, BlockEditorState> {
     return (
       <div className="editor__wrapper">
         <div className="editor">
-          <h2 className="editor__title">
-            {props.takeDocument.title}
-          </h2>
-          <div className="editor__block-list">
-            {props.takeDocument.blocks.map((block, idx) =>
-              <BlockContainer
-                key={idx.toString()}
-                index={idx}
-                block={block}
-                handleDelete={props.handleDelete}
-                handleChange={props.handleChange}
-                handleFocus={props.handleFocus}
-                handleEnter={props.handleEnter}
-                handleMouseOver={this.handleMouseOver}
-                handleMouseLeave={this.handleMouseLeave}
-                active={idx === props.active}
-                hover={idx === this.state.hover}
-              />
-            )}
+          <div className="editor__inner">
+            <textarea
+              className="editor__title"
+              onChange={this.handleChange}
+              onKeyDown={this.handleKeyDown}
+              onKeyUp={this.handleKeyUp}
+              value={props.takeDocument.title}
+              style={this.state.style}
+            />
+            <div
+              className="editor__title-height-div"
+              ref={(div: HTMLDivElement) => (this.div = div)}
+            />
+            <div className="editor__block-list">
+              {props.takeDocument.blocks.map((block, idx) =>
+                <BlockContainer
+                  key={idx.toString()}
+                  index={idx}
+                  block={block}
+                  handleDelete={props.handleDelete}
+                  handleChange={props.handleChange}
+                  handleFocus={props.handleFocus}
+                  handleEnter={props.handleEnter}
+                  active={idx === props.active}
+                />
+              )}
+            </div>
           </div>
         </div>
       </div>

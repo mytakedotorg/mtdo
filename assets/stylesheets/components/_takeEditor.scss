@@ -1,46 +1,68 @@
-.editor__wrapper {
-  margin: 2rem auto;
-  width: 768px;
-  max-width: 100%;
-}
-.editor {
-  padding: 0 3rem;
-  min-height: 300px;
-}
-.editor__title {
-  text-align: left;
-  margin-top: 0;
+@mixin overrideDefaultTextArea {
   position: relative;
-  @include heading1;
-}
-.editor__title--placeholder {
-  opacity: 0.3;
-}
-.editor__paragraph--placeholder {
-  opacity: 0.3;
-}
-.editor__paragraph {
-  text-align: left;
-  margin-left: 1px;
-  margin-right: 1px;
-  position: relative;
+  z-index: 1;
   width: 100%;
   border: 0;
   overflow: auto;
   outline: none;
   box-shadow: none;
   resize: none;
+  .noscroll {
+    overflow: hidden; // Added with JS to allow scrolling textareas if JS is turned off
+  }
+}
+@mixin textareaHeightDiv {
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  left: 0;
+  white-space: pre-wrap;
+  width: 100%;
+  word-wrap: break-word;
+}
+.editor__wrapper {
+  margin: 2rem auto;
+  width: 768px;
+  max-width: 100%;
+}
+.editor {
+  position: relative;
+  padding: 0 3rem;
+  min-height: 300px;
+}
+.editor__inner {
+  position: relative;
+}
+.editor__title {
+  text-align: left;
+  margin-top: 0;
+  position: relative;
+  height: 61px;
+  @include overrideDefaultTextArea;
+  @include heading1;
+}
+.editor__title-height-div {
+  @include textareaHeightDiv;
+  @include heading1;
+}
+.editor__title--placeholder {
+  opacity: 0.3;
+}
+.editor__block {
+  position: relative;
+}
+.editor__paragraph--placeholder {
+  opacity: 0.3;
+}
+.editor__paragraph {
+  text-align: left;
+  position: relative;
+  @include overrideDefaultTextArea;
   @include body--lead;
 }
-.editor__paragraph--active {
-  border: 1px solid blue;
-  margin-left: 0;
-  margin-right: 0;
-}
-.editor__paragraph--hover {
-  border: 1px solid red;
-  margin-left: 0;
-  margin-right: 0;
+.editor__paragraph-height-div {
+  @include textareaHeightDiv;
+  @include body--lead;
 }
 .editor__document {
   background: palette(editor, background);
@@ -50,18 +72,6 @@
   padding: 5px 15px;
   margin-bottom: 2rem;
   @include body--italic;
-  margin-left: 1px;
-  margin-right: 1px;
-}
-.editor__document--active {
-  border: 1px solid blue;
-  margin-left: 0;
-  margin-right: 0;
-}
-.editor__document--hover {
-  border: 1px solid red;
-  margin-left: 0;
-  margin-right: 0;
 }
 .editor__document-highlight {
   color: palette(editor, text--highlight);

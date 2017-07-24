@@ -14,13 +14,41 @@
   max-width: 100%; }
 
 .editor {
+  position: relative;
   padding: 0 3rem;
   min-height: 300px; }
+
+.editor__inner {
+  position: relative; }
 
 .editor__title {
   text-align: left;
   margin-top: 0;
   position: relative;
+  height: 61px;
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  border: 0;
+  overflow: auto;
+  outline: none;
+  box-shadow: none;
+  resize: none;
+  font-family: "Source Sans Pro", sans-serif;
+  font-weight: 700;
+  font-size: 44px;
+  line-height: 1.3em; }
+  .editor__title .noscroll {
+    overflow: hidden; }
+
+.editor__title-height-div {
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  left: 0;
+  white-space: pre-wrap;
+  width: 100%;
+  word-wrap: break-word;
   font-family: "Source Sans Pro", sans-serif;
   font-weight: 700;
   font-size: 44px;
@@ -29,14 +57,17 @@
 .editor__title--placeholder {
   opacity: 0.3; }
 
+.editor__block {
+  position: relative; }
+
 .editor__paragraph--placeholder {
   opacity: 0.3; }
 
 .editor__paragraph {
   text-align: left;
-  margin-left: 1px;
-  margin-right: 1px;
   position: relative;
+  position: relative;
+  z-index: 1;
   width: 100%;
   border: 0;
   overflow: auto;
@@ -47,16 +78,21 @@
   font-weight: 300;
   font-size: 22px;
   line-height: 1.5em; }
+  .editor__paragraph .noscroll {
+    overflow: hidden; }
 
-.editor__paragraph--active {
-  border: 1px solid blue;
-  margin-left: 0;
-  margin-right: 0; }
-
-.editor__paragraph--hover {
-  border: 1px solid red;
-  margin-left: 0;
-  margin-right: 0; }
+.editor__paragraph-height-div {
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  left: 0;
+  white-space: pre-wrap;
+  width: 100%;
+  word-wrap: break-word;
+  font-family: "Source Sans Pro", sans-serif;
+  font-weight: 300;
+  font-size: 22px;
+  line-height: 1.5em; }
 
 .editor__document {
   border: #758aa8;
@@ -68,19 +104,7 @@
   font-weight: 400;
   font-size: 15px;
   line-height: 1.7em;
-  font-style: italic;
-  margin-left: 1px;
-  margin-right: 1px; }
-
-.editor__document--active {
-  border: 1px solid blue;
-  margin-left: 0;
-  margin-right: 0; }
-
-.editor__document--hover {
-  border: 1px solid red;
-  margin-left: 0;
-  margin-right: 0; }
+  font-style: italic; }
 
 .editor__document-highlight {
   color: #051a38;

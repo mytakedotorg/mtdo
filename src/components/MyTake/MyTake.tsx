@@ -47,36 +47,46 @@ class MyTake extends React.Component<MyTakeProps, MyTakeState> {
       activeBlockIndex: ++activeBlockIndex
     });
   };
-  addParagraph = (): void => {
+  addParagraph = (isTitle?: boolean): void => {
     const blocks = this.state.takeDocument.blocks;
+
     let activeBlockIndex = this.state.activeBlockIndex;
+    let newIndex;
 
     const newBlock: ParagraphBlock = {
       kind: "paragraph",
-      text: "new block"
+      text: ""
     };
 
-    const newBlocks = [
-      ...blocks.slice(0, activeBlockIndex + 1),
-      newBlock,
-      ...blocks.slice(activeBlockIndex + 1)
-    ];
+    let newBlocks = [];
+
+    if (isTitle) {
+      newBlocks = [newBlock, ...blocks.slice(0)];
+      newIndex = 0;
+    } else {
+      newBlocks = [
+        ...blocks.slice(0, activeBlockIndex + 1),
+        newBlock,
+        ...blocks.slice(activeBlockIndex + 1)
+      ];
+      newIndex = ++activeBlockIndex;
+    }
 
     this.setState({
       takeDocument: {
         ...this.state.takeDocument,
         blocks: newBlocks
       },
-      activeBlockIndex: ++activeBlockIndex
+      activeBlockIndex: newIndex
     });
   };
-  removeParagraph = (id: number): void => {
+  removeParagraph = (idx: number): void => {
     const blocks = this.state.takeDocument.blocks;
     if (blocks.length > 1) {
       this.setState({
         takeDocument: {
           ...this.state.takeDocument,
-          blocks: [...blocks.slice(0, id), ...blocks.slice(id + 1)]
+          blocks: [...blocks.slice(0, idx), ...blocks.slice(idx + 1)]
         }
       });
     } else {
@@ -91,31 +101,45 @@ class MyTake extends React.Component<MyTakeProps, MyTakeState> {
       }
     }
   };
-  handleTakeBlockChange = (id: number, value: string): void => {
-    const blocks = this.state.takeDocument.blocks;
+  handleTakeBlockChange = (
+    idx: number,
+    value: string,
+    isTitle?: boolean
+  ): void => {
+    if (isTitle) {
+      // Change the title
+      this.setState({
+        takeDocument: {
+          ...this.state.takeDocument,
+          title: value
+        }
+      });
+    } else {
+      const blocks = this.state.takeDocument.blocks;
 
-    const newBlock = blocks[id] as ParagraphBlock;
-    newBlock.text = value;
+      const newBlock = blocks[idx] as ParagraphBlock;
+      newBlock.text = value;
 
-    const newBlocks = [
-      ...blocks.slice(0, id),
-      newBlock,
-      ...blocks.slice(id + 1)
-    ];
+      const newBlocks = [
+        ...blocks.slice(0, idx),
+        newBlock,
+        ...blocks.slice(idx + 1)
+      ];
 
-    this.setState({
-      takeDocument: {
-        ...this.state.takeDocument,
-        blocks: newBlocks
-      }
-    });
+      this.setState({
+        takeDocument: {
+          ...this.state.takeDocument,
+          blocks: newBlocks
+        }
+      });
+    }
   };
-  handleTakeBlockFocus = (id: number): void => {
-    this.setActive(id);
+  handleTakeBlockFocus = (idx: number): void => {
+    this.setActive(idx);
   };
-  setActive = (id: number): void => {
+  setActive = (idx: number): void => {
     this.setState({
-      activeBlockIndex: id
+      activeBlockIndex: idx
     });
   };
   render() {
