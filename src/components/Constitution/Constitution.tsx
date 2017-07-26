@@ -1,8 +1,7 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { FoundationTextTypes, FoundationNode } from "../Foundation";
-import getNodeArray from "../../utils/getNodeArray";
-import { highlightText, HighlightedText } from "../../utils/functions";
+import { getNodeArray, highlightText, HighlightedText } from "../../utils/functions";
 const constitutionText = require("../../foundation/constitution.foundation.html");
 
 interface ConstitutionProps {
@@ -24,18 +23,14 @@ class Constitution extends React.Component<
     super(props);
 
     this.state = {
-      constitutionNodes: this.getInitialText(),
+      constitutionNodes: getNodeArray('CONSTITUTION'),
       range: [0, 0],
       textIsHighlighted: false
     };
   }
-  getInitialText = (): Array<FoundationNode> => {
-    let initialText = getNodeArray(constitutionText);
-    return initialText;
-  };
   handleClearClick = () => {
     this.setState({
-      constitutionNodes: this.getInitialText(), //Clear existing highlights
+      constitutionNodes: getNodeArray('CONSTITUTION'), //Clear existing highlights
       textIsHighlighted: false
     });
   };

@@ -5,10 +5,7 @@ import {
   FoundationNodeProps,
   FoundationTextTypes
 } from "../Foundation";
-import getNodeArray from "../../utils/getNodeArray";
-import { getHighlightedNodes } from "../../utils/functions";
-const constitutionText = require("../../foundation/constitution.foundation.html");
-const amendmentsText = require("../../foundation/amendments.foundation.html");
+import { getNodeArray, getHighlightedNodes } from "../../utils/functions";
 
 ////////////////////
 // Document model //
@@ -44,8 +41,7 @@ export interface DocumentBlockProps {
   eventHandlers: EventHandlers;
 }
 export interface DocumentBlockState {
-  constitutionNodes: FoundationNode[];
-  amendmentsNodes: FoundationNode[];
+  documentNodes: FoundationNode[];
 }
 
 export type TakeBlock = ParagraphBlock | DocumentBlock;
@@ -146,22 +142,8 @@ class Document extends React.Component<DocumentBlockProps, DocumentBlockState> {
     super(props);
 
     this.state = {
-      constitutionNodes: this.getInitialText("CONSTITUTION"),
-      amendmentsNodes: this.getInitialText("AMENDMENTS")
+      documentNodes: getNodeArray(props.block.document),
     };
-  }
-  getInitialText(type: FoundationTextTypes): FoundationNode[] {
-    let initialText;
-    switch (type) {
-      case "AMENDMENTS":
-        initialText = getNodeArray(amendmentsText);
-        return initialText;
-      case "CONSTITUTION":
-        initialText = getNodeArray(constitutionText);
-        return initialText;
-      default:
-        break;
-    }
   }
   handleClick = () => {
     this.props.eventHandlers.handleFocus(this.props.idx);
@@ -183,24 +165,11 @@ class Document extends React.Component<DocumentBlockProps, DocumentBlockState> {
   };
   render() {
     const { props } = this;
-    let highlightedNodes: FoundationNode[] = [];
-    switch (props.block.document) {
-      case "CONSTITUTION":
-        highlightedNodes = getHighlightedNodes(
-          [...this.state.constitutionNodes],
-          props.block.range
-        );
-        break;
-      case "AMENDMENTS":
-        highlightedNodes = getHighlightedNodes(
-          [...this.state.amendmentsNodes],
-          props.block.range
-        );
-        break;
-      default:
-        break;
-    }
-
+    let highlightedNodes = getHighlightedNodes(
+			[...this.state.documentNodes],
+			props.block.range
+		);
+        
     let classes = "editor__document";
     if (this.props.active) {
       classes += " editor__document--active";

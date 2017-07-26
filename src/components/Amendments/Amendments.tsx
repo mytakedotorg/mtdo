@@ -1,9 +1,7 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { FoundationTextTypes, FoundationNode } from "../Foundation";
-import getNodeArray from "../../utils/getNodeArray";
-import { highlightText, HighlightedText } from "../../utils/functions";
-const amendmentsText = require("../../foundation/amendments.foundation.html");
+import { getNodeArray, highlightText, HighlightedText } from "../../utils/functions";
 
 interface AmendmentsProps {
   onBackClick: () => void;
@@ -21,18 +19,14 @@ class Amendments extends React.Component<AmendmentsProps, AmendmentsState> {
     super(props);
 
     this.state = {
-      amendmentsNodes: this.getInitialText(),
+      amendmentsNodes: getNodeArray('AMENDMENTS'),
       range: [0, 0],
       textIsHighlighted: false
     };
   }
-  getInitialText = (): Array<FoundationNode> => {
-    let initialText = getNodeArray(amendmentsText);
-    return initialText;
-  };
   handleClearClick = () => {
     this.setState({
-      amendmentsNodes: this.getInitialText(), //Clear existing highlights
+      amendmentsNodes: getNodeArray('AMENDMENTS'), //Clear existing highlights
       textIsHighlighted: false
     });
   };
