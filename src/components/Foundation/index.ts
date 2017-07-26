@@ -1,8 +1,8 @@
 import Foundation, {
   FoundationNode,
   FoundationNodeProps,
-  FoundationTextTypes
+  FoundationTextType
 } from "./Foundation";
 
-export { FoundationNode, FoundationNodeProps, FoundationTextTypes };
+export { FoundationNode, FoundationNodeProps, FoundationTextType };
 export default Foundation;

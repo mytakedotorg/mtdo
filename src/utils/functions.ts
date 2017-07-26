@@ -1,5 +1,5 @@
 import * as React from "react";
-import { FoundationNode, FoundationTextTypes, FoundationNodeProps } from "../components/Foundation";
+import { FoundationNode, FoundationTextType, FoundationNodeProps } from "../components/Foundation";
 var htmlparser = require("htmlparser2");
 const constitutionText = require("../foundation/constitution.foundation.html");
 const amendmentsText = require("../foundation/amendments.foundation.html");
@@ -129,7 +129,7 @@ interface HighlightedText {
 function highlightText(
   range: Range,
   nodes: FoundationNode[],
-  type: FoundationTextTypes,
+  type: FoundationTextType,
   childNodes: NodeList,
   handleSetClick: () => void
 ): HighlightedText {
@@ -337,7 +337,7 @@ function highlightText(
  *  Assumes no child nodes in HTML string input.
  */
 
-function getNodeArray(type: FoundationTextTypes): Array<FoundationNode> {
+function getNodeArray(type: FoundationTextType): Array<FoundationNode> {
 	let source;
 	switch (type) {
 		case "AMENDMENTS":

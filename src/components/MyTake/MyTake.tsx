@@ -4,7 +4,7 @@ import BlockEditor, {
   ParagraphBlock,
   TakeDocument
 } from "../BlockEditor";
-import Foundation, { FoundationTextTypes } from "../Foundation";
+import Foundation, { FoundationTextType } from "../Foundation";
 
 interface MyTakeProps {
   initState: MyTakeState;
@@ -23,7 +23,7 @@ class MyTake extends React.Component<MyTakeProps, MyTakeState> {
       ...props.initState
     };
   }
-  addDocument = (type: FoundationTextTypes, range: [number, number]): void => {
+  addDocument = (type: FoundationTextType, range: [number, number]): void => {
     const blocks = this.state.takeDocument.blocks;
     let activeBlockIndex = this.state.activeBlockIndex;
 

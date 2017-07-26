@@ -3,7 +3,7 @@ import * as keycode from "keycode";
 import {
   FoundationNode,
   FoundationNodeProps,
-  FoundationTextTypes
+  FoundationTextType
 } from "../Foundation";
 import { getNodeArray, getHighlightedNodes } from "../../utils/functions";
 
@@ -16,7 +16,7 @@ export interface ParagraphBlock {
 }
 export interface DocumentBlock {
   kind: "document";
-  document: FoundationTextTypes;
+  document: FoundationTextType;
   range: [number, number];
 }
 export interface EventHandlers {

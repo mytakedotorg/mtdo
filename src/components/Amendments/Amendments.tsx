@@ -1,11 +1,11 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { FoundationTextTypes, FoundationNode } from "../Foundation";
+import { FoundationTextType, FoundationNode } from "../Foundation";
 import { getNodeArray, highlightText, HighlightedText } from "../../utils/functions";
 
 interface AmendmentsProps {
   onBackClick: () => void;
-  onSetClick: (type: FoundationTextTypes, range: [number, number]) => void;
+  onSetClick: (type: FoundationTextType, range: [number, number]) => void;
 }
 
 interface AmendmentsState {

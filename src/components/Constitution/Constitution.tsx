@@ -1,12 +1,12 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { FoundationTextTypes, FoundationNode } from "../Foundation";
+import { FoundationTextType, FoundationNode } from "../Foundation";
 import { getNodeArray, highlightText, HighlightedText } from "../../utils/functions";
 const constitutionText = require("../../foundation/constitution.foundation.html");
 
 interface ConstitutionProps {
   onBackClick: () => void;
-  onSetClick: (type: FoundationTextTypes, range: [number, number]) => void;
+  onSetClick: (type: FoundationTextType, range: [number, number]) => void;
 }
 
 interface ConstitutionState {

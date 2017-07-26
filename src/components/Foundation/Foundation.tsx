@@ -3,8 +3,8 @@ import Constitution from "../Constitution";
 import Debates from "../Debates";
 import Amendments from "../Amendments";
 
-export type FoundationTextTypes = "CONSTITUTION" | "AMENDMENTS";
-export type FoundationView = "INITIAL" | "DEBATES" | FoundationTextTypes;
+export type FoundationTextType = "CONSTITUTION" | "AMENDMENTS";
+export type FoundationView = "INITIAL" | "DEBATES" | FoundationTextType;
 
 export interface FoundationNode {
   component: string;
@@ -102,7 +102,7 @@ function DebatesCard(props: FoundationCardProps) {
 }
 
 interface FoundationProps {
-  handleSetClick: (type: FoundationTextTypes, range: [number, number]) => void;
+  handleSetClick: (type: FoundationTextType, range: [number, number]) => void;
 }
 
 interface FoundationState {
