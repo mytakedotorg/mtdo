@@ -98,16 +98,32 @@ class Paragraph extends React.Component<
     this.props.eventHandlers.handleFocus(this.props.idx);
   };
   handleKeyUp = (ev: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    let content: string = this.props.block.text;
-    content = content.replace(/\n/g, "<br />");
-    this.div.innerHTML = content + "<br />";
-    this.setState({
-      style: { height: this.div.clientHeight }
-    });
-  };
+		this.resetHeight();
+	};
+	resetHeight = () => {
+		let content: string = this.props.block.text;
+		content = content.replace(/\n/g, "<br />");
+		this.div.innerHTML = content + "<br />";
+		let height = this.div.clientHeight;
+		this.setState({
+			style: { height: height }
+		});
+	}
   componentDidMount() {
-    this.textarea.focus();
-  }
+		if (this.props.active) {
+			this.textarea.focus();
+		}
+	}
+	componentDidUpdate(){
+		if (this.props.active) {
+			this.textarea.focus();
+		}
+	}
+	componentWillReceiveProps(nextProps: ParagraphBlockProps) {
+		if (this.props.block.text !== nextProps.block.text) {
+			this.resetHeight();	
+		}
+	}
   render() {
     let classes = "editor__paragraph";
     if (this.props.active) {
@@ -312,7 +328,7 @@ class BlockEditor extends React.Component<BlockEditorProps, BlockEditorState> {
                 <BlockContainer
                   key={idx.toString()}
                   index={idx}
-                  block={block}
+                  block={(Object as any).assign({}, block)}
                   handleDelete={props.handleDelete}
                   handleChange={props.handleChange}
                   handleFocus={props.handleFocus}

@@ -132,12 +132,12 @@ class MyTake extends React.Component<MyTakeProps, MyTakeState> {
 						kind: "paragraph",
 						text: element
 					};
+					newIndex++;
 				}
 				newBlocks = [
 					...newBlocks,
 					newBlock
 				];
-				newIndex++;
 			});
 
 			newBlocks = [
@@ -150,7 +150,8 @@ class MyTake extends React.Component<MyTakeProps, MyTakeState> {
         takeDocument: {
           ...this.state.takeDocument,
           blocks: newBlocks
-				}
+				},
+				activeBlockIndex: newIndex
       });
     }
   };
@@ -170,7 +171,7 @@ class MyTake extends React.Component<MyTakeProps, MyTakeState> {
           handleChange={this.handleTakeBlockChange}
           handleFocus={this.handleTakeBlockFocus}
           handleEnter={this.addParagraph}
-          takeDocument={this.state.takeDocument}
+          takeDocument={(Object as any).assign({}, this.state.takeDocument)}
           active={this.state.activeBlockIndex}
         />
         <Foundation handleSetClick={this.addDocument} />
