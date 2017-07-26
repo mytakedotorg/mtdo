@@ -1,0 +1,161 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Simple block editor model 1`] = `
+<div
+  className="editor__wrapper"
+>
+  <div
+    className="editor"
+  >
+    <h2
+      className="editor__title"
+    >
+      My take title
+    </h2>
+    <div
+      className="editor__block"
+    >
+      <textarea
+        className="editor__paragraph"
+        onChange={[Function]}
+        onClick={[Function]}
+        onMouseLeave={[Function]}
+        onMouseOver={[Function]}
+        value="Some text"
+      />
+    </div>
+    <div
+      className="editor__block"
+    >
+      <textarea
+        className="editor__paragraph"
+        onChange={[Function]}
+        onClick={[Function]}
+        onMouseLeave={[Function]}
+        onMouseOver={[Function]}
+        value="Some other text"
+      />
+    </div>
+  </div>
+</div>
+`;
+
+exports[`With active 1`] = `
+<div
+  className="editor__wrapper"
+>
+  <div
+    className="editor"
+  >
+    <h2
+      className="editor__title"
+    >
+      My take title
+    </h2>
+    <div
+      className="editor__block editor__block--active"
+    >
+      <textarea
+        className="editor__paragraph"
+        onChange={[Function]}
+        onClick={[Function]}
+        onMouseLeave={[Function]}
+        onMouseOver={[Function]}
+        value="Some text"
+      />
+    </div>
+    <div
+      className="editor__block"
+    >
+      <textarea
+        className="editor__paragraph"
+        onChange={[Function]}
+        onClick={[Function]}
+        onMouseLeave={[Function]}
+        onMouseOver={[Function]}
+        value="Some other text"
+      />
+    </div>
+  </div>
+</div>
+`;
+
+exports[`With hover 1`] = `
+<div
+  className="editor__wrapper"
+>
+  <div
+    className="editor"
+  >
+    <h2
+      className="editor__title"
+    >
+      My take title
+    </h2>
+    <div
+      className="editor__block editor__block--hover"
+    >
+      <textarea
+        className="editor__paragraph"
+        onChange={[Function]}
+        onClick={[Function]}
+        onMouseLeave={[Function]}
+        onMouseOver={[Function]}
+        value="Some text"
+      />
+    </div>
+    <div
+      className="editor__block"
+    >
+      <textarea
+        className="editor__paragraph"
+        onChange={[Function]}
+        onClick={[Function]}
+        onMouseLeave={[Function]}
+        onMouseOver={[Function]}
+        value="Some other text"
+      />
+    </div>
+  </div>
+</div>
+`;
+
+exports[`With hover and active 1`] = `
+<div
+  className="editor__wrapper"
+>
+  <div
+    className="editor"
+  >
+    <h2
+      className="editor__title"
+    >
+      My take title
+    </h2>
+    <div
+      className="editor__block editor__block--hover editor__block--active"
+    >
+      <textarea
+        className="editor__paragraph"
+        onChange={[Function]}
+        onClick={[Function]}
+        onMouseLeave={[Function]}
+        onMouseOver={[Function]}
+        value="Some text"
+      />
+    </div>
+    <div
+      className="editor__block"
+    >
+      <textarea
+        className="editor__paragraph"
+        onChange={[Function]}
+        onClick={[Function]}
+        onMouseLeave={[Function]}
+        onMouseOver={[Function]}
+        value="Some other text"
+      />
+    </div>
+  </div>
+</div>
+`;

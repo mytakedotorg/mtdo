@@ -10,11 +10,11 @@ module.exports = function (source) {
         throw "*.foundation.html files cannot have nested HTML tags";
       }
       tagIsOpen = true;
-      var offset = output.length + name.length + 20;
+      var offset = output.length + name.length + 13;
       for(var i = 2; i < offset.toString().length; i++){
         offset++;
       }
-      output += '<' + name + ' data-offset="' + offset.toString() + '">';
+      output += '<' + name + ' data="' + offset.toString() + '">';
     },
     ontext: function(text) {
       text = text.replace(new RegExp(/\r?\n|\r/g), ' '); //replace all newlines with spaces

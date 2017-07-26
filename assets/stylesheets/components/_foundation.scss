@@ -28,7 +28,7 @@
   width: 100%;
   display: flex;
   margin-bottom: 2rem;
-  &:nth-of-type(2n){
+  &:nth-of-type(2n) {
     margin-right: 0;
   }
   &:hover {
@@ -39,13 +39,12 @@
   }
 }
 .foundation__image-container {
-  
 }
 .foundation__image {
   display: block;
   width: 110px;
   height: 156px;
-  @media #{$mq-small}{
+  @media #{$mq-small} {
     width: 220px;
     height: 313px;
   }
@@ -57,7 +56,7 @@
   @include heading3;
   margin: 0;
   padding: 1rem;
-  @media #{$mq-small}{
+  @media #{$mq-small} {
     padding: 2rem;
   }
 }
@@ -65,7 +64,7 @@
   @include body;
   float: left;
   padding: 0 1rem;
-  @media #{$mq-small}{
+  @media #{$mq-small} {
     padding: 2rem;
   }
 }

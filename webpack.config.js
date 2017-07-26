@@ -1,8 +1,12 @@
 module.exports = {
-  entry: __dirname + "/src/index.tsx",
+  entry: {
+		app: __dirname + "/src/index.tsx",
+		blockEditor: __dirname + "/src/blockEditor.tsx"
+	},
+
   output: {
-    filename: "bundle-0.0.3.js",  // There are more stable cache busting solutions for the long term
-    path: __dirname + "/docs"
+    filename: "[name].bundle-0.0.4.js",  // There are more stable cache busting solutions for the long term
+    path: __dirname + "/docs/"
   },
 
   // Enable sourcemaps for debugging webpack's output.

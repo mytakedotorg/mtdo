@@ -1,3 +1,3 @@
-import Amendments from './Amendments';
+import Amendments from "./Amendments";
 
 export default Amendments;

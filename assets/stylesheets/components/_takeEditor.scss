@@ -1,53 +1,76 @@
+@mixin overrideDefaultTextArea {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  border: 0;
+  overflow: hidden;
+  outline: none;
+  box-shadow: none;
+  resize: none;
+}
+@mixin textareaHeightDiv {
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  left: 0;
+  white-space: pre-wrap;
+  width: 100%;
+  word-wrap: break-word;
+}
 .editor__wrapper {
   margin: 2rem auto;
   width: 768px;
   max-width: 100%;
 }
 .editor {
+  position: relative;
   padding: 0 3rem;
   min-height: 300px;
+}
+.editor__inner {
+  position: relative;
 }
 .editor__title {
   text-align: left;
   margin-top: 0;
   position: relative;
+  height: 61px;
+  @include overrideDefaultTextArea;
+  @include heading1;
+}
+.editor__title-height-div {
+  @include textareaHeightDiv;
   @include heading1;
 }
 .editor__title--placeholder {
   opacity: 0.3;
+}
+.editor__block {
+  position: relative;
 }
 .editor__paragraph--placeholder {
   opacity: 0.3;
 }
 .editor__paragraph {
   text-align: left;
-  margin-top: 0;
   position: relative;
+  @include overrideDefaultTextArea;
   @include body--lead;
 }
-.editor__constitution {
-  background: palette(editor, constitution__background);
-  border: palette(editor, constitution__border);
-  box-shadow: 1px 1px 2px palette(editor, constitution__shadow);
-  color: palette(editor, constitution__text);
+.editor__paragraph-height-div {
+  @include textareaHeightDiv;
+  @include body--lead;
+}
+.editor__document {
+  background: palette(editor, background);
+  border: palette(editor, border);
+  box-shadow: 1px 1px 2px palette(editor, shadow);
+  color: palette(editor, text);
   padding: 5px 15px;
   margin-bottom: 2rem;
   @include body--italic;
 }
-.editor__constitution--highlighted {
-  color: palette(editor, constitution__text--highlight);
-  background-color: palette(editor, constitution__background--highlight);
-}
-.editor__amendments {
-  background: palette(editor, amendments__background);
-  border: palette(editor, amendments__border);
-  box-shadow: 1px 1px 2px palette(editor, amendments__shadow);
-  color: palette(editor, amendments__text);
-  padding: 5px 15px;
-  margin-bottom: 2rem;
-  @include body--italic;
-}
-.editor__amendments--highlighted {
-  color: palette(editor, amendments__text--highlight);
-  background-color: palette(editor, amendments__background--highlight);
+.editor__document-highlight {
+  color: palette(editor, text--highlight);
+  background-color: palette(editor, background--highlight);
 }

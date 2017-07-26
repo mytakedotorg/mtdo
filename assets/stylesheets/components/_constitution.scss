@@ -1,5 +1,4 @@
 .constitution {
-  
 }
 .constitution__heading {
   margin-top: 0;
@@ -19,7 +18,7 @@
   flex-wrap: wrap;
   justify-content: space-between;
 }
-.constitution__sections{
+.constitution__sections {
   @include body--lead;
   width: 100%;
   @media #{$mq-medium} {
@@ -47,7 +46,7 @@
     border-radius: 2px;
     //background-color: rgba(0,0,0,.5);
     background-color: palette(constitution, background--scrollbar-thumb);
-    -webkit-box-shadow: 0 0 1px rgba(255,255,255,.5);
+    -webkit-box-shadow: 0 0 1px rgba(255, 255, 255, .5);
   }
 
   &::-webkit-scrollbar-track {

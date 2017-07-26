@@ -4,6 +4,8 @@
   "description": "What's your take?",
   "main": "src/index.tsx",
   "scripts": {
+    "format-list": "prettier --list-different '*.json' 'assets/**/*.scss' 'src/**/*.ts?(x)'",
+    "format-write": "prettier --write '*.json' 'assets/**/*.scss' 'src/**/*.ts?(x)'",
     "start": "gulp",
     "test": "jest"
   },
@@ -12,10 +14,10 @@
   "dependencies": {
     "@types/react": "^15.0.25",
     "@types/react-dom": "^15.5.0",
+    "@types/react-test-renderer": "^15.5.1",
     "keycode": "^2.1.9",
     "react": "^15.5.4",
-    "react-dom": "^15.5.4",
-    "slate": "^0.20.1"
+    "react-dom": "^15.5.4"
   },
   "devDependencies": {
     "@types/jest": "^20.0.2",
@@ -34,6 +36,8 @@
     "htmlparser2": "^3.9.2",
     "jest": "^20.0.4",
     "node-sass": "^4.5.3",
+    "prettier": "^1.5.3",
+    "react-test-renderer": "^15.6.1",
     "source-map-loader": "^0.2.1",
     "ts-jest": "^20.0.5",
     "typescript": "^2.3.3",
@@ -45,10 +49,6 @@
       ".(ts|tsx)": "./node_modules/ts-jest/preprocessor.js"
     },
     "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js"
-    ]
+    "moduleFileExtensions": ["ts", "tsx", "js"]
   }
 }
