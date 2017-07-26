@@ -30,7 +30,7 @@
   z-index: 1;
   width: 100%;
   border: 0;
-  overflow: auto;
+  overflow: hidden;
   outline: none;
   box-shadow: none;
   resize: none;
@@ -38,8 +38,6 @@
   font-weight: 700;
   font-size: 44px;
   line-height: 1.3em; }
-  .editor__title .noscroll {
-    overflow: hidden; }
 
 .editor__title-height-div {
   position: absolute;
@@ -70,7 +68,7 @@
   z-index: 1;
   width: 100%;
   border: 0;
-  overflow: auto;
+  overflow: hidden;
   outline: none;
   box-shadow: none;
   resize: none;
@@ -78,8 +76,6 @@
   font-weight: 300;
   font-size: 22px;
   line-height: 1.5em; }
-  .editor__paragraph .noscroll {
-    overflow: hidden; }
 
 .editor__paragraph-height-div {
   position: absolute;

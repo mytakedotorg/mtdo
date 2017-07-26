@@ -3,13 +3,10 @@
   z-index: 1;
   width: 100%;
   border: 0;
-  overflow: auto;
+  overflow: hidden;
   outline: none;
   box-shadow: none;
   resize: none;
-  .noscroll {
-    overflow: hidden; // Added with JS to allow scrolling textareas if JS is turned off
-  }
 }
 @mixin textareaHeightDiv {
   position: absolute;
