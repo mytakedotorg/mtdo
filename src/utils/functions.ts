@@ -1,5 +1,9 @@
 import * as React from "react";
-import { FoundationNode, FoundationTextType, FoundationNodeProps } from "../components/Foundation";
+import {
+  FoundationNode,
+  FoundationTextType,
+  FoundationNodeProps
+} from "../components/Foundation";
 var htmlparser = require("htmlparser2");
 const constitutionText = require("../foundation/constitution.foundation.html");
 const amendmentsText = require("../foundation/amendments.foundation.html");
@@ -338,17 +342,17 @@ function highlightText(
  */
 
 function getNodeArray(type: FoundationTextType): Array<FoundationNode> {
-	let source;
-	switch (type) {
-		case "AMENDMENTS":
-			source = amendmentsText;
-			break;
-		case "CONSTITUTION":
-			source = constitutionText;
-			break;
-		default:
-			break;
-	}
+  let source;
+  switch (type) {
+    case "AMENDMENTS":
+      source = amendmentsText;
+      break;
+    case "CONSTITUTION":
+      source = constitutionText;
+      break;
+    default:
+      break;
+  }
 
   let output: Array<FoundationNode> = [];
   let tagIsOpen: boolean = false;
@@ -388,11 +392,10 @@ function getNodeArray(type: FoundationTextType): Array<FoundationNode> {
   return output;
 }
 
-
 export {
   clearDefaultDOMSelection,
-	getHighlightedNodes,
-	getNodeArray,
+  getHighlightedNodes,
+  getNodeArray,
   highlightText,
   HighlightedText
 };

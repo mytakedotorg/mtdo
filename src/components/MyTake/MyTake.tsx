@@ -1,8 +1,8 @@
 import * as React from "react";
 import BlockEditor, {
   DocumentBlock,
-	ParagraphBlock,
-	TakeBlock,
+  ParagraphBlock,
+  TakeBlock,
   TakeDocument
 } from "../BlockEditor";
 import Foundation, { FoundationTextType } from "../Foundation";
@@ -117,41 +117,38 @@ class MyTake extends React.Component<MyTakeProps, MyTakeState> {
       });
     } else {
       const blocks = [...this.state.takeDocument.blocks];
-			
-			let valuesArr: string[] = value.split("\n");
-			let newBlock: ParagraphBlock;
-			let newBlocks: TakeBlock[] = [];
-			let newIndex = stateIndex;
 
-			valuesArr.forEach((element, arrIdx) => {
-				if (arrIdx === 0) {
-					newBlock = blocks[stateIndex] as ParagraphBlock;
-					newBlock.text = element;
-				} else {
-					newBlock = {
-						kind: "paragraph",
-						text: element
-					};
-					newIndex++;
-				}
-				newBlocks = [
-					...newBlocks,
-					newBlock
-				];
-			});
+      let valuesArr: string[] = value.split("\n");
+      let newBlock: ParagraphBlock;
+      let newBlocks: TakeBlock[] = [];
+      let newIndex = stateIndex;
 
-			newBlocks = [
-				...blocks.slice(0, stateIndex),
-				...newBlocks,
-				...blocks.slice(stateIndex + 1)
-			];
-		
+      valuesArr.forEach((element, arrIdx) => {
+        if (arrIdx === 0) {
+          newBlock = blocks[stateIndex] as ParagraphBlock;
+          newBlock.text = element;
+        } else {
+          newBlock = {
+            kind: "paragraph",
+            text: element
+          };
+          newIndex++;
+        }
+        newBlocks = [...newBlocks, newBlock];
+      });
+
+      newBlocks = [
+        ...blocks.slice(0, stateIndex),
+        ...newBlocks,
+        ...blocks.slice(stateIndex + 1)
+      ];
+
       this.setState({
         takeDocument: {
           ...this.state.takeDocument,
           blocks: newBlocks
-				},
-				activeBlockIndex: newIndex
+        },
+        activeBlockIndex: newIndex
       });
     }
   };

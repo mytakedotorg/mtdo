@@ -98,32 +98,32 @@ class Paragraph extends React.Component<
     this.props.eventHandlers.handleFocus(this.props.idx);
   };
   handleKeyUp = (ev: React.KeyboardEvent<HTMLTextAreaElement>) => {
-		this.resetHeight();
-	};
-	resetHeight = () => {
-		let content: string = this.props.block.text;
-		content = content.replace(/\n/g, "<br />");
-		this.div.innerHTML = content + "<br />";
-		let height = this.div.clientHeight;
-		this.setState({
-			style: { height: height }
-		});
-	}
+    this.resetHeight();
+  };
+  resetHeight = () => {
+    let content: string = this.props.block.text;
+    content = content.replace(/\n/g, "<br />");
+    this.div.innerHTML = content + "<br />";
+    let height = this.div.clientHeight;
+    this.setState({
+      style: { height: height }
+    });
+  };
   componentDidMount() {
-		if (this.props.active) {
-			this.textarea.focus();
-		}
-	}
-	componentDidUpdate(){
-		if (this.props.active) {
-			this.textarea.focus();
-		}
-	}
-	componentWillReceiveProps(nextProps: ParagraphBlockProps) {
-		if (this.props.block.text !== nextProps.block.text) {
-			this.resetHeight();	
-		}
-	}
+    if (this.props.active) {
+      this.textarea.focus();
+    }
+  }
+  componentDidUpdate() {
+    if (this.props.active) {
+      this.textarea.focus();
+    }
+  }
+  componentWillReceiveProps(nextProps: ParagraphBlockProps) {
+    if (this.props.block.text !== nextProps.block.text) {
+      this.resetHeight();
+    }
+  }
   render() {
     let classes = "editor__paragraph";
     if (this.props.active) {
@@ -139,7 +139,7 @@ class Paragraph extends React.Component<
           onFocus={this.handleFocus}
           onKeyDown={this.handleKeyDown}
           onKeyUp={this.handleKeyUp}
-					placeholder={this.props.idx === 0 ? "Use your voice here." : "..." }
+          placeholder={this.props.idx === 0 ? "Use your voice here." : "..."}
           value={this.props.block.text}
           style={this.state.style}
           ref={(textarea: HTMLTextAreaElement) => (this.textarea = textarea)}
@@ -158,7 +158,7 @@ class Document extends React.Component<DocumentBlockProps, DocumentBlockState> {
     super(props);
 
     this.state = {
-      documentNodes: getNodeArray(props.block.document),
+      documentNodes: getNodeArray(props.block.document)
     };
   }
   handleClick = () => {
@@ -182,10 +182,10 @@ class Document extends React.Component<DocumentBlockProps, DocumentBlockState> {
   render() {
     const { props } = this;
     let highlightedNodes = getHighlightedNodes(
-			[...this.state.documentNodes],
-			props.block.range
-		);
-        
+      [...this.state.documentNodes],
+      props.block.range
+    );
+
     let classes = "editor__document";
     if (this.props.active) {
       classes += " editor__document--active";
@@ -315,7 +315,7 @@ class BlockEditor extends React.Component<BlockEditorProps, BlockEditorState> {
               onChange={this.handleChange}
               onKeyDown={this.handleKeyDown}
               onKeyUp={this.handleKeyUp}
-							placeholder="Title"
+              placeholder="Title"
               value={props.takeDocument.title}
               style={this.state.style}
             />
