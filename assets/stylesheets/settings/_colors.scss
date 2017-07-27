@@ -88,12 +88,35 @@ $palettes: (
       shadow: $base-darkest,
       text: $base-darkest,
       text--highlight: $base-darkest
-    ),
+		),
+	feed:
+		(
+			background--highlight: $secondary-lightest,
+			card__border: $base-lightest,shadow: $base-darkest,
+			card__shadow: $base-darkest,
+      text: $base-darkest,
+			text--highlight: $base-darkest,
+			text--faded: $base-lightest,
+		),
   foundation:
     (
       text: $base-darkest,
       card-title--debates: $white,
       card-border: $base-lightest,
       shadow: $base-darkest
-    )
+		),
+	hero:
+		(
+			background: $base,
+			title: $white,
+			text: $base-lightest,
+			text--special: $white,
+		),
+	button:
+		(
+			background--action:	$action,
+			background--action-hover: $action-light,
+			color--action: $white,
+			color--action-shadow: $base
+		)
 );

@@ -1,0 +1,61 @@
+.feed {
+  margin: 2rem auto;
+  width: 768px;
+	max-width: 100%;
+}
+.feed__title {
+	@include heading2;
+}
+.feed__card {
+	position: relative;
+  background: palette(feed, background);
+  border: palette(feed, card__border);
+  box-shadow: 2px 2px 4px palette(feed, card__shadow);
+  color: palette(feed, text);
+	padding-top: 5px;
+	padding-bottom: 5px;
+	margin: 2rem;
+}
+.feed__card-title {
+	@include heading3;
+	margin-left: 15px;
+	margin-right: 15px;
+}
+.feed__link {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	z-index: 1;
+}
+.feed__card-document {
+	padding-top: 5px;
+	padding-bottom: 5px;
+	border: palette(feed, card__border);
+	box-shadow: 1px 1px 2px palette(feed, card__shadow);
+}
+.feed__card-document-title {
+	@include heading4;
+	font-style: italic;
+	margin-left: 15px;
+	margin-right: 15px;
+}
+.feed__card-document-text {
+	@include body--italic;
+	margin-left: 15px;
+	margin-right: 15px;
+}
+.feed__card-document-text--highlight {
+	color: palette(feed, text--highlight);
+  background-color: palette(feed, background--highlight);
+}
+.feed__card-text-container {
+	margin: 10px 15px;
+}
+.feed__card-text {
+	margin-top: 0;
+	margin-bottom: 0;
+	@include body--small;
+	color: palette(feed, text--faded);
+}

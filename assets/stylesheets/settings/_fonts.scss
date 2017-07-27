@@ -50,6 +50,10 @@ $serif: 'Merriweather', serif;
   @include typography($serif, 400, 15px, 1.7em);
 }
 
+@mixin body--small {
+  @include typography($serif, 400, 13px, 1.7em);
+}
+
 @mixin body--lead {
   @include typography($sans, 300, 22px, 1.5em);
 }
