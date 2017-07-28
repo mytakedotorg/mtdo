@@ -118,5 +118,10 @@ $palettes: (
 			background--action-hover: $action-light,
 			color--action: $white,
 			color--action-shadow: $base
+		),
+	about:
+		(
+			text--special: $base,
+			text: $base-darkest,
 		)
 );

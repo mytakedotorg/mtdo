@@ -571,6 +571,46 @@
   .hero__button:hover {
     background: #c86373; }
 
+.about {
+  margin: 2rem 4rem; }
+
+.about__text {
+  font-family: "Merriweather", serif;
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 1.7em;
+  color: #051a38; }
+
+.about__text--lead {
+  font-family: "Source Sans Pro", sans-serif;
+  font-weight: 300;
+  font-size: 22px;
+  line-height: 1.5em; }
+
+.about__text--aside {
+  font-size: 10px; }
+
+.about__list-item, .about__sub-list-item {
+  font-family: "Merriweather", serif;
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 1.7em; }
+
+.about__text--special {
+  color: #2c4770;
+  font-weight: 700; }
+
+.about__link {
+  text-decoration: none;
+  color: #051a38; }
+
+.about__image-container {
+  text-align: center; }
+
+.about__image {
+  max-width: 100%;
+  height: auto; }
+
 body {
   margin: 0;
   padding: 0; }
