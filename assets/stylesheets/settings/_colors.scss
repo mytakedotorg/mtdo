@@ -92,9 +92,10 @@ $palettes: (
 	feed:
 		(
 			background--highlight: $secondary-lightest,
-			card__border: $base-lightest,shadow: $base-darkest,
+			card__border: $secondary-lightest,
 			card__shadow: $base-darkest,
-      text: $base-darkest,
+			text: $base-darkest,
+			text--document: $secondary-darkest,
 			text--highlight: $base-darkest,
 			text--faded: $base-lightest,
 		),

@@ -444,7 +444,7 @@
 
 .feed__card {
   position: relative;
-  border: #758aa8;
+  border: #a4d990;
   box-shadow: 2px 2px 4px #051a38;
   color: #051a38;
   padding-top: 5px;
@@ -470,8 +470,9 @@
 .feed__card-document {
   padding-top: 5px;
   padding-bottom: 5px;
-  border: #758aa8;
-  box-shadow: 1px 1px 2px #051a38; }
+  margin-left: 15px;
+  margin-right: 15px;
+  border: 1px solid #a4d990; }
 
 .feed__card-document-title {
   font-family: "Source Sans Pro", sans-serif;
@@ -480,7 +481,8 @@
   line-height: 1.3em;
   font-style: italic;
   margin-left: 15px;
-  margin-right: 15px; }
+  margin-right: 15px;
+  color: #134800; }
 
 .feed__card-document-text {
   font-family: "Merriweather", serif;
@@ -489,7 +491,8 @@
   line-height: 1.7em;
   font-style: italic;
   margin-left: 15px;
-  margin-right: 15px; }
+  margin-right: 15px;
+  color: #134800; }
 
 .feed__card-document-text--highlight {
   color: #051a38;
