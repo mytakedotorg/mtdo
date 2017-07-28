@@ -17,7 +17,8 @@
     "@types/react-test-renderer": "^15.5.1",
     "keycode": "^2.1.9",
     "react": "^15.5.4",
-    "react-dom": "^15.5.4"
+    "react-dom": "^15.5.4",
+    "react-youtube": "^7.4.0"
   },
   "devDependencies": {
     "@types/jest": "^20.0.2",
