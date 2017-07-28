@@ -1,11 +1,18 @@
 import * as React from "react";
 import * as keycode from "keycode";
+import YouTube from "react-youtube";
 import {
   FoundationNode,
   FoundationNodeProps,
   FoundationTextType
 } from "../Foundation";
 import { getNodeArray, getHighlightedNodes } from "../../utils/functions";
+
+interface YTPlayerParameters {
+  rel: number;
+  start?: number;
+  end?: number;
+}
 
 ////////////////////
 // Document model //
@@ -18,6 +25,11 @@ export interface DocumentBlock {
   kind: "document";
   document: FoundationTextType;
   range: [number, number];
+}
+export interface VideoBlock {
+  kind: "video";
+  videoId: string;
+  range?: [number, number];
 }
 export interface EventHandlers {
   handleDelete: (idx: number) => void;
@@ -43,8 +55,15 @@ export interface DocumentBlockProps {
 export interface DocumentBlockState {
   documentNodes: FoundationNode[];
 }
+export interface VideoBlockProps {
+  idx: number;
+  active: boolean;
+  block: VideoBlock;
+  eventHandlers: EventHandlers;
+}
+export interface VideoBlockState {}
 
-export type TakeBlock = ParagraphBlock | DocumentBlock;
+export type TakeBlock = ParagraphBlock | DocumentBlock | VideoBlock;
 
 export interface TakeDocument {
   title: string;
@@ -211,6 +230,73 @@ class Document extends React.Component<DocumentBlockProps, DocumentBlockState> {
   }
 }
 
+class Video extends React.Component<VideoBlockProps, VideoBlockState> {
+  constructor(props: VideoBlockProps) {
+    super(props);
+  }
+  handleClick = () => {
+    this.props.eventHandlers.handleFocus(this.props.idx);
+  };
+  handleFocus = () => {
+    this.props.eventHandlers.handleFocus(this.props.idx);
+  };
+  handleKeyDown = (ev: React.KeyboardEvent<HTMLDivElement>) => {
+    switch (ev.keyCode) {
+      case keycode("enter"):
+        this.props.eventHandlers.handleEnterPress();
+        break;
+      case keycode("backspace") || keycode("delete"):
+        this.props.eventHandlers.handleDelete(this.props.idx);
+        break;
+      default:
+        break;
+    }
+  };
+  handleVideoEnd = (event: any) => {
+    event.target.stopVideo();
+  };
+  render() {
+    const { props } = this;
+
+    let classes = "editor__video-container";
+    if (this.props.active) {
+      classes += " editor__video-container--active";
+    }
+
+    let playerVars: YTPlayerParameters = {
+      rel: 0
+    };
+
+    if (props.block.range) {
+      playerVars.start = props.block.range[0];
+      playerVars.end = props.block.range[1];
+    }
+
+    const opts = {
+      height: "315",
+      width: "560",
+      playerVars: playerVars
+    };
+
+    return (
+      <div
+        tabIndex={0}
+        className={classes}
+        onClick={this.handleClick}
+        onFocus={this.handleFocus}
+        onKeyDown={this.handleKeyDown}
+      >
+        <YouTube
+          videoId={props.block.videoId}
+          opts={opts}
+          onEnd={this.handleVideoEnd}
+          className="editor__video"
+        />
+      </div>
+    );
+  }
+}
+
 export interface BlockContainerProps {
   block: TakeBlock;
   index: number;
@@ -249,6 +335,15 @@ class BlockContainer extends React.Component<BlockContainerProps, void> {
         inner = (
           <Document
             block={props.block}
+            idx={props.index}
+            active={props.active}
+            eventHandlers={eventHandlers}
+          />
+        );
+      case "video":
+        inner = (
+          <Video
+            block={props.block as VideoBlock}
             idx={props.index}
             active={props.active}
             eventHandlers={eventHandlers}
