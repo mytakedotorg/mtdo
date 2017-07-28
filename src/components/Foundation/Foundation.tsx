@@ -102,7 +102,11 @@ function DebatesCard(props: FoundationCardProps) {
 }
 
 interface FoundationProps {
-  handleSetClick: (type: FoundationTextType, range: [number, number]) => void;
+  handleDocumentSetClick: (
+    type: FoundationTextType,
+    range: [number, number]
+  ) => void;
+  handleVideoSetClick: (id: string, range: [number, number]) => void;
 }
 
 interface FoundationState {
@@ -162,7 +166,7 @@ export default class Foundation extends React.Component<
           <div className="foundation">
             <Amendments
               onBackClick={this.handleBackClick}
-              onSetClick={props.handleSetClick}
+              onSetClick={props.handleDocumentSetClick}
             />
           </div>
         );
@@ -171,14 +175,17 @@ export default class Foundation extends React.Component<
           <div className="foundation">
             <Constitution
               onBackClick={this.handleBackClick}
-              onSetClick={props.handleSetClick}
+              onSetClick={props.handleDocumentSetClick}
             />
           </div>
         );
       case "DEBATES":
         return (
           <div className="foundation">
-            <Debates onBackClick={this.handleBackClick} />
+            <Debates
+              onBackClick={this.handleBackClick}
+              onSetClick={props.handleVideoSetClick}
+            />
           </div>
         );
       default:
