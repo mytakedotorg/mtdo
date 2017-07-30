@@ -1,3 +1,18 @@
+@mixin button {
+  @include body;
+  position: relative;
+  border-radius: 5px;
+  display: inline-block;
+  padding: 5px;
+  text-decoration: none;
+  -webkit-appearance: none; // prevent weird iOS look with <button> elements
+  height: 35px;
+  line-height: 35px;
+  overflow: hidden;
+  &:hover {
+    cursor: pointer;
+  }
+}
 @mixin clearfix {
   &::after {
     clear: both;

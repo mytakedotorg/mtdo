@@ -62,9 +62,9 @@ $palettes: (
     ),
   amendments:
     (
-      background--highlight: $tertiary-light,
+      background--highlight: lighten($base-lightest, 10%),
       background--scrollbar-track: $base-lightest,
-      background--scrollbar-thumb: $tertiary-light,
+      background--scrollbar-thumb: $white,
       border: $base-lightest,
       shadow: $base-darkest,
       text: $base-darkest,
@@ -72,9 +72,9 @@ $palettes: (
     ),
   constitution:
     (
-      background--highlight: $tertiary-light,
+      background--highlight: lighten($base-lightest, 10%),
       background--scrollbar-track: $base-lightest,
-      background--scrollbar-thumb: $tertiary-light,
+      background--scrollbar-thumb: $white,
       border: $base-lightest,
       shadow: $base-darkest,
       text: $base-darkest,
@@ -83,11 +83,21 @@ $palettes: (
   debates: (text: $base-darkest),
   editor:
     (
-      background--highlight: $tertiary-light,
+      background--highlight: lighten($base-lightest, 10%),
       border: $base-lightest,
       shadow: $base-darkest,
       text: $base-darkest,
       text--highlight: $base-darkest
+    ),
+  feed:
+    (
+      background--highlight: lighten($base-lightest, 10%),
+      card__border: $base-lightest,
+      card__shadow: $base-darkest,
+      text: $base-darkest,
+      text--document: $base-darkest,
+      text--highlight: $base-darkest,
+      text--faded: $base-darkest
     ),
   foundation:
     (
@@ -95,5 +105,20 @@ $palettes: (
       card-title--debates: $white,
       card-border: $base-lightest,
       shadow: $base-darkest
-    )
+    ),
+  hero:
+    (
+      background: $base,
+      title: $white,
+      text: $base-lightest,
+      text--special: $white
+    ),
+  button:
+    (
+      background--action: $action,
+      background--action-hover: $action-light,
+      color--action: $white,
+      color--action-shadow: $base
+    ),
+  about: (text--special: $base, text: $base-darkest)
 );

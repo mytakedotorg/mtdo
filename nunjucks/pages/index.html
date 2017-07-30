@@ -1,5 +1,46 @@
-{% extends "react.html" %}
+{% extends "base.html" %}
 
 {% block content %}
-  <div id="app"></div>
+<div class="hero__wrapper">
+	<div class="hero">
+		<div class="hero__inner-container">
+			<h1 class="hero__title">Shape The Discussion</h1>
+			<p class="hero__text">Explore a <span class="hero__text--special">Foundation</span> of <span class="hero__text--special">Facts.</span></p>
+			<p class="hero__text">Form your own opinion</p>
+			<p class="hero__text">Share your <span class="hero__text--special">Take.</span></p>
+			<a class="hero__button" href="/editor.html">Get Started</a>
+		</div>
+	</div>
+</div>
+<div class="feed">
+	<div class="feed__card">
+		<a href="/conservative.html" class="feed__link"><span></span></a>
+		<h2 class="feed__card-title">Does a law mean what it says, or what it meant?</h2>
+		<div class="feed_card-excerpt">
+			<div class="feed__card-document">
+				<h2 class="feed__card-document-title">Amendment 2</h2>
+				<p class="feed__card-document-text"><span class="feed__card-document-text--highlight">A well regulated Militia, being necessary to the security of a free State, the right of the people to keep and bear Arms, shall not be infringed.</span></p>
+			</div>
+			<div class="feed__card-text-container">
+				<p class="feed__card-text">If our judges get to decide that the law means whatever they want it to mean, then we still live under a King, we’ve just changed his name to Judge. That’s why it’s important to apply consistent methodology when interpreting the law. But in this case, whether you’re a Textualist or an Originalist, I don’t see how the 2nd amendment allows for any of the gun restrictions in place today...</p>
+				<span class="feed__more">Read more</span>
+			</div>
+		</div>
+	</div>
+	<div>
+		<div class="feed__card">
+			<a href="/liberal.html" class="feed__link"><span></span></a>
+			<h2 class="feed__card-title">Don’t worry, we’ll protect the Constitution for you!</h2>
+			<div class="feed_card-excerpt">
+				<div class="feed__card-document">
+					<p class="feed__card-document-text"><span class="feed__card-document-text--highlight">He shall have Power, by and with the Advice and Consent of the Senate, to make Treaties, provided two thirds of the Senators present concur; and he shall nominate, and by and with the Advice and Consent of the Senate, shall appoint Ambassadors, other public Ministers and Consuls, Judges of the supreme Court, and all other Officers of the United States, whose Appointments are not herein otherwise provided for, and which shall be established by Law: but the Congress may by Law vest the Appointment of such inferior Officers, as they think proper, in the President alone, in the Courts of Law, or in the Heads of Departments.</span></p>
+				</div>
+				<div class="feed__card-text-container">
+					<p class="feed__card-text">The system for appointing judges to the Supreme Court is quite complex. Only a lawyer with years of experience could understand it. But trust me – this President has no right to make an appointment! We’ll let the people decide in the next election, as demanded by our Constitution!!...</p>
+					<span class="feed__more">Read more</span>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>	
 {% endblock %}
