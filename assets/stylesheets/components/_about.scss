@@ -1,31 +1,32 @@
 .about {
-	margin: 2rem 4rem;
+  margin: 2rem 4rem;
 }
 .about__text {
-	@include body;
-	color: palette(about, text);
+  @include body;
+  color: palette(about, text);
 }
 .about__text--lead {
-	@include body--lead;
+  @include body--lead;
 }
 .about__text--aside {
-	font-size: 10px;
+  font-size: 10px;
 }
-.about__list-item, .about__sub-list-item {
-	@include body;
+.about__list-item,
+.about__sub-list-item {
+  @include body;
 }
 .about__text--special {
-	color: palette(about, text--special);
-	font-weight: 700;
+  color: palette(about, text--special);
+  font-weight: 700;
 }
 .about__link {
-	text-decoration: none;
-	color: palette(about, text);
+  text-decoration: none;
+  color: palette(about, text);
 }
 .about__image-container {
-	text-align: center;
+  text-align: center;
 }
 .about__image {
-	max-width: 100%;
-	height: auto;
+  max-width: 100%;
+  height: auto;
 }

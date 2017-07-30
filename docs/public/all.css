@@ -104,7 +104,7 @@
 
 .editor__document-highlight {
   color: #051a38;
-  background-color: #d4cf69; }
+  background-color: #94a5bc; }
 
 .foundation {
   margin-left: 3rem;
@@ -243,14 +243,14 @@
     width: 10px; }
   .constitution__text::-webkit-scrollbar-thumb {
     border-radius: 2px;
-    background-color: #d4cf69;
+    background-color: #fff;
     -webkit-box-shadow: 0 0 1px rgba(255, 255, 255, 0.5); }
   .constitution__text::-webkit-scrollbar-track {
     background-color: #758aa8; }
 
 .constitution__text--selected {
   color: #051a38;
-  background-color: #d4cf69;
+  background-color: #94a5bc;
   cursor: pointer; }
 
 .amendments__heading {
@@ -307,14 +307,14 @@
     width: 10px; }
   .amendments__text::-webkit-scrollbar-thumb {
     border-radius: 2px;
-    background-color: #d4cf69;
+    background-color: #fff;
     -webkit-box-shadow: 0 0 1px rgba(255, 255, 255, 0.5); }
   .amendments__text::-webkit-scrollbar-track {
     background-color: #758aa8; }
 
 .amendments__text--selected {
   color: #051a38;
-  background-color: #d4cf69;
+  background-color: #94a5bc;
   cursor: pointer; }
 
 .debates__heading {
@@ -444,7 +444,7 @@
 
 .feed__card {
   position: relative;
-  border: #a4d990;
+  border: #758aa8;
   box-shadow: 2px 2px 4px #051a38;
   color: #051a38;
   padding-top: 5px;
@@ -472,7 +472,7 @@
   padding-bottom: 5px;
   margin-left: 15px;
   margin-right: 15px;
-  border: 1px solid #a4d990; }
+  border: 1px solid #758aa8; }
 
 .feed__card-document-title {
   font-family: "Source Sans Pro", sans-serif;
@@ -482,7 +482,7 @@
   font-style: italic;
   margin-left: 15px;
   margin-right: 15px;
-  color: #134800; }
+  color: #051a38; }
 
 .feed__card-document-text {
   font-family: "Merriweather", serif;
@@ -492,14 +492,18 @@
   font-style: italic;
   margin-left: 15px;
   margin-right: 15px;
-  color: #134800; }
+  color: #051a38; }
 
 .feed__card-document-text--highlight {
   color: #051a38;
-  background-color: #a4d990; }
+  background-color: #94a5bc; }
 
 .feed__card-text-container {
   margin: 10px 15px; }
+  .feed__card-text-container::after {
+    clear: both;
+    content: "";
+    display: table; }
 
 .feed__card-text {
   margin-top: 0;
@@ -508,7 +512,16 @@
   font-weight: 400;
   font-size: 13px;
   line-height: 1.7em;
-  color: #758aa8; }
+  color: #051a38; }
+
+.feed__more {
+  float: right;
+  font-family: "Merriweather", serif;
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 1.7em;
+  color: #051a38;
+  margin-right: 1rem; }
 
 .hero {
   background-color: #2c4770;
@@ -593,7 +606,8 @@
 .about__text--aside {
   font-size: 10px; }
 
-.about__list-item, .about__sub-list-item {
+.about__list-item,
+.about__sub-list-item {
   font-family: "Merriweather", serif;
   font-weight: 400;
   font-size: 15px;

@@ -1,41 +1,41 @@
 .hero {
-	background-color: palette(hero, background);
-	float: left;
-	width: 100%;
-	position: relative;
-	height: 400px;	
+  background-color: palette(hero, background);
+  float: left;
+  width: 100%;
+  position: relative;
+  height: 400px;
 }
 .hero__wrapper {
-	@include clearfix;
+  @include clearfix;
 }
 .hero__inner-container {
-	position: absolute;
-	width: 100%;
-	left: 0;
-	top: 25px;
-	text-align: center;
+  position: absolute;
+  width: 100%;
+  left: 0;
+  top: 25px;
+  text-align: center;
 }
 .hero__title {
-	@include heading2;
-	color: palette(hero, title);
-	@media screen and (min-width: 480px) {
-		@include heading1;
-	}
+  @include heading2;
+  color: palette(hero, title);
+  @media screen and (min-width: 480px) {
+    @include heading1;
+  }
 }
 .hero__text {
-	@include body--lead;
-	color: palette(hero, text);
+  @include body--lead;
+  color: palette(hero, text);
 }
 .hero__text--special {
-	color: palette(hero, text--special);
+  color: palette(hero, text--special);
 }
 .hero__button {
-	@include button;
-	color: palette(button, color--action);
-	//text-shadow: 1px 1px palette(button, color--action-shadow);
-	background: palette(button, background--action);
-	&:hover {
-		background: palette(button, background--action-hover);
-	}
-	width: 300px;
+  @include button;
+  color: palette(button, color--action);
+  //text-shadow: 1px 1px palette(button, color--action-shadow);
+  background: palette(button, background--action);
+  &:hover {
+    background: palette(button, background--action-hover);
+  }
+  width: 300px;
 }
