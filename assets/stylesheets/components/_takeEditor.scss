@@ -74,3 +74,8 @@
   color: palette(editor, text--highlight);
   background-color: palette(editor, background--highlight);
 }
+.editor__video {
+  display: block;
+  margin: auto;
+  max-width: 100%;
+}

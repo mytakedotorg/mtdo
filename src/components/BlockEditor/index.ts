@@ -2,8 +2,9 @@ import BlockEditor, {
   DocumentBlock,
   ParagraphBlock,
   TakeBlock,
-  TakeDocument
+  TakeDocument,
+  VideoBlock
 } from "./BlockEditor";
 
-export { DocumentBlock, ParagraphBlock, TakeBlock, TakeDocument };
+export { DocumentBlock, ParagraphBlock, TakeBlock, TakeDocument, VideoBlock };
 export default BlockEditor;

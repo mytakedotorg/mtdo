@@ -1,3 +1,5 @@
+declare module "react-youtube";
+
 interface SlateEditorState {
   document: SlateDocument;
   selection: SlateSelection;

@@ -3,7 +3,8 @@ import BlockEditor, {
   DocumentBlock,
   ParagraphBlock,
   TakeBlock,
-  TakeDocument
+  TakeDocument,
+  VideoBlock
 } from "../BlockEditor";
 import Foundation, { FoundationTextType } from "../Foundation";
 
@@ -79,6 +80,30 @@ class MyTake extends React.Component<MyTakeProps, MyTakeState> {
         blocks: newBlocks
       },
       activeBlockIndex: newIndex
+    });
+  };
+  addVideo = (id: string, range: [number, number]): void => {
+    const blocks = this.state.takeDocument.blocks;
+    let activeBlockIndex = this.state.activeBlockIndex;
+
+    const newBlock: VideoBlock = {
+      kind: "video",
+      range: range,
+      videoId: id
+    };
+
+    const newBlocks = [
+      ...blocks.slice(0, activeBlockIndex + 1),
+      newBlock,
+      ...blocks.slice(activeBlockIndex + 1)
+    ];
+
+    this.setState({
+      takeDocument: {
+        ...this.state.takeDocument,
+        blocks: newBlocks
+      },
+      activeBlockIndex: ++activeBlockIndex
     });
   };
   removeParagraph = (idx: number): void => {
@@ -171,7 +196,10 @@ class MyTake extends React.Component<MyTakeProps, MyTakeState> {
           takeDocument={(Object as any).assign({}, this.state.takeDocument)}
           active={this.state.activeBlockIndex}
         />
-        <Foundation handleSetClick={this.addDocument} />
+        <Foundation
+          handleDocumentSetClick={this.addDocument}
+          handleVideoSetClick={this.addVideo}
+        />
       </div>
     );
   }
