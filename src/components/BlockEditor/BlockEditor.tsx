@@ -331,7 +331,7 @@ class BlockContainer extends React.Component<BlockContainerProps, void> {
           />
         );
         break;
-      case "document":
+			case "document":
         inner = (
           <Document
             block={props.block}
@@ -339,8 +339,9 @@ class BlockContainer extends React.Component<BlockContainerProps, void> {
             active={props.active}
             eventHandlers={eventHandlers}
           />
-        );
-      case "video":
+				);
+				break;
+			case "video":
         inner = (
           <Video
             block={props.block as VideoBlock}
