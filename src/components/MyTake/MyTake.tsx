@@ -127,18 +127,15 @@ class MyTake extends React.Component<MyTakeProps, MyTakeState> {
       }
     }
   };
-  handleTakeBlockChange = (
-    stateIndex: number,
-    value: string,
-    isTitle?: boolean
-  ): void => {
-    if (isTitle) {
+  handleTakeBlockChange = (stateIndex: number, value: string): void => {
+    if (stateIndex === -1) {
       // Change the title
       this.setState({
         takeDocument: {
           ...this.state.takeDocument,
           title: value
-        }
+        },
+        activeBlockIndex: -1
       });
     } else {
       const blocks = [...this.state.takeDocument.blocks];

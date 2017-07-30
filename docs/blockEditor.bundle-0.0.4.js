@@ -10273,6 +10273,7 @@ var Paragraph = (function (_super) {
         return _this;
     }
     Paragraph.prototype.componentDidMount = function () {
+        this.resetHeight();
         if (this.props.active) {
             this.textarea.focus();
         }
@@ -10423,7 +10424,7 @@ var BlockEditor = (function (_super) {
     function BlockEditor(props) {
         var _this = _super.call(this, props) || this;
         _this.handleChange = function (ev) {
-            _this.props.handleChange(0, ev.target.value, true);
+            _this.props.handleChange(-1, ev.target.value);
         };
         _this.handleKeyDown = function (ev) {
             if (ev.keyCode === keycode("enter")) {
@@ -10432,11 +10433,15 @@ var BlockEditor = (function (_super) {
             }
         };
         _this.handleKeyUp = function (ev) {
+            _this.resetHeight();
+        };
+        _this.resetHeight = function () {
             var content = _this.props.takeDocument.title;
             content = content.replace(/\n/g, "<br />");
             _this.div.innerHTML = content + "<br />";
+            var height = _this.div.clientHeight;
             _this.setState({
-                style: { height: _this.div.clientHeight }
+                style: { height: height }
             });
         };
         _this.state = {
@@ -10444,13 +10449,26 @@ var BlockEditor = (function (_super) {
         };
         return _this;
     }
+    BlockEditor.prototype.componentDidMount = function () {
+        this.resetHeight();
+        if (this.props.active === -1) {
+            this.textarea.focus();
+        }
+    };
+    BlockEditor.prototype.componentDidUpdate = function () {
+        if (this.props.active === -1) {
+            this.textarea.focus();
+        }
+    };
     BlockEditor.prototype.render = function () {
         var _this = this;
         var props = this.props;
         return (React.createElement("div", { className: "editor__wrapper" },
             React.createElement("div", { className: "editor" },
                 React.createElement("div", { className: "editor__inner" },
-                    React.createElement("textarea", { className: "editor__title", onChange: this.handleChange, onKeyDown: this.handleKeyDown, onKeyUp: this.handleKeyUp, placeholder: "Title", value: props.takeDocument.title, style: this.state.style }),
+                    React.createElement("textarea", { className: "editor__title", onChange: this.handleChange, onKeyDown: this.handleKeyDown, onKeyUp: this.handleKeyUp, placeholder: "Title", value: props.takeDocument.title, style: this.state.style, ref: function (textarea) {
+                            return (_this.textarea = textarea);
+                        } }),
                     React.createElement("div", { className: "editor__title-height-div", ref: function (div) { return (_this.div = div); } }),
                     React.createElement("div", { className: "editor__block-list" }, props.takeDocument.blocks.map(function (block, idx) {
                         return React.createElement(BlockContainer, { key: idx.toString(), index: idx, block: Object.assign({}, block), handleDelete: props.handleDelete, handleChange: props.handleChange, handleFocus: props.handleFocus, handleEnter: props.handleEnter, active: idx === props.active });

@@ -129,6 +129,7 @@ class Paragraph extends React.Component<
     });
   };
   componentDidMount() {
+    this.resetHeight();
     if (this.props.active) {
       this.textarea.focus();
     }
@@ -331,7 +332,7 @@ class BlockContainer extends React.Component<BlockContainerProps, void> {
           />
         );
         break;
-			case "document":
+      case "document":
         inner = (
           <Document
             block={props.block}
@@ -339,9 +340,9 @@ class BlockContainer extends React.Component<BlockContainerProps, void> {
             active={props.active}
             eventHandlers={eventHandlers}
           />
-				);
-				break;
-			case "video":
+        );
+        break;
+      case "video":
         inner = (
           <Video
             block={props.block as VideoBlock}
@@ -375,6 +376,7 @@ export interface BlockEditorState {
 }
 
 class BlockEditor extends React.Component<BlockEditorProps, BlockEditorState> {
+  private textarea: HTMLTextAreaElement;
   private div: HTMLDivElement;
   constructor(props: BlockEditorProps) {
     super(props);
@@ -384,7 +386,7 @@ class BlockEditor extends React.Component<BlockEditorProps, BlockEditorState> {
     };
   }
   handleChange = (ev: React.ChangeEvent<HTMLTextAreaElement>) => {
-    this.props.handleChange(0, ev.target.value, true);
+    this.props.handleChange(-1, ev.target.value);
   };
   handleKeyDown = (ev: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (ev.keyCode === keycode("enter")) {
@@ -393,13 +395,28 @@ class BlockEditor extends React.Component<BlockEditorProps, BlockEditorState> {
     }
   };
   handleKeyUp = (ev: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    this.resetHeight();
+  };
+  resetHeight = () => {
     let content: string = this.props.takeDocument.title;
     content = content.replace(/\n/g, "<br />");
     this.div.innerHTML = content + "<br />";
+    let height = this.div.clientHeight;
     this.setState({
-      style: { height: this.div.clientHeight }
+      style: { height: height }
     });
   };
+  componentDidMount() {
+    this.resetHeight();
+    if (this.props.active === -1) {
+      this.textarea.focus();
+    }
+  }
+  componentDidUpdate() {
+    if (this.props.active === -1) {
+      this.textarea.focus();
+    }
+  }
   render() {
     const { props } = this;
     return (
@@ -414,6 +431,8 @@ class BlockEditor extends React.Component<BlockEditorProps, BlockEditorState> {
               placeholder="Title"
               value={props.takeDocument.title}
               style={this.state.style}
+              ref={(textarea: HTMLTextAreaElement) =>
+                (this.textarea = textarea)}
             />
             <div
               className="editor__title-height-div"
