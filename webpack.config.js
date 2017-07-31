@@ -5,7 +5,7 @@ module.exports = {
 	},
 
   output: {
-    filename: "[name].bundle-0.0.4.js",  // There are more stable cache busting solutions for the long term
+    filename: "[name].[hash].bundle.js",
     path: __dirname + "/docs/"
   },
 
