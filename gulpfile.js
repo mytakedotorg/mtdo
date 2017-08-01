@@ -32,7 +32,8 @@ gulp.task('css', () => {
 gulp.task('nunjucks', () => {
   return gulp.src(config.nunjucksPages + '/**/*.html')
     .pipe(nunjucks({
-      searchPaths: [config.nunjucksTemplates]
+      searchPaths: [config.nunjucksTemplates],
+      locals: { manifest: require('./docs/manifest.json') }
     }))
     .pipe(gulp.dest(config.siteRoot))
 });
