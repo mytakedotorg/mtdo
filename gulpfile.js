@@ -38,17 +38,20 @@ gulp.task('nunjucks', () => {
     .pipe(gulp.dest(config.siteRoot))
 });
 
-gulp.task('webpack', () => {
+gulp.task('webpack', (cb) => {
   const webpack = child.spawn('webpack');
-
+  // log
   const webpackLogger = (buffer) => {
     buffer.toString()
       .split(/\n/)
       .forEach((message) => gutil.log('Webpack: ' + message));
   };
-
   webpack.stdout.on('data', webpackLogger);
   webpack.stderr.on('data', webpackLogger);
+  // block until webpack exits
+  webpack.on('close', (code) => {
+    cb(code);
+  })
 });
 
 gulp.task('serve', () => {
@@ -66,4 +69,5 @@ gulp.task('serve', () => {
   gulp.watch(config.sassFilter, ['css']);
 });
 
-gulp.task('default', ['css', 'nunjucks', 'webpack', 'serve']);
+gulp.task('default', ['css', 'webpack', 'nunjucks', 'serve']);
+gulp.task('build', ['css', 'webpack', 'nunjucks']);
