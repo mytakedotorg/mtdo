@@ -1,3 +1,5 @@
+var ManifestPlugin = require('webpack-manifest-plugin');
+
 module.exports = {
   entry: {
 		app: __dirname + "/src/index.tsx",
@@ -5,7 +7,7 @@ module.exports = {
 	},
 
   output: {
-    filename: "[name].[hash].bundle.js",
+    filename: "[name].[chunkhash:8].bundle.js",
     path: __dirname + "/docs/"
   },
 
@@ -57,4 +59,7 @@ module.exports = {
     "react": "React",
     "react-dom": "ReactDOM"
   },
+  plugins: [
+    new ManifestPlugin()
+  ]
 };

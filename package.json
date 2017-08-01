@@ -49,7 +49,8 @@
     "ts-jest": "^20.0.5",
     "typescript": "^2.3.3",
     "url-loader": "^0.5.9",
-    "webpack": "^2.6.1"
+    "webpack": "^2.6.1",
+    "webpack-manifest-plugin": "^1.2.1"
   },
   "jest": {
     "transform": {
