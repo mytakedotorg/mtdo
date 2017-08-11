@@ -1,5 +1,6 @@
 const gulp = require('gulp')
-  child = require('child_process')
+  webpackCore = require('webpack')
+  webpack = require('webpack-stream')
   gutil = require('gulp-util')
   nunjucks = require('gulp-nunjucks-html')
   concat = require('gulp-concat')
@@ -29,29 +30,23 @@ gulp.task('css', () => {
 		.pipe(gulp.dest(config.publicDir))
 });
 
-gulp.task('nunjucks', () => {
-  return gulp.src(config.nunjucksPages + '/**/*.html')
+gulp.task('webpack', (cb) => {
+  gulp.src(config.siteSrc)
+    .pipe(webpack({
+      config : require('./webpack.config.js')
+    }, webpackCore, (err, stats) => {
+      cb(err)
+    }))
+    .pipe(gulp.dest(config.siteRoot))
+});
+
+gulp.task('nunjucks', ['webpack'], () => {
+  gulp.src(config.nunjucksPages + '/**/*.html')
     .pipe(nunjucks({
       searchPaths: [config.nunjucksTemplates],
       locals: { manifest: require('./docs/manifest.json') }
     }))
     .pipe(gulp.dest(config.siteRoot))
-});
-
-gulp.task('webpack', (cb) => {
-  const webpack = child.spawn('webpack');
-  // log
-  const webpackLogger = (buffer) => {
-    buffer.toString()
-      .split(/\n/)
-      .forEach((message) => gutil.log('Webpack: ' + message));
-  };
-  webpack.stdout.on('data', webpackLogger);
-  webpack.stderr.on('data', webpackLogger);
-  // block until webpack exits
-  webpack.on('close', (code) => {
-    cb(code);
-  })
 });
 
 gulp.task('serve', () => {
