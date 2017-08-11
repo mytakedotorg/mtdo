@@ -14,7 +14,7 @@ const config = {
   publicDir: './docs/public',
   nunjucksTemplates: './nunjucks/templates',
   nunjucksPages: './nunjucks/pages',
-  siteSrc: './src/**/*',
+  siteSrc: ['./src/**/*', '!src/**/*.spec.js'],
   sassFilter:  './assets/stylesheets/**/*.?(s)css'
 }
 
