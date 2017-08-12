@@ -1,6 +1,8 @@
 const gulp = require('gulp')
   webpackCore = require('webpack')
   webpack = require('webpack-stream')
+  path = require('path')
+  fs = require('fs')
   gutil = require('gulp-util')
   nunjucks = require('gulp-nunjucks-html')
   concat = require('gulp-concat')
@@ -10,8 +12,8 @@ const gulp = require('gulp')
   browserSync = require('browser-sync').create();
 
 const config = {
-  siteRoot: './docs',
-  publicDir: './docs/public',
+  siteRoot: './dist',
+  publicDir: './dist/public',
   nunjucksTemplates: './nunjucks/templates',
   nunjucksPages: './nunjucks/pages',
   siteSrc: ['./src/**/*', '!src/**/*.spec.js'],
@@ -35,6 +37,11 @@ gulp.task('webpack', (cb) => {
     .pipe(webpack({
       config : require('./webpack.config.js')
     }, webpackCore, (err, stats) => {
+      // workaround for https://github.com/shama/webpack-stream/issues/161
+      const abspath = path.resolve(config.siteRoot + '/manifest.json')
+      const content = stats.compilation.compiler.outputFileSystem.readFileSync(abspath)
+      fs.writeFileSync(abspath, content)
+      // makes this task blocking
       cb(err)
     }))
     .pipe(gulp.dest(config.siteRoot))
@@ -44,7 +51,7 @@ gulp.task('nunjucks', ['webpack'], () => {
   gulp.src(config.nunjucksPages + '/**/*.html')
     .pipe(nunjucks({
       searchPaths: [config.nunjucksTemplates],
-      locals: { manifest: require('./docs/manifest.json') }
+      locals: { manifest: require(config.siteRoot + '/manifest.json') }
     }))
     .pipe(gulp.dest(config.siteRoot))
 });

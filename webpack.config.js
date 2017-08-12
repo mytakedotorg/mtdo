@@ -8,7 +8,7 @@ module.exports = {
 
   output: {
     filename: "[name].[chunkhash:8].bundle.js",
-    path: __dirname + "/docs/"
+    path: __dirname + "/dist/"
   },
 
   // Enable sourcemaps for debugging webpack's output.
