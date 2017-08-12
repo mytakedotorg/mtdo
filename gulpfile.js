@@ -14,6 +14,7 @@ const gulp = require('gulp')
   // misc
   browserSync = require('browser-sync').create();
   rev = require('gulp-rev');
+  tasklisting = require('gulp-task-listing');
 
 const config = {
   dist: './dist',
@@ -63,7 +64,7 @@ function setupPipeline(mode) {
   gulp.task(SERVE + mode, [nunjucks], browserSyncCfg(mode))
 }
 
-gulp.task('default', [SERVE]);
+gulp.task('default', tasklisting.withFilters(/nunjucks|rev|sass|default|webpack/))
 
 //////////////////////
 // Config functions //
