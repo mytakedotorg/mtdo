@@ -17,6 +17,7 @@ const gulp = require('gulp')
 
 const config = {
   dist: './dist',
+  unhashed: './dist-unhashed',
   sassSrc:  './assets/stylesheets/**/*.?(s)css',
   webpackSrc: ['./src/**/*', '!src/**/*.spec.js'],
   nunjucksTemplates: './nunjucks/templates',
@@ -29,44 +30,44 @@ const config = {
 const BUILD = 'build'
 const SERVE = 'serve'
 
-function setup(mode) {
+const DEV = 'Dev'
+const PROD = 'Prod'
+
+setupPipeline(DEV)
+setupPipeline(PROD)
+
+function setupPipeline(mode) {
   const sass = 'sass' + mode;
   const webpack = 'webpack' + mode;
   const nunjucks = 'nunjucks' + mode;
   gulp.task(sass, sassCfg(mode))
   gulp.task(webpack, webpackCfg(mode))
-  gulp.task(nunjucks, [webpack], nunjucksCfg(mode))
+
+  if (mode === DEV) {
+    gulp.task(nunjucks, [webpack], nunjucksCfg(mode))
+  } else {
+    const revtask = 'rev' + mode;
+    gulp.task(revtask, [sass, webpack], () => {
+      gulp.src([config.unhashed + '/*.css', config.unhashed + '/*.js'])
+        .pipe(rev())
+        .pipe(gulp.dest(config.dist))
+        .pipe(rev.manifest())
+        .pipe(gulp.dest(config.unhashed))
+      gulp.src([config.unhashed + '/*.jpg', config.unhashed + '/*.js'])
+        .pipe(gulp.dest(config.dist))
+    })
+    gulp.task(nunjucks, [revtask], nunjucksCfg(mode))
+  }
 
   gulp.task(BUILD + mode, [nunjucks])
-  gulp.task(SERVE + mode, browserSyncCfg(mode))
+  gulp.task(SERVE + mode, [nunjucks], browserSyncCfg(mode))
 }
-const DEV = 'Dev'
-const PROD = 'Prod'
-setup(DEV)
-setup(PROD)
 
-gulp.task(SERVE, [SERVE + DEV])
-gulp.task(BUILD, [BUILD + PROD])
 gulp.task('default', [SERVE]);
 
 //////////////////////
 // Config functions //
 //////////////////////
-function browserSyncCfg(mode) {
-  return () => {
-    browserSync.init({
-      files: [config.dist + '/**'],
-      server: {
-        baseDir: config.dist
-      }
-    });
-    gulp.watch([config.nunjucksTemplates + '/**/*.html', 
-                config.nunjucksPages + '/**/*.html'], ['nunjucks' + mode]);
-    gulp.watch(config.webpackSrc, ['webpack' + mode]);
-    gulp.watch(config.sassSrc, ['css' + mode]);
-  }
-}
-
 function sassCfg(mode) {
   return () => {
     gulp.src(config.sassSrc)
@@ -77,18 +78,7 @@ function sassCfg(mode) {
         })))
       .pipe(autoprefixer({cascade: false, browsers: ['> 0.25%']}))
       .pipe(concat('all.css'))
-      .pipe(gulp.dest(config.dist))
-  }
-}
-
-function nunjucksCfg(mode) {
-  return () => {
-    gulp.src(config.nunjucksPages + '/**/*.html')
-      .pipe(nunjucks({
-        searchPaths: [config.nunjucksTemplates],
-        locals: { manifest: require(config.dist + '/manifest.json') }
-      }))
-      .pipe(gulp.dest(config.dist))
+      .pipe(gulp.dest(config.unhashed))
   }
 }
 
@@ -101,6 +91,39 @@ function webpackCfg(mode) {
         // makes this task blocking
         cb(err)
       }))
-      .pipe(gulp.dest(config.dist))
+      .pipe(gulp.dest(config.unhashed))
+  }
+}
+
+function nunjucksCfg(mode) {
+  return () => {
+    var manifest = require(config.unhashed + '/rev-manifest.json')
+    if (mode === DEV) {
+      for (key in manifest) {
+        manifest[key] = key
+      }
+    }
+    gulp.src(config.nunjucksPages + '/**/*.html')
+      .pipe(nunjucks({
+        searchPaths: [config.nunjucksTemplates],
+        locals: { manifest: manifest }
+      }))
+      .pipe(gulp.dest(mode === PROD ? config.dist : config.unhashed))
+  }
+}
+
+function browserSyncCfg(mode) {
+  return () => {
+    dir = mode === PROD ? config.dist : config.unhashed
+    browserSync.init({
+      files: [dir + '/**'],
+      server: {
+        baseDir: dir
+      }
+    });
+    gulp.watch([config.nunjucksTemplates + '/**/*.html', 
+                config.nunjucksPages + '/**/*.html'], ['nunjucks' + mode]);
+    gulp.watch(config.webpackSrc, ['webpack' + mode]);
+    gulp.watch(config.sassSrc, ['css' + mode]);
   }
 }

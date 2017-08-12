@@ -8,3 +8,4 @@ yarn-error.log
 
 # build artifacts
 dist/
+dist-unhashed/
