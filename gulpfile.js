@@ -1,68 +1,108 @@
 const gulp = require('gulp')
-  child = require('child_process')
-  gutil = require('gulp-util')
-  nunjucks = require('gulp-nunjucks-html')
-  concat = require('gulp-concat')
-  autoprefixer = require('gulp-autoprefixer')
+  // sass
   sass = require('gulp-sass')
+  autoprefixer = require('gulp-autoprefixer')
+  concat = require('gulp-concat')
   notify = require('gulp-notify')
+  // webpack
+  webpackCore = require('webpack')
+  webpack = require('webpack-stream')
+  path = require('path')
+  fs = require('fs')
+  // html
+  nunjucks = require('gulp-nunjucks-html')
+  // misc
   browserSync = require('browser-sync').create();
+  tasklisting = require('gulp-task-listing');
+  del = require('del')
 
 const config = {
-  siteRoot: './docs',
-  publicDir: './docs/public',
+  dist: './dist',
+  sassSrc:  './assets/stylesheets/**/*.?(s)css',
+  webpackSrc: ['./src/**/*', '!src/**/*.spec.js'],
   nunjucksTemplates: './nunjucks/templates',
   nunjucksPages: './nunjucks/pages',
-  siteSrc: './src/**/*',
-  sassFilter:  './assets/stylesheets/**/*.?(s)css'
 }
 
-gulp.task('css', () => {
-	gulp.src(config.sassFilter)
-		.pipe(sass({
-			style: 'compressed'
-			}).on("error", notify.onError(function (error) {
-				return "Error: " + error.message;
-			})))
-		.pipe(autoprefixer({cascade: false, browsers: ['> 0.25%']}))
-		.pipe(concat('all.css'))
-		.pipe(gulp.dest(config.publicDir))
-});
+///////////////////////////////
+// Create dev and prod tasks //
+///////////////////////////////
+const BUILD = 'build'
+const SERVE = 'serve'
 
-gulp.task('nunjucks', () => {
-  return gulp.src(config.nunjucksPages + '/**/*.html')
-    .pipe(nunjucks({
-      searchPaths: [config.nunjucksTemplates]
-    }))
-    .pipe(gulp.dest(config.siteRoot))
-});
+const DEV = 'Dev'
+const PROD = 'Prod'
 
-gulp.task('webpack', () => {
-  const webpack = child.spawn('webpack');
+setupPipeline(DEV)
+setupPipeline(PROD)
 
-  const webpackLogger = (buffer) => {
-    buffer.toString()
-      .split(/\n/)
-      .forEach((message) => gutil.log('Webpack: ' + message));
-  };
+function setupPipeline(mode) {
+  const sass = 'sass' + mode;
+  const webpack = 'webpack' + mode;
+  const nunjucks = 'nunjucks' + mode;
+  gulp.task(sass, sassCfg(mode))
+  gulp.task(webpack, webpackCfg(mode))
+  gulp.task(nunjucks, [webpack], nunjucksCfg(mode))
+  gulp.task(BUILD + mode, [nunjucks, sass])
+  gulp.task(SERVE + mode, [BUILD + mode], browserSyncCfg(mode))
+}
 
-  webpack.stdout.on('data', webpackLogger);
-  webpack.stderr.on('data', webpackLogger);
-});
+gulp.task('default', tasklisting.withFilters(/clean|default|sass|webpack|nunjucks|rev|default/))
+gulp.task('clean', () => {
+  return del([config.dist])
+})
 
-gulp.task('serve', () => {
-  browserSync.init({
-    files: [config.siteRoot + '/**'],
-    port: 4000,
-    server: {
-      baseDir: config.siteRoot
-    }
-  });
-  
-  gulp.watch([config.nunjucksTemplates + '/**/*.html', 
-              config.nunjucksPages + '/**/*.html'], ['nunjucks'])
-  gulp.watch(config.siteSrc, ['webpack']);
-  gulp.watch(config.sassFilter, ['css']);
-});
+//////////////////////
+// Config functions //
+//////////////////////
+function sassCfg(mode) {
+  return () => {
+    gulp.src(config.sassSrc)
+      .pipe(sass({
+        style: 'compressed'
+        }).on("error", notify.onError(function (error) {
+          return "Error: " + error.message;
+        })))
+      .pipe(autoprefixer({cascade: false, browsers: ['> 0.25%']}))
+      .pipe(concat('all.css'))
+      .pipe(gulp.dest(config.dist))
+  }
+}
 
-gulp.task('default', ['css', 'nunjucks', 'webpack', 'serve']);
+function webpackCfg(mode) {
+  return (cb) => {
+    gulp.src(config.webpackSrc)
+      .pipe(webpack({
+        config : require('./webpack.config.js')
+      }, webpackCore, (err) => {
+        // makes this task blocking
+        cb(err)
+      }))
+      .pipe(gulp.dest(config.dist))
+  }
+}
+
+function nunjucksCfg(mode) {
+  return () => {
+    return gulp.src(config.nunjucksPages + '/**/*.html')
+      .pipe(nunjucks({
+        searchPaths: [config.nunjucksTemplates],
+      }))
+      .pipe(gulp.dest(config.dist))
+  }
+}
+
+function browserSyncCfg(mode) {
+  return () => {
+    browserSync.init({
+      files: [config.dist + '/**'],
+      server: {
+        baseDir: config.dist
+      }
+    });
+    gulp.watch([config.nunjucksTemplates + '/**/*.html', 
+                config.nunjucksPages + '/**/*.html'], ['nunjucks' + mode]);
+    gulp.watch(config.webpackSrc, ['webpack' + mode]);
+    gulp.watch(config.sassSrc, ['sass' + mode]);
+  }
+}

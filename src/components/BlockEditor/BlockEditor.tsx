@@ -308,7 +308,7 @@ export interface BlockContainerProps {
   active: boolean;
 }
 
-class BlockContainer extends React.Component<BlockContainerProps, void> {
+class BlockContainer extends React.Component<BlockContainerProps, {}> {
   constructor(props: BlockContainerProps) {
     super(props);
   }
