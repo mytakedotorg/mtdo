@@ -1,8 +1,8 @@
 module.exports = {
   entry: {
-		app: __dirname + "/src/index.tsx",
-		blockEditor: __dirname + "/src/blockEditor.tsx"
-	},
+    app: __dirname + "/src/index.tsx",
+    blockEditor: __dirname + "/src/blockEditor.tsx"
+  },
 
   output: {
     filename: "[name].bundle.js",
@@ -17,34 +17,34 @@ module.exports = {
     extensions: [".ts", ".tsx", ".js", ".json", ".jpg"]
   },
   resolveLoader: {
-    modules: ['node_modules', __dirname + '/loaders'],
+    modules: ["node_modules", __dirname + "/loaders"]
   },
   module: {
     rules: [
       // All files with a '.ts' or '.tsx' extension will be handled by 'awesome-typescript-loader'.
-      { 
+      {
         test: /\.tsx?$/,
-        exclude: /node_modules/, 
-        loader: "awesome-typescript-loader" 
+        exclude: /node_modules/,
+        loader: "awesome-typescript-loader"
       },
 
       // All output '.js' files will have any sourcemaps re-processed by 'source-map-loader'.
-      { 
-        enforce: "pre", 
+      {
+        enforce: "pre",
         test: /\.js$/,
         exclude: /node_modules/,
-        loader: "source-map-loader" 
+        loader: "source-map-loader"
       },
 
       // All files with a '.html' extension will be handled by 'html-loader'.
       {
         test: /\.foundation\.html$/,
-        loaders: ['html-loader', 'foundation-loader']
+        loaders: ["html-loader", "foundation-loader"]
       },
 
-      { 
-        test: /\.(png|jpg)$/, 
-        loader: 'url-loader?limit=8192' 
+      {
+        test: /\.(png|jpg)$/,
+        loader: "url-loader?limit=8192"
       } // inline base64 URLs for <=8k images, direct URLs for the rest
     ]
   },
@@ -54,7 +54,7 @@ module.exports = {
   // This is important because it allows us to avoid bundling all of our
   // dependencies, which allows browsers to cache those libraries between builds.
   externals: {
-    "react": "React",
+    react: "React",
     "react-dom": "ReactDOM"
   },
   plugins: []

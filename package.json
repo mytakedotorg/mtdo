@@ -10,8 +10,8 @@
   },
   "main": "src/index.tsx",
   "scripts": {
-    "format-list": "prettier --list-different '*.json' 'assets/**/*.scss' 'src/**/*.ts?(x)'",
-    "format-write": "prettier --write '*.json' 'assets/**/*.scss' 'src/**/*.ts?(x)'",
+    "format-list": "prettier --list-different '*.js' 'assets/**/*.scss' 'src/**/*.ts?(x)'",
+    "format-write": "prettier --write '*.js' 'assets/**/*.scss' 'src/**/*.ts?(x)'",
     "start": "gulp",
     "test": "jest"
   },
