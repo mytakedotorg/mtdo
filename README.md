@@ -2,20 +2,27 @@
 
 Here's what we have so far:
 
-- [A pitch](https://github.com/nedtwigg/mytake/wiki/Pitch)
-- [A design for our product](https://github.com/nedtwigg/mytake/wiki/Design)
-- [A prototype for our product](https://nedtwigg.github.io/mytake/)
-- We're discussing how to improve these [here](https://github.com/nedtwigg/mytake/issues).
+- [A pitch](https://github.com/mytake/mytake/wiki/Pitch)
+- [A design for our product](https://github.com/mytake/mytake/wiki/Design)
+- [A prototype for our product](https://mytake.netlify.com/)
+- We're discussing how to improve these [here](https://github.com/mytake/mytake/issues).
 
 # build instructions
  
- From root folder:
+## source locations
 
- - `npm install`
- - `npm test`
- - `npm start`
+- Sass lives in `/assets`
+- Typescript lives in `/src`
+- Html lives in `/nunjucks`
 
-This opens a browser which will refresh when you make any changes, and it will also write the compiled changes into the `docs` folder.  The `docs` folder gets served at https://nedtwigg.github.io/mytake/
+## how to get started
+
+- `gulp serveDev` serves the site from `/dist`, with live reloading.
+
+## CI
+
+- Netlify deploys the site by running `gulp buildProd` and then serving the `/dist` folder, with asset fingerprinting built-in to the serve.
+- Travis runs `npm run-script format-list` and `npm run-script test`
 
 ## update deps
 
