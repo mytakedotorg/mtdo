@@ -36,10 +36,8 @@
     "gulp": "^3.9.1",
     "gulp-autoprefixer": "^4.0.0",
     "gulp-concat": "^2.6.1",
-    "gulp-flatmap": "^1.0.0",
     "gulp-notify": "^3.0.0",
     "gulp-nunjucks-html": "^2.0.0",
-    "gulp-rev": "^8.0.0",
     "gulp-sass": "^3.1.0",
     "gulp-task-listing": "^1.0.1",
     "gulp-util": "^3.0.8",
@@ -61,6 +59,10 @@
       ".(ts|tsx)": "./node_modules/ts-jest/preprocessor.js"
     },
     "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
-    "moduleFileExtensions": ["ts", "tsx", "js"]
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js"
+    ]
   }
 }
