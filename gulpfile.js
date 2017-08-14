@@ -122,8 +122,8 @@ function nunjucksCfg(mode) {
       gulp.src(config.unhashed + '/rev-manifest.json')
         .pipe(flatmap((stream, file) => {
           var contents = JSON.parse(file.contents.toString('utf8'));
-          return forManifest(contents)
-        })).pipe(gulp.dest(config.dist))
+          return forManifest(contents).pipe(gulp.dest(config.dist))
+        }))
     }
   }
 }
