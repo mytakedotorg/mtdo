@@ -15,6 +15,8 @@ const gulp = require('gulp')
   browserSync = require('browser-sync').create();
   rev = require('gulp-rev');
   tasklisting = require('gulp-task-listing');
+  del = require('del')
+  flatmap = require('gulp-flatmap')
 
 const config = {
   dist: './dist',
@@ -64,7 +66,10 @@ function setupPipeline(mode) {
   gulp.task(SERVE + mode, [nunjucks], browserSyncCfg(mode))
 }
 
-gulp.task('default', tasklisting.withFilters(/nunjucks|rev|sass|default|webpack/))
+gulp.task('default', tasklisting.withFilters(/clean|default|sass|webpack|nunjucks|rev|default/))
+gulp.task('clean', () => {
+  return del([config.dist, config.unhashed])
+})
 
 //////////////////////
 // Config functions //
@@ -97,19 +102,29 @@ function webpackCfg(mode) {
 }
 
 function nunjucksCfg(mode) {
-  return () => {
-    var manifest = require(config.unhashed + '/rev-manifest.json')
-    if (mode === DEV) {
-      for (key in manifest) {
-        manifest[key] = key
-      }
-    }
-    gulp.src(config.nunjucksPages + '/**/*.html')
+  function forManifest(manifest) {
+    return gulp.src(config.nunjucksPages + '/**/*.html')
       .pipe(nunjucks({
         searchPaths: [config.nunjucksTemplates],
-        locals: { manifest: manifest }
+        locals: {
+          manifest: manifest
+        }
       }))
-      .pipe(gulp.dest(mode === PROD ? config.dist : config.unhashed))
+  }
+  return () => {
+    if (mode == DEV) {
+      var passthrough = {}
+      for (key in ['all.css', 'app.bundle.js', 'blockEditor.bundle.js']) {
+        passthrough[key] = key
+      }
+      return forManifest(passthrough).pipe(gulp.dest(config.unhashed))
+    } else {
+      gulp.src(config.unhashed + '/rev-manifest.json')
+        .pipe(flatmap((stream, file) => {
+          var contents = JSON.parse(file.contents.toString('utf8'));
+          return forManifest(contents)
+        })).pipe(gulp.dest(config.dist))
+    }
   }
 }
 
