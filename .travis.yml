@@ -3,13 +3,10 @@ language: node_js
 before_install:
   - npm i -g npm@5.2.0
 
-jobs:
-  include:
-    - stage: format
-    - script: npm run-script format-list
-    - stage: test
-    - script: npm test
+script:
+  - npm run-script format-list
+  - npm test
 
 cache:
   directories:
-    - "node_modules"
+    - node_modules
