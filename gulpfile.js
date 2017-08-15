@@ -19,6 +19,7 @@ del = require("del");
 const config = {
   dist: "./dist",
   sassSrc: "./assets/stylesheets/**/*.?(s)css",
+  imgSrc: "./assets/images/**/*.{jpg,png}",
   webpackSrc: ["./src/**/*", "!src/**/*.spec.js"],
   nunjucksTemplates: "./nunjucks/templates",
   nunjucksPages: "./nunjucks/pages"
@@ -40,16 +41,20 @@ function setupPipeline(mode) {
   const sass = "sass" + mode;
   const webpack = "webpack" + mode;
   const nunjucks = "nunjucks" + mode;
+  const images = "images" + mode;
   gulp.task(sass, sassCfg(mode));
   gulp.task(webpack, webpackCfg(mode));
   gulp.task(nunjucks, [webpack], nunjucksCfg(mode));
-  gulp.task(BUILD + mode, [nunjucks, sass]);
+  gulp.task(images, imagesCfg(mode));
+  gulp.task(BUILD + mode, [nunjucks, sass, images]);
   gulp.task(SERVE + mode, [BUILD + mode], browserSyncCfg(mode));
 }
 
 gulp.task(
   "default",
-  tasklisting.withFilters(/clean|default|sass|webpack|nunjucks|rev|default/)
+  tasklisting.withFilters(
+    /clean|default|sass|webpack|nunjucks|images|rev|default/
+  )
 );
 gulp.task("clean", () => {
   return del([config.dist]);
@@ -108,6 +113,14 @@ function nunjucksCfg(mode) {
         })
       )
       .pipe(gulp.dest(config.dist));
+  };
+}
+
+function imagesCfg(mode) {
+  return () => {
+    return gulp
+      .src(config.imgSrc)
+      .pipe(gulp.dest(config.dist + "/images"));
   };
 }
 
