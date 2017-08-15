@@ -118,9 +118,7 @@ function nunjucksCfg(mode) {
 
 function imagesCfg(mode) {
   return () => {
-    return gulp
-      .src(config.imgSrc)
-      .pipe(gulp.dest(config.dist + "/images"));
+    return gulp.src(config.imgSrc).pipe(gulp.dest(config.dist + "/images"));
   };
 }
 
