@@ -30,7 +30,7 @@ function AmendmentsCard(props: FoundationCardProps) {
     >
       <div className="foundation__image-container">
         <img
-          src={require("./images/amendments.jpg")}
+          src="/images/amendments.jpg"
           className="foundation__image foundation__image--amendments"
           width="220"
           height="313"
@@ -56,7 +56,7 @@ function ConstitutionCard(props: FoundationCardProps) {
     >
       <div className="foundation__image-container">
         <img
-          src={require("../../assets/images/constitution.jpg")}
+          src="/images/constitution.jpg"
           className="foundation__image foundation__image--constitution"
           width="220"
           height="313"
@@ -83,7 +83,7 @@ function DebatesCard(props: FoundationCardProps) {
     >
       <div className="foundation__image-container">
         <img
-          src={require("../../assets/images/debates.jpg")}
+          src="/images/debates.jpg"
           className="foundation__image foundation__image--debates"
           width="220"
           height="313"
