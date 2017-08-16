@@ -2,4 +2,4 @@
 [build]
   base   = ""
   public = "dist"
-  command = "gulp buildProd"
+  command = "npm run deploy"
