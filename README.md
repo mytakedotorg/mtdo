@@ -17,11 +17,11 @@ Here's what we have so far:
 
 ## how to get started
 
-- `gulp serveDev` serves the site from `/dist`, with live reloading.
+- `npm start` serves the site from `/dist`, with live reloading.
 
 ## CI
 
-- Netlify deploys the site by running `gulp buildProd` and then serving the `/dist` folder, with asset fingerprinting built-in to the serve.
+- Netlify deploys the site by running `npm run deploy` and then serving the `/dist` folder, with asset fingerprinting built-in to the serve.
 - Travis runs `npm run-script format-list` and `npm run-script test`
 
 ## update deps

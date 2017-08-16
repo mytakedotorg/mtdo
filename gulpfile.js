@@ -15,6 +15,7 @@ nunjucks = require("gulp-nunjucks-html");
 browserSync = require("browser-sync").create();
 tasklisting = require("gulp-task-listing");
 del = require("del");
+gutil = require("gulp-util");
 
 const config = {
   dist: "./dist",
@@ -97,7 +98,9 @@ function webpackCfg(mode) {
             // makes this task blocking
             cb(err);
           }
-        )
+        ).on("error", err => {
+          gutil.log("Webpack: " + err.message);
+        })
       )
       .pipe(gulp.dest(config.dist));
   };
