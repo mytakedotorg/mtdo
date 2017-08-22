@@ -1,7 +1,8 @@
 module.exports = {
   entry: {
     app: __dirname + "/src/index.tsx",
-    blockEditor: __dirname + "/src/blockEditor.tsx"
+    blockEditor: __dirname + "/src/blockEditor.tsx",
+    documentReader: __dirname + "/src/documentReader.tsx"
   },
 
   output: {
