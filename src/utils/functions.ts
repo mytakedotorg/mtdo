@@ -334,6 +334,78 @@ function highlightText(
     range: [rangeStart, rangeEnd]
   };
 }
+/**
+ * Returns offsetTop of the HTML element at the specified range index.
+ */
+function getStartRangeOffsetTop(
+  type: FoundationTextType,
+  childNodes: NodeList,
+  range: [number, number]
+): number {
+  const startRange = range[0];
+  const endRange = range[1];
+  let firstIndexClassName;
+  let secondIndexClassName;
+
+  switch (type) {
+    case "AMENDMENTS":
+      firstIndexClassName = "amendments__row";
+      secondIndexClassName = "amendments__text";
+      break;
+    case "CONSTITUTION":
+      firstIndexClassName = "constitution__row";
+      secondIndexClassName = "constitution__text";
+      break;
+    default:
+      break;
+  }
+  let containerIndex;
+  let firstNodeList = childNodes;
+  for (let i = 0; i < firstNodeList.length; i++) {
+    for (let j = 0; j < firstNodeList[i].attributes.length; j++) {
+      if (firstNodeList[i].attributes.item(j).value == firstIndexClassName) {
+        containerIndex = i;
+        break;
+      }
+    }
+    if (containerIndex !== undefined) {
+      break;
+    }
+  }
+
+  let documentIndex;
+  let secondNodeList = firstNodeList[containerIndex].childNodes;
+  for (let i = 0; i < secondNodeList.length; i++) {
+    for (let j = 0; j < secondNodeList[i].attributes.length; j++) {
+      if (secondNodeList[i].attributes.item(j).value == secondIndexClassName) {
+        documentIndex = i;
+        break;
+      }
+    }
+    if (documentIndex !== undefined) {
+      break;
+    }
+  }
+
+  let textNodes = secondNodeList[documentIndex].childNodes;
+  let resultNodes;
+  for (let idx = 0; idx < textNodes.length; idx++) {
+    if (textNodes[idx + 1]) {
+      if (parseInt(textNodes[idx].attributes[0].value) < startRange) {
+        continue;
+      }
+    }
+    if (parseInt(textNodes[idx].attributes[0].value) > endRange) {
+      break;
+    }
+    resultNodes = textNodes[idx];
+  }
+
+  let offsetTop = (resultNodes as HTMLElement).offsetTop;
+  return offsetTop;
+  //(secondNodeList[documentIndex] as HTMLElement).scrollTop = offsetTop;
+  //return resultNodes;
+}
 
 /**
  *  Create an array of React elements for each Node in a given HTML string.
@@ -394,6 +466,7 @@ function getNodeArray(type: FoundationTextType): Array<FoundationNode> {
 
 export {
   clearDefaultDOMSelection,
+  getStartRangeOffsetTop,
   getHighlightedNodes,
   getNodeArray,
   highlightText,
