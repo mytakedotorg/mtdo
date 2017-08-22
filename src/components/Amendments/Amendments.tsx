@@ -2,7 +2,9 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { FoundationTextType, FoundationNode } from "../Foundation";
 import {
+  getStartRangeOffsetTop,
   getNodeArray,
+  getHighlightedNodes,
   highlightText,
   HighlightedText
 } from "../../utils/functions";
@@ -10,12 +12,16 @@ import {
 interface AmendmentsProps {
   onBackClick: () => void;
   onSetClick: (type: FoundationTextType, range: [number, number]) => void;
+  range?: [number, number];
+  offset?: number;
 }
 
 interface AmendmentsState {
   amendmentsNodes: FoundationNode[];
   range: [number, number];
   textIsHighlighted: boolean;
+  alwaysHighlightedNodes: FoundationNode[];
+  style: any;
 }
 
 class Amendments extends React.Component<AmendmentsProps, AmendmentsState> {
@@ -24,8 +30,10 @@ class Amendments extends React.Component<AmendmentsProps, AmendmentsState> {
 
     this.state = {
       amendmentsNodes: getNodeArray("AMENDMENTS"),
-      range: [0, 0],
-      textIsHighlighted: false
+      range: props.range,
+      textIsHighlighted: false,
+      alwaysHighlightedNodes: [],
+      style: {}
     };
   }
   handleClearClick = () => {
@@ -43,7 +51,7 @@ class Amendments extends React.Component<AmendmentsProps, AmendmentsState> {
         let range: Range = selection.getRangeAt(0);
 
         const highlightedText: HighlightedText = highlightText(
-          range,
+          range, // HTML Range, not [number, number] as in props.range
           [...this.state.amendmentsNodes],
           "AMENDMENTS",
           ReactDOM.findDOMNode(this).childNodes,
@@ -61,24 +69,41 @@ class Amendments extends React.Component<AmendmentsProps, AmendmentsState> {
   handleSetClick = () => {
     this.props.onSetClick("AMENDMENTS", this.state.range);
   };
+  componentDidMount() {
+    if (this.props.range) {
+      this.setup();
+    }
+  }
+  setup = () => {
+    let alwaysHighlightedNodes = getHighlightedNodes(
+      [...this.state.amendmentsNodes],
+      this.props.range
+    );
+
+    let theseDOMNodes = ReactDOM.findDOMNode(this).childNodes;
+
+    let offsetTop = getStartRangeOffsetTop(
+      "AMENDMENTS",
+      theseDOMNodes,
+      this.props.range
+    );
+
+    this.setState({
+      alwaysHighlightedNodes: alwaysHighlightedNodes,
+      style: { top: offsetTop }
+    });
+  };
   render() {
+    let classes = "amendments";
+    if (this.props.range) {
+      classes += " amendments--ref";
+    }
     return (
-      <div className="amendments">
-        <h2 className="amendments__heading">Amendments to the Constitution</h2>
-        <p className="constitution__instructions">
-          {this.state.textIsHighlighted
-            ? "Click your selection to send it to the Take."
-            : "Highlight some text from the Amendments below."}
-        </p>
+      <div className={classes}>
         <button onClick={this.props.onBackClick}>Back to Foundation</button>
         <button onClick={this.handleClearClick}>Clear Selection</button>
+        <h2 className="amendments__heading">Amendments to the Constitution</h2>
         <div className="amendments__row">
-          <div className="amendments__sections">
-            <p>
-              &lt;This is just a placeholder block for section links to
-              autoscroll to particular parts of the amendments&gt;
-            </p>
-          </div>
           <div className="amendments__text" onMouseUp={this.handleMouseUp}>
             {this.state.amendmentsNodes.map(function(
               element: FoundationNode,
@@ -92,6 +117,21 @@ class Amendments extends React.Component<AmendmentsProps, AmendmentsState> {
               );
             })}
           </div>
+          {this.props.range
+            ? <div
+                className="amendments__text--permanent"
+                style={this.state.style}
+              >
+                {this.state.alwaysHighlightedNodes.map((node, index) => {
+                  node.props["key"] = index.toString();
+                  return React.createElement(
+                    node.component,
+                    node.props,
+                    node.innerHTML
+                  );
+                })}
+              </div>
+            : null}
         </div>
       </div>
     );
