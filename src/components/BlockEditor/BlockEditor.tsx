@@ -42,6 +42,7 @@ export interface ParagraphBlockProps {
   onChange: (idx: number, value: string) => void;
   block: ParagraphBlock;
   eventHandlers: EventHandlers;
+  readOnly: boolean;
 }
 export interface ParagraphBlockState {
   style: any;
@@ -51,6 +52,12 @@ export interface DocumentBlockProps {
   active: boolean;
   block: DocumentBlock;
   eventHandlers: EventHandlers;
+  readOnly: boolean;
+  onDocumentClick: (
+    type: FoundationTextType,
+    range: [number, number],
+    offset: number
+  ) => void;
 }
 export interface DocumentBlockState {
   documentNodes: FoundationNode[];
@@ -162,6 +169,7 @@ class Paragraph extends React.Component<
           placeholder={this.props.idx === 0 ? "Use your voice here." : "..."}
           value={this.props.block.text}
           style={this.state.style}
+          readOnly={this.props.readOnly}
           ref={(textarea: HTMLTextAreaElement) => (this.textarea = textarea)}
         />
         <div
@@ -174,6 +182,7 @@ class Paragraph extends React.Component<
 }
 
 class Document extends React.Component<DocumentBlockProps, DocumentBlockState> {
+  private div: HTMLDivElement;
   constructor(props: DocumentBlockProps) {
     super(props);
 
@@ -183,6 +192,13 @@ class Document extends React.Component<DocumentBlockProps, DocumentBlockState> {
   }
   handleClick = () => {
     this.props.eventHandlers.handleFocus(this.props.idx);
+    if (this.props.readOnly) {
+      this.props.onDocumentClick(
+        this.props.block.document,
+        this.props.block.range,
+        this.div.getBoundingClientRect().top
+      );
+    }
   };
   handleFocus = () => {
     this.props.eventHandlers.handleFocus(this.props.idx);
@@ -217,6 +233,7 @@ class Document extends React.Component<DocumentBlockProps, DocumentBlockState> {
         onClick={this.handleClick}
         onFocus={this.handleFocus}
         onKeyDown={this.handleKeyDown}
+        ref={(div: HTMLDivElement) => (this.div = div)}
       >
         {highlightedNodes.map((node, index) => {
           node.props["key"] = index.toString();
@@ -305,7 +322,13 @@ export interface BlockContainerProps {
   handleChange: (id: number, value: string) => void;
   handleFocus: (id: number) => void;
   handleEnter: () => void;
+  onDocumentClick: (
+    type: FoundationTextType,
+    range: [number, number],
+    offset: number
+  ) => void;
   active: boolean;
+  readOnly: boolean;
 }
 
 class BlockContainer extends React.Component<BlockContainerProps, {}> {
@@ -329,6 +352,7 @@ class BlockContainer extends React.Component<BlockContainerProps, {}> {
             active={props.active}
             onChange={props.handleChange}
             eventHandlers={eventHandlers}
+            readOnly={props.readOnly}
           />
         );
         break;
@@ -339,6 +363,8 @@ class BlockContainer extends React.Component<BlockContainerProps, {}> {
             idx={props.index}
             active={props.active}
             eventHandlers={eventHandlers}
+            readOnly={props.readOnly}
+            onDocumentClick={props.onDocumentClick}
           />
         );
         break;
@@ -363,12 +389,18 @@ class BlockContainer extends React.Component<BlockContainerProps, {}> {
 }
 
 export interface BlockEditorProps {
-  handleChange: (idx: number, value: string, isTitle?: boolean) => void;
-  handleDelete: (idx: number) => void;
-  handleEnter: (isTitle?: boolean) => void;
-  handleFocus: (idx: number) => void;
+  handleChange?: (idx: number, value: string, isTitle?: boolean) => void;
+  handleDelete?: (idx: number) => void;
+  handleEnter?: (isTitle?: boolean) => void;
+  handleFocus?: (idx: number) => void;
+  onDocumentClick?: (
+    type: FoundationTextType,
+    range: [number, number],
+    offset: number
+  ) => void;
   takeDocument: TakeDocument;
-  active: number;
+  active?: number;
+  readOnly?: boolean;
 }
 
 export interface BlockEditorState {
@@ -425,12 +457,13 @@ class BlockEditor extends React.Component<BlockEditorProps, BlockEditorState> {
           <div className="editor__inner">
             <textarea
               className="editor__title"
-              onChange={this.handleChange}
-              onKeyDown={this.handleKeyDown}
-              onKeyUp={this.handleKeyUp}
+              onChange={props.readOnly ? () => {} : this.handleChange}
+              onKeyDown={props.readOnly ? () => {} : this.handleKeyDown}
+              onKeyUp={props.readOnly ? () => {} : this.handleKeyUp}
               placeholder="Title"
               value={props.takeDocument.title}
               style={this.state.style}
+              readOnly={this.props.readOnly ? true : false}
               ref={(textarea: HTMLTextAreaElement) =>
                 (this.textarea = textarea)}
             />
@@ -444,11 +477,15 @@ class BlockEditor extends React.Component<BlockEditorProps, BlockEditorState> {
                   key={idx.toString()}
                   index={idx}
                   block={(Object as any).assign({}, block)}
-                  handleDelete={props.handleDelete}
-                  handleChange={props.handleChange}
-                  handleFocus={props.handleFocus}
-                  handleEnter={props.handleEnter}
+                  handleDelete={props.readOnly ? () => {} : props.handleDelete}
+                  handleChange={props.readOnly ? () => {} : props.handleChange}
+                  handleFocus={props.readOnly ? () => {} : props.handleFocus}
+                  handleEnter={props.readOnly ? () => {} : props.handleEnter}
+                  onDocumentClick={
+                    props.readOnly ? props.onDocumentClick : () => {}
+                  }
                   active={idx === props.active}
+                  readOnly={this.props.readOnly ? true : false}
                 />
               )}
             </div>
