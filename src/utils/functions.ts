@@ -32,7 +32,7 @@ function getHighlightedNodes(
   let highlightedNodes: FoundationNode[] = [];
   for (let idx = 0; idx < nodes.length; idx++) {
     if (nodes[idx + 1]) {
-      if (parseInt(nodes[idx + 1].props.data) < startRange) {
+      if (parseInt(nodes[idx + 1].props.data) <= startRange) {
         continue;
       }
     }
@@ -137,19 +137,22 @@ function highlightText(
   childNodes: NodeList,
   handleSetClick: () => void
 ): HighlightedText {
-  let firstIndexClassName = "constitution__row";
-  let secondIndexClassName = "constitution__text";
-  let foundationClassName = "constitution__text--selected";
+  let rowIndexClassName;
+  let rowInnerIndexClassName;
+  let textIndexClassName;
+  let foundationClassName;
 
   switch (type) {
     case "AMENDMENTS":
-      firstIndexClassName = "amendments__row";
-      secondIndexClassName = "amendments__text";
+      rowIndexClassName = "amendments__row";
+      rowInnerIndexClassName = "amendments__row-inner";
+      textIndexClassName = "amendments__text";
       foundationClassName = "amendments__text--selected";
       break;
     case "CONSTITUTION":
-      firstIndexClassName = "constitution__row";
-      secondIndexClassName = "constitution__text";
+      rowIndexClassName = "constitution__row";
+      rowInnerIndexClassName = "constitution__row-inner";
+      textIndexClassName = "constitution__text";
       foundationClassName = "constitution__text--selected";
       break;
     default:
@@ -170,42 +173,56 @@ function highlightText(
 
   const indexOfSelectionEnd: number = range.endOffset;
 
-  let foundationIndex;
+  let rowIndex;
   let firstNodeList = childNodes;
   for (let i = 0; i < firstNodeList.length; i++) {
     for (let j = 0; j < firstNodeList[i].attributes.length; j++) {
-      if (firstNodeList[i].attributes.item(j).value == firstIndexClassName) {
-        foundationIndex = i;
+      if (firstNodeList[i].attributes.item(j).value == rowIndexClassName) {
+        rowIndex = i;
         break;
       }
     }
-    if (foundationIndex !== undefined) {
+    if (rowIndex !== undefined) {
       break;
     }
   }
 
-  let secondIndex; //constitution | amendments
-  let secondNodeList = firstNodeList[foundationIndex].childNodes;
+  let rowInnerIndex;
+  let secondNodeList = firstNodeList[rowIndex].childNodes;
   for (let i = 0; i < secondNodeList.length; i++) {
     for (let j = 0; j < secondNodeList[i].attributes.length; j++) {
-      if (secondNodeList[i].attributes.item(j).value == secondIndexClassName) {
-        secondIndex = i;
+      if (
+        secondNodeList[i].attributes.item(j).value == rowInnerIndexClassName
+      ) {
+        rowInnerIndex = i;
         break;
       }
     }
-    if (secondIndex !== undefined) {
+    if (rowInnerIndex !== undefined) {
+      break;
+    }
+  }
+
+  let textIndex;
+  let thirdNodeList = secondNodeList[rowInnerIndex].childNodes;
+  for (let i = 0; i < thirdNodeList.length; i++) {
+    for (let j = 0; j < thirdNodeList[i].attributes.length; j++) {
+      if (thirdNodeList[i].attributes.item(j).value == textIndexClassName) {
+        textIndex = i;
+        break;
+      }
+    }
+    if (textIndex !== undefined) {
       break;
     }
   }
 
   const startContainer: Node =
-    firstNodeList[foundationIndex].childNodes[secondIndex].childNodes[
-      indexOfStartContainer
-    ];
+    firstNodeList[rowIndex].childNodes[rowInnerIndex].childNodes[textIndex]
+      .childNodes[indexOfStartContainer];
   const endContainer: Node =
-    firstNodeList[foundationIndex].childNodes[secondIndex].childNodes[
-      indexOfEndContainer
-    ];
+    firstNodeList[rowIndex].childNodes[rowInnerIndex].childNodes[textIndex]
+      .childNodes[indexOfEndContainer];
 
   let newNodes: Array<FoundationNode> = [
     ...nodes.slice(0, indexOfStartContainer)
@@ -344,50 +361,69 @@ function getStartRangeOffsetTop(
 ): number {
   const startRange = range[0];
   const endRange = range[1];
-  let firstIndexClassName;
-  let secondIndexClassName;
+  let rowIndexClassName;
+  let rowInnerIndexClassName;
+  let textIndexClassName;
 
   switch (type) {
     case "AMENDMENTS":
-      firstIndexClassName = "amendments__row";
-      secondIndexClassName = "amendments__text";
+      rowIndexClassName = "amendments__row";
+      rowInnerIndexClassName = "amendments__row-inner";
+      textIndexClassName = "amendments__text";
       break;
     case "CONSTITUTION":
-      firstIndexClassName = "constitution__row";
-      secondIndexClassName = "constitution__text";
+      rowIndexClassName = "constitution__row";
+      rowInnerIndexClassName = "constitution__row-inner";
+      textIndexClassName = "constitution__text";
       break;
     default:
       break;
   }
-  let containerIndex;
+  let rowIndex;
   let firstNodeList = childNodes;
   for (let i = 0; i < firstNodeList.length; i++) {
     for (let j = 0; j < firstNodeList[i].attributes.length; j++) {
-      if (firstNodeList[i].attributes.item(j).value == firstIndexClassName) {
-        containerIndex = i;
+      if (firstNodeList[i].attributes.item(j).value == rowIndexClassName) {
+        rowIndex = i;
         break;
       }
     }
-    if (containerIndex !== undefined) {
+    if (rowIndex !== undefined) {
       break;
     }
   }
 
-  let documentIndex;
-  let secondNodeList = firstNodeList[containerIndex].childNodes;
+  let rowInnerIndex;
+  let secondNodeList = firstNodeList[rowIndex].childNodes;
   for (let i = 0; i < secondNodeList.length; i++) {
     for (let j = 0; j < secondNodeList[i].attributes.length; j++) {
-      if (secondNodeList[i].attributes.item(j).value == secondIndexClassName) {
-        documentIndex = i;
+      if (
+        secondNodeList[i].attributes.item(j).value == rowInnerIndexClassName
+      ) {
+        rowInnerIndex = i;
         break;
       }
     }
-    if (documentIndex !== undefined) {
+    if (rowInnerIndex !== undefined) {
       break;
     }
   }
 
-  let textNodes = secondNodeList[documentIndex].childNodes;
+  let textIndex;
+  let thirdNodeList = secondNodeList[rowInnerIndex].childNodes;
+  for (let i = 0; i < thirdNodeList.length; i++) {
+    for (let j = 0; j < thirdNodeList[i].attributes.length; j++) {
+      if (thirdNodeList[i].attributes.item(j).value == textIndexClassName) {
+        textIndex = i;
+        break;
+      }
+    }
+    if (textIndex !== undefined) {
+      break;
+    }
+  }
+
+  let textNodes = thirdNodeList[textIndex].childNodes;
   let resultNodes;
   for (let idx = 0; idx < textNodes.length; idx++) {
     if (textNodes[idx + 1]) {
