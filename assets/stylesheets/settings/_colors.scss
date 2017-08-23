@@ -83,6 +83,7 @@ $palettes: (
   debates: (text: $base-darkest),
   editor:
     (
+      background: white,
       background--highlight: lighten($base-lightest, 10%),
       border: $base-lightest,
       shadow: $base-darkest,

@@ -10,6 +10,7 @@ import {
 } from "../../utils/functions";
 
 interface AmendmentsProps {
+  backButtonText?: string;
   onBackClick: () => void;
   onSetClick: (type: FoundationTextType, range: [number, number]) => void;
   range?: [number, number];
@@ -70,68 +71,89 @@ class Amendments extends React.Component<AmendmentsProps, AmendmentsState> {
     this.props.onSetClick("AMENDMENTS", this.state.range);
   };
   componentDidMount() {
-    if (this.props.range) {
-      this.setup();
-    }
+    this.setup();
+  }
+  componentWillUnmount() {
+    this.tearDown();
   }
   setup = () => {
-    let alwaysHighlightedNodes = getHighlightedNodes(
-      [...this.state.amendmentsNodes],
-      this.props.range
-    );
+    if (this.props.range) {
+      // Show Amendments over an existing take with pre-existing and uneditable highlights
+      document.body.classList.add("noscroll");
 
-    let theseDOMNodes = ReactDOM.findDOMNode(this).childNodes;
+      let alwaysHighlightedNodes = getHighlightedNodes(
+        [...this.state.amendmentsNodes],
+        this.props.range
+      );
 
-    let offsetTop = getStartRangeOffsetTop(
-      "AMENDMENTS",
-      theseDOMNodes,
-      this.props.range
-    );
+      let theseDOMNodes = ReactDOM.findDOMNode(this).childNodes;
 
-    this.setState({
-      alwaysHighlightedNodes: alwaysHighlightedNodes,
-      style: { top: offsetTop }
-    });
+      let offsetTop = getStartRangeOffsetTop(
+        "AMENDMENTS",
+        theseDOMNodes,
+        this.props.range
+      );
+
+      this.setState({
+        alwaysHighlightedNodes: alwaysHighlightedNodes,
+        style: { top: offsetTop - 20 }
+      });
+    } else {
+      document.body.classList.remove("noscroll");
+    }
+  };
+  tearDown = () => {
+    document.body.classList.remove("noscroll");
   };
   render() {
     let classes = "amendments";
     if (this.props.range) {
-      classes += " amendments--ref";
+      classes += " amendments--overlay";
+    } else {
+      classes += " amendments--static";
     }
     return (
       <div className={classes}>
-        <button onClick={this.props.onBackClick}>Back to Foundation</button>
+        <button onClick={this.props.onBackClick}>
+          {this.props.backButtonText
+            ? this.props.backButtonText
+            : "Back to Foundation"}
+        </button>
         <button onClick={this.handleClearClick}>Clear Selection</button>
         <h2 className="amendments__heading">Amendments to the Constitution</h2>
         <div className="amendments__row">
-          <div className="amendments__text" onMouseUp={this.handleMouseUp}>
-            {this.state.amendmentsNodes.map(function(
-              element: FoundationNode,
-              index: number
-            ) {
-              element.props["key"] = index.toString();
-              return React.createElement(
-                element.component,
-                element.props,
-                element.innerHTML
-              );
-            })}
+          <div className="amendments__row-inner">
+            <div className="amendments__text" onMouseUp={this.handleMouseUp}>
+              {this.state.amendmentsNodes.map(function(
+                element: FoundationNode,
+                index: number
+              ) {
+                element.props["key"] = index.toString();
+                return React.createElement(
+                  element.component,
+                  element.props,
+                  element.innerHTML
+                );
+              })}
+            </div>
+            {this.props.range
+              ? <div
+                  className="editor__block editor__block--overlay"
+                  style={this.state.style}
+                >
+                  <div className="editor__document editor__document--overlay">
+                    {this.state.alwaysHighlightedNodes.map((node, index) => {
+                      node.props["key"] = index.toString();
+                      return React.createElement(
+                        node.component,
+                        node.props,
+                        node.innerHTML
+                      );
+                    })}
+                  </div>
+                </div>
+              : null}
           </div>
-          {this.props.range
-            ? <div
-                className="amendments__text--permanent"
-                style={this.state.style}
-              >
-                {this.state.alwaysHighlightedNodes.map((node, index) => {
-                  node.props["key"] = index.toString();
-                  return React.createElement(
-                    node.component,
-                    node.props,
-                    node.innerHTML
-                  );
-                })}
-              </div>
-            : null}
         </div>
       </div>
     );

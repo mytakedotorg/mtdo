@@ -48,6 +48,9 @@
 .editor__block {
   position: relative;
 }
+.editor__block--overlay {
+  position: absolute;
+}
 .editor__paragraph--placeholder {
   opacity: 0.3;
 }

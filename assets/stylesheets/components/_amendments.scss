@@ -1,15 +1,17 @@
 .amendments {
-  margin: 2rem auto;
   width: 768px;
   max-width: 100%;
 }
-.amendments--ref {
-  position: absolute;
+.amendments--overlay {
+  position: fixed;
   top: 0;
   left: 50%;
   margin-left: -384px;
   z-index: 1;
-  background-color: white;
+  background-color: grey;
+}
+.amendments--static {
+  margin: 2rem auto;
 }
 
 .amendments__heading {
@@ -32,8 +34,13 @@
   height: 500px;
   overflow: scroll;
   position: relative;
+  padding: 0 3rem;
+}
+.amendments__row-inner {
+  position: relative;
 }
 .amendments__text {
+  padding: 1px;
   color: palette(amendments, color);
   @include body;
 }
@@ -47,15 +54,4 @@
   color: palette(amendments, text--highlight);
   background-color: palette(amendments, background--highlight);
   cursor: pointer;
-}
-.amendments__text--permanent {
-  position: absolute;
-  top: 0;
-  left: 0;
-  border: 1px solid palette(amendments, border);
-  box-shadow: 1px 1px 2px palette(amendments, shadow);
-  padding: 0 15px;
-  width: 100%;
-  background-color: white;
-  opacity: 0.8;
 }
