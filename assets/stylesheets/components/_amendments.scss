@@ -5,6 +5,7 @@
 .amendments--overlay {
   position: fixed;
   top: 0;
+  bottom: 0;
   left: 50%;
   margin-left: -384px;
   z-index: 1;
@@ -12,6 +13,14 @@
 }
 .amendments--static {
   margin: 2rem auto;
+}
+.amendments__header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: palette(amendments, background--header);
+  z-index: 10;
 }
 
 .amendments__heading {
@@ -28,10 +37,11 @@
   @include body--lead;
 }
 .amendments__row {
+  z-index: 5;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  height: 500px;
+  height: 100%;
   overflow: scroll;
   position: relative;
   padding: 0 3rem;

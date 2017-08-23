@@ -114,13 +114,17 @@ class Amendments extends React.Component<AmendmentsProps, AmendmentsState> {
     }
     return (
       <div className={classes}>
-        <button onClick={this.props.onBackClick}>
-          {this.props.backButtonText
-            ? this.props.backButtonText
-            : "Back to Foundation"}
-        </button>
-        <button onClick={this.handleClearClick}>Clear Selection</button>
-        <h2 className="amendments__heading">Amendments to the Constitution</h2>
+        <div className="amendments__header">
+          <button onClick={this.props.onBackClick}>
+            {this.props.backButtonText
+              ? this.props.backButtonText
+              : "Back to Foundation"}
+          </button>
+          <button onClick={this.handleClearClick}>Clear Selection</button>
+          <h2 className="amendments__heading">
+            Amendments to the Constitution
+          </h2>
+        </div>
         <div className="amendments__row">
           <div className="amendments__row-inner">
             <div className="amendments__text" onMouseUp={this.handleMouseUp}>
