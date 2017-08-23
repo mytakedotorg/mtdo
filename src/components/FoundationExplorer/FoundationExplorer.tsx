@@ -6,12 +6,14 @@ import database, { BlockIndexMetaData } from "../../utils/database";
 import Foundation, { FoundationTextType } from "../Foundation";
 
 interface FoundationExplorerProps {
-  type?: FoundationTextType;
-  range?: [number, number];
-  offset?: number;
+  type: FoundationTextType;
+  range: [number, number];
+  offset: number;
+  onBackClick: () => void;
 }
 
 interface FoundationExplorerState {
+  articleTitle: string;
   type: FoundationTextType;
   range: [number, number];
 }
@@ -24,26 +26,27 @@ class FoundationExplorer extends React.Component<
     super(props);
 
     this.state = {
+      articleTitle: null,
       type: props ? props.type : null,
       range: props ? props.range : [0, 0]
     };
   }
   handleBackClick = () => {
-    // TODO
+    this.props.onBackClick();
   };
   handleSetClick = () => {
     // TODO
   };
   getBlockMetaData = (
     user: string,
-    article: string,
+    articleTitle: string,
     blockIndex: number
   ): BlockIndexMetaData => {
     // This function can be stubbed out when a backend/database is needed
     if (database[user]) {
-      if (database[user][article]) {
-        if (database[user][article][blockIndex]) {
-          return database[user][article][blockIndex];
+      if (database[user][articleTitle]) {
+        if (database[user][articleTitle][blockIndex]) {
+          return database[user][articleTitle][blockIndex];
         }
       }
     }
@@ -53,10 +56,11 @@ class FoundationExplorer extends React.Component<
       // Expect hash URL to be like, #/{user}/{article-title}&{block-index}
       let hashes = window.location.hash.split("&");
       let user = hashes[0].substring(1).split("/")[0];
-      let article = hashes[0].substring(1).split("/")[1];
+      let articleTitle = hashes[0].substring(1).split("/")[1];
       let blockIndex = parseInt(hashes[1]);
-      let metaData = this.getBlockMetaData(user, article, blockIndex);
+      let metaData = this.getBlockMetaData(user, articleTitle, blockIndex);
       this.setState({
+        articleTitle: articleTitle,
         type: metaData.type,
         range: metaData.range
       });
@@ -73,6 +77,7 @@ class FoundationExplorer extends React.Component<
         return (
           <div className="DocumentReader">
             <Amendments
+              backButtonText={this.state.articleTitle}
               onBackClick={this.handleBackClick}
               onSetClick={this.handleSetClick}
               range={this.props.range}

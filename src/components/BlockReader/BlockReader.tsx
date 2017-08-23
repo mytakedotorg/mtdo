@@ -37,6 +37,13 @@ class BlockReader extends React.Component<BlockReaderProps, BlockReaderState> {
       expandedBlockWindowOffset: offset
     });
   };
+  handleBackClick = () => {
+    this.setState({
+      expandedBlockType: null,
+      expandedBlockRange: null,
+      expandedBlockWindowOffset: null
+    });
+  };
   render() {
     return (
       <div>
@@ -50,6 +57,7 @@ class BlockReader extends React.Component<BlockReaderProps, BlockReaderState> {
               type={this.state.expandedBlockType}
               range={this.state.expandedBlockRange}
               offset={this.state.expandedBlockWindowOffset}
+              onBackClick={this.handleBackClick}
             />
           : null}
       </div>
