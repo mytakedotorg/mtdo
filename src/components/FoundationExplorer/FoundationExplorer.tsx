@@ -2,7 +2,7 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import Amendments from "../Amendments";
 import Constitution from "../Constitution";
-import database, { BlockIndexMetaData } from "../../utils/database";
+import database, { EvidenceBlock } from "../../utils/database";
 import Foundation, { FoundationTextType } from "../Foundation";
 
 interface FoundationExplorerProps {
@@ -38,15 +38,21 @@ class FoundationExplorer extends React.Component<
     // TODO
   };
   getBlockMetaData = (
-    user: string,
+    username: string,
     articleTitle: string,
     blockIndex: number
-  ): BlockIndexMetaData => {
+  ): EvidenceBlock => {
     // This function can be stubbed out when a backend/database is needed
-    if (database[user]) {
-      if (database[user][articleTitle]) {
-        if (database[user][articleTitle][blockIndex]) {
-          return database[user][articleTitle][blockIndex];
+    for (let user of database.users) {
+      if (user.name === username) {
+        for (let article of user.articles) {
+          if (article.title === articleTitle) {
+            for (let block of article.evidenceBlocks) {
+              if (block.index === blockIndex) {
+                return block;
+              }
+            }
+          }
         }
       }
     }
