@@ -5,34 +5,27 @@ import Constitution from "../Constitution";
 import database, { EvidenceBlock } from "../../utils/database";
 import Foundation, { FoundationTextType } from "../Foundation";
 
-interface FoundationExplorerProps {
-  type: FoundationTextType;
-  range: [number, number];
-  offset: number;
-  onBackClick: () => void;
-}
-
 interface FoundationExplorerState {
   articleTitle: string;
+  articleUser: string;
   type: FoundationTextType;
   range: [number, number];
 }
 
-class FoundationExplorer extends React.Component<
-  FoundationExplorerProps,
-  FoundationExplorerState
-> {
-  constructor(props: FoundationExplorerProps) {
+class FoundationExplorer extends React.Component<{}, FoundationExplorerState> {
+  constructor(props: {}) {
     super(props);
 
     this.state = {
       articleTitle: null,
-      type: props ? props.type : null,
-      range: props ? props.range : [0, 0]
+      articleUser: null,
+      type: null,
+      range: [0, 0]
     };
   }
   handleBackClick = () => {
-    this.props.onBackClick();
+    let url = "/" + this.state.articleUser + "/" + this.state.articleTitle;
+    window.location.href = url;
   };
   handleSetClick = () => {
     // TODO
@@ -61,21 +54,20 @@ class FoundationExplorer extends React.Component<
     if (window.location.hash) {
       // Expect hash URL to be like, #/{user}/{article-title}&{block-index}
       let hashes = window.location.hash.split("&");
-      let user = hashes[0].substring(1).split("/")[0];
-      let articleTitle = hashes[0].substring(1).split("/")[1];
+      let user = hashes[0].substring(1).split("/")[1];
+      let articleTitle = hashes[0].substring(1).split("/")[2];
       let blockIndex = parseInt(hashes[1]);
       let metaData = this.getBlockMetaData(user, articleTitle, blockIndex);
       this.setState({
         articleTitle: articleTitle,
+        articleUser: user,
         type: metaData.type,
         range: metaData.range
       });
     }
   };
   componentDidMount() {
-    if (!this.props) {
-      this.getDocumentInfo();
-    }
+    this.getDocumentInfo();
   }
   render() {
     switch (this.state.type) {
@@ -86,8 +78,7 @@ class FoundationExplorer extends React.Component<
               backButtonText={this.state.articleTitle}
               onBackClick={this.handleBackClick}
               onSetClick={this.handleSetClick}
-              range={this.props.range}
-              offset={this.props.offset}
+              range={this.state.range}
             />
           </div>
         );
