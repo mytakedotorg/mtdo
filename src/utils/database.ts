@@ -17,25 +17,25 @@ interface User {
 }
 
 interface Database {
-	documents: Document[];
+  documents: Document[];
   users: User[];
 }
 
 interface Document {
-	type: FoundationTextType;
-	heading: string;
+  type: FoundationTextType;
+  heading: string;
 }
 const database: Database = {
-	documents: [
-		{
-			type: "CONSTITUTION",
-			heading: "Constitution for the United States of America"
-		},
-		{
-			type: "AMENDMENTS",
-			heading: "Amendments to the Constitution"
-		}
-	],
+  documents: [
+    {
+      type: "CONSTITUTION",
+      heading: "Constitution for the United States of America"
+    },
+    {
+      type: "AMENDMENTS",
+      heading: "Amendments to the Constitution"
+    }
+  ],
   users: [
     {
       name: "samples",

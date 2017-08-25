@@ -18,20 +18,17 @@ export interface FoundationNodeProps {
 }
 
 interface FoundationCardProps {
-	onClick: () => void;
-	image: string;
-	width: number;
-	height: number;
-	title: string;
-	description: string;
+  onClick: () => void;
+  image: string;
+  width: number;
+  height: number;
+  title: string;
+  description: string;
 }
 
 function FoundationCard(props: FoundationCardProps) {
   return (
-    <div
-      className="foundation__card"
-      onClick={props.onClick}
-    >
+    <div className="foundation__card" onClick={props.onClick}>
       <div className="foundation__image-container">
         <img
           src={props.image}
@@ -61,8 +58,8 @@ interface FoundationProps {
 }
 
 interface FoundationState {
-	type: FoundationTextType | null;
-	view: FoundationView;
+  type: FoundationTextType | null;
+  view: FoundationView;
 }
 
 export default class Foundation extends React.Component<
@@ -73,22 +70,22 @@ export default class Foundation extends React.Component<
     super(props);
 
     this.state = {
-			type: null,
+      type: null,
       view: "INITIAL"
     };
   }
   handleDocumentCardClick = (type: FoundationTextType) => {
-    this.setState({ 
-			type: type,
-			view: "DOCUMENT" 
-		});
-  }
+    this.setState({
+      type: type,
+      view: "DOCUMENT"
+    });
+  };
   handleDebatesCardClick = () => {
     this.setState({ view: "DEBATES" });
-  }
+  };
   handleBackClick = () => {
     this.setState({ view: "INITIAL" });
-  }
+  };
   render() {
     let { props } = this;
 
@@ -101,39 +98,40 @@ export default class Foundation extends React.Component<
               Browse the Foundation to support your take with Facts.
             </p>
             <div className="foundation__card-list">
-              <FoundationCard 
-								onClick={() => this.handleDocumentCardClick("AMENDMENTS")}
-								image="/images/amendments.jpg"
-								width={220}
-								height={313}
-								title="The Amendments"
-								description="The full text of the Amendments to the U.S. Constitution."
-							/>
-              <FoundationCard 
-								onClick={() => this.handleDocumentCardClick("CONSTITUTION")}
-								image="/images/constitution.jpg"
-								width={220}
-								height={313}
-								title="The Constitution"
-								description="The full text of the U.S. Constitution, as it was originally penned in 1787."
-							/>
-              <FoundationCard onClick={this.handleDebatesCardClick}
-								image="/images/debates.jpg"
-								width={220}
-								height={313}
-								title="The Debates"
-								description="Full videos and transcripts of all presidential debates since 1976."
-							/>
+              <FoundationCard
+                onClick={() => this.handleDocumentCardClick("AMENDMENTS")}
+                image="/images/amendments.jpg"
+                width={220}
+                height={313}
+                title="The Amendments"
+                description="The full text of the Amendments to the U.S. Constitution."
+              />
+              <FoundationCard
+                onClick={() => this.handleDocumentCardClick("CONSTITUTION")}
+                image="/images/constitution.jpg"
+                width={220}
+                height={313}
+                title="The Constitution"
+                description="The full text of the U.S. Constitution, as it was originally penned in 1787."
+              />
+              <FoundationCard
+                onClick={this.handleDebatesCardClick}
+                image="/images/debates.jpg"
+                width={220}
+                height={313}
+                title="The Debates"
+                description="Full videos and transcripts of all presidential debates since 1976."
+              />
             </div>
           </div>
         );
-      case "DOCUMENT" :
+      case "DOCUMENT":
         return (
           <div className="foundation">
             <Document
               onBackClick={this.handleBackClick}
               onSetClick={props.handleDocumentSetClick}
-							type={this.state.type}
+              type={this.state.type}
             />
           </div>
         );

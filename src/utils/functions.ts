@@ -136,11 +136,11 @@ function highlightText(
   childNodes: NodeList,
   handleSetClick: () => void
 ): HighlightedText {
-	let rowIndexClassName = "document__row";
-	let rowInnerIndexClassName = "document__row-inner";
-	let textIndexClassName = "document__text";
-	let foundationClassName = "document__text--selected";
-  
+  let rowIndexClassName = "document__row";
+  let rowInnerIndexClassName = "document__row-inner";
+  let textIndexClassName = "document__text";
+  let foundationClassName = "document__text--selected";
+
   const indexOfStartContainer: number = Array.prototype.indexOf.call(
     range.startContainer.parentElement.parentNode.childNodes, //Arrange siblings into an array
     range.startContainer.parentNode
@@ -343,10 +343,10 @@ function getStartRangeOffsetTop(
   const startRange = range[0];
   const endRange = range[1];
 
-	let rowIndexClassName = "document__row";
-	let rowInnerIndexClassName = "document__row-inner";
-	let textIndexClassName = "document__text";
-	
+  let rowIndexClassName = "document__row";
+  let rowInnerIndexClassName = "document__row-inner";
+  let textIndexClassName = "document__text";
+
   let rowIndex;
   let firstNodeList = childNodes;
   for (let i = 0; i < firstNodeList.length; i++) {

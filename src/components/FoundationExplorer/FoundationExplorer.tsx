@@ -70,27 +70,27 @@ class FoundationExplorer extends React.Component<{}, FoundationExplorerState> {
   }
   render() {
     if (!this.state.type) {
-			return (
-				<div className="DocumentReader">
-					<Foundation
-						handleDocumentSetClick={this.handleSetClick}
-						handleVideoSetClick={this.handleSetClick}
-					/>
-				</div>
-			);
-		} else {
-			return (
-				<div className="DocumentReader">
-					<Document
-						backButtonText={this.state.articleTitle}
-						onBackClick={this.handleBackClick}
-						onSetClick={this.handleSetClick}
-						range={this.state.range}
-						type={this.state.type}
-					/>
-				</div>
-			);
-		}
+      return (
+        <div className="DocumentReader">
+          <Foundation
+            handleDocumentSetClick={this.handleSetClick}
+            handleVideoSetClick={this.handleSetClick}
+          />
+        </div>
+      );
+    } else {
+      return (
+        <div className="DocumentReader">
+          <Document
+            backButtonText={this.state.articleTitle}
+            onBackClick={this.handleBackClick}
+            onSetClick={this.handleSetClick}
+            range={this.state.range}
+            type={this.state.type}
+          />
+        </div>
+      );
+    }
   }
 }
 

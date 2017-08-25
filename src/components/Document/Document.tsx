@@ -14,8 +14,8 @@ interface DocumentProps {
   backButtonText?: string;
   onBackClick: () => void;
   onSetClick: (type: FoundationTextType, range: [number, number]) => void;
-	range?: [number, number];
-	type: FoundationTextType;
+  range?: [number, number];
+  type: FoundationTextType;
 }
 
 interface DocumentState {
@@ -37,15 +37,15 @@ class Document extends React.Component<DocumentProps, DocumentState> {
       alwaysHighlightedNodes: [],
       style: {}
     };
-	}
-	getDocumentHeading = () => {
-		for (let document of database.documents){
-			if (document.type === this.props.type) {
-				return document.heading;
-			}
-		}
-		return "Foundation document";
-	}
+  }
+  getDocumentHeading = () => {
+    for (let document of database.documents) {
+      if (document.type === this.props.type) {
+        return document.heading;
+      }
+    }
+    return "Foundation document";
+  };
   handleClearClick = () => {
     this.setState({
       documentNodes: getNodeArray(this.props.type), //Clear existing highlights
@@ -96,10 +96,7 @@ class Document extends React.Component<DocumentProps, DocumentState> {
 
       let theseDOMNodes = ReactDOM.findDOMNode(this).childNodes;
 
-      let offsetTop = getStartRangeOffsetTop(
-        theseDOMNodes,
-        this.props.range
-      );
+      let offsetTop = getStartRangeOffsetTop(theseDOMNodes, this.props.range);
 
       this.setState({
         alwaysHighlightedNodes: alwaysHighlightedNodes,
@@ -113,7 +110,7 @@ class Document extends React.Component<DocumentProps, DocumentState> {
     document.body.classList.remove("noscroll");
   };
   render() {
-		let cssBlock = "document";
+    let cssBlock = "document";
     let classes = cssBlock;
     if (this.props.range) {
       classes += " " + cssBlock + "--overlay";
