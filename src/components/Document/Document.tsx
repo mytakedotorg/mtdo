@@ -63,7 +63,6 @@ class Document extends React.Component<DocumentProps, DocumentState> {
         const highlightedText: HighlightedText = highlightText(
           range, // HTML Range, not [number, number] as in props.range
           [...this.state.documentNodes],
-          this.props.type,
           ReactDOM.findDOMNode(this).childNodes,
           this.handleSetClick
         );
@@ -98,7 +97,6 @@ class Document extends React.Component<DocumentProps, DocumentState> {
       let theseDOMNodes = ReactDOM.findDOMNode(this).childNodes;
 
       let offsetTop = getStartRangeOffsetTop(
-        this.props.type,
         theseDOMNodes,
         this.props.range
       );
