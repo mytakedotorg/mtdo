@@ -384,7 +384,7 @@ class BlockContainer extends React.Component<BlockContainerProps, {}> {
     }
 
     return (
-      <div className="editor__block">
+      <div className="editor__block editor__block--base">
         {inner}
       </div>
     );
