@@ -16,11 +16,26 @@ interface User {
   articles: Article[];
 }
 
-interface UsersToArticles {
+interface Database {
+	documents: Document[];
   users: User[];
 }
 
-const database: UsersToArticles = {
+interface Document {
+	type: FoundationTextType;
+	heading: string;
+}
+const database: Database = {
+	documents: [
+		{
+			type: "CONSTITUTION",
+			heading: "Constitution for the United States of America"
+		},
+		{
+			type: "AMENDMENTS",
+			heading: "Amendments to the Constitution"
+		}
+	],
   users: [
     {
       name: "samples",
