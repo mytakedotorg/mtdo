@@ -55,8 +55,9 @@ export interface DocumentBlockProps {
   readOnly: boolean;
   onDocumentClick: (
     type: FoundationTextType,
-    range: [number, number],
-    offset: number
+    // range: [number, number],
+    // offset: number
+    idx: number
   ) => void;
 }
 export interface DocumentBlockState {
@@ -195,8 +196,9 @@ class Document extends React.Component<DocumentBlockProps, DocumentBlockState> {
     if (this.props.readOnly) {
       this.props.onDocumentClick(
         this.props.block.document,
-        this.props.block.range,
-        this.div.getBoundingClientRect().top
+        this.props.idx
+        // this.props.block.range,
+        // this.div.getBoundingClientRect().top
       );
     }
   };
@@ -324,8 +326,9 @@ export interface BlockContainerProps {
   handleEnter: () => void;
   onDocumentClick: (
     type: FoundationTextType,
-    range: [number, number],
-    offset: number
+    // range: [number, number],
+    // offset: number
+    idx: number
   ) => void;
   active: boolean;
   readOnly: boolean;
@@ -395,8 +398,9 @@ export interface BlockEditorProps {
   handleFocus?: (idx: number) => void;
   onDocumentClick?: (
     type: FoundationTextType,
-    range: [number, number],
-    offset: number
+    // range: [number, number],
+    // offset: number
+    idx: number
   ) => void;
   takeDocument: TakeDocument;
   active?: number;
