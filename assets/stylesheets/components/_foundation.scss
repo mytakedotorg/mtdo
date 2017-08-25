@@ -1,7 +1,8 @@
 .foundation {
   @include clearfix;
   margin-left: 3rem;
-  margin-right: 3rem;
+	margin-right: 3rem;
+	position: relative;
 }
 
 .foundation__heading {
