@@ -133,32 +133,14 @@ interface HighlightedText {
 function highlightText(
   range: Range,
   nodes: FoundationNode[],
-  type: FoundationTextType,
   childNodes: NodeList,
   handleSetClick: () => void
 ): HighlightedText {
-  let rowIndexClassName;
-  let rowInnerIndexClassName;
-  let textIndexClassName;
-  let foundationClassName;
-
-  switch (type) {
-    case "AMENDMENTS":
-      rowIndexClassName = "amendments__row";
-      rowInnerIndexClassName = "amendments__row-inner";
-      textIndexClassName = "amendments__text";
-      foundationClassName = "amendments__text--selected";
-      break;
-    case "CONSTITUTION":
-      rowIndexClassName = "constitution__row";
-      rowInnerIndexClassName = "constitution__row-inner";
-      textIndexClassName = "constitution__text";
-      foundationClassName = "constitution__text--selected";
-      break;
-    default:
-      break;
-  }
-
+	let rowIndexClassName = "document__row";
+	let rowInnerIndexClassName = "document__row-inner";
+	let textIndexClassName = "document__text";
+	let foundationClassName = "document__text--selected";
+  
   const indexOfStartContainer: number = Array.prototype.indexOf.call(
     range.startContainer.parentElement.parentNode.childNodes, //Arrange siblings into an array
     range.startContainer.parentNode
@@ -355,30 +337,16 @@ function highlightText(
  * Returns offsetTop of the HTML element at the specified range index.
  */
 function getStartRangeOffsetTop(
-  type: FoundationTextType,
   childNodes: NodeList,
   range: [number, number]
 ): number {
   const startRange = range[0];
   const endRange = range[1];
-  let rowIndexClassName;
-  let rowInnerIndexClassName;
-  let textIndexClassName;
 
-  switch (type) {
-    case "AMENDMENTS":
-      rowIndexClassName = "amendments__row";
-      rowInnerIndexClassName = "amendments__row-inner";
-      textIndexClassName = "amendments__text";
-      break;
-    case "CONSTITUTION":
-      rowIndexClassName = "constitution__row";
-      rowInnerIndexClassName = "constitution__row-inner";
-      textIndexClassName = "constitution__text";
-      break;
-    default:
-      break;
-  }
+	let rowIndexClassName = "document__row";
+	let rowInnerIndexClassName = "document__row-inner";
+	let textIndexClassName = "document__text";
+	
   let rowIndex;
   let firstNodeList = childNodes;
   for (let i = 0; i < firstNodeList.length; i++) {
