@@ -1,7 +1,6 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import Amendments from "../Amendments";
-import Constitution from "../Constitution";
+import Document from "../Document";
 import database, { EvidenceBlock } from "../../utils/database";
 import Foundation, { FoundationTextType } from "../Foundation";
 
@@ -70,37 +69,28 @@ class FoundationExplorer extends React.Component<{}, FoundationExplorerState> {
     this.getDocumentInfo();
   }
   render() {
-    switch (this.state.type) {
-      case "AMENDMENTS":
-        return (
-          <div className="DocumentReader">
-            <Amendments
-              backButtonText={this.state.articleTitle}
-              onBackClick={this.handleBackClick}
-              onSetClick={this.handleSetClick}
-              range={this.state.range}
-            />
-          </div>
-        );
-      case "CONSTITUTION":
-        return (
-          <div className="DocumentReader">
-            <Constitution
-              onBackClick={this.handleBackClick}
-              onSetClick={this.handleSetClick}
-            />
-          </div>
-        );
-      default:
-        return (
-          <div className="DocumentReader">
-            <Foundation
-              handleDocumentSetClick={this.handleSetClick}
-              handleVideoSetClick={this.handleSetClick}
-            />
-          </div>
-        );
-    }
+    if (!this.state.type) {
+			return (
+				<div className="DocumentReader">
+					<Foundation
+						handleDocumentSetClick={this.handleSetClick}
+						handleVideoSetClick={this.handleSetClick}
+					/>
+				</div>
+			);
+		} else {
+			return (
+				<div className="DocumentReader">
+					<Document
+						backButtonText={this.state.articleTitle}
+						onBackClick={this.handleBackClick}
+						onSetClick={this.handleSetClick}
+						range={this.state.range}
+						type={this.state.type}
+					/>
+				</div>
+			);
+		}
   }
 }
 
