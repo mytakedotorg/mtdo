@@ -1,0 +1,75 @@
+.document {
+  width: 768px;
+  max-width: 100%;
+}
+.document--overlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1;
+  background-color: palette(amendments, background);
+  @media only screen and (min-width: 768px) {
+    left: 50%;
+    margin-left: -384px;
+  }
+}
+.document--static {
+  margin: 2rem auto;
+}
+.document__header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: palette(amendments, background);
+  z-index: 10;
+  height: 8rem;
+  border-bottom: 1px solid palette(header, border);
+}
+
+.document__heading {
+  margin-top: 0;
+  margin-bottom: 15px;
+  color: palette(amendments, text);
+  @include heading2;
+}
+
+.document__instructions {
+  margin-top: 0;
+  margin-bottom: 15px;
+  color: palette(amendments, text);
+  @include body--lead;
+}
+.document__row {
+  z-index: 5;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  height: 100%;
+  overflow: scroll;
+  position: relative;
+  padding: 0 3rem;
+}
+.document__row-inner {
+  position: relative;
+  margin-top: 8rem;
+}
+.document__text {
+  position: relative;
+  padding: 1px;
+  color: palette(amendments, color);
+  z-index: 100;
+  @include body;
+}
+.document__text--block {
+  border: 1px solid palette(amendments, border);
+  box-shadow: 1px 1px 2px palette(amendments, shadow);
+  padding: 0 15px;
+  width: 100%;
+}
+.document__text--selected {
+  color: palette(amendments, text--highlight);
+  background-color: palette(amendments, background--highlight);
+  cursor: pointer;
+}

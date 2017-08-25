@@ -46,8 +46,10 @@
   opacity: 0.3;
 }
 .editor__block {
-  position: relative;
   z-index: 10;
+}
+.editpr__block--base {
+	position: relative;
 }
 .editor__block--overlay {
   position: absolute;
