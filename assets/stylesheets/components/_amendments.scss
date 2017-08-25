@@ -3,13 +3,16 @@
   max-width: 100%;
 }
 .amendments--overlay {
-  position: fixed;
+  position: absolute;
   top: 0;
   bottom: 0;
-  left: 50%;
-  margin-left: -384px;
+  left: 0;
   z-index: 1;
-  background-color: grey;
+  background-color: palette(amendments, background);
+  @media only screen and (min-width: 768px) {
+    left: 50%;
+    margin-left: -384px;
+  }
 }
 .amendments--static {
   margin: 2rem auto;
@@ -19,8 +22,10 @@
   top: 0;
   left: 0;
   width: 100%;
-  background-color: palette(amendments, background--header);
+  background-color: palette(amendments, background);
   z-index: 10;
+  height: 8rem;
+  border-bottom: 1px solid palette(header, border);
 }
 
 .amendments__heading {
@@ -48,10 +53,13 @@
 }
 .amendments__row-inner {
   position: relative;
+  margin-top: 8rem;
 }
 .amendments__text {
+  position: relative;
   padding: 1px;
   color: palette(amendments, color);
+  z-index: 100;
   @include body;
 }
 .amendments__text--block {

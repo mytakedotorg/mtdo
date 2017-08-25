@@ -47,6 +47,7 @@
 }
 .editor__block {
   position: relative;
+  z-index: 10;
 }
 .editor__block--overlay {
   position: absolute;
@@ -69,9 +70,15 @@
   border: palette(editor, border);
   box-shadow: 1px 1px 2px palette(editor, shadow);
   color: palette(editor, text);
-  padding: 5px 15px;
   margin-bottom: 2rem;
+}
+.editor__document--base {
+  padding: 5px 15px;
   @include body--italic;
+}
+.editor__document--overlay {
+  padding: 5px 1px;
+  @include body;
 }
 .editor__document-highlight {
   color: palette(editor, text--highlight);

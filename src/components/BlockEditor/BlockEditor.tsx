@@ -224,7 +224,7 @@ class Document extends React.Component<DocumentBlockProps, DocumentBlockState> {
       props.block.range
     );
 
-    let classes = "editor__document";
+    let classes = "editor__document editor__document--base";
     if (this.props.active) {
       classes += " editor__document--active";
     }
