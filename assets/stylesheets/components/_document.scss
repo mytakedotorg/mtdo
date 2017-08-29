@@ -59,7 +59,7 @@
   position: relative;
   padding: 1px;
   color: palette(amendments, color);
-  z-index: 100;
+  z-index: 1;
   @include body;
 }
 .document__text--block {

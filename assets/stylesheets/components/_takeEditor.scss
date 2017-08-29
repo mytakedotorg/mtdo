@@ -72,13 +72,14 @@
   border: palette(editor, border);
   box-shadow: 1px 1px 2px palette(editor, shadow);
   color: palette(editor, text);
-  margin-bottom: 2rem;
 }
 .editor__document--base {
   padding: 5px 15px;
+  margin-bottom: 2rem;
   @include body--italic;
 }
 .editor__document--overlay {
+  cursor: pointer;
   padding: 5px 1px;
   @include body;
 }

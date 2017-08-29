@@ -26,8 +26,22 @@ class FoundationExplorer extends React.Component<{}, FoundationExplorerState> {
     let url = "/" + this.state.articleUser + "/" + this.state.articleTitle;
     window.location.href = url;
   };
-  handleSetClick = () => {
-    // TODO
+  handleSetClick = (
+    type: FoundationTextType,
+    range: [number, number]
+  ): void => {
+    window.location.href =
+      "/new-take/#" +
+      type.toLowerCase() +
+      "&" +
+      "/" +
+      this.state.articleUser +
+      "/" +
+      this.state.articleTitle +
+      "&" +
+      range[0] +
+      "&" +
+      range[1];
   };
   getBlockMetaData = (
     username: string,

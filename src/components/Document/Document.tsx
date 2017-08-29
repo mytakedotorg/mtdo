@@ -22,7 +22,8 @@ interface DocumentState {
   documentNodes: FoundationNode[];
   range: [number, number];
   textIsHighlighted: boolean;
-  alwaysHighlightedNodes: FoundationNode[];
+  initialHighlightedNodes: FoundationNode[];
+  showInitialHighlights: boolean;
   style: any;
 }
 
@@ -34,7 +35,8 @@ class Document extends React.Component<DocumentProps, DocumentState> {
       documentNodes: getNodeArray(props.type),
       range: props.range,
       textIsHighlighted: false,
-      alwaysHighlightedNodes: [],
+      initialHighlightedNodes: [],
+      showInitialHighlights: true,
       style: {}
     };
   }
@@ -70,13 +72,18 @@ class Document extends React.Component<DocumentProps, DocumentState> {
         this.setState({
           documentNodes: highlightedText.newNodes,
           range: highlightedText.range,
-          textIsHighlighted: true
+          textIsHighlighted: true,
+          showInitialHighlights: false
         });
       }
     }
   };
-  handleSetClick = () => {
-    this.props.onSetClick(this.props.type, this.state.range);
+  handleSetClick = (isInitialRange?: boolean) => {
+    if (isInitialRange) {
+      this.props.onSetClick(this.props.type, this.props.range);
+    } else {
+      this.props.onSetClick(this.props.type, this.state.range);
+    }
   };
   componentDidMount() {
     this.setup();
@@ -89,7 +96,7 @@ class Document extends React.Component<DocumentProps, DocumentState> {
       // Show Amendments over an existing take with pre-existing and uneditable highlights
       document.body.classList.add("noscroll");
 
-      let alwaysHighlightedNodes = getHighlightedNodes(
+      let initialHighlightedNodes = getHighlightedNodes(
         [...this.state.documentNodes],
         this.props.range
       );
@@ -99,7 +106,7 @@ class Document extends React.Component<DocumentProps, DocumentState> {
       let offsetTop = getStartRangeOffsetTop(theseDOMNodes, this.props.range);
 
       this.setState({
-        alwaysHighlightedNodes: alwaysHighlightedNodes,
+        initialHighlightedNodes: initialHighlightedNodes,
         style: { top: offsetTop - 20 }
       });
     } else {
@@ -145,13 +152,14 @@ class Document extends React.Component<DocumentProps, DocumentState> {
                 );
               })}
             </div>
-            {this.props.range
+            {this.props.range && this.state.showInitialHighlights
               ? <div
                   className="editor__block editor__block--overlay"
                   style={this.state.style}
+                  onClick={() => this.handleSetClick(true)}
                 >
                   <div className="editor__document editor__document--overlay">
-                    {this.state.alwaysHighlightedNodes.map((node, index) => {
+                    {this.state.initialHighlightedNodes.map((node, index) => {
                       node.props["key"] = index.toString();
                       return React.createElement(
                         node.component,
