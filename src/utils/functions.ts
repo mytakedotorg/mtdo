@@ -217,7 +217,7 @@ function highlightText(
       {
         className: foundationClassName,
         key: "someKey",
-        onClick: handleSetClick
+        onClick: () => handleSetClick()
       },
       startContainer.textContent.substring(
         indexOfSelectionStart,
@@ -247,7 +247,7 @@ function highlightText(
       {
         className: foundationClassName,
         key: "someKey",
-        onClick: handleSetClick
+        onClick: () => handleSetClick()
       },
       startContainer.textContent.substring(
         indexOfSelectionStart,
@@ -281,7 +281,7 @@ function highlightText(
         {
           className: foundationClassName,
           key: "someKey",
-          onClick: handleSetClick
+          onClick: () => handleSetClick()
         },
         nextNewNode.innerHTML
       );
@@ -296,7 +296,7 @@ function highlightText(
       {
         className: foundationClassName,
         key: "someKey",
-        onClick: handleSetClick
+        onClick: () => handleSetClick()
       },
       endContainer.textContent.substring(0, indexOfSelectionEnd)
     );
