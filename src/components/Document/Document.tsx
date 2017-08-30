@@ -109,12 +109,12 @@ class Document extends React.Component<DocumentProps, DocumentState> {
       let theseDOMNodes = ReactDOM.findDOMNode(this).childNodes;
       let offsetTop = getStartRangeOffsetTop(theseDOMNodes, this.props.range);
 
-			// Scroll the Document to this offset
-			//offsetTop = offsetTop - 20 + Document.headerHeight;
-			offsetTop -= 20 + Document.headerHeight;
-			if (this.props.offset) {
-				offsetTop -= this.props.offset;
-			}
+      // Scroll the Document to this offset
+      //offsetTop = offsetTop - 20 + Document.headerHeight;
+      offsetTop -= 20 + Document.headerHeight;
+      if (this.props.offset) {
+        offsetTop -= this.props.offset;
+      }
       this.div.scrollTop = offsetTop;
 
       this.setState({
