@@ -12,6 +12,7 @@ import {
 
 interface DocumentProps {
   backButtonText?: string;
+  offset?: number;
   onBackClick: () => void;
   onSetClick: (type: FoundationTextType, range: [number, number]) => void;
   range?: [number, number];
@@ -24,10 +25,12 @@ interface DocumentState {
   textIsHighlighted: boolean;
   initialHighlightedNodes: FoundationNode[];
   showInitialHighlights: boolean;
-  style: any;
+  scrollTop: number;
 }
 
 class Document extends React.Component<DocumentProps, DocumentState> {
+  private div: HTMLDivElement;
+  static headerHeight = 80;
   constructor(props: DocumentProps) {
     super(props);
 
@@ -37,7 +40,7 @@ class Document extends React.Component<DocumentProps, DocumentState> {
       textIsHighlighted: false,
       initialHighlightedNodes: [],
       showInitialHighlights: true,
-      style: {}
+      scrollTop: 0
     };
   }
   getDocumentHeading = () => {
@@ -96,18 +99,25 @@ class Document extends React.Component<DocumentProps, DocumentState> {
       // Show Amendments over an existing take with pre-existing and uneditable highlights
       document.body.classList.add("noscroll");
 
+      // Get the list of nodes highlighted by a previous author
       let initialHighlightedNodes = getHighlightedNodes(
         [...this.state.documentNodes],
         this.props.range
       );
 
+      // Get the scrollTop value of the top most HTML element containing the same highlighted nodes
       let theseDOMNodes = ReactDOM.findDOMNode(this).childNodes;
-
       let offsetTop = getStartRangeOffsetTop(theseDOMNodes, this.props.range);
+
+      // Scroll the Document to this offset
+      let scrollTop =
+        offsetTop - 20 - this.props.offset + Document.headerHeight;
+      console.log(scrollTop);
+      this.div.scrollTop = scrollTop;
 
       this.setState({
         initialHighlightedNodes: initialHighlightedNodes,
-        style: { top: offsetTop - 20 }
+        scrollTop: offsetTop - 20
       });
     } else {
       document.body.classList.remove("noscroll");
@@ -137,7 +147,10 @@ class Document extends React.Component<DocumentProps, DocumentState> {
             {this.getDocumentHeading()}
           </h2>
         </div>
-        <div className={cssBlock + "__row"}>
+        <div
+          className={cssBlock + "__row"}
+          ref={(div: HTMLDivElement) => (this.div = div)}
+        >
           <div className={cssBlock + "__row-inner"}>
             <div className={cssBlock + "__text"} onMouseUp={this.handleMouseUp}>
               {this.state.documentNodes.map(function(
@@ -155,7 +168,7 @@ class Document extends React.Component<DocumentProps, DocumentState> {
             {this.props.range && this.state.showInitialHighlights
               ? <div
                   className="editor__block editor__block--overlay"
-                  style={this.state.style}
+                  style={{ top: this.state.scrollTop }}
                   onClick={() => this.handleSetClick(true)}
                 >
                   <div className="editor__document editor__document--overlay">
