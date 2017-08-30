@@ -22,9 +22,8 @@ class BlockReader extends React.Component<BlockReaderProps, BlockReaderState> {
   }
   handleClick = (
     type: FoundationTextType,
-    blockIndex: number
-    // range: [number, number],
-    // offset: number
+    blockIndex: number,
+    offset: number
   ) => {
     window.location.href =
       "/foundation/" +
@@ -32,7 +31,9 @@ class BlockReader extends React.Component<BlockReaderProps, BlockReaderState> {
       "#" +
       window.location.pathname +
       "&" +
-      blockIndex;
+      blockIndex +
+      "&" +
+      offset;
   };
   render() {
     return (
