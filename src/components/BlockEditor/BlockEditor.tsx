@@ -32,36 +32,35 @@ export interface VideoBlock {
   range?: [number, number];
 }
 export interface WritingEventHandlers {
-  handleDelete: (idx: number) => void | undefined;
-  handleEnterPress: () => void | undefined;
-  handleFocus: (idx: number) => void | undefined;
+  handleDelete: (idx: number) => void;
+  handleEnterPress: (isTitle?: boolean) => void;
+  handleFocus: (idx: number) => void;
   handleChange?: (idx: number, value: string) => void;
-}
-interface ParagraphBlockReadWriteProps {
-  writingEventHandlers: WritingEventHandlers;
 }
 export interface ParagraphBlockProps {
   idx: number;
   active: boolean;
   block: ParagraphBlock;
-  readWrite?: ParagraphBlockReadWriteProps;
+  eventHandlers?: WritingEventHandlers;
 }
 export interface ParagraphBlockState {
   style: any;
 }
-interface DocumentBlockReadOnlyProps {
+interface ReadingEventHandlers {
   onDocumentClick: (
     type: FoundationTextType,
     idx: number,
     offset: number
   ) => void;
 }
+function isWriteOnly(eventHandlers: WritingEventHandlers | ReadingEventHandlers | undefined): eventHandlers is WritingEventHandlers {
+	return (eventHandlers as WritingEventHandlers).handleDelete !== undefined;
+}
 export interface DocumentBlockProps {
   idx: number;
   active: boolean;
-  block: DocumentBlock;
-  writingEventHandlers?: WritingEventHandlers;
-  readOnly?: DocumentBlockReadOnlyProps;
+	block: DocumentBlock;
+	eventHandlers: WritingEventHandlers | ReadingEventHandlers
 }
 export interface DocumentBlockState {
   documentNodes: FoundationNode[];
@@ -70,7 +69,7 @@ export interface VideoBlockProps {
   idx: number;
   active: boolean;
   block: VideoBlock;
-  writingEventHandlers?: WritingEventHandlers;
+  eventHandlers?: WritingEventHandlers;
 }
 export interface VideoBlockState {}
 
@@ -98,22 +97,22 @@ class Paragraph extends React.Component<
     };
   }
   handleBlur = () => {
-    if (this.props.readWrite && !this.props.block.text) {
+    if (isWriteOnly(this.props.eventHandlers) && !this.props.block.text) {
       // Paragraph is about to lose focus. If empty, should be removed.
-      this.props.readWrite.writingEventHandlers.handleDelete(this.props.idx);
+      this.props.eventHandlers.handleDelete(this.props.idx);
     }
   };
   handleKeyDown = (ev: React.KeyboardEvent<HTMLTextAreaElement>) => {
     switch (ev.keyCode) {
       case keycode("enter"):
         ev.preventDefault();
-        if (this.props.readWrite) {
-          this.props.readWrite.writingEventHandlers.handleEnterPress();
+        if (isWriteOnly(this.props.eventHandlers)) {
+          this.props.eventHandlers.handleEnterPress();
         }
         break;
       case keycode("backspace") || keycode("delete"):
-        if (this.props.readWrite && !this.props.block.text) {
-          this.props.readWrite.writingEventHandlers.handleDelete(
+        if (isWriteOnly(this.props.eventHandlers) && !this.props.block.text) {
+          this.props.eventHandlers.handleDelete(
             this.props.idx
           );
         }
@@ -124,23 +123,23 @@ class Paragraph extends React.Component<
   };
   handleChange = (ev: React.ChangeEvent<HTMLTextAreaElement>) => {
     if (
-      this.props.readWrite &&
-      this.props.readWrite.writingEventHandlers.handleChange
+      isWriteOnly(this.props.eventHandlers) &&
+      this.props.eventHandlers.handleChange
     ) {
-      this.props.readWrite.writingEventHandlers.handleChange(
+      this.props.eventHandlers.handleChange(
         this.props.idx,
         ev.target.value
       );
     }
   };
   handleClick = () => {
-    if (this.props.readWrite) {
-      this.props.readWrite.writingEventHandlers.handleFocus(this.props.idx);
+    if (isWriteOnly(this.props.eventHandlers)) {
+      this.props.eventHandlers.handleFocus(this.props.idx);
     }
   };
   handleFocus = () => {
-    if (this.props.readWrite) {
-      this.props.readWrite.writingEventHandlers.handleFocus(this.props.idx);
+    if (isWriteOnly(this.props.eventHandlers)) {
+      this.props.eventHandlers.handleFocus(this.props.idx);
     }
   };
   handleKeyUp = (ev: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -189,7 +188,7 @@ class Paragraph extends React.Component<
           placeholder={this.props.idx === 0 ? "Use your voice here." : "..."}
           value={this.props.block.text}
           style={this.state.style}
-          readOnly={this.props.readWrite ? false : true}
+          readOnly={!isWriteOnly(this.props.eventHandlers)}
           ref={(textarea: HTMLTextAreaElement) => (this.textarea = textarea)}
         />
         <div
@@ -211,11 +210,10 @@ class Document extends React.Component<DocumentBlockProps, DocumentBlockState> {
     };
   }
   handleClick = () => {
-    if (this.props.writingEventHandlers) {
-      this.props.writingEventHandlers.handleFocus(this.props.idx);
-    }
-    if (this.props.readOnly) {
-      this.props.readOnly.onDocumentClick(
+    if (isWriteOnly(this.props.eventHandlers)) {
+      this.props.eventHandlers.handleFocus(this.props.idx);
+    } else {
+      this.props.eventHandlers.onDocumentClick(
         this.props.block.document,
         this.props.idx,
         this.div.getBoundingClientRect().top
@@ -223,20 +221,20 @@ class Document extends React.Component<DocumentBlockProps, DocumentBlockState> {
     }
   };
   handleFocus = () => {
-    if (this.props.writingEventHandlers) {
-      this.props.writingEventHandlers.handleFocus(this.props.idx);
+    if (isWriteOnly(this.props.eventHandlers)) {
+      this.props.eventHandlers.handleFocus(this.props.idx);
     }
   };
   handleKeyDown = (ev: React.KeyboardEvent<HTMLDivElement>) => {
     switch (ev.keyCode) {
       case keycode("enter"):
-        if (this.props.writingEventHandlers) {
-          this.props.writingEventHandlers.handleEnterPress();
+        if (isWriteOnly(this.props.eventHandlers)) {
+          this.props.eventHandlers.handleEnterPress();
         }
         break;
       case keycode("backspace") || keycode("delete"):
-        if (this.props.writingEventHandlers) {
-          this.props.writingEventHandlers.handleDelete(this.props.idx);
+        if (isWriteOnly(this.props.eventHandlers)) {
+          this.props.eventHandlers.handleDelete(this.props.idx);
         }
         break;
       default:
@@ -281,25 +279,25 @@ class Video extends React.Component<VideoBlockProps, VideoBlockState> {
     super(props);
   }
   handleClick = () => {
-    if (this.props.writingEventHandlers) {
-      this.props.writingEventHandlers.handleFocus(this.props.idx);
+    if (isWriteOnly(this.props.eventHandlers)) {
+      this.props.eventHandlers.handleFocus(this.props.idx);
     }
   };
   handleFocus = () => {
-    if (this.props.writingEventHandlers) {
-      this.props.writingEventHandlers.handleFocus(this.props.idx);
+    if (isWriteOnly(this.props.eventHandlers)) {
+      this.props.eventHandlers.handleFocus(this.props.idx);
     }
   };
   handleKeyDown = (ev: React.KeyboardEvent<HTMLDivElement>) => {
     switch (ev.keyCode) {
       case keycode("enter"):
-        if (this.props.writingEventHandlers) {
-          this.props.writingEventHandlers.handleEnterPress();
+        if (isWriteOnly(this.props.eventHandlers)) {
+          this.props.eventHandlers.handleEnterPress();
         }
         break;
       case keycode("backspace") || keycode("delete"):
-        if (this.props.writingEventHandlers) {
-          this.props.writingEventHandlers.handleDelete(this.props.idx);
+        if (isWriteOnly(this.props.eventHandlers)) {
+          this.props.eventHandlers.handleDelete(this.props.idx);
         }
         break;
       default:
@@ -353,13 +351,8 @@ class Video extends React.Component<VideoBlockProps, VideoBlockState> {
 
 export interface BlockContainerProps {
   block: TakeBlock;
-  index: number;
-  writingEventHandlers?: WritingEventHandlers;
-  onDocumentClick?: (
-    type: FoundationTextType,
-    idx: number,
-    offset: number
-  ) => void;
+	index: number;
+	eventHandlers: WritingEventHandlers | ReadingEventHandlers;
   active: boolean;
 }
 
@@ -372,16 +365,13 @@ class BlockContainer extends React.Component<BlockContainerProps, {}> {
     const { props } = this;
     switch (props.block.kind) {
       case "paragraph":
-        if (props.writingEventHandlers) {
-          const readWrite: ParagraphBlockReadWriteProps = {
-            writingEventHandlers: props.writingEventHandlers
-          };
+        if (isWriteOnly(props.eventHandlers)) {
           inner = (
             <Paragraph
               block={props.block}
               idx={props.index}
               active={props.active}
-              readWrite={readWrite}
+              eventHandlers={props.eventHandlers}
             />
           );
         } else {
@@ -395,38 +385,34 @@ class BlockContainer extends React.Component<BlockContainerProps, {}> {
         }
         break;
       case "document":
-        if (props.onDocumentClick) {
-          const readOnly: DocumentBlockReadOnlyProps = {
-            onDocumentClick: props.onDocumentClick
-          };
-          inner = (
-            <Document
-              block={props.block}
-              idx={props.index}
-              active={props.active}
-              readOnly={readOnly}
-            />
-          );
-        } else {
-          inner = (
-            <Document
-              block={props.block}
-              idx={props.index}
-              active={props.active}
-              writingEventHandlers={props.writingEventHandlers}
-            />
-          );
-        }
+				inner = (
+					<Document
+						block={props.block}
+						idx={props.index}
+						active={props.active}
+						eventHandlers={props.eventHandlers}
+					/>
+				);
         break;
-      case "video":
-        inner = (
-          <Video
-            block={props.block as VideoBlock}
-            idx={props.index}
-            active={props.active}
-            writingEventHandlers={props.writingEventHandlers}
-          />
-        );
+			case "video":
+				if (isWriteOnly(props.eventHandlers)) {
+					inner = (
+						<Video
+							block={props.block as VideoBlock}
+							idx={props.index}
+							active={props.active}
+							eventHandlers={props.eventHandlers}
+						/>
+					);
+				} else {
+					inner = (
+						<Video
+							block={props.block as VideoBlock}
+							idx={props.index}
+							active={props.active}
+						/>
+					);
+				}
         break;
     }
 
@@ -438,24 +424,10 @@ class BlockContainer extends React.Component<BlockContainerProps, {}> {
   }
 }
 
-interface BlockEditorReadWriteProps {
-  handleChange: (idx: number, value: string, isTitle?: boolean) => void;
-  handleDelete: (idx: number) => void;
-  handleEnter: (isTitle?: boolean) => void;
-  handleFocus: (idx: number) => void;
-}
-interface BlockEditorReadOnlyProps {
-  onDocumentClick: (
-    type: FoundationTextType,
-    idx: number,
-    offset: number
-  ) => void;
-}
 export interface BlockEditorProps {
   takeDocument: TakeDocument;
-  active?: number;
-  readOnly?: BlockEditorReadOnlyProps;
-  readWrite?: BlockEditorReadWriteProps;
+	active?: number;
+	eventHandlers: WritingEventHandlers | ReadingEventHandlers;
 }
 
 export interface BlockEditorState {
@@ -473,15 +445,15 @@ class BlockEditor extends React.Component<BlockEditorProps, BlockEditorState> {
     };
   }
   handleChange = (ev: React.ChangeEvent<HTMLTextAreaElement>) => {
-    if (this.props.readWrite) {
-      this.props.readWrite.handleChange(-1, ev.target.value);
+    if (isWriteOnly(this.props.eventHandlers) && this.props.eventHandlers.handleChange) {
+      this.props.eventHandlers.handleChange(-1, ev.target.value);
     }
   };
   handleKeyDown = (ev: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (this.props.readWrite) {
+    if (isWriteOnly(this.props.eventHandlers)) {
       if (ev.keyCode === keycode("enter")) {
         ev.preventDefault();
-        this.props.readWrite.handleEnter(true);
+        this.props.eventHandlers.handleEnterPress(true);
       }
     }
   };
@@ -514,7 +486,7 @@ class BlockEditor extends React.Component<BlockEditorProps, BlockEditorState> {
       <div className="editor__wrapper">
         <div className="editor">
           <div className="editor__inner">
-            {props.readOnly
+            {!isWriteOnly(props.eventHandlers)
               ? <textarea
                   className="editor__title"
                   placeholder="Title"
@@ -541,29 +513,32 @@ class BlockEditor extends React.Component<BlockEditorProps, BlockEditorState> {
             />
             <div className="editor__block-list">
               {props.takeDocument.blocks.map((block, idx) => {
-                if (props.readOnly) {
+                if (!isWriteOnly(props.eventHandlers)) {
+									const readingEventHandlers: ReadingEventHandlers = {
+										onDocumentClick: props.eventHandlers.onDocumentClick
+									}
                   return (
                     <BlockContainer
                       key={idx.toString()}
                       index={idx}
                       block={(Object as any).assign({}, block)}
-                      onDocumentClick={props.readOnly.onDocumentClick}
+                      eventHandlers={readingEventHandlers}
                       active={idx === props.active}
                     />
                   );
-                } else if (props.readWrite) {
+                } else {
                   const writingEventHandlers: WritingEventHandlers = {
-                    handleChange: props.readWrite.handleChange,
-                    handleDelete: props.readWrite.handleDelete,
-                    handleEnterPress: props.readWrite.handleEnter,
-                    handleFocus: props.readWrite.handleFocus
+                    handleChange: props.eventHandlers.handleChange,
+                    handleDelete: props.eventHandlers.handleDelete,
+                    handleEnterPress: props.eventHandlers.handleEnterPress,
+                    handleFocus: props.eventHandlers.handleFocus
                   };
                   return (
                     <BlockContainer
                       key={idx.toString()}
                       index={idx}
                       block={(Object as any).assign({}, block)}
-                      writingEventHandlers={writingEventHandlers}
+                      eventHandlers={writingEventHandlers}
                       active={idx === props.active}
                     />
                   );
