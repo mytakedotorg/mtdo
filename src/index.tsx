@@ -3,10 +3,15 @@ import * as ReactDOM from "react-dom";
 import MyTake from "./components/MyTake";
 import config from "./components/MyTake/config";
 
-let app: HTMLElement = document.getElementById("app");
+let app = document.getElementById("app");
 let initJson;
-if (app.hasAttribute("data-init")) {
-  initJson = JSON.parse(app.getAttribute("data-init"));
+if (app && app.hasAttribute("data-init")) {
+  let data = app.getAttribute("data-init");
+  if (data) {
+    initJson = JSON.parse(data);
+  } else {
+    initJson = config.initialState;
+  }
 } else if (window.location.hash) {
   // Expect hash URL to be like, #{FoundationType}&{URL of Take being read}&{highlightRangeStart}&{highlightRangeEnd}
   // localhost:3000/new-take/#amendments&/samples/does-a-law-mean-what-it-says-or-what-it-meant/&369&514

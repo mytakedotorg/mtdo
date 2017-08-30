@@ -12,9 +12,9 @@ export interface FoundationNode {
 }
 
 export interface FoundationNodeProps {
-  key?: string;
+  key: string;
   dataOffset: string;
-  [index: string]: string;
+  index: string;
 }
 
 interface FoundationCardProps {
@@ -90,18 +90,18 @@ export default class Foundation extends React.Component<
     let { props } = this;
 
     switch (this.state.view) {
-			case "DOCUMENT":
-				if (this.state.type) {
-					return (
-						<div className="foundation">
-							<Document
-								onBackClick={this.handleBackClick}
-								onSetClick={props.handleDocumentSetClick}
-								type={this.state.type}
-							/>
-						</div>
-					);
-				}
+      case "DOCUMENT":
+        if (this.state.type) {
+          return (
+            <div className="foundation">
+              <Document
+                onBackClick={this.handleBackClick}
+                onSetClick={props.handleDocumentSetClick}
+                type={this.state.type}
+              />
+            </div>
+          );
+        }
       case "DEBATES":
         return (
           <div className="foundation">
@@ -112,40 +112,40 @@ export default class Foundation extends React.Component<
           </div>
         );
       default:
-				return (
-					<div className="foundation">
-						<h2 className="foundation__heading">The Foundation</h2>
-						<p className="foundation__instructions">
-							Browse the Foundation to support your take with Facts.
-						</p>
-						<div className="foundation__card-list">
-							<FoundationCard
-								onClick={() => this.handleDocumentCardClick("AMENDMENTS")}
-								image="/images/amendments.jpg"
-								width={220}
-								height={313}
-								title="The Amendments"
-								description="The full text of the Amendments to the U.S. Constitution."
-							/>
-							<FoundationCard
-								onClick={() => this.handleDocumentCardClick("CONSTITUTION")}
-								image="/images/constitution.jpg"
-								width={220}
-								height={313}
-								title="The Constitution"
-								description="The full text of the U.S. Constitution, as it was originally penned in 1787."
-							/>
-							<FoundationCard
-								onClick={this.handleDebatesCardClick}
-								image="/images/debates.jpg"
-								width={220}
-								height={313}
-								title="The Debates"
-								description="Full videos and transcripts of all presidential debates since 1976."
-							/>
-						</div>
-					</div>
-				);
+        return (
+          <div className="foundation">
+            <h2 className="foundation__heading">The Foundation</h2>
+            <p className="foundation__instructions">
+              Browse the Foundation to support your take with Facts.
+            </p>
+            <div className="foundation__card-list">
+              <FoundationCard
+                onClick={() => this.handleDocumentCardClick("AMENDMENTS")}
+                image="/images/amendments.jpg"
+                width={220}
+                height={313}
+                title="The Amendments"
+                description="The full text of the Amendments to the U.S. Constitution."
+              />
+              <FoundationCard
+                onClick={() => this.handleDocumentCardClick("CONSTITUTION")}
+                image="/images/constitution.jpg"
+                width={220}
+                height={313}
+                title="The Constitution"
+                description="The full text of the U.S. Constitution, as it was originally penned in 1787."
+              />
+              <FoundationCard
+                onClick={this.handleDebatesCardClick}
+                image="/images/debates.jpg"
+                width={220}
+                height={313}
+                title="The Debates"
+                description="Full videos and transcripts of all presidential debates since 1976."
+              />
+            </div>
+          </div>
+        );
     }
   }
 }

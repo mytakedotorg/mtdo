@@ -32,18 +32,18 @@ function getHighlightedNodes(
   let highlightedNodes: FoundationNode[] = [];
   for (let idx = 0; idx < nodes.length; idx++) {
     if (nodes[idx + 1]) {
-      if (parseInt(nodes[idx + 1].props.data) <= startRange) {
+      if (parseInt((nodes[idx + 1].props as any).data) <= startRange) {
         continue;
       }
     }
-    if (parseInt(nodes[idx].props.data) > endRange) {
+    if (parseInt((nodes[idx].props as any).data) > endRange) {
       break;
     }
     documentNodes = [...documentNodes, ...nodes.slice(idx, idx + 1)];
   }
   // documentNodes is a new array with only the nodes containing text to be highlighted
   if (documentNodes.length === 1) {
-    const offset = parseInt(documentNodes[0].props.data);
+    const offset = parseInt((documentNodes[0].props as any).data);
     const startIndex = startRange - offset;
     const endIndex = endRange - offset;
     let newSpan: React.ReactNode = React.createElement(
@@ -64,7 +64,7 @@ function getHighlightedNodes(
     highlightedNodes = [newNode];
   } else {
     // More than one DOM node highlighted
-    let offset = parseInt(documentNodes[0].props.data);
+    let offset = parseInt((documentNodes[0].props as any).data);
     let length = documentNodes[0].innerHTML.toString().length;
     let startIndex = startRange - offset;
     let endIndex = length;
@@ -87,7 +87,7 @@ function getHighlightedNodes(
     highlightedNodes = [newNode];
 
     for (let index: number = 1; index < documentNodes.length; index++) {
-      offset = parseInt(documentNodes[index].props.data);
+      offset = parseInt((documentNodes[index].props as any).data);
       length = documentNodes[index].innerHTML.toString().length;
       startIndex = 0;
 
@@ -141,18 +141,29 @@ function highlightText(
   let textIndexClassName = "document__text";
   let foundationClassName = "document__text--selected";
 
-  const indexOfStartContainer: number = Array.prototype.indexOf.call(
-    range.startContainer.parentElement.parentNode.childNodes, //Arrange siblings into an array
-    range.startContainer.parentNode
-  ); //Find indexOf current Node
+  let indexOfStartContainer = 0;
+  if (
+    range.startContainer.parentElement &&
+    range.startContainer.parentElement.parentNode
+  ) {
+    indexOfStartContainer = Array.prototype.indexOf.call(
+      range.startContainer.parentElement.parentNode.childNodes, //Arrange siblings into an array
+      range.startContainer.parentNode
+    ); //Find indexOf current Node
+  }
+
+  let indexOfEndContainer = 0;
+  if (
+    range.endContainer.parentElement &&
+    range.endContainer.parentElement.parentNode
+  ) {
+    indexOfEndContainer = Array.prototype.indexOf.call(
+      range.endContainer.parentElement.parentNode.childNodes, //Arrange siblings into an array
+      range.endContainer.parentNode
+    ); //Find indexOf current Node
+  }
 
   const indexOfSelectionStart: number = range.startOffset;
-
-  const indexOfEndContainer: number = Array.prototype.indexOf.call(
-    range.endContainer.parentElement.parentNode.childNodes, //Arrange siblings into an array
-    range.endContainer.parentNode
-  ); //Find indexOf current Node
-
   const indexOfSelectionEnd: number = range.endOffset;
 
   let rowIndex;
@@ -170,48 +181,70 @@ function highlightText(
   }
 
   let rowInnerIndex;
-  let secondNodeList = firstNodeList[rowIndex].childNodes;
-  for (let i = 0; i < secondNodeList.length; i++) {
-    for (let j = 0; j < secondNodeList[i].attributes.length; j++) {
-      if (
-        secondNodeList[i].attributes.item(j).value == rowInnerIndexClassName
-      ) {
-        rowInnerIndex = i;
+  let secondNodeList;
+  if (rowIndex !== undefined) {
+    secondNodeList = firstNodeList[rowIndex].childNodes;
+    for (let i = 0; i < secondNodeList.length; i++) {
+      for (let j = 0; j < secondNodeList[i].attributes.length; j++) {
+        if (
+          secondNodeList[i].attributes.item(j).value == rowInnerIndexClassName
+        ) {
+          rowInnerIndex = i;
+          break;
+        }
+      }
+      if (rowInnerIndex !== undefined) {
         break;
       }
-    }
-    if (rowInnerIndex !== undefined) {
-      break;
     }
   }
 
   let textIndex;
-  let thirdNodeList = secondNodeList[rowInnerIndex].childNodes;
-  for (let i = 0; i < thirdNodeList.length; i++) {
-    for (let j = 0; j < thirdNodeList[i].attributes.length; j++) {
-      if (thirdNodeList[i].attributes.item(j).value == textIndexClassName) {
-        textIndex = i;
+  let thirdNodeList;
+  if (secondNodeList && rowInnerIndex !== undefined) {
+    thirdNodeList = secondNodeList[rowInnerIndex].childNodes;
+    for (let i = 0; i < thirdNodeList.length; i++) {
+      for (let j = 0; j < thirdNodeList[i].attributes.length; j++) {
+        if (thirdNodeList[i].attributes.item(j).value == textIndexClassName) {
+          textIndex = i;
+          break;
+        }
+      }
+      if (textIndex !== undefined) {
         break;
       }
     }
-    if (textIndex !== undefined) {
-      break;
-    }
   }
 
-  const startContainer: Node =
-    firstNodeList[rowIndex].childNodes[rowInnerIndex].childNodes[textIndex]
-      .childNodes[indexOfStartContainer];
-  const endContainer: Node =
-    firstNodeList[rowIndex].childNodes[rowInnerIndex].childNodes[textIndex]
-      .childNodes[indexOfEndContainer];
+  let startContainer;
+  let endContainer;
+  if (
+    rowIndex !== undefined &&
+    rowInnerIndex !== undefined &&
+    textIndex !== undefined
+  ) {
+    startContainer =
+      firstNodeList[rowIndex].childNodes[rowInnerIndex].childNodes[textIndex]
+        .childNodes[indexOfStartContainer];
+    endContainer =
+      firstNodeList[rowIndex].childNodes[rowInnerIndex].childNodes[textIndex]
+        .childNodes[indexOfEndContainer];
+  }
 
   let newNodes: Array<FoundationNode> = [
     ...nodes.slice(0, indexOfStartContainer)
   ];
 
-  if (startContainer === endContainer) {
+  if (startContainer && startContainer === endContainer) {
     // Create a new Span element with the contents of the highlighted text
+    let textContent = "";
+    if (startContainer.textContent) {
+      textContent = startContainer.textContent.substring(
+        indexOfSelectionStart,
+        indexOfSelectionEnd
+      );
+    }
+
     let newSpan: React.ReactNode = React.createElement(
       "span",
       {
@@ -219,10 +252,7 @@ function highlightText(
         key: "someKey",
         onClick: () => handleSetClick()
       },
-      startContainer.textContent.substring(
-        indexOfSelectionStart,
-        indexOfSelectionEnd
-      )
+      textContent
     );
 
     // Modify state array immutably
@@ -230,17 +260,30 @@ function highlightText(
       {},
       nodes[indexOfStartContainer]
     );
-    newNode.innerHTML = [
-      startContainer.textContent.substring(0, indexOfSelectionStart),
-      newSpan,
-      startContainer.textContent.substring(
+
+    let startText = "";
+    let endText = "";
+    if (startContainer.textContent) {
+      startText = startContainer.textContent.substring(
+        0,
+        indexOfSelectionStart
+      );
+      endText = startContainer.textContent.substring(
         indexOfSelectionEnd,
         startContainer.textContent.length
-      )
-    ];
+      );
+    }
+    newNode.innerHTML = [startText, newSpan, endText];
 
     newNodes = [...newNodes, newNode];
-  } else {
+  } else if (startContainer && endContainer) {
+    let textContent = "";
+    if (startContainer.textContent) {
+      textContent = startContainer.textContent.substring(
+        indexOfSelectionStart,
+        startContainer.textContent.length
+      );
+    }
     // Create a new Span element with the contents of the highlighted text
     let firstNewSpan: React.ReactNode = React.createElement(
       "span",
@@ -249,10 +292,7 @@ function highlightText(
         key: "someKey",
         onClick: () => handleSetClick()
       },
-      startContainer.textContent.substring(
-        indexOfSelectionStart,
-        startContainer.textContent.length
-      )
+      textContent
     );
 
     // Modify state array immutably
@@ -260,10 +300,15 @@ function highlightText(
       {},
       nodes[indexOfStartContainer]
     );
-    firstNewNode.innerHTML = [
-      startContainer.textContent.substring(0, indexOfSelectionStart),
-      firstNewSpan
-    ];
+
+    let startText = "";
+    if (startContainer.textContent) {
+      startText = startContainer.textContent.substring(
+        0,
+        indexOfSelectionStart
+      );
+    }
+    firstNewNode.innerHTML = [startText, firstNewSpan];
 
     newNodes = [...newNodes, firstNewNode];
 
@@ -290,6 +335,10 @@ function highlightText(
       newNodes = [...newNodes, nextNewNode];
     }
 
+    textContent = "";
+    if (endContainer.textContent) {
+      textContent = endContainer.textContent.substring(0, indexOfSelectionEnd);
+    }
     // Create a new Span element with the contents of the highlighted text
     let lastNewSpan: React.ReactNode = React.createElement(
       "span",
@@ -298,20 +347,21 @@ function highlightText(
         key: "someKey",
         onClick: () => handleSetClick()
       },
-      endContainer.textContent.substring(0, indexOfSelectionEnd)
+      textContent
     );
     // Modify state array immutably
     let lastNewNode: FoundationNode = (Object as any).assign(
       {},
       nodes[indexOfEndContainer]
     );
-    lastNewNode.innerHTML = [
-      lastNewSpan,
-      endContainer.textContent.substring(
+    let endText = "";
+    if (endContainer.textContent) {
+      endText = endContainer.textContent.substring(
         indexOfSelectionEnd,
         endContainer.textContent.length
-      )
-    ];
+      );
+    }
+    lastNewNode.innerHTML = [lastNewSpan, endText];
 
     newNodes = [...newNodes, lastNewNode];
   }
@@ -323,10 +373,13 @@ function highlightText(
 
   clearDefaultDOMSelection();
 
-  const rangeStart =
-    parseInt(startContainer.attributes[0].value) + indexOfSelectionStart;
-  const rangeEnd =
-    parseInt(endContainer.attributes[0].value) + indexOfSelectionEnd;
+  let rangeStart = 0;
+  let rangeEnd = 0;
+  if (startContainer && endContainer) {
+    rangeStart =
+      parseInt(startContainer.attributes[0].value) + indexOfSelectionStart;
+    rangeEnd = parseInt(endContainer.attributes[0].value) + indexOfSelectionEnd;
+  }
 
   return {
     newNodes: newNodes,
@@ -362,47 +415,55 @@ function getStartRangeOffsetTop(
   }
 
   let rowInnerIndex;
-  let secondNodeList = firstNodeList[rowIndex].childNodes;
-  for (let i = 0; i < secondNodeList.length; i++) {
-    for (let j = 0; j < secondNodeList[i].attributes.length; j++) {
-      if (
-        secondNodeList[i].attributes.item(j).value == rowInnerIndexClassName
-      ) {
-        rowInnerIndex = i;
+  let secondNodeList;
+  if (rowIndex !== undefined) {
+    secondNodeList = firstNodeList[rowIndex].childNodes;
+    for (let i = 0; i < secondNodeList.length; i++) {
+      for (let j = 0; j < secondNodeList[i].attributes.length; j++) {
+        if (
+          secondNodeList[i].attributes.item(j).value == rowInnerIndexClassName
+        ) {
+          rowInnerIndex = i;
+          break;
+        }
+      }
+      if (rowInnerIndex !== undefined) {
         break;
       }
-    }
-    if (rowInnerIndex !== undefined) {
-      break;
     }
   }
 
   let textIndex;
-  let thirdNodeList = secondNodeList[rowInnerIndex].childNodes;
-  for (let i = 0; i < thirdNodeList.length; i++) {
-    for (let j = 0; j < thirdNodeList[i].attributes.length; j++) {
-      if (thirdNodeList[i].attributes.item(j).value == textIndexClassName) {
-        textIndex = i;
+  let thirdNodeList;
+  if (secondNodeList && rowInnerIndex !== undefined) {
+    thirdNodeList = secondNodeList[rowInnerIndex].childNodes;
+    for (let i = 0; i < thirdNodeList.length; i++) {
+      for (let j = 0; j < thirdNodeList[i].attributes.length; j++) {
+        if (thirdNodeList[i].attributes.item(j).value == textIndexClassName) {
+          textIndex = i;
+          break;
+        }
+      }
+      if (textIndex !== undefined) {
         break;
       }
     }
-    if (textIndex !== undefined) {
-      break;
-    }
   }
 
-  let textNodes = thirdNodeList[textIndex].childNodes;
   let resultNodes;
-  for (let idx = 0; idx < textNodes.length; idx++) {
-    if (textNodes[idx + 1]) {
-      if (parseInt(textNodes[idx].attributes[0].value) < startRange) {
-        continue;
+  if (thirdNodeList && textIndex !== undefined) {
+    let textNodes = thirdNodeList[textIndex].childNodes;
+    for (let idx = 0; idx < textNodes.length; idx++) {
+      if (textNodes[idx + 1]) {
+        if (parseInt(textNodes[idx].attributes[0].value) < startRange) {
+          continue;
+        }
       }
+      if (parseInt(textNodes[idx].attributes[0].value) > endRange) {
+        break;
+      }
+      resultNodes = textNodes[idx];
     }
-    if (parseInt(textNodes[idx].attributes[0].value) > endRange) {
-      break;
-    }
-    resultNodes = textNodes[idx];
   }
 
   let offsetTop = (resultNodes as HTMLElement).offsetTop;

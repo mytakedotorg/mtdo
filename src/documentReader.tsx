@@ -2,13 +2,18 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import BlockReader from "./components/BlockReader";
 
-let app: HTMLElement = document.getElementById("app");
+let app: HTMLElement | null = document.getElementById("app");
 
 let initJson;
 let Root;
-if (app.hasAttribute("data-init")) {
-  initJson = JSON.parse(app.getAttribute("data-init"));
-  Root = <BlockReader initState={initJson} />;
+if (app && app.hasAttribute("data-init")) {
+  let data = app.getAttribute("data-init");
+  if (data) {
+    initJson = JSON.parse(data);
+    Root = <BlockReader initState={initJson} />;
+  } else {
+    Root = <BlockReader />;
+  }
 } else {
   Root = <BlockReader />;
 }

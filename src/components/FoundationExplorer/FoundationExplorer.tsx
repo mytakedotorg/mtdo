@@ -4,7 +4,7 @@ import Document from "../Document";
 import database, { EvidenceBlock } from "../../utils/database";
 import Foundation, { FoundationTextType } from "../Foundation";
 
-interface FoundationExplorerState {
+class FoundationExplorerState {
   articleTitle: string;
   articleUser: string;
   type: FoundationTextType;
@@ -12,37 +12,48 @@ interface FoundationExplorerState {
   offset: number;
 }
 
-class FoundationExplorer extends React.Component<{}, FoundationExplorerState | undefined> {
+class FoundationExplorer extends React.Component<
+  {},
+  FoundationExplorerState | {}
+> {
   constructor(props: {}) {
-		super(props);
-		// this.state = {
-
-		// };
+    super(props);
+    this.state = {};
   }
   handleBackClick = () => {
-		if (this.state) {
-			let url = "/" + this.state.articleUser + "/" + this.state.articleTitle;
-			window.location.href = url;
-		}
+    if (
+      this.state instanceof FoundationExplorerState &&
+      this.state.articleUser
+    ) {
+      let url = "/" + this.state.articleUser;
+      if (this.state.articleTitle) {
+        url += "/" + this.state.articleTitle;
+      }
+      window.location.href = url;
+    }
   };
   handleSetClick = (
     type: FoundationTextType,
     range: [number, number]
   ): void => {
-		if (this.state) {
-			window.location.href =
-				"/new-take/#" +
-				type.toLowerCase() +
-				"&" +
-				"/" +
-				this.state.articleUser +
-				"/" +
-				this.state.articleTitle +
-				"&" +
-				range[0] +
-				"&" +
-				range[1];
-		}
+    if (
+      this.state instanceof FoundationExplorerState &&
+      this.state.articleUser &&
+      this.state.articleTitle
+    ) {
+      window.location.href =
+        "/new-take/#" +
+        type.toLowerCase() +
+        "&" +
+        "/" +
+        this.state.articleUser +
+        "/" +
+        this.state.articleTitle +
+        "&" +
+        range[0] +
+        "&" +
+        range[1];
+    }
   };
   getBlockMetaData = (
     username: string,
@@ -71,29 +82,29 @@ class FoundationExplorer extends React.Component<{}, FoundationExplorerState | u
       let user = hashes[0].substring(1).split("/")[1];
       let articleTitle = hashes[0].substring(1).split("/")[2];
       let blockIndex = parseInt(hashes[1]);
-			let offset = parseInt(hashes[2]);
-			this.setState({
+      let offset = parseInt(hashes[2]);
+      this.setState({
         articleTitle: articleTitle,
         articleUser: user,
         offset: offset
-			});
-			
-			let metaData = this.getBlockMetaData(user, articleTitle, blockIndex);
-			
-			if (metaData) {
-				this.setState({
-					type: metaData.type,
-					range: metaData.range
-				});
-			}
+      });
+
+      let metaData = this.getBlockMetaData(user, articleTitle, blockIndex);
+
+      if (metaData) {
+        this.setState({
+          type: metaData.type,
+          range: metaData.range
+        });
+      }
     }
   };
   componentDidMount() {
     this.getDocumentInfo();
   }
   render() {
-		if (this.state) {
-			return (
+    if (this.state instanceof FoundationExplorerState) {
+      return (
         <div className="DocumentReader">
           <Document
             backButtonText={this.state.articleTitle}
@@ -105,7 +116,7 @@ class FoundationExplorer extends React.Component<{}, FoundationExplorerState | u
           />
         </div>
       );
-		} else {
+    } else {
       return (
         <div className="DocumentReader">
           <Foundation
