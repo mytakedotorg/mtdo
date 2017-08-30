@@ -110,10 +110,8 @@ class Document extends React.Component<DocumentProps, DocumentState> {
       let offsetTop = getStartRangeOffsetTop(theseDOMNodes, this.props.range);
 
       // Scroll the Document to this offset
-      let scrollTop =
+      this.div.scrollTop =
         offsetTop - 20 - this.props.offset + Document.headerHeight;
-      console.log(scrollTop);
-      this.div.scrollTop = scrollTop;
 
       this.setState({
         initialHighlightedNodes: initialHighlightedNodes,
