@@ -53,14 +53,16 @@ interface ReadingEventHandlers {
     offset: number
   ) => void;
 }
-function isWriteOnly(eventHandlers: WritingEventHandlers | ReadingEventHandlers | undefined): eventHandlers is WritingEventHandlers {
-	return (eventHandlers as WritingEventHandlers).handleDelete !== undefined;
+function isWriteOnly(
+  eventHandlers: WritingEventHandlers | ReadingEventHandlers | undefined
+): eventHandlers is WritingEventHandlers {
+  return (eventHandlers as WritingEventHandlers).handleDelete !== undefined;
 }
 export interface DocumentBlockProps {
   idx: number;
   active: boolean;
-	block: DocumentBlock;
-	eventHandlers: WritingEventHandlers | ReadingEventHandlers
+  block: DocumentBlock;
+  eventHandlers: WritingEventHandlers | ReadingEventHandlers;
 }
 export interface DocumentBlockState {
   documentNodes: FoundationNode[];
@@ -112,9 +114,7 @@ class Paragraph extends React.Component<
         break;
       case keycode("backspace") || keycode("delete"):
         if (isWriteOnly(this.props.eventHandlers) && !this.props.block.text) {
-          this.props.eventHandlers.handleDelete(
-            this.props.idx
-          );
+          this.props.eventHandlers.handleDelete(this.props.idx);
         }
         break;
       default:
@@ -126,10 +126,7 @@ class Paragraph extends React.Component<
       isWriteOnly(this.props.eventHandlers) &&
       this.props.eventHandlers.handleChange
     ) {
-      this.props.eventHandlers.handleChange(
-        this.props.idx,
-        ev.target.value
-      );
+      this.props.eventHandlers.handleChange(this.props.idx, ev.target.value);
     }
   };
   handleClick = () => {
@@ -351,8 +348,8 @@ class Video extends React.Component<VideoBlockProps, VideoBlockState> {
 
 export interface BlockContainerProps {
   block: TakeBlock;
-	index: number;
-	eventHandlers: WritingEventHandlers | ReadingEventHandlers;
+  index: number;
+  eventHandlers: WritingEventHandlers | ReadingEventHandlers;
   active: boolean;
 }
 
@@ -385,34 +382,34 @@ class BlockContainer extends React.Component<BlockContainerProps, {}> {
         }
         break;
       case "document":
-				inner = (
-					<Document
-						block={props.block}
-						idx={props.index}
-						active={props.active}
-						eventHandlers={props.eventHandlers}
-					/>
-				);
+        inner = (
+          <Document
+            block={props.block}
+            idx={props.index}
+            active={props.active}
+            eventHandlers={props.eventHandlers}
+          />
+        );
         break;
-			case "video":
-				if (isWriteOnly(props.eventHandlers)) {
-					inner = (
-						<Video
-							block={props.block as VideoBlock}
-							idx={props.index}
-							active={props.active}
-							eventHandlers={props.eventHandlers}
-						/>
-					);
-				} else {
-					inner = (
-						<Video
-							block={props.block as VideoBlock}
-							idx={props.index}
-							active={props.active}
-						/>
-					);
-				}
+      case "video":
+        if (isWriteOnly(props.eventHandlers)) {
+          inner = (
+            <Video
+              block={props.block as VideoBlock}
+              idx={props.index}
+              active={props.active}
+              eventHandlers={props.eventHandlers}
+            />
+          );
+        } else {
+          inner = (
+            <Video
+              block={props.block as VideoBlock}
+              idx={props.index}
+              active={props.active}
+            />
+          );
+        }
         break;
     }
 
@@ -426,8 +423,8 @@ class BlockContainer extends React.Component<BlockContainerProps, {}> {
 
 export interface BlockEditorProps {
   takeDocument: TakeDocument;
-	active?: number;
-	eventHandlers: WritingEventHandlers | ReadingEventHandlers;
+  active?: number;
+  eventHandlers: WritingEventHandlers | ReadingEventHandlers;
 }
 
 export interface BlockEditorState {
@@ -445,7 +442,10 @@ class BlockEditor extends React.Component<BlockEditorProps, BlockEditorState> {
     };
   }
   handleChange = (ev: React.ChangeEvent<HTMLTextAreaElement>) => {
-    if (isWriteOnly(this.props.eventHandlers) && this.props.eventHandlers.handleChange) {
+    if (
+      isWriteOnly(this.props.eventHandlers) &&
+      this.props.eventHandlers.handleChange
+    ) {
       this.props.eventHandlers.handleChange(-1, ev.target.value);
     }
   };
@@ -514,9 +514,9 @@ class BlockEditor extends React.Component<BlockEditorProps, BlockEditorState> {
             <div className="editor__block-list">
               {props.takeDocument.blocks.map((block, idx) => {
                 if (!isWriteOnly(props.eventHandlers)) {
-									const readingEventHandlers: ReadingEventHandlers = {
-										onDocumentClick: props.eventHandlers.onDocumentClick
-									}
+                  const readingEventHandlers: ReadingEventHandlers = {
+                    onDocumentClick: props.eventHandlers.onDocumentClick
+                  };
                   return (
                     <BlockContainer
                       key={idx.toString()}
