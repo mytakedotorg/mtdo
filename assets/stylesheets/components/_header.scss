@@ -20,7 +20,7 @@
   @include display2;
   font-style: normal;
   margin-left: $page-margin;
-  line-height: 8rem;	// cd src && grep -Rn "static headerHeight" *
+  line-height: 8rem; // cd src && grep -Rn "static headerHeight" *
 }
 .header__logo-link {
   text-decoration: none;
