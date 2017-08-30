@@ -183,13 +183,16 @@ class MyTake extends React.Component<MyTakeProps, MyTakeState> {
     });
   };
   render() {
+    const eventHandlers = {
+      handleChange: this.handleTakeBlockChange,
+      handleDelete: this.removeParagraph,
+      handleEnterPress: this.addParagraph,
+      handleFocus: this.handleTakeBlockFocus
+    };
     return (
       <div>
         <BlockEditor
-          handleDelete={this.removeParagraph}
-          handleChange={this.handleTakeBlockChange}
-          handleFocus={this.handleTakeBlockFocus}
-          handleEnter={this.addParagraph}
+          eventHandlers={eventHandlers}
           takeDocument={(Object as any).assign({}, this.state.takeDocument)}
           active={this.state.activeBlockIndex}
         />

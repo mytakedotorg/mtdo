@@ -36,12 +36,14 @@ class BlockReader extends React.Component<BlockReaderProps, BlockReaderState> {
       offset;
   };
   render() {
+    const eventHandlers = {
+      onDocumentClick: this.handleClick
+    };
     return (
       <div>
         <BlockEditor
           takeDocument={(Object as any).assign({}, this.state.takeDocument)}
-          readOnly={true}
-          onDocumentClick={this.handleClick}
+          eventHandlers={eventHandlers}
         />
       </div>
     );
