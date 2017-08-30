@@ -56,7 +56,11 @@ interface ReadingEventHandlers {
 function isWriteOnly(
   eventHandlers: WritingEventHandlers | ReadingEventHandlers | undefined
 ): eventHandlers is WritingEventHandlers {
-  return (eventHandlers as WritingEventHandlers).handleDelete !== undefined;
+	if (eventHandlers) {
+		return (eventHandlers as WritingEventHandlers).handleDelete !== undefined;
+	} else {
+		return false;
+	}
 }
 export interface DocumentBlockProps {
   idx: number;
