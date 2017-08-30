@@ -9,7 +9,7 @@ interface BlockReaderProps {
 }
 
 interface BlockReaderState {
-  takeDocument: TakeDocument;
+  takeDocument?: TakeDocument;
 }
 
 class BlockReader extends React.Component<BlockReaderProps, BlockReaderState> {

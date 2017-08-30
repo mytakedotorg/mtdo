@@ -36,7 +36,7 @@ class Document extends React.Component<DocumentProps, DocumentState> {
 
     this.state = {
       documentNodes: getNodeArray(props.type),
-      range: props.range,
+      range: props.range || [0, 0],
       textIsHighlighted: false,
       initialHighlightedNodes: [],
       showInitialHighlights: true,
@@ -82,7 +82,7 @@ class Document extends React.Component<DocumentProps, DocumentState> {
     }
   };
   handleSetClick = (isInitialRange?: boolean) => {
-    if (isInitialRange) {
+    if (isInitialRange && this.props.range) {
       this.props.onSetClick(this.props.type, this.props.range);
     } else {
       this.props.onSetClick(this.props.type, this.state.range);
@@ -109,9 +109,13 @@ class Document extends React.Component<DocumentProps, DocumentState> {
       let theseDOMNodes = ReactDOM.findDOMNode(this).childNodes;
       let offsetTop = getStartRangeOffsetTop(theseDOMNodes, this.props.range);
 
-      // Scroll the Document to this offset
-      this.div.scrollTop =
-        offsetTop - 20 - this.props.offset + Document.headerHeight;
+			// Scroll the Document to this offset
+			//offsetTop = offsetTop - 20 + Document.headerHeight;
+			offsetTop -= 20 + Document.headerHeight;
+			if (this.props.offset) {
+				offsetTop -= this.props.offset;
+			}
+      this.div.scrollTop = offsetTop;
 
       this.setState({
         initialHighlightedNodes: initialHighlightedNodes,
