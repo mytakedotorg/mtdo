@@ -9,6 +9,7 @@ interface FoundationExplorerState {
   articleUser: string;
   type: FoundationTextType;
   range: [number, number];
+  offset: number;
 }
 
 class FoundationExplorer extends React.Component<{}, FoundationExplorerState> {
@@ -19,7 +20,8 @@ class FoundationExplorer extends React.Component<{}, FoundationExplorerState> {
       articleTitle: null,
       articleUser: null,
       type: null,
-      range: [0, 0]
+      range: [0, 0],
+      offset: 0
     };
   }
   handleBackClick = () => {
@@ -70,12 +72,14 @@ class FoundationExplorer extends React.Component<{}, FoundationExplorerState> {
       let user = hashes[0].substring(1).split("/")[1];
       let articleTitle = hashes[0].substring(1).split("/")[2];
       let blockIndex = parseInt(hashes[1]);
+      let offset = parseInt(hashes[2]);
       let metaData = this.getBlockMetaData(user, articleTitle, blockIndex);
       this.setState({
         articleTitle: articleTitle,
         articleUser: user,
         type: metaData.type,
-        range: metaData.range
+        range: metaData.range,
+        offset: offset
       });
     }
   };
@@ -97,6 +101,7 @@ class FoundationExplorer extends React.Component<{}, FoundationExplorerState> {
         <div className="DocumentReader">
           <Document
             backButtonText={this.state.articleTitle}
+            offset={this.state.offset}
             onBackClick={this.handleBackClick}
             onSetClick={this.handleSetClick}
             range={this.state.range}
