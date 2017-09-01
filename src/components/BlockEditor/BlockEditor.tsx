@@ -174,9 +174,6 @@ class Paragraph extends React.Component<
   }
   render() {
     let classes = "editor__paragraph";
-    if (this.props.active) {
-      classes += " editor__paragraph--active";
-    }
     return (
       <div>
         <textarea
@@ -252,9 +249,6 @@ class Document extends React.Component<DocumentBlockProps, DocumentBlockState> {
     );
 
     let classes = "editor__document editor__document--base";
-    if (this.props.active) {
-      classes += " editor__document--active";
-    }
     return (
       <div
         tabIndex={0}
@@ -314,9 +308,6 @@ class Video extends React.Component<VideoBlockProps, VideoBlockState> {
     const { props } = this;
 
     let classes = "editor__video-container";
-    if (this.props.active) {
-      classes += " editor__video-container--active";
-    }
 
     let playerVars: YTPlayerParameters = {
       rel: 0
