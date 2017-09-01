@@ -170,7 +170,9 @@ function highlightText(
   let firstNodeList = childNodes;
   for (let i = 0; i < firstNodeList.length; i++) {
     for (let j = 0; j < firstNodeList[i].attributes.length; j++) {
-      if (firstNodeList[i].attributes.item(j).value == rowIndexClassName) {
+      if (
+        (firstNodeList[i] as HTMLElement).classList.contains(rowIndexClassName)
+      ) {
         rowIndex = i;
         break;
       }
@@ -187,7 +189,9 @@ function highlightText(
     for (let i = 0; i < secondNodeList.length; i++) {
       for (let j = 0; j < secondNodeList[i].attributes.length; j++) {
         if (
-          secondNodeList[i].attributes.item(j).value == rowInnerIndexClassName
+          (secondNodeList[i] as HTMLElement).classList.contains(
+            rowInnerIndexClassName
+          )
         ) {
           rowInnerIndex = i;
           break;
@@ -205,7 +209,11 @@ function highlightText(
     thirdNodeList = secondNodeList[rowInnerIndex].childNodes;
     for (let i = 0; i < thirdNodeList.length; i++) {
       for (let j = 0; j < thirdNodeList[i].attributes.length; j++) {
-        if (thirdNodeList[i].attributes.item(j).value == textIndexClassName) {
+        if (
+          (thirdNodeList[i] as HTMLElement).classList.contains(
+            textIndexClassName
+          )
+        ) {
           textIndex = i;
           break;
         }
@@ -404,7 +412,9 @@ function getStartRangeOffsetTop(
   let firstNodeList = childNodes;
   for (let i = 0; i < firstNodeList.length; i++) {
     for (let j = 0; j < firstNodeList[i].attributes.length; j++) {
-      if (firstNodeList[i].attributes.item(j).value == rowIndexClassName) {
+      if (
+        (firstNodeList[i] as HTMLElement).classList.contains(rowIndexClassName)
+      ) {
         rowIndex = i;
         break;
       }
@@ -421,7 +431,9 @@ function getStartRangeOffsetTop(
     for (let i = 0; i < secondNodeList.length; i++) {
       for (let j = 0; j < secondNodeList[i].attributes.length; j++) {
         if (
-          secondNodeList[i].attributes.item(j).value == rowInnerIndexClassName
+          (secondNodeList[i] as HTMLElement).classList.contains(
+            rowInnerIndexClassName
+          )
         ) {
           rowInnerIndex = i;
           break;
@@ -439,7 +451,11 @@ function getStartRangeOffsetTop(
     thirdNodeList = secondNodeList[rowInnerIndex].childNodes;
     for (let i = 0; i < thirdNodeList.length; i++) {
       for (let j = 0; j < thirdNodeList[i].attributes.length; j++) {
-        if (thirdNodeList[i].attributes.item(j).value == textIndexClassName) {
+        if (
+          (thirdNodeList[i] as HTMLElement).classList.contains(
+            textIndexClassName
+          )
+        ) {
           textIndex = i;
           break;
         }
