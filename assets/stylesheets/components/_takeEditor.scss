@@ -18,9 +18,14 @@
   word-wrap: break-word;
 }
 .editor__wrapper {
-  margin: 2rem auto;
+  margin: auto;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
   width: 768px;
   max-width: 100%;
+  background-color: palette(editor, background);
+  position: relative;
+  z-index: 10;
 }
 .editor {
   position: relative;
@@ -46,7 +51,13 @@
   opacity: 0.3;
 }
 .editor__block {
+  z-index: 10;
+}
+.editor__block--base {
   position: relative;
+}
+.editor__block--overlay {
+  position: absolute;
 }
 .editor__paragraph--placeholder {
   opacity: 0.3;
@@ -66,9 +77,16 @@
   border: palette(editor, border);
   box-shadow: 1px 1px 2px palette(editor, shadow);
   color: palette(editor, text);
+}
+.editor__document--base {
   padding: 5px 15px;
   margin-bottom: 2rem;
   @include body--italic;
+}
+.editor__document--overlay {
+  cursor: pointer;
+  padding: 5px 1px;
+  @include body;
 }
 .editor__document-highlight {
   color: palette(editor, text--highlight);

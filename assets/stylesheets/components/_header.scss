@@ -1,6 +1,9 @@
 .header {
   width: 100%;
   @include clearfix;
+  position: relative;
+  z-index: 10;
+  background-color: white;
 }
 .header__skip-link {
   position: absolute;
@@ -20,7 +23,7 @@
   @include display2;
   font-style: normal;
   margin-left: $page-margin;
-  line-height: 8rem;
+  line-height: 8rem; // cd src && grep -Rn "static headerHeight" *
 }
 .header__logo-link {
   text-decoration: none;
@@ -35,7 +38,7 @@
 }
 .header__button {
   @include body--lead;
-  line-height: 8rem;
+  line-height: 8rem; // cd src && grep -Rn "static headerHeight" *
   margin-right: $page-margin;
   color: palette(header, text);
   &:hover {

@@ -22,25 +22,29 @@ const doc: TakeDocument = {
 
 const handleChange = (id: number, value: string): void => {};
 const handleDelete = (id: number): void => {};
-const handleEnter = (): void => {};
+const handleEnterPress = (): void => {};
 const handleFocus = (id: number): void => {};
 const handlers = {
   handleChange,
   handleDelete,
-  handleEnter,
+  handleEnterPress,
   handleFocus
 };
 
 test("Simple block editor model", () => {
   const tree = renderer
-    .create(<BlockEditor takeDocument={doc} active={-1} {...handlers} />)
+    .create(
+      <BlockEditor takeDocument={doc} active={-1} eventHandlers={handlers} />
+    )
     .toJSON();
   expect(tree).toMatchSnapshot();
 });
 
 test("With active", () => {
   const tree = renderer
-    .create(<BlockEditor takeDocument={doc} active={0} {...handlers} />)
+    .create(
+      <BlockEditor takeDocument={doc} active={0} eventHandlers={handlers} />
+    )
     .toJSON();
   expect(tree).toMatchSnapshot();
 });

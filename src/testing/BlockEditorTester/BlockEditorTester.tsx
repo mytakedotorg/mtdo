@@ -101,13 +101,16 @@ class BlockEditorTester extends React.Component<
     });
   };
   render() {
+    const eventHandlers = {
+      handleChange: this.handleTakeBlockChange,
+      handleDelete: this.removeParagraph,
+      handleEnterPress: this.addParagraph,
+      handleFocus: this.handleTakeBlockFocus
+    };
     return (
       <div>
         <BlockEditor
-          handleDelete={this.removeParagraph}
-          handleChange={this.handleTakeBlockChange}
-          handleFocus={this.handleTakeBlockFocus}
-          handleEnter={this.addParagraph}
+          eventHandlers={eventHandlers}
           takeDocument={this.state.takeDocument}
           active={this.state.activeBlockIndex}
         />

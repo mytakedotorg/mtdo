@@ -1,0 +1,100 @@
+.document {
+  width: 768px;
+  max-width: 100%;
+  position: relative;
+  z-index: 1;
+}
+.document--overlay {
+  position: relative;
+  z-index: 1;
+  background-color: palette(document, background);
+  @media only screen and (min-width: 768px) {
+    left: 50%;
+    margin-left: -384px;
+  }
+}
+.document--static {
+  margin: 2rem auto;
+}
+.document__header {
+  width: 100%;
+  background-color: palette(document, background);
+}
+.document__header--visible {
+  position: relative;
+  z-index: 15;
+  height: 8rem;
+}
+.document__header--fixed {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  @media only screen and (min-width: 768px) {
+    left: 50%;
+    margin-left: -383px;
+  }
+}
+.document__header--hidden {
+  visibility: hidden;
+  height: 0;
+}
+.document__heading {
+  margin-top: 0;
+  margin-bottom: 15px;
+  color: palette(document, text);
+  @include heading2;
+}
+
+.document__instructions {
+  margin-top: 0;
+  margin-bottom: 15px;
+  color: palette(document, text);
+  @include body--lead;
+}
+.document__row {
+  z-index: 5;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  height: 100%;
+  overflow: scroll;
+  position: relative;
+  padding: 0 3rem;
+}
+.document__row--push {
+  margin-top: 8rem;
+}
+.document__row-inner {
+  position: relative;
+}
+.document__text {
+  position: relative;
+  padding: 1px;
+  color: palette(document, color);
+  z-index: 1;
+  @include body;
+}
+.document__text--block {
+  border: 1px solid palette(document, border);
+  box-shadow: 1px 1px 2px palette(document, shadow);
+  padding: 0 15px;
+  width: 100%;
+}
+.document__text--selected {
+  color: palette(document, text--highlight);
+  background-color: palette(document, background--highlight);
+  cursor: pointer;
+}
+.document__button {
+  @include button;
+  border: none;
+  color: palette(button, color--base);
+  background: palette(button, background--base);
+  &:hover {
+    background: palette(button, background--base-hover);
+  }
+  width: 175px;
+  margin-bottom: 15px;
+  margin-right: 15px;
+}

@@ -10,6 +10,7 @@
   },
   "main": "src/index.tsx",
   "scripts": {
+    "clean": "gulp clean",
     "deploy": "gulp buildProd",
     "format-list": "prettier --list-different '*.js' 'assets/**/*.scss' 'src/**/*.ts?(x)'",
     "format-write": "prettier --write '*.js' 'assets/**/*.scss' 'src/**/*.ts?(x)'",
@@ -51,6 +52,7 @@
     "source-map-loader": "^0.2.1",
     "ts-jest": "^20.0.5",
     "typescript": "^2.3.3",
+    "uglifyjs-webpack-plugin": "^0.4.6",
     "url-loader": "^0.5.9",
     "webpack": "^3.4.0",
     "webpack-stream": "^4.0.0"
