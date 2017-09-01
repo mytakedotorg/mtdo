@@ -25,10 +25,12 @@ interface DocumentState {
   initialHighlightedNodes: FoundationNode[];
   showInitialHighlights: boolean;
   offsetTop: number;
+  headerHidden: boolean;
 }
 
 class Document extends React.Component<DocumentProps, DocumentState> {
-  private div: HTMLDivElement;
+  private docContainer: HTMLDivElement;
+  private header: HTMLDivElement;
   static headerHeight = 80;
   constructor(props: DocumentProps) {
     super(props);
@@ -39,7 +41,8 @@ class Document extends React.Component<DocumentProps, DocumentState> {
       textIsHighlighted: false,
       initialHighlightedNodes: [],
       showInitialHighlights: true,
-      offsetTop: 0
+      offsetTop: 0,
+      headerHidden: false
     };
   }
   getDocumentHeading = () => {
@@ -80,6 +83,11 @@ class Document extends React.Component<DocumentProps, DocumentState> {
       }
     }
   };
+  handleScroll = () => {
+    this.setState({
+      headerHidden: this.header.getBoundingClientRect().top <= 0
+    });
+  };
   handleSetClick = (isInitialRange?: boolean) => {
     if (isInitialRange && this.props.range) {
       this.props.onSetClick(this.props.type, this.props.range);
@@ -89,15 +97,13 @@ class Document extends React.Component<DocumentProps, DocumentState> {
   };
   componentDidMount() {
     this.setup();
+    window.addEventListener("scroll", this.handleScroll);
   }
   componentWillUnmount() {
-    this.tearDown();
+    window.removeEventListener("scroll", this.handleScroll);
   }
   setup = () => {
     if (this.props.range) {
-      // Show Amendments over an existing take with pre-existing and uneditable highlights
-      document.body.classList.add("noscroll");
-
       // Get the list of nodes highlighted by a previous author
       let initialHighlightedNodes = getHighlightedNodes(
         [...this.state.documentNodes],
@@ -113,18 +119,13 @@ class Document extends React.Component<DocumentProps, DocumentState> {
       if (this.props.offset) {
         scrollTop -= this.props.offset;
       }
-      this.div.scrollTop = scrollTop;
+      this.docContainer.scrollTop = scrollTop;
 
       this.setState({
         initialHighlightedNodes: initialHighlightedNodes,
         offsetTop: offsetTop - 20
       });
-    } else {
-      document.body.classList.remove("noscroll");
     }
-  };
-  tearDown = () => {
-    document.body.classList.remove("noscroll");
   };
   render() {
     let classes = "document";
@@ -133,25 +134,51 @@ class Document extends React.Component<DocumentProps, DocumentState> {
     } else {
       classes += " document--static";
     }
+
+    let headerClass = "document__header";
+    let documentClass = "document__row";
+    if (this.state.headerHidden) {
+      headerClass += " document__header--hidden";
+      documentClass += " document__row--push";
+    } else {
+      headerClass += " document__header--visible";
+    }
+
+    const headerContent = (
+      <div>
+        <h2 className={"document__heading"}>
+          {this.getDocumentHeading()}
+        </h2>
+        <button className="document__button" onClick={this.props.onBackClick}>
+          <i className="fa fa-long-arrow-left" aria-hidden="true" />
+          {this.props.range ? " Back to Take" : " Back to Foundation"}
+        </button>
+        {this.state.textIsHighlighted
+          ? <button
+              className="document__button"
+              onClick={this.handleClearClick}
+            >
+              Clear Selection
+            </button>
+          : null}
+      </div>
+    );
+
     return (
       <div className={classes}>
-        <div className={"document__header"}>
-					<h2 className={"document__heading"}>
-            {this.getDocumentHeading()}
-          </h2>
-          <button onClick={this.props.onBackClick}>
-						<i className="fa fa-long-arrow-left" aria-hidden="true"></i>
-            {this.props.range
-              ? " Back to Take"
-              : " Back to Foundation"}
-          </button>
-					{this.state.textIsHighlighted ? 
-          	<button onClick={this.handleClearClick}>Clear Selection</button>
-						: null }
+        <div
+          className={headerClass}
+          ref={(header: HTMLDivElement) => (this.header = header)}
+        >
+          {headerContent}
+        </div>
+        <div className={"document__header document__header--fixed"}>
+          {headerContent}
         </div>
         <div
-          className={"document__row"}
-          ref={(div: HTMLDivElement) => (this.div = div)}
+          className={documentClass}
+          ref={(docContainer: HTMLDivElement) =>
+            (this.docContainer = docContainer)}
         >
           <div className={"document__row-inner"}>
             <div className={"document__text"} onMouseUp={this.handleMouseUp}>
