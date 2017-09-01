@@ -25,7 +25,7 @@ interface DocumentState {
   textIsHighlighted: boolean;
   initialHighlightedNodes: FoundationNode[];
   showInitialHighlights: boolean;
-  scrollTop: number;
+  offsetTop: number;
 }
 
 class Document extends React.Component<DocumentProps, DocumentState> {
@@ -40,7 +40,7 @@ class Document extends React.Component<DocumentProps, DocumentState> {
       textIsHighlighted: false,
       initialHighlightedNodes: [],
       showInitialHighlights: true,
-      scrollTop: 0
+      offsetTop: 0
     };
   }
   getDocumentHeading = () => {
@@ -110,16 +110,15 @@ class Document extends React.Component<DocumentProps, DocumentState> {
       let offsetTop = getStartRangeOffsetTop(theseDOMNodes, this.props.range);
 
       // Scroll the Document to this offset
-      //offsetTop = offsetTop - 20 + Document.headerHeight;
-      offsetTop -= 20 + Document.headerHeight;
+      let scrollTop = offsetTop - 20 + Document.headerHeight;
       if (this.props.offset) {
-        offsetTop -= this.props.offset;
+        scrollTop -= this.props.offset;
       }
-      this.div.scrollTop = offsetTop;
+      this.div.scrollTop = scrollTop;
 
       this.setState({
         initialHighlightedNodes: initialHighlightedNodes,
-        scrollTop: offsetTop - 20
+        offsetTop: offsetTop - 20
       });
     } else {
       document.body.classList.remove("noscroll");
@@ -170,7 +169,7 @@ class Document extends React.Component<DocumentProps, DocumentState> {
             {this.props.range && this.state.showInitialHighlights
               ? <div
                   className="editor__block editor__block--overlay"
-                  style={{ top: this.state.scrollTop }}
+                  style={{ top: this.state.offsetTop }}
                   onClick={() => this.handleSetClick(true)}
                 >
                   <div className="editor__document editor__document--overlay">
