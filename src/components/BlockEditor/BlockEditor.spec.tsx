@@ -33,14 +33,18 @@ const handlers = {
 
 test("Simple block editor model", () => {
   const tree = renderer
-    .create(<BlockEditor takeDocument={doc} active={-1} eventHandlers={handlers} />)
+    .create(
+      <BlockEditor takeDocument={doc} active={-1} eventHandlers={handlers} />
+    )
     .toJSON();
   expect(tree).toMatchSnapshot();
 });
 
 test("With active", () => {
   const tree = renderer
-    .create(<BlockEditor takeDocument={doc} active={0} eventHandlers={handlers} />)
+    .create(
+      <BlockEditor takeDocument={doc} active={0} eventHandlers={handlers} />
+    )
     .toJSON();
   expect(tree).toMatchSnapshot();
 });
