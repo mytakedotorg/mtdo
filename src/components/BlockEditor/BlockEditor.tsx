@@ -31,19 +31,19 @@ export interface VideoBlock {
   videoId: string;
   range?: [number, number];
 }
-export interface WritingEventHandlers {
+interface WritingEventHandlers {
   handleDelete: (idx: number) => void;
   handleEnterPress: (isTitle?: boolean) => void;
   handleFocus: (idx: number) => void;
   handleChange?: (idx: number, value: string) => void;
 }
-export interface ParagraphBlockProps {
+interface ParagraphBlockProps {
   idx: number;
   active: boolean;
   block: ParagraphBlock;
   eventHandlers?: WritingEventHandlers;
 }
-export interface ParagraphBlockState {
+interface ParagraphBlockState {
   style: any;
 }
 interface ReadingEventHandlers {
@@ -63,22 +63,22 @@ function isWriteOnly(
     return false;
   }
 }
-export interface DocumentBlockProps {
+interface DocumentBlockProps {
   idx: number;
   active: boolean;
   block: DocumentBlock;
   eventHandlers: WritingEventHandlers | ReadingEventHandlers;
 }
-export interface DocumentBlockState {
+interface DocumentBlockState {
   documentNodes: FoundationNode[];
 }
-export interface VideoBlockProps {
+interface VideoBlockProps {
   idx: number;
   active: boolean;
   block: VideoBlock;
   eventHandlers?: WritingEventHandlers;
 }
-export interface VideoBlockState {}
+interface VideoBlockState {}
 
 export type TakeBlock = ParagraphBlock | DocumentBlock | VideoBlock;
 
@@ -352,7 +352,7 @@ class Video extends React.Component<VideoBlockProps, VideoBlockState> {
   }
 }
 
-export interface BlockContainerProps {
+interface BlockContainerProps {
   block: TakeBlock;
   index: number;
   eventHandlers: WritingEventHandlers | ReadingEventHandlers;
@@ -427,13 +427,13 @@ class BlockContainer extends React.Component<BlockContainerProps, {}> {
   }
 }
 
-export interface BlockEditorProps {
+interface BlockEditorProps {
   takeDocument: TakeDocument;
   active?: number;
   eventHandlers: WritingEventHandlers | ReadingEventHandlers;
 }
 
-export interface BlockEditorState {
+interface BlockEditorState {
   style: any;
 }
 
