@@ -42,7 +42,6 @@ class FoundationExplorer extends React.Component<FoundationExplorerProps, {}> {
     return (
       <div className="DocumentReader">
         <Document
-          backButtonText={this.props.articleTitle}
           offset={this.props.scrollTop}
           onBackClick={this.handleBackClick}
           onSetClick={this.handleSetClick}

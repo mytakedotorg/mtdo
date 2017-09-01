@@ -11,7 +11,6 @@ import {
 } from "../../utils/functions";
 
 interface DocumentProps {
-  backButtonText?: string;
   offset?: number;
   onBackClick: () => void;
   onSetClick: (type: FoundationTextType, range: [number, number]) => void;
@@ -128,32 +127,34 @@ class Document extends React.Component<DocumentProps, DocumentState> {
     document.body.classList.remove("noscroll");
   };
   render() {
-    let cssBlock = "document";
-    let classes = cssBlock;
+    let classes = "document";
     if (this.props.range) {
-      classes += " " + cssBlock + "--overlay";
+      classes += " document--overlay";
     } else {
-      classes += " " + cssBlock + "--static";
+      classes += " document--static";
     }
     return (
       <div className={classes}>
-        <div className={cssBlock + "__header"}>
-          <button onClick={this.props.onBackClick}>
-            {this.props.backButtonText
-              ? this.props.backButtonText
-              : "Back to Foundation"}
-          </button>
-          <button onClick={this.handleClearClick}>Clear Selection</button>
-          <h2 className={cssBlock + "__heading"}>
+        <div className={"document__header"}>
+					<h2 className={"document__heading"}>
             {this.getDocumentHeading()}
           </h2>
+          <button onClick={this.props.onBackClick}>
+						<i className="fa fa-long-arrow-left" aria-hidden="true"></i>
+            {this.props.range
+              ? " Back to Take"
+              : " Back to Foundation"}
+          </button>
+					{this.state.textIsHighlighted ? 
+          	<button onClick={this.handleClearClick}>Clear Selection</button>
+						: null }
         </div>
         <div
-          className={cssBlock + "__row"}
+          className={"document__row"}
           ref={(div: HTMLDivElement) => (this.div = div)}
         >
-          <div className={cssBlock + "__row-inner"}>
-            <div className={cssBlock + "__text"} onMouseUp={this.handleMouseUp}>
+          <div className={"document__row-inner"}>
+            <div className={"document__text"} onMouseUp={this.handleMouseUp}>
               {this.state.documentNodes.map(function(
                 element: FoundationNode,
                 index: number
