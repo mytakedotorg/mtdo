@@ -4,128 +4,53 @@ import Document from "../Document";
 import database, { EvidenceBlock } from "../../utils/database";
 import Foundation, { FoundationTextType } from "../Foundation";
 
-class FoundationExplorerState {
+interface FoundationExplorerProps {
   articleTitle: string;
   articleUser: string;
-  type: FoundationTextType;
+  blockIndex: number;
   range: [number, number];
-  offset: number;
+  scrollTop: number;
+  type: FoundationTextType;
 }
 
-class FoundationExplorer extends React.Component<
-  {},
-  FoundationExplorerState | {}
-> {
-  constructor(props: {}) {
+class FoundationExplorer extends React.Component<FoundationExplorerProps, {}> {
+  constructor(props: FoundationExplorerProps) {
     super(props);
-    this.state = {};
   }
   handleBackClick = () => {
-    if (
-      this.state instanceof FoundationExplorerState &&
-      this.state.articleUser
-    ) {
-      let url = "/" + this.state.articleUser;
-      if (this.state.articleTitle) {
-        url += "/" + this.state.articleTitle;
-      }
-      window.location.href = url;
-    }
+    let url = "/" + this.props.articleUser + "/" + this.props.articleTitle;
+    window.location.href = url;
   };
   handleSetClick = (
     type: FoundationTextType,
     range: [number, number]
   ): void => {
-    if (
-      this.state instanceof FoundationExplorerState &&
-      this.state.articleUser &&
-      this.state.articleTitle
-    ) {
-      window.location.href =
-        "/new-take/#" +
-        type.toLowerCase() +
-        "&" +
-        "/" +
-        this.state.articleUser +
-        "/" +
-        this.state.articleTitle +
-        "&" +
-        range[0] +
-        "&" +
-        range[1];
-    }
+    window.location.href =
+      "/new-take/#" +
+      type.toLowerCase() +
+      "&" +
+      "/" +
+      this.props.articleUser +
+      "/" +
+      this.props.articleTitle +
+      "&" +
+      range[0] +
+      "&" +
+      range[1];
   };
-  getBlockMetaData = (
-    username: string,
-    articleTitle: string,
-    blockIndex: number
-  ): EvidenceBlock | undefined => {
-    // This function can be stubbed out when a backend/database is needed
-    for (let user of database.users) {
-      if (user.name === username) {
-        for (let article of user.articles) {
-          if (article.title === articleTitle) {
-            for (let block of article.evidenceBlocks) {
-              if (block.index === blockIndex) {
-                return block;
-              }
-            }
-          }
-        }
-      }
-    }
-  };
-  getDocumentInfo = () => {
-    if (window.location.hash) {
-      // Expect hash URL to be like, #/{user}/{article-title}&{block-index}&{scrollTop}
-      let hashes = window.location.hash.split("&");
-      let user = hashes[0].substring(1).split("/")[1];
-      let articleTitle = hashes[0].substring(1).split("/")[2];
-      let blockIndex = parseInt(hashes[1]);
-      let offset = parseInt(hashes[2]);
-      this.setState({
-        articleTitle: articleTitle,
-        articleUser: user,
-        offset: offset
-      });
-
-      let metaData = this.getBlockMetaData(user, articleTitle, blockIndex);
-
-      if (metaData) {
-        this.setState({
-          type: metaData.type,
-          range: metaData.range
-        });
-      }
-    }
-  };
-  componentDidMount() {
-    this.getDocumentInfo();
-  }
   render() {
-    if (this.state instanceof FoundationExplorerState) {
-      return (
-        <div className="DocumentReader">
-          <Document
-            backButtonText={this.state.articleTitle}
-            offset={this.state.offset}
-            onBackClick={this.handleBackClick}
-            onSetClick={this.handleSetClick}
-            range={this.state.range}
-            type={this.state.type}
-          />
-        </div>
-      );
-    } else {
-      return (
-        <div className="DocumentReader">
-          <Foundation
-            handleDocumentSetClick={this.handleSetClick}
-            handleVideoSetClick={this.handleSetClick}
-          />
-        </div>
-      );
-    }
+    return (
+      <div className="DocumentReader">
+        <Document
+          backButtonText={this.props.articleTitle}
+          offset={this.props.scrollTop}
+          onBackClick={this.handleBackClick}
+          onSetClick={this.handleSetClick}
+          range={this.props.range}
+          type={this.props.type}
+        />
+      </div>
+    );
   }
 }
 
