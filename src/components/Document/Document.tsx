@@ -29,9 +29,8 @@ interface DocumentState {
 }
 
 class Document extends React.Component<DocumentProps, DocumentState> {
-  private docContainer: HTMLDivElement;
   private header: HTMLDivElement;
-  static headerHeight = 80;
+  static headerHeight = 219;
   constructor(props: DocumentProps) {
     super(props);
 
@@ -119,7 +118,8 @@ class Document extends React.Component<DocumentProps, DocumentState> {
       if (this.props.offset) {
         scrollTop -= this.props.offset;
       }
-      this.docContainer.scrollTop = scrollTop;
+
+      window.scrollTo(0, scrollTop);
 
       this.setState({
         initialHighlightedNodes: initialHighlightedNodes,
@@ -175,11 +175,7 @@ class Document extends React.Component<DocumentProps, DocumentState> {
         <div className={"document__header document__header--fixed"}>
           {headerContent}
         </div>
-        <div
-          className={documentClass}
-          ref={(docContainer: HTMLDivElement) =>
-            (this.docContainer = docContainer)}
-        >
+        <div className={documentClass}>
           <div className={"document__row-inner"}>
             <div className={"document__text"} onMouseUp={this.handleMouseUp}>
               {this.state.documentNodes.map(function(

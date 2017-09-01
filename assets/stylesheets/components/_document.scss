@@ -23,7 +23,7 @@
 .document__header--visible {
   position: relative;
   z-index: 15;
-  height: 8rem;
+  height: 10rem;
 }
 .document__header--fixed {
   position: fixed;
@@ -63,7 +63,7 @@
   padding: 0 3rem;
 }
 .document__row--push {
-  margin-top: 8rem;
+  margin-top: 10rem;
 }
 .document__row-inner {
   position: relative;
@@ -95,6 +95,5 @@
     background: palette(button, background--base-hover);
   }
   width: 175px;
-  margin-bottom: 15px;
   margin-right: 15px;
 }
