@@ -47,6 +47,7 @@ $black: #000;
 $palettes: (
   header:
     (
+      background: $white,
       border: $base-darkest,
       text: $base,
       text--hover: $base-lightest,
@@ -60,19 +61,9 @@ $palettes: (
       active: $secondary,
       active--hover: $secondary-light
     ),
-  amendments:
+  document:
     (
       background: $white,
-      background--highlight: lighten($base-lightest, 10%),
-      background--scrollbar-track: $base-lightest,
-      background--scrollbar-thumb: $white,
-      border: $base-lightest,
-      shadow: $base-darkest,
-      text: $base-darkest,
-      text--highlight: $base-darkest
-    ),
-  constitution:
-    (
       background--highlight: lighten($base-lightest, 10%),
       background--scrollbar-track: $base-lightest,
       background--scrollbar-thumb: $white,
@@ -84,7 +75,7 @@ $palettes: (
   debates: (text: $base-darkest),
   editor:
     (
-      background: white,
+      background: $white,
       background--highlight: lighten($base-lightest, 10%),
       border: $base-lightest,
       shadow: $base-darkest,
@@ -118,9 +109,13 @@ $palettes: (
   button:
     (
       background--action: $action,
+      background--base: $base,
       background--action-hover: $action-light,
+      background--base-hover: $base-light,
       color--action: $white,
-      color--action-shadow: $base
+      color--base: $white,
+      color--action-shadow: $base,
+      color--base-shadow: $base-darkest
     ),
   about: (text--special: $base, text: $base-darkest)
 );

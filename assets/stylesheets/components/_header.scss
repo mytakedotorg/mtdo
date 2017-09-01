@@ -1,6 +1,9 @@
 .header {
   width: 100%;
   @include clearfix;
+  position: relative;
+  z-index: 10;
+  background-color: white;
 }
 .header__skip-link {
   position: absolute;

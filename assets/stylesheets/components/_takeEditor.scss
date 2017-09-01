@@ -18,9 +18,14 @@
   word-wrap: break-word;
 }
 .editor__wrapper {
-  margin: 2rem auto;
+  margin: auto;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
   width: 768px;
   max-width: 100%;
+  background-color: palette(editor, background);
+  position: relative;
+  z-index: 10;
 }
 .editor {
   position: relative;
