@@ -2,6 +2,11 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import MyTake from "./components/MyTake";
 import config from "./components/MyTake/config";
+import { FoundationTextType } from "./components/Foundation";
+import { validators } from "./utils/functions";
+
+const AMENDMENTS: FoundationTextType = "AMENDMENTS";
+const CONSTITUTION: FoundationTextType = "CONSTITUTION";
 
 let app = document.getElementById("app");
 let initJson;
@@ -16,33 +21,28 @@ if (app && app.hasAttribute("data-init")) {
   // Expect hash URL to be like, #{FoundationType}&{URL of Take being read}&{highlightRangeStart}&{highlightRangeEnd}
   // localhost:3000/new-take/#amendments&/samples/does-a-law-mean-what-it-says-or-what-it-meant/&369&514
   let hashes = window.location.hash.toLowerCase().split("&");
-  let foundationType = hashes[0].substring(1);
-  let article = hashes[1];
+  let foundationType = hashes[0].substring(1).toUpperCase();
+  //let article = hashes[1];
   let range = [parseInt(hashes[2]), parseInt(hashes[3])];
   let kind; //document or video
-  let blockId; //FoundationTextType or videoId
   switch (foundationType) {
-    case "amendments":
+    case AMENDMENTS || CONSTITUTION:
       kind = "document";
-      blockId = "AMENDMENTS";
-      break;
-    case "constitution":
-      kind = "document";
-      blockId = "CONSTITUTION";
-      break;
-    case "debates":
-      kind = "video";
-      blockId = "SomethingFromURL";
       break;
     default:
       break;
   }
-  if (kind) {
+  if (
+    validators.isFoundationTextType(foundationType) &&
+    !isNaN(range[0]) &&
+    !isNaN(range[1])
+  ) {
     initJson = {
       takeDocument: {
         title: "",
         blocks: [
-          { kind: kind, document: blockId, range: range },
+          // Currently only works for Foundation documents, need to add a video case
+          { kind: kind, document: foundationType, range: range },
           { kind: "paragraph", text: "" }
         ]
       },

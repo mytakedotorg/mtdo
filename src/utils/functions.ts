@@ -529,13 +529,36 @@ function getNodeArray(type: FoundationTextType): Array<FoundationNode> {
   return output;
 }
 
+const validators = {
+  isFoundationTextType: (type: string): type is FoundationTextType => {
+    const AMENDMENTS: FoundationTextType = "AMENDMENTS";
+    const CONSTITUTION: FoundationTextType = "CONSTITUTION";
+    return type === CONSTITUTION || type === AMENDMENTS;
+  },
+  isValidUser: (user: string): boolean => {
+    // User must be alphanumeric
+    if (user.match(/^[a-z0-9]+$/i)) {
+      return true;
+    }
+    return false;
+  },
+  isValidTitle: (title: string): boolean => {
+    // Title must be alphanumeric, hyphens and underscores are also allowed
+    if (title.match(/^[a-z0-9\-\_]+$/i)) {
+      return true;
+    }
+    return false;
+  }
+};
+
 export {
   clearDefaultDOMSelection,
   getStartRangeOffsetTop,
   getHighlightedNodes,
   getNodeArray,
   highlightText,
-  HighlightedText
+  HighlightedText,
+  validators
 };
 
 export default {};
