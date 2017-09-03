@@ -26,7 +26,10 @@ if (app && app.hasAttribute("data-init")) {
   let range = [parseInt(hashes[2]), parseInt(hashes[3])];
   let kind; //document or video
   switch (foundationType) {
-    case AMENDMENTS || CONSTITUTION:
+    case AMENDMENTS:
+      kind = "document";
+      break;
+    case CONSTITUTION:
       kind = "document";
       break;
     default:
