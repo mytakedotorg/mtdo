@@ -25,7 +25,8 @@
     "keycode": "^2.1.9",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
-    "react-youtube": "^7.4.0"
+    "react-youtube": "^7.4.0",
+    "vis": "^4.20.1"
   },
   "devDependencies": {
     "@types/jest": "20.0.2",
