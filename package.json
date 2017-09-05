@@ -60,13 +60,16 @@
   },
   "jest": {
     "transform": {
-      ".(ts|tsx)": "./node_modules/ts-jest/preprocessor.js"
+      ".(ts|tsx)": "./node_modules/ts-jest/preprocessor.js",
+      "foundation.html": "./transformers/foundationTransformer.js"
     },
     "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
     "moduleFileExtensions": [
+      "foundation.html",
       "ts",
       "tsx",
       "js"
-    ]
+    ],
+    "verbose": true
   }
 }

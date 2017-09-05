@@ -6,7 +6,7 @@ import {
 } from "../components/Foundation";
 var htmlparser = require("htmlparser2");
 const constitutionText = require("../foundation/constitution.foundation.html");
-const amendmentsText = require("../foundation/amendments.foundation.html");
+//const amendmentsText = require("../foundation/amendments.foundation.html");
 
 function clearDefaultDOMSelection(): void {
   if (window.getSelection) {
@@ -495,17 +495,17 @@ function getStartRangeOffsetTop(
  */
 
 function getNodeArray(type: FoundationTextType): Array<FoundationNode> {
-  let source;
-  switch (type) {
-    case "AMENDMENTS":
-      source = amendmentsText;
-      break;
-    case "CONSTITUTION":
-      source = constitutionText;
-      break;
-    default:
-      break;
-  }
+  let source = constitutionText;
+  // switch (type) {
+  //   case "AMENDMENTS":
+  //     source = amendmentsText;
+  //     break;
+  //   case "CONSTITUTION":
+  //     source = constitutionText;
+  //     break;
+  //   default:
+  //     break;
+  // }
 
   let output: Array<FoundationNode> = [];
   let tagIsOpen: boolean = false;
