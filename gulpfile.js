@@ -85,13 +85,15 @@ function sassCfg(mode) {
 }
 
 function webpackCfg(mode) {
+  const configFile =
+    mode === DEV ? "./webpack.config.dev.js" : "./webpack.config.js";
   return cb => {
     gulp
       .src(config.webpackSrc)
       .pipe(
         webpack(
           {
-            config: require("./webpack.config.js")
+            config: require(configFile)
           },
           webpackCore,
           err => {
