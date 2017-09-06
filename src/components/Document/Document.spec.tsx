@@ -53,6 +53,10 @@ describe('Constitution', () => {
 		expect(wrapper.find('.document__header--fixed').length).toBe(1);
 	});
 
+	test("Heading text renders properly", () => {
+		expect(wrapper.find('.document__heading').first().text()).toBe('Constitution for the United States of America');
+	});
+
 	test("Header buttons render", () => {
 		// Header buttons are siblings along with h2.document__heading
 		expect(wrapper.find('.document__header').first().childAt(0).children().length).toBe(2);
@@ -60,6 +64,22 @@ describe('Constitution', () => {
 		wrapper.setState({textIsHighlighted: true});
 
 		expect(wrapper.find('.document__header').first().childAt(0).children().length).toBe(3);
+	});
+
+	test("Back button works", () => {
+		wrapper.find('.document__header').children().at(0).children().at(1).simulate('click');
+		expect(onBackClick).toHaveBeenCalled();
+	});
+
+	test("Clear button works", () => {
+		wrapper.setState({textIsHighlighted: true});
+		wrapper.find('.document__header').children().at(0).children().at(2).simulate('click');
+		expect(wrapper.state('textIsHighlighted')).toBe(false);
+	});
+	
+	test("Set text click works for initial highlight", () => {
+		wrapper.find('.editor__block--overlay').simulate('click');
+		expect(onSetClick).toHaveBeenCalled();
 	});
 
 	test("Constitution text renders", () => {
@@ -79,4 +99,13 @@ describe('Constitution', () => {
 		
 		expect(mockWindow.scrollTo).toHaveBeenCalled();
 	});
+
+	/**
+	 * TODO: 
+	 *   - Add the following test cases:
+	 *     + Some text is highlighted by user
+	 * 	   + Set text click works for user highlights
+	 *   - Fix test cases:
+	 *     + Window autoscrolls (See comments inside test block)
+	 */
 });
