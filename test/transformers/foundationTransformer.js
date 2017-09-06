@@ -1,4 +1,4 @@
-const foundationLoader = require('../loaders/foundation-loader');
+const foundationLoader = require('../../loaders/foundation-loader');
 const htmlLoader = require('html-loader');
 
 module.exports = {
