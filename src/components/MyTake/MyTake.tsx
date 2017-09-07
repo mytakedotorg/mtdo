@@ -12,7 +12,7 @@ interface MyTakeProps {
   initState: MyTakeState;
 }
 
-interface MyTakeState {
+export interface MyTakeState {
   takeDocument: TakeDocument;
   activeBlockIndex: number;
 }
