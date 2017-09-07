@@ -5,7 +5,6 @@ import config from "./components/MyTake/config";
 import { FoundationTextType } from "./components/Foundation";
 import { validators } from "./utils/functions";
 
-const AMENDMENTS: FoundationTextType = "AMENDMENTS";
 const CONSTITUTION: FoundationTextType = "CONSTITUTION";
 
 let app = document.getElementById("app");
@@ -26,9 +25,6 @@ if (app && app.hasAttribute("data-init")) {
   let range = [parseInt(hashes[2]), parseInt(hashes[3])];
   let kind; //document or video
   switch (foundationType) {
-    case AMENDMENTS:
-      kind = "document";
-      break;
     case CONSTITUTION:
       kind = "document";
       break;

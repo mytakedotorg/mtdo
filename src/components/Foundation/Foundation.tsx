@@ -2,7 +2,7 @@ import * as React from "react";
 import Debates from "../Debates";
 import Document from "../Document";
 
-export type FoundationTextType = "CONSTITUTION" | "AMENDMENTS";
+export type FoundationTextType = "CONSTITUTION";
 export type FoundationView = "INITIAL" | "DEBATES" | "DOCUMENT";
 
 export interface FoundationNode {
@@ -120,7 +120,7 @@ export default class Foundation extends React.Component<
             </p>
             <div className="foundation__card-list">
               <FoundationCard
-                onClick={() => this.handleDocumentCardClick("AMENDMENTS")}
+                onClick={() => this.handleDocumentCardClick("CONSTITUTION")}
                 image="/images/amendments.jpg"
                 width={220}
                 height={313}

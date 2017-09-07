@@ -101,7 +101,7 @@ describe("Constitution", () => {
   });
 
   test("Constitution text renders", () => {
-    expect(wrapper.find(".document__text").children().length).toBe(168);
+    expect(wrapper.find(".document__text").children().length).toBe(247);
   });
 
   test("Initial highlights render", () => {

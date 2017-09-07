@@ -23,7 +23,7 @@ class BlockEditorTester extends React.Component<
         title: "My Title",
         blocks: [
           { kind: "paragraph", text: "Use your voice here." },
-          { kind: "document", document: "AMENDMENTS", range: [369, 514] }
+          { kind: "document", document: "CONSTITUTION", range: [369, 514] }
         ]
       },
       activeBlockIndex: -1

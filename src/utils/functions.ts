@@ -535,9 +535,8 @@ function getNodeArray(type: FoundationTextType): Array<FoundationNode> {
 
 const validators = {
   isFoundationTextType: (type: string): type is FoundationTextType => {
-    const AMENDMENTS: FoundationTextType = "AMENDMENTS";
     const CONSTITUTION: FoundationTextType = "CONSTITUTION";
-    return type === CONSTITUTION || type === AMENDMENTS;
+    return type === CONSTITUTION;
   },
   isValidUser: (user: string): boolean => {
     // User must be alphanumeric

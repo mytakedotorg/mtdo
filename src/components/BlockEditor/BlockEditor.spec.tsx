@@ -14,7 +14,7 @@ const doc: TakeDocument = {
     },
     {
       kind: "document",
-      document: "AMENDMENTS",
+      document: "CONSTITUTION",
       range: [369, 514]
     }
   ]

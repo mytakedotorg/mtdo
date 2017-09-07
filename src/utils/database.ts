@@ -30,10 +30,6 @@ const database: Database = {
     {
       type: "CONSTITUTION",
       heading: "Constitution for the United States of America"
-    },
-    {
-      type: "AMENDMENTS",
-      heading: "Amendments to the Constitution"
     }
   ],
   users: [
@@ -45,13 +41,13 @@ const database: Database = {
           evidenceBlocks: [
             {
               index: 6,
-              type: "AMENDMENTS",
-              range: [369, 514]
+              type: "CONSTITUTION",
+              range: [30794, 30939]
             },
             {
               index: 9,
-              type: "AMENDMENTS",
-              range: [369, 442]
+              type: "CONSTITUTION",
+              range: [30794, 30867]
             }
           ]
         },
