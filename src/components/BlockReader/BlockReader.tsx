@@ -5,7 +5,7 @@ import FoundationExplorer from "../FoundationExplorer";
 import { FoundationTextType } from "../Foundation";
 
 interface BlockReaderProps {
-  initState?: TakeDocument;
+  initState: TakeDocument;
 }
 
 interface BlockReaderState {

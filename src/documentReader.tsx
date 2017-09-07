@@ -12,10 +12,10 @@ if (app && app.hasAttribute("data-init")) {
     initJson = JSON.parse(data);
     Root = <BlockReader initState={initJson} />;
   } else {
-    Root = <BlockReader />;
+    Root = <div />;
   }
 } else {
-  Root = <BlockReader />;
+  Root = <div />;
 }
 
 ReactDOM.render(Root, app);
