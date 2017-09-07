@@ -32,8 +32,8 @@ const WritingEventHandlers = {
   handleFocus
 };
 const ReadingEventHandler = {
-	onDocumentClick
-}
+  onDocumentClick
+};
 
 function createNodeMock(element: React.ReactElement<HTMLElement>) {
   switch (element.type) {
@@ -57,7 +57,11 @@ function createNodeMock(element: React.ReactElement<HTMLElement>) {
 test("Simple block editor model", () => {
   const tree = renderer
     .create(
-      <BlockEditor takeDocument={doc} active={-1} eventHandlers={WritingEventHandlers} />,
+      <BlockEditor
+        takeDocument={doc}
+        active={-1}
+        eventHandlers={WritingEventHandlers}
+      />,
       { createNodeMock }
     )
     .toJSON();
@@ -67,7 +71,11 @@ test("Simple block editor model", () => {
 test("With active", () => {
   const tree = renderer
     .create(
-      <BlockEditor takeDocument={doc} active={0} eventHandlers={WritingEventHandlers} />,
+      <BlockEditor
+        takeDocument={doc}
+        active={0}
+        eventHandlers={WritingEventHandlers}
+      />,
       { createNodeMock }
     )
     .toJSON();
@@ -83,4 +91,3 @@ test("Read only", () => {
     .toJSON();
   expect(tree).toMatchSnapshot();
 });
-
