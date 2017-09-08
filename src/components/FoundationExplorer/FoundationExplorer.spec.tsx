@@ -9,26 +9,26 @@ const onSetClick = jest.fn();
 let wrapper: ReactWrapper;
 
 beforeAll(() => {
-	let title = "does-a-law-mean-what-it-says-or-what-it-meant";
-	let user = "samples";
-	let blockIndex = 6;
-	let range: [number, number] = [30794, 30939];
-	let scrollTop = 101;
-	let type: FoundationTextType = "CONSTITUTION";
-	wrapper = mount(
-		<FoundationExplorer 
-			articleTitle={title} 
-			articleUser={user} 
-			blockIndex={blockIndex}
-			range={range}
-			scrollTop={scrollTop}
-			type={type}
-		/>
-	);
+  let title = "does-a-law-mean-what-it-says-or-what-it-meant";
+  let user = "samples";
+  let blockIndex = 6;
+  let range: [number, number] = [30794, 30939];
+  let scrollTop = 101;
+  let type: FoundationTextType = "CONSTITUTION";
+  wrapper = mount(
+    <FoundationExplorer
+      articleTitle={title}
+      articleUser={user}
+      blockIndex={blockIndex}
+      range={range}
+      scrollTop={scrollTop}
+      type={type}
+    />
+  );
 });
 
 test("FoundationExplorer renders", () => {
-	expect(wrapper.find(FoundationExplorer).length).toBe(1);
+  expect(wrapper.find(FoundationExplorer).length).toBe(1);
 });
 
 // test("Set button works", () => {

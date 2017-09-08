@@ -8,23 +8,19 @@ const onSetClick = jest.fn();
 let wrapper: ReactWrapper;
 
 beforeAll(() => {
-	let initState: MyTakeState = {
-		takeDocument: {
-			title: "",
-			blocks: [{ kind: "paragraph", text: "" }]
-		},
-		activeBlockIndex: -1
-	}
+  let initState: MyTakeState = {
+    takeDocument: {
+      title: "",
+      blocks: [{ kind: "paragraph", text: "" }]
+    },
+    activeBlockIndex: -1
+  };
 
-	wrapper = mount(
-		<MyTake 
-			initState={initState}
-		/>
-	);
+  wrapper = mount(<MyTake initState={initState} />);
 });
 
 test("MyTake renders", () => {
-	expect(wrapper.find(MyTake).length).toBe(1);
+  expect(wrapper.find(MyTake).length).toBe(1);
 });
 
 /**

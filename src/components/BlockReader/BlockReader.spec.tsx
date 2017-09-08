@@ -34,18 +34,14 @@ function createNodeMock(element: React.ReactElement<HTMLElement>) {
   }
 }
 
-
 test("Read only", () => {
-	// Object.defineProperty(window.location, 'pathname', {
-	// 	writable: true,
-	// 	value: 'anything'
-	// });
+  // Object.defineProperty(window.location, 'pathname', {
+  // 	writable: true,
+  // 	value: 'anything'
+  // });
 
   const tree = renderer
-    .create(
-      <BlockReader initState={doc} />,
-      { createNodeMock }
-    )
+    .create(<BlockReader initState={doc} />, { createNodeMock })
     .toJSON();
   expect(tree).toMatchSnapshot();
 });

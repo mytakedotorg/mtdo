@@ -81,6 +81,7 @@ function initTimeline() {
 function orderById(a: VisDataItem, b: VisDataItem) {
   return a.id - b.id;
 }
+
 interface TimelineProps {}
 
 interface TimelineState {}
