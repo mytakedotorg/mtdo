@@ -1,6 +1,7 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import database from "../../utils/database";
+import { FoundationTextType } from "../Foundation";
 
 //import vis from "vis";
 let vis = require("vis");
@@ -19,7 +20,9 @@ database.videos.map(video => {
   dataset = [
     ...dataset,
     {
-      id: idx++,
+      idx: idx++,
+      id: video.id,
+      title: video.title,
       start: video.date,
       content: video.title
     }
@@ -30,52 +33,53 @@ database.excerpts.map(excerpt => {
   dataset = [
     ...dataset,
     {
-      id: idx++,
+      idx: idx++,
       start: excerpt.date,
-      content: excerpt.name
+      content: excerpt.title,
+      document: excerpt.document,
+      range: excerpt.highlightedRange
     }
   ];
 });
 
-let items = new vis.DataSet(dataset);
+interface TimelineItemProps {
+  item: any;
+  onClick: (
+    range: [number, number],
+    type: FoundationTextType,
+    title: string
+  ) => void;
+}
 
-class ItemTemplate extends React.Component<{ item: any }, {}> {
+class TimelineItem extends React.Component<TimelineItemProps, {}> {
+  constructor(props: TimelineItemProps) {
+    super(props);
+  }
+  handleClick = () => {
+    console.log("YES!!! Clicked item");
+    let { item } = this.props.item;
+    this.props.onClick(item.range, item.document, item.content);
+  };
   render() {
     var { item } = this.props;
     return (
-      <div>
-        <label>
+      <div className="timeline__item" onClick={this.handleClick}>
+        <label onClick={this.handleClick}>
           {item.content}
         </label>
+        <button onClick={this.handleClick}>Click me</button>
       </div>
     );
   }
 }
 
-let options = {
-  orientation: "top",
-  start: new Date(1770, 0, 1),
-  end: new Date(),
-  order: orderById,
-  template: function(item: any, element: any) {
-    if (!item) {
-      return;
-    }
-    ReactDOM.unmountComponentAtNode(element);
-    return ReactDOM.render(<ItemTemplate item={item} />, element);
-  }
-};
-
-function initTimeline() {
-  var container = document.getElementById("mytimeline");
-  let timeline = new vis.Timeline(container, items, options);
+interface TimelineProps {
+  onItemClick: (
+    range: [number, number],
+    type: FoundationTextType,
+    title: string
+  ) => void;
 }
-
-function orderById(a: VisDataItem, b: VisDataItem) {
-  return a.id - b.id;
-}
-
-interface TimelineProps {}
 
 interface TimelineState {}
 
@@ -83,11 +87,39 @@ export default class Timeline extends React.Component<
   TimelineProps,
   TimelineState
 > {
+  private timeline: any;
   constructor(props: TimelineProps) {
     super(props);
   }
+  initTimeline = () => {
+    let container = document.getElementById("mytimeline");
+    let items = new vis.DataSet(dataset);
+    let options = {
+      orientation: "top",
+      start: new Date(1770, 0, 1),
+      end: new Date(),
+      order: this.orderById,
+      template: (item: any, element: any) => {
+        if (!item) {
+          return;
+        }
+        ReactDOM.unmountComponentAtNode(element);
+        return ReactDOM.render(
+          <TimelineItem item={item} onClick={this.props.onItemClick} />,
+          element
+        );
+      }
+    };
+    this.timeline = new vis.Timeline(container, items, options);
+  };
+  orderById = (a: VisDataItem, b: VisDataItem) => {
+    return a.id - b.id;
+  };
   componentDidMount() {
-    return initTimeline();
+    this.initTimeline();
+    // this.timeline.on('select', function (properties: any) {
+    // 	console.log('Selected', properties);
+    // });
   }
   render() {
     return (
