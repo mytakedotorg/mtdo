@@ -1,9 +1,9 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import Timeline from "./components/Timeline";
+import TimelineView from "./components/TimelineView";
 
 let app: HTMLElement | null = document.getElementById("app");
 
-let Root = <Timeline />;
+let Root = <TimelineView />;
 
 ReactDOM.render(Root, app);
