@@ -11,7 +11,6 @@ let wrapper: ReactWrapper;
 beforeAll(() => {
   let title = "does-a-law-mean-what-it-says-or-what-it-meant";
   let user = "samples";
-  let blockIndex = 6;
   let range: [number, number] = [30794, 30939];
   let scrollTop = 101;
   let type: FoundationTextType = "CONSTITUTION";
@@ -19,7 +18,6 @@ beforeAll(() => {
     <FoundationExplorer
       articleTitle={title}
       articleUser={user}
-      blockIndex={blockIndex}
       range={range}
       scrollTop={scrollTop}
       type={type}

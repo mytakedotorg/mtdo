@@ -49,7 +49,6 @@ interface ParagraphBlockState {
 interface ReadingEventHandlers {
   onDocumentClick: (
     type: FoundationTextType,
-    idx: number,
     offset: number,
     range: [number, number]
   ) => void;
@@ -214,7 +213,6 @@ class Document extends React.Component<DocumentBlockProps, DocumentBlockState> {
     } else {
       this.props.eventHandlers.onDocumentClick(
         this.props.block.document,
-        this.props.idx,
         this.div.getBoundingClientRect().top,
         this.props.block.range
       );

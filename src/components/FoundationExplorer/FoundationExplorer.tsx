@@ -7,7 +7,6 @@ import Foundation, { FoundationTextType } from "../Foundation";
 interface FoundationExplorerProps {
   articleTitle: string;
   articleUser: string;
-  blockIndex: number;
   range: [number, number];
   scrollTop: number;
   type: FoundationTextType;

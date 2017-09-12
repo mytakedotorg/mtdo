@@ -22,7 +22,6 @@ class BlockReader extends React.Component<BlockReaderProps, BlockReaderState> {
   }
   handleClick = (
     type: FoundationTextType,
-    blockIndex: number,
     offset: number,
     range: [number, number]
   ) => {
@@ -31,8 +30,6 @@ class BlockReader extends React.Component<BlockReaderProps, BlockReaderState> {
       type.toLowerCase() +
       "#" +
       window.location.pathname +
-      "&" +
-      blockIndex +
       "&" +
       range[0] +
       "&" +
