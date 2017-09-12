@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import Document from "../Document";
-import database, { EvidenceBlock } from "../../utils/database";
+import database from "../../utils/database";
 import Foundation, { FoundationTextType } from "../Foundation";
 
 interface FoundationExplorerProps {
