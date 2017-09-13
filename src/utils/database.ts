@@ -14,15 +14,12 @@ interface User {
 
 interface Document {
   type: FoundationTextType;
-  heading: string;
-  last_updated: Date;
 }
 
-interface DocumentExcerpt {
+export interface DocumentExcerpt {
   title: string;
   document: FoundationTextType;
-  highlightedRange: [number, number];
-  viewRange?: [number, number];
+  range: [number, number];
   date: string;
 }
 
@@ -42,9 +39,7 @@ interface Database {
 const database: Database = {
   documents: [
     {
-      type: "CONSTITUTION",
-      heading: "Constitution for the United States of America",
-      last_updated: new Date("1992-05-05")
+      type: "CONSTITUTION"
     }
   ],
   videos: [
@@ -68,13 +63,13 @@ const database: Database = {
     {
       title: "United States Constitution",
       document: "CONSTITUTION",
-      highlightedRange: [0, 30412],
+      range: [0, 30412],
       date: "1788-06-21"
     },
     {
       title: "Bill of Rights",
       document: "CONSTITUTION",
-      highlightedRange: [30434, 33609],
+      range: [30434, 33609],
       date: "1791-12-15"
     },
     // {
@@ -140,103 +135,103 @@ const database: Database = {
     {
       title: "Amendment 11",
       document: "CONSTITUTION",
-      highlightedRange: [33631, 33903],
+      range: [33631, 33903],
       date: "1795-02-07"
     },
     {
       title: "Amendment 12",
       document: "CONSTITUTION",
-      highlightedRange: [33925, 36297],
+      range: [33925, 36297],
       date: "1804-06-15"
     },
     {
       title: "Amendment 13",
       document: "CONSTITUTION",
-      highlightedRange: [36319, 36680],
+      range: [36319, 36680],
       date: "1865-12-06"
     },
     {
       title: "Amendment 14",
       document: "CONSTITUTION",
-      highlightedRange: [36702, 39402],
+      range: [36702, 39402],
       date: "1868-07-09"
     },
     {
       title: "Amendment 15",
       document: "CONSTITUTION",
-      highlightedRange: [39424, 39766],
+      range: [39424, 39766],
       date: "1870-02-03"
     },
     {
       title: "Amendment 16",
       document: "CONSTITUTION",
-      highlightedRange: [39788, 40015],
+      range: [39788, 40015],
       date: "1913-02-03"
     },
     {
       title: "Amendment 17",
       document: "CONSTITUTION",
-      highlightedRange: [40037, 40914],
+      range: [40037, 40914],
       date: "1913-04-08"
     },
     {
       title: "Amendment 18",
       document: "CONSTITUTION",
-      highlightedRange: [40936, 41727],
+      range: [40936, 41727],
       date: "1919-01-16"
     },
     {
       title: "Amendment 19",
       document: "CONSTITUTION",
-      highlightedRange: [41749, 42000],
+      range: [41749, 42000],
       date: "1920-08-18"
     },
     {
       title: "Amendment 20",
       document: "CONSTITUTION",
-      highlightedRange: [42022, 44106],
+      range: [42022, 44106],
       date: "1933-01-23"
     },
     {
       title: "Amendment 21",
       document: "CONSTITUTION",
-      highlightedRange: [44128, 44796],
+      range: [44128, 44796],
       date: "1933-12-05"
     },
     {
       title: "Amendment 22",
       document: "CONSTITUTION",
-      highlightedRange: [44818, 45818],
+      range: [44818, 45818],
       date: "1951-02-27"
     },
     {
       title: "Amendment 23",
       document: "CONSTITUTION",
-      highlightedRange: [45840, 46659],
+      range: [45840, 46659],
       date: "1961-03-29"
     },
     {
       title: "Amendment 24",
       document: "CONSTITUTION",
-      highlightedRange: [46681, 47170],
+      range: [46681, 47170],
       date: "1964-01-23"
     },
     {
       title: "Amendment 25",
       document: "CONSTITUTION",
-      highlightedRange: [47192, 49705],
+      range: [47192, 49705],
       date: "1967-02-10"
     },
     {
       title: "Amendment 26",
       document: "CONSTITUTION",
-      highlightedRange: [49727, 50066],
+      range: [49727, 50066],
       date: "1971-07-01"
     },
     {
       title: "Amendment 27",
       document: "CONSTITUTION",
-      highlightedRange: [50088, 50285],
+      range: [50088, 50285],
       date: "1992-05-05"
     }
   ],
@@ -278,8 +273,8 @@ const database: Database = {
             },
             {
               kind: "document",
-              document: "CONSTITUTION",
-              range: [30794, 30939]
+              excerptId: "bill-of-rights",
+              highlightedRange: [30794, 30939]
             },
             {
               kind: "paragraph",
@@ -293,8 +288,8 @@ const database: Database = {
             },
             {
               kind: "document",
-              document: "CONSTITUTION",
-              range: [30794, 30867]
+              excerptId: "bill-of-rights",
+              highlightedRange: [30794, 30867]
             },
             {
               kind: "paragraph",
@@ -319,8 +314,8 @@ const database: Database = {
             },
             {
               kind: "document",
-              document: "CONSTITUTION",
-              range: [19343, 19970]
+              excerptId: "united-states-constitution",
+              highlightedRange: [19343, 19970]
             },
             {
               kind: "paragraph",
