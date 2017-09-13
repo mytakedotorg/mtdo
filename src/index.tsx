@@ -25,14 +25,7 @@ if (app && app.hasAttribute("data-init")) {
   let range = [parseInt(hashes[2]), parseInt(hashes[3])];
   let excerpt = getExcerpt(excerptId);
 
-  let kind; //document or video
-  switch (excerpt.document) {
-    case CONSTITUTION:
-      kind = "document";
-      break;
-    default:
-      break;
-  }
+  let kind = "document";
   if (!isNaN(range[0]) && !isNaN(range[1])) {
     initJson = {
       takeDocument: {
