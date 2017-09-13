@@ -6,7 +6,6 @@ import {
   FoundationNodeProps
 } from "../components/Foundation";
 var htmlparser = require("htmlparser2");
-const constitutionText = require("../foundation/constitution-amendments.foundation.html");
 
 function clearDefaultDOMSelection(): void {
   if (window.getSelection) {
@@ -512,48 +511,52 @@ function getNodeArray(excerptId: string): Array<FoundationNode> {
   })[0];
 
   let source;
-  if (excerpt.document === "CONSTITUTION") {
-    source = constitutionText;
+  if (excerpt) {
+    source = require("../foundation/" + excerpt.filename);
   } else {
     throw "Error retrieving document type from database";
   }
 
-  let output: Array<FoundationNode> = [];
-  let tagIsOpen: boolean = false;
-  let newElementName: string;
-  let newElementProps: FoundationNodeProps;
-  let newElementText: string;
-  let iter = 0;
+  if (source) {
+    let output: Array<FoundationNode> = [];
+    let tagIsOpen: boolean = false;
+    let newElementName: string;
+    let newElementProps: FoundationNodeProps;
+    let newElementText: string;
+    let iter = 0;
 
-  var parser = new htmlparser.Parser({
-    onopentag: function(name: string, attributes: FoundationNodeProps) {
-      tagIsOpen = true;
-      newElementName = name;
-      newElementProps = attributes;
-    },
-    ontext: function(text: string) {
-      if (tagIsOpen) {
-        newElementText = text;
+    var parser = new htmlparser.Parser({
+      onopentag: function(name: string, attributes: FoundationNodeProps) {
+        tagIsOpen = true;
+        newElementName = name;
+        newElementProps = attributes;
+      },
+      ontext: function(text: string) {
+        if (tagIsOpen) {
+          newElementText = text;
+        }
+        // Ignore text between tags, usually this is just a blank space
+      },
+      onclosetag: function(name: string) {
+        tagIsOpen = false;
+        output.push({
+          component: newElementName,
+          props: newElementProps,
+          innerHTML: [newElementText]
+        });
+      },
+      onerror: function(error: Error) {
+        throw error;
       }
-      // Ignore text between tags, usually this is just a blank space
-    },
-    onclosetag: function(name: string) {
-      tagIsOpen = false;
-      output.push({
-        component: newElementName,
-        props: newElementProps,
-        innerHTML: [newElementText]
-      });
-    },
-    onerror: function(error: Error) {
-      throw error;
-    }
-  });
+    });
 
-  parser.write(source);
-  parser.end();
+    parser.write(source);
+    parser.end();
 
-  return getNodesInRange(output, excerpt.range);
+    return output;
+  } else {
+    throw "Error retriving Foundation document";
+  }
 }
 
 const validators = {
@@ -590,6 +593,7 @@ function getExcerpt(excerptId: string): DocumentExcerpt {
     return slugify(excerpt.title) === excerptId;
   })[0];
 }
+
 export {
   clearDefaultDOMSelection,
   getExcerpt,
