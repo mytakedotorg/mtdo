@@ -1,4 +1,5 @@
 import * as React from "react";
+import database, { DocumentExcerpt } from "./database";
 import {
   FoundationNode,
   FoundationTextType,
@@ -21,14 +22,13 @@ function clearDefaultDOMSelection(): void {
   }
 }
 
-function getHighlightedNodes(
+function getNodesInRange(
   nodes: FoundationNode[],
   range: [number, number]
 ): FoundationNode[] {
   const startRange = range[0];
   const endRange = range[1];
   let documentNodes: FoundationNode[] = [];
-  let highlightedNodes: FoundationNode[] = [];
   for (let idx = 0; idx < nodes.length; idx++) {
     if (nodes[idx + 1]) {
       if (parseInt((nodes[idx + 1].props as any).data) <= startRange) {
@@ -40,6 +40,18 @@ function getHighlightedNodes(
     }
     documentNodes = [...documentNodes, ...nodes.slice(idx, idx + 1)];
   }
+
+  return documentNodes;
+}
+
+function getHighlightedNodes(
+  nodes: FoundationNode[],
+  range: [number, number]
+): FoundationNode[] {
+  const startRange = range[0];
+  const endRange = range[1];
+  let documentNodes = getNodesInRange(nodes, range);
+  let highlightedNodes: FoundationNode[] = [];
   // documentNodes is a new array with only the nodes containing text to be highlighted
   if (documentNodes.length === 1) {
     const offset = parseInt((documentNodes[0].props as any).data);
@@ -493,8 +505,19 @@ function getStartRangeOffsetTop(
  *  Assumes no child nodes in HTML string input.
  */
 
-function getNodeArray(type: FoundationTextType): Array<FoundationNode> {
-  let source = constitutionText;
+function getNodeArray(excerptId: string): Array<FoundationNode> {
+  // Fetch the excerpt from the DB by its ID
+  let excerpt = database.excerpts.filter(excerpt => {
+    return slugify(excerpt.title) === excerptId;
+  })[0];
+
+  let source;
+  if (excerpt.document === "CONSTITUTION") {
+    source = constitutionText;
+  } else {
+    throw "Error retrieving document type from database";
+  }
+
   let output: Array<FoundationNode> = [];
   let tagIsOpen: boolean = false;
   let newElementName: string;
@@ -530,7 +553,7 @@ function getNodeArray(type: FoundationTextType): Array<FoundationNode> {
   parser.write(source);
   parser.end();
 
-  return output;
+  return getNodesInRange(output, excerpt.range);
 }
 
 const validators = {
@@ -554,13 +577,29 @@ const validators = {
   }
 };
 
+function slugify(text: string): string {
+  return text
+    .toLowerCase()
+    .replace(/ /g, "-") //replace spaces with hyphens
+    .replace(/[-]+/g, "-") //replace multiple hyphens with single hyphen
+    .replace(/[^\w-]+/g, ""); //remove non-alphanumics and non-hyphens
+}
+
+function getExcerpt(excerptId: string): DocumentExcerpt {
+  return database.excerpts.filter(excerpt => {
+    return slugify(excerpt.title) === excerptId;
+  })[0];
+}
 export {
   clearDefaultDOMSelection,
+  getExcerpt,
   getStartRangeOffsetTop,
   getHighlightedNodes,
+  getNodesInRange,
   getNodeArray,
   highlightText,
   HighlightedText,
+  slugify,
   validators
 };
 
