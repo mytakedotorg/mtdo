@@ -5,24 +5,27 @@ import database from "../../utils/database";
 import {
   getStartRangeOffsetTop,
   getNodeArray,
+  getNodesInRange,
   getHighlightedNodes,
   highlightText,
-  HighlightedText
+  HighlightedText,
+  slugify
 } from "../../utils/functions";
 
 interface DocumentProps {
   offset?: number;
   onBackClick: () => void;
-  onSetClick: (type: FoundationTextType, range: [number, number]) => void;
-  range?: [number, number];
-  type: FoundationTextType;
+  onSetClick: (excerptId: string, highlightedRange: [number, number]) => void;
+  highlightedRange?: [number, number];
+  viewRange?: [number, number];
+  excerptId: string;
 }
 
 interface DocumentState {
   documentNodes: FoundationNode[];
-  range: [number, number];
+  highlightedRange: [number, number];
   textIsHighlighted: boolean;
-  initialHighlightedNodes: FoundationNode[];
+  highlightedNodes: FoundationNode[];
   showInitialHighlights: boolean;
   offsetTop: number;
   headerHidden: boolean;
@@ -35,26 +38,26 @@ class Document extends React.Component<DocumentProps, DocumentState> {
     super(props);
 
     this.state = {
-      documentNodes: getNodeArray(props.type),
-      range: props.range || [0, 0],
+      documentNodes: getNodeArray(props.excerptId),
+      highlightedRange: props.highlightedRange || [0, 0],
       textIsHighlighted: false,
-      initialHighlightedNodes: [],
+      highlightedNodes: [],
       showInitialHighlights: true,
       offsetTop: 0,
       headerHidden: false
     };
   }
   getDocumentHeading = () => {
-    for (let document of database.documents) {
-      if (document.type === this.props.type) {
-        return document.heading;
+    for (let excerpt of database.excerpts) {
+      if (slugify(excerpt.title) === this.props.excerptId) {
+        return excerpt.title;
       }
     }
     return "Foundation document";
   };
   handleClearClick = () => {
     this.setState({
-      documentNodes: getNodeArray(this.props.type), //Clear existing highlights
+      documentNodes: getNodeArray(this.props.excerptId), //Clear existing highlights
       textIsHighlighted: false
     });
   };
@@ -75,7 +78,7 @@ class Document extends React.Component<DocumentProps, DocumentState> {
 
         this.setState({
           documentNodes: highlightedText.newNodes,
-          range: highlightedText.range,
+          highlightedRange: highlightedText.range,
           textIsHighlighted: true,
           showInitialHighlights: false
         });
@@ -88,10 +91,10 @@ class Document extends React.Component<DocumentProps, DocumentState> {
     });
   };
   handleSetClick = (isInitialRange?: boolean) => {
-    if (isInitialRange && this.props.range) {
-      this.props.onSetClick(this.props.type, this.props.range);
+    if (isInitialRange && this.props.highlightedRange) {
+      this.props.onSetClick(this.props.excerptId, this.props.highlightedRange);
     } else {
-      this.props.onSetClick(this.props.type, this.state.range);
+      this.props.onSetClick(this.props.excerptId, this.state.highlightedRange);
     }
   };
   componentDidMount() {
@@ -102,16 +105,19 @@ class Document extends React.Component<DocumentProps, DocumentState> {
     window.removeEventListener("scroll", this.handleScroll);
   }
   setup = () => {
-    if (this.props.range) {
+    if (this.props.highlightedRange) {
       // Get the list of nodes highlighted by a previous author
       let initialHighlightedNodes = getHighlightedNodes(
         [...this.state.documentNodes],
-        this.props.range
+        this.props.highlightedRange
       );
 
       // Get the scrollTop value of the top most HTML element containing the same highlighted nodes
       let theseDOMNodes = ReactDOM.findDOMNode(this).childNodes;
-      let offsetTop = getStartRangeOffsetTop(theseDOMNodes, this.props.range);
+      let offsetTop = getStartRangeOffsetTop(
+        theseDOMNodes,
+        this.props.highlightedRange
+      );
 
       // Scroll the Document to this offset
       let scrollTop = offsetTop - 20 + Document.headerHeight;
@@ -122,14 +128,14 @@ class Document extends React.Component<DocumentProps, DocumentState> {
       window.scrollTo(0, scrollTop);
 
       this.setState({
-        initialHighlightedNodes: initialHighlightedNodes,
+        highlightedNodes: initialHighlightedNodes,
         offsetTop: offsetTop - 20
       });
     }
   };
   render() {
     let classes = "document";
-    if (this.props.range) {
+    if (this.props.highlightedRange) {
       classes += " document--overlay";
     } else {
       classes += " document--static";
@@ -151,7 +157,9 @@ class Document extends React.Component<DocumentProps, DocumentState> {
         </h2>
         <button className="document__button" onClick={this.props.onBackClick}>
           <i className="fa fa-long-arrow-left" aria-hidden="true" />
-          {this.props.range ? " Back to Take" : " Back to Foundation"}
+          {this.props.highlightedRange
+            ? " Back to Take"
+            : " Back to Foundation"}
         </button>
         {this.state.textIsHighlighted
           ? <button
@@ -190,14 +198,14 @@ class Document extends React.Component<DocumentProps, DocumentState> {
                 );
               })}
             </div>
-            {this.props.range && this.state.showInitialHighlights
+            {this.props.highlightedRange && this.state.showInitialHighlights
               ? <div
                   className="editor__block editor__block--overlay"
                   style={{ top: this.state.offsetTop }}
                   onClick={() => this.handleSetClick(true)}
                 >
                   <div className="editor__document editor__document--overlay">
-                    {this.state.initialHighlightedNodes.map((node, index) => {
+                    {this.state.highlightedNodes.map((node, index) => {
                       node.props["key"] = index.toString();
                       return React.createElement(
                         node.component,
