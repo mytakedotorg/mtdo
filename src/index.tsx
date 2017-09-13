@@ -3,7 +3,7 @@ import * as ReactDOM from "react-dom";
 import MyTake from "./components/MyTake";
 import config from "./components/MyTake/config";
 import { FoundationTextType } from "./components/Foundation";
-import { validators } from "./utils/functions";
+import { getExcerpt, validators } from "./utils/functions";
 
 const CONSTITUTION: FoundationTextType = "CONSTITUTION";
 
@@ -20,28 +20,26 @@ if (app && app.hasAttribute("data-init")) {
   // Expect hash URL to be like, #{FoundationType}&{URL of Take being read}&{highlightRangeStart}&{highlightRangeEnd}
   // localhost:3000/new-take/#amendments&/samples/does-a-law-mean-what-it-says-or-what-it-meant/&369&514
   let hashes = window.location.hash.toLowerCase().split("&");
-  let foundationType = hashes[0].substring(1).toUpperCase();
+  let excerptId = hashes[0].substring(1);
   //let article = hashes[1];
   let range = [parseInt(hashes[2]), parseInt(hashes[3])];
+  let excerpt = getExcerpt(excerptId);
+
   let kind; //document or video
-  switch (foundationType) {
+  switch (excerpt.document) {
     case CONSTITUTION:
       kind = "document";
       break;
     default:
       break;
   }
-  if (
-    validators.isFoundationTextType(foundationType) &&
-    !isNaN(range[0]) &&
-    !isNaN(range[1])
-  ) {
+  if (!isNaN(range[0]) && !isNaN(range[1])) {
     initJson = {
       takeDocument: {
         title: "",
         blocks: [
           // Currently only works for Foundation documents, need to add a video case
-          { kind: kind, document: foundationType, range: range },
+          { kind: kind, excerptId: excerptId, highlightedRange: range },
           { kind: "paragraph", text: "" }
         ]
       },

@@ -20,8 +20,8 @@ let mockWindow = getMockWindow();
 describe("Constitution", () => {
   let wrapper: ReactWrapper;
   const offset = 399;
-  const range: [number, number] = [19343, 19970];
-  const type = "CONSTITUTION";
+  const highlightedRange: [number, number] = [19343, 19970];
+  const excerptId = "united-states-constitution";
 
   beforeAll(() => {
     wrapper = mount(
@@ -29,8 +29,8 @@ describe("Constitution", () => {
         offset={offset}
         onBackClick={onBackClick}
         onSetClick={onSetClick}
-        range={range}
-        type={type}
+        highlightedRange={highlightedRange}
+        excerptId={excerptId}
       />
     );
   });
@@ -55,7 +55,7 @@ describe("Constitution", () => {
 
   test("Heading text renders properly", () => {
     expect(wrapper.find(".document__heading").first().text()).toBe(
-      "Constitution for the United States of America"
+      "United States Constitution"
     );
   });
 
@@ -101,7 +101,7 @@ describe("Constitution", () => {
   });
 
   test("Constitution text renders", () => {
-    expect(wrapper.find(".document__text").children().length).toBe(247);
+    expect(wrapper.find(".document__text").children().length).toBe(168);
   });
 
   test("Initial highlights render", () => {

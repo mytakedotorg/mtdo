@@ -14,8 +14,8 @@ const doc: TakeDocument = {
     },
     {
       kind: "document",
-      document: "CONSTITUTION",
-      range: [369, 514]
+      excerptId: "united-states-constitution",
+      highlightedRange: [369, 514]
     }
   ]
 };

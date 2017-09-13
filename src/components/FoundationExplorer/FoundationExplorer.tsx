@@ -7,9 +7,9 @@ import Foundation, { FoundationTextType } from "../Foundation";
 interface FoundationExplorerProps {
   articleTitle: string;
   articleUser: string;
-  range: [number, number];
+  highlightedRange: [number, number];
   scrollTop: number;
-  type: FoundationTextType;
+  excerptId: string;
 }
 
 class FoundationExplorer extends React.Component<FoundationExplorerProps, {}> {
@@ -44,8 +44,8 @@ class FoundationExplorer extends React.Component<FoundationExplorerProps, {}> {
           offset={this.props.scrollTop}
           onBackClick={this.handleBackClick}
           onSetClick={this.handleSetClick}
-          range={this.props.range}
-          type={this.props.type}
+          highlightedRange={this.props.highlightedRange}
+          excerptId={this.props.excerptId}
         />
       </div>
     );

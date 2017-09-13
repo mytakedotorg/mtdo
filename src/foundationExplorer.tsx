@@ -12,7 +12,7 @@ let Root;
 // Expect hash URL to be like, #/{user}/{article-title}&{range[0]}&{range[1]}&{scrollTop}
 
 let url = window.location.pathname;
-let type = url.split("/")[2].toUpperCase();
+let excerptId = url.split("/")[2];
 let hashes = window.location.hash.substring(1).split("&");
 let user = hashes[0].split("/")[1];
 let articleTitle = hashes[0].split("/")[2];
@@ -21,7 +21,6 @@ let scrollTop = parseInt(hashes[3]);
 
 // Validate all Props here
 if (
-  validators.isFoundationTextType(type) &&
   validators.isValidUser(user) &&
   validators.isValidTitle(articleTitle) &&
   !isNaN(range[0]) &&
@@ -32,9 +31,9 @@ if (
     <FoundationExplorer
       articleTitle={articleTitle}
       articleUser={user}
-      range={range}
       scrollTop={scrollTop}
-      type={type}
+      highlightedRange={range}
+      excerptId={excerptId}
     />
   );
 

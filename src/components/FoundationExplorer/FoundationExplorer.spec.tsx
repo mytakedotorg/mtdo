@@ -13,14 +13,14 @@ beforeAll(() => {
   let user = "samples";
   let range: [number, number] = [30794, 30939];
   let scrollTop = 101;
-  let type: FoundationTextType = "CONSTITUTION";
+  let excerptId = "bill-of-rights";
   wrapper = mount(
     <FoundationExplorer
       articleTitle={title}
       articleUser={user}
-      range={range}
+      highlightedRange={range}
       scrollTop={scrollTop}
-      type={type}
+      excerptId={excerptId}
     />
   );
 });
