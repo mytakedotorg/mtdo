@@ -12,15 +12,10 @@ interface User {
   articles: Article[];
 }
 
-interface Document {
-  type: FoundationTextType;
-}
-
 export interface DocumentExcerpt {
   title: string;
-  document: FoundationTextType;
-  range: [number, number];
-  date: string;
+  filename: string;
+  ratificationDate: Date;
 }
 
 interface Video {
@@ -30,18 +25,12 @@ interface Video {
 }
 
 interface Database {
-  documents: Document[];
-  videos: Video[];
   excerpts: DocumentExcerpt[];
+  videos: Video[];
   users: User[];
 }
 
 const database: Database = {
-  documents: [
-    {
-      type: "CONSTITUTION"
-    }
-  ],
   videos: [
     {
       id: "qAqIKybNO38",
@@ -62,177 +51,98 @@ const database: Database = {
   excerpts: [
     {
       title: "United States Constitution",
-      document: "CONSTITUTION",
-      range: [0, 30412],
-      date: "1788-06-21"
+      filename: "united-states-constitution.foundation.html",
+      ratificationDate: new Date("1788-06-21")
     },
     {
       title: "Bill of Rights",
-      document: "CONSTITUTION",
-      range: [30434, 33609],
-      date: "1791-12-15"
+      filename: "bill-of-rights.foundation.html",
+      ratificationDate: new Date("1791-12-15")
     },
-    // {
-    // 	title: "Amendment 1",
-    // 	document: "CONSTITUTION",
-    // 	highlightedRange: [30434, 30739],
-    // 	date: "1791-12-15"
-    // },
-    // {
-    // 	title: "Amendment 2",
-    // 	document: "CONSTITUTION",
-    // 	highlightedRange: [30761, 30939],
-    // 	date: "1791-12-15"
-    // },
-    // {
-    // 	title: "Amendment 3",
-    // 	document: "CONSTITUTION",
-    // 	highlightedRange: [30961, 31150],
-    // 	date: "1791-12-15"
-    // },
-    // {
-    // 	title: "Amendment 4",
-    // 	document: "CONSTITUTION",
-    // 	highlightedRange: [31172, 31537],
-    // 	date: "1791-12-15"
-    // },
-    // {
-    // 	title: "Amendment 5",
-    // 	document: "CONSTITUTION",
-    // 	highlightedRange: [31559, 32181],
-    // 	date: "1791-12-15"
-    // },
-    // {
-    // 	title: "Amendment 6",
-    // 	document: "CONSTITUTION",
-    // 	highlightedRange: [32203, 32714],
-    // 	date: "1791-12-15"
-    // },
-    // {
-    // 	title: "Amendment 7",
-    // 	document: "CONSTITUTION",
-    // 	highlightedRange: [32736, 33041],
-    // 	date: "1791-12-15"
-    // },
-    // {
-    // 	title: "Amendment 8",
-    // 	document: "CONSTITUTION",
-    // 	highlightedRange: [33063, 33207],
-    // 	date: "1791-12-15"
-    // },
-    // {
-    // 	title: "Amendment 9",
-    // 	document: "CONSTITUTION",
-    // 	highlightedRange: [33229, 33392],
-    // 	date: "1791-12-15"
-    // },
-    // {
-    // 	title: "Amendment 10",
-    // 	document: "CONSTITUTION",
-    // 	highlightedRange: [33414, 33609],
-    // 	date: "1791-12-15"
-    // },
     {
       title: "Amendment 11",
-      document: "CONSTITUTION",
-      range: [33631, 33903],
-      date: "1795-02-07"
+      filename: "amendment-11.foundation.html",
+      ratificationDate: new Date("1795-02-07")
     },
     {
       title: "Amendment 12",
-      document: "CONSTITUTION",
-      range: [33925, 36297],
-      date: "1804-06-15"
+      filename: "amendment-12.foundation.html",
+      ratificationDate: new Date("1804-06-15")
     },
     {
       title: "Amendment 13",
-      document: "CONSTITUTION",
-      range: [36319, 36680],
-      date: "1865-12-06"
+      filename: "amendment-13.foundation.html",
+      ratificationDate: new Date("1865-12-06")
     },
     {
       title: "Amendment 14",
-      document: "CONSTITUTION",
-      range: [36702, 39402],
-      date: "1868-07-09"
+      filename: "amendment-14.foundation.html",
+      ratificationDate: new Date("1868-07-09")
     },
     {
       title: "Amendment 15",
-      document: "CONSTITUTION",
-      range: [39424, 39766],
-      date: "1870-02-03"
+      filename: "amendment-15.foundation.html",
+      ratificationDate: new Date("1870-02-03")
     },
     {
       title: "Amendment 16",
-      document: "CONSTITUTION",
-      range: [39788, 40015],
-      date: "1913-02-03"
+      filename: "amendment-16.foundation.html",
+      ratificationDate: new Date("1913-02-03")
     },
     {
       title: "Amendment 17",
-      document: "CONSTITUTION",
-      range: [40037, 40914],
-      date: "1913-04-08"
+      filename: "amendment-17.foundation.html",
+      ratificationDate: new Date("1913-04-08")
     },
     {
       title: "Amendment 18",
-      document: "CONSTITUTION",
-      range: [40936, 41727],
-      date: "1919-01-16"
+      filename: "amendment-18.foundation.html",
+      ratificationDate: new Date("1919-01-16")
     },
     {
       title: "Amendment 19",
-      document: "CONSTITUTION",
-      range: [41749, 42000],
-      date: "1920-08-18"
+      filename: "amendment-19.foundation.html",
+      ratificationDate: new Date("1920-08-18")
     },
     {
       title: "Amendment 20",
-      document: "CONSTITUTION",
-      range: [42022, 44106],
-      date: "1933-01-23"
+      filename: "amendment-20.foundation.html",
+      ratificationDate: new Date("1933-01-23")
     },
     {
       title: "Amendment 21",
-      document: "CONSTITUTION",
-      range: [44128, 44796],
-      date: "1933-12-05"
+      filename: "amendment-21.foundation.html",
+      ratificationDate: new Date("1933-12-05")
     },
     {
       title: "Amendment 22",
-      document: "CONSTITUTION",
-      range: [44818, 45818],
-      date: "1951-02-27"
+      filename: "amendment-22.foundation.html",
+      ratificationDate: new Date("1951-02-27")
     },
     {
       title: "Amendment 23",
-      document: "CONSTITUTION",
-      range: [45840, 46659],
-      date: "1961-03-29"
+      filename: "amendment-23.foundation.html",
+      ratificationDate: new Date("1961-03-29")
     },
     {
       title: "Amendment 24",
-      document: "CONSTITUTION",
-      range: [46681, 47170],
-      date: "1964-01-23"
+      filename: "amendment-24.foundation.html",
+      ratificationDate: new Date("1964-01-23")
     },
     {
       title: "Amendment 25",
-      document: "CONSTITUTION",
-      range: [47192, 49705],
-      date: "1967-02-10"
+      filename: "amendment-25.foundation.html",
+      ratificationDate: new Date("1967-02-10")
     },
     {
       title: "Amendment 26",
-      document: "CONSTITUTION",
-      range: [49727, 50066],
-      date: "1971-07-01"
+      filename: "amendment-26.foundation.html",
+      ratificationDate: new Date("1971-07-01")
     },
     {
       title: "Amendment 27",
-      document: "CONSTITUTION",
-      range: [50088, 50285],
-      date: "1992-05-05"
+      filename: "amendment-27.foundation.html",
+      ratificationDate: new Date("1992-05-05")
     }
   ],
   users: [
@@ -274,7 +184,7 @@ const database: Database = {
             {
               kind: "document",
               excerptId: "bill-of-rights",
-              highlightedRange: [30794, 30939]
+              highlightedRange: [368, 513]
             },
             {
               kind: "paragraph",
@@ -289,7 +199,7 @@ const database: Database = {
             {
               kind: "document",
               excerptId: "bill-of-rights",
-              highlightedRange: [30794, 30867]
+              highlightedRange: [368, 442]
             },
             {
               kind: "paragraph",
