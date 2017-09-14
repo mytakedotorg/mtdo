@@ -22,7 +22,8 @@ export interface DocumentExcerpt {
 interface Video {
   id: string;
   title: string;
-  date: string;
+  primaryDate: Date;
+  primaryDateKind: "recorded";
 }
 
 interface Database {
@@ -36,17 +37,20 @@ const database: Database = {
     {
       id: "qAqIKybNO38",
       title: "Jimmy Carter - Gerald Ford #1",
-      date: "1976-09-23"
+      primaryDate: new Date("1976-09-23"),
+      primaryDateKind: "recorded"
     },
     {
       id: "TjHjU0Eu26Y",
       title: "Jimmy Carter - Gerald Ford #2",
-      date: "1976-10-06"
+      primaryDate: new Date("1976-10-06"),
+      primaryDateKind: "recorded"
     },
     {
       id: "CipT04S0bVE",
       title: "Jimmy Carter - Gerald Ford #3",
-      date: "1976-10-22"
+      primaryDate: new Date("1976-10-22"),
+      primaryDateKind: "recorded"
     }
   ],
   excerpts: [
