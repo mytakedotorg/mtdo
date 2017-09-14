@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import Document from "../Document";
+import DocumentFullScreen from "../DocumentFullScreen";
 import database from "../../utils/database";
 import Foundation, { FoundationTextType } from "../Foundation";
 
@@ -40,7 +40,7 @@ class FoundationExplorer extends React.Component<FoundationExplorerProps, {}> {
   render() {
     return (
       <div className="DocumentReader">
-        <Document
+        <DocumentFullScreen
           offset={this.props.scrollTop}
           onBackClick={this.handleBackClick}
           onSetClick={this.handleSetClick}
