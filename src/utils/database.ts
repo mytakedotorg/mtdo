@@ -15,7 +15,8 @@ interface User {
 export interface DocumentExcerpt {
   title: string;
   filename: string;
-  ratificationDate: Date;
+  primaryDate: Date;
+  primaryDateKind: "ratified" | "published";
 }
 
 interface Video {
@@ -52,97 +53,116 @@ const database: Database = {
     {
       title: "United States Constitution",
       filename: "united-states-constitution.foundation.html",
-      ratificationDate: new Date("1788-06-21")
+      primaryDate: new Date("1788-06-21"),
+      primaryDateKind: "ratified"
     },
     {
       title: "Bill of Rights",
       filename: "bill-of-rights.foundation.html",
-      ratificationDate: new Date("1791-12-15")
+      primaryDate: new Date("1791-12-15"),
+      primaryDateKind: "ratified"
     },
     {
       title: "Amendment 11",
       filename: "amendment-11.foundation.html",
-      ratificationDate: new Date("1795-02-07")
+      primaryDate: new Date("1795-02-07"),
+      primaryDateKind: "ratified"
     },
     {
       title: "Amendment 12",
       filename: "amendment-12.foundation.html",
-      ratificationDate: new Date("1804-06-15")
+      primaryDate: new Date("1804-06-15"),
+      primaryDateKind: "ratified"
     },
     {
       title: "Amendment 13",
       filename: "amendment-13.foundation.html",
-      ratificationDate: new Date("1865-12-06")
+      primaryDate: new Date("1865-12-06"),
+      primaryDateKind: "ratified"
     },
     {
       title: "Amendment 14",
       filename: "amendment-14.foundation.html",
-      ratificationDate: new Date("1868-07-09")
+      primaryDate: new Date("1868-07-09"),
+      primaryDateKind: "ratified"
     },
     {
       title: "Amendment 15",
       filename: "amendment-15.foundation.html",
-      ratificationDate: new Date("1870-02-03")
+      primaryDate: new Date("1870-02-03"),
+      primaryDateKind: "ratified"
     },
     {
       title: "Amendment 16",
       filename: "amendment-16.foundation.html",
-      ratificationDate: new Date("1913-02-03")
+      primaryDate: new Date("1913-02-03"),
+      primaryDateKind: "ratified"
     },
     {
       title: "Amendment 17",
       filename: "amendment-17.foundation.html",
-      ratificationDate: new Date("1913-04-08")
+      primaryDate: new Date("1913-04-08"),
+      primaryDateKind: "ratified"
     },
     {
       title: "Amendment 18",
       filename: "amendment-18.foundation.html",
-      ratificationDate: new Date("1919-01-16")
+      primaryDate: new Date("1919-01-16"),
+      primaryDateKind: "ratified"
     },
     {
       title: "Amendment 19",
       filename: "amendment-19.foundation.html",
-      ratificationDate: new Date("1920-08-18")
+      primaryDate: new Date("1920-08-18"),
+      primaryDateKind: "ratified"
     },
     {
       title: "Amendment 20",
       filename: "amendment-20.foundation.html",
-      ratificationDate: new Date("1933-01-23")
+      primaryDate: new Date("1933-01-23"),
+      primaryDateKind: "ratified"
     },
     {
       title: "Amendment 21",
       filename: "amendment-21.foundation.html",
-      ratificationDate: new Date("1933-12-05")
+      primaryDate: new Date("1933-12-05"),
+      primaryDateKind: "ratified"
     },
     {
       title: "Amendment 22",
       filename: "amendment-22.foundation.html",
-      ratificationDate: new Date("1951-02-27")
+      primaryDate: new Date("1951-02-27"),
+      primaryDateKind: "ratified"
     },
     {
       title: "Amendment 23",
       filename: "amendment-23.foundation.html",
-      ratificationDate: new Date("1961-03-29")
+      primaryDate: new Date("1961-03-29"),
+      primaryDateKind: "ratified"
     },
     {
       title: "Amendment 24",
       filename: "amendment-24.foundation.html",
-      ratificationDate: new Date("1964-01-23")
+      primaryDate: new Date("1964-01-23"),
+      primaryDateKind: "ratified"
     },
     {
       title: "Amendment 25",
       filename: "amendment-25.foundation.html",
-      ratificationDate: new Date("1967-02-10")
+      primaryDate: new Date("1967-02-10"),
+      primaryDateKind: "ratified"
     },
     {
       title: "Amendment 26",
       filename: "amendment-26.foundation.html",
-      ratificationDate: new Date("1971-07-01")
+      primaryDate: new Date("1971-07-01"),
+      primaryDateKind: "ratified"
     },
     {
       title: "Amendment 27",
       filename: "amendment-27.foundation.html",
-      ratificationDate: new Date("1992-05-05")
+      primaryDate: new Date("1992-05-05"),
+      primaryDateKind: "ratified"
     }
   ],
   users: [
