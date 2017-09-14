@@ -482,6 +482,7 @@ function getStartRangeOffsetTop(
     for (let idx = 0; idx < textNodes.length; idx++) {
       if (textNodes[idx + 1]) {
         if (parseInt(textNodes[idx].attributes[0].value) < startRange) {
+          resultNodes = textNodes[idx];
           continue;
         }
       }
