@@ -1,4 +1,3 @@
-import TimelinePreview, { PreviewDocument } from "./TimelinePreview";
+import TimelinePreview from "./TimelinePreview";
 
-export { PreviewDocument };
 export default TimelinePreview;
