@@ -2,6 +2,7 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { FoundationTextType, FoundationNode } from "../Foundation";
 import database from "../../utils/database";
+import Document from "../Document";
 import {
   getStartRangeOffsetTop,
   getNodeArray,
@@ -22,11 +23,9 @@ interface DocumentFullScreenProps {
 }
 
 interface DocumentFullScreenState {
-  documentNodes: FoundationNode[];
   highlightedRange: [number, number];
   textIsHighlighted: boolean;
   highlightedNodes: FoundationNode[];
-  showInitialHighlights: boolean;
   offsetTop: number;
   headerHidden: boolean;
 }
@@ -36,16 +35,15 @@ class DocumentFullScreen extends React.Component<
   DocumentFullScreenState
 > {
   private header: HTMLDivElement;
+  private document: Document;
   static headerHeight = 219;
   constructor(props: DocumentFullScreenProps) {
     super(props);
 
     this.state = {
-      documentNodes: getNodeArray(props.excerptId),
       highlightedRange: props.highlightedRange || [0, 0],
-      textIsHighlighted: false,
+      textIsHighlighted: props.highlightedRange ? true : false,
       highlightedNodes: [],
-      showInitialHighlights: true,
       offsetTop: 0,
       headerHidden: false
     };
@@ -58,10 +56,21 @@ class DocumentFullScreen extends React.Component<
     }
     return "Foundation document";
   };
+  getScrollTop = (range?: [number, number]) => {
+    // Get the scrollTop value of the top most HTML element containing the same highlighted nodes
+    let theseDOMNodes = ReactDOM.findDOMNode(this.document).childNodes;
+
+    let offsetTop = getStartRangeOffsetTop(
+      theseDOMNodes,
+      range ? range : this.state.highlightedRange
+    );
+
+    return offsetTop - 20;
+  };
   handleClearClick = () => {
     this.setState({
-      documentNodes: getNodeArray(this.props.excerptId), //Clear existing highlights
-      textIsHighlighted: false
+      textIsHighlighted: false,
+      highlightedNodes: []
     });
   };
   handleMouseUp = () => {
@@ -74,16 +83,21 @@ class DocumentFullScreen extends React.Component<
 
         const highlightedText: HighlightedText = highlightText(
           range, // HTML Range, not [number, number] as in props.range
-          [...this.state.documentNodes],
-          ReactDOM.findDOMNode(this).childNodes,
+          this.document.getDocumentNodes(),
+          ReactDOM.findDOMNode(this.document).childNodes,
           this.handleSetClick
         );
 
+        const newHighlightedNodes = getHighlightedNodes(
+          this.document.getDocumentNodes(),
+          highlightedText.range
+        );
+
         this.setState({
-          documentNodes: highlightedText.newNodes,
+          highlightedNodes: newHighlightedNodes,
           highlightedRange: highlightedText.range,
           textIsHighlighted: true,
-          showInitialHighlights: false
+          offsetTop: this.getScrollTop(highlightedText.range)
         });
       }
     }
@@ -93,12 +107,8 @@ class DocumentFullScreen extends React.Component<
       headerHidden: this.header.getBoundingClientRect().top <= 0
     });
   };
-  handleSetClick = (isInitialRange?: boolean) => {
-    if (isInitialRange && this.props.highlightedRange) {
-      this.props.onSetClick(this.props.excerptId, this.props.highlightedRange);
-    } else {
-      this.props.onSetClick(this.props.excerptId, this.state.highlightedRange);
-    }
+  handleSetClick = () => {
+    this.props.onSetClick(this.props.excerptId, this.state.highlightedRange);
   };
   componentDidMount() {
     this.setup();
@@ -111,28 +121,13 @@ class DocumentFullScreen extends React.Component<
     if (this.props.highlightedRange) {
       // Get the list of nodes highlighted by a previous author
       let initialHighlightedNodes = getHighlightedNodes(
-        [...this.state.documentNodes],
+        this.document.getDocumentNodes(),
         this.props.highlightedRange
       );
-
-      // Get the scrollTop value of the top most HTML element containing the same highlighted nodes
-      let theseDOMNodes = ReactDOM.findDOMNode(this).childNodes;
-      let offsetTop = getStartRangeOffsetTop(
-        theseDOMNodes,
-        this.props.highlightedRange
-      );
-
-      // Scroll the Document to this offset
-      let scrollTop = offsetTop - 20 + DocumentFullScreen.headerHeight;
-      if (this.props.offset) {
-        scrollTop -= this.props.offset;
-      }
-
-      window.scrollTo(0, scrollTop);
 
       this.setState({
         highlightedNodes: initialHighlightedNodes,
-        offsetTop: offsetTop - 20
+        offsetTop: this.getScrollTop()
       });
     }
   };
@@ -186,41 +181,30 @@ class DocumentFullScreen extends React.Component<
         <div className={"document__header document__header--fixed"}>
           {headerContent}
         </div>
-        <div className={documentClass}>
-          <div className={"document__row-inner"}>
-            <div className={"document__text"} onMouseUp={this.handleMouseUp}>
-              {this.state.documentNodes.map(function(
-                element: FoundationNode,
-                index: number
-              ) {
-                element.props["key"] = index.toString();
-                return React.createElement(
-                  element.component,
-                  element.props,
-                  element.innerHTML
-                );
-              })}
-            </div>
-            {this.props.highlightedRange && this.state.showInitialHighlights
-              ? <div
-                  className="editor__block editor__block--overlay"
-                  style={{ top: this.state.offsetTop }}
-                  onClick={() => this.handleSetClick(true)}
-                >
-                  <div className="editor__document editor__document--overlay">
-                    {this.state.highlightedNodes.map((node, index) => {
-                      node.props["key"] = index.toString();
-                      return React.createElement(
-                        node.component,
-                        node.props,
-                        node.innerHTML
-                      );
-                    })}
-                  </div>
+        <Document
+          excerptId={this.props.excerptId}
+          onMouseUp={this.handleMouseUp}
+          ref={(document: Document) => (this.document = document)}
+        >
+          {this.state.textIsHighlighted
+            ? <div
+                className="editor__block editor__block--overlay"
+                style={{ top: this.state.offsetTop }}
+                onClick={() => this.handleSetClick()}
+              >
+                <div className="editor__document editor__document--overlay">
+                  {this.state.highlightedNodes.map((node, index) => {
+                    node.props["key"] = index.toString();
+                    return React.createElement(
+                      node.component,
+                      node.props,
+                      node.innerHTML
+                    );
+                  })}
                 </div>
-              : null}
-          </div>
-        </div>
+              </div>
+            : null}
+        </Document>
       </div>
     );
   }
