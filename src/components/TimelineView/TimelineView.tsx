@@ -1,13 +1,13 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import Timeline from "../Timeline";
-import TimelinePreview, { PreviewDocument } from "../TimelinePreview";
+import TimelinePreview from "../TimelinePreview";
 import { FoundationTextType } from "../Foundation";
 
 interface TimelineViewProps {}
 
 interface TimelineViewState {
-  previewDocument: PreviewDocument | null;
+  excerptId: string | null;
 }
 
 export default class TimelineView extends React.Component<
@@ -17,33 +17,20 @@ export default class TimelineView extends React.Component<
   constructor(props: TimelineViewProps) {
     super(props);
     this.state = {
-      previewDocument: null
+      excerptId: null
     };
   }
-  showPreview = (
-    range: [number, number],
-    type: FoundationTextType,
-    title: string
-  ) => {
-    console.log("HUZZAH!!");
+  showPreview = (excerptId: string) => {
     this.setState({
-      previewDocument: {
-        range: range,
-        type: type,
-        title: title
-      }
+      excerptId: excerptId
     });
   };
   render() {
     return (
       <div>
         <Timeline onItemClick={this.showPreview} />
-        {this.state.previewDocument
-          ? <TimelinePreview
-              range={this.state.previewDocument.range}
-              type={this.state.previewDocument.type}
-              title={this.state.previewDocument.title}
-            />
+        {this.state.excerptId
+          ? <TimelinePreview excerptId={this.state.excerptId} />
           : null}
       </div>
     );
