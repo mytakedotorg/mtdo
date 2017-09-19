@@ -7,7 +7,8 @@ import {
   getHighlightedNodes,
   getStartRangeOffsetTop,
   highlightText,
-  HighlightedText
+	HighlightedText,
+	slugify
 } from "../../utils/functions";
 
 interface TimelinePreviewProps {
@@ -86,7 +87,19 @@ export default class TimelinePreview extends React.Component<
     }
   };
   handleSetClick = () => {
-    //TODO, set window.location.href
+		//TODO, set window.location.href
+		window.location.href =
+			"/new-take/#" +
+			slugify(getExcerpt(this.props.excerptId).title) +
+			"&" +
+			"/" +
+			"SomeUser" +
+			"/" +
+			"SomeTitle" +
+			"&" +
+			this.state.highlightedRange[0] +
+			"&" +
+			this.state.highlightedRange[1];
   };
   render() {
     return (
