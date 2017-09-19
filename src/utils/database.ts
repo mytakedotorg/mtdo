@@ -26,7 +26,9 @@ export interface Video {
   primaryDateKind: "recorded";
 }
 
-export function isDocument(fact: DocumentExcerpt | Video | null): fact is DocumentExcerpt {
+export function isDocument(
+  fact: DocumentExcerpt | Video | null
+): fact is DocumentExcerpt {
   if (fact) {
     return (fact as DocumentExcerpt).filename !== undefined;
   } else {

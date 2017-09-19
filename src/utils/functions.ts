@@ -592,21 +592,21 @@ function slugify(text: string): string {
 function getFact(factId: string): DocumentExcerpt | Video | null {
   let excerpt = database.excerpts.filter(excerpt => {
     return slugify(excerpt.title) === factId;
-	})[0];
-	
-	if (excerpt) {
-		return excerpt;
-	} 
+  })[0];
 
-	let video = database.videos.filter(video => {
-		return video.id === factId;
-	})[0];
+  if (excerpt) {
+    return excerpt;
+  }
 
-	if (video) {
-		return video;
-	}
+  let video = database.videos.filter(video => {
+    return video.id === factId;
+  })[0];
 
-	return null;
+  if (video) {
+    return video;
+  }
+
+  return null;
 }
 
 export {
