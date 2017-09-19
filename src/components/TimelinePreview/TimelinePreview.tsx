@@ -1,15 +1,22 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import Document from "../Document";
+import Debates from "../Debates";
 import { FoundationNode } from "../Foundation";
 import {
-  getExcerpt,
+  getFact,
   getHighlightedNodes,
   getStartRangeOffsetTop,
   highlightText,
   HighlightedText,
   slugify
 } from "../../utils/functions";
+import {
+  DocumentExcerpt,
+  Video,
+  isDocument,
+  isVideo
+} from "../../utils/database";
 
 interface TimelinePreviewProps {
   excerptId: string;
@@ -20,6 +27,7 @@ interface TimelinePreviewState {
   textIsHighlighted: boolean;
   highlightedNodes: FoundationNode[];
   offsetTop: number;
+  fact: DocumentExcerpt | Video | null;
 }
 
 export default class TimelinePreview extends React.Component<
@@ -34,7 +42,8 @@ export default class TimelinePreview extends React.Component<
       highlightedRange: [0, 0],
       textIsHighlighted: false,
       highlightedNodes: [],
-      offsetTop: 0
+      offsetTop: 0,
+      fact: getFact(props.excerptId)
     };
   }
   getScrollTop = (range?: [number, number]) => {
@@ -49,7 +58,11 @@ export default class TimelinePreview extends React.Component<
     return offsetTop - 20;
   };
   getTitle = () => {
-    return getExcerpt(this.props.excerptId).title;
+    let excerpt = getFact(this.props.excerptId);
+    if (excerpt) {
+      return excerpt.title;
+    }
+    return null;
   };
   handleClearClick = () => {
     this.setState({
@@ -90,12 +103,18 @@ export default class TimelinePreview extends React.Component<
     //TODO, set window.location.href
     window.location.href =
       "/new-take/#" +
-      slugify(getExcerpt(this.props.excerptId).title) +
       "&" +
       this.state.highlightedRange[0] +
       "&" +
       this.state.highlightedRange[1];
   };
+  componentWillReceiveProps(nextProps: TimelinePreviewProps) {
+    if (this.props.excerptId !== nextProps.excerptId) {
+      this.setState({
+        fact: getFact(nextProps.excerptId)
+      });
+    }
+  }
   render() {
     return (
       <div>
@@ -110,30 +129,35 @@ export default class TimelinePreview extends React.Component<
               Clear Selection
             </button>
           : null}
-        <Document
-          excerptId={this.props.excerptId}
-          onMouseUp={this.handleMouseUp}
-          ref={(document: Document) => (this.document = document)}
-        >
-          {this.state.textIsHighlighted
-            ? <div
-                className="editor__block editor__block--overlay"
-                style={{ top: this.state.offsetTop }}
-                onClick={() => this.handleSetClick()}
-              >
-                <div className="editor__document editor__document--overlay">
-                  {this.state.highlightedNodes.map((node, index) => {
-                    node.props["key"] = index.toString();
-                    return React.createElement(
-                      node.component,
-                      node.props,
-                      node.innerHTML
-                    );
-                  })}
-                </div>
-              </div>
-            : null}
-        </Document>
+        {isDocument(this.state.fact)
+          ? <Document
+              excerptId={this.props.excerptId}
+              onMouseUp={this.handleMouseUp}
+              ref={(document: Document) => (this.document = document)}
+            >
+              {this.state.textIsHighlighted
+                ? <div
+                    className="editor__block editor__block--overlay"
+                    style={{ top: this.state.offsetTop }}
+                    onClick={() => this.handleSetClick()}
+                  >
+                    <div className="editor__document editor__document--overlay">
+                      {this.state.highlightedNodes.map((node, index) => {
+                        node.props["key"] = index.toString();
+                        return React.createElement(
+                          node.component,
+                          node.props,
+                          node.innerHTML
+                        );
+                      })}
+                    </div>
+                  </div>
+                : null}
+            </Document>
+          : null}
+        {isVideo(this.state.fact)
+          ? <Debates onBackClick={() => {}} onSetClick={() => {}} />
+          : null}
       </div>
     );
   }
