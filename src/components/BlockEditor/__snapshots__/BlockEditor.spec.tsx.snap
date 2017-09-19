@@ -1,5 +1,106 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Read only 1`] = `
+<div
+  className="editor__wrapper"
+>
+  <div
+    className="editor"
+  >
+    <div
+      className="editor__inner"
+    >
+      <textarea
+        className="editor__title"
+        placeholder="Title"
+        readOnly={true}
+        style={
+          Object {
+            "height": undefined,
+          }
+        }
+        value="My take title"
+      />
+      <div
+        className="editor__title-height-div"
+      />
+      <div
+        className="editor__block-list"
+      >
+        <div
+          className="editor__block editor__block--base"
+        >
+          <div>
+            <textarea
+              className="editor__paragraph"
+              onBlur={[Function]}
+              onChange={[Function]}
+              onClick={[Function]}
+              onFocus={[Function]}
+              onKeyDown={[Function]}
+              onKeyUp={[Function]}
+              placeholder="Use your voice here."
+              readOnly={true}
+              style={
+                Object {
+                  "height": undefined,
+                }
+              }
+              value="Some text"
+            />
+            <div
+              className="editor__paragraph-height-div"
+            />
+          </div>
+        </div>
+        <div
+          className="editor__block editor__block--base"
+        >
+          <div
+            className="editor__document editor__document--base"
+            onClick={[Function]}
+            onFocus={[Function]}
+            onKeyDown={[Function]}
+            tabIndex={0}
+          >
+            <h2
+              data="361"
+            >
+              Article.
+              <span
+                className="editor__document-highlight"
+              >
+                 I.
+              </span>
+            </h2>
+            <h3
+              data="393"
+            >
+              <span
+                className="editor__document-highlight"
+              >
+                Section. 1.
+              </span>
+              
+            </h3>
+            <p
+              data="424"
+            >
+              <span
+                className="editor__document-highlight"
+              >
+                All legislative Powers herein granted shall be vested in a Congress of the United States, 
+              </span>
+              which shall consist of a Senate and House of Representatives.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
 exports[`Simple block editor model 1`] = `
 <div
   className="editor__wrapper"
@@ -7,34 +108,97 @@ exports[`Simple block editor model 1`] = `
   <div
     className="editor"
   >
-    <h2
-      className="editor__title"
-    >
-      My take title
-    </h2>
     <div
-      className="editor__block"
+      className="editor__inner"
     >
       <textarea
-        className="editor__paragraph"
+        className="editor__title"
         onChange={[Function]}
-        onClick={[Function]}
-        onMouseLeave={[Function]}
-        onMouseOver={[Function]}
-        value="Some text"
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        placeholder="Title"
+        style={
+          Object {
+            "height": undefined,
+          }
+        }
+        value="My take title"
       />
-    </div>
-    <div
-      className="editor__block"
-    >
-      <textarea
-        className="editor__paragraph"
-        onChange={[Function]}
-        onClick={[Function]}
-        onMouseLeave={[Function]}
-        onMouseOver={[Function]}
-        value="Some other text"
+      <div
+        className="editor__title-height-div"
       />
+      <div
+        className="editor__block-list"
+      >
+        <div
+          className="editor__block editor__block--base"
+        >
+          <div>
+            <textarea
+              className="editor__paragraph"
+              onBlur={[Function]}
+              onChange={[Function]}
+              onClick={[Function]}
+              onFocus={[Function]}
+              onKeyDown={[Function]}
+              onKeyUp={[Function]}
+              placeholder="Use your voice here."
+              readOnly={false}
+              style={
+                Object {
+                  "height": undefined,
+                }
+              }
+              value="Some text"
+            />
+            <div
+              className="editor__paragraph-height-div"
+            />
+          </div>
+        </div>
+        <div
+          className="editor__block editor__block--base"
+        >
+          <div
+            className="editor__document editor__document--base"
+            onClick={[Function]}
+            onFocus={[Function]}
+            onKeyDown={[Function]}
+            tabIndex={0}
+          >
+            <h2
+              data="361"
+            >
+              Article.
+              <span
+                className="editor__document-highlight"
+              >
+                 I.
+              </span>
+            </h2>
+            <h3
+              data="393"
+            >
+              <span
+                className="editor__document-highlight"
+              >
+                Section. 1.
+              </span>
+              
+            </h3>
+            <p
+              data="424"
+            >
+              <span
+                className="editor__document-highlight"
+              >
+                All legislative Powers herein granted shall be vested in a Congress of the United States, 
+              </span>
+              which shall consist of a Senate and House of Representatives.
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -47,114 +211,97 @@ exports[`With active 1`] = `
   <div
     className="editor"
   >
-    <h2
-      className="editor__title"
-    >
-      My take title
-    </h2>
     <div
-      className="editor__block editor__block--active"
+      className="editor__inner"
     >
       <textarea
-        className="editor__paragraph"
+        className="editor__title"
         onChange={[Function]}
-        onClick={[Function]}
-        onMouseLeave={[Function]}
-        onMouseOver={[Function]}
-        value="Some text"
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        placeholder="Title"
+        style={
+          Object {
+            "height": undefined,
+          }
+        }
+        value="My take title"
       />
-    </div>
-    <div
-      className="editor__block"
-    >
-      <textarea
-        className="editor__paragraph"
-        onChange={[Function]}
-        onClick={[Function]}
-        onMouseLeave={[Function]}
-        onMouseOver={[Function]}
-        value="Some other text"
+      <div
+        className="editor__title-height-div"
       />
-    </div>
-  </div>
-</div>
-`;
-
-exports[`With hover 1`] = `
-<div
-  className="editor__wrapper"
->
-  <div
-    className="editor"
-  >
-    <h2
-      className="editor__title"
-    >
-      My take title
-    </h2>
-    <div
-      className="editor__block editor__block--hover"
-    >
-      <textarea
-        className="editor__paragraph"
-        onChange={[Function]}
-        onClick={[Function]}
-        onMouseLeave={[Function]}
-        onMouseOver={[Function]}
-        value="Some text"
-      />
-    </div>
-    <div
-      className="editor__block"
-    >
-      <textarea
-        className="editor__paragraph"
-        onChange={[Function]}
-        onClick={[Function]}
-        onMouseLeave={[Function]}
-        onMouseOver={[Function]}
-        value="Some other text"
-      />
-    </div>
-  </div>
-</div>
-`;
-
-exports[`With hover and active 1`] = `
-<div
-  className="editor__wrapper"
->
-  <div
-    className="editor"
-  >
-    <h2
-      className="editor__title"
-    >
-      My take title
-    </h2>
-    <div
-      className="editor__block editor__block--hover editor__block--active"
-    >
-      <textarea
-        className="editor__paragraph"
-        onChange={[Function]}
-        onClick={[Function]}
-        onMouseLeave={[Function]}
-        onMouseOver={[Function]}
-        value="Some text"
-      />
-    </div>
-    <div
-      className="editor__block"
-    >
-      <textarea
-        className="editor__paragraph"
-        onChange={[Function]}
-        onClick={[Function]}
-        onMouseLeave={[Function]}
-        onMouseOver={[Function]}
-        value="Some other text"
-      />
+      <div
+        className="editor__block-list"
+      >
+        <div
+          className="editor__block editor__block--base"
+        >
+          <div>
+            <textarea
+              className="editor__paragraph"
+              onBlur={[Function]}
+              onChange={[Function]}
+              onClick={[Function]}
+              onFocus={[Function]}
+              onKeyDown={[Function]}
+              onKeyUp={[Function]}
+              placeholder="Use your voice here."
+              readOnly={false}
+              style={
+                Object {
+                  "height": undefined,
+                }
+              }
+              value="Some text"
+            />
+            <div
+              className="editor__paragraph-height-div"
+            />
+          </div>
+        </div>
+        <div
+          className="editor__block editor__block--base"
+        >
+          <div
+            className="editor__document editor__document--base"
+            onClick={[Function]}
+            onFocus={[Function]}
+            onKeyDown={[Function]}
+            tabIndex={0}
+          >
+            <h2
+              data="361"
+            >
+              Article.
+              <span
+                className="editor__document-highlight"
+              >
+                 I.
+              </span>
+            </h2>
+            <h3
+              data="393"
+            >
+              <span
+                className="editor__document-highlight"
+              >
+                Section. 1.
+              </span>
+              
+            </h3>
+            <p
+              data="424"
+            >
+              <span
+                className="editor__document-highlight"
+              >
+                All legislative Powers herein granted shall be vested in a Congress of the United States, 
+              </span>
+              which shall consist of a Senate and House of Representatives.
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>

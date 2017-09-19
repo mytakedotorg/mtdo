@@ -23,8 +23,9 @@ export interface ParagraphBlock {
 }
 export interface DocumentBlock {
   kind: "document";
-  document: FoundationTextType;
-  range: [number, number];
+  excerptId: string;
+  highlightedRange: [number, number];
+  viewRange?: [number, number];
 }
 export interface VideoBlock {
   kind: "video";
@@ -48,8 +49,7 @@ interface ParagraphBlockState {
 }
 interface ReadingEventHandlers {
   onDocumentClick: (
-    type: FoundationTextType,
-    idx: number,
+    excerptId: string,
     offset: number,
     range: [number, number]
   ) => void;
@@ -205,7 +205,7 @@ class Document extends React.Component<DocumentBlockProps, DocumentBlockState> {
     super(props);
 
     this.state = {
-      documentNodes: getNodeArray(props.block.document)
+      documentNodes: getNodeArray(props.block.excerptId)
     };
   }
   handleClick = () => {
@@ -213,10 +213,9 @@ class Document extends React.Component<DocumentBlockProps, DocumentBlockState> {
       this.props.eventHandlers.handleFocus(this.props.idx);
     } else {
       this.props.eventHandlers.onDocumentClick(
-        this.props.block.document,
-        this.props.idx,
+        this.props.block.excerptId,
         this.div.getBoundingClientRect().top,
-        this.props.block.range
+        this.props.block.highlightedRange
       );
     }
   };
@@ -245,7 +244,7 @@ class Document extends React.Component<DocumentBlockProps, DocumentBlockState> {
     const { props } = this;
     let highlightedNodes = getHighlightedNodes(
       [...this.state.documentNodes],
-      props.block.range
+      props.block.highlightedRange
     );
 
     let classes = "editor__document editor__document--base";

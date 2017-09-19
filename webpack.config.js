@@ -5,6 +5,7 @@ module.exports = {
     app: __dirname + "/src/index.tsx",
     blockEditor: __dirname + "/src/blockEditor.tsx",
     documentReader: __dirname + "/src/documentReader.tsx",
+    foundation: __dirname + "/src/foundationView.tsx",
     foundationExplorer: __dirname + "/src/foundationExplorer.tsx"
   },
 
@@ -62,8 +63,8 @@ module.exports = {
     "react-dom": "ReactDOM"
   },
   plugins: [
-		new UglifyJSPlugin({
-			sourceMap: true
-		})
-	]
+    new UglifyJSPlugin({
+      sourceMap: true
+    })
+  ]
 };

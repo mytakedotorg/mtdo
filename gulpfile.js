@@ -19,6 +19,7 @@ gutil = require("gulp-util");
 
 const config = {
   dist: "./dist",
+  cssSrc: "./assets/public/**/*.css",
   sassSrc: "./assets/stylesheets/**/*.?(s)css",
   imgSrc: "./assets/images/**/*.{jpg,png}",
   webpackSrc: ["./src/**/*", "!src/**/*.spec.js"],
@@ -39,22 +40,24 @@ setupPipeline(DEV);
 setupPipeline(PROD);
 
 function setupPipeline(mode) {
+  const css = "css" + mode;
   const sass = "sass" + mode;
   const webpack = "webpack" + mode;
   const nunjucks = "nunjucks" + mode;
   const images = "images" + mode;
+  gulp.task(css, cssCfg(mode));
   gulp.task(sass, sassCfg(mode));
   gulp.task(webpack, webpackCfg(mode));
   gulp.task(nunjucks, [webpack], nunjucksCfg(mode));
   gulp.task(images, imagesCfg(mode));
-  gulp.task(BUILD + mode, [nunjucks, sass, images]);
+  gulp.task(BUILD + mode, [nunjucks, sass, images, css]);
   gulp.task(SERVE + mode, [BUILD + mode], browserSyncCfg(mode));
 }
 
 gulp.task(
   "default",
   tasklisting.withFilters(
-    /clean|default|sass|webpack|nunjucks|images|rev|default/
+    /clean|default|css|sass|webpack|nunjucks|images|rev|default/
   )
 );
 gulp.task("clean", () => {
@@ -64,6 +67,12 @@ gulp.task("clean", () => {
 //////////////////////
 // Config functions //
 //////////////////////
+function cssCfg(mode) {
+  return () => {
+    return gulp.src(config.cssSrc).pipe(gulp.dest(config.dist + "/"));
+  };
+}
+
 function sassCfg(mode) {
   return () => {
     gulp
@@ -85,13 +94,15 @@ function sassCfg(mode) {
 }
 
 function webpackCfg(mode) {
+  const configFile =
+    mode === DEV ? "./webpack.config.dev.js" : "./webpack.config.js";
   return cb => {
     gulp
       .src(config.webpackSrc)
       .pipe(
         webpack(
           {
-            config: require("./webpack.config.js")
+            config: require(configFile)
           },
           webpackCore,
           err => {

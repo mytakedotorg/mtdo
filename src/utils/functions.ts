@@ -1,12 +1,11 @@
 import * as React from "react";
+import database, { DocumentExcerpt, Video } from "./database";
 import {
   FoundationNode,
   FoundationTextType,
   FoundationNodeProps
 } from "../components/Foundation";
 var htmlparser = require("htmlparser2");
-const constitutionText = require("../foundation/constitution.foundation.html");
-const amendmentsText = require("../foundation/amendments.foundation.html");
 
 function clearDefaultDOMSelection(): void {
   if (window.getSelection) {
@@ -22,14 +21,13 @@ function clearDefaultDOMSelection(): void {
   }
 }
 
-function getHighlightedNodes(
+function getNodesInRange(
   nodes: FoundationNode[],
   range: [number, number]
 ): FoundationNode[] {
   const startRange = range[0];
   const endRange = range[1];
   let documentNodes: FoundationNode[] = [];
-  let highlightedNodes: FoundationNode[] = [];
   for (let idx = 0; idx < nodes.length; idx++) {
     if (nodes[idx + 1]) {
       if (parseInt((nodes[idx + 1].props as any).data) <= startRange) {
@@ -41,6 +39,18 @@ function getHighlightedNodes(
     }
     documentNodes = [...documentNodes, ...nodes.slice(idx, idx + 1)];
   }
+
+  return documentNodes;
+}
+
+function getHighlightedNodes(
+  nodes: FoundationNode[],
+  range: [number, number]
+): FoundationNode[] {
+  const startRange = range[0];
+  const endRange = range[1];
+  let documentNodes = getNodesInRange(nodes, range);
+  let highlightedNodes: FoundationNode[] = [];
   // documentNodes is a new array with only the nodes containing text to be highlighted
   if (documentNodes.length === 1) {
     const offset = parseInt((documentNodes[0].props as any).data);
@@ -472,6 +482,7 @@ function getStartRangeOffsetTop(
     for (let idx = 0; idx < textNodes.length; idx++) {
       if (textNodes[idx + 1]) {
         if (parseInt(textNodes[idx].attributes[0].value) < startRange) {
+          resultNodes = textNodes[idx];
           continue;
         }
       }
@@ -494,62 +505,65 @@ function getStartRangeOffsetTop(
  *  Assumes no child nodes in HTML string input.
  */
 
-function getNodeArray(type: FoundationTextType): Array<FoundationNode> {
+function getNodeArray(excerptId: string): Array<FoundationNode> {
+  // Fetch the excerpt from the DB by its ID
+  let excerpt = database.excerpts.filter(excerpt => {
+    return slugify(excerpt.title) === excerptId;
+  })[0];
+
   let source;
-  switch (type) {
-    case "AMENDMENTS":
-      source = amendmentsText;
-      break;
-    case "CONSTITUTION":
-      source = constitutionText;
-      break;
-    default:
-      break;
+  if (excerpt) {
+    source = require("../foundation/" + excerpt.filename);
+  } else {
+    throw "Error retrieving document type from database";
   }
 
-  let output: Array<FoundationNode> = [];
-  let tagIsOpen: boolean = false;
-  let newElementName: string;
-  let newElementProps: FoundationNodeProps;
-  let newElementText: string;
-  let iter = 0;
+  if (source) {
+    let output: Array<FoundationNode> = [];
+    let tagIsOpen: boolean = false;
+    let newElementName: string;
+    let newElementProps: FoundationNodeProps;
+    let newElementText: string;
+    let iter = 0;
 
-  var parser = new htmlparser.Parser({
-    onopentag: function(name: string, attributes: FoundationNodeProps) {
-      tagIsOpen = true;
-      newElementName = name;
-      newElementProps = attributes;
-    },
-    ontext: function(text: string) {
-      if (tagIsOpen) {
-        newElementText = text;
+    var parser = new htmlparser.Parser({
+      onopentag: function(name: string, attributes: FoundationNodeProps) {
+        tagIsOpen = true;
+        newElementName = name;
+        newElementProps = attributes;
+      },
+      ontext: function(text: string) {
+        if (tagIsOpen) {
+          newElementText = text;
+        }
+        // Ignore text between tags, usually this is just a blank space
+      },
+      onclosetag: function(name: string) {
+        tagIsOpen = false;
+        output.push({
+          component: newElementName,
+          props: newElementProps,
+          innerHTML: [newElementText]
+        });
+      },
+      onerror: function(error: Error) {
+        throw error;
       }
-      // Ignore text between tags, usually this is just a blank space
-    },
-    onclosetag: function(name: string) {
-      tagIsOpen = false;
-      output.push({
-        component: newElementName,
-        props: newElementProps,
-        innerHTML: [newElementText]
-      });
-    },
-    onerror: function(error: Error) {
-      throw error;
-    }
-  });
+    });
 
-  parser.write(source);
-  parser.end();
+    parser.write(source);
+    parser.end();
 
-  return output;
+    return output;
+  } else {
+    throw "Error retriving Foundation document";
+  }
 }
 
 const validators = {
   isFoundationTextType: (type: string): type is FoundationTextType => {
-    const AMENDMENTS: FoundationTextType = "AMENDMENTS";
     const CONSTITUTION: FoundationTextType = "CONSTITUTION";
-    return type === CONSTITUTION || type === AMENDMENTS;
+    return type === CONSTITUTION;
   },
   isValidUser: (user: string): boolean => {
     // User must be alphanumeric
@@ -567,13 +581,44 @@ const validators = {
   }
 };
 
+function slugify(text: string): string {
+  return text
+    .toLowerCase()
+    .replace(/ /g, "-") //replace spaces with hyphens
+    .replace(/[-]+/g, "-") //replace multiple hyphens with single hyphen
+    .replace(/[^\w-]+/g, ""); //remove non-alphanumics and non-hyphens
+}
+
+function getFact(factId: string): DocumentExcerpt | Video | null {
+  let excerpt = database.excerpts.filter(excerpt => {
+    return slugify(excerpt.title) === factId;
+  })[0];
+
+  if (excerpt) {
+    return excerpt;
+  }
+
+  let video = database.videos.filter(video => {
+    return video.id === factId;
+  })[0];
+
+  if (video) {
+    return video;
+  }
+
+  return null;
+}
+
 export {
   clearDefaultDOMSelection,
+  getFact,
   getStartRangeOffsetTop,
   getHighlightedNodes,
+  getNodesInRange,
   getNodeArray,
   highlightText,
   HighlightedText,
+  slugify,
   validators
 };
 

@@ -5,7 +5,7 @@ import FoundationExplorer from "../FoundationExplorer";
 import { FoundationTextType } from "../Foundation";
 
 interface BlockReaderProps {
-  initState?: TakeDocument;
+  initState: TakeDocument;
 }
 
 interface BlockReaderState {
@@ -21,18 +21,15 @@ class BlockReader extends React.Component<BlockReaderProps, BlockReaderState> {
     };
   }
   handleClick = (
-    type: FoundationTextType,
-    blockIndex: number,
+    excerptId: string,
     offset: number,
     range: [number, number]
   ) => {
     window.location.href =
       "/foundation/" +
-      type.toLowerCase() +
+      excerptId +
       "#" +
       window.location.pathname +
-      "&" +
-      blockIndex +
       "&" +
       range[0] +
       "&" +

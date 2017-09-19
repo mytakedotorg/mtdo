@@ -12,7 +12,7 @@ interface MyTakeProps {
   initState: MyTakeState;
 }
 
-interface MyTakeState {
+export interface MyTakeState {
   takeDocument: TakeDocument;
   activeBlockIndex: number;
 }
@@ -25,14 +25,17 @@ class MyTake extends React.Component<MyTakeProps, MyTakeState> {
       ...props.initState
     };
   }
-  addDocument = (type: FoundationTextType, range: [number, number]): void => {
+  addDocument = (
+    excerptId: string,
+    highlightedRange: [number, number]
+  ): void => {
     const blocks = this.state.takeDocument.blocks;
     let activeBlockIndex = this.state.activeBlockIndex;
 
     const newBlock: DocumentBlock = {
       kind: "document",
-      document: type,
-      range: range
+      excerptId: excerptId,
+      highlightedRange: highlightedRange
     };
 
     const newBlocks = [

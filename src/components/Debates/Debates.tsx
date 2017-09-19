@@ -1,15 +1,14 @@
 import * as React from "react";
-import config from "./config";
 import YouTube from "react-youtube";
+import { getFact } from "../../utils/functions";
+import { Video } from "../../utils/database";
 
 interface DebatesProps {
-  onBackClick: () => void;
-  onSetClick: (id: string, range: [number, number]) => void;
+  onSetClick: (range: [number, number]) => void;
+  video: Video;
 }
 
 interface DebatesState {
-  videos: DebateVideo[];
-  activeVideoIdx: number;
   currentTime: number;
   startTime: number;
   endTime: number;
@@ -27,47 +26,19 @@ class Debates extends React.Component<DebatesProps, DebatesState> {
     super(props);
 
     this.state = {
-      videos: this.getVideos(),
-      activeVideoIdx: 0,
       currentTime: 0,
       startTime: 0,
       endTime: -1
     };
   }
-  getVideos = (): DebateVideo[] => {
-    let videos = config.videos.map(function(video) {
-      return {
-        id: video.id,
-        img: "http://img.youtube.com/vi/" + video.id + "/0.jpg",
-        title: video.title,
-        date: video.date
-      };
-    });
-
-    return videos;
-  };
-  handleClick = (index: number) => {
-    if (this.state.activeVideoIdx !== index) {
-      this.setState({
-        activeVideoIdx: index
-      });
-    }
-  };
   handlePause = (event: any) => {
     this.setState({
       currentTime: Math.round(event.target.getCurrentTime())
     });
   };
   handleSetClick = () => {
-    if (
-      this.state.activeVideoIdx >= 0 &&
-      this.state.endTime > this.state.startTime
-    ) {
-      const videoId = this.state.videos[this.state.activeVideoIdx].id;
-      this.props.onSetClick(videoId, [
-        this.state.startTime,
-        this.state.endTime
-      ]);
+    if (this.state.endTime > this.state.startTime) {
+      this.props.onSetClick([this.state.startTime, this.state.endTime]);
     }
   };
   handleSetStart = () => {
@@ -91,34 +62,25 @@ class Debates extends React.Component<DebatesProps, DebatesState> {
       }
     };
 
-    let activeVid = null;
-    if (this.state.activeVideoIdx >= 0) {
-      activeVid = (Object as any).assign(
-        {},
-        this.state.videos[this.state.activeVideoIdx]
-      );
-    }
-
     return (
       <div className="debates">
         <h2 className="debates__heading">Debates</h2>
         <p className="debates__instructions">
           Choose a video clip to support your Take.
         </p>
-        <button onClick={this.props.onBackClick}>Back to Foundation</button>
         <button onClick={this.handleSetClick}>Send to Take</button>
         <div className="debates__row">
           <div className="debates__video-container">
-            {activeVid
+            {this.props.video
               ? <div>
                   <h3 className="debates__video-title">
-                    {activeVid.title}
+                    {this.props.video.title}
                   </h3>
                   <p className="debates__video-date">
-                    {activeVid.date}
+                    {this.props.video.primaryDate.toDateString()}
                   </p>
                   <YouTube
-                    videoId={activeVid.id}
+                    videoId={this.props.video.id}
                     opts={opts}
                     onPause={this.handlePause}
                     className="debates__video"
@@ -136,36 +98,6 @@ class Debates extends React.Component<DebatesProps, DebatesState> {
                   <button onClick={this.handleSetEnd}>Set End Time</button>
                 </div>
               : null}
-          </div>
-          <div className="debates__list-container">
-            <div className="debates__list">
-              {this.state.videos.map(
-                function(video: DebateVideo, index: number) {
-                  return (
-                    <div
-                      key={index.toString()}
-                      className="debates__card"
-                      onClick={() => this.handleClick(index)}
-                    >
-                      <div className="debates__thumb-container">
-                        <img
-                          className="debates__thumb"
-                          width="480"
-                          height="360"
-                          src={video.img}
-                        />
-                      </div>
-                      <h3 className="debates__card-title">
-                        {video.title}
-                      </h3>
-                      <p className="debates__card-date">
-                        {video.date}
-                      </p>
-                    </div>
-                  );
-                }.bind(this)
-              )}
-            </div>
           </div>
         </div>
       </div>

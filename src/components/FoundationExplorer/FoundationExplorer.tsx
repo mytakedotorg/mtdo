@@ -1,16 +1,15 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import Document from "../Document";
-import database, { EvidenceBlock } from "../../utils/database";
+import DocumentFullScreen from "../DocumentFullScreen";
+import database from "../../utils/database";
 import Foundation, { FoundationTextType } from "../Foundation";
 
 interface FoundationExplorerProps {
   articleTitle: string;
   articleUser: string;
-  blockIndex: number;
-  range: [number, number];
+  highlightedRange: [number, number];
   scrollTop: number;
-  type: FoundationTextType;
+  excerptId: string;
 }
 
 class FoundationExplorer extends React.Component<FoundationExplorerProps, {}> {
@@ -29,24 +28,24 @@ class FoundationExplorer extends React.Component<FoundationExplorerProps, {}> {
       "/new-take/#" +
       type.toLowerCase() +
       "&" +
+      range[0] +
+      "&" +
+      range[1] +
+      "&" +
       "/" +
       this.props.articleUser +
       "/" +
-      this.props.articleTitle +
-      "&" +
-      range[0] +
-      "&" +
-      range[1];
+      this.props.articleTitle;
   };
   render() {
     return (
       <div className="DocumentReader">
-        <Document
+        <DocumentFullScreen
           offset={this.props.scrollTop}
           onBackClick={this.handleBackClick}
           onSetClick={this.handleSetClick}
-          range={this.props.range}
-          type={this.props.type}
+          highlightedRange={this.props.highlightedRange}
+          excerptId={this.props.excerptId}
         />
       </div>
     );

@@ -1,0 +1,62 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Read only 1`] = `
+<div>
+  <div
+    className="editor__wrapper"
+  >
+    <div
+      className="editor"
+    >
+      <div
+        className="editor__inner"
+      >
+        <textarea
+          className="editor__title"
+          placeholder="Title"
+          readOnly={true}
+          style={
+            Object {
+              "height": undefined,
+            }
+          }
+          value="My take title"
+        />
+        <div
+          className="editor__title-height-div"
+        />
+        <div
+          className="editor__block-list"
+        >
+          <div
+            className="editor__block editor__block--base"
+          >
+            <div>
+              <textarea
+                className="editor__paragraph"
+                onBlur={[Function]}
+                onChange={[Function]}
+                onClick={[Function]}
+                onFocus={[Function]}
+                onKeyDown={[Function]}
+                onKeyUp={[Function]}
+                placeholder="Use your voice here."
+                readOnly={true}
+                style={
+                  Object {
+                    "height": undefined,
+                  }
+                }
+                value=""
+              />
+              <div
+                className="editor__paragraph-height-div"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
