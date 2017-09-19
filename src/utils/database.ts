@@ -40,7 +40,7 @@ export interface Video {
   id: string;
   title: string;
   primaryDate: Date;
-	primaryDateKind: "recorded";
+  primaryDateKind: "recorded";
 }
 
 export function isDocument(
