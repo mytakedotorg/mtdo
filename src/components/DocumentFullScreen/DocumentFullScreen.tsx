@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { FoundationTextType, FoundationNode } from "../Foundation";
-import database from "../../utils/database";
+import { getDocumentExcerptTitle } from "../../utils/databaseAPI";
 import Document from "../Document";
 import {
   getStartRangeOffsetTop,
@@ -49,12 +49,8 @@ class DocumentFullScreen extends React.Component<
     };
   }
   getDocumentHeading = () => {
-    for (let excerpt of database.excerpts) {
-      if (slugify(excerpt.title) === this.props.excerptId) {
-        return excerpt.title;
-      }
-    }
-    return "Foundation document";
+    let title = getDocumentExcerptTitle(this.props.excerptId);
+    return title ? title : "Foundation document";
   };
   getScrollTop = (range?: [number, number]) => {
     // Get the scrollTop value of the top most HTML element containing the same highlighted nodes

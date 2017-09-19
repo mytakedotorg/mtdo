@@ -1,7 +1,6 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import DocumentFullScreen from "../DocumentFullScreen";
-import database from "../../utils/database";
 import Foundation, { FoundationTextType } from "../Foundation";
 
 interface FoundationExplorerProps {

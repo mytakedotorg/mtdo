@@ -1,5 +1,6 @@
 import * as React from "react";
-import database, { DocumentExcerpt, Video } from "./database";
+import { DocumentExcerpt, Video } from "./database";
+import { getVideo, getDocumentExcerpt } from "./databaseAPI";
 import {
   FoundationNode,
   FoundationTextType,
@@ -481,9 +482,15 @@ function getStartRangeOffsetTop(
     let textNodes = thirdNodeList[textIndex].childNodes;
     for (let idx = 0; idx < textNodes.length; idx++) {
       if (textNodes[idx + 1]) {
-        if (parseInt(textNodes[idx].attributes[0].value) < startRange) {
+        if (parseInt(textNodes[idx].attributes[0].value) <= startRange) {
           resultNodes = textNodes[idx];
           continue;
+        } else {
+          if (resultNodes) {
+            return (resultNodes as HTMLElement).offsetTop;
+          }
+          resultNodes = textNodes[idx];
+          return (resultNodes as HTMLElement).offsetTop;
         }
       }
       if (parseInt(textNodes[idx].attributes[0].value) > endRange) {
@@ -495,8 +502,6 @@ function getStartRangeOffsetTop(
 
   let offsetTop = (resultNodes as HTMLElement).offsetTop;
   return offsetTop;
-  //(secondNodeList[documentIndex] as HTMLElement).scrollTop = offsetTop;
-  //return resultNodes;
 }
 
 /**
@@ -507,10 +512,7 @@ function getStartRangeOffsetTop(
 
 function getNodeArray(excerptId: string): Array<FoundationNode> {
   // Fetch the excerpt from the DB by its ID
-  let excerpt = database.excerpts.filter(excerpt => {
-    return slugify(excerpt.title) === excerptId;
-  })[0];
-
+  let excerpt = getDocumentExcerpt(excerptId);
   let source;
   if (excerpt) {
     source = require("../foundation/" + excerpt.filename);
@@ -590,17 +592,13 @@ function slugify(text: string): string {
 }
 
 function getFact(factId: string): DocumentExcerpt | Video | null {
-  let excerpt = database.excerpts.filter(excerpt => {
-    return slugify(excerpt.title) === factId;
-  })[0];
+  let excerpt = getDocumentExcerpt(factId);
 
   if (excerpt) {
     return excerpt;
   }
 
-  let video = database.videos.filter(video => {
-    return video.id === factId;
-  })[0];
+  let video = getVideo(factId);
 
   if (video) {
     return video;

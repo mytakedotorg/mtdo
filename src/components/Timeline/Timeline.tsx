@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import database from "../../utils/database";
+import { getAllVideos, getAllDocumentExcerpts } from "../../utils/databaseAPI";
 import { FoundationTextType } from "../Foundation";
 import { slugify } from "../../utils/functions";
 import * as vis from "vis";
@@ -113,7 +113,7 @@ export default class Timeline extends React.Component<
     super(props);
   }
   initTimeline = () => {
-    for (let video of database.videos) {
+    for (let video of getAllVideos()) {
       this.timelineData = [
         ...this.timelineData,
         {
@@ -124,7 +124,7 @@ export default class Timeline extends React.Component<
       ];
     }
 
-    for (let excerpt of database.excerpts) {
+    for (let excerpt of getAllDocumentExcerpts()) {
       let idx = slugify(excerpt.title);
       this.timelineData = [
         ...this.timelineData,
