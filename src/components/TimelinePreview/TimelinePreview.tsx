@@ -99,14 +99,16 @@ export default class TimelinePreview extends React.Component<
       }
     }
   };
-  handleSetClick = () => {
+  handleSetClick = (videoRange?: [number, number]) => {
+    let range: [number, number];
+    if (videoRange) {
+      range = videoRange;
+    } else {
+      range = this.state.highlightedRange;
+    }
     //TODO, set window.location.href
     window.location.href =
-      "/new-take/#" +
-      "&" +
-      this.state.highlightedRange[0] +
-      "&" +
-      this.state.highlightedRange[1];
+      "/new-take/#" + this.props.excerptId + "&" + range[0] + "&" + range[1];
   };
   componentWillReceiveProps(nextProps: TimelinePreviewProps) {
     if (this.props.excerptId !== nextProps.excerptId) {
@@ -156,7 +158,7 @@ export default class TimelinePreview extends React.Component<
             </Document>
           : null}
         {isVideo(this.state.fact)
-          ? <Debates onBackClick={() => {}} onSetClick={() => {}} />
+          ? <Debates onSetClick={this.handleSetClick} video={this.state.fact} />
           : null}
       </div>
     );
