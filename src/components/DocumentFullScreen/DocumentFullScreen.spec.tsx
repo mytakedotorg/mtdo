@@ -20,7 +20,7 @@ let mockWindow = getMockWindow();
 describe("Constitution", () => {
   let wrapper: ReactWrapper;
   const offset = 399;
-  const highlightedRange: [number, number] = [19343, 19970];
+  const highlightedRange: [number, number] = [368, 513];
   const excerptId = "united-states-constitution";
 
   beforeAll(() => {
@@ -61,12 +61,25 @@ describe("Constitution", () => {
 
   test("Header buttons render", () => {
     // Header buttons are siblings along with h2.document__heading
+
+    // On initial render, there are 2 buttons
+    expect(
+      wrapper.find(".document__header").first().childAt(0).children().length
+    ).toBe(3);
+
+    // When the 2nd button, "Clear Selection" is clicked, it is hidden
+    wrapper
+      .find(".document__header")
+      .first()
+      .childAt(0)
+      .childAt(2)
+      .simulate("click");
     expect(
       wrapper.find(".document__header").first().childAt(0).children().length
     ).toBe(2);
 
+    // When some more text is highlighted, the "Clear Selection" button is shown again
     wrapper.setState({ textIsHighlighted: true });
-
     expect(
       wrapper.find(".document__header").first().childAt(0).children().length
     ).toBe(3);
@@ -83,18 +96,6 @@ describe("Constitution", () => {
     expect(onBackClick).toHaveBeenCalled();
   });
 
-  test("Clear button works", () => {
-    wrapper.setState({ textIsHighlighted: true });
-    wrapper
-      .find(".document__header")
-      .children()
-      .at(0)
-      .children()
-      .at(2)
-      .simulate("click");
-    expect(wrapper.state("textIsHighlighted")).toBe(false);
-  });
-
   test("Set text click works for initial highlight", () => {
     wrapper.find(".editor__block--overlay").simulate("click");
     expect(onSetClick).toHaveBeenCalled();
@@ -108,15 +109,27 @@ describe("Constitution", () => {
     expect(wrapper.find(".editor__block--overlay").length).toBe(1);
   });
 
-  test("Window autoscrolls", () => {
-    // expect(mockWindow.scrollTo).toHaveBeenCalledWith(0, 6967);
-    // in Document.tsx, getStartRangeOffsetTop should return 7167,
-    // but this returns 0 while testing.
-    // Can't figure out how to mock out that function.
-    // Good info here, but it's not enough https://stackoverflow.com/questions/39633919/cannot-mock-a-module-with-jest-and-test-function-calls?rq=1
-
-    expect(mockWindow.scrollTo).toHaveBeenCalled();
+  test("Clear button works", () => {
+    wrapper.setState({ textIsHighlighted: true });
+    wrapper
+      .find(".document__header")
+      .children()
+      .at(0)
+      .children()
+      .at(2)
+      .simulate("click");
+    expect(wrapper.state("textIsHighlighted")).toBe(false);
   });
+
+  // test("Window autoscrolls", () => {
+  //   // expect(mockWindow.scrollTo).toHaveBeenCalledWith(0, 6967);
+  //   // in Document.tsx, getStartRangeOffsetTop should return 7167,
+  //   // but this returns 0 while testing.
+  //   // Can't figure out how to mock out that function.
+  //   // Good info here, but it's not enough https://stackoverflow.com/questions/39633919/cannot-mock-a-module-with-jest-and-test-function-calls?rq=1
+
+  //   expect(mockWindow.scrollTo).toHaveBeenCalled();
+  // });
 
   /**
 	 * TODO: 

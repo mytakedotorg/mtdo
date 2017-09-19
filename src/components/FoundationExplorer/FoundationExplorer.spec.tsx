@@ -11,7 +11,7 @@ let wrapper: ReactWrapper;
 beforeAll(() => {
   let title = "does-a-law-mean-what-it-says-or-what-it-meant";
   let user = "samples";
-  let range: [number, number] = [30794, 30939];
+  let range: [number, number] = [368, 513];
   let scrollTop = 101;
   let excerptId = "bill-of-rights";
   wrapper = mount(
