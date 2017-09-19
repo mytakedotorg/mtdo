@@ -19,11 +19,27 @@ export interface DocumentExcerpt {
   primaryDateKind: "ratified" | "published";
 }
 
-interface Video {
+export interface Video {
   id: string;
   title: string;
   primaryDate: Date;
   primaryDateKind: "recorded";
+}
+
+export function isDocument(fact: DocumentExcerpt | Video | null): fact is DocumentExcerpt {
+  if (fact) {
+    return (fact as DocumentExcerpt).filename !== undefined;
+  } else {
+    return false;
+  }
+}
+
+export function isVideo(fact: DocumentExcerpt | Video | null): fact is Video {
+  if (fact) {
+    return (fact as Video).id !== undefined;
+  } else {
+    return false;
+  }
 }
 
 interface Database {
