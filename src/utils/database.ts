@@ -1,17 +1,30 @@
 import { FoundationTextType } from "../components/Foundation";
 import { TakeBlock } from "../components/BlockEditor";
 
-interface Article {
+/**
+ * Constraints:
+ *  - titleSlug not null
+ */
+export interface Article {
   title: string;
   titleSlug: string;
   blocks: TakeBlock[];
 }
 
-interface User {
+/**
+ * Constraints:
+ *  - Username must be unique
+ *  - All articles must have unique titleSlugs
+ */
+export interface User {
   name: string;
-  articles: Article[];
+  articles: Article[] | null;
 }
 
+/**
+ * Constraints:
+ *  - Filename must be unique
+ */
 export interface DocumentExcerpt {
   title: string;
   filename: string;
@@ -19,11 +32,15 @@ export interface DocumentExcerpt {
   primaryDateKind: "ratified" | "published";
 }
 
+/**
+ * Constraints:
+ *  - ID must be unique
+ */
 export interface Video {
   id: string;
   title: string;
   primaryDate: Date;
-  primaryDateKind: "recorded";
+	primaryDateKind: "recorded";
 }
 
 export function isDocument(
@@ -44,7 +61,7 @@ export function isVideo(fact: DocumentExcerpt | Video | null): fact is Video {
   }
 }
 
-interface Database {
+export interface Database {
   excerpts: DocumentExcerpt[];
   videos: Video[];
   users: User[];
