@@ -6,6 +6,7 @@ import {
   FoundationNodeProps,
   FoundationTextType
 } from "../Foundation";
+import { getDocumentExcerptTitle } from "../../utils/databaseAPI";
 import { getNodeArray, getHighlightedNodes } from "../../utils/functions";
 
 interface YTPlayerParameters {
@@ -208,6 +209,9 @@ class Document extends React.Component<DocumentBlockProps, DocumentBlockState> {
       documentNodes: getNodeArray(props.block.excerptId)
     };
   }
+  getTitle = () => {
+    return getDocumentExcerptTitle(this.props.block.excerptId);
+  };
   handleClick = () => {
     if (isWriteOnly(this.props.eventHandlers)) {
       this.props.eventHandlers.handleFocus(this.props.idx);
@@ -257,6 +261,9 @@ class Document extends React.Component<DocumentBlockProps, DocumentBlockState> {
         onKeyDown={this.handleKeyDown}
         ref={(div: HTMLDivElement) => (this.div = div)}
       >
+        <h2>
+          {this.getTitle()}
+        </h2>
         {highlightedNodes.map((node, index) => {
           node.props["key"] = index.toString();
           return React.createElement(
