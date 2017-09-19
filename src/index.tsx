@@ -3,7 +3,7 @@ import * as ReactDOM from "react-dom";
 import MyTake from "./components/MyTake";
 import config from "./components/MyTake/config";
 import { FoundationTextType } from "./components/Foundation";
-import { getExcerpt, validators } from "./utils/functions";
+import { validators } from "./utils/functions";
 
 const CONSTITUTION: FoundationTextType = "CONSTITUTION";
 
@@ -23,7 +23,6 @@ if (app && app.hasAttribute("data-init")) {
   let excerptId = hashes[0].substring(1);
   let range = [parseInt(hashes[1]), parseInt(hashes[2])];
   //let article = hashes[3];
-  let excerpt = getExcerpt(excerptId);
 
   let kind = "document";
   if (!isNaN(range[0]) && !isNaN(range[1])) {
