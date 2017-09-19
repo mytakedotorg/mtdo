@@ -1,5 +1,5 @@
 import * as React from "react";
-import database, { DocumentExcerpt } from "./database";
+import database, { DocumentExcerpt, Video } from "./database";
 import {
   FoundationNode,
   FoundationTextType,
@@ -589,15 +589,29 @@ function slugify(text: string): string {
     .replace(/[^\w-]+/g, ""); //remove non-alphanumics and non-hyphens
 }
 
-function getExcerpt(excerptId: string): DocumentExcerpt {
-  return database.excerpts.filter(excerpt => {
-    return slugify(excerpt.title) === excerptId;
-  })[0];
+function getFact(factId: string): DocumentExcerpt | Video | null {
+  let excerpt = database.excerpts.filter(excerpt => {
+    return slugify(excerpt.title) === factId;
+	})[0];
+	
+	if (excerpt) {
+		return excerpt;
+	} 
+
+	let video = database.videos.filter(video => {
+		return video.id === factId;
+	})[0];
+
+	if (video) {
+		return video;
+	}
+
+	return null;
 }
 
 export {
   clearDefaultDOMSelection,
-  getExcerpt,
+  getFact,
   getStartRangeOffsetTop,
   getHighlightedNodes,
   getNodesInRange,
