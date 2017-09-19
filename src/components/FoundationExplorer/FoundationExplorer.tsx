@@ -28,14 +28,14 @@ class FoundationExplorer extends React.Component<FoundationExplorerProps, {}> {
       "/new-take/#" +
       type.toLowerCase() +
       "&" +
+      range[0] +
+      "&" +
+      range[1] +
+      "&" +
       "/" +
       this.props.articleUser +
       "/" +
-      this.props.articleTitle +
-      "&" +
-      range[0] +
-      "&" +
-      range[1];
+      this.props.articleTitle;
   };
   render() {
     return (

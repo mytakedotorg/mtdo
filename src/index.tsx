@@ -17,12 +17,12 @@ if (app && app.hasAttribute("data-init")) {
     initJson = config.initialState;
   }
 } else if (window.location.hash) {
-  // Expect hash URL to be like, #{FoundationType}&{URL of Take being read}&{highlightRangeStart}&{highlightRangeEnd}
-  // localhost:3000/new-take/#amendments&/samples/does-a-law-mean-what-it-says-or-what-it-meant/&369&514
+  // Expect hash URL to be like, #{FoundationType}&{highlightRangeStart}&{highlightRangeEnd}&{URL of Take being read}
+  // localhost:3000/new-take/#amendments&369&514&/samples/does-a-law-mean-what-it-says-or-what-it-meant/
   let hashes = window.location.hash.toLowerCase().split("&");
   let excerptId = hashes[0].substring(1);
-  //let article = hashes[1];
-  let range = [parseInt(hashes[2]), parseInt(hashes[3])];
+  let range = [parseInt(hashes[1]), parseInt(hashes[2])];
+  //let article = hashes[3];
   let excerpt = getExcerpt(excerptId);
 
   let kind = "document";
