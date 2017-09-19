@@ -1,13 +1,7 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { FoundationNode } from "../Foundation";
-import database from "../../utils/database";
-import {
-  getNodeArray,
-  highlightText,
-  HighlightedText,
-  slugify
-} from "../../utils/functions";
+import { getNodeArray } from "../../utils/functions";
 
 interface DocumentProps {
   onMouseUp: () => void;
