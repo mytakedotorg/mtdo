@@ -167,10 +167,12 @@ export default class Timeline extends React.Component<
   };
   handleClick = (properties: TimelineSelectEventHandlerProps) => {
     let dataSetId = properties.items[0];
-    let dataItem = this.timelineData.filter((dataItem: any) => {
-      return dataItem.id === dataSetId;
-    })[0];
-    this.props.onItemClick(dataItem.id);
+    if (dataSetId) {
+      let dataItem = this.timelineData.filter((dataItem: any) => {
+        return dataItem.id === dataSetId;
+      })[0];
+      this.props.onItemClick(dataItem.id);
+    }
   };
   componentDidMount() {
     this.initTimeline();
