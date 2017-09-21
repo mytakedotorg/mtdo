@@ -18,8 +18,14 @@ import {
   isVideo
 } from "../../utils/database";
 
+export interface SetFactHandlers {
+  handleDocumentSetClick: (excerptId: string, range: [number, number]) => void;
+  handleVideoSetClick: (id: string, range: [number, number]) => void;
+}
+
 interface TimelinePreviewProps {
   excerptId: string;
+  setFactHandlers?: SetFactHandlers;
 }
 
 interface TimelinePreviewState {
@@ -101,14 +107,23 @@ export default class TimelinePreview extends React.Component<
   };
   handleSetClick = (videoRange?: [number, number]) => {
     let range: [number, number];
+    let excerptId = this.props.excerptId;
     if (videoRange) {
-      range = videoRange;
+      if (this.props.setFactHandlers) {
+        this.props.setFactHandlers.handleVideoSetClick(excerptId, videoRange);
+      } else {
+        window.location.href =
+          "/new-take/#" + excerptId + "&" + videoRange[0] + "&" + videoRange[1];
+      }
     } else {
       range = this.state.highlightedRange;
+      if (this.props.setFactHandlers) {
+        this.props.setFactHandlers.handleDocumentSetClick(excerptId, range);
+      } else {
+        window.location.href =
+          "/new-take/#" + excerptId + "&" + range[0] + "&" + range[1];
+      }
     }
-    //TODO, set window.location.href
-    window.location.href =
-      "/new-take/#" + this.props.excerptId + "&" + range[0] + "&" + range[1];
   };
   componentWillReceiveProps(nextProps: TimelinePreviewProps) {
     if (this.props.excerptId !== nextProps.excerptId) {

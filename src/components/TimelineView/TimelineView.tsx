@@ -1,10 +1,12 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import Timeline from "../Timeline";
-import TimelinePreview from "../TimelinePreview";
+import TimelinePreview, { SetFactHandlers } from "../TimelinePreview";
 import { FoundationTextType } from "../Foundation";
 
-interface TimelineViewProps {}
+interface TimelineViewProps {
+  setFactHandlers?: SetFactHandlers;
+}
 
 interface TimelineViewState {
   excerptId: string | null;
@@ -30,7 +32,10 @@ export default class TimelineView extends React.Component<
       <div>
         <Timeline onItemClick={this.showPreview} />
         {this.state.excerptId
-          ? <TimelinePreview excerptId={this.state.excerptId} />
+          ? <TimelinePreview
+              excerptId={this.state.excerptId}
+              setFactHandlers={this.props.setFactHandlers}
+            />
           : null}
       </div>
     );
