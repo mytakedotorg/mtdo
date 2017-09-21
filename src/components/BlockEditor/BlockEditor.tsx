@@ -209,6 +209,18 @@ class Document extends React.Component<DocumentBlockProps, DocumentBlockState> {
       documentNodes: getNodeArray(props.block.excerptId)
     };
   }
+  blocksAreEqual(b1: DocumentBlock, b2: DocumentBlock): boolean {
+    if (b1.excerptId !== b2.excerptId) {
+      return false;
+    }
+    if (b1.highlightedRange[0] !== b2.highlightedRange[0]) {
+      return false;
+    }
+    if (b1.highlightedRange[1] !== b2.highlightedRange[1]) {
+      return false;
+    }
+    return true;
+  }
   getTitle = () => {
     return getDocumentExcerptTitle(this.props.block.excerptId);
   };
@@ -244,6 +256,13 @@ class Document extends React.Component<DocumentBlockProps, DocumentBlockState> {
         break;
     }
   };
+  componentWillReceiveProps(nextProps: DocumentBlockProps) {
+    if (!this.blocksAreEqual(this.props.block, nextProps.block)) {
+      this.setState({
+        documentNodes: getNodeArray(nextProps.block.excerptId)
+      });
+    }
+  }
   render() {
     const { props } = this;
     let highlightedNodes = getHighlightedNodes(
