@@ -6,6 +6,7 @@ import { getNodeArray } from "../../utils/functions";
 interface DocumentProps {
   onMouseUp: () => void;
   excerptId: string;
+  className?: string;
 }
 
 interface DocumentState {
@@ -32,11 +33,13 @@ class Document extends React.Component<DocumentProps, DocumentState> {
   }
   render() {
     let classes = "document document--static";
-    let documentClass = "document__row";
+    let documentClass = this.props.className
+      ? this.props.className
+      : "document__row";
 
     return (
       <div className={classes}>
-        <div className={documentClass}>
+        <div className={this.props.className}>
           <div className={"document__row-inner"}>
             <div className={"document__text"} onMouseUp={this.props.onMouseUp}>
               {this.state.documentNodes.map(function(

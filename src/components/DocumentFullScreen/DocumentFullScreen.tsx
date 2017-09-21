@@ -121,6 +121,18 @@ class DocumentFullScreen extends React.Component<
         this.props.highlightedRange
       );
 
+      // Get the scrollTop value of the top most HTML element containing the same highlighted nodes
+      let theseDOMNodes = ReactDOM.findDOMNode(this).childNodes;
+      let offsetTop = this.getScrollTop();
+
+      // Scroll the Document to this offset
+      let scrollTop = offsetTop + DocumentFullScreen.headerHeight;
+      if (this.props.offset) {
+        scrollTop -= this.props.offset;
+      }
+
+      window.scrollTo(0, scrollTop);
+
       this.setState({
         highlightedNodes: initialHighlightedNodes,
         offsetTop: this.getScrollTop()
@@ -181,6 +193,7 @@ class DocumentFullScreen extends React.Component<
           excerptId={this.props.excerptId}
           onMouseUp={this.handleMouseUp}
           ref={(document: Document) => (this.document = document)}
+          className={documentClass}
         >
           {this.state.textIsHighlighted
             ? <div
