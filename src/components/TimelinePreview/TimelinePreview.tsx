@@ -113,7 +113,9 @@ export default class TimelinePreview extends React.Component<
   componentWillReceiveProps(nextProps: TimelinePreviewProps) {
     if (this.props.excerptId !== nextProps.excerptId) {
       this.setState({
-        fact: getFact(nextProps.excerptId)
+        fact: getFact(nextProps.excerptId),
+        textIsHighlighted: false,
+        highlightedNodes: []
       });
     }
   }
