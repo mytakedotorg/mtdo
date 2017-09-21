@@ -39,7 +39,7 @@ class Document extends React.Component<DocumentProps, DocumentState> {
 
     return (
       <div className={classes}>
-        <div className={this.props.className}>
+        <div className={documentClass}>
           <div className={"document__row-inner"}>
             <div className={"document__text"} onMouseUp={this.props.onMouseUp}>
               {this.state.documentNodes.map(function(
