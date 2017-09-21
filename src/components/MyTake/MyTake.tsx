@@ -7,6 +7,7 @@ import BlockEditor, {
   VideoBlock
 } from "../BlockEditor";
 import Foundation, { FoundationTextType } from "../Foundation";
+import TimelineView from "../TimelineView";
 
 interface MyTakeProps {
   initState: MyTakeState;
@@ -192,6 +193,12 @@ class MyTake extends React.Component<MyTakeProps, MyTakeState> {
       handleEnterPress: this.addParagraph,
       handleFocus: this.handleTakeBlockFocus
     };
+
+    const setFactHandlers = {
+      handleDocumentSetClick: this.addDocument,
+      handleVideoSetClick: this.addVideo
+    };
+
     return (
       <div>
         <BlockEditor
@@ -199,10 +206,7 @@ class MyTake extends React.Component<MyTakeProps, MyTakeState> {
           takeDocument={(Object as any).assign({}, this.state.takeDocument)}
           active={this.state.activeBlockIndex}
         />
-        <Foundation
-          handleDocumentSetClick={this.addDocument}
-          handleVideoSetClick={this.addVideo}
-        />
+        <TimelineView setFactHandlers={setFactHandlers} />
       </div>
     );
   }
