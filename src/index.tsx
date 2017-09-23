@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import MyTake from "./components/MyTake";
-import config from "./components/MyTake/config";
+import BlockWriter from "./components/BlockWriter";
+import config from "./components/BlockWriter/config";
 import TimelineView from "./components/TimelineView";
 import FoundationExplorer from "./components/FoundationExplorer";
 import { getFact, validators } from "./utils/functions";
@@ -98,7 +98,7 @@ if (route === "foundation" && !excerptId) {
 		initJson = config.initialState;
 	}
 
-	Root = <MyTake initState={initJson} />;
+	Root = <BlockWriter initState={initJson} />;
 }
 
 ReactDOM.render(Root, app);
