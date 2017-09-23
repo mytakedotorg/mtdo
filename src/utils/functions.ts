@@ -1,5 +1,5 @@
 import * as React from "react";
-import { DocumentFact, VideoFact } from "./database";
+import { DocumentFact, VideoFact } from "./databaseData";
 import { getVideoFact, getDocumentFact } from "./databaseAPI";
 import {
   FoundationNode,

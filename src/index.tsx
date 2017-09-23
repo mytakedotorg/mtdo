@@ -4,7 +4,7 @@ import MyTake from "./components/MyTake";
 import config from "./components/MyTake/config";
 import { FoundationTextType } from "./components/Foundation";
 import { getFact, validators } from "./utils/functions";
-import { isDocument, isVideo } from "./utils/database";
+import { isDocument, isVideo } from "./utils/databaseData";
 const CONSTITUTION: FoundationTextType = "CONSTITUTION";
 
 let app = document.getElementById("app");

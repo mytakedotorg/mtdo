@@ -4,7 +4,7 @@ import database, {
   DocumentFact,
   User,
   Article
-} from "./database";
+} from "./databaseData";
 import { slugify } from "./functions";
 import { TakeBlock } from "../components/BlockEditor";
 

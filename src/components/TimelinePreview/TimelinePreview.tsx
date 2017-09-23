@@ -17,7 +17,7 @@ import {
   VideoFact,
   isDocument,
   isVideo
-} from "../../utils/database";
+} from "../../utils/databaseData";
 
 export interface SetFactHandlers {
   handleDocumentSetClick: (excerptId: string, range: [number, number]) => void;
