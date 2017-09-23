@@ -2,7 +2,7 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import Document from "../Document";
 import FactHeader from "../FactHeader";
-import Debates from "../Debates";
+import Video from "../Video";
 import { FoundationNode } from "../Foundation";
 import {
   getFact,
@@ -219,7 +219,7 @@ export default class TimelinePreview extends React.Component<
             </Document>
           : null}
         {isVideo(this.state.fact)
-          ? <Debates onSetClick={this.handleSetClick} video={this.state.fact} />
+          ? <Video onSetClick={this.handleSetClick} video={this.state.fact} />
           : null}
       </div>
     );
