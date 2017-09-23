@@ -1,7 +1,6 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import BlockWriter from "./components/BlockWriter";
-import config from "./components/BlockWriter/config";
+import BlockWriter, { config } from "./components/BlockWriter";
 import TimelineView from "./components/TimelineView";
 import FoundationExplorer from "./components/FoundationExplorer";
 import { getFact, validators } from "./utils/functions";
