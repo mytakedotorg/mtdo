@@ -1,4 +1,3 @@
-import { FoundationTextType } from "../components/Foundation";
 import { TakeBlock } from "../components/BlockEditor";
 
 /**

@@ -3,8 +3,8 @@ import * as ReactDOM from "react-dom";
 import Document from "../Document";
 import FactHeader from "../FactHeader";
 import Video from "../Video";
-import { FoundationNode } from "../Foundation";
 import {
+  FoundationNode,
   getFact,
   getHighlightedNodes,
   getStartRangeOffsetTop,

@@ -1,7 +1,6 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { getAllVideoFacts, getAllDocumentFacts } from "../../utils/databaseAPI";
-import { FoundationTextType } from "../Foundation";
 import { slugify } from "../../utils/functions";
 import * as vis from "vis";
 

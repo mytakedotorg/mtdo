@@ -1,7 +1,6 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import FoundationExplorer from "./components/FoundationExplorer";
-import { FoundationTextType } from "./components/Foundation";
 import { validators } from "./utils/functions";
 
 let app: HTMLElement | null = document.getElementById("app");

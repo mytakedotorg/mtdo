@@ -6,7 +6,6 @@ import BlockEditor, {
   TakeDocument,
   VideoBlock
 } from "../BlockEditor";
-import Foundation, { FoundationTextType } from "../Foundation";
 import TimelineView from "../TimelineView";
 
 interface MyTakeProps {

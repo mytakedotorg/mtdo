@@ -2,10 +2,8 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import MyTake from "./components/MyTake";
 import config from "./components/MyTake/config";
-import { FoundationTextType } from "./components/Foundation";
 import { getFact, validators } from "./utils/functions";
 import { isDocument, isVideo } from "./utils/databaseData";
-const CONSTITUTION: FoundationTextType = "CONSTITUTION";
 
 let app = document.getElementById("app");
 let initJson;

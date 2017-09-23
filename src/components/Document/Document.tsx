@@ -1,7 +1,6 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { FoundationNode } from "../Foundation";
-import { getNodeArray } from "../../utils/functions";
+import { getNodeArray, FoundationNode } from "../../utils/functions";
 
 interface DocumentProps {
   onMouseUp: () => void;

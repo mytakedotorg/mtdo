@@ -2,7 +2,6 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import BlockEditor, { TakeDocument } from "../BlockEditor";
 import FoundationExplorer from "../FoundationExplorer";
-import { FoundationTextType } from "../Foundation";
 
 interface BlockReaderProps {
   initState: TakeDocument;

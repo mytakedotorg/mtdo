@@ -2,7 +2,6 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import Timeline from "../Timeline";
 import TimelinePreview, { SetFactHandlers } from "../TimelinePreview";
-import { FoundationTextType } from "../Foundation";
 
 interface InitialRangeOptions {
   offset: number;

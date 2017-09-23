@@ -1,13 +1,13 @@
 import * as React from "react";
 import * as keycode from "keycode";
 import YouTube from "react-youtube";
-import {
-  FoundationNode,
-  FoundationNodeProps,
-  FoundationTextType
-} from "../Foundation";
 import { getDocumentFactTitle } from "../../utils/databaseAPI";
-import { getNodeArray, getHighlightedNodes } from "../../utils/functions";
+import {
+  getNodeArray,
+  getHighlightedNodes,
+  FoundationNode,
+  FoundationNodeProps
+} from "../../utils/functions";
 
 interface YTPlayerParameters {
   rel: number;

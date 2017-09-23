@@ -1,12 +1,19 @@
 import * as React from "react";
 import { DocumentFact, VideoFact } from "./databaseData";
 import { getVideoFact, getDocumentFact } from "./databaseAPI";
-import {
-  FoundationNode,
-  FoundationTextType,
-  FoundationNodeProps
-} from "../components/Foundation";
 var htmlparser = require("htmlparser2");
+
+export interface FoundationNode {
+  component: string;
+  props: FoundationNodeProps;
+  innerHTML: Array<string | React.ReactNode>;
+}
+
+export interface FoundationNodeProps {
+  key: string;
+  dataOffset: string;
+  index: string;
+}
 
 function clearDefaultDOMSelection(): void {
   if (window.getSelection) {
@@ -563,10 +570,6 @@ function getNodeArray(excerptId: string): Array<FoundationNode> {
 }
 
 const validators = {
-  isFoundationTextType: (type: string): type is FoundationTextType => {
-    const CONSTITUTION: FoundationTextType = "CONSTITUTION";
-    return type === CONSTITUTION;
-  },
   isValidUser: (user: string): boolean => {
     // User must be alphanumeric
     if (user.match(/^[a-z0-9]+$/i)) {
