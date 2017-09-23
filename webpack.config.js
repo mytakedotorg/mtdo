@@ -2,8 +2,8 @@ const UglifyJSPlugin = require("uglifyjs-webpack-plugin");
 
 module.exports = {
   entry: {
-		app: __dirname + "/src/index.tsx",
-		takeReader: __dirname + "/src/takeReader.tsx"
+    app: __dirname + "/src/index.tsx",
+    takeReader: __dirname + "/src/takeReader.tsx"
   },
 
   output: {
