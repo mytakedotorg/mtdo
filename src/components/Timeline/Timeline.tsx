@@ -149,7 +149,8 @@ export default class Timeline extends React.Component<
         }
         ReactDOM.unmountComponentAtNode(element);
         return ReactDOM.render(<TimelineItem item={item} />, element);
-      }
+      },
+      zoomable: false
     };
     if (container) {
       this.timeline = new vis.Timeline(
@@ -157,6 +158,7 @@ export default class Timeline extends React.Component<
         items,
         options as vis.TimelineOptions
       );
+      this.timeline.on("select", this.handleClick);
     }
   };
   orderById = (a: TimelineData, b: TimelineData): number => {
@@ -176,11 +178,13 @@ export default class Timeline extends React.Component<
   };
   componentDidMount() {
     this.initTimeline();
-    this.timeline.on("select", this.handleClick);
+  }
+  componentWillUnMount() {
+    (this.timeline.off as any)("select", this.handleClick); //Issue with vis tyings here.
   }
   render() {
     return (
-      <div>
+      <div className={"timeline"}>
         <h1>This is a Timeline</h1>
         <div id="mytimeline" />
       </div>
