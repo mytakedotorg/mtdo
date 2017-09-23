@@ -1,18 +1,18 @@
 import database, {
   Database,
-  Video,
-  DocumentExcerpt,
+  VideoFact,
+  DocumentFact,
   User,
   Article
 } from "./database";
 import { slugify } from "./functions";
 import { TakeBlock } from "../components/BlockEditor";
 
-export function getAllVideos(): Video[] {
+export function getAllVideoFacts(): VideoFact[] {
   return database.videos;
 }
 
-export function getVideo(videoId: string): Video | null {
+export function getVideoFact(videoId: string): VideoFact | null {
   for (let video of database.videos) {
     if (video.id === videoId) {
       return video;
@@ -22,8 +22,8 @@ export function getVideo(videoId: string): Video | null {
   return null;
 }
 
-export function getVideoTitle(videoId: string): string | null {
-  let video = getVideo(videoId);
+export function getVideoFactTitle(videoId: string): string | null {
+  let video = getVideoFact(videoId);
   if (video) {
     return video.title;
   }
@@ -31,8 +31,8 @@ export function getVideoTitle(videoId: string): string | null {
   return null;
 }
 
-export function getVideoPrimaryDate(videoId: string): Date | null {
-  let video = getVideo(videoId);
+export function getVideoFactPrimaryDate(videoId: string): Date | null {
+  let video = getVideoFact(videoId);
   if (video) {
     return video.primaryDate;
   }
@@ -40,8 +40,8 @@ export function getVideoPrimaryDate(videoId: string): Date | null {
   return null;
 }
 
-export function getVideoPrimaryDateKind(videoId: string): string | null {
-  let video = getVideo(videoId);
+export function getVideoFactPrimaryDateKind(videoId: string): string | null {
+  let video = getVideoFact(videoId);
   if (video) {
     return video.primaryDateKind;
   }
@@ -49,11 +49,11 @@ export function getVideoPrimaryDateKind(videoId: string): string | null {
   return null;
 }
 
-export function getAllDocumentExcerpts(): DocumentExcerpt[] {
+export function getAllDocumentFacts(): DocumentFact[] {
   return database.excerpts;
 }
 
-export function getDocumentExcerpt(excerptId: string): DocumentExcerpt | null {
+export function getDocumentFact(excerptId: string): DocumentFact | null {
   for (let excerpt of database.excerpts) {
     if (slugify(excerpt.title) === excerptId) {
       return excerpt;
@@ -63,7 +63,7 @@ export function getDocumentExcerpt(excerptId: string): DocumentExcerpt | null {
   return null;
 }
 
-export function getDocumentExcerptTitle(excerptId: string): string | null {
+export function getDocumentFactTitle(excerptId: string): string | null {
   for (let excerpt of database.excerpts) {
     if (slugify(excerpt.title) === excerptId) {
       return excerpt.title;
@@ -73,7 +73,7 @@ export function getDocumentExcerptTitle(excerptId: string): string | null {
   return null;
 }
 
-export function getDocumentExcerptFilename(excerptId: string): string | null {
+export function getDocumentFactFilename(excerptId: string): string | null {
   for (let excerpt of database.excerpts) {
     if (slugify(excerpt.title) === excerptId) {
       return excerpt.filename;
@@ -83,7 +83,7 @@ export function getDocumentExcerptFilename(excerptId: string): string | null {
   return null;
 }
 
-export function getDocumentExcerptPrimaryDate(excerptId: string): Date | null {
+export function getDocumentFactPrimaryDate(excerptId: string): Date | null {
   for (let excerpt of database.excerpts) {
     if (slugify(excerpt.title) === excerptId) {
       return excerpt.primaryDate;
@@ -93,7 +93,7 @@ export function getDocumentExcerptPrimaryDate(excerptId: string): Date | null {
   return null;
 }
 
-export function getDocumentExcerptPrimaryDateKind(
+export function getDocumentFactPrimaryDateKind(
   excerptId: string
 ): string | null {
   for (let excerpt of database.excerpts) {

@@ -13,8 +13,8 @@ import {
   slugify
 } from "../../utils/functions";
 import {
-  DocumentExcerpt,
-  Video,
+  DocumentFact,
+  VideoFact,
   isDocument,
   isVideo
 } from "../../utils/database";
@@ -36,7 +36,7 @@ interface TimelinePreviewState {
   textIsHighlighted: boolean;
   highlightedNodes: FoundationNode[];
   offsetTop: number;
-  fact: DocumentExcerpt | Video | null;
+  fact: DocumentFact | VideoFact | null;
   headerHidden: boolean;
 }
 

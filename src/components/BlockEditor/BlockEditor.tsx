@@ -6,7 +6,7 @@ import {
   FoundationNodeProps,
   FoundationTextType
 } from "../Foundation";
-import { getDocumentExcerptTitle } from "../../utils/databaseAPI";
+import { getDocumentFactTitle } from "../../utils/databaseAPI";
 import { getNodeArray, getHighlightedNodes } from "../../utils/functions";
 
 interface YTPlayerParameters {
@@ -222,7 +222,7 @@ class Document extends React.Component<DocumentBlockProps, DocumentBlockState> {
     return true;
   }
   getTitle = () => {
-    return getDocumentExcerptTitle(this.props.block.excerptId);
+    return getDocumentFactTitle(this.props.block.excerptId);
   };
   handleClick = () => {
     if (isWriteOnly(this.props.eventHandlers)) {

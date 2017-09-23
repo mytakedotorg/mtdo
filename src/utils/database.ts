@@ -25,7 +25,7 @@ export interface User {
  * Constraints:
  *  - Filename must be unique
  */
-export interface DocumentExcerpt {
+export interface DocumentFact {
   title: string;
   filename: string;
   primaryDate: Date;
@@ -36,7 +36,7 @@ export interface DocumentExcerpt {
  * Constraints:
  *  - ID must be unique
  */
-export interface Video {
+export interface VideoFact {
   id: string;
   title: string;
   primaryDate: Date;
@@ -44,26 +44,28 @@ export interface Video {
 }
 
 export function isDocument(
-  fact: DocumentExcerpt | Video | null
-): fact is DocumentExcerpt {
+  fact: DocumentFact | VideoFact | null
+): fact is DocumentFact {
   if (fact) {
-    return (fact as DocumentExcerpt).filename !== undefined;
+    return (fact as DocumentFact).filename !== undefined;
   } else {
     return false;
   }
 }
 
-export function isVideo(fact: DocumentExcerpt | Video | null): fact is Video {
+export function isVideo(
+  fact: DocumentFact | VideoFact | null
+): fact is VideoFact {
   if (fact) {
-    return (fact as Video).id !== undefined;
+    return (fact as VideoFact).id !== undefined;
   } else {
     return false;
   }
 }
 
 export interface Database {
-  excerpts: DocumentExcerpt[];
-  videos: Video[];
+  excerpts: DocumentFact[];
+  videos: VideoFact[];
   users: User[];
 }
 

@@ -1,11 +1,11 @@
 import * as React from "react";
 import YouTube from "react-youtube";
 import { getFact } from "../../utils/functions";
-import { Video } from "../../utils/database";
+import { VideoFact } from "../../utils/database";
 
 interface DebatesProps {
   onSetClick: (range: [number, number]) => void;
-  video: Video;
+  video: VideoFact;
 }
 
 interface DebatesState {

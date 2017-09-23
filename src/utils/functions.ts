@@ -1,6 +1,6 @@
 import * as React from "react";
-import { DocumentExcerpt, Video } from "./database";
-import { getVideo, getDocumentExcerpt } from "./databaseAPI";
+import { DocumentFact, VideoFact } from "./database";
+import { getVideoFact, getDocumentFact } from "./databaseAPI";
 import {
   FoundationNode,
   FoundationTextType,
@@ -512,7 +512,7 @@ function getStartRangeOffsetTop(
 
 function getNodeArray(excerptId: string): Array<FoundationNode> {
   // Fetch the excerpt from the DB by its ID
-  let excerpt = getDocumentExcerpt(excerptId);
+  let excerpt = getDocumentFact(excerptId);
   let source;
   if (excerpt) {
     source = require("../foundation/" + excerpt.filename);
@@ -591,14 +591,14 @@ function slugify(text: string): string {
     .replace(/[^\w-]+/g, ""); //remove non-alphanumics and non-hyphens
 }
 
-function getFact(factId: string): DocumentExcerpt | Video | null {
-  let excerpt = getDocumentExcerpt(factId);
+function getFact(factId: string): DocumentFact | VideoFact | null {
+  let excerpt = getDocumentFact(factId);
 
   if (excerpt) {
     return excerpt;
   }
 
-  let video = getVideo(factId);
+  let video = getVideoFact(factId);
 
   if (video) {
     return video;
