@@ -3,26 +3,19 @@ import YouTube from "react-youtube";
 import { getFact } from "../../utils/functions";
 import { VideoFact } from "../../utils/databaseData";
 
-interface DebatesProps {
+interface VideoProps {
   onSetClick: (range: [number, number]) => void;
   video: VideoFact;
 }
 
-interface DebatesState {
+interface VideoState {
   currentTime: number;
   startTime: number;
   endTime: number;
 }
 
-interface DebateVideo {
-  id: string;
-  img: string;
-  title: string;
-  date: string;
-}
-
-class Debates extends React.Component<DebatesProps, DebatesState> {
-  constructor(props: DebatesProps) {
+class Video extends React.Component<VideoProps, VideoState> {
+  constructor(props: VideoProps) {
     super(props);
 
     this.state = {
@@ -105,4 +98,4 @@ class Debates extends React.Component<DebatesProps, DebatesState> {
   }
 }
 
-export default Debates;
+export default Video;
