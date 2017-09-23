@@ -8,17 +8,17 @@ import BlockEditor, {
 } from "../BlockEditor";
 import TimelineView from "../TimelineView";
 
-interface MyTakeProps {
-  initState: MyTakeState;
+interface BlockWriterProps {
+  initState: BlockWriterState;
 }
 
-export interface MyTakeState {
+export interface BlockWriterState {
   takeDocument: TakeDocument;
   activeBlockIndex: number;
 }
 
-class MyTake extends React.Component<MyTakeProps, MyTakeState> {
-  constructor(props: MyTakeProps) {
+class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
+  constructor(props: BlockWriterProps) {
     super(props);
 
     this.state = {
@@ -211,4 +211,4 @@ class MyTake extends React.Component<MyTakeProps, MyTakeState> {
   }
 }
 
-export default MyTake;
+export default BlockWriter;

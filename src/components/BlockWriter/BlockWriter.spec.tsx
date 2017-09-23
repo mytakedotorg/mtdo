@@ -1,6 +1,6 @@
 import * as React from "react";
 import { mount, ReactWrapper } from "enzyme";
-import MyTake, { MyTakeState } from "./MyTake";
+import BlockWriter, { BlockWriterState } from "./BlockWriter";
 
 const onBackClick = jest.fn();
 const onSetClick = jest.fn();
@@ -8,7 +8,7 @@ const onSetClick = jest.fn();
 let wrapper: ReactWrapper;
 
 beforeAll(() => {
-  let initState: MyTakeState = {
+  let initState: BlockWriterState = {
     takeDocument: {
       title: "",
       blocks: [{ kind: "paragraph", text: "" }]
@@ -16,11 +16,11 @@ beforeAll(() => {
     activeBlockIndex: -1
   };
 
-  wrapper = mount(<MyTake initState={initState} />);
+  wrapper = mount(<BlockWriter initState={initState} />);
 });
 
 test("MyTake renders", () => {
-  expect(wrapper.find(MyTake).length).toBe(1);
+  expect(wrapper.find(BlockWriter).length).toBe(1);
 });
 
 /**
