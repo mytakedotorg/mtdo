@@ -1,12 +1,11 @@
 import * as React from "react";
-import { mount, ReactWrapper, shallow, ShallowWrapper } from "enzyme";
+import { mount, ReactWrapper } from "enzyme";
 import MyTake, { MyTakeState } from "./MyTake";
 
 const onBackClick = jest.fn();
 const onSetClick = jest.fn();
 
-let shallowWrapper: ShallowWrapper;
-//let wrapper: ReactWrapper;
+let wrapper: ReactWrapper;
 
 beforeAll(() => {
   let initState: MyTakeState = {
@@ -17,12 +16,11 @@ beforeAll(() => {
     activeBlockIndex: -1
   };
 
-  //wrapper = mount(<MyTake initState={initState} />);
-  shallowWrapper = shallow(<MyTake initState={initState} />);
+  wrapper = mount(<MyTake initState={initState} />);
 });
 
 test("MyTake renders", () => {
-  expect(shallowWrapper.length).toBe(1);
+  expect(wrapper.find(MyTake).length).toBe(1);
 });
 
 /**
