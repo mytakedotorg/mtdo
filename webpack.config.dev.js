@@ -3,19 +3,14 @@ const UglifyJSPlugin = require("uglifyjs-webpack-plugin");
 module.exports = {
   entry: {
     app: __dirname + "/src/index.tsx",
-    blockEditor: __dirname + "/src/blockEditor.tsx",
-    documentReader: __dirname + "/src/documentReader.tsx",
-    foundation: __dirname + "/src/foundationView.tsx",
-    foundationExplorer: __dirname + "/src/foundationExplorer.tsx"
+		takeReader: __dirname + "/src/takeReader.tsx",
+		blockEditorTest: __dirname + "/src/blockEditorTest.tsx" // Standalone component for testing
   },
 
   output: {
     filename: "[name].bundle.js",
     path: __dirname + "/dist/"
   },
-
-  // Enable sourcemaps for debugging webpack's output.
-  //devtool: "source-map",
 
   resolve: {
     // Add '.ts' and '.tsx' as resolvable extensions.
@@ -61,10 +56,5 @@ module.exports = {
   externals: {
     react: "React",
     "react-dom": "ReactDOM"
-  },
-  plugins: [
-    // new UglifyJSPlugin({
-    //   sourceMap: true
-    // })
-  ]
+  }
 };
