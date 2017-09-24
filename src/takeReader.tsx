@@ -2,7 +2,7 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import BlockReader from "./components/BlockReader";
 import { TakeDocument } from "./components/BlockEditor";
-import database from "./utils/database";
+import { getArticle } from "./utils/databaseAPI";
 
 interface InitJSON {
   user: string;
@@ -17,24 +17,25 @@ if (app && app.hasAttribute("data-init")) {
   if (data) {
     let initJson: InitJSON = JSON.parse(data);
 
-    let user = database.users.filter(user => {
-      return user.name === initJson.user;
-    })[0];
+    let article = getArticle(initJson.user, initJson.article);
 
-    let article = user.articles.filter(article => {
-      return article.titleSlug === initJson.article;
-    })[0];
+    if (article) {
+      let takeDocument: TakeDocument = {
+        title: article.title,
+        blocks: article.blocks
+      };
 
-    let takeDocument: TakeDocument = {
-      title: article.title,
-      blocks: article.blocks
-    };
-
-    Root = <BlockReader initState={takeDocument} />;
+      Root = <BlockReader initState={takeDocument} />;
+    } else {
+      // Error getting article
+      Root = <div />;
+    }
   } else {
+    // Error parsing data
     Root = <div />;
   }
 } else {
+  // Error finding root node
   Root = <div />;
 }
 

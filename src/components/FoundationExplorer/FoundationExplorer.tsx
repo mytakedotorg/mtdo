@@ -1,8 +1,6 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import DocumentFullScreen from "../DocumentFullScreen";
-import database from "../../utils/database";
-import Foundation, { FoundationTextType } from "../Foundation";
+import TimelineView from "../TimelineView";
 
 interface FoundationExplorerProps {
   articleTitle: string;
@@ -16,17 +14,10 @@ class FoundationExplorer extends React.Component<FoundationExplorerProps, {}> {
   constructor(props: FoundationExplorerProps) {
     super(props);
   }
-  handleBackClick = () => {
-    let url = "/" + this.props.articleUser + "/" + this.props.articleTitle;
-    window.location.href = url;
-  };
-  handleSetClick = (
-    type: FoundationTextType,
-    range: [number, number]
-  ): void => {
+  handleSetClick = (excerptTitle: string, range: [number, number]): void => {
     window.location.href =
       "/new-take/#" +
-      type.toLowerCase() +
+      excerptTitle.toLowerCase() +
       "&" +
       range[0] +
       "&" +
@@ -38,14 +29,22 @@ class FoundationExplorer extends React.Component<FoundationExplorerProps, {}> {
       this.props.articleTitle;
   };
   render() {
+    const initialRange = {
+      offset: this.props.scrollTop,
+      highlightedRange: this.props.highlightedRange,
+      excerptId: this.props.excerptId
+    };
+
+    const setFactHandlers = {
+      handleDocumentSetClick: this.handleSetClick,
+      handleVideoSetClick: this.handleSetClick
+    };
+
     return (
       <div className="DocumentReader">
-        <DocumentFullScreen
-          offset={this.props.scrollTop}
-          onBackClick={this.handleBackClick}
-          onSetClick={this.handleSetClick}
-          highlightedRange={this.props.highlightedRange}
-          excerptId={this.props.excerptId}
+        <TimelineView
+          initialRange={initialRange}
+          setFactHandlers={setFactHandlers}
         />
       </div>
     );

@@ -1,25 +1,41 @@
-import { FoundationTextType } from "../components/Foundation";
 import { TakeBlock } from "../components/BlockEditor";
 
-interface Article {
+/**
+ * Constraints:
+ *  - titleSlug not null
+ */
+export interface Article {
   title: string;
   titleSlug: string;
   blocks: TakeBlock[];
 }
 
-interface User {
+/**
+ * Constraints:
+ *  - Username must be unique
+ *  - All articles must have unique titleSlugs
+ */
+export interface User {
   name: string;
-  articles: Article[];
+  articles: Article[] | null;
 }
 
-export interface DocumentExcerpt {
+/**
+ * Constraints:
+ *  - Filename must be unique
+ */
+export interface DocumentFact {
   title: string;
   filename: string;
   primaryDate: Date;
   primaryDateKind: "ratified" | "published";
 }
 
-export interface Video {
+/**
+ * Constraints:
+ *  - ID must be unique
+ */
+export interface VideoFact {
   id: string;
   title: string;
   primaryDate: Date;
@@ -27,26 +43,28 @@ export interface Video {
 }
 
 export function isDocument(
-  fact: DocumentExcerpt | Video | null
-): fact is DocumentExcerpt {
+  fact: DocumentFact | VideoFact | null
+): fact is DocumentFact {
   if (fact) {
-    return (fact as DocumentExcerpt).filename !== undefined;
+    return (fact as DocumentFact).filename !== undefined;
   } else {
     return false;
   }
 }
 
-export function isVideo(fact: DocumentExcerpt | Video | null): fact is Video {
+export function isVideo(
+  fact: DocumentFact | VideoFact | null
+): fact is VideoFact {
   if (fact) {
-    return (fact as Video).id !== undefined;
+    return (fact as VideoFact).id !== undefined;
   } else {
     return false;
   }
 }
 
-interface Database {
-  excerpts: DocumentExcerpt[];
-  videos: Video[];
+export interface Database {
+  excerpts: DocumentFact[];
+  videos: VideoFact[];
   users: User[];
 }
 

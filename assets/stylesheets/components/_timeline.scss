@@ -5,3 +5,14 @@
 .timeline__item {
   //z-index: 100;
 }
+
+.timeline__preview {
+  position: relative;
+  z-index: 1;
+}
+
+.timeline {
+  position: relative;
+  z-index: 2;
+  background-color: white;
+}

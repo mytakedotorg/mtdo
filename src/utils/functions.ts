@@ -1,11 +1,19 @@
 import * as React from "react";
-import database, { DocumentExcerpt, Video } from "./database";
-import {
-  FoundationNode,
-  FoundationTextType,
-  FoundationNodeProps
-} from "../components/Foundation";
+import { DocumentFact, VideoFact } from "./databaseData";
+import { getVideoFact, getDocumentFact } from "./databaseAPI";
 var htmlparser = require("htmlparser2");
+
+export interface FoundationNode {
+  component: string;
+  props: FoundationNodeProps;
+  innerHTML: Array<string | React.ReactNode>;
+}
+
+export interface FoundationNodeProps {
+  key: string;
+  dataOffset: string;
+  index: string;
+}
 
 function clearDefaultDOMSelection(): void {
   if (window.getSelection) {
@@ -481,9 +489,15 @@ function getStartRangeOffsetTop(
     let textNodes = thirdNodeList[textIndex].childNodes;
     for (let idx = 0; idx < textNodes.length; idx++) {
       if (textNodes[idx + 1]) {
-        if (parseInt(textNodes[idx].attributes[0].value) < startRange) {
+        if (parseInt(textNodes[idx].attributes[0].value) <= startRange) {
           resultNodes = textNodes[idx];
           continue;
+        } else {
+          if (resultNodes) {
+            return (resultNodes as HTMLElement).offsetTop;
+          }
+          resultNodes = textNodes[idx];
+          return (resultNodes as HTMLElement).offsetTop;
         }
       }
       if (parseInt(textNodes[idx].attributes[0].value) > endRange) {
@@ -495,8 +509,6 @@ function getStartRangeOffsetTop(
 
   let offsetTop = (resultNodes as HTMLElement).offsetTop;
   return offsetTop;
-  //(secondNodeList[documentIndex] as HTMLElement).scrollTop = offsetTop;
-  //return resultNodes;
 }
 
 /**
@@ -507,10 +519,7 @@ function getStartRangeOffsetTop(
 
 function getNodeArray(excerptId: string): Array<FoundationNode> {
   // Fetch the excerpt from the DB by its ID
-  let excerpt = database.excerpts.filter(excerpt => {
-    return slugify(excerpt.title) === excerptId;
-  })[0];
-
+  let excerpt = getDocumentFact(excerptId);
   let source;
   if (excerpt) {
     source = require("../foundation/" + excerpt.filename);
@@ -561,10 +570,6 @@ function getNodeArray(excerptId: string): Array<FoundationNode> {
 }
 
 const validators = {
-  isFoundationTextType: (type: string): type is FoundationTextType => {
-    const CONSTITUTION: FoundationTextType = "CONSTITUTION";
-    return type === CONSTITUTION;
-  },
   isValidUser: (user: string): boolean => {
     // User must be alphanumeric
     if (user.match(/^[a-z0-9]+$/i)) {
@@ -589,18 +594,14 @@ function slugify(text: string): string {
     .replace(/[^\w-]+/g, ""); //remove non-alphanumics and non-hyphens
 }
 
-function getFact(factId: string): DocumentExcerpt | Video | null {
-  let excerpt = database.excerpts.filter(excerpt => {
-    return slugify(excerpt.title) === factId;
-  })[0];
+function getFact(factId: string): DocumentFact | VideoFact | null {
+  let excerpt = getDocumentFact(factId);
 
   if (excerpt) {
     return excerpt;
   }
 
-  let video = database.videos.filter(video => {
-    return video.id === factId;
-  })[0];
+  let video = getVideoFact(factId);
 
   if (video) {
     return video;

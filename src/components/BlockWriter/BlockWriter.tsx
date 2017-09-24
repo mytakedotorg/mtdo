@@ -6,19 +6,19 @@ import BlockEditor, {
   TakeDocument,
   VideoBlock
 } from "../BlockEditor";
-import Foundation, { FoundationTextType } from "../Foundation";
+import TimelineView from "../TimelineView";
 
-interface MyTakeProps {
-  initState: MyTakeState;
+interface BlockWriterProps {
+  initState: BlockWriterState;
 }
 
-export interface MyTakeState {
+export interface BlockWriterState {
   takeDocument: TakeDocument;
   activeBlockIndex: number;
 }
 
-class MyTake extends React.Component<MyTakeProps, MyTakeState> {
-  constructor(props: MyTakeProps) {
+class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
+  constructor(props: BlockWriterProps) {
     super(props);
 
     this.state = {
@@ -192,6 +192,12 @@ class MyTake extends React.Component<MyTakeProps, MyTakeState> {
       handleEnterPress: this.addParagraph,
       handleFocus: this.handleTakeBlockFocus
     };
+
+    const setFactHandlers = {
+      handleDocumentSetClick: this.addDocument,
+      handleVideoSetClick: this.addVideo
+    };
+
     return (
       <div>
         <BlockEditor
@@ -199,13 +205,10 @@ class MyTake extends React.Component<MyTakeProps, MyTakeState> {
           takeDocument={(Object as any).assign({}, this.state.takeDocument)}
           active={this.state.activeBlockIndex}
         />
-        <Foundation
-          handleDocumentSetClick={this.addDocument}
-          handleVideoSetClick={this.addVideo}
-        />
+        <TimelineView setFactHandlers={setFactHandlers} />
       </div>
     );
   }
 }
 
-export default MyTake;
+export default BlockWriter;

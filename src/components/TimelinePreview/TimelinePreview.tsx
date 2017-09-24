@@ -1,9 +1,10 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import Document from "../Document";
-import Debates from "../Debates";
-import { FoundationNode } from "../Foundation";
+import FactHeader from "../FactHeader";
+import Video from "../Video";
 import {
+  FoundationNode,
   getFact,
   getHighlightedNodes,
   getStartRangeOffsetTop,
@@ -12,14 +13,22 @@ import {
   slugify
 } from "../../utils/functions";
 import {
-  DocumentExcerpt,
-  Video,
+  DocumentFact,
+  VideoFact,
   isDocument,
   isVideo
-} from "../../utils/database";
+} from "../../utils/databaseData";
+
+export interface SetFactHandlers {
+  handleDocumentSetClick: (excerptId: string, range: [number, number]) => void;
+  handleVideoSetClick: (id: string, range: [number, number]) => void;
+}
 
 interface TimelinePreviewProps {
   excerptId: string;
+  setFactHandlers?: SetFactHandlers;
+  highlightedRange?: [number, number];
+  offset?: number;
 }
 
 interface TimelinePreviewState {
@@ -27,7 +36,8 @@ interface TimelinePreviewState {
   textIsHighlighted: boolean;
   highlightedNodes: FoundationNode[];
   offsetTop: number;
-  fact: DocumentExcerpt | Video | null;
+  fact: DocumentFact | VideoFact | null;
+  headerHidden: boolean;
 }
 
 export default class TimelinePreview extends React.Component<
@@ -39,11 +49,12 @@ export default class TimelinePreview extends React.Component<
     super(props);
 
     this.state = {
-      highlightedRange: [0, 0],
-      textIsHighlighted: false,
+      highlightedRange: props.highlightedRange || [0, 0],
+      textIsHighlighted: props.highlightedRange ? true : false,
       highlightedNodes: [],
       offsetTop: 0,
-      fact: getFact(props.excerptId)
+      fact: getFact(props.excerptId),
+      headerHidden: false
     };
   }
   getScrollTop = (range?: [number, number]) => {
@@ -62,7 +73,7 @@ export default class TimelinePreview extends React.Component<
     if (excerpt) {
       return excerpt.title;
     }
-    return null;
+    return "";
   };
   handleClearClick = () => {
     this.setState({
@@ -101,36 +112,86 @@ export default class TimelinePreview extends React.Component<
   };
   handleSetClick = (videoRange?: [number, number]) => {
     let range: [number, number];
+    let excerptId = this.props.excerptId;
     if (videoRange) {
-      range = videoRange;
+      if (this.props.setFactHandlers) {
+        this.props.setFactHandlers.handleVideoSetClick(excerptId, videoRange);
+      } else {
+        window.location.href =
+          "/new-take/#" + excerptId + "&" + videoRange[0] + "&" + videoRange[1];
+      }
     } else {
       range = this.state.highlightedRange;
+      if (this.props.setFactHandlers) {
+        this.props.setFactHandlers.handleDocumentSetClick(excerptId, range);
+      } else {
+        window.location.href =
+          "/new-take/#" + excerptId + "&" + range[0] + "&" + range[1];
+      }
     }
-    //TODO, set window.location.href
-    window.location.href =
-      "/new-take/#" + this.props.excerptId + "&" + range[0] + "&" + range[1];
+  };
+  handleScroll = (headerHidden: boolean) => {
+    this.setState({
+      headerHidden: headerHidden
+    });
+  };
+  componentDidMount() {
+    this.setup();
+  }
+  setup = () => {
+    if (this.props.highlightedRange) {
+      // Get the list of nodes highlighted by a previous author
+      let initialHighlightedNodes = getHighlightedNodes(
+        this.document.getDocumentNodes(),
+        this.props.highlightedRange
+      );
+
+      // Get the scrollTop value of the top most HTML element containing the same highlighted nodes
+      let theseDOMNodes = ReactDOM.findDOMNode(this).childNodes;
+      let offsetTop = this.getScrollTop();
+
+      // Scroll the Document to this offset
+      let scrollTop = offsetTop + FactHeader.headerHeight;
+      if (this.props.offset) {
+        scrollTop -= this.props.offset;
+      }
+
+      window.scrollTo(0, scrollTop);
+
+      this.setState({
+        highlightedNodes: initialHighlightedNodes,
+        offsetTop: this.getScrollTop()
+      });
+    }
   };
   componentWillReceiveProps(nextProps: TimelinePreviewProps) {
     if (this.props.excerptId !== nextProps.excerptId) {
       this.setState({
-        fact: getFact(nextProps.excerptId)
+        fact: getFact(nextProps.excerptId),
+        textIsHighlighted: false,
+        highlightedNodes: []
       });
     }
   }
   render() {
+    let headerClass = "document__header";
+    let documentClass = "document__row";
+    if (this.state.headerHidden) {
+      headerClass += " document__header--hidden";
+      documentClass += " document__row--push";
+    } else {
+      headerClass += " document__header--visible";
+    }
+
     return (
-      <div>
-        <h3>
-          {this.getTitle()}
-        </h3>
-        {this.state.textIsHighlighted
-          ? <button
-              className="document__button"
-              onClick={this.handleClearClick}
-            >
-              Clear Selection
-            </button>
-          : null}
+      <div className={"timeline__preview"}>
+        <FactHeader
+          heading={this.getTitle()}
+          className={headerClass}
+          onClearClick={this.handleClearClick}
+          onScroll={this.handleScroll}
+          textIsHighlighted={this.state.textIsHighlighted}
+        />
         {isDocument(this.state.fact)
           ? <Document
               excerptId={this.props.excerptId}
@@ -158,7 +219,7 @@ export default class TimelinePreview extends React.Component<
             </Document>
           : null}
         {isVideo(this.state.fact)
-          ? <Debates onSetClick={this.handleSetClick} video={this.state.fact} />
+          ? <Video onSetClick={this.handleSetClick} video={this.state.fact} />
           : null}
       </div>
     );

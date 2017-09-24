@@ -1,7 +1,6 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import database from "../../utils/database";
-import { FoundationTextType } from "../Foundation";
+import { getAllVideoFacts, getAllDocumentFacts } from "../../utils/databaseAPI";
 import { slugify } from "../../utils/functions";
 import * as vis from "vis";
 
@@ -113,7 +112,7 @@ export default class Timeline extends React.Component<
     super(props);
   }
   initTimeline = () => {
-    for (let video of database.videos) {
+    for (let video of getAllVideoFacts()) {
       this.timelineData = [
         ...this.timelineData,
         {
@@ -124,7 +123,7 @@ export default class Timeline extends React.Component<
       ];
     }
 
-    for (let excerpt of database.excerpts) {
+    for (let excerpt of getAllDocumentFacts()) {
       let idx = slugify(excerpt.title);
       this.timelineData = [
         ...this.timelineData,
@@ -149,7 +148,8 @@ export default class Timeline extends React.Component<
         }
         ReactDOM.unmountComponentAtNode(element);
         return ReactDOM.render(<TimelineItem item={item} />, element);
-      }
+      },
+      zoomable: false
     };
     if (container) {
       this.timeline = new vis.Timeline(
@@ -157,6 +157,7 @@ export default class Timeline extends React.Component<
         items,
         options as vis.TimelineOptions
       );
+      this.timeline.on("select", this.handleClick);
     }
   };
   orderById = (a: TimelineData, b: TimelineData): number => {
@@ -176,11 +177,13 @@ export default class Timeline extends React.Component<
   };
   componentDidMount() {
     this.initTimeline();
-    this.timeline.on("select", this.handleClick);
+  }
+  componentWillUnMount() {
+    (this.timeline.off as any)("select", this.handleClick); //Issue with vis tyings here.
   }
   render() {
     return (
-      <div>
+      <div className={"timeline"}>
         <h1>This is a Timeline</h1>
         <div id="mytimeline" />
       </div>

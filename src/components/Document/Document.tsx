@@ -1,11 +1,11 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { FoundationNode } from "../Foundation";
-import { getNodeArray } from "../../utils/functions";
+import { getNodeArray, FoundationNode } from "../../utils/functions";
 
 interface DocumentProps {
   onMouseUp: () => void;
   excerptId: string;
+  className?: string;
 }
 
 interface DocumentState {
@@ -32,7 +32,9 @@ class Document extends React.Component<DocumentProps, DocumentState> {
   }
   render() {
     let classes = "document document--static";
-    let documentClass = "document__row";
+    let documentClass = this.props.className
+      ? this.props.className
+      : "document__row";
 
     return (
       <div className={classes}>

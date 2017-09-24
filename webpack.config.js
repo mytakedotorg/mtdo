@@ -3,10 +3,7 @@ const UglifyJSPlugin = require("uglifyjs-webpack-plugin");
 module.exports = {
   entry: {
     app: __dirname + "/src/index.tsx",
-    blockEditor: __dirname + "/src/blockEditor.tsx",
-    documentReader: __dirname + "/src/documentReader.tsx",
-    foundation: __dirname + "/src/foundationView.tsx",
-    foundationExplorer: __dirname + "/src/foundationExplorer.tsx"
+    takeReader: __dirname + "/src/takeReader.tsx"
   },
 
   output: {

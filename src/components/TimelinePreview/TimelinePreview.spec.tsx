@@ -1,10 +1,10 @@
 import * as React from "react";
 import { mount, ReactWrapper } from "enzyme";
 
-import DocumentFullScreen from "./DocumentFullScreen";
+import TimelinePreview from "./TimelinePreview";
 
-const onBackClick = jest.fn();
-const onSetClick = jest.fn();
+const onDocumentSetClick = jest.fn();
+const onVideoSetClick = jest.fn();
 
 interface MockWindow extends Window {
   scrollTo: jest.Mock<{}> & typeof window.scrollTo;
@@ -22,21 +22,24 @@ describe("Constitution", () => {
   const offset = 399;
   const highlightedRange: [number, number] = [368, 513];
   const excerptId = "united-states-constitution";
+  const setFactHandlers = {
+    handleDocumentSetClick: onDocumentSetClick,
+    handleVideoSetClick: onVideoSetClick
+  };
 
   beforeAll(() => {
     wrapper = mount(
-      <DocumentFullScreen
-        offset={offset}
-        onBackClick={onBackClick}
-        onSetClick={onSetClick}
-        highlightedRange={highlightedRange}
+      <TimelinePreview
         excerptId={excerptId}
+        setFactHandlers={setFactHandlers}
+        highlightedRange={highlightedRange}
+        offset={offset}
       />
     );
   });
 
   test("Document renders", () => {
-    expect(wrapper.find(DocumentFullScreen).length).toBe(1);
+    expect(wrapper.find(TimelinePreview).length).toBe(1);
   });
 
   test("Scrolling header renders", () => {
@@ -60,45 +63,34 @@ describe("Constitution", () => {
   });
 
   test("Header buttons render", () => {
-    // Header buttons are siblings along with h2.document__heading
+    // Header button is sibling along with h2.document__heading
 
-    // On initial render, there are 2 buttons
+    // On initial render, there is 1 button
     expect(
       wrapper.find(".document__header").first().childAt(0).children().length
-    ).toBe(3);
+    ).toBe(2);
 
-    // When the 2nd button, "Clear Selection" is clicked, it is hidden
+    // When the button, "Clear Selection" is clicked, it is hidden
     wrapper
       .find(".document__header")
       .first()
       .childAt(0)
-      .childAt(2)
+      .childAt(1)
       .simulate("click");
     expect(
       wrapper.find(".document__header").first().childAt(0).children().length
-    ).toBe(2);
+    ).toBe(1);
 
     // When some more text is highlighted, the "Clear Selection" button is shown again
     wrapper.setState({ textIsHighlighted: true });
     expect(
       wrapper.find(".document__header").first().childAt(0).children().length
-    ).toBe(3);
-  });
-
-  test("Back button works", () => {
-    wrapper
-      .find(".document__header")
-      .children()
-      .at(0)
-      .children()
-      .at(1)
-      .simulate("click");
-    expect(onBackClick).toHaveBeenCalled();
+    ).toBe(2);
   });
 
   test("Set text click works for initial highlight", () => {
     wrapper.find(".editor__block--overlay").simulate("click");
-    expect(onSetClick).toHaveBeenCalled();
+    expect(onDocumentSetClick).toHaveBeenCalled();
   });
 
   test("Constitution text renders", () => {
@@ -116,7 +108,7 @@ describe("Constitution", () => {
       .children()
       .at(0)
       .children()
-      .at(2)
+      .at(1)
       .simulate("click");
     expect(wrapper.state("textIsHighlighted")).toBe(false);
   });
