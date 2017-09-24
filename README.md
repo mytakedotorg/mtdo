@@ -1,5 +1,9 @@
 # codename mytake.org
 
+[![Travis CI](https://travis-ci.org/mytake/mytake.svg?branch=master)](https://travis-ci.org/mytake/mytake)
+[![License GPLv2](https://img.shields.io/badge/license-GPLv2-brightgreen.svg)](https://tldrlegal.com/license/gnu-general-public-license-v2)
+[![Live chat](https://img.shields.io/badge/gitter-chat-brightgreen.svg)](https://gitter.im/mytake)
+
 Here's what we have so far:
 
 - [A pitch](https://github.com/mytake/mytake/wiki/Pitch)
