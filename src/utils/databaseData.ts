@@ -8,6 +8,7 @@ export interface Article {
   title: string;
   titleSlug: string;
   blocks: TakeBlock[];
+  previewBlocks: number[];
 }
 
 /**
@@ -271,7 +272,8 @@ const database: Database = {
               text:
                 "If our judges get to decide that the law means whatever they want it to mean, then we still live under a King, we’ve just changed his name to Judge. That’s why it’s important to apply consistent methodology when interpreting the law. But in this case, whether you’re a Textualist or an Originalist, I don’t see how the 2nd amendment allows for any of the gun restrictions in place today."
             }
-          ]
+          ],
+          previewBlocks: [6, 11]
         },
         {
           title: "Don't worry, we'll protect the Constitution for you!",
@@ -292,7 +294,8 @@ const database: Database = {
               text:
                 "Don’t bother reading the Constitution, it’s only for smart people like me. Trust me – the President is way out of line to think the Senate has any obligation to give his candidate a hearing!"
             }
-          ]
+          ],
+          previewBlocks: [1, 0]
         }
       ]
     }

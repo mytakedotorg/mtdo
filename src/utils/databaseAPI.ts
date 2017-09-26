@@ -115,6 +115,10 @@ export function getUser(username: string): User | null {
   return null;
 }
 
+export function getAllUsers(): User[] {
+  return database.users;
+}
+
 export function createUser(username: string): boolean {
   if (getUser(username)) {
     return false;
@@ -197,7 +201,8 @@ export function getArticle(
 export function createArticle(
   username: string,
   title: string,
-  blocks: TakeBlock[]
+  blocks: TakeBlock[],
+  previewBlocks: number[]
 ): boolean {
   if (!title) {
     // Throw error, title is required
@@ -220,7 +225,8 @@ export function createArticle(
         {
           title: title,
           titleSlug: slugify(title),
-          blocks: blocks
+          blocks: blocks,
+          previewBlocks: previewBlocks
         }
       ];
     } else {
@@ -228,7 +234,8 @@ export function createArticle(
         {
           title: title,
           titleSlug: slugify(title),
-          blocks: blocks
+          blocks: blocks,
+          previewBlocks: previewBlocks
         }
       ];
     }
