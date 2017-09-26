@@ -1,12 +1,14 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import BlockReader from "./components/BlockReader";
+import FeedList from "./components/FeedList";
 import { TakeDocument } from "./components/BlockEditor";
 import { getArticle } from "./utils/databaseAPI";
 
 interface InitJSON {
   user: string;
   article: string;
+  route?: string;
 }
 
 let app: HTMLElement | null = document.getElementById("app");
@@ -17,18 +19,23 @@ if (app && app.hasAttribute("data-init")) {
   if (data) {
     let initJson: InitJSON = JSON.parse(data);
 
-    let article = getArticle(initJson.user, initJson.article);
-
-    if (article) {
-      let takeDocument: TakeDocument = {
-        title: article.title,
-        blocks: article.blocks
-      };
-
-      Root = <BlockReader initState={takeDocument} />;
+    if (initJson.route && initJson.route === "/") {
+      //Homepage feed
+      Root = <FeedList />;
     } else {
-      // Error getting article
-      Root = <div />;
+      let article = getArticle(initJson.user, initJson.article);
+
+      if (article) {
+        let takeDocument: TakeDocument = {
+          title: article.title,
+          blocks: article.blocks
+        };
+
+        Root = <BlockReader initState={takeDocument} />;
+      } else {
+        // Error getting article
+        Root = <div />;
+      }
     }
   } else {
     // Error parsing data
