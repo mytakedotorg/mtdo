@@ -131,9 +131,11 @@ export default class TimelinePreview extends React.Component<
     }
   };
   handleScroll = (headerHidden: boolean) => {
-    this.setState({
-      headerHidden: headerHidden
-    });
+    if (this.state.headerHidden != headerHidden) {
+      this.setState({
+        headerHidden: headerHidden
+      });
+    }
   };
   componentDidMount() {
     this.setup();
