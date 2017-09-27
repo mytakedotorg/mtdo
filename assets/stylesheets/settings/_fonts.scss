@@ -14,23 +14,68 @@ $serif: 'Merriweather', serif;
 }
 
 @mixin display1 {
-  @include typography($sans, 700, 59px, 1.3em);
+  @include typography($sans, 700, 39px, 1.3em);
+  @media #{$mq-small} {
+    @include typography($sans, 700, 39px, 1.3em);
+  }
+  @media #{$mq-medium} {
+    @include typography($sans, 700, 49px, 1.3em);
+  }
+  @media #{$mq-large} {
+    @include typography($sans, 700, 59px, 1.3em);
+  }
 }
 
 @mixin display2 {
-  @include typography($sans, 300, 44px, 1.3em);
+  @include typography($sans, 300, 29px, 1.3em);
+  @media #{$mq-small} {
+    @include typography($sans, 300, 29px, 1.3em);
+  }
+  @media #{$mq-medium} {
+    @include typography($sans, 300, 36px, 1.3em);
+  }
+  @media #{$mq-large} {
+    @include typography($sans, 300, 44px, 1.3em);
+  }
 }
 
 @mixin heading1 {
-  @include typography($sans, 700, 44px, 1.3em);
+  @include typography($sans, 700, 29px, 1.3em);
+  @media #{$mq-small} {
+    @include typography($sans, 700, 29px, 1.3em);
+  }
+  @media #{$mq-medium} {
+    @include typography($sans, 700, 36px, 1.3em);
+  }
+  @media #{$mq-large} {
+    @include typography($sans, 700, 44px, 1.3em);
+  }
 }
 
 @mixin heading2 {
-  @include typography($sans, 700, 34px, 1.3em);
+  @include typography($sans, 700, 24px, 1.3em);
+  @media #{$mq-small} {
+    @include typography($sans, 700, 24px, 1.3em);
+  }
+  @media #{$mq-medium} {
+    @include typography($sans, 700, 3px, 1.3em);
+  }
+  @media #{$mq-large} {
+    @include typography($sans, 700, 34px, 1.3em);
+  }
 }
 
 @mixin heading3 {
-  @include typography($sans, 700, 24px, 1.3em);
+  @include typography($sans, 700, 19px, 1.3em);
+  @media #{$mq-small} {
+    @include typography($sans, 700, 19px, 1.3em);
+  }
+  @media #{$mq-medium} {
+    @include typography($sans, 700, 20px, 1.3em);
+  }
+  @media #{$mq-large} {
+    @include typography($sans, 700, 24px, 1.3em);
+  }
 }
 
 @mixin heading4 {
