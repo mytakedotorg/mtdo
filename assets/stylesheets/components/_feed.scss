@@ -60,7 +60,7 @@
 .feed__card-text {
   margin-top: 0;
   margin-bottom: 0;
-  @include body--small;
+  @include body;
   color: palette(feed, text--faded);
 }
 .feed__more {
