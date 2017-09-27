@@ -77,6 +77,11 @@
   border: palette(editor, border);
   box-shadow: 1px 1px 2px palette(editor, shadow);
   color: palette(editor, text);
+  overflow: hidden;
+  p {
+    z-index: 1;
+    position: relative;
+  }
 }
 .editor__document--base {
   padding: 5px 15px;
@@ -89,8 +94,15 @@
   @include body;
 }
 .editor__document-highlight {
+  position: relative;
+  z-index: -1;
   color: palette(editor, text--highlight);
   background-color: palette(editor, background--highlight);
+  box-shadow: 5px 5px 0 palette(editor, background--highlight),
+    -5px 5px 0 palette(editor, background--highlight),
+    -5px -5px 0 palette(editor, background--highlight),
+    5px -5px 0 palette(editor, background--highlight);
+  box-decoration-break: clone;
 }
 .editor__video {
   display: block;
