@@ -6,36 +6,36 @@ $serif: 'Merriweather', serif;
 * Source Sans Pro headings, Merriweather body
 */
 
-@mixin typography($fontFamily, $fontWeight, $fontSize, $lineHeight) {
+@mixin typography($fontFamily, $fontWeight, $fontSize, $lineHeight:"") {
   font-family: $fontFamily;
   font-weight: $fontWeight;
   font-size: $fontSize;
-  line-height: $lineHeight;
+  line-height: #{$lineHeight};
 }
 
 @mixin display1 {
-  @include typography($sans, 700, 39px, 1.3em);
+  @include typography($sans, 700, 39px);
   @media #{$mq-small} {
-    @include typography($sans, 700, 39px, 1.3em);
+    @include typography($sans, 700, 39px);
   }
   @media #{$mq-medium} {
-    @include typography($sans, 700, 49px, 1.3em);
+    @include typography($sans, 700, 49px);
   }
   @media #{$mq-large} {
-    @include typography($sans, 700, 59px, 1.3em);
+    @include typography($sans, 700, 59px);
   }
 }
 
 @mixin display2 {
-  @include typography($sans, 300, 29px, 1.3em);
+  @include typography($sans, 300, 29px);
   @media #{$mq-small} {
-    @include typography($sans, 300, 29px, 1.3em);
+    @include typography($sans, 300, 29px);
   }
   @media #{$mq-medium} {
-    @include typography($sans, 300, 36px, 1.3em);
+    @include typography($sans, 300, 36px);
   }
   @media #{$mq-large} {
-    @include typography($sans, 300, 44px, 1.3em);
+    @include typography($sans, 300, 44px);
   }
 }
 
