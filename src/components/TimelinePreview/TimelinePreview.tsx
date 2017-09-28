@@ -199,6 +199,11 @@ export default class TimelinePreview extends React.Component<
               excerptId={this.props.excerptId}
               onMouseUp={this.handleMouseUp}
               ref={(document: Document) => (this.document = document)}
+              className={
+                this.state.headerHidden
+                  ? "document__row document__row--push"
+                  : "document__row"
+              }
             >
               {this.state.textIsHighlighted
                 ? <div
