@@ -17,8 +17,11 @@
   margin: 2rem auto;
 }
 .document__header {
-  width: 100%;
+  width: 768px;
+  max-width: 100%;
+  margin: 0 auto;
   background-color: palette(document, background);
+  border-bottom: 1px solid palette(header, border);
 }
 .document__header--visible {
   position: relative;
@@ -45,7 +48,9 @@
   color: palette(document, text);
   @include heading2;
 }
-
+.document__header-actions {
+  height: 4rem;
+}
 .document__instructions {
   margin-top: 0;
   margin-bottom: 15px;
