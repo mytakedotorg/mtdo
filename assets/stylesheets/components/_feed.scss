@@ -14,7 +14,10 @@
   color: palette(feed, text);
   padding-top: 5px;
   padding-bottom: 5px;
-  margin: 2rem;
+  margin: 1rem;
+  @media #{$mq-medium} {
+    margin: 2rem;
+  }
 }
 .feed__card-title {
   @include heading3;

@@ -29,7 +29,10 @@
 }
 .editor {
   position: relative;
-  padding: 0 3rem;
+  padding: 0 $page-margin-mobile;
+  @media #{$mq-medium} {
+    padding: 0 $page-margin;
+  }
   min-height: 300px;
 }
 .editor__inner {
@@ -66,11 +69,11 @@
   text-align: left;
   position: relative;
   @include overrideDefaultTextArea;
-  @include body--lead;
+  @include body;
 }
 .editor__paragraph-height-div {
   @include textareaHeightDiv;
-  @include body--lead;
+  @include body;
 }
 .editor__document {
   background: palette(editor, background);

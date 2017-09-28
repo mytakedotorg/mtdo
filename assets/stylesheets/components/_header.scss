@@ -5,6 +5,9 @@
   z-index: 10;
   background-color: white;
 }
+.header__top {
+  height: 8rem;
+}
 .header__skip-link {
   position: absolute;
   top: -40px;
@@ -22,8 +25,11 @@
 .header__logo {
   @include display2;
   font-style: normal;
-  margin-left: $page-margin;
-  line-height: 8rem; // cd src && grep -Rn "static headerHeight" *
+  margin-left: $page-margin-mobile;
+  @media #{$mq-medium} {
+    margin-left: $page-margin;
+  }
+  line-height: 8rem; // cd src && grep -Rn "headerHeight =" *
 }
 .header__logo-link {
   text-decoration: none;
@@ -34,12 +40,14 @@
 }
 .header__button-list {
   float: right;
-  //line-height: 8rem;
 }
 .header__button {
   @include body--lead;
-  line-height: 8rem; // cd src && grep -Rn "static headerHeight" *
-  margin-right: $page-margin;
+  line-height: 8rem; // cd src && grep -Rn "headerHeight =" *
+  margin-right: $page-margin-mobile;
+  @media #{$mq-medium} {
+    margin-right: $page-margin;
+  }
   color: palette(header, text);
   &:hover {
     color: palette(header, text--hover);
