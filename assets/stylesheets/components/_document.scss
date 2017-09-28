@@ -47,9 +47,17 @@
   margin-bottom: 15px;
   color: palette(document, text);
   @include heading2;
+  margin-left: $page-margin-mobile;
+  @media #{$mq-medium} {
+    margin-left: $page-margin;
+  }
 }
 .document__header-actions {
   height: 4rem;
+  margin-left: $page-margin-mobile;
+  @media #{$mq-medium} {
+    margin-left: $page-margin;
+  }
 }
 .document__instructions {
   margin-top: 0;
