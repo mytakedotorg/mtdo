@@ -36,14 +36,18 @@ class FactHeader extends React.Component<FactHeaderProps, FactHeaderState> {
         <h2 className={"document__heading"}>
           {this.props.heading}
         </h2>
-        {this.props.textIsHighlighted
-          ? <button
-              className="document__button"
-              onClick={this.handleClearClick}
-            >
-              Clear Selection
-            </button>
-          : null}
+        <div className="document__header-actions">
+          {this.props.textIsHighlighted
+            ? <button
+                className="document__button"
+                onClick={this.handleClearClick}
+              >
+                Clear Selection
+              </button>
+            : <p className="document__instructions">
+                Highlight something to give your Take
+              </p>}
+        </div>
       </div>
     );
 
