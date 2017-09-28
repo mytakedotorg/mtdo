@@ -43,16 +43,18 @@ describe("Constitution", () => {
   });
 
   test("Scrolling header renders", () => {
+    wrapper.setState({ headerHidden: false });
     expect(wrapper.find(".document__header--visible").length).toBe(1);
-    expect(wrapper.find(".document__header--hidden").length).toBe(0);
 
     wrapper.setState({ headerHidden: true });
-
     expect(wrapper.find(".document__header--visible").length).toBe(0);
-    expect(wrapper.find(".document__header--hidden").length).toBe(1);
   });
 
   test("Fixed header renders", () => {
+    wrapper.setState({ headerHidden: false });
+    expect(wrapper.find(".document__header--fixed").length).toBe(0);
+
+    wrapper.setState({ headerHidden: true });
     expect(wrapper.find(".document__header--fixed").length).toBe(1);
   });
 
