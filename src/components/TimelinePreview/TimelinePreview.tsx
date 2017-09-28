@@ -176,20 +176,16 @@ export default class TimelinePreview extends React.Component<
     }
   }
   render() {
-    let headerClass = "document__header";
     let documentClass = "document__row";
     if (this.state.headerHidden) {
-      headerClass += " document__header--hidden";
       documentClass += " document__row--push";
-    } else {
-      headerClass += " document__header--visible";
     }
 
     return (
       <div className={"timeline__preview"}>
         <FactHeader
           heading={this.getTitle()}
-          className={headerClass}
+          isFixed={this.state.headerHidden}
           onClearClick={this.handleClearClick}
           onScroll={this.handleScroll}
           textIsHighlighted={this.state.textIsHighlighted}

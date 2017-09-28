@@ -4,7 +4,7 @@ import { getNodeArray, FoundationNode } from "../../utils/functions";
 
 interface FactHeaderProps {
   heading: string;
-  className: string;
+  isFixed: boolean;
   onClearClick: () => void;
   onScroll: (headerHidden: boolean) => void;
   textIsHighlighted: boolean;
@@ -31,6 +31,16 @@ class FactHeader extends React.Component<FactHeaderProps, FactHeaderState> {
     window.removeEventListener("scroll", this.handleScroll);
   }
   render() {
+    let scrollingHeaderClass = "document__header";
+    let fixedHeaderClass = "document__header";
+    if (this.props.isFixed) {
+      scrollingHeaderClass += " document__header--hidden";
+      fixedHeaderClass += " document__header--fixed";
+    } else {
+      scrollingHeaderClass += " document__header--visible";
+      fixedHeaderClass += " document__header--hidden";
+    }
+
     const headerContent = (
       <div>
         <h2 className={"document__heading"}>
@@ -53,10 +63,10 @@ class FactHeader extends React.Component<FactHeaderProps, FactHeaderState> {
 
     return (
       <div ref={(header: HTMLDivElement) => (this.header = header)}>
-        <div className={this.props.className}>
+        <div className={scrollingHeaderClass}>
           {headerContent}
         </div>
-        <div className={"document__header document__header--fixed"}>
+        <div className={fixedHeaderClass}>
           {headerContent}
         </div>
       </div>
