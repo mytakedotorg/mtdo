@@ -1,5 +1,7 @@
 .about {
-  margin: 2rem 4rem;
+  margin: 0;
+  padding: 0 4rem;
+  background-color: palette(about, background);
 }
 .about__text {
   @include body;
