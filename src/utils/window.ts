@@ -1,6 +1,3 @@
-interface extendedEvent extends Event {
-  handled: boolean;
-}
 /**
 * Small screen navigation toggle
 **/
@@ -9,21 +6,36 @@ function addNavEvents() {
   let navToggle = document.getElementsByClassName("header__nav-toggle")[0];
   let navMenu = document.getElementsByClassName("nav")[0];
 
-  if (navToggle) {
-    navToggle.addEventListener("click", function(e: extendedEvent) {
-      if (!e.handled) {
-        toggleNav();
-        e.handled = true;
-      }
-    });
+  function navEvent(e: Event) {
+    if (!e.defaultPrevented) {
+      toggleNav();
+      e.preventDefault();
+    }
   }
 
-  body.addEventListener("click", function(e: extendedEvent) {
-    if (body.classList.contains("fade") && !e.handled) {
-      toggleNav();
-      e.handled = true;
+  function bodyEvent(e: Event) {
+    if (body.classList.contains("fade") && !e.defaultPrevented) {
+      if (
+        e.srcElement &&
+        !e.srcElement.classList.contains("header__nav--icon")
+      ) {
+        if (
+          !e.srcElement.classList.contains("nav__link") &&
+          !e.srcElement.classList.contains("nav__link-text")
+        ) {
+          toggleNav();
+          e.preventDefault();
+        }
+      }
     }
-  });
+  }
+
+  if (navToggle) {
+    navToggle.addEventListener("click", navEvent);
+  }
+
+  body.addEventListener("click", bodyEvent);
+  body.addEventListener("touchstart", bodyEvent);
 
   function toggleNav() {
     if (navMenu) {
