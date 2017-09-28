@@ -4,7 +4,8 @@ module.exports = {
   entry: {
     app: __dirname + "/src/index.tsx",
     takeReader: __dirname + "/src/takeReader.tsx",
-    blockEditorTest: __dirname + "/src/blockEditorTest.tsx" // Standalone component for testing
+    blockEditorTest: __dirname + "/src/blockEditorTest.tsx", // Standalone component for testing
+    window: __dirname + "/src/utils/window.ts"
   },
 
   output: {
