@@ -8,6 +8,7 @@ interface FactHeaderProps {
   onClearClick: () => void;
   onScroll: (headerHidden: boolean) => void;
   textIsHighlighted: boolean;
+  isDocument: boolean;
 }
 
 interface FactHeaderState {}
@@ -55,7 +56,9 @@ class FactHeader extends React.Component<FactHeaderProps, FactHeaderState> {
                 Clear Selection
               </button>
             : <p className="document__instructions">
-                Highlight something to give your Take
+                {this.props.isDocument
+                  ? "Highlight something to give your Take"
+                  : "Pause the video to set your start and end times"}
               </p>}
         </div>
       </div>

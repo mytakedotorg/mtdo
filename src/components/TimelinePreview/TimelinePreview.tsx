@@ -189,6 +189,7 @@ export default class TimelinePreview extends React.Component<
           onClearClick={this.handleClearClick}
           onScroll={this.handleScroll}
           textIsHighlighted={this.state.textIsHighlighted}
+          isDocument={isDocument(this.state.fact)}
         />
         {isDocument(this.state.fact)
           ? <Document
@@ -222,7 +223,15 @@ export default class TimelinePreview extends React.Component<
             </Document>
           : null}
         {isVideo(this.state.fact)
-          ? <Video onSetClick={this.handleSetClick} video={this.state.fact} />
+          ? <Video
+              onSetClick={this.handleSetClick}
+              video={this.state.fact}
+              className={
+                this.state.headerHidden
+                  ? "video__inner-container video__inner-container--push"
+                  : "video__inner-container"
+              }
+            />
           : null}
       </div>
     );
