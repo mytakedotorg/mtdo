@@ -56,27 +56,27 @@ class Video extends React.Component<VideoProps, VideoState> {
     };
 
     return (
-      <div className="debates">
-        <h2 className="debates__heading">Debates</h2>
-        <p className="debates__instructions">
+      <div className="video">
+        <h2 className="video__heading">Debates</h2>
+        <p className="video__instructions">
           Choose a video clip to support your Take.
         </p>
         <button onClick={this.handleSetClick}>Send to Take</button>
-        <div className="debates__row">
-          <div className="debates__video-container">
+        <div className="video__row">
+          <div className="video__container">
             {this.props.video
               ? <div>
-                  <h3 className="debates__video-title">
+                  <h3 className="video__title">
                     {this.props.video.title}
                   </h3>
-                  <p className="debates__video-date">
+                  <p className="video__date">
                     {this.props.video.primaryDate.toDateString()}
                   </p>
                   <YouTube
                     videoId={this.props.video.id}
                     opts={opts}
                     onPause={this.handlePause}
-                    className="debates__video"
+                    className="video__video"
                   />
                   <p>
                     Pause the video where you want your clip to start or stop.
