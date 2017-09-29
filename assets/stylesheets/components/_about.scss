@@ -1,25 +1,23 @@
 .about {
-  margin: 0;
+  margin: 0 auto;
   padding: 0 $page-margin-mobile;
   background-color: palette(about, background);
-
   @media #{$mq-medium} {
     padding: 0 $page-margin;
   }
+  width: 768px;
+  max-width: 100%;
 }
 .about__text {
-  @include body;
+  @include body('sans');
   color: palette(about, text);
-}
-.about__text--lead {
-  @include body--lead;
 }
 .about__text--aside {
   font-size: 10px;
 }
 .about__list-item,
 .about__sub-list-item {
-  @include body;
+  @include body('sans');
 }
 .about__text--special {
   color: palette(about, text--special);
