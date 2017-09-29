@@ -58,7 +58,7 @@ $serif: 'Merriweather', serif;
     @include typography($sans, 700, 24px, 1.3em);
   }
   @media #{$mq-medium} {
-    @include typography($sans, 700, 3px, 1.3em);
+    @include typography($sans, 700, 30px, 1.3em);
   }
   @media #{$mq-large} {
     @include typography($sans, 700, 34px, 1.3em);
