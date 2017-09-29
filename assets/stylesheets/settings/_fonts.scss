@@ -91,8 +91,12 @@ $serif: 'Merriweather', serif;
   text-transform: uppercase;
 }
 
-@mixin body {
-  @include typography($serif, 400, 15px, 1.7em);
+@mixin body ($font: 'serif') {
+  @if $font == 'serif' {
+    @include typography($serif, 400, 15px, 1.7em);
+  } @else {
+    @include typography($sans, 400, 16px, 1.7em);
+  }
 }
 
 @mixin body--small {
@@ -101,9 +105,4 @@ $serif: 'Merriweather', serif;
 
 @mixin body--lead {
   @include typography($sans, 300, 22px, 1.5em);
-}
-
-@mixin body--italic {
-  @include body;
-  font-style: italic;
 }
