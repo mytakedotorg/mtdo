@@ -41,13 +41,12 @@
 }
 .feed__card-document-title {
   @include heading4;
-  font-style: italic;
   margin-left: 15px;
   margin-right: 15px;
   color: palette(feed, text--document);
 }
 .feed__card-document-text {
-  @include body--italic;
+  @include body;
   margin-left: 15px;
   margin-right: 15px;
   color: palette(feed, text--document);
@@ -63,7 +62,7 @@
 .feed__card-text {
   margin-top: 0;
   margin-bottom: 0;
-  @include body;
+  @include body('sans');
   color: palette(feed, text--faded);
 }
 .feed__more {

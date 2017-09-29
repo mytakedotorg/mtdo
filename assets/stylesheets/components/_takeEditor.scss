@@ -69,11 +69,11 @@
   text-align: left;
   position: relative;
   @include overrideDefaultTextArea;
-  @include body;
+  @include body('sans');
 }
 .editor__paragraph-height-div {
   @include textareaHeightDiv;
-  @include body;
+  @include body('sans');
 }
 .editor__document {
   background: palette(editor, background);
@@ -89,7 +89,7 @@
 .editor__document--base {
   padding: 5px 15px;
   margin-bottom: 2rem;
-  @include body--italic;
+  @include body;
 }
 .editor__document--overlay {
   cursor: pointer;
