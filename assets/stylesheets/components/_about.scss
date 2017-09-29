@@ -1,7 +1,11 @@
 .about {
   margin: 0;
-  padding: 0 4rem;
+  padding: 0 $page-margin-mobile;
   background-color: palette(about, background);
+
+  @media #{$mq-medium} {
+    padding: 0 $page-margin;
+  }
 }
 .about__text {
   @include body;
@@ -22,8 +26,7 @@
   font-weight: 700;
 }
 .about__link {
-  text-decoration: none;
-  color: palette(about, text);
+  color: palette(about, text--link);
 }
 .about__image-container {
   text-align: center;
