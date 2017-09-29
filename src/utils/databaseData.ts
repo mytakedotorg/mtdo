@@ -151,25 +151,25 @@ const database: Database = {
     },
     {
       id: "m6sUGKAm2YQ",
-      title:  "Bill Clinton - George H.W. Bush (2/3)",
+      title: "Bill Clinton - George H.W. Bush (2/3)",
       primaryDate: new Date("1992-10-15"),
       primaryDateKind: "recorded"
     },
     {
       id: "jCGtHqIwKek",
-      title:  "Bill Clinton - George H.W. Bush (3/3)",
+      title: "Bill Clinton - George H.W. Bush (3/3)",
       primaryDate: new Date("1992-10-19"),
       primaryDateKind: "recorded"
     },
     {
       id: "lZhyS5OtPto",
-      title:  "Bill Clinton - Bob Dole (1/2)",
+      title: "Bill Clinton - Bob Dole (1/2)",
       primaryDate: new Date("1996-10-06"),
       primaryDateKind: "recorded"
     },
     {
       id: "I1fcJjdvLn4",
-      title:  "Bill Clinton - Bob Dole (2/2)",
+      title: "Bill Clinton - Bob Dole (2/2)",
       primaryDate: new Date("1996-10-16"),
       primaryDateKind: "recorded"
     },
