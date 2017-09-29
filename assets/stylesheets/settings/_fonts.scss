@@ -6,31 +6,76 @@ $serif: 'Merriweather', serif;
 * Source Sans Pro headings, Merriweather body
 */
 
-@mixin typography($fontFamily, $fontWeight, $fontSize, $lineHeight) {
+@mixin typography($fontFamily, $fontWeight, $fontSize, $lineHeight:"") {
   font-family: $fontFamily;
   font-weight: $fontWeight;
   font-size: $fontSize;
-  line-height: $lineHeight;
+  line-height: #{$lineHeight};
 }
 
 @mixin display1 {
-  @include typography($sans, 700, 59px, 1.3em);
+  @include typography($sans, 700, 39px);
+  @media #{$mq-small} {
+    @include typography($sans, 700, 39px);
+  }
+  @media #{$mq-medium} {
+    @include typography($sans, 700, 49px);
+  }
+  @media #{$mq-large} {
+    @include typography($sans, 700, 59px);
+  }
 }
 
 @mixin display2 {
-  @include typography($sans, 300, 44px, 1.3em);
+  @include typography($sans, 300, 29px);
+  @media #{$mq-small} {
+    @include typography($sans, 300, 29px);
+  }
+  @media #{$mq-medium} {
+    @include typography($sans, 300, 36px);
+  }
+  @media #{$mq-large} {
+    @include typography($sans, 300, 44px);
+  }
 }
 
 @mixin heading1 {
-  @include typography($sans, 700, 44px, 1.3em);
+  @include typography($sans, 700, 29px, 1.3em);
+  @media #{$mq-small} {
+    @include typography($sans, 700, 29px, 1.3em);
+  }
+  @media #{$mq-medium} {
+    @include typography($sans, 700, 36px, 1.3em);
+  }
+  @media #{$mq-large} {
+    @include typography($sans, 700, 44px, 1.3em);
+  }
 }
 
 @mixin heading2 {
-  @include typography($sans, 700, 34px, 1.3em);
+  @include typography($sans, 700, 24px, 1.3em);
+  @media #{$mq-small} {
+    @include typography($sans, 700, 24px, 1.3em);
+  }
+  @media #{$mq-medium} {
+    @include typography($sans, 700, 30px, 1.3em);
+  }
+  @media #{$mq-large} {
+    @include typography($sans, 700, 34px, 1.3em);
+  }
 }
 
 @mixin heading3 {
-  @include typography($sans, 700, 24px, 1.3em);
+  @include typography($sans, 700, 19px, 1.3em);
+  @media #{$mq-small} {
+    @include typography($sans, 700, 19px, 1.3em);
+  }
+  @media #{$mq-medium} {
+    @include typography($sans, 700, 20px, 1.3em);
+  }
+  @media #{$mq-large} {
+    @include typography($sans, 700, 24px, 1.3em);
+  }
 }
 
 @mixin heading4 {
@@ -46,8 +91,12 @@ $serif: 'Merriweather', serif;
   text-transform: uppercase;
 }
 
-@mixin body {
-  @include typography($serif, 400, 15px, 1.7em);
+@mixin body ($font: 'serif') {
+  @if $font == 'serif' {
+    @include typography($serif, 400, 15px, 1.7em);
+  } @else {
+    @include typography($sans, 400, 16px, 1.7em);
+  }
 }
 
 @mixin body--small {
@@ -55,10 +104,8 @@ $serif: 'Merriweather', serif;
 }
 
 @mixin body--lead {
-  @include typography($sans, 300, 22px, 1.5em);
-}
-
-@mixin body--italic {
-  @include body;
-  font-style: italic;
+  @include typography($sans, 300, 18px, 1.5em);
+  @media #{$mq-small} {
+    @include typography($sans, 300, 22px, 1.5em);
+  }
 }

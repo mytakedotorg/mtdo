@@ -72,7 +72,7 @@ $palettes: (
       text: $base-darkest,
       text--highlight: $base-darkest
     ),
-  debates: (text: $base-darkest),
+  video: (text: $base-darkest),
   editor:
     (
       background: $white,
@@ -117,5 +117,11 @@ $palettes: (
       color--action-shadow: $base,
       color--base-shadow: $base-darkest
     ),
-  about: (text--special: $base, text: $base-darkest)
+  about:
+    (
+      background: $white,
+      text--special: $base,
+      text: $base-darkest,
+      text--link: $base-light
+    )
 );

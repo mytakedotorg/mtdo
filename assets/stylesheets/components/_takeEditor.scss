@@ -29,7 +29,10 @@
 }
 .editor {
   position: relative;
-  padding: 0 3rem;
+  padding: 0 $page-margin-mobile;
+  @media #{$mq-medium} {
+    padding: 0 $page-margin;
+  }
   min-height: 300px;
 }
 .editor__inner {
@@ -66,22 +69,27 @@
   text-align: left;
   position: relative;
   @include overrideDefaultTextArea;
-  @include body--lead;
+  @include body('sans');
 }
 .editor__paragraph-height-div {
   @include textareaHeightDiv;
-  @include body--lead;
+  @include body('sans');
 }
 .editor__document {
   background: palette(editor, background);
   border: palette(editor, border);
   box-shadow: 1px 1px 2px palette(editor, shadow);
   color: palette(editor, text);
+  overflow: hidden;
+  p {
+    z-index: 1;
+    position: relative;
+  }
 }
 .editor__document--base {
   padding: 5px 15px;
   margin-bottom: 2rem;
-  @include body--italic;
+  @include body;
 }
 .editor__document--overlay {
   cursor: pointer;
@@ -89,8 +97,15 @@
   @include body;
 }
 .editor__document-highlight {
+  position: relative;
+  z-index: -1;
   color: palette(editor, text--highlight);
   background-color: palette(editor, background--highlight);
+  box-shadow: 5px 5px 0 palette(editor, background--highlight),
+    -5px 5px 0 palette(editor, background--highlight),
+    -5px -5px 0 palette(editor, background--highlight),
+    5px -5px 0 palette(editor, background--highlight);
+  box-decoration-break: clone;
 }
 .editor__video {
   display: block;

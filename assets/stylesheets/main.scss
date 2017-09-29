@@ -22,6 +22,18 @@ body {
   &.noscroll {
     overflow: hidden;
   }
+  &.fade {
+    background-color: #000;
+    > :not(.header) {
+      opacity: 0.4;
+    }
+  }
+}
+
+#app {
+  background-color: #fff;
+  position: relative;
+  z-index: 1;
 }
 
 html {

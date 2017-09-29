@@ -1,9 +1,15 @@
+$nav-height: 35px;
+$nav-items: 3;
+$fa-size: 16px;
 .header {
   width: 100%;
   @include clearfix;
   position: relative;
   z-index: 10;
   background-color: white;
+}
+.header__top {
+  height: 8rem;
 }
 .header__skip-link {
   position: absolute;
@@ -22,8 +28,11 @@
 .header__logo {
   @include display2;
   font-style: normal;
-  margin-left: $page-margin;
-  line-height: 8rem; // cd src && grep -Rn "static headerHeight" *
+  margin-left: $page-margin-mobile;
+  @media #{$mq-medium} {
+    margin-left: $page-margin;
+  }
+  line-height: 8rem; // cd src && grep -Rn "headerHeight =" *
 }
 .header__logo-link {
   text-decoration: none;
@@ -34,12 +43,14 @@
 }
 .header__button-list {
   float: right;
-  //line-height: 8rem;
 }
 .header__button {
   @include body--lead;
-  line-height: 8rem; // cd src && grep -Rn "static headerHeight" *
-  margin-right: $page-margin;
+  line-height: 8rem; // cd src && grep -Rn "headerHeight =" *
+  margin-right: $page-margin-mobile;
+  @media #{$mq-medium} {
+    margin-right: $page-margin;
+  }
   color: palette(header, text);
   &:hover {
     color: palette(header, text--hover);
@@ -52,21 +63,84 @@
   @include clearfix;
   border-top: 1px solid palette(header, border);
   border-bottom: 2px solid palette(header, border);
+  height: $nav-height;
   line-height: 1rem;
+}
+.header__nav-toggle {
+  display: inline;
+  position: relative;
+  @media #{$mq-small} {
+    display: none;
+  }
+}
+.header__nav-icon {
+  @include heading6;
+  height: 100%;
+  color: palette(header, text);
+  &:hover {
+    color: palette(header, text--hover);
+  }
+  .fa {
+    position: absolute;
+    font-size: $fa-size;
+    margin-top: ($nav-height - $fa-size)/2;
+    margin-left: $page-margin-mobile;
+  }
+}
+.nav {
+  max-height: $nav-height * $nav-items;
+  overflow: hidden;
+  transition: max-height 0.1s linear 0s;
+  @media #{$mq-small} {
+    transition: none;
+  }
+  &.collapse {
+    max-height: 0;
+    @media #{$mq-small} {
+      max-height: $nav-height * $nav-items;
+    }
+  }
 }
 .nav__list {
   list-style: none;
+  padding: 0;
+  margin: 0;
+  @media #{$mq-medium} {
+    margin-left: $page-margin;
+  }
+}
+.nav__list--footer {
+  display: none;
+  @media #{$mq-small} {
+    display: block;
+  }
 }
 .nav__list-item {
-  margin-right: 3rem;
-  display: inline-block;
+  height: $nav-height;
+  line-height: $nav-height;
+  background-color: palette(header, background);
+  border-top: 1px solid palette(header, border);
+  @media #{$mq-small} {
+    margin-right: 3rem;
+    display: inline-block;
+    border: none;
+  }
 }
 .nav__link {
+  text-decoration: none;
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding-left: $page-margin-mobile;
+  @media #{$mq-medium} {
+    padding-left: 0;
+  }
+}
+.nav__link-text {
   @include heading6;
   color: palette(nav, text);
-  text-decoration: none;
+  display: inline;
   &:hover {
     color: palette(nav, text--hover);
-    //text-decoration: underline;
   }
 }

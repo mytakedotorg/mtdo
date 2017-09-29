@@ -17,8 +17,11 @@
   margin: 2rem auto;
 }
 .document__header {
-  width: 100%;
+  width: 768px;
+  max-width: 100%;
+  margin: 0 auto;
   background-color: palette(document, background);
+  border-bottom: 1px solid palette(header, border);
 }
 .document__header--visible {
   position: relative;
@@ -27,6 +30,7 @@
 }
 .document__header--fixed {
   position: fixed;
+  height: 10rem;
   top: 0;
   left: 0;
   z-index: 10;
@@ -44,8 +48,18 @@
   margin-bottom: 15px;
   color: palette(document, text);
   @include heading2;
+  margin-left: $page-margin-mobile;
+  @media #{$mq-medium} {
+    margin-left: $page-margin;
+  }
 }
-
+.document__header-actions {
+  height: 4rem;
+  margin-left: $page-margin-mobile;
+  @media #{$mq-medium} {
+    margin-left: $page-margin;
+  }
+}
 .document__instructions {
   margin-top: 0;
   margin-bottom: 15px;
@@ -88,12 +102,6 @@
 }
 .document__button {
   @include button;
-  border: none;
-  color: palette(button, color--base);
-  background: palette(button, background--base);
-  &:hover {
-    background: palette(button, background--base-hover);
-  }
-  width: 175px;
+  @include button--blue;
   margin-right: 15px;
 }

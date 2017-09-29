@@ -43,16 +43,18 @@ describe("Constitution", () => {
   });
 
   test("Scrolling header renders", () => {
+    wrapper.setState({ headerHidden: false });
     expect(wrapper.find(".document__header--visible").length).toBe(1);
-    expect(wrapper.find(".document__header--hidden").length).toBe(0);
 
     wrapper.setState({ headerHidden: true });
-
     expect(wrapper.find(".document__header--visible").length).toBe(0);
-    expect(wrapper.find(".document__header--hidden").length).toBe(1);
   });
 
   test("Fixed header renders", () => {
+    wrapper.setState({ headerHidden: false });
+    expect(wrapper.find(".document__header--fixed").length).toBe(0);
+
+    wrapper.setState({ headerHidden: true });
     expect(wrapper.find(".document__header--fixed").length).toBe(1);
   });
 
@@ -70,16 +72,17 @@ describe("Constitution", () => {
       wrapper.find(".document__header").first().childAt(0).children().length
     ).toBe(2);
 
-    // When the button, "Clear Selection" is clicked, it is hidden
+    // When the button, "Clear Selection" is clicked, it is hidden and a paragraph is shown instead
     wrapper
       .find(".document__header")
       .first()
       .childAt(0)
       .childAt(1)
+      .childAt(0)
       .simulate("click");
     expect(
       wrapper.find(".document__header").first().childAt(0).children().length
-    ).toBe(1);
+    ).toBe(2);
 
     // When some more text is highlighted, the "Clear Selection" button is shown again
     wrapper.setState({ textIsHighlighted: true });
@@ -109,6 +112,8 @@ describe("Constitution", () => {
       .at(0)
       .children()
       .at(1)
+      .children()
+      .at(0)
       .simulate("click");
     expect(wrapper.state("textIsHighlighted")).toBe(false);
   });

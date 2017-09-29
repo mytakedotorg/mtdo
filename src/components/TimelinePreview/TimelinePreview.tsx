@@ -131,9 +131,11 @@ export default class TimelinePreview extends React.Component<
     }
   };
   handleScroll = (headerHidden: boolean) => {
-    this.setState({
-      headerHidden: headerHidden
-    });
+    if (this.state.headerHidden != headerHidden) {
+      this.setState({
+        headerHidden: headerHidden
+      });
+    }
   };
   componentDidMount() {
     this.setup();
@@ -174,29 +176,31 @@ export default class TimelinePreview extends React.Component<
     }
   }
   render() {
-    let headerClass = "document__header";
     let documentClass = "document__row";
     if (this.state.headerHidden) {
-      headerClass += " document__header--hidden";
       documentClass += " document__row--push";
-    } else {
-      headerClass += " document__header--visible";
     }
 
     return (
       <div className={"timeline__preview"}>
         <FactHeader
           heading={this.getTitle()}
-          className={headerClass}
+          isFixed={this.state.headerHidden}
           onClearClick={this.handleClearClick}
           onScroll={this.handleScroll}
           textIsHighlighted={this.state.textIsHighlighted}
+          isDocument={isDocument(this.state.fact)}
         />
         {isDocument(this.state.fact)
           ? <Document
               excerptId={this.props.excerptId}
               onMouseUp={this.handleMouseUp}
               ref={(document: Document) => (this.document = document)}
+              className={
+                this.state.headerHidden
+                  ? "document__row document__row--push"
+                  : "document__row"
+              }
             >
               {this.state.textIsHighlighted
                 ? <div
@@ -219,7 +223,15 @@ export default class TimelinePreview extends React.Component<
             </Document>
           : null}
         {isVideo(this.state.fact)
-          ? <Video onSetClick={this.handleSetClick} video={this.state.fact} />
+          ? <Video
+              onSetClick={this.handleSetClick}
+              video={this.state.fact}
+              className={
+                this.state.headerHidden
+                  ? "video__inner-container video__inner-container--push"
+                  : "video__inner-container"
+              }
+            />
           : null}
       </div>
     );

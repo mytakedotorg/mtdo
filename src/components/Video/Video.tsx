@@ -6,6 +6,7 @@ import { VideoFact } from "../../utils/databaseData";
 interface VideoProps {
   onSetClick: (range: [number, number]) => void;
   video: VideoFact;
+  className: string;
 }
 
 interface VideoState {
@@ -56,41 +57,47 @@ class Video extends React.Component<VideoProps, VideoState> {
     };
 
     return (
-      <div className="debates">
-        <h2 className="debates__heading">Debates</h2>
-        <p className="debates__instructions">
-          Choose a video clip to support your Take.
-        </p>
-        <button onClick={this.handleSetClick}>Send to Take</button>
-        <div className="debates__row">
-          <div className="debates__video-container">
-            {this.props.video
-              ? <div>
-                  <h3 className="debates__video-title">
-                    {this.props.video.title}
-                  </h3>
-                  <p className="debates__video-date">
-                    {this.props.video.primaryDate.toDateString()}
-                  </p>
-                  <YouTube
-                    videoId={this.props.video.id}
-                    opts={opts}
-                    onPause={this.handlePause}
-                    className="debates__video"
-                  />
-                  <p>
-                    Pause the video where you want your clip to start or stop.
-                  </p>
-                  <p>
-                    Current Start Time: <span>{this.state.startTime}</span>
-                  </p>
-                  <button onClick={this.handleSetStart}>Set Start Time</button>
-                  <p>
-                    Current End Time: <span>{this.state.endTime}</span>
-                  </p>
-                  <button onClick={this.handleSetEnd}>Set End Time</button>
-                </div>
-              : null}
+      <div className="video__outer-container">
+        <div className={this.props.className}>
+          <div className="video__container">
+            <div className="video__header">
+              {this.state.endTime > this.state.startTime
+                ? <button
+                    className="video__button video__button--top"
+                    onClick={this.handleSetClick}
+                  >
+                    Send to Take
+                  </button>
+                : null}
+              <p className="video__date">
+                {this.props.video.primaryDate.toDateString()}
+              </p>
+            </div>
+            <YouTube
+              videoId={this.props.video.id}
+              opts={opts}
+              onPause={this.handlePause}
+              className="video__video"
+            />
+          </div>
+          <div className="video__actions">
+            <div className="video__action">
+              <p className="video__instructions">
+                Current Start Time: <span>{this.state.startTime}</span>
+              </p>
+              <button className="video__button" onClick={this.handleSetStart}>
+                Set Start Time
+              </button>
+            </div>
+            <div className="video__action">
+              <p className="video__instructions">
+                Current End Time:{" "}
+                <span>{this.state.endTime > 0 ? this.state.endTime : "-"}</span>
+              </p>
+              <button className="video__button" onClick={this.handleSetEnd}>
+                Set End Time
+              </button>
+            </div>
           </div>
         </div>
       </div>

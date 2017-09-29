@@ -184,7 +184,6 @@ export default class Timeline extends React.Component<
   render() {
     return (
       <div className={"timeline"}>
-        <h1>This is a Timeline</h1>
         <div id="mytimeline" />
       </div>
     );

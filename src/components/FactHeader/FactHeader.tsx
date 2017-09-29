@@ -4,10 +4,11 @@ import { getNodeArray, FoundationNode } from "../../utils/functions";
 
 interface FactHeaderProps {
   heading: string;
-  className: string;
+  isFixed: boolean;
   onClearClick: () => void;
   onScroll: (headerHidden: boolean) => void;
   textIsHighlighted: boolean;
+  isDocument: boolean;
 }
 
 interface FactHeaderState {}
@@ -31,28 +32,44 @@ class FactHeader extends React.Component<FactHeaderProps, FactHeaderState> {
     window.removeEventListener("scroll", this.handleScroll);
   }
   render() {
+    let scrollingHeaderClass = "document__header";
+    let fixedHeaderClass = "document__header";
+    if (this.props.isFixed) {
+      scrollingHeaderClass += " document__header--hidden";
+      fixedHeaderClass += " document__header--fixed";
+    } else {
+      scrollingHeaderClass += " document__header--visible";
+      fixedHeaderClass += " document__header--hidden";
+    }
+
     const headerContent = (
       <div>
         <h2 className={"document__heading"}>
           {this.props.heading}
         </h2>
-        {this.props.textIsHighlighted
-          ? <button
-              className="document__button"
-              onClick={this.handleClearClick}
-            >
-              Clear Selection
-            </button>
-          : null}
+        <div className="document__header-actions">
+          {this.props.textIsHighlighted
+            ? <button
+                className="document__button"
+                onClick={this.handleClearClick}
+              >
+                Clear Selection
+              </button>
+            : <p className="document__instructions">
+                {this.props.isDocument
+                  ? "Highlight something to give your Take"
+                  : "Pause the video to set your start and end times"}
+              </p>}
+        </div>
       </div>
     );
 
     return (
       <div ref={(header: HTMLDivElement) => (this.header = header)}>
-        <div className={this.props.className}>
+        <div className={scrollingHeaderClass}>
           {headerContent}
         </div>
-        <div className={"document__header document__header--fixed"}>
+        <div className={fixedHeaderClass}>
           {headerContent}
         </div>
       </div>
