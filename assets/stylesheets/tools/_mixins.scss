@@ -11,6 +11,17 @@
     cursor: pointer;
   }
 }
+
+@mixin button--blue {
+  border: none;
+  color: palette(button, color--base);
+  background: palette(button, background--base);
+  &:hover {
+    background: palette(button, background--base-hover);
+  }
+  width: 175px;
+}
+
 @mixin clearfix {
   &::after {
     clear: both;

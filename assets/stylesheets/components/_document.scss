@@ -102,12 +102,6 @@
 }
 .document__button {
   @include button;
-  border: none;
-  color: palette(button, color--base);
-  background: palette(button, background--base);
-  &:hover {
-    background: palette(button, background--base-hover);
-  }
-  width: 175px;
+  @include button--blue;
   margin-right: 15px;
 }
