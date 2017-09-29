@@ -1,70 +1,63 @@
-.video__heading {
-  margin-top: 0;
-  margin-bottom: 15px;
-  color: palette(video, text);
-  @include heading2;
+$video-container-width: 540px;
+$video-header-height: 60px;
+.video__outer-container {
+  width: 768px;
+  max-width: 100%;
+  margin: auto;
 }
-
+.video__inner-container {
+  padding: 15px $page-margin-mobile;
+  @media #{$mq-medium} {
+    padding: 15px $page-margin;
+  }
+}
+.video__inner-container--push {
+  padding-top: 12rem;
+}
+.video__header {
+  height: $video-header-height;
+}
+.video__actions {
+  @include clearfix;
+  width: $video-container-width;
+  max-width: 100%;
+  margin: 15px auto;
+}
+.video__action {
+  width: 50%;
+  float: left;
+  &:nth-of-type(2) {
+    float: right;
+  }
+}
 .video__instructions {
   margin-top: 0;
   margin-bottom: 15px;
   color: palette(video, text);
-  @include body--lead;
-}
-
-.video__row {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-}
-.video__list-container {
-  width: 100%;
-  @media #{$mq-medium} {
-    width: 48%;
-  }
-}
-.video__list {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-}
-.video__card {
-  width: 250px;
-  border: 1px solid palette(foundation, card-border);
-  box-shadow: 1px 1px 2px palette(foundation, shadow);
-  margin-bottom: 2rem;
-  &:hover {
-    cursor: pointer;
-  }
-}
-.video__card-title {
-  @include heading3;
-  margin: 1rem;
-}
-.video__card-date {
   @include body;
-  margin: 1rem;
+  float: inherit;
 }
-.video__thumb-container {
-  width: 250px;
+.video__button {
+  @include button;
+  @include button--blue;
+  float: inherit;
 }
-.video__thumb {
-  max-width: 100%;
-  height: auto;
-  display: block;
+.video__button--top {
+  //line-height: $video-header-height;
+  margin-top: ($video-header-height - 35px)/2;
 }
 .video__container {
-  width: 100%;
-  @media #{$mq-medium} {
-    width: 48%;
-  }
+  width: $video-container-width;
+  max-width: 100%;
+  margin: auto;
 }
-
 .video__title {
   @include heading3;
 }
 .video__date {
   @include body;
+  float: right;
+  margin-top: ($video-header-height - 22px)/2;
 }
 .video__video {
   max-width: 100%;
