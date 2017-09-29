@@ -72,21 +72,195 @@ export interface Database {
 const database: Database = {
   videos: [
     {
+      id: "Txkwp5AUfCg",
+      title: "John F. Kennedy - Nixon (1/4)",
+      primaryDate: new Date("1960-09-26"),
+      primaryDateKind: "recorded"
+    },
+    {
+      id: "z-4VeDta7Mo",
+      title: "John F. Kennedy - Nixon (2/4)",
+      primaryDate: new Date("1960-10-07"),
+      primaryDateKind: "recorded"
+    },
+    {
+      id: "8SdDhojNT2o",
+      title: "John F. Kennedy - Nixon (3/4)",
+      primaryDate: new Date("1960-10-13"),
+      primaryDateKind: "recorded"
+    },
+    {
+      id: "LN8F1FGZfzA",
+      title: "John F. Kennedy - Nixon (4/4)",
+      primaryDate: new Date("1960-10-21"),
+      primaryDateKind: "recorded"
+    },
+    {
       id: "GlPjW_2_LXI",
-      title: "Jimmy Carter - Gerald Ford #1",
+      title: "Jimmy Carter - Gerald Ford (1/3)",
       primaryDate: new Date("1976-09-23"),
       primaryDateKind: "recorded"
     },
     {
       id: "TjHjU0Eu26Y",
-      title: "Jimmy Carter - Gerald Ford #2",
+      title: "Jimmy Carter - Gerald Ford (2/3)",
       primaryDate: new Date("1976-10-06"),
       primaryDateKind: "recorded"
     },
     {
       id: "CipT04S0bVE",
-      title: "Jimmy Carter - Gerald Ford #3",
+      title: "Jimmy Carter - Gerald Ford (3/3)",
       primaryDate: new Date("1976-10-22"),
+      primaryDateKind: "recorded"
+    },
+    {
+      id: "_8YxFc_1b_0",
+      title: "Ronald Reagan - Jimmy Carter (1/1)",
+      primaryDate: new Date("1980-10-28"),
+      primaryDateKind: "recorded"
+    },
+    {
+      id: "OGvBFQQPRXs",
+      title: "Ronald Reagan - Walter Mondale (1/2)",
+      primaryDate: new Date("1984-10-07"),
+      primaryDateKind: "recorded"
+    },
+    {
+      id: "EF73k5-Hiqg",
+      title: "Ronald Reagan - Walter Mondale (2/2)",
+      primaryDate: new Date("1984-10-21"),
+      primaryDateKind: "recorded"
+    },
+    {
+      id: "PbSzCpUyLPc",
+      title: "George H.W. Bush - Michael Dukakis (1/2)",
+      primaryDate: new Date("1988-09-25"),
+      primaryDateKind: "recorded"
+    },
+    {
+      id: "OGpROh7Ia10",
+      title: "George H.W. Bush - Michael Dukakis (2/2)",
+      primaryDate: new Date("1988-10-13"),
+      primaryDateKind: "recorded"
+    },
+    {
+      id: "XD_cXN9O9ds",
+      title: "Bill Clinton - George H.W. Bush (1/3)",
+      primaryDate: new Date("1992-10-11"),
+      primaryDateKind: "recorded"
+    },
+    {
+      id: "m6sUGKAm2YQ",
+      title:  "Bill Clinton - George H.W. Bush (2/3)",
+      primaryDate: new Date("1992-10-15"),
+      primaryDateKind: "recorded"
+    },
+    {
+      id: "jCGtHqIwKek",
+      title:  "Bill Clinton - George H.W. Bush (3/3)",
+      primaryDate: new Date("1992-10-19"),
+      primaryDateKind: "recorded"
+    },
+    {
+      id: "lZhyS5OtPto",
+      title:  "Bill Clinton - Bob Dole (1/2)",
+      primaryDate: new Date("1996-10-06"),
+      primaryDateKind: "recorded"
+    },
+    {
+      id: "I1fcJjdvLn4",
+      title:  "Bill Clinton - Bob Dole (2/2)",
+      primaryDate: new Date("1996-10-16"),
+      primaryDateKind: "recorded"
+    },
+    {
+      id: "ibcDfgiin2c",
+      title: "George W. Bush - Al Gore (1/3)",
+      primaryDate: new Date("2000-10-03"),
+      primaryDateKind: "recorded"
+    },
+    {
+      id: "zBXoItXHLTM",
+      title: "George W. Bush - Al Gore (2/3)",
+      primaryDate: new Date("2000-10-11"),
+      primaryDateKind: "recorded"
+    },
+    {
+      id: "qCIHimWyFb4",
+      title: "George W. Bush - Al Gore (3/3)",
+      primaryDate: new Date("2000-10-17"),
+      primaryDateKind: "recorded"
+    },
+    {
+      id: "1kW8_Qqff38",
+      title: "George W. Bush - John Kerry (1/3)",
+      primaryDate: new Date("2004-09-30"),
+      primaryDateKind: "recorded"
+    },
+    {
+      id: "21fXfTmv-aQ",
+      title: "George W. Bush - John Kerry (2/3)",
+      primaryDate: new Date("2004-10-08"),
+      primaryDateKind: "recorded"
+    },
+    {
+      id: "QcNLfajsA_M",
+      title: "George W. Bush - John Kerry (3/3)",
+      primaryDate: new Date("2004-10-13"),
+      primaryDateKind: "recorded"
+    },
+    {
+      id: "F-nNIEduEOw",
+      title: "Barack Obama - John McCain (1/3)",
+      primaryDate: new Date("2008-09-26"),
+      primaryDateKind: "recorded"
+    },
+    {
+      id: "VkBqLBsu-o4",
+      title: "Barack Obama - John McCain (2/3)",
+      primaryDate: new Date("2008-10-07"),
+      primaryDateKind: "recorded"
+    },
+    {
+      id: "DvdfO0lq4rQ",
+      title: "Barack Obama - John McCain (3/3)",
+      primaryDate: new Date("2008-10-13"),
+      primaryDateKind: "recorded"
+    },
+    {
+      id: "dkrwUU_YApE",
+      title: "Barack Obama - Mitt Romney (1/3)",
+      primaryDate: new Date("2012-10-03"),
+      primaryDateKind: "recorded"
+    },
+    {
+      id: "QEpCrcMF5Ps",
+      title: "Barack Obama - Mitt Romney (2/3)",
+      primaryDate: new Date("2012-10-16"),
+      primaryDateKind: "recorded"
+    },
+    {
+      id: "tecohezcA78",
+      title: "Barack Obama - Mitt Romney (3/3)",
+      primaryDate: new Date("2012-10-22"),
+      primaryDateKind: "recorded"
+    },
+    {
+      id: "ZEHPrYUcoi0",
+      title: "Donald Trump - Hillary Clinton (1/3)",
+      primaryDate: new Date("2016-09-26"),
+      primaryDateKind: "recorded"
+    },
+    {
+      id: "OyDSCKYz5sA",
+      title: "Donald Trump - Hillary Clinton (2/3)",
+      primaryDate: new Date("2016-10-09"),
+      primaryDateKind: "recorded"
+    },
+    {
+      id: "VLdmEDOAA4A",
+      title: "Donald Trump - Hillary Clinton (3/3)",
+      primaryDate: new Date("2016-10-16"),
       primaryDateKind: "recorded"
     }
   ],
