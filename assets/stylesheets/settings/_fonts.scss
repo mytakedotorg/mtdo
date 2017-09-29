@@ -104,5 +104,8 @@ $serif: 'Merriweather', serif;
 }
 
 @mixin body--lead {
-  @include typography($sans, 300, 22px, 1.5em);
+  @include typography($sans, 300, 18px, 1.5em);
+  @media #{$mq-small} {
+    @include typography($sans, 300, 22px, 1.5em);
+  }
 }
