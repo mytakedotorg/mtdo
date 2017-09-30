@@ -99,8 +99,12 @@ $serif: 'Merriweather', serif;
   }
 }
 
-@mixin body--small {
-  @include typography($serif, 400, 13px, 1.7em);
+@mixin body--small ($font: 'serif') {
+  @if $font == 'serif' {
+    @include typography($serif, 400, 13px, 1.7em);
+  } @else {
+    @include typography($sans, 400, 13px, 1.7em);
+  }
 }
 
 @mixin body--lead {

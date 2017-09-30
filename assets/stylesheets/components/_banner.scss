@@ -1,0 +1,15 @@
+.banner {
+  margin: 0 auto;
+  padding: 0 $page-margin-mobile;
+  background-color: palette(about, background);
+  @media #{$mq-medium} {
+    padding: 0 $page-margin;
+  }
+  width: 768px;
+  max-width: 100%;
+}
+
+.banner__text {
+  @include body--small('sans');
+  color: palette(banner, text);
+}

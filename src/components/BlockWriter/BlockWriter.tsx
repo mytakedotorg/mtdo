@@ -7,6 +7,7 @@ import BlockEditor, {
   VideoBlock
 } from "../BlockEditor";
 import TimelineView from "../TimelineView";
+import Banner from "../Banner";
 
 interface BlockWriterProps {
   initState: BlockWriterState;
@@ -205,6 +206,7 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
           takeDocument={(Object as any).assign({}, this.state.takeDocument)}
           active={this.state.activeBlockIndex}
         />
+        <Banner />
         <TimelineView setFactHandlers={setFactHandlers} />
       </div>
     );
