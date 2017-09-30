@@ -22,6 +22,16 @@
   width: 175px;
 }
 
+@mixin button--red {
+  border: none;
+  color: palette(button, color--action);
+  background: palette(button, background--action);
+  &:hover {
+    background: palette(button, background--action-hover);
+  }
+  width: 180px;
+}
+
 @mixin clearfix {
   &::after {
     clear: both;

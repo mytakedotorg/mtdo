@@ -102,6 +102,11 @@
 }
 .document__button {
   @include button;
-  @include button--blue;
   margin-right: 15px;
+}
+.document__button--blue {
+  @include button--blue;
+}
+.document__button--red {
+  @include button--red;
 }
