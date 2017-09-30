@@ -41,10 +41,10 @@ $fa-size: 16px;
     color: palette(header, text--hover);
   }
 }
-.header__button-list {
+.header__icon-list {
   float: right;
 }
-.header__button {
+.header__icon {
   @include body--lead;
   line-height: 8rem; // cd src && grep -Rn "headerHeight =" *
   margin-right: $page-margin-mobile;
@@ -56,7 +56,7 @@ $fa-size: 16px;
     color: palette(header, text--hover);
   }
 }
-.header__button--github {
+.header__icon--github {
   font-size: 4rem;
 }
 .header__nav {
