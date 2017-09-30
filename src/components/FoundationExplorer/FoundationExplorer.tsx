@@ -17,7 +17,7 @@ class FoundationExplorer extends React.Component<FoundationExplorerProps, {}> {
   handleSetClick = (excerptTitle: string, range: [number, number]): void => {
     window.location.href =
       "/new-take/#" +
-      excerptTitle.toLowerCase() +
+      excerptTitle +
       "&" +
       range[0] +
       "&" +
