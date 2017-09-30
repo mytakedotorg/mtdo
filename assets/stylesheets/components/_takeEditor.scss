@@ -54,6 +54,7 @@
   opacity: 0.3;
 }
 .editor__block {
+  position: relative;
   z-index: 10;
 }
 .editor__block--base {
@@ -76,14 +77,27 @@
   @include body('sans');
 }
 .editor__document {
+  position: relative;
   background: palette(editor, background);
-  border: palette(editor, border);
+  border: 1px solid palette(editor, border);
   box-shadow: 1px 1px 2px palette(editor, shadow);
   color: palette(editor, text);
-  overflow: hidden;
+  &:not(.editor__document--no-hover) {
+    cursor: pointer;
+    &:hover:before {
+      content: " ";
+      position: absolute;
+      top: -3px;
+      left: -3px;
+      right: -3px;
+      bottom: -3px;
+      border: 3px solid palette(editor, border);
+    }
+  }
   p {
     z-index: 1;
     position: relative;
+    overflow: hidden;
   }
 }
 .editor__document--base {

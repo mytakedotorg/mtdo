@@ -68,7 +68,9 @@ $palettes: (
       background: $white,
       background--highlight: lighten($base-lightest, 10%),
       border: $base-lightest,
+      border--hover: $action-light,
       shadow: $base-darkest,
+      shadow--hover: $action-light,
       text: $base-darkest,
       text--highlight: $base-darkest
     ),
