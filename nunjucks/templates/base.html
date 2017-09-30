@@ -23,7 +23,7 @@
     <a class="header__skip-link" href="#app" tabindex="1">Skip to main content</a>
     <div class="header__top">
       <em class="header__logo"><a class="header__logo-link" href="/">MyTake.org</a></em>
-      <div class="header__icon-list">
+      <div class="header__icon-list header__icon-list--top">
         <a class="header__icon header__icon--github" href="https://github.com/mytake/mytake"><i class="fa fa-github" aria-hidden="true"></i></a>
       </div>
     </div>
@@ -41,7 +41,17 @@
           <li class="nav__list-item"><a class="nav__link" href="/about/" tabindex="4"><span class="nav__link-text">About us</span></a></li>
         </ul>
       </nav>
-		</div>
+    </div>
+    <div class="header__banner">
+      <div class="header__icon-list header__icon-list--bottom">
+        <span class="header__icon header__icon--triangle"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i></span>
+      </div>
+      <div class="header__banner-links">
+        <p class="header__text">Under construction</p>
+        <p class="header__text"><a class="header__link" href="#">How to use</a></p>
+        <p class="header__text"><a class="header__link" href="#">Contribute</a></p>
+      </div>
+    </div>
   </header>
 
   {% block content %}

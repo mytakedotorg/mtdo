@@ -39,8 +39,10 @@ $palettes: (
       border: $base-darkest,
       text: $base,
       text--hover: $base-lightest,
+      text--link: $base-light,
       skip-bg: $action,
-      skip-text: $white
+      skip-text: $white,
+      banner__background: $tertiary-lightest
     ),
   nav:
     (
