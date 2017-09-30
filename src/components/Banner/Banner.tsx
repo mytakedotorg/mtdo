@@ -10,10 +10,19 @@ class Banner extends React.Component<BannerProps, {}> {
   render() {
     return (
       <div className="banner">
-        <p className="banner__text">
-          Unfortunately takes can't be saved yet. If you really like what you
-          wrote, feel free to screenshot it and share it with us.
-        </p>
+        <div className="banner__inner-container">
+          <p className="banner__text banner__text--reg">
+            Unfortunately Takes can't be saved yet. If you really like what you
+            wrote, feel free to screenshot it and share it with us. For more
+            information please refer to{" "}
+            <a
+              className="banner__text banner__text--link"
+              href="https://github.com/mytake/mytake/blob/master/WORK_IN_PROGRESS.md"
+            >
+              how to use the MyTake.org prototype
+            </a>.
+          </p>
+        </div>
       </div>
     );
   }
