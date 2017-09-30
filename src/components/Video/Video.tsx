@@ -66,7 +66,7 @@ class Video extends React.Component<VideoProps, VideoState> {
                     className="video__button video__button--top"
                     onClick={this.handleSetClick}
                   >
-                    Send to Take
+                    Give your Take on this
                   </button>
                 : null}
               <p className="video__date">
@@ -85,7 +85,10 @@ class Video extends React.Component<VideoProps, VideoState> {
               <p className="video__instructions">
                 Current Start Time: <span>{this.state.startTime}</span>
               </p>
-              <button className="video__button" onClick={this.handleSetStart}>
+              <button
+                className="video__button video__button--bottom"
+                onClick={this.handleSetStart}
+              >
                 Set Start Time
               </button>
             </div>
@@ -94,7 +97,10 @@ class Video extends React.Component<VideoProps, VideoState> {
                 Current End Time:{" "}
                 <span>{this.state.endTime > 0 ? this.state.endTime : "-"}</span>
               </p>
-              <button className="video__button" onClick={this.handleSetEnd}>
+              <button
+                className="video__button video__button--bottom"
+                onClick={this.handleSetEnd}
+              >
                 Set End Time
               </button>
             </div>
