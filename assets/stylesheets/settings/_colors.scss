@@ -5,18 +5,6 @@
 //     Thanks to SASS Map, we can define all colors at one place.
 //     We also respect our BEM like notation and files architecture.
 
-/**
-* Colors to be adjusted
-*/
-$paper--dark: lighten(#d8d670, 20%);
-$paper--light: lighten(#fffeac, 15%);
-
-$ink: #1c0a03;
-$ink--highlight: darkslategray;
-$paper--highlight: yellow;
-/**
-* end adjusted
-*/
 $base: #2c4770;
 $base-dark: #142f54;
 $base-darkest: #051a38;
