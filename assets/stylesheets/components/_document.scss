@@ -68,11 +68,6 @@
 }
 .document__row {
   z-index: 5;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  height: 100%;
-  overflow: scroll;
   position: relative;
   padding: 0 3rem;
 }
