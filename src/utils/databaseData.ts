@@ -385,6 +385,52 @@ const database: Database = {
       name: "samples",
       articles: [
         {
+          title: "Why it's so hard to have peace",
+          titleSlug: "why-its-so-hard-to-have-peace",
+          blocks: [
+            {
+              kind: "paragraph",
+              text:
+                "During the cold war, anybody who wanted to negotiate with the evil Communists was “weak”."
+            },
+            {
+              kind: "paragraph",
+              text:
+                "Today, anybody who wants to negotiate with a Muslim country is “weak”."
+            },
+            {
+              kind: "video",
+              videoId: "qkk1lrLQl9Q",
+              range: [304, 321]
+            },
+            {
+              kind: "paragraph",
+              text:
+                "Thank goodness there's at least one party who is willing to give peace a chance!"
+            },
+            {
+              kind: "video",
+              videoId: "TjHjU0Eu26Y",
+              range: [246, 261]
+            },
+            {
+              kind: "paragraph",
+              text: "Err..  Surely that's an outlier?"
+            },
+            {
+              kind: "video",
+              videoId: "TjHjU0Eu26Y",
+              range: [190, 203]
+            },
+            {
+              kind: "paragraph",
+              text:
+                "Huh.  Too bad Jimmy Carter didn't think of something as catchy as MAGA."
+            }
+          ],
+          previewBlocks: [1, 2]
+        },
+        {
           title: "Does a law mean what it says, or what it meant?",
           titleSlug: "does-a-law-mean-what-it-says-or-what-it-meant",
           blocks: [
