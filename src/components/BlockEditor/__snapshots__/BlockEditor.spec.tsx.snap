@@ -163,7 +163,7 @@ exports[`Simple block editor model 1`] = `
           className="editor__block editor__block--base"
         >
           <div
-            className="editor__document editor__document--base"
+            className="editor__document editor__document--base editor__document--no-hover"
             onClick={[Function]}
             onFocus={[Function]}
             onKeyDown={[Function]}
@@ -269,7 +269,7 @@ exports[`With active 1`] = `
           className="editor__block editor__block--base"
         >
           <div
-            className="editor__document editor__document--base"
+            className="editor__document editor__document--base editor__document--no-hover"
             onClick={[Function]}
             onFocus={[Function]}
             onKeyDown={[Function]}

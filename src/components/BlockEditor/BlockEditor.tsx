@@ -271,6 +271,9 @@ class Document extends React.Component<DocumentBlockProps, DocumentBlockState> {
     );
 
     let classes = "editor__document editor__document--base";
+    if (isWriteOnly(this.props.eventHandlers)) {
+      classes += " editor__document--no-hover";
+    }
     return (
       <div
         tabIndex={0}
