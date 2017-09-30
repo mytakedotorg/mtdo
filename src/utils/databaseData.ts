@@ -246,19 +246,19 @@ const database: Database = {
       primaryDateKind: "recorded"
     },
     {
-      id: "ZEHPrYUcoi0",
+      id: "NscjkqaJ8wI",
       title: "Donald Trump - Hillary Clinton (1/3)",
       primaryDate: new Date("2016-09-26"),
       primaryDateKind: "recorded"
     },
     {
-      id: "OyDSCKYz5sA",
+      id: "qkk1lrLQl9Q",
       title: "Donald Trump - Hillary Clinton (2/3)",
       primaryDate: new Date("2016-10-09"),
       primaryDateKind: "recorded"
     },
     {
-      id: "VLdmEDOAA4A",
+      id: "fT0spjjJOK8",
       title: "Donald Trump - Hillary Clinton (3/3)",
       primaryDate: new Date("2016-10-16"),
       primaryDateKind: "recorded"
