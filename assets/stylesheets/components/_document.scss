@@ -1,5 +1,5 @@
 .document {
-  width: 768px;
+  width: $column-width;
   max-width: 100%;
   position: relative;
   z-index: 1;
@@ -8,7 +8,7 @@
   position: relative;
   z-index: 1;
   background-color: palette(document, background);
-  @media only screen and (min-width: 768px) {
+  @media #{$mq-medium} {
     left: 50%;
     margin-left: -384px;
   }
@@ -17,7 +17,7 @@
   margin: 2rem auto;
 }
 .document__header {
-  width: 768px;
+  width: $column-width;
   max-width: 100%;
   margin: 0 auto;
   background-color: palette(document, background);
@@ -34,7 +34,7 @@
   top: 0;
   left: 0;
   z-index: 10;
-  @media only screen and (min-width: 768px) {
+  @media #{$mq-medium} {
     left: 50%;
     margin-left: -383px;
   }

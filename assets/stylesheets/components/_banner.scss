@@ -1,7 +1,7 @@
 .banner {
   margin: 0 auto;
   background-color: palette(about, background);
-  width: 768px;
+  width: $column-width;
   max-width: 100%;
 }
 

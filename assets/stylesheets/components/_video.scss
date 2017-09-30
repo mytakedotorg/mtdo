@@ -1,7 +1,7 @@
 $video-container-width: 540px;
 $video-header-height: 60px;
 .video__outer-container {
-  width: 768px;
+  width: $column-width;
   max-width: 100%;
   margin: auto;
 }
