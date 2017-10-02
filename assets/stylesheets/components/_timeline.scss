@@ -16,3 +16,23 @@
   z-index: 2;
   background-color: white;
 }
+
+.timeline__actions {
+  margin-left: $page-margin-mobile;
+  @media #{$mq-medium} {
+    margin-left: $page-margin;
+  }
+  margin-bottom: 15px;
+}
+.timeline__instructions {
+  color: palette(document, text);
+  @include body--lead;
+}
+
+.timeline__radio {
+  margin-right: 1rem;
+}
+.timeline__radio-label {
+  margin-right: 2rem;
+  @include body('sans');
+}

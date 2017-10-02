@@ -1,8 +1,8 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import BlockWriter, { config } from "./components/BlockWriter";
-import TimelineView from "./components/TimelineView";
-import FoundationExplorer from "./components/FoundationExplorer";
+import Foundation from "./components/Foundation";
+import Fact from "./components/Fact";
 import { getFact, validators } from "./utils/functions";
 import { isDocument, isVideo } from "./utils/databaseData";
 
@@ -15,7 +15,7 @@ let excerptId = url.split("/")[2];
 
 if (route === "foundation" && !excerptId) {
   // mytake.org/foundation/ route
-  Root = <TimelineView />;
+  Root = <Foundation />;
 } else if (route === "foundation" && excerptId) {
   // e.g. mytake.org/foundation/bill-of-rights
   let hashes = window.location.hash.substring(1).split("&");
@@ -33,7 +33,7 @@ if (route === "foundation" && !excerptId) {
     !isNaN(scrollTop)
   ) {
     Root = (
-      <FoundationExplorer
+      <Fact
         articleTitle={articleTitle}
         articleUser={user}
         scrollTop={scrollTop}

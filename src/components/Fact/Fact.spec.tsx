@@ -1,6 +1,6 @@
 import * as React from "react";
 import { mount, ReactWrapper } from "enzyme";
-import FoundationExplorer from "./FoundationExplorer";
+import Fact from "./Fact";
 
 const onBackClick = jest.fn();
 const onSetClick = jest.fn();
@@ -14,7 +14,7 @@ beforeAll(() => {
   let scrollTop = 101;
   let excerptId = "bill-of-rights";
   wrapper = mount(
-    <FoundationExplorer
+    <Fact
       articleTitle={title}
       articleUser={user}
       highlightedRange={range}
@@ -25,7 +25,7 @@ beforeAll(() => {
 });
 
 test("FoundationExplorer renders", () => {
-  expect(wrapper.find(FoundationExplorer).length).toBe(1);
+  expect(wrapper.find(Fact).length).toBe(1);
 });
 
 // test("Set button works", () => {

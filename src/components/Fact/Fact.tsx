@@ -2,7 +2,7 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import TimelineView from "../TimelineView";
 
-interface FoundationExplorerProps {
+interface FactProps {
   articleTitle: string;
   articleUser: string;
   highlightedRange: [number, number];
@@ -10,8 +10,8 @@ interface FoundationExplorerProps {
   excerptId: string;
 }
 
-class FoundationExplorer extends React.Component<FoundationExplorerProps, {}> {
-  constructor(props: FoundationExplorerProps) {
+class Fact extends React.Component<FactProps, {}> {
+  constructor(props: FactProps) {
     super(props);
   }
   handleSetClick = (excerptTitle: string, range: [number, number]): void => {
@@ -51,4 +51,4 @@ class FoundationExplorer extends React.Component<FoundationExplorerProps, {}> {
   }
 }
 
-export default FoundationExplorer;
+export default Fact;
