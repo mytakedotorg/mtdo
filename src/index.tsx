@@ -2,7 +2,7 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import BlockWriter, { config } from "./components/BlockWriter";
 import TimelineView from "./components/TimelineView";
-import FoundationExplorer from "./components/FoundationExplorer";
+import Fact from "./components/Fact";
 import { getFact, validators } from "./utils/functions";
 import { isDocument, isVideo } from "./utils/databaseData";
 
@@ -33,7 +33,7 @@ if (route === "foundation" && !excerptId) {
     !isNaN(scrollTop)
   ) {
     Root = (
-      <FoundationExplorer
+      <Fact
         articleTitle={articleTitle}
         articleUser={user}
         scrollTop={scrollTop}
