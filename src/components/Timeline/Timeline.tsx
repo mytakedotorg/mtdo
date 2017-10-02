@@ -24,14 +24,20 @@ class TimelineItem extends React.Component<TimelineItemProps, {}> {
   }
 }
 
-interface TimelineData {
+interface TimelineItemData {
   id: string;
   start: Date;
   content: string;
 }
 
+interface TimelineData {
+  items: TimelineItemData[];
+  start: Date;
+  end: Date;
+}
+
 interface TimelineSelectEventHandlerProps {
-  items: TimelineData["id"][];
+  items: TimelineItemData["id"][];
   event: Event;
 }
 
@@ -73,7 +79,7 @@ interface TimelineOptions {
   onMoving?(): void; // TODO
   onRemove?(): void; // TODO
   onRemoveGroup?(): void; // TODO
-  order?(a: TimelineData, b: TimelineData): number;
+  order?(a: TimelineItemData, b: TimelineItemData): number;
   orientation?: vis.TimelineOptionsOrientationType;
   rollingMode?: any;
   selectable?: boolean;
@@ -100,49 +106,31 @@ interface TimelineProps {
   onItemClick: (excerptId: string) => void;
 }
 
-interface TimelineState {}
+interface TimelineState {
+  selectedOption: "Debates" | "Documents";
+}
 
 export default class Timeline extends React.Component<
   TimelineProps,
   TimelineState
 > {
   private timeline: vis.Timeline;
-  private timelineData: TimelineData[] = [];
   constructor(props: TimelineProps) {
     super(props);
+
+    this.state = {
+      selectedOption: "Debates"
+    };
   }
   initTimeline = () => {
-    for (let video of getAllVideoFacts()) {
-      this.timelineData = [
-        ...this.timelineData,
-        {
-          id: video.id,
-          start: video.primaryDate,
-          content: video.title
-        }
-      ];
-    }
-
-    for (let excerpt of getAllDocumentFacts()) {
-      let idx = slugify(excerpt.title);
-      this.timelineData = [
-        ...this.timelineData,
-        {
-          id: idx,
-          start: excerpt.primaryDate,
-          content: excerpt.title
-        }
-      ];
-    }
-
     let container = document.getElementById("mytimeline");
-    let items: vis.DataSet<TimelineData> = new vis.DataSet(this.timelineData);
+    let timelineData = this.getTimelineData();
     let options: TimelineOptions = {
       orientation: "top",
-      start: new Date(1770, 0, 1),
-      end: new Date(),
+      start: timelineData.start,
+      end: timelineData.end,
       order: this.orderById,
-      template: (item: TimelineData, element: HTMLElement) => {
+      template: (item: TimelineItemData, element: HTMLElement) => {
         if (!item) {
           return;
         }
@@ -154,36 +142,111 @@ export default class Timeline extends React.Component<
     if (container) {
       this.timeline = new vis.Timeline(
         container,
-        items,
+        new vis.DataSet(timelineData.items),
         options as vis.TimelineOptions
       );
       this.timeline.on("select", this.handleClick);
     }
   };
-  orderById = (a: TimelineData, b: TimelineData): number => {
+  orderById = (a: TimelineItemData, b: TimelineItemData): number => {
     if (a.id < b.id) {
       return -1;
     }
     return 1;
   };
+  getTimelineData = (): TimelineData => {
+    let timelineItems: TimelineItemData[] = [];
+    let start: Date = new Date();
+    let end: Date = new Date();
+    if (this.state.selectedOption === "Debates") {
+      start = new Date(1957, 0, 1);
+      end = new Date(2021, 0, 1);
+      for (let video of getAllVideoFacts()) {
+        timelineItems = [
+          ...timelineItems,
+          {
+            id: video.id,
+            start: video.primaryDate,
+            content: video.title
+          }
+        ];
+      }
+    }
+
+    if (this.state.selectedOption === "Documents") {
+      start = new Date(1770, 0, 1);
+      end = new Date();
+      for (let excerpt of getAllDocumentFacts()) {
+        let idx = slugify(excerpt.title);
+        timelineItems = [
+          ...timelineItems,
+          {
+            id: idx,
+            start: excerpt.primaryDate,
+            content: excerpt.title
+          }
+        ];
+      }
+    }
+
+    return {
+      items: timelineItems,
+      start: start,
+      end: end
+    };
+  };
+  handleChange = (ev: React.ChangeEvent<HTMLInputElement>) => {
+    const value = ev.target.value;
+    if (value === "Debates" || value === "Documents") {
+      this.setState({
+        selectedOption: value
+      });
+    }
+  };
   handleClick = (properties: TimelineSelectEventHandlerProps) => {
     let dataSetId = properties.items[0];
-    if (dataSetId) {
-      let dataItem = this.timelineData.filter((dataItem: any) => {
-        return dataItem.id === dataSetId;
-      })[0];
-      this.props.onItemClick(dataItem.id);
-    }
+    this.props.onItemClick(dataSetId);
   };
   componentDidMount() {
     this.initTimeline();
   }
+  componentDidUpdate(prevProps: TimelineProps, prevState: TimelineState) {
+    if (this.state.selectedOption !== prevState.selectedOption) {
+      this.updateTimeline();
+    }
+  }
   componentWillUnMount() {
     (this.timeline.off as any)("select", this.handleClick); //Issue with vis tyings here.
+  }
+  updateTimeline() {
+    let timelineData = this.getTimelineData();
+    this.timeline.setOptions({
+      start: timelineData.start,
+      end: timelineData.end
+    });
+    this.timeline.setItems(timelineData.items);
   }
   render() {
     return (
       <div className={"timeline"}>
+        <input
+          type="radio"
+          id="radio--debates"
+          name="type"
+          value="Debates"
+          onChange={this.handleChange}
+          checked={this.state.selectedOption === "Debates"}
+        />
+        <label htmlFor="radio--debates">Debates</label>
+        <input
+          type="radio"
+          id="radio--documents"
+          name="type"
+          value="Documents"
+          onChange={this.handleChange}
+          checked={this.state.selectedOption === "Documents"}
+        />
+        <label htmlFor="radio--documents">Founding Documents</label>
         <div id="mytimeline" />
       </div>
     );
