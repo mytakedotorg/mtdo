@@ -13,8 +13,13 @@ class Banner extends React.Component<BannerProps, {}> {
         <div className="banner__inner-container">
           <p className="banner__text banner__text--reg">
             Unfortunately Takes can't be saved yet. If you really like what you
-            wrote, feel free to screenshot it and share it with us. For more
-            information please refer to{" "}
+            wrote, feel free to screenshot it and{" "}
+            <a
+              className="banner__text banner__text--link"
+              href="mailto:edgar.twigg@gmail.com?Subject=Take%20Screenshot"
+            >
+              share it with us
+            </a>. For more information please refer to{" "}
             <a
               className="banner__text banner__text--link"
               href="https://github.com/mytake/mytake/blob/master/WORK_IN_PROGRESS.md"
