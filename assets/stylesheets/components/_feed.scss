@@ -71,3 +71,12 @@
   color: palette(feed, text);
   margin-right: 1rem;
 }
+.feed__card-thumb-container {
+  text-align: center;
+  margin: 10px 15px;
+  @include clearfix;
+}
+.feed__card-thumb {
+  max-width: 100%;
+  height: auto;
+}
