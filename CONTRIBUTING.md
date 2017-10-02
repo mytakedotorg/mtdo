@@ -2,6 +2,8 @@
 
 We welcome contributions of all kinds - design, code, strategy, anything you got!
 
+If you want to make a financial donation, please email Ned at [edgar.twigg@gmail.com](mailto:edgar.twigg@gmail.com).
+
 We believe in permissionless innovation - if you have an idea, feel free to just build it and submit a PR.
 
 We also believe in teamwork and consensus - if you want your idea to get merged and released, be ready to debate its merits in the PR.

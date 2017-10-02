@@ -34,6 +34,10 @@ body {
   background-color: #fff;
   position: relative;
   z-index: 1;
+  float: left;
+  @include clearfix;
+  margin: auto;
+  width: 100%;
 }
 
 html {

@@ -5,18 +5,6 @@
 //     Thanks to SASS Map, we can define all colors at one place.
 //     We also respect our BEM like notation and files architecture.
 
-/**
-* Colors to be adjusted
-*/
-$paper--dark: lighten(#d8d670, 20%);
-$paper--light: lighten(#fffeac, 15%);
-
-$ink: #1c0a03;
-$ink--highlight: darkslategray;
-$paper--highlight: yellow;
-/**
-* end adjusted
-*/
 $base: #2c4770;
 $base-dark: #142f54;
 $base-darkest: #051a38;
@@ -51,8 +39,10 @@ $palettes: (
       border: $base-darkest,
       text: $base,
       text--hover: $base-lightest,
+      text--link: $base-light,
       skip-bg: $action,
-      skip-text: $white
+      skip-text: $white,
+      banner__background: $tertiary-lightest
     ),
   nav:
     (
@@ -123,5 +113,6 @@ $palettes: (
       text--special: $base,
       text: $base-darkest,
       text--link: $base-light
-    )
+    ),
+  banner: (text: $action, text--link: $base-light)
 );

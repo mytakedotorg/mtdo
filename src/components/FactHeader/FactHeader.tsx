@@ -6,6 +6,7 @@ interface FactHeaderProps {
   heading: string;
   isFixed: boolean;
   onClearClick: () => void;
+  onSetClick: () => void;
   onScroll: (headerHidden: boolean) => void;
   textIsHighlighted: boolean;
   isDocument: boolean;
@@ -21,6 +22,9 @@ class FactHeader extends React.Component<FactHeaderProps, FactHeaderState> {
   }
   handleClearClick = () => {
     this.props.onClearClick();
+  };
+  handleSetClick = () => {
+    this.props.onSetClick();
   };
   handleScroll = () => {
     this.props.onScroll(this.header.getBoundingClientRect().top <= 0);
@@ -50,7 +54,7 @@ class FactHeader extends React.Component<FactHeaderProps, FactHeaderState> {
         <div className="document__header-actions">
           {this.props.textIsHighlighted
             ? <button
-                className="document__button"
+                className="document__button document__button--blue"
                 onClick={this.handleClearClick}
               >
                 Clear Selection
@@ -60,6 +64,14 @@ class FactHeader extends React.Component<FactHeaderProps, FactHeaderState> {
                   ? "Highlight something to give your Take"
                   : "Pause the video to set your start and end times"}
               </p>}
+          {this.props.textIsHighlighted
+            ? <button
+                className="document__button document__button--red"
+                onClick={this.handleSetClick}
+              >
+                Give your Take on this
+              </button>
+            : null}
         </div>
       </div>
     );

@@ -91,3 +91,18 @@ test("Read only", () => {
     .toJSON();
   expect(tree).toMatchSnapshot();
 });
+
+/**
+ * TODO: 
+ *   - Add the following test cases:
+ *     + 'No text in editor, cursor in title, press enter'
+ *     + 'Title only in editor, cursor in title, press enter'
+ *     + 'Press enter when cursor is inside/before/after a TakeBlock'
+ *     + 'Press backspace/delete when cursor is inside/before/after a TakeBlock'
+ *     + 'Press backspace/delete if there is no title'
+ *     + 'Press backspace/delete if there is no content in Take'
+ *     + 'Press backspace/delete if there is no title or no content in Take'
+ *     + 'Press backspace/delete if there is title and no content in Take'
+ *     + 'Press backspace/delete if there is title and content in Take'
+ *     + 'Press backspace/delete if there is no title and there is content in Take'
+ */

@@ -187,6 +187,7 @@ export default class TimelinePreview extends React.Component<
           heading={this.getTitle()}
           isFixed={this.state.headerHidden}
           onClearClick={this.handleClearClick}
+          onSetClick={this.handleSetClick}
           onScroll={this.handleScroll}
           textIsHighlighted={this.state.textIsHighlighted}
           isDocument={isDocument(this.state.fact)}

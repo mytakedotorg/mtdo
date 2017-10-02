@@ -1,7 +1,7 @@
 $video-container-width: 540px;
 $video-header-height: 60px;
 .video__outer-container {
-  width: 768px;
+  width: $column-width;
   max-width: 100%;
   margin: auto;
 }
@@ -39,12 +39,14 @@ $video-header-height: 60px;
 }
 .video__button {
   @include button;
-  @include button--blue;
   float: inherit;
 }
 .video__button--top {
-  //line-height: $video-header-height;
+  @include button--red;
   margin-top: ($video-header-height - 35px)/2;
+}
+.video__button--bottom {
+  @include button--blue;
 }
 .video__container {
   width: $video-container-width;

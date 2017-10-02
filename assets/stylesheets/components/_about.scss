@@ -5,7 +5,7 @@
   @media #{$mq-medium} {
     padding: 0 $page-margin;
   }
-  width: 768px;
+  width: $column-width;
   max-width: 100%;
 }
 .about__text {

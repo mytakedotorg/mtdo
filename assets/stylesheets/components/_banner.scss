@@ -1,0 +1,25 @@
+.banner {
+  margin: 0 auto;
+  background-color: palette(about, background);
+  width: $column-width;
+  max-width: 100%;
+}
+
+.banner__inner-container {
+  padding: 0 $page-margin-mobile;
+  @media #{$mq-medium} {
+    padding: 0 $page-margin;
+  }
+}
+
+.banner__text {
+  @include body--small('sans');
+}
+
+.banner__text--reg {
+  color: palette(banner, text);
+}
+
+.banner__text--link {
+  color: palette(banner, text--link);
+}
