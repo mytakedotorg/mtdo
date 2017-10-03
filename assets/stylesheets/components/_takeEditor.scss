@@ -111,15 +111,7 @@
   @include body;
 }
 .editor__document-highlight {
-  position: relative;
-  z-index: -1;
-  color: palette(editor, text--highlight);
-  background-color: palette(editor, background--highlight);
-  box-shadow: 5px 5px 0 palette(editor, background--highlight),
-    -5px 5px 0 palette(editor, background--highlight),
-    -5px -5px 0 palette(editor, background--highlight),
-    5px -5px 0 palette(editor, background--highlight);
-  box-decoration-break: clone;
+  @include text-special;
 }
 .editor__video {
   display: block;
