@@ -63,7 +63,9 @@ exports[`Read only 1`] = `
             onKeyDown={[Function]}
             tabIndex={0}
           >
-            <h2>
+            <h2
+              className="editor__document-title"
+            >
               United States Constitution
             </h2>
             <h2
@@ -169,7 +171,9 @@ exports[`Simple block editor model 1`] = `
             onKeyDown={[Function]}
             tabIndex={0}
           >
-            <h2>
+            <h2
+              className="editor__document-title"
+            >
               United States Constitution
             </h2>
             <h2
@@ -275,7 +279,9 @@ exports[`With active 1`] = `
             onKeyDown={[Function]}
             tabIndex={0}
           >
-            <h2>
+            <h2
+              className="editor__document-title"
+            >
               United States Constitution
             </h2>
             <h2
