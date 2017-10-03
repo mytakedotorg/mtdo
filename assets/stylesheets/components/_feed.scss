@@ -1,6 +1,9 @@
 .feed {
-  margin: 2rem auto;
-  width: $column-width;
+  margin: 2rem 2rem 0;
+  @media #{$mq-medium} {
+    margin: 2rem auto 0;
+    width: $column-width;
+  }
   max-width: 100%;
 }
 .feed__title {
@@ -14,9 +17,8 @@
   color: palette(feed, text);
   padding-top: 5px;
   padding-bottom: 5px;
-  margin: 1rem;
-  @media #{$mq-medium} {
-    margin: 2rem;
+  &:not(:last-of-type) {
+    margin-bottom: 2rem;
   }
 }
 .feed__card-title {
