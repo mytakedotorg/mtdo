@@ -12,15 +12,21 @@
 .feed__card {
   position: relative;
   background: palette(feed, background);
-  border: 1px solid palette(feed, card__border--outer);
+  border: 1px solid palette(feed, card__border);
   color: palette(feed, text);
   margin-top: $content-margin;
 }
 .feed__card-title {
   @include heading3;
-  margin: $page-margin-mobile;
+  margin-top: $page-margin-mobile;
+  margin-right: $page-margin-mobile;
+  margin-left: $page-margin-mobile;
+  margin-bottom: $page-margin-mobile / 2;
   @media #{$mq-medium} {
-    margin: $content-margin;
+    margin-top: $content-margin;
+    margin-right: $content-margin;
+    margin-left: $content-margin;
+    margin-bottom: $content-margin / 2;
   }
 }
 .feed__link {
@@ -32,26 +38,45 @@
   z-index: 100;
 }
 .feed__card-document {
-  @include text-margin;
-  border: 1px solid palette(feed, card__border--inner);
+  padding: $page-margin-mobile;
+  margin-top: 0;
+  margin-right: $page-margin-mobile;
+  margin-left: $page-margin-mobile;
+  margin-bottom: $page-margin-mobile / 2;
+  @media #{$mq-medium} {
+    padding: $content-margin;
+    margin-right: $content-margin;
+    margin-left: $content-margin;
+    margin-bottom: $content-margin / 2;
+  }
+  background-color: palette(feed, background--highlight);
 }
 .feed__card-document-title {
   @include heading4;
-  @include text-margin;
+  margin: 0;
+  margin-bottom: $page-margin-mobile / 2;
+  @media #{$mq-medium} {
+    margin-bottom: $content-margin / 2;
+  }
   color: palette(feed, text--document);
 }
 .feed__card-document-text {
   @include body;
-  @include text-margin;
+  margin: 0;
   color: palette(feed, text--document);
-}
-.feed__card-document-text--highlight {
-  color: palette(feed, text--highlight);
-  background-color: palette(feed, background--highlight);
+  > p {
+    margin: 0;
+  }
 }
 .feed__card-text-container {
   @include text-margin;
   @include clearfix;
+  &:last-of-type {
+    margin-bottom: $page-margin-mobile;
+    @media #{$mq-medium} {
+      margin-bottom: $content-margin;
+    }
+  }
 }
 .feed__card-text {
   margin-top: 0;
@@ -66,7 +91,6 @@
 }
 .feed__card-thumb-container {
   text-align: center;
-  margin: 10px 15px;
   @include clearfix;
 }
 .feed__card-thumb {

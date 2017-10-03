@@ -11,6 +11,8 @@ $base-darkest: #051a38;
 $base-light: #4c678c;
 $base-lightest: #758aa8;
 
+$base-highlight: #204d90; // $base w/ Hue +10 and Saturation +10
+
 $secondary: #4a9130;
 $secondary-dark: #2b6d12;
 $secondary-darkest: #134800;
@@ -66,21 +68,21 @@ $palettes: (
   editor:
     (
       background: $white,
-      background--highlight: lighten($base-lightest, 10%),
+      document__background: lighten($base-lightest, 40%),
+      document__background--hover: lighten($base-lightest, 36%),
       border: $base-lightest,
       shadow: $base-darkest,
       text: $base-darkest,
-      text--highlight: $base-darkest
+      text--highlight: $base-highlight
     ),
   feed:
     (
-      background--highlight: lighten($base-lightest, 10%),
-      card__border--outer: lighten($base-lightest, 20%),
-      card__border--inner: $base-lightest,
+      background: $white,
+      background--highlight: lighten($base-lightest, 40%),
+      card__border: $base-lightest,
       card__shadow: $base-darkest,
       text: $base-darkest,
       text--document: $base-darkest,
-      text--highlight: $base-darkest,
       text--faded: $base-darkest
     ),
   foundation:

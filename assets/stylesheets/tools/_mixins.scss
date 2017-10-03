@@ -63,10 +63,6 @@
   }
 }
 
-@mixin text-special {
-  color: palette(about, text--special);
-  font-weight: 700;
-}
 @function palette($palette, $tone) {
   @if not map-has-key($palettes, $palette) {
     @warn "No palette found for `#{$palette}` in $palettes map. Property omitted.";

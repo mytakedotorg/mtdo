@@ -20,7 +20,8 @@
   @include body('sans');
 }
 .about__text--special {
-  @include text-special;
+  color: palette(about, text--special);
+  font-weight: 700;
 }
 .about__link {
   color: palette(about, text--link);

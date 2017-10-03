@@ -78,20 +78,19 @@
 }
 .editor__document {
   position: relative;
-  background: palette(editor, background);
-  border: 1px solid palette(editor, border);
-  box-shadow: 1px 1px 2px palette(editor, shadow);
+  background: palette(editor, document__background);
   color: palette(editor, text);
+  border-radius: 3px;
+  margin-bottom: 4px;
+  padding: $page-margin-mobile;
+  @media #{$mq-medium} {
+    padding: $content-margin;
+  }
+  @include body;
   &:not(.editor__document--no-hover) {
     cursor: pointer;
-    &:hover:before {
-      content: " ";
-      position: absolute;
-      top: -3px;
-      left: -3px;
-      right: -3px;
-      bottom: -3px;
-      border: 3px solid palette(editor, border);
+    &:hover {
+      background: palette(editor, document__background--hover);
     }
   }
   p,
@@ -100,18 +99,20 @@
     position: relative;
     overflow: hidden;
   }
+  > p {
+    margin: 0;
+  }
 }
-.editor__document--base {
-  padding: 5px 15px;
-  margin-bottom: 2rem;
-  @include body;
-}
-.editor__document--overlay {
-  padding: 5px 1px;
-  @include body;
+.editor__document-title {
+  @include heading3;
+  margin: 0;
+  margin-bottom: $page-margin-mobile / 2;
+  @media #{$mq-medium} {
+    margin-bottom: $content-margin / 2;
+  }
 }
 .editor__document-highlight {
-  @include text-special;
+  color: palette(editor, text--highlight);
 }
 .editor__video {
   display: block;

@@ -283,7 +283,7 @@ class Document extends React.Component<DocumentBlockProps, DocumentBlockState> {
         onKeyDown={this.handleKeyDown}
         ref={(div: HTMLDivElement) => (this.div = div)}
       >
-        <h2>
+        <h2 className="editor__document-title">
           {this.getTitle()}
         </h2>
         {highlightedNodes.map((node, index) => {
