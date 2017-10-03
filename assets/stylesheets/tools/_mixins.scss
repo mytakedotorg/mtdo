@@ -46,6 +46,23 @@
   -webkit-box-sizing: border-box;
 }
 
+@mixin text-margin-lr {
+  margin-left: $page-margin-mobile;
+  margin-right: $page-margin-mobile;
+  @media #{$mq-medium} {
+    margin-left: $content-margin;
+    margin-right: $content-margin;
+  }
+}
+
+@mixin text-margin {
+  @include text-margin-lr;
+  margin-bottom: $page-margin-mobile;
+  @media #{$mq-medium} {
+    margin-bottom: $content-margin;
+  }
+}
+
 @function palette($palette, $tone) {
   @if not map-has-key($palettes, $palette) {
     @warn "No palette found for `#{$palette}` in $palettes map. Property omitted.";

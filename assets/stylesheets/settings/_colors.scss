@@ -75,7 +75,8 @@ $palettes: (
   feed:
     (
       background--highlight: lighten($base-lightest, 10%),
-      card__border: $base-lightest,
+      card__border--outer: lighten($base-lightest, 20%),
+      card__border--inner: $base-lightest,
       card__shadow: $base-darkest,
       text: $base-darkest,
       text--document: $base-darkest,

@@ -1,10 +1,10 @@
 .feed {
-  margin: 2rem 2rem 0;
-  @media #{$mq-medium} {
-    margin: 2rem auto 0;
-    width: $column-width;
-  }
+  margin: auto;
+  width: $column-width;
   max-width: 100%;
+}
+.feed__inner-container {
+  @include text-margin-lr;
 }
 .feed__title {
   @include heading2;
@@ -12,19 +12,16 @@
 .feed__card {
   position: relative;
   background: palette(feed, background);
-  border: palette(feed, card__border);
-  box-shadow: 2px 2px 4px palette(feed, card__shadow);
+  border: 1px solid palette(feed, card__border--outer);
   color: palette(feed, text);
-  padding-top: 5px;
-  padding-bottom: 5px;
-  &:not(:last-of-type) {
-    margin-bottom: 2rem;
-  }
+  margin-top: $content-margin;
 }
 .feed__card-title {
   @include heading3;
-  margin-left: 15px;
-  margin-right: 15px;
+  margin: $page-margin-mobile;
+  @media #{$mq-medium} {
+    margin: $content-margin;
+  }
 }
 .feed__link {
   position: absolute;
@@ -35,22 +32,17 @@
   z-index: 100;
 }
 .feed__card-document {
-  padding-top: 5px;
-  padding-bottom: 5px;
-  margin-left: 15px;
-  margin-right: 15px;
-  border: 1px solid palette(feed, card__border);
+  @include text-margin;
+  border: 1px solid palette(feed, card__border--inner);
 }
 .feed__card-document-title {
   @include heading4;
-  margin-left: 15px;
-  margin-right: 15px;
+  @include text-margin;
   color: palette(feed, text--document);
 }
 .feed__card-document-text {
   @include body;
-  margin-left: 15px;
-  margin-right: 15px;
+  @include text-margin;
   color: palette(feed, text--document);
 }
 .feed__card-document-text--highlight {
@@ -58,7 +50,7 @@
   background-color: palette(feed, background--highlight);
 }
 .feed__card-text-container {
-  margin: 10px 15px;
+  @include text-margin;
   @include clearfix;
 }
 .feed__card-text {
@@ -71,7 +63,6 @@
   float: right;
   @include body--small;
   color: palette(feed, text);
-  margin-right: 1rem;
 }
 .feed__card-thumb-container {
   text-align: center;
