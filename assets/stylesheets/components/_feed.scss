@@ -46,7 +46,7 @@
   background-color: palette(feed, background--highlight);
 }
 .feed__card-document-title {
-  @include heading4;
+  @include heading5;
   margin: 0;
   margin-bottom: $page-margin-mobile / 2;
   @media #{$mq-medium} {
@@ -83,17 +83,26 @@
   color: palette(feed, text);
 }
 .feed__card-thumb-container {
-  float: left;
-  width: 60%;
-  height: 100%;
+  width: 100%;
+  @media #{$mq-medium} {
+    float: left;
+    width: 60%;
+  }
   margin-right: $page-margin-mobile;
   @media #{$mq-medium} {
     margin-right: $content-margin;
   }
   @include clearfix;
 }
+.feed__card-thumb-container--video {
+  max-height: 250px;
+  overflow: hidden;
+  @media #{$mq-medium} {
+    max-height: initial;
+  }
+}
 .feed__card-thumb {
-  max-width: 100%;
+  width: 100%;
   height: auto;
   vertical-align: bottom;
 }

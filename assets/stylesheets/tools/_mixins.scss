@@ -57,9 +57,9 @@
 
 @mixin text-margin {
   @include text-margin-lr;
-  margin-bottom: $page-margin-mobile * 2;
+  margin-bottom: $page-margin-mobile * 2.25;
   @media #{$mq-medium} {
-    margin-bottom: $content-margin * 2;
+    margin-bottom: $content-margin * 2.25;
   }
 }
 

@@ -32,15 +32,15 @@ class FeedCard extends React.Component<FeedCardProps, {}> {
         <a href={this.getArticleURL()} className="feed__link">
           <span />
         </a>
-        <div className="feed__card-thumb-container">
-          {props.article.previewBlocks.map((blockIdx, mapIdx) => {
-            let block = props.article.blocks[blockIdx];
-            if (block.kind === "document") {
-              let highlightedNodes = getHighlightedNodes(
-                getNodeArray(block.excerptId),
-                block.highlightedRange
-              );
-              return (
+        {props.article.previewBlocks.map((blockIdx, mapIdx) => {
+          let block = props.article.blocks[blockIdx];
+          if (block.kind === "document") {
+            let highlightedNodes = getHighlightedNodes(
+              getNodeArray(block.excerptId),
+              block.highlightedRange
+            );
+            return (
+              <div className="feed__card-thumb-container feed__card-thumb-container--document">
                 <div className="feed__card-document" key={mapIdx}>
                   <h2 className="feed__card-document-title">
                     {getDocumentFactTitle(block.excerptId)}
@@ -56,16 +56,17 @@ class FeedCard extends React.Component<FeedCardProps, {}> {
                     })}
                   </div>
                 </div>
-              );
-            } else if (block.kind === "video") {
-              let thumb =
-                "http://img.youtube.com/vi/" + block.videoId + "/0.jpg";
-              return (
+              </div>
+            );
+          } else if (block.kind === "video") {
+            let thumb = "http://img.youtube.com/vi/" + block.videoId + "/0.jpg";
+            return (
+              <div className="feed__card-thumb-container feed__card-thumb-container--video">
                 <img className="feed__card-thumb" src={thumb} key={mapIdx} />
-              );
-            }
-          })}
-        </div>
+              </div>
+            );
+          }
+        })}
         <div className="feed__card-excerpt">
           <h2 className="feed__card-title">
             {props.article.title}
