@@ -40,8 +40,11 @@ class FeedCard extends React.Component<FeedCardProps, {}> {
               block.highlightedRange
             );
             return (
-              <div className="feed__card-thumb-container feed__card-thumb-container--document">
-                <div className="feed__card-document" key={mapIdx}>
+              <div
+                className="feed__card-thumb-container feed__card-thumb-container--document"
+                key={mapIdx}
+              >
+                <div className="feed__card-document">
                   <h2 className="feed__card-document-title">
                     {getDocumentFactTitle(block.excerptId)}
                   </h2>
@@ -61,8 +64,11 @@ class FeedCard extends React.Component<FeedCardProps, {}> {
           } else if (block.kind === "video") {
             let thumb = "http://img.youtube.com/vi/" + block.videoId + "/0.jpg";
             return (
-              <div className="feed__card-thumb-container feed__card-thumb-container--video">
-                <img className="feed__card-thumb" src={thumb} key={mapIdx} />
+              <div
+                className="feed__card-thumb-container feed__card-thumb-container--video"
+                key={mapIdx}
+              >
+                <img className="feed__card-thumb" src={thumb} />
               </div>
             );
           }
