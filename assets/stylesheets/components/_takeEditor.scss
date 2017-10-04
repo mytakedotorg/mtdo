@@ -39,6 +39,7 @@
 }
 .editor__inner {
   position: relative;
+  overflow: hidden;
 }
 .editor__title {
   position: relative;
@@ -64,7 +65,6 @@
 }
 .editor__block--overlay {
   position: absolute;
-  //margin-left: 55px; //For visual testing only
 }
 .editor__paragraph--placeholder {
   opacity: 0.3;
