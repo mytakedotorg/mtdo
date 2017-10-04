@@ -82,6 +82,7 @@
   padding: 1px;
   color: palette(document, color);
   z-index: 1;
+  @include text-margin;
   @include body;
 }
 .document__text--block {

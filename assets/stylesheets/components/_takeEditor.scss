@@ -19,8 +19,10 @@
 }
 .editor__wrapper {
   margin: auto;
-  padding-top: 2rem;
-  padding-bottom: 2rem;
+  padding-top: $page-margin-mobile * 2.25;
+  @media #{$mq-medium} {
+    padding-top: $content-margin * 2.25;
+  }
   width: $column-width;
   max-width: 100%;
   background-color: palette(editor, background);
@@ -39,16 +41,15 @@
   position: relative;
 }
 .editor__title {
-  text-align: left;
-  margin-top: 0;
   position: relative;
-  height: 61px;
   @include overrideDefaultTextArea;
   @include heading1;
+  @include text-margin;
 }
 .editor__title-height-div {
   @include textareaHeightDiv;
   @include heading1;
+  @include text-margin;
 }
 .editor__title--placeholder {
   opacity: 0.3;
@@ -56,18 +57,19 @@
 .editor__block {
   position: relative;
   z-index: 10;
+  @include text-margin;
 }
 .editor__block--base {
   position: relative;
 }
 .editor__block--overlay {
   position: absolute;
+  //margin-left: 55px; //For visual testing only
 }
 .editor__paragraph--placeholder {
   opacity: 0.3;
 }
 .editor__paragraph {
-  text-align: left;
   position: relative;
   @include overrideDefaultTextArea;
   @include body('sans');
@@ -81,10 +83,11 @@
   background: palette(editor, document__background);
   color: palette(editor, text);
   border-radius: 3px;
-  margin-bottom: 4px;
-  padding: $page-margin-mobile;
+  padding-left: $page-margin-mobile;
+  padding-right: $page-margin-mobile;
   @media #{$mq-medium} {
-    padding: $content-margin;
+    padding-left: $content-margin;
+    padding-right: $content-margin;
   }
   @include body;
   &:not(.editor__document--no-hover) {

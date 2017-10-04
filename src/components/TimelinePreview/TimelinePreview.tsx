@@ -66,7 +66,7 @@ export default class TimelinePreview extends React.Component<
       range ? range : this.state.highlightedRange
     );
 
-    return offsetTop - 20;
+    return offsetTop;
   };
   getTitle = () => {
     let excerpt = getFact(this.props.excerptId);
