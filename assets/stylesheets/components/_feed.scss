@@ -15,6 +15,7 @@
   border: 1px solid palette(feed, card__border);
   color: palette(feed, text);
   margin-top: $content-margin;
+  @include clearfix;
 }
 .feed__card-title {
   @include heading3;
@@ -39,15 +40,8 @@
 }
 .feed__card-document {
   padding: $page-margin-mobile;
-  margin-top: 0;
-  margin-right: $page-margin-mobile;
-  margin-left: $page-margin-mobile;
-  margin-bottom: $page-margin-mobile / 2;
   @media #{$mq-medium} {
     padding: $content-margin;
-    margin-right: $content-margin;
-    margin-left: $content-margin;
-    margin-bottom: $content-margin / 2;
   }
   background-color: palette(feed, background--highlight);
 }
@@ -70,13 +64,6 @@
 }
 .feed__card-text-container {
   @include text-margin;
-  @include clearfix;
-  &:last-of-type {
-    margin-bottom: $page-margin-mobile;
-    @media #{$mq-medium} {
-      margin-bottom: $content-margin;
-    }
-  }
 }
 .feed__card-text {
   margin-top: 0;
@@ -85,15 +72,28 @@
   color: palette(feed, text--faded);
 }
 .feed__more {
-  float: right;
+  position: absolute;
+  bottom: $page-margin-mobile / 2;
+  right: $page-margin-mobile;
+  @media #{$mq-medium} {
+    bottom: $content-margin / 2;
+    right: $content-margin;
+  }
   @include body--small;
   color: palette(feed, text);
 }
 .feed__card-thumb-container {
-  text-align: center;
+  float: left;
+  width: 60%;
+  height: 100%;
+  margin-right: $page-margin-mobile;
+  @media #{$mq-medium} {
+    margin-right: $content-margin;
+  }
   @include clearfix;
 }
 .feed__card-thumb {
   max-width: 100%;
   height: auto;
+  vertical-align: bottom;
 }

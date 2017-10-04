@@ -32,21 +32,10 @@ class FeedCard extends React.Component<FeedCardProps, {}> {
         <a href={this.getArticleURL()} className="feed__link">
           <span />
         </a>
-        <h2 className="feed__card-title">
-          {props.article.title}
-        </h2>
-        <div className="feed_card-excerpt">
+        <div className="feed__card-thumb-container">
           {props.article.previewBlocks.map((blockIdx, mapIdx) => {
             let block = props.article.blocks[blockIdx];
-            if (block.kind === "paragraph") {
-              return (
-                <div className="feed__card-text-container" key={mapIdx}>
-                  <p className="feed__card-text">
-                    {block.text}
-                  </p>
-                </div>
-              );
-            } else if (block.kind === "document") {
+            if (block.kind === "document") {
               let highlightedNodes = getHighlightedNodes(
                 getNodeArray(block.excerptId),
                 block.highlightedRange
@@ -72,16 +61,29 @@ class FeedCard extends React.Component<FeedCardProps, {}> {
               let thumb =
                 "http://img.youtube.com/vi/" + block.videoId + "/0.jpg";
               return (
-                <div className="feed__card-thumb-container" key={mapIdx}>
-                  <img className="feed__card-thumb" src={thumb} />
+                <img className="feed__card-thumb" src={thumb} key={mapIdx} />
+              );
+            }
+          })}
+        </div>
+        <div className="feed__card-excerpt">
+          <h2 className="feed__card-title">
+            {props.article.title}
+          </h2>
+          {props.article.previewBlocks.map((blockIdx, mapIdx) => {
+            let block = props.article.blocks[blockIdx];
+            if (block.kind === "paragraph") {
+              return (
+                <div className="feed__card-text-container" key={mapIdx}>
+                  <p className="feed__card-text">
+                    {block.text}
+                  </p>
                 </div>
               );
             }
           })}
         </div>
-        <div className="feed__card-text-container">
-          <span className="feed__more">Read more</span>
-        </div>
+        <span className="feed__more">Read more</span>
       </div>
     );
   }
