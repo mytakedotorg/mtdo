@@ -83,12 +83,6 @@
   background: palette(editor, document__background);
   color: palette(editor, text);
   border-radius: 3px;
-  padding-left: $page-margin-mobile;
-  padding-right: $page-margin-mobile;
-  @media #{$mq-medium} {
-    padding-left: $content-margin;
-    padding-right: $content-margin;
-  }
   @include body;
   &:not(.editor__document--no-hover) {
     cursor: pointer;
@@ -116,6 +110,7 @@
 }
 .editor__document-highlight {
   color: palette(editor, text--highlight);
+  font-weight: 700;
 }
 .editor__video {
   display: block;
