@@ -3,7 +3,10 @@
   position: relative;
   border-radius: 5px;
   display: inline-block;
-  padding: 5px;
+  padding: 5px $page-margin-mobile;
+  @media #{$mq-medium} {
+    padding: 5px $content-margin;
+  }
   text-decoration: none;
   -webkit-appearance: none; // prevent weird iOS look with <button> elements
   overflow: hidden;
@@ -19,7 +22,6 @@
   &:hover {
     background: palette(button, background--base-hover);
   }
-  width: 175px;
 }
 
 @mixin button--red {
@@ -29,7 +31,6 @@
   &:hover {
     background: palette(button, background--action-hover);
   }
-  width: 180px;
 }
 
 @mixin clearfix {
