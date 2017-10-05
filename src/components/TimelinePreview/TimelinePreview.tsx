@@ -209,7 +209,7 @@ export default class TimelinePreview extends React.Component<
                     style={{ top: this.state.offsetTop }}
                     onClick={() => this.handleSetClick()}
                   >
-                    <div className="editor__document editor__document--overlay">
+                    <div className="editor__document editor__document--hover">
                       {this.state.highlightedNodes.map((node, index) => {
                         node.props["key"] = index.toString();
                         return React.createElement(
