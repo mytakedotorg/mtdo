@@ -63,7 +63,11 @@
   }
 }
 .feed__card-text-container {
-  @include text-margin;
+  @include text-margin-lr;
+  margin-bottom: $page-margin-mobile * 2.25;
+  @media #{$mq-medium} {
+    margin-bottom: $content-margin * 2.25;
+  }
 }
 .feed__card-text {
   margin-top: 0;
