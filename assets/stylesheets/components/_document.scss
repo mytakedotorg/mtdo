@@ -98,7 +98,10 @@
 }
 .document__button {
   @include button;
-  margin-right: 15px;
+  margin-right: $page-margin-mobile;
+  @media #{$mq-medium} {
+    margin-right: $content-margin;
+  }
 }
 .document__button--blue {
   @include button--blue;
