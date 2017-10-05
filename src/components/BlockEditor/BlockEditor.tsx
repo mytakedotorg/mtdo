@@ -204,7 +204,9 @@ class Paragraph extends React.Component<
           <p
             ref={(paragraph: HTMLParagraphElement) =>
               (this.paragraph = paragraph)}
-          />
+          >
+            <br />
+          </p>
         </div>
       </div>
     );

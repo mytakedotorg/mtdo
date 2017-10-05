@@ -14,17 +14,16 @@ exports[`Read only 1`] = `
         <div
           className="editor__text-container"
         >
-          <textarea
+          <h1
             className="editor__title"
-            placeholder="Title"
-            readOnly={true}
             style={
               Object {
                 "height": undefined,
               }
             }
-            value="My take title"
-          />
+          >
+            My take title
+          </h1>
           <div
             className="editor__title-height-div"
           />
@@ -38,26 +37,23 @@ exports[`Read only 1`] = `
             <div
               className="editor__text-container"
             >
-              <textarea
+              <p
                 className="editor__paragraph"
-                onBlur={[Function]}
-                onChange={[Function]}
-                onClick={[Function]}
-                onFocus={[Function]}
-                onKeyDown={[Function]}
-                onKeyUp={[Function]}
-                placeholder="Use your voice here."
-                readOnly={true}
                 style={
                   Object {
                     "height": undefined,
                   }
                 }
-                value=""
-              />
+              >
+                
+              </p>
               <div
                 className="editor__paragraph-height-div"
-              />
+              >
+                <p>
+                  <br />
+                </p>
+              </div>
             </div>
           </div>
         </div>
