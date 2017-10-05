@@ -87,12 +87,8 @@
   color: palette(editor, text);
   border-radius: 3px;
   @include body;
-  padding-left: $page-margin-mobile;
-  padding-right: $page-margin-mobile;
   margin-bottom: $page-margin-mobile * $vertical-margin-multiplier;
   @media #{$mq-medium} {
-    padding-left: $content-margin;
-    padding-right: $content-margin;
     margin-bottom: $content-margin * $vertical-margin-multiplier;
   }
   &:not(.editor__document--no-hover) {
@@ -109,6 +105,22 @@
   }
   > p {
     margin: 0;
+  }
+}
+.editor__document--base {
+  padding-left: $page-margin-mobile + 4px;
+  padding-right: $page-margin-mobile + 4px;
+  @media #{$mq-medium} {
+    padding-left: $content-margin + 2px;
+    padding-right: $content-margin + 2px;
+  }
+}
+.editor__document--overlay {
+  padding-left: $page-margin-mobile;
+  padding-right: $page-margin-mobile;
+  @media #{$mq-medium} {
+    padding-left: $content-margin;
+    padding-right: $content-margin;
   }
 }
 .editor__document-title {
