@@ -95,8 +95,8 @@ class Paragraph extends React.Component<
   ParagraphBlockProps,
   ParagraphBlockState
 > {
-  private textarea: HTMLTextAreaElement;
-  private div: HTMLDivElement;
+  private text: HTMLTextAreaElement | HTMLParagraphElement;
+  private paragraph: HTMLParagraphElement;
   constructor(props: ParagraphBlockProps) {
     super(props);
 
@@ -151,8 +151,8 @@ class Paragraph extends React.Component<
   resetHeight = () => {
     let content: string = this.props.block.text;
     content = content.replace(/\n/g, "<br />");
-    this.div.innerHTML = content + "<br />";
-    let height = this.div.clientHeight;
+    this.paragraph.innerHTML = content + "<br />";
+    let height = this.paragraph.clientHeight;
     this.setState({
       style: { height: height }
     });
@@ -160,12 +160,12 @@ class Paragraph extends React.Component<
   componentDidMount() {
     this.resetHeight();
     if (this.props.active) {
-      this.textarea.focus();
+      this.text.focus();
     }
   }
   componentDidUpdate() {
     if (this.props.active) {
-      this.textarea.focus();
+      this.text.focus();
     }
   }
   componentWillReceiveProps(nextProps: ParagraphBlockProps) {
@@ -177,24 +177,35 @@ class Paragraph extends React.Component<
     let classes = "editor__paragraph";
     return (
       <div className="editor__text-container">
-        <textarea
-          className={classes}
-          onBlur={this.handleBlur}
-          onChange={this.handleChange}
-          onClick={this.handleClick}
-          onFocus={this.handleFocus}
-          onKeyDown={this.handleKeyDown}
-          onKeyUp={this.handleKeyUp}
-          placeholder={this.props.idx === 0 ? "Use your voice here." : "..."}
-          value={this.props.block.text}
-          style={this.state.style}
-          readOnly={!isWriteOnly(this.props.eventHandlers)}
-          ref={(textarea: HTMLTextAreaElement) => (this.textarea = textarea)}
-        />
-        <div
-          className="editor__paragraph-height-div"
-          ref={(div: HTMLDivElement) => (this.div = div)}
-        />
+        {isWriteOnly(this.props.eventHandlers)
+          ? <textarea
+              className={classes}
+              onBlur={this.handleBlur}
+              onChange={this.handleChange}
+              onClick={this.handleClick}
+              onFocus={this.handleFocus}
+              onKeyDown={this.handleKeyDown}
+              onKeyUp={this.handleKeyUp}
+              placeholder={
+                this.props.idx === 0 ? "Use your voice here." : "..."
+              }
+              value={this.props.block.text}
+              style={this.state.style}
+              ref={(text: HTMLTextAreaElement) => (this.text = text)}
+            />
+          : <p
+              className={classes}
+              style={this.state.style}
+              ref={(text: HTMLParagraphElement) => (this.text = text)}
+            >
+              {this.props.block.text}
+            </p>}
+        <div className="editor__paragraph-height-div">
+          <p
+            ref={(paragraph: HTMLParagraphElement) =>
+              (this.paragraph = paragraph)}
+          />
+        </div>
       </div>
     );
   }
@@ -274,15 +285,8 @@ class Document extends React.Component<DocumentBlockProps, DocumentBlockState> {
     if (isWriteOnly(this.props.eventHandlers)) {
       classes += " editor__document--no-hover";
     }
-    return (
-      <div
-        tabIndex={0}
-        className={classes}
-        onClick={this.handleClick}
-        onFocus={this.handleFocus}
-        onKeyDown={this.handleKeyDown}
-        ref={(div: HTMLDivElement) => (this.div = div)}
-      >
+    const innerContent = (
+      <div>
         <h2 className="editor__document-title">
           {this.getTitle()}
         </h2>
@@ -296,6 +300,31 @@ class Document extends React.Component<DocumentBlockProps, DocumentBlockState> {
         })}
       </div>
     );
+
+    if (isWriteOnly(this.props.eventHandlers)) {
+      return (
+        <div
+          tabIndex={0}
+          className="editor__document editor__document--base editor__document--focus"
+          onClick={this.handleClick}
+          onFocus={this.handleFocus}
+          onKeyDown={this.handleKeyDown}
+          ref={(div: HTMLDivElement) => (this.div = div)}
+        >
+          {innerContent}
+        </div>
+      );
+    } else {
+      return (
+        <div
+          className="editor__document editor__document--base editor__document--hover"
+          onClick={this.handleClick}
+          ref={(div: HTMLDivElement) => (this.div = div)}
+        >
+          {innerContent}
+        </div>
+      );
+    }
   }
 }
 
@@ -457,7 +486,7 @@ interface BlockEditorState {
 }
 
 class BlockEditor extends React.Component<BlockEditorProps, BlockEditorState> {
-  private textarea: HTMLTextAreaElement;
+  private text: HTMLTextAreaElement | HTMLHeadingElement;
   private div: HTMLDivElement;
   constructor(props: BlockEditorProps) {
     super(props);
@@ -497,12 +526,12 @@ class BlockEditor extends React.Component<BlockEditorProps, BlockEditorState> {
   componentDidMount() {
     this.resetHeight();
     if (this.props.active === -1) {
-      this.textarea.focus();
+      this.text.focus();
     }
   }
   componentDidUpdate() {
     if (this.props.active === -1) {
-      this.textarea.focus();
+      this.text.focus();
     }
   }
   render() {
@@ -513,15 +542,13 @@ class BlockEditor extends React.Component<BlockEditorProps, BlockEditorState> {
           <div className="editor__inner">
             <div className="editor__text-container">
               {!isWriteOnly(props.eventHandlers)
-                ? <textarea
+                ? <h1
                     className="editor__title"
-                    placeholder="Title"
-                    value={props.takeDocument.title}
                     style={this.state.style}
-                    readOnly={true}
-                    ref={(textarea: HTMLTextAreaElement) =>
-                      (this.textarea = textarea)}
-                  />
+                    ref={(text: HTMLHeadingElement) => (this.text = text)}
+                  >
+                    {props.takeDocument.title}
+                  </h1>
                 : <textarea
                     className="editor__title"
                     onChange={this.handleChange}
@@ -530,8 +557,7 @@ class BlockEditor extends React.Component<BlockEditorProps, BlockEditorState> {
                     placeholder="Title"
                     value={props.takeDocument.title}
                     style={this.state.style}
-                    ref={(textarea: HTMLTextAreaElement) =>
-                      (this.textarea = textarea)}
+                    ref={(text: HTMLTextAreaElement) => (this.text = text)}
                   />}
               <div
                 className="editor__title-height-div"

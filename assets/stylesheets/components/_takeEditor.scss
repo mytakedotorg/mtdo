@@ -8,6 +8,7 @@
   box-shadow: none;
   resize: none;
   box-sizing: border-box;
+  background-color: palette(editor, background);
   @include text-margin;
 }
 @mixin textareaHeightDiv {
@@ -15,13 +16,11 @@
   z-index: -1;
   top: 0;
   left: 0;
-  white-space: pre-wrap;
   width: 100%;
   word-wrap: break-word;
   box-sizing: border-box;
-  padding-left: 2px;
-  padding-right: $content-margin + 2px;
-  margin-top: 2px;
+  padding-right: $content-margin;
+  margin-top: 0;
   @include text-margin;
 }
 .editor__wrapper {
@@ -51,6 +50,7 @@
   position: relative;
   @include overrideDefaultTextArea;
   @include heading1;
+  margin-top: 0;
 }
 .editor__title-height-div {
   @include textareaHeightDiv;
@@ -77,7 +77,7 @@
   @include overrideDefaultTextArea;
   @include body('sans');
 }
-.editor__paragraph-height-div {
+.editor__paragraph-height-div > p {
   @include textareaHeightDiv;
   @include body('sans');
 }
@@ -91,10 +91,26 @@
   @media #{$mq-medium} {
     margin-bottom: $content-margin * $vertical-margin-multiplier;
   }
-  &:not(.editor__document--no-hover) {
+  &.editor__document--hover {
     cursor: pointer;
     &:hover {
       background: palette(editor, document__background--hover);
+    }
+    padding-left: $page-margin-mobile;
+    padding-right: $page-margin-mobile;
+    @media #{$mq-medium} {
+      padding-left: $content-margin;
+      padding-right: $content-margin;
+    }
+  }
+  &.editor__document--focus {
+    margin-left: 4px;
+    margin-right: 4px;
+    padding-left: $page-margin-mobile - 2px;
+    padding-right: $page-margin-mobile - 2px;
+    @media #{$mq-medium} {
+      padding-left: $content-margin - 2px;
+      padding-right: $content-margin - 2px;
     }
   }
   p,
@@ -105,22 +121,6 @@
   }
   > p {
     margin: 0;
-  }
-}
-.editor__document--base {
-  padding-left: $page-margin-mobile + 4px;
-  padding-right: $page-margin-mobile + 4px;
-  @media #{$mq-medium} {
-    padding-left: $content-margin + 2px;
-    padding-right: $content-margin + 2px;
-  }
-}
-.editor__document--overlay {
-  padding-left: $page-margin-mobile;
-  padding-right: $page-margin-mobile;
-  @media #{$mq-medium} {
-    padding-left: $content-margin;
-    padding-right: $content-margin;
   }
 }
 .editor__document-title {
