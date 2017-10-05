@@ -32,27 +32,19 @@ class FeedCard extends React.Component<FeedCardProps, {}> {
         <a href={this.getArticleURL()} className="feed__link">
           <span />
         </a>
-        <h2 className="feed__card-title">
-          {props.article.title}
-        </h2>
-        <div className="feed_card-excerpt">
-          {props.article.previewBlocks.map((blockIdx, mapIdx) => {
-            let block = props.article.blocks[blockIdx];
-            if (block.kind === "paragraph") {
-              return (
-                <div className="feed__card-text-container" key={mapIdx}>
-                  <p className="feed__card-text">
-                    {block.text}
-                  </p>
-                </div>
-              );
-            } else if (block.kind === "document") {
-              let highlightedNodes = getHighlightedNodes(
-                getNodeArray(block.excerptId),
-                block.highlightedRange
-              );
-              return (
-                <div className="feed__card-document" key={mapIdx}>
+        {props.article.previewBlocks.map((blockIdx, mapIdx) => {
+          let block = props.article.blocks[blockIdx];
+          if (block.kind === "document") {
+            let highlightedNodes = getHighlightedNodes(
+              getNodeArray(block.excerptId),
+              block.highlightedRange
+            );
+            return (
+              <div
+                className="feed__card-thumb-container feed__card-thumb-container--document"
+                key={mapIdx}
+              >
+                <div className="feed__card-document">
                   <h2 className="feed__card-document-title">
                     {getDocumentFactTitle(block.excerptId)}
                   </h2>
@@ -67,21 +59,38 @@ class FeedCard extends React.Component<FeedCardProps, {}> {
                     })}
                   </div>
                 </div>
-              );
-            } else if (block.kind === "video") {
-              let thumb =
-                "http://img.youtube.com/vi/" + block.videoId + "/0.jpg";
+              </div>
+            );
+          } else if (block.kind === "video") {
+            let thumb = "http://img.youtube.com/vi/" + block.videoId + "/0.jpg";
+            return (
+              <div
+                className="feed__card-thumb-container feed__card-thumb-container--video"
+                key={mapIdx}
+              >
+                <img className="feed__card-thumb" src={thumb} />
+              </div>
+            );
+          }
+        })}
+        <div className="feed__card-excerpt">
+          <h2 className="feed__card-title">
+            {props.article.title}
+          </h2>
+          {props.article.previewBlocks.map((blockIdx, mapIdx) => {
+            let block = props.article.blocks[blockIdx];
+            if (block.kind === "paragraph") {
               return (
-                <div className="feed__card-thumb-container" key={mapIdx}>
-                  <img className="feed__card-thumb" src={thumb} />
+                <div className="feed__card-text-container" key={mapIdx}>
+                  <p className="feed__card-text">
+                    {block.text}
+                  </p>
                 </div>
               );
             }
           })}
         </div>
-        <div className="feed__card-text-container">
-          <span className="feed__more">Read more</span>
-        </div>
+        <span className="feed__more">Read more</span>
       </div>
     );
   }

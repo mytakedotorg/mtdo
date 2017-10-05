@@ -1,7 +1,10 @@
 .feed {
-  margin: 2rem auto;
+  margin: auto;
   width: $column-width;
   max-width: 100%;
+}
+.feed__inner-container {
+  @include text-margin-lr;
 }
 .feed__title {
   @include heading2;
@@ -9,20 +12,23 @@
 .feed__card {
   position: relative;
   background: palette(feed, background);
-  border: palette(feed, card__border);
-  box-shadow: 2px 2px 4px palette(feed, card__shadow);
+  border: 1px solid palette(feed, card__border);
   color: palette(feed, text);
-  padding-top: 5px;
-  padding-bottom: 5px;
-  margin: 1rem;
-  @media #{$mq-medium} {
-    margin: 2rem;
-  }
+  margin-top: $content-margin;
+  @include clearfix;
 }
 .feed__card-title {
   @include heading3;
-  margin-left: 15px;
-  margin-right: 15px;
+  margin-top: $page-margin-mobile;
+  margin-right: $page-margin-mobile;
+  margin-left: $page-margin-mobile;
+  margin-bottom: $page-margin-mobile / 2;
+  @media #{$mq-medium} {
+    margin-top: $content-margin;
+    margin-right: $content-margin;
+    margin-left: $content-margin;
+    margin-bottom: $content-margin / 2;
+  }
 }
 .feed__link {
   position: absolute;
@@ -33,31 +39,35 @@
   z-index: 100;
 }
 .feed__card-document {
-  padding-top: 5px;
-  padding-bottom: 5px;
-  margin-left: 15px;
-  margin-right: 15px;
-  border: 1px solid palette(feed, card__border);
+  padding: $page-margin-mobile;
+  @media #{$mq-medium} {
+    padding: $content-margin;
+  }
+  background-color: palette(feed, background--highlight);
 }
 .feed__card-document-title {
-  @include heading4;
-  margin-left: 15px;
-  margin-right: 15px;
+  @include heading5;
+  margin: 0;
+  margin-bottom: $page-margin-mobile / 2;
+  @media #{$mq-medium} {
+    margin-bottom: $content-margin / 2;
+  }
   color: palette(feed, text--document);
 }
 .feed__card-document-text {
   @include body;
-  margin-left: 15px;
-  margin-right: 15px;
+  margin: 0;
   color: palette(feed, text--document);
-}
-.feed__card-document-text--highlight {
-  color: palette(feed, text--highlight);
-  background-color: palette(feed, background--highlight);
+  > p {
+    margin: 0;
+  }
 }
 .feed__card-text-container {
-  margin: 10px 15px;
-  @include clearfix;
+  @include text-margin-lr;
+  margin-bottom: $page-margin-mobile * 2.25;
+  @media #{$mq-medium} {
+    margin-bottom: $content-margin * 2.25;
+  }
 }
 .feed__card-text {
   margin-top: 0;
@@ -66,17 +76,37 @@
   color: palette(feed, text--faded);
 }
 .feed__more {
-  float: right;
+  position: absolute;
+  bottom: $page-margin-mobile / 2;
+  right: $page-margin-mobile;
+  @media #{$mq-medium} {
+    bottom: $content-margin / 2;
+    right: $content-margin;
+  }
   @include body--small;
   color: palette(feed, text);
-  margin-right: 1rem;
 }
 .feed__card-thumb-container {
-  text-align: center;
-  margin: 10px 15px;
+  width: 100%;
+  @media #{$mq-medium} {
+    float: left;
+    width: 60%;
+  }
+  margin-right: $page-margin-mobile;
+  @media #{$mq-medium} {
+    margin-right: $content-margin;
+  }
   @include clearfix;
 }
+.feed__card-thumb-container--video {
+  max-height: 250px;
+  overflow: hidden;
+  @media #{$mq-medium} {
+    max-height: initial;
+  }
+}
 .feed__card-thumb {
-  max-width: 100%;
+  width: 100%;
   height: auto;
+  vertical-align: bottom;
 }

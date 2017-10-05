@@ -7,6 +7,8 @@
   outline: none;
   box-shadow: none;
   resize: none;
+  box-sizing: border-box;
+  @include text-margin;
 }
 @mixin textareaHeightDiv {
   position: absolute;
@@ -16,11 +18,18 @@
   white-space: pre-wrap;
   width: 100%;
   word-wrap: break-word;
+  box-sizing: border-box;
+  padding-left: 2px;
+  padding-right: $content-margin + 2px;
+  margin-top: 2px;
+  @include text-margin;
 }
 .editor__wrapper {
   margin: auto;
-  padding-top: 2rem;
-  padding-bottom: 2rem;
+  padding-top: $page-margin-mobile * $vertical-margin-multiplier;
+  @media #{$mq-medium} {
+    padding-top: $content-margin * $vertical-margin-multiplier;
+  }
   width: $column-width;
   max-width: 100%;
   background-color: palette(editor, background);
@@ -29,20 +38,17 @@
 }
 .editor {
   position: relative;
-  padding: 0 $page-margin-mobile;
-  @media #{$mq-medium} {
-    padding: 0 $page-margin;
-  }
   min-height: 300px;
+  overflow: hidden;
 }
 .editor__inner {
   position: relative;
 }
+.editor__text-container {
+  padding-right: $content-margin;
+}
 .editor__title {
-  text-align: left;
-  margin-top: 0;
   position: relative;
-  height: 61px;
   @include overrideDefaultTextArea;
   @include heading1;
 }
@@ -67,7 +73,6 @@
   opacity: 0.3;
 }
 .editor__paragraph {
-  text-align: left;
   position: relative;
   @include overrideDefaultTextArea;
   @include body('sans');
@@ -78,20 +83,22 @@
 }
 .editor__document {
   position: relative;
-  background: palette(editor, background);
-  border: 1px solid palette(editor, border);
-  box-shadow: 1px 1px 2px palette(editor, shadow);
+  background: palette(editor, document__background);
   color: palette(editor, text);
+  border-radius: 3px;
+  @include body;
+  padding-left: $page-margin-mobile;
+  padding-right: $page-margin-mobile;
+  margin-bottom: $page-margin-mobile * $vertical-margin-multiplier;
+  @media #{$mq-medium} {
+    padding-left: $content-margin;
+    padding-right: $content-margin;
+    margin-bottom: $content-margin * $vertical-margin-multiplier;
+  }
   &:not(.editor__document--no-hover) {
     cursor: pointer;
-    &:hover:before {
-      content: " ";
-      position: absolute;
-      top: -3px;
-      left: -3px;
-      right: -3px;
-      bottom: -3px;
-      border: 3px solid palette(editor, border);
+    &:hover {
+      background: palette(editor, document__background--hover);
     }
   }
   p,
@@ -100,26 +107,21 @@
     position: relative;
     overflow: hidden;
   }
+  > p {
+    margin: 0;
+  }
 }
-.editor__document--base {
-  padding: 5px 15px;
-  margin-bottom: 2rem;
-  @include body;
-}
-.editor__document--overlay {
-  padding: 5px 1px;
-  @include body;
+.editor__document-title {
+  @include heading3;
+  margin: 0;
+  margin-bottom: $page-margin-mobile / 2;
+  @media #{$mq-medium} {
+    margin-bottom: $content-margin / 2;
+  }
 }
 .editor__document-highlight {
-  position: relative;
-  z-index: -1;
   color: palette(editor, text--highlight);
-  background-color: palette(editor, background--highlight);
-  box-shadow: 5px 5px 0 palette(editor, background--highlight),
-    -5px 5px 0 palette(editor, background--highlight),
-    -5px -5px 0 palette(editor, background--highlight),
-    5px -5px 0 palette(editor, background--highlight);
-  box-decoration-break: clone;
+  font-weight: 700;
 }
 .editor__video {
   display: block;

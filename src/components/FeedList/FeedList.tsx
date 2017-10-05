@@ -42,15 +42,17 @@ class FeedList extends React.Component<FeedListProps, FeedListState> {
   render() {
     return (
       <div className="feed">
-        {this.state.cards.map((card, idx) => {
-          return (
-            <FeedCard
-              key={idx}
-              username={card.username}
-              article={card.article}
-            />
-          );
-        })}
+        <div className="feed__inner-container">
+          {this.state.cards.map((card, idx) => {
+            return (
+              <FeedCard
+                key={idx}
+                username={card.username}
+                article={card.article}
+              />
+            );
+          })}
+        </div>
       </div>
     );
   }

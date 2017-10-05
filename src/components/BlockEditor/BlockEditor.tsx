@@ -176,7 +176,7 @@ class Paragraph extends React.Component<
   render() {
     let classes = "editor__paragraph";
     return (
-      <div>
+      <div className="editor__text-container">
         <textarea
           className={classes}
           onBlur={this.handleBlur}
@@ -283,7 +283,7 @@ class Document extends React.Component<DocumentBlockProps, DocumentBlockState> {
         onKeyDown={this.handleKeyDown}
         ref={(div: HTMLDivElement) => (this.div = div)}
       >
-        <h2>
+        <h2 className="editor__document-title">
           {this.getTitle()}
         </h2>
         {highlightedNodes.map((node, index) => {
@@ -511,31 +511,33 @@ class BlockEditor extends React.Component<BlockEditorProps, BlockEditorState> {
       <div className="editor__wrapper">
         <div className="editor">
           <div className="editor__inner">
-            {!isWriteOnly(props.eventHandlers)
-              ? <textarea
-                  className="editor__title"
-                  placeholder="Title"
-                  value={props.takeDocument.title}
-                  style={this.state.style}
-                  readOnly={true}
-                  ref={(textarea: HTMLTextAreaElement) =>
-                    (this.textarea = textarea)}
-                />
-              : <textarea
-                  className="editor__title"
-                  onChange={this.handleChange}
-                  onKeyDown={this.handleKeyDown}
-                  onKeyUp={this.handleKeyUp}
-                  placeholder="Title"
-                  value={props.takeDocument.title}
-                  style={this.state.style}
-                  ref={(textarea: HTMLTextAreaElement) =>
-                    (this.textarea = textarea)}
-                />}
-            <div
-              className="editor__title-height-div"
-              ref={(div: HTMLDivElement) => (this.div = div)}
-            />
+            <div className="editor__text-container">
+              {!isWriteOnly(props.eventHandlers)
+                ? <textarea
+                    className="editor__title"
+                    placeholder="Title"
+                    value={props.takeDocument.title}
+                    style={this.state.style}
+                    readOnly={true}
+                    ref={(textarea: HTMLTextAreaElement) =>
+                      (this.textarea = textarea)}
+                  />
+                : <textarea
+                    className="editor__title"
+                    onChange={this.handleChange}
+                    onKeyDown={this.handleKeyDown}
+                    onKeyUp={this.handleKeyUp}
+                    placeholder="Title"
+                    value={props.takeDocument.title}
+                    style={this.state.style}
+                    ref={(textarea: HTMLTextAreaElement) =>
+                      (this.textarea = textarea)}
+                  />}
+              <div
+                className="editor__title-height-div"
+                ref={(div: HTMLDivElement) => (this.div = div)}
+              />
+            </div>
             <div className="editor__block-list">
               {props.takeDocument.blocks.map((block, idx) => {
                 if (!isWriteOnly(props.eventHandlers)) {

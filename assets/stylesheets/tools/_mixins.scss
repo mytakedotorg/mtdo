@@ -3,7 +3,10 @@
   position: relative;
   border-radius: 5px;
   display: inline-block;
-  padding: 5px;
+  padding: 5px $page-margin-mobile;
+  @media #{$mq-medium} {
+    padding: 5px $content-margin;
+  }
   text-decoration: none;
   -webkit-appearance: none; // prevent weird iOS look with <button> elements
   overflow: hidden;
@@ -19,7 +22,6 @@
   &:hover {
     background: palette(button, background--base-hover);
   }
-  width: 175px;
 }
 
 @mixin button--red {
@@ -29,7 +31,6 @@
   &:hover {
     background: palette(button, background--action-hover);
   }
-  width: 180px;
 }
 
 @mixin clearfix {
@@ -44,6 +45,23 @@
   box-sizing: border-box;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
+}
+
+@mixin text-margin-lr {
+  margin-left: $page-margin-mobile;
+  margin-right: $page-margin-mobile;
+  @media #{$mq-medium} {
+    margin-left: $content-margin;
+    margin-right: $content-margin;
+  }
+}
+
+@mixin text-margin {
+  @include text-margin-lr;
+  margin-bottom: $page-margin-mobile * $vertical-margin-multiplier;
+  @media #{$mq-medium} {
+    margin-bottom: $content-margin * $vertical-margin-multiplier;
+  }
 }
 
 @function palette($palette, $tone) {
