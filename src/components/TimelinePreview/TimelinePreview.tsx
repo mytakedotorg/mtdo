@@ -20,19 +20,29 @@ import {
 } from "../../utils/databaseData";
 
 export interface SetFactHandlers {
-  handleDocumentSetClick: (excerptId: string, range: [number, number]) => void;
+  handleDocumentSetClick: (
+    excerptId: string,
+    highlightedRange: [number, number],
+    viewRange: [number, number]
+  ) => void;
   handleVideoSetClick: (id: string, range: [number, number]) => void;
+}
+
+interface Ranges {
+  highlightedRange: [number, number];
+  viewRange: [number, number];
 }
 
 interface TimelinePreviewProps {
   excerptId: string;
   setFactHandlers?: SetFactHandlers;
-  highlightedRange?: [number, number];
+  ranges?: Ranges;
   offset?: number;
 }
 
 interface TimelinePreviewState {
   highlightedRange: [number, number];
+  viewRange: [number, number];
   textIsHighlighted: boolean;
   highlightedNodes: FoundationNode[];
   offsetTop: number;
@@ -49,8 +59,9 @@ export default class TimelinePreview extends React.Component<
     super(props);
 
     this.state = {
-      highlightedRange: props.highlightedRange || [0, 0],
-      textIsHighlighted: props.highlightedRange ? true : false,
+      highlightedRange: props.ranges ? props.ranges.highlightedRange : [0, 0],
+      viewRange: props.ranges ? props.ranges.viewRange : [0, 0],
+      textIsHighlighted: props.ranges ? true : false,
       highlightedNodes: [],
       offsetTop: 0,
       fact: getFact(props.excerptId),
@@ -98,20 +109,20 @@ export default class TimelinePreview extends React.Component<
 
         const newHighlightedNodes = getHighlightedNodes(
           this.document.getDocumentNodes(),
-          highlightedText.range
+          highlightedText.highlightedRange,
+          highlightedText.viewRange
         );
 
         this.setState({
           highlightedNodes: newHighlightedNodes,
-          highlightedRange: highlightedText.range,
+          highlightedRange: highlightedText.highlightedRange,
           textIsHighlighted: true,
-          offsetTop: this.getScrollTop(highlightedText.range)
+          offsetTop: this.getScrollTop(highlightedText.highlightedRange)
         });
       }
     }
   };
   handleSetClick = (videoRange?: [number, number]) => {
-    let range: [number, number];
     let excerptId = this.props.excerptId;
     if (videoRange) {
       if (this.props.setFactHandlers) {
@@ -121,12 +132,25 @@ export default class TimelinePreview extends React.Component<
           "/new-take/#" + excerptId + "&" + videoRange[0] + "&" + videoRange[1];
       }
     } else {
-      range = this.state.highlightedRange;
+      let highlightedRange = this.state.highlightedRange;
+      let viewRange = this.state.viewRange;
       if (this.props.setFactHandlers) {
-        this.props.setFactHandlers.handleDocumentSetClick(excerptId, range);
+        this.props.setFactHandlers.handleDocumentSetClick(
+          excerptId,
+          highlightedRange,
+          viewRange
+        );
       } else {
         window.location.href =
-          "/new-take/#" + excerptId + "&" + range[0] + "&" + range[1];
+          "/new-take/#" +
+          excerptId +
+          "&" +
+          highlightedRange[0] +
+          "&" +
+          highlightedRange[1] +
+          viewRange[0] +
+          "&" +
+          viewRange[1];
       }
     }
   };
@@ -141,11 +165,12 @@ export default class TimelinePreview extends React.Component<
     this.setup();
   }
   setup = () => {
-    if (this.props.highlightedRange) {
+    if (this.props.ranges) {
       // Get the list of nodes highlighted by a previous author
       let initialHighlightedNodes = getHighlightedNodes(
         this.document.getDocumentNodes(),
-        this.props.highlightedRange
+        this.props.ranges.highlightedRange,
+        this.props.ranges.viewRange
       );
 
       // Get the scrollTop value of the top most HTML element containing the same highlighted nodes

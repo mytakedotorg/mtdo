@@ -21,15 +21,21 @@ if (route === "foundation" && !excerptId) {
   let hashes = window.location.hash.substring(1).split("&");
   let user = hashes[0].split("/")[1];
   let articleTitle = hashes[0].split("/")[2];
-  let range: [number, number] = [parseInt(hashes[1]), parseInt(hashes[2])];
-  let scrollTop = parseInt(hashes[3]);
+  let highlighedRange: [number, number] = [
+    parseInt(hashes[1]),
+    parseInt(hashes[2])
+  ];
+  let viewRange: [number, number] = [parseInt(hashes[3]), parseInt(hashes[4])];
+  let scrollTop = parseInt(hashes[5]);
 
   // Validate all Props here
   if (
     validators.isValidUser(user) &&
     validators.isValidTitle(articleTitle) &&
-    !isNaN(range[0]) &&
-    !isNaN(range[1]) &&
+    !isNaN(highlighedRange[0]) &&
+    !isNaN(highlighedRange[1]) &&
+    !isNaN(viewRange[0]) &&
+    !isNaN(viewRange[1]) &&
     !isNaN(scrollTop)
   ) {
     Root = (
@@ -37,7 +43,8 @@ if (route === "foundation" && !excerptId) {
         articleTitle={articleTitle}
         articleUser={user}
         scrollTop={scrollTop}
-        highlightedRange={range}
+        highlightedRange={highlighedRange}
+        viewRange={viewRange}
         excerptId={excerptId}
       />
     );
@@ -52,16 +59,16 @@ if (route === "foundation" && !excerptId) {
       initJson = config.initialState;
     }
   } else if (window.location.hash) {
-    // Expect hash URL to be like, #{FoundationType}&{highlightRangeStart}&{highlightRangeEnd}&{URL of Take being read}
+    // Expect hash URL to be like, #{FoundationType}&{highlightRangeStart}&{highlightRangeEnd}&{viewRangeStart}&{viewRangeEnd}&{URL of Take being read}
     // localhost:3000/new-take/#amendments&369&514&/samples/does-a-law-mean-what-it-says-or-what-it-meant/
     let hashes = window.location.hash.split("&");
     let excerptId = hashes[0].substring(1);
-    let range = [parseInt(hashes[1]), parseInt(hashes[2])];
-    //let article = hashes[3];
+    let highlightedRange = [parseInt(hashes[1]), parseInt(hashes[2])];
+    let viewRange = [parseInt(hashes[3]), parseInt(hashes[4])];
 
     let fact = getFact(excerptId);
     if (isDocument(fact)) {
-      if (!isNaN(range[0]) && !isNaN(range[1])) {
+      if (!isNaN(highlightedRange[0]) && !isNaN(highlightedRange[1])) {
         initJson = {
           takeDocument: {
             title: "",
@@ -69,7 +76,8 @@ if (route === "foundation" && !excerptId) {
               {
                 kind: "document",
                 excerptId: excerptId,
-                highlightedRange: range
+                highlightedRange: highlightedRange,
+                viewRange: viewRange
               },
               { kind: "paragraph", text: "" }
             ]
@@ -80,12 +88,12 @@ if (route === "foundation" && !excerptId) {
         initJson = config.initialState;
       }
     } else if (isVideo(fact)) {
-      if (!isNaN(range[0]) && !isNaN(range[1])) {
+      if (!isNaN(highlightedRange[0]) && !isNaN(highlightedRange[1])) {
         initJson = {
           takeDocument: {
             title: "",
             blocks: [
-              { kind: "video", videoId: excerptId, range: range },
+              { kind: "video", videoId: excerptId, range: highlightedRange },
               { kind: "paragraph", text: "" }
             ]
           },

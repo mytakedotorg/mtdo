@@ -18,6 +18,7 @@ beforeAll(() => {
       articleTitle={title}
       articleUser={user}
       highlightedRange={range}
+      viewRange={range}
       scrollTop={scrollTop}
       excerptId={excerptId}
     />

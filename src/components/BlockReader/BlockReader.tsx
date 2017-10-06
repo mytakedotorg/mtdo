@@ -21,7 +21,8 @@ class BlockReader extends React.Component<BlockReaderProps, BlockReaderState> {
   handleClick = (
     excerptId: string,
     offset: number,
-    range: [number, number]
+    highlightedRange: [number, number],
+    viewRange: [number, number]
   ) => {
     window.location.href =
       "/foundation/" +
@@ -29,9 +30,13 @@ class BlockReader extends React.Component<BlockReaderProps, BlockReaderState> {
       "#" +
       window.location.pathname +
       "&" +
-      range[0] +
+      highlightedRange[0] +
       "&" +
-      range[1] +
+      highlightedRange[1] +
+      "&" +
+      viewRange[0] +
+      "&" +
+      viewRange[1] +
       "&" +
       offset;
   };

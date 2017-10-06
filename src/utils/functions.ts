@@ -53,8 +53,12 @@ function getNodesInRange(
 
 function getHighlightedNodes(
   nodes: FoundationNode[],
-  range: [number, number]
+  range: [number, number],
+  viewRange: [number, number]
 ): FoundationNode[] {
+  if (range[0] === viewRange[0] && range[1] === viewRange[1]) {
+    return getNodesInRange(nodes, range);
+  }
   const startRange = range[0];
   const endRange = range[1];
   let documentNodes = getNodesInRange(nodes, range);
@@ -145,7 +149,8 @@ function getHighlightedNodes(
 
 interface HighlightedText {
   newNodes: FoundationNode[];
-  range: [number, number];
+  highlightedRange: [number, number];
+  viewRange: [number, number];
 }
 
 function highlightText(
@@ -399,17 +404,27 @@ function highlightText(
 
   clearDefaultDOMSelection();
 
-  let rangeStart = 0;
-  let rangeEnd = 0;
+  let highlightedRangeStart = 0;
+  let highlightedRangeEnd = 0;
+  let viewRangeStart = 0;
+  let viewRangeEnd = 0;
   if (startContainer && endContainer) {
-    rangeStart =
+    highlightedRangeStart =
       parseInt(startContainer.attributes[0].value) + indexOfSelectionStart;
-    rangeEnd = parseInt(endContainer.attributes[0].value) + indexOfSelectionEnd;
+    viewRangeStart = parseInt(startContainer.attributes[0].value);
+    highlightedRangeEnd =
+      parseInt(endContainer.attributes[0].value) + indexOfSelectionEnd;
+    if (endContainer.textContent) {
+      viewRangeEnd =
+        parseInt(endContainer.attributes[0].value) +
+        endContainer.textContent.length;
+    }
   }
 
   return {
     newNodes: newNodes,
-    range: [rangeStart, rangeEnd]
+    highlightedRange: [highlightedRangeStart, highlightedRangeEnd],
+    viewRange: [viewRangeStart, viewRangeEnd]
   };
 }
 /**
