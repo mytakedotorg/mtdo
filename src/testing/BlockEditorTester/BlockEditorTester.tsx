@@ -26,7 +26,8 @@ class BlockEditorTester extends React.Component<
           {
             kind: "document",
             excerptId: "united-states-constitution",
-            highlightedRange: [369, 514]
+            highlightedRange: [369, 514],
+            viewRange: [361, 575]
           }
         ]
       },

@@ -37,7 +37,8 @@ class FeedCard extends React.Component<FeedCardProps, {}> {
           if (block.kind === "document") {
             let highlightedNodes = getHighlightedNodes(
               getNodeArray(block.excerptId),
-              block.highlightedRange
+              block.highlightedRange,
+              block.viewRange
             );
             return (
               <div

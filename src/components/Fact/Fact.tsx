@@ -6,6 +6,7 @@ interface FactProps {
   articleTitle: string;
   articleUser: string;
   highlightedRange: [number, number];
+  viewRange: [number, number];
   scrollTop: number;
   excerptId: string;
 }
@@ -14,7 +15,32 @@ class Fact extends React.Component<FactProps, {}> {
   constructor(props: FactProps) {
     super(props);
   }
-  handleSetClick = (excerptTitle: string, range: [number, number]): void => {
+  handleDocumentSetClick = (
+    excerptTitle: string,
+    highlightedRange: [number, number],
+    viewRange: [number, number]
+  ): void => {
+    window.location.href =
+      "/new-take/#" +
+      excerptTitle +
+      "&" +
+      highlightedRange[0] +
+      "&" +
+      highlightedRange[1] +
+      "&" +
+      viewRange[0] +
+      "&" +
+      viewRange[1] +
+      "&" +
+      "/" +
+      this.props.articleUser +
+      "/" +
+      this.props.articleTitle;
+  };
+  handleVideoSetClick = (
+    excerptTitle: string,
+    range: [number, number]
+  ): void => {
     window.location.href =
       "/new-take/#" +
       excerptTitle +
@@ -32,12 +58,13 @@ class Fact extends React.Component<FactProps, {}> {
     const initialRange = {
       offset: this.props.scrollTop,
       highlightedRange: this.props.highlightedRange,
+      viewRange: this.props.viewRange,
       excerptId: this.props.excerptId
     };
 
     const setFactHandlers = {
-      handleDocumentSetClick: this.handleSetClick,
-      handleVideoSetClick: this.handleSetClick
+      handleDocumentSetClick: this.handleDocumentSetClick,
+      handleVideoSetClick: this.handleVideoSetClick
     };
 
     return (

@@ -26,7 +26,7 @@ export interface DocumentBlock {
   kind: "document";
   excerptId: string;
   highlightedRange: [number, number];
-  viewRange?: [number, number];
+  viewRange: [number, number];
 }
 export interface VideoBlock {
   kind: "video";
@@ -52,7 +52,8 @@ interface ReadingEventHandlers {
   onDocumentClick: (
     excerptId: string,
     offset: number,
-    range: [number, number]
+    highlightedRange: [number, number],
+    viewRange: [number, number]
   ) => void;
 }
 function isWriteOnly(
@@ -244,7 +245,8 @@ class Document extends React.Component<DocumentBlockProps, DocumentBlockState> {
       this.props.eventHandlers.onDocumentClick(
         this.props.block.excerptId,
         this.div.getBoundingClientRect().top,
-        this.props.block.highlightedRange
+        this.props.block.highlightedRange,
+        this.props.block.viewRange
       );
     }
   };
@@ -280,7 +282,8 @@ class Document extends React.Component<DocumentBlockProps, DocumentBlockState> {
     const { props } = this;
     let highlightedNodes = getHighlightedNodes(
       [...this.state.documentNodes],
-      props.block.highlightedRange
+      props.block.highlightedRange,
+      props.block.viewRange
     );
 
     let classes = "editor__document editor__document--base";

@@ -6,6 +6,7 @@ import TimelinePreview, { SetFactHandlers } from "../TimelinePreview";
 interface InitialRangeOptions {
   offset: number;
   highlightedRange: [number, number];
+  viewRange: [number, number];
   excerptId: string;
 }
 
@@ -34,14 +35,19 @@ export default class TimelineView extends React.Component<
     });
   };
   render() {
-    if (this.props.initialRange) {
+    const { props } = this;
+    if (props.initialRange) {
+      const ranges = {
+        highlightedRange: props.initialRange.highlightedRange,
+        viewRange: props.initialRange.viewRange
+      };
       return (
         <div className={"timeline__view"}>
           <TimelinePreview
             excerptId={this.state.excerptId}
-            setFactHandlers={this.props.setFactHandlers}
-            highlightedRange={this.props.initialRange.highlightedRange}
-            offset={this.props.initialRange.offset}
+            setFactHandlers={props.setFactHandlers}
+            ranges={ranges}
+            offset={props.initialRange.offset}
           />
           <Timeline onItemClick={this.showPreview} />
         </div>
@@ -53,7 +59,7 @@ export default class TimelineView extends React.Component<
           {this.state.excerptId
             ? <TimelinePreview
                 excerptId={this.state.excerptId}
-                setFactHandlers={this.props.setFactHandlers}
+                setFactHandlers={props.setFactHandlers}
               />
             : null}
         </div>

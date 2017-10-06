@@ -21,10 +21,15 @@ describe("Constitution", () => {
   let wrapper: ReactWrapper;
   const offset = 399;
   const highlightedRange: [number, number] = [368, 513];
+  const viewRange: [number, number] = [368, 513];
   const excerptId = "united-states-constitution";
   const setFactHandlers = {
     handleDocumentSetClick: onDocumentSetClick,
     handleVideoSetClick: onVideoSetClick
+  };
+  const ranges = {
+    highlightedRange: highlightedRange,
+    viewRange: viewRange
   };
 
   beforeAll(() => {
@@ -32,7 +37,7 @@ describe("Constitution", () => {
       <TimelinePreview
         excerptId={excerptId}
         setFactHandlers={setFactHandlers}
-        highlightedRange={highlightedRange}
+        ranges={ranges}
         offset={offset}
       />
     );

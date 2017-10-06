@@ -63,7 +63,8 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
     const newBlock: DocumentBlock = {
       kind: "document",
       excerptId: excerptId,
-      highlightedRange: highlightedRange
+      highlightedRange: highlightedRange,
+      viewRange: highlightedRange
     };
 
     const emptyParagraphBlock: ParagraphBlock = {

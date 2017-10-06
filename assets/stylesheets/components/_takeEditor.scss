@@ -114,10 +114,12 @@
     }
   }
   p,
-  h2 {
+  h2,
+  h3 {
     z-index: 1;
     position: relative;
     overflow: hidden;
+    margin-top: 0;
   }
   > p {
     margin: 0;
