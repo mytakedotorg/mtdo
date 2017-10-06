@@ -259,34 +259,36 @@ export default class Timeline extends React.Component<
   render() {
     return (
       <div className={"timeline"}>
-        <div className="timeline__actions">
+        <div className="timeline__inner-container">
           <p className="timeline__instructions">
             Choose the type of Fact you wish to explore.
           </p>
-          <input
-            type="radio"
-            id="radio--debates"
-            className="timeline__radio"
-            name="type"
-            value="Debates"
-            onChange={this.handleChange}
-            checked={this.state.selectedOption === "Debates"}
-          />
-          <label htmlFor="radio--debates" className="timeline__radio-label">
-            Debates
-          </label>
-          <input
-            type="radio"
-            id="radio--documents"
-            className="timeline__radio"
-            name="type"
-            value="Documents"
-            onChange={this.handleChange}
-            checked={this.state.selectedOption === "Documents"}
-          />
-          <label htmlFor="radio--documents" className="timeline__radio-label">
-            Founding Documents
-          </label>
+          <div className="timeline__actions">
+            <input
+              type="radio"
+              id="radio--debates"
+              className="timeline__radio"
+              name="type"
+              value="Debates"
+              onChange={this.handleChange}
+              checked={this.state.selectedOption === "Debates"}
+            />
+            <label htmlFor="radio--debates" className="timeline__radio-label">
+              Debates
+            </label>
+            <input
+              type="radio"
+              id="radio--documents"
+              className="timeline__radio"
+              name="type"
+              value="Documents"
+              onChange={this.handleChange}
+              checked={this.state.selectedOption === "Documents"}
+            />
+            <label htmlFor="radio--documents" className="timeline__radio-label">
+              Founding Documents
+            </label>
+          </div>
         </div>
         <div id="mytimeline" />
       </div>

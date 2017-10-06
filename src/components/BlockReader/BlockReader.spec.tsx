@@ -31,6 +31,20 @@ function createNodeMock(element: React.ReactElement<HTMLElement>) {
         }
       };
     }
+    case "p": {
+      return {
+        resetHeight() {
+          // Do nothing
+        }
+      };
+    }
+    case "h1": {
+      return {
+        focus() {
+          // Do nothing
+        }
+      };
+    }
   }
 }
 

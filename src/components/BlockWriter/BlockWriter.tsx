@@ -26,6 +26,33 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
       ...props.initState
     };
   }
+  shouldAppendParagraph = (): boolean => {
+    const blocks = this.state.takeDocument.blocks;
+    const activeBlockIndex = this.state.activeBlockIndex;
+    if (
+      blocks[activeBlockIndex + 1] &&
+      blocks[activeBlockIndex + 1].kind === "paragraph" &&
+      (blocks[activeBlockIndex + 1] as ParagraphBlock).text.length === 0
+    ) {
+      // There is already an empty paragraph after this block
+      return false;
+    } else {
+      return true;
+    }
+  };
+  shouldPrependParagraph = (): boolean => {
+    const blocks = this.state.takeDocument.blocks;
+    const activeBlockIndex = this.state.activeBlockIndex;
+    if (
+      blocks[activeBlockIndex] &&
+      blocks[activeBlockIndex].kind !== "paragraph"
+    ) {
+      // There is an evidence block immediately before this block
+      return true;
+    } else {
+      return false;
+    }
+  };
   addDocument = (
     excerptId: string,
     highlightedRange: [number, number]
@@ -39,18 +66,53 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
       highlightedRange: highlightedRange
     };
 
-    const newBlocks = [
-      ...blocks.slice(0, activeBlockIndex + 1),
-      newBlock,
-      ...blocks.slice(activeBlockIndex + 1)
-    ];
+    const emptyParagraphBlock: ParagraphBlock = {
+      kind: "paragraph",
+      text: ""
+    };
+
+    let newBlocks = [];
+
+    let indexAddition = 2;
+
+    if (this.shouldAppendParagraph() && this.shouldPrependParagraph()) {
+      indexAddition = 3;
+      newBlocks = [
+        ...blocks.slice(0, activeBlockIndex + 1),
+        emptyParagraphBlock,
+        newBlock,
+        emptyParagraphBlock,
+        ...blocks.slice(activeBlockIndex + 1)
+      ];
+    } else if (this.shouldAppendParagraph()) {
+      newBlocks = [
+        ...blocks.slice(0, activeBlockIndex + 1),
+        newBlock,
+        emptyParagraphBlock,
+        ...blocks.slice(activeBlockIndex + 1)
+      ];
+    } else if (this.shouldPrependParagraph()) {
+      newBlocks = [
+        ...blocks.slice(0, activeBlockIndex + 1),
+        emptyParagraphBlock,
+        newBlock,
+        ...blocks.slice(activeBlockIndex + 1)
+      ];
+    } else {
+      indexAddition = 1;
+      newBlocks = [
+        ...blocks.slice(0, activeBlockIndex + 1),
+        newBlock,
+        ...blocks.slice(activeBlockIndex + 1)
+      ];
+    }
 
     this.setState({
       takeDocument: {
         ...this.state.takeDocument,
         blocks: newBlocks
       },
-      activeBlockIndex: ++activeBlockIndex
+      activeBlockIndex: activeBlockIndex + indexAddition
     });
   };
   addParagraph = (isTitle?: boolean): void => {
@@ -110,9 +172,38 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
       activeBlockIndex: ++activeBlockIndex
     });
   };
-  removeParagraph = (idx: number): void => {
+  shouldRemoveBlock = (idx: number): boolean => {
     const blocks = this.state.takeDocument.blocks;
     if (blocks.length > 1) {
+      // Don't remove the last paragraph if there is not a paragraph immediately before it
+      if (
+        idx === blocks.length - 1 && // Index is for the last block
+        blocks[idx].kind === "paragraph" && // Last block is a paragraph
+        blocks[idx - 1].kind !== "paragraph" // Next to last block is evidence
+      ) {
+        return false;
+      }
+
+      // Never remove a paragraph block between 2 evidence blocks
+      if (blocks[idx - 1] && blocks[idx + 1]) {
+        if (
+          (blocks[idx - 1].kind === "document" &&
+            blocks[idx + 1].kind === "document") ||
+          (blocks[idx - 1].kind === "document" &&
+            blocks[idx + 1].kind === "video") ||
+          (blocks[idx - 1].kind === "video" &&
+            blocks[idx + 1].kind === "document") ||
+          (blocks[idx - 1].kind === "video" && blocks[idx + 1].kind === "video")
+        ) {
+          return false;
+        }
+      }
+    }
+    return true;
+  };
+  removeBlock = (idx: number): void => {
+    const blocks = this.state.takeDocument.blocks;
+    if (blocks.length > 1 && this.shouldRemoveBlock(idx)) {
       this.setState({
         takeDocument: {
           ...this.state.takeDocument,
@@ -120,7 +211,7 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
         }
       });
     } else {
-      if (blocks[0].kind === "document") {
+      if (blocks.length === 1 && blocks[0].kind === "document") {
         //User wants a fresh take, so give user an empty paragraph.
         this.setState({
           takeDocument: {
@@ -189,7 +280,7 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
   render() {
     const eventHandlers = {
       handleChange: this.handleTakeBlockChange,
-      handleDelete: this.removeParagraph,
+      handleDelete: this.removeBlock,
       handleEnterPress: this.addParagraph,
       handleFocus: this.handleTakeBlockFocus
     };

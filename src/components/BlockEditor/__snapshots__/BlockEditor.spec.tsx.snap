@@ -13,17 +13,16 @@ exports[`Read only 1`] = `
       <div
         className="editor__text-container"
       >
-        <textarea
+        <h1
           className="editor__title"
-          placeholder="Title"
-          readOnly={true}
           style={
             Object {
               "height": undefined,
             }
           }
-          value="My take title"
-        />
+        >
+          My take title
+        </h1>
         <div
           className="editor__title-height-div"
         />
@@ -37,73 +36,69 @@ exports[`Read only 1`] = `
           <div
             className="editor__text-container"
           >
-            <textarea
+            <p
               className="editor__paragraph"
-              onBlur={[Function]}
-              onChange={[Function]}
-              onClick={[Function]}
-              onFocus={[Function]}
-              onKeyDown={[Function]}
-              onKeyUp={[Function]}
-              placeholder="Use your voice here."
-              readOnly={true}
               style={
                 Object {
                   "height": undefined,
                 }
               }
-              value="Some text"
-            />
+            >
+              Some text
+            </p>
             <div
               className="editor__paragraph-height-div"
-            />
+            >
+              <p>
+                <br />
+              </p>
+            </div>
           </div>
         </div>
         <div
           className="editor__block editor__block--base"
         >
           <div
-            className="editor__document editor__document--base"
+            className="editor__document editor__document--base editor__document--hover"
             onClick={[Function]}
-            onFocus={[Function]}
-            onKeyDown={[Function]}
-            tabIndex={0}
           >
-            <h2
-              className="editor__document-title"
-            >
-              United States Constitution
-            </h2>
-            <h2
-              data="361"
-            >
-              Article.
-              <span
-                className="editor__document-highlight"
+            <div>
+              <h2
+                className="editor__document-title"
               >
-                 I.
-              </span>
-            </h2>
-            <h3
-              data="393"
-            >
-              <span
-                className="editor__document-highlight"
+                United States Constitution
+              </h2>
+              <h2
+                data="361"
               >
-                Section. 1.
-              </span>
-              
-            </h3>
-            <p
-              data="424"
-            >
-              <span
-                className="editor__document-highlight"
+                Article.
+                <span
+                  className="editor__document-highlight"
+                >
+                   I.
+                </span>
+              </h2>
+              <h3
+                data="393"
               >
-                All legislative Powers herein granted shall be vested in a Congress of the United States, 
-              </span>
-              which shall consist of a Senate and House of Representatives.
-            </p>
+                <span
+                  className="editor__document-highlight"
+                >
+                  Section. 1.
+                </span>
+                
+              </h3>
+              <p
+                data="424"
+              >
+                <span
+                  className="editor__document-highlight"
+                >
+                  All legislative Powers herein granted shall be vested in a Congress of the United States, 
+                </span>
+                which shall consist of a Senate and House of Representatives.
+              </p>
+            </div>
           </div>
         </div>
       </div>
@@ -160,7 +155,6 @@ exports[`Simple block editor model 1`] = `
               onKeyDown={[Function]}
               onKeyUp={[Function]}
               placeholder="Use your voice here."
-              readOnly={false}
               style={
                 Object {
                   "height": undefined,
@@ -170,54 +164,60 @@ exports[`Simple block editor model 1`] = `
             />
             <div
               className="editor__paragraph-height-div"
-            />
+            >
+              <p>
+                <br />
+              </p>
+            </div>
           </div>
         </div>
         <div
           className="editor__block editor__block--base"
         >
           <div
-            className="editor__document editor__document--base editor__document--no-hover"
+            className="editor__document editor__document--base editor__document--focus"
             onClick={[Function]}
             onFocus={[Function]}
             onKeyDown={[Function]}
             tabIndex={0}
           >
-            <h2
-              className="editor__document-title"
-            >
-              United States Constitution
-            </h2>
-            <h2
-              data="361"
-            >
-              Article.
-              <span
-                className="editor__document-highlight"
+            <div>
+              <h2
+                className="editor__document-title"
               >
-                 I.
-              </span>
-            </h2>
-            <h3
-              data="393"
-            >
-              <span
-                className="editor__document-highlight"
+                United States Constitution
+              </h2>
+              <h2
+                data="361"
               >
-                Section. 1.
-              </span>
-              
-            </h3>
-            <p
-              data="424"
-            >
-              <span
-                className="editor__document-highlight"
+                Article.
+                <span
+                  className="editor__document-highlight"
+                >
+                   I.
+                </span>
+              </h2>
+              <h3
+                data="393"
               >
-                All legislative Powers herein granted shall be vested in a Congress of the United States, 
-              </span>
-              which shall consist of a Senate and House of Representatives.
-            </p>
+                <span
+                  className="editor__document-highlight"
+                >
+                  Section. 1.
+                </span>
+                
+              </h3>
+              <p
+                data="424"
+              >
+                <span
+                  className="editor__document-highlight"
+                >
+                  All legislative Powers herein granted shall be vested in a Congress of the United States, 
+                </span>
+                which shall consist of a Senate and House of Representatives.
+              </p>
+            </div>
           </div>
         </div>
       </div>
@@ -274,7 +274,6 @@ exports[`With active 1`] = `
               onKeyDown={[Function]}
               onKeyUp={[Function]}
               placeholder="Use your voice here."
-              readOnly={false}
               style={
                 Object {
                   "height": undefined,
@@ -284,54 +283,60 @@ exports[`With active 1`] = `
             />
             <div
               className="editor__paragraph-height-div"
-            />
+            >
+              <p>
+                <br />
+              </p>
+            </div>
           </div>
         </div>
         <div
           className="editor__block editor__block--base"
         >
           <div
-            className="editor__document editor__document--base editor__document--no-hover"
+            className="editor__document editor__document--base editor__document--focus"
             onClick={[Function]}
             onFocus={[Function]}
             onKeyDown={[Function]}
             tabIndex={0}
           >
-            <h2
-              className="editor__document-title"
-            >
-              United States Constitution
-            </h2>
-            <h2
-              data="361"
-            >
-              Article.
-              <span
-                className="editor__document-highlight"
+            <div>
+              <h2
+                className="editor__document-title"
               >
-                 I.
-              </span>
-            </h2>
-            <h3
-              data="393"
-            >
-              <span
-                className="editor__document-highlight"
+                United States Constitution
+              </h2>
+              <h2
+                data="361"
               >
-                Section. 1.
-              </span>
-              
-            </h3>
-            <p
-              data="424"
-            >
-              <span
-                className="editor__document-highlight"
+                Article.
+                <span
+                  className="editor__document-highlight"
+                >
+                   I.
+                </span>
+              </h2>
+              <h3
+                data="393"
               >
-                All legislative Powers herein granted shall be vested in a Congress of the United States, 
-              </span>
-              which shall consist of a Senate and House of Representatives.
-            </p>
+                <span
+                  className="editor__document-highlight"
+                >
+                  Section. 1.
+                </span>
+                
+              </h3>
+              <p
+                data="424"
+              >
+                <span
+                  className="editor__document-highlight"
+                >
+                  All legislative Powers herein granted shall be vested in a Congress of the United States, 
+                </span>
+                which shall consist of a Senate and House of Representatives.
+              </p>
+            </div>
           </div>
         </div>
       </div>

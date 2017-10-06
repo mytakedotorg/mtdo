@@ -1,3 +1,6 @@
+$document-header-height: 118px;
+$document-margin-top: 0px;
+
 .document {
   width: $column-width;
   max-width: 100%;
@@ -14,29 +17,42 @@
   }
 }
 .document--static {
-  margin: 2rem auto;
+  margin: $document-margin-top auto;
 }
 .document__header {
   width: $column-width;
   max-width: 100%;
   margin: 0 auto;
   background-color: palette(document, background);
-  border-bottom: 1px solid palette(header, border);
+  overflow: hidden;
+  height: $document-header-height - 1; //Subtract border bottom width
+  &:before {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    height: 1px;
+    border-bottom: 1px solid palette(header, border);
+    left: $page-margin-mobile;
+    right: $page-margin-mobile;
+    @media #{$mq-medium} {
+      left: $content-margin;
+      right: $content-margin;
+    }
+  }
 }
 .document__header--visible {
   position: relative;
   z-index: 15;
-  height: 10rem;
 }
 .document__header--fixed {
   position: fixed;
-  height: 10rem;
   top: 0;
   left: 0;
   z-index: 10;
+
   @media #{$mq-medium} {
     left: 50%;
-    margin-left: -383px;
+    margin-left: -$column-width/2; // 768px/2
   }
 }
 .document__header--hidden {
@@ -44,35 +60,30 @@
   height: 0;
 }
 .document__heading {
-  margin-top: 0;
-  margin-bottom: 15px;
+  margin-top: 13.5px;
+  margin-bottom: 13.5px;
   color: palette(document, text);
   @include heading2;
-  margin-left: $page-margin-mobile;
-  @media #{$mq-medium} {
-    margin-left: $page-margin;
-  }
+  @include text-margin-lr;
 }
 .document__header-actions {
-  height: 4rem;
-  margin-left: $page-margin-mobile;
-  @media #{$mq-medium} {
-    margin-left: $page-margin;
-  }
+  @include text-margin-lr;
 }
 .document__instructions {
-  margin-top: 0;
-  margin-bottom: 15px;
+  margin-top: 20px;
+  @media #{$mq-medium} {
+    margin-top: 0;
+    margin-bottom: 10.5px;
+  }
   color: palette(document, text);
   @include body--lead;
 }
 .document__row {
   z-index: 5;
   position: relative;
-  padding: 0 3rem;
 }
 .document__row--push {
-  margin-top: 12rem;
+  margin-top: $document-header-height + $document-margin-top;
 }
 .document__row-inner {
   position: relative;
@@ -99,6 +110,7 @@
 .document__button {
   @include button;
   margin-right: $page-margin-mobile;
+  margin-bottom: 10.5px;
   @media #{$mq-medium} {
     margin-right: $content-margin;
   }

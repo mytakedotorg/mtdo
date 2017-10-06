@@ -17,22 +17,29 @@
   background-color: white;
 }
 
-.timeline__actions {
-  margin-left: $page-margin-mobile;
-  @media #{$mq-medium} {
-    margin-left: $page-margin;
-  }
-  margin-bottom: 15px;
+.timeline__inner-container {
+  width: $column-width;
+  max-width: 100%;
+  margin: auto;
 }
+
 .timeline__instructions {
   color: palette(document, text);
   @include body--lead;
+  @include text-margin;
+}
+
+.timeline__actions {
+  @include text-margin;
 }
 
 .timeline__radio {
   margin-right: 1rem;
 }
 .timeline__radio-label {
-  margin-right: 2rem;
+  margin-right: $page-margin-mobile;
+  @media #{$mq-medium} {
+    margin-right: $content-margin;
+  }
   @include body('sans');
 }

@@ -16,7 +16,7 @@ interface FactHeaderState {}
 
 class FactHeader extends React.Component<FactHeaderProps, FactHeaderState> {
   private header: HTMLDivElement;
-  static headerHeight = 219;
+  static headerHeight = 118;
   constructor(props: FactHeaderProps) {
     super(props);
   }
