@@ -187,7 +187,7 @@ export default class TimelinePreview extends React.Component<
 
       this.setState({
         highlightedNodes: initialHighlightedNodes,
-        offsetTop: this.getScrollTop()
+        offsetTop: offsetTop
       });
     }
   };

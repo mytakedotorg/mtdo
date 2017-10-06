@@ -26,17 +26,21 @@ $document-margin-top: 0px;
   background-color: palette(document, background);
   overflow: hidden;
   height: $document-header-height - 1; //Subtract border bottom width
-  &:before {
-    content: "";
-    position: absolute;
-    bottom: 0;
-    height: 1px;
-    border-bottom: 1px solid palette(header, border);
-    left: $page-margin-mobile;
-    right: $page-margin-mobile;
-    @media #{$mq-medium} {
-      left: $content-margin;
-      right: $content-margin;
+  border-bottom: 1px solid palette(header, border);
+  @media #{$mq-medium} {
+    border-bottom: none;
+    &:before {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      height: 1px;
+      border-bottom: 1px solid palette(header, border);
+      left: $page-margin-mobile;
+      right: $page-margin-mobile;
+      @media #{$mq-medium} {
+        left: $content-margin;
+        right: $content-margin;
+      }
     }
   }
 }
