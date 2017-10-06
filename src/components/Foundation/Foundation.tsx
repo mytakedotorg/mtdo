@@ -11,7 +11,9 @@ class Foundation extends React.Component<FoundationProps, {}> {
   render() {
     return (
       <div className="foundation">
-        <h1 className="foundation__heading">Foundation of Facts</h1>
+        <div className="foundation__inner-container">
+          <h1 className="foundation__heading">Foundation of Facts</h1>
+        </div>
         <TimelineView />
       </div>
     );

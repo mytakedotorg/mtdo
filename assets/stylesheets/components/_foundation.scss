@@ -2,13 +2,18 @@
   @include clearfix;
 }
 
+.foundation__inner-container {
+  width: $column-width;
+  max-width: 100%;
+  margin: auto;
+}
+
 .foundation__heading {
-  margin-top: 0;
-  margin-bottom: 15px;
-  margin-left: $page-margin-mobile;
+  @include text-margin;
+  margin-top: $page-margin-mobile * $vertical-margin-multiplier;
   @media #{$mq-medium} {
-    margin-left: $page-margin;
+    margin-top: $content-margin * $vertical-margin-multiplier;
   }
   color: palette(foundation, text);
-  @include heading2;
+  @include heading1;
 }
