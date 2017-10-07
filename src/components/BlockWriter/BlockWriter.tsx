@@ -53,19 +53,9 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
       return false;
     }
   };
-  addDocument = (
-    excerptId: string,
-    highlightedRange: [number, number]
-  ): void => {
+  addEvidenceBlock = (newBlock: DocumentBlock | VideoBlock): void => {
     const blocks = this.state.takeDocument.blocks;
     let activeBlockIndex = this.state.activeBlockIndex;
-
-    const newBlock: DocumentBlock = {
-      kind: "document",
-      excerptId: excerptId,
-      highlightedRange: highlightedRange,
-      viewRange: [0, 0]
-    };
 
     const emptyParagraphBlock: ParagraphBlock = {
       kind: "paragraph",
@@ -116,6 +106,19 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
       activeBlockIndex: activeBlockIndex + indexAddition
     });
   };
+  addDocument = (
+    excerptId: string,
+    highlightedRange: [number, number]
+  ): void => {
+    const newBlock: DocumentBlock = {
+      kind: "document",
+      excerptId: excerptId,
+      highlightedRange: highlightedRange,
+      viewRange: [0, 0]
+    };
+
+    this.addEvidenceBlock(newBlock);
+  };
   addParagraph = (isTitle?: boolean): void => {
     const blocks = this.state.takeDocument.blocks;
 
@@ -150,28 +153,13 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
     });
   };
   addVideo = (id: string, range: [number, number]): void => {
-    const blocks = this.state.takeDocument.blocks;
-    let activeBlockIndex = this.state.activeBlockIndex;
-
     const newBlock: VideoBlock = {
       kind: "video",
       range: range,
       videoId: id
     };
 
-    const newBlocks = [
-      ...blocks.slice(0, activeBlockIndex + 1),
-      newBlock,
-      ...blocks.slice(activeBlockIndex + 1)
-    ];
-
-    this.setState({
-      takeDocument: {
-        ...this.state.takeDocument,
-        blocks: newBlocks
-      },
-      activeBlockIndex: ++activeBlockIndex
-    });
+    this.addEvidenceBlock(newBlock);
   };
   shouldRemoveBlock = (idx: number): boolean => {
     const blocks = this.state.takeDocument.blocks;
