@@ -48,7 +48,12 @@ module.exports = {
       {
         test: /\.(png|jpg)$/,
         loader: "url-loader?limit=8192"
-      } // inline base64 URLs for <=8k images, direct URLs for the rest
+      }, // inline base64 URLs for <=8k images, direct URLs for the rest
+
+      {
+        test: /\.sbv$/,
+        loader: ["html-loader", "caption-loader"]
+      }
     ]
   },
 
