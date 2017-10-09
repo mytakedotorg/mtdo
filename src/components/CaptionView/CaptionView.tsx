@@ -1,86 +1,105 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { getCaptionNodeArray, CaptionNode } from "../../utils/functions";
+import Document from "../Document";
+import {
+  getHighlightedNodes,
+  getNodeArray,
+  getStartRangeOffsetTop,
+  highlightText,
+  HighlightedText,
+  FoundationNode
+} from "../../utils/functions";
+
+interface Ranges {
+  highlightedRange: [number, number];
+  viewRange: [number, number];
+}
 
 interface CaptionViewProps {
+  videoId: string;
   timer: number;
+  ranges?: Ranges;
+  onHighlight: (videoRange: [number, number]) => void;
+  onClearPress: () => void;
+  captionIsHighlighted: boolean;
 }
 
 interface CaptionViewState {
-  captionNodes: CaptionNode[];
+  highlightedRange: [number, number];
+  viewRange: [number, number];
+  highlightedNodes: FoundationNode[];
   currentIndex: number;
+  offsetTop: number;
 }
 
 class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
-  private scrollWindow: HTMLDivElement;
+  private document: Document;
   constructor(props: CaptionViewProps) {
     super(props);
     this.state = {
-      captionNodes: getCaptionNodeArray(),
-      currentIndex: 0
+      highlightedRange: props.ranges ? props.ranges.highlightedRange : [0, 0],
+      viewRange: props.ranges ? props.ranges.viewRange : [0, 0],
+      highlightedNodes: getNodeArray(props.videoId),
+      currentIndex: 0,
+      offsetTop: 0
     };
   }
-  setScrollView = () => {
-    const currentIndex = this.state.currentIndex;
-    const timer = this.props.timer;
-    const elementList = this.scrollWindow.querySelectorAll("[data]");
+  handleClearClick = () => {
+    this.setState({
+      highlightedNodes: getNodeArray(this.props.videoId)
+    });
+    this.props.onClearPress();
+  };
+  handleMouseUp = () => {
+    if (window.getSelection && !this.props.captionIsHighlighted) {
+      // Pre IE9 will always be false
+      let selection: Selection = window.getSelection();
+      if (selection.toString().length) {
+        // Some text is selected
+        let range: Range = selection.getRangeAt(0);
 
-    for (let i = 0; i < elementList.length; i++) {
-      const data = elementList[i].getAttribute("data");
-      if (data) {
-        if (elementList[i + 1]) {
-          const nextData = elementList[i + 1].getAttribute("data");
-          if (nextData) {
-            let startTime = parseInt(data.split("|")[0]);
-            let nextStartTime = parseInt(nextData.split("|")[0]);
+        const highlightedText: HighlightedText = highlightText(
+          range, // HTML Range, not [number, number] as in props.range
+          this.document.getDocumentNodes(),
+          ReactDOM.findDOMNode(this.document).childNodes,
+          () => {} // noop
+        );
 
-            if (
-              startTime <= timer &&
-              timer < nextStartTime &&
-              currentIndex !== i
-            ) {
-              let parentTop = this.scrollWindow.getBoundingClientRect().top;
-              let childTop =
-                elementList[i].getBoundingClientRect().top +
-                this.scrollWindow.scrollTop;
-              let scrollTop = childTop - parentTop;
-              this.scrollWindow.scrollTop = scrollTop;
-              this.setState({ currentIndex: i });
-              return;
-            }
-          }
-        }
+        this.setState({
+          highlightedNodes: highlightedText.newNodes,
+          highlightedRange: highlightedText.highlightedRange
+        });
+
+        this.props.onHighlight(highlightedText.videoRange);
       }
     }
   };
-  componentDidMount() {
-    this.setScrollView();
-  }
-  componentDidUpdate(prevProps: CaptionViewProps, prevState: CaptionViewState) {
-    if (prevProps.timer !== this.props.timer) {
-      this.setScrollView();
-    }
-  }
   render() {
     return (
       <div className="captions">
-        <div
-          className="captions__scroll-window"
-          ref={(scrollWindow: HTMLDivElement) =>
-            (this.scrollWindow = scrollWindow)}
-        >
-          {this.state.captionNodes.map(function(
-            element: CaptionNode,
-            index: number
-          ) {
-            element.props["key"] = index.toString();
-            return React.createElement(
-              element.component,
-              element.props,
-              element.innerHTML
-            );
-          })}
-        </div>
+        {this.props.captionIsHighlighted
+          ? <div className="video__actions">
+              <div className="video__action">
+								<p className="video__instructions">
+                	Press Play to see your clip
+              	</p>
+                <button
+                  className="video__button video__button--bottom"
+                  onClick={this.handleClearClick}
+                >
+                  Clear Selection
+                </button>
+              </div>
+            </div>
+          : null}
+        <Document
+          excerptId={this.props.videoId}
+          onMouseUp={this.handleMouseUp}
+          ref={(document: Document) => (this.document = document)}
+          className="document__row"
+          captionTimer={this.props.timer}
+          nodes={this.state.highlightedNodes}
+        />
       </div>
     );
   }
