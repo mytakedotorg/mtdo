@@ -9,7 +9,7 @@ import {
   FoundationNodeProps
 } from "../../utils/functions";
 
-interface YTPlayerParameters {
+export interface YTPlayerParameters {
   rel: number;
   start?: number;
   end?: number;
