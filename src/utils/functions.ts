@@ -14,17 +14,6 @@ export interface FoundationNodeProps {
   index: string;
 }
 
-export interface CaptionNode {
-  component: string;
-  props: CaptionNodeProps;
-  innerHTML: Array<string | React.ReactNode>;
-}
-
-export interface CaptionNodeProps {
-  key: string;
-  className: string;
-}
-
 function clearDefaultDOMSelection(): void {
   if (window.getSelection) {
     if (window.getSelection().empty) {
@@ -161,6 +150,7 @@ interface HighlightedText {
   newNodes: FoundationNode[];
   highlightedRange: [number, number];
   viewRange: [number, number];
+  videoRange: [number, number];
 }
 
 function highlightText(
@@ -418,23 +408,38 @@ function highlightText(
   let highlightedRangeEnd = 0;
   let viewRangeStart = 0;
   let viewRangeEnd = 0;
+  let videoStart = 0;
+  let videoEnd = 0;
   if (startContainer && endContainer) {
-    highlightedRangeStart =
-      parseInt(startContainer.attributes[0].value) + indexOfSelectionStart;
-    viewRangeStart = parseInt(startContainer.attributes[0].value);
-    highlightedRangeEnd =
-      parseInt(endContainer.attributes[0].value) + indexOfSelectionEnd;
+    let startData = startContainer.attributes[0].value;
+    if (startData.indexOf("|") !== -1) {
+      // data looks like 0|5|16 for example
+      viewRangeStart = parseInt(startData.split("|")[2]);
+      videoStart = parseInt(startData.split("|")[0]);
+    } else {
+      viewRangeStart = parseInt(startData);
+    }
+    highlightedRangeStart = viewRangeStart + indexOfSelectionStart;
+
+    let endData = endContainer.attributes[0].value;
+    if (endData.indexOf("|") !== -1) {
+      // data looks like 0|5|16 for example
+      viewRangeEnd = parseInt(endData.split("|")[2]);
+      videoEnd = parseInt(startData.split("|")[1]);
+    } else {
+      viewRangeEnd = parseInt(endData);
+    }
+    highlightedRangeEnd = viewRangeEnd + indexOfSelectionEnd;
     if (endContainer.textContent) {
-      viewRangeEnd =
-        parseInt(endContainer.attributes[0].value) +
-        endContainer.textContent.length;
+      viewRangeEnd += endContainer.textContent.length;
     }
   }
 
   return {
     newNodes: newNodes,
     highlightedRange: [highlightedRangeStart, highlightedRangeEnd],
-    viewRange: [viewRangeStart, viewRangeEnd]
+    viewRange: [viewRangeStart, viewRangeEnd],
+    videoRange: [videoStart, videoEnd]
   };
 }
 /**
@@ -549,7 +554,7 @@ function getNodeArray(excerptId: string): Array<FoundationNode> {
   if (excerpt) {
     source = require("../foundation/" + excerpt.filename);
   } else {
-    throw "Error retrieving document type from database";
+    return getCaptionNodeArray();
   }
 
   if (source) {
@@ -594,20 +599,20 @@ function getNodeArray(excerptId: string): Array<FoundationNode> {
   }
 }
 
-function getCaptionNodeArray(): Array<CaptionNode> {
+function getCaptionNodeArray(): Array<FoundationNode> {
   // Fetch the excerpt from the DB by its ID
   let source = require("../foundation/trump-hillary-2.sbv");
 
   if (source) {
-    let output: Array<CaptionNode> = [];
+    let output: Array<FoundationNode> = [];
     let tagIsOpen: boolean = false;
     let newElementName: string;
-    let newElementProps: CaptionNodeProps;
+    let newElementProps: FoundationNodeProps;
     let newElementText: string;
     let iter = 0;
 
     var parser = new htmlparser.Parser({
-      onopentag: function(name: string, attributes: CaptionNodeProps) {
+      onopentag: function(name: string, attributes: FoundationNodeProps) {
         tagIsOpen = true;
         newElementName = name;
         newElementProps = attributes;
