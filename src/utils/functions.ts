@@ -11,8 +11,18 @@ export interface FoundationNode {
 
 export interface FoundationNodeProps {
   key: string;
-  dataOffset: string;
   index: string;
+}
+
+export interface CaptionNode {
+  component: string;
+  props: CaptionNodeProps;
+  innerHTML: Array<string | React.ReactNode>;
+}
+
+export interface CaptionNodeProps {
+  key: string;
+  className: string;
 }
 
 function clearDefaultDOMSelection(): void {
@@ -584,6 +594,52 @@ function getNodeArray(excerptId: string): Array<FoundationNode> {
   }
 }
 
+function getCaptionNodeArray(): Array<CaptionNode> {
+  // Fetch the excerpt from the DB by its ID
+  let source = require("../foundation/trump-hillary-2.sbv");
+
+  if (source) {
+    let output: Array<CaptionNode> = [];
+    let tagIsOpen: boolean = false;
+    let newElementName: string;
+    let newElementProps: CaptionNodeProps;
+    let newElementText: string;
+    let iter = 0;
+
+    var parser = new htmlparser.Parser({
+      onopentag: function(name: string, attributes: CaptionNodeProps) {
+        tagIsOpen = true;
+        newElementName = name;
+        newElementProps = attributes;
+      },
+      ontext: function(text: string) {
+        if (tagIsOpen) {
+          newElementText = text;
+        }
+        // Ignore text between tags, usually this is just a blank space
+      },
+      onclosetag: function(name: string) {
+        tagIsOpen = false;
+        output.push({
+          component: newElementName,
+          props: newElementProps,
+          innerHTML: [newElementText]
+        });
+      },
+      onerror: function(error: Error) {
+        throw error;
+      }
+    });
+
+    parser.write(source);
+    parser.end();
+
+    return output;
+  } else {
+    throw "Error retrieving Caption document";
+  }
+}
+
 const validators = {
   isValidUser: (user: string): boolean => {
     // User must be alphanumeric
@@ -627,6 +683,7 @@ function getFact(factId: string): DocumentFact | VideoFact | null {
 
 export {
   clearDefaultDOMSelection,
+  getCaptionNodeArray,
   getFact,
   getStartRangeOffsetTop,
   getHighlightedNodes,

@@ -1,0 +1,6 @@
+.captions__scroll-window {
+  position: relative;
+  height: 100px;
+  overflow: scroll;
+  @include body;
+}
