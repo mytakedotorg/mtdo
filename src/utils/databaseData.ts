@@ -103,10 +103,12 @@ const database: Database = {
       primaryDateKind: "recorded"
     },
     {
-      id: "TjHjU0Eu26Y",
+      //id: "TjHjU0Eu26Y",
+      id: "vIZ6w0kMqUA",
       title: "Jimmy Carter - Gerald Ford (2/3)",
       primaryDate: new Date("1976-10-06"),
-      primaryDateKind: "recorded"
+      primaryDateKind: "recorded",
+      captionFile: "carter-ford-2.sbv"
     },
     {
       id: "CipT04S0bVE",
@@ -413,7 +415,7 @@ const database: Database = {
             },
             {
               kind: "video",
-              videoId: "TjHjU0Eu26Y",
+              videoId: "vIZ6w0kMqUA",
               range: [246, 261]
             },
             {
@@ -422,7 +424,7 @@ const database: Database = {
             },
             {
               kind: "video",
-              videoId: "TjHjU0Eu26Y",
+              videoId: "vIZ6w0kMqUA",
               range: [190, 203]
             },
             {
