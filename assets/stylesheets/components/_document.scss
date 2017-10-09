@@ -108,8 +108,7 @@ $document-margin-top: 0px;
 }
 .document__text--selected {
   color: palette(document, text--highlight);
-  background-color: palette(document, background--highlight);
-  cursor: pointer;
+  font-weight: 700;
 }
 .document__button {
   @include button;
