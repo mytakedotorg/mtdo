@@ -41,6 +41,7 @@ export interface VideoFact {
   title: string;
   primaryDate: Date;
   primaryDateKind: "recorded";
+  captionFile?: string;
 }
 
 export function isDocument(
@@ -252,10 +253,12 @@ const database: Database = {
       primaryDateKind: "recorded"
     },
     {
-      id: "qkk1lrLQl9Q",
+      //id: "qkk1lrLQl9Q",
+      id: "QuPWV36zqdc",
       title: "Donald Trump - Hillary Clinton (2/3)",
       primaryDate: new Date("2016-10-09"),
-      primaryDateKind: "recorded"
+      primaryDateKind: "recorded",
+      captionFile: "trump-hillary-2.sbv"
     },
     {
       id: "fT0spjjJOK8",
