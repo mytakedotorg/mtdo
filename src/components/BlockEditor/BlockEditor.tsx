@@ -11,6 +11,8 @@ import {
 
 export interface YTPlayerParameters {
   rel: number;
+  cc_load_policy?: number;
+  cc_lang_pref?: string;
   start?: number;
   end?: number;
 }
@@ -372,7 +374,9 @@ class Video extends React.Component<VideoBlockProps, VideoBlockState> {
     let classes = "editor__video-container";
 
     let playerVars: YTPlayerParameters = {
-      rel: 0
+      rel: 0,
+      cc_load_policy: 1,
+      cc_lang_pref: "en"
     };
 
     if (props.block.range) {
