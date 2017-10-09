@@ -62,7 +62,7 @@ class FactHeader extends React.Component<FactHeaderProps, FactHeaderState> {
             : <p className="document__instructions">
                 {this.props.isDocument
                   ? "Highlight something to give your Take"
-                  : "Pause the video to set your start and end times"}
+                  : "Highlight captions to create a video clip"}
               </p>}
           {this.props.textIsHighlighted
             ? <button
