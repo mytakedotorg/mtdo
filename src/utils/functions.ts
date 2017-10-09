@@ -425,7 +425,7 @@ function highlightText(
     if (endData.indexOf("|") !== -1) {
       // data looks like 0|5|16 for example
       viewRangeEnd = parseInt(endData.split("|")[2]);
-      videoEnd = parseInt(startData.split("|")[1]);
+      videoEnd = parseInt(endData.split("|")[1]);
     } else {
       viewRangeEnd = parseInt(endData);
     }
