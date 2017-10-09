@@ -2,6 +2,7 @@ import * as React from "react";
 import YouTube from "react-youtube";
 import { getFact } from "../../utils/functions";
 import { VideoFact } from "../../utils/databaseData";
+import { YTPlayerParameters } from "../BlockEditor";
 import CaptionView from "../CaptionView";
 
 interface VideoProps {
@@ -14,6 +15,7 @@ interface VideoState {
   currentTime: number;
   startTime: number;
   endTime: number;
+  captionIsHighlighted: boolean;
 }
 
 class Video extends React.Component<VideoProps, VideoState> {
@@ -25,9 +27,23 @@ class Video extends React.Component<VideoProps, VideoState> {
     this.state = {
       currentTime: 0,
       startTime: 0,
-      endTime: -1
+      endTime: -1,
+      captionIsHighlighted: false
     };
   }
+  handleCaptionHighlight = (videoRange: [number, number]): void => {
+    //Set video times
+    this.setState({
+      captionIsHighlighted: true,
+      startTime: videoRange[0],
+      endTime: videoRange[1]
+    });
+  };
+  handleClearClick = (): void => {
+    this.setState({
+      captionIsHighlighted: false
+    });
+  };
   handlePause = (event: any) => {
     this.setState({
       currentTime: Math.round(event.target.getCurrentTime())
@@ -40,18 +56,6 @@ class Video extends React.Component<VideoProps, VideoState> {
     if (this.state.endTime > this.state.startTime) {
       this.props.onSetClick([this.state.startTime, this.state.endTime]);
     }
-  };
-  handleSetStart = () => {
-    const startTime = this.state.currentTime;
-    this.setState({
-      startTime: startTime
-    });
-  };
-  handleSetEnd = () => {
-    const endTime = this.state.currentTime;
-    this.setState({
-      endTime: endTime
-    });
   };
   handleStateChange = (event: any) => {
     if (event.data === 0) {
@@ -93,12 +97,19 @@ class Video extends React.Component<VideoProps, VideoState> {
     this.stopTimer();
   }
   render() {
+    let playerVars: YTPlayerParameters = {
+      rel: 0
+    };
+
+    if (this.state.captionIsHighlighted) {
+      playerVars.start = this.state.startTime;
+      playerVars.end = this.state.endTime;
+    }
+
     const opts = {
       height: "315",
       width: "560",
-      playerVars: {
-        rel: 0
-      }
+      playerVars: playerVars
     };
 
     return (
@@ -127,32 +138,13 @@ class Video extends React.Component<VideoProps, VideoState> {
               className="video__video"
             />
           </div>
-          <div className="video__actions">
-            <div className="video__action">
-              <p className="video__instructions">
-                Current Start Time: <span>{this.state.startTime}</span>
-              </p>
-              <button
-                className="video__button video__button--bottom"
-                onClick={this.handleSetStart}
-              >
-                Set Start Time
-              </button>
-            </div>
-            <div className="video__action">
-              <p className="video__instructions">
-                Current End Time:{" "}
-                <span>{this.state.endTime > 0 ? this.state.endTime : "-"}</span>
-              </p>
-              <button
-                className="video__button video__button--bottom"
-                onClick={this.handleSetEnd}
-              >
-                Set End Time
-              </button>
-            </div>
-          </div>
-          <CaptionView timer={this.state.currentTime} />
+          <CaptionView
+            timer={this.state.currentTime}
+            videoId={this.props.video.id}
+            onHighlight={this.handleCaptionHighlight}
+            onClearPress={this.handleClearClick}
+            captionIsHighlighted={this.state.captionIsHighlighted}
+          />
         </div>
       </div>
     );
