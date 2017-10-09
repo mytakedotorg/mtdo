@@ -1,6 +1,10 @@
 import * as React from "react";
 import { DocumentFact, VideoFact } from "./databaseData";
-import { getVideoFact, getDocumentFact } from "./databaseAPI";
+import {
+  getVideoFact,
+  getDocumentFact,
+  getVideoFactCaptionFile
+} from "./databaseAPI";
 var htmlparser = require("htmlparser2");
 
 export interface FoundationNode {
@@ -554,7 +558,7 @@ function getNodeArray(excerptId: string): Array<FoundationNode> {
   if (excerpt) {
     source = require("../foundation/" + excerpt.filename);
   } else {
-    return getCaptionNodeArray();
+    return getCaptionNodeArray(excerptId);
   }
 
   if (source) {
@@ -599,9 +603,15 @@ function getNodeArray(excerptId: string): Array<FoundationNode> {
   }
 }
 
-function getCaptionNodeArray(): Array<FoundationNode> {
+function getCaptionNodeArray(videoId: string): Array<FoundationNode> {
   // Fetch the excerpt from the DB by its ID
-  let source = require("../foundation/trump-hillary-2.sbv");
+  let captionFile = getVideoFactCaptionFile(videoId);
+  let source;
+  if (captionFile) {
+    source = require("../foundation/" + captionFile);
+  } else {
+    source = require("../foundation/trump-hillary-2.sbv");
+  }
 
   if (source) {
     let output: Array<FoundationNode> = [];

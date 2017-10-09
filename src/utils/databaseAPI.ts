@@ -49,6 +49,15 @@ export function getVideoFactPrimaryDateKind(videoId: string): string | null {
   return null;
 }
 
+export function getVideoFactCaptionFile(videoId: string): string | null {
+  let video = getVideoFact(videoId);
+  if (video && video.captionFile) {
+    return video.captionFile;
+  }
+
+  return null;
+}
+
 export function getAllDocumentFacts(): DocumentFact[] {
   return database.excerpts;
 }
