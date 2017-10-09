@@ -2,6 +2,7 @@ import * as React from "react";
 import YouTube from "react-youtube";
 import { getFact } from "../../utils/functions";
 import { VideoFact } from "../../utils/databaseData";
+import CaptionView from "../CaptionView";
 
 interface VideoProps {
   onSetClick: (range: [number, number]) => void;
@@ -16,6 +17,8 @@ interface VideoState {
 }
 
 class Video extends React.Component<VideoProps, VideoState> {
+  private timerId: number | null;
+  private player: any;
   constructor(props: VideoProps) {
     super(props);
 
@@ -29,6 +32,9 @@ class Video extends React.Component<VideoProps, VideoState> {
     this.setState({
       currentTime: Math.round(event.target.getCurrentTime())
     });
+  };
+  handleReady = (event: any) => {
+    this.player = event.target;
   };
   handleSetClick = () => {
     if (this.state.endTime > this.state.startTime) {
@@ -47,6 +53,45 @@ class Video extends React.Component<VideoProps, VideoState> {
       endTime: endTime
     });
   };
+  handleStateChange = (event: any) => {
+    if (event.data === 0) {
+      // Video ended
+      this.stopTimer();
+    } else if (event.data === 1) {
+      // Video playing
+      this.startTimer();
+      this.setState({
+        currentTime: Math.round(event.target.getCurrentTime())
+      });
+    } else if (event.data === 2) {
+      // Video paused
+      this.stopTimer();
+      this.setState({
+        currentTime: Math.round(event.target.getCurrentTime())
+      });
+    } else if (event.data === 3) {
+      // Video buffering
+      this.stopTimer();
+      this.setState({
+        currentTime: Math.round(event.target.getCurrentTime())
+      });
+    }
+  };
+  startTimer = () => {
+    this.setState({
+      currentTime: this.state.currentTime + 1
+    });
+    this.timerId = window.setTimeout(this.startTimer, 1000);
+  };
+  stopTimer = () => {
+    if (this.timerId) {
+      window.clearTimeout(this.timerId);
+      this.timerId = null;
+    }
+  };
+  componentWillUnmount() {
+    this.stopTimer();
+  }
   render() {
     const opts = {
       height: "315",
@@ -76,7 +121,9 @@ class Video extends React.Component<VideoProps, VideoState> {
             <YouTube
               videoId={this.props.video.id}
               opts={opts}
+              onReady={this.handleReady}
               onPause={this.handlePause}
+              onStateChange={this.handleStateChange}
               className="video__video"
             />
           </div>
@@ -105,6 +152,7 @@ class Video extends React.Component<VideoProps, VideoState> {
               </button>
             </div>
           </div>
+          <CaptionView timer={this.state.currentTime} />
         </div>
       </div>
     );
