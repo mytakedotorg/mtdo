@@ -80,9 +80,9 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
         {this.props.captionIsHighlighted
           ? <div className="video__actions">
               <div className="video__action">
-								<p className="video__instructions">
-                	Press Play to see your clip
-              	</p>
+                <p className="video__instructions">
+                  Press Play to see your clip
+                </p>
                 <button
                   className="video__button video__button--bottom"
                   onClick={this.handleClearClick}
