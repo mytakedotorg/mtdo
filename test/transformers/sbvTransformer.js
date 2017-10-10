@@ -1,4 +1,4 @@
-const captionLoader = require('../../loaders/sbv-loader');
+const captionLoader = require('../../loaders/dist/sbv-loader');
 
 module.exports = {
 	process(src, filename, config, options){
