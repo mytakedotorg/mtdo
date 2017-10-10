@@ -1,9 +1,10 @@
 import * as React from "react";
-import { DocumentFact, VideoFact } from "./databaseData";
+import { CaptionWord, DocumentFact, VideoFact } from "./databaseData";
 import {
   getVideoFact,
   getDocumentFact,
-  getVideoFactCaptionFile
+  getVideoFactCaptionFile,
+  getVideoCaptionMetaData
 } from "./databaseAPI";
 var htmlparser = require("htmlparser2");
 
@@ -15,7 +16,7 @@ export interface FoundationNode {
 
 export interface FoundationNodeProps {
   key: string;
-  index: string;
+  data?: string;
 }
 
 function clearDefaultDOMSelection(): void {
@@ -602,54 +603,66 @@ function getNodeArray(excerptId: string): Array<FoundationNode> {
     throw "Error retriving Foundation document";
   }
 }
+function convertTimestampToSeconds(timestamp: string): number {
+  // Parse data string in form HH:MM:SS.SSS
+  const HH = parseInt(timestamp.split(":")[0]);
+  const MM = parseInt(timestamp.split(":")[1]);
+  const SS = parseInt(timestamp.split(":")[2].split(".")[0]);
+
+  // Convert HHMMSS to seconds
+  return HH * 60 * 60 + MM * 60 + SS;
+}
 
 function getCaptionNodeArray(videoId: string): Array<FoundationNode> {
   // Fetch the excerpt from the DB by its ID
-  let captionFile = getVideoFactCaptionFile(videoId);
+  const captionFile = getVideoFactCaptionFile(videoId);
   let source;
   if (captionFile) {
     source = require("../foundation/" + captionFile);
-  } else {
-    source = require("../foundation/trump-hillary-2.sbv");
-  }
+    if (source) {
+      const captionMeta = getVideoCaptionMetaData(videoId);
+      let output: Array<FoundationNode> = [];
+      let charCount = 0;
+      if (captionMeta) {
+        const speakerMap = captionMeta.speakerMap;
+        const captions: CaptionWord[] = JSON.parse(source);
+        for (const speaker of speakerMap) {
+          let innerHTML = "";
+          for (let i = speaker.range[0]; i <= speaker.range[1]; i++) {
+            if (captions[i]) {
+              innerHTML += " " + captions[i].word;
+            }
+          }
+          let startTime = convertTimestampToSeconds(
+            captions[speaker.range[0]].timestamp
+          );
+          let endTime = convertTimestampToSeconds(
+            captions[speaker.range[0]].timestamp
+          );
 
-  if (source) {
-    let output: Array<FoundationNode> = [];
-    let tagIsOpen: boolean = false;
-    let newElementName: string;
-    let newElementProps: FoundationNodeProps;
-    let newElementText: string;
-    let iter = 0;
+          // Append a separator and a character count offset
+          let dataValue = startTime.toString() + "|" + endTime.toString() + "|";
 
-    var parser = new htmlparser.Parser({
-      onopentag: function(name: string, attributes: FoundationNodeProps) {
-        tagIsOpen = true;
-        newElementName = name;
-        newElementProps = attributes;
-      },
-      ontext: function(text: string) {
-        if (tagIsOpen) {
-          newElementText = text;
+          // Character count offset
+          charCount += dataValue.length + 10 + innerHTML.length;
+          charCount += charCount.toString().length;
+
+          dataValue += charCount.toString();
+
+          output.push({
+            component: "p",
+            props: {
+              key: captions[speaker.range[0]].timestamp,
+              data: dataValue
+            },
+            innerHTML: [innerHTML]
+          });
         }
-        // Ignore text between tags, usually this is just a blank space
-      },
-      onclosetag: function(name: string) {
-        tagIsOpen = false;
-        output.push({
-          component: newElementName,
-          props: newElementProps,
-          innerHTML: [newElementText]
-        });
-      },
-      onerror: function(error: Error) {
-        throw error;
       }
-    });
-
-    parser.write(source);
-    parser.end();
-
-    return output;
+      return output;
+    } else {
+      throw "Error retrieving Caption document";
+    }
   } else {
     throw "Error retrieving Caption document";
   }
