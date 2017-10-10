@@ -52,7 +52,7 @@ module.exports = {
 
       {
         test: /\.sbv$/,
-        loader: ["html-loader", "caption-loader"]
+        loader: ["html-loader", "sbv-loader"]
       }
     ]
   },
