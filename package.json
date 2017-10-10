@@ -67,12 +67,10 @@
   "jest": {
     "transform": {
       "^.+\\.(ts|tsx)$": "./node_modules/ts-jest/preprocessor.js",
-      "^.+\\.foundation\\.html$": "./test/transformers/foundationTransformer.js",
-      "^.+\\.sbv$": "./test/transformers/captionTransformer.js"
+      "^.+\\.foundation\\.html$": "./test/transformers/foundationTransformer.js"
     },
     "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
     "moduleFileExtensions": [
-      "sbv",
       "html",
       "ts",
       "tsx",
