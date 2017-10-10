@@ -98,7 +98,8 @@ class Video extends React.Component<VideoProps, VideoState> {
   }
   render() {
     let playerVars: YTPlayerParameters = {
-      rel: 0
+      rel: 0,
+      playsinline: 1
     };
 
     if (this.state.captionIsHighlighted) {

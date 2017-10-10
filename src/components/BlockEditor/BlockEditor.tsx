@@ -15,6 +15,7 @@ export interface YTPlayerParameters {
   cc_lang_pref?: string;
   start?: number;
   end?: number;
+  playsinline: 1;
 }
 
 ////////////////////
@@ -376,7 +377,8 @@ class Video extends React.Component<VideoBlockProps, VideoBlockState> {
     let playerVars: YTPlayerParameters = {
       rel: 0,
       cc_load_policy: 1,
-      cc_lang_pref: "en"
+      cc_lang_pref: "en",
+      playsinline: 1
     };
 
     if (props.block.range) {
