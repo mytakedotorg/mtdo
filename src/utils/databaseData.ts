@@ -41,13 +41,19 @@ export interface VideoFact {
   title: string;
   primaryDate: Date;
   primaryDateKind: "recorded";
-  captionFile?: string;
+  captionFile?: string; //JSON.stringify(CaptionWord[])
   captionMeta?: CaptionMeta;
 }
 
-interface CaptionMeta {
+export interface CaptionMeta {
   speakers: Person[];
   speakerMap: SpeakerMap[];
+}
+
+export interface CaptionWord {
+  idx: number;
+  word: string;
+  timestamp: string; //Like "00:00:00.750"
 }
 
 interface Person {
@@ -276,7 +282,7 @@ const database: Database = {
       title: "Donald Trump - Hillary Clinton (2/3)",
       primaryDate: new Date("2016-10-09"),
       primaryDateKind: "recorded",
-      captionFile: "trump-hillary-2.sbv",
+      captionFile: "trump-hillary-2.vtt",
       captionMeta: {
         speakers: [
           {
