@@ -42,6 +42,22 @@ export interface VideoFact {
   primaryDate: Date;
   primaryDateKind: "recorded";
   captionFile?: string;
+  captionMeta?: CaptionMeta;
+}
+
+interface CaptionMeta {
+  speakers: Person[];
+  speakerMap: SpeakerMap[];
+}
+
+interface Person {
+  firstname: string;
+  lastname: string;
+}
+
+interface SpeakerMap {
+  speaker: string; //Last name of Person object
+  range: [number, number];
 }
 
 export function isDocument(
@@ -260,7 +276,65 @@ const database: Database = {
       title: "Donald Trump - Hillary Clinton (2/3)",
       primaryDate: new Date("2016-10-09"),
       primaryDateKind: "recorded",
-      captionFile: "trump-hillary-2.sbv"
+      captionFile: "trump-hillary-2.sbv",
+      captionMeta: {
+        speakers: [
+          {
+            firstname: "Martha",
+            lastname: "Raddatz"
+          },
+          {
+            firstname: "Anderson",
+            lastname: "Cooper"
+          },
+          {
+            firstname: "Patrice",
+            lastname: "Brock"
+          },
+          {
+            firstname: "Hillary",
+            lastname: "Clinton"
+          },
+          {
+            firstname: "Donald",
+            lastname: "Trump"
+          }
+        ],
+        speakerMap: [
+          {
+            speaker: "Raddatz",
+            range: [0, 7]
+          },
+          {
+            speaker: "Cooper",
+            range: [8, 89]
+          },
+          {
+            speaker: "Raddatz",
+            range: [90, 219]
+          },
+          {
+            speaker: "Cooper",
+            range: [221, 273]
+          },
+          {
+            speaker: "Brock",
+            range: [274, 317]
+          },
+          {
+            speaker: "Clinton",
+            range: [318, 645]
+          },
+          {
+            speaker: "Cooper",
+            range: [646, 655]
+          },
+          {
+            speaker: "Trump",
+            range: [656, 869]
+          }
+        ]
+      }
     },
     {
       id: "fT0spjjJOK8",
