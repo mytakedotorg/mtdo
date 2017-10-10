@@ -1,11 +1,11 @@
 var htmlparser = require('htmlparser2');
 
-module.exports = function (source) {
+module.exports = function (source: string) {
   var output = "";
   var tagIsOpen = false;
 
   var parser = new htmlparser.Parser({
-    onopentagname: function(name, attribs) {
+    onopentagname: function(name: string, attribs: any) {
       if(tagIsOpen){
         throw "*.foundation.html files cannot have nested HTML tags";
       }
@@ -16,15 +16,15 @@ module.exports = function (source) {
       }
       output += '<' + name + ' data="' + offset.toString() + '">';
     },
-    ontext: function(text) {
+    ontext: function(text: string) {
       text = text.replace(new RegExp(/\r?\n|\r/g), ' '); //replace all newlines with spaces
       output += text;
     },
-    onclosetag: function(name) {
+    onclosetag: function(name: string) {
       tagIsOpen = false;
       output += '</' + name + '>';
     },
-    onerror: function(error) {
+    onerror: function(error: Error) {
       throw error;
     }
   })

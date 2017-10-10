@@ -11,6 +11,9 @@ path = require("path");
 fs = require("fs");
 // html
 nunjucks = require("gulp-nunjucks-html");
+// file loaders
+ts = require("gulp-typescript");
+tsProject = ts.createProject("./loaders/tsconfig.json");
 // misc
 browserSync = require("browser-sync").create();
 tasklisting = require("gulp-task-listing");
@@ -24,7 +27,8 @@ const config = {
   imgSrc: "./assets/images/**/*.{jpg,png}",
   webpackSrc: ["./src/**/*", "!src/**/*.spec.js"],
   nunjucksTemplates: "./nunjucks/templates",
-  nunjucksPages: "./nunjucks/pages"
+  nunjucksPages: "./nunjucks/pages",
+  loadersDist: "./loaders/dist"
 };
 
 ///////////////////////////////
@@ -45,11 +49,13 @@ function setupPipeline(mode) {
   const webpack = "webpack" + mode;
   const nunjucks = "nunjucks" + mode;
   const images = "images" + mode;
+  const loaders = "loaders" + mode;
   gulp.task(css, cssCfg(mode));
   gulp.task(sass, sassCfg(mode));
-  gulp.task(webpack, webpackCfg(mode));
+  gulp.task(webpack, [loaders], webpackCfg(mode));
   gulp.task(nunjucks, [webpack], nunjucksCfg(mode));
   gulp.task(images, imagesCfg(mode));
+  gulp.task(loaders, loadersCfg(mode));
   gulp.task(BUILD + mode, [nunjucks, sass, images, css]);
   gulp.task(SERVE + mode, [BUILD + mode], browserSyncCfg(mode));
 }
@@ -57,7 +63,7 @@ function setupPipeline(mode) {
 gulp.task(
   "default",
   tasklisting.withFilters(
-    /clean|default|css|sass|webpack|nunjucks|images|rev|default/
+    /clean|default|css|sass|webpack|nunjucks|images|loaders|rev|default/
   )
 );
 gulp.task("clean", () => {
@@ -133,6 +139,15 @@ function nunjucksCfg(mode) {
 function imagesCfg(mode) {
   return () => {
     return gulp.src(config.imgSrc).pipe(gulp.dest(config.dist + "/images"));
+  };
+}
+
+function loadersCfg(mode) {
+  return () => {
+    return tsProject
+      .src()
+      .pipe(tsProject())
+      .js.pipe(gulp.dest(config.loadersDist));
   };
 }
 

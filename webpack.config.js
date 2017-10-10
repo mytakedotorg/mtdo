@@ -20,7 +20,7 @@ module.exports = {
     extensions: [".ts", ".tsx", ".js", ".json", ".jpg"]
   },
   resolveLoader: {
-    modules: ["node_modules", __dirname + "/loaders"]
+    modules: ["node_modules", __dirname + "/loaders/dist"]
   },
   module: {
     rules: [
@@ -53,6 +53,11 @@ module.exports = {
       {
         test: /\.sbv$/,
         loader: ["html-loader", "sbv-loader"]
+      },
+
+      {
+        test: /\.vtt$/,
+        loader: ["html-loader", "vtt-loader"]
       }
     ]
   },
