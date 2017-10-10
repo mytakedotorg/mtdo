@@ -169,6 +169,6 @@ function browserSyncCfg(mode) {
     );
     gulp.watch(config.webpackSrc, ["webpack" + mode]);
     gulp.watch(config.sassSrc, ["sass" + mode]);
-    gulp.watch(config.loadersSrc, ["loaders" + mode, "webpack" + mode]);
+    gulp.watch(config.loadersSrc, ["webpack" + mode, "loaders" + mode]);
   };
 }
