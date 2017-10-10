@@ -1,4 +1,5 @@
 import database, {
+  CaptionMeta,
   Database,
   VideoFact,
   DocumentFact,
@@ -53,6 +54,15 @@ export function getVideoFactCaptionFile(videoId: string): string | null {
   let video = getVideoFact(videoId);
   if (video && video.captionFile) {
     return video.captionFile;
+  }
+
+  return null;
+}
+
+export function getVideoCaptionMetaData(videoId: string): CaptionMeta | null {
+  let video = getVideoFact(videoId);
+  if (video && video.captionMeta) {
+    return video.captionMeta;
   }
 
   return null;
