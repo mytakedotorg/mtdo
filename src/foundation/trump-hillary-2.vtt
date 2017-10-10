@@ -1,0 +1,394 @@
+WEBVTT
+Kind: captions
+Language: en
+Style:
+::cue(c.colorCCCCCC) { color: rgb(204,204,204);
+ }
+::cue(c.colorE5E5E5) { color: rgb(229,229,229);
+ }
+##
+
+00:00:00.060 --> 00:00:05.310 align:start position:19%
+good<00:00:00.750><c> evening</c><c.colorCCCCCC><00:00:00.960><c> I'm</c><00:00:01.560><c> Martha</c></c><c.colorE5E5E5><00:00:01.920><c> Raddatz</c><00:00:02.129><c> from</c><00:00:02.520><c> ABC</c></c>
+
+00:00:03.060 --> 00:00:06.240 align:start position:19%
+News<c.colorE5E5E5><00:00:03.090><c> and</c><00:00:03.659><c> I'm</c><00:00:03.870><c> Anderson</c><00:00:04.259><c> Cooper</c><00:00:04.529><c> from</c><00:00:04.680><c> CNN</c><00:00:05.100><c> we</c></c>
+
+00:00:05.310 --> 00:00:08.880 align:start position:19%
+want<00:00:05.490><c> to</c><c.colorCCCCCC><00:00:05.549><c> welcome</c><00:00:05.850><c> you</c></c><c.colorE5E5E5><00:00:05.970><c> to</c><00:00:06.089><c> Washington</c></c>
+
+00:00:06.240 --> 00:00:10.290 align:start position:19%
+<c.colorCCCCCC>University<00:00:07.200><c> in</c></c><c.colorE5E5E5><00:00:07.290><c> st.</c></c><c.colorCCCCCC><00:00:07.529><c> Louis</c><00:00:07.799><c> for</c><00:00:08.010><c> the</c></c><c.colorE5E5E5><00:00:08.429><c> second</c></c>
+
+00:00:08.880 --> 00:00:12.480 align:start position:19%
+presidential<00:00:09.240><c> debate</c><c.colorCCCCCC><00:00:09.450><c> between</c><00:00:09.870><c> Hillary</c></c>
+
+00:00:10.290 --> 00:00:13.880 align:start position:19%
+Clinton<c.colorCCCCCC><00:00:10.320><c> and</c><00:00:10.679><c> Donald</c><00:00:10.889><c> Trump</c><00:00:11.389><c> sponsored</c><00:00:12.389><c> by</c></c>
+
+00:00:12.480 --> 00:00:16.139 align:start position:19%
+<c.colorE5E5E5>the<00:00:12.540><c> Commission</c><00:00:12.990><c> on</c><00:00:13.080><c> Presidential</c><00:00:13.650><c> Debates</c></c>
+
+00:00:13.880 --> 00:00:18.630 align:start position:19%
+<c.colorCCCCCC>tonight's</c><c.colorE5E5E5><00:00:14.880><c> debate</c><00:00:15.150><c> is</c><00:00:15.389><c> a</c></c><c.colorCCCCCC><00:00:15.450><c> Town</c><00:00:15.870><c> Hall</c><00:00:16.109><c> format</c></c>
+
+00:00:16.139 --> 00:00:20.880 align:start position:19%
+<c.colorCCCCCC>which<00:00:16.800><c> gives</c><00:00:17.010><c> voters</c><00:00:17.430><c> a</c><00:00:17.460><c> chance</c><00:00:17.609><c> to</c><00:00:18.119><c> directly</c></c>
+
+00:00:18.630 --> 00:00:22.590 align:start position:19%
+ask<00:00:18.810><c> the</c><00:00:18.990><c> candidates</c><00:00:19.410><c> questions</c><c.colorCCCCCC><00:00:19.789><c> Martha</c></c><c.colorE5E5E5><00:00:20.789><c> and</c></c>
+
+00:00:20.880 --> 00:00:24.240 align:start position:19%
+I<00:00:20.939><c> will</c><00:00:21.150><c> ask</c><00:00:21.300><c> follow-up</c><00:00:21.689><c> questions</c><c.colorCCCCCC><00:00:21.810><c> but</c><00:00:22.470><c> the</c></c>
+
+00:00:22.590 --> 00:00:26.130 align:start position:19%
+night<00:00:22.769><c> really</c><c.colorE5E5E5><00:00:23.039><c> belongs</c><00:00:23.460><c> to</c><00:00:23.760><c> the</c><00:00:23.850><c> people</c><00:00:24.150><c> in</c></c>
+
+00:00:24.240 --> 00:00:27.510 align:start position:19%
+this<00:00:24.390><c> room</c><c.colorE5E5E5><00:00:24.689><c> and</c><00:00:24.990><c> to</c></c><c.colorCCCCCC><00:00:25.019><c> people</c><00:00:25.710><c> across</c></c><c.colorE5E5E5><00:00:25.800><c> the</c></c>
+
+00:00:26.130 --> 00:00:30.119 align:start position:19%
+country<c.colorCCCCCC><00:00:26.310><c> who</c><00:00:26.640><c> have</c></c><c.colorE5E5E5><00:00:26.670><c> submitted</c><00:00:26.939><c> questions</c></c>
+
+00:00:27.510 --> 00:00:32.090 align:start position:19%
+<c.colorCCCCCC>online<00:00:28.170><c> the</c><00:00:28.830><c> people</c><00:00:29.279><c> you</c></c><c.colorE5E5E5><00:00:29.429><c> see</c><00:00:29.640><c> on</c><00:00:29.789><c> this</c><00:00:29.939><c> stage</c></c>
+
+00:00:30.119 --> 00:00:34.950 align:start position:19%
+<c.colorE5E5E5>were<00:00:30.539><c> chosen</c><00:00:30.900><c> by</c><00:00:31.260><c> the</c><00:00:31.320><c> Gallup</c><00:00:31.830><c> Organization</c></c>
+
+00:00:32.090 --> 00:00:37.380 align:start position:19%
+<c.colorCCCCCC>they<00:00:33.090><c> are</c><00:00:33.210><c> all</c><00:00:33.420><c> from</c><00:00:33.660><c> the</c></c><c.colorE5E5E5><00:00:33.719><c> st.</c></c><c.colorCCCCCC><00:00:34.050><c> Louis</c><00:00:34.380><c> area</c><00:00:34.620><c> and</c></c>
+
+00:00:34.950 --> 00:00:39.809 align:start position:19%
+<c.colorE5E5E5>told<00:00:35.340><c> Gallup</c><00:00:35.790><c> they</c><00:00:36.210><c> haven't</c><00:00:36.719><c> committed</c><00:00:37.020><c> to</c><00:00:37.350><c> a</c></c>
+
+00:00:37.380 --> 00:00:42.180 align:start position:19%
+candidate<c.colorE5E5E5><00:00:38.010><c> each</c><00:00:38.730><c> of</c><00:00:39.000><c> them</c><00:00:39.149><c> came</c><00:00:39.450><c> here</c></c><c.colorCCCCCC><00:00:39.480><c> with</c></c>
+
+00:00:39.809 --> 00:00:44.489 align:start position:19%
+<c.colorE5E5E5>questions<00:00:40.379><c> they</c><00:00:40.590><c> want</c><00:00:40.800><c> to</c></c><c.colorCCCCCC><00:00:40.860><c> ask</c><00:00:41.100><c> and</c><00:00:41.430><c> we</c><00:00:41.820><c> saw</c></c>
+
+00:00:42.180 --> 00:00:47.340 align:start position:19%
+those<00:00:42.450><c> questions</c><c.colorE5E5E5><00:00:43.020><c> for</c><00:00:43.290><c> the</c><00:00:43.379><c> first</c><00:00:43.680><c> time</c><00:00:44.040><c> this</c></c>
+
+00:00:44.489 --> 00:00:50.460 align:start position:19%
+<c.colorCCCCCC>morning</c><c.colorE5E5E5><00:00:44.870><c> Anderson</c><00:00:45.870><c> and</c><00:00:46.020><c> I</c><00:00:46.110><c> and</c><00:00:46.440><c> our</c><00:00:46.680><c> team</c><00:00:47.039><c> from</c></c>
+
+00:00:47.340 --> 00:00:53.160 align:start position:19%
+<c.colorE5E5E5>ABC<00:00:47.969><c> and</c><00:00:48.180><c> CNN</c><00:00:48.450><c> are</c><00:00:48.960><c> the</c></c><c.colorCCCCCC><00:00:49.260><c> only</c><00:00:49.739><c> ones</c><00:00:50.010><c> who</c><00:00:50.340><c> have</c></c>
+
+00:00:50.460 --> 00:00:55.230 align:start position:19%
+seen<00:00:50.730><c> them</c><00:00:50.969><c> both</c><00:00:51.809><c> candidates</c><00:00:52.379><c> will</c><c.colorCCCCCC><00:00:52.620><c> have</c><00:00:52.829><c> two</c></c>
+
+00:00:53.160 --> 00:00:58.020 align:start position:19%
+<c.colorCCCCCC>minutes<00:00:53.520><c> to</c></c><c.colorE5E5E5><00:00:53.699><c> answer</c><00:00:53.850><c> each</c><00:00:54.360><c> audience</c><00:00:54.899><c> and</c></c>
+
+00:00:55.230 --> 00:01:00.809 align:start position:19%
+online<00:00:55.860><c> question</c><00:00:56.489><c> we</c><00:00:57.030><c> hope</c><00:00:57.329><c> to</c><00:00:57.539><c> get</c><c.colorE5E5E5><00:00:57.690><c> to</c></c><c.colorCCCCCC><00:00:57.750><c> as</c></c>
+
+00:00:58.020 --> 00:01:02.850 align:start position:19%
+many<00:00:58.350><c> questions</c><00:00:58.530><c> as</c><c.colorE5E5E5><00:00:59.190><c> we</c></c><c.colorCCCCCC><00:00:59.250><c> can</c><00:00:59.640><c> so</c><00:01:00.210><c> we've</c><00:01:00.390><c> asked</c></c>
+
+00:01:00.809 --> 00:01:05.880 align:start position:19%
+the<c.colorCCCCCC><00:01:00.930><c> audience</c><00:01:01.379><c> here</c><00:01:01.620><c> not</c><00:01:01.949><c> to</c><00:01:02.219><c> slow</c><00:01:02.520><c> things</c></c>
+
+00:01:02.850 --> 00:01:07.790 align:start position:19%
+down<c.colorE5E5E5><00:01:03.030><c> with</c><00:01:03.629><c> any</c><00:01:03.899><c> applause</c><00:01:04.460><c> except</c><00:01:05.460><c> for</c><00:01:05.729><c> now</c></c>
+
+00:01:05.880 --> 00:01:11.220 align:start position:19%
+ladies<00:01:06.810><c> and</c><00:01:06.840><c> gentlemen</c><00:01:07.470><c> the</c><00:01:07.619><c> Republican</c>
+
+00:01:07.790 --> 00:01:13.320 align:start position:19%
+<c.colorE5E5E5>nominee</c><c.colorCCCCCC><00:01:08.790><c> for</c><00:01:09.030><c> president</c><00:01:09.330><c> Donald</c><00:01:10.320><c> J</c><00:01:10.500><c> Trump</c></c><c.colorE5E5E5><00:01:10.920><c> and</c></c>
+
+00:01:11.220 --> 00:01:15.030 align:start position:19%
+the<00:01:11.640><c> Democratic</c><00:01:12.420><c> nominee</c><00:01:12.840><c> for</c><c.colorCCCCCC><00:01:12.869><c> president</c></c>
+
+00:01:13.320 --> 00:01:40.100 align:start position:19%
+<c.colorCCCCCC>Hillary<00:01:14.189><c> Clinton</c></c>
+
+00:01:15.030 --> 00:01:42.150 align:start position:19%
+[Applause]
+
+00:01:40.100 --> 00:01:44.790 align:start position:19%
+thank<00:01:41.100><c> you</c><00:01:41.159><c> very</c><c.colorE5E5E5><00:01:41.220><c> much</c></c><c.colorCCCCCC><00:01:41.400><c> for</c></c><c.colorE5E5E5><00:01:41.610><c> being</c><00:01:41.790><c> here</c><00:01:41.850><c> we're</c></c>
+
+00:01:42.150 --> 00:01:46.560 align:start position:19%
+<c.colorE5E5E5>gonna</c><c.colorCCCCCC><00:01:42.240><c> begin</c><00:01:42.570><c> with</c><00:01:42.630><c> a</c></c><c.colorE5E5E5><00:01:42.810><c> question</c><00:01:43.710><c> from</c><00:01:44.190><c> one</c></c><c.colorCCCCCC><00:01:44.700><c> of</c></c>
+
+00:01:44.790 --> 00:01:48.090 align:start position:19%
+the<00:01:44.880><c> members</c><00:01:45.180><c> in</c><00:01:45.330><c> our</c><c.colorCCCCCC><00:01:45.420><c> Town</c><00:01:45.690><c> Hall</c></c>
+
+00:01:46.560 --> 00:01:49.710 align:start position:19%
+each<00:01:46.830><c> of</c><00:01:47.100><c> you</c><00:01:47.190><c> will</c><c.colorCCCCCC><00:01:47.220><c> have</c></c><c.colorE5E5E5><00:01:47.400><c> two</c><00:01:47.729><c> minutes</c><00:01:47.909><c> to</c></c>
+
+00:01:48.090 --> 00:01:51.299 align:start position:19%
+<c.colorE5E5E5>respond<00:01:48.509><c> to</c><00:01:48.659><c> this</c><00:01:48.780><c> question</c><00:01:49.020><c> Secretary</c></c>
+
+00:01:49.710 --> 00:01:52.920 align:start position:19%
+Clinton<c.colorCCCCCC><00:01:50.009><c> you</c><00:01:50.159><c> won</c><00:01:50.310><c> the</c><00:01:50.460><c> coin</c><00:01:50.640><c> toss</c><00:01:50.880><c> so</c><00:01:50.939><c> you'll</c></c>
+
+00:01:51.299 --> 00:01:57.509 align:start position:19%
+go<00:01:51.479><c> first</c><00:01:51.750><c> our</c><00:01:51.990><c> first</c><00:01:52.140><c> question</c><00:01:52.530><c> comes</c><c.colorE5E5E5><00:01:52.560><c> from</c></c>
+
+00:01:52.920 --> 00:01:59.640 align:start position:19%
+Patrice<c.colorE5E5E5><00:01:53.790><c> brach</c><00:01:54.210><c> the</c><00:01:54.840><c> trees</c><00:01:56.119><c> thank</c><00:01:57.119><c> you</c><00:01:57.330><c> and</c></c>
+
+00:01:57.509 --> 00:02:02.820 align:start position:19%
+good<00:01:57.659><c> evening</c><c.colorCCCCCC><00:01:57.920><c> the</c><00:01:58.920><c> last</c></c><c.colorE5E5E5><00:01:58.950><c> presidential</c></c>
+
+00:01:59.640 --> 00:02:05.280 align:start position:19%
+debate<00:02:00.119><c> could</c><c.colorE5E5E5><00:02:00.509><c> have</c><00:02:00.659><c> been</c><00:02:00.899><c> rated</c><00:02:01.830><c> as</c></c><c.colorCCCCCC><00:02:02.190><c> ma</c></c>
+
+00:02:02.820 --> 00:02:07.680 align:start position:19%
+<c.colorE5E5E5>mature<00:02:03.450><c> audiences</c><00:02:04.049><c> per</c><00:02:04.530><c> TV</c><00:02:04.890><c> parental</c></c>
+
+00:02:05.280 --> 00:02:09.239 align:start position:19%
+guidelines<c.colorCCCCCC><00:02:05.570><c> knowing</c><00:02:06.570><c> that</c><00:02:06.750><c> educators</c><00:02:07.259><c> design</c></c>
+
+00:02:07.680 --> 00:02:10.229 align:start position:19%
+viewing<00:02:08.039><c> the</c><00:02:08.130><c> presidential</c><00:02:08.729><c> debates</c><00:02:09.030><c> as</c>
+
+00:02:09.239 --> 00:02:12.269 align:start position:19%
+students<c.colorCCCCCC><00:02:09.660><c> homework</c></c>
+
+00:02:10.229 --> 00:02:14.430 align:start position:19%
+do<00:02:10.530><c> you</c><00:02:10.649><c> feel</c><c.colorE5E5E5><00:02:10.830><c> you're</c><00:02:11.069><c> modeling</c><00:02:11.489><c> appropriate</c></c>
+
+00:02:12.269 --> 00:02:19.110 align:start position:19%
+and<00:02:12.450><c> positive</c><00:02:12.989><c> behavior</c><c.colorCCCCCC><00:02:13.140><c> for</c><00:02:13.860><c> today's</c><00:02:14.130><c> youth</c></c>
+
+00:02:14.430 --> 00:02:20.670 align:start position:19%
+well<00:02:15.209><c> thank</c><00:02:15.480><c> you</c><00:02:15.660><c> are</c><c.colorE5E5E5><00:02:15.690><c> you</c><00:02:16.050><c> a</c><00:02:16.170><c> teacher</c></c><c.colorCCCCCC><00:02:17.810><c> yes</c><00:02:18.810><c> I</c></c>
+
+00:02:19.110 --> 00:02:23.819 align:start position:19%
+think<c.colorCCCCCC><00:02:19.230><c> that</c><00:02:19.739><c> that's</c></c><c.colorE5E5E5><00:02:19.860><c> a</c><00:02:20.069><c> very</c><00:02:20.220><c> good</c></c><c.colorCCCCCC><00:02:20.340><c> question</c></c>
+
+00:02:20.670 --> 00:02:26.010 align:start position:19%
+<c.colorE5E5E5>because<00:02:21.150><c> I've</c><00:02:22.140><c> heard</c><00:02:22.410><c> from</c><00:02:22.650><c> lots</c><00:02:23.010><c> of</c><00:02:23.310><c> teachers</c></c>
+
+00:02:23.819 --> 00:02:28.019 align:start position:19%
+and<c.colorE5E5E5><00:02:24.120><c> parents</c><00:02:24.510><c> about</c><00:02:25.080><c> some</c><00:02:25.350><c> of</c><00:02:25.440><c> their</c></c><c.colorCCCCCC><00:02:25.560><c> concerns</c></c>
+
+00:02:26.010 --> 00:02:32.130 align:start position:19%
+about<00:02:26.430><c> some</c><c.colorE5E5E5><00:02:27.090><c> of</c><00:02:27.209><c> the</c><00:02:27.299><c> things</c><00:02:27.510><c> that</c></c><c.colorCCCCCC><00:02:27.660><c> are</c><00:02:27.900><c> being</c></c>
+
+00:02:28.019 --> 00:02:34.230 align:start position:19%
+<c.colorE5E5E5>said</c><c.colorCCCCCC><00:02:28.140><c> and</c><00:02:28.709><c> done</c></c><c.colorE5E5E5><00:02:29.060><c> in</c><00:02:30.060><c> this</c><00:02:30.390><c> campaign</c></c><c.colorCCCCCC><00:02:30.950><c> and</c><00:02:31.950><c> I</c></c>
+
+00:02:32.130 --> 00:02:37.760 align:start position:19%
+<c.colorCCCCCC>think<00:02:32.370><c> it</c><00:02:32.489><c> is</c></c><c.colorE5E5E5><00:02:32.670><c> very</c><00:02:33.090><c> important</c><00:02:33.690><c> for</c><00:02:34.019><c> us</c><00:02:34.200><c> to</c></c>
+
+00:02:34.230 --> 00:02:41.400 align:start position:19%
+<c.colorCCCCCC>make<00:02:34.590><c> clear</c><00:02:35.010><c> to</c><00:02:35.150><c> our</c><00:02:36.150><c> children</c></c><c.colorE5E5E5><00:02:36.750><c> that</c><00:02:37.200><c> our</c></c>
+
+00:02:37.760 --> 00:02:44.610 align:start position:19%
+<c.colorE5E5E5>country<00:02:38.760><c> really</c><00:02:39.390><c> is</c><00:02:39.680><c> great</c><00:02:40.680><c> because</c><00:02:41.190><c> we're</c></c>
+
+00:02:41.400 --> 00:02:48.150 align:start position:19%
+good<00:02:41.640><c> and</c><00:02:42.079><c> we</c><00:02:43.079><c> are</c><c.colorE5E5E5><00:02:43.440><c> going</c><00:02:43.709><c> to</c><00:02:43.920><c> respect</c><00:02:44.430><c> one</c></c>
+
+00:02:44.610 --> 00:02:51.329 align:start position:19%
+another<00:02:44.880><c> lift</c><00:02:45.810><c> each</c><00:02:46.110><c> other</c><00:02:46.350><c> up</c><c.colorE5E5E5><00:02:46.579><c> we</c><00:02:47.579><c> are</c><00:02:47.850><c> going</c></c>
+
+00:02:48.150 --> 00:02:54.870 align:start position:19%
+<c.colorE5E5E5>to<00:02:48.540><c> be</c><00:02:48.750><c> looking</c><00:02:49.650><c> for</c><00:02:49.920><c> ways</c></c><c.colorCCCCCC><00:02:50.070><c> to</c><00:02:50.489><c> celebrate</c></c><c.colorE5E5E5><00:02:50.850><c> our</c></c>
+
+00:02:51.329 --> 00:02:57.209 align:start position:19%
+<c.colorCCCCCC>diversity<00:02:52.079><c> and</c><00:02:52.650><c> we</c><00:02:53.519><c> are</c></c><c.colorE5E5E5><00:02:53.670><c> going</c><00:02:54.000><c> to</c><00:02:54.299><c> try</c><00:02:54.840><c> to</c></c>
+
+00:02:54.870 --> 00:03:00.780 align:start position:19%
+<c.colorE5E5E5>reach<00:02:55.200><c> out</c><00:02:55.470><c> to</c><00:02:55.500><c> every</c><00:02:55.920><c> boy</c><00:02:56.100><c> and</c><00:02:56.370><c> girl</c><00:02:56.430><c> as</c></c><c.colorCCCCCC><00:02:56.940><c> well</c></c>
+
+00:02:57.209 --> 00:03:03.000 align:start position:19%
+as<00:02:57.450><c> every</c><00:02:57.930><c> adult</c><c.colorE5E5E5><00:02:58.370><c> to</c><00:02:59.370><c> bring</c><00:02:59.850><c> them</c><00:03:00.090><c> in</c><00:03:00.480><c> to</c></c>
+
+00:03:00.780 --> 00:03:05.310 align:start position:19%
+working<c.colorCCCCCC><00:03:01.049><c> on</c></c><c.colorE5E5E5><00:03:01.350><c> behalf</c><00:03:01.560><c> of</c><00:03:01.890><c> our</c><00:03:02.040><c> country</c></c><c.colorCCCCCC><00:03:02.489><c> I</c><00:03:02.670><c> have</c></c>
+
+00:03:03.000 --> 00:03:07.650 align:start position:19%
+a<00:03:03.060><c> very</c><c.colorCCCCCC><00:03:03.269><c> positive</c><00:03:03.959><c> and</c></c><c.colorE5E5E5><00:03:04.260><c> optimistic</c><00:03:04.440><c> view</c></c>
+
+00:03:05.310 --> 00:03:09.840 align:start position:19%
+about<00:03:05.579><c> what</c><00:03:05.790><c> we</c><00:03:05.970><c> can</c><00:03:06.150><c> do</c><00:03:06.329><c> together</c><c.colorCCCCCC><00:03:06.600><c> that's</c><00:03:07.410><c> why</c></c>
+
+00:03:07.650 --> 00:03:11.820 align:start position:19%
+the<00:03:07.709><c> slogan</c><c.colorE5E5E5><00:03:08.310><c> of</c><00:03:08.400><c> my</c><00:03:08.519><c> campaign</c><00:03:09.030><c> is</c><00:03:09.269><c> stronger</c></c>
+
+00:03:09.840 --> 00:03:15.150 align:start position:19%
+<c.colorCCCCCC>together<00:03:10.200><c> because</c><00:03:10.980><c> I</c></c><c.colorE5E5E5><00:03:11.100><c> think</c><00:03:11.160><c> if</c><00:03:11.400><c> we</c><00:03:11.549><c> work</c></c>
+
+00:03:11.820 --> 00:03:17.609 align:start position:19%
+together<00:03:12.060><c> if</c><00:03:12.510><c> we</c><00:03:13.079><c> overcome</c><00:03:13.799><c> the</c><00:03:14.340><c> divisive</c>
+
+00:03:15.150 --> 00:03:20.730 align:start position:19%
+<c.colorCCCCCC>nough<00:03:15.390><c> stats</c><00:03:15.900><c> sometimes</c><00:03:16.470><c> sets</c><00:03:16.920><c> Americans</c></c>
+
+00:03:17.609 --> 00:03:22.980 align:start position:19%
+against<00:03:18.150><c> one</c><00:03:18.359><c> another</c><c.colorCCCCCC><00:03:18.390><c> and</c></c><c.colorE5E5E5><00:03:18.870><c> instead</c><00:03:19.859><c> we</c><00:03:20.519><c> make</c></c>
+
+00:03:20.730 --> 00:03:24.780 align:start position:19%
+some<00:03:21.000><c> big</c><00:03:21.239><c> goals</c><00:03:21.540><c> and</c><00:03:22.049><c> I've</c><00:03:22.140><c> set</c><00:03:22.440><c> forth</c><00:03:22.769><c> some</c>
+
+00:03:22.980 --> 00:03:26.750 align:start position:19%
+big<00:03:23.190><c> goals</c><00:03:23.459><c> getting</c><c.colorE5E5E5><00:03:23.820><c> the</c><00:03:24.000><c> economy</c></c><c.colorCCCCCC><00:03:24.299><c> to</c></c><c.colorE5E5E5><00:03:24.630><c> work</c></c>
+
+00:03:24.780 --> 00:03:30.000 align:start position:19%
+for<c.colorE5E5E5><00:03:24.989><c> everyone</c><00:03:25.380><c> not</c><00:03:25.890><c> just</c><00:03:25.920><c> those</c><00:03:26.310><c> at</c><00:03:26.370><c> the</c><00:03:26.579><c> top</c></c>
+
+00:03:26.750 --> 00:03:32.100 align:start position:19%
+<c.colorE5E5E5>making<00:03:27.750><c> sure</c><00:03:27.959><c> that</c><00:03:28.650><c> we</c><00:03:28.859><c> have</c><00:03:29.190><c> the</c><00:03:29.700><c> best</c></c>
+
+00:03:30.000 --> 00:03:35.160 align:start position:19%
+education<c.colorE5E5E5><00:03:30.510><c> system</c><00:03:31.200><c> from</c><00:03:31.470><c> preschool</c><00:03:32.069><c> through</c></c>
+
+00:03:32.100 --> 00:03:37.980 align:start position:19%
+<c.colorCCCCCC>college</c><c.colorE5E5E5><00:03:32.670><c> and</c><00:03:33.090><c> making</c><00:03:33.690><c> it</c><00:03:33.780><c> affordable</c></c><c.colorCCCCCC><00:03:34.109><c> and</c><00:03:34.560><c> so</c></c>
+
+00:03:35.160 --> 00:03:40.230 align:start position:19%
+much<00:03:35.340><c> else</c><c.colorE5E5E5><00:03:35.609><c> if</c><00:03:35.880><c> we</c><00:03:36.390><c> set</c><00:03:36.690><c> those</c><00:03:36.900><c> goals</c></c><c.colorCCCCCC><00:03:36.930><c> and</c><00:03:37.620><c> we</c></c>
+
+00:03:37.980 --> 00:03:42.660 align:start position:19%
+go<c.colorCCCCCC><00:03:38.340><c> together</c></c><c.colorE5E5E5><00:03:38.850><c> to</c><00:03:39.209><c> try</c><00:03:39.450><c> to</c><00:03:39.480><c> achieve</c><00:03:39.780><c> them</c></c>
+
+00:03:40.230 --> 00:03:45.239 align:start position:19%
+there's<00:03:40.650><c> nothing</c><c.colorCCCCCC><00:03:40.920><c> in</c><00:03:41.280><c> my</c><00:03:41.640><c> opinion</c><00:03:41.670><c> that</c></c>
+
+00:03:42.660 --> 00:03:47.760 align:start position:19%
+America<00:03:43.109><c> can't</c><00:03:43.410><c> do</c><c.colorE5E5E5><00:03:43.620><c> so</c><00:03:44.160><c> that's</c><00:03:44.400><c> why</c><00:03:44.579><c> I</c><00:03:44.609><c> hope</c></c>
+
+00:03:45.239 --> 00:03:49.480 align:start position:19%
+that<00:03:45.600><c> we</c><c.colorE5E5E5><00:03:45.900><c> will</c><00:03:46.169><c> come</c><00:03:47.040><c> together</c><00:03:47.250><c> in</c><00:03:47.609><c> this</c></c>
+
+00:03:47.760 --> 00:03:52.450 align:start position:19%
+campaign
+
+00:03:49.480 --> 00:03:54.760 align:start position:19%
+<c.colorE5E5E5>I'm<00:03:49.930><c> hoping</c><00:03:50.470><c> to</c><00:03:50.680><c> earn</c><00:03:50.739><c> your</c><00:03:51.069><c> vote</c></c><c.colorCCCCCC><00:03:51.129><c> I'm</c><00:03:51.760><c> hoping</c></c>
+
+00:03:52.450 --> 00:03:56.769 align:start position:19%
+<c.colorE5E5E5>to<00:03:52.599><c> be</c><00:03:52.750><c> elected</c><00:03:53.230><c> in</c><00:03:53.349><c> November</c><00:03:53.950><c> and</c><00:03:54.129><c> I</c><00:03:54.580><c> can</c></c>
+
+00:03:54.760 --> 00:03:59.019 align:start position:19%
+promise<c.colorE5E5E5><00:03:55.000><c> you</c><00:03:55.209><c> I</c><00:03:55.569><c> will</c><00:03:55.690><c> work</c><00:03:56.110><c> with</c><00:03:56.379><c> every</c></c>
+
+00:03:56.769 --> 00:04:01.060 align:start position:19%
+American<00:03:57.250><c> I</c><00:03:57.400><c> want</c><c.colorE5E5E5><00:03:57.519><c> to</c><00:03:57.640><c> be</c><00:03:57.790><c> the</c><00:03:58.239><c> president</c></c><c.colorCCCCCC><00:03:58.420><c> for</c></c>
+
+00:03:59.019 --> 00:04:02.980 align:start position:19%
+all<c.colorE5E5E5><00:03:59.050><c> Americans</c></c><c.colorCCCCCC><00:03:59.769><c> regardless</c><00:04:00.010><c> of</c><00:04:00.940><c> your</c></c>
+
+00:04:01.060 --> 00:04:05.680 align:start position:19%
+political<00:04:01.360><c> beliefs</c><00:04:02.140><c> where</c><00:04:02.560><c> you</c><00:04:02.680><c> come</c><00:04:02.950><c> from</c>
+
+00:04:02.980 --> 00:04:07.239 align:start position:19%
+<c.colorE5E5E5>what<00:04:03.519><c> you</c><00:04:03.670><c> look</c></c><c.colorCCCCCC><00:04:03.700><c> like</c><00:04:04.150><c> your</c><00:04:04.420><c> religion</c><00:04:04.989><c> I</c><00:04:05.140><c> want</c></c>
+
+00:04:05.680 --> 00:04:09.640 align:start position:19%
+us<c.colorE5E5E5><00:04:05.769><c> to</c><00:04:05.920><c> heal</c><00:04:06.160><c> our</c><00:04:06.400><c> country</c><00:04:06.819><c> and</c><00:04:06.940><c> bring</c><00:04:07.120><c> it</c></c>
+
+00:04:07.239 --> 00:04:11.650 align:start position:19%
+together<c.colorE5E5E5><00:04:07.440><c> because</c><00:04:08.440><c> that's</c><00:04:08.709><c> I</c><00:04:08.920><c> think</c><00:04:08.980><c> the</c><00:04:09.430><c> best</c></c>
+
+00:04:09.640 --> 00:04:13.090 align:start position:19%
+<c.colorE5E5E5>way<00:04:09.880><c> for</c></c><c.colorCCCCCC><00:04:09.910><c> us</c><00:04:10.239><c> to</c><00:04:10.390><c> get</c></c><c.colorE5E5E5><00:04:10.480><c> the</c><00:04:10.630><c> future</c><00:04:10.900><c> that</c><00:04:11.530><c> our</c></c>
+
+00:04:11.650 --> 00:04:15.160 align:start position:19%
+<c.colorCCCCCC>children<00:04:12.069><c> and</c></c><c.colorE5E5E5><00:04:12.220><c> our</c><00:04:12.370><c> grandchildren</c><00:04:12.400><c> deserve</c></c>
+
+00:04:13.090 --> 00:04:16.930 align:start position:19%
+<c.colorE5E5E5>Secretary<00:04:14.050><c> Clinton</c><00:04:14.380><c> thank</c><00:04:14.560><c> you</c><00:04:14.709><c> mr.</c><00:04:14.920><c> Trump</c></c>
+
+00:04:15.160 --> 00:04:19.870 align:start position:19%
+you<c.colorCCCCCC><00:04:15.250><c> have</c><00:04:15.340><c> two</c><00:04:15.489><c> minutes</c></c><c.colorE5E5E5><00:04:15.640><c> well</c><00:04:16.600><c> I</c><00:04:16.630><c> actually</c></c>
+
+00:04:16.930 --> 00:04:24.460 align:start position:19%
+agree<c.colorCCCCCC><00:04:17.410><c> with</c><00:04:17.590><c> that</c></c><c.colorE5E5E5><00:04:17.769><c> I</c><00:04:18.040><c> agree</c></c><c.colorCCCCCC><00:04:18.340><c> with</c></c><c.colorE5E5E5><00:04:18.870><c> everything</c></c>
+
+00:04:19.870 --> 00:04:27.070 align:start position:19%
+she<c.colorE5E5E5><00:04:20.049><c> said</c></c><c.colorCCCCCC><00:04:20.500><c> I</c><00:04:21.060><c> began</c><00:04:22.060><c> this</c><00:04:22.780><c> campaign</c></c><c.colorE5E5E5><00:04:23.430><c> because</c><00:04:24.430><c> I</c></c>
+
+00:04:24.460 --> 00:04:29.770 align:start position:19%
+was<00:04:24.760><c> so</c><00:04:24.970><c> tired</c><c.colorE5E5E5><00:04:25.240><c> of</c></c><c.colorCCCCCC><00:04:25.720><c> seeing</c></c><c.colorE5E5E5><00:04:26.110><c> such</c><00:04:26.620><c> foolish</c></c>
+
+00:04:27.070 --> 00:04:32.229 align:start position:19%
+things<c.colorE5E5E5><00:04:27.340><c> happen</c><00:04:28.000><c> to</c><00:04:28.090><c> our</c><00:04:28.150><c> country</c></c><c.colorCCCCCC><00:04:28.470><c> this</c><00:04:29.470><c> is</c><00:04:29.530><c> a</c></c>
+
+00:04:29.770 --> 00:04:33.970 align:start position:19%
+great<00:04:30.010><c> country</c><c.colorCCCCCC><00:04:30.280><c> this</c></c><c.colorE5E5E5><00:04:30.760><c> is</c><00:04:30.910><c> a</c><00:04:31.000><c> great</c><00:04:31.210><c> land</c></c><c.colorCCCCCC><00:04:31.479><c> I've</c></c>
+
+00:04:32.229 --> 00:04:36.040 align:start position:19%
+gotten<00:04:32.710><c> to</c><00:04:32.770><c> know</c><c.colorE5E5E5><00:04:32.830><c> the</c></c><c.colorCCCCCC><00:04:33.040><c> people</c></c><c.colorE5E5E5><00:04:33.190><c> of</c><00:04:33.460><c> the</c></c><c.colorCCCCCC><00:04:33.580><c> country</c></c>
+
+00:04:33.970 --> 00:04:39.400 align:start position:19%
+<c.colorCCCCCC>over<00:04:34.210><c> the</c><00:04:34.330><c> last</c><00:04:34.479><c> year</c></c><c.colorE5E5E5><00:04:35.229><c> and</c><00:04:35.380><c> a</c><00:04:35.440><c> half</c><00:04:35.470><c> that</c><00:04:35.860><c> I've</c></c>
+
+00:04:36.040 --> 00:04:41.080 align:start position:19%
+been<00:04:36.220><c> doing</c><c.colorCCCCCC><00:04:37.060><c> this</c><00:04:37.240><c> as</c><00:04:37.600><c> a</c><00:04:37.870><c> politician</c><00:04:38.260><c> I</c><00:04:38.830><c> could</c></c>
+
+00:04:39.400 --> 00:04:43.150 align:start position:19%
+not<00:04:39.580><c> believe</c><00:04:39.700><c> I'm</c><00:04:40.000><c> saying</c><00:04:40.180><c> that</c><c.colorE5E5E5><00:04:40.330><c> about</c></c><c.colorCCCCCC><00:04:40.540><c> myself</c></c>
+
+00:04:41.080 --> 00:04:46.810 align:start position:19%
+but<00:04:41.290><c> I</c><00:04:41.320><c> guess</c><00:04:41.560><c> I</c><00:04:41.710><c> have</c><00:04:41.860><c> been</c><00:04:41.889><c> a</c><c.colorE5E5E5><00:04:42.040><c> politician</c></c><c.colorCCCCCC><00:04:42.430><c> and</c></c>
+
+00:04:43.150 --> 00:04:50.050 align:start position:19%
+my<00:04:43.840><c> whole</c><00:04:44.080><c> concept</c><c.colorE5E5E5><00:04:44.580><c> was</c><00:04:45.580><c> to</c><00:04:45.970><c> make</c><00:04:46.240><c> America</c></c>
+
+00:04:46.810 --> 00:04:52.260 align:start position:19%
+great<00:04:46.840><c> again</c><00:04:47.050><c> when</c><00:04:47.590><c> I</c><00:04:47.620><c> watch</c><00:04:47.970><c> the</c><00:04:48.970><c> deals</c><00:04:49.690><c> being</c>
+
+00:04:50.050 --> 00:04:55.150 align:start position:19%
+made<00:04:50.200><c> when</c><00:04:50.650><c> I</c><00:04:50.680><c> watch</c><00:04:50.979><c> what's</c><00:04:51.460><c> happening</c><c.colorCCCCCC><00:04:51.550><c> with</c></c>
+
+00:04:52.260 --> 00:04:57.340 align:start position:19%
+some<00:04:53.260><c> horrible</c><00:04:53.680><c> things</c><c.colorE5E5E5><00:04:53.950><c> like</c><00:04:54.250><c> Obamacare</c></c><c.colorCCCCCC><00:04:54.970><c> were</c></c>
+
+00:04:55.150 --> 00:04:58.780 align:start position:19%
+<c.colorE5E5E5>your<00:04:55.360><c> health</c><00:04:55.660><c> insurance</c><00:04:56.050><c> and</c><00:04:56.380><c> health</c></c><c.colorCCCCCC><00:04:56.919><c> care</c><00:04:57.220><c> is</c></c>
+
+00:04:57.340 --> 00:05:01.979 align:start position:19%
+going<c.colorCCCCCC><00:04:57.370><c> up</c><00:04:57.789><c> by</c><00:04:57.970><c> numbers</c><00:04:58.360><c> that</c><00:04:58.600><c> are</c></c>
+
+00:04:58.780 --> 00:05:05.260 align:start position:19%
+astronomical<c.colorE5E5E5><00:04:59.650><c> 68%</c></c><c.colorCCCCCC><00:05:00.639><c> fifty-nine</c><00:05:01.600><c> percent</c></c>
+
+00:05:01.979 --> 00:05:07.120 align:start position:19%
+<c.colorCCCCCC>seventy<00:05:02.979><c> one</c><00:05:03.160><c> percent</c></c><c.colorE5E5E5><00:05:03.750><c> when</c><00:05:04.750><c> I</c><00:05:04.780><c> look</c><00:05:05.020><c> at</c><00:05:05.139><c> the</c></c>
+
+00:05:05.260 --> 00:05:10.150 align:start position:19%
+Iran<c.colorCCCCCC><00:05:05.560><c> deal</c><00:05:05.830><c> and</c><00:05:06.070><c> how</c><00:05:06.190><c> bad</c><00:05:06.430><c> a</c><00:05:06.460><c> deal</c><00:05:06.789><c> it</c><00:05:06.970><c> is</c></c><c.colorE5E5E5><00:05:07.060><c> for</c></c>
+
+00:05:07.120 --> 00:05:11.680 align:start position:19%
+<c.colorCCCCCC>us<00:05:07.479><c> it's</c><00:05:07.780><c> a</c><00:05:07.930><c> one</c><00:05:08.110><c> sided</c><00:05:08.430><c> transaction</c><00:05:09.430><c> where</c></c>
+
+00:05:10.150 --> 00:05:14.110 align:start position:19%
+we're<00:05:10.330><c> giving</c><00:05:10.600><c> back</c><c.colorCCCCCC><00:05:10.630><c> a</c><00:05:10.810><c> hundred</c><00:05:11.260><c> and</c><00:05:11.350><c> fifty</c></c>
+
+00:05:11.680 --> 00:05:15.880 align:start position:19%
+billion<00:05:11.889><c> dollars</c><00:05:12.430><c> to</c><00:05:12.729><c> a</c><00:05:13.000><c> terrorist</c><c.colorE5E5E5><00:05:13.870><c> state</c></c>
+
+00:05:14.110 --> 00:05:18.039 align:start position:19%
+really<00:05:14.650><c> the</c><00:05:14.830><c> number</c><c.colorE5E5E5><00:05:15.100><c> one</c><00:05:15.280><c> terrorist</c></c><c.colorCCCCCC><00:05:15.520><c> state</c></c>
+
+00:05:15.880 --> 00:05:19.660 align:start position:19%
+we've<00:05:16.120><c> made</c><00:05:16.360><c> them</c><00:05:16.510><c> a</c><00:05:16.600><c> strong</c><00:05:16.840><c> country</c><00:05:17.320><c> from</c>
+
+00:05:18.039 --> 00:05:22.270 align:start position:19%
+really<00:05:18.310><c> a</c><00:05:18.340><c> very</c><00:05:18.550><c> weak</c><00:05:18.789><c> country</c><00:05:19.210><c> just</c><c.colorE5E5E5><00:05:19.389><c> three</c></c>
+
+00:05:19.660 --> 00:05:23.800 align:start position:19%
+<c.colorCCCCCC>years</c><c.colorE5E5E5><00:05:19.870><c> ago</c></c><c.colorCCCCCC><00:05:20.250><c> when</c><00:05:21.250><c> I</c><00:05:21.280><c> look</c><00:05:21.580><c> at</c><00:05:21.700><c> all</c><00:05:21.880><c> of</c><00:05:22.120><c> the</c></c>
+
+00:05:22.270 --> 00:05:25.660 align:start position:19%
+things<c.colorCCCCCC><00:05:22.300><c> that</c><00:05:22.780><c> I</c><00:05:22.900><c> see</c><00:05:23.200><c> and</c><00:05:23.410><c> all</c><00:05:23.530><c> of</c><00:05:23.680><c> the</c></c>
+
+00:05:23.800 --> 00:05:28.360 align:start position:19%
+potential<c.colorCCCCCC><00:05:24.490><c> that</c></c><c.colorE5E5E5><00:05:24.789><c> our</c><00:05:24.850><c> country</c><00:05:25.300><c> has</c></c><c.colorCCCCCC><00:05:25.330><c> we</c><00:05:25.630><c> have</c></c>
+
+00:05:25.660 --> 00:05:30.570 align:start position:19%
+<c.colorE5E5E5>such</c><c.colorCCCCCC><00:05:25.930><c> tremendous</c><00:05:26.440><c> potential</c></c><c.colorE5E5E5><00:05:27.090><c> whether</c><00:05:28.090><c> it's</c></c>
+
+00:05:28.360 --> 00:05:30.570 align:start position:19%
+in
+
