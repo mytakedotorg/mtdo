@@ -148,6 +148,7 @@ export default class TimelinePreview extends React.Component<
           highlightedRange[0] +
           "&" +
           highlightedRange[1] +
+          "&" +
           viewRange[0] +
           "&" +
           viewRange[1];
