@@ -546,14 +546,17 @@ function getStartRangeOffsetTop(
 }
 
 /**
- *  Create an array of React elements for each Node in a given HTML string.
- * 
- *  Assumes no child nodes in HTML string input.
+ *  Create an array of React elements for each Node in a given object.
  */
+
+interface FoundationComponent {
+  component: "p" | "h2" | "h3";
+  innerHTML: string;
+}
 
 function getNodeArray(excerptId: string): Array<FoundationNode> {
   // Fetch the excerpt from the DB by its ID
-  let excerpt = getDocumentFact(excerptId);
+  const excerpt = getDocumentFact(excerptId);
   let source;
   if (excerpt) {
     source = require("../foundation/" + excerpt.filename);
@@ -562,44 +565,36 @@ function getNodeArray(excerptId: string): Array<FoundationNode> {
   }
 
   if (source) {
-    let output: Array<FoundationNode> = [];
-    let tagIsOpen: boolean = false;
-    let newElementName: string;
-    let newElementProps: FoundationNodeProps;
-    let newElementText: string;
-    let iter = 0;
+    const output: Array<FoundationNode> = [];
+    const components: FoundationComponent[] = JSON.parse(source);
+    let offset = 0;
+    for (const component of components) {
+      // data-offset  <-- 11 characters
+      offset += component.component.length + 11;
+      const oldtLength = offset.toString().length;
+      offset += oldtLength;
+      const newLength = offset.toString().length;
 
-    var parser = new htmlparser.Parser({
-      onopentag: function(name: string, attributes: FoundationNodeProps) {
-        tagIsOpen = true;
-        newElementName = name;
-        newElementProps = attributes;
-      },
-      ontext: function(text: string) {
-        if (tagIsOpen) {
-          newElementText = text;
-        }
-        // Ignore text between tags, usually this is just a blank space
-      },
-      onclosetag: function(name: string) {
-        tagIsOpen = false;
-        output.push({
-          component: newElementName,
-          props: newElementProps,
-          innerHTML: [newElementText]
-        });
-      },
-      onerror: function(error: Error) {
-        throw error;
+      if (newLength !== oldtLength) {
+        // Went from 99 to 100 for example, so need to add 1 more digit.
+        offset += 1;
       }
-    });
 
-    parser.write(source);
-    parser.end();
+      output.push({
+        component: component.component,
+        props: {
+          offset: offset.toString()
+        },
+        innerHTML: [component.innerHTML]
+      });
+
+      // Add innerHTML plus closing tag length
+      offset += component.innerHTML.length + component.component.length + 3;
+    }
 
     return output;
   } else {
-    throw "Error retriving Foundation document";
+    throw "Error retrieving Foundation document";
   }
 }
 function convertTimestampToSeconds(timestamp: string): number {

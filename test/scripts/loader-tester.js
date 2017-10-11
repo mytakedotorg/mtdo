@@ -16,8 +16,8 @@
  *     compile .ts files to .js, 
  *     and rerun this script
  */
-var loader = require("./loaders/dist/vtt-loader.js");
+var loader = require(__dirname + "/../../loaders/dist/foundation-loader.js");
 var fs = require("fs");
-var file = "./src/foundation/trump-hillary-2.vtt";
+var file = __dirname + "/../../src/foundation/bill-of-rights.foundation.html";
 
 console.log(loader(fs.readFileSync(file).toString()));
