@@ -1,6 +1,7 @@
 import * as React from "react";
 import * as keycode from "keycode";
 import YouTube from "react-youtube";
+import DocumentTextNodeList from "../DocumentTextNodeList";
 import { getDocumentFactTitle } from "../../utils/databaseAPI";
 import {
   getNodeArray,
@@ -298,14 +299,7 @@ class Document extends React.Component<DocumentBlockProps, DocumentBlockState> {
         <h2 className="editor__document-title">
           {this.getTitle()}
         </h2>
-        {highlightedNodes.map((node, index) => {
-          node.props["key"] = index.toString();
-          return React.createElement(
-            node.component,
-            node.props,
-            node.innerHTML
-          );
-        })}
+        <DocumentTextNodeList documentNodes={highlightedNodes} />
       </div>
     );
 

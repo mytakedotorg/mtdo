@@ -68,36 +68,41 @@ exports[`Read only 1`] = `
               >
                 United States Constitution
               </h2>
-              <h2
-                data="361"
+              <div
+                className={undefined}
+                onMouseUp={undefined}
               >
-                Article.
-                <span
-                  className="editor__document-highlight"
+                <h2
+                  data-offset="361"
                 >
-                   I.
-                </span>
-              </h2>
-              <h3
-                data="393"
-              >
-                <span
-                  className="editor__document-highlight"
+                  Article.
+                  <span
+                    className="editor__document-highlight"
+                  >
+                     I.
+                  </span>
+                </h2>
+                <h3
+                  data-offset="393"
                 >
-                  Section. 1.
-                </span>
-                
-              </h3>
-              <p
-                data="424"
-              >
-                <span
-                  className="editor__document-highlight"
+                  <span
+                    className="editor__document-highlight"
+                  >
+                    Section. 1.
+                  </span>
+                  
+                </h3>
+                <p
+                  data-offset="424"
                 >
-                  All legislative Powers herein granted shall be vested in a Congress of the United States, 
-                </span>
-                which shall consist of a Senate and House of Representatives.
-              </p>
+                  <span
+                    className="editor__document-highlight"
+                  >
+                    All legislative Powers herein granted shall be vested in a Congress of the United States, 
+                  </span>
+                  which shall consist of a Senate and House of Representatives.
+                </p>
+              </div>
             </div>
           </div>
         </div>
@@ -187,36 +192,41 @@ exports[`Simple block editor model 1`] = `
               >
                 United States Constitution
               </h2>
-              <h2
-                data="361"
+              <div
+                className={undefined}
+                onMouseUp={undefined}
               >
-                Article.
-                <span
-                  className="editor__document-highlight"
+                <h2
+                  data-offset="361"
                 >
-                   I.
-                </span>
-              </h2>
-              <h3
-                data="393"
-              >
-                <span
-                  className="editor__document-highlight"
+                  Article.
+                  <span
+                    className="editor__document-highlight"
+                  >
+                     I.
+                  </span>
+                </h2>
+                <h3
+                  data-offset="393"
                 >
-                  Section. 1.
-                </span>
-                
-              </h3>
-              <p
-                data="424"
-              >
-                <span
-                  className="editor__document-highlight"
+                  <span
+                    className="editor__document-highlight"
+                  >
+                    Section. 1.
+                  </span>
+                  
+                </h3>
+                <p
+                  data-offset="424"
                 >
-                  All legislative Powers herein granted shall be vested in a Congress of the United States, 
-                </span>
-                which shall consist of a Senate and House of Representatives.
-              </p>
+                  <span
+                    className="editor__document-highlight"
+                  >
+                    All legislative Powers herein granted shall be vested in a Congress of the United States, 
+                  </span>
+                  which shall consist of a Senate and House of Representatives.
+                </p>
+              </div>
             </div>
           </div>
         </div>
@@ -306,36 +316,41 @@ exports[`With active 1`] = `
               >
                 United States Constitution
               </h2>
-              <h2
-                data="361"
+              <div
+                className={undefined}
+                onMouseUp={undefined}
               >
-                Article.
-                <span
-                  className="editor__document-highlight"
+                <h2
+                  data-offset="361"
                 >
-                   I.
-                </span>
-              </h2>
-              <h3
-                data="393"
-              >
-                <span
-                  className="editor__document-highlight"
+                  Article.
+                  <span
+                    className="editor__document-highlight"
+                  >
+                     I.
+                  </span>
+                </h2>
+                <h3
+                  data-offset="393"
                 >
-                  Section. 1.
-                </span>
-                
-              </h3>
-              <p
-                data="424"
-              >
-                <span
-                  className="editor__document-highlight"
+                  <span
+                    className="editor__document-highlight"
+                  >
+                    Section. 1.
+                  </span>
+                  
+                </h3>
+                <p
+                  data-offset="424"
                 >
-                  All legislative Powers herein granted shall be vested in a Congress of the United States, 
-                </span>
-                which shall consist of a Senate and House of Representatives.
-              </p>
+                  <span
+                    className="editor__document-highlight"
+                  >
+                    All legislative Powers herein granted shall be vested in a Congress of the United States, 
+                  </span>
+                  which shall consist of a Senate and House of Representatives.
+                </p>
+              </div>
             </div>
           </div>
         </div>

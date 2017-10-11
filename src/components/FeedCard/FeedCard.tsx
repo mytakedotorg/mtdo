@@ -2,6 +2,7 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import BlockReader from "../BlockReader";
 import { TakeDocument } from "../BlockEditor";
+import DocumentTextNodeList from "../DocumentTextNodeList";
 import { getDocumentFactTitle } from "../../utils/databaseAPI";
 import { Article } from "../../utils/databaseData";
 import { getNodeArray, getHighlightedNodes } from "../../utils/functions";
@@ -49,16 +50,10 @@ class FeedCard extends React.Component<FeedCardProps, {}> {
                   <h2 className="feed__card-document-title">
                     {getDocumentFactTitle(block.excerptId)}
                   </h2>
-                  <div className="feed__card-document-text">
-                    {highlightedNodes.map((node, index) => {
-                      node.props["key"] = index.toString();
-                      return React.createElement(
-                        node.component,
-                        node.props,
-                        node.innerHTML
-                      );
-                    })}
-                  </div>
+                  <DocumentTextNodeList
+                    className="feed__card-document-text"
+                    documentNodes={highlightedNodes}
+                  />
                 </div>
               </div>
             );

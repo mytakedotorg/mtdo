@@ -2,6 +2,7 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import Document from "../Document";
 import FactHeader from "../FactHeader";
+import DocumentTextNodeList from "../DocumentTextNodeList";
 import Video from "../Video";
 import {
   FoundationNode,
@@ -235,16 +236,10 @@ export default class TimelinePreview extends React.Component<
                     style={{ top: this.state.offsetTop }}
                     onClick={() => this.handleSetClick()}
                   >
-                    <div className="editor__document editor__document--hover">
-                      {this.state.highlightedNodes.map((node, index) => {
-                        node.props["key"] = index.toString();
-                        return React.createElement(
-                          node.component,
-                          node.props,
-                          node.innerHTML
-                        );
-                      })}
-                    </div>
+                    <DocumentTextNodeList
+                      className="editor__document editor__document--hover"
+                      documentNodes={this.state.highlightedNodes}
+                    />
                   </div>
                 : null}
             </Document>
