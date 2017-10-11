@@ -15,8 +15,7 @@ export interface FoundationNode {
 }
 
 export interface FoundationNodeProps {
-  key: string;
-  data?: string;
+  offset: string;
 }
 
 function clearDefaultDOMSelection(): void {
@@ -42,11 +41,11 @@ function getNodesInRange(
   let documentNodes: FoundationNode[] = [];
   for (let idx = 0; idx < nodes.length; idx++) {
     if (nodes[idx + 1]) {
-      if (parseInt((nodes[idx + 1].props as any).data) <= startRange) {
+      if (parseInt(nodes[idx + 1].props.offset) <= startRange) {
         continue;
       }
     }
-    if (parseInt((nodes[idx].props as any).data) > endRange) {
+    if (parseInt(nodes[idx].props.offset) > endRange) {
       break;
     }
     documentNodes = [...documentNodes, ...nodes.slice(idx, idx + 1)];
@@ -69,7 +68,7 @@ function getHighlightedNodes(
   let highlightedNodes: FoundationNode[] = [];
   // documentNodes is a new array with only the nodes containing text to be highlighted
   if (documentNodes.length === 1) {
-    const offset = parseInt((documentNodes[0].props as any).data);
+    const offset = parseInt(documentNodes[0].props.offset);
     const startIndex = startRange - offset;
     const endIndex = endRange - offset;
     let newSpan: React.ReactNode = React.createElement(
@@ -90,7 +89,7 @@ function getHighlightedNodes(
     highlightedNodes = [newNode];
   } else {
     // More than one DOM node highlighted
-    let offset = parseInt((documentNodes[0].props as any).data);
+    let offset = parseInt(documentNodes[0].props.offset);
     let length = documentNodes[0].innerHTML.toString().length;
     let startIndex = startRange - offset;
     let endIndex = length;
@@ -113,7 +112,7 @@ function getHighlightedNodes(
     highlightedNodes = [newNode];
 
     for (let index: number = 1; index < documentNodes.length; index++) {
-      offset = parseInt((documentNodes[index].props as any).data);
+      offset = parseInt(documentNodes[index].props.offset);
       length = documentNodes[index].innerHTML.toString().length;
       startIndex = 0;
 
@@ -652,8 +651,7 @@ function getCaptionNodeArray(videoId: string): Array<FoundationNode> {
           output.push({
             component: "p",
             props: {
-              key: captions[speaker.range[0]].timestamp,
-              data: dataValue
+              offset: dataValue
             },
             innerHTML: [innerHTML]
           });
