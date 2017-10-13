@@ -26,18 +26,19 @@ describe("A series of editor actions", () => {
   });
 
   test("Add a Document block", () => {
-    (wrapper.instance() as BlockWriter).addDocument("bill-of-rights", [
-      368,
-      513
-    ]);
+    (wrapper.instance() as BlockWriter).addDocument(
+      "bill-of-rights",
+      [294, 368],
+      [294, 439]
+    );
     const newState = wrapper.state() as BlockWriterState;
     const docBlock = newState.takeDocument.blocks[0] as DocumentBlock;
     expect(docBlock.kind).toBe("document");
     expect(docBlock.excerptId).toBe("bill-of-rights");
     expect(docBlock.highlightedRange).toEqual(
-      expect.arrayContaining([368, 513])
+      expect.arrayContaining([294, 368])
     );
-    expect(docBlock.viewRange).toEqual(expect.arrayContaining([0, 0]));
+    expect(docBlock.viewRange).toEqual(expect.arrayContaining([294, 439]));
   });
 
   test("Type in a Paragraph block", () => {

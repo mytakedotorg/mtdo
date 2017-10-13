@@ -108,13 +108,14 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
   };
   addDocument = (
     excerptId: string,
-    highlightedRange: [number, number]
+    highlightedRange: [number, number],
+    viewRange: [number, number]
   ): void => {
     const newBlock: DocumentBlock = {
       kind: "document",
       excerptId: excerptId,
       highlightedRange: highlightedRange,
-      viewRange: [0, 0]
+      viewRange: viewRange
     };
 
     this.addEvidenceBlock(newBlock);

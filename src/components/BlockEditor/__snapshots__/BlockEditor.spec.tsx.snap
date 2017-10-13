@@ -73,7 +73,7 @@ exports[`Read only 1`] = `
                 onMouseUp={undefined}
               >
                 <h2
-                  data-offset="361"
+                  data-offset={327}
                 >
                   Article.
                   <span
@@ -83,7 +83,7 @@ exports[`Read only 1`] = `
                   </span>
                 </h2>
                 <h3
-                  data-offset="393"
+                  data-offset={338}
                 >
                   <span
                     className="editor__document-highlight"
@@ -93,14 +93,14 @@ exports[`Read only 1`] = `
                   
                 </h3>
                 <p
-                  data-offset="424"
+                  data-offset={349}
                 >
                   <span
                     className="editor__document-highlight"
                   >
-                    All legislative Powers herein granted shall be vested in a Congress of the United States, 
+                    All legislative Powers herein granted shall be vested in a Congress of the United States,
                   </span>
-                  which shall consist of a Senate and House of Representatives.
+                   which shall consist of a Senate and House of Representatives.
                 </p>
               </div>
             </div>
@@ -197,7 +197,7 @@ exports[`Simple block editor model 1`] = `
                 onMouseUp={undefined}
               >
                 <h2
-                  data-offset="361"
+                  data-offset={327}
                 >
                   Article.
                   <span
@@ -207,7 +207,7 @@ exports[`Simple block editor model 1`] = `
                   </span>
                 </h2>
                 <h3
-                  data-offset="393"
+                  data-offset={338}
                 >
                   <span
                     className="editor__document-highlight"
@@ -217,14 +217,14 @@ exports[`Simple block editor model 1`] = `
                   
                 </h3>
                 <p
-                  data-offset="424"
+                  data-offset={349}
                 >
                   <span
                     className="editor__document-highlight"
                   >
-                    All legislative Powers herein granted shall be vested in a Congress of the United States, 
+                    All legislative Powers herein granted shall be vested in a Congress of the United States,
                   </span>
-                  which shall consist of a Senate and House of Representatives.
+                   which shall consist of a Senate and House of Representatives.
                 </p>
               </div>
             </div>
@@ -321,7 +321,7 @@ exports[`With active 1`] = `
                 onMouseUp={undefined}
               >
                 <h2
-                  data-offset="361"
+                  data-offset={327}
                 >
                   Article.
                   <span
@@ -331,7 +331,7 @@ exports[`With active 1`] = `
                   </span>
                 </h2>
                 <h3
-                  data-offset="393"
+                  data-offset={338}
                 >
                   <span
                     className="editor__document-highlight"
@@ -341,14 +341,14 @@ exports[`With active 1`] = `
                   
                 </h3>
                 <p
-                  data-offset="424"
+                  data-offset={349}
                 >
                   <span
                     className="editor__document-highlight"
                   >
-                    All legislative Powers herein granted shall be vested in a Congress of the United States, 
+                    All legislative Powers herein granted shall be vested in a Congress of the United States,
                   </span>
-                  which shall consist of a Senate and House of Representatives.
+                   which shall consist of a Senate and House of Representatives.
                 </p>
               </div>
             </div>
