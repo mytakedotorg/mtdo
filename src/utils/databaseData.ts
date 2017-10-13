@@ -550,8 +550,8 @@ const database: Database = {
             {
               kind: "document",
               excerptId: "bill-of-rights",
-              highlightedRange: [368, 513],
-              viewRange: [368, 513]
+              highlightedRange: [283, 439],
+              viewRange: [283, 439]
             },
             {
               kind: "paragraph",
@@ -566,8 +566,8 @@ const database: Database = {
             {
               kind: "document",
               excerptId: "bill-of-rights",
-              highlightedRange: [368, 442],
-              viewRange: [368, 513]
+              highlightedRange: [294, 368],
+              viewRange: [283, 439]
             },
             {
               kind: "paragraph",
@@ -594,8 +594,8 @@ const database: Database = {
             {
               kind: "document",
               excerptId: "united-states-constitution",
-              highlightedRange: [19343, 19970],
-              viewRange: [19343, 19970]
+              highlightedRange: [17730, 18357],
+              viewRange: [17730, 18357]
             },
             {
               kind: "paragraph",
