@@ -15,7 +15,7 @@ export interface FoundationNode {
 }
 
 export interface FoundationNodeProps {
-  offset: string;
+  offset: number;
 }
 
 function clearDefaultDOMSelection(): void {
@@ -41,11 +41,11 @@ function getNodesInRange(
   let documentNodes: FoundationNode[] = [];
   for (let idx = 0; idx < nodes.length; idx++) {
     if (nodes[idx + 1]) {
-      if (parseInt(nodes[idx + 1].props.offset) <= startRange) {
+      if (nodes[idx + 1].props.offset <= startRange) {
         continue;
       }
     }
-    if (parseInt(nodes[idx].props.offset) > endRange) {
+    if (nodes[idx].props.offset >= endRange) {
       break;
     }
     documentNodes = [...documentNodes, ...nodes.slice(idx, idx + 1)];
@@ -64,11 +64,11 @@ function getHighlightedNodes(
   }
   const startRange = range[0];
   const endRange = range[1];
-  let documentNodes = getNodesInRange(nodes, range);
+  let documentNodes = getNodesInRange(nodes, viewRange);
   let highlightedNodes: FoundationNode[] = [];
   // documentNodes is a new array with only the nodes containing text to be highlighted
   if (documentNodes.length === 1) {
-    const offset = parseInt(documentNodes[0].props.offset);
+    const offset = documentNodes[0].props.offset;
     const startIndex = startRange - offset;
     const endIndex = endRange - offset;
     let newSpan: React.ReactNode = React.createElement(
@@ -87,9 +87,9 @@ function getHighlightedNodes(
       newNode.innerHTML.toString().substring(endIndex, length)
     ];
     highlightedNodes = [newNode];
-  } else {
+  } else if (documentNodes.length > 1) {
     // More than one DOM node highlighted
-    let offset = parseInt(documentNodes[0].props.offset);
+    let offset = documentNodes[0].props.offset;
     let length = documentNodes[0].innerHTML.toString().length;
     let startIndex = startRange - offset;
     let endIndex = length;
@@ -112,7 +112,7 @@ function getHighlightedNodes(
     highlightedNodes = [newNode];
 
     for (let index: number = 1; index < documentNodes.length; index++) {
-      offset = parseInt(documentNodes[index].props.offset);
+      offset = documentNodes[index].props.offset;
       length = documentNodes[index].innerHTML.toString().length;
       startIndex = 0;
 
@@ -272,12 +272,14 @@ function highlightText(
 
   if (startContainer && startContainer === endContainer) {
     // Create a new Span element with the contents of the highlighted text
-    let textContent = "";
+    let textContent;
     if (startContainer.textContent) {
       textContent = startContainer.textContent.substring(
         indexOfSelectionStart,
         indexOfSelectionEnd
       );
+    } else {
+      textContent = "";
     }
 
     let newSpan: React.ReactNode = React.createElement(
@@ -296,8 +298,8 @@ function highlightText(
       nodes[indexOfStartContainer]
     );
 
-    let startText = "";
-    let endText = "";
+    let startText;
+    let endText;
     if (startContainer.textContent) {
       startText = startContainer.textContent.substring(
         0,
@@ -307,18 +309,24 @@ function highlightText(
         indexOfSelectionEnd,
         startContainer.textContent.length
       );
+    } else {
+      startText = "";
+      endText = "";
     }
     newNode.innerHTML = [startText, newSpan, endText];
 
     newNodes = [...newNodes, newNode];
   } else if (startContainer && endContainer) {
-    let textContent = "";
+    let textContent;
     if (startContainer.textContent) {
       textContent = startContainer.textContent.substring(
         indexOfSelectionStart,
         startContainer.textContent.length
       );
+    } else {
+      textContent = "";
     }
+
     // Create a new Span element with the contents of the highlighted text
     let firstNewSpan: React.ReactNode = React.createElement(
       "span",
@@ -336,13 +344,16 @@ function highlightText(
       nodes[indexOfStartContainer]
     );
 
-    let startText = "";
+    let startText;
     if (startContainer.textContent) {
       startText = startContainer.textContent.substring(
         0,
         indexOfSelectionStart
       );
+    } else {
+      startText = "";
     }
+
     firstNewNode.innerHTML = [startText, firstNewSpan];
 
     newNodes = [...newNodes, firstNewNode];
@@ -370,10 +381,13 @@ function highlightText(
       newNodes = [...newNodes, nextNewNode];
     }
 
-    textContent = "";
+    textContent;
     if (endContainer.textContent) {
       textContent = endContainer.textContent.substring(0, indexOfSelectionEnd);
+    } else {
+      textContent = "";
     }
+
     // Create a new Span element with the contents of the highlighted text
     let lastNewSpan: React.ReactNode = React.createElement(
       "span",
@@ -389,13 +403,16 @@ function highlightText(
       {},
       nodes[indexOfEndContainer]
     );
-    let endText = "";
+    let endText;
     if (endContainer.textContent) {
       endText = endContainer.textContent.substring(
         indexOfSelectionEnd,
         endContainer.textContent.length
       );
+    } else {
+      endText = "";
     }
+
     lastNewNode.innerHTML = [lastNewSpan, endText];
 
     newNodes = [...newNodes, lastNewNode];
@@ -408,42 +425,22 @@ function highlightText(
 
   clearDefaultDOMSelection();
 
-  let highlightedRangeStart = 0;
-  let highlightedRangeEnd = 0;
-  let viewRangeStart = 0;
-  let viewRangeEnd = 0;
-  let videoStart = 0;
-  let videoEnd = 0;
-  if (startContainer && endContainer) {
-    let startData = startContainer.attributes[0].value;
-    if (startData.indexOf("|") !== -1) {
-      // data looks like 0|5|16 for example
-      viewRangeStart = parseInt(startData.split("|")[2]);
-      videoStart = parseInt(startData.split("|")[0]);
-    } else {
-      viewRangeStart = parseInt(startData);
-    }
-    highlightedRangeStart = viewRangeStart + indexOfSelectionStart;
+  let startData = nodes[indexOfStartContainer].props;
+  let viewRangeStart = startData.offset;
+  let highlightedRangeStart = viewRangeStart + indexOfSelectionStart;
 
-    let endData = endContainer.attributes[0].value;
-    if (endData.indexOf("|") !== -1) {
-      // data looks like 0|5|16 for example
-      viewRangeEnd = parseInt(endData.split("|")[2]);
-      videoEnd = parseInt(endData.split("|")[1]);
-    } else {
-      viewRangeEnd = parseInt(endData);
-    }
-    highlightedRangeEnd = viewRangeEnd + indexOfSelectionEnd;
-    if (endContainer.textContent) {
-      viewRangeEnd += endContainer.textContent.length;
-    }
+  let endData = nodes[indexOfEndContainer];
+  let viewRangeEnd = endData.props.offset;
+  let highlightedRangeEnd = viewRangeEnd + indexOfSelectionEnd;
+  if (endData.innerHTML) {
+    viewRangeEnd += endData.innerHTML.toString().length;
   }
 
   return {
     newNodes: newNodes,
     highlightedRange: [highlightedRangeStart, highlightedRangeEnd],
     viewRange: [viewRangeStart, viewRangeEnd],
-    videoRange: [videoStart, videoEnd]
+    videoRange: [0, 0]
   };
 }
 /**
@@ -522,27 +519,35 @@ function getStartRangeOffsetTop(
   if (thirdNodeList && textIndex !== undefined) {
     let textNodes = thirdNodeList[textIndex].childNodes;
     for (let idx = 0; idx < textNodes.length; idx++) {
-      if (textNodes[idx + 1]) {
-        if (parseInt(textNodes[idx].attributes[0].value) <= startRange) {
-          resultNodes = textNodes[idx];
-          continue;
-        } else {
-          if (resultNodes) {
+      if ((textNodes[idx] as HTMLElement).dataset) {
+        let dataOffset = (textNodes[idx] as HTMLElement).dataset.offset;
+        if (textNodes[idx + 1]) {
+          if (dataOffset && parseInt(dataOffset) <= startRange) {
+            resultNodes = textNodes[idx];
+            continue;
+          } else {
+            if (resultNodes) {
+              return (resultNodes as HTMLElement).offsetTop;
+            }
+            resultNodes = textNodes[idx];
             return (resultNodes as HTMLElement).offsetTop;
           }
-          resultNodes = textNodes[idx];
-          return (resultNodes as HTMLElement).offsetTop;
         }
+
+        if (dataOffset && parseInt(dataOffset) > endRange) {
+          break;
+        }
+        resultNodes = textNodes[idx];
       }
-      if (parseInt(textNodes[idx].attributes[0].value) > endRange) {
-        break;
-      }
-      resultNodes = textNodes[idx];
     }
   }
 
-  let offsetTop = (resultNodes as HTMLElement).offsetTop;
-  return offsetTop;
+  if (resultNodes) {
+    let offsetTop = (resultNodes as HTMLElement).offsetTop;
+    return offsetTop;
+  } else {
+    return 0;
+  }
 }
 
 /**
@@ -569,27 +574,14 @@ function getNodeArray(excerptId: string): Array<FoundationNode> {
     const components: FoundationComponent[] = JSON.parse(source);
     let offset = 0;
     for (const component of components) {
-      // data-offset  <-- 11 characters
-      offset += component.component.length + 11;
-      const oldtLength = offset.toString().length;
-      offset += oldtLength;
-      const newLength = offset.toString().length;
-
-      if (newLength !== oldtLength) {
-        // Went from 99 to 100 for example, so need to add 1 more digit.
-        offset += 1;
-      }
-
       output.push({
         component: component.component,
         props: {
-          offset: offset.toString()
+          offset: offset
         },
         innerHTML: [component.innerHTML]
       });
-
-      // Add innerHTML plus closing tag length
-      offset += component.innerHTML.length + component.component.length + 3;
+      offset += component.innerHTML.length;
     }
 
     return output;
@@ -616,7 +608,7 @@ function getCaptionNodeArray(videoId: string): Array<FoundationNode> {
     if (source) {
       const captionMeta = getVideoCaptionMetaData(videoId);
       let output: Array<FoundationNode> = [];
-      let charCount = 0;
+      let offset = 0;
       if (captionMeta) {
         const speakerMap = captionMeta.speakerMap;
         const captions: CaptionWord[] = JSON.parse(source);
@@ -638,15 +630,15 @@ function getCaptionNodeArray(videoId: string): Array<FoundationNode> {
           let dataValue = startTime.toString() + "|" + endTime.toString() + "|";
 
           // Character count offset
-          charCount += dataValue.length + 10 + innerHTML.length;
-          charCount += charCount.toString().length;
+          offset += dataValue.length + 10 + innerHTML.length;
+          offset += offset.toString().length;
 
-          dataValue += charCount.toString();
+          dataValue += offset.toString();
 
           output.push({
             component: "p",
             props: {
-              offset: dataValue
+              offset: parseInt(dataValue)
             },
             innerHTML: [innerHTML]
           });
