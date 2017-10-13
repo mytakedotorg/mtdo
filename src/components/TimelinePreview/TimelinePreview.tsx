@@ -7,6 +7,7 @@ import Video from "../Video";
 import {
   FoundationNode,
   getFact,
+  getNodesInRange,
   getHighlightedNodes,
   getStartRangeOffsetTop,
   highlightText,
@@ -75,7 +76,7 @@ export default class TimelinePreview extends React.Component<
 
     let offsetTop = getStartRangeOffsetTop(
       theseDOMNodes,
-      range ? range : this.state.highlightedRange
+      range ? range : this.state.viewRange
     );
 
     return offsetTop;
@@ -108,15 +109,15 @@ export default class TimelinePreview extends React.Component<
           this.handleSetClick
         );
 
-        const newHighlightedNodes = getHighlightedNodes(
-          this.document.getDocumentNodes(),
-          highlightedText.highlightedRange,
+        const newHighlightedNodes = getNodesInRange(
+          highlightedText.newNodes,
           highlightedText.viewRange
         );
 
         this.setState({
           highlightedNodes: newHighlightedNodes,
           highlightedRange: highlightedText.highlightedRange,
+          viewRange: highlightedText.viewRange,
           textIsHighlighted: true,
           offsetTop: this.getScrollTop(highlightedText.highlightedRange)
         });

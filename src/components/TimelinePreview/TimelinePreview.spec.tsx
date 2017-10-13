@@ -20,8 +20,8 @@ let mockWindow = getMockWindow();
 describe("Constitution", () => {
   let wrapper: ReactWrapper;
   const offset = 399;
-  const highlightedRange: [number, number] = [368, 513];
-  const viewRange: [number, number] = [368, 513];
+  const highlightedRange: [number, number] = [327, 500];
+  const viewRange: [number, number] = [327, 500];
   const excerptId = "united-states-constitution";
   const setFactHandlers = {
     handleDocumentSetClick: onDocumentSetClick,
