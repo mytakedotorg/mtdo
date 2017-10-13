@@ -1,7 +1,12 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { FoundationNode } from "../../utils/functions";
+import { FoundationNode, isCaptionNode } from "../../utils/functions";
 
+interface DataAttributes {
+  "data-offset": number;
+  "data-start"?: number;
+  "data-end"?: number;
+}
 interface DocumentTextNodeProps {
   documentNode: FoundationNode;
 }
@@ -17,22 +22,34 @@ class DocumentTextNode extends React.Component<
   }
   render() {
     const { documentNode } = this.props;
+
+    let attributes: DataAttributes = {
+      "data-offset": documentNode.props.offset
+    };
+
+    if (isCaptionNode(documentNode.props)) {
+      attributes = {
+        ...attributes,
+        "data-start": documentNode.props.start,
+        "data-end": documentNode.props.end
+      };
+    }
     switch (documentNode.component) {
       case "h2":
         return (
-          <h2 data-offset={documentNode.props.offset}>
+          <h2 {...attributes}>
             {documentNode.innerHTML}
           </h2>
         );
       case "h3":
         return (
-          <h3 data-offset={documentNode.props.offset}>
+          <h3 {...attributes}>
             {documentNode.innerHTML}
           </h3>
         );
       case "p":
         return (
-          <p data-offset={documentNode.props.offset}>
+          <p {...attributes}>
             {documentNode.innerHTML}
           </p>
         );

@@ -10,12 +10,24 @@ var htmlparser = require("htmlparser2");
 
 export interface FoundationNode {
   component: string;
-  props: FoundationNodeProps;
+  props: FoundationNodeProps | CaptionNodeProps;
   innerHTML: Array<string | React.ReactNode>;
 }
 
 export interface FoundationNodeProps {
   offset: number;
+}
+
+export interface CaptionNodeProps {
+  offset: number;
+  start: number;
+  end: number;
+}
+
+export function isCaptionNode(
+  props: FoundationNodeProps | CaptionNodeProps
+): props is CaptionNodeProps {
+  return (props as CaptionNodeProps).start !== undefined;
 }
 
 function clearDefaultDOMSelection(): void {
@@ -425,22 +437,34 @@ function highlightText(
 
   clearDefaultDOMSelection();
 
-  let startData = nodes[indexOfStartContainer].props;
-  let viewRangeStart = startData.offset;
+  let startData = nodes[indexOfStartContainer];
+  let startProps = startData.props;
+  let viewRangeStart = startProps.offset;
   let highlightedRangeStart = viewRangeStart + indexOfSelectionStart;
 
   let endData = nodes[indexOfEndContainer];
-  let viewRangeEnd = endData.props.offset;
-  let highlightedRangeEnd = viewRangeEnd + indexOfSelectionEnd;
-  if (endData.innerHTML) {
-    viewRangeEnd += endData.innerHTML.toString().length;
+  let endProps = endData.props;
+  let viewRangeEnd = endProps.offset + endData.innerHTML.toString().length;
+  let highlightedRangeEnd = endProps.offset + indexOfSelectionEnd;
+
+  let videoStart;
+  let videoEnd;
+  if (isCaptionNode(startProps)) {
+    videoStart = startProps.start;
+  } else {
+    videoStart = 0;
+  }
+  if (isCaptionNode(endProps)) {
+    videoEnd = endProps.end;
+  } else {
+    videoEnd = 0;
   }
 
   return {
     newNodes: newNodes,
     highlightedRange: [highlightedRangeStart, highlightedRangeEnd],
     viewRange: [viewRangeStart, viewRangeEnd],
-    videoRange: [0, 0]
+    videoRange: [videoStart, videoEnd]
   };
 }
 /**
@@ -622,23 +646,23 @@ function getCaptionNodeArray(videoId: string): Array<FoundationNode> {
           let startTime = convertTimestampToSeconds(
             captions[speaker.range[0]].timestamp
           );
-          let endTime = convertTimestampToSeconds(
-            captions[speaker.range[0]].timestamp
-          );
 
-          // Append a separator and a character count offset
-          let dataValue = startTime.toString() + "|" + endTime.toString() + "|";
+          if (startTime > 0) {
+            startTime -= 1;
+          }
+
+          let endTime =
+            convertTimestampToSeconds(captions[speaker.range[1]].timestamp) + 1;
 
           // Character count offset
-          offset += dataValue.length + 10 + innerHTML.length;
-          offset += offset.toString().length;
-
-          dataValue += offset.toString();
+          offset += innerHTML.length;
 
           output.push({
             component: "p",
             props: {
-              offset: parseInt(dataValue)
+              offset: offset,
+              start: startTime,
+              end: endTime
             },
             innerHTML: [innerHTML]
           });

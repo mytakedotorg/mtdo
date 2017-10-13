@@ -30,16 +30,16 @@ class DocumentTextNodeList extends React.Component<
     if (this.props.captionTimer) {
       const currentIndex = this.state.currentCaptionIndex;
       const timer = this.props.captionTimer;
-      const elementList = this.scrollWindow.querySelectorAll("[data]");
+      const elementList = this.scrollWindow.querySelectorAll("[data-start]");
 
       for (let i = 0; i < elementList.length; i++) {
-        const data = elementList[i].getAttribute("data");
+        const data = elementList[i].getAttribute("data-start");
         if (data) {
           if (elementList[i + 1]) {
-            const nextData = elementList[i + 1].getAttribute("data");
+            const nextData = elementList[i + 1].getAttribute("data-start");
             if (nextData) {
-              let startTime = parseInt(data.split("|")[0]);
-              let nextStartTime = parseInt(nextData.split("|")[0]);
+              let startTime = parseInt(data);
+              let nextStartTime = parseInt(nextData);
 
               if (
                 startTime <= timer &&
