@@ -10,7 +10,13 @@ var htmlparser = require("htmlparser2");
 
 export interface FoundationNode {
   component: string;
-  props: FoundationNodeProps | CaptionNodeProps;
+  props: FoundationNodeProps;
+  innerHTML: Array<string | React.ReactNode>;
+}
+
+export interface CaptionNode {
+  component: string;
+  props: CaptionNodeProps;
   innerHTML: Array<string | React.ReactNode>;
 }
 
@@ -25,9 +31,15 @@ export interface CaptionNodeProps {
 }
 
 export function isCaptionNode(
-  props: FoundationNodeProps | CaptionNodeProps
-): props is CaptionNodeProps {
-  return (props as CaptionNodeProps).start !== undefined;
+  node: FoundationNode | CaptionNode
+): node is CaptionNode {
+  return (node.props as CaptionNodeProps).start !== undefined;
+}
+
+export function isCaptionNodeArray(
+  node: FoundationNode[] | CaptionNode[]
+): node is CaptionNode[] {
+  return (node[0].props as CaptionNodeProps).start !== undefined;
 }
 
 function clearDefaultDOMSelection(): void {
@@ -438,24 +450,22 @@ function highlightText(
   clearDefaultDOMSelection();
 
   let startData = nodes[indexOfStartContainer];
-  let startProps = startData.props;
-  let viewRangeStart = startProps.offset;
+  let viewRangeStart = startData.props.offset;
   let highlightedRangeStart = viewRangeStart + indexOfSelectionStart;
 
   let endData = nodes[indexOfEndContainer];
-  let endProps = endData.props;
-  let viewRangeEnd = endProps.offset + endData.innerHTML.toString().length;
-  let highlightedRangeEnd = endProps.offset + indexOfSelectionEnd;
+  let viewRangeEnd = endData.props.offset + endData.innerHTML.toString().length;
+  let highlightedRangeEnd = endData.props.offset + indexOfSelectionEnd;
 
   let videoStart;
   let videoEnd;
-  if (isCaptionNode(startProps)) {
-    videoStart = startProps.start;
+  if (isCaptionNode(startData)) {
+    videoStart = startData.props.start;
   } else {
     videoStart = 0;
   }
-  if (isCaptionNode(endProps)) {
-    videoEnd = endProps.end;
+  if (isCaptionNode(endData)) {
+    videoEnd = endData.props.end;
   } else {
     videoEnd = 0;
   }
@@ -583,7 +593,7 @@ interface FoundationComponent {
   innerHTML: string;
 }
 
-function getNodeArray(excerptId: string): Array<FoundationNode> {
+function getNodeArray(excerptId: string): FoundationNode[] | CaptionNode[] {
   // Fetch the excerpt from the DB by its ID
   const excerpt = getDocumentFact(excerptId);
   let source;
@@ -623,7 +633,7 @@ function convertTimestampToSeconds(timestamp: string): number {
   return HH * 60 * 60 + MM * 60 + SS;
 }
 
-function getCaptionNodeArray(videoId: string): Array<FoundationNode> {
+function getCaptionNodeArray(videoId: string): Array<CaptionNode> {
   // Fetch the excerpt from the DB by its ID
   const captionFile = getVideoFactCaptionFile(videoId);
   let source;
@@ -631,7 +641,7 @@ function getCaptionNodeArray(videoId: string): Array<FoundationNode> {
     source = require("../foundation/" + captionFile);
     if (source) {
       const captionMeta = getVideoCaptionMetaData(videoId);
-      let output: Array<FoundationNode> = [];
+      let output: Array<CaptionNode> = [];
       let offset = 0;
       if (captionMeta) {
         const speakerMap = captionMeta.speakerMap;
@@ -640,9 +650,16 @@ function getCaptionNodeArray(videoId: string): Array<FoundationNode> {
           let innerHTML = "";
           for (let i = speaker.range[0]; i <= speaker.range[1]; i++) {
             if (captions[i]) {
-              innerHTML += " " + captions[i].word;
+              if (i !== 0) {
+                // Add a space between each word, but not before first word.
+                innerHTML += " ";
+              }
+              innerHTML += captions[i].word;
             }
           }
+          innerHTML = innerHTML.replace(/[\s]+/, " "); //Replace extra whitespace with a single space
+          innerHTML = innerHTML.replace(/^[\s]+/, ""); //Trim all whitespace
+
           let startTime = convertTimestampToSeconds(
             captions[speaker.range[0]].timestamp
           );
@@ -720,6 +737,7 @@ function getFact(factId: string): DocumentFact | VideoFact | null {
 
 export {
   clearDefaultDOMSelection,
+  convertTimestampToSeconds,
   getCaptionNodeArray,
   getFact,
   getStartRangeOffsetTop,
