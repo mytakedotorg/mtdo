@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { CaptionNode } from "../../utils/functions";
+import { CaptionNode, convertTimestampToSeconds } from "../../utils/functions";
 import { CaptionWord } from "../../utils/databaseData";
 import CaptionTextNode from "../CaptionTextNode";
 
@@ -13,57 +13,80 @@ interface CaptionTextNodeListProps {
 }
 
 interface CaptionTextNodeListState {
-  currentCaptionIndex: number;
+  currentCaptionIndex: [number, number]; // ElementListIdx, ElementListItemIdx
 }
 
 class CaptionTextNodeList extends React.Component<
   CaptionTextNodeListProps,
   CaptionTextNodeListState
 > {
-  private scrollWindow: HTMLDivElement;
+  private captionNodeContainer: HTMLDivElement;
   constructor(props: CaptionTextNodeListProps) {
     super(props);
 
     this.state = {
-      currentCaptionIndex: 0
+      currentCaptionIndex: [0, 0]
     };
   }
   setScrollView = () => {
     if (this.props.captionTimer) {
       const currentIndex = this.state.currentCaptionIndex;
       const timer = this.props.captionTimer;
-      const elementList = this.scrollWindow.querySelectorAll("[data-start]");
+      const elementList = this.captionNodeContainer.querySelectorAll(
+        "[data-map]"
+      );
 
       for (let i = 0; i < elementList.length; i++) {
-        const data = elementList[i].getAttribute("data-start");
-        if (data) {
-          if (elementList[i + 1]) {
-            const nextData = elementList[i + 1].getAttribute("data-start");
-            if (nextData) {
-              let startTime = parseInt(data);
-              let nextStartTime = parseInt(nextData);
-
+        const dataMapAttribute = elementList[i].getAttribute("data-map");
+        if (dataMapAttribute) {
+          const dataMap: number[] = JSON.parse(dataMapAttribute);
+          for (let idx = 0; idx < dataMap.length; idx++) {
+            let startTime = dataMap[idx];
+            let nextStartTime;
+            if (dataMap[idx + 1]) {
+              // Next scroll index is in current paragraph
+              nextStartTime = dataMap[idx + 1];
+            } else if (elementList[i + 1]) {
+              // Next scroll index is in next paragraph
+              const nextDataMapAttribute = elementList[i + 1].getAttribute(
+                "data-map"
+              );
+              if (nextDataMapAttribute) {
+                const nextDataMap: number[] = JSON.parse(nextDataMapAttribute);
+                if (nextDataMap && nextDataMap[0]) {
+                  nextStartTime = nextDataMap[0];
+                }
+              }
+            }
+            if (nextStartTime) {
               if (
                 startTime <= timer &&
                 timer < nextStartTime &&
-                currentIndex !== i
+                (currentIndex[0] !== i || currentIndex[1] !== idx)
               ) {
-                let parentTop = this.scrollWindow.getBoundingClientRect().top;
-                let childTop;
-                if (elementList[i - 1]) {
-                  childTop =
-                    elementList[i - 1].getBoundingClientRect().top +
-                    this.scrollWindow.scrollTop;
-                } else {
-                  childTop =
-                    elementList[i].getBoundingClientRect().top +
-                    this.scrollWindow.scrollTop;
-                }
-                let scrollTop = childTop - parentTop;
-                this.scrollWindow.scrollTop = scrollTop;
-                this.setState({ currentCaptionIndex: i });
+                // scroll to here
+                let parentTop = this.captionNodeContainer.getBoundingClientRect()
+                  .top;
+
+                // Get the offsetTop value of the child element.
+                // The line height is 25px, so add 25 for each
+                // time the line has wrapped, which is equal to
+                // the value of the `idx` variable
+                let childTop =
+                  (this.captionNodeContainer.children[i] as HTMLElement)
+                    .offsetTop +
+                  25 * idx;
+
+                // Set the parent container's scrollTop value to the offsetTop
+                this.captionNodeContainer.scrollTop = childTop;
+
+                // Set the state to hold the current index pair
+                this.setState({ currentCaptionIndex: [i, idx] });
                 return;
               }
+            } else {
+              // Reached the end of the scroll container
+              return;
             }
           }
         }
@@ -93,8 +116,8 @@ class CaptionTextNodeList extends React.Component<
       <div
         className={this.props.className}
         onMouseUp={this.props.onMouseUp}
-        ref={(scrollWindow: HTMLDivElement) =>
-          (this.scrollWindow = scrollWindow)}
+        ref={(captionNodeContainer: HTMLDivElement) =>
+          (this.captionNodeContainer = captionNodeContainer)}
       >
         {this.props.documentNodes.map(
           function(element: CaptionNode, index: number) {
