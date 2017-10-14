@@ -44,6 +44,32 @@ class Video extends React.Component<VideoProps, VideoState> {
       captionIsHighlighted: false
     });
   };
+  handleFineTuneUp = (rangeIdx: 0 | 1): void => {
+    if (rangeIdx === 0) {
+      let startTime = this.state.startTime;
+      this.setState({
+        startTime: startTime + 0.1
+      });
+    } else {
+      let endTime = this.state.endTime;
+      this.setState({
+        endTime: endTime + 0.1
+      });
+    }
+  };
+  handleFineTuneDown = (rangeIdx: 0 | 1): void => {
+    if (rangeIdx === 0) {
+      let startTime = this.state.startTime;
+      this.setState({
+        startTime: startTime - 0.1
+      });
+    } else {
+      let endTime = this.state.endTime;
+      this.setState({
+        endTime: endTime - 0.1
+      });
+    }
+  };
   handlePause = (event: any) => {
     this.setState({
       currentTime: Math.round(event.target.getCurrentTime())
@@ -145,6 +171,9 @@ class Video extends React.Component<VideoProps, VideoState> {
             onHighlight={this.handleCaptionHighlight}
             onClearPress={this.handleClearClick}
             captionIsHighlighted={this.state.captionIsHighlighted}
+            onFineTuneDown={this.handleFineTuneDown}
+            onFineTuneUp={this.handleFineTuneUp}
+            videoRange={[this.state.startTime, this.state.endTime]}
           />
         </div>
       </div>

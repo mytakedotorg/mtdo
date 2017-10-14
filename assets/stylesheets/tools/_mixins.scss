@@ -15,6 +15,18 @@
   }
 }
 
+@mixin button--small {
+  position: relative;
+  border-radius: 5px;
+  display: inline-block;
+  text-decoration: none;
+  -webkit-appearance: none; // prevent weird iOS look with <button> elements
+  overflow: hidden;
+  &:hover {
+    cursor: pointer;
+  }
+}
+
 @mixin button--blue {
   border: none;
   color: palette(button, color--base);

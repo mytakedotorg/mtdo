@@ -2,7 +2,6 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import Document from "../Document";
 import {
-  getHighlightedNodes,
   getNodeArray,
   getStartRangeOffsetTop,
   highlightText,
@@ -22,6 +21,9 @@ interface CaptionViewProps {
   onHighlight: (videoRange: [number, number]) => void;
   onClearPress: () => void;
   captionIsHighlighted: boolean;
+  onFineTuneUp: (rangeIdx: 0 | 1) => void;
+  onFineTuneDown: (rangeIdx: 0 | 1) => void;
+  videoRange: [number, number];
 }
 
 interface CaptionViewState {
@@ -89,6 +91,49 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
                 >
                   Clear Selection
                 </button>
+              </div>
+              <div className="video__action">
+                <p className="video__instructions">Fine tune your clip</p>
+                <div className="video__tuning">
+                  <div className="video__action">
+                    <button
+                      className="video__button video__button--small"
+                      onClick={() => this.props.onFineTuneDown(0)}
+                    >
+                      <i className="fa fa-arrow-down" aria-hidden="true" />
+                    </button>
+                    <span className="video__time">
+                      {this.props.videoRange[0] >= 0
+                        ? "Start: " + this.props.videoRange[0].toFixed(1)
+                        : "Start: -" + this.props.videoRange[0].toFixed(1)}
+                    </span>
+                    <button
+                      className="video__button video__button--small"
+                      onClick={() => this.props.onFineTuneUp(0)}
+                    >
+                      <i className="fa fa-arrow-up" aria-hidden="true" />
+                    </button>
+                  </div>
+                  <div className="video__action">
+                    <button
+                      className="video__button video__button--small"
+                      onClick={() => this.props.onFineTuneDown(1)}
+                    >
+                      <i className="fa fa-arrow-down" aria-hidden="true" />
+                    </button>
+                    <span className="video__time">
+                      {this.props.videoRange[1] >= 0
+                        ? "End: " + this.props.videoRange[1].toFixed(1)
+                        : "End: -" + this.props.videoRange[1].toFixed(1)}
+                    </span>
+                    <button
+                      className="video__button video__button--small"
+                      onClick={() => this.props.onFineTuneUp(1)}
+                    >
+                      <i className="fa fa-arrow-up" aria-hidden="true" />
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
           : null}
