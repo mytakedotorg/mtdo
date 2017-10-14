@@ -1,19 +1,31 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import * as _ from "lodash";
-import { getNodeArray, FoundationNode } from "../../utils/functions";
+import {
+  getNodeArray,
+  FoundationNode,
+  CaptionNode,
+  isCaptionNodeArray
+} from "../../utils/functions";
+import { CaptionWord } from "../../utils/databaseData";
 import DocumentTextNodeList from "../DocumentTextNodeList";
+import CaptionTextNodeList from "../CaptionTextNodeList";
+
+interface CaptionData {
+  captionTimer: number;
+  captionMap: CaptionWord[];
+}
 
 interface DocumentProps {
   onMouseUp: () => void;
   excerptId: string;
   className?: string;
-  captionTimer?: number;
-  nodes?: FoundationNode[];
+  nodes?: FoundationNode[] | CaptionNode[];
+  captionData?: CaptionData;
 }
 
 interface DocumentState {
-  documentNodes: FoundationNode[];
+  documentNodes: FoundationNode[] | CaptionNode[];
 }
 
 class Document extends React.Component<DocumentProps, DocumentState> {
@@ -51,23 +63,35 @@ class Document extends React.Component<DocumentProps, DocumentState> {
       ? this.props.className
       : "document__row";
 
-    let textListClass;
-    if (this.props.captionTimer || this.props.captionTimer === 0) {
-      textListClass = "document__text document__text--caption";
+    let childComponent;
+    if (
+      this.props.captionData &&
+      isCaptionNodeArray(this.state.documentNodes)
+    ) {
+      childComponent = (
+        <CaptionTextNodeList
+          className="document__text document__text--caption"
+          onMouseUp={this.props.onMouseUp}
+          documentNodes={this.state.documentNodes}
+          captionTimer={this.props.captionData.captionTimer}
+          captionWordMap={this.props.captionData.captionMap}
+        />
+      );
     } else {
-      textListClass = "document__text";
+      childComponent = (
+        <DocumentTextNodeList
+          className="document__text"
+          onMouseUp={this.props.onMouseUp}
+          documentNodes={this.state.documentNodes}
+        />
+      );
     }
 
     return (
       <div className={classes}>
         <div className={documentClass}>
           <div className={"document__row-inner"}>
-            <DocumentTextNodeList
-              className={textListClass}
-              onMouseUp={this.props.onMouseUp}
-              captionTimer={this.props.captionTimer}
-              documentNodes={this.state.documentNodes}
-            />
+            {childComponent}
             {this.props.children ? this.props.children : null}
           </div>
         </div>
