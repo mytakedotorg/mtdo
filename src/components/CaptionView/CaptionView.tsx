@@ -8,6 +8,8 @@ import {
   HighlightedText,
   FoundationNode
 } from "../../utils/functions";
+import { getVideoCaptionWordMap } from "../../utils/databaseAPI";
+import { CaptionWord } from "../../utils/databaseData";
 
 interface Ranges {
   highlightedRange: [number, number];
@@ -32,6 +34,7 @@ interface CaptionViewState {
   highlightedNodes: FoundationNode[];
   currentIndex: number;
   offsetTop: number;
+  captionMap: CaptionWord[];
 }
 
 class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
@@ -43,7 +46,8 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
       viewRange: props.ranges ? props.ranges.viewRange : [0, 0],
       highlightedNodes: getNodeArray(props.videoId),
       currentIndex: 0,
-      offsetTop: 0
+      offsetTop: 0,
+      captionMap: getVideoCaptionWordMap(props.videoId) || []
     };
   }
   handleClearClick = () => {
@@ -142,7 +146,10 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
           onMouseUp={this.handleMouseUp}
           ref={(document: Document) => (this.document = document)}
           className="document__row"
-          captionTimer={this.props.timer}
+          captionData={{
+            captionTimer: this.props.timer,
+            captionMap: this.state.captionMap
+          }}
           nodes={this.state.highlightedNodes}
         />
       </div>
