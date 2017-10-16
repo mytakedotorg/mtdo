@@ -1,23 +1,34 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { CaptionNode, convertTimestampToSeconds } from "../../utils/functions";
+import {
+  FoundationNode,
+  convertTimestampToSeconds
+} from "../../utils/functions";
 import { CaptionWord } from "../../utils/databaseData";
 
 interface DataAttributes {
   "data-offset": number;
-  "data-start": number;
-  "data-end": number;
   "data-map": string;
 }
 
+/**
+ * ScrollData to be as concise as possile since it's going in the DOM.
+ * If it were an object interface, it would look like this:
+ *   {
+ *     wordIndex: number;
+ *     time: number;
+ *   }
+ */
+export type ScrollData = [number, number]; //wordIndex, time
+
 interface CaptionTextNodeProps {
-  documentNode: CaptionNode;
+  documentNode: FoundationNode;
   wordCount: number;
   captionWordMap: CaptionWord[];
 }
 
 interface CaptionTextNodeState {
-  contentMap: number[];
+  contentMap: ScrollData[];
 }
 
 class CaptionTextNode extends React.Component<
@@ -38,7 +49,7 @@ class CaptionTextNode extends React.Component<
       let contentArr = content.split(/[\s]+/);
       let height = 0;
       this.text.innerHTML = "";
-      let contentMap = [];
+      let contentMap: ScrollData[] = [];
       for (let idx in contentArr) {
         this.text.innerHTML += contentArr[idx] + " ";
         // console.log(idx, contentArr[idx]);
@@ -54,14 +65,13 @@ class CaptionTextNode extends React.Component<
             this.props.captionWordMap &&
             this.props.captionWordMap[wordCount]
           ) {
-            contentMap.push(
+            contentMap.push([
+              wordCount,
               convertTimestampToSeconds(
                 this.props.captionWordMap[wordCount].timestamp
               )
-            );
+            ]);
           }
-
-          //contentMap.push(wordCount);
           height = this.text.clientHeight;
         }
       }
@@ -78,8 +88,6 @@ class CaptionTextNode extends React.Component<
 
     let attributes: DataAttributes = {
       "data-offset": documentNode.props.offset,
-      "data-start": documentNode.props.start,
-      "data-end": documentNode.props.end,
       "data-map": JSON.stringify(this.state.contentMap)
     };
 
