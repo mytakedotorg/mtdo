@@ -2,7 +2,8 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import Document from "../Document";
 import {
-  getNodeArray,
+  convertTimestampToSeconds,
+  getCaptionNodeArray,
   getStartRangeOffsetTop,
   highlightText,
   HighlightedText,
@@ -33,7 +34,6 @@ interface CaptionViewState {
   viewRange: [number, number];
   highlightedNodes: FoundationNode[];
   currentIndex: number;
-  offsetTop: number;
   captionMap: CaptionWord[];
 }
 
@@ -41,18 +41,18 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
   private document: Document;
   constructor(props: CaptionViewProps) {
     super(props);
+
     this.state = {
       highlightedRange: props.ranges ? props.ranges.highlightedRange : [0, 0],
       viewRange: props.ranges ? props.ranges.viewRange : [0, 0],
-      highlightedNodes: getNodeArray(props.videoId),
+      highlightedNodes: getCaptionNodeArray(props.videoId),
       currentIndex: 0,
-      offsetTop: 0,
       captionMap: getVideoCaptionWordMap(props.videoId) || []
     };
   }
   handleClearClick = () => {
     this.setState({
-      highlightedNodes: getNodeArray(this.props.videoId)
+      highlightedNodes: getCaptionNodeArray(this.props.videoId)
     });
     this.props.onClearPress();
   };
@@ -73,10 +73,19 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
 
         this.setState({
           highlightedNodes: highlightedText.newNodes,
-          highlightedRange: highlightedText.highlightedRange
+          highlightedRange: highlightedText.highlightedCharacterRange
         });
 
-        this.props.onHighlight(highlightedText.videoRange);
+        let startTime = convertTimestampToSeconds(
+          this.state.captionMap[highlightedText.highlightedWordRange[0]]
+            .timestamp
+        );
+        let endTime = convertTimestampToSeconds(
+          this.state.captionMap[highlightedText.highlightedWordRange[1]]
+            .timestamp
+        );
+
+        this.props.onHighlight([startTime, endTime]);
       }
     }
   };
