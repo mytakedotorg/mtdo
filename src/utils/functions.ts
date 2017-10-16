@@ -14,32 +14,8 @@ export interface FoundationNode {
   innerHTML: Array<string | React.ReactNode>;
 }
 
-export interface CaptionNode {
-  component: string;
-  props: CaptionNodeProps;
-  innerHTML: Array<string | React.ReactNode>;
-}
-
 export interface FoundationNodeProps {
   offset: number;
-}
-
-export interface CaptionNodeProps {
-  offset: number;
-  start: number;
-  end: number;
-}
-
-export function isCaptionNode(
-  node: FoundationNode | CaptionNode
-): node is CaptionNode {
-  return (node.props as CaptionNodeProps).start !== undefined;
-}
-
-export function isCaptionNodeArray(
-  node: FoundationNode[] | CaptionNode[]
-): node is CaptionNode[] {
-  return (node[0].props as CaptionNodeProps).start !== undefined;
 }
 
 function clearDefaultDOMSelection(): void {
@@ -176,9 +152,22 @@ function getHighlightedNodes(
 
 interface HighlightedText {
   newNodes: FoundationNode[];
-  highlightedRange: [number, number];
+  highlightedCharacterRange: [number, number];
+  highlightedWordRange: [number, number];
   viewRange: [number, number];
-  videoRange: [number, number];
+}
+
+function findAncestor(node: Node, className: string): Node | null {
+  while (node.parentNode) {
+    node = node.parentNode;
+    if (
+      (node as HTMLElement).className &&
+      (node as HTMLElement).className.indexOf(className) >= 0
+    ) {
+      return node;
+    }
+  }
+  return null;
 }
 
 function highlightText(
@@ -192,26 +181,56 @@ function highlightText(
   let textIndexClassName = "document__text";
   let foundationClassName = "document__text--selected";
 
-  let indexOfStartContainer = 0;
+  let indexOfStartContainer;
+
+  let startParentContainer = findAncestor(
+    range.startContainer,
+    textIndexClassName
+  );
+  let startChildNode;
+  let isCaptionNode: boolean;
   if (
-    range.startContainer.parentElement &&
-    range.startContainer.parentElement.parentNode
+    range.startContainer.parentNode &&
+    (range.startContainer.parentNode as HTMLElement).className.indexOf(
+      "document__node"
+    ) >= 0
   ) {
+    startChildNode = range.startContainer.parentNode.parentNode;
+    isCaptionNode = true;
+  } else {
+    startChildNode = range.startContainer.parentNode;
+    isCaptionNode = false;
+  }
+  if (startParentContainer) {
     indexOfStartContainer = Array.prototype.indexOf.call(
-      range.startContainer.parentElement.parentNode.childNodes, //Arrange siblings into an array
-      range.startContainer.parentNode
+      startParentContainer.childNodes, //Arrange siblings into an array
+      startChildNode
     ); //Find indexOf current Node
+  } else {
+    indexOfStartContainer = -1;
   }
 
-  let indexOfEndContainer = 0;
+  let indexOfEndContainer;
+
+  let endParentContainer = findAncestor(range.endContainer, textIndexClassName);
+  let endChildNode;
   if (
-    range.endContainer.parentElement &&
-    range.endContainer.parentElement.parentNode
+    range.endContainer.parentNode &&
+    (range.endContainer.parentNode as HTMLElement).className.indexOf(
+      "document__node"
+    ) >= 0
   ) {
+    endChildNode = range.endContainer.parentNode.parentNode;
+  } else {
+    endChildNode = range.endContainer.parentNode;
+  }
+  if (endParentContainer) {
     indexOfEndContainer = Array.prototype.indexOf.call(
-      range.endContainer.parentElement.parentNode.childNodes, //Arrange siblings into an array
-      range.endContainer.parentNode
+      endParentContainer.childNodes, //Arrange siblings into an array
+      endChildNode
     ); //Find indexOf current Node
+  } else {
+    indexOfEndContainer = -1;
   }
 
   const indexOfSelectionStart: number = range.startOffset;
@@ -277,27 +296,58 @@ function highlightText(
 
   let startContainer;
   let endContainer;
+  let wordCountBeforeSelection = 0;
   if (
     rowIndex !== undefined &&
     rowInnerIndex !== undefined &&
     textIndex !== undefined
   ) {
-    startContainer =
-      firstNodeList[rowIndex].childNodes[rowInnerIndex].childNodes[textIndex]
-        .childNodes[indexOfStartContainer];
-    endContainer =
-      firstNodeList[rowIndex].childNodes[rowInnerIndex].childNodes[textIndex]
-        .childNodes[indexOfEndContainer];
+    if (isCaptionNode) {
+      startContainer =
+        firstNodeList[rowIndex].childNodes[rowInnerIndex].childNodes[textIndex]
+          .childNodes[indexOfStartContainer].childNodes[0];
+      endContainer =
+        firstNodeList[rowIndex].childNodes[rowInnerIndex].childNodes[textIndex]
+          .childNodes[indexOfEndContainer].childNodes[0];
+
+      if (startContainer.parentNode) {
+        let prevSib = startContainer.parentNode.previousSibling;
+        while (prevSib) {
+          let prevSibChild = prevSib.childNodes[0];
+          if (prevSibChild && prevSibChild.textContent) {
+            wordCountBeforeSelection += prevSibChild.textContent.split(" ")
+              .length;
+          }
+          prevSib = prevSib.previousSibling;
+        }
+      }
+    } else {
+      startContainer =
+        firstNodeList[rowIndex].childNodes[rowInnerIndex].childNodes[textIndex]
+          .childNodes[indexOfStartContainer];
+      endContainer =
+        firstNodeList[rowIndex].childNodes[rowInnerIndex].childNodes[textIndex]
+          .childNodes[indexOfEndContainer];
+
+      let prevSib = startContainer.previousSibling;
+      while (prevSib && prevSib.textContent) {
+        wordCountBeforeSelection += prevSib.textContent.split(" ").length;
+        prevSib = prevSib.previousSibling;
+      }
+    }
   }
 
-  let newNodes: Array<FoundationNode> = [
-    ...nodes.slice(0, indexOfStartContainer)
-  ];
+  let newNodes: FoundationNode[] = [...nodes.slice(0, indexOfStartContainer)];
 
+  let lengthOfSelection = 0;
   if (startContainer && startContainer === endContainer) {
     // Create a new Span element with the contents of the highlighted text
     let textContent;
     if (startContainer.textContent) {
+      wordCountBeforeSelection += startContainer.textContent
+        .substring(0, indexOfSelectionStart)
+        .split(" ").length;
+
       textContent = startContainer.textContent.substring(
         indexOfSelectionStart,
         indexOfSelectionEnd
@@ -305,6 +355,8 @@ function highlightText(
     } else {
       textContent = "";
     }
+
+    lengthOfSelection += textContent.split(" ").length;
 
     let newSpan: React.ReactNode = React.createElement(
       "span",
@@ -337,12 +389,16 @@ function highlightText(
       startText = "";
       endText = "";
     }
+
     newNode.innerHTML = [startText, newSpan, endText];
 
     newNodes = [...newNodes, newNode];
   } else if (startContainer && endContainer) {
     let textContent;
     if (startContainer.textContent) {
+      wordCountBeforeSelection += startContainer.textContent
+        .substring(0, indexOfSelectionStart)
+        .split(" ").length;
       textContent = startContainer.textContent.substring(
         indexOfSelectionStart,
         startContainer.textContent.length
@@ -350,6 +406,8 @@ function highlightText(
     } else {
       textContent = "";
     }
+
+    lengthOfSelection += textContent.split(" ").length;
 
     // Create a new Span element with the contents of the highlighted text
     let firstNewSpan: React.ReactNode = React.createElement(
@@ -391,6 +449,9 @@ function highlightText(
         {},
         nodes[index]
       );
+
+      lengthOfSelection += nextNewNode.innerHTML.toString().split(" ").length;
+
       let nextNewSpan: React.ReactNode = React.createElement(
         "span",
         {
@@ -400,17 +461,19 @@ function highlightText(
         },
         nextNewNode.innerHTML
       );
+
       nextNewNode.innerHTML = [nextNewSpan];
 
       newNodes = [...newNodes, nextNewNode];
     }
 
-    textContent;
     if (endContainer.textContent) {
       textContent = endContainer.textContent.substring(0, indexOfSelectionEnd);
     } else {
       textContent = "";
     }
+
+    lengthOfSelection += textContent.split(" ").length;
 
     // Create a new Span element with the contents of the highlighted text
     let lastNewSpan: React.ReactNode = React.createElement(
@@ -449,32 +512,40 @@ function highlightText(
 
   clearDefaultDOMSelection();
 
+  let viewRangeStart;
+  let highlightedCharacterRangeStart;
+  let viewRangeEnd;
+  let highlightedCharacterRangeEnd;
+
   let startData = nodes[indexOfStartContainer];
-  let viewRangeStart = startData.props.offset;
-  let highlightedRangeStart = viewRangeStart + indexOfSelectionStart;
+  if (startData) {
+    viewRangeStart = startData.props.offset;
+    highlightedCharacterRangeStart = viewRangeStart + indexOfSelectionStart;
+  } else {
+    viewRangeStart = -1;
+    highlightedCharacterRangeStart = -1;
+  }
 
   let endData = nodes[indexOfEndContainer];
-  let viewRangeEnd = endData.props.offset + endData.innerHTML.toString().length;
-  let highlightedRangeEnd = endData.props.offset + indexOfSelectionEnd;
-
-  let videoStart;
-  let videoEnd;
-  if (isCaptionNode(startData)) {
-    videoStart = startData.props.start;
+  if (endData) {
+    viewRangeEnd = endData.props.offset + endData.innerHTML.toString().length;
+    highlightedCharacterRangeEnd = endData.props.offset + indexOfSelectionEnd;
   } else {
-    videoStart = 0;
-  }
-  if (isCaptionNode(endData)) {
-    videoEnd = endData.props.end;
-  } else {
-    videoEnd = 0;
+    viewRangeEnd = -1;
+    highlightedCharacterRangeEnd = -1;
   }
 
   return {
     newNodes: newNodes,
-    highlightedRange: [highlightedRangeStart, highlightedRangeEnd],
+    highlightedCharacterRange: [
+      highlightedCharacterRangeStart,
+      highlightedCharacterRangeEnd
+    ],
     viewRange: [viewRangeStart, viewRangeEnd],
-    videoRange: [videoStart, videoEnd]
+    highlightedWordRange: [
+      wordCountBeforeSelection - 1,
+      wordCountBeforeSelection - 1 + lengthOfSelection
+    ]
   };
 }
 /**
@@ -593,14 +664,14 @@ interface FoundationComponent {
   innerHTML: string;
 }
 
-function getNodeArray(excerptId: string): FoundationNode[] | CaptionNode[] {
+function getNodeArray(excerptId: string): FoundationNode[] {
   // Fetch the excerpt from the DB by its ID
   const excerpt = getDocumentFact(excerptId);
   let source;
   if (excerpt) {
     source = require("../foundation/" + excerpt.filename);
   } else {
-    return getCaptionNodeArray(excerptId);
+    throw "Error retrieving Foundation document";
   }
 
   if (source) {
@@ -633,7 +704,7 @@ function convertTimestampToSeconds(timestamp: string): number {
   return HH * 60 * 60 + MM * 60 + SS;
 }
 
-function getCaptionNodeArray(videoId: string): Array<CaptionNode> {
+function getCaptionNodeArray(videoId: string): Array<FoundationNode> {
   // Fetch the excerpt from the DB by its ID
   const captionFile = getVideoFactCaptionFile(videoId);
   let source;
@@ -641,7 +712,7 @@ function getCaptionNodeArray(videoId: string): Array<CaptionNode> {
     source = require("../foundation/" + captionFile);
     if (source) {
       const captionMeta = getVideoCaptionMetaData(videoId);
-      let output: Array<CaptionNode> = [];
+      let output: Array<FoundationNode> = [];
       let offset = 0;
       if (captionMeta) {
         const speakerMap = captionMeta.speakerMap;
@@ -650,39 +721,22 @@ function getCaptionNodeArray(videoId: string): Array<CaptionNode> {
           let innerHTML = "";
           for (let i = speaker.range[0]; i <= speaker.range[1]; i++) {
             if (captions[i]) {
-              if (i !== 0) {
-                // Add a space between each word, but not before first word.
-                innerHTML += " ";
-              }
               innerHTML += captions[i].word;
             }
           }
-          innerHTML = innerHTML.replace(/[\s]+/, " "); //Replace extra whitespace with a single space
-          innerHTML = innerHTML.replace(/^[\s]+/, ""); //Trim all whitespace
 
-          let startTime = convertTimestampToSeconds(
-            captions[speaker.range[0]].timestamp
-          );
-
-          if (startTime > 0) {
-            startTime -= 1;
-          }
-
-          let endTime =
-            convertTimestampToSeconds(captions[speaker.range[1]].timestamp) + 1;
-
-          // Character count offset
-          offset += innerHTML.length;
+          innerHTML = innerHTML.trim(); //Replace extra whitespace with a single space
 
           output.push({
             component: "p",
             props: {
-              offset: offset,
-              start: startTime,
-              end: endTime
+              offset: offset
             },
             innerHTML: [innerHTML]
           });
+
+          // Character count offset
+          offset += innerHTML.length;
         }
       }
       return output;
