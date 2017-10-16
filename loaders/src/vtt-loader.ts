@@ -17,6 +17,8 @@ module.exports = function(source: string) {
       if (line.indexOf("-->") !== -1) {
         // Found an arrow, don't parse this line
         if (word) {
+          word = word.trim(); //Trim all whitespace
+          word += " "; //Append a single space
           wordTimeMaps.push({
             idx: idx,
             word: word,
@@ -49,6 +51,8 @@ module.exports = function(source: string) {
             continue;
           } else if (char === ">") {
             //Reached end of timestamp, push into map
+            word = word.trim(); //Trim all whitespace
+            word += " "; //Append a single space
             wordTimeMaps.push({
               idx: idx,
               word: word,
