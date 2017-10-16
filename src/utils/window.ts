@@ -55,3 +55,7 @@ function addNavEvents() {
 }
 
 addNavEvents();
+
+(window as any).YTConfig = {
+  host: "https://www.youtube.com"
+};
