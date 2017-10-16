@@ -21,3 +21,4 @@ var fs = require("fs");
 var file = __dirname + "/../../src/foundation/bill-of-rights.foundation.html";
 
 console.log(loader(fs.readFileSync(file).toString()));
+
