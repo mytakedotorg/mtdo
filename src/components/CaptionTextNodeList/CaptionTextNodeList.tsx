@@ -1,14 +1,17 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { CaptionNode, convertTimestampToSeconds } from "../../utils/functions";
+import {
+  FoundationNode,
+  convertTimestampToSeconds
+} from "../../utils/functions";
 import { CaptionWord } from "../../utils/databaseData";
-import CaptionTextNode from "../CaptionTextNode";
+import CaptionTextNode, { ScrollData } from "../CaptionTextNode";
 
 interface CaptionTextNodeListProps {
   className: string;
   onMouseUp: () => void;
   captionTimer: number;
-  documentNodes: CaptionNode[];
+  documentNodes: FoundationNode[];
   captionWordMap: CaptionWord[];
 }
 
@@ -39,22 +42,24 @@ class CaptionTextNodeList extends React.Component<
       for (let i = 0; i < elementList.length; i++) {
         const dataMapAttribute = elementList[i].getAttribute("data-map");
         if (dataMapAttribute) {
-          const dataMap: number[] = JSON.parse(dataMapAttribute);
+          const dataMap: ScrollData[] = JSON.parse(dataMapAttribute);
           for (let idx = 0; idx < dataMap.length; idx++) {
-            let startTime = dataMap[idx];
+            let startTime = dataMap[idx][1];
             let nextStartTime;
             if (dataMap[idx + 1]) {
               // Next scroll index is in current paragraph
-              nextStartTime = dataMap[idx + 1];
+              nextStartTime = dataMap[idx + 1][1];
             } else if (elementList[i + 1]) {
               // Next scroll index is in next paragraph
               const nextDataMapAttribute = elementList[i + 1].getAttribute(
                 "data-map"
               );
               if (nextDataMapAttribute) {
-                const nextDataMap: number[] = JSON.parse(nextDataMapAttribute);
-                if (nextDataMap && nextDataMap[0]) {
-                  nextStartTime = nextDataMap[0];
+                const nextDataMap: ScrollData[] = JSON.parse(
+                  nextDataMapAttribute
+                );
+                if (nextDataMap && nextDataMap[0][1]) {
+                  nextStartTime = nextDataMap[0][1];
                 }
               }
             }
@@ -120,7 +125,7 @@ class CaptionTextNodeList extends React.Component<
           (this.captionNodeContainer = captionNodeContainer)}
       >
         {this.props.documentNodes.map(
-          function(element: CaptionNode, index: number) {
+          function(element: FoundationNode, index: number) {
             if (index === 0) {
               wordCount = 0;
               nextWordCount = 0;
