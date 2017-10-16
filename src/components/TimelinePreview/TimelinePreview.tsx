@@ -116,10 +116,12 @@ export default class TimelinePreview extends React.Component<
 
         this.setState({
           highlightedNodes: newHighlightedNodes,
-          highlightedRange: highlightedText.highlightedRange,
+          highlightedRange: highlightedText.highlightedCharacterRange,
           viewRange: highlightedText.viewRange,
           textIsHighlighted: true,
-          offsetTop: this.getScrollTop(highlightedText.highlightedRange)
+          offsetTop: this.getScrollTop(
+            highlightedText.highlightedCharacterRange
+          )
         });
       }
     }
