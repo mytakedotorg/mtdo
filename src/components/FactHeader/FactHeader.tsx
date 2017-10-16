@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { getNodeArray, FoundationNode } from "../../utils/functions";
+import { FoundationNode } from "../../utils/functions";
 
 interface FactHeaderProps {
   heading: string;
