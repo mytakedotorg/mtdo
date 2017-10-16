@@ -3,9 +3,8 @@ import * as ReactDOM from "react-dom";
 import * as _ from "lodash";
 import {
   getNodeArray,
-  FoundationNode,
-  CaptionNode,
-  isCaptionNodeArray
+  getCaptionNodeArray,
+  FoundationNode
 } from "../../utils/functions";
 import { CaptionWord } from "../../utils/databaseData";
 import DocumentTextNodeList from "../DocumentTextNodeList";
@@ -20,22 +19,31 @@ interface DocumentProps {
   onMouseUp: () => void;
   excerptId: string;
   className?: string;
-  nodes?: FoundationNode[] | CaptionNode[];
+  nodes?: FoundationNode[];
   captionData?: CaptionData;
 }
 
 interface DocumentState {
-  documentNodes: FoundationNode[] | CaptionNode[];
+  documentNodes: FoundationNode[];
 }
 
 class Document extends React.Component<DocumentProps, DocumentState> {
   constructor(props: DocumentProps) {
     super(props);
 
+    let nodes: FoundationNode[];
+    if (!props.nodes) {
+      if (props.captionData) {
+        nodes = getCaptionNodeArray(props.excerptId);
+      } else {
+        nodes = getNodeArray(props.excerptId);
+      }
+    } else {
+      nodes = props.nodes;
+    }
+
     this.state = {
-      documentNodes: this.props.nodes
-        ? this.props.nodes
-        : getNodeArray(props.excerptId)
+      documentNodes: nodes
     };
   }
   getDocumentNodes = () => {
@@ -64,10 +72,7 @@ class Document extends React.Component<DocumentProps, DocumentState> {
       : "document__row";
 
     let childComponent;
-    if (
-      this.props.captionData &&
-      isCaptionNodeArray(this.state.documentNodes)
-    ) {
+    if (this.props.captionData) {
       childComponent = (
         <CaptionTextNodeList
           className="document__text document__text--caption"
