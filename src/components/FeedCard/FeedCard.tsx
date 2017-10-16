@@ -63,7 +63,8 @@ class FeedCard extends React.Component<FeedCardProps, {}> {
               </div>
             );
           } else if (block.kind === "video") {
-            let thumb = "http://img.youtube.com/vi/" + block.videoId + "/0.jpg";
+            let thumb =
+              "https://img.youtube.com/vi/" + block.videoId + "/0.jpg";
             return (
               <div
                 className="feed__card-thumb-container feed__card-thumb-container--video"
