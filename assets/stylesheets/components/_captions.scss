@@ -1,6 +1,9 @@
 .document__text--caption {
   position: relative;
-  height: 200px;
+  height: 0px;
   overflow: scroll;
   @include body;
+  &:last-child {
+    padding-bottom: 200px;
+  }
 }
