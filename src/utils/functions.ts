@@ -789,6 +789,43 @@ function getFact(factId: string): DocumentFact | VideoFact | null {
   return null;
 }
 
+function getWordCount(selection: Selection): number {
+  // Cursor is in a block of caption text
+
+  // Get the text Node
+  let textNode = selection.anchorNode;
+
+  // Get the character offset of the cursor position in the Node
+  let anchorOffset = selection.anchorOffset;
+
+  // Get the word offset of the cursor position in the Node
+  let wordCount;
+  if (textNode.textContent) {
+    wordCount = textNode.textContent
+      .toString()
+      .substring(0, anchorOffset)
+      .split(" ").length;
+  } else {
+    wordCount = 0;
+  }
+
+  let paragraphNode = textNode.parentNode;
+
+  if (paragraphNode) {
+    let captionBlock = paragraphNode.parentNode;
+
+    while (captionBlock && captionBlock.previousSibling) {
+      captionBlock = captionBlock.previousSibling;
+      let prevTextNode = captionBlock.childNodes[0];
+      if (prevTextNode.textContent) {
+        wordCount += prevTextNode.textContent.toString().split(" ").length;
+      }
+    }
+  }
+
+  return wordCount;
+}
+
 export {
   clearDefaultDOMSelection,
   convertTimestampToSeconds,
@@ -798,6 +835,7 @@ export {
   getHighlightedNodes,
   getNodesInRange,
   getNodeArray,
+  getWordCount,
   highlightText,
   HighlightedText,
   slugify,
