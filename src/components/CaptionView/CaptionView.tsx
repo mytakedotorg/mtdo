@@ -29,7 +29,7 @@ interface CaptionViewProps {
   onFineTuneUp: (rangeIdx: 0 | 1) => void;
   onFineTuneDown: (rangeIdx: 0 | 1) => void;
   videoStart: number;
-  videoEnd: number | null;
+  videoEnd: number;
 }
 
 interface CaptionViewState {
@@ -144,11 +144,9 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
                       <i className="fa fa-arrow-down" aria-hidden="true" />
                     </button>
                     <span className="video__time">
-                      {this.props.videoEnd && [
-                        this.props.videoEnd >= 0
-                          ? "End: " + this.props.videoEnd.toFixed(1)
-                          : "End: -" + this.props.videoEnd.toFixed(1)
-                      ]}
+                      {this.props.videoEnd >= 0
+                        ? "End: " + this.props.videoEnd.toFixed(1)
+                        : "End: -" + this.props.videoEnd.toFixed(1)}
                     </span>
                     <button
                       className="video__button video__button--small"
