@@ -58,6 +58,7 @@ export interface CaptionWord {
 
 interface Person {
   firstname: string;
+  middlename?: string;
   lastname: string;
 }
 
@@ -130,7 +131,51 @@ const database: Database = {
       title: "Jimmy Carter - Gerald Ford (2/3)",
       primaryDate: new Date("1976-10-06"),
       primaryDateKind: "recorded",
-      captionFile: "carter-ford-2.sbv"
+      captionFile: "carter-ford-2.vtt",
+      captionMeta: {
+        speakers: [
+          {
+            firstname: "Pauline",
+            lastname: "Frederick"
+          },
+          {
+            firstname: "Max",
+            lastname: "Frankel"
+          },
+          {
+            firstname: "Jimmy",
+            lastname: "Carter"
+          },
+          {
+            firstname: "Gerald",
+            middlename: "R",
+            lastname: "Ford"
+          },
+          {
+            firstname: "Henry",
+            middlename: "L",
+            lastname: "Trewhitt"
+          },
+          {
+            firstname: "Richard",
+            lastname: "Valeriani"
+          }
+        ],
+        speakerMap: [
+          {
+            speaker: "Frederick",
+            range: [0, 292]
+          },
+          {
+            speaker: "Frankel",
+            range: [293, 415]
+          },
+          {
+            speaker: "Carter",
+            range: [416, 688]
+          }
+        ]
+      }
     },
     {
       id: "CipT04S0bVE",
