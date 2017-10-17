@@ -137,7 +137,7 @@ class CaptionTextNodeList extends React.Component<
 
             return (
               <CaptionTextNode
-                key={index.toString()}
+                key={element.props.offset}
                 documentNode={element}
                 wordCount={wordCount}
                 captionWordMap={this.props.captionWordMap}

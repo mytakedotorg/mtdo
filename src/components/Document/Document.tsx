@@ -51,17 +51,23 @@ class Document extends React.Component<DocumentProps, DocumentState> {
   };
 
   componentWillReceiveProps(nextProps: DocumentProps) {
-    if (this.props.excerptId !== nextProps.excerptId) {
-      this.setState({
-        documentNodes: getNodeArray(nextProps.excerptId)
-      });
-    }
     if (
       !_.isEqual(this.state.documentNodes, nextProps.nodes) &&
       nextProps.nodes !== undefined
     ) {
       this.setState({
         documentNodes: nextProps.nodes
+      });
+    } else if (this.props.excerptId !== nextProps.excerptId) {
+      let nodes: FoundationNode[];
+      if (this.props.captionData) {
+        nodes = getCaptionNodeArray(this.props.excerptId);
+      } else {
+        nodes = getNodeArray(this.props.excerptId);
+      }
+
+      this.setState({
+        documentNodes: nodes
       });
     }
   }
