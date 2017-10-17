@@ -16,6 +16,9 @@ export interface YTPlayerParameters {
   cc_lang_pref?: string;
   start?: number;
   end?: number;
+  autoplay?: number;
+  showinfo?: number;
+  modestbranding?: number;
   playsinline: 1;
 }
 

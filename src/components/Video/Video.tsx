@@ -44,6 +44,12 @@ class Video extends React.Component<VideoProps, VideoState> {
       captionIsHighlighted: false
     });
   };
+  handleCursorPlacement = (videoTime: number): void => {
+    this.setState({
+      startTime: videoTime,
+      endTime: -1
+    });
+  };
   handleFineTuneUp = (rangeIdx: 0 | 1): void => {
     if (rangeIdx === 0) {
       let startTime = this.state.startTime;
@@ -52,9 +58,11 @@ class Video extends React.Component<VideoProps, VideoState> {
       });
     } else {
       let endTime = this.state.endTime;
-      this.setState({
-        endTime: endTime + 0.1
-      });
+      if (endTime >= 0) {
+        this.setState({
+          endTime: endTime + 0.1
+        });
+      }
     }
   };
   handleFineTuneDown = (rangeIdx: 0 | 1): void => {
@@ -65,9 +73,11 @@ class Video extends React.Component<VideoProps, VideoState> {
       });
     } else {
       let endTime = this.state.endTime;
-      this.setState({
-        endTime: endTime - 0.1
-      });
+      if (endTime >= 0) {
+        this.setState({
+          endTime: endTime - 0.1
+        });
+      }
     }
   };
   handlePause = (event: any) => {
@@ -77,6 +87,7 @@ class Video extends React.Component<VideoProps, VideoState> {
   };
   handleReady = (event: any) => {
     this.player = event.target;
+    this.player.mute();
   };
   handleSetClick = () => {
     if (this.state.endTime > this.state.startTime) {
@@ -125,12 +136,17 @@ class Video extends React.Component<VideoProps, VideoState> {
   render() {
     let playerVars: YTPlayerParameters = {
       rel: 0,
-      playsinline: 1
+      playsinline: 1,
+      autoplay: 1,
+      showinfo: 0,
+      modestbranding: 1
     };
 
+    playerVars.start = this.state.startTime;
     if (this.state.captionIsHighlighted) {
-      playerVars.start = this.state.startTime;
-      playerVars.end = this.state.endTime;
+      if (this.state.endTime >= 0) {
+        playerVars.end = this.state.endTime;
+      }
     }
 
     const opts = {
@@ -170,10 +186,12 @@ class Video extends React.Component<VideoProps, VideoState> {
             videoId={this.props.video.id}
             onHighlight={this.handleCaptionHighlight}
             onClearPress={this.handleClearClick}
+            onCursorPlace={this.handleCursorPlacement}
             captionIsHighlighted={this.state.captionIsHighlighted}
             onFineTuneDown={this.handleFineTuneDown}
             onFineTuneUp={this.handleFineTuneUp}
-            videoRange={[this.state.startTime, this.state.endTime]}
+            videoStart={this.state.startTime}
+            videoEnd={this.state.endTime}
           />
         </div>
       </div>
