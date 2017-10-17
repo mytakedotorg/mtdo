@@ -5,6 +5,7 @@ import {
   convertTimestampToSeconds,
   getCaptionNodeArray,
   getStartRangeOffsetTop,
+  getWordCount,
   highlightText,
   HighlightedText,
   FoundationNode
@@ -23,10 +24,12 @@ interface CaptionViewProps {
   ranges?: Ranges;
   onHighlight: (videoRange: [number, number]) => void;
   onClearPress: () => void;
+  onCursorPlace: (videoTime: number) => void;
   captionIsHighlighted: boolean;
   onFineTuneUp: (rangeIdx: 0 | 1) => void;
   onFineTuneDown: (rangeIdx: 0 | 1) => void;
-  videoRange: [number, number];
+  videoStart: number;
+  videoEnd: number | null;
 }
 
 interface CaptionViewState {
@@ -86,6 +89,12 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
         );
 
         this.props.onHighlight([startTime, endTime]);
+      } else {
+        let wordCount = getWordCount(selection);
+        let videoTime = convertTimestampToSeconds(
+          this.state.captionMap[wordCount].timestamp
+        );
+        this.props.onCursorPlace(videoTime);
       }
     }
   };
@@ -116,9 +125,9 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
                       <i className="fa fa-arrow-down" aria-hidden="true" />
                     </button>
                     <span className="video__time">
-                      {this.props.videoRange[0] >= 0
-                        ? "Start: " + this.props.videoRange[0].toFixed(1)
-                        : "Start: -" + this.props.videoRange[0].toFixed(1)}
+                      {this.props.videoStart >= 0
+                        ? "Start: " + this.props.videoStart.toFixed(1)
+                        : "Start: -" + this.props.videoStart.toFixed(1)}
                     </span>
                     <button
                       className="video__button video__button--small"
@@ -135,9 +144,11 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
                       <i className="fa fa-arrow-down" aria-hidden="true" />
                     </button>
                     <span className="video__time">
-                      {this.props.videoRange[1] >= 0
-                        ? "End: " + this.props.videoRange[1].toFixed(1)
-                        : "End: -" + this.props.videoRange[1].toFixed(1)}
+                      {this.props.videoEnd && [
+                        this.props.videoEnd >= 0
+                          ? "End: " + this.props.videoEnd.toFixed(1)
+                          : "End: -" + this.props.videoEnd.toFixed(1)
+                      ]}
                     </span>
                     <button
                       className="video__button video__button--small"
