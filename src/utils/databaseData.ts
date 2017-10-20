@@ -126,8 +126,8 @@ const database: Database = {
       primaryDateKind: "recorded"
     },
     {
-      //id: "TjHjU0Eu26Y",
-      id: "vIZ6w0kMqUA",
+      //id: "TjHjU0Eu26Y",  // Original video
+      id: "vIZ6w0kMqUA",  // Trimmed for dev work, with captions
       title: "Jimmy Carter - Gerald Ford (2/3)",
       primaryDate: new Date("1976-10-06"),
       primaryDateKind: "recorded",
@@ -322,8 +322,9 @@ const database: Database = {
       primaryDateKind: "recorded"
     },
     {
-      //id: "qkk1lrLQl9Q",
-      id: "QuPWV36zqdc",
+      //id: "qkk1lrLQl9Q",  // Original video
+			//id: "QuPWV36zqdc",  // Trimmed for dev work, with captions
+			id: "ApTLB76Nmdg",  // Full length with captions
       title: "Donald Trump - Hillary Clinton (2/3)",
       primaryDate: new Date("2016-10-09"),
       primaryDateKind: "recorded",
