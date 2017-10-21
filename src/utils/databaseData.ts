@@ -127,7 +127,7 @@ const database: Database = {
     },
     {
       //id: "TjHjU0Eu26Y",  // Original video
-      id: "vIZ6w0kMqUA",  // Trimmed for dev work, with captions
+      id: "vIZ6w0kMqUA", // Trimmed for dev work, with captions
       title: "Jimmy Carter - Gerald Ford (2/3)",
       primaryDate: new Date("1976-10-06"),
       primaryDateKind: "recorded",
@@ -323,8 +323,8 @@ const database: Database = {
     },
     {
       //id: "qkk1lrLQl9Q",  // Original video
-			//id: "QuPWV36zqdc",  // Trimmed for dev work, with captions
-			id: "ApTLB76Nmdg",  // Full length with captions
+      //id: "QuPWV36zqdc",  // Trimmed for dev work, with captions
+      id: "ApTLB76Nmdg", // Full length with captions
       title: "Donald Trump - Hillary Clinton (2/3)",
       primaryDate: new Date("2016-10-09"),
       primaryDateKind: "recorded",
@@ -350,6 +350,34 @@ const database: Database = {
           {
             firstname: "Donald",
             lastname: "Trump"
+          },
+          {
+            firstname: "Ken",
+            lastname: "Karpowicz"
+          },
+          {
+            firstname: "Gorbah",
+            lastname: "Hameed"
+          },
+          {
+            firstname: "Spencer",
+            lastname: "Moss"
+          },
+          {
+            firstname: "James",
+            lastname: "Carter"
+          },
+          {
+            firstname: "Beth",
+            lastname: "Miller"
+          },
+          {
+            firstname: "Ken",
+            lastname: "Bone"
+          },
+          {
+            firstname: "Karl",
+            lastname: "Becker"
           }
         ],
         speakerMap: [
@@ -383,7 +411,679 @@ const database: Database = {
           },
           {
             speaker: "Trump",
-            range: [656, 869]
+            range: [656, 1019]
+          },
+          {
+            speaker: "Cooper",
+            range: [1020, 1094]
+          },
+          {
+            speaker: "Trump",
+            range: [1095, 1279]
+          },
+          {
+            speaker: "Cooper",
+            range: [1280, 1280]
+          },
+          {
+            speaker: "Trump",
+            range: [1281, 1308]
+          },
+          {
+            speaker: "Cooper",
+            range: [1309, 1340]
+          },
+          {
+            speaker: "Trump",
+            range: [1341, 1355]
+          },
+          {
+            speaker: "Cooper",
+            range: [1356, 1365]
+          },
+          {
+            speaker: "Trump",
+            range: [1366, 1390]
+          },
+          {
+            speaker: "Cooper",
+            range: [1391, 1396]
+          },
+          {
+            speaker: "Trump",
+            range: [1397, 1517]
+          },
+          {
+            speaker: "Cooper",
+            range: [1518, 1521]
+          },
+          {
+            speaker: "Trump",
+            range: [1522, 1529]
+          },
+          {
+            speaker: "Cooper",
+            range: [1530, 1536]
+          },
+          {
+            speaker: "Clinton",
+            range: [1537, 1896]
+          },
+          {
+            speaker: "Raddatz",
+            range: [1897, 1906]
+          },
+          {
+            speaker: "Trump",
+            range: [1907, 1918]
+          },
+          {
+            speaker: "Raddatz",
+            range: [1919, 1924]
+          },
+          {
+            speaker: "Trump",
+            range: [1925, 2061]
+          },
+          {
+            speaker: "Raddatz",
+            range: [2063, 2074]
+          },
+          {
+            speaker: "Trump",
+            range: [2075, 2086]
+          },
+          {
+            speaker: "Raddatz",
+            range: [2087, 2098]
+          },
+          {
+            speaker: "Trump",
+            range: [2099, 2102]
+          },
+          {
+            speaker: "Raddatz",
+            range: [2103, 2220]
+          },
+          {
+            speaker: "Trump",
+            range: [2221, 2496]
+          },
+          {
+            speaker: "Raddatz",
+            range: [2497, 2502]
+          },
+          {
+            speaker: "Clinton",
+            range: [2503, 2776]
+          },
+          {
+            speaker: "Trump",
+            range: [2777, 3246]
+          },
+          {
+            speaker: "Clinton",
+            range: [3247, 3365]
+          },
+          {
+            speaker: "Trump",
+            range: [3366, 3370]
+          },
+          {
+            speaker: "Raddatz",
+            range: [3371, 3372]
+          },
+          {
+            speaker: "Cooper",
+            range: [3373, 3392]
+          },
+          {
+            speaker: "Raddatz",
+            range: [3393, 3470]
+          },
+          {
+            speaker: "Clinton",
+            range: [3471, 3675]
+          },
+          {
+            speaker: "Trump",
+            range: [3676, 3909]
+          },
+          {
+            speaker: "Cooper",
+            range: [3910, 3923]
+          },
+          {
+            speaker: "Clinton",
+            range: [3924, 3931]
+          },
+          {
+            speaker: "Trump",
+            range: [3932, 3936]
+          },
+          {
+            speaker: "Cooper",
+            range: [3937, 3937]
+          },
+          {
+            speaker: "Clinton",
+            range: [3938, 3946]
+          },
+          {
+            speaker: "Trump",
+            range: [3947, 3948]
+          },
+          {
+            speaker: "Cooper",
+            range: [3949, 3959]
+          },
+          {
+            speaker: "Clinton",
+            range: [3960, 3993]
+          },
+          {
+            speaker: "Trump",
+            range: [3994, 3998]
+          },
+          {
+            speaker: "Clinton",
+            range: [3999, 4037]
+          },
+          {
+            speaker: "Cooper",
+            range: [4038, 4052]
+          },
+          {
+            speaker: "Trump",
+            range: [4053, 4087]
+          },
+          {
+            speaker: "Cooper",
+            range: [4088, 4092]
+          },
+          {
+            speaker: "Trump",
+            range: [4093, 4098]
+          },
+          {
+            speaker: "Karpowicz",
+            range: [4099, 4145]
+          },
+          {
+            speaker: "Cooper",
+            range: [4146, 4155]
+          },
+          {
+            speaker: "Clinton",
+            range: [4156, 4165]
+          },
+          {
+            speaker: "Trump",
+            range: [4166, 4172]
+          },
+          {
+            speaker: "Cooper",
+            range: [4173, 4174]
+          },
+          {
+            speaker: "Clinton",
+            range: [4175, 4541]
+          },
+          {
+            speaker: "Cooper",
+            range: [4542, 4547]
+          },
+          {
+            speaker: "Trump",
+            range: [4548, 4900]
+          },
+          {
+            speaker: "Cooper",
+            range: [4901, 4946]
+          },
+          {
+            speaker: "Clinton",
+            range: [4947, 5223]
+          },
+          {
+            speaker: "Cooper",
+            range: [5224, 5231]
+          },
+          {
+            speaker: "Trump",
+            range: [5232, 5262]
+          },
+          {
+            speaker: "Cooper",
+            range: [5262, 5315]
+          },
+          {
+            speaker: "Trump",
+            range: [5216, 5527]
+          },
+          {
+            speaker: "Raddatz",
+            range: [5528, 5539]
+          },
+          {
+            speaker: "Hammeed",
+            range: [5540, 5591]
+          },
+          {
+            speaker: "Raddatz",
+            range: [5592, 5595]
+          },
+          {
+            speaker: "Trump",
+            range: [5596, 5852]
+          },
+          {
+            speaker: "Raddatz",
+            range: [5853, 5854]
+          },
+          {
+            speaker: "Clinton",
+            range: [5855, 6181]
+          },
+          {
+            speaker: "Raddatz",
+            range: [6182, 6261]
+          },
+          {
+            speaker: "Trump",
+            range: [6262, 6255]
+          },
+          {
+            speaker: "Raddatz",
+            range: [6356, 6361]
+          },
+          {
+            speaker: "Trump",
+            range: [6362, 6368]
+          },
+          {
+            speaker: "Raddatz",
+            range: [6369, 6377]
+          },
+          {
+            speaker: "Trump",
+            range: [6378, 6560]
+          },
+          {
+            speaker: "Raddatz",
+            range: [6561, 6607]
+          },
+          {
+            speaker: "Clinton",
+            range: [6608, 6912]
+          },
+          {
+            speaker: "Trump",
+            range: [6913, 6947]
+          },
+          {
+            speaker: "Raddatz",
+            range: [6948, 6950]
+          },
+          {
+            speaker: "Trump",
+            range: [6951, 7168]
+          },
+          {
+            speaker: "Raddatz",
+            range: [7169, 7269]
+          },
+          {
+            speaker: "Clinton",
+            range: [7270, 7270]
+          },
+          {
+            speaker: "Raddatz",
+            range: [7271, 7273]
+          },
+          {
+            speaker: "Clinton",
+            range: [7274, 7577]
+          },
+          {
+            speaker: "Raddatz",
+            range: [7578, 7583]
+          },
+          {
+            speaker: "Trump",
+            range: [7584, 8008]
+          },
+          {
+            speaker: "Raddatz",
+            range: [8009, 8010]
+          },
+          {
+            speaker: "Cooper",
+            range: [8011, 8026]
+          },
+          {
+            speaker: "Moss",
+            range: [8027, 8049]
+          },
+          {
+            speaker: "Cooper",
+            range: [8050, 8055]
+          },
+          {
+            speaker: "Trump",
+            range: [8056, 8495]
+          },
+          {
+            speaker: "Cooper",
+            range: [8496, 8521]
+          },
+          {
+            speaker: "Clinton",
+            range: [8522, 8910]
+          },
+          {
+            speaker: "Cooper",
+            range: [8911, 9018]
+          },
+          {
+            speaker: "Trump",
+            range: [9019, 9214]
+          },
+          {
+            speaker: "Cooper",
+            range: [9215, 9230]
+          },
+          {
+            speaker: "Trump",
+            range: [9231, 9405]
+          },
+          {
+            speaker: "Cooper",
+            range: [9406, 9413]
+          },
+          {
+            speaker: "Clinton",
+            range: [9414, 9449]
+          },
+          {
+            speaker: "Trump",
+            range: [9450, 9455]
+          },
+          {
+            speaker: "Clinton",
+            range: [9456, 9471]
+          },
+          {
+            speaker: "Trump",
+            range: [9472, 9502]
+          },
+          {
+            speaker: "Cooper",
+            range: [9503, 9508]
+          },
+          {
+            speaker: "Clinton",
+            range: [9509, 9804]
+          },
+          {
+            speaker: "Cooper",
+            range: [9805, 9807]
+          },
+          {
+            speaker: "Clinton",
+            range: [9808, 9819]
+          },
+          {
+            speaker: "Cooper",
+            range: [9820, 9822]
+          },
+          {
+            speaker: "Raddatz",
+            range: [9823, 9835]
+          },
+          {
+            speaker: "Trump",
+            range: [9836, 9839]
+          },
+          {
+            speaker: "Raddatz",
+            range: [9840, 10007]
+          },
+          {
+            speaker: "Clinton",
+            range: [10008, 10321]
+          },
+          {
+            speaker: "Raddatz",
+            range: [10322, 10324]
+          },
+          {
+            speaker: "Trump",
+            range: [10325, 10338]
+          },
+          {
+            speaker: "Clinton",
+            range: [10339, 10348]
+          },
+          {
+            speaker: "Trump",
+            range: [10349, 10741]
+          },
+          {
+            speaker: "Raddatz",
+            range: [10742, 10826]
+          },
+          {
+            speaker: "Trump",
+            range: [10827, 11095]
+          },
+          {
+            speaker: "Raddatz",
+            range: [11096, 11104]
+          },
+          {
+            speaker: "Trump",
+            range: [11105, 11259]
+          },
+          {
+            speaker: "Raddatz",
+            range: [11260, 11320]
+          },
+          {
+            speaker: "Clinton",
+            range: [11321, 11409]
+          },
+          {
+            speaker: "Raddatz",
+            range: [11410, 11418]
+          },
+          {
+            speaker: "Clinton",
+            range: [11419, 11426]
+          },
+          {
+            speaker: "Trump",
+            range: [11427, 11427]
+          },
+          {
+            speaker: "Clinton",
+            range: [11428, 11626]
+          },
+          {
+            speaker: "Raddatz",
+            range: [11627, 11634]
+          },
+          {
+            speaker: "Trump",
+            range: [11635, 11657]
+          },
+          {
+            speaker: "Cooper",
+            range: [11658, 11665]
+          },
+          {
+            speaker: "Carter",
+            range: [11666, 11685]
+          },
+          {
+            speaker: "Cooper",
+            range: [11686, 11689]
+          },
+          {
+            speaker: "Trump",
+            range: [11690, 12078]
+          },
+          {
+            speaker: "Cooper",
+            range: [12079, 12084]
+          },
+          {
+            speaker: "Trump",
+            range: [12085, 12089]
+          },
+          {
+            speaker: "Cooper",
+            range: [12090, 12095]
+          },
+          {
+            speaker: "Clinton",
+            range: [12096, 12460]
+          },
+          {
+            speaker: "Cooper",
+            range: [12461, 12541]
+          },
+          {
+            speaker: "Clinton",
+            range: [12542, 12710]
+          },
+          {
+            speaker: "Cooper",
+            range: [12711, 12714]
+          },
+          {
+            speaker: "Trump",
+            range: [12715, 12843]
+          },
+          {
+            speaker: "Cooper",
+            range: [12844, 12928]
+          },
+          {
+            speaker: "Trump",
+            range: [12929, 13160]
+          },
+          {
+            speaker: "Cooper",
+            range: [13161, 13173]
+          },
+          {
+            speaker: "Clinton",
+            range: [13174, 13174]
+          },
+          {
+            speaker: "Trump",
+            range: [13175, 13179]
+          },
+          {
+            speaker: "Clinton",
+            range: [13180, 13345]
+          },
+          {
+            speaker: "Cooper",
+            range: [13346, 13350]
+          },
+          {
+            speaker: "Clinton",
+            range: [13351, 13390]
+          },
+          {
+            speaker: "Raddatz",
+            range: [13391, 13434]
+          },
+          {
+            speaker: "Miller",
+            range: [13435, 13464]
+          },
+          {
+            speaker: "Raddatz",
+            range: [13465, 13472]
+          },
+          {
+            speaker: "Clinton",
+            range: [13473, 13879]
+          },
+          {
+            speaker: "Raddatz",
+            range: [13880, 13887]
+          },
+          {
+            speaker: "Trump",
+            range: [13888, 14227]
+          },
+          {
+            speaker: "Raddatz",
+            range: [14228, 14241]
+          },
+          {
+            speaker: "Clinton",
+            range: [14242, 14284]
+          },
+          {
+            speaker: "Cooper",
+            range: [14285, 14309]
+          },
+          {
+            speaker: "Bone",
+            range: [14310, 14338]
+          },
+          {
+            speaker: "Trump",
+            range: [14339, 14677]
+          },
+          {
+            speaker: "Cooper",
+            range: [14678, 14679]
+          },
+          {
+            speaker: "Clinton",
+            range: [14680, 15068]
+          },
+          {
+            speaker: "Raddatz",
+            range: [15069, 15082]
+          },
+          {
+            speaker: "Becker",
+            range: [15083, 15108]
+          },
+          {
+            speaker: "Raddatz",
+            range: [15109, 15116]
+          },
+          {
+            speaker: "Clinton",
+            range: [15117, 15371]
+          },
+          {
+            speaker: "Raddatz",
+            range: [15372, 15373]
+          },
+          {
+            speaker: "Trump",
+            range: [15374, 15494]
+          },
+          {
+            speaker: "Raddatz",
+            range: [15495, 15499]
+          },
+          {
+            speaker: "Cooper",
+            range: [15500, 15534]
+          },
+          {
+            speaker: "Raddatz",
+            range: [15535, 15559]
           }
         ]
       }
