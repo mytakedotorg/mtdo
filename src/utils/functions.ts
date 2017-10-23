@@ -727,16 +727,18 @@ function getCaptionNodeArray(videoId: string): Array<FoundationNode> {
 
           innerHTML = innerHTML.trim(); //Replace extra whitespace with a single space
 
-          output.push({
-            component: "p",
-            props: {
-              offset: offset
-            },
-            innerHTML: [innerHTML]
-          });
+          if (innerHTML.length > 0) {
+            output.push({
+              component: "p",
+              props: {
+                offset: offset
+              },
+              innerHTML: [innerHTML]
+            });
 
-          // Character count offset
-          offset += innerHTML.length;
+            // Character count offset
+            offset += innerHTML.length;
+          }
         }
       }
       return output;

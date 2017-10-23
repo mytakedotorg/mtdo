@@ -58,7 +58,7 @@ class CaptionTextNodeList extends React.Component<
                 const nextDataMap: ScrollData[] = JSON.parse(
                   nextDataMapAttribute
                 );
-                if (nextDataMap && nextDataMap[0][1]) {
+                if (nextDataMap && nextDataMap[0] && nextDataMap[0][1]) {
                   nextStartTime = nextDataMap[0][1];
                 }
               }
