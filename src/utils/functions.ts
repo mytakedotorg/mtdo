@@ -738,6 +738,10 @@ function getCaptionNodeArray(videoId: string): Array<FoundationNode> {
 
             // Character count offset
             offset += innerHTML.length;
+          } else {
+            // Likely an error in the databaseData if we're here.
+            // A speaker's start range is greater than end range.
+            // console.log(speaker.range) to find the offending range.
           }
         }
       }

@@ -1032,7 +1032,7 @@ const database: Database = {
           },
           {
             speaker: "Trump",
-            range: [6262, 6255]
+            range: [6262, 6355]
           },
           {
             speaker: "Raddatz",
