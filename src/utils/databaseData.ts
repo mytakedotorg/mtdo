@@ -127,7 +127,8 @@ const database: Database = {
     },
     {
       //id: "TjHjU0Eu26Y",  // Original video
-      id: "vIZ6w0kMqUA", // Trimmed for dev work, with captions
+      //id: "vIZ6w0kMqUA", // Trimmed for dev work, with captions
+      id: "GX1kHw2tmtI", // Full with captions
       title: "Jimmy Carter - Gerald Ford (2/3)",
       primaryDate: new Date("1976-10-06"),
       primaryDateKind: "recorded",
@@ -172,8 +173,348 @@ const database: Database = {
           },
           {
             speaker: "Carter",
-            range: [416, 688]
-          }
+            range: [416, 843]
+          },
+          {
+            speaker: "Frederick",
+            range: [844, 850]
+					},
+          {
+            speaker: "Ford",
+            range: [851, 1141]
+          },
+          {
+            speaker: "Frederick",
+            range: [1142, 1148]
+					},
+					{
+            speaker: "Trewhitt",
+            range: [1149, 1258]
+					},
+					{
+            speaker: "Ford",
+            range: [1259, 1691]
+					},
+					{
+            speaker: "Carter",
+            range: [1692, 2001]
+					},
+					{
+            speaker: "Frederick",
+            range: [2002, 2008]
+					},
+					{
+            speaker: "Valeriani",
+            range: [2009, 2114]
+					},
+					{
+            speaker: "Carter",
+            range: [2115, 2600]
+					},
+					{
+            speaker: "Valeriani",
+            range: [2601, 2622]
+					},
+					{
+            speaker: "Carter",
+            range: [2623, 2871]
+					},
+					{
+            speaker: "Frederick",
+            range: [2872, 2878]
+					},
+					{
+            speaker: "Ford",
+            range: [2879, 3161]
+					},
+					{
+            speaker: "Frederick",
+            range: [3162, 3168]
+					},
+					{
+            speaker: "Frankel",
+            range: [3169, 3317]
+					},
+					{
+            speaker: "Ford",
+            range: [3318, 3704]
+					},
+					{
+            speaker: "Frankel",
+            range: [3705, 3775]
+					},
+					{
+            speaker: "Ford",
+            range: [3776, 3892]
+					},
+					{
+            speaker: "Frederick",
+            range: [3893, 3896]
+					},
+					{
+            speaker: "Carter",
+            range: [3897, 4258]
+					},
+					{
+            speaker: "Frederick",
+            range: [4259, 4265]
+					},
+					{
+            speaker: "Trewhitt",
+            range: [4266, 4375]
+					},
+					{
+            speaker: "Carter",
+            range: [4376, 4894]
+					},
+					{
+            speaker: "Trewhitt",
+            range: [4895, 4957]
+					},
+					{
+            speaker: "Carter",
+            range: [4958, 5037]
+					},
+					{
+            speaker: "Frederick",
+            range: [5038, 5039]
+					},
+					{
+            speaker: "Ford",
+            range: [5040, 5305]
+					},
+					{
+            speaker: "Frederick",
+            range: [5306, 5312]
+					},
+					{
+            speaker: "Valeriani",
+            range: [5313, 5390]
+					},
+					{
+            speaker: "Ford",
+            range: [5391, 5595]
+					},
+					{
+            speaker: "Valeriani",
+            range: [5596, 5604]
+					},
+					{
+            speaker: "Ford",
+            range: [5605, 5664]
+					},
+					{
+            speaker: "Frederick",
+            range: [5665, 5666]
+					},
+					{
+            speaker: "Carter",
+            range: [5667, 5905]
+					},
+					{
+            speaker: "Frederick",
+            range: [5906, 5912]
+					},
+					{
+            speaker: "Frankel",
+            range: [5913, 6020]
+					},
+					{
+            speaker: "Carter",
+            range: [6021, 6480]
+					},
+					{
+            speaker: "Frankel",
+            range: [6481, 6544]
+					},
+					{
+            speaker: "Carter",
+            range: [6545, 6707]
+					},
+					{
+            speaker: "Frederick",
+            range: [6708, 6709]
+					},
+					{
+            speaker: "Ford",
+            range: [6710, 6986]
+					},
+					{
+            speaker: "Frederick",
+            range: [6987, 6993]
+					},
+					{
+            speaker: "Trewhitt",
+            range: [6994, 7098]
+					},
+					{
+            speaker: "Ford",
+            range: [7099, 7456]
+					},
+					{
+            speaker: "Trewhitt",
+            range: [7457, 7558]
+					},
+					{
+            speaker: "Ford",
+            range: [7559, 7726]
+					},
+					{
+            speaker: "Frederick",
+            range: [7727, 7728]
+					},
+					{
+            speaker: "Carter",
+            range: [7729, 8056]
+					},
+					{
+            speaker: "Frederick",
+            range: [8057, 8063]
+					},
+					{
+            speaker: "Valeriani",
+            range: [8064, 8124]
+					},
+					{
+            speaker: "Carter",
+            range: [8125, 8454]
+					},
+					{
+            speaker: "Frederick",
+            range: [8455, 8456]
+					},
+					{
+            speaker: "Ford",
+            range: [8457, 8706]
+					},
+					{
+            speaker: "Frederick",
+            range: [8707, 8713]
+					},
+					{
+            speaker: "Frankel",
+            range: [8714, 8946]
+					},
+					{
+            speaker: "Ford",
+            range: [8947, 9349]
+					},
+					{
+            speaker: "Frankel",
+            range: [9350, 9413]
+					},
+					{
+            speaker: "Ford",
+            range: [9414, 9677]
+					},
+					{
+            speaker: "Frederick",
+            range: [9678, 9679]
+					},
+					{
+            speaker: "Carter",
+            range: [9680, 10018]
+					},
+					{
+            speaker: "Frederick",
+            range: [10019, 10079]
+					},
+					{
+            speaker: "Trewhitt",
+            range: [10080, 10133]
+					},
+					{
+            speaker: "Carter",
+            range: [10134, 10339]
+					},
+					{
+            speaker: "Frederick",
+            range: [10340, 10341]
+					},
+					{
+            speaker: "Ford",
+            range: [10342, 10476]
+					},
+					{
+            speaker: "Frederick",
+            range: [10477, 10483]
+					},
+					{
+            speaker: "Valeriani",
+            range: [10484, 10546]
+					},
+					{
+            speaker: "Ford",
+            range: [10547, 10842]
+					},
+					{
+            speaker: "Frederick",
+            range: [10843, 10844]
+					},
+					{
+            speaker: "Carter",
+            range: [10845, 11105]
+					},
+					{
+            speaker: "Frederick",
+            range: [11106, 11125]
+					},
+					{
+            speaker: "Frankel",
+            range: [11126, 11153]
+					},
+					{
+            speaker: "Carter",
+            range: [11154, 11357]
+					},
+					{
+            speaker: "Frederick",
+            range: [11358, 11359]
+					},
+					{
+            speaker: "Ford",
+            range: [11360, 11606]
+					},
+					{
+            speaker: "Frederick",
+            range: [11607, 11615]
+					},
+					{
+            speaker: "Trewhitt",
+            range: [11616, 11651]
+					},
+					{
+            speaker: "Ford",
+            range: [11652, 11735]
+					},
+					{
+            speaker: "Frederick",
+            range: [11736, 11737]
+					},
+					{
+            speaker: "Carter",
+            range: [11738, 11923]
+					},
+					{
+            speaker: "Frederick",
+            range: [11924, 11974]
+					},
+					{
+            speaker: "Carter",
+            range: [11975, 12436]
+					},
+					{
+            speaker: "Frederick",
+            range: [12437, 12438]
+					},
+					{
+            speaker: "Ford",
+            range: [12439, 12552]
+					},
+					{
+            speaker: "Frederick",
+            range: [12553, 12661]
+					}
         ]
       }
     },
