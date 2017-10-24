@@ -8,8 +8,11 @@ import {
   HighlightedText,
   FoundationNode
 } from "../../utils/functions";
-import { getVideoCaptionWordMap } from "../../utils/databaseAPI";
-import { CaptionWord } from "../../utils/databaseData";
+import {
+  getVideoCaptionWordMap,
+  getVideoCaptionMetaData
+} from "../../utils/databaseAPI";
+import { CaptionWord, CaptionMeta } from "../../utils/databaseData";
 
 interface Ranges {
   highlightedRange: [number, number];
@@ -36,6 +39,7 @@ interface CaptionViewState {
   highlightedNodes?: FoundationNode[];
   currentIndex: number;
   captionMap?: CaptionWord[];
+  captionMeta?: CaptionMeta;
 }
 
 class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
@@ -52,9 +56,15 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
   getCaptionData = () => {
     try {
       let captionMap = getVideoCaptionWordMap(this.props.videoId) || [];
+      let captionMeta = getVideoCaptionMetaData(this.props.videoId);
+      if (!captionMeta) {
+        throw "Caption Metadata is missing for video with id " +
+          this.props.videoId;
+      }
       this.setState({
         highlightedNodes: getCaptionNodeArray(this.props.videoId),
-        captionMap: captionMap
+        captionMap: captionMap,
+        captionMeta: captionMeta
       });
     } catch (e) {
       console.warn(
@@ -62,7 +72,8 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
       );
       this.setState({
         highlightedNodes: undefined,
-        captionMap: undefined
+        captionMap: undefined,
+        captionMeta: undefined
       });
     }
   };
@@ -101,7 +112,7 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
           ].timestamp;
 
           this.props.onHighlight([startTime, endTime]);
-        } else {
+        } else if (selection) {
           let wordCount = getWordCount(selection);
           let videoTime = this.state.captionMap[wordCount].timestamp;
           this.props.onCursorPlace(videoTime);
@@ -180,7 +191,9 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
               </div>
             </div>
           : null}
-        {this.state.captionMap && this.state.highlightedNodes
+        {this.state.captionMap &&
+        this.state.captionMeta &&
+        this.state.highlightedNodes
           ? <Document
               excerptId={this.props.videoId}
               onMouseUp={this.handleMouseUp}
@@ -188,7 +201,8 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
               className="document__row"
               captionData={{
                 captionTimer: this.props.timer,
-                captionMap: this.state.captionMap
+                captionMap: this.state.captionMap,
+                captionMeta: this.state.captionMeta
               }}
               nodes={this.state.highlightedNodes}
             />

@@ -6,13 +6,14 @@ import {
   getCaptionNodeArray,
   FoundationNode
 } from "../../utils/functions";
-import { CaptionWord } from "../../utils/databaseData";
+import { CaptionWord, CaptionMeta } from "../../utils/databaseData";
 import DocumentTextNodeList from "../DocumentTextNodeList";
 import CaptionTextNodeList from "../CaptionTextNodeList";
 
 interface CaptionData {
   captionTimer: number;
   captionMap: CaptionWord[];
+  captionMeta: CaptionMeta;
 }
 
 interface DocumentProps {
@@ -86,6 +87,7 @@ class Document extends React.Component<DocumentProps, DocumentState> {
           documentNodes={this.state.documentNodes}
           captionTimer={this.props.captionData.captionTimer}
           captionWordMap={this.props.captionData.captionMap}
+          captionMeta={this.props.captionData.captionMeta}
         />
       );
     } else {
