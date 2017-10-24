@@ -62,7 +62,7 @@ interface Person {
   lastname: string;
 }
 
-interface SpeakerMap {
+export interface SpeakerMap {
   speaker: string; //Last name of Person object
   range: [number, number];
 }
