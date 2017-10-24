@@ -10,35 +10,18 @@ interface DataAttributes {
   "data-char-offset": number;
 }
 
-/**
- * ScrollData to be as concise as possile since it's going in the DOM.
- * If it were an object interface, it would look like this:
- *   {
- *     wordIndex: number;
- *     time: number;
- *   }
- */
-export type ScrollData = [number, number]; //wordIndex, time
-
 interface CaptionTextNodeProps {
   documentNode: FoundationNode;
 }
 
-interface CaptionTextNodeState {
-  contentMap: ScrollData[];
-}
+interface CaptionTextNodeState {}
 
 class CaptionTextNode extends React.Component<
   CaptionTextNodeProps,
   CaptionTextNodeState
 > {
-  private text: HTMLHeadingElement | HTMLParagraphElement;
   constructor(props: CaptionTextNodeProps) {
     super(props);
-
-    this.state = {
-      contentMap: []
-    };
   }
   render() {
     const { documentNode } = this.props;
@@ -58,12 +41,7 @@ class CaptionTextNode extends React.Component<
               {documentNode.innerHTML}
             </h2>
             <div className="document__node-height-div">
-              <h2
-                className="document__node-text document__node-text--hidden-h2"
-                ref={(text: HTMLHeadingElement) => {
-                  this.text = text;
-                }}
-              >
+              <h2 className="document__node-text document__node-text--hidden-h2">
                 {documentNode.innerHTML}
               </h2>
             </div>
@@ -79,12 +57,7 @@ class CaptionTextNode extends React.Component<
               {documentNode.innerHTML}
             </h3>
             <div className="document__node-height-div">
-              <h3
-                className="document__node-text document__node-text--hidden-h3"
-                ref={(text: HTMLHeadingElement) => {
-                  this.text = text;
-                }}
-              >
+              <h3 className="document__node-text document__node-text--hidden-h3">
                 {documentNode.innerHTML}
               </h3>
             </div>
@@ -100,12 +73,7 @@ class CaptionTextNode extends React.Component<
               {documentNode.innerHTML}
             </p>
             <div className="document__node-height-div">
-              <p
-                className="document__node-text document__node-text--hidden-p"
-                ref={(text: HTMLParagraphElement) => {
-                  this.text = text;
-                }}
-              />
+              <p className="document__node-text document__node-text--hidden-p" />
             </div>
           </div>
         );

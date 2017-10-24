@@ -1,4 +1,3 @@
-import CaptionTextNode, { ScrollData } from "./CaptionTextNode";
+import CaptionTextNode from "./CaptionTextNode";
 
-export { ScrollData };
 export default CaptionTextNode;
