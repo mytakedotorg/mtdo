@@ -625,7 +625,8 @@ function getStartRangeOffsetTop(
     let textNodes = thirdNodeList[textIndex].childNodes;
     for (let idx = 0; idx < textNodes.length; idx++) {
       if ((textNodes[idx] as HTMLElement).dataset) {
-        let dataOffset = (textNodes[idx] as HTMLElement).dataset.offset;
+        // Get the value of the data-char-offset attribute
+        let dataOffset = (textNodes[idx] as HTMLElement).dataset.charOffset;
         if (textNodes[idx + 1]) {
           if (dataOffset && parseInt(dataOffset) <= startRange) {
             resultNodes = textNodes[idx];
@@ -698,7 +699,7 @@ function convertTimestampToSeconds(timestamp: string): number {
   // Parse data string in form HH:MM:SS.SSS
   const HH = parseInt(timestamp.split(":")[0]);
   const MM = parseInt(timestamp.split(":")[1]);
-  const SS = parseInt(timestamp.split(":")[2].split(".")[0]);
+  const SS = parseInt(timestamp.split(":")[2]);
 
   // Convert HHMMSS to seconds
   return HH * 60 * 60 + MM * 60 + SS;

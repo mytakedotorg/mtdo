@@ -7,8 +7,7 @@ import {
 import { CaptionWord } from "../../utils/databaseData";
 
 interface DataAttributes {
-  "data-offset": number;
-  "data-map": string;
+  "data-char-offset": number;
 }
 
 /**
@@ -23,8 +22,6 @@ export type ScrollData = [number, number]; //wordIndex, time
 
 interface CaptionTextNodeProps {
   documentNode: FoundationNode;
-  wordCount: number;
-  captionWordMap: CaptionWord[];
 }
 
 interface CaptionTextNodeState {
@@ -43,52 +40,11 @@ class CaptionTextNode extends React.Component<
       contentMap: []
     };
   }
-  setScrollData = () => {
-    if (this.text) {
-      let content: string = this.props.documentNode.innerHTML.toString();
-      let contentArr = content.split(/[\s]+/);
-      let height = 0;
-      this.text.innerHTML = "";
-      let contentMap: ScrollData[] = [];
-      for (let idx in contentArr) {
-        this.text.innerHTML += contentArr[idx] + " ";
-        // console.log(idx, contentArr[idx]);
-        if (this.text.clientHeight !== height) {
-          let wordCount: number;
-          if (this.props.wordCount) {
-            wordCount = parseInt(idx) + this.props.wordCount;
-          } else {
-            wordCount = parseInt(idx);
-          }
-          //get timestamp of word
-          if (
-            this.props.captionWordMap &&
-            this.props.captionWordMap[wordCount]
-          ) {
-            contentMap.push([
-              wordCount,
-              convertTimestampToSeconds(
-                this.props.captionWordMap[wordCount].timestamp
-              )
-            ]);
-          }
-          height = this.text.clientHeight;
-        }
-      }
-      this.setState({
-        contentMap: contentMap
-      });
-    }
-  };
-  componentDidMount() {
-    this.setScrollData();
-  }
   render() {
     const { documentNode } = this.props;
 
     let attributes: DataAttributes = {
-      "data-offset": documentNode.props.offset,
-      "data-map": JSON.stringify(this.state.contentMap)
+      "data-char-offset": documentNode.props.offset
     };
 
     switch (documentNode.component) {
