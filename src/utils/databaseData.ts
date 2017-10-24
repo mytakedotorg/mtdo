@@ -53,7 +53,7 @@ export interface CaptionMeta {
 export interface CaptionWord {
   idx: number;
   word: string;
-  timestamp: string; //Like "00:00:00.750"
+  timestamp: number;
 }
 
 interface Person {

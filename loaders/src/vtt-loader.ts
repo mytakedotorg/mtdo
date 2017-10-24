@@ -1,7 +1,17 @@
 interface WordTimeMap {
   idx: number;
   word: string;
-  timestamp: string;
+  timestamp: number;
+}
+
+function convertTimestampToSeconds(timestamp: string): number {
+  // Parse data string in form HH:MM:SS.SSS
+  const HH = parseInt(timestamp.split(":")[0]);
+  const MM = parseInt(timestamp.split(":")[1]);
+  const SS = parseInt(timestamp.split(":")[2]);
+
+  // Convert HHMMSS to seconds
+  return HH * 60 * 60 + MM * 60 + SS;
 }
 
 module.exports = function(source: string) {
@@ -22,7 +32,7 @@ module.exports = function(source: string) {
           wordTimeMaps.push({
             idx: idx,
             word: word,
-            timestamp: line.split(" ")[0]
+            timestamp: convertTimestampToSeconds(line.split(" ")[0])
           });
           idx++;
         }
@@ -56,7 +66,7 @@ module.exports = function(source: string) {
             wordTimeMaps.push({
               idx: idx,
               word: word,
-              timestamp: timestamp
+              timestamp: convertTimestampToSeconds(timestamp)
             });
             //Reinitialize all variables
             isWord = true;

@@ -2,9 +2,7 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import Document from "../Document";
 import {
-  convertTimestampToSeconds,
   getCaptionNodeArray,
-  getStartRangeOffsetTop,
   getWordCount,
   highlightText,
   HighlightedText,
@@ -95,21 +93,17 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
             highlightedRange: highlightedText.highlightedCharacterRange
           });
 
-          let startTime = convertTimestampToSeconds(
-            this.state.captionMap[highlightedText.highlightedWordRange[0]]
-              .timestamp
-          );
-          let endTime = convertTimestampToSeconds(
-            this.state.captionMap[highlightedText.highlightedWordRange[1]]
-              .timestamp
-          );
+          let startTime = this.state.captionMap[
+            highlightedText.highlightedWordRange[0]
+          ].timestamp;
+          let endTime = this.state.captionMap[
+            highlightedText.highlightedWordRange[1]
+          ].timestamp;
 
           this.props.onHighlight([startTime, endTime]);
         } else {
           let wordCount = getWordCount(selection);
-          let videoTime = convertTimestampToSeconds(
-            this.state.captionMap[wordCount].timestamp
-          );
+          let videoTime = this.state.captionMap[wordCount].timestamp;
           this.props.onCursorPlace(videoTime);
         }
       }
