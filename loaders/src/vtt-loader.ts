@@ -8,7 +8,7 @@ function convertTimestampToSeconds(timestamp: string): number {
   // Parse data string in form HH:MM:SS.SSS
   const HH = parseInt(timestamp.split(":")[0]);
   const MM = parseInt(timestamp.split(":")[1]);
-  const SS = parseInt(timestamp.split(":")[2]);
+  const SS = parseFloat(timestamp.split(":")[2]);
 
   // Convert HHMMSS to seconds
   return HH * 60 * 60 + MM * 60 + SS;
@@ -28,6 +28,12 @@ module.exports = function(source: string) {
         // Found an arrow, don't parse this line
         if (word) {
           word = word.trim(); //Trim all whitespace
+          if (word.split(" ").length > 1) {
+            throw "Encountered word with a space in it. Index: " +
+              idx.toString() +
+              ", word: " +
+              word;
+          }
           word += " "; //Append a single space
           wordTimeMaps.push({
             idx: idx,
@@ -62,6 +68,12 @@ module.exports = function(source: string) {
           } else if (char === ">") {
             //Reached end of timestamp, push into map
             word = word.trim(); //Trim all whitespace
+            if (word.split(" ").length > 1) {
+              throw "Encountered word with a space in it. Index: " +
+                idx.toString() +
+                ", word: " +
+                word;
+            }
             word += " "; //Append a single space
             wordTimeMaps.push({
               idx: idx,
