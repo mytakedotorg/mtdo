@@ -169,351 +169,351 @@ const database: Database = {
           },
           {
             speaker: "Frankel",
-            range: [293, 415]
+            range: [293, 416]
           },
           {
             speaker: "Carter",
-            range: [416, 843]
+            range: [417, 849]
           },
           {
             speaker: "Frederick",
-            range: [844, 850]
+            range: [850, 856]
           },
           {
             speaker: "Ford",
-            range: [851, 1141]
+            range: [857, 1148]
           },
           {
             speaker: "Frederick",
-            range: [1142, 1148]
+            range: [1149, 1155]
           },
           {
             speaker: "Trewhitt",
-            range: [1149, 1258]
+            range: [1156, 1265]
           },
           {
             speaker: "Ford",
-            range: [1259, 1691]
+            range: [1266, 1700]
           },
           {
             speaker: "Carter",
-            range: [1692, 2001]
+            range: [1701, 2014]
           },
           {
             speaker: "Frederick",
-            range: [2002, 2008]
+            range: [2015, 2021]
           },
           {
             speaker: "Valeriani",
-            range: [2009, 2114]
+            range: [2022, 2128]
           },
           {
             speaker: "Carter",
-            range: [2115, 2600]
+            range: [2129, 2619]
           },
           {
             speaker: "Valeriani",
-            range: [2601, 2622]
+            range: [2620, 2641]
           },
           {
             speaker: "Carter",
-            range: [2623, 2871]
+            range: [2642, 2896]
           },
           {
             speaker: "Frederick",
-            range: [2872, 2878]
+            range: [2897, 2903]
           },
           {
             speaker: "Ford",
-            range: [2879, 3161]
+            range: [2904, 3187]
           },
           {
             speaker: "Frederick",
-            range: [3162, 3168]
+            range: [3188, 3194]
           },
           {
             speaker: "Frankel",
-            range: [3169, 3317]
+            range: [3195, 3343]
           },
           {
             speaker: "Ford",
-            range: [3318, 3704]
+            range: [3344, 3734]
           },
           {
             speaker: "Frankel",
-            range: [3705, 3775]
+            range: [3735, 3808]
           },
           {
             speaker: "Ford",
-            range: [3776, 3892]
+            range: [3809, 3925]
           },
           {
             speaker: "Frederick",
-            range: [3893, 3896]
+            range: [3926, 3932]
           },
           {
             speaker: "Carter",
-            range: [3897, 4258]
+            range: [3933, 4294]
           },
           {
             speaker: "Frederick",
-            range: [4259, 4265]
+            range: [4295, 4301]
           },
           {
             speaker: "Trewhitt",
-            range: [4266, 4375]
+            range: [4302, 4414]
           },
           {
             speaker: "Carter",
-            range: [4376, 4894]
+            range: [4415, 4933]
           },
           {
             speaker: "Trewhitt",
-            range: [4895, 4957]
+            range: [4934, 4996]
           },
           {
             speaker: "Carter",
-            range: [4958, 5037]
+            range: [4997, 5079]
           },
           {
             speaker: "Frederick",
-            range: [5038, 5039]
+            range: [5080, 5081]
           },
           {
             speaker: "Ford",
-            range: [5040, 5305]
+            range: [5082, 5348]
           },
           {
             speaker: "Frederick",
-            range: [5306, 5312]
+            range: [5349, 5355]
           },
           {
             speaker: "Valeriani",
-            range: [5313, 5390]
+            range: [5356, 5434]
           },
           {
             speaker: "Ford",
-            range: [5391, 5595]
+            range: [5435, 5639]
           },
           {
             speaker: "Valeriani",
-            range: [5596, 5604]
+            range: [5640, 5648]
           },
           {
             speaker: "Ford",
-            range: [5605, 5664]
+            range: [5649, 5708]
           },
           {
             speaker: "Frederick",
-            range: [5665, 5666]
+            range: [5709, 5710]
           },
           {
             speaker: "Carter",
-            range: [5667, 5905]
+            range: [5711, 5951]
           },
           {
             speaker: "Frederick",
-            range: [5906, 5912]
+            range: [5952, 5958]
           },
           {
             speaker: "Frankel",
-            range: [5913, 6020]
+            range: [5959, 6067]
           },
           {
             speaker: "Carter",
-            range: [6021, 6480]
+            range: [6068, 6531]
           },
           {
             speaker: "Frankel",
-            range: [6481, 6544]
+            range: [6532, 6596]
           },
           {
             speaker: "Carter",
-            range: [6545, 6707]
+            range: [6597, 6761]
           },
           {
             speaker: "Frederick",
-            range: [6708, 6709]
+            range: [6762, 6763]
           },
           {
             speaker: "Ford",
-            range: [6710, 6986]
+            range: [6764, 7041]
           },
           {
             speaker: "Frederick",
-            range: [6987, 6993]
+            range: [7042, 7048]
           },
           {
             speaker: "Trewhitt",
-            range: [6994, 7098]
+            range: [7049, 7161]
           },
           {
             speaker: "Ford",
-            range: [7099, 7456]
+            range: [7162, 7522]
           },
           {
             speaker: "Trewhitt",
-            range: [7457, 7558]
+            range: [7523, 7627]
           },
           {
             speaker: "Ford",
-            range: [7559, 7726]
+            range: [7628, 7797]
           },
           {
             speaker: "Frederick",
-            range: [7727, 7728]
+            range: [7798, 7799]
           },
           {
             speaker: "Carter",
-            range: [7729, 8056]
+            range: [7800, 8127]
           },
           {
             speaker: "Frederick",
-            range: [8057, 8063]
+            range: [8128, 8134]
           },
           {
             speaker: "Valeriani",
-            range: [8064, 8124]
+            range: [8135, 8195]
           },
           {
             speaker: "Carter",
-            range: [8125, 8454]
+            range: [8196, 8532]
           },
           {
             speaker: "Frederick",
-            range: [8455, 8456]
+            range: [8533, 8534]
           },
           {
             speaker: "Ford",
-            range: [8457, 8706]
+            range: [8535, 8795]
           },
           {
             speaker: "Frederick",
-            range: [8707, 8713]
+            range: [8796, 8802]
           },
           {
             speaker: "Frankel",
-            range: [8714, 8946]
+            range: [8803, 9040]
           },
           {
             speaker: "Ford",
-            range: [8947, 9349]
+            range: [9041, 9444]
           },
           {
             speaker: "Frankel",
-            range: [9350, 9413]
+            range: [9445, 9508]
           },
           {
             speaker: "Ford",
-            range: [9414, 9677]
+            range: [9509, 9774]
           },
           {
             speaker: "Frederick",
-            range: [9678, 9679]
+            range: [9775, 9776]
           },
           {
             speaker: "Carter",
-            range: [9680, 10018]
+            range: [9777, 10118]
           },
           {
             speaker: "Frederick",
-            range: [10019, 10079]
+            range: [10119, 10180]
           },
           {
             speaker: "Trewhitt",
-            range: [10080, 10133]
+            range: [10181, 10235]
           },
           {
             speaker: "Carter",
-            range: [10134, 10339]
+            range: [10236, 10441]
           },
           {
             speaker: "Frederick",
-            range: [10340, 10341]
+            range: [10442, 10443]
           },
           {
             speaker: "Ford",
-            range: [10342, 10476]
+            range: [10444, 10578]
           },
           {
             speaker: "Frederick",
-            range: [10477, 10483]
+            range: [10579, 10585]
           },
           {
             speaker: "Valeriani",
-            range: [10484, 10546]
+            range: [10586, 10648]
           },
           {
             speaker: "Ford",
-            range: [10547, 10842]
+            range: [10649, 10944]
           },
           {
             speaker: "Frederick",
-            range: [10843, 10844]
+            range: [10945, 10946]
           },
           {
             speaker: "Carter",
-            range: [10845, 11105]
+            range: [10947, 11209]
           },
           {
             speaker: "Frederick",
-            range: [11106, 11125]
+            range: [11210, 11229]
           },
           {
             speaker: "Frankel",
-            range: [11126, 11153]
+            range: [11230, 11257]
           },
           {
             speaker: "Carter",
-            range: [11154, 11357]
+            range: [11258, 11461]
           },
           {
             speaker: "Frederick",
-            range: [11358, 11359]
+            range: [11462, 11463]
           },
           {
             speaker: "Ford",
-            range: [11360, 11606]
+            range: [11464, 11714]
           },
           {
             speaker: "Frederick",
-            range: [11607, 11615]
+            range: [11715, 11723]
           },
           {
             speaker: "Trewhitt",
-            range: [11616, 11651]
+            range: [11724, 11760]
           },
           {
             speaker: "Ford",
-            range: [11652, 11735]
+            range: [11761, 11844]
           },
           {
             speaker: "Frederick",
-            range: [11736, 11737]
+            range: [11845, 11846]
           },
           {
             speaker: "Carter",
-            range: [11738, 11923]
+            range: [11847, 12034]
           },
           {
             speaker: "Frederick",
-            range: [11924, 11974]
+            range: [12035, 12085]
           },
           {
             speaker: "Carter",
-            range: [11975, 12436]
+            range: [12086, 12554]
           },
           {
             speaker: "Frederick",
-            range: [12437, 12438]
+            range: [12555, 12556]
           },
           {
             speaker: "Ford",
-            range: [12439, 12552]
+            range: [12557, 12671]
           },
           {
             speaker: "Frederick",
-            range: [12553, 12661]
+            range: [12672, 12780]
           }
         ]
       }
