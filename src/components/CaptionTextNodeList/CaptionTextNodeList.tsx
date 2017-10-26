@@ -51,13 +51,25 @@ class CaptionTextNodeList extends React.Component<
       );
       if (speakerIdx < 0) {
         speakerIdx = -speakerIdx - 2;
+        if (speakerIdx < 0) {
+          // If still negative, it means we're at the first node
+          speakerIdx = 0;
+        }
       }
 
       let speakerRange = this.props.captionMeta.speakerMap[speakerIdx];
-
+      let hiddenTextElement;
       // This lookup should match the DOM structure of CaptionTextNode
-      let hiddenTextElement = this.captionNodeContainer.children[speakerIdx]
-        .children[1].children[0];
+      if (
+        this.captionNodeContainer.children[speakerIdx] &&
+        this.captionNodeContainer.children[speakerIdx].children[1]
+      ) {
+        hiddenTextElement = this.captionNodeContainer.children[speakerIdx]
+          .children[1].children[0];
+      } else {
+        console.log(speakerIdx);
+        throw "Couldn't find caption node";
+      }
 
       let height = 0;
       let numberOfLines = -1;
