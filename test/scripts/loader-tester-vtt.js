@@ -18,6 +18,6 @@
  */
 var loader = require(__dirname + "/../../loaders/dist/vtt-loader.js");
 var fs = require("fs");
-var file = __dirname + "/../../src/foundation/trump-hillary-2.vtt";
+var file = __dirname + "/../../src/foundation/carter-ford-2.vtt";
 
 console.log(loader(fs.readFileSync(file).toString()));

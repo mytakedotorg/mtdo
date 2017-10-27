@@ -1,0 +1,9 @@
+{
+	"noImplicitAny": true,
+		"compilerOptions": {
+    "target": "es5",
+		"strictNullChecks": true
+  },
+  "include": ["./src/**/*.ts"],
+  "exclude": ["./src/**/*.spec.ts"]
+}
