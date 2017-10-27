@@ -13,7 +13,8 @@ fs = require("fs");
 nunjucks = require("gulp-nunjucks-html");
 // file loaders
 ts = require("gulp-typescript");
-tsProject = ts.createProject("./loaders/tsconfig.json");
+tsLoaders = ts.createProject("./loaders/tsconfig.json");
+tsScripts = ts.createProject("./test/scripts/tsconfig.json");
 // misc
 browserSync = require("browser-sync").create();
 tasklisting = require("gulp-task-listing");
@@ -29,7 +30,9 @@ const config = {
   nunjucksTemplates: "./nunjucks/templates",
   nunjucksPages: "./nunjucks/pages",
   loadersSrc: "./loaders/src/**/*.ts",
-  loadersDist: "./loaders/dist"
+  loadersDist: "./loaders/dist",
+  scriptsSrc: "./test/scripts/src/**/*.ts",
+  scriptsDist: "./test/scripts/dist"
 };
 
 ///////////////////////////////
@@ -51,12 +54,16 @@ function setupPipeline(mode) {
   const nunjucks = "nunjucks" + mode;
   const images = "images" + mode;
   const loaders = "loaders" + mode;
+  const scripts = "scripts" + mode;
+  const scriptsWatch = "scriptsWatch" + mode;
   gulp.task(css, cssCfg(mode));
   gulp.task(sass, sassCfg(mode));
   gulp.task(webpack, [loaders], webpackCfg(mode));
   gulp.task(nunjucks, [webpack], nunjucksCfg(mode));
   gulp.task(images, imagesCfg(mode));
   gulp.task(loaders, loadersCfg(mode));
+  gulp.task(scripts, scriptsCfg(mode));
+  gulp.task(scriptsWatch, scriptsWatchCfg(mode));
   gulp.task(BUILD + mode, [nunjucks, sass, images, css]);
   gulp.task(SERVE + mode, [BUILD + mode], browserSyncCfg(mode));
 }
@@ -64,7 +71,7 @@ function setupPipeline(mode) {
 gulp.task(
   "default",
   tasklisting.withFilters(
-    /clean|default|css|sass|webpack|nunjucks|images|loaders|rev|default/
+    /clean|default|css|sass|webpack|nunjucks|images|loaders|rev|scripts|default/
   )
 );
 gulp.task("clean", () => {
@@ -145,10 +152,25 @@ function imagesCfg(mode) {
 
 function loadersCfg(mode) {
   return () => {
-    return tsProject
+    return tsLoaders
       .src()
-      .pipe(tsProject())
+      .pipe(tsLoaders())
       .js.pipe(gulp.dest(config.loadersDist));
+  };
+}
+
+function scriptsCfg(mode) {
+  return () => {
+    return tsScripts
+      .src()
+      .pipe(tsScripts())
+      .js.pipe(gulp.dest(config.scriptsDist));
+  };
+}
+
+function scriptsWatchCfg(mode) {
+  return () => {
+    gulp.watch(config.scriptsSrc, ["scripts" + mode]);
   };
 }
 
