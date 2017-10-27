@@ -12,8 +12,8 @@
   "scripts": {
     "clean": "gulp clean",
     "deploy": "gulp buildProd",
-    "format-list": "prettier --list-different '*.js' 'assets/**/*.scss' 'src/**/*.ts?(x)' 'loaders/**/*.ts'",
-    "format-write": "prettier --write '*.js' 'assets/**/*.scss' 'src/**/*.ts?(x)' 'loaders/**/*.ts'",
+    "format-list": "prettier --list-different '*.js' 'assets/**/*.scss' 'src/**/*.ts?(x)' 'loaders/**/*.ts' 'test/**/*.ts'",
+    "format-write": "prettier --write '*.js' 'assets/**/*.scss' 'src/**/*.ts?(x)' 'loaders/**/*.ts' 'test/**/*.ts'",
     "start": "gulp serveDev",
     "test": "jest"
   },
@@ -39,6 +39,7 @@
     "@types/vis": "^4.18.4",
     "awesome-typescript-loader": "^3.1.3",
     "browser-sync": "^2.18.12",
+    "cli-interact": "^0.1.9",
     "del": "^3.0.0",
     "enzyme": "^2.9.1",
     "file-loader": "^0.11.2",
