@@ -3,8 +3,16 @@ import BlockEditor, {
   ParagraphBlock,
   TakeBlock,
   TakeDocument,
-  VideoBlock
+  VideoBlock,
+  YTPlayerParameters
 } from "./BlockEditor";
 
-export { DocumentBlock, ParagraphBlock, TakeBlock, TakeDocument, VideoBlock };
+export {
+  DocumentBlock,
+  ParagraphBlock,
+  TakeBlock,
+  TakeDocument,
+  VideoBlock,
+  YTPlayerParameters
+};
 export default BlockEditor;

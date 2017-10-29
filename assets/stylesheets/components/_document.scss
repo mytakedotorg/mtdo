@@ -108,8 +108,7 @@ $document-margin-top: 0px;
 }
 .document__text--selected {
   color: palette(document, text--highlight);
-  background-color: palette(document, background--highlight);
-  cursor: pointer;
+  font-weight: 700;
 }
 .document__button {
   @include button;
@@ -124,4 +123,38 @@ $document-margin-top: 0px;
 }
 .document__button--red {
   @include button--red;
+}
+.document__node {
+  position: relative;
+}
+.document__node-height-div {
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  left: 0;
+  width: 100%;
+  word-wrap: break-word;
+  box-sizing: border-box;
+}
+.document__node-text {
+  margin-top: 0;
+  background-color: palette(document, background);
+}
+.document__node-text--h2 {
+  @include heading2;
+}
+.document__node-text--hidden-h2 {
+  @include heading2;
+}
+.document__node-text--h3 {
+  @include heading3;
+}
+.document__node-text--hidden-h3 {
+  @include heading3;
+}
+.document__node-text--p {
+  @include body;
+}
+.document__node-text--hidden-p {
+  @include body;
 }

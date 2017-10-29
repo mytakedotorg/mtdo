@@ -1,4 +1,6 @@
 import database, {
+  CaptionMeta,
+  CaptionWord,
   Database,
   VideoFact,
   DocumentFact,
@@ -44,6 +46,34 @@ export function getVideoFactPrimaryDateKind(videoId: string): string | null {
   let video = getVideoFact(videoId);
   if (video) {
     return video.primaryDateKind;
+  }
+
+  return null;
+}
+
+export function getVideoFactCaptionFile(videoId: string): string | null {
+  let video = getVideoFact(videoId);
+  if (video && video.captionFile) {
+    return video.captionFile;
+  }
+
+  return null;
+}
+
+export function getVideoCaptionMetaData(videoId: string): CaptionMeta | null {
+  let video = getVideoFact(videoId);
+  if (video && video.captionMeta) {
+    return video.captionMeta;
+  }
+
+  return null;
+}
+
+export function getVideoCaptionWordMap(videoId: string): CaptionWord[] | null {
+  const captionFile = getVideoFactCaptionFile(videoId);
+  const source = require("../foundation/" + captionFile);
+  if (source) {
+    return <CaptionWord[]>JSON.parse(source);
   }
 
   return null;

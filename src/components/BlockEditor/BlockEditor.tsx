@@ -1,6 +1,7 @@
 import * as React from "react";
 import * as keycode from "keycode";
 import YouTube from "react-youtube";
+import DocumentTextNodeList from "../DocumentTextNodeList";
 import { getDocumentFactTitle } from "../../utils/databaseAPI";
 import {
   getNodeArray,
@@ -9,10 +10,16 @@ import {
   FoundationNodeProps
 } from "../../utils/functions";
 
-interface YTPlayerParameters {
+export interface YTPlayerParameters {
   rel: number;
+  cc_load_policy?: number;
+  cc_lang_pref?: string;
   start?: number;
   end?: number;
+  autoplay?: number;
+  showinfo?: number;
+  modestbranding?: number;
+  playsinline: 1;
 }
 
 ////////////////////
@@ -295,14 +302,7 @@ class Document extends React.Component<DocumentBlockProps, DocumentBlockState> {
         <h2 className="editor__document-title">
           {this.getTitle()}
         </h2>
-        {highlightedNodes.map((node, index) => {
-          node.props["key"] = index.toString();
-          return React.createElement(
-            node.component,
-            node.props,
-            node.innerHTML
-          );
-        })}
+        <DocumentTextNodeList documentNodes={highlightedNodes} />
       </div>
     );
 
@@ -372,7 +372,10 @@ class Video extends React.Component<VideoBlockProps, VideoBlockState> {
     let classes = "editor__video-container";
 
     let playerVars: YTPlayerParameters = {
-      rel: 0
+      rel: 0,
+      cc_load_policy: 1,
+      cc_lang_pref: "en",
+      playsinline: 1
     };
 
     if (props.block.range) {

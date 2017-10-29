@@ -20,7 +20,7 @@ module.exports = {
     extensions: [".ts", ".tsx", ".js", ".json", ".jpg"]
   },
   resolveLoader: {
-    modules: ["node_modules", __dirname + "/loaders"]
+    modules: ["node_modules", __dirname + "/loaders/dist"]
   },
   module: {
     rules: [
@@ -48,7 +48,17 @@ module.exports = {
       {
         test: /\.(png|jpg)$/,
         loader: "url-loader?limit=8192"
-      } // inline base64 URLs for <=8k images, direct URLs for the rest
+      }, // inline base64 URLs for <=8k images, direct URLs for the rest
+
+      {
+        test: /\.sbv$/,
+        loader: ["html-loader", "sbv-loader"]
+      },
+
+      {
+        test: /\.vtt$/,
+        loader: ["html-loader", "vtt-loader"]
+      }
     ]
   },
 

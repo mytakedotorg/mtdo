@@ -1,11 +1,27 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { getNodeArray, FoundationNode } from "../../utils/functions";
+import * as _ from "lodash";
+import {
+  getNodeArray,
+  getCaptionNodeArray,
+  FoundationNode
+} from "../../utils/functions";
+import { CaptionWord, CaptionMeta } from "../../utils/databaseData";
+import DocumentTextNodeList from "../DocumentTextNodeList";
+import CaptionTextNodeList from "../CaptionTextNodeList";
+
+interface CaptionData {
+  captionTimer: number;
+  captionMap: CaptionWord[];
+  captionMeta: CaptionMeta;
+}
 
 interface DocumentProps {
   onMouseUp: () => void;
   excerptId: string;
   className?: string;
+  nodes?: FoundationNode[];
+  captionData?: CaptionData;
 }
 
 interface DocumentState {
@@ -16,17 +32,43 @@ class Document extends React.Component<DocumentProps, DocumentState> {
   constructor(props: DocumentProps) {
     super(props);
 
+    let nodes: FoundationNode[];
+    if (!props.nodes) {
+      if (props.captionData) {
+        nodes = getCaptionNodeArray(props.excerptId);
+      } else {
+        nodes = getNodeArray(props.excerptId);
+      }
+    } else {
+      nodes = props.nodes;
+    }
+
     this.state = {
-      documentNodes: getNodeArray(props.excerptId)
+      documentNodes: nodes
     };
   }
   getDocumentNodes = () => {
     return [...this.state.documentNodes];
   };
+
   componentWillReceiveProps(nextProps: DocumentProps) {
-    if (this.props.excerptId !== nextProps.excerptId) {
+    if (
+      !_.isEqual(this.state.documentNodes, nextProps.nodes) &&
+      nextProps.nodes !== undefined
+    ) {
       this.setState({
-        documentNodes: getNodeArray(nextProps.excerptId)
+        documentNodes: nextProps.nodes
+      });
+    } else if (this.props.excerptId !== nextProps.excerptId) {
+      let nodes: FoundationNode[];
+      if (this.props.captionData) {
+        nodes = getCaptionNodeArray(nextProps.excerptId);
+      } else {
+        nodes = getNodeArray(nextProps.excerptId);
+      }
+
+      this.setState({
+        documentNodes: nodes
       });
     }
   }
@@ -36,23 +78,33 @@ class Document extends React.Component<DocumentProps, DocumentState> {
       ? this.props.className
       : "document__row";
 
+    let childComponent;
+    if (this.props.captionData) {
+      childComponent = (
+        <CaptionTextNodeList
+          className="document__text document__text--caption"
+          onMouseUp={this.props.onMouseUp}
+          documentNodes={this.state.documentNodes}
+          captionTimer={this.props.captionData.captionTimer}
+          captionWordMap={this.props.captionData.captionMap}
+          captionMeta={this.props.captionData.captionMeta}
+        />
+      );
+    } else {
+      childComponent = (
+        <DocumentTextNodeList
+          className="document__text"
+          onMouseUp={this.props.onMouseUp}
+          documentNodes={this.state.documentNodes}
+        />
+      );
+    }
+
     return (
       <div className={classes}>
         <div className={documentClass}>
           <div className={"document__row-inner"}>
-            <div className={"document__text"} onMouseUp={this.props.onMouseUp}>
-              {this.state.documentNodes.map(function(
-                element: FoundationNode,
-                index: number
-              ) {
-                element.props["key"] = index.toString();
-                return React.createElement(
-                  element.component,
-                  element.props,
-                  element.innerHTML
-                );
-              })}
-            </div>
+            {childComponent}
             {this.props.children ? this.props.children : null}
           </div>
         </div>

@@ -2,10 +2,12 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import Document from "../Document";
 import FactHeader from "../FactHeader";
+import DocumentTextNodeList from "../DocumentTextNodeList";
 import Video from "../Video";
 import {
   FoundationNode,
   getFact,
+  getNodesInRange,
   getHighlightedNodes,
   getStartRangeOffsetTop,
   highlightText,
@@ -74,7 +76,7 @@ export default class TimelinePreview extends React.Component<
 
     let offsetTop = getStartRangeOffsetTop(
       theseDOMNodes,
-      range ? range : this.state.highlightedRange
+      range ? range : this.state.viewRange
     );
 
     return offsetTop;
@@ -107,17 +109,19 @@ export default class TimelinePreview extends React.Component<
           this.handleSetClick
         );
 
-        const newHighlightedNodes = getHighlightedNodes(
-          this.document.getDocumentNodes(),
-          highlightedText.highlightedRange,
+        const newHighlightedNodes = getNodesInRange(
+          highlightedText.newNodes,
           highlightedText.viewRange
         );
 
         this.setState({
           highlightedNodes: newHighlightedNodes,
-          highlightedRange: highlightedText.highlightedRange,
+          highlightedRange: highlightedText.highlightedCharacterRange,
+          viewRange: highlightedText.viewRange,
           textIsHighlighted: true,
-          offsetTop: this.getScrollTop(highlightedText.highlightedRange)
+          offsetTop: this.getScrollTop(
+            highlightedText.highlightedCharacterRange
+          )
         });
       }
     }
@@ -148,6 +152,7 @@ export default class TimelinePreview extends React.Component<
           highlightedRange[0] +
           "&" +
           highlightedRange[1] +
+          "&" +
           viewRange[0] +
           "&" +
           viewRange[1];
@@ -234,16 +239,10 @@ export default class TimelinePreview extends React.Component<
                     style={{ top: this.state.offsetTop }}
                     onClick={() => this.handleSetClick()}
                   >
-                    <div className="editor__document editor__document--hover">
-                      {this.state.highlightedNodes.map((node, index) => {
-                        node.props["key"] = index.toString();
-                        return React.createElement(
-                          node.component,
-                          node.props,
-                          node.innerHTML
-                        );
-                      })}
-                    </div>
+                    <DocumentTextNodeList
+                      className="editor__document editor__document--hover"
+                      documentNodes={this.state.highlightedNodes}
+                    />
                   </div>
                 : null}
             </Document>

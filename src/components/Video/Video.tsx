@@ -2,6 +2,8 @@ import * as React from "react";
 import YouTube from "react-youtube";
 import { getFact } from "../../utils/functions";
 import { VideoFact } from "../../utils/databaseData";
+import { YTPlayerParameters } from "../BlockEditor";
+import CaptionView from "../CaptionView";
 
 interface VideoProps {
   onSetClick: (range: [number, number]) => void;
@@ -13,47 +15,144 @@ interface VideoState {
   currentTime: number;
   startTime: number;
   endTime: number;
+  captionIsHighlighted: boolean;
 }
 
 class Video extends React.Component<VideoProps, VideoState> {
+  private timerId: number | null;
+  private player: any;
   constructor(props: VideoProps) {
     super(props);
 
     this.state = {
       currentTime: 0,
       startTime: 0,
-      endTime: -1
+      endTime: -1,
+      captionIsHighlighted: false
     };
   }
+  handleCaptionHighlight = (videoRange: [number, number]): void => {
+    //Set video times
+    this.setState({
+      captionIsHighlighted: true,
+      startTime: videoRange[0],
+      endTime: videoRange[1]
+    });
+  };
+  handleClearClick = (): void => {
+    this.setState({
+      captionIsHighlighted: false
+    });
+  };
+  handleCursorPlacement = (videoTime: number): void => {
+    this.setState({
+      startTime: videoTime,
+      endTime: -1
+    });
+  };
+  handleFineTuneUp = (rangeIdx: 0 | 1): void => {
+    if (rangeIdx === 0) {
+      let startTime = this.state.startTime;
+      this.setState({
+        startTime: startTime + 0.1
+      });
+    } else {
+      let endTime = this.state.endTime;
+      if (endTime >= 0) {
+        this.setState({
+          endTime: endTime + 0.1
+        });
+      }
+    }
+  };
+  handleFineTuneDown = (rangeIdx: 0 | 1): void => {
+    if (rangeIdx === 0) {
+      let startTime = this.state.startTime;
+      this.setState({
+        startTime: startTime - 0.1
+      });
+    } else {
+      let endTime = this.state.endTime;
+      if (endTime >= 0) {
+        this.setState({
+          endTime: endTime - 0.1
+        });
+      }
+    }
+  };
   handlePause = (event: any) => {
     this.setState({
       currentTime: Math.round(event.target.getCurrentTime())
     });
+  };
+  handleReady = (event: any) => {
+    this.player = event.target;
+    this.player.mute();
   };
   handleSetClick = () => {
     if (this.state.endTime > this.state.startTime) {
       this.props.onSetClick([this.state.startTime, this.state.endTime]);
     }
   };
-  handleSetStart = () => {
-    const startTime = this.state.currentTime;
-    this.setState({
-      startTime: startTime
-    });
+  handleStateChange = (event: any) => {
+    if (event.data === 0) {
+      // Video ended
+      this.stopTimer();
+    } else if (event.data === 1) {
+      // Video playing
+      this.startTimer();
+      this.setState({
+        currentTime: Math.round(event.target.getCurrentTime())
+      });
+    } else if (event.data === 2) {
+      // Video paused
+      this.stopTimer();
+      this.setState({
+        currentTime: Math.round(event.target.getCurrentTime())
+      });
+    } else if (event.data === 3) {
+      // Video buffering
+      this.stopTimer();
+      this.setState({
+        currentTime: Math.round(event.target.getCurrentTime())
+      });
+    }
   };
-  handleSetEnd = () => {
-    const endTime = this.state.currentTime;
+  startTimer = () => {
     this.setState({
-      endTime: endTime
+      currentTime: this.state.currentTime + 1
     });
+    this.timerId = window.setTimeout(this.startTimer, 1000);
   };
+  stopTimer = () => {
+    if (this.timerId) {
+      window.clearTimeout(this.timerId);
+      this.timerId = null;
+    }
+  };
+  componentWillUnmount() {
+    this.stopTimer();
+  }
   render() {
+    let playerVars: YTPlayerParameters = {
+      rel: 0,
+      playsinline: 1,
+      autoplay: 1,
+      showinfo: 0,
+      modestbranding: 1
+    };
+
+    playerVars.start = this.state.startTime;
+    if (this.state.captionIsHighlighted) {
+      if (this.state.endTime >= 0) {
+        playerVars.end = this.state.endTime;
+      }
+    }
+
     const opts = {
       height: "315",
       width: "560",
-      playerVars: {
-        rel: 0
-      }
+      playerVars: playerVars
     };
 
     return (
@@ -76,35 +175,24 @@ class Video extends React.Component<VideoProps, VideoState> {
             <YouTube
               videoId={this.props.video.id}
               opts={opts}
+              onReady={this.handleReady}
               onPause={this.handlePause}
+              onStateChange={this.handleStateChange}
               className="video__video"
             />
           </div>
-          <div className="video__actions">
-            <div className="video__action">
-              <p className="video__instructions">
-                Current Start Time: <span>{this.state.startTime}</span>
-              </p>
-              <button
-                className="video__button video__button--bottom"
-                onClick={this.handleSetStart}
-              >
-                Set Start Time
-              </button>
-            </div>
-            <div className="video__action">
-              <p className="video__instructions">
-                Current End Time:{" "}
-                <span>{this.state.endTime > 0 ? this.state.endTime : "-"}</span>
-              </p>
-              <button
-                className="video__button video__button--bottom"
-                onClick={this.handleSetEnd}
-              >
-                Set End Time
-              </button>
-            </div>
-          </div>
+          <CaptionView
+            timer={this.state.currentTime}
+            videoId={this.props.video.id}
+            onHighlight={this.handleCaptionHighlight}
+            onClearPress={this.handleClearClick}
+            onCursorPlace={this.handleCursorPlacement}
+            captionIsHighlighted={this.state.captionIsHighlighted}
+            onFineTuneDown={this.handleFineTuneDown}
+            onFineTuneUp={this.handleFineTuneUp}
+            videoStart={this.state.startTime}
+            videoEnd={this.state.endTime}
+          />
         </div>
       </div>
     );

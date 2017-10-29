@@ -31,6 +31,7 @@ $video-header-height: 60px;
   }
 }
 .video__instructions {
+  width: 100%;
   margin-top: 0;
   margin-bottom: 15px;
   color: palette(video, text);
@@ -38,15 +39,25 @@ $video-header-height: 60px;
   float: inherit;
 }
 .video__button {
-  @include button;
   float: inherit;
 }
+.video__button--small {
+  @include button--small;
+}
 .video__button--top {
+  @include button;
   @include button--red;
   margin-top: ($video-header-height - 35px)/2;
 }
 .video__button--bottom {
+  @include button;
   @include button--blue;
+}
+.video__time {
+  float: inherit;
+  @include body;
+  margin-left: 2px;
+  margin-right: 2px;
 }
 .video__container {
   width: $video-container-width;
