@@ -1000,14 +1000,6 @@ const database: Database = {
           },
           {
             speaker: "Cooper",
-            range: [5294, 5340]
-          },
-          {
-            speaker: "Trump",
-            range: [5341, 5344]
-          },
-          {
-            speaker: "Cooper",
             range: [5345, 5348]
           },
           {
