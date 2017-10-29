@@ -62,9 +62,9 @@ class Document extends React.Component<DocumentProps, DocumentState> {
     } else if (this.props.excerptId !== nextProps.excerptId) {
       let nodes: FoundationNode[];
       if (this.props.captionData) {
-        nodes = getCaptionNodeArray(this.props.excerptId);
+        nodes = getCaptionNodeArray(nextProps.excerptId);
       } else {
-        nodes = getNodeArray(this.props.excerptId);
+        nodes = getNodeArray(nextProps.excerptId);
       }
 
       this.setState({
