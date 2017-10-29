@@ -3,7 +3,7 @@ import * as ReactDOM from "react-dom";
 import { FoundationNode } from "../../utils/functions";
 
 interface DataAttributes {
-  "data-offset": number;
+  "data-char-offset": number;
 }
 
 interface DocumentTextNodeProps {
@@ -23,7 +23,7 @@ class DocumentTextNode extends React.Component<
     const { documentNode } = this.props;
 
     let attributes: DataAttributes = {
-      "data-offset": documentNode.props.offset
+      "data-char-offset": documentNode.props.offset
     };
 
     switch (documentNode.component) {

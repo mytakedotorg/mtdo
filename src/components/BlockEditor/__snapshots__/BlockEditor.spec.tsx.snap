@@ -73,7 +73,7 @@ exports[`Read only 1`] = `
                 onMouseUp={undefined}
               >
                 <h2
-                  data-offset={327}
+                  data-char-offset={327}
                 >
                   Article.
                   <span
@@ -83,7 +83,7 @@ exports[`Read only 1`] = `
                   </span>
                 </h2>
                 <h3
-                  data-offset={338}
+                  data-char-offset={338}
                 >
                   <span
                     className="editor__document-highlight"
@@ -93,7 +93,7 @@ exports[`Read only 1`] = `
                   
                 </h3>
                 <p
-                  data-offset={349}
+                  data-char-offset={349}
                 >
                   <span
                     className="editor__document-highlight"
@@ -197,7 +197,7 @@ exports[`Simple block editor model 1`] = `
                 onMouseUp={undefined}
               >
                 <h2
-                  data-offset={327}
+                  data-char-offset={327}
                 >
                   Article.
                   <span
@@ -207,7 +207,7 @@ exports[`Simple block editor model 1`] = `
                   </span>
                 </h2>
                 <h3
-                  data-offset={338}
+                  data-char-offset={338}
                 >
                   <span
                     className="editor__document-highlight"
@@ -217,7 +217,7 @@ exports[`Simple block editor model 1`] = `
                   
                 </h3>
                 <p
-                  data-offset={349}
+                  data-char-offset={349}
                 >
                   <span
                     className="editor__document-highlight"
@@ -321,7 +321,7 @@ exports[`With active 1`] = `
                 onMouseUp={undefined}
               >
                 <h2
-                  data-offset={327}
+                  data-char-offset={327}
                 >
                   Article.
                   <span
@@ -331,7 +331,7 @@ exports[`With active 1`] = `
                   </span>
                 </h2>
                 <h3
-                  data-offset={338}
+                  data-char-offset={338}
                 >
                   <span
                     className="editor__document-highlight"
@@ -341,7 +341,7 @@ exports[`With active 1`] = `
                   
                 </h3>
                 <p
-                  data-offset={349}
+                  data-char-offset={349}
                 >
                   <span
                     className="editor__document-highlight"
