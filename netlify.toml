@@ -1,5 +1,5 @@
 # Global settings applied to the whole site.
 [build]
   base   = "client"
-  public = "dist"
+  public = "client/dist"
   command = "npm run deploy"
