@@ -135,7 +135,7 @@ describe("A series of editor actions", () => {
     //   },
     //   { kind: "paragraph", text: "test" }
     // ];
-    const videoId = "fT0spjjJ0KB";
+    const videoId = "ApTLB76Nmdg";
     (wrapper.instance() as BlockWriter).addVideo(videoId, [0, 6]);
     const newState = wrapper.state() as BlockWriterState;
     const vidBlock = newState.takeDocument.blocks[2] as VideoBlock;
