@@ -780,20 +780,16 @@ function slugify(text: string): string {
     .replace(/[^\w-]+/g, ""); //remove non-alphanumics and non-hyphens
 }
 
-function getFact(factId: string): DocumentFact | VideoFact | null {
-  let excerpt = getDocumentFact(factId);
-
-  if (excerpt) {
-    return excerpt;
+function getFact(factId: string): DocumentFact | VideoFact {
+  try {
+    return getDocumentFact(factId);
+  } catch (err) {
+    try {
+      return getVideoFact(factId);
+    } catch (err) {
+      throw err;
+    }
   }
-
-  let video = getVideoFact(factId);
-
-  if (video) {
-    return video;
-  }
-
-  return null;
 }
 
 function getWordCount(selection: Selection): number {

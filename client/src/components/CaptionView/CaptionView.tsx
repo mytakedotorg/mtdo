@@ -55,12 +55,8 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
   }
   getCaptionData = () => {
     try {
-      let captionMap = getVideoCaptionWordMap(this.props.videoId) || [];
+      let captionMap = getVideoCaptionWordMap(this.props.videoId);
       let captionMeta = getVideoCaptionMetaData(this.props.videoId);
-      if (!captionMeta) {
-        throw "Caption Metadata is missing for video with id " +
-          this.props.videoId;
-      }
       this.setState({
         highlightedNodes: getCaptionNodeArray(this.props.videoId),
         captionMap: captionMap,
