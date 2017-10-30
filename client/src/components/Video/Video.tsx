@@ -8,7 +8,8 @@ import CaptionView from "../CaptionView";
 interface VideoProps {
   onSetClick: (range: [number, number]) => void;
   video: VideoFact;
-  className: string;
+  className?: string;
+  range?: [number, number];
 }
 
 interface VideoState {
@@ -136,16 +137,23 @@ class Video extends React.Component<VideoProps, VideoState> {
   render() {
     let playerVars: YTPlayerParameters = {
       rel: 0,
+      cc_load_policy: 1,
+      cc_lang_pref: "en",
       playsinline: 1,
-      autoplay: 1,
+      autoplay: 0,
       showinfo: 0,
       modestbranding: 1
     };
 
-    playerVars.start = this.state.startTime;
-    if (this.state.captionIsHighlighted) {
-      if (this.state.endTime >= 0) {
-        playerVars.end = this.state.endTime;
+    if (this.props.range && !this.state.captionIsHighlighted) {
+      playerVars.start = this.props.range[0];
+      playerVars.end = this.props.range[1];
+    } else {
+      playerVars.start = this.state.startTime;
+      if (this.state.captionIsHighlighted) {
+        if (this.state.endTime >= 0) {
+          playerVars.end = this.state.endTime;
+        }
       }
     }
 
@@ -157,7 +165,13 @@ class Video extends React.Component<VideoProps, VideoState> {
 
     return (
       <div className="video__outer-container">
-        <div className={this.props.className}>
+        <div
+          className={
+            this.props.className
+              ? this.props.className
+              : "video__inner-container"
+          }
+        >
           <div className="video__container">
             <div className="video__header">
               {this.state.endTime > this.state.startTime

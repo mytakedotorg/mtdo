@@ -2,7 +2,8 @@ import * as React from "react";
 import * as keycode from "keycode";
 import YouTube from "react-youtube";
 import DocumentTextNodeList from "../DocumentTextNodeList";
-import { getDocumentFactTitle } from "../../utils/databaseAPI";
+import CaptionedVideo from "../Video";
+import { getDocumentFactTitle, getVideoFact } from "../../utils/databaseAPI";
 import {
   getNodeArray,
   getHighlightedNodes,
@@ -363,6 +364,9 @@ class Video extends React.Component<VideoBlockProps, VideoBlockState> {
         break;
     }
   };
+  handleSetClick = (range: [number, number]): void => {
+    throw "TODO";
+  };
   handleVideoEnd = (event: any) => {
     event.target.stopVideo();
   };
@@ -370,24 +374,6 @@ class Video extends React.Component<VideoBlockProps, VideoBlockState> {
     const { props } = this;
 
     let classes = "editor__video-container";
-
-    let playerVars: YTPlayerParameters = {
-      rel: 0,
-      cc_load_policy: 1,
-      cc_lang_pref: "en",
-      playsinline: 1
-    };
-
-    if (props.block.range) {
-      playerVars.start = props.block.range[0];
-      playerVars.end = props.block.range[1];
-    }
-
-    const opts = {
-      height: "315",
-      width: "560",
-      playerVars: playerVars
-    };
 
     return (
       <div
@@ -397,11 +383,10 @@ class Video extends React.Component<VideoBlockProps, VideoBlockState> {
         onFocus={this.handleFocus}
         onKeyDown={this.handleKeyDown}
       >
-        <YouTube
-          videoId={props.block.videoId}
-          opts={opts}
-          onEnd={this.handleVideoEnd}
-          className="editor__video"
+        <CaptionedVideo
+          onSetClick={this.handleSetClick}
+          video={getVideoFact(this.props.block.videoId)}
+          range={this.props.block.range}
         />
       </div>
     );
