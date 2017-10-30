@@ -1628,7 +1628,7 @@ const database: Database = {
             },
             {
               kind: "video",
-              videoId: "QuPWV36zqdc",
+              videoId: "ApTLB76Nmdg",
               range: [304, 321]
             },
             {
@@ -1638,7 +1638,7 @@ const database: Database = {
             },
             {
               kind: "video",
-              videoId: "vIZ6w0kMqUA",
+              videoId: "GX1kHw2tmtI",
               range: [246, 261]
             },
             {
@@ -1647,7 +1647,7 @@ const database: Database = {
             },
             {
               kind: "video",
-              videoId: "vIZ6w0kMqUA",
+              videoId: "GX1kHw2tmtI",
               range: [190, 203]
             },
             {
