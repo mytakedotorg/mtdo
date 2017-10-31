@@ -1,6 +1,7 @@
 import * as React from "react";
 import { CaptionWord, DocumentFact, VideoFact } from "./databaseData";
 import {
+  getVideoCaptionWordMap,
   getVideoFact,
   getDocumentFact,
   getVideoFactCaptionFile,
@@ -827,6 +828,43 @@ function getWordCount(selection: Selection): number {
   }
 
   return wordCount;
+}
+
+function getCharRange(
+  videoId: string,
+  timeRange: [number, number]
+): [number, number] {
+  const startTime = timeRange[0];
+  const endTime = timeRange[1];
+
+  const wordMap = getVideoCaptionWordMap(videoId);
+  let charCount = 0;
+  let startCharIndex: number;
+  let isStartSet = false;
+  let endCharIndex: number;
+
+  for (const captionWord of wordMap) {
+    if (captionWord.timestamp < startTime) {
+      charCount += captionWord.word.length;
+      continue;
+    }
+    if (!isStartSet) {
+      startCharIndex = charCount;
+      isStartSet = true;
+    }
+    if (captionWord.timestamp < endTime) {
+      charCount += captionWord.word.length;
+      continue;
+    }
+    endCharIndex = charCount;
+    break;
+  }
+
+  if (startCharIndex && endCharIndex) {
+    return [startCharIndex, endCharIndex];
+  } else {
+    throw "Index not found";
+  }
 }
 
 export {
