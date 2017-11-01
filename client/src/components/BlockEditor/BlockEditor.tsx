@@ -11,18 +11,6 @@ import {
   FoundationNodeProps
 } from "../../utils/functions";
 
-export interface YTPlayerParameters {
-  rel: number;
-  cc_load_policy?: number;
-  cc_lang_pref?: string;
-  start?: number;
-  end?: number;
-  autoplay?: number;
-  showinfo?: number;
-  modestbranding?: number;
-  playsinline: 1;
-}
-
 ////////////////////
 // Document model //
 ////////////////////
@@ -386,7 +374,7 @@ class Video extends React.Component<VideoBlockProps, VideoBlockState> {
         <CaptionedVideo
           onSetClick={this.handleSetClick}
           video={getVideoFact(this.props.block.videoId)}
-          range={this.props.block.range}
+          timeRange={this.props.block.range}
         />
       </div>
     );
