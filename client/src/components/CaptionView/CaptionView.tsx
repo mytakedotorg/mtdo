@@ -3,9 +3,9 @@ import * as ReactDOM from "react-dom";
 import Document from "../Document";
 import {
   getCaptionNodeArray,
+  getSimpleRangesFromHTMLRange,
   getWordCount,
-  highlightText,
-  HighlightedText,
+  highlightTextTwo,
   FoundationNode
 } from "../../utils/functions";
 import {
@@ -14,27 +14,28 @@ import {
 } from "../../utils/databaseAPI";
 import { CaptionWord, CaptionMeta } from "../../utils/databaseData";
 
-interface Ranges {
-  highlightedRange: [number, number];
-  viewRange: [number, number];
+interface EventHandlers {
+  onHighlight: (
+    videoRange: [number, number],
+    charRange: [number, number]
+  ) => void;
+  onClearPress: () => void;
+  onCursorPlace: (videoTime: number) => void;
+  onFineTuneUp: (rangeIdx: 0 | 1) => void;
+  onFineTuneDown: (rangeIdx: 0 | 1) => void;
 }
 
 interface CaptionViewProps {
   videoId: string;
   timer: number;
-  ranges?: Ranges;
-  onHighlight: (videoRange: [number, number]) => void;
-  onClearPress: () => void;
-  onCursorPlace: (videoTime: number) => void;
   captionIsHighlighted: boolean;
-  onFineTuneUp: (rangeIdx: 0 | 1) => void;
-  onFineTuneDown: (rangeIdx: 0 | 1) => void;
   videoStart: number;
   videoEnd: number;
+  eventHandlers: EventHandlers;
+  highlightedCharRange?: [number, number];
 }
 
 interface CaptionViewState {
-  highlightedRange: [number, number];
   viewRange: [number, number];
   highlightedNodes?: FoundationNode[];
   currentIndex: number;
@@ -48,8 +49,7 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
     super(props);
 
     this.state = {
-      highlightedRange: props.ranges ? props.ranges.highlightedRange : [0, 0],
-      viewRange: props.ranges ? props.ranges.viewRange : [0, 0],
+      viewRange: [0, 0],
       currentIndex: 0
     };
   }
@@ -57,15 +57,23 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
     try {
       let captionMap = getVideoCaptionWordMap(this.props.videoId);
       let captionMeta = getVideoCaptionMetaData(this.props.videoId);
+      let captionNodes = getCaptionNodeArray(this.props.videoId);
+      if (this.props.captionIsHighlighted && this.props.highlightedCharRange) {
+        captionNodes = highlightTextTwo(
+          captionNodes,
+          this.props.highlightedCharRange,
+          () => {
+            throw "todo";
+          }
+        );
+      }
       this.setState({
-        highlightedNodes: getCaptionNodeArray(this.props.videoId),
+        highlightedNodes: captionNodes,
         captionMap: captionMap,
         captionMeta: captionMeta
       });
     } catch (e) {
-      console.warn(
-        "Couldn't get caption data for video with id " + this.props.videoId
-      );
+      console.warn(e);
       this.setState({
         highlightedNodes: undefined,
         captionMap: undefined,
@@ -77,41 +85,47 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
     this.setState({
       highlightedNodes: getCaptionNodeArray(this.props.videoId)
     });
-    this.props.onClearPress();
+    this.props.eventHandlers.onClearPress();
   };
   handleMouseUp = () => {
     if (this.state.captionMap) {
       if (window.getSelection && !this.props.captionIsHighlighted) {
         // Pre IE9 will always be false
-        let selection: Selection = window.getSelection();
+        const selection: Selection = window.getSelection();
         if (selection.toString().length) {
           // Some text is selected
-          let range: Range = selection.getRangeAt(0);
+          const range: Range = selection.getRangeAt(0);
 
-          const highlightedText: HighlightedText = highlightText(
-            range, // HTML Range, not [number, number] as in props.range
-            this.document.getDocumentNodes(),
-            ReactDOM.findDOMNode(this.document).childNodes,
-            () => {} // noop
+          const simpleRanges = getSimpleRangesFromHTMLRange(
+            range,
+            ReactDOM.findDOMNode(this.document).childNodes
+          );
+
+          const newNodes = highlightTextTwo(
+            [...this.document.getDocumentNodes()],
+            simpleRanges.charRange,
+            () => {
+              throw "todo";
+            }
           );
 
           this.setState({
-            highlightedNodes: highlightedText.newNodes,
-            highlightedRange: highlightedText.highlightedCharacterRange
+            highlightedNodes: newNodes
           });
 
-          let startTime = this.state.captionMap[
-            highlightedText.highlightedWordRange[0]
-          ].timestamp;
-          let endTime = this.state.captionMap[
-            highlightedText.highlightedWordRange[1]
-          ].timestamp;
+          let startTime = this.state.captionMap[simpleRanges.wordRange[0]]
+            .timestamp;
+          let endTime = this.state.captionMap[simpleRanges.wordRange[1]]
+            .timestamp;
 
-          this.props.onHighlight([startTime, endTime]);
+          this.props.eventHandlers.onHighlight(
+            [startTime, endTime],
+            simpleRanges.charRange
+          );
         } else if (selection) {
           let wordCount = getWordCount(selection);
           let videoTime = this.state.captionMap[wordCount].timestamp;
-          this.props.onCursorPlace(videoTime);
+          this.props.eventHandlers.onCursorPlace(videoTime);
         }
       }
     }
@@ -148,7 +162,7 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
                   <div className="video__action">
                     <button
                       className="video__button video__button--small"
-                      onClick={() => this.props.onFineTuneDown(0)}
+                      onClick={() => this.props.eventHandlers.onFineTuneDown(0)}
                     >
                       <i className="fa fa-arrow-down" aria-hidden="true" />
                     </button>
@@ -159,7 +173,7 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
                     </span>
                     <button
                       className="video__button video__button--small"
-                      onClick={() => this.props.onFineTuneUp(0)}
+                      onClick={() => this.props.eventHandlers.onFineTuneUp(0)}
                     >
                       <i className="fa fa-arrow-up" aria-hidden="true" />
                     </button>
@@ -167,7 +181,7 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
                   <div className="video__action">
                     <button
                       className="video__button video__button--small"
-                      onClick={() => this.props.onFineTuneDown(1)}
+                      onClick={() => this.props.eventHandlers.onFineTuneDown(1)}
                     >
                       <i className="fa fa-arrow-down" aria-hidden="true" />
                     </button>
@@ -178,7 +192,7 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
                     </span>
                     <button
                       className="video__button video__button--small"
-                      onClick={() => this.props.onFineTuneUp(1)}
+                      onClick={() => this.props.eventHandlers.onFineTuneUp(1)}
                     >
                       <i className="fa fa-arrow-up" aria-hidden="true" />
                     </button>
