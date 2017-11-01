@@ -8,6 +8,8 @@ package common;
 
 import com.diffplug.common.base.Errors;
 import com.google.inject.Binder;
+import com.icegreen.greenmail.util.GreenMail;
+import com.icegreen.greenmail.util.ServerSetup;
 import com.opentable.db.postgres.embedded.DatabasePreparer;
 import com.opentable.db.postgres.embedded.EmbeddedPostgres;
 import com.opentable.db.postgres.embedded.FlywayPreparer;
@@ -32,6 +34,7 @@ public class Dev extends Jooby {
 			binder.bind(Random.class).toInstance(new Random(0));
 		});
 		use(new DevTime.Module());
+		use(new GreenMailModule());
 		Prod.common(this);
 		use(new EmbeddedPostgresModule());
 		use(new jOOQ());
@@ -65,6 +68,17 @@ public class Dev extends Jooby {
 		@Override
 		public void configure(Env env, Config conf, Binder binder) throws Throwable {
 			env.onStop(postgres::close);
+		}
+	}
+
+	static class GreenMailModule implements Jooby.Module {
+		@Override
+		public void configure(Env env, Config conf, Binder binder) throws Throwable {
+			ServerSetup setup = new ServerSetup(conf.getInt("mail.smtpPort"), conf.getString("mail.hostName"), "smtp");
+			GreenMail greenMail = new GreenMail(setup);
+			greenMail.start();
+			env.onStop(greenMail::stop);
+			binder.bind(GreenMail.class).toInstance(greenMail);
 		}
 	}
 

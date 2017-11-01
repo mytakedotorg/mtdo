@@ -12,6 +12,7 @@ import javax.sql.DataSource;
 import org.flywaydb.core.Flyway;
 import org.jooby.Jooby;
 import org.jooby.jooq.jOOQ;
+import org.jooby.mail.CommonsEmail;
 
 /**
  * The app that we run in production.  See {@link Dev} in the test
@@ -41,7 +42,7 @@ public class Prod extends Jooby {
 	}
 
 	static void common(Jooby jooby) {
-		// setup infrastructure
+		jooby.use(new CommonsEmail());
 	}
 
 	static void controllers(Jooby jooby) {
