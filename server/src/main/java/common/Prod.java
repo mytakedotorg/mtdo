@@ -19,6 +19,9 @@ public class Prod extends Jooby {
 		use((env, conf, binder) -> {
 			binder.bind(Random.class).toInstance(SecureRandom.getInstanceStrong());
 		});
+		use((env, conf, binder) -> {
+			binder.bind(Time.class).toInstance(() -> System.currentTimeMillis());
+		});
 		common(this);
 		controllers(this);
 	}

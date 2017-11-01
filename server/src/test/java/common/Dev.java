@@ -15,10 +15,11 @@ import org.jooby.Jooby;
  */
 public class Dev extends Jooby {
 	{
-		// random results in tests will be repeatable
+		// random and time-dependent results in tests will be repeatable
 		use((env, conf, binder) -> {
 			binder.bind(Random.class).toInstance(new Random(0));
 		});
+		use(new DevTime.Module());
 		Prod.common(this);
 		Prod.controllers(this);
 	}
