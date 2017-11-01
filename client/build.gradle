@@ -1,0 +1,24 @@
+plugins {
+	id 'com.moowork.node' version '1.2.0' // https://github.com/srs/gradle-node-plugin/blob/master/docs/node.md
+	id 'com.moowork.gulp' version '1.2.0' // https://github.com/srs/gradle-node-plugin/blob/master/docs/gulp.md
+}
+
+node {
+	version = '6.10.2'
+	npmVersion = '5.2.0'
+	// yarnVersion = '0.16.1'
+	download = true
+}
+
+// make the gulp_buildProd have accurate up-to-date checking
+gulp_buildProd.dependsOn 'npmInstall'
+gulp_buildProd.inputs.dir('assets')
+gulp_buildProd.inputs.dir('loaders')
+gulp_buildProd.inputs.dir('nunjucks')
+gulp_buildProd.inputs.dir('src')
+gulp_buildProd.inputs.file('gulpfile.js')
+gulp_buildProd.inputs.file('package.json')
+gulp_buildProd.inputs.file('postcss.config.js')
+gulp_buildProd.inputs.file('tsconfig.json')
+gulp_buildProd.inputs.file('webpack.config.js')
+gulp_buildProd.outputs.dir('dist')

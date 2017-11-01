@@ -9,6 +9,12 @@ script:
   - npm run format-list
   - npm test
 
+before_cache:
+  - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
+  - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
 cache:
   directories:
-    - node_modules
+    - client/.gradle/
+    - client/node_modules/
+    - $HOME/.gradle/caches/
+    - $HOME/.gradle/wrapper/

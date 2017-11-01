@@ -11,4 +11,5 @@ dist/
 dist-unhashed/
 
 # gradle
-/.gradle/
+.gradle/
+build/
