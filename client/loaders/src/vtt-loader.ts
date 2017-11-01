@@ -14,7 +14,8 @@ function convertTimestampToSeconds(timestamp: string): number {
   return HH * 60 * 60 + MM * 60 + SS;
 }
 
-module.exports = function(source: string) {
+export default function(source: string) {
+  //module.exports = function(source: string) {
   const sourceArr: string[] = source.split("\n\n");
   let wordTimeMaps: WordTimeMap[] = [];
   let idx = 0;
@@ -49,7 +50,9 @@ module.exports = function(source: string) {
       let isTimestamp = false;
       word = "";
       let timestamp = "";
-      for (const char of line) {
+      // for (const char of line) {
+      for (let j = 0, len = line.length; i < len; i++) {
+        const char = line[j];
         if (char === "<") {
           isWord = false;
           isTimestamp = true;
@@ -103,4 +106,4 @@ module.exports = function(source: string) {
   const output: string = JSON.stringify(wordTimeMaps);
 
   return output;
-};
+}

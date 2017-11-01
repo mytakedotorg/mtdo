@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
     "noImplicitAny": true,
-    "target": "es5",
-		"strictNullChecks": true
+    "target": "es3",
+    "strictNullChecks": true
   },
   "include": ["./src/**/*"],
   "exclude": ["./src/**/*.spec.ts"]
