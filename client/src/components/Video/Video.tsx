@@ -51,6 +51,14 @@ class Video extends React.Component<VideoProps, VideoState> {
       highlightedCharRange: charRange
     };
   }
+  cueVideo = () => {
+    this.player.cueVideoById({
+      videoId: this.props.video.id,
+      startSeconds: this.state.startTime,
+      endSeconds: this.state.endTime,
+      suggestedQuality: "default"
+    });
+  };
   getCharRange = (
     videoId: string,
     timeRange?: [number, number]
@@ -123,6 +131,8 @@ class Video extends React.Component<VideoProps, VideoState> {
   };
   handleReady = (event: any) => {
     this.player = event.target;
+    this.player.pauseVideo();
+    this.cueVideo();
   };
   handleSetClick = () => {
     if (this.state.endTime > this.state.startTime) {
@@ -133,12 +143,7 @@ class Video extends React.Component<VideoProps, VideoState> {
     if (event.data === 0) {
       // Video ended
       this.stopTimer();
-      this.player.cueVideoById({
-        videoId: this.props.video.id,
-        startSeconds: this.state.startTime,
-        endSeconds: this.state.endTime,
-        suggestedQuality: "default"
-      });
+      this.cueVideo();
     } else if (event.data === 1) {
       // Video playing
       this.startTimer();
@@ -198,7 +203,7 @@ class Video extends React.Component<VideoProps, VideoState> {
       cc_load_policy: 1,
       cc_lang_pref: "en",
       playsinline: 1,
-      autoplay: 0,
+      autoplay: 1,
       showinfo: 0,
       modestbranding: 1
     };
