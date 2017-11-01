@@ -3,6 +3,8 @@ package org.mytake.gradle.flywayjooq;
 import java.io.File;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -15,6 +17,7 @@ import org.gradle.api.tasks.compile.JavaCompile;
 import org.jooq.util.DefaultGeneratorStrategy;
 import org.jooq.util.JavaGenerator;
 import org.jooq.util.jaxb.Database;
+import org.jooq.util.jaxb.ForcedType;
 import org.jooq.util.jaxb.Generate;
 import org.jooq.util.jaxb.Generator;
 import org.jooq.util.jaxb.Strategy;
@@ -39,10 +42,15 @@ public class EmbeddedPgPlugin implements Plugin<Project> {
 		public File migrations;
 
 		private Generator generator;
+		private List<ForcedType> forcedTypes;
 		{
 			generator = new Generator();
 			generator.setStrategy(new Strategy());
-			generator.setDatabase(new Database());
+			
+			Database database = new Database();
+			forcedTypes = new ArrayList<>();
+			database.setForcedTypes(forcedTypes);
+			generator.setDatabase(database);
 			generator.setGenerate(new Generate());
 			generator.setTarget(new Target());
 
@@ -53,6 +61,12 @@ public class EmbeddedPgPlugin implements Plugin<Project> {
 
 		public void generator(Action<Generator> generatorConfig) {
 			generatorConfig.execute(generator);
+		}
+
+		public void forcedType(Action<ForcedType> forcedConfig) {
+			ForcedType forced = new ForcedType();
+			forcedConfig.execute(forced);
+			forcedTypes.add(forced);
 		}
 	}
 

@@ -29,6 +29,19 @@ flywayJooqEmbeddedPg {
 		target.packageName = 'db'
 		target.directory = file('src/main/jooq-generated').absolutePath
 	}
+	// https://www.jooq.org/doc/latest/manual/code-generation/custom-data-type-bindings/
+	forcedType {
+		userType = 'com.google.gson.JsonElement'
+		binding = 'db.bindings.PostgresJSONGsonBinding'
+		expression = '.*'
+		types = 'jsonb'
+	}
+	forcedType {
+		userType = 'java.lang.String'
+		binding = 'db.bindings.PostgresInetBinding'
+		expression = '.*'
+		types = 'inet'
+	}
 }
 sourceSets.main.java {
 	srcDir 'src/main/jooq-generated'
@@ -87,6 +100,7 @@ dependencies {
 	// common libs
 	compile 'commons-validator:commons-validator:1.6'
 	compile 'com.diffplug.durian:durian-core:1.2.0'
+	compile 'com.google.code.gson:gson:2.8.2'
 
 	// code quality annotations, especially @Nullable
 	compileOnly 'com.google.code.findbugs:jsr305:3.0.0'
