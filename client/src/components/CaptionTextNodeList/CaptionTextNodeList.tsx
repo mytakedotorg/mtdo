@@ -67,8 +67,7 @@ class CaptionTextNodeList extends React.Component<
         hiddenTextElement = this.captionNodeContainer.children[speakerIdx]
           .children[1].children[0];
       } else {
-        console.log(speakerIdx);
-        throw "Couldn't find caption node";
+        throw "Couldn't find caption node at index " + speakerIdx;
       }
 
       let height = 0;
