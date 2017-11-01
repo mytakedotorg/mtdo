@@ -1,13 +1,6 @@
 language: node_js
 
-before_install:
-  - cd client
-  - npm i -g npm@5.2.0
-
 script:
-  - npm run deploy
-  - npm run format-list
-  - npm test
   - "./gradlew check"
 
 before_cache:
