@@ -36,6 +36,7 @@ public class Prod extends Jooby {
 				flyway.migrate();
 			});
 		});
+		use(new InitialData.Module());
 		controllers(this);
 	}
 

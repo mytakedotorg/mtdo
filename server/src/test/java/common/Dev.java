@@ -69,6 +69,12 @@ public class Dev extends Jooby {
 	}
 
 	public static void main(String[] args) {
-		Jooby.run(Dev.class, args);
+		Jooby.run(DevWithInitialData.class, args);
+	}
+
+	public static class DevWithInitialData extends Dev {
+		{
+			use(new InitialData.Module());
+		}
 	}
 }
