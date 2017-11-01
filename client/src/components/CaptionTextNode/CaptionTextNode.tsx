@@ -1,10 +1,6 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import {
-  FoundationNode,
-  convertTimestampToSeconds
-} from "../../utils/functions";
-import { CaptionWord } from "../../utils/databaseData";
+import { FoundationNode } from "../../utils/functions";
 
 interface DataAttributes {
   "data-char-offset": number;
