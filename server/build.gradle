@@ -1,0 +1,143 @@
+plugins {
+	id 'nu.studer.rocker' version '0.3.1'					// https://github.com/etiennestuder/gradle-rocker-plugin
+	id 'com.github.johnrengelman.shadow' version '2.0.1'	// http://imperceptiblethoughts.com/shadow/#
+}
+
+apply plugin: 'java'
+apply plugin: 'com.diffplug.gradle.spotless'
+spotless {
+	java {
+		target 'src/main/java/**/*.java', 'src/test/java/**/*.java'
+		licenseHeaderFile(rootProject.file('gradle/spotless.license.java'))
+		importOrder()
+		eclipse().configFile(rootProject.file('gradle/spotless.eclipseformat.xml'))
+		removeUnusedImports()
+	}
+}
+
+////////////////
+// flywayJooq //
+////////////////
+apply plugin: 'org.mytake.gradle.flywayjooq.embeddedpg'
+flywayJooqEmbeddedPg {
+	templateDb = file('build/pgTemplate')
+	migrations = file('src/main/resources/db/migration')
+	generator {
+		database.inputSchema = 'public'
+		generate.pojos = true
+		generate.fluentSetters = true
+		target.packageName = 'db'
+		target.directory = file('src/main/jooq-generated').absolutePath
+	}
+}
+sourceSets.main.java {
+	srcDir 'src/main/jooq-generated'
+	srcDir 'src/main/rocker'
+}
+
+////////////
+// rocker //
+////////////
+rockerVersion = '0.22.0'
+rocker {
+	main {
+		optimize = Env.isHerokuOrCI()
+		templateDir = file('src/main/rocker')
+		outputDir = file('src/main/rocker-generated')
+		classDir = file('src/test/resources')
+		// extendsClass = 'common.CustomRockerTemplate'
+		// extendsModelClass = 'common.CustomRockerModel'
+	}
+}
+// enforce tab indentation on rocker files
+spotless {
+	format 'rocker', {
+		target 'src/main/rocker/**/*.rocker.html'
+		indentWithTabs(4)
+	}
+}
+
+apply plugin: 'eclipse'
+tasks.eclipse.dependsOn([
+	tasks.cleanEclipse,
+	'jooq',
+	'compileRocker'
+])
+
+repositories { mavenCentral() }
+
+dependencies {
+	// jooby
+	compile 'org.jooby:jooby-netty:1.1.3'
+	compile 'org.jooby:jooby-rocker:1.1.3'
+	compile 'org.jooby:jooby-jooq:1.1.3'
+	compile 'org.jooby:jooby-commons-email:1.1.3'
+	compile 'org.apache.commons:commons-email:1.5' // commons-email has a newer version now
+
+	// jooq (version is set by jooq DSL)
+	compile 'org.jooq:jooq'
+
+	// db connector for postgres and h2
+	compile 'org.postgresql:postgresql:42.1.4'
+	jooqRuntime 'org.postgresql:postgresql:42.1.4'
+
+	// flyway
+	compile 'org.flywaydb:flyway-core:4.2.0'
+
+	// common libs
+	compile 'commons-validator:commons-validator:1.6'
+	compile 'com.diffplug.durian:durian-core:1.2.0'
+
+	// code quality annotations, especially @Nullable
+	compileOnly 'com.google.code.findbugs:jsr305:3.0.0'
+	compileOnly 'com.google.errorprone:error_prone_annotations:2.1.1'
+
+	testCompile 'junit:junit:4.12'
+	testCompile 'org.assertj:assertj-core:3.8.0'
+	testCompile 'io.rest-assured:rest-assured:3.0.3'
+	testCompile 'com.icegreen:greenmail:1.5.5'					// http://www.icegreen.com/greenmail/
+	testCompile 'com.opentable.components:otj-pg-embedded:0.9.0'	// https://github.com/opentable/otj-pg-embedded
+	testCompile "com.fizzed:rocker-compiler:${rockerVersion}"		// required for hotreload
+
+	// dep for auth
+	compile 'com.auth0:java-jwt:3.2.0'
+}
+configurations.all {
+	exclude group: 'org.slf4j', module: 'slf4j-log4j12'
+}
+sourceSets {
+	test.compileClasspath += configurations.compileOnly
+	test.runtimeClasspath += configurations.compileOnly
+}
+
+//////////////
+// joobyRun //
+//////////////
+task runProd(type: JavaExec, dependsOn: classes) {
+	description = 'Run app in prod mode'
+	classpath = sourceSets.main.runtimeClasspath
+	main = 'common.Prod'
+	if (project.hasProperty('DATABASE_URL')) {
+		environment('DATABASE_URL', project.getProperty('DATABASE_URL'))
+	}
+	if (project.hasProperty('SPARKPOST_APIKEY')) {
+		environment('SPARKPOST_APIKEY', project.getProperty('SPARKPOST_APIKEY'))
+	}
+	args = [
+		'prod'
+	]
+}
+
+task runDev(type: JavaExec, dependsOn: classes) {
+	description = 'Run app in dev mode'
+	classpath = sourceSets.test.runtimeClasspath
+	main = 'common.Dev'
+	args = [
+		'dev'
+	]
+}
+
+/////////////
+// fat jar //
+/////////////
+shadowJar {}
