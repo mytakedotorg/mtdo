@@ -53,12 +53,12 @@ CREATE TABLE takepublished (
     title_slug      varchar(255) NOT NULL,
     blocks          jsonb NOT NULL,
     published_at    timestamp NOT NULL,
-    deleted_at      timestamp NOT NULL,
-    count_view      int NOT NULL,
-    count_like      int NOT NULL,
-    count_bookmark  int NOT NULL,
-    count_spam      int NOT NULL,
-    count_illegal   int NOT NULL
+    deleted_at      timestamp, --NULLABLE
+    count_view      int NOT NULL DEFAULT 0,
+    count_like      int NOT NULL DEFAULT 0,
+    count_bookmark  int NOT NULL DEFAULT 0,
+    count_spam      int NOT NULL DEFAULT 0,
+    count_illegal   int NOT NULL DEFAULT 0
 );
 
 CREATE TYPE reaction AS ENUM ('like', 'bookmark', 'spam', 'illegal');
