@@ -6,6 +6,8 @@
  */
 package common;
 
+import java.security.SecureRandom;
+import java.util.Random;
 import org.jooby.Jooby;
 
 /**
@@ -14,6 +16,9 @@ import org.jooby.Jooby;
  */
 public class Prod extends Jooby {
 	{
+		use((env, conf, binder) -> {
+			binder.bind(Random.class).toInstance(SecureRandom.getInstanceStrong());
+		});
 		common(this);
 		controllers(this);
 	}

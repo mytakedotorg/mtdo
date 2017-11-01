@@ -6,6 +6,7 @@
  */
 package common;
 
+import java.util.Random;
 import org.jooby.Jooby;
 
 /**
@@ -14,6 +15,10 @@ import org.jooby.Jooby;
  */
 public class Dev extends Jooby {
 	{
+		// random results in tests will be repeatable
+		use((env, conf, binder) -> {
+			binder.bind(Random.class).toInstance(new Random(0));
+		});
 		Prod.common(this);
 		Prod.controllers(this);
 	}
