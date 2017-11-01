@@ -13,6 +13,7 @@ import org.flywaydb.core.Flyway;
 import org.jooby.Jooby;
 import org.jooby.jooq.jOOQ;
 import org.jooby.mail.CommonsEmail;
+import org.jooby.rocker.Rockerby;
 
 /**
  * The app that we run in production.  See {@link Dev} in the test
@@ -43,6 +44,7 @@ public class Prod extends Jooby {
 
 	static void common(Jooby jooby) {
 		jooby.use(new CommonsEmail());
+		jooby.use(new Rockerby());
 	}
 
 	static void controllers(Jooby jooby) {

@@ -58,8 +58,7 @@ rocker {
 		templateDir = file('src/main/rocker')
 		outputDir = file('src/main/rocker-generated')
 		classDir = file('src/test/resources')
-		// extendsClass = 'common.CustomRockerTemplate'
-		// extendsModelClass = 'common.CustomRockerModel'
+		extendsModelClass = 'common.CustomRockerModel'
 	}
 }
 // enforce tab indentation on rocker files

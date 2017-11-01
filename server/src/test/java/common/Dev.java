@@ -7,6 +7,7 @@
 package common;
 
 import com.diffplug.common.base.Errors;
+import com.fizzed.rocker.runtime.RockerRuntime;
 import com.google.inject.Binder;
 import com.icegreen.greenmail.util.GreenMail;
 import com.icegreen.greenmail.util.ServerSetup;
@@ -35,6 +36,10 @@ public class Dev extends Jooby {
 		});
 		use(new DevTime.Module());
 		use(new GreenMailModule());
+		// disable hot reloading on CI, to make sure tests work in the prod environment
+		if (!System.getenv().containsKey("CI")) {
+			RockerRuntime.getInstance().setReloading(true);
+		}
 		Prod.common(this);
 		use(new EmbeddedPostgresModule());
 		use(new jOOQ());

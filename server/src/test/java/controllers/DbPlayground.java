@@ -12,10 +12,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import common.JoobyDevRule;
 import db.tables.pojos.Confirmaccountlink;
 import db.tables.records.ConfirmaccountlinkRecord;
-
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-
 import org.jooq.DSLContext;
 import org.jooq.Result;
 import org.junit.ClassRule;
