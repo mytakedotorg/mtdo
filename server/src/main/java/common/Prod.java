@@ -48,7 +48,7 @@ public class Prod extends Jooby {
 	}
 
 	static void controllers(Jooby jooby) {
-		// setup routes
+		jooby.use(new RedirectException.Module());
 	}
 
 	public static void main(String[] args) {
