@@ -8,6 +8,7 @@ script:
   - npm run deploy
   - npm run format-list
   - npm test
+  - "./gradlew check"
 
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
