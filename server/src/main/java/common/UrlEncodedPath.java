@@ -89,6 +89,6 @@ public class UrlEncodedPath {
 
 	/** We allow http for local dev connections, but reauire https for everything else. */
 	public static boolean isSecurable(Request req) {
-		return req.hostname().endsWith(".com");
+		return req.hostname().endsWith(".com") || req.hostname().endsWith(".org");
 	}
 }

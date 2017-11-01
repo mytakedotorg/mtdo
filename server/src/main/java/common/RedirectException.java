@@ -54,7 +54,7 @@ public class RedirectException extends RuntimeException {
 	}
 
 	/**
-	 * Redirects with status 404 to `/error` and shows the given
+	 * Redirects with status 400 to `/error` and shows the given
 	 * error message to the user.
 	 * 
 	 * Meant for when a request is inherently an error,
