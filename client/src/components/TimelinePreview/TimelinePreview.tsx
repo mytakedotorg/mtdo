@@ -96,16 +96,16 @@ export default class TimelinePreview extends React.Component<
   handleMouseUp = () => {
     if (window.getSelection && !this.state.textIsHighlighted) {
       // Pre IE9 will always be false
-      let selection: Selection = window.getSelection();
+      const selection: Selection = window.getSelection();
       if (selection.toString().length) {
         //Some text is selected
-        let range: Range = selection.getRangeAt(0);
+        const range: Range = selection.getRangeAt(0);
 
-        let simpleRanges = getSimpleRangesFromHTMLRange(
+        const simpleRanges = getSimpleRangesFromHTMLRange(
           range,
           ReactDOM.findDOMNode(this.document).childNodes
         );
-        let newNodes = highlightTextTwo(
+        const newNodes = highlightTextTwo(
           [...this.document.getDocumentNodes()],
           simpleRanges.charRange,
           this.handleSetClick
