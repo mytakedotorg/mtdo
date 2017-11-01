@@ -9,10 +9,9 @@ import {
   getFact,
   getNodesInRange,
   getHighlightedNodes,
+  getSimpleRangesFromHTMLRange,
   getStartRangeOffsetTop,
-  highlightText,
-  HighlightedText,
-  slugify
+  highlightTextTwo
 } from "../../utils/functions";
 import {
   DocumentFact,
@@ -102,26 +101,27 @@ export default class TimelinePreview extends React.Component<
         //Some text is selected
         let range: Range = selection.getRangeAt(0);
 
-        const highlightedText: HighlightedText = highlightText(
-          range, // HTML Range, not [number, number] as in props.range
-          this.document.getDocumentNodes(),
-          ReactDOM.findDOMNode(this.document).childNodes,
+        let simpleRanges = getSimpleRangesFromHTMLRange(
+          range,
+          ReactDOM.findDOMNode(this.document).childNodes
+        );
+        let newNodes = highlightTextTwo(
+          [...this.document.getDocumentNodes()],
+          simpleRanges.charRange,
           this.handleSetClick
         );
 
         const newHighlightedNodes = getNodesInRange(
-          highlightedText.newNodes,
-          highlightedText.viewRange
+          newNodes,
+          simpleRanges.viewRange
         );
 
         this.setState({
           highlightedNodes: newHighlightedNodes,
-          highlightedRange: highlightedText.highlightedCharacterRange,
-          viewRange: highlightedText.viewRange,
+          highlightedRange: simpleRanges.charRange,
+          viewRange: simpleRanges.viewRange,
           textIsHighlighted: true,
-          offsetTop: this.getScrollTop(
-            highlightedText.highlightedCharacterRange
-          )
+          offsetTop: this.getScrollTop(simpleRanges.charRange)
         });
       }
     }

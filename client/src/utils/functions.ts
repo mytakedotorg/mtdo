@@ -830,7 +830,7 @@ function getWordCount(selection: Selection): number {
   return wordCount;
 }
 
-function getCharRange(
+function getCharRangeFromVideoRange(
   videoId: string,
   timeRange: [number, number]
 ): [number, number] {
@@ -839,9 +839,9 @@ function getCharRange(
 
   const wordMap = getVideoCaptionWordMap(videoId);
   let charCount = 0;
-  let startCharIndex: number;
+  let startCharIndex: number = -1;
   let isStartSet = false;
-  let endCharIndex: number;
+  let endCharIndex: number = -1;
 
   for (const captionWord of wordMap) {
     if (captionWord.timestamp < startTime) {
@@ -860,24 +860,421 @@ function getCharRange(
     break;
   }
 
-  if (startCharIndex && endCharIndex) {
+  if (startCharIndex >= 0 && endCharIndex >= 0) {
     return [startCharIndex, endCharIndex];
   } else {
     throw "Index not found";
   }
 }
 
+function isCaptionNode(htmlRange: Range): boolean {
+  if (
+    htmlRange.startContainer.parentNode &&
+    (htmlRange.startContainer.parentNode as HTMLElement).className.indexOf(
+      "document__node"
+    ) >= 0
+  ) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+interface ClassNames {
+  rowIndex: string;
+  rowInnerIndex: string;
+  textIndex: string;
+}
+
+function getContainer(
+  nodes: NodeList,
+  containerIndex: number,
+  classNames: ClassNames
+): Node {
+  let rowIndex;
+  let firstNodeList = nodes;
+  for (let i = 0; i < firstNodeList.length; i++) {
+    for (let j = 0; j < firstNodeList[i].attributes.length; j++) {
+      if (
+        (firstNodeList[i] as HTMLElement).classList.contains(
+          classNames.rowIndex
+        )
+      ) {
+        rowIndex = i;
+        break;
+      }
+    }
+    if (rowIndex !== undefined) {
+      break;
+    }
+  }
+
+  let rowInnerIndex;
+  let secondNodeList;
+  if (rowIndex !== undefined) {
+    secondNodeList = firstNodeList[rowIndex].childNodes;
+    for (let i = 0; i < secondNodeList.length; i++) {
+      for (let j = 0; j < secondNodeList[i].attributes.length; j++) {
+        if (
+          (secondNodeList[i] as HTMLElement).classList.contains(
+            classNames.rowInnerIndex
+          )
+        ) {
+          rowInnerIndex = i;
+          break;
+        }
+      }
+      if (rowInnerIndex !== undefined) {
+        break;
+      }
+    }
+  } else {
+    throw "Couldn't find nodes in " + classNames.rowIndex;
+  }
+
+  let textIndex;
+  let thirdNodeList;
+  if (secondNodeList && rowInnerIndex !== undefined) {
+    thirdNodeList = secondNodeList[rowInnerIndex].childNodes;
+    for (let i = 0; i < thirdNodeList.length; i++) {
+      for (let j = 0; j < thirdNodeList[i].attributes.length; j++) {
+        if (
+          (thirdNodeList[i] as HTMLElement).classList.contains(
+            classNames.textIndex
+          )
+        ) {
+          textIndex = i;
+          break;
+        }
+      }
+      if (textIndex !== undefined) {
+        break;
+      }
+    }
+  } else {
+    throw "Couldn't find nodes in " + classNames.rowInnerIndex;
+  }
+
+  if (textIndex !== undefined) {
+    return firstNodeList[rowIndex].childNodes[rowInnerIndex].childNodes[
+      textIndex
+    ].childNodes[containerIndex];
+  } else {
+    throw "Couldn't find nodes in " + classNames.textIndex;
+  }
+}
+
+interface SimpleRanges {
+  charRange: [number, number];
+  wordRange: [number, number];
+  viewRange: [number, number];
+}
+
+function getSimpleRangesFromHTMLRange(
+  htmlRange: Range,
+  childNodes: NodeList
+): SimpleRanges {
+  const classNames: ClassNames = {
+    rowIndex: "document__row",
+    rowInnerIndex: "document__row-inner",
+    textIndex: "document__text"
+  };
+
+  let startChildNode: Node | null;
+  let endChildNode: Node | null;
+  const isCaption = isCaptionNode(htmlRange);
+  if (isCaption) {
+    if (
+      htmlRange.startContainer.parentNode &&
+      htmlRange.endContainer.parentNode
+    ) {
+      startChildNode = htmlRange.startContainer.parentNode.parentNode;
+      endChildNode = htmlRange.endContainer.parentNode.parentNode;
+    } else {
+      throw "Unexpcected HTML structure";
+    }
+  } else {
+    startChildNode = htmlRange.startContainer.parentNode;
+    endChildNode = htmlRange.endContainer.parentNode;
+  }
+
+  const startParentContainer = findAncestor(
+    htmlRange.startContainer,
+    classNames.textIndex
+  );
+
+  let indexOfStartContainer: number;
+  if (startParentContainer) {
+    indexOfStartContainer = Array.prototype.indexOf.call(
+      startParentContainer.childNodes, //Arrange siblings into an array
+      startChildNode
+    ); //Find indexOf current Node
+  } else {
+    throw "Couldn't find start container";
+  }
+
+  const endParentContainer = findAncestor(
+    htmlRange.endContainer,
+    classNames.textIndex
+  );
+
+  let indexOfEndContainer: number;
+  if (endParentContainer) {
+    indexOfEndContainer = Array.prototype.indexOf.call(
+      endParentContainer.childNodes, //Arrange siblings into an array
+      endChildNode
+    ); //Find indexOf current Node
+  } else {
+    throw "Couldn't find end container";
+  }
+
+  let startContainer = getContainer(
+    childNodes,
+    indexOfStartContainer,
+    classNames
+  );
+  let endContainer = getContainer(childNodes, indexOfEndContainer, classNames);
+
+  let wordCountBeforeSelection = 0;
+  let charCountBeforeSelection = 0;
+
+  if (isCaption) {
+    startContainer = startContainer.childNodes[0];
+    endContainer = endContainer.childNodes[0];
+
+    // Get word and char counts
+    if (startContainer.parentNode) {
+      let prevSib = startContainer.parentNode.previousSibling;
+      while (prevSib) {
+        const prevSibChild = prevSib.childNodes[0];
+        if (prevSibChild && prevSibChild.textContent) {
+          const text = prevSibChild.textContent;
+          wordCountBeforeSelection += text.split(" ").length;
+          charCountBeforeSelection += text.length;
+        } else {
+          throw "Unexpected HTML structure";
+        }
+        prevSib = prevSib.previousSibling;
+      }
+    } else {
+      throw "Unexpected HTML structure";
+    }
+  } else {
+    // Get word count
+    let prevSib = startContainer.previousSibling;
+    while (prevSib && prevSib.textContent) {
+      const text = prevSib.textContent;
+      wordCountBeforeSelection += text.split(" ").length;
+      charCountBeforeSelection += text.length;
+      prevSib = prevSib.previousSibling;
+    }
+  }
+
+  let wordStart: number;
+  let wordEnd: number;
+  let charStart: number;
+  let charEnd: number;
+  let viewStart: number;
+  let viewEnd: number;
+
+  if (startContainer.textContent) {
+    const textBeforeStart = startContainer.textContent.substring(
+      0,
+      htmlRange.startOffset
+    );
+    wordStart =
+      wordCountBeforeSelection + textBeforeStart.split(" ").length - 1;
+    charStart = charCountBeforeSelection + textBeforeStart.length;
+    viewStart = charCountBeforeSelection;
+  } else {
+    throw "Unexpected HTML structure";
+  }
+
+  if (startContainer === endContainer && endContainer.textContent) {
+    const textBeforeEnd = endContainer.textContent.substr(
+      0,
+      htmlRange.endOffset
+    );
+    wordEnd = wordCountBeforeSelection + textBeforeEnd.split(" ").length - 1;
+    charEnd = charCountBeforeSelection + textBeforeEnd.length;
+    viewEnd = charCountBeforeSelection + endContainer.textContent.length;
+
+    return {
+      charRange: [charStart, charEnd],
+      wordRange: [wordStart, wordEnd],
+      viewRange: [viewStart, viewEnd]
+    };
+  } else {
+    // Count words/chars where selection begins
+    const textOfStartContainer = startContainer.textContent;
+    wordCountBeforeSelection += textOfStartContainer.split(" ").length;
+    charCountBeforeSelection += textOfStartContainer.length;
+
+    // Count words/chars in the middle of the selection
+    for (
+      let index: number = indexOfStartContainer + 1;
+      index < indexOfEndContainer;
+      index++
+    ) {
+      if (startContainer.parentNode) {
+        const textOfMiddleContainer =
+          startContainer.parentNode.childNodes[index].textContent;
+        if (textOfMiddleContainer) {
+          wordCountBeforeSelection += textOfMiddleContainer.split(" ").length;
+          charCountBeforeSelection += textOfMiddleContainer.length;
+        }
+      } else {
+        throw "Unexpected HTML structure";
+      }
+    }
+
+    // Count words/chars at the end of the selection
+    const textOfEndContainer = endContainer.textContent;
+    if (textOfEndContainer) {
+      const textBeforeEnd = textOfEndContainer.substr(0, htmlRange.endOffset);
+      wordEnd = wordCountBeforeSelection + textBeforeEnd.split(" ").length - 1;
+      charEnd = charCountBeforeSelection + textBeforeEnd.length;
+      viewEnd = charCountBeforeSelection + textOfEndContainer.length;
+
+      return {
+        charRange: [charStart, charEnd],
+        wordRange: [wordStart, wordEnd],
+        viewRange: [viewStart, viewEnd]
+      };
+    } else {
+      throw "Unexpected HTML structure";
+    }
+  }
+}
+
+function highlightTextTwo(
+  nodes: FoundationNode[],
+  range: [number, number],
+  handleSetClick: () => void
+): FoundationNode[] {
+  const foundationClassName = "document__text--selected";
+  let charCount = 0;
+  const newNodes: FoundationNode[] = [];
+  let isFirstNodeWithHighlights = true;
+  let isFinished = false;
+  for (const node_1 of nodes) {
+    const node: FoundationNode = (Object as any).assign({}, node_1);
+    if (charCount + node.innerHTML.toString().length <= range[0]) {
+      charCount += node.innerHTML.toString().length;
+      newNodes.push(node);
+      continue;
+    }
+    if (isFirstNodeWithHighlights) {
+      if (charCount + node.innerHTML.toString().length <= range[1]) {
+        isFirstNodeWithHighlights = false;
+        const startOffset = range[0] - charCount;
+        charCount += node.innerHTML.toString().length;
+        const textBefore = node.innerHTML.toString().substring(0, startOffset);
+        const textContent = node.innerHTML.toString().substring(startOffset);
+        // First span
+        const newSpan: React.ReactNode = React.createElement(
+          "span",
+          {
+            className: foundationClassName,
+            key: "someKey",
+            onClick: () => handleSetClick()
+          },
+          textContent
+        );
+
+        const newNode = node;
+        newNode.innerHTML = [textBefore, newSpan];
+        newNodes.push(node);
+        continue;
+      } else {
+        isFirstNodeWithHighlights = false;
+        // A single node contains the full range
+        const startOffset = range[0] - charCount;
+        const endOffset = range[1] - charCount;
+        charCount += node.innerHTML.toString().length;
+        const textBefore = node.innerHTML.toString().substring(0, startOffset);
+        const textContent = node.innerHTML
+          .toString()
+          .substring(startOffset, endOffset);
+        const textAfter = node.innerHTML.toString().substring(endOffset);
+
+        const newSpan: React.ReactNode = React.createElement(
+          "span",
+          {
+            className: foundationClassName,
+            key: "someKey",
+            onClick: () => handleSetClick()
+          },
+          textContent
+        );
+
+        const newNode = node;
+        newNode.innerHTML = [textBefore, newSpan, textAfter];
+        newNodes.push(node);
+        isFinished = true;
+        continue;
+      }
+    }
+    if (
+      charCount + node.innerHTML.toString().length <= range[1] &&
+      !isFinished
+    ) {
+      charCount += node.innerHTML.toString().length;
+
+      const newSpan: React.ReactNode = React.createElement(
+        "span",
+        {
+          className: foundationClassName,
+          key: "someKey",
+          onClick: () => handleSetClick()
+        },
+        node.innerHTML
+      );
+
+      const newNode = node;
+      newNode.innerHTML = [newSpan];
+      newNodes.push(node);
+      continue;
+    } else if (!isFinished) {
+      const endOffset = range[1] - charCount;
+      const textContent = node.innerHTML.toString().substring(0, endOffset);
+      const textAfter = node.innerHTML.toString().substring(endOffset);
+
+      const newSpan: React.ReactNode = React.createElement(
+        "span",
+        {
+          className: foundationClassName,
+          key: "someKey",
+          onClick: () => handleSetClick()
+        },
+        textContent
+      );
+
+      const newNode = node;
+      newNode.innerHTML = [newSpan, textAfter];
+      newNodes.push(node);
+      isFinished = true;
+    } else {
+      newNodes.push(node);
+    }
+  }
+  return newNodes;
+}
+
 export {
   clearDefaultDOMSelection,
   convertTimestampToSeconds,
   getCaptionNodeArray,
+  getCharRangeFromVideoRange,
   getFact,
+  getSimpleRangesFromHTMLRange,
   getStartRangeOffsetTop,
   getHighlightedNodes,
   getNodesInRange,
   getNodeArray,
   getWordCount,
   highlightText,
+  highlightTextTwo,
   HighlightedText,
   slugify,
   validators
