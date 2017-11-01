@@ -4,7 +4,7 @@ plugins { id 'com.diffplug.gradle.spotless' version '3.6.0' // https://github.co
 
 spotless {
 	groovyGradle {
-		target 'build.gradle', 'client/build.gradle'
+		target 'build.gradle', 'buildSrc/build.gradle', 'client/build.gradle'
 		greclipse().configFile(
 				'gradle/spotless.eclipseformat.xml',
 				'gradle/spotless.greclipse.properties'
