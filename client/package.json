@@ -43,6 +43,7 @@
     "del": "^3.0.0",
     "enzyme": "^2.9.1",
     "file-loader": "^0.11.2",
+    "fs": "0.0.1-security",
     "gulp": "^3.9.1",
     "gulp-autoprefixer": "^4.0.0",
     "gulp-concat": "^2.6.1",
@@ -70,14 +71,16 @@
   "jest": {
     "transform": {
       "^.+\\.(ts|tsx)$": "./node_modules/ts-jest/preprocessor.js",
-      "^.+\\.foundation\\.html$": "./test/transformers/foundationTransformer.js"
+      "^.+\\.foundation\\.html$": "./test/transformers/foundationTransformer.js",
+      "\\.vtt$": "./test/transformers/vttTransformer.js"
     },
     "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
     "moduleFileExtensions": [
       "html",
       "ts",
       "tsx",
-      "js"
+      "js",
+      "vtt"
     ],
     "verbose": true
   }
