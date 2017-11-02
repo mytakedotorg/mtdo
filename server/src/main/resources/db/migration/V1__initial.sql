@@ -1,8 +1,8 @@
 --- Account management
 CREATE TABLE account (
     id              serial PRIMARY KEY,
-    username        varchar(60) NOT NULL,
-    email           varchar(513) NOT NULL,
+    username        varchar(60) NOT NULL UNIQUE,
+    email           varchar(513) NOT NULL UNIQUE,
     name            varchar(255), --NULLABLE
     created_at      timestamp NOT NULL,
     created_ip      inet NOT NULL,
@@ -53,13 +53,17 @@ CREATE TABLE takepublished (
     title_slug      varchar(255) NOT NULL,
     blocks          jsonb NOT NULL,
     published_at    timestamp NOT NULL,
+    published_ip    inet NOT NULL,
     deleted_at      timestamp, --NULLABLE
+    deleted_ip      inet, --NULLABLE
     count_view      int NOT NULL DEFAULT 0,
     count_like      int NOT NULL DEFAULT 0,
     count_bookmark  int NOT NULL DEFAULT 0,
     count_spam      int NOT NULL DEFAULT 0,
     count_illegal   int NOT NULL DEFAULT 0
 );
+-- /user/title must be unique, and fast to lookup
+CREATE UNIQUE INDEX takepublished_title_user ON takepublished (title_slug, user_id);
 
 CREATE TYPE reaction AS ENUM ('like', 'bookmark', 'spam', 'illegal');
 CREATE TABLE takereaction (
