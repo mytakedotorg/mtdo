@@ -1,0 +1,71 @@
+@args (String title, String description, RockerBody content)
+
+<!doctype html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>@title</title>
+<meta name="description" content="@description | MyTake.org">
+<meta name="author" content="MyTake.org">
+
+<link rel="stylesheet" href="/all.css">
+<link href="https://fonts.googleapis.com/css?family=Merriweather:400,400i,700|Source+Sans+Pro:300,400,700" rel="stylesheet">
+<script src="https://use.fontawesome.com/be03d6dcba.js"></script>
+<!--[if lt IE 9]>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
+<![endif]-->
+</head>
+
+<body>
+<header class="header" role="banner">
+	<a class="header__skip-link" href="#app" tabindex="1">Skip to main content</a>
+	<div class="header__top">
+	<em class="header__logo"><a class="header__logo-link" href="/">MyTake.org</a></em>
+	<div class="header__icon-list header__icon-list--top">
+		<a class="header__icon header__icon--github" href="https://github.com/mytake/mytake"><i class="fa fa-github" aria-hidden="true"></i></a>
+	</div>
+	</div>
+	<div class="header__nav">
+	<a href="javascript:void(0)" class="header__nav-toggle">
+		<div class="header__nav-icon">
+		<i class="fa fa-bars" aria-hidden="true"></i>
+		</div>
+	</a>
+	<nav class="nav collapse" role="navigation">
+		<ul class="nav__list nav__list--top">
+		@* Be sure to change SASS variable if you add or remove nav links (cd assets && grep -Rn nav-items: *) *@
+		<li class="nav__list-item nav__list-item--top"><a class="nav__link nav__link--top" href="/foundation/" tabindex="2"><span class="nav__link-text nav__link-text--top">Explore the Foundation</span></a></li>
+		<li class="nav__list-item nav__list-item--top"><a class="nav__link nav__link--top" href="/new-take/" tabindex="3"><span class="nav__link-text nav__link-text--top">Give your Take</span></a></li>
+		<li class="nav__list-item nav__list-item--top"><a class="nav__link nav__link--top" href="/about/" tabindex="4"><span class="nav__link-text nav__link-text--top">About us</span></a></li>
+		</ul>
+	</nav>
+	</div>
+	<div class="header__banner">
+	<div class="header__icon-list header__icon-list--bottom">
+		<span class="header__icon header__icon--triangle"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i></span>
+	</div>
+	<div class="header__banner-links">
+		<p class="header__text">Under construction</p>
+		<p class="header__text"><a class="header__link" href="https://github.com/mytake/mytake/blob/master/WORK_IN_PROGRESS.md">How to use</a></p>
+		<p class="header__text"><a class="header__link" href="https://github.com/mytake/mytake/blob/master/CONTRIBUTING.md">Contribute</a></p>
+	</div>
+	</div>
+</header>
+
+@content
+
+<footer class="footer">
+<hr class="footer__hr" />
+	<ul class="nav__list nav__list--bottom">
+	<li class="nav__list-item nav__list-item--bottom"><a class="nav__link nav__link--bottom" href="/foundation/" tabindex="5"><span class="nav__link-text nav__link-text--bottom">Explore the Foundation</span></a></li>
+	<li class="nav__list-item nav__list-item--bottom"><a class="nav__link nav__link--bottom" href="/new-take/" tabindex="6"><span class="nav__link-text nav__link-text--bottom">Give your Take</span></a></li>
+	<li class="nav__list-item nav__list-item--bottom"><a class="nav__link nav__link--bottom" href="/about/" tabindex="7"><span class="nav__link-text nav__link-text--bottom">About us</span></a></li>
+	</ul>
+</footer>
+<script src="/window.bundle.js"></script>
+</body>
+</html>

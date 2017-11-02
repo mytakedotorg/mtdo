@@ -6,6 +6,7 @@
  */
 package common;
 
+import controllers.Takes;
 import java.security.SecureRandom;
 import java.util.Random;
 import javax.sql.DataSource;
@@ -49,6 +50,7 @@ public class Prod extends Jooby {
 
 	static void controllers(Jooby jooby) {
 		jooby.use(new RedirectException.Module());
+		jooby.use(new Takes());
 	}
 
 	public static void main(String[] args) {
