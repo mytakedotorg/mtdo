@@ -13,11 +13,12 @@ public class CreateAccountFormTest {
 	@Test
 	public void allFieldsBroken() {
 		MetaFormValidationAssert.assertThat(CreateAccountForm.class,
-				"username", "a",
-				"email", "nope")
+				"createuser", "a",
+				"createemail", "nope",
+				"redirect", "")
 				.hasFieldErrors(
-						"username", "Must be at least 5 characters long",
-						"email", "Invalid email");
+						"createuser", "Must be at least 5 characters long",
+						"createemail", "Invalid email");
 	}
 
 	@Test
@@ -35,12 +36,13 @@ public class CreateAccountFormTest {
 
 	private void usernameCase(String username, String error) {
 		MetaFormValidationAssert assertion = MetaFormValidationAssert.assertThat(CreateAccountForm.class,
-				"username", username,
-				"email", "name@email.com");
+				"createuser", username,
+				"createemail", "name@email.com",
+				"redirect", "");
 		if (error == null) {
 			assertion.noError();
 		} else {
-			assertion.hasFieldErrors("username", error);
+			assertion.hasFieldErrors("createuser", error);
 		}
 	}
 }
