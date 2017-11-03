@@ -70,11 +70,7 @@ public class LoginForm extends MetaFormDef.HandleValid {
 				login.setAccountId(account.getId());
 				login.insert();
 
-				UrlEncodedPath path = UrlEncodedPath.absolutePath(req, AuthModule.URL_confirm_login + code);
-				String redirect = validation.parsed(REDIRECT);
-				if (!redirect.isEmpty()) {
-					path.param(REDIRECT, redirect);
-				}
+				UrlEncodedPath path = EmailConfirmationForm.generateLink(req, validation, AuthModule.URL_confirm_login + code);
 				path.param(LOGIN_USERNAME, username);
 
 				String html = views.Auth.emailLogin.template(username, path.build()).renderToString();
@@ -100,16 +96,9 @@ public class LoginForm extends MetaFormDef.HandleValid {
 			LoginlinkRecord link = dsl.selectFrom(LOGINLINK)
 					.where(LOGINLINK.CODE.eq(code))
 					.fetchOne();
-			if (link == null
-					|| time.nowTimestamp().after(link.getExpiresAt())
-					|| !link.getRequestorIp().equals(req.ip())) {
-				MetaFormValidation validation = MetaFormValidation.empty(CreateAccountForm.class)
-						.initAllIfPresent(req);
-				if (link == null || time.nowTimestamp().after(link.getExpiresAt())) {
-					validation.errorForForm("This link expired");
-				} else if (!link.getRequestorIp().equals(req.ip())) {
-					validation.errorForForm("Make sure to open the link from the same computer you requested it from");
-				}
+			MetaFormValidation validation = EmailConfirmationForm.validate(LoginForm.class, req, link,
+					LoginlinkRecord::getExpiresAt, LoginlinkRecord::getRequestorIp);
+			if (validation != null) {
 				// show a "try again" login form
 				rsp.send(views.Auth.loginUnknown.template(validation.markup(AuthModule.URL_login)));
 			} else {

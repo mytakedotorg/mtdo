@@ -133,11 +133,7 @@ public class CreateAccountForm extends MetaFormDef.HandleValid {
 					confirm.insert();
 
 					// send a confirmation email
-					UrlEncodedPath path = UrlEncodedPath.absolutePath(req, AuthModule.URL_confirm_account + code);
-					String redirect = validation.parsed(REDIRECT);
-					if (!redirect.isEmpty()) {
-						path.param(REDIRECT, redirect);
-					}
+					UrlEncodedPath path = EmailConfirmationForm.generateLink(req, validation, AuthModule.URL_confirm_account + code);
 					path.param(CREATE_USERNAME, username);
 					path.param(CREATE_EMAIL, email);
 
@@ -157,9 +153,8 @@ public class CreateAccountForm extends MetaFormDef.HandleValid {
 		return false;
 	}
 
-	private static String getNullToEmpty(MetaFormValidation validation, MetaField<String> field) {
-		String value = validation.init(field);
-		return value == null ? "" : value;
+	private static String getNullToEmpty(Request req, MetaField<String> field) {
+		return req.param(field.name()).value("");
 	}
 
 	public static void confirm(String code, Request req, Response rsp) throws Throwable {
@@ -170,24 +165,16 @@ public class CreateAccountForm extends MetaFormDef.HandleValid {
 		// all of the above needs to be a transaction to ensure that the
 		// account insertion won't hit uniqueness constraints on username
 		// and email
+		Time time = req.require(Time.class);
 		try (DSLContext dsl = req.require(DSLContext.class)) {
 			ConfirmaccountlinkRecord link = dsl.selectFrom(CONFIRMACCOUNTLINK)
 					.where(CONFIRMACCOUNTLINK.CODE.eq(code))
 					.fetchOne();
-			Time time = req.require(Time.class);
-			if (link == null
-					|| time.nowTimestamp().after(link.getExpiresAt())
-					|| !link.getRequestorIp().equals(req.ip())) {
-				MetaFormValidation validation = MetaFormValidation.empty(CreateAccountForm.class)
-						.initAllIfPresent(req);
-				if (link == null || time.nowTimestamp().after(link.getExpiresAt())) {
-					validation.errorForForm("This link expired");
-				} else if (!link.getRequestorIp().equals(req.ip())) {
-					validation.errorForForm("Make sure to open the link from the same computer you requested it from");
-				}
-
-				String username = getNullToEmpty(validation, CREATE_USERNAME);
-				String email = getNullToEmpty(validation, CREATE_EMAIL);
+			MetaFormValidation validation = EmailConfirmationForm.validate(CreateAccountForm.class, req, link,
+					ConfirmaccountlinkRecord::getExpiresAt, ConfirmaccountlinkRecord::getRequestorIp);
+			if (validation != null) {
+				String username = getNullToEmpty(req, CREATE_USERNAME);
+				String email = getNullToEmpty(req, CREATE_EMAIL);
 				validateUsernameEmail(username, email, dsl, validation);
 				rsp.send(views.Auth.confirmUnknown.template(validation.markup(AuthModule.URL_login)));
 			} else {
