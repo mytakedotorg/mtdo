@@ -1,12 +1,23 @@
+@import auth.AuthModule
+@import forms.api.FormMarkup
+
+@args(FormMarkup createAccount)
+
 @views.base.template("Account confirmation unknown", "Account confirmation unknown") -> {
 
-<p>
-Sorry, this confirmation link is unknown.  It might be because:
-</p>
-<ul>
-<li>it expired - it was only good for @auth.CreateAccountForm.CONFIRM_WITHIN_MINUTES minutes, <a href="@auth.AuthModule.URL_login">go here</a> to try again</li>
-<li>you already clicked it, in which case you can <a href="@auth.AuthModule.URL_login">go here</a> to login</li>
-<li>somebody else confirmed your username before you did, in which case you can <a href="@auth.AuthModule.URL_login">go here</a> to create an account</li>
-</ul>
+	<section id="create">
+		<div class="heading-line">
+			<h2>Create account</h2>
+		</div>
+		<div class="content-bg">
+			@createAccount.formError()
+			@createAccount.openForm("id", "create")
+				@createAccount.field(AuthModule.CREATE_USERNAME).label("Username").errorSpan().input("text", "class", "form-control")
+				@createAccount.field(AuthModule.CREATE_EMAIL).label("Email").errorSpan().input("email", "class", "form-control")
+				@createAccount.field(AuthModule.REDIRECT).input("hidden")
+				<input type="submit" class="btn btn-success" value="Try again" />
+			@createAccount.closeForm()
+		</div>
+	</section>
 
 }

@@ -67,6 +67,11 @@ public class MetaFormValidation extends FormValidation<MetaMap> {
 		return this;
 	}
 
+	public <R> R init(MetaField<R> field) {
+		String value = init(field.name());
+		return field.parser().convert(value);
+	}
+
 	@SuppressWarnings("unchecked")
 	public final MetaFormValidation initFromGettersOf(Object value) {
 		MetaMap metaMap = MetaMap.buildFrom(value, def());
@@ -100,6 +105,13 @@ public class MetaFormValidation extends FormValidation<MetaMap> {
 
 	public <T> T parsed(MetaField<T> field) {
 		return parsedValue().get(field);
+	}
+
+	public MetaFormValidation initAllIfPresent(Request req) {
+		for (MetaField<?> field : def().fields()) {
+			initIfPresent(req, field);
+		}
+		return this;
 	}
 
 	@SuppressWarnings("unchecked")

@@ -100,7 +100,7 @@ public class LoginForm extends MetaFormDef.HandleValid {
 					|| time.nowTimestamp().after(link.getExpiresAt())
 					|| !link.getRequestorIp().equals(req.ip())) {
 				MetaFormValidation validation = MetaFormValidation.empty(CreateAccountForm.class)
-						.initIfPresent(req, LOGIN_USERNAME, REDIRECT);
+						.initAllIfPresent(req);
 				if (link == null || time.nowTimestamp().after(link.getExpiresAt())) {
 					validation.errorForForm("This link expired");
 				} else if (!link.getRequestorIp().equals(req.ip())) {

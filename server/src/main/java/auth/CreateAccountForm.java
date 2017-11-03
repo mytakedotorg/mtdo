@@ -93,6 +93,22 @@ public class CreateAccountForm extends MetaFormDef.HandleValid {
 		Validator.regexMustMatch(LOWERCASE_AND_DASH, msg_ALLOWED_CHARACTERS).validate(validation, field);
 	}
 
+	static void validateUsernameEmail(String username, String email, DSLContext dsl, MetaFormValidation validation) {
+		Integer existingAccountId = dsl.selectFrom(ACCOUNT)
+				.where(ACCOUNT.USERNAME.eq(username))
+				.fetchOne(ACCOUNT.ID);
+		if (existingAccountId != null) {
+			validation.errorForField(CREATE_USERNAME, msg_USERNAME_NOT_AVAILABLE);
+		}
+
+		Integer accountId = dsl.selectFrom(ACCOUNT)
+				.where(ACCOUNT.EMAIL.eq(email))
+				.fetchOne(ACCOUNT.ID);
+		if (accountId != null) {
+			validation.errorForField(CREATE_EMAIL, "This email is already used by another account");
+		}
+	}
+
 	@Override
 	public boolean handleSuccessful(MetaFormValidation validation, Request req, Response rsp) throws Throwable {
 		String username = Text.lowercase(validation.parsed(CREATE_USERNAME));
@@ -101,20 +117,7 @@ public class CreateAccountForm extends MetaFormDef.HandleValid {
 			validation.errorForField(msg_USERNAME_NOT_AVAILABLE);
 		} else {
 			try (DSLContext dsl = req.require(DSLContext.class)) {
-				Integer existingAccountId = dsl.selectFrom(ACCOUNT)
-						.where(ACCOUNT.USERNAME.eq(username))
-						.fetchOne(ACCOUNT.ID);
-				if (existingAccountId != null) {
-					validation.errorForField(CREATE_USERNAME, msg_USERNAME_NOT_AVAILABLE);
-				}
-
-				Integer accountId = dsl.selectFrom(ACCOUNT)
-						.where(ACCOUNT.EMAIL.eq(email))
-						.fetchOne(ACCOUNT.ID);
-				if (accountId != null) {
-					validation.errorForField(CREATE_EMAIL, "This email is already used by another account");
-				}
-
+				validateUsernameEmail(username, email, dsl, validation);
 				if (validation.noErrors()) {
 					String code = RandomString.get(req.require(Random.class), VarChars.CODE);
 
@@ -151,6 +154,11 @@ public class CreateAccountForm extends MetaFormDef.HandleValid {
 		return false;
 	}
 
+	private static String getNullToEmpty(MetaFormValidation validation, MetaField<String> field) {
+		String value = validation.init(field);
+		return value == null ? "" : value;
+	}
+
 	public static void confirm(String code, Request req, Response rsp) throws Throwable {
 		// might be a race condition here, depending on issue #97
 		//    - fetch code
@@ -160,48 +168,46 @@ public class CreateAccountForm extends MetaFormDef.HandleValid {
 		// account insertion won't hit uniqueness constraints on username
 		// and email
 		try (DSLContext dsl = req.require(DSLContext.class)) {
-			ConfirmaccountlinkRecord record = dsl.selectFrom(CONFIRMACCOUNTLINK)
+			ConfirmaccountlinkRecord link = dsl.selectFrom(CONFIRMACCOUNTLINK)
 					.where(CONFIRMACCOUNTLINK.CODE.eq(code))
 					.fetchOne();
-			if (record == null) {
-				// - maybe expired a long time ago and got cleaned
-				// - maybe already clicked
-				// - maybe somebody else sniped the username
-				rsp.send(views.Auth.confirmUnknown.template());
-			} else {
-				Time time = req.require(Time.class);
-				if (time.nowTimestamp().after(record.getExpiresAt())) {
-					// it expired, but the username and email are still available,
-					// so we'll prepopulate the link
-					String createAccountLink = UrlEncodedPath.path(AuthModule.URL_login)
-							.param(CREATE_USERNAME, record.getEmail())
-							.param(CREATE_EMAIL, record.getUsername())
-							.paramIfPresent(REDIRECT, req)
-							.build();
-					record.delete();
-					rsp.send(views.Auth.confirmExpired.template(createAccountLink));
-				} else {
-					AccountRecord account = dsl.newRecord(ACCOUNT);
-					account.setUsername(record.getUsername());
-					account.setEmail(record.getEmail());
-					account.setCreatedAt(time.nowTimestamp());
-					account.setCreatedIp(req.ip());
-					account.setUpdatedAt(time.nowTimestamp());
-					account.setUpdatedIp(req.ip());
-					account.setLastSeenAt(time.nowTimestamp());
-					account.setUpdatedIp(req.ip());
-					account.setLastEmailedAt(time.nowTimestamp());
-					record.insert();
-
-					// delete all other requests from that email and username
-					dsl.deleteFrom(CONFIRMACCOUNTLINK)
-							.where(CONFIRMACCOUNTLINK.EMAIL.eq(record.getEmail()))
-							.or(CONFIRMACCOUNTLINK.USERNAME.eq(record.getUsername()))
-							.execute();
-
-					AuthUser.login(account.into(Account.class), req, rsp);
-					rsp.send(views.Auth.confirmSuccess.template(account.getUsername()));
+			Time time = req.require(Time.class);
+			if (link == null
+					|| time.nowTimestamp().after(link.getExpiresAt())
+					|| !link.getRequestorIp().equals(req.ip())) {
+				MetaFormValidation validation = MetaFormValidation.empty(CreateAccountForm.class)
+						.initAllIfPresent(req);
+				if (link == null || time.nowTimestamp().after(link.getExpiresAt())) {
+					validation.errorForForm("This link expired");
+				} else if (!link.getRequestorIp().equals(req.ip())) {
+					validation.errorForForm("Make sure to open the link from the same computer you requested it from");
 				}
+
+				String username = getNullToEmpty(validation, CREATE_USERNAME);
+				String email = getNullToEmpty(validation, CREATE_EMAIL);
+				validateUsernameEmail(username, email, dsl, validation);
+				rsp.send(views.Auth.confirmUnknown.template(validation.markup(AuthModule.URL_login)));
+			} else {
+				AccountRecord account = dsl.newRecord(ACCOUNT);
+				account.setUsername(link.getUsername());
+				account.setEmail(link.getEmail());
+				account.setCreatedAt(time.nowTimestamp());
+				account.setCreatedIp(req.ip());
+				account.setUpdatedAt(time.nowTimestamp());
+				account.setUpdatedIp(req.ip());
+				account.setLastSeenAt(time.nowTimestamp());
+				account.setUpdatedIp(req.ip());
+				account.setLastEmailedAt(time.nowTimestamp());
+				link.insert();
+
+				// delete all other requests from that email and username
+				dsl.deleteFrom(CONFIRMACCOUNTLINK)
+						.where(CONFIRMACCOUNTLINK.EMAIL.eq(link.getEmail()))
+						.or(CONFIRMACCOUNTLINK.USERNAME.eq(link.getUsername()))
+						.execute();
+
+				AuthUser.login(account.into(Account.class), req, rsp);
+				rsp.send(views.Auth.confirmSuccess.template(account.getUsername()));
 			}
 		}
 	}
