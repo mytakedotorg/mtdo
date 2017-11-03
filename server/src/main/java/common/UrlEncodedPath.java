@@ -19,6 +19,17 @@ public class UrlEncodedPath {
 	private String path;
 	private LinkedHashMap<String, String> query = new LinkedHashMap<>();
 
+	/** Creates a UrlEncodedPath with the same host as the given request. */
+	public static UrlEncodedPath absolutePath(Request req, String path) {
+		String root;
+		if (isSecurable(req)) {
+			root = "https://" + req.hostname();
+		} else {
+			root = "http://" + req.hostname() + ":" + req.port();
+		}
+		return path(root + path);
+	}
+
 	public static UrlEncodedPath path(String path) {
 		UrlEncodedPath encoded = new UrlEncodedPath();
 		encoded.path = path;
@@ -75,15 +86,6 @@ public class UrlEncodedPath {
 				}
 			}
 			return builder.toString();
-		}
-	}
-
-	/** Returns something like `http://localhost:9000` or `https://www.diffplug.com` as appropriate. */
-	public static String httpDomain(Request req) {
-		if (isSecurable(req)) {
-			return "https://" + req.hostname();
-		} else {
-			return "http://" + req.hostname() + ":" + req.port();
 		}
 	}
 
