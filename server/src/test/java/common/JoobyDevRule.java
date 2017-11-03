@@ -6,8 +6,13 @@
  */
 package common;
 
+import static db.Tables.ACCOUNT;
+
+import auth.AuthModuleHarness;
 import com.diffplug.common.base.Throwing;
 import com.icegreen.greenmail.util.GreenMail;
+import db.tables.pojos.Account;
+import io.restassured.specification.RequestSpecification;
 import javax.mail.internet.MimeMessage;
 import org.assertj.core.api.Assertions;
 import org.jooby.Jooby;
@@ -83,5 +88,11 @@ public class JoobyDevRule extends ExternalResource {
 
 	public Jooby app() {
 		return app;
+	}
+
+	/** Returns a request with cookies set for the given username. */
+	public RequestSpecification givenUser(String username) {
+		Account account = fetchRecord(ACCOUNT, ACCOUNT.USERNAME, username).into(Account.class);
+		return AuthModuleHarness.givenUser(app, account);
 	}
 }
