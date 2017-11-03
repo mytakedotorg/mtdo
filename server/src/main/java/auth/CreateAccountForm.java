@@ -17,6 +17,8 @@ import common.Text;
 import common.Time;
 import common.UrlEncodedPath;
 import db.VarChars;
+import db.tables.Account;
+import db.tables.records.AccountRecord;
 import db.tables.records.ConfirmaccountlinkRecord;
 import forms.meta.MetaField;
 import forms.meta.MetaFormDef;
@@ -150,37 +152,56 @@ public class CreateAccountForm extends MetaFormDef.HandleValid {
 	}
 
 	public static void confirm(String code, Request req, Response rsp) throws Throwable {
+		// might be a race condition here, depending on issue #97
+		//    - fetch code
+		//    - create account
+		//    - delete all confirmaccounts for that username and email
+		// all of the above needs to be a transaction to ensure that the
+		// account insertion won't hit uniqueness constraints on username
+		// and email
 		try (DSLContext dsl = req.require(DSLContext.class)) {
-			//			ProtouserRecord protouser = dsl.selectFrom(PROTOUSER)
-			//					.where(PROTOUSER.CODE.eq(code))
-			//					.fetchOne();
-			//			if (protouser == null) {
-			//				rsp.send(views.Auth.unknownRegistration.template());
-			//			} else {
-			//				// create the new user
-			//				DpUserRecord user = new DpUserRecord();
-			//				user.setEmail(protouser.getEmail());
-			//				user.setIssuper(false);
-			//				user.setIsbeta(false);
-			//				user.setPwhash(protouser.getPassword());
-			//				user.attach(dsl.configuration());
-			//				user.insert();
-			//				DDpUser userModel = user.into(DDpUser.class);
-			//
-			//				UserinfoRecord info = new UserinfoRecord();
-			//				info.setUserId(user.getId());
-			//				info.setFirstname(protouser.getFirstname());
-			//				info.setLastname(protouser.getLastname());
-			//				info.attach(dsl.configuration());
-			//				info.insert();
-			//
-			//				// and delete the proto
-			//				protouser.delete();
-			//
-			//				// log them in and let them know they're logged in
-			//				AuthUser.login(userModel, req, rsp);
-			//				rsp.send(views.Auth.confirmed.template(protouser.getFirstname()));
-			//			}
+			ConfirmaccountlinkRecord record = dsl.selectFrom(CONFIRMACCOUNTLINK)
+					.where(CONFIRMACCOUNTLINK.CODE.eq(code))
+					.fetchOne();
+			if (record == null) {
+				// - maybe expired a long time ago and got cleaned
+				// - maybe already clicked
+				// - maybe somebody else sniped the username
+				rsp.send(views.Auth.confirmUnknown.template());
+			} else {
+				Time time = req.require(Time.class);
+				if (time.nowTimestamp().after(record.getExpiresAt())) {
+					// it expired, but the username and email are still available,
+					// so we'll prepopulate the link
+					String createAccountLink = UrlEncodedPath.path(AuthModule.URL_login)
+							.param(AuthModule.LOGIN_PARAM_EMAIL, record.getEmail())
+							.param(AuthModule.LOGIN_PARAM_USERNAME, record.getUsername())
+							.build();
+					record.delete();
+					rsp.send(views.Auth.confirmExpired.template(createAccountLink));
+				} else {
+					AccountRecord account = dsl.newRecord(ACCOUNT);
+					account.setUsername(record.getUsername());
+					account.setEmail(record.getEmail());
+					account.setCreatedAt(time.nowTimestamp());
+					account.setCreatedIp(req.ip());
+					account.setUpdatedAt(time.nowTimestamp());
+					account.setUpdatedIp(req.ip());
+					account.setLastSeenAt(time.nowTimestamp());
+					account.setUpdatedIp(req.ip());
+					account.setLastEmailedAt(time.nowTimestamp());
+					record.insert();
+
+					// delete all other requests from that email and username
+					dsl.deleteFrom(CONFIRMACCOUNTLINK)
+							.where(CONFIRMACCOUNTLINK.EMAIL.eq(record.getEmail()))
+							.or(CONFIRMACCOUNTLINK.USERNAME.eq(record.getUsername()))
+							.execute();
+
+					AuthUser.login(account.into(Account.class), req, rsp);
+					rsp.send(views.Auth.confirmSuccess.template(account.getUsername()));
+				}
+			}
 		}
 	}
 }

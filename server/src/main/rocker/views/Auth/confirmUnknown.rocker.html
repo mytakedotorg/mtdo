@@ -1,0 +1,12 @@
+@views.base.template("Account confirmation unknown", "Account confirmation unknown") -> {
+
+<p>
+Sorry, this confirmation link is unknown.  It might be because:
+</p>
+<ul>
+<li>it expired - it was only good for @auth.CreateAccountForm.CONFIRM_WITHIN_MINUTES minutes, <a href="@auth.AuthModule.URL_login">go here</a> to try again</li>
+<li>you already clicked it, in which case you can <a href="@auth.AuthModule.URL_login">go here</a> to login</li>
+<li>somebody else confirmed your username before you did, in which case you can <a href="@auth.AuthModule.URL_login">go here</a> to create an account</li>
+</ul>
+
+}
