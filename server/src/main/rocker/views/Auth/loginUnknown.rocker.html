@@ -1,0 +1,11 @@
+@views.base.template("Login link unknown", "Login link unknown") -> {
+
+<p>
+Sorry, this login link has expired, you can login again
+</p>
+<ul>
+<li>it expired - it was only good for @auth.LoginForm.EXPIRES_MINUTES minutes, <a href="@auth.AuthModule.URL_login">go here</a> to try again</li>
+<li>you already clicked it, in which case you can <a href="@auth.AuthModule.URL_login">go here</a> to login</li>
+</ul>
+
+}

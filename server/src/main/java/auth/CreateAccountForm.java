@@ -6,6 +6,9 @@
  */
 package auth;
 
+import static auth.AuthModule.CREATE_EMAIL;
+import static auth.AuthModule.CREATE_USERNAME;
+import static auth.AuthModule.REDIRECT;
 import static db.Tables.ACCOUNT;
 import static db.Tables.CONFIRMACCOUNTLINK;
 
@@ -17,7 +20,7 @@ import common.Text;
 import common.Time;
 import common.UrlEncodedPath;
 import db.VarChars;
-import db.tables.Account;
+import db.tables.pojos.Account;
 import db.tables.records.AccountRecord;
 import db.tables.records.ConfirmaccountlinkRecord;
 import forms.meta.MetaField;
@@ -69,13 +72,9 @@ public class CreateAccountForm extends MetaFormDef.HandleValid {
 		}
 	}
 
-	public static final MetaField<String> USERNAME = MetaField.string("username");
-	public static final MetaField<String> EMAIL = MetaField.string("email");
-	public static final MetaField<String> REDIRECT = MetaField.string("redirect");
-
 	@Override
 	public Set<MetaField<?>> fields() {
-		return ImmutableSet.of(USERNAME, EMAIL, REDIRECT);
+		return ImmutableSet.of(CREATE_USERNAME, CREATE_EMAIL, REDIRECT);
 	}
 
 	@Override
@@ -83,10 +82,10 @@ public class CreateAccountForm extends MetaFormDef.HandleValid {
 		// keep the fields in the reply
 		validation.keepAll();
 
-		validateUsername(validation, USERNAME);
+		validateUsername(validation, CREATE_USERNAME);
 
-		Validator.strLength(0, VarChars.EMAIL).validate(validation, EMAIL);
-		Validator.email().validate(validation, EMAIL);
+		Validator.strLength(0, VarChars.EMAIL).validate(validation, CREATE_EMAIL);
+		Validator.email().validate(validation, CREATE_EMAIL);
 	}
 
 	static void validateUsername(MetaFormValidation validation, MetaField<String> field) {
@@ -96,8 +95,8 @@ public class CreateAccountForm extends MetaFormDef.HandleValid {
 
 	@Override
 	public boolean handleSuccessful(MetaFormValidation validation, Request req, Response rsp) throws Throwable {
-		String username = Text.lowercase(validation.parsed(USERNAME));
-		String email = Text.lowercase(validation.parsed(EMAIL));
+		String username = Text.lowercase(validation.parsed(CREATE_USERNAME));
+		String email = Text.lowercase(validation.parsed(CREATE_EMAIL));
 		if (RESERVED_USERNAMES.contains(username)) {
 			validation.errorForField(msg_USERNAME_NOT_AVAILABLE);
 		} else {
@@ -106,14 +105,14 @@ public class CreateAccountForm extends MetaFormDef.HandleValid {
 						.where(ACCOUNT.USERNAME.eq(username))
 						.fetchOne(ACCOUNT.ID);
 				if (existingAccountId != null) {
-					validation.errorForField(USERNAME, msg_USERNAME_NOT_AVAILABLE);
+					validation.errorForField(CREATE_USERNAME, msg_USERNAME_NOT_AVAILABLE);
 				}
 
 				Integer accountId = dsl.selectFrom(ACCOUNT)
 						.where(ACCOUNT.EMAIL.eq(email))
 						.fetchOne(ACCOUNT.ID);
 				if (accountId != null) {
-					validation.errorForField(EMAIL, "This email is already used by another account");
+					validation.errorForField(CREATE_EMAIL, "This email is already used by another account");
 				}
 
 				if (validation.noErrors()) {
@@ -134,7 +133,7 @@ public class CreateAccountForm extends MetaFormDef.HandleValid {
 					UrlEncodedPath root = UrlEncodedPath.absolutePath(req, AuthModule.URL_confirm + code);
 					String redirect = validation.parsed(REDIRECT);
 					if (!redirect.isEmpty()) {
-						root.param(AuthModule.LOGIN_PARAM_ORIGINAL, redirect);
+						root.param(REDIRECT, redirect);
 					}
 					String html = views.Auth.emailConfirm.template(username, root.build()).renderToString();
 					req.require(HtmlEmail.class)
@@ -175,8 +174,9 @@ public class CreateAccountForm extends MetaFormDef.HandleValid {
 					// it expired, but the username and email are still available,
 					// so we'll prepopulate the link
 					String createAccountLink = UrlEncodedPath.path(AuthModule.URL_login)
-							.param(AuthModule.LOGIN_PARAM_EMAIL, record.getEmail())
-							.param(AuthModule.LOGIN_PARAM_USERNAME, record.getUsername())
+							.param(CREATE_USERNAME, record.getEmail())
+							.param(CREATE_EMAIL, record.getUsername())
+							.paramIfPresent(REDIRECT, req)
 							.build();
 					record.delete();
 					rsp.send(views.Auth.confirmExpired.template(createAccountLink));

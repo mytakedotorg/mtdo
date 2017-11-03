@@ -6,14 +6,20 @@
  */
 package auth;
 
+import static auth.AuthModule.LOGIN_USERNAME;
+import static auth.AuthModule.REDIRECT;
 import static db.Tables.ACCOUNT;
 import static db.Tables.LOGINLINK;
 
 import com.google.common.collect.ImmutableSet;
+import common.Emails;
 import common.RandomString;
 import common.Time;
 import common.UrlEncodedPath;
+import controllers.HomeFeed;
 import db.VarChars;
+import db.tables.pojos.Account;
+import db.tables.records.AccountRecord;
 import db.tables.records.LoginlinkRecord;
 import forms.meta.MetaField;
 import forms.meta.MetaFormDef;
@@ -21,36 +27,36 @@ import forms.meta.MetaFormValidation;
 import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
+import org.apache.commons.mail.HtmlEmail;
+import org.jooby.Mutant;
 import org.jooby.Request;
 import org.jooby.Response;
+import org.jooby.Results;
 import org.jooq.DSLContext;
 
 public class LoginForm extends MetaFormDef.HandleValid {
 	public static final int EXPIRES_MINUTES = 10;
 
-	public static final MetaField<String> USERNAME = MetaField.string("login-user");
-	public static final MetaField<String> REDIRECT = MetaField.string("redirect");
-
 	@Override
 	public Set<MetaField<?>> fields() {
-		return ImmutableSet.of(USERNAME, REDIRECT);
+		return ImmutableSet.of(LOGIN_USERNAME, REDIRECT);
 	}
 
 	@Override
 	protected void validate(MetaFormValidation validation) {
 		validation.keepAll();
-		CreateAccountForm.validateUsername(validation, USERNAME);
+		CreateAccountForm.validateUsername(validation, LOGIN_USERNAME);
 	}
 
 	@Override
 	public boolean handleSuccessful(MetaFormValidation validation, Request req, Response rsp) throws Throwable {
-		String username = validation.parsed(USERNAME);
+		String username = validation.parsed(LOGIN_USERNAME);
 		try (DSLContext dsl = req.require(DSLContext.class)) {
-			Integer accountId = dsl.selectFrom(ACCOUNT)
+			AccountRecord account = dsl.selectFrom(ACCOUNT)
 					.where(ACCOUNT.USERNAME.eq(username))
-					.fetchOne(ACCOUNT.ID);
-			if (accountId == null) {
-				validation.errorForField(USERNAME, "No such user");
+					.fetchOne();
+			if (account == null) {
+				validation.errorForField(LOGIN_USERNAME, "No such user");
 				return false;
 			} else {
 				String code = RandomString.get(req.require(Random.class), VarChars.CODE);
@@ -61,13 +67,57 @@ public class LoginForm extends MetaFormDef.HandleValid {
 				login.setCreatedAt(time.nowTimestamp());
 				login.setExpiresAt(time.nowTimestamp().plus(EXPIRES_MINUTES, TimeUnit.MINUTES));
 				login.setRequestorIp(req.ip());
-				login.setAccountId(accountId);
+				login.setAccountId(account.getId());
 				login.insert();
 
 				UrlEncodedPath path = UrlEncodedPath.absolutePath(req, AuthModule.URL_confirm_login + code);
-				path.copyIfPresent(req, AuthModule.LOGIN_PARAM_ORIGINAL);
+				path.paramIfPresent(REDIRECT, req);
+
+				String html = views.Auth.emailLogin.template(username, path.build()).renderToString();
+				req.require(HtmlEmail.class)
+						.setHtmlMsg(html)
+						.setSubject("MyTake.org login link")
+						.addTo(account.getEmail())
+						.setFrom(Emails.FEEDBACK)
+						.send();
+
+				account.setLastEmailedAt(time.nowTimestamp());
+				account.update();
+
 				rsp.send(views.Auth.emailLogin.template(username, path.build()));
 				return true;
+			}
+		}
+	}
+
+	public static void confirm(String code, Request req, Response rsp) throws Throwable {
+		try (DSLContext dsl = req.require(DSLContext.class)) {
+			LoginlinkRecord link = dsl.selectFrom(LOGINLINK)
+					.where(LOGINLINK.CODE.eq(code))
+					.fetchOne();
+			if (link == null) {
+				rsp.send(views.Auth.loginUnknown.template());
+			} else {
+				dsl.deleteFrom(LOGINLINK)
+						.where(LOGINLINK.ACCOUNT_ID.eq(link.getAccountId()))
+						.execute();
+				AccountRecord account = dsl.selectFrom(ACCOUNT)
+						.where(ACCOUNT.ID.eq(link.getAccountId()))
+						.fetchOne();
+
+				Time time = req.require(Time.class);
+				account.setLastSeenIp(req.ip());
+				account.setLastSeenAt(time.nowTimestamp());
+				account.update();
+
+				AuthUser.login(account.into(Account.class), req, rsp);
+
+				Mutant redirect = req.param(REDIRECT.name());
+				if (redirect.isSet()) {
+					rsp.send(Results.redirect(redirect.value()));
+				} else {
+					rsp.send(HomeFeed.URL);
+				}
 			}
 		}
 	}
