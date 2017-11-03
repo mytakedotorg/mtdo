@@ -7,6 +7,7 @@
 package common;
 
 import com.google.common.net.UrlEscapers;
+import forms.meta.MetaField;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -37,35 +38,36 @@ public class UrlEncodedPath {
 		return encoded;
 	}
 
-	public UrlEncodedPath param(String key, String value) {
-		Objects.requireNonNull(key);
+	public <T> UrlEncodedPath param(MetaField<T> field, T value) {
+		Objects.requireNonNull(field);
 		Objects.requireNonNull(value);
-		query.put(key, UrlEscapers.urlFormParameterEscaper().escape(value));
+		query.put(field.name(), UrlEscapers.urlFormParameterEscaper().escape(
+				field.parser().reverse().convert(value)));
 		return this;
 	}
 
-	public UrlEncodedPath paramPathAndQuery(String key, Request request) {
+	public UrlEncodedPath paramToPath(MetaField<String> field, Request request) {
 		String path = request.path();
 		Optional<String> query = request.queryString();
 		if (!query.isPresent()) {
-			param(key, path);
+			param(field, path);
 		} else {
-			param(key, path + "?" + query.get());
+			param(field, path + "?" + query.get());
 		}
 		return this;
 	}
 
-	public UrlEncodedPath paramIfPresent(String key, @Nullable String value) {
+	public <T> UrlEncodedPath paramIfPresent(MetaField<T> field, @Nullable T value) {
 		if (value != null) {
-			param(key, value);
+			param(field, value);
 		}
 		return this;
 	}
 
-	public UrlEncodedPath copyIfPresent(Request req, String key) {
-		Mutant param = req.param(key);
+	public UrlEncodedPath copyIfPresent(Request req, MetaField<?> field) {
+		Mutant param = req.param(field.name());
 		if (param.isSet()) {
-			param(key, param.value());
+			query.put(field.name(), param.value());
 		}
 		return this;
 	}

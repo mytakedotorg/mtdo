@@ -8,6 +8,7 @@ package common;
 
 import com.google.inject.Binder;
 import com.typesafe.config.Config;
+import forms.meta.MetaField;
 import org.jooby.Env;
 import org.jooby.Jooby;
 import org.jooby.Status;
@@ -47,7 +48,7 @@ public class RedirectException extends RuntimeException {
 	public static RedirectException notFoundError(String error) {
 		return new RedirectException(Status.NOT_FOUND,
 				UrlEncodedPath.path(Module.URL_notFound)
-						.param(Module.MSG, error)
+						.param(MSG, error)
 						.build());
 	}
 
@@ -61,14 +62,13 @@ public class RedirectException extends RuntimeException {
 	public static RedirectException badRequestError(String error) {
 		return new RedirectException(Status.BAD_REQUEST,
 				UrlEncodedPath.path(Module.URL_badRequest)
-						.param(Module.MSG, error)
+						.param(MSG, error)
 						.build());
 	}
 
 	public static class Module implements Jooby.Module {
 		static final String URL_notFound = "/notFound";
 		static final String URL_badRequest = "/badRequest";
-		static final String MSG = "msg";
 
 		@Override
 		public void configure(Env env, Config conf, Binder binder) throws Throwable {
@@ -78,11 +78,13 @@ public class RedirectException extends RuntimeException {
 				rsp.redirect(status, url);
 			});
 			env.router().get(URL_notFound, req -> {
-				return views.RedirectException.notFound.template(req.param(MSG).value());
+				return views.RedirectException.notFound.template(req.param(MSG.name()).value());
 			});
 			env.router().get(URL_badRequest, req -> {
-				return views.RedirectException.badRequest.template(req.param(MSG).value());
+				return views.RedirectException.badRequest.template(req.param(MSG.name()).value());
 			});
 		}
 	}
+
+	private static final MetaField<String> MSG = MetaField.string("msg");
 }
