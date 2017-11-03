@@ -13,6 +13,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import javax.annotation.Nullable;
+import org.jooby.Mutant;
 import org.jooby.Request;
 
 public class UrlEncodedPath {
@@ -56,10 +57,17 @@ public class UrlEncodedPath {
 
 	public UrlEncodedPath paramIfPresent(String key, @Nullable String value) {
 		if (value != null) {
-			return param(key, value);
-		} else {
-			return this;
+			param(key, value);
 		}
+		return this;
+	}
+
+	public UrlEncodedPath copyIfPresent(Request req, String key) {
+		Mutant param = req.param(key);
+		if (param.isSet()) {
+			param(key, param.value());
+		}
+		return this;
 	}
 
 	public String build() {
