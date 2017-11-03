@@ -7,6 +7,7 @@
 package forms.meta;
 
 import forms.api.FormValidation;
+import java.util.regex.Pattern;
 import org.apache.commons.validator.routines.EmailValidator;
 
 public interface Validator<T> {
@@ -35,13 +36,21 @@ public interface Validator<T> {
 		};
 	}
 
-	public static Validator<String> name() {
+	public static Validator<String> strLength(int minLength, int maxLength) {
 		return (validation, fieldName, value) -> {
-			if (value.isEmpty()) {
-				validation.errorForField(fieldName, "Name can't be empty");
+			if (value.length() < minLength) {
+				validation.errorForField(fieldName, "Must be at least " + minLength + " characters long");
 			}
-			if (!value.trim().equals(value)) {
-				validation.errorForField(fieldName, "Name cannot have leading or trailing spaces");
+			if (value.length() > maxLength) {
+				validation.errorForField(fieldName, "Must be no longer than " + maxLength + " characters");
+			}
+		};
+	}
+
+	public static Validator<String> regexMustMatch(Pattern pattern, String error) {
+		return (validation, fieldName, value) -> {
+			if (!pattern.matcher(value).matches()) {
+				validation.errorForField(fieldName, error);
 			}
 		};
 	}
@@ -50,15 +59,6 @@ public interface Validator<T> {
 		return (validation, fieldName, value) -> {
 			if (!EmailValidator.getInstance().isValid(value)) {
 				validation.errorForField(fieldName, "Invalid email");
-			}
-		};
-	}
-
-	public static Validator<String> phoneNumber() {
-		return (validation, fieldName, value) -> {
-			final String PHONE_NUMBER_REGEX = "\\d{3}-\\d{3}-\\d{4}"; // XXX-XXX-XXXX
-			if (!value.matches(PHONE_NUMBER_REGEX)) {
-				validation.errorForField(fieldName, "Phone number is invalid, format XXX-XXX-XXXX");
 			}
 		};
 	}
