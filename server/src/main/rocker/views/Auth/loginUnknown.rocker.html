@@ -1,11 +1,21 @@
-@views.base.template("Login link unknown", "Login link unknown") -> {
+@import forms.api.FormMarkup
 
-<p>
-Sorry, this login link has expired, you can login again
-</p>
-<ul>
-<li>it expired - it was only good for @auth.LoginForm.EXPIRES_MINUTES minutes, <a href="@auth.AuthModule.URL_login">go here</a> to try again</li>
-<li>you already clicked it, in which case you can <a href="@auth.AuthModule.URL_login">go here</a> to login</li>
-</ul>
+@args(FormMarkup loginForm)
+
+@views.base.template("Try again", "Try again") -> {
+
+	<section id="login">
+		<div class="heading-line">
+			<h2>Log in</h2>
+		</div>
+		<div class="content-bg">
+			@loginForm.formError()
+			@loginForm.openForm("id", "login")
+				@loginForm.field(AuthModule.LOGIN_USERNAME).label("Email").errorSpan().input("text", "class", "form-control")
+				@loginForm.field(AuthModule.REDIRECT).input("hidden")
+				<input type="submit" class="btn btn-success" value="Try again" />
+			@loginForm.closeForm()
+		</div>
+	</section>
 
 }

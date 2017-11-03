@@ -91,33 +91,40 @@ public class LoginForm extends MetaFormDef.HandleValid {
 	}
 
 	public static void confirm(String code, Request req, Response rsp) throws Throwable {
+		Time time = req.require(Time.class);
 		try (DSLContext dsl = req.require(DSLContext.class)) {
 			LoginlinkRecord link = dsl.selectFrom(LOGINLINK)
 					.where(LOGINLINK.CODE.eq(code))
 					.fetchOne();
-			if (link == null) {
-				rsp.send(views.Auth.loginUnknown.template());
+			if (link == null
+					|| time.nowTimestamp().after(link.getExpiresAt())
+					|| !link.getRequestorIp().equals(req.ip())) {
+				MetaFormValidation validation = MetaFormValidation.empty(CreateAccountForm.class)
+						.initIfPresent(req, LOGIN_USERNAME, REDIRECT);
+				if (link == null || time.nowTimestamp().after(link.getExpiresAt())) {
+					validation.errorForForm("This link expired");
+				} else if (!link.getRequestorIp().equals(req.ip())) {
+					validation.errorForForm("Make sure to open the link from the same computer you requested it from");
+				}
+				// show a "try again" login form
+				rsp.send(views.Auth.loginUnknown.template(validation.markup(AuthModule.URL_login)));
 			} else {
+				// delete all login links for this account
 				dsl.deleteFrom(LOGINLINK)
 						.where(LOGINLINK.ACCOUNT_ID.eq(link.getAccountId()))
 						.execute();
+				// update the record's lastSeen
 				AccountRecord account = dsl.selectFrom(ACCOUNT)
 						.where(ACCOUNT.ID.eq(link.getAccountId()))
 						.fetchOne();
-
-				Time time = req.require(Time.class);
 				account.setLastSeenIp(req.ip());
 				account.setLastSeenAt(time.nowTimestamp());
 				account.update();
-
+				// set the login cookies
 				AuthUser.login(account.into(Account.class), req, rsp);
-
+				// redirect 
 				Mutant redirect = req.param(REDIRECT.name());
-				if (redirect.isSet()) {
-					rsp.send(Results.redirect(redirect.value()));
-				} else {
-					rsp.send(HomeFeed.URL);
-				}
+				rsp.send(Results.redirect(redirect.value(HomeFeed.URL)));
 			}
 		}
 	}
