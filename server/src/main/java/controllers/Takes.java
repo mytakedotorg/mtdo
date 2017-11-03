@@ -29,15 +29,13 @@ public class Takes implements Jooby.Module {
 			String user = Text.lowercase(req, "user");
 			String title = Text.lowercase(req, "title");
 			try (DSLContext dsl = req.require(DSLContext.class)) {
-				Integer userId = dsl.selectFrom(ACCOUNT)
-						.where(ACCOUNT.USERNAME.eq(user))
-						.fetchOne(ACCOUNT.ID);
-				assertNotNull(userId);
-
 				TakepublishedRecord record = dsl.selectFrom(TAKEPUBLISHED)
 						.where(TAKEPUBLISHED.TITLE_SLUG.eq(title))
-						.and(TAKEPUBLISHED.USER_ID.eq(userId))
+						.and(TAKEPUBLISHED.USER_ID.eq(dsl.select(ACCOUNT.ID)
+								.from(ACCOUNT)
+								.where(ACCOUNT.USERNAME.eq(user))))
 						.fetchOne();
+
 				assertNotNull(record);
 				// increment the view
 				record.setCountView(record.getCountView() + 1);
