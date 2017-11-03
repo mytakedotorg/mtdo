@@ -71,7 +71,11 @@ public class LoginForm extends MetaFormDef.HandleValid {
 				login.insert();
 
 				UrlEncodedPath path = UrlEncodedPath.absolutePath(req, AuthModule.URL_confirm_login + code);
-				path.paramIfPresent(REDIRECT, req);
+				String redirect = validation.parsed(REDIRECT);
+				if (!redirect.isEmpty()) {
+					path.param(REDIRECT, redirect);
+				}
+				path.param(LOGIN_USERNAME, username);
 
 				String html = views.Auth.emailLogin.template(username, path.build()).renderToString();
 				req.require(HtmlEmail.class)

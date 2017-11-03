@@ -133,12 +133,15 @@ public class CreateAccountForm extends MetaFormDef.HandleValid {
 					confirm.insert();
 
 					// send a confirmation email
-					UrlEncodedPath root = UrlEncodedPath.absolutePath(req, AuthModule.URL_confirm + code);
+					UrlEncodedPath path = UrlEncodedPath.absolutePath(req, AuthModule.URL_confirm_account + code);
 					String redirect = validation.parsed(REDIRECT);
 					if (!redirect.isEmpty()) {
-						root.param(REDIRECT, redirect);
+						path.param(REDIRECT, redirect);
 					}
-					String html = views.Auth.emailConfirm.template(username, root.build()).renderToString();
+					path.param(CREATE_USERNAME, username);
+					path.param(CREATE_EMAIL, email);
+
+					String html = views.Auth.emailConfirm.template(username, path.build()).renderToString();
 					req.require(HtmlEmail.class)
 							.setHtmlMsg(html)
 							.setSubject("MyTake.org account confirmation")
