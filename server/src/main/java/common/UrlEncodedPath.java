@@ -38,15 +38,18 @@ public class UrlEncodedPath {
 		return encoded;
 	}
 
-	public <T> UrlEncodedPath param(MetaField<T> field, T value) {
+	public UrlEncodedPath param(String field, String value) {
 		Objects.requireNonNull(field);
 		Objects.requireNonNull(value);
-		query.put(field.name(), UrlEscapers.urlFormParameterEscaper().escape(
-				field.parser().reverse().convert(value)));
+		query.put(field, value);
 		return this;
 	}
 
-	public UrlEncodedPath paramToPath(MetaField<String> field, Request request) {
+	public <T> UrlEncodedPath param(MetaField<T> field, T value) {
+		return param(field.name(), field.parser().reverse().convert(value));
+	}
+
+	public UrlEncodedPath paramPathAndQuery(MetaField<String> field, Request request) {
 		String path = request.path();
 		Optional<String> query = request.queryString();
 		if (!query.isPresent()) {
@@ -64,10 +67,10 @@ public class UrlEncodedPath {
 		return this;
 	}
 
-	public UrlEncodedPath copyIfPresent(Request req, MetaField<?> field) {
+	public UrlEncodedPath paramIfPresent(MetaField<?> field, Request req) {
 		Mutant param = req.param(field.name());
 		if (param.isSet()) {
-			query.put(field.name(), param.value());
+			param(field.name(), param.value());
 		}
 		return this;
 	}
@@ -90,7 +93,7 @@ public class UrlEncodedPath {
 				Map.Entry<String, String> entry = iter.next();
 				builder.append(entry.getKey());
 				builder.append('=');
-				builder.append(entry.getValue());
+				builder.append(UrlEscapers.urlFormParameterEscaper().escape(entry.getValue()));
 				if (iter.hasNext()) {
 					builder.append('&');
 				}

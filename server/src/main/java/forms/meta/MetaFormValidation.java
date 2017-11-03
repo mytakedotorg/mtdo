@@ -11,6 +11,7 @@ import com.google.common.collect.Maps;
 import forms.api.FormValidation;
 import java.util.Map;
 import org.jooby.Mutant;
+import org.jooby.Request;
 
 public class MetaFormValidation extends FormValidation<MetaMap> {
 	@SafeVarargs
@@ -99,5 +100,16 @@ public class MetaFormValidation extends FormValidation<MetaMap> {
 
 	public <T> T parsed(MetaField<T> field) {
 		return parsedValue().get(field);
+	}
+
+	@SuppressWarnings("unchecked")
+	public MetaFormValidation initIfPresent(Request req, MetaField<?>... fields) {
+		for (MetaField<?> field : fields) {
+			Mutant value = req.param(field.name());
+			if (value.isSet()) {
+				init((MetaField<Object>) field, (Object) field.parser().convert(value.value()));
+			}
+		}
+		return this;
 	}
 }
