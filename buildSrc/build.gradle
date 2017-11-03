@@ -23,7 +23,7 @@ if (!keys.contains(HEROKU_ENV_VAR) && !keys.contains(CI_ENV_VAR)) {
 	build.dependsOn(tasks.getByName('eclipse'))
 }
 
-eclipse { project { name = 'buildSrc-mytake' } }
+eclipse { project { name = 'mytake-buildSrc' } }
 
 gradlePlugin {
 	plugins {

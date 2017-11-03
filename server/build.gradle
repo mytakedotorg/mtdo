@@ -70,6 +70,7 @@ spotless {
 }
 
 apply plugin: 'eclipse'
+eclipse { project { name = 'mytake-server' } }
 tasks.eclipse.dependsOn([
 	tasks.cleanEclipse,
 	'jooq',
