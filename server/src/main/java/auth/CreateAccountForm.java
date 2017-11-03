@@ -144,6 +144,7 @@ public class CreateAccountForm extends MetaFormDef.HandleValid {
 							.setFrom(Emails.FEEDBACK)
 							.send();
 
+					rsp.send(views.Auth.confirmationSent.template(email, Emails.FEEDBACK));
 					return true;
 				}
 			}
