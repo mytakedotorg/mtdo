@@ -33,11 +33,9 @@ public class RedirectException extends RuntimeException {
 		this.redirectUrl = redirectUrl;
 	}
 
-	/**
-	 * Redirects with status 404 to redirectUrl
-	 */
-	public static RedirectException notFoundUrl(String redirectUrl) {
-		return new RedirectException(Status.NOT_FOUND, redirectUrl);
+	@Override
+	public String getMessage() {
+		return "Redirect to " + redirectUrl + " with " + status;
 	}
 
 	/**
@@ -54,22 +52,22 @@ public class RedirectException extends RuntimeException {
 	}
 
 	/**
-	 * Redirects with status 400 to `/error` and shows the given
+	 * Redirects with status 400 to `/badRequest` and shows the given
 	 * error message to the user.
 	 * 
 	 * Meant for when a request is inherently an error,
 	 * e.g. `printCount?userCount=a`
 	 */
-	public static RedirectException invalidUrlError(String error) {
+	public static RedirectException badRequestError(String error) {
 		return new RedirectException(Status.BAD_REQUEST,
-				UrlEncodedPath.path(Module.URL_error)
+				UrlEncodedPath.path(Module.URL_badRequest)
 						.param(Module.MSG, error)
 						.build());
 	}
 
 	public static class Module implements Jooby.Module {
-		static final String URL_error = "/error";
 		static final String URL_notFound = "/notFound";
+		static final String URL_badRequest = "/badRequest";
 		static final String MSG = "msg";
 
 		@Override
@@ -79,15 +77,11 @@ public class RedirectException extends RuntimeException {
 				String url = ((RedirectException) err.getCause()).redirectUrl;
 				rsp.redirect(status, url);
 			});
-			env.router().get(URL_error, req -> {
-				String message = req.get(MSG);
-				return "<h1>" + message + "</h1>";
-				// return views.RedirectException.error.template(message);
-			});
 			env.router().get(URL_notFound, req -> {
-				String message = req.get(MSG);
-				return "<h1>" + message + "</h1>";
-				// return views.RedirectException.notFound.template(message);
+				return views.RedirectException.notFound.template(req.param(MSG).value());
+			});
+			env.router().get(URL_badRequest, req -> {
+				return views.RedirectException.badRequest.template(req.param(MSG).value());
 			});
 		}
 	}
