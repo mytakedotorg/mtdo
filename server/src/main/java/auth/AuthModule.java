@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Optional;
 import org.jooby.Env;
 import org.jooby.Jooby;
+import org.jooby.Status;
 
 /** The login module.  Must be before all modules that require login. */
 public class AuthModule implements Jooby.Module {
@@ -78,7 +79,7 @@ public class AuthModule implements Jooby.Module {
 		// a missing or expired login redirects to the login page
 		env.router().err(JWTVerificationException.class, (req, rsp, err) -> {
 			rsp.clearCookie(AuthUser.LOGIN_COOKIE);
-			rsp.redirect(UrlEncodedPath.path(URL_login)
+			rsp.redirect(Status.FORBIDDEN, UrlEncodedPath.path(URL_login)
 					.paramIfPresent(LOGIN_USERNAME, AuthUser.usernameForError(req))
 					.paramPathAndQuery(REDIRECT, req)
 					.build());
