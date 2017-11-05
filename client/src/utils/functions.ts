@@ -741,9 +741,8 @@ function getCaptionNodeArray(videoId: string): Array<FoundationNode> {
             // Character count offset
             offset += innerHTML.length;
           } else {
-            // Likely an error in the databaseData if we're here.
-            // A speaker's start range is greater than end range.
-            // console.log(speaker.range) to find the offending range.
+            throw "A speaker's start range can't be greater than the end range, offending range: " +
+              speaker.range;
           }
         }
       }
@@ -838,6 +837,8 @@ function getCharRangeFromVideoRange(
   const endTime = timeRange[1];
 
   const wordMap = getVideoCaptionWordMap(videoId);
+  const speakerMap = getVideoCaptionMetaData(videoId).speakerMap;
+
   let charCount = 0;
   let startCharIndex: number = -1;
   let isStartSet = false;
@@ -849,14 +850,46 @@ function getCharRangeFromVideoRange(
       continue;
     }
     if (!isStartSet) {
+      // This block only executes once
       startCharIndex = charCount;
+
+      // Subtract 1 for every paragraph break. HTML removes extra whitespace, but our data model still contains a space.
+      for (const speakerIdx in speakerMap) {
+        if (speakerMap[speakerIdx].range[1] < captionWord.idx) {
+          continue;
+        }
+        const paragraphCount = parseInt(speakerIdx);
+        startCharIndex -= paragraphCount;
+
+        // Don't let index go negative here
+        if (startCharIndex < 0) {
+          startCharIndex = 0;
+        }
+        break;
+      }
+
       isStartSet = true;
     }
-    if (captionWord.timestamp < endTime) {
+    if (captionWord.timestamp <= endTime) {
       charCount += captionWord.word.length;
       continue;
     }
+
     endCharIndex = charCount;
+    // Subtract 1 for every paragraph break. HTML removes extra whitespace, but our data model still contains a space.
+    for (const speakerIdx in speakerMap) {
+      if (speakerMap[speakerIdx].range[1] < captionWord.idx) {
+        continue;
+      }
+      const paragraphCount = parseInt(speakerIdx);
+      endCharIndex -= paragraphCount;
+
+      // Don't let index go negative here
+      if (endCharIndex < 0) {
+        endCharIndex = 0;
+      }
+      break;
+    }
     break;
   }
 
