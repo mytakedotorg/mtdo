@@ -43,7 +43,7 @@ class Video extends React.Component<VideoProps, VideoState> {
     );
 
     this.state = {
-      currentTime: 0,
+      currentTime: props.timeRange ? props.timeRange[0] : 0,
       startTime: props.timeRange ? props.timeRange[0] : 0,
       endTime: props.timeRange ? props.timeRange[1] : -1,
       captionIsHighlighted:
