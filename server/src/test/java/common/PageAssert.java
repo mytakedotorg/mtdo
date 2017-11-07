@@ -63,9 +63,9 @@ public class PageAssert {
 			run.run();
 		} catch (Throwable t) {
 			t.printStackTrace();
-			new Snapshot.OpenBrowser()
+			new OpenBrowser()
 					.add("/failedAssertion", body)
-					.isYes("Failed assertion");
+					.isYes("Failed assertion, press any button");
 		}
 		return this;
 	}

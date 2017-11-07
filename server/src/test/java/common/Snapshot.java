@@ -7,20 +7,13 @@
 package common;
 
 import com.diffplug.common.base.Errors;
-import com.google.common.base.Preconditions;
 import java.io.File;
 import java.io.IOException;
-import java.net.ServerSocket;
-import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.LinkedHashMap;
-import java.util.Map;
 import javax.annotation.Nullable;
-import javax.swing.JOptionPane;
 import org.assertj.core.api.Assertions;
-import org.jooby.Jooby;
 import org.junit.Assert;
 
 public class Snapshot {
@@ -78,43 +71,6 @@ public class Snapshot {
 			}
 		} catch (ClassNotFoundException | IOException e) {
 			throw Errors.asRuntime(e);
-		}
-	}
-
-	/** Opens a browser to show content. */
-	static class OpenBrowser {
-		Map<String, String> map = new LinkedHashMap<>();
-
-		public OpenBrowser add(String url, String content) {
-			Preconditions.checkArgument(url.startsWith("/"));
-			map.put(url, content);
-			return this;
-		}
-
-		public boolean isYes(String message) {
-			try {
-				ServerSocket socket = new ServerSocket(0);
-				int port = socket.getLocalPort();
-				socket.close();
-
-				Jooby jooby = new Jooby();
-				jooby.port(port);
-				map.forEach((url, content) -> {
-					jooby.get(url, () -> content);
-				});
-				jooby.start("server.join=false");
-
-				for (String url : map.keySet()) {
-					java.awt.Desktop.getDesktop().browse(new URI("http://localhost:" + port + url));
-				}
-
-				JOptionPane.getRootFrame().setAlwaysOnTop(true);
-				int dialogResult = JOptionPane.showConfirmDialog(null, message);
-				jooby.stop();
-				return dialogResult == JOptionPane.YES_OPTION;
-			} catch (Exception e) {
-				throw Errors.asRuntime(e);
-			}
 		}
 	}
 
