@@ -16,6 +16,7 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableSet;
 import common.Emails;
 import common.RandomString;
+import common.RedirectException;
 import common.Text;
 import common.Time;
 import common.UrlEncodedPath;
@@ -56,7 +57,9 @@ public class CreateAccountForm extends MetaFormDef.HandleValid {
 			"legal",    // for legal attributes
 			url(AuthModule.URL_login),
 			url(AuthModule.URL_logout),
-			url(AuthModule.URL_confirm));
+			url(AuthModule.URL_confirm),
+			url(RedirectException.Module.URL_notFound),
+			url(RedirectException.Module.URL_badRequest));
 
 	private static final String msg_USERNAME_NOT_AVAILABLE = "Username is not available";
 
@@ -64,9 +67,9 @@ public class CreateAccountForm extends MetaFormDef.HandleValid {
 		Preconditions.checkArgument(url.startsWith("/"));
 		int nextSlash = url.indexOf('/', 1);
 		if (nextSlash == -1) {
-			return url.substring(1);
+			return Text.lowercase(url.substring(1));
 		} else if (nextSlash == url.length() - 1) {
-			return url.substring(1, nextSlash);
+			return Text.lowercase(url.substring(1, nextSlash));
 		} else {
 			throw new IllegalArgumentException("Must be just /url/ or /url, was " + url);
 		}

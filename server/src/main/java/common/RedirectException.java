@@ -67,8 +67,8 @@ public class RedirectException extends RuntimeException {
 	}
 
 	public static class Module implements Jooby.Module {
-		static final String URL_notFound = "/notFound";
-		static final String URL_badRequest = "/badRequest";
+		public static final String URL_notFound = "/notFound";
+		public static final String URL_badRequest = "/badRequest";
 
 		@Override
 		public void configure(Env env, Config conf, Binder binder) throws Throwable {
