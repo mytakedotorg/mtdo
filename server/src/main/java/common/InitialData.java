@@ -41,7 +41,7 @@ public class InitialData {
 	}
 
 	public static void init(DSLContext dsl, Time time) throws Exception {
-		int sampleUser = usernameEmail(dsl, time, "sample", "ned.twigg@diffplug.com");
+		int sampleUser = usernameEmail(dsl, time, "sample", "sample@email.com");
 		take(dsl, time, sampleUser, "Why it's so hard to have peace");
 		take(dsl, time, sampleUser, "Does a law mean what it says, or what it meant?");
 		take(dsl, time, sampleUser, "Don't worry, we'll protect the Constitution for you!");

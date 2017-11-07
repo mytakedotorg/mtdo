@@ -26,7 +26,7 @@ public class AuthModule implements Jooby.Module {
 	/** Used by {@link LoginForm} and {@link CreateAccountForm}. */
 	public static final MetaField<String> REDIRECT = MetaField.string("redirect");
 	/** Used by {@link LoginForm} only. */
-	public static final MetaField<String> LOGIN_USERNAME = MetaField.string("loginuser");
+	public static final MetaField<String> LOGIN_EMAIL = MetaField.string("loginemail");
 	/** Used by {@link CreateAccountForm} only. */
 	public static final MetaField<String> CREATE_USERNAME = MetaField.string("createuser");
 	public static final MetaField<String> CREATE_EMAIL = MetaField.string("createemail");
@@ -52,7 +52,7 @@ public class AuthModule implements Jooby.Module {
 			} else {
 				// initialize the form parameters
 				MetaFormValidation login = MetaFormValidation.empty(CreateAccountForm.class)
-						.initIfPresent(req, REDIRECT, LOGIN_USERNAME);
+						.initIfPresent(req, REDIRECT, LOGIN_EMAIL);
 				MetaFormValidation createAccount = MetaFormValidation.empty(CreateAccountForm.class)
 						.initIfPresent(req, REDIRECT, CREATE_USERNAME, CREATE_EMAIL);
 				return views.Auth.login.template(login.markup(URL_login), createAccount.markup(URL_login));
@@ -80,7 +80,7 @@ public class AuthModule implements Jooby.Module {
 		env.router().err(JWTVerificationException.class, (req, rsp, err) -> {
 			rsp.clearCookie(AuthUser.LOGIN_COOKIE);
 			rsp.redirect(Status.FORBIDDEN, UrlEncodedPath.path(URL_login)
-					.paramIfPresent(LOGIN_USERNAME, AuthUser.usernameForError(req))
+					.paramIfPresent(LOGIN_EMAIL, AuthUser.usernameForError(req))
 					.paramPathAndQuery(REDIRECT, req)
 					.build());
 		});

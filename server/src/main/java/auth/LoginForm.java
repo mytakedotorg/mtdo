@@ -6,7 +6,7 @@
  */
 package auth;
 
-import static auth.AuthModule.LOGIN_USERNAME;
+import static auth.AuthModule.LOGIN_EMAIL;
 import static auth.AuthModule.REDIRECT;
 import static db.Tables.ACCOUNT;
 import static db.Tables.LOGINLINK;
@@ -14,6 +14,7 @@ import static db.Tables.LOGINLINK;
 import com.google.common.collect.ImmutableSet;
 import common.Emails;
 import common.RandomString;
+import common.Text;
 import common.Time;
 import common.UrlEncodedPath;
 import controllers.HomeFeed;
@@ -39,24 +40,23 @@ public class LoginForm extends MetaFormDef.HandleValid {
 
 	@Override
 	public Set<MetaField<?>> fields() {
-		return ImmutableSet.of(LOGIN_USERNAME, REDIRECT);
+		return ImmutableSet.of(LOGIN_EMAIL, REDIRECT);
 	}
 
 	@Override
 	protected void validate(MetaFormValidation validation) {
 		validation.keepAll();
-		CreateAccountForm.validateUsername(validation, LOGIN_USERNAME);
 	}
 
 	@Override
 	public boolean handleSuccessful(MetaFormValidation validation, Request req, Response rsp) throws Throwable {
-		String username = validation.parsed(LOGIN_USERNAME);
+		String email = Text.lowercase(validation.parsed(LOGIN_EMAIL));
 		try (DSLContext dsl = req.require(DSLContext.class)) {
 			AccountRecord account = dsl.selectFrom(ACCOUNT)
-					.where(ACCOUNT.USERNAME.eq(username))
+					.where(ACCOUNT.EMAIL.eq(email))
 					.fetchOne();
 			if (account == null) {
-				validation.errorForField(LOGIN_USERNAME, "No such user");
+				validation.errorForField(LOGIN_EMAIL, "No account for this email");
 				return false;
 			} else {
 				String code = RandomString.get(req.require(Random.class), VarChars.CODE);
@@ -71,20 +71,20 @@ public class LoginForm extends MetaFormDef.HandleValid {
 				login.insert();
 
 				UrlEncodedPath path = EmailConfirmationForm.generateLink(req, validation, AuthModule.URL_confirm_login + code);
-				path.param(LOGIN_USERNAME, username);
+				path.param(LOGIN_EMAIL, email);
 
-				String html = views.Auth.emailLogin.template(username, path.build()).renderToString();
+				String html = views.Auth.loginEmail.template(account.getUsername(), path.build()).renderToString();
 				req.require(HtmlEmail.class)
 						.setHtmlMsg(html)
 						.setSubject("MyTake.org login link")
-						.addTo(account.getEmail())
+						.addTo(email)
 						.setFrom(Emails.FEEDBACK)
 						.send();
 
 				account.setLastEmailedAt(time.nowTimestamp());
 				account.update();
 
-				rsp.send(views.Auth.emailLogin.template(username, path.build()));
+				rsp.send(views.Auth.loginEmailSent.template(email, path.build()));
 				return true;
 			}
 		}
