@@ -189,9 +189,9 @@ public class CreateAccountForm extends MetaFormDef.HandleValid {
 				account.setUpdatedAt(time.nowTimestamp());
 				account.setUpdatedIp(req.ip());
 				account.setLastSeenAt(time.nowTimestamp());
-				account.setUpdatedIp(req.ip());
+				account.setLastSeenIp(req.ip());
 				account.setLastEmailedAt(time.nowTimestamp());
-				link.insert();
+				account.insert();
 
 				// delete all other requests from that email and username
 				dsl.deleteFrom(CONFIRMACCOUNTLINK)
