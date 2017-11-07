@@ -812,14 +812,19 @@ function getWordCount(selection: Selection): number {
     wordCount = 0;
   }
 
-  let paragraphNode = textNode.parentNode;
+  let paragraphNode;
+  if (textNode.parentNode) {
+    paragraphNode = textNode.parentNode.parentNode;
+  } else {
+    throw "Unknown HTML Structure";
+  }
 
   if (paragraphNode) {
     let captionBlock = paragraphNode.parentNode;
 
     while (captionBlock && captionBlock.previousSibling) {
       captionBlock = captionBlock.previousSibling;
-      let prevTextNode = captionBlock.childNodes[0];
+      let prevTextNode = captionBlock.childNodes[1].childNodes[0];
       if (prevTextNode.textContent) {
         wordCount += prevTextNode.textContent.toString().split(" ").length;
       }
@@ -903,9 +908,9 @@ function getCharRangeFromVideoRange(
 function isCaptionNode(htmlRange: Range): boolean {
   if (
     htmlRange.startContainer.parentNode &&
-    (htmlRange.startContainer.parentNode as HTMLElement).className.indexOf(
-      "document__node"
-    ) >= 0
+    htmlRange.startContainer.parentNode.parentNode &&
+    (htmlRange.startContainer.parentNode
+      .parentNode as HTMLElement).className.indexOf("document__node") >= 0
   ) {
     return true;
   } else {
@@ -1019,10 +1024,13 @@ function getSimpleRangesFromHTMLRange(
   if (isCaption) {
     if (
       htmlRange.startContainer.parentNode &&
-      htmlRange.endContainer.parentNode
+      htmlRange.startContainer.parentNode.parentNode &&
+      htmlRange.endContainer.parentNode &&
+      htmlRange.endContainer.parentNode.parentNode
     ) {
-      startChildNode = htmlRange.startContainer.parentNode.parentNode;
-      endChildNode = htmlRange.endContainer.parentNode.parentNode;
+      startChildNode =
+        htmlRange.startContainer.parentNode.parentNode.parentNode;
+      endChildNode = htmlRange.endContainer.parentNode.parentNode.parentNode;
     } else {
       throw "Unexpcected HTML structure";
     }
@@ -1072,14 +1080,14 @@ function getSimpleRangesFromHTMLRange(
   let charCountBeforeSelection = 0;
 
   if (isCaption) {
-    startContainer = startContainer.childNodes[0];
-    endContainer = endContainer.childNodes[0];
+    startContainer = startContainer.childNodes[1].childNodes[0];
+    endContainer = endContainer.childNodes[1].childNodes[0];
 
     // Get word and char counts
-    if (startContainer.parentNode) {
-      let prevSib = startContainer.parentNode.previousSibling;
+    if (startContainer.parentNode && startContainer.parentNode.parentNode) {
+      let prevSib = startContainer.parentNode.parentNode.previousSibling;
       while (prevSib) {
-        const prevSibChild = prevSib.childNodes[0];
+        const prevSibChild = prevSib.childNodes[1].childNodes[0];
         if (prevSibChild && prevSibChild.textContent) {
           const text = prevSibChild.textContent;
           wordCountBeforeSelection += text.split(" ").length;
