@@ -8,6 +8,7 @@ interface DataAttributes {
 
 interface CaptionTextNodeProps {
   documentNode: FoundationNode;
+  speaker: string;
 }
 
 interface CaptionTextNodeState {}
@@ -25,58 +26,24 @@ class CaptionTextNode extends React.Component<
     let attributes: DataAttributes = {
       "data-char-offset": documentNode.props.offset
     };
-
-    switch (documentNode.component) {
-      case "h2":
-        return (
-          <div className="document__node">
-            <h2
-              className="document__node-text document__node-text--h2"
-              {...attributes}
-            >
-              {documentNode.innerHTML}
-            </h2>
-            <div className="document__node-height-div">
-              <h2 className="document__node-text document__node-text--hidden-h2">
-                {documentNode.innerHTML}
-              </h2>
-            </div>
+    return (
+      <div className="document__node">
+        <h3 className="document__node-text document__node-text--speaker">
+          {this.props.speaker}
+        </h3>
+        <div className="document__node-text-container">
+          <p
+            className="document__node-text document__node-text--p"
+            {...attributes}
+          >
+            {documentNode.innerHTML}
+          </p>
+          <div className="document__node-height-div">
+            <p className="document__node-text document__node-text--hidden-p" />
           </div>
-        );
-      case "h3":
-        return (
-          <div className="document__node">
-            <h3
-              className="document__node-text document__node-text--h3"
-              {...attributes}
-            >
-              {documentNode.innerHTML}
-            </h3>
-            <div className="document__node-height-div">
-              <h3 className="document__node-text document__node-text--hidden-h3">
-                {documentNode.innerHTML}
-              </h3>
-            </div>
-          </div>
-        );
-      case "p":
-        return (
-          <div className="document__node">
-            <p
-              className="document__node-text document__node-text--p"
-              {...attributes}
-            >
-              {documentNode.innerHTML}
-            </p>
-            <div className="document__node-height-div">
-              <p className="document__node-text document__node-text--hidden-p" />
-            </div>
-          </div>
-        );
-      default:
-        // Unknown element, silently throw error here
-        return <div />;
-    }
+        </div>
+      </div>
+    );
   }
 }
 
