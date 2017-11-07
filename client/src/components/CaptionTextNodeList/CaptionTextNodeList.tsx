@@ -57,14 +57,12 @@ class CaptionTextNodeList extends React.Component<
     }
 
     let speakerRange = this.props.captionMeta.speakerMap[speakerIdx];
+    const captionTextContainer = this.captionNodeContainer.children[speakerIdx]
+      .children[1];
     let hiddenTextElement;
     // This lookup should match the DOM structure of CaptionTextNode
-    if (
-      this.captionNodeContainer.children[speakerIdx] &&
-      this.captionNodeContainer.children[speakerIdx].children[1]
-    ) {
-      hiddenTextElement = this.captionNodeContainer.children[speakerIdx]
-        .children[1].children[0];
+    if (captionTextContainer && captionTextContainer.children[1]) {
+      hiddenTextElement = captionTextContainer.children[1];
     } else {
       throw "Couldn't find caption node at index " + speakerIdx;
     }
@@ -81,16 +79,18 @@ class CaptionTextNodeList extends React.Component<
     }
 
     // scroll to here
-    let parentTop = this.captionNodeContainer.getBoundingClientRect().top;
+    const parentTop = this.captionNodeContainer.getBoundingClientRect().top;
 
     // Get the offsetTop value of the child element.
     // The line height is 25px, so add 25 for each
     // time the line has wrapped, which is equal to
-    // the value of the `idx` variable
-    let childTop =
+    // the value of the `idx` variable.
+    // Add 43px for the line-height and font-size of the speaker name
+    const childTop =
       (this.captionNodeContainer.children[speakerIdx] as HTMLElement)
         .offsetTop +
-      25 * numberOfLines;
+      25 * numberOfLines +
+      43;
 
     // Set the parent container's scrollTop value to the offsetTop
     this.captionNodeContainer.scrollTop = childTop;
@@ -112,6 +112,13 @@ class CaptionTextNodeList extends React.Component<
   render() {
     let wordCount: number;
     let nextWordCount: number;
+    if (
+      this.props.captionMeta.speakerMap.length !==
+      this.props.documentNodes.length
+    ) {
+      throw "Speaker map length not equal to number of caption nodes.";
+    }
+    const speakerMap = this.props.captionMeta.speakerMap;
     return (
       <div
         className={this.props.className}
@@ -127,6 +134,7 @@ class CaptionTextNodeList extends React.Component<
             <CaptionTextNode
               key={element.props.offset}
               documentNode={element}
+              speaker={speakerMap[index].speaker}
             />
           );
         })}
