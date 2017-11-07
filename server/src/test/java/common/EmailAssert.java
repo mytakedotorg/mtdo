@@ -33,6 +33,7 @@ public class EmailAssert extends AbstractAssert<EmailAssert, MimeMessage> {
 		return Assertions.assertThat(bodyRaw());
 	}
 
+	/** @param all the HTML (including spaces) before the <a href tag you're interested in. */
 	public String extractLink(String leadIn) {
 		Pattern pattern = Pattern.compile(leadIn + "<a href=\"(.*?)\"");
 		Matcher matcher = pattern.matcher(bodyRaw());

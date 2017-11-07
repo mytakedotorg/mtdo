@@ -7,11 +7,11 @@
 package common;
 
 import com.diffplug.common.base.Errors;
+import com.google.common.base.Preconditions;
 import java.io.File;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -47,7 +47,7 @@ public class Snapshot {
 					Files.write(testName.testFile, actual.getBytes(StandardCharsets.UTF_8));
 				}
 			}
-		} catch (ClassNotFoundException | IOException | URISyntaxException e) {
+		} catch (ClassNotFoundException | IOException e) {
 			throw Errors.asRuntime(e);
 		}
 	}
@@ -76,7 +76,7 @@ public class Snapshot {
 					throw new AssertionError("User rejected");
 				}
 			}
-		} catch (ClassNotFoundException | IOException | URISyntaxException e) {
+		} catch (ClassNotFoundException | IOException e) {
 			throw Errors.asRuntime(e);
 		}
 	}
@@ -86,30 +86,35 @@ public class Snapshot {
 		Map<String, String> map = new LinkedHashMap<>();
 
 		public OpenBrowser add(String url, String content) {
+			Preconditions.checkArgument(url.startsWith("/"));
 			map.put(url, content);
 			return this;
 		}
 
-		public boolean isYes(String message) throws IOException, URISyntaxException {
-			ServerSocket socket = new ServerSocket(0);
-			int port = socket.getLocalPort();
-			socket.close();
+		public boolean isYes(String message) {
+			try {
+				ServerSocket socket = new ServerSocket(0);
+				int port = socket.getLocalPort();
+				socket.close();
 
-			Jooby jooby = new Jooby();
-			jooby.port(port);
-			map.forEach((url, content) -> {
-				jooby.get(url, () -> content);
-			});
-			jooby.start("server.join=false");
+				Jooby jooby = new Jooby();
+				jooby.port(port);
+				map.forEach((url, content) -> {
+					jooby.get(url, () -> content);
+				});
+				jooby.start("server.join=false");
 
-			for (String url : map.keySet()) {
-				java.awt.Desktop.getDesktop().browse(new URI("http://localhost:" + port + url));
+				for (String url : map.keySet()) {
+					java.awt.Desktop.getDesktop().browse(new URI("http://localhost:" + port + url));
+				}
+
+				JOptionPane.getRootFrame().setAlwaysOnTop(true);
+				int dialogResult = JOptionPane.showConfirmDialog(null, message);
+				jooby.stop();
+				return dialogResult == JOptionPane.YES_OPTION;
+			} catch (Exception e) {
+				throw Errors.asRuntime(e);
 			}
-
-			JOptionPane.getRootFrame().setAlwaysOnTop(true);
-			int dialogResult = JOptionPane.showConfirmDialog(null, message);
-			jooby.stop();
-			return dialogResult == JOptionPane.YES_OPTION;
 		}
 	}
 
