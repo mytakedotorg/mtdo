@@ -127,6 +127,9 @@ $document-margin-top: 0px;
 .document__node {
   position: relative;
 }
+.document__node-text-container {
+  position: relative;
+}
 .document__node-height-div {
   position: absolute;
   z-index: -1;
@@ -139,6 +142,9 @@ $document-margin-top: 0px;
 .document__node-text {
   margin-top: 0;
   background-color: palette(document, background);
+}
+.document__node-text--speaker {
+  user-select: none;
 }
 .document__node-text--h2 {
   @include heading2;
