@@ -140,7 +140,7 @@ public class CreateAccountForm extends MetaFormDef.HandleValid {
 					path.param(CREATE_USERNAME, username);
 					path.param(CREATE_EMAIL, email);
 
-					String html = views.Auth.emailConfirm.template(username, path.build()).renderToString();
+					String html = views.Auth.createAccountEmail.template(username, path.build()).renderToString();
 					req.require(HtmlEmail.class)
 							.setHtmlMsg(html)
 							.setSubject("MyTake.org account confirmation")
@@ -148,7 +148,7 @@ public class CreateAccountForm extends MetaFormDef.HandleValid {
 							.setFrom(Emails.FEEDBACK)
 							.send();
 
-					rsp.send(views.Auth.confirmationSent.template(email, Emails.FEEDBACK));
+					rsp.send(views.Auth.createAccountEmailSent.template(email, Emails.FEEDBACK));
 					return true;
 				}
 			}
@@ -179,7 +179,7 @@ public class CreateAccountForm extends MetaFormDef.HandleValid {
 				String username = getNullToEmpty(req, CREATE_USERNAME);
 				String email = getNullToEmpty(req, CREATE_EMAIL);
 				validateUsernameEmail(username, email, dsl, validation);
-				rsp.send(views.Auth.confirmUnknown.template(validation.markup(AuthModule.URL_login)));
+				rsp.send(views.Auth.createAccountUnknown.template(validation.markup(AuthModule.URL_login)));
 			} else {
 				AccountRecord account = dsl.newRecord(ACCOUNT);
 				account.setUsername(link.getUsername());
@@ -200,7 +200,7 @@ public class CreateAccountForm extends MetaFormDef.HandleValid {
 						.execute();
 
 				AuthUser.login(account.into(Account.class), req, rsp);
-				rsp.send(views.Auth.confirmSuccess.template(account.getUsername()));
+				rsp.send(views.Auth.createAccountSuccess.template(account.getUsername()));
 			}
 		}
 	}

@@ -21,7 +21,7 @@ import org.jooby.Status;
 import org.junit.ClassRule;
 import org.junit.Test;
 
-public class AccountCreationTest {
+public class CreateAccountTest {
 	@ClassRule
 	public static JoobyDevRule dev = JoobyDevRule.empty();
 
