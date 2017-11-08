@@ -59,6 +59,7 @@ rocker {
 		outputDir = file('src/main/rocker-generated')
 		classDir = file('src/test/resources')
 		extendsModelClass = 'common.CustomRockerModel'
+		extendsClass = 'common.CustomRockerTemplate'
 	}
 }
 // enforce tab indentation on rocker files
@@ -87,6 +88,11 @@ dependencies {
 	compile "org.jooby:jooby-jooq:$JOOBY_VER"
 	compile "org.jooby:jooby-commons-email:$JOOBY_VER"
 	compile "org.jooby:jooby-whoops:$JOOBY_VER"
+	compile "org.jooby:jooby-assets:$JOOBY_VER"
+	// jooby assets only
+	compile "org.jooby:jooby-assets-sass:$JOOBY_VER"
+	compile "org.jooby:jooby-assets-clean-css:$JOOBY_VER"
+	compile "org.jooby:jooby-assets-uglify:$JOOBY_VER"
 
 	// jooq (version is set by jooq DSL)
 	compile 'org.jooq:jooq'
@@ -125,6 +131,10 @@ sourceSets {
 //////////////
 // joobyRun //
 //////////////
+apply plugin: 'application'
+apply plugin: 'jooby'
+mainClassName = 'common.Prod'
+
 task runProd(type: JavaExec, dependsOn: classes) {
 	description = 'Run app in prod mode'
 	classpath = sourceSets.main.runtimeClasspath
