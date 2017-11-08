@@ -81,11 +81,11 @@ repositories { mavenCentral() }
 
 dependencies {
 	// jooby
-	compile 'org.jooby:jooby-netty:1.1.3'
-	compile 'org.jooby:jooby-rocker:1.1.3'
-	compile 'org.jooby:jooby-jooq:1.1.3'
-	compile 'org.jooby:jooby-commons-email:1.1.3'
-	compile 'org.apache.commons:commons-email:1.5' // commons-email has a newer version now
+	compile 'org.jooby:jooby-netty:1.2.2'
+	compile 'org.jooby:jooby-rocker:1.2.2'
+	compile 'org.jooby:jooby-jooq:1.2.2'
+	compile 'org.jooby:jooby-commons-email:1.2.2'
+	//compile 'org.apache.commons:commons-email:1.5' // commons-email has a newer version now
 
 	// jooq (version is set by jooq DSL)
 	compile 'org.jooq:jooq'

@@ -14,6 +14,7 @@ import java.util.Random;
 import javax.sql.DataSource;
 import org.flywaydb.core.Flyway;
 import org.jooby.Jooby;
+import org.jooby.jdbc.Jdbc;
 import org.jooby.jooq.jOOQ;
 import org.jooby.mail.CommonsEmail;
 import org.jooby.rocker.Rockerby;
@@ -32,6 +33,7 @@ public class Prod extends Jooby {
 		});
 		common(this);
 		use(new HerokuDatabase.Module());
+		use(new Jdbc());
 		use(new jOOQ());
 		use((env, conf, binder) -> {
 			env.onStart(registry -> {

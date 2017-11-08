@@ -22,6 +22,7 @@ import java.util.Map;
 import java.util.Random;
 import org.jooby.Env;
 import org.jooby.Jooby;
+import org.jooby.jdbc.Jdbc;
 import org.jooby.jooq.jOOQ;
 
 /**
@@ -42,6 +43,7 @@ public class Dev extends Jooby {
 		}
 		Prod.common(this);
 		use(new EmbeddedPostgresModule());
+		use(new Jdbc());
 		use(new jOOQ());
 		Prod.controllers(this);
 	}
