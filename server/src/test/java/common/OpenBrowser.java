@@ -17,6 +17,12 @@ import org.jooby.Jooby;
 
 /** Opens a browser to show content. */
 class OpenBrowser {
+	/** Returns true if we are in an interactive environment */
+	public static boolean isInteractive() {
+		String ci = System.getenv("CI");
+		return ci == null;
+	}
+
 	Map<String, String> map = new LinkedHashMap<>();
 
 	public OpenBrowser add(String url, String content) {

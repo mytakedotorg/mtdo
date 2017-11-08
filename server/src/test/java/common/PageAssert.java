@@ -6,6 +6,7 @@
  */
 package common;
 
+import com.diffplug.common.base.Errors;
 import com.diffplug.common.base.Throwing;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
@@ -62,10 +63,17 @@ public class PageAssert {
 		try {
 			run.run();
 		} catch (Throwable t) {
-			t.printStackTrace();
-			new OpenBrowser()
-					.add("/failedAssertion", body)
-					.isYes("Failed assertion, press any button");
+			if (OpenBrowser.isInteractive()) {
+				t.printStackTrace();
+				new OpenBrowser()
+						.add("/failedAssertion", body)
+						.isYes("Failed assertion, press any button");
+			}
+			if (t instanceof Error) {
+				throw (Error) t;
+			} else {
+				throw Errors.asRuntime(t);
+			}
 		}
 		return this;
 	}

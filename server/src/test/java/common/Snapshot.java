@@ -18,34 +18,6 @@ import org.junit.Assert;
 
 public class Snapshot {
 	/**
-	 * Pauses and displays the current and snapshot values in a browser.
-	 * 
-	 * @param id the name of the snapshot, must be unique per test class
-	 * @param actual the value which needs to equal the snapshotted value
-	 */
-	public static void matchDebug(String id, String actual) {
-		try {
-			IdSnapshot testName = IdSnapshot.capture(id);
-			String expected = testName.expected();
-			if (expected.equals(actual)) {
-				new OpenBrowser()
-						.add("/same", actual)
-						.isYes("Expected and actual match for " + testName.label());
-			} else {
-				boolean overwrite = new OpenBrowser()
-						.add("/expected", expected)
-						.add("/actual", actual)
-						.isYes("Click yes to overwrite expected with actual for " + testName.label());
-				if (overwrite) {
-					Files.write(testName.testFile, actual.getBytes(StandardCharsets.UTF_8));
-				}
-			}
-		} catch (ClassNotFoundException | IOException e) {
-			throw Errors.asRuntime(e);
-		}
-	}
-
-	/**
 	 * If the snapshot doesn't match, it will block and spawn a browser
 	 * to display the snapshots.
 	 * 
@@ -54,17 +26,33 @@ public class Snapshot {
 	 */
 	public static void match(String id, String actual) {
 		try {
-			IdSnapshot testName = IdSnapshot.capture(id);
-			if (Files.exists(testName.testFile)) {
-				Assert.assertEquals(testName.expected(), actual);
+			IdSnapshot snapshot = IdSnapshot.capture(id);
+			if (Files.exists(snapshot.testFile)) {
+				try {
+					Assert.assertEquals(snapshot.expected(), actual);
+				} catch (Error e) {
+					if (OpenBrowser.isInteractive()) {
+						throw e;
+					} else {
+						e.printStackTrace();
+						boolean overwrite = new OpenBrowser()
+								.add("/expected", snapshot.expected())
+								.add("/actual", actual)
+								.isYes("Click yes to overwrite expected with actual for " + snapshot.label());
+						if (overwrite) {
+							Files.write(snapshot.testFile, actual.getBytes(StandardCharsets.UTF_8));
+						}
+					}
+				}
 			} else {
+				Assert.assertTrue("No snapshot for " + id, OpenBrowser.isInteractive());
 				boolean writeSnapshot = new OpenBrowser()
 						.add("/", actual)
-						.isYes("Is this snapshot okay for " + testName.label());
+						.isYes("Is this snapshot okay for " + snapshot.label());
 				if (writeSnapshot) {
-					Files.createDirectories(testName.testFile.getParent());
+					Files.createDirectories(snapshot.testFile.getParent());
 					byte[] toWrite = actual.getBytes(StandardCharsets.UTF_8);
-					Files.write(testName.testFile, toWrite);
+					Files.write(snapshot.testFile, toWrite);
 				} else {
 					throw new AssertionError("User rejected");
 				}
