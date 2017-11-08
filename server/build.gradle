@@ -103,21 +103,18 @@ dependencies {
 	compile 'com.google.code.gson:gson:2.8.2'
 
 	// code quality annotations, especially @Nullable
-	compileOnly 'com.google.code.findbugs:jsr305:3.0.0'
-	compileOnly 'com.google.errorprone:error_prone_annotations:2.1.1'
+	compileOnly 'com.google.code.findbugs:jsr305:3.0.2'
+	compileOnly 'com.google.errorprone:error_prone_annotations:2.1.2'
 
 	testCompile 'junit:junit:4.12'
 	testCompile 'org.assertj:assertj-core:3.8.0'
-	testCompile 'io.rest-assured:rest-assured:3.0.3'
+	testCompile 'io.rest-assured:rest-assured:3.0.5'
 	testCompile 'com.icegreen:greenmail:1.5.5'					// http://www.icegreen.com/greenmail/
-	testCompile 'com.opentable.components:otj-pg-embedded:0.9.0'	// https://github.com/opentable/otj-pg-embedded
+	testCompile 'com.opentable.components:otj-pg-embedded:0.10.0'	// https://github.com/opentable/otj-pg-embedded
 	testCompile "com.fizzed:rocker-compiler:${rockerVersion}"		// required for hotreload
 
 	// dep for auth
-	compile 'com.auth0:java-jwt:3.2.0'
-}
-configurations.all {
-	exclude group: 'org.slf4j', module: 'slf4j-log4j12'
+	compile 'com.auth0:java-jwt:3.3.0'
 }
 sourceSets {
 	test.compileClasspath += configurations.compileOnly
