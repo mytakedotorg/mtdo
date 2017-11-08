@@ -2,6 +2,7 @@
   position: relative;
   height: 0px;
   overflow: scroll;
+  background-color: palette(document, background);
   @include body;
   &:last-child {
     padding-bottom: 200px;

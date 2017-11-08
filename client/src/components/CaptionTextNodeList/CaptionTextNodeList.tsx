@@ -14,7 +14,9 @@ interface CaptionTextNodeListProps {
   captionMeta: CaptionMeta;
 }
 
-interface CaptionTextNodeListState {}
+interface CaptionTextNodeListState {
+  currentSpeaker: string;
+}
 
 class CaptionTextNodeList extends React.Component<
   CaptionTextNodeListProps,
@@ -23,7 +25,24 @@ class CaptionTextNodeList extends React.Component<
   private captionNodeContainer: HTMLDivElement;
   constructor(props: CaptionTextNodeListProps) {
     super(props);
+
+    this.state = {
+      currentSpeaker: props.captionMeta.speakerMap[0].speaker
+    };
   }
+  handleScroll = () => {
+    let speakerIdx = bs(
+      this.captionNodeContainer.children,
+      0,
+      (child: HTMLDivElement, idx: number) => {
+        return child.scrollTop - idx;
+      }
+    );
+
+    // this.setState({
+    // 	currentSpeaker: this.props.captionMeta.speakerMap[speakerIdx].speaker
+    // });
+  };
   setScrollView = () => {
     const timer = this.props.captionTimer;
 
@@ -94,6 +113,10 @@ class CaptionTextNodeList extends React.Component<
 
     // Set the parent container's scrollTop value to the offsetTop
     this.captionNodeContainer.scrollTop = childTop;
+
+    this.setState({
+      currentSpeaker: this.props.captionMeta.speakerMap[speakerIdx].speaker
+    });
   };
   componentDidMount() {
     this.setScrollView();
@@ -120,24 +143,30 @@ class CaptionTextNodeList extends React.Component<
     }
     const speakerMap = this.props.captionMeta.speakerMap;
     return (
-      <div
-        className={this.props.className}
-        onMouseUp={this.props.onMouseUp}
-        ref={(captionNodeContainer: HTMLDivElement) =>
-          (this.captionNodeContainer = captionNodeContainer)}
-      >
-        {this.props.documentNodes.map(function(
-          element: FoundationNode,
-          index: number
-        ) {
-          return (
-            <CaptionTextNode
-              key={element.props.offset}
-              documentNode={element}
-              speaker={speakerMap[index].speaker}
-            />
-          );
-        })}
+      <div className="document__text">
+        <h3 className="document__node-text document__node-text--speaker-top">
+          {this.state.currentSpeaker}
+        </h3>
+        <div
+          className={this.props.className}
+          onMouseUp={this.props.onMouseUp}
+          ref={(captionNodeContainer: HTMLDivElement) =>
+            (this.captionNodeContainer = captionNodeContainer)}
+          onScroll={this.handleScroll}
+        >
+          {this.props.documentNodes.map(function(
+            element: FoundationNode,
+            index: number
+          ) {
+            return (
+              <CaptionTextNode
+                key={element.props.offset}
+                documentNode={element}
+                speaker={speakerMap[index].speaker}
+              />
+            );
+          })}
+        </div>
       </div>
     );
   }
