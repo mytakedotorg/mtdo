@@ -80,12 +80,13 @@ tasks.eclipse.dependsOn([
 repositories { mavenCentral() }
 
 dependencies {
+	String JOOBY_VER = '1.2.2'
 	// jooby
-	compile 'org.jooby:jooby-netty:1.2.2'
-	compile 'org.jooby:jooby-rocker:1.2.2'
-	compile 'org.jooby:jooby-jooq:1.2.2'
-	compile 'org.jooby:jooby-commons-email:1.2.2'
-	//compile 'org.apache.commons:commons-email:1.5' // commons-email has a newer version now
+	compile "org.jooby:jooby-netty:$JOOBY_VER"
+	compile "org.jooby:jooby-rocker:$JOOBY_VER"
+	compile "org.jooby:jooby-jooq:$JOOBY_VER"
+	compile "org.jooby:jooby-commons-email:$JOOBY_VER"
+	compile "org.jooby:jooby-whoops:$JOOBY_VER"
 
 	// jooq (version is set by jooq DSL)
 	compile 'org.jooq:jooq'

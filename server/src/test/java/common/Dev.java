@@ -24,6 +24,7 @@ import org.jooby.Env;
 import org.jooby.Jooby;
 import org.jooby.jdbc.Jdbc;
 import org.jooby.jooq.jOOQ;
+import org.jooby.whoops.Whoops;
 
 /**
  * The app that we run in unit tests.  See {@link Prod} in the main
@@ -46,6 +47,7 @@ public class Dev extends Jooby {
 		use(new Jdbc());
 		use(new jOOQ());
 		Prod.controllers(this);
+		use(new Whoops());
 	}
 
 	static class EmbeddedPostgresModule implements Jooby.Module {
