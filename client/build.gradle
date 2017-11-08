@@ -22,3 +22,13 @@ gulp_buildProd.inputs.file('postcss.config.js')
 gulp_buildProd.inputs.file('tsconfig.json')
 gulp_buildProd.inputs.file('webpack.config.js')
 gulp_buildProd.outputs.dir('dist')
+
+// map prettier to spotless (to match server)
+task spotlessCheck(dependsOn: npm_run_formatlist)
+task spotlessApply(dependsOn: npm_run_formatwrite)
+
+// check should run all tests
+task check(dependsOn: [
+	npm_run_test,
+	spotlessCheck
+])
