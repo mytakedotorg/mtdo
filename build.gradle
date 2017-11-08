@@ -1,7 +1,10 @@
 buildscript { repositories { mavenCentral() } }
-plugins { id 'com.diffplug.gradle.spotless' version '3.6.0' // https://github.com/diffplug/spotless/blob/master/plugin-gradle/README.md
+plugins {
+	id 'com.diffplug.gradle.eclipse.resourcefilters' version '3.8.1'
+	id 'com.diffplug.gradle.spotless' version '3.6.0' // https://github.com/diffplug/spotless/blob/master/plugin-gradle/README.md
 }
 
+// format build files
 spotless {
 	groovyGradle {
 		target 'build.gradle', 'buildSrc/build.gradle', 'client/build.gradle', 'server/build.gradle'
@@ -12,3 +15,17 @@ spotless {
 		paddedCell()
 	}
 }
+
+// exclude the gradle build folder
+allprojects {
+	buildscript { repositories { mavenCentral() } }
+	apply plugin: 'com.diffplug.gradle.eclipse.excludebuildfolder'
+}
+
+// root eclipse project
+eclipse { project { name = 'mytake-root' } }
+eclipseResourceFilters {
+	exclude().folders().name('buildSrc')
+	exclude().folders().name('server')
+}
+tasks.eclipse.dependsOn(tasks.cleanEclipse)
