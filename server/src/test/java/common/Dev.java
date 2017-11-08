@@ -22,8 +22,6 @@ import java.util.Map;
 import java.util.Random;
 import org.jooby.Env;
 import org.jooby.Jooby;
-import org.jooby.jdbc.Jdbc;
-import org.jooby.jooq.jOOQ;
 import org.jooby.whoops.Whoops;
 
 /**
@@ -42,10 +40,8 @@ public class Dev extends Jooby {
 		if (!System.getenv().containsKey("CI")) {
 			RockerRuntime.getInstance().setReloading(true);
 		}
-		Prod.common(this);
 		use(new EmbeddedPostgresModule());
-		use(new Jdbc());
-		use(new jOOQ());
+		Prod.common(this);
 		Prod.controllers(this);
 		use(new Whoops());
 	}

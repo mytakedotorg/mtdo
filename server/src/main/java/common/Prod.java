@@ -31,10 +31,8 @@ public class Prod extends Jooby {
 		use((env, conf, binder) -> {
 			binder.bind(Time.class).toInstance(() -> System.currentTimeMillis());
 		});
-		common(this);
 		use(new HerokuDatabase.Module());
-		use(new Jdbc());
-		use(new jOOQ());
+		common(this);
 		use((env, conf, binder) -> {
 			env.onStart(registry -> {
 				Flyway flyway = new Flyway();
@@ -49,6 +47,8 @@ public class Prod extends Jooby {
 
 	static void common(Jooby jooby) {
 		jooby.use(new CommonsEmail());
+		jooby.use(new Jdbc());
+		jooby.use(new jOOQ());
 		jooby.use(new Rockerby());
 	}
 
