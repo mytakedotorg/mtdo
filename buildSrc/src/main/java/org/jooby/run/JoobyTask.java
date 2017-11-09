@@ -215,11 +215,8 @@ import java.util.stream.Collectors;
 
 import org.gradle.api.Project;
 import org.gradle.api.internal.ConventionTask;
-import org.gradle.api.invocation.Gradle;
-import org.gradle.api.tasks.GradleBuild;
 import org.gradle.api.tasks.InputFiles;
 import org.gradle.api.tasks.TaskAction;
-import org.gradle.process.ExecSpec;
 import org.gradle.tooling.GradleConnector;
 import org.gradle.tooling.ProjectConnection;
 import org.jooby.funzy.Try;

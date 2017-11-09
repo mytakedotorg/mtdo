@@ -261,7 +261,6 @@ import java.io.FileWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 import org.gradle.api.internal.ConventionTask;
@@ -272,7 +271,6 @@ import org.gradle.api.tasks.OutputFile;
 import org.gradle.api.tasks.TaskAction;
 import org.jooby.assets.AssetCompiler;
 
-import com.google.common.base.Throwables;
 import com.google.common.io.Files;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;

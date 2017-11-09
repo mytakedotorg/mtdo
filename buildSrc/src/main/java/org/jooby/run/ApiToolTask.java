@@ -227,10 +227,6 @@ import java.nio.file.Path;
 
 public class ApiToolTask extends ConventionTask {
 
-  @SuppressWarnings("serial")
-  private static class Done extends RuntimeException {
-  }
-
   private String mainClassName;
 
   @TaskAction

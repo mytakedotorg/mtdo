@@ -219,7 +219,6 @@ package org.jooby.run;
 
 import java.net.URLClassLoader;
 import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 
 import com.typesafe.config.Config;
 import org.gradle.api.Project;

@@ -210,7 +210,6 @@ import org.gradle.api.internal.ConventionMapping;
 import org.gradle.api.invocation.Gradle;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
