@@ -52,7 +52,8 @@ public class CreateAccountForm extends MetaFormDef.HandleValid {
 			"import",	// import from e.g. Google docs?
 			"api",		// for api access
 			"settings",	// for user settings
-			"evidence",	// for service evidence
+			"evidence", "foundation",	// for serving evidence
+			"blog",		// for a blog
 			"aboutus",  // for us
 			"legal",    // for legal attributes
 			url(AuthModule.URL_login),
