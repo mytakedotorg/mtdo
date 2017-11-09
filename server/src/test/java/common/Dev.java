@@ -22,6 +22,8 @@ import java.util.Map;
 import java.util.Random;
 import org.jooby.Env;
 import org.jooby.Jooby;
+import org.jooby.json.Jackson;
+import org.jooby.livereload.LiveReload;
 import org.jooby.whoops.Whoops;
 
 /**
@@ -44,6 +46,8 @@ public class Dev extends Jooby {
 		Prod.common(this);
 		Prod.controllers(this);
 		use(new Whoops());
+		use(new Jackson());
+		use(new LiveReload());
 	}
 
 	static class EmbeddedPostgresModule implements Jooby.Module {
