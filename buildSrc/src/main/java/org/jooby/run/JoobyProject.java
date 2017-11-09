@@ -266,6 +266,10 @@ public class JoobyProject {
     if (provided != null) {
       provided.getFiles().forEach(cp::add);
     }
+    Configuration compileOnly = project.getConfigurations().findByName("compileOnly");
+    if (compileOnly != null) {
+      compileOnly.getFiles().forEach(cp::add);
+    }
 
     return cp;
   }
