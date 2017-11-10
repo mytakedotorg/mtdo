@@ -51,7 +51,7 @@ public class AuthModule implements Jooby.Module {
 				return views.Auth.alreadyLoggedIn.template(userOpt.get().username());
 			} else {
 				// initialize the form parameters
-				MetaFormValidation login = MetaFormValidation.empty(CreateAccountForm.class)
+				MetaFormValidation login = MetaFormValidation.empty(LoginForm.class)
 						.initIfPresent(req, REDIRECT, LOGIN_EMAIL);
 				MetaFormValidation createAccount = MetaFormValidation.empty(CreateAccountForm.class)
 						.initIfPresent(req, REDIRECT, CREATE_USERNAME, CREATE_EMAIL);
