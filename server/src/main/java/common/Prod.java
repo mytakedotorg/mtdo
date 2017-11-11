@@ -14,7 +14,6 @@ import java.util.Random;
 import javax.sql.DataSource;
 import org.flywaydb.core.Flyway;
 import org.jooby.Jooby;
-import org.jooby.assets.Assets;
 import org.jooby.jdbc.Jdbc;
 import org.jooby.jooq.jOOQ;
 import org.jooby.mail.CommonsEmail;
@@ -42,6 +41,7 @@ public class Prod extends Jooby {
 				flyway.migrate();
 			});
 		});
+		CustomAssets.initProd(this);
 		use(new InitialData.Module());
 		controllers(this);
 	}
@@ -51,7 +51,6 @@ public class Prod extends Jooby {
 		jooby.use(new Jdbc());
 		jooby.use(new jOOQ());
 		jooby.use(new Rockerby());
-		jooby.use(new Assets());
 	}
 
 	static void controllers(Jooby jooby) {
