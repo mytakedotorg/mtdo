@@ -201,91 +201,155 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-/**
- * This copy of Woodstox XML processor is licensed under the
- * Apache (Software) License, version 2.0 ("the License").
- * See the License for details about distribution rights, and the
- * specific rights regarding derivate works.
- *
- * You may obtain a copy of the License at:
- *
- * http://www.apache.org/licenses/
- *
- * A copy is also included in the downloadable source code package
- * containing Woodstox, in file "ASL2.0", under the same directory
- * as this file.
- */
-package org.jooby.run;
+package org.mytake.gradle.jooby;
 
+import org.gradle.api.Plugin;
 import org.gradle.api.Project;
-import org.gradle.api.internal.ConventionTask;
-import org.gradle.api.tasks.InputDirectory;
-import org.gradle.api.tasks.TaskAction;
-import org.jooby.Jooby;
-import org.jooby.spec.RouteProcessor;
-import org.jooby.spec.RouteSpec;
+import org.gradle.api.Task;
+import org.gradle.api.internal.ConventionMapping;
+import org.gradle.api.invocation.Gradle;
 
 import java.io.File;
-import java.nio.file.Path;
-import java.util.stream.Collectors;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
-public class SpecTask extends ConventionTask {
+public class JoobyPlugin implements Plugin<Project> {
 
-  @SuppressWarnings("serial")
-  private static class Done extends RuntimeException {
+  static {
+    // Gradle hack: OS j2v8 dependency
+    String family = os(System.getProperty("os.name", "").toLowerCase());
+    String arch = osarch(System.getProperty("os.arch", "").toLowerCase());
+    Object j2v8 = "j2v8_" + family + "_" + arch;
+    System.getProperties().put("j2v8", j2v8);
   }
 
-  private String mainClassName;
+  @Override
+  public void apply(final Project project) {
+    configureJoobyRun(project);
 
-  @InputDirectory
-  private File source;
+    configureJoobyAssets(project);
 
-  @TaskAction
-  public void process() throws Throwable {
-    long start = System.currentTimeMillis();
-    try {
-      Project project = getProject();
-      new JoobyContainer(project)
-          .run(getMainClassName(), (app, conf) -> {
-            process(app, getSource().toPath(), new JoobyProject(project).classes().toPath());
+    configureJoobySpec(project);
+
+    configureApiTool(project);
+  }
+
+  private void configureJoobyRun(final Project project) {
+    project.getTasks()
+        .withType(JoobyTask.class, joobyRun -> {
+          ConventionMapping mapping = joobyRun.getConventionMapping();
+
+          mapping.map("classpath", () -> new JoobyProject(project).classpath());
+
+          mapping.map("src", () -> new JoobyProject(project).sources());
+
+          mapping.map("mainClassName", () -> project.getProperties().get("mainClassName"));
+
+          mapping.map("srcExtensions", () -> Arrays.asList(".java", ".conf", ".properties", ".kt"));
+
+          mapping.map("compiler", () -> {
+            File eclipseClasspath = new File(project.getProjectDir(), ".classpath");
+            return eclipseClasspath.exists() ? "off" : "on";
           });
-    } catch (Done ex) {
-      long end = System.currentTimeMillis();
-      getLogger().info("compilation took " + (end - start) + "ms");
+
+          Gradle gradle = project.getGradle();
+          mapping.map("block", () -> !gradle.getStartParameter().isContinuous());
+          mapping.map("logLevel", () -> gradle.getStartParameter().getLogLevel().name());
+        });
+
+    Map<String, Object> options = new HashMap<>();
+    options.put(Task.TASK_TYPE, JoobyTask.class);
+    options.put(Task.TASK_DEPENDS_ON, "classes");
+    options.put(Task.TASK_NAME, "joobyRun");
+    options.put(Task.TASK_DESCRIPTION, "Run, debug and hot reload applications");
+    options.put(Task.TASK_GROUP, "jooby");
+    project.getTasks().create(options);
+  }
+
+  private void configureJoobyAssets(final Project project) {
+    project.getTasks()
+        .withType(AssetTask.class, task -> {
+          ConventionMapping mapping = task.getConventionMapping();
+
+          mapping.map("env", () -> "dist");
+
+          mapping.map("maxAge", () -> "365d");
+
+          mapping.map("mainClassName", () -> project.getProperties().get("mainClassName"));
+
+          mapping.map("output", () -> new JoobyProject(project).classes());
+
+          mapping.map("assemblyOutput", () -> new File(project.getBuildDir(), "__public_"));
+        });
+
+    Map<String, Object> options = new HashMap<>();
+    options.put(Task.TASK_TYPE, AssetTask.class);
+    options.put(Task.TASK_DEPENDS_ON, "classes");
+    options.put(Task.TASK_NAME, "joobyAssets");
+    options.put(Task.TASK_DESCRIPTION, "Process, optimize and compress static files");
+    options.put(Task.TASK_GROUP, "jooby");
+    project.getTasks().create(options);
+  }
+
+  private void configureJoobySpec(final Project project) {
+    project.getTasks()
+        .withType(SpecTask.class, task -> {
+          ConventionMapping mapping = task.getConventionMapping();
+
+          mapping.map("mainClassName", () -> project.getProperties().get("mainClassName"));
+
+          mapping.map("source", () -> new JoobyProject(project).javaSrc());
+        });
+
+    Map<String, Object> options = new HashMap<>();
+    options.put(Task.TASK_TYPE, SpecTask.class);
+    options.put(Task.TASK_DEPENDS_ON, "classes");
+    options.put(Task.TASK_NAME, "joobySpec");
+    options.put(Task.TASK_DESCRIPTION, "Export your API/microservices outside a Jooby application");
+    options.put(Task.TASK_GROUP, "jooby");
+    project.getTasks().create(options);
+  }
+
+  private void configureApiTool(final Project project) {
+    project.getTasks()
+        .withType(ApiToolTask.class, task -> {
+          ConventionMapping mapping = task.getConventionMapping();
+          mapping.map("mainClassName", () -> project.getProperties().get("mainClassName"));
+        });
+
+    Map<String, Object> options = new HashMap<>();
+    options.put(Task.TASK_TYPE, ApiToolTask.class);
+    options.put(Task.TASK_DEPENDS_ON, "classes");
+    options.put(Task.TASK_NAME, "joobyApiTool");
+    options
+        .put(Task.TASK_DESCRIPTION, "Export your HTTP API to open standards like Swagger and RAML");
+    options.put(Task.TASK_GROUP, "jooby");
+
+    project.getTasks().create(options);
+  }
+
+  private static String os(final String os) {
+    if (os.contains("windows")) {
+      return "win32";
+    } else if (os.contains("linux")) {
+
+      return "linux";
+    } else if (os.contains("mac")) {
+      return "macosx";
     }
+    return os;
   }
 
-  private void process(final Jooby app, final Path srcdir, final Path bindir) {
-    getLogger().info("Source: {}", srcdir);
-    getLogger().info("Output: {}", bindir);
-    RouteProcessor processor = new RouteProcessor();
-    String[] name = app.getClass().getPackage().getName().split("\\.");
-    Path outdir = bindir;
-    for (String n : name) {
-      outdir = outdir.resolve(n);
+  private static String osarch(final String arch) {
+    if (arch.contains("x86_64")) {
+      return "x86_64";
+    } else if (arch.contains("x86")) {
+      return "x86";
+    } else if (arch.contains("amd64")) {
+      return "amd64";
     }
-    String routes = processor.compile(app, srcdir, outdir).stream()
-        .map(RouteSpec::toString)
-        .collect(Collectors.joining("\n"));
-    getLogger().debug(app.getClass().getSimpleName() + ".spec :\n" + routes);
-    // update task output
-    throw new Done();
+    return arch;
   }
-
-  public File getSource() {
-    return source;
-  }
-
-  public void setSource(final File source) {
-    this.source = source;
-  }
-
-  public String getMainClassName() {
-    return mainClassName;
-  }
-
-  public void setMainClassName(final String mainClassName) {
-    this.mainClassName = mainClassName;
-  }
-
 }

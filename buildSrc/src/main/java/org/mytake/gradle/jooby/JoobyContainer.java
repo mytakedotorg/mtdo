@@ -215,10 +215,11 @@
  * containing Woodstox, in file "ASL2.0", under the same directory
  * as this file.
  */
-package org.jooby.run;
+package org.mytake.gradle.jooby;
 
 import java.net.URLClassLoader;
 import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 import com.typesafe.config.Config;
 import org.gradle.api.Project;

@@ -31,5 +31,9 @@ gradlePlugin {
 			id = 'org.mytake.gradle.flywayjooq.embeddedpg'
 			implementationClass = 'org.mytake.gradle.flywayjooq.EmbeddedPgPlugin'
 		}
+		mytakeJooby {
+			id = 'org.mytake.jooby'
+			implementationClass = 'org.mytake.gradle.jooby.JoobyPlugin'
+		}
 	}
 }

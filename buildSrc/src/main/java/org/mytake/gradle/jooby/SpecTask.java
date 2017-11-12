@@ -201,195 +201,83 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package org.jooby.run;
-
-import java.io.File;
-import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
+/**
+ * This copy of Woodstox XML processor is licensed under the
+ * Apache (Software) License, version 2.0 ("the License").
+ * See the License for details about distribution rights, and the
+ * specific rights regarding derivate works.
+ *
+ * You may obtain a copy of the License at:
+ *
+ * http://www.apache.org/licenses/
+ *
+ * A copy is also included in the downloadable source code package
+ * containing Woodstox, in file "ASL2.0", under the same directory
+ * as this file.
+ */
+package org.mytake.gradle.jooby;
 
 import org.gradle.api.Project;
 import org.gradle.api.internal.ConventionTask;
-import org.gradle.api.tasks.InputFiles;
+import org.gradle.api.tasks.InputDirectory;
 import org.gradle.api.tasks.TaskAction;
-import org.gradle.tooling.GradleConnector;
-import org.gradle.tooling.ProjectConnection;
-import org.jooby.funzy.Try;
+import org.jooby.Jooby;
+import org.jooby.spec.RouteProcessor;
+import org.jooby.spec.RouteSpec;
 
-public class JoobyTask extends ConventionTask {
+import java.io.File;
+import java.nio.file.Path;
+import java.util.stream.Collectors;
 
-  private static final Object LOCK = new Object();
+public class SpecTask extends ConventionTask {
 
-  private static final List<String> XML_PROPS = Arrays.asList(
-      "javax.xml.parsers.DocumentBuilderFactory",
-      "javax.xml.parsers.SAXParserFactory",
-      "javax.xml.stream.XMLInputFactory",
-      "javax.xml.stream.XMLEventFactory",
-      "javax.xml.transform.TransformerFactory",
-      "javax.xml.stream.XMLOutputFactory",
-      "javax.xml.datatype.DatatypeFactory",
-      "org.xml.sax.driver");
-
-  private List<String> includes;
-
-  private List<String> excludes;
-
-  private String logLevel;
-
-  private boolean block;
-
-  private Set<File> classpath;
-
-  private Set<File> src;
-
-  private List<String> watchDirs;
-
-  private List<String> srcExtensions;
+  @SuppressWarnings("serial")
+  private static class Done extends RuntimeException {
+  }
 
   private String mainClassName;
 
-  private String compiler;
-
-  private ProjectConnection connection;
+  @InputDirectory
+  private File source;
 
   @TaskAction
-  public void run() throws Exception {
-    System.setProperty("logLevel", getLogLevel());
-
-    Project project = getProject();
-
-    String mId = project.getName();
-
-    List<File> cp = new ArrayList<>();
-
-    // conf & public
-    getClasspath().forEach(cp::add);
-
-    Main app = new Main(mId, getMainClassName(), toFiles(watchDirs),
-        cp.toArray(new File[cp.size()]));
-    if (includes != null) {
-      app.includes(includes.stream().collect(Collectors.joining(File.pathSeparator)));
-    }
-
-    if (excludes != null) {
-      app.excludes(excludes.stream().collect(Collectors.joining(File.pathSeparator)));
-    }
-
-    String compiler = getCompiler();
-    getLogger().info("compiler is {}", compiler);
-    if ("on".equalsIgnoreCase(compiler)) {
-      Path[] watchDirs = getSrc().stream()
-          .filter(File::exists)
-          .map(File::toPath)
-          .collect(Collectors.toList())
-          .toArray(new Path[0]);
-      getLogger().info("watching directories {}", Arrays.asList(watchDirs));
-
-      connection = GradleConnector.newConnector()
-          .useInstallation(project.getGradle().getGradleHomeDir())
-          .forProjectDirectory(project.getRootDir())
-          .connect();
-
-      Watcher watcher = new Watcher((k, path) -> {
-        if (getSrcExtensions().stream()
-            .anyMatch(ext -> path.toString().endsWith(ext))) {
-          runTask(connection, path, "classes");
-        }
-      }, watchDirs);
-      Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-        Try.run(() -> watcher.stop())
-          .onComplete(() -> connection.close())
-          .throwException();
-      }));
-      watcher.start();
-    }
-
-    String[] args = project.getGradle().getStartParameter().getProjectProperties()
-        .entrySet().stream().map(e -> e.toString()).collect(Collectors.toList())
-        .toArray(new String[0]);
-    app.run(isBlock(), args);
-  }
-
-  private List<File> toFiles(final List<String> watchDirs) {
-    List<File> files = new ArrayList<>();
-    if (watchDirs != null) {
-      watchDirs.forEach(f -> files.add(new File(f)));
-    }
-    return files;
-  }
-
-  private void runTask(final ProjectConnection connection, final Path path, final String task) {
-    synchronized (LOCK) {
-      Map<String, String> xml = new HashMap<>();
-      try {
-        // clean jaxp
-        XML_PROPS.forEach(p -> xml.put(p, (String) System.getProperties().remove(p)));
-
-        try {
-          connection.newBuild()
-              .setStandardError(System.err)
-              .setStandardOutput(System.out)
-              .forTasks(task)
-              .run();
-        } catch (Exception ex) {
-          getLogger().debug("Execution of " + task + " resulted in exception", ex);
-        }
-
-      } finally {
-        // restore jaxp
-        xml.forEach((k, v) -> {
-          if (v != null) {
-            System.setProperty(k, v);
-          }
-        });
-      }
+  public void process() throws Throwable {
+    long start = System.currentTimeMillis();
+    try {
+      Project project = getProject();
+      new JoobyContainer(project)
+          .run(getMainClassName(), (app, conf) -> {
+            process(app, getSource().toPath(), new JoobyProject(project).classes().toPath());
+          });
+    } catch (Done ex) {
+      long end = System.currentTimeMillis();
+      getLogger().info("compilation took " + (end - start) + "ms");
     }
   }
 
-  public void setIncludes(final List<String> includes) {
-    this.includes = includes;
+  private void process(final Jooby app, final Path srcdir, final Path bindir) {
+    getLogger().info("Source: {}", srcdir);
+    getLogger().info("Output: {}", bindir);
+    RouteProcessor processor = new RouteProcessor();
+    String[] name = app.getClass().getPackage().getName().split("\\.");
+    Path outdir = bindir;
+    for (String n : name) {
+      outdir = outdir.resolve(n);
+    }
+    String routes = processor.compile(app, srcdir, outdir).stream()
+        .map(RouteSpec::toString)
+        .collect(Collectors.joining("\n"));
+    getLogger().debug(app.getClass().getSimpleName() + ".spec :\n" + routes);
+    // update task output
+    throw new Done();
   }
 
-  public List<String> getIncludes() {
-    return includes;
+  public File getSource() {
+    return source;
   }
 
-  public void setExcludes(final List<String> excludes) {
-    this.excludes = excludes;
-  }
-
-  public List<String> getExcludes() {
-    return excludes;
-  }
-
-  public void setLogLevel(final String logLevel) {
-    this.logLevel = logLevel;
-  }
-
-  public String getLogLevel() {
-    return logLevel;
-  }
-
-  @InputFiles
-  public Set<File> getClasspath() {
-    return classpath;
-  }
-
-  public void setClasspath(final Set<File> classpath) {
-    this.classpath = classpath;
-  }
-
-  public void setBlock(final boolean block) {
-    this.block = block;
-  }
-
-  public boolean isBlock() {
-    return block;
+  public void setSource(final File source) {
+    this.source = source;
   }
 
   public String getMainClassName() {
@@ -398,38 +286,6 @@ public class JoobyTask extends ConventionTask {
 
   public void setMainClassName(final String mainClassName) {
     this.mainClassName = mainClassName;
-  }
-
-  public Set<File> getSrc() {
-    return src;
-  }
-
-  public void setSrc(final Set<File> watchDirs) {
-    this.src = watchDirs;
-  }
-
-  public List<String> getWatchDirs() {
-    return watchDirs;
-  }
-
-  public void setWatchDirs(final List<String> watchDirs) {
-    this.watchDirs = watchDirs;
-  }
-
-  public List<String> getSrcExtensions() {
-    return srcExtensions;
-  }
-
-  public void setSrcExtensions(final List<String> srcExtensions) {
-    this.srcExtensions = srcExtensions;
-  }
-
-  public String getCompiler() {
-    return compiler;
-  }
-
-  public void setCompiler(final String compiler) {
-    this.compiler = compiler;
   }
 
 }

@@ -215,7 +215,7 @@
  * containing Woodstox, in file "ASL2.0", under the same directory
  * as this file.
  */
-package org.jooby.run;
+package org.mytake.gradle.jooby;
 
 import org.gradle.api.Project;
 import org.gradle.api.internal.ConventionTask;
@@ -226,6 +226,10 @@ import java.net.URLClassLoader;
 import java.nio.file.Path;
 
 public class ApiToolTask extends ConventionTask {
+
+  @SuppressWarnings("serial")
+  private static class Done extends RuntimeException {
+  }
 
   private String mainClassName;
 

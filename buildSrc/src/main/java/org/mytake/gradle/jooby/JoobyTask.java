@@ -201,123 +201,240 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-/**
- * This copy of Woodstox XML processor is licensed under the
- * Apache (Software) License, version 2.0 ("the License").
- * See the License for details about distribution rights, and the
- * specific rights regarding derivate works.
- *
- * You may obtain a copy of the License at:
- *
- * http://www.apache.org/licenses/
- *
- * A copy is also included in the downloadable source code package
- * containing Woodstox, in file "ASL2.0", under the same directory
- * as this file.
- */
-package org.jooby.run;
-
-import org.gradle.api.Project;
-import org.gradle.api.artifacts.Configuration;
-import org.gradle.api.plugins.JavaPluginConvention;
-import org.gradle.api.tasks.SourceSet;
-import static org.jooby.funzy.Throwing.throwingFunction;
+package org.mytake.gradle.jooby;
 
 import java.io.File;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLClassLoader;
-import java.util.LinkedHashSet;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class JoobyProject {
+import org.gradle.api.Project;
+import org.gradle.api.internal.ConventionTask;
+import org.gradle.api.invocation.Gradle;
+import org.gradle.api.tasks.GradleBuild;
+import org.gradle.api.tasks.InputFiles;
+import org.gradle.api.tasks.TaskAction;
+import org.gradle.process.ExecSpec;
+import org.gradle.tooling.GradleConnector;
+import org.gradle.tooling.ProjectConnection;
+import org.jooby.funzy.Try;
+import org.jooby.run.Main;
+import org.jooby.run.Watcher;
 
-  private Project project;
+public class JoobyTask extends ConventionTask {
 
-  public JoobyProject(final Project project) {
-    this.project = project;
-  }
+  private static final Object LOCK = new Object();
 
-  /**
-   * @return Returns the output directory for .class file.
-   */
-  public File classes() {
-    SourceSet sourceSet = sourceSet(project);
-    return sourceSet.getRuntimeClasspath().getFiles().stream()
-        .filter(f -> f.exists() && f.isDirectory() && f.toString().contains("classes"))
-        .findFirst()
-        .get();
-  }
+  private static final List<String> XML_PROPS = Arrays.asList(
+      "javax.xml.parsers.DocumentBuilderFactory",
+      "javax.xml.parsers.SAXParserFactory",
+      "javax.xml.stream.XMLInputFactory",
+      "javax.xml.stream.XMLEventFactory",
+      "javax.xml.transform.TransformerFactory",
+      "javax.xml.stream.XMLOutputFactory",
+      "javax.xml.datatype.DatatypeFactory",
+      "org.xml.sax.driver");
 
-  public Set<File> classpath() {
-    SourceSet sourceSet = sourceSet(project);
+  private List<String> includes;
 
-    Set<File> cp = new LinkedHashSet<>();
+  private List<String> excludes;
+
+  private String logLevel;
+
+  private boolean block;
+
+  private Set<File> classpath;
+
+  private Set<File> src;
+
+  private List<String> watchDirs;
+
+  private List<String> srcExtensions;
+
+  private String mainClassName;
+
+  private String compiler;
+
+  private ProjectConnection connection;
+
+  @TaskAction
+  public void run() throws Exception {
+    System.setProperty("logLevel", getLogLevel());
+
+    Project project = getProject();
+
+    String mId = project.getName();
+
+    List<File> cp = new ArrayList<>();
+
     // conf & public
-    sourceSet.getResources().getSrcDirs().forEach(cp::add);
+    getClasspath().forEach(cp::add);
 
-    // classes/main, resources/main + jars
-    sourceSet.getRuntimeClasspath().getFiles().forEach(cp::add);
-
-    // provided?
-    Configuration provided = project.getConfigurations().findByName("provided");
-    if (provided != null) {
-      provided.getFiles().forEach(cp::add);
-    }
-    Configuration compileOnly = project.getConfigurations().findByName("compileOnly");
-    if (compileOnly != null) {
-      compileOnly.getFiles().forEach(cp::add);
+    Main app = new Main(mId, getMainClassName(), toFiles(watchDirs),
+        cp.toArray(new File[cp.size()]));
+    if (includes != null) {
+      app.includes(includes.stream().collect(Collectors.joining(File.pathSeparator)));
     }
 
-    return cp;
+    if (excludes != null) {
+      app.excludes(excludes.stream().collect(Collectors.joining(File.pathSeparator)));
+    }
+
+    String compiler = getCompiler();
+    getLogger().info("compiler is {}", compiler);
+    if ("on".equalsIgnoreCase(compiler)) {
+      Path[] watchDirs = getSrc().stream()
+          .filter(File::exists)
+          .map(File::toPath)
+          .collect(Collectors.toList())
+          .toArray(new Path[0]);
+      getLogger().info("watching directories {}", Arrays.asList(watchDirs));
+
+      connection = GradleConnector.newConnector()
+          .useInstallation(project.getGradle().getGradleHomeDir())
+          .forProjectDirectory(project.getRootDir())
+          .connect();
+
+      Watcher watcher = new Watcher((k, path) -> {
+        if (getSrcExtensions().stream()
+            .anyMatch(ext -> path.toString().endsWith(ext))) {
+          runTask(connection, path, "classes");
+        }
+      }, watchDirs);
+      Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+        Try.run(() -> watcher.stop())
+          .onComplete(() -> connection.close())
+          .throwException();
+      }));
+      watcher.start();
+    }
+
+    String[] args = project.getGradle().getStartParameter().getProjectProperties()
+        .entrySet().stream().map(e -> e.toString()).collect(Collectors.toList())
+        .toArray(new String[0]);
+    app.run(isBlock(), args);
   }
 
-  public Set<File> sources() {
-    SourceSet sourceSet = sourceSet(project);
+  private List<File> toFiles(final List<String> watchDirs) {
+    List<File> files = new ArrayList<>();
+    if (watchDirs != null) {
+      watchDirs.forEach(f -> files.add(new File(f)));
+    }
+    return files;
+  }
 
-    Set<File> src = new LinkedHashSet<>();
-    // conf & public
-    sourceSet.getResources().getSrcDirs().forEach(src::add);
+  private void runTask(final ProjectConnection connection, final Path path, final String task) {
+    synchronized (LOCK) {
+      Map<String, String> xml = new HashMap<>();
+      try {
+        // clean jaxp
+        XML_PROPS.forEach(p -> xml.put(p, (String) System.getProperties().remove(p)));
 
-    // source java: always add parent file: should be src/main
-    sourceSet.getJava().getSrcDirs().forEach(f -> src.add(f.getParentFile()));
+        try {
+          connection.newBuild()
+              .setStandardError(System.err)
+              .setStandardOutput(System.out)
+              .forTasks(task)
+              .run();
+        } catch (Exception ex) {
+          getLogger().debug("Execution of " + task + " resulted in exception", ex);
+        }
 
+      } finally {
+        // restore jaxp
+        xml.forEach((k, v) -> {
+          if (v != null) {
+            System.setProperty(k, v);
+          }
+        });
+      }
+    }
+  }
+
+  public void setIncludes(final List<String> includes) {
+    this.includes = includes;
+  }
+
+  public List<String> getIncludes() {
+    return includes;
+  }
+
+  public void setExcludes(final List<String> excludes) {
+    this.excludes = excludes;
+  }
+
+  public List<String> getExcludes() {
+    return excludes;
+  }
+
+  public void setLogLevel(final String logLevel) {
+    this.logLevel = logLevel;
+  }
+
+  public String getLogLevel() {
+    return logLevel;
+  }
+
+  @InputFiles
+  public Set<File> getClasspath() {
+    return classpath;
+  }
+
+  public void setClasspath(final Set<File> classpath) {
+    this.classpath = classpath;
+  }
+
+  public void setBlock(final boolean block) {
+    this.block = block;
+  }
+
+  public boolean isBlock() {
+    return block;
+  }
+
+  public String getMainClassName() {
+    return mainClassName;
+  }
+
+  public void setMainClassName(final String mainClassName) {
+    this.mainClassName = mainClassName;
+  }
+
+  public Set<File> getSrc() {
     return src;
   }
 
-  public File javaSrc() {
-    SourceSet sourceSet = sourceSet(project);
-
-    // source java
-    return sourceSet.getJava().getSrcDirs().iterator().next();
+  public void setSrc(final Set<File> watchDirs) {
+    this.src = watchDirs;
   }
 
-  private SourceSet sourceSet(final Project project) {
-    SourceSet sourceSet = getJavaConvention(project).getSourceSets()
-        .getByName(SourceSet.MAIN_SOURCE_SET_NAME);
-    return sourceSet;
+  public List<String> getWatchDirs() {
+    return watchDirs;
   }
 
-  public JavaPluginConvention getJavaConvention(final Project project) {
-    return project.getConvention().getPlugin(JavaPluginConvention.class);
+  public void setWatchDirs(final List<String> watchDirs) {
+    this.watchDirs = watchDirs;
   }
 
-  public URLClassLoader newClassLoader() throws MalformedURLException {
-    return toClassLoader(
-        classpath().stream()
-            .map(throwingFunction(f -> f.toURI().toURL()))
-            .collect(Collectors.toList()),
-        getClass().getClassLoader());
+  public List<String> getSrcExtensions() {
+    return srcExtensions;
   }
 
-  private static URLClassLoader toClassLoader(final List<URL> cp, final ClassLoader parent) {
-    return new URLClassLoader(cp.toArray(new URL[cp.size()]), parent) {
-      @Override
-      public String toString() {
-        return cp.toString();
-      }
-    };
+  public void setSrcExtensions(final List<String> srcExtensions) {
+    this.srcExtensions = srcExtensions;
   }
+
+  public String getCompiler() {
+    return compiler;
+  }
+
+  public void setCompiler(final String compiler) {
+    this.compiler = compiler;
+  }
+
 }
