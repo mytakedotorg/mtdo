@@ -28,19 +28,34 @@ compileTypeScript {
 }
 
 // make the gulp_buildProd have accurate up-to-date checking
-gulp_buildProd.dependsOn 'npmInstall'
-gulp_buildProd.inputs.dir('assets')
-gulp_buildProd.inputs.dir('loaders')
-gulp_buildProd.inputs.dir('nunjucks')
-gulp_buildProd.inputs.dir('src')
-gulp_buildProd.inputs.file('gulpfile.js')
-gulp_buildProd.inputs.file('package.json')
-gulp_buildProd.inputs.file('postcss.config.js')
-gulp_buildProd.inputs.file('tsconfig.json')
-gulp_buildProd.inputs.file('webpack.config.js')
-gulp_buildProd.outputs.dir('dist')
+def setInputs(targetTask) {
+	targetTask.dependsOn 'npmInstall'
+	def inputs = [
+		'assets',
+		'loaders',
+		'src',
+		'gulpfile.js',
+		'postcss.config.js',
+		'tsconfig.json',
+		'webpack.config.js'
+	]
+	for (input in inputs) {
+		File file = file(input)
+		if (file.isFile()) {
+			targetTask.inputs.file(file)
+		} else {
+			targetTask.inputs.dir(file)
+		}
+	}
+}
+setInputs(gulp_buildDev)
+setInputs(gulp_buildProd)
+gulp_buildDev.outputs.dir('../server/src/main/resources/assets/dev')
+gulp_buildProd.outputs.dir('../server/src/main/resources/assets/prod')
 
 // map prettier to spotless (to match server)
+setInputs(npm_run_formatlist)
+setInputs(npm_run_formatwrite)
 task spotlessCheck(dependsOn: npm_run_formatlist)
 task spotlessApply(dependsOn: npm_run_formatwrite)
 

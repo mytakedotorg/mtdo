@@ -20,9 +20,12 @@ browserSync = require("browser-sync").create();
 tasklisting = require("gulp-task-listing");
 del = require("del");
 gutil = require("gulp-util");
+rev = require("gulp-rev");
+merge = require("gulp-merge-json");
 
 const config = {
-  dist: "./dist",
+  dist: "../server/src/main/resources/assets/dev",
+  distProd: "../server/src/main/resources/assets/prod",
   cssSrc: "./assets/public/**/*.css",
   sassSrc: "./assets/stylesheets/**/*.?(s)css",
   imgSrc: "./assets/images/**/*.{jpg,png}",
@@ -58,14 +61,27 @@ function setupPipeline(mode) {
   const scriptsWatch = "scriptsWatch" + mode;
   gulp.task(css, cssCfg(mode));
   gulp.task(sass, sassCfg(mode));
+  gulp.task(loaders, loadersCfg(mode));
   gulp.task(webpack, [loaders], webpackCfg(mode));
   gulp.task(nunjucks, [webpack], nunjucksCfg(mode));
   gulp.task(images, imagesCfg(mode));
-  gulp.task(loaders, loadersCfg(mode));
   gulp.task(scripts, scriptsCfg(mode));
   gulp.task(scriptsWatch, scriptsWatchCfg(mode));
-  gulp.task(BUILD + mode, [nunjucks, sass, images, css]);
-  gulp.task(SERVE + mode, [BUILD + mode], browserSyncCfg(mode));
+  if (mode === PROD) {
+    gulp.task(BUILD + mode, [nunjucks, sass, images, css], () => {
+      return gulp
+        .src(config.distProd + "/*.json")
+        .pipe(
+          merge({
+            fileName: "manifest.json"
+          })
+        )
+        .pipe(gulp.dest(config.distProd));
+    });
+  } else {
+    gulp.task(BUILD + mode, [nunjucks, sass, images, css]);
+    gulp.task(SERVE + mode, [BUILD + mode], browserSyncCfg(mode));
+  }
 }
 
 gulp.task(
@@ -74,36 +90,66 @@ gulp.task(
     /clean|default|css|sass|webpack|nunjucks|images|loaders|rev|scripts|default/
   )
 );
-gulp.task("clean", () => {
-  return del([config.dist]);
-});
+
+// these resources are fingerprinted in PROD and in DEV,
+// and don't show up in the manifest.mf
+//
+// they need to be referred to only by their fingerprinted value
+function fingerprintAlways(mode, stream) {
+  return stream
+    .pipe(rev())
+    .pipe(gulp.dest(mode === PROD ? config.distProd : config.dist));
+}
+
+// these resources end up with a translation to their name
+// in the manifest.json, which our app will translate to the
+// correct links for us in prod
+var revCount = 0;
+function fingerprint(mode, stream) {
+  ++revCount;
+  if (mode === PROD) {
+    // workaround for https://github.com/sindresorhus/gulp-rev/issues/205
+    return stream
+      .pipe(rev())
+      .pipe(gulp.dest(config.distProd))
+      .pipe(
+        rev.manifest(revCount + ".json", {
+          merge: true
+        })
+      )
+      .pipe(gulp.dest(config.distProd));
+  } else {
+    return stream.pipe(gulp.dest(config.dist));
+  }
+}
 
 //////////////////////
 // Config functions //
 //////////////////////
 function cssCfg(mode) {
   return () => {
-    return gulp.src(config.cssSrc).pipe(gulp.dest(config.dist + "/"));
+    return fingerprint(mode, gulp.src(config.cssSrc));
   };
 }
 
 function sassCfg(mode) {
   return () => {
-    gulp
-      .src(config.sassSrc)
-      .pipe(
-        sass({
-          style: "compressed"
-        }).on(
-          "error",
-          notify.onError(function(error) {
-            return "Error: " + error.message;
-          })
+    return fingerprint(
+      mode,
+      gulp
+        .src(config.sassSrc)
+        .pipe(
+          sass({
+            style: "compressed"
+          }).on(
+            "error",
+            notify.onError(function(error) {
+              return "Error: " + error.message;
+            })
+          )
         )
-      )
-      .pipe(autoprefixer({ cascade: false, browsers: ["> 0.25%"] }))
-      .pipe(concat("all.css"))
-      .pipe(gulp.dest(config.dist));
+        .pipe(autoprefixer({ cascade: false, browsers: ["> 0.25%"] }))
+    );
   };
 }
 
@@ -111,9 +157,9 @@ function webpackCfg(mode) {
   const configFile =
     mode === DEV ? "./webpack.config.dev.js" : "./webpack.config.js";
   return cb => {
-    gulp
-      .src(config.webpackSrc)
-      .pipe(
+    fingerprint(
+      mode,
+      gulp.src(config.webpackSrc).pipe(
         webpack(
           {
             config: require(configFile)
@@ -127,26 +173,23 @@ function webpackCfg(mode) {
           gutil.log("Webpack: " + err.message);
         })
       )
-      .pipe(gulp.dest(config.dist));
+    );
   };
 }
 
 function nunjucksCfg(mode) {
   return () => {
-    return gulp
-      .src(config.nunjucksPages + "/**/*.html")
-      .pipe(
-        nunjucks({
-          searchPaths: [config.nunjucksTemplates]
-        })
-      )
-      .pipe(gulp.dest(config.dist));
+    return gulp.src(config.nunjucksPages + "/**/*.html").pipe(
+      nunjucks({
+        searchPaths: [config.nunjucksTemplates]
+      })
+    );
   };
 }
 
 function imagesCfg(mode) {
   return () => {
-    return gulp.src(config.imgSrc).pipe(gulp.dest(config.dist + "/images"));
+    return fingerprintAlways(mode, gulp.src(config.imgSrc));
   };
 }
 

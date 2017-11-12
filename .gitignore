@@ -16,6 +16,7 @@ build/
 /server/src/main/jooq-generated/
 /server/src/main/rocker-generated/
 /server/src/test/resources/rocker-compiler.conf
+/server/src/main/resources/assets/
 
 # eclipse
 .classpath

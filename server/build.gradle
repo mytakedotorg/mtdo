@@ -123,6 +123,11 @@ sourceSets {
 	test.runtimeClasspath += configurations.compileOnly
 }
 
+processResources.dependsOn([
+	':client:gulp_buildProd',
+	':client:gulp_buildDev'
+])
+
 //////////////
 // joobyRun //
 //////////////
