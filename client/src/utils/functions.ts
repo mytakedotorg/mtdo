@@ -918,87 +918,33 @@ function isCaptionNode(htmlRange: Range): boolean {
   }
 }
 
-interface ClassNames {
-  rowIndex: string;
-  rowInnerIndex: string;
-  textIndex: string;
-}
-
 function getContainer(
   nodes: NodeList,
   containerIndex: number,
-  classNames: ClassNames
+  classNames: string[]
 ): Node {
   let rowIndex;
-  let firstNodeList = nodes;
-  for (let i = 0; i < firstNodeList.length; i++) {
-    for (let j = 0; j < firstNodeList[i].attributes.length; j++) {
-      if (
-        (firstNodeList[i] as HTMLElement).classList.contains(
-          classNames.rowIndex
-        )
-      ) {
-        rowIndex = i;
+  let nodeList = nodes;
+  for (let i = 0; i < classNames.length; i++) {
+    for (let j = 0; j < nodeList.length; j++) {
+      if ((nodeList[j] as HTMLElement).classList.contains(classNames[i])) {
+        rowIndex = j;
         break;
       }
     }
-    if (rowIndex !== undefined) {
-      break;
+    if (i < classNames.length - 1) {
+      if (rowIndex !== undefined) {
+        nodeList = nodeList[rowIndex].childNodes;
+      } else {
+        throw "Couldn't find nodes in " + classNames[i];
+      }
     }
   }
 
-  let rowInnerIndex;
-  let secondNodeList;
   if (rowIndex !== undefined) {
-    secondNodeList = firstNodeList[rowIndex].childNodes;
-    for (let i = 0; i < secondNodeList.length; i++) {
-      for (let j = 0; j < secondNodeList[i].attributes.length; j++) {
-        if (
-          (secondNodeList[i] as HTMLElement).classList.contains(
-            classNames.rowInnerIndex
-          )
-        ) {
-          rowInnerIndex = i;
-          break;
-        }
-      }
-      if (rowInnerIndex !== undefined) {
-        break;
-      }
-    }
+    return nodeList[rowIndex].childNodes[containerIndex];
   } else {
-    throw "Couldn't find nodes in " + classNames.rowIndex;
-  }
-
-  let textIndex;
-  let thirdNodeList;
-  if (secondNodeList && rowInnerIndex !== undefined) {
-    thirdNodeList = secondNodeList[rowInnerIndex].childNodes;
-    for (let i = 0; i < thirdNodeList.length; i++) {
-      for (let j = 0; j < thirdNodeList[i].attributes.length; j++) {
-        if (
-          (thirdNodeList[i] as HTMLElement).classList.contains(
-            classNames.textIndex
-          )
-        ) {
-          textIndex = i;
-          break;
-        }
-      }
-      if (textIndex !== undefined) {
-        break;
-      }
-    }
-  } else {
-    throw "Couldn't find nodes in " + classNames.rowInnerIndex;
-  }
-
-  if (textIndex !== undefined) {
-    return firstNodeList[rowIndex].childNodes[rowInnerIndex].childNodes[
-      textIndex
-    ].childNodes[containerIndex];
-  } else {
-    throw "Couldn't find nodes in " + classNames.textIndex;
+    throw "Couldn't find nodes in " + classNames[classNames.length];
   }
 }
 
@@ -1012,11 +958,7 @@ function getSimpleRangesFromHTMLRange(
   htmlRange: Range,
   childNodes: NodeList
 ): SimpleRanges {
-  const classNames: ClassNames = {
-    rowIndex: "document__row",
-    rowInnerIndex: "document__row-inner",
-    textIndex: "document__text"
-  };
+  let classNames: string[];
 
   let startChildNode: Node | null;
   let endChildNode: Node | null;
@@ -1034,14 +976,21 @@ function getSimpleRangesFromHTMLRange(
     } else {
       throw "Unexpcected HTML structure";
     }
+    classNames = [
+      "document__row",
+      "document__row-inner",
+      "document__text",
+      "document__text--caption"
+    ];
   } else {
     startChildNode = htmlRange.startContainer.parentNode;
     endChildNode = htmlRange.endContainer.parentNode;
+    classNames = ["document__row", "document__row-inner", "document__text"];
   }
 
   const startParentContainer = findAncestor(
     htmlRange.startContainer,
-    classNames.textIndex
+    "document__text"
   );
 
   let indexOfStartContainer: number;
@@ -1056,7 +1005,7 @@ function getSimpleRangesFromHTMLRange(
 
   const endParentContainer = findAncestor(
     htmlRange.endContainer,
-    classNames.textIndex
+    "document__text"
   );
 
   let indexOfEndContainer: number;
