@@ -151,11 +151,13 @@
   border-radius: 3px;
   &:hover {
     background: palette(editor, document__background--hover);
-    .document__node-text {
+    .document__node-text,
+    .document__text {
       background: palette(editor, document__background--hover);
     }
   }
-  .document__node-text {
+  .document__node-text,
+  .document__text {
     background: palette(editor, document__background);
   }
 }
