@@ -53,15 +53,26 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
       currentIndex: 0
     };
   }
-  getCaptionData = () => {
+  getCaptionData = (
+    npVideoId?: string,
+    npCaptionIsHighlighted?: boolean,
+    npHighlightedCharRange?: [number, number]
+  ) => {
+    const videoId = npVideoId ? npVideoId : this.props.videoId;
+    const captionIsHighlighted = npCaptionIsHighlighted
+      ? npCaptionIsHighlighted
+      : this.props.captionIsHighlighted;
+    const highlightedCharRange = npHighlightedCharRange
+      ? npHighlightedCharRange
+      : this.props.highlightedCharRange;
     try {
-      let captionMap = getVideoCaptionWordMap(this.props.videoId);
-      let captionMeta = getVideoCaptionMetaData(this.props.videoId);
-      let captionNodes = getCaptionNodeArray(this.props.videoId);
-      if (this.props.captionIsHighlighted && this.props.highlightedCharRange) {
+      let captionMap = getVideoCaptionWordMap(videoId);
+      let captionMeta = getVideoCaptionMetaData(videoId);
+      let captionNodes = getCaptionNodeArray(videoId);
+      if (captionIsHighlighted && highlightedCharRange) {
         captionNodes = highlightTextTwo(
           captionNodes,
-          this.props.highlightedCharRange,
+          highlightedCharRange,
           () => {
             throw "todo";
           }
@@ -135,9 +146,9 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
       this.getCaptionData();
     }
   }
-  componentDidUpdate(prevProps: CaptionViewProps, prevState: CaptionViewState) {
-    if (prevProps.videoId !== this.props.videoId && this.props.videoId) {
-      this.getCaptionData();
+  componentWillReceiveProps(nextProps: CaptionViewProps) {
+    if (nextProps.videoId !== this.props.videoId && this.props.videoId) {
+      this.getCaptionData(nextProps.videoId);
     }
   }
   render() {
