@@ -40,7 +40,7 @@ class CaptionTextNodeList extends React.Component<
     }
   };
   handleScroll = () => {
-    // Only allow this function to execute no more than once per second
+    // Only allow this function to execute no more than twice per second
     if (!this.timerId && this.captionNodeContainer) {
       const parentTop = this.captionNodeContainer.scrollTop;
 
@@ -64,7 +64,7 @@ class CaptionTextNodeList extends React.Component<
         currentSpeaker: this.props.captionMeta.speakerMap[speakerIdx].speaker
       });
 
-      this.timerId = window.setTimeout(this.clearTimer, 1000);
+      this.timerId = window.setTimeout(this.clearTimer, 500);
     }
   };
   setScrollView = () => {
