@@ -123,10 +123,10 @@ sourceSets {
 	test.runtimeClasspath += configurations.compileOnly
 }
 
-processResources.dependsOn([
-	':client:gulp_buildProd',
-	':client:gulp_buildDev'
-])
+//processResources.dependsOn([
+//	':client:gulp_buildProd',
+//	':client:gulp_buildDev'
+//])
 
 //////////////
 // joobyRun //
@@ -158,6 +158,11 @@ task runDev(type: JavaExec, dependsOn: classes) {
 		'dev'
 	]
 }
+
+task runLive(type: org.mytake.gradle.live.RunSpringLoaded) {
+
+}
+runLive.dependsOn 'testClasses'
 
 /////////////
 // fat jar //
