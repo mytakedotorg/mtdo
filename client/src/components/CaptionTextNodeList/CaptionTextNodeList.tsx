@@ -22,7 +22,7 @@ class CaptionTextNodeList extends React.Component<
   CaptionTextNodeListProps,
   CaptionTextNodeListState
 > {
-  private captionNodeContainer: HTMLDivElement;
+  private captionNodeContainer: HTMLDivElement | null;
   private timerId: number | null;
   constructor(props: CaptionTextNodeListProps) {
     super(props);
@@ -41,7 +41,7 @@ class CaptionTextNodeList extends React.Component<
   };
   handleScroll = () => {
     // Only allow this function to execute no more than once per second
-    if (!this.timerId) {
+    if (!this.timerId && this.captionNodeContainer) {
       const parentTop = this.captionNodeContainer.scrollTop;
 
       let speakerIdx = bs(
@@ -68,72 +68,75 @@ class CaptionTextNodeList extends React.Component<
     }
   };
   setScrollView = () => {
-    const timer = this.props.captionTimer;
+    if (this.captionNodeContainer) {
+      const timer = this.props.captionTimer;
 
-    let wordIdx = bs(
-      this.props.captionWordMap,
-      timer,
-      (word: CaptionWord, time: number) => {
-        return word.timestamp - time;
+      let wordIdx = bs(
+        this.props.captionWordMap,
+        timer,
+        (word: CaptionWord, time: number) => {
+          return word.timestamp - time;
+        }
+      );
+
+      // usually the timestamp is between two words, in which case it returns (-insertionPoint - 2)
+      if (wordIdx < 0) {
+        wordIdx = -wordIdx - 2;
       }
-    );
 
-    // usually the timestamp is between two words, in which case it returns (-insertionPoint - 2)
-    if (wordIdx < 0) {
-      wordIdx = -wordIdx - 2;
-    }
-
-    // find the speaker for that word
-    let speakerIdx = bs(
-      this.props.captionMeta.speakerMap,
-      wordIdx,
-      (speaker: SpeakerMap, idx: number) => {
-        return speaker.range[0] - idx;
-      }
-    );
-    if (speakerIdx < 0) {
-      speakerIdx = -speakerIdx - 2;
+      // find the speaker for that word
+      let speakerIdx = bs(
+        this.props.captionMeta.speakerMap,
+        wordIdx,
+        (speaker: SpeakerMap, idx: number) => {
+          return speaker.range[0] - idx;
+        }
+      );
       if (speakerIdx < 0) {
-        // If still negative, it means we're at the first node
-        speakerIdx = 0;
+        speakerIdx = -speakerIdx - 2;
+        if (speakerIdx < 0) {
+          // If still negative, it means we're at the first node
+          speakerIdx = 0;
+        }
       }
-    }
 
-    let speakerRange = this.props.captionMeta.speakerMap[speakerIdx];
-    const captionTextContainer = this.captionNodeContainer.children[speakerIdx]
-      .children[1];
-    let hiddenTextElement;
-    // This lookup should match the DOM structure of CaptionTextNode
-    if (captionTextContainer && captionTextContainer.children[1]) {
-      hiddenTextElement = captionTextContainer.children[1];
-    } else {
-      throw "Couldn't find caption node at index " + speakerIdx;
-    }
-
-    let height = 0;
-    let numberOfLines = -1;
-    hiddenTextElement.innerHTML = "";
-    for (let i = speakerRange.range[0]; i < wordIdx; ++i) {
-      hiddenTextElement.innerHTML += this.props.captionWordMap[i].word;
-      if (hiddenTextElement.clientHeight !== height) {
-        height = hiddenTextElement.clientHeight;
-        numberOfLines++;
+      let speakerRange = this.props.captionMeta.speakerMap[speakerIdx];
+      const captionTextContainer = this.captionNodeContainer.children[
+        speakerIdx
+      ].children[1];
+      let hiddenTextElement;
+      // This lookup should match the DOM structure of CaptionTextNode
+      if (captionTextContainer && captionTextContainer.children[1]) {
+        hiddenTextElement = captionTextContainer.children[1];
+      } else {
+        throw "Couldn't find caption node at index " + speakerIdx;
       }
+
+      let height = 0;
+      let numberOfLines = -1;
+      hiddenTextElement.innerHTML = "";
+      for (let i = speakerRange.range[0]; i < wordIdx; ++i) {
+        hiddenTextElement.innerHTML += this.props.captionWordMap[i].word;
+        if (hiddenTextElement.clientHeight !== height) {
+          height = hiddenTextElement.clientHeight;
+          numberOfLines++;
+        }
+      }
+
+      // Get the offsetTop value of the child element.
+      // The line height is 25px, so add 25 for each
+      // time the line has wrapped, which is equal to
+      // the value of the `idx` variable.
+      // Add 31px for the height of the speaker name
+      const childTop =
+        (this.captionNodeContainer.children[speakerIdx] as HTMLElement)
+          .offsetTop +
+        25 * numberOfLines +
+        31;
+
+      // Set the parent container's scrollTop value to the offsetTop
+      this.captionNodeContainer.scrollTop = childTop;
     }
-
-    // Get the offsetTop value of the child element.
-    // The line height is 25px, so add 25 for each
-    // time the line has wrapped, which is equal to
-    // the value of the `idx` variable.
-    // Add 31px for the height of the speaker name
-    const childTop =
-      (this.captionNodeContainer.children[speakerIdx] as HTMLElement)
-        .offsetTop +
-      25 * numberOfLines +
-      31;
-
-    // Set the parent container's scrollTop value to the offsetTop
-    this.captionNodeContainer.scrollTop = childTop;
   };
   componentDidMount() {
     this.setScrollView();
