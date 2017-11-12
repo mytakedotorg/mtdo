@@ -55,7 +55,7 @@ $video-header-height: 60px;
 }
 .video__time {
   float: inherit;
-  @include body;
+  @include body--small;
   margin-left: 2px;
   margin-right: 2px;
 }
