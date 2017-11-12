@@ -131,9 +131,9 @@ processResources.dependsOn([
 //////////////
 // joobyRun //
 //////////////
-apply plugin: 'application'
-apply plugin: 'jooby'
-mainClassName = 'common.Prod'
+// we're not using any jooby-specific reloading
+// because as of 1.2.2 it's crazy slow, and also
+// appears to be broken
 
 task runProd(type: JavaExec, dependsOn: classes) {
 	description = 'Run app in prod mode'
