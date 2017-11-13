@@ -18,14 +18,14 @@ public abstract class CustomRockerTemplate extends RequestRockerTemplate {
 
 	/** Returns link tags for the css files with the given fileset. */
 	public RockerRaw style(String fileset) {
-		String linkTags = (String) locals.get(fileset + "_styles");
+		String linkTags = (String) locals.get(fileset + CustomAssets._STYLES);
 		Preconditions.checkNotNull(linkTags, "No such styles %s, available: %s", fileset, locals.keySet());
 		return new RockerRaw().appendRaw(linkTags);
 	}
 
 	/** Returns script tags for the js files with the given fileset. */
 	public RockerRaw script(String fileset) {
-		String scriptTags = (String) locals.get(fileset + "_scripts");
+		String scriptTags = (String) locals.get(fileset + CustomAssets._SCRIPTS);
 		Preconditions.checkNotNull(scriptTags, "No such scripts %s, available: %s", fileset, locals.keySet());
 		return new RockerRaw().appendRaw(scriptTags);
 	}

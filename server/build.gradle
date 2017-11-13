@@ -87,6 +87,7 @@ dependencies {
 	compile "org.jooby:jooby-rocker:$JOOBY_VER"
 	compile "org.jooby:jooby-jooq:$JOOBY_VER"
 	compile "org.jooby:jooby-commons-email:$JOOBY_VER"
+	compile "org.jooby:jooby-assets:$JOOBY_VER"
 	testCompile "org.jooby:jooby-whoops:$JOOBY_VER"
 
 	// jooq (version is set by jooq DSL)
@@ -123,10 +124,10 @@ sourceSets {
 	test.runtimeClasspath += configurations.compileOnly
 }
 
-//processResources.dependsOn([
-//	':client:gulp_buildProd',
-//	':client:gulp_buildDev'
-//])
+processResources.dependsOn([
+	':client:gulp_buildProd',
+	':client:gulp_buildDev'
+])
 
 //////////////
 // joobyRun //

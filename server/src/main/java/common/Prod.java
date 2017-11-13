@@ -41,7 +41,6 @@ public class Prod extends Jooby {
 				flyway.migrate();
 			});
 		});
-		CustomAssets.initProd(this);
 		use(new InitialData.Module());
 		controllers(this);
 	}
@@ -51,6 +50,7 @@ public class Prod extends Jooby {
 		jooby.use(new Jdbc());
 		jooby.use(new jOOQ());
 		jooby.use(new Rockerby());
+		jooby.use(new CustomAssets());
 	}
 
 	static void controllers(Jooby jooby) {
