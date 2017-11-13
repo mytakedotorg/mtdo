@@ -1648,7 +1648,7 @@ const database: Database = {
             {
               kind: "video",
               videoId: "GX1kHw2tmtI",
-              range: [190, 203]
+              range: [190, 202.5]
             },
             {
               kind: "paragraph",
