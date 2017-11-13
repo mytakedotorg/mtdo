@@ -42,8 +42,6 @@ const config = {
 // Create dev and prod tasks //
 ///////////////////////////////
 const BUILD = "build";
-const SERVE = "serve";
-
 const DEV = "Dev";
 const PROD = "Prod";
 
@@ -80,7 +78,7 @@ function setupPipeline(mode) {
     });
   } else {
     gulp.task(BUILD + mode, [nunjucks, sass, images, css]);
-    gulp.task(SERVE + mode, [BUILD + mode], browserSyncCfg(mode));
+    gulp.task("proxy" + mode, [BUILD + mode], proxyCfg(mode));
   }
 }
 
@@ -217,23 +215,22 @@ function scriptsWatchCfg(mode) {
   };
 }
 
-function browserSyncCfg(mode) {
+function proxyCfg(mode) {
   return () => {
     browserSync.init({
-      files: [config.dist + "/**"],
-      server: {
-        baseDir: config.dist
-      }
+      proxy: "localhost:8080",
+      files: config.dist + "/**",
+      serveStatic: [
+        {
+          route: "/assets/dev",
+          dir: config.dist
+        }
+      ]
     });
-    gulp.watch(
-      [
-        config.nunjucksTemplates + "/**/*.html",
-        config.nunjucksPages + "/**/*.html"
-      ],
-      ["nunjucks" + mode]
-    );
     gulp.watch(config.webpackSrc, ["webpack" + mode]);
     gulp.watch(config.sassSrc, ["sass" + mode]);
+    gulp.watch(config.cssSrc, ["css" + mode]);
+    gulp.watch(config.imagesSrc, ["images" + mode]);
     gulp.watch(config.loadersSrc, ["webpack" + mode, "loaders" + mode]);
   };
 }
