@@ -9,8 +9,6 @@ dependencies {
 	compile 'com.opentable.components:otj-pg-embedded:0.10.0'
 	// jooq codegen
 	compile 'org.jooq:jooq-codegen:3.10.1'
-	// http://jooby.org/doc/gradle-plugin/
-	compile 'org.jooby:jooby-gradle-plugin:1.2.2'
 	// db migration
 	compile 'org.flywaydb:flyway-core:4.2.0'
 }
@@ -31,9 +29,9 @@ gradlePlugin {
 			id = 'org.mytake.gradle.flywayjooq.embeddedpg'
 			implementationClass = 'org.mytake.gradle.flywayjooq.EmbeddedPgPlugin'
 		}
-		mytakeJooby {
-			id = 'org.mytake.jooby'
-			implementationClass = 'org.mytake.gradle.jooby.JoobyPlugin'
+		live {
+			id = 'org.mytake.gradle.live'
+			implementationClass = 'org.mytake.gradle.live.LivePlugin'
 		}
 	}
 }

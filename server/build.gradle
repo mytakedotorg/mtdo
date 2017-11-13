@@ -135,6 +135,7 @@ processResources.dependsOn([
 // we're not using any jooby-specific reloading
 // because as of 1.2.2 it's crazy slow, and also
 // appears to be broken
+apply plugin: 'org.mytake.gradle.live'
 
 task runProd(type: JavaExec, dependsOn: classes) {
 	description = 'Run app in prod mode'
@@ -159,11 +160,6 @@ task runDev(type: JavaExec, dependsOn: classes) {
 		'dev'
 	]
 }
-
-task runLive(type: org.mytake.gradle.live.RunSpringLoaded) {
-
-}
-runLive.dependsOn 'testClasses'
 
 /////////////
 // fat jar //
