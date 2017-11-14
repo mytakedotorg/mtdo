@@ -94,6 +94,9 @@ public class Dev extends Jooby {
 	public static class DevWithInitialData extends Dev {
 		{
 			use(new InitialData.Module());
+			get("/exit", (req, rsp) -> {
+				stop();
+			});
 		}
 	}
 }
