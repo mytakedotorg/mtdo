@@ -20,6 +20,8 @@ import common.RedirectException;
 import common.Text;
 import common.Time;
 import common.UrlEncodedPath;
+import controllers.AboutUs;
+import controllers.Foundation;
 import db.VarChars;
 import db.tables.pojos.Account;
 import db.tables.records.AccountRecord;
@@ -48,14 +50,14 @@ public class CreateAccountForm extends MetaFormDef.HandleValid {
 	private static final String msg_ALLOWED_CHARACTERS = "Can only use lowercase letters, numbers, and '-'";
 
 	public static final ImmutableSet<String> RESERVED_USERNAMES = ImmutableSet.of(
-			"drafts",	// drafts
-			"import",	// import from e.g. Google docs?
-			"api",		// for api access
-			"settings",	// for user settings
-			"evidence", "foundation",	// for serving evidence
-			"blog",		// for a blog
-			"aboutus",  // for us
-			"legal",    // for legal attributes
+			"drafts",			// drafts
+			"import",			// import from e.g. Google docs?
+			"api",				// for api access
+			"settings",			// for user settings
+			url(Foundation.URL),	// for serving evidence
+			"blog",				// for a blog
+			url(AboutUs.URL),	// for us
+			"legal",				// for legal attributes
 			url(AuthModule.URL_login),
 			url(AuthModule.URL_logout),
 			url(AuthModule.URL_confirm),

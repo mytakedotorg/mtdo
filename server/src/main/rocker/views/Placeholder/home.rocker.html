@@ -1,0 +1,20 @@
+@views.naked.template("MyTake.org", "Your bicycle for politics", "takeReader") -> {
+<div class="hero__wrapper">
+	<div class="hero">
+		<div class="hero__inner-container">
+			<h1 class="hero__title">Shape The Discussion</h1>
+			<p class="hero__text">Explore a <span class="hero__text--special">Foundation</span> of <span class="hero__text--special">Facts.</span></p>
+			<p class="hero__text">Form your own opinion</p>
+			<p class="hero__text">Share your <span class="hero__text--special">Take.</span></p>
+			<a class="hero__button" href="/new-take/">Get Started</a>
+		</div>
+	</div>
+</div>
+<div id="app"></div>
+<script type="text/javascript">
+	var app = document.getElementById('app')
+	app.setAttribute('data-init', JSON.stringify({
+		"route": "/"
+	}))
+</script>
+}

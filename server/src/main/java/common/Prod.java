@@ -7,6 +7,8 @@
 package common;
 
 import auth.AuthModule;
+import controllers.AboutUs;
+import controllers.Foundation;
 import controllers.HomeFeed;
 import controllers.Takes;
 import java.security.SecureRandom;
@@ -55,6 +57,8 @@ public class Prod extends Jooby {
 
 	static void controllers(Jooby jooby) {
 		jooby.use(new HomeFeed());
+		jooby.use(new Foundation());
+		jooby.use(new AboutUs());
 		jooby.use(new AuthModule());
 		jooby.use(new RedirectException.Module());
 		// takes needs to be last, because otherwise it will swallow
