@@ -28,7 +28,7 @@ class CaptionTextNodeList extends React.Component<
     super(props);
 
     this.state = {
-      currentSpeaker: props.captionMeta.speakerMap[0].speaker
+      currentSpeaker: "-"
     };
   }
   clearTimer = () => {
@@ -43,28 +43,33 @@ class CaptionTextNodeList extends React.Component<
     // Only allow this function to execute no more than twice per second
     if (!this.timerId && this.captionNodeContainer) {
       const parentTop = this.captionNodeContainer.scrollTop;
+      if (parentTop === 0) {
+        this.setState({
+          currentSpeaker: "-"
+        });
+      } else {
+        let speakerIdx = bs(
+          this.captionNodeContainer.children,
+          parentTop,
+          (child: HTMLDivElement, parentTop: number) => {
+            return child.offsetTop - parentTop;
+          }
+        );
 
-      let speakerIdx = bs(
-        this.captionNodeContainer.children,
-        parentTop,
-        (child: HTMLDivElement, parentTop: number) => {
-          return child.offsetTop - parentTop;
-        }
-      );
-
-      if (speakerIdx < 0) {
-        speakerIdx = -speakerIdx - 2;
         if (speakerIdx < 0) {
-          // If still negative, it means we're at the first node
-          speakerIdx = 0;
+          speakerIdx = -speakerIdx - 2;
+          if (speakerIdx < 0) {
+            // If still negative, it means we're at the first node
+            speakerIdx = 0;
+          }
         }
+
+        this.setState({
+          currentSpeaker: this.props.captionMeta.speakerMap[speakerIdx].speaker
+        });
+
+        this.timerId = window.setTimeout(this.clearTimer, 500);
       }
-
-      this.setState({
-        currentSpeaker: this.props.captionMeta.speakerMap[speakerIdx].speaker
-      });
-
-      this.timerId = window.setTimeout(this.clearTimer, 500);
     }
   };
   setScrollView = () => {
@@ -127,12 +132,14 @@ class CaptionTextNodeList extends React.Component<
       // The line height is 25px, so add 25 for each
       // time the line has wrapped, which is equal to
       // the value of the `idx` variable.
-      // Add 31px for the height of the speaker name
+      // Add 31px for the height of each previous speaker name
+      // Subtract 1 for spacing
       const childTop =
         (this.captionNodeContainer.children[speakerIdx] as HTMLElement)
           .offsetTop +
         25 * numberOfLines +
-        31;
+        31 * (speakerIdx + 1) -
+        1;
 
       // Set the parent container's scrollTop value to the offsetTop
       this.captionNodeContainer.scrollTop = childTop;

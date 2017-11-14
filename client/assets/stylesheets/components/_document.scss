@@ -151,10 +151,6 @@ $document-margin-top: 0px;
   user-select: none;
   @include heading3;
   @include text-margin;
-  width: 100%;
-  position: absolute;
-  top: 0;
-  z-index: 10;
 }
 .document__node-text--h2 {
   @include heading2;
