@@ -34,14 +34,14 @@ public class CustomAssets implements Jooby.Module {
 		AssetCompiler compiler = new AssetCompiler(config);
 		Function<String, String> url;
 		if (env.name().equals("dev")) {
-			url = raw -> "assets-dev" + raw;
+			url = raw -> "/assets-dev" + raw;
 			env.router().assets("/assets-dev/**");
 			env.router().assets("/assets/**");
 		} else {
 			String manifest = Resources.toString(CustomAssets.class.getResource(
 					"/assets/manifest.json"), StandardCharsets.UTF_8);
 			Map<String, String> map = new Gson().fromJson(manifest, new TypeToken<HashMap<String, String>>() {}.getType());
-			url = raw -> "assets" + Objects.requireNonNull(map.get(raw), "No fingerprinted version of " + raw);
+			url = raw -> "/assets" + Objects.requireNonNull(map.get(raw), "No fingerprinted version of " + raw);
 			env.router().assets("/assets/**");
 		}
 		// key, style, key, script
@@ -63,15 +63,15 @@ public class CustomAssets implements Jooby.Module {
 
 	private static String styles(Function<String, String> urlMapper, AssetCompiler compiler, String fileset) {
 		return compiler.styles(fileset).stream()
-				.map(url -> url.startsWith("https://") ? url : urlMapper.apply(url))
-				.map(script -> "<link rel=\"stylesheet\" href=\"/" + script + "\">")
+				.map(url -> url.startsWith("/https://") ? url.substring(1) : urlMapper.apply(url))
+				.map(script -> "<link rel=\"stylesheet\" href=\"" + script + "\">")
 				.collect(Collectors.joining());
 	}
 
 	private static String scripts(Function<String, String> urlMapper, AssetCompiler compiler, String fileset) {
 		return compiler.scripts(fileset).stream()
-				.map(url -> url.startsWith("https://") ? url : urlMapper.apply(url))
-				.map(script -> "<script type=\"text/javascript\" src=\"/" + script + "\"></script>")
+				.map(url -> url.startsWith("/https://") ? url.substring(1) : urlMapper.apply(url))
+				.map(script -> "<script type=\"text/javascript\" src=\"" + script + "\"></script>")
 				.collect(Collectors.joining());
 	}
 }
