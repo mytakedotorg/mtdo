@@ -128,16 +128,28 @@ class CaptionTextNodeList extends React.Component<
         }
       }
 
+      const speakerNameHeight = this.captionNodeContainer.children[speakerIdx]
+        .children[0].clientHeight;
+      let totalSpeakerHeight;
+      if (speakerNameHeight === 31) {
+        // Large screen, margin-bottom is 24px;
+        totalSpeakerHeight = 55;
+      } else {
+        // Small screen, margin-bottom is 19px;
+        totalSpeakerHeight = 43;
+      }
+
       // Get the offsetTop value of the child element.
       // The line height is 25px, so add 25 for each
       // time the line has wrapped, which is equal to
       // the value of the `idx` variable.
-      // Add 55px for the height and margin of the speaker name
+      // Add the height and margin of the speaker name
       const childTop =
         (this.captionNodeContainer.children[speakerIdx] as HTMLElement)
           .offsetTop +
         25 * numberOfLines +
-        55;
+        totalSpeakerHeight;
+
       // Set the parent container's scrollTop value to the offsetTop
       this.captionNodeContainer.scrollTop = childTop;
     }
