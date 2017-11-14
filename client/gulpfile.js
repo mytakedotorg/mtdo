@@ -24,8 +24,8 @@ rev = require("gulp-rev");
 merge = require("gulp-merge-json");
 
 const config = {
-  dist: "../server/src/main/resources/assets/dev",
-  distProd: "../server/src/main/resources/assets/prod",
+  dist: "../server/src/main/resources/assets-dev",
+  distProd: "../server/src/main/resources/assets",
   cssSrc: "./assets/public/**/*.css",
   sassSrc: "./assets/stylesheets/**/*.?(s)css",
   imgSrc: "./assets/images/**/*.{jpg,png}",
@@ -94,9 +94,7 @@ gulp.task(
 //
 // they need to be referred to only by their fingerprinted value
 function fingerprintAlways(mode, stream) {
-  return stream
-    .pipe(rev())
-    .pipe(gulp.dest(mode === PROD ? config.distProd : config.dist));
+  return stream.pipe(rev()).pipe(gulp.dest(config.distProd));
 }
 
 // these resources end up with a translation to their name
@@ -222,7 +220,7 @@ function proxyCfg(mode) {
       files: config.dist + "/**",
       serveStatic: [
         {
-          route: "/assets/dev",
+          route: "/assets-dev",
           dir: config.dist
         }
       ]

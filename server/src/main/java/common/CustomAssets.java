@@ -34,14 +34,15 @@ public class CustomAssets implements Jooby.Module {
 		AssetCompiler compiler = new AssetCompiler(config);
 		Function<String, String> url;
 		if (env.name().equals("dev")) {
-			url = raw -> "assets/dev" + raw;
-			env.router().assets("/assets/dev/**");
+			url = raw -> "assets-dev" + raw;
+			env.router().assets("/assets-dev/**");
+			env.router().assets("/assets/**");
 		} else {
 			String manifest = Resources.toString(CustomAssets.class.getResource(
-					"/assets/prod/manifest.json"), StandardCharsets.UTF_8);
+					"/assets/manifest.json"), StandardCharsets.UTF_8);
 			Map<String, String> map = new Gson().fromJson(manifest, new TypeToken<HashMap<String, String>>() {}.getType());
-			url = raw -> "assets/prod" + Objects.requireNonNull(map.get(raw), "No fingerprinted version of " + raw);
-			env.router().assets("/assets/prod/**");
+			url = raw -> "assets" + Objects.requireNonNull(map.get(raw), "No fingerprinted version of " + raw);
+			env.router().assets("/assets/**");
 		}
 		// key, style, key, script
 		List<String> keyValue = new ArrayList<>(4 * compiler.fileset().size());

@@ -33,8 +33,8 @@ def setInputs(targetTask) {
 }
 setInputs(gulp_buildDev)
 setInputs(gulp_buildProd)
-gulp_buildDev.outputs.dir('../server/src/main/resources/assets/dev')
-gulp_buildProd.outputs.dir('../server/src/main/resources/assets/prod')
+gulp_buildDev.outputs.dir('../server/src/main/resources/assets-dev')
+gulp_buildProd.outputs.dir('../server/src/main/resources/assets')
 
 // map prettier to spotless (to match server)
 setInputs(npm_run_formatlist)
