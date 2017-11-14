@@ -706,6 +706,47 @@ function convertTimestampToSeconds(timestamp: string): number {
   return HH * 60 * 60 + MM * 60 + SS;
 }
 
+function zeroPad(someNumber: number): string {
+  let twoDigitStr: string;
+  if (someNumber == 0) {
+    return "00";
+  }
+
+  if (someNumber < 10) {
+    twoDigitStr = "0" + someNumber.toString();
+  } else {
+    twoDigitStr = someNumber.toString();
+  }
+  return twoDigitStr;
+}
+
+function convertSecondsToTimestamp(totalSeconds: number): string {
+  const DD = totalSeconds.toFixed(1).split(".")[1];
+
+  let truncated = totalSeconds | 0;
+
+  const hours = Math.floor(truncated / 3600);
+  const HH = Math.floor(truncated / 3600).toString();
+
+  truncated %= 3600;
+
+  const seconds = truncated % 60;
+  const SS = zeroPad(seconds);
+
+  const minutes = Math.floor(truncated / 60);
+
+  let MM;
+  if (hours > 0) {
+    MM = zeroPad(minutes);
+    return HH + ":" + MM + ":" + SS + "." + DD;
+  } else if (minutes > 0) {
+    MM = minutes.toString();
+    return MM + ":" + SS + "." + DD;
+  } else {
+    return seconds.toString() + "." + DD;
+  }
+}
+
 function getCaptionNodeArray(videoId: string): Array<FoundationNode> {
   // Fetch the excerpt from the DB by its ID
   const captionFile = getVideoFactCaptionFile(videoId);
@@ -1253,6 +1294,7 @@ function highlightTextTwo(
 
 export {
   clearDefaultDOMSelection,
+  convertSecondsToTimestamp,
   convertTimestampToSeconds,
   getCaptionNodeArray,
   getCharRangeFromVideoRange,

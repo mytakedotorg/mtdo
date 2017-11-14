@@ -2,6 +2,7 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import Document from "../Document";
 import {
+  convertSecondsToTimestamp,
   getCaptionNodeArray,
   getSimpleRangesFromHTMLRange,
   getWordCount,
@@ -152,14 +153,15 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
     }
   }
   render() {
+    const startTime = convertSecondsToTimestamp(this.props.videoStart);
+    const endTime = convertSecondsToTimestamp(this.props.videoEnd);
+
     return (
       <div className="captions">
         {this.props.captionIsHighlighted
           ? <div className="video__actions">
               <div className="video__action">
-                <p className="video__instructions">
-                  Press Play to see your clip
-                </p>
+                <p className="video__instructions">Fine tune your clip</p>
                 <button
                   className="video__button video__button--bottom"
                   onClick={this.handleClearClick}
@@ -168,45 +170,48 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
                 </button>
               </div>
               <div className="video__action">
-                <p className="video__instructions">Fine tune your clip</p>
                 <div className="video__tuning">
                   <div className="video__action">
-                    <button
-                      className="video__button video__button--small"
-                      onClick={() => this.props.eventHandlers.onFineTuneDown(0)}
-                    >
-                      <i className="fa fa-arrow-down" aria-hidden="true" />
-                    </button>
-                    <span className="video__time">
-                      {this.props.videoStart >= 0
-                        ? "Start: " + this.props.videoStart.toFixed(1)
-                        : "Start: -" + this.props.videoStart.toFixed(1)}
-                    </span>
-                    <button
-                      className="video__button video__button--small"
-                      onClick={() => this.props.eventHandlers.onFineTuneUp(0)}
-                    >
-                      <i className="fa fa-arrow-up" aria-hidden="true" />
-                    </button>
+                    <p className="video__instructions">Start Time</p>
+                    <div className="video__tuning-buttons">
+                      <button
+                        className="video__button video__button--small"
+                        onClick={() =>
+                          this.props.eventHandlers.onFineTuneDown(0)}
+                      >
+                        <i className="fa fa-arrow-down" aria-hidden="true" />
+                      </button>
+                      <span className="video__time">
+                        {startTime}
+                      </span>
+                      <button
+                        className="video__button video__button--small"
+                        onClick={() => this.props.eventHandlers.onFineTuneUp(0)}
+                      >
+                        <i className="fa fa-arrow-up" aria-hidden="true" />
+                      </button>
+                    </div>
                   </div>
                   <div className="video__action">
-                    <button
-                      className="video__button video__button--small"
-                      onClick={() => this.props.eventHandlers.onFineTuneDown(1)}
-                    >
-                      <i className="fa fa-arrow-down" aria-hidden="true" />
-                    </button>
-                    <span className="video__time">
-                      {this.props.videoEnd >= 0
-                        ? "End: " + this.props.videoEnd.toFixed(1)
-                        : "End: -" + this.props.videoEnd.toFixed(1)}
-                    </span>
-                    <button
-                      className="video__button video__button--small"
-                      onClick={() => this.props.eventHandlers.onFineTuneUp(1)}
-                    >
-                      <i className="fa fa-arrow-up" aria-hidden="true" />
-                    </button>
+                    <p className="video__instructions">End Time</p>
+                    <div className="video__tuning-buttons">
+                      <button
+                        className="video__button video__button--small"
+                        onClick={() =>
+                          this.props.eventHandlers.onFineTuneDown(1)}
+                      >
+                        <i className="fa fa-arrow-down" aria-hidden="true" />
+                      </button>
+                      <span className="video__time">
+                        {endTime}
+                      </span>
+                      <button
+                        className="video__button video__button--small"
+                        onClick={() => this.props.eventHandlers.onFineTuneUp(1)}
+                      >
+                        <i className="fa fa-arrow-up" aria-hidden="true" />
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>

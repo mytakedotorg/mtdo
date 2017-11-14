@@ -38,11 +38,22 @@ $video-header-height: 60px;
   @include body;
   float: inherit;
 }
-.video__button {
-  float: inherit;
+.video__tuning-buttons {
+  float: left;
+  padding-top: 6px;
 }
 .video__button--small {
   @include button--small;
+  float: left;
+  padding: 2px 5px;
+  width: 22px;
+  text-align: center;
+  border: none;
+  color: palette(button, color--base);
+  background: palette(button, background--base);
+  &:hover {
+    background: palette(button, background--base-hover);
+  }
 }
 .video__button--top {
   @include button;
@@ -54,7 +65,7 @@ $video-header-height: 60px;
   @include button--blue;
 }
 .video__time {
-  float: inherit;
+  float: left;
   @include body--small;
   margin-left: 2px;
   margin-right: 2px;
