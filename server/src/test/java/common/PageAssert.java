@@ -13,7 +13,9 @@ import io.restassured.response.Response;
 import io.restassured.response.ValidatableResponse;
 import org.assertj.core.api.AbstractCharSequenceAssert;
 import org.assertj.core.api.Assertions;
+import org.jooby.Jooby;
 import org.jooby.Status;
+import org.jooby.rocker.Rockerby;
 
 /**
  * Performs assertions on page content.  If a test fails,
@@ -29,6 +31,18 @@ public class PageAssert {
 		return new PageAssert(response).responseAssert(asserter -> {
 			asserter.statusCode(status.value());
 		});
+	}
+
+	public static PageAssert assertThatStaticUrl(Jooby.Module module, String url) {
+		Dev.rockerDevInit();
+		Jooby jooby = new Jooby();
+		jooby.use(new Rockerby());
+		jooby.use(new CustomAssets());
+		jooby.use(module);
+		jooby.start("server.join=false");
+		Response response = RestAssured.get(url);
+		jooby.stop();
+		return assertThat(response, Status.OK);
 	}
 
 	private final Response response;

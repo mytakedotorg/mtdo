@@ -36,14 +36,19 @@ public class Dev extends Jooby {
 		});
 		use(new DevTime.Module());
 		use(new GreenMailModule());
-		// disable hot reloading on CI, to make sure tests work in the prod environment
-		if (!System.getenv().containsKey("CI")) {
-			RockerRuntime.getInstance().setReloading(true);
-		}
+		rockerDevInit();
 		use(new EmbeddedPostgresModule());
 		Prod.common(this);
 		Prod.controllers(this);
 		use(new Whoops());
+	}
+
+	/** Initializes the rocker template subsystem. */
+	static void rockerDevInit() {
+		// disable hot reloading on CI, to make sure tests work in the prod environment
+		if (!System.getenv().containsKey("CI")) {
+			RockerRuntime.getInstance().setReloading(true);
+		}
 	}
 
 	static class EmbeddedPostgresModule implements Jooby.Module {
