@@ -124,11 +124,10 @@ sourceSets {
 	test.runtimeClasspath += configurations.compileOnly
 }
 
-jooq.enabled=false
-//processResources.dependsOn([
-//	':client:gulp_buildProd',
-//	':client:gulp_buildDev'
-//])
+processResources.dependsOn([
+	':client:gulp_buildProd',
+	':client:gulp_buildDev'
+])
 
 //////////////
 // joobyRun //
@@ -136,6 +135,8 @@ jooq.enabled=false
 // we're not using any jooby-specific reloading
 // because as of 1.2.2 it's crazy slow, and also
 // appears to be broken
+
+// our in-house plugin works pretty good
 apply plugin: 'org.mytake.gradle.live'
 
 task runProd(type: JavaExec, dependsOn: classes) {
@@ -153,7 +154,7 @@ task runProd(type: JavaExec, dependsOn: classes) {
 	]
 }
 
-task runDev(type: JavaExec, dependsOn: classes) {
+task runDev(type: JavaExec, dependsOn: testClasses) {
 	description = 'Run app in dev mode'
 	classpath = sourceSets.test.runtimeClasspath
 	main = 'common.Dev'

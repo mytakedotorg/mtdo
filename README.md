@@ -12,29 +12,48 @@ Here's what we have so far:
 - We're discussing how to improve these [here](https://github.com/mytake/mytake/issues).
 
 # build instructions
- 
-## source locations
 
-- Sass lives in `/assets`
-- Typescript lives in `/src`
-- Html lives in `/nunjucks`
+## Quickstart
 
-## how to get started
+Run `gradlew live`, and you'll get:
 
-- `npm start` serves the site from `/dist`, with live reloading.
+- a server running at localhost:8080
+- proxied by browsersync, with instant asset reloading
+- and a continuous build hotswapping any code or template changes
+- **exit by navigating to `/exit` or you'll have zombie processes all over the place**
+
+Takes 30-60s to launch.
+
+## styling
+
+styling is all in `/client/assets/stylesheets/main.scss`
+
+## client-side js
+
+all js lives in `/client/src`
+
+## server-side java
+
+all lives in `/server/`
 
 ## CI
 
-- Netlify deploys the site by running `npm run deploy` and then serving the `/dist` folder, with asset fingerprinting built-in to the serve.
-- Travis runs `npm run-script format-list` and `npm run-script test`
+- Travis runs `gradlew check`
 
 ## update deps
+
+Update gradle deps with `gradlew dependencyUpdates` ([ref](https://github.com/ben-manes/gradle-versions-plugin)).
+
+Update npm deps in client folder with
 
 ```
 npm outdated               - shows which packages are out of date
 npm update <packagename>   - updates packagename to "Wanted", but won't pass semver
 ```
+
 ## troubleshooting
+
+OUTDATED: gradle handled NPM now, TBD how we recommend using it
 
 If `npm install` generates EINTEGRITY warnings, try the following
 
