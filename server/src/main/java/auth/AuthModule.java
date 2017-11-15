@@ -74,6 +74,7 @@ public class AuthModule implements Jooby.Module {
 		});
 		env.router().get(URL_logout, (req, rsp) -> {
 			rsp.clearCookie(AuthUser.LOGIN_COOKIE);
+			rsp.clearCookie(AuthUser.LOGIN_UI_COOKIE);
 			rsp.redirect(HomeFeed.URL);
 		});
 		// a missing or expired login redirects to the login page
