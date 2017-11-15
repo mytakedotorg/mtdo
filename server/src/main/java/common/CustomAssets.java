@@ -29,9 +29,14 @@ import org.jooby.rocker.Rockerby;
 public class CustomAssets implements Jooby.Module {
 	public static void initTemplates(Jooby jooby) {
 		// disable hot reloading on CI, to make sure tests work in the prod environment
-		if (!System.getenv().containsKey("CI")) {
-			RockerRuntime.getInstance().setReloading(true);
-		}
+		jooby.use(new Jooby.Module() {
+			@Override
+			public void configure(Env env, Config conf, Binder binder) throws Throwable {
+				if (env.name().equals("dev") && !System.getenv().containsKey("CI")) {
+					RockerRuntime.getInstance().setReloading(true);
+				}
+			}
+		});
 		// sets variables that the templates need
 		jooby.use(new CustomAssets());
 		// makes rocker templates work
