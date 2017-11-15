@@ -29,9 +29,14 @@ import org.jooby.rocker.Rockerby;
 public class CustomAssets implements Jooby.Module {
 	public static void initTemplates(Jooby jooby) {
 		// disable hot reloading on CI, to make sure tests work in the prod environment
-		if (!System.getenv().containsKey("CI")) {
-			RockerRuntime.getInstance().setReloading(true);
-		}
+		jooby.use(new Jooby.Module() {
+			@Override
+			public void configure(Env env, Config conf, Binder binder) throws Throwable {
+				if (env.name().equals("dev") && !System.getenv().containsKey("CI")) {
+					RockerRuntime.getInstance().setReloading(true);
+				}
+			}
+		});
 		// sets variables that the templates need
 		jooby.use(new CustomAssets());
 		// makes rocker templates work
@@ -56,7 +61,7 @@ public class CustomAssets implements Jooby.Module {
 			String manifest = Resources.toString(CustomAssets.class.getResource(
 					"/assets/manifest.json"), StandardCharsets.UTF_8);
 			Map<String, String> map = new Gson().fromJson(manifest, new TypeToken<HashMap<String, String>>() {}.getType());
-			url = raw -> "/assets" + Objects.requireNonNull(map.get(raw), "No fingerprinted version of " + raw);
+			url = raw -> "/assets/" + Objects.requireNonNull(map.get(raw.substring(1)), "No fingerprinted version of " + raw);
 			env.router().assets("/assets/**");
 		}
 		// key, style, key, script
@@ -80,13 +85,13 @@ public class CustomAssets implements Jooby.Module {
 		return compiler.styles(fileset).stream()
 				.map(url -> url.startsWith("/https://") ? url.substring(1) : urlMapper.apply(url))
 				.map(script -> "<link rel=\"stylesheet\" href=\"" + script + "\">")
-				.collect(Collectors.joining());
+				.collect(Collectors.joining("\n"));
 	}
 
 	private static String scripts(Function<String, String> urlMapper, AssetCompiler compiler, String fileset) {
 		return compiler.scripts(fileset).stream()
 				.map(url -> url.startsWith("/https://") ? url.substring(1) : urlMapper.apply(url))
 				.map(script -> "<script type=\"text/javascript\" src=\"" + script + "\"></script>")
-				.collect(Collectors.joining());
+				.collect(Collectors.joining("\n"));
 	}
 }

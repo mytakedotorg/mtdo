@@ -30,3 +30,19 @@ eclipseResourceFilters {
 	exclude().folders().name('server')
 }
 tasks.eclipse.dependsOn(tasks.cleanEclipse)
+
+// heroku deploys fatjar (and deletes everything else)
+task stage {
+	dependsOn ':server:shadowJar'
+	doLast {
+		delete fileTree(dir: '.', exclude: [
+			'Procfile',
+			'app.json',
+			'system.properties',
+			'.profile.d/**',
+			'.jdk/**',
+			'.heroku/**',
+			'server/build/libs/server-all.jar'
+		])
+	}
+}

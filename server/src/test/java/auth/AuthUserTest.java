@@ -18,7 +18,6 @@ import io.restassured.specification.RequestSpecification;
 import java.util.Optional;
 import org.jooby.Jooby;
 import org.jooby.Status;
-import org.jooby.rocker.Rockerby;
 import org.junit.ClassRule;
 import org.junit.Test;
 

@@ -1,10 +1,18 @@
-import java.util.Set;
-
 public class Env {
+	/** https://devcenter.heroku.com/articles/buildpack-api#stacks */
+	static final String ENV_VAR_HEROKU = "STACK";
+	/** https://circleci.com/docs/1.0/environment-variables/#basics */
+	static final String ENV_VAR_CI = "CI";
+	
 	public static boolean isHerokuOrCI() {
-		String HEROKU_ENV_VAR = "STACK";  // https://devcenter.heroku.com/articles/buildpack-api#stacks
-		String CI_ENV_VAR = "CI";  // https://circleci.com/docs/1.0/environment-variables/#basics
-		Set<String> env = System.getenv().keySet();
-		return env.contains(HEROKU_ENV_VAR) || env.contains(CI_ENV_VAR);
+		return isCI() || isHeroku();
+	}
+
+	public static boolean isCI() {
+		return System.getenv().containsKey(ENV_VAR_CI);
+	}
+
+	public static boolean isHeroku() {
+		return System.getenv().containsKey(ENV_VAR_HEROKU);
 	}
 }
