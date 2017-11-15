@@ -85,13 +85,13 @@ public class CustomAssets implements Jooby.Module {
 		return compiler.styles(fileset).stream()
 				.map(url -> url.startsWith("/https://") ? url.substring(1) : urlMapper.apply(url))
 				.map(script -> "<link rel=\"stylesheet\" href=\"" + script + "\">")
-				.collect(Collectors.joining());
+				.collect(Collectors.joining("\n"));
 	}
 
 	private static String scripts(Function<String, String> urlMapper, AssetCompiler compiler, String fileset) {
 		return compiler.scripts(fileset).stream()
 				.map(url -> url.startsWith("/https://") ? url.substring(1) : urlMapper.apply(url))
 				.map(script -> "<script type=\"text/javascript\" src=\"" + script + "\"></script>")
-				.collect(Collectors.joining());
+				.collect(Collectors.joining("\n"));
 	}
 }
