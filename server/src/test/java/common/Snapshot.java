@@ -32,8 +32,6 @@ public class Snapshot {
 					Assert.assertEquals(snapshot.expected(), actual);
 				} catch (Error e) {
 					if (OpenBrowser.isInteractive()) {
-						throw e;
-					} else {
 						e.printStackTrace();
 						boolean overwrite = new OpenBrowser()
 								.add("/expected", snapshot.expected())
@@ -41,7 +39,11 @@ public class Snapshot {
 								.isYes("Click yes to overwrite expected with actual for " + snapshot.label());
 						if (overwrite) {
 							Files.write(snapshot.testFile, actual.getBytes(StandardCharsets.UTF_8));
+						} else {
+							throw e;
 						}
+					} else {
+						throw e;
 					}
 				}
 			} else {
@@ -67,7 +69,6 @@ public class Snapshot {
 		final String id;
 		final String pkg;
 		final String className;
-		final String method;
 		final Path testFile;
 
 		static IdSnapshot capture(String id) throws ClassNotFoundException {
@@ -80,20 +81,18 @@ public class Snapshot {
 			StackTraceElement last = trace[3];
 			int lastSlash = last.getClassName().lastIndexOf('.');
 			String className = last.getClassName().substring(lastSlash + 1);
-			String method = last.getMethodName();
 			String pkg = last.getClassName().substring(0, lastSlash);
 
 			Path joobyRoot = new File(".").toPath();
 			Path testFile = joobyRoot.resolve("src/test/java/" +
 					pkg.replace('.', '/') + "/__snapshots__/" +
-					className + "-" + method + "-" + id);
-			return new IdSnapshot(pkg, className, method, id, testFile);
+					className + "-" + id);
+			return new IdSnapshot(pkg, className, id, testFile);
 		}
 
-		public IdSnapshot(String pkg, String className, String method, String id, Path testFile) {
+		public IdSnapshot(String pkg, String className, String id, Path testFile) {
 			this.pkg = pkg;
 			this.className = className;
-			this.method = method;
 			this.id = id;
 			this.testFile = testFile;
 		}
@@ -108,7 +107,7 @@ public class Snapshot {
 		}
 
 		public String label() {
-			return className + "::" + method + "(" + id + ")";
+			return className + "(" + id + ")";
 		}
 	}
 }
