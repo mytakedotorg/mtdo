@@ -28,15 +28,15 @@ import org.jooby.Response;
 public class AuthUser {
 	public static final int LOGIN_DAYS = 7;
 
-	final long id;
+	final int id;
 	final String username;
 
-	public AuthUser(long id, String username) {
+	public AuthUser(int id, String username) {
 		this.id = id;
 		this.username = username;
 	}
 
-	public long id() {
+	public int id() {
 		return id;
 	}
 
@@ -97,7 +97,7 @@ public class AuthUser {
 			throw new TokenExpiredException("Your login timed out.");
 		}
 		// create the logged-in AuthUser
-		long userId = Long.parseLong(decoded.getSubject());
+		int userId = Integer.parseInt(decoded.getSubject());
 		String username = decoded.getClaim(CLAIM_USERNAME).asString();
 
 		AuthUser user = new AuthUser(userId, username);
@@ -125,12 +125,12 @@ public class AuthUser {
 		Cookie.Definition httpCookie = new Cookie.Definition(LOGIN_COOKIE, jwtToken(req, account));
 		httpCookie.httpOnly(true);
 		httpCookie.secure(isSecurable);
-		httpCookie.maxAge((int) TimeUnit.MINUTES.toSeconds(LOGIN_DAYS));
+		httpCookie.maxAge((int) TimeUnit.DAYS.toSeconds(LOGIN_DAYS));
 		rsp.cookie(httpCookie);
 
 		Cookie.Definition uiCookie = new Cookie.Definition(LOGIN_UI_COOKIE, "{\"username\":\"" + account.getUsername() + "\"}");
 		uiCookie.secure(isSecurable);
-		uiCookie.maxAge((int) TimeUnit.MINUTES.toSeconds(LOGIN_DAYS));
+		uiCookie.maxAge((int) TimeUnit.DAYS.toSeconds(LOGIN_DAYS));
 		rsp.cookie(uiCookie);
 	}
 }
