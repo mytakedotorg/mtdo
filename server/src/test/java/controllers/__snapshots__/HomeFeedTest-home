@@ -81,7 +81,10 @@
 	<li class="nav__list-item nav__list-item--bottom"><a class="nav__link nav__link--bottom" href="/about/" tabindex="7"><span class="nav__link-text nav__link-text--bottom">About us</span></a></li>
 	</ul>
 </footer>
-<script type="text/javascript" src="/assets-dev/window.bundle.js"></script><script type="text/javascript" src="https://unpkg.com/react@15/dist/react.js"></script><script type="text/javascript" src="https://unpkg.com/react-dom@15/dist/react-dom.js"></script><script type="text/javascript" src="/assets-dev/takeReader.bundle.js"></script>
+<script type="text/javascript" src="/assets-dev/window.bundle.js"></script>
+<script type="text/javascript" src="https://unpkg.com/react@15/dist/react.js"></script>
+<script type="text/javascript" src="https://unpkg.com/react-dom@15/dist/react-dom.js"></script>
+<script type="text/javascript" src="/assets-dev/takeReader.bundle.js"></script>
 
 </body>
 </html>
