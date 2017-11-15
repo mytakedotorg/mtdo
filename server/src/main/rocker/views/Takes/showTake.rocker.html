@@ -2,11 +2,15 @@
 
 @args (Takepublished take)
 
-@views.base.template(take.getTitle(), take.getTitle()) -> {
+@views.naked.template(take.getTitle(), take.getTitle(), "takeReader") -> {
 
-<h1>@take.getTitle()</h1>
-@take.getBlocks()
-<span>Likes: @take.getCountLike()</span>
-<span>Views: @take.getCountView()</span>
+<div id="app"></div>
+<script type="text/javascript">
+var app = document.getElementById('app')
+	app.setAttribute('data-init', JSON.stringify({
+			"user": "samples",
+			"article": "why-its-so-hard-to-have-peace"
+		}))
+</script>
 
 }

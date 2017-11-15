@@ -11,6 +11,7 @@ import com.google.common.collect.ImmutableSet;
 import common.RedirectException;
 import common.Text;
 import controllers.AboutUs;
+import controllers.Drafts;
 import controllers.Foundation;
 
 /** Usernames that we reserve for ourselves, for routing or other reasons. */
@@ -20,7 +21,8 @@ class ReservedUsernames {
 	}
 
 	private static final ImmutableSet<String> RESERVED_USERNAMES = ImmutableSet.of(
-			"drafts",			// drafts
+			url(Drafts.URL),		// drafts
+			url(Drafts.URL_NEW),	// anonymous drafts
 			"import",			// import from e.g. Google docs?
 			"api",				// for api access
 			"settings",			// for user settings

@@ -1,0 +1,22 @@
+@views.naked.template("MyTake.org", "Your bicycle for politics", "react") -> {
+<div id="app"></div>
+
+@* TODO
+A save button.  When you click it, it makes a post with these fields:
+
+title="Why it's so hard to have peace" enforce length <= 255
+blocks=JSON.stringify(take.blocks)
+(FOR UPDATING AN EXISTING DRAFT)
+draftId = draftId
+parentId = parentId
+(/FOR UPDATING AN EXISTING DRAFT))
+
+The post will respond with:
+
+{ draftId: "123", parentId: "123"}
+
+The next time the user presses save, we need to send those values along.
+
+*@
+
+}
