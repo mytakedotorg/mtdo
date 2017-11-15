@@ -15,7 +15,14 @@
       "generator": "secret"
     }
   },
-  "addons": [],
+  "addons": [
+    {
+      "plan": "heroku-postgresql:hobby-dev",
+      "options": {
+        "version": "9.6"
+      }
+    }
+  ],
   "buildpacks": [
     { "url": "https://github.com/heroku/heroku-buildpack-gradle.git" }
   ]
