@@ -19,7 +19,6 @@ import org.jooby.Jooby;
 import org.jooby.jdbc.Jdbc;
 import org.jooby.jooq.jOOQ;
 import org.jooby.mail.CommonsEmail;
-import org.jooby.rocker.Rockerby;
 
 /**
  * The app that we run in production.  See {@link Dev} in the test
@@ -51,8 +50,7 @@ public class Prod extends Jooby {
 		jooby.use(new CommonsEmail());
 		jooby.use(new Jdbc());
 		jooby.use(new jOOQ());
-		jooby.use(new Rockerby());
-		jooby.use(new CustomAssets());
+		CustomAssets.initTemplates(jooby);
 	}
 
 	static void controllers(Jooby jooby) {

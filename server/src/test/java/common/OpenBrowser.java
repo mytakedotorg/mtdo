@@ -38,7 +38,7 @@ class OpenBrowser {
 			socket.close();
 
 			Jooby jooby = new Jooby();
-			jooby.use(new CustomAssets());
+			CustomAssets.initTemplates(jooby);
 			jooby.port(port);
 			map.forEach((url, content) -> {
 				jooby.get(url, () -> content);

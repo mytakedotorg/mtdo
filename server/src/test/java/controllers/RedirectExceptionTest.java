@@ -9,22 +9,18 @@ package controllers;
 import static io.restassured.RestAssured.given;
 
 import common.CustomAssets;
-import common.Dev;
 import common.JoobyDevRule;
 import common.RedirectException;
 import common.Snapshot;
 import org.jooby.Jooby;
 import org.jooby.Status;
-import org.jooby.rocker.Rockerby;
 import org.junit.ClassRule;
 import org.junit.Test;
 
 public class RedirectExceptionTest {
 	static class App extends Jooby {
 		{
-			use(new Rockerby());
-			use(new CustomAssets());
-			Dev.rockerDevInit();
+			CustomAssets.initTemplates(this);
 			use(new RedirectException.Module());
 			get("/urlWasInvalid", req -> {
 				throw RedirectException.badRequestError("URL was invalid!");

@@ -6,6 +6,7 @@
  */
 package common;
 
+import com.fizzed.rocker.runtime.RockerRuntime;
 import com.google.common.io.Resources;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -23,8 +24,22 @@ import java.util.stream.Collectors;
 import org.jooby.Env;
 import org.jooby.Jooby;
 import org.jooby.assets.AssetCompiler;
+import org.jooby.rocker.Rockerby;
 
 public class CustomAssets implements Jooby.Module {
+	public static void initTemplates(Jooby jooby) {
+		// disable hot reloading on CI, to make sure tests work in the prod environment
+		if (!System.getenv().containsKey("CI")) {
+			RockerRuntime.getInstance().setReloading(true);
+		}
+		// sets variables that the templates need
+		jooby.use(new CustomAssets());
+		// makes rocker templates work
+		jooby.use(new Rockerby());
+	}
+
+	private CustomAssets() {}
+
 	static final String _STYLES = "_styles";
 	static final String _SCRIPTS = "_scripts";
 

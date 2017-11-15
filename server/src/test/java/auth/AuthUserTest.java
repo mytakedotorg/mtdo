@@ -9,6 +9,7 @@ package auth;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
 
+import common.CustomAssets;
 import common.DevTime;
 import common.JoobyDevRule;
 import common.RedirectException;
@@ -24,7 +25,7 @@ import org.junit.Test;
 public class AuthUserTest {
 	static class App extends Jooby {
 		{
-			use(new Rockerby());
+			CustomAssets.initTemplates(this);
 			use(new DevTime.Module());
 			use(new AuthModule());
 			use(new RedirectException.Module());

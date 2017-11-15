@@ -15,7 +15,6 @@ import org.assertj.core.api.AbstractCharSequenceAssert;
 import org.assertj.core.api.Assertions;
 import org.jooby.Jooby;
 import org.jooby.Status;
-import org.jooby.rocker.Rockerby;
 
 /**
  * Performs assertions on page content.  If a test fails,
@@ -34,10 +33,8 @@ public class PageAssert {
 	}
 
 	public static PageAssert assertThatStaticUrl(Jooby.Module module, String url) {
-		Dev.rockerDevInit();
 		Jooby jooby = new Jooby();
-		jooby.use(new Rockerby());
-		jooby.use(new CustomAssets());
+		CustomAssets.initTemplates(jooby);
 		jooby.use(module);
 		jooby.start("server.join=false");
 		Response response = RestAssured.get(url);

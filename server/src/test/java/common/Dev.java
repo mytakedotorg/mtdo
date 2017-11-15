@@ -7,7 +7,6 @@
 package common;
 
 import com.diffplug.common.base.Errors;
-import com.fizzed.rocker.runtime.RockerRuntime;
 import com.google.inject.Binder;
 import com.icegreen.greenmail.util.GreenMail;
 import com.icegreen.greenmail.util.ServerSetup;
@@ -36,19 +35,10 @@ public class Dev extends Jooby {
 		});
 		use(new DevTime.Module());
 		use(new GreenMailModule());
-		rockerDevInit();
 		use(new EmbeddedPostgresModule());
 		Prod.common(this);
 		Prod.controllers(this);
 		use(new Whoops());
-	}
-
-	/** Initializes the rocker template subsystem. */
-	public static void rockerDevInit() {
-		// disable hot reloading on CI, to make sure tests work in the prod environment
-		if (!System.getenv().containsKey("CI")) {
-			RockerRuntime.getInstance().setReloading(true);
-		}
 	}
 
 	static class EmbeddedPostgresModule implements Jooby.Module {
