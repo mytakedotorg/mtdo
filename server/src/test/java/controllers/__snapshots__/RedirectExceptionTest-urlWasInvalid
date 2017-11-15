@@ -6,8 +6,8 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title>MyTake.org</title>
-<meta name="description" content="Your bicycle for politics | MyTake.org">
+<title>Bad request</title>
+<meta name="description" content="Bad request | MyTake.org">
 <meta name="author" content="MyTake.org">
 
 <link rel="stylesheet" href="/assets-dev/main.css">
@@ -35,9 +35,9 @@
 	</a>
 	<nav class="nav collapse" role="navigation">
 		<ul class="nav__list nav__list--top">
-		<li class="nav__list-item nav__list-item--top"><a class="nav__link nav__link--top" href="/foundation/" tabindex="2"><span class="nav__link-text nav__link-text--top">Explore the Foundation</span></a></li>
+		<li class="nav__list-item nav__list-item--top"><a class="nav__link nav__link--top" href="/foundation" tabindex="2"><span class="nav__link-text nav__link-text--top">Explore the Foundation</span></a></li>
 		<li class="nav__list-item nav__list-item--top"><a class="nav__link nav__link--top" href="/new-take/" tabindex="3"><span class="nav__link-text nav__link-text--top">Give your Take</span></a></li>
-		<li class="nav__list-item nav__list-item--top"><a class="nav__link nav__link--top" href="/about/" tabindex="4"><span class="nav__link-text nav__link-text--top">About us</span></a></li>
+		<li class="nav__list-item nav__list-item--top"><a class="nav__link nav__link--top" href="/aboutus" tabindex="4"><span class="nav__link-text nav__link-text--top">About us</span></a></li>
 		</ul>
 	</nav>
 	</div>
@@ -53,24 +53,7 @@
 	</div>
 </header>
 
-<div class="hero__wrapper">
-	<div class="hero">
-		<div class="hero__inner-container">
-			<h1 class="hero__title">Shape The Discussion</h1>
-			<p class="hero__text">Explore a <span class="hero__text--special">Foundation</span> of <span class="hero__text--special">Facts.</span></p>
-			<p class="hero__text">Form your own opinion</p>
-			<p class="hero__text">Share your <span class="hero__text--special">Take.</span></p>
-			<a class="hero__button" href="/new-take/">Get Started</a>
-		</div>
-	</div>
-</div>
-<div id="app"></div>
-<script type="text/javascript">
-	var app = document.getElementById('app')
-	app.setAttribute('data-init', JSON.stringify({
-		"route": "/"
-	}))
-</script>
+URL was invalid!
 
 
 <footer class="footer">
@@ -81,7 +64,7 @@
 	<li class="nav__list-item nav__list-item--bottom"><a class="nav__link nav__link--bottom" href="/about/" tabindex="7"><span class="nav__link-text nav__link-text--bottom">About us</span></a></li>
 	</ul>
 </footer>
-<script type="text/javascript" src="/assets-dev/window.bundle.js"></script><script type="text/javascript" src="/assets-dev/https://unpkg.com/react@15/dist/react.js"></script><script type="text/javascript" src="/assets-dev/https://unpkg.com/react-dom@15/dist/react-dom.js"></script><script type="text/javascript" src="/assets-dev/takeReader.bundle.js"></script>
+<script type="text/javascript" src="/assets-dev/window.bundle.js"></script>
 
 </body>
 </html>

@@ -44,7 +44,7 @@ public class Dev extends Jooby {
 	}
 
 	/** Initializes the rocker template subsystem. */
-	static void rockerDevInit() {
+	public static void rockerDevInit() {
 		// disable hot reloading on CI, to make sure tests work in the prod environment
 		if (!System.getenv().containsKey("CI")) {
 			RockerRuntime.getInstance().setReloading(true);

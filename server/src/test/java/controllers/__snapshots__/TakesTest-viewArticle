@@ -6,11 +6,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title>Bad request</title>
-<meta name="description" content="Bad request | MyTake.org">
+<title>Why it&#39;s so hard to have peace</title>
+<meta name="description" content="Why it&#39;s so hard to have peace | MyTake.org">
 <meta name="author" content="MyTake.org">
 
-<link rel="stylesheet" href="/all.css">
+<link rel="stylesheet" href="/assets-dev/main.css">
 <link href="https://fonts.googleapis.com/css?family=Merriweather:400,400i,700|Source+Sans+Pro:300,400,700" rel="stylesheet">
 <script src="https://use.fontawesome.com/be03d6dcba.js"></script>
 <!--[if lt IE 9]>
@@ -35,9 +35,9 @@
 	</a>
 	<nav class="nav collapse" role="navigation">
 		<ul class="nav__list nav__list--top">
-		<li class="nav__list-item nav__list-item--top"><a class="nav__link nav__link--top" href="/foundation/" tabindex="2"><span class="nav__link-text nav__link-text--top">Explore the Foundation</span></a></li>
+		<li class="nav__list-item nav__list-item--top"><a class="nav__link nav__link--top" href="/foundation" tabindex="2"><span class="nav__link-text nav__link-text--top">Explore the Foundation</span></a></li>
 		<li class="nav__list-item nav__list-item--top"><a class="nav__link nav__link--top" href="/new-take/" tabindex="3"><span class="nav__link-text nav__link-text--top">Give your Take</span></a></li>
-		<li class="nav__list-item nav__list-item--top"><a class="nav__link nav__link--top" href="/about/" tabindex="4"><span class="nav__link-text nav__link-text--top">About us</span></a></li>
+		<li class="nav__list-item nav__list-item--top"><a class="nav__link nav__link--top" href="/aboutus" tabindex="4"><span class="nav__link-text nav__link-text--top">About us</span></a></li>
 		</ul>
 	</nav>
 	</div>
@@ -53,7 +53,11 @@
 	</div>
 </header>
 
-Resource not found!
+<h1>Why it&#39;s so hard to have peace</h1>
+[{&quot;kind&quot;:&quot;paragraph&quot;,&quot;text&quot;:&quot;During the cold war, anybody who wanted to negotiate with the evil Communists was “weak”.&quot;},{&quot;kind&quot;:&quot;paragraph&quot;,&quot;text&quot;:&quot;Today, anybody who wants to negotiate with a Muslim country is “weak”.&quot;},{&quot;kind&quot;:&quot;video&quot;,&quot;range&quot;:[304,321],&quot;videoId&quot;:&quot;QuPWV36zqdc&quot;},{&quot;kind&quot;:&quot;paragraph&quot;,&quot;text&quot;:&quot;Thank goodness there&#39;s at least one party who is willing to give peace a chance!&quot;},{&quot;kind&quot;:&quot;video&quot;,&quot;range&quot;:[246,261],&quot;videoId&quot;:&quot;vIZ6w0kMqUA&quot;},{&quot;kind&quot;:&quot;paragraph&quot;,&quot;text&quot;:&quot;Err..  Surely that&#39;s an outlier?&quot;},{&quot;kind&quot;:&quot;video&quot;,&quot;range&quot;:[190,203],&quot;videoId&quot;:&quot;vIZ6w0kMqUA&quot;},{&quot;kind&quot;:&quot;paragraph&quot;,&quot;text&quot;:&quot;Huh.  Too bad Jimmy Carter didn&#39;t think of something as catchy as MAGA.&quot;}]
+<span>Likes: 0</span>
+<span>Views: 1</span>
+
 
 
 <footer class="footer">
@@ -64,6 +68,7 @@ Resource not found!
 	<li class="nav__list-item nav__list-item--bottom"><a class="nav__link nav__link--bottom" href="/about/" tabindex="7"><span class="nav__link-text nav__link-text--bottom">About us</span></a></li>
 	</ul>
 </footer>
-<script src="/window.bundle.js"></script>
+<script type="text/javascript" src="/assets-dev/window.bundle.js"></script>
+
 </body>
 </html>

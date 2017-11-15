@@ -8,6 +8,8 @@ package controllers;
 
 import static io.restassured.RestAssured.given;
 
+import common.CustomAssets;
+import common.Dev;
 import common.JoobyDevRule;
 import common.RedirectException;
 import common.Snapshot;
@@ -21,6 +23,8 @@ public class RedirectExceptionTest {
 	static class App extends Jooby {
 		{
 			use(new Rockerby());
+			use(new CustomAssets());
+			Dev.rockerDevInit();
 			use(new RedirectException.Module());
 			get("/urlWasInvalid", req -> {
 				throw RedirectException.badRequestError("URL was invalid!");
@@ -52,7 +56,7 @@ public class RedirectExceptionTest {
 				.statusCode(Status.NOT_FOUND.value())
 				.header("Location", "/notFound?msg=Resource+not+found%21");
 		Snapshot.match("resourceNotFound", given().urlEncodingEnabled(false)
-				.get("/badRequest?msg=Resource+not+found%21")
+				.get("/notFound?msg=Resource+not+found%21")
 				.body().asString());
 	}
 }
