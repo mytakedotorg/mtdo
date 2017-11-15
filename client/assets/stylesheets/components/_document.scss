@@ -170,3 +170,13 @@ $document-margin-top: 0px;
 .document__node-text--hidden-p {
   @include body;
 }
+.document__text--caption {
+  position: relative;
+  height: 0px;
+  overflow-y: scroll;
+  background-color: palette(document, background);
+  @include body;
+  &:last-child {
+    padding-bottom: 200px;
+  }
+}
