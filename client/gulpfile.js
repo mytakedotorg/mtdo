@@ -9,8 +9,6 @@ webpackCore = require("webpack");
 webpack = require("webpack-stream");
 path = require("path");
 fs = require("fs");
-// html
-nunjucks = require("gulp-nunjucks-html");
 // file loaders
 ts = require("gulp-typescript");
 tsLoaders = ts.createProject("./loaders/tsconfig.json");
@@ -30,8 +28,6 @@ const config = {
   sassSrc: "./assets/stylesheets/**/*.?(s)css",
   imgSrc: "./assets/images/**/*.{jpg,png}",
   webpackSrc: ["./src/**/*", "!src/**/*.spec.js"],
-  nunjucksTemplates: "./nunjucks/templates",
-  nunjucksPages: "./nunjucks/pages",
   loadersSrc: "./loaders/src/**/*.ts",
   loadersDist: "./loaders/dist",
   scriptsSrc: "./test/scripts/src/**/*.ts",
@@ -52,7 +48,6 @@ function setupPipeline(mode) {
   const css = "css" + mode;
   const sass = "sass" + mode;
   const webpack = "webpack" + mode;
-  const nunjucks = "nunjucks" + mode;
   const images = "images" + mode;
   const loaders = "loaders" + mode;
   const scripts = "scripts" + mode;
@@ -60,11 +55,10 @@ function setupPipeline(mode) {
   gulp.task(sass, sassCfg(mode));
   gulp.task(loaders, loadersCfg(mode));
   gulp.task(webpack, [loaders], webpackCfg(mode));
-  gulp.task(nunjucks, [webpack], nunjucksCfg(mode));
   gulp.task(images, imagesCfg(mode));
   gulp.task(scripts, scriptsCfg(mode));
   if (mode === PROD) {
-    gulp.task(BUILD + mode, [nunjucks, sass, images, css], () => {
+    gulp.task(BUILD + mode, [webpack, sass, images, css], () => {
       return gulp
         .src(config.distProd + "/*.json")
         .pipe(
@@ -167,16 +161,6 @@ function webpackCfg(mode) {
           gutil.log("Webpack: " + err.message);
         })
       )
-    );
-  };
-}
-
-function nunjucksCfg(mode) {
-  return () => {
-    return gulp.src(config.nunjucksPages + "/**/*.html").pipe(
-      nunjucks({
-        searchPaths: [config.nunjucksTemplates]
-      })
     );
   };
 }
