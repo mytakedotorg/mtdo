@@ -61,7 +61,7 @@ public class CustomAssets implements Jooby.Module {
 			String manifest = Resources.toString(CustomAssets.class.getResource(
 					"/assets/manifest.json"), StandardCharsets.UTF_8);
 			Map<String, String> map = new Gson().fromJson(manifest, new TypeToken<HashMap<String, String>>() {}.getType());
-			url = raw -> "/assets" + Objects.requireNonNull(map.get(raw), "No fingerprinted version of " + raw);
+			url = raw -> "/assets/" + Objects.requireNonNull(map.get(raw.substring(1)), "No fingerprinted version of " + raw);
 			env.router().assets("/assets/**");
 		}
 		// key, style, key, script
