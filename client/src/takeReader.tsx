@@ -5,45 +5,22 @@ import FeedList from "./components/FeedList";
 import { TakeDocument } from "./components/BlockEditor";
 import { getArticle } from "./utils/databaseAPI";
 
-interface InitJSON {
-  user: string;
-  article: string;
-  route?: string;
-}
-
 let app: HTMLElement | null = document.getElementById("app");
 
 let Root;
-if (app && app.hasAttribute("data-init")) {
+
+if (window.location.pathname === "/") {
+  Root = <FeedList />;
+} else if (app) {
   let data = app.getAttribute("data-init");
   if (data) {
-    let initJson: InitJSON = JSON.parse(data);
-
-    if (initJson.route && initJson.route === "/") {
-      //Homepage feed
-      Root = <FeedList />;
-    } else {
-      let article = getArticle(initJson.user, initJson.article);
-
-      if (article) {
-        let takeDocument: TakeDocument = {
-          title: article.title,
-          blocks: article.blocks
-        };
-
-        Root = <BlockReader initState={takeDocument} />;
-      } else {
-        // Error getting article
-        Root = <div />;
-      }
-    }
+    let initJson: TakeDocument = JSON.parse(data);
+    Root = <BlockReader initState={initJson} />;
   } else {
-    // Error parsing data
-    Root = <div />;
+    throw "Error reading data-init attribute";
   }
 } else {
-  // Error finding root node
-  Root = <div />;
+  throw "Couldn't find div#app";
 }
 
 ReactDOM.render(Root, app);
