@@ -15,6 +15,7 @@
     "formatlist": "prettier --list-different '*.js' 'assets/**/*.scss' 'src/**/*.ts?(x)' 'loaders/**/*.ts' 'test/**/*.ts'",
     "formatwrite": "prettier --write '*.js' 'assets/**/*.scss' 'src/**/*.ts?(x)' 'loaders/**/*.ts' 'test/**/*.ts'",
     "start": "gulp serveDev",
+    "testprep": "gulp loadersDev scriptsDev",
     "test": "jest"
   },
   "author": "",

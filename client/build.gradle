@@ -43,6 +43,7 @@ task spotlessCheck(dependsOn: npm_run_formatlist)
 task spotlessApply(dependsOn: npm_run_formatwrite)
 
 // check should run all tests
+npm_run_test.dependsOn(npm_run_testprep)
 task check(dependsOn: [
 	npm_run_test,
 	spotlessCheck
