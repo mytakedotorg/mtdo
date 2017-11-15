@@ -5,7 +5,7 @@ plugins {
 
 node {
 	version = '6.10.2'
-	npmVersion = '5.2.0'
+	npmVersion = '5.4.2'
 	// yarnVersion = '0.16.1'
 	download = true
 }
