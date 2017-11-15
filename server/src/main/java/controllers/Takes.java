@@ -9,16 +9,19 @@ package controllers;
 import static db.Tables.ACCOUNT;
 import static db.Tables.TAKEPUBLISHED;
 
-import com.google.inject.Binder;
-import com.typesafe.config.Config;
-import common.RedirectException;
-import common.Text;
-import db.tables.pojos.Takepublished;
-import db.tables.records.TakepublishedRecord;
 import org.jooby.Env;
 import org.jooby.Jooby;
 import org.jooby.internal.RoutePattern;
 import org.jooq.DSLContext;
+
+import com.google.gson.Gson;
+import com.google.inject.Binder;
+import com.typesafe.config.Config;
+
+import common.RedirectException;
+import common.Text;
+import db.tables.pojos.Takepublished;
+import db.tables.records.TakepublishedRecord;
 
 public class Takes implements Jooby.Module {
 	public static final RoutePattern USER_TITLE = new RoutePattern("GET", "/:user/:title");
@@ -42,7 +45,8 @@ public class Takes implements Jooby.Module {
 				record.update();
 
 				Takepublished take = record.into(Takepublished.class);
-				return views.Takes.showTake.template(take);
+				String blocksJson = new Gson().toJson(take.getBlocks());
+				return views.Takes.showTake.template(take, blocksJson);
 			}
 		});
 	}

@@ -1,6 +1,6 @@
 @import db.tables.pojos.Takepublished
 
-@args (Takepublished take)
+@args (Takepublished take, String blocksJson)
 
 @views.naked.template(take.getTitle(), take.getTitle(), "takeReader") -> {
 
