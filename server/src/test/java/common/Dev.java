@@ -19,6 +19,10 @@ import com.typesafe.config.ConfigFactory;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
+import javax.mail.Address;
+import javax.mail.Message.RecipientType;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
 import org.jooby.Env;
 import org.jooby.Jooby;
 import org.jooby.whoops.Whoops;
@@ -79,6 +83,40 @@ public class Dev extends Jooby {
 			greenMail.start();
 			env.onStop(greenMail::stop);
 			binder.bind(GreenMail.class).toInstance(greenMail);
+
+			env.router().get("/email", req -> {
+				StringBuilder builder = new StringBuilder();
+				builder.append("<ul>");
+				MimeMessage[] messages = greenMail.getReceivedMessages();
+				for (int i = 0; i < messages.length; ++i) {
+					String index = Integer.toString(i + 1);
+					builder.append("<li><a href=\"/email/" + index + "\">");
+					builder.append(index + " &lt;");
+					MimeMessage message = messages[i];
+					for (Address addr : message.getRecipients(RecipientType.TO)) {
+						builder.append(addr.toString());
+					}
+					builder.append("&gt; " + message.getSubject());
+					builder.append("</a></li>");
+				}
+				builder.append("</ul>");
+				return builder.toString();
+			});
+			env.router().get("/email/:idx", req -> {
+				int idx = req.param("idx").intValue() - 1;
+				MimeMessage[] messages = greenMail.getReceivedMessages();
+				if (idx >= 0 && idx < messages.length) {
+					MimeMessage message = messages[idx];
+					MimeMultipart content = (MimeMultipart) message.getContent();
+					StringBuilder buffer = new StringBuilder();
+					for (int i = 0; i < content.getCount(); ++i) {
+						buffer.append(content.getBodyPart(i).getContent().toString());
+					}
+					return buffer.toString();
+				} else {
+					return "No such message";
+				}
+			});
 		}
 	}
 

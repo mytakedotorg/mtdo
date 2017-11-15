@@ -36,6 +36,10 @@ class EmailConfirmationForm {
 			validation.errorForForm("This link expired");
 			return validation;
 		} else if (!req.ip().equals(requestorIp.apply(link))) {
+			// localhost workaround for dev - allow anything
+			if (req.ip().equals("0:0:0:0:0:0:0:1")) {
+				return null;
+			}
 			validation.errorForForm("Make sure to open the link from the same computer you requested it from");
 			return validation;
 		} else {
