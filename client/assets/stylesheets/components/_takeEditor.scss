@@ -146,4 +146,18 @@
   margin-left: 4px;
   margin-right: 4px;
   margin-bottom: 4px;
+  background: palette(editor, document__background);
+  color: palette(editor, text);
+  border-radius: 3px;
+  &:hover {
+    background: palette(editor, document__background--hover);
+    .document__node-text,
+    .document__text {
+      background: palette(editor, document__background--hover);
+    }
+  }
+  .document__node-text,
+  .document__text {
+    background: palette(editor, document__background);
+  }
 }

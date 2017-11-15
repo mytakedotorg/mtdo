@@ -63,8 +63,8 @@ if (route === "foundation" && !excerptId) {
     // localhost:3000/new-take/#amendments&369&514&/samples/does-a-law-mean-what-it-says-or-what-it-meant/
     let hashes = window.location.hash.split("&");
     let excerptId = hashes[0].substring(1);
-    let highlightedRange = [parseInt(hashes[1]), parseInt(hashes[2])];
-    let viewRange = [parseInt(hashes[3]), parseInt(hashes[4])];
+    let highlightedRange = [parseFloat(hashes[1]), parseFloat(hashes[2])];
+    let viewRange = [parseFloat(hashes[3]), parseFloat(hashes[4])];
 
     let fact = getFact(excerptId);
     if (isDocument(fact)) {

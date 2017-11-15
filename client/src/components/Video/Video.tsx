@@ -1,14 +1,26 @@
 import * as React from "react";
 import YouTube from "react-youtube";
-import { getFact } from "../../utils/functions";
+import { getCharRangeFromVideoRange, getFact } from "../../utils/functions";
 import { VideoFact } from "../../utils/databaseData";
-import { YTPlayerParameters } from "../BlockEditor";
 import CaptionView from "../CaptionView";
+
+interface YTPlayerParameters {
+  rel: number;
+  cc_load_policy: number;
+  cc_lang_pref: string;
+  start?: number;
+  end?: number;
+  autoplay: number;
+  showinfo: number;
+  modestbranding: number;
+  playsinline: 1;
+}
 
 interface VideoProps {
   onSetClick: (range: [number, number]) => void;
   video: VideoFact;
-  className: string;
+  className?: string;
+  timeRange?: [number, number];
 }
 
 interface VideoState {
@@ -16,6 +28,7 @@ interface VideoState {
   startTime: number;
   endTime: number;
   captionIsHighlighted: boolean;
+  highlightedCharRange: [number, number];
 }
 
 class Video extends React.Component<VideoProps, VideoState> {
@@ -24,14 +37,45 @@ class Video extends React.Component<VideoProps, VideoState> {
   constructor(props: VideoProps) {
     super(props);
 
+    let charRange: [number, number] = this.getCharRange(
+      props.video.id,
+      props.timeRange
+    );
+
     this.state = {
-      currentTime: 0,
-      startTime: 0,
-      endTime: -1,
-      captionIsHighlighted: false
+      currentTime: props.timeRange ? props.timeRange[0] : 0,
+      startTime: props.timeRange ? props.timeRange[0] : 0,
+      endTime: props.timeRange ? props.timeRange[1] : -1,
+      captionIsHighlighted:
+        charRange[0] === -1 && charRange[1] === -1 ? false : true,
+      highlightedCharRange: charRange
     };
   }
-  handleCaptionHighlight = (videoRange: [number, number]): void => {
+  cueVideo = () => {
+    this.player.cueVideoById({
+      videoId: this.props.video.id,
+      startSeconds: this.state.startTime,
+      endSeconds: this.state.endTime,
+      suggestedQuality: "default"
+    });
+  };
+  getCharRange = (
+    videoId: string,
+    timeRange?: [number, number]
+  ): [number, number] => {
+    if (timeRange) {
+      try {
+        return getCharRangeFromVideoRange(videoId, timeRange);
+      } catch (err) {
+        console.warn(err);
+      }
+    }
+    return [-1, -1];
+  };
+  handleCaptionHighlight = (
+    videoRange: [number, number],
+    charRange: [number, number]
+  ): void => {
     //Set video times
     this.setState({
       captionIsHighlighted: true,
@@ -87,7 +131,8 @@ class Video extends React.Component<VideoProps, VideoState> {
   };
   handleReady = (event: any) => {
     this.player = event.target;
-    this.player.mute();
+    this.player.pauseVideo();
+    this.cueVideo();
   };
   handleSetClick = () => {
     if (this.state.endTime > this.state.startTime) {
@@ -98,6 +143,7 @@ class Video extends React.Component<VideoProps, VideoState> {
     if (event.data === 0) {
       // Video ended
       this.stopTimer();
+      this.cueVideo();
     } else if (event.data === 1) {
       // Video playing
       this.startTimer();
@@ -133,9 +179,29 @@ class Video extends React.Component<VideoProps, VideoState> {
   componentWillUnmount() {
     this.stopTimer();
   }
+  componentWillReceiveProps(nextProps: VideoProps) {
+    if (nextProps.video.id !== this.props.video.id && nextProps.timeRange) {
+      const charRange = this.getCharRange(
+        nextProps.video.id,
+        nextProps.timeRange
+      );
+      let isHighlighted: boolean;
+      if (charRange[0] === -1 && charRange[1] === -1) {
+        isHighlighted = false;
+      } else {
+        isHighlighted = true;
+      }
+      this.setState({
+        highlightedCharRange: charRange,
+        captionIsHighlighted: isHighlighted
+      });
+    }
+  }
   render() {
     let playerVars: YTPlayerParameters = {
       rel: 0,
+      cc_load_policy: 1,
+      cc_lang_pref: "en",
       playsinline: 1,
       autoplay: 1,
       showinfo: 0,
@@ -155,9 +221,23 @@ class Video extends React.Component<VideoProps, VideoState> {
       playerVars: playerVars
     };
 
+    const captionEventHandlers = {
+      onHighlight: this.handleCaptionHighlight,
+      onClearPress: this.handleClearClick,
+      onCursorPlace: this.handleCursorPlacement,
+      onFineTuneUp: this.handleFineTuneUp,
+      onFineTuneDown: this.handleFineTuneDown
+    };
+
     return (
       <div className="video__outer-container">
-        <div className={this.props.className}>
+        <div
+          className={
+            this.props.className
+              ? this.props.className
+              : "video__inner-container"
+          }
+        >
           <div className="video__container">
             <div className="video__header">
               {this.state.endTime > this.state.startTime
@@ -184,14 +264,11 @@ class Video extends React.Component<VideoProps, VideoState> {
           <CaptionView
             timer={this.state.currentTime}
             videoId={this.props.video.id}
-            onHighlight={this.handleCaptionHighlight}
-            onClearPress={this.handleClearClick}
-            onCursorPlace={this.handleCursorPlacement}
             captionIsHighlighted={this.state.captionIsHighlighted}
-            onFineTuneDown={this.handleFineTuneDown}
-            onFineTuneUp={this.handleFineTuneUp}
             videoStart={this.state.startTime}
             videoEnd={this.state.endTime}
+            eventHandlers={captionEventHandlers}
+            highlightedCharRange={this.state.highlightedCharRange}
           />
         </div>
       </div>

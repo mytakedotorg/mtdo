@@ -14,125 +14,124 @@ export function getAllVideoFacts(): VideoFact[] {
   return database.videos;
 }
 
-export function getVideoFact(videoId: string): VideoFact | null {
+export function getVideoFact(videoId: string): VideoFact {
   for (let video of database.videos) {
     if (video.id === videoId) {
       return video;
     }
   }
 
-  return null;
+  throw "Cannot get VideoFact for video with id: " + videoId;
 }
 
-export function getVideoFactTitle(videoId: string): string | null {
+export function getVideoFactTitle(videoId: string): string {
   let video = getVideoFact(videoId);
   if (video) {
     return video.title;
   }
 
-  return null;
+  throw "Cannot get video title for video with id: " + videoId;
 }
 
-export function getVideoFactPrimaryDate(videoId: string): Date | null {
+export function getVideoFactPrimaryDate(videoId: string): Date {
   let video = getVideoFact(videoId);
   if (video) {
     return video.primaryDate;
   }
 
-  return null;
+  throw "Cannot get video primary date for video with id: " + videoId;
 }
 
-export function getVideoFactPrimaryDateKind(videoId: string): string | null {
+export function getVideoFactPrimaryDateKind(videoId: string): string {
   let video = getVideoFact(videoId);
   if (video) {
     return video.primaryDateKind;
   }
 
-  return null;
+  throw "Cannot get video primary date kind for video with id: " + videoId;
 }
 
-export function getVideoFactCaptionFile(videoId: string): string | null {
+export function getVideoFactCaptionFile(videoId: string): string {
   let video = getVideoFact(videoId);
   if (video && video.captionFile) {
     return video.captionFile;
   }
 
-  return null;
+  throw "Cannot get video caption file for video with id: " + videoId;
 }
 
-export function getVideoCaptionMetaData(videoId: string): CaptionMeta | null {
+export function getVideoCaptionMetaData(videoId: string): CaptionMeta {
   let video = getVideoFact(videoId);
   if (video && video.captionMeta) {
     return video.captionMeta;
   }
 
-  return null;
+  throw "Cannot get video caption metadata for video with id: " + videoId;
 }
 
-export function getVideoCaptionWordMap(videoId: string): CaptionWord[] | null {
+export function getVideoCaptionWordMap(videoId: string): CaptionWord[] {
   const captionFile = getVideoFactCaptionFile(videoId);
   const source = require("../foundation/" + captionFile);
   if (source) {
     return <CaptionWord[]>JSON.parse(source);
   }
 
-  return null;
+  throw "Cannot get video caption word-map for video with id: " + videoId;
 }
 
 export function getAllDocumentFacts(): DocumentFact[] {
   return database.excerpts;
 }
 
-export function getDocumentFact(excerptId: string): DocumentFact | null {
+export function getDocumentFact(excerptId: string): DocumentFact {
   for (let excerpt of database.excerpts) {
     if (slugify(excerpt.title) === excerptId) {
       return excerpt;
     }
   }
 
-  return null;
+  throw "Cannot get DocumentFact for document with id: " + excerptId;
 }
 
-export function getDocumentFactTitle(excerptId: string): string | null {
+export function getDocumentFactTitle(excerptId: string): string {
   for (let excerpt of database.excerpts) {
     if (slugify(excerpt.title) === excerptId) {
       return excerpt.title;
     }
   }
 
-  return null;
+  throw "Cannot get document title for document with id: " + excerptId;
 }
 
-export function getDocumentFactFilename(excerptId: string): string | null {
+export function getDocumentFactFilename(excerptId: string): string {
   for (let excerpt of database.excerpts) {
     if (slugify(excerpt.title) === excerptId) {
       return excerpt.filename;
     }
   }
 
-  return null;
+  throw "Cannot get document filename for document with id: " + excerptId;
 }
 
-export function getDocumentFactPrimaryDate(excerptId: string): Date | null {
+export function getDocumentFactPrimaryDate(excerptId: string): Date {
   for (let excerpt of database.excerpts) {
     if (slugify(excerpt.title) === excerptId) {
       return excerpt.primaryDate;
     }
   }
 
-  return null;
+  throw "Cannot get document primary date for document with id: " + excerptId;
 }
 
-export function getDocumentFactPrimaryDateKind(
-  excerptId: string
-): string | null {
+export function getDocumentFactPrimaryDateKind(excerptId: string): string {
   for (let excerpt of database.excerpts) {
     if (slugify(excerpt.title) === excerptId) {
       return excerpt.primaryDateKind;
     }
   }
 
-  return null;
+  throw "Cannot get document primary date kind for document with id: " +
+    excerptId;
 }
 
 export function getUser(username: string): User | null {
@@ -142,7 +141,7 @@ export function getUser(username: string): User | null {
     }
   }
 
-  return null;
+  throw "Cannot get user: " + username;
 }
 
 export function getAllUsers(): User[] {
@@ -151,7 +150,7 @@ export function getAllUsers(): User[] {
 
 export function createUser(username: string): boolean {
   if (getUser(username)) {
-    return false;
+    throw "User already exists with username: " + username;
   }
 
   return database.users.push({ name: username, articles: null }) > 0;
@@ -164,7 +163,7 @@ export function updateUserName(
   let oldUser = getUser(oldUserName);
   let newUser = getUser(newUserName);
   if (!oldUser || newUser) {
-    return false;
+    throw "Failed to update username";
   }
 
   oldUser.name = newUserName;
@@ -174,8 +173,7 @@ export function updateUserName(
 
 export function deleteUser(username: string): boolean {
   if (!getUser(username)) {
-    // User doesn't exist
-    return false;
+    throw "User doesn't exist: " + username;
   }
 
   let newDatabase: Database = {
@@ -221,7 +219,7 @@ export function getArticle(
     }
   } else {
     //Invalid username
-    return null;
+    throw "User doesn't exist: " + username;
   }
 
   //Article not found
@@ -236,11 +234,11 @@ export function createArticle(
 ): boolean {
   if (!title) {
     // Throw error, title is required
-    return false;
+    throw "Invalid title: " + title;
   }
   if (getArticle(username, slugify(title))) {
     // Can't create duplicate article
-    return false;
+    throw "User, " + username + ", already has article with title, " + title;
     /**
 		 * Could also create the article anyway and append an ID counter to the title,
 		 * e.g. new-take-title, new-take-title-2, new-take-title-3
@@ -272,7 +270,7 @@ export function createArticle(
     return true;
   } else {
     // Invalid username
-    return false;
+    throw "User doesn't exist: " + username;
   }
 }
 
@@ -284,7 +282,7 @@ export function updateArticleTitle(
   let newArticle = getArticle(username, slugify(newTitle));
   if (newArticle) {
     // Can't create duplicate article
-    return false;
+    throw "User, " + username + ", already has article with title, " + newTitle;
     /**
 		 * Could also create the article anyway and append an ID counter to the title,
 		 * e.g. new-take-title, new-take-title-2, new-take-title-3
@@ -299,7 +297,7 @@ export function updateArticleTitle(
     return true;
   }
 
-  return false;
+  throw "Failed to update article title";
 }
 
 export function updateArticle(
@@ -314,7 +312,7 @@ export function updateArticle(
     return true;
   }
 
-  return false;
+  throw "Failed to update article";
 }
 
 export function deleteArticle(username: string, titleSlug: string): boolean {
@@ -334,6 +332,6 @@ export function deleteArticle(username: string, titleSlug: string): boolean {
     return true;
   } else {
     // User or articles don't exist
-    return false;
+    throw "Failed to delete article";
   }
 }

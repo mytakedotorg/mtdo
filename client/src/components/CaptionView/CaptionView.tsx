@@ -2,10 +2,11 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import Document from "../Document";
 import {
+  convertSecondsToTimestamp,
   getCaptionNodeArray,
+  getSimpleRangesFromHTMLRange,
   getWordCount,
-  highlightText,
-  HighlightedText,
+  highlightTextTwo,
   FoundationNode
 } from "../../utils/functions";
 import {
@@ -14,27 +15,28 @@ import {
 } from "../../utils/databaseAPI";
 import { CaptionWord, CaptionMeta } from "../../utils/databaseData";
 
-interface Ranges {
-  highlightedRange: [number, number];
-  viewRange: [number, number];
+interface EventHandlers {
+  onHighlight: (
+    videoRange: [number, number],
+    charRange: [number, number]
+  ) => void;
+  onClearPress: () => void;
+  onCursorPlace: (videoTime: number) => void;
+  onFineTuneUp: (rangeIdx: 0 | 1) => void;
+  onFineTuneDown: (rangeIdx: 0 | 1) => void;
 }
 
 interface CaptionViewProps {
   videoId: string;
   timer: number;
-  ranges?: Ranges;
-  onHighlight: (videoRange: [number, number]) => void;
-  onClearPress: () => void;
-  onCursorPlace: (videoTime: number) => void;
   captionIsHighlighted: boolean;
-  onFineTuneUp: (rangeIdx: 0 | 1) => void;
-  onFineTuneDown: (rangeIdx: 0 | 1) => void;
   videoStart: number;
   videoEnd: number;
+  eventHandlers: EventHandlers;
+  highlightedCharRange?: [number, number];
 }
 
 interface CaptionViewState {
-  highlightedRange: [number, number];
   viewRange: [number, number];
   highlightedNodes?: FoundationNode[];
   currentIndex: number;
@@ -48,28 +50,42 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
     super(props);
 
     this.state = {
-      highlightedRange: props.ranges ? props.ranges.highlightedRange : [0, 0],
-      viewRange: props.ranges ? props.ranges.viewRange : [0, 0],
+      viewRange: [0, 0],
       currentIndex: 0
     };
   }
-  getCaptionData = () => {
+  getCaptionData = (
+    npVideoId?: string,
+    npCaptionIsHighlighted?: boolean,
+    npHighlightedCharRange?: [number, number]
+  ) => {
+    const videoId = npVideoId ? npVideoId : this.props.videoId;
+    const captionIsHighlighted = npCaptionIsHighlighted
+      ? npCaptionIsHighlighted
+      : this.props.captionIsHighlighted;
+    const highlightedCharRange = npHighlightedCharRange
+      ? npHighlightedCharRange
+      : this.props.highlightedCharRange;
     try {
-      let captionMap = getVideoCaptionWordMap(this.props.videoId) || [];
-      let captionMeta = getVideoCaptionMetaData(this.props.videoId);
-      if (!captionMeta) {
-        throw "Caption Metadata is missing for video with id " +
-          this.props.videoId;
+      let captionMap = getVideoCaptionWordMap(videoId);
+      let captionMeta = getVideoCaptionMetaData(videoId);
+      let captionNodes = getCaptionNodeArray(videoId);
+      if (captionIsHighlighted && highlightedCharRange) {
+        captionNodes = highlightTextTwo(
+          captionNodes,
+          highlightedCharRange,
+          () => {
+            throw "todo";
+          }
+        );
       }
       this.setState({
-        highlightedNodes: getCaptionNodeArray(this.props.videoId),
+        highlightedNodes: captionNodes,
         captionMap: captionMap,
         captionMeta: captionMeta
       });
     } catch (e) {
-      console.warn(
-        "Couldn't get caption data for video with id " + this.props.videoId
-      );
+      console.warn(e);
       this.setState({
         highlightedNodes: undefined,
         captionMap: undefined,
@@ -81,41 +97,47 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
     this.setState({
       highlightedNodes: getCaptionNodeArray(this.props.videoId)
     });
-    this.props.onClearPress();
+    this.props.eventHandlers.onClearPress();
   };
   handleMouseUp = () => {
     if (this.state.captionMap) {
       if (window.getSelection && !this.props.captionIsHighlighted) {
         // Pre IE9 will always be false
-        let selection: Selection = window.getSelection();
+        const selection: Selection = window.getSelection();
         if (selection.toString().length) {
           // Some text is selected
-          let range: Range = selection.getRangeAt(0);
+          const range: Range = selection.getRangeAt(0);
 
-          const highlightedText: HighlightedText = highlightText(
-            range, // HTML Range, not [number, number] as in props.range
-            this.document.getDocumentNodes(),
-            ReactDOM.findDOMNode(this.document).childNodes,
-            () => {} // noop
+          const simpleRanges = getSimpleRangesFromHTMLRange(
+            range,
+            ReactDOM.findDOMNode(this.document).childNodes
+          );
+
+          const newNodes = highlightTextTwo(
+            [...this.document.getDocumentNodes()],
+            simpleRanges.charRange,
+            () => {
+              throw "todo";
+            }
           );
 
           this.setState({
-            highlightedNodes: highlightedText.newNodes,
-            highlightedRange: highlightedText.highlightedCharacterRange
+            highlightedNodes: newNodes
           });
 
-          let startTime = this.state.captionMap[
-            highlightedText.highlightedWordRange[0]
-          ].timestamp;
-          let endTime = this.state.captionMap[
-            highlightedText.highlightedWordRange[1]
-          ].timestamp;
+          let startTime = this.state.captionMap[simpleRanges.wordRange[0]]
+            .timestamp;
+          let endTime = this.state.captionMap[simpleRanges.wordRange[1]]
+            .timestamp;
 
-          this.props.onHighlight([startTime, endTime]);
+          this.props.eventHandlers.onHighlight(
+            [startTime, endTime],
+            simpleRanges.charRange
+          );
         } else if (selection) {
           let wordCount = getWordCount(selection);
           let videoTime = this.state.captionMap[wordCount].timestamp;
-          this.props.onCursorPlace(videoTime);
+          this.props.eventHandlers.onCursorPlace(videoTime);
         }
       }
     }
@@ -125,20 +147,21 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
       this.getCaptionData();
     }
   }
-  componentDidUpdate(prevProps: CaptionViewProps, prevState: CaptionViewState) {
-    if (prevProps.videoId !== this.props.videoId && this.props.videoId) {
-      this.getCaptionData();
+  componentWillReceiveProps(nextProps: CaptionViewProps) {
+    if (nextProps.videoId !== this.props.videoId && this.props.videoId) {
+      this.getCaptionData(nextProps.videoId);
     }
   }
   render() {
+    const startTime = convertSecondsToTimestamp(this.props.videoStart);
+    const endTime = convertSecondsToTimestamp(this.props.videoEnd);
+
     return (
       <div className="captions">
         {this.props.captionIsHighlighted
           ? <div className="video__actions">
               <div className="video__action">
-                <p className="video__instructions">
-                  Press Play to see your clip
-                </p>
+                <p className="video__instructions">Fine tune your clip</p>
                 <button
                   className="video__button video__button--bottom"
                   onClick={this.handleClearClick}
@@ -147,45 +170,48 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
                 </button>
               </div>
               <div className="video__action">
-                <p className="video__instructions">Fine tune your clip</p>
                 <div className="video__tuning">
                   <div className="video__action">
-                    <button
-                      className="video__button video__button--small"
-                      onClick={() => this.props.onFineTuneDown(0)}
-                    >
-                      <i className="fa fa-arrow-down" aria-hidden="true" />
-                    </button>
-                    <span className="video__time">
-                      {this.props.videoStart >= 0
-                        ? "Start: " + this.props.videoStart.toFixed(1)
-                        : "Start: -" + this.props.videoStart.toFixed(1)}
-                    </span>
-                    <button
-                      className="video__button video__button--small"
-                      onClick={() => this.props.onFineTuneUp(0)}
-                    >
-                      <i className="fa fa-arrow-up" aria-hidden="true" />
-                    </button>
+                    <p className="video__instructions">Start Time</p>
+                    <div className="video__tuning-buttons">
+                      <button
+                        className="video__button video__button--small"
+                        onClick={() =>
+                          this.props.eventHandlers.onFineTuneDown(0)}
+                      >
+                        <i className="fa fa-arrow-down" aria-hidden="true" />
+                      </button>
+                      <span className="video__time">
+                        {startTime}
+                      </span>
+                      <button
+                        className="video__button video__button--small"
+                        onClick={() => this.props.eventHandlers.onFineTuneUp(0)}
+                      >
+                        <i className="fa fa-arrow-up" aria-hidden="true" />
+                      </button>
+                    </div>
                   </div>
                   <div className="video__action">
-                    <button
-                      className="video__button video__button--small"
-                      onClick={() => this.props.onFineTuneDown(1)}
-                    >
-                      <i className="fa fa-arrow-down" aria-hidden="true" />
-                    </button>
-                    <span className="video__time">
-                      {this.props.videoEnd >= 0
-                        ? "End: " + this.props.videoEnd.toFixed(1)
-                        : "End: -" + this.props.videoEnd.toFixed(1)}
-                    </span>
-                    <button
-                      className="video__button video__button--small"
-                      onClick={() => this.props.onFineTuneUp(1)}
-                    >
-                      <i className="fa fa-arrow-up" aria-hidden="true" />
-                    </button>
+                    <p className="video__instructions">End Time</p>
+                    <div className="video__tuning-buttons">
+                      <button
+                        className="video__button video__button--small"
+                        onClick={() =>
+                          this.props.eventHandlers.onFineTuneDown(1)}
+                      >
+                        <i className="fa fa-arrow-down" aria-hidden="true" />
+                      </button>
+                      <span className="video__time">
+                        {endTime}
+                      </span>
+                      <button
+                        className="video__button video__button--small"
+                        onClick={() => this.props.eventHandlers.onFineTuneUp(1)}
+                      >
+                        <i className="fa fa-arrow-up" aria-hidden="true" />
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>

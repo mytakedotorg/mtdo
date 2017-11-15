@@ -127,6 +127,9 @@ $document-margin-top: 0px;
 .document__node {
   position: relative;
 }
+.document__node-text-container {
+  position: relative;
+}
 .document__node-height-div {
   position: absolute;
   z-index: -1;
@@ -139,6 +142,15 @@ $document-margin-top: 0px;
 .document__node-text {
   margin-top: 0;
   background-color: palette(document, background);
+}
+.document__node-text--speaker {
+  user-select: none;
+  @include heading3;
+}
+.document__node-text--speaker-top {
+  user-select: none;
+  @include heading3;
+  @include text-margin;
 }
 .document__node-text--h2 {
   @include heading2;
@@ -157,4 +169,14 @@ $document-margin-top: 0px;
 }
 .document__node-text--hidden-p {
   @include body;
+}
+.document__text--caption {
+  position: relative;
+  height: 0px;
+  overflow-y: scroll;
+  background-color: palette(document, background);
+  @include body;
+  &:last-child {
+    padding-bottom: 200px;
+  }
 }

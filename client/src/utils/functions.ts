@@ -1,6 +1,7 @@
 import * as React from "react";
 import { CaptionWord, DocumentFact, VideoFact } from "./databaseData";
 import {
+  getVideoCaptionWordMap,
   getVideoFact,
   getDocumentFact,
   getVideoFactCaptionFile,
@@ -705,6 +706,47 @@ function convertTimestampToSeconds(timestamp: string): number {
   return HH * 60 * 60 + MM * 60 + SS;
 }
 
+function zeroPad(someNumber: number): string {
+  let twoDigitStr: string;
+  if (someNumber == 0) {
+    return "00";
+  }
+
+  if (someNumber < 10) {
+    twoDigitStr = "0" + someNumber.toString();
+  } else {
+    twoDigitStr = someNumber.toString();
+  }
+  return twoDigitStr;
+}
+
+function convertSecondsToTimestamp(totalSeconds: number): string {
+  const DD = totalSeconds.toFixed(1).split(".")[1];
+
+  let truncated = totalSeconds | 0;
+
+  const hours = Math.floor(truncated / 3600);
+  const HH = Math.floor(truncated / 3600).toString();
+
+  truncated %= 3600;
+
+  const seconds = truncated % 60;
+  const SS = zeroPad(seconds);
+
+  const minutes = Math.floor(truncated / 60);
+
+  let MM;
+  if (hours > 0) {
+    MM = zeroPad(minutes);
+    return HH + ":" + MM + ":" + SS + "." + DD;
+  } else if (minutes > 0) {
+    MM = minutes.toString();
+    return MM + ":" + SS + "." + DD;
+  } else {
+    return seconds.toString() + "." + DD;
+  }
+}
+
 function getCaptionNodeArray(videoId: string): Array<FoundationNode> {
   // Fetch the excerpt from the DB by its ID
   const captionFile = getVideoFactCaptionFile(videoId);
@@ -740,9 +782,8 @@ function getCaptionNodeArray(videoId: string): Array<FoundationNode> {
             // Character count offset
             offset += innerHTML.length;
           } else {
-            // Likely an error in the databaseData if we're here.
-            // A speaker's start range is greater than end range.
-            // console.log(speaker.range) to find the offending range.
+            throw "A speaker's start range can't be greater than the end range, offending range: " +
+              speaker.range;
           }
         }
       }
@@ -780,20 +821,16 @@ function slugify(text: string): string {
     .replace(/[^\w-]+/g, ""); //remove non-alphanumics and non-hyphens
 }
 
-function getFact(factId: string): DocumentFact | VideoFact | null {
-  let excerpt = getDocumentFact(factId);
-
-  if (excerpt) {
-    return excerpt;
+function getFact(factId: string): DocumentFact | VideoFact {
+  try {
+    return getDocumentFact(factId);
+  } catch (err) {
+    try {
+      return getVideoFact(factId);
+    } catch (err) {
+      throw err;
+    }
   }
-
-  let video = getVideoFact(factId);
-
-  if (video) {
-    return video;
-  }
-
-  return null;
 }
 
 function getWordCount(selection: Selection): number {
@@ -816,14 +853,19 @@ function getWordCount(selection: Selection): number {
     wordCount = 0;
   }
 
-  let paragraphNode = textNode.parentNode;
+  let paragraphNode;
+  if (textNode.parentNode) {
+    paragraphNode = textNode.parentNode.parentNode;
+  } else {
+    throw "Unknown HTML Structure";
+  }
 
   if (paragraphNode) {
     let captionBlock = paragraphNode.parentNode;
 
     while (captionBlock && captionBlock.previousSibling) {
       captionBlock = captionBlock.previousSibling;
-      let prevTextNode = captionBlock.childNodes[0];
+      let prevTextNode = captionBlock.childNodes[1].childNodes[0];
       if (prevTextNode.textContent) {
         wordCount += prevTextNode.textContent.toString().split(" ").length;
       }
@@ -833,17 +875,438 @@ function getWordCount(selection: Selection): number {
   return wordCount;
 }
 
+function getCharRangeFromVideoRange(
+  videoId: string,
+  timeRange: [number, number]
+): [number, number] {
+  const startTime = timeRange[0];
+  const endTime = timeRange[1];
+
+  const wordMap = getVideoCaptionWordMap(videoId);
+  const speakerMap = getVideoCaptionMetaData(videoId).speakerMap;
+
+  let charCount = 0;
+  let startCharIndex: number = -1;
+  let isStartSet = false;
+  let endCharIndex: number = -1;
+
+  for (const captionWord of wordMap) {
+    if (captionWord.timestamp < startTime) {
+      charCount += captionWord.word.length;
+      continue;
+    }
+    if (!isStartSet) {
+      // This block only executes once
+      startCharIndex = charCount;
+
+      // Subtract 1 for every paragraph break. HTML removes extra whitespace, but our data model still contains a space.
+      for (const speakerIdx in speakerMap) {
+        if (speakerMap[speakerIdx].range[1] < captionWord.idx) {
+          continue;
+        }
+        const paragraphCount = parseInt(speakerIdx);
+        startCharIndex -= paragraphCount;
+
+        // Don't let index go negative here
+        if (startCharIndex < 0) {
+          startCharIndex = 0;
+        }
+        break;
+      }
+
+      isStartSet = true;
+    }
+    if (captionWord.timestamp <= endTime) {
+      charCount += captionWord.word.length;
+      continue;
+    }
+
+    endCharIndex = charCount;
+    // Subtract 1 for every paragraph break. HTML removes extra whitespace, but our data model still contains a space.
+    for (const speakerIdx in speakerMap) {
+      if (speakerMap[speakerIdx].range[1] < captionWord.idx) {
+        continue;
+      }
+      const paragraphCount = parseInt(speakerIdx);
+      endCharIndex -= paragraphCount;
+
+      // Don't let index go negative here
+      if (endCharIndex < 0) {
+        endCharIndex = 0;
+      }
+      break;
+    }
+    break;
+  }
+
+  if (startCharIndex >= 0 && endCharIndex >= 0) {
+    return [startCharIndex, endCharIndex];
+  } else {
+    throw "Index not found";
+  }
+}
+
+function isCaptionNode(htmlRange: Range): boolean {
+  if (
+    htmlRange.startContainer.parentNode &&
+    htmlRange.startContainer.parentNode.parentNode &&
+    (htmlRange.startContainer.parentNode
+      .parentNode as HTMLElement).className.indexOf("document__node") >= 0
+  ) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+function getContainer(
+  nodes: NodeList,
+  containerIndex: number,
+  classNames: string[]
+): Node {
+  let rowIndex;
+  let nodeList = nodes;
+  for (let i = 0; i < classNames.length; i++) {
+    for (let j = 0; j < nodeList.length; j++) {
+      if ((nodeList[j] as HTMLElement).classList.contains(classNames[i])) {
+        rowIndex = j;
+        break;
+      }
+    }
+    if (i < classNames.length - 1) {
+      if (rowIndex !== undefined) {
+        nodeList = nodeList[rowIndex].childNodes;
+      } else {
+        throw "Couldn't find nodes in " + classNames[i];
+      }
+    }
+  }
+
+  if (rowIndex !== undefined) {
+    return nodeList[rowIndex].childNodes[containerIndex];
+  } else {
+    throw "Couldn't find nodes in " + classNames[classNames.length];
+  }
+}
+
+interface SimpleRanges {
+  charRange: [number, number];
+  wordRange: [number, number];
+  viewRange: [number, number];
+}
+
+function getSimpleRangesFromHTMLRange(
+  htmlRange: Range,
+  childNodes: NodeList
+): SimpleRanges {
+  let classNames: string[];
+
+  let startChildNode: Node | null;
+  let endChildNode: Node | null;
+  const isCaption = isCaptionNode(htmlRange);
+  if (isCaption) {
+    if (
+      htmlRange.startContainer.parentNode &&
+      htmlRange.startContainer.parentNode.parentNode &&
+      htmlRange.endContainer.parentNode &&
+      htmlRange.endContainer.parentNode.parentNode
+    ) {
+      startChildNode =
+        htmlRange.startContainer.parentNode.parentNode.parentNode;
+      endChildNode = htmlRange.endContainer.parentNode.parentNode.parentNode;
+    } else {
+      throw "Unexpcected HTML structure";
+    }
+    classNames = [
+      "document__row",
+      "document__row-inner",
+      "document__text",
+      "document__text--caption"
+    ];
+  } else {
+    startChildNode = htmlRange.startContainer.parentNode;
+    endChildNode = htmlRange.endContainer.parentNode;
+    classNames = ["document__row", "document__row-inner", "document__text"];
+  }
+
+  const startParentContainer = findAncestor(
+    htmlRange.startContainer,
+    "document__text"
+  );
+
+  let indexOfStartContainer: number;
+  if (startParentContainer) {
+    indexOfStartContainer = Array.prototype.indexOf.call(
+      startParentContainer.childNodes, //Arrange siblings into an array
+      startChildNode
+    ); //Find indexOf current Node
+  } else {
+    throw "Couldn't find start container";
+  }
+
+  const endParentContainer = findAncestor(
+    htmlRange.endContainer,
+    "document__text"
+  );
+
+  let indexOfEndContainer: number;
+  if (endParentContainer) {
+    indexOfEndContainer = Array.prototype.indexOf.call(
+      endParentContainer.childNodes, //Arrange siblings into an array
+      endChildNode
+    ); //Find indexOf current Node
+  } else {
+    throw "Couldn't find end container";
+  }
+
+  let startContainer = getContainer(
+    childNodes,
+    indexOfStartContainer,
+    classNames
+  );
+  let endContainer = getContainer(childNodes, indexOfEndContainer, classNames);
+
+  let wordCountBeforeSelection = 0;
+  let charCountBeforeSelection = 0;
+
+  if (isCaption) {
+    startContainer = startContainer.childNodes[1].childNodes[0];
+    endContainer = endContainer.childNodes[1].childNodes[0];
+
+    // Get word and char counts
+    if (startContainer.parentNode && startContainer.parentNode.parentNode) {
+      let prevSib = startContainer.parentNode.parentNode.previousSibling;
+      while (prevSib) {
+        const prevSibChild = prevSib.childNodes[1].childNodes[0];
+        if (prevSibChild && prevSibChild.textContent) {
+          const text = prevSibChild.textContent;
+          wordCountBeforeSelection += text.split(" ").length;
+          charCountBeforeSelection += text.length;
+        } else {
+          throw "Unexpected HTML structure";
+        }
+        prevSib = prevSib.previousSibling;
+      }
+    } else {
+      throw "Unexpected HTML structure";
+    }
+  } else {
+    // Get word count
+    let prevSib = startContainer.previousSibling;
+    while (prevSib && prevSib.textContent) {
+      const text = prevSib.textContent;
+      wordCountBeforeSelection += text.split(" ").length;
+      charCountBeforeSelection += text.length;
+      prevSib = prevSib.previousSibling;
+    }
+  }
+
+  let wordStart: number;
+  let wordEnd: number;
+  let charStart: number;
+  let charEnd: number;
+  let viewStart: number;
+  let viewEnd: number;
+
+  if (startContainer.textContent) {
+    const textBeforeStart = startContainer.textContent.substring(
+      0,
+      htmlRange.startOffset
+    );
+    wordStart =
+      wordCountBeforeSelection + textBeforeStart.split(" ").length - 1;
+    charStart = charCountBeforeSelection + textBeforeStart.length;
+    viewStart = charCountBeforeSelection;
+  } else {
+    throw "Unexpected HTML structure";
+  }
+
+  if (startContainer === endContainer && endContainer.textContent) {
+    const textBeforeEnd = endContainer.textContent.substr(
+      0,
+      htmlRange.endOffset
+    );
+    wordEnd = wordCountBeforeSelection + textBeforeEnd.split(" ").length - 1;
+    charEnd = charCountBeforeSelection + textBeforeEnd.length;
+    viewEnd = charCountBeforeSelection + endContainer.textContent.length;
+
+    return {
+      charRange: [charStart, charEnd],
+      wordRange: [wordStart, wordEnd],
+      viewRange: [viewStart, viewEnd]
+    };
+  } else {
+    // Count words/chars where selection begins
+    const textOfStartContainer = startContainer.textContent;
+    wordCountBeforeSelection += textOfStartContainer.split(" ").length;
+    charCountBeforeSelection += textOfStartContainer.length;
+
+    // Count words/chars in the middle of the selection
+    for (
+      let index: number = indexOfStartContainer + 1;
+      index < indexOfEndContainer;
+      index++
+    ) {
+      if (startContainer.parentNode) {
+        const textOfMiddleContainer =
+          startContainer.parentNode.childNodes[index].textContent;
+        if (textOfMiddleContainer) {
+          wordCountBeforeSelection += textOfMiddleContainer.split(" ").length;
+          charCountBeforeSelection += textOfMiddleContainer.length;
+        }
+      } else {
+        throw "Unexpected HTML structure";
+      }
+    }
+
+    // Count words/chars at the end of the selection
+    const textOfEndContainer = endContainer.textContent;
+    if (textOfEndContainer) {
+      const textBeforeEnd = textOfEndContainer.substr(0, htmlRange.endOffset);
+      wordEnd = wordCountBeforeSelection + textBeforeEnd.split(" ").length - 1;
+      charEnd = charCountBeforeSelection + textBeforeEnd.length;
+      viewEnd = charCountBeforeSelection + textOfEndContainer.length;
+
+      return {
+        charRange: [charStart, charEnd],
+        wordRange: [wordStart, wordEnd],
+        viewRange: [viewStart, viewEnd]
+      };
+    } else {
+      throw "Unexpected HTML structure";
+    }
+  }
+}
+
+function highlightTextTwo(
+  nodes: FoundationNode[],
+  range: [number, number],
+  handleSetClick: () => void
+): FoundationNode[] {
+  const foundationClassName = "document__text--selected";
+  let charCount = 0;
+  const newNodes: FoundationNode[] = [];
+  let isFirstNodeWithHighlights = true;
+  let isFinished = false;
+  for (const node_1 of nodes) {
+    const node: FoundationNode = (Object as any).assign({}, node_1);
+    if (charCount + node.innerHTML.toString().length <= range[0]) {
+      charCount += node.innerHTML.toString().length;
+      newNodes.push(node);
+      continue;
+    }
+    if (isFirstNodeWithHighlights) {
+      if (charCount + node.innerHTML.toString().length <= range[1]) {
+        isFirstNodeWithHighlights = false;
+        const startOffset = range[0] - charCount;
+        charCount += node.innerHTML.toString().length;
+        const textBefore = node.innerHTML.toString().substring(0, startOffset);
+        const textContent = node.innerHTML.toString().substring(startOffset);
+        // First span
+        const newSpan: React.ReactNode = React.createElement(
+          "span",
+          {
+            className: foundationClassName,
+            key: "someKey",
+            onClick: () => handleSetClick()
+          },
+          textContent
+        );
+
+        const newNode = node;
+        newNode.innerHTML = [textBefore, newSpan];
+        newNodes.push(node);
+        continue;
+      } else {
+        isFirstNodeWithHighlights = false;
+        // A single node contains the full range
+        const startOffset = range[0] - charCount;
+        const endOffset = range[1] - charCount;
+        charCount += node.innerHTML.toString().length;
+        const textBefore = node.innerHTML.toString().substring(0, startOffset);
+        const textContent = node.innerHTML
+          .toString()
+          .substring(startOffset, endOffset);
+        const textAfter = node.innerHTML.toString().substring(endOffset);
+
+        const newSpan: React.ReactNode = React.createElement(
+          "span",
+          {
+            className: foundationClassName,
+            key: "someKey",
+            onClick: () => handleSetClick()
+          },
+          textContent
+        );
+
+        const newNode = node;
+        newNode.innerHTML = [textBefore, newSpan, textAfter];
+        newNodes.push(node);
+        isFinished = true;
+        continue;
+      }
+    }
+    if (
+      charCount + node.innerHTML.toString().length <= range[1] &&
+      !isFinished
+    ) {
+      charCount += node.innerHTML.toString().length;
+
+      const newSpan: React.ReactNode = React.createElement(
+        "span",
+        {
+          className: foundationClassName,
+          key: "someKey",
+          onClick: () => handleSetClick()
+        },
+        node.innerHTML
+      );
+
+      const newNode = node;
+      newNode.innerHTML = [newSpan];
+      newNodes.push(node);
+      continue;
+    } else if (!isFinished) {
+      const endOffset = range[1] - charCount;
+      const textContent = node.innerHTML.toString().substring(0, endOffset);
+      const textAfter = node.innerHTML.toString().substring(endOffset);
+
+      const newSpan: React.ReactNode = React.createElement(
+        "span",
+        {
+          className: foundationClassName,
+          key: "someKey",
+          onClick: () => handleSetClick()
+        },
+        textContent
+      );
+
+      const newNode = node;
+      newNode.innerHTML = [newSpan, textAfter];
+      newNodes.push(node);
+      isFinished = true;
+    } else {
+      newNodes.push(node);
+    }
+  }
+  return newNodes;
+}
+
 export {
   clearDefaultDOMSelection,
+  convertSecondsToTimestamp,
   convertTimestampToSeconds,
   getCaptionNodeArray,
+  getCharRangeFromVideoRange,
   getFact,
+  getSimpleRangesFromHTMLRange,
   getStartRangeOffsetTop,
   getHighlightedNodes,
   getNodesInRange,
   getNodeArray,
   getWordCount,
   highlightText,
+  highlightTextTwo,
   HighlightedText,
   slugify,
   validators

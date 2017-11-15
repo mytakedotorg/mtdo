@@ -14,18 +14,66 @@ interface CaptionTextNodeListProps {
   captionMeta: CaptionMeta;
 }
 
-interface CaptionTextNodeListState {}
+interface CaptionTextNodeListState {
+  currentSpeaker: string;
+}
 
 class CaptionTextNodeList extends React.Component<
   CaptionTextNodeListProps,
   CaptionTextNodeListState
 > {
-  private captionNodeContainer: HTMLDivElement;
+  private captionNodeContainer: HTMLDivElement | null;
+  private timerId: number | null;
   constructor(props: CaptionTextNodeListProps) {
     super(props);
+
+    this.state = {
+      currentSpeaker: "-"
+    };
   }
+  clearTimer = () => {
+    if (this.timerId) {
+      window.clearTimeout(this.timerId);
+      this.timerId = null;
+      // Call it one more time to be sure the result is correct when the user scroll has stopped.
+      this.handleScroll();
+    }
+  };
+  handleScroll = () => {
+    // Only allow this function to execute no more than twice per second
+    if (!this.timerId && this.captionNodeContainer) {
+      const parentTop = this.captionNodeContainer.scrollTop;
+      if (parentTop === 0) {
+        this.setState({
+          currentSpeaker: "-"
+        });
+      } else {
+        let speakerIdx = bs(
+          this.captionNodeContainer.children,
+          parentTop,
+          (child: HTMLDivElement, parentTop: number) => {
+            return child.offsetTop - parentTop;
+          }
+        );
+
+        if (speakerIdx < 0) {
+          speakerIdx = -speakerIdx - 2;
+          if (speakerIdx < 0) {
+            // If still negative, it means we're at the first node
+            speakerIdx = 0;
+          }
+        }
+
+        this.setState({
+          currentSpeaker: this.props.captionMeta.speakerMap[speakerIdx].speaker
+        });
+
+        this.timerId = window.setTimeout(this.clearTimer, 500);
+      }
+    }
+  };
   setScrollView = () => {
-    if (this.props.captionTimer) {
+    if (this.captionNodeContainer) {
       const timer = this.props.captionTimer;
 
       let wordIdx = bs(
@@ -58,17 +106,15 @@ class CaptionTextNodeList extends React.Component<
       }
 
       let speakerRange = this.props.captionMeta.speakerMap[speakerIdx];
+      const captionTextContainer = this.captionNodeContainer.children[
+        speakerIdx
+      ].children[1];
       let hiddenTextElement;
       // This lookup should match the DOM structure of CaptionTextNode
-      if (
-        this.captionNodeContainer.children[speakerIdx] &&
-        this.captionNodeContainer.children[speakerIdx].children[1]
-      ) {
-        hiddenTextElement = this.captionNodeContainer.children[speakerIdx]
-          .children[1].children[0];
+      if (captionTextContainer && captionTextContainer.children[1]) {
+        hiddenTextElement = captionTextContainer.children[1];
       } else {
-        console.log(speakerIdx);
-        throw "Couldn't find caption node";
+        throw "Couldn't find caption node at index " + speakerIdx;
       }
 
       let height = 0;
@@ -82,26 +128,34 @@ class CaptionTextNodeList extends React.Component<
         }
       }
 
-      // scroll to here
-      let parentTop = this.captionNodeContainer.getBoundingClientRect().top;
+      const speakerNameHeight = this.captionNodeContainer.children[speakerIdx]
+        .children[0].clientHeight;
+      let totalSpeakerHeight;
+      if (speakerNameHeight === 31) {
+        // Large screen, margin-bottom is 24px;
+        totalSpeakerHeight = 55;
+      } else {
+        // Small screen, margin-bottom is 19px;
+        totalSpeakerHeight = 43;
+      }
 
       // Get the offsetTop value of the child element.
       // The line height is 25px, so add 25 for each
       // time the line has wrapped, which is equal to
-      // the value of the `idx` variable
-      let childTop =
+      // the value of the `idx` variable.
+      // Add the height and margin of the speaker name
+      const childTop =
         (this.captionNodeContainer.children[speakerIdx] as HTMLElement)
           .offsetTop +
-        25 * numberOfLines;
+        25 * numberOfLines +
+        totalSpeakerHeight;
 
       // Set the parent container's scrollTop value to the offsetTop
       this.captionNodeContainer.scrollTop = childTop;
     }
   };
   componentDidMount() {
-    if (this.props.captionTimer) {
-      this.setScrollView();
-    }
+    this.setScrollView();
   }
   componentDidUpdate(
     prevProps: CaptionTextNodeListProps,
@@ -117,24 +171,38 @@ class CaptionTextNodeList extends React.Component<
   render() {
     let wordCount: number;
     let nextWordCount: number;
+    if (
+      this.props.captionMeta.speakerMap.length !==
+      this.props.documentNodes.length
+    ) {
+      throw "Speaker map length not equal to number of caption nodes.";
+    }
+    const speakerMap = this.props.captionMeta.speakerMap;
     return (
-      <div
-        className={this.props.className}
-        onMouseUp={this.props.onMouseUp}
-        ref={(captionNodeContainer: HTMLDivElement) =>
-          (this.captionNodeContainer = captionNodeContainer)}
-      >
-        {this.props.documentNodes.map(function(
-          element: FoundationNode,
-          index: number
-        ) {
-          return (
-            <CaptionTextNode
-              key={element.props.offset}
-              documentNode={element}
-            />
-          );
-        })}
+      <div className="document__text">
+        <h3 className="document__node-text document__node-text--speaker-top">
+          {this.state.currentSpeaker}
+        </h3>
+        <div
+          className={this.props.className}
+          onMouseUp={this.props.onMouseUp}
+          ref={(captionNodeContainer: HTMLDivElement) =>
+            (this.captionNodeContainer = captionNodeContainer)}
+          onScroll={this.handleScroll}
+        >
+          {this.props.documentNodes.map(function(
+            element: FoundationNode,
+            index: number
+          ) {
+            return (
+              <CaptionTextNode
+                key={element.props.offset}
+                documentNode={element}
+                speaker={speakerMap[index].speaker}
+              />
+            );
+          })}
+        </div>
       </div>
     );
   }
