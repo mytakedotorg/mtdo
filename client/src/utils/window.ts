@@ -64,11 +64,19 @@ interface LoginCookie {
   username: string;
 }
 
-const cookieStr = document.cookie;
-if (cookieStr) {
-  const loginUi: LoginCookie = JSON.parse(
-    JSON.parse(cookieStr.split("; ")[0].split("=")[1])
-  );
+function getCookieValue(a: string): string {
+  // https://stackoverflow.com/questions/5639346/what-is-the-shortest-function-for-reading-a-cookie-by-name-in-javascript?noredirect=1&lq=1
+  const b = document.cookie.match("(^|;)\\s*" + a + "\\s*=\\s*([^;]+)");
+  if (b) {
+    const c = b.pop();
+    return c ? c : "";
+  }
+  return "";
+}
+
+const loginCookieStr = getCookieValue("loginui");
+if (loginCookieStr) {
+  const loginUi: LoginCookie = JSON.parse(JSON.parse(loginCookieStr));
   const loginLink = document.getElementById("login");
   if (loginLink) {
     loginLink.innerText = loginUi.username;
