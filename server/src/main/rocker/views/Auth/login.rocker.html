@@ -1,0 +1,35 @@
+@import auth.AuthModule
+@import forms.api.FormMarkup
+
+@args(FormMarkup loginForm, FormMarkup createAccount)
+
+@views.base.template("Log in", "Login or create an account") -> {
+
+	<section id="login">
+		<div class="heading-line">
+			<h2>Log in</h2>
+		</div>
+		<div class="content-bg">
+			@loginForm.openForm("id", "login")
+				@loginForm.field(AuthModule.LOGIN_EMAIL).label("Email").errorSpan().input("text", "class", "form-control")
+				@loginForm.field(AuthModule.REDIRECT).input("hidden")
+				<input type="submit" class="btn btn-success" value="Log in" />
+			@loginForm.closeForm()
+		</div>
+	</section>
+
+	<section id="create">
+		<div class="heading-line">
+			<h2>Create account</h2>
+		</div>
+		<div class="content-bg">
+			@createAccount.openForm("id", "create")
+				@createAccount.field(AuthModule.CREATE_USERNAME).label("Username").errorSpan().input("text", "class", "form-control")
+				@createAccount.field(AuthModule.CREATE_EMAIL).label("Email").errorSpan().input("email", "class", "form-control")
+				@createAccount.field(AuthModule.REDIRECT).input("hidden")
+				<input type="submit" class="btn btn-success" value="Claim username" />
+			@createAccount.closeForm()
+		</div>
+	</section>
+
+}

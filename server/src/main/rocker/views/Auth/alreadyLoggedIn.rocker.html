@@ -1,0 +1,10 @@
+@args(String username)
+
+@views.base.template("Already logged in", "You're already logged in") -> {
+	<p>
+		You are already logged in as <strong>@username</strong>.
+	</p>
+	<p>
+		If you'd like to login as someone else, you have to <a href="@auth.AuthModule.URL_logout">logout</a> first.
+	</p>
+}

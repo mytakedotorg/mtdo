@@ -12,8 +12,8 @@
   "scripts": {
     "clean": "gulp clean",
     "deploy": "gulp buildProd",
-    "format-list": "prettier --list-different '*.js' 'assets/**/*.scss' 'src/**/*.ts?(x)' 'loaders/**/*.ts' 'test/**/*.ts'",
-    "format-write": "prettier --write '*.js' 'assets/**/*.scss' 'src/**/*.ts?(x)' 'loaders/**/*.ts' 'test/**/*.ts'",
+    "formatlist": "prettier --list-different '*.js' 'assets/**/*.scss' 'src/**/*.ts?(x)' 'loaders/**/*.ts' 'test/**/*.ts'",
+    "formatwrite": "prettier --write '*.js' 'assets/**/*.scss' 'src/**/*.ts?(x)' 'loaders/**/*.ts' 'test/**/*.ts'",
     "start": "gulp serveDev",
     "test": "jest"
   },
@@ -47,8 +47,10 @@
     "gulp": "^3.9.1",
     "gulp-autoprefixer": "^4.0.0",
     "gulp-concat": "^2.6.1",
+    "gulp-merge-json": "^1.2.0",
     "gulp-notify": "^3.0.0",
     "gulp-nunjucks-html": "^2.0.0",
+    "gulp-rev": "^8.1.0",
     "gulp-sass": "^3.1.0",
     "gulp-task-listing": "^1.0.1",
     "gulp-typescript": "^3.2.2",

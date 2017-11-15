@@ -1,0 +1,49 @@
+plugins {
+	id 'com.moowork.node' version '1.2.0' // https://github.com/srs/gradle-node-plugin/blob/master/docs/node.md
+	id 'com.moowork.gulp' version '1.2.0' // https://github.com/srs/gradle-node-plugin/blob/master/docs/gulp.md
+}
+
+node {
+	version = '6.10.2'
+	npmVersion = '5.4.2'
+	// yarnVersion = '0.16.1'
+	download = true
+}
+
+// make the gulp_buildProd have accurate up-to-date checking
+def setInputs(targetTask) {
+	targetTask.dependsOn 'npmInstall'
+	def inputs = [
+		'assets',
+		'loaders',
+		'src',
+		'gulpfile.js',
+		'postcss.config.js',
+		'tsconfig.json',
+		'webpack.config.js'
+	]
+	for (input in inputs) {
+		File file = file(input)
+		if (file.isFile()) {
+			targetTask.inputs.file(file)
+		} else {
+			targetTask.inputs.dir(file)
+		}
+	}
+}
+setInputs(gulp_buildDev)
+setInputs(gulp_buildProd)
+gulp_buildDev.outputs.dir('../server/src/main/resources/assets-dev')
+gulp_buildProd.outputs.dir('../server/src/main/resources/assets')
+
+// map prettier to spotless (to match server)
+setInputs(npm_run_formatlist)
+setInputs(npm_run_formatwrite)
+task spotlessCheck(dependsOn: npm_run_formatlist)
+task spotlessApply(dependsOn: npm_run_formatwrite)
+
+// check should run all tests
+task check(dependsOn: [
+	npm_run_test,
+	spotlessCheck
+])

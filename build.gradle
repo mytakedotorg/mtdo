@@ -1,0 +1,48 @@
+buildscript { repositories { mavenCentral() } }
+plugins {
+	id 'com.diffplug.gradle.eclipse.resourcefilters' version '3.8.1'
+	id 'com.diffplug.gradle.spotless' version '3.6.0'	// https://github.com/diffplug/spotless/blob/master/plugin-gradle/README.md
+	id 'com.github.ben-manes.versions' version '0.17.0'	// https://github.com/ben-manes/gradle-versions-plugin
+}
+
+// format build files
+spotless {
+	groovyGradle {
+		target 'build.gradle', 'buildSrc/build.gradle', 'client/build.gradle', 'server/build.gradle'
+		greclipse().configFile(
+				'gradle/spotless.eclipseformat.xml',
+				'gradle/spotless.greclipse.properties'
+				)
+		paddedCell()
+	}
+}
+
+// exclude the gradle build folder
+allprojects {
+	buildscript { repositories { mavenCentral() } }
+	apply plugin: 'com.diffplug.gradle.eclipse.excludebuildfolder'
+}
+
+// root eclipse project
+eclipse { project { name = 'mytake-root' } }
+eclipseResourceFilters {
+	exclude().folders().name('buildSrc')
+	exclude().folders().name('server')
+}
+tasks.eclipse.dependsOn(tasks.cleanEclipse)
+
+// heroku deploys fatjar (and deletes everything else)
+task stage {
+	dependsOn ':server:shadowJar'
+	doLast {
+		delete fileTree(dir: '.', exclude: [
+			'Procfile',
+			'app.json',
+			'system.properties',
+			'.profile.d/**',
+			'.jdk/**',
+			'.heroku/**',
+			'server/build/libs/server-all.jar'
+		])
+	}
+}

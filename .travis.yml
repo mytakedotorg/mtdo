@@ -1,14 +1,14 @@
 language: node_js
 
-before_install:
-  - cd client
-  - npm i -g npm@5.2.0
-
 script:
-  - npm run deploy
-  - npm run format-list
-  - npm test
+  - "./gradlew check"
 
+before_cache:
+  - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
+  - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
 cache:
   directories:
-    - node_modules
+    - client/.gradle/
+    - client/node_modules/
+    - $HOME/.gradle/caches/
+    - $HOME/.gradle/wrapper/

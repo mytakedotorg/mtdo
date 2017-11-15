@@ -1,0 +1,22 @@
+@import auth.AuthModule
+@import forms.api.FormMarkup
+
+@args(FormMarkup loginForm)
+
+@views.base.template("Try again", "Try again") -> {
+
+	<section id="login">
+		<div class="heading-line">
+			<h2>Log in</h2>
+		</div>
+		<div class="content-bg">
+			@loginForm.formError()
+			@loginForm.openForm("id", "login")
+				@loginForm.field(AuthModule.LOGIN_EMAIL).label("Email").errorSpan().input("text", "class", "form-control")
+				@loginForm.field(AuthModule.REDIRECT).input("hidden")
+				<input type="submit" class="btn btn-success" value="Try again" />
+			@loginForm.closeForm()
+		</div>
+	</section>
+
+}

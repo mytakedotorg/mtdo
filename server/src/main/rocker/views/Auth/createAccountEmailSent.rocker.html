@@ -1,0 +1,13 @@
+@args(String to, String from)
+
+@views.base.template("Confirmation email sent", "Confirmation email sent") -> {
+
+<p>
+	A confirmation email has been sent to @raw(to).
+	Click the link in the email to confirm your account.
+</p>
+<p>
+	Make sure your spam filter allows emails from @raw(from).
+</p>
+
+}

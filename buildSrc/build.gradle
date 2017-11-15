@@ -1,0 +1,42 @@
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'java-gradle-plugin'
+
+repositories { maven { url 'https://plugins.gradle.org/m2/' } }
+
+dependencies {
+	// https://github.com/opentable/otj-pg-embedded
+	compile 'com.opentable.components:otj-pg-embedded:0.10.0'
+	// jooq codegen
+	compile 'org.jooq:jooq-codegen:3.10.1'
+	// db migration
+	compile 'org.flywaydb:flyway-core:4.2.0'
+	// java8 utilities
+	compile 'com.diffplug.durian:durian-core:1.2.0'
+}
+
+// if we're not in CI, grab all source
+String HEROKU_ENV_VAR = 'STACK'  // https://devcenter.heroku.com/articles/buildpack-api#stacks
+String CI_ENV_VAR = 'CI'  // https://circleci.com/docs/1.0/environment-variables/#basics
+def keys = System.getenv().keySet()
+
+if (!keys.contains(HEROKU_ENV_VAR) && !keys.contains(CI_ENV_VAR)) {
+	// uncomment to generate eclipse project
+	// (adds tons of noise to continuous build)
+	// build.dependsOn(tasks.getByName('eclipse'))
+}
+
+eclipse { project { name = 'mytake-buildSrc' } }
+
+gradlePlugin {
+	plugins {
+		flywayJooqEmbeddedPg {
+			id = 'org.mytake.gradle.flywayjooq.embeddedpg'
+			implementationClass = 'org.mytake.gradle.flywayjooq.EmbeddedPgPlugin'
+		}
+		live {
+			id = 'org.mytake.gradle.live'
+			implementationClass = 'org.mytake.gradle.live.LivePlugin'
+		}
+	}
+}

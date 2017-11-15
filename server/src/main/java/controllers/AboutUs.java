@@ -1,0 +1,21 @@
+/*
+ * MyTake.org
+ *
+ *  Copyright 2017 by its authors.
+ *  Some rights reserved. See LICENSE, https://github.com/mytake/mytake/graphs/contributors
+ */
+package controllers;
+
+import com.google.inject.Binder;
+import com.typesafe.config.Config;
+import org.jooby.Env;
+import org.jooby.Jooby;
+
+public class AboutUs implements Jooby.Module {
+	public static final String URL = "/aboutus";
+
+	@Override
+	public void configure(Env env, Config conf, Binder binder) throws Throwable {
+		env.router().get(URL, () -> views.Placeholder.aboutUs.template());
+	}
+}

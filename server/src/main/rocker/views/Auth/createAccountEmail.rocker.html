@@ -1,0 +1,12 @@
+@args(String username, String confirmUrl)
+
+@views.email.template() -> {
+
+<p>
+Welcome to MyTake.org, @username!
+</p>
+<p>
+Visit the <a href="@raw(confirmUrl)">confirmation page</a> to confirm your account and give your take!
+</p>
+
+}

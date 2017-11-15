@@ -1,0 +1,12 @@
+@import db.tables.pojos.Takepublished
+
+@args (Takepublished take)
+
+@views.base.template(take.getTitle(), take.getTitle()) -> {
+
+<h1>@take.getTitle()</h1>
+@take.getBlocks()
+<span>Likes: @take.getCountLike()</span>
+<span>Views: @take.getCountView()</span>
+
+}
