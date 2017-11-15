@@ -59,3 +59,19 @@ addNavEvents();
 (window as any).YTConfig = {
   host: "https://www.youtube.com"
 };
+
+interface LoginCookie {
+  username: string;
+}
+
+const cookieStr = document.cookie;
+if (cookieStr) {
+  const loginUi: LoginCookie = JSON.parse(
+    JSON.parse(cookieStr.split("; ")[0].split("=")[1])
+  );
+  const loginLink = document.getElementById("login");
+  if (loginLink) {
+    loginLink.innerText = loginUi.username;
+    loginLink.setAttribute("href", "/logout");
+  }
+}
