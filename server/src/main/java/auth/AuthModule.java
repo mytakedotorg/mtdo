@@ -79,6 +79,7 @@ public class AuthModule implements Jooby.Module {
 		// a missing or expired login redirects to the login page
 		env.router().err(JWTVerificationException.class, (req, rsp, err) -> {
 			rsp.clearCookie(AuthUser.LOGIN_COOKIE);
+			rsp.clearCookie(AuthUser.LOGIN_UI_COOKIE);
 			rsp.redirect(Status.FORBIDDEN, UrlEncodedPath.path(URL_login)
 					.paramIfPresent(LOGIN_EMAIL, AuthUser.usernameForError(req))
 					.paramPathAndQuery(REDIRECT, req)

@@ -106,6 +106,7 @@ public class AuthUser {
 	}
 
 	static final String LOGIN_COOKIE = "login";
+	static final String LOGIN_UI_COOKIE = "loginui";
 	private static final String REQ_LOGIN_STATUS = "reqLoginStatus";
 
 	/** Attempts to parse the user's email, even if it isn't an otherwise valid login. */
@@ -119,10 +120,17 @@ public class AuthUser {
 	}
 
 	static void login(Account account, Request req, Response rsp) {
+		boolean isSecurable = UrlEncodedPath.isSecurable(req);
+
 		Cookie.Definition httpCookie = new Cookie.Definition(LOGIN_COOKIE, jwtToken(req, account));
 		httpCookie.httpOnly(true);
-		httpCookie.secure(UrlEncodedPath.isSecurable(req));
+		httpCookie.secure(isSecurable);
 		httpCookie.maxAge((int) TimeUnit.MINUTES.toSeconds(LOGIN_DAYS));
 		rsp.cookie(httpCookie);
+
+		Cookie.Definition uiCookie = new Cookie.Definition(LOGIN_UI_COOKIE, "{\"username\":\"" + account.getUsername() + "\"}");
+		uiCookie.secure(isSecurable);
+		uiCookie.maxAge((int) TimeUnit.MINUTES.toSeconds(LOGIN_DAYS));
+		rsp.cookie(uiCookie);
 	}
 }
