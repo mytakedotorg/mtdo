@@ -56,7 +56,6 @@ function setupPipeline(mode) {
   const images = "images" + mode;
   const loaders = "loaders" + mode;
   const scripts = "scripts" + mode;
-  const scriptsWatch = "scriptsWatch" + mode;
   gulp.task(css, cssCfg(mode));
   gulp.task(sass, sassCfg(mode));
   gulp.task(loaders, loadersCfg(mode));
@@ -64,7 +63,6 @@ function setupPipeline(mode) {
   gulp.task(nunjucks, [webpack], nunjucksCfg(mode));
   gulp.task(images, imagesCfg(mode));
   gulp.task(scripts, scriptsCfg(mode));
-  gulp.task(scriptsWatch, scriptsWatchCfg(mode));
   if (mode === PROD) {
     gulp.task(BUILD + mode, [nunjucks, sass, images, css], () => {
       return gulp
@@ -204,12 +202,6 @@ function scriptsCfg(mode) {
       .src()
       .pipe(tsScripts())
       .js.pipe(gulp.dest(config.scriptsDist));
-  };
-}
-
-function scriptsWatchCfg(mode) {
-  return () => {
-    gulp.watch(config.scriptsSrc, ["scripts" + mode]);
   };
 }
 
