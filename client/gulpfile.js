@@ -11,8 +11,6 @@ path = require("path");
 fs = require("fs");
 // file loaders
 ts = require("gulp-typescript");
-tsLoaders = ts.createProject("./loaders/tsconfig.json");
-tsScripts = ts.createProject("./test/scripts/tsconfig.json");
 // misc
 browserSync = require("browser-sync").create();
 tasklisting = require("gulp-task-listing");
@@ -21,6 +19,8 @@ gutil = require("gulp-util");
 rev = require("gulp-rev");
 merge = require("gulp-merge-json");
 
+tsLoaders = ts.createProject("./loaders/tsconfig.json");
+tsScripts = ts.createProject("./test/scripts/tsconfig.json");
 const config = {
   dist: "../server/src/main/resources/assets-dev",
   distProd: "../server/src/main/resources/assets",
@@ -49,16 +49,12 @@ function setupPipeline(mode) {
   const sass = "sass" + mode;
   const webpack = "webpack" + mode;
   const images = "images" + mode;
-  const loaders = "loaders" + mode;
-  const scripts = "scripts" + mode;
   gulp.task(css, cssCfg(mode));
   gulp.task(sass, sassCfg(mode));
-  gulp.task(loaders, loadersCfg(mode));
-  gulp.task(webpack, [loaders], webpackCfg(mode));
+  gulp.task(webpack, webpackCfg(mode));
   gulp.task(images, imagesCfg(mode));
-  gulp.task(scripts, scriptsCfg(mode));
   if (mode === PROD) {
-    gulp.task(BUILD + mode, [webpack, sass, images, css], () => {
+    gulp.task(BUILD + mode, [css, sass, webpack, images], () => {
       return gulp
         .src(config.distProd + "/*.json")
         .pipe(
@@ -69,7 +65,7 @@ function setupPipeline(mode) {
         .pipe(gulp.dest(config.distProd));
     });
   } else {
-    gulp.task(BUILD + mode, [nunjucks, sass, images, css]);
+    gulp.task(BUILD + mode, [webpack, sass, images, css]);
     gulp.task("proxy" + mode, [BUILD + mode], proxyCfg(mode));
   }
 }
@@ -111,9 +107,6 @@ function fingerprint(mode, stream) {
   }
 }
 
-//////////////////////
-// Config functions //
-//////////////////////
 function cssCfg(mode) {
   return () => {
     return fingerprint(mode, gulp.src(config.cssSrc));
@@ -171,24 +164,6 @@ function imagesCfg(mode) {
   };
 }
 
-function loadersCfg(mode) {
-  return () => {
-    return tsLoaders
-      .src()
-      .pipe(tsLoaders())
-      .js.pipe(gulp.dest(config.loadersDist));
-  };
-}
-
-function scriptsCfg(mode) {
-  return () => {
-    return tsScripts
-      .src()
-      .pipe(tsScripts())
-      .js.pipe(gulp.dest(config.scriptsDist));
-  };
-}
-
 function proxyCfg(mode) {
   return () => {
     browserSync.init({
@@ -208,3 +183,19 @@ function proxyCfg(mode) {
     gulp.watch(config.loadersSrc, ["webpack" + mode, "loaders" + mode]);
   };
 }
+
+//////////////////////////////
+// Non-asset-pipeline tasks //
+//////////////////////////////
+gulp.task("loaders", () => {
+  return tsLoaders
+    .src()
+    .pipe(tsLoaders())
+    .js.pipe(gulp.dest(config.loadersDist));
+});
+gulp.task("scripts", () => {
+  return tsScripts
+    .src()
+    .pipe(tsScripts())
+    .js.pipe(gulp.dest(config.scriptsDist));
+});

@@ -10,9 +10,19 @@ node {
 	download = true
 }
 
+// prep needs to run before anything else, but is easy to do up-to-date checking on
+npm_run_prep.dependsOn 'npmInstall'
+npm_run_prep.inputs.file('gulpfile.js')
+npm_run_prep.inputs.file('loaders/tsconfig.json')
+npm_run_prep.inputs.dir('loaders/src')
+npm_run_prep.outputs.dir('loaders/dist')
+npm_run_prep.inputs.file('test/scripts/tsconfig.json')
+npm_run_prep.inputs.dir('test/scripts/src')
+npm_run_prep.outputs.dir('test/scripts/dist')
+
 // make the gulp_buildProd have accurate up-to-date checking
 def setInputs(targetTask) {
-	targetTask.dependsOn 'npmInstall'
+	targetTask.dependsOn npm_run_prep
 	def inputs = [
 		'assets',
 		'loaders',
@@ -43,7 +53,7 @@ task spotlessCheck(dependsOn: npm_run_formatlist)
 task spotlessApply(dependsOn: npm_run_formatwrite)
 
 // check should run all tests
-npm_run_test.dependsOn(npm_run_testprep)
+npm_run_test.dependsOn(npm_run_prep)
 task check(dependsOn: [
 	npm_run_test,
 	spotlessCheck
