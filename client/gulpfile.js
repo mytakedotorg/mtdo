@@ -73,7 +73,7 @@ function setupPipeline(mode) {
 gulp.task(
   "default",
   tasklisting.withFilters(
-    /clean|default|css|sass|webpack|nunjucks|images|loaders|rev|scripts|default/
+    /clean|default|css|sass|webpack|images|loaders|rev|scripts|default/
   )
 );
 
