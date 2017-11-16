@@ -25,11 +25,11 @@ def setInputs(targetTask) {
 	targetTask.dependsOn npm_run_prep
 	def inputs = [
 		'assets',
-		'loaders',
 		'src',
 		'gulpfile.js',
 		'postcss.config.js',
 		'tsconfig.json',
+		'webpack.config.dev.js',
 		'webpack.config.js'
 	]
 	for (input in inputs) {
