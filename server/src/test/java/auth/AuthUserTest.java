@@ -63,8 +63,8 @@ public class AuthUserTest {
 				.statusCode(Status.OK.value())
 				.body(equalTo("morty"));
 		given().redirects().follow(false).get("/required").then()
-				.statusCode(Status.FORBIDDEN.value())
-				.header("Location", "/login?redirect=%2Frequired");
+				.statusCode(Status.TEMPORARY_REDIRECT.value())
+				.header("Location", "/login?redirect=%2Frequired&loginreason=We+can+show+that+to+you+after+you+log+in.");
 	}
 
 	@Test

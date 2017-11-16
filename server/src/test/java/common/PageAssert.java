@@ -78,7 +78,7 @@ public class PageAssert {
 				t.printStackTrace();
 				new OpenBrowser()
 						.add("/failedAssertion", body)
-						.isYes("Failed assertion, press any button");
+						.waitForOk("Failed assertion");
 			}
 			if (t instanceof Error) {
 				throw (Error) t;
