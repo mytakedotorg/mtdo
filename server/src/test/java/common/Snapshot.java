@@ -82,9 +82,13 @@ public class Snapshot {
 			Assertions.assertThat(trace[0].getClassName()).isEqualTo("java.lang.Thread");
 			Assertions.assertThat(trace[1].getClassName()).isEqualTo("common.Snapshot$IdSnapshot");
 			Assertions.assertThat(trace[2].getClassName()).isEqualTo("common.Snapshot");
-			Assertions.assertThat(trace[3].getClassName()).doesNotContain("common.Snapshot");
+			StackTraceElement last;
+			if (trace[3].getClassName().contains("common.Snapshot")) {
+				last = trace[4];
+			} else {
+				last = trace[3];
+			}
 
-			StackTraceElement last = trace[3];
 			int lastSlash = last.getClassName().lastIndexOf('.');
 			String className = last.getClassName().substring(lastSlash + 1);
 			String pkg = last.getClassName().substring(0, lastSlash);
