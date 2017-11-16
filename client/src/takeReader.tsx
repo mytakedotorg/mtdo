@@ -5,22 +5,42 @@ import FeedList from "./components/FeedList";
 import { TakeDocument } from "./components/BlockEditor";
 import { getArticle } from "./utils/databaseAPI";
 
-let app: HTMLElement | null = document.getElementById("app");
+interface HomeArgs {
+  type: "home";
+}
+
+interface ShowTakeArgs {
+  type: "showtake";
+  takeDocument: TakeDocument;
+}
+
+declare global {
+  interface Window {
+    mytake?: HomeArgs | ShowTakeArgs;
+  }
+}
 
 let Root;
 
-if (window.location.pathname === "/") {
-  Root = <FeedList />;
-} else if (app) {
-  let data = app.getAttribute("data-init");
-  if (data) {
-    let initJson: TakeDocument = JSON.parse(data);
-    Root = <BlockReader initState={initJson} />;
-  } else {
-    throw "Error reading data-init attribute";
+if (typeof window.mytake != "undefined") {
+  switch (window.mytake.type) {
+    case "home":
+      Root = <FeedList />;
+      break;
+    case "showtake":
+      Root = <BlockReader initState={window.mytake.takeDocument} />;
+      break;
+    default:
+      throw "Unknown argument structure";
   }
+} else {
+  throw "window.mytake is undefined";
+}
+
+const app: HTMLElement | null = document.getElementById("app");
+
+if (app) {
+  ReactDOM.render(Root, app);
 } else {
   throw "Couldn't find div#app";
 }
-
-ReactDOM.render(Root, app);

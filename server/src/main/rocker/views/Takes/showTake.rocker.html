@@ -6,11 +6,13 @@
 
 <div id="app"></div>
 <script type="text/javascript">
-var app = document.getElementById('app')
-	app.setAttribute('data-init', JSON.stringify({
+window.mytake = {
+	type: "showtake",
+	takeDocument: {
 	title: "@raw(take.getTitle())",
 	blocks: @raw(blocksJson)
-}))
+	}
+};
 </script>
 
 }
