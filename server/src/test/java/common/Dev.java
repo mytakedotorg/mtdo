@@ -8,6 +8,7 @@ package common;
 
 import com.diffplug.common.base.Errors;
 import com.google.inject.Binder;
+import com.google.inject.multibindings.Multibinder;
 import com.icegreen.greenmail.util.GreenMail;
 import com.icegreen.greenmail.util.ServerSetup;
 import com.opentable.db.postgres.embedded.DatabasePreparer;
@@ -25,6 +26,8 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import org.jooby.Env;
 import org.jooby.Jooby;
+import org.jooby.MediaType;
+import org.jooby.Renderer;
 import org.jooby.whoops.Whoops;
 
 /**
@@ -42,7 +45,27 @@ public class Dev extends Jooby {
 		use(new EmbeddedPostgresModule());
 		Prod.common(this);
 		Prod.controllers(this);
+		use(new JooqDebugRenderer());
 		use(new Whoops());
+	}
+
+	static class JooqDebugRenderer implements Jooby.Module {
+		@Override
+		public void configure(Env env, Config conf, Binder binder) throws Throwable {
+			Multibinder.newSetBinder(binder, Renderer.class)
+					.addBinding()
+					.toInstance(new Renderer() {
+						@Override
+						public void render(Object value, Context ctx) throws Exception {
+							if (value instanceof org.jooq.Result) {
+								ctx.type(MediaType.html)
+										.send("<!DOCTYPE html><html><body><div style=\"font-family:monospace\">" +
+												value.toString().replace("\n", "<br>").replace(" ", "&nbsp;") +
+												"</div></body></html>");
+							}
+						}
+					});
+		}
 	}
 
 	static class EmbeddedPostgresModule implements Jooby.Module {
