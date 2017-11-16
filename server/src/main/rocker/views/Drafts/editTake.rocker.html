@@ -7,7 +7,11 @@ Existing draft -> Strings are not-null, all ids are meaningful
 
 @views.naked.template("MyTake.org", "Your bicycle for politics", "react") -> {
 <div id="app"></div>
-
+<script type="text/javascript">
+window.mytake = {
+	type: "new-take"
+};
+</script>
 @* TODO
 A save button.  When you click it, it makes a post with these fields:
 

@@ -5,19 +5,13 @@ import FeedList from "./components/FeedList";
 import { TakeDocument } from "./components/BlockEditor";
 import { getArticle } from "./utils/databaseAPI";
 
-interface HomeArgs {
+export interface HomeArgs {
   type: "home";
 }
 
-interface ShowTakeArgs {
+export interface ShowTakeArgs {
   type: "showtake";
   takeDocument: TakeDocument;
-}
-
-declare global {
-  interface Window {
-    mytake?: HomeArgs | ShowTakeArgs;
-  }
 }
 
 let Root;

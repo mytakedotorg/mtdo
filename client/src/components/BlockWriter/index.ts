@@ -1,5 +1,5 @@
-import BlockWriter from "./BlockWriter";
+import BlockWriter, { BlockWriterState } from "./BlockWriter";
 import config from "./config";
 
-export { config };
+export { config, BlockWriterState };
 export default BlockWriter;
