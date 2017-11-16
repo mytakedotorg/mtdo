@@ -49,7 +49,7 @@ public class Snapshot {
 			} else {
 				Assert.assertTrue("No snapshot for " + id, OpenBrowser.isInteractive());
 				boolean writeSnapshot = new OpenBrowser()
-						.add("/", actual)
+						.add("/first", actual)
 						.isYes("Is this snapshot okay for " + snapshot.label());
 				if (writeSnapshot) {
 					Files.createDirectories(snapshot.testFile.getParent());

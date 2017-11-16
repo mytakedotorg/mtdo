@@ -50,7 +50,7 @@ class OpenBrowser {
 			}
 
 			JOptionPane.getRootFrame().setAlwaysOnTop(true);
-			int dialogResult = JOptionPane.showConfirmDialog(null, message);
+			int dialogResult = JOptionPane.showConfirmDialog(null, message, message, JOptionPane.YES_NO_OPTION);
 			jooby.stop();
 			return dialogResult == JOptionPane.YES_OPTION;
 		} catch (Exception e) {
