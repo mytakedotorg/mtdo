@@ -51,6 +51,7 @@ public class LoginForm extends MetaFormDef.HandleValid {
 	@Override
 	public boolean handleSuccessful(MetaFormValidation validation, Request req, Response rsp) throws Throwable {
 		String email = Text.lowercase(validation.parsed(LOGIN_EMAIL));
+		String from = Emails.FEEDBACK;
 		try (DSLContext dsl = req.require(DSLContext.class)) {
 			AccountRecord account = dsl.selectFrom(ACCOUNT)
 					.where(ACCOUNT.EMAIL.eq(email))
@@ -78,13 +79,13 @@ public class LoginForm extends MetaFormDef.HandleValid {
 						.setHtmlMsg(html)
 						.setSubject("MyTake.org login link")
 						.addTo(email)
-						.setFrom(Emails.FEEDBACK)
+						.setFrom(from)
 						.send();
 
 				account.setLastEmailedAt(time.nowTimestamp());
 				account.update();
 
-				rsp.send(views.Auth.loginEmailSent.template(email, path.build()));
+				rsp.send(views.Auth.loginEmailSent.template(email, from));
 				return true;
 			}
 		}
