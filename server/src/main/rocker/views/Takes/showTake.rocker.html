@@ -8,9 +8,9 @@
 <script type="text/javascript">
 var app = document.getElementById('app')
 	app.setAttribute('data-init', JSON.stringify({
-			"user": "samples",
-			"article": "why-its-so-hard-to-have-peace"
-		}))
+	title: "@raw(take.getTitle())",
+	blocks: @raw(blocksJson)
+}))
 </script>
 
 }
