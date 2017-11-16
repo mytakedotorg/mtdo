@@ -12,7 +12,7 @@ import static db.Tables.TAKEPUBLISHED;
 import com.google.gson.Gson;
 import com.google.inject.Binder;
 import com.typesafe.config.Config;
-import common.RedirectException;
+import common.NotFound;
 import common.Text;
 import db.tables.pojos.Takepublished;
 import db.tables.records.TakepublishedRecord;
@@ -41,15 +41,17 @@ public class Takes implements Jooby.Module {
 								.from(ACCOUNT)
 								.where(ACCOUNT.USERNAME.eq(user))))
 						.fetchOne();
+				if (record == null) {
+					return NotFound.result();
+				} else {
+					// increment the view
+					record.setCountView(record.getCountView() + 1);
+					record.update();
 
-				assertNotNull(record);
-				// increment the view
-				record.setCountView(record.getCountView() + 1);
-				record.update();
-
-				Takepublished take = record.into(Takepublished.class);
-				String blocksJson = new Gson().toJson(take.getBlocks());
-				return views.Takes.showTake.template(take, blocksJson);
+					Takepublished take = record.into(Takepublished.class);
+					String blocksJson = new Gson().toJson(take.getBlocks());
+					return views.Takes.showTake.template(take, blocksJson);
+				}
 			}
 		});
 		env.router().get(USER.pattern(), req -> {
@@ -59,22 +61,20 @@ public class Takes implements Jooby.Module {
 						.from(ACCOUNT)
 						.where(ACCOUNT.USERNAME.eq(username))
 						.fetchOne();
-				int userId = account.component1();
-				String name = account.component2(); // nullable
-				Result<Record4<String, String, Timestamp, Integer>> takes = dsl
-						.select(TAKEPUBLISHED.TITLE, TAKEPUBLISHED.TITLE_SLUG, TAKEPUBLISHED.PUBLISHED_AT, TAKEPUBLISHED.COUNT_LIKE)
-						.from(TAKEPUBLISHED)
-						.where(TAKEPUBLISHED.USER_ID.eq(userId))
-						.orderBy(TAKEPUBLISHED.PUBLISHED_AT.desc())
-						.fetch();
-				return takes;
+				if (account == null) {
+					return NotFound.result();
+				} else {
+					int userId = account.component1();
+					String name = account.component2(); // nullable
+					Result<Record4<String, String, Timestamp, Integer>> takes = dsl
+							.select(TAKEPUBLISHED.TITLE, TAKEPUBLISHED.TITLE_SLUG, TAKEPUBLISHED.PUBLISHED_AT, TAKEPUBLISHED.COUNT_LIKE)
+							.from(TAKEPUBLISHED)
+							.where(TAKEPUBLISHED.USER_ID.eq(userId))
+							.orderBy(TAKEPUBLISHED.PUBLISHED_AT.desc())
+							.fetch();
+					return takes;
+				}
 			}
 		});
-	}
-
-	static void assertNotNull(Object obj) {
-		if (obj == null) {
-			throw RedirectException.notFoundError("No such take.");
-		}
 	}
 }
