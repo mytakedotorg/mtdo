@@ -17,6 +17,7 @@ import java.util.Random;
 import javax.sql.DataSource;
 import org.flywaydb.core.Flyway;
 import org.jooby.Jooby;
+import org.jooby.Results;
 import org.jooby.jdbc.Jdbc;
 import org.jooby.jooq.jOOQ;
 import org.jooby.mail.CommonsEmail;
@@ -55,6 +56,7 @@ public class Prod extends Jooby {
 	}
 
 	static void controllers(Jooby jooby) {
+		jooby.get("favicon.ico", () -> Results.noContent());
 		jooby.use(new HomeFeed());
 		jooby.use(new Foundation());
 		jooby.use(new AboutUs());
