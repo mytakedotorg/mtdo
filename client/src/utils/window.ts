@@ -51,6 +51,20 @@ function addNavEvents(userNav?: boolean) {
           e.preventDefault();
         }
       }
+    } else if (
+      userDropdown &&
+      !userDropdown.classList.contains("header__dropdown--collapse") &&
+      !e.defaultPrevented
+    ) {
+      if (
+        e.srcElement &&
+        !e.srcElement.classList.contains("header__icon--login")
+      ) {
+        if (!e.srcElement.classList.contains("header__dropdown-link")) {
+          toggleUserNav();
+          e.preventDefault();
+        }
+      }
     }
   }
 
@@ -133,6 +147,11 @@ function loadUser() {
         "</ul>" +
         "</div>";
       return true;
+    }
+  } else {
+    if (loginDiv) {
+      loginDiv.innerHTML =
+        '<a class="header__icon header__icon--login" href="/login">Login</a>';
     }
   }
   return false;
