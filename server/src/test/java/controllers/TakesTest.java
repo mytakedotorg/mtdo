@@ -19,7 +19,12 @@ public class TakesTest {
 
 	@Test
 	public void viewArticle() {
-		Snapshot.match("viewArticle", get("/sample/why-its-so-hard-to-have-peace")
-				.getBody().asString());
+		Snapshot.match("viewArticle", get("/samples/why-its-so-hard-to-have-peace"));
+	}
+
+	@Test
+	public void viewUser() {
+		Snapshot.match("viewUser", get("/samples"));
+		Snapshot.match("viewUserOther", get("/other"));
 	}
 }
