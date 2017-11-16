@@ -17,7 +17,7 @@ public class DraftsTest {
 
 	@Test
 	public void drafts() {
-		Snapshot.match("samplesDrafts", dev.givenUser("samples").get("/drafts").asString());
-		Snapshot.match("otherDrafts", dev.givenUser("other").get("/drafts").asString());
+		Snapshot.match("samplesDrafts", dev.givenUser("samples").get("/drafts"));
+		Snapshot.match("otherDrafts", dev.givenUser("other").get("/drafts"));
 	}
 }

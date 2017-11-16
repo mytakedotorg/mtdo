@@ -7,6 +7,7 @@
 package common;
 
 import com.diffplug.common.base.Errors;
+import io.restassured.response.Response;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -17,6 +18,11 @@ import org.assertj.core.api.Assertions;
 import org.junit.Assert;
 
 public class Snapshot {
+	/** See {@link #match(String, String) */
+	public static void match(String id, Response response) {
+		match(id, response.asString());
+	}
+
 	/**
 	 * If the snapshot doesn't match, it will block and spawn a browser
 	 * to display the snapshots.

@@ -41,8 +41,7 @@ public class RedirectExceptionTest {
 				.statusCode(Status.BAD_REQUEST.value())
 				.header("Location", "/badRequest?msg=URL+was+invalid%21");
 		Snapshot.match("urlWasInvalid", given().urlEncodingEnabled(false)
-				.get("/badRequest?msg=URL+was+invalid%21")
-				.body().asString());
+				.get("/badRequest?msg=URL+was+invalid%21"));
 	}
 
 	@Test
@@ -52,7 +51,6 @@ public class RedirectExceptionTest {
 				.statusCode(Status.NOT_FOUND.value())
 				.header("Location", "/notFound?msg=Resource+not+found%21");
 		Snapshot.match("resourceNotFound", given().urlEncodingEnabled(false)
-				.get("/notFound?msg=Resource+not+found%21")
-				.body().asString());
+				.get("/notFound?msg=Resource+not+found%21"));
 	}
 }
