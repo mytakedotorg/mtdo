@@ -12,7 +12,6 @@ import static org.hamcrest.Matchers.equalTo;
 import common.CustomAssets;
 import common.DevTime;
 import common.JoobyDevRule;
-import common.RedirectException;
 import db.tables.pojos.Account;
 import io.restassured.specification.RequestSpecification;
 import java.util.Optional;
@@ -27,7 +26,6 @@ public class AuthUserTest {
 			CustomAssets.initTemplates(this);
 			use(new DevTime.Module());
 			use(new AuthModule());
-			use(new RedirectException.Module());
 			get("/required", req -> {
 				AuthUser user = AuthUser.auth(req);
 				return user.username();

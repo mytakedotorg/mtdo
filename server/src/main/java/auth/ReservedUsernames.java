@@ -8,7 +8,6 @@ package auth;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableSet;
-import common.RedirectException;
 import common.Text;
 import controllers.AboutUs;
 import controllers.Drafts;
@@ -31,9 +30,7 @@ class ReservedUsernames {
 			"legal",				// for legal attributes
 			url(AuthModule.URL_login),
 			url(AuthModule.URL_logout),
-			url(AuthModule.URL_confirm),
-			url(RedirectException.Module.URL_notFound),
-			url(RedirectException.Module.URL_badRequest));
+			url(AuthModule.URL_confirm));
 
 	private static String url(String url) {
 		Preconditions.checkArgument(url.startsWith("/"));

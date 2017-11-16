@@ -62,7 +62,7 @@ public class Prod extends Jooby {
 		jooby.use(new AboutUs());
 		jooby.use(new Drafts());
 		jooby.use(new AuthModule());
-		jooby.use(new RedirectException.Module());
+		jooby.use(new NotFound());
 		// takes needs to be last, because otherwise it will swallow
 		// every `/user/take` URL.
 		jooby.use(new Takes());

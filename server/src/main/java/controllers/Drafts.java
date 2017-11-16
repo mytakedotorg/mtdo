@@ -16,7 +16,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.google.inject.Binder;
 import com.typesafe.config.Config;
-import common.RedirectException;
+import common.NotFound;
 import common.SimpleJson;
 import common.Time;
 import db.VarChars;
@@ -75,7 +75,7 @@ public class Drafts implements Jooby.Module {
 							.where(TAKEDRAFT.ID.eq(draftid.intValue()))
 							.fetchOne();
 					if (draft.getUserId().equals(user.id())) {
-						throw RedirectException.badRequestError("This isn't your draft");
+						return NotFound.result();
 					}
 				} else {
 					draft = null;
