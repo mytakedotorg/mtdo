@@ -38,27 +38,11 @@ public class Drafts implements Jooby.Module {
 
 	@Override
 	public void configure(Env env, Config conf, Binder binder) throws Throwable {
+		// brand new template
 		env.router().get(URL_NEW, req -> {
 			return views.Drafts.editTake.template(null, null, -1, -1);
 		});
-		env.router().get(URL + "/:id", req -> {
-			AuthUser user = AuthUser.auth(req);
-			int draftId = req.param("id").intValue();
-			try (DSLContext dsl = req.require(DSLContext.class)) {
-				TakerevisionRecord rev = dsl.selectFrom(TAKEREVISION)
-						.where(TAKEREVISION.ID.eq(
-								dsl.select(TAKEDRAFT.LAST_REVISION)
-										.where(TAKEDRAFT.ID.eq(draftId))
-										.and(TAKEDRAFT.USER_ID.eq(user.id()))))
-						.fetchOne();
-				if (rev == null) {
-					return "No such draft";
-				} else {
-					String blocksJson = new Gson().toJson(rev.getBlocks());
-					return views.Drafts.editTake.template(rev.getTitle(), blocksJson, draftId, rev.getId());
-				}
-			}
-		});
+		// list drafts for the logged-in user
 		env.router().get(URL, req -> {
 			AuthUser user = AuthUser.auth(req);
 			try (DSLContext dsl = req.require(DSLContext.class)) {
@@ -72,6 +56,7 @@ public class Drafts implements Jooby.Module {
 				return drafts;
 			}
 		});
+		// save a draft
 		env.router().post(URL_SAVE, req -> {
 			// the user has to be logged-in
 			AuthUser user = AuthUser.auth(req);
@@ -117,6 +102,25 @@ public class Drafts implements Jooby.Module {
 					newdraft.setLastRevision(rev.getId());
 					newdraft.insert();
 					return draftLastrev(draft);
+				}
+			}
+		});
+		// reopen an existing draft (MUST BE LAST so ":id" doesn't clobber other routes)
+		env.router().get(URL + "/:id", req -> {
+			AuthUser user = AuthUser.auth(req);
+			int draftId = req.param("id").intValue();
+			try (DSLContext dsl = req.require(DSLContext.class)) {
+				TakerevisionRecord rev = dsl.selectFrom(TAKEREVISION)
+						.where(TAKEREVISION.ID.eq(
+								dsl.select(TAKEDRAFT.LAST_REVISION)
+										.where(TAKEDRAFT.ID.eq(draftId))
+										.and(TAKEDRAFT.USER_ID.eq(user.id()))))
+						.fetchOne();
+				if (rev == null) {
+					return "No such draft";
+				} else {
+					String blocksJson = new Gson().toJson(rev.getBlocks());
+					return views.Drafts.editTake.template(rev.getTitle(), blocksJson, draftId, rev.getId());
 				}
 			}
 		});
