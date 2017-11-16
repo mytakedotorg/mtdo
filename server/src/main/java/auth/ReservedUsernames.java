@@ -22,7 +22,6 @@ class ReservedUsernames {
 
 	private static final ImmutableSet<String> RESERVED_USERNAMES = ImmutableSet.of(
 			url(Drafts.URL),		// drafts
-			url(Drafts.URL_NEW),	// anonymous drafts
 			"import",			// import from e.g. Google docs?
 			"api",				// for api access
 			"settings",			// for user settings

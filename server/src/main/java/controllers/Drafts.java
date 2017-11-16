@@ -11,6 +11,7 @@ import static db.Tables.TAKEREVISION;
 
 import auth.AuthUser;
 import com.google.common.base.Preconditions;
+import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.google.inject.Binder;
@@ -31,14 +32,32 @@ import org.jooq.Result;
 
 public class Drafts implements Jooby.Module {
 	/** special url for anonymous drafts */
-	public static final String URL_NEW = "/new-take";
 	public static final String URL = "/drafts";
+	public static final String URL_NEW = URL + "/new";
 	public static final String URL_SAVE = URL + "/save";
 
 	@Override
 	public void configure(Env env, Config conf, Binder binder) throws Throwable {
 		env.router().get(URL_NEW, req -> {
-			return views.Placeholder.newTake.template();
+			return views.Drafts.editTake.template(null, null, -1, -1);
+		});
+		env.router().get(URL + "/:id", req -> {
+			AuthUser user = AuthUser.auth(req);
+			int draftId = req.param("id").intValue();
+			try (DSLContext dsl = req.require(DSLContext.class)) {
+				TakerevisionRecord rev = dsl.selectFrom(TAKEREVISION)
+						.where(TAKEREVISION.ID.eq(
+								dsl.select(TAKEDRAFT.LAST_REVISION)
+										.where(TAKEDRAFT.ID.eq(draftId))
+										.and(TAKEDRAFT.USER_ID.eq(user.id()))))
+						.fetchOne();
+				if (rev == null) {
+					return "No such draft";
+				} else {
+					String blocksJson = new Gson().toJson(rev.getBlocks());
+					return views.Drafts.editTake.template(rev.getTitle(), blocksJson, draftId, rev.getId());
+				}
+			}
 		});
 		env.router().get(URL, req -> {
 			AuthUser user = AuthUser.auth(req);
