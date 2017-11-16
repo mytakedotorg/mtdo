@@ -23,6 +23,7 @@ import org.jooby.Status;
 
 /** The login module.  Must be before all modules that require login. */
 public class AuthModule implements Jooby.Module {
+	static final MetaField<String> LOGIN_REASON = MetaField.string("loginreason");
 	/** Used by {@link LoginForm} and {@link CreateAccountForm}. */
 	public static final MetaField<String> REDIRECT = MetaField.string("redirect");
 	/** Used by {@link LoginForm} only. */
@@ -50,20 +51,23 @@ public class AuthModule implements Jooby.Module {
 			if (userOpt.isPresent()) {
 				return views.Auth.alreadyLoggedIn.template(userOpt.get().username());
 			} else {
+				// we might have gotten here from a JWTVerificationException, and we want to tell the user why
+				String loginReason = req.param(LOGIN_REASON.name()).value(null);
 				// initialize the form parameters
 				MetaFormValidation login = MetaFormValidation.empty(LoginForm.class)
 						.initIfPresent(req, REDIRECT, LOGIN_EMAIL);
 				MetaFormValidation createAccount = MetaFormValidation.empty(CreateAccountForm.class)
 						.initIfPresent(req, REDIRECT, CREATE_USERNAME, CREATE_EMAIL);
-				return views.Auth.login.template(login.markup(URL_login), createAccount.markup(URL_login));
+				return views.Auth.login.template(loginReason, login.markup(URL_login), createAccount.markup(URL_login));
 			}
 		});
 		env.router().post(URL_login, (req, rsp) -> {
 			List<MetaFormValidation> validations = MetaFormDef.HandleValid.validation(req, rsp, LoginForm.class, CreateAccountForm.class);
 			if (!validations.isEmpty()) {
+				String loginReason = null;
 				MetaFormValidation login = validations.get(0);
 				MetaFormValidation createAccount = validations.get(1);
-				rsp.send(views.Auth.login.template(login.markup(URL_login), createAccount.markup(URL_login)));
+				rsp.send(views.Auth.login.template(loginReason, login.markup(URL_login), createAccount.markup(URL_login)));
 			}
 		});
 		env.router().get(URL_confirm_account + ":code", (req, rsp) -> {
@@ -81,9 +85,10 @@ public class AuthModule implements Jooby.Module {
 		env.router().err(JWTVerificationException.class, (req, rsp, err) -> {
 			rsp.clearCookie(AuthUser.LOGIN_COOKIE);
 			rsp.clearCookie(AuthUser.LOGIN_UI_COOKIE);
-			rsp.redirect(Status.FORBIDDEN, UrlEncodedPath.path(URL_login)
+			rsp.redirect(Status.TEMPORARY_REDIRECT, UrlEncodedPath.path(URL_login)
 					.paramIfPresent(LOGIN_EMAIL, AuthUser.usernameForError(req))
 					.paramPathAndQuery(REDIRECT, req)
+					.param(LOGIN_REASON, err.getCause().getMessage())
 					.build());
 		});
 	}
