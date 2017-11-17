@@ -6,12 +6,13 @@
  */
 package common;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
+import java.util.function.Consumer;
 
 public class TakeBuilder {
-	public static TakeBuilder builder() {
-		return new TakeBuilder();
+	public static TakeBuilder builder(Consumer<TakeBuilder> builderConsumer) {
+		TakeBuilder builder = new TakeBuilder();
+		builderConsumer.accept(builder);
+		return builder;
 	}
 
 	StringBuilder builder = new StringBuilder("[\n");
@@ -26,7 +27,7 @@ public class TakeBuilder {
 		return this;
 	}
 
-	String build() {
+	public String buildString() {
 		if (builder.length() == 2) {
 			builder = null;
 			return "[]";
@@ -37,9 +38,5 @@ public class TakeBuilder {
 			builder = null;
 			return str;
 		}
-	}
-
-	public JsonElement buildJson() {
-		return new JsonParser().parse(build());
 	}
 }

@@ -12,7 +12,6 @@ import static db.Tables.TAKEPUBLISHED;
 import static db.Tables.TAKEREVISION;
 
 import com.google.common.io.Resources;
-import com.google.gson.JsonParser;
 import com.google.inject.Binder;
 import com.typesafe.config.Config;
 import db.Tables;
@@ -63,9 +62,7 @@ public class InitialData {
 		rev.setCreatedAt(time.nowTimestamp());
 		rev.setCreatedIp(IP);
 		rev.setTitle(title);
-		TakeBuilder b = TakeBuilder.builder();
-		builder.accept(b);
-		rev.setBlocks(new JsonParser().parse(b.build()));
+		rev.setBlocks(TakeBuilder.builder(builder).buildString());
 		rev.insert();
 
 		TakedraftRecord draft = dsl.newRecord(TAKEDRAFT);
@@ -92,16 +89,14 @@ public class InitialData {
 	static int take(DSLContext dsl, Time time, int user, String title) throws IOException {
 		TakepublishedRecord record = takeInternal(dsl, time, user, title);
 		String jsonData = Resources.toString(Resources.getResource("initialdata/" + record.getTitleSlug() + ".json"), StandardCharsets.UTF_8);
-		record.setBlocks(new JsonParser().parse(jsonData));
+		record.setBlocks(jsonData);
 		record.insert();
 		return record.getId();
 	}
 
 	static int take(DSLContext dsl, Time time, int user, String title, Consumer<TakeBuilder> b) throws IOException {
 		TakepublishedRecord record = takeInternal(dsl, time, user, title);
-		TakeBuilder builder = TakeBuilder.builder();
-		b.accept(builder);
-		record.setBlocks(builder.buildJson());
+		record.setBlocks(TakeBuilder.builder(b).buildString());
 		record.insert();
 		return record.getId();
 	}

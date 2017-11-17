@@ -88,7 +88,6 @@ dependencies {
 	compile "org.jooby:jooby-jooq:$JOOBY_VER"
 	compile "org.jooby:jooby-commons-email:$JOOBY_VER"
 	compile "org.jooby:jooby-assets:$JOOBY_VER"
-	compile "org.jooby:jooby-jackson:$JOOBY_VER"
 	testCompile "org.jooby:jooby-whoops:$JOOBY_VER"
 
 	// json
@@ -107,7 +106,6 @@ dependencies {
 	// common libs
 	compile 'commons-validator:commons-validator:1.6'
 	compile 'com.diffplug.durian:durian-core:1.2.0'
-	compile 'com.google.code.gson:gson:2.8.2'
 
 	// code quality annotations, especially @Nullable
 	compileOnly 'com.google.code.findbugs:jsr305:3.0.2'

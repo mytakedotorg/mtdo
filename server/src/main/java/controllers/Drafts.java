@@ -11,9 +11,6 @@ import static db.Tables.TAKEREVISION;
 
 import auth.AuthUser;
 import com.google.common.base.Preconditions;
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
 import com.google.inject.Binder;
 import com.typesafe.config.Config;
 import common.NotFound;
@@ -66,7 +63,7 @@ public class Drafts implements Jooby.Module {
 			// the title and blocks must be set
 			String title = req.param(SAVE_title).value();
 			Preconditions.checkArgument(title.length() < VarChars.TITLE);
-			JsonElement blocks = new JsonParser().parse(req.param(SAVE_blocks).value());
+			String blocks = req.param(SAVE_blocks).value();
 
 			try (DSLContext dsl = req.require(DSLContext.class)) {
 				TakedraftRecord draft;
@@ -119,8 +116,7 @@ public class Drafts implements Jooby.Module {
 				if (rev == null) {
 					return "No such draft";
 				} else {
-					String blocksJson = new Gson().toJson(rev.getBlocks());
-					return views.Drafts.editTake.template(rev.getTitle(), blocksJson, draftId, rev.getId());
+					return views.Drafts.editTake.template(rev.getTitle(), rev.getBlocks(), draftId, rev.getId());
 				}
 			}
 		});

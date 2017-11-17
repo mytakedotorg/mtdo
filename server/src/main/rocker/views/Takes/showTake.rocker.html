@@ -1,6 +1,6 @@
-@import db.tables.pojos.Takepublished
+@import db.tables.records.TakepublishedRecord
 
-@args (Takepublished take, String blocksJson)
+@args (TakepublishedRecord take)
 
 @views.naked.template(take.getTitle(), take.getTitle(), "takeReader") -> {
 
@@ -10,7 +10,7 @@ window.mytake = {
 	type: "showtake",
 	takeDocument: {
 	title: "@raw(take.getTitle())",
-	blocks: @raw(blocksJson)
+	blocks: @raw(take.getBlocks())
 	}
 };
 </script>

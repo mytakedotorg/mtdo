@@ -37,8 +37,7 @@ public class TakeBuilderTest {
 
 	private void testCase(Consumer<TakeBuilder> b, String... lines) {
 		String expected = StringPrinter.buildStringFromLines(lines);
-		TakeBuilder builder = TakeBuilder.builder();
-		b.accept(builder);
-		Assert.assertEquals(expected.substring(0, expected.length() - 1), builder.build());
+		Assert.assertEquals(expected.substring(0, expected.length() - 1),
+				TakeBuilder.builder(b).buildString());
 	}
 }

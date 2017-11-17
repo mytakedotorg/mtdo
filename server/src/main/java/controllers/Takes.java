@@ -9,12 +9,10 @@ package controllers;
 import static db.Tables.ACCOUNT;
 import static db.Tables.TAKEPUBLISHED;
 
-import com.google.gson.Gson;
 import com.google.inject.Binder;
 import com.typesafe.config.Config;
 import common.NotFound;
 import common.Text;
-import db.tables.pojos.Takepublished;
 import db.tables.records.TakepublishedRecord;
 import java.sql.Timestamp;
 import org.jooby.Env;
@@ -35,22 +33,20 @@ public class Takes implements Jooby.Module {
 			String user = Text.lowercase(req, "user");
 			String title = Text.lowercase(req, "title");
 			try (DSLContext dsl = req.require(DSLContext.class)) {
-				TakepublishedRecord record = dsl.selectFrom(TAKEPUBLISHED)
+				TakepublishedRecord take = dsl.selectFrom(TAKEPUBLISHED)
 						.where(TAKEPUBLISHED.TITLE_SLUG.eq(title))
 						.and(TAKEPUBLISHED.USER_ID.eq(dsl.select(ACCOUNT.ID)
 								.from(ACCOUNT)
 								.where(ACCOUNT.USERNAME.eq(user))))
 						.fetchOne();
-				if (record == null) {
+				if (take == null) {
 					return NotFound.result();
 				} else {
 					// increment the view
-					record.setCountView(record.getCountView() + 1);
-					record.update();
+					take.setCountView(take.getCountView() + 1);
+					take.update();
 
-					Takepublished take = record.into(Takepublished.class);
-					String blocksJson = new Gson().toJson(take.getBlocks());
-					return views.Takes.showTake.template(take, blocksJson);
+					return views.Takes.showTake.template(take);
 				}
 			}
 		});

@@ -8,12 +8,11 @@ package common;
 
 import com.fizzed.rocker.runtime.RockerRuntime;
 import com.google.common.io.Resources;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.google.inject.Binder;
+import com.jsoniter.JsonIterator;
+import com.jsoniter.spi.TypeLiteral;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -58,9 +57,8 @@ public class CustomAssets implements Jooby.Module {
 			env.router().assets("/assets-dev/**");
 			env.router().assets("/assets/**");
 		} else {
-			String manifest = Resources.toString(CustomAssets.class.getResource(
-					"/assets/manifest.json"), StandardCharsets.UTF_8);
-			Map<String, String> map = new Gson().fromJson(manifest, new TypeToken<HashMap<String, String>>() {}.getType());
+			byte[] manifest = Resources.toByteArray(CustomAssets.class.getResource("/assets/manifest.json"));
+			Map<String, String> map = JsonIterator.deserialize(manifest, new TypeLiteral<HashMap<String, String>>() {});
 			url = raw -> "/assets/" + Objects.requireNonNull(map.get(raw.substring(1)), "No fingerprinted version of " + raw);
 			env.router().assets("/assets/**");
 		}
