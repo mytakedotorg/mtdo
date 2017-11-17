@@ -19,6 +19,7 @@ import java.text.ParseException;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 import javax.annotation.Nullable;
+import json.LoginCookie;
 import org.jooby.Cookie;
 import org.jooby.Mutant;
 import org.jooby.Registry;
@@ -127,6 +128,10 @@ public class AuthUser {
 		httpCookie.secure(isSecurable);
 		httpCookie.maxAge((int) TimeUnit.DAYS.toSeconds(LOGIN_DAYS));
 		rsp.cookie(httpCookie);
+
+		LoginCookie cookie = new LoginCookie();
+		cookie.username = account.getUsername();
+		// TODO: add serialization code for this
 
 		Cookie.Definition uiCookie = new Cookie.Definition(LOGIN_UI_COOKIE, "{\"username\":\"" + account.getUsername() + "\"}");
 		uiCookie.secure(isSecurable);

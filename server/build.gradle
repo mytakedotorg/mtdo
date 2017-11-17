@@ -46,6 +46,7 @@ flywayJooqEmbeddedPg {
 sourceSets.main.java {
 	srcDir 'src/main/jooq-generated'
 	srcDir 'src/main/rocker'
+	srcDir 'src/main/ts-generated'
 }
 
 ////////////
@@ -70,6 +71,19 @@ spotless {
 	}
 }
 
+//////////////////////////
+// Typescript interface //
+//////////////////////////
+task ts2java(type: org.mytake.gradle.ts2java.Ts2JavaTask) {
+	input = file('../client/src/server')
+	output = file('src/main/ts-generated')
+	pkg = 'json'
+}
+compileJava.dependsOn(ts2java)
+
+//////////////////
+// normal stuff //
+//////////////////
 apply plugin: 'eclipse'
 eclipse { project { name = 'mytake-server' } }
 tasks.eclipse.dependsOn([
@@ -78,7 +92,10 @@ tasks.eclipse.dependsOn([
 	'compileRocker'
 ])
 
-repositories { mavenCentral() }
+repositories {
+	mavenCentral()
+	maven { url 'http://repository.jsweet.org/artifactory/libs-release-local' }
+}
 
 dependencies {
 	String JOOBY_VER = '1.2.2'
@@ -92,6 +109,7 @@ dependencies {
 
 	// json
 	compile 'com.jsoniter:jsoniter:0.9.17'
+	compile 'org.jsweet:jsweet-core:5-20170726'
 
 	// jooq (version is set by jooq DSL)
 	compile 'org.jooq:jooq'

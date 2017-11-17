@@ -1,6 +1,7 @@
 /**
 * Small screen navigation toggle
 **/
+import { LoginCookie } from "../server/api";
 
 const body = document.body;
 const loginDiv = document.getElementById("login");
@@ -111,10 +112,6 @@ function addNavEvents(userNav?: boolean) {
 };
 
 function loadUser() {
-  interface LoginCookie {
-    username: string;
-  }
-
   function getCookieValue(a: string): string {
     // https://stackoverflow.com/questions/5639346/what-is-the-shortest-function-for-reading-a-cookie-by-name-in-javascript?noredirect=1&lq=1
     const b = document.cookie.match("(^|;)\\s*" + a + "\\s*=\\s*([^;]+)");
