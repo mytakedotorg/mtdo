@@ -15,6 +15,7 @@ import controllers.Takes;
 import java.security.SecureRandom;
 import java.util.Random;
 import javax.sql.DataSource;
+import json.JsoniterModule;
 import org.flywaydb.core.Flyway;
 import org.jooby.Jooby;
 import org.jooby.Results;
@@ -52,6 +53,7 @@ public class Prod extends Jooby {
 		jooby.use(new CommonsEmail());
 		jooby.use(new Jdbc());
 		jooby.use(new jOOQ());
+		jooby.use(new JsoniterModule());
 		CustomAssets.initTemplates(jooby);
 	}
 
