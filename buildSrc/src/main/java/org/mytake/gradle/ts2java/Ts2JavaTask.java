@@ -42,7 +42,7 @@ public class Ts2JavaTask extends DefaultTask {
 		for (File java : defSrcName.listFiles()) {
 			String orig = Files.asCharSource(java, StandardCharsets.UTF_8).read();
 			String notAbstract = orig.replace(" abstract ", " ");
-			String fixedPackage = notAbstract.replace("package def.src." + inputName, "package " + pkg);
+			String fixedPackage = notAbstract.replace("def.src." + inputName, pkg);
 			java.delete();
 
 			File fixed = new File(pkgDir, java.getName());
