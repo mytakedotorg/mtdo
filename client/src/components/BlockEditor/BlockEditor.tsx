@@ -29,6 +29,15 @@ export interface VideoBlock {
   videoId: string;
   range?: [number, number];
 }
+export type TakeBlock = ParagraphBlock | DocumentBlock | VideoBlock;
+export interface TakeDocument {
+  title: string;
+  blocks: TakeBlock[];
+}
+
+/////////////////
+// React model //
+/////////////////
 interface WritingEventHandlers {
   handleDelete: (idx: number) => void;
   handleEnterPress: (isTitle?: boolean) => void;
@@ -78,16 +87,6 @@ interface VideoBlockProps {
 }
 interface VideoBlockState {}
 
-export type TakeBlock = ParagraphBlock | DocumentBlock | VideoBlock;
-
-export interface TakeDocument {
-  title: string;
-  blocks: TakeBlock[];
-}
-
-/////////////////
-// React model //
-/////////////////
 class Paragraph extends React.Component<
   ParagraphBlockProps,
   ParagraphBlockState
