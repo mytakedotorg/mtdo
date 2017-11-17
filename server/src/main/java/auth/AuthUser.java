@@ -12,6 +12,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.jsoniter.output.JsonStream;
 import common.Time;
 import common.UrlEncodedPath;
 import db.tables.pojos.Account;
@@ -131,9 +132,7 @@ public class AuthUser {
 
 		LoginCookie cookie = new LoginCookie();
 		cookie.username = account.getUsername();
-		// TODO: add serialization code for this
-
-		Cookie.Definition uiCookie = new Cookie.Definition(LOGIN_UI_COOKIE, "{\"username\":\"" + account.getUsername() + "\"}");
+		Cookie.Definition uiCookie = new Cookie.Definition(LOGIN_UI_COOKIE, JsonStream.serialize(cookie));
 		uiCookie.secure(isSecurable);
 		uiCookie.maxAge((int) TimeUnit.DAYS.toSeconds(LOGIN_DAYS));
 		rsp.cookie(uiCookie);
