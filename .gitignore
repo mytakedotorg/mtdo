@@ -1,3 +1,12 @@
+/client/loaders/dist
+/server/src/main/jooq-generated/
+/server/src/main/rocker-generated/
+/server/src/main/ts-generated/
+/server/src/test/resources/rocker-compiler.conf
+/server/src/main/resources/assets/
+/server/src/main/resources/assets-dev/
+
+
 # OSX
 .DS_Store
 
@@ -6,19 +15,9 @@ node_modules/
 npm-debug.log
 yarn-error.log
 
-# build artifacts
-dist/
-dist-unhashed/
-
 # gradle
 .gradle/
 build/
-/server/src/main/jooq-generated/
-/server/src/main/rocker-generated/
-/server/src/main/ts-generated/
-/server/src/test/resources/rocker-compiler.conf
-/server/src/main/resources/assets/
-/server/src/main/resources/assets-dev/
 
 # eclipse
 .classpath
