@@ -25,7 +25,7 @@ def setInputs(targetTask) {
 	targetTask.dependsOn npm_run_prep
 	def inputs = [
 		'assets',
-		'src',
+		'src/main/typescript',
 		'gulpfile.js',
 		'postcss.config.js',
 		'tsconfig.json',

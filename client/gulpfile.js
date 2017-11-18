@@ -27,7 +27,10 @@ const config = {
   cssSrc: "./assets/public/**/*.css",
   sassSrc: "./assets/stylesheets/**/*.?(s)css",
   imgSrc: "./assets/images/**/*.{jpg,png}",
-  webpackSrc: ["./src/**/*", "!src/**/*.spec.js"],
+  webpackSrc: [
+    "./src/main/typescript/**/*",
+    "!src/main/typescript/**/*.spec.js"
+  ],
   loadersSrc: "./loaders/src/**/*.ts",
   loadersDist: "./loaders/dist",
   scriptsSrc: "./test/scripts/src/**/*.ts",
