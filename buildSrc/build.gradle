@@ -31,7 +31,7 @@ def keys = System.getenv().keySet()
 if (!keys.contains(HEROKU_ENV_VAR) && !keys.contains(CI_ENV_VAR)) {
 	// uncomment to generate eclipse project
 	// (adds tons of noise to continuous build)
-	build.dependsOn(tasks.getByName('eclipse'))
+	//	build.dependsOn(tasks.getByName('eclipse'))
 }
 
 eclipse { project { name = 'mytake-buildSrc' } }

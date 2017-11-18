@@ -24,6 +24,10 @@ npm_run_prep.outputs.dir('loaders/dist')
 npm_run_prep.inputs.file('test/scripts/tsconfig.json')
 npm_run_prep.inputs.dir('test/scripts/src')
 npm_run_prep.outputs.dir('test/scripts/dist')
+clean {
+	delete 'loaders/dist'
+	delete 'test/scripts/dist'
+}
 
 // make the gulp_buildProd have accurate up-to-date checking
 def setInputs(targetTask) {
@@ -50,6 +54,10 @@ setInputs(gulp_buildDev)
 setInputs(gulp_buildProd)
 gulp_buildDev.outputs.dir('src/main/resources/assets-dev')
 gulp_buildProd.outputs.dir('src/main/resources/assets')
+clean {
+	delete 'src/main/resources/assets-dev'
+	delete 'src/main/resources/assets'
+}
 
 // map prettier to spotless (to match server)
 setInputs(npm_run_formatlist)
@@ -67,7 +75,6 @@ check.dependsOn(spotlessCheck)
 ////////////////
 repositories { maven { url 'http://repository.jsweet.org/artifactory/libs-release-local' } }
 dependencies { compile 'org.jsweet:jsweet-core:5-20170726' }
-
 apply plugin: 'eclipse'
 eclipse { project { name = 'mytake-client' } }
 sourceSets.main.java {
@@ -81,6 +88,8 @@ task ts2java(type: org.mytake.gradle.ts2java.Ts2JavaTask) {
 	output = file('src/main/ts2java')
 	pkg = 'json'
 }
+clean { delete 'src/main/ts2java' }
+
 compileJava.dependsOn(ts2java)
 
 // make sure that the gulp tasks are run
