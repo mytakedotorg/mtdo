@@ -27,6 +27,7 @@ allprojects {
 eclipse { project { name = 'mytake-root' } }
 eclipseResourceFilters {
 	exclude().folders().name('buildSrc')
+	exclude().folders().name('client')
 	exclude().folders().name('server')
 }
 tasks.eclipse.dependsOn(tasks.cleanEclipse)

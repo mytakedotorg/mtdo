@@ -35,14 +35,14 @@ public class Ts2JavaTask extends DefaultTask {
 				"--tsDeps", "",
 				"--coreVersion", "NONE"
 		});
-		String inputName = input.getName();
-		File defSrcName = new File(output, "def/src/" + inputName);
+		String inputName = input.getParentFile().getName() + "/" + input.getName();
+		File defSrcName = new File(output, "def/" + inputName);
 		File pkgDir = new File(output, pkg);
 		pkgDir.mkdirs();
 		for (File java : defSrcName.listFiles()) {
 			String orig = Files.asCharSource(java, StandardCharsets.UTF_8).read();
 			String notAbstract = orig.replace(" abstract ", " ");
-			String fixedPackage = notAbstract.replace("def.src." + inputName, pkg);
+			String fixedPackage = notAbstract.replace("def." + inputName.replace('/',  '.'), pkg);
 			java.delete();
 
 			File fixed = new File(pkgDir, java.getName());

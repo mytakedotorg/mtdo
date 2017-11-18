@@ -1,10 +1,10 @@
 /client/loaders/dist
+/client/src/main/ts2java/
+/client/src/main/resources/assets/
+/client/src/main/resources/assets-dev/
 /server/src/main/jooq-generated/
 /server/src/main/rocker-generated/
-/server/src/main/ts-generated/
 /server/src/test/resources/rocker-compiler.conf
-/server/src/main/resources/assets/
-/server/src/main/resources/assets-dev/
 
 
 # OSX

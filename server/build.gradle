@@ -46,7 +46,6 @@ flywayJooqEmbeddedPg {
 sourceSets.main.java {
 	srcDir 'src/main/jooq-generated'
 	srcDir 'src/main/rocker'
-	srcDir 'src/main/ts-generated'
 }
 
 ////////////
@@ -70,16 +69,6 @@ spotless {
 		indentWithTabs(4)
 	}
 }
-
-//////////////////////////
-// Typescript interface //
-//////////////////////////
-task ts2java(type: org.mytake.gradle.ts2java.Ts2JavaTask) {
-	input = file('../client/src/server')
-	output = file('src/main/ts-generated')
-	pkg = 'json'
-}
-compileJava.dependsOn(ts2java)
 
 //////////////////
 // normal stuff //
@@ -110,6 +99,7 @@ dependencies {
 	// json
 	compile 'com.jsoniter:jsoniter:0.9.17'
 	compile 'org.jsweet:jsweet-core:5-20170726'
+	compile project(':client')
 
 	// jooq (version is set by jooq DSL)
 	compile 'org.jooq:jooq'
@@ -142,11 +132,6 @@ dependencies {
 sourceSets {
 	test.compileClasspath += configurations.compileOnly
 	test.runtimeClasspath += configurations.compileOnly
-}
-
-processResources.dependsOn ':client:gulp_buildProd'
-if (!Env.isHeroku()) {
-	processResources.dependsOn ':client:gulp_buildDev'
 }
 
 //////////////

@@ -3,6 +3,11 @@ plugins {
 	id 'com.moowork.gulp' version '1.2.0' // https://github.com/srs/gradle-node-plugin/blob/master/docs/gulp.md
 }
 
+apply plugin: 'java'
+
+////////////////
+// node stuff //
+////////////////
 node {
 	version = '6.10.2'
 	npmVersion = '5.4.2'
@@ -43,8 +48,8 @@ def setInputs(targetTask) {
 }
 setInputs(gulp_buildDev)
 setInputs(gulp_buildProd)
-gulp_buildDev.outputs.dir('../server/src/main/resources/assets-dev')
-gulp_buildProd.outputs.dir('../server/src/main/resources/assets')
+gulp_buildDev.outputs.dir('src/main/resources/assets-dev')
+gulp_buildProd.outputs.dir('src/main/resources/assets')
 
 // map prettier to spotless (to match server)
 setInputs(npm_run_formatlist)
@@ -54,7 +59,32 @@ task spotlessApply(dependsOn: npm_run_formatwrite)
 
 // check should run all tests
 npm_run_test.dependsOn(npm_run_prep)
-task check(dependsOn: [
-	npm_run_test,
-	spotlessCheck
-])
+check.dependsOn(npm_run_test)
+check.dependsOn(spotlessCheck)
+
+////////////////
+// java stuff //
+////////////////
+repositories { maven { url 'http://repository.jsweet.org/artifactory/libs-release-local' } }
+dependencies { compile 'org.jsweet:jsweet-core:5-20170726' }
+
+apply plugin: 'eclipse'
+eclipse { project { name = 'mytake-client' } }
+sourceSets.main.java {
+	srcDir 'src/main/typescript'
+	srcDir 'src/main/ts2java'
+}
+
+// generate java files for the typescript in the server folder
+task ts2java(type: org.mytake.gradle.ts2java.Ts2JavaTask) {
+	input = file('src/main/typescript/server')
+	output = file('src/main/ts2java')
+	pkg = 'json'
+}
+compileJava.dependsOn(ts2java)
+
+// make sure that the gulp tasks are run
+processResources.dependsOn(gulp_buildProd)
+if (!Env.isHeroku()) {
+	processResources.dependsOn(gulp_buildDev)
+}

@@ -22,8 +22,8 @@ merge = require("gulp-merge-json");
 tsLoaders = ts.createProject("./loaders/tsconfig.json");
 tsScripts = ts.createProject("./test/scripts/tsconfig.json");
 const config = {
-  dist: "../server/src/main/resources/assets-dev",
-  distProd: "../server/src/main/resources/assets",
+  dist: "./src/main/resources/assets-dev",
+  distProd: "./src/main/resources/assets",
   cssSrc: "./assets/public/**/*.css",
   sassSrc: "./assets/stylesheets/**/*.?(s)css",
   imgSrc: "./assets/images/**/*.{jpg,png}",
