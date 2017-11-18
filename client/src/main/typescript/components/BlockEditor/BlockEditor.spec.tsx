@@ -3,7 +3,7 @@
 import * as React from "react";
 import * as renderer from "react-test-renderer";
 import BlockEditor from "./BlockEditor";
-import { TakeDocument } from "./BlockEditor";
+import { TakeDocument } from "./../../server/api";
 
 const doc: TakeDocument = {
   title: "My take title",
