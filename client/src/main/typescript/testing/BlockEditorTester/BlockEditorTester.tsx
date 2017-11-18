@@ -1,8 +1,6 @@
 import * as React from "react";
-import BlockEditor, {
-  ParagraphBlock,
-  TakeDocument
-} from "../../components/BlockEditor";
+import BlockEditor from "../../components/BlockEditor";
+import { ParagraphBlock, TakeDocument } from "../../server/api";
 
 interface BlockEditorTesterProps {}
 

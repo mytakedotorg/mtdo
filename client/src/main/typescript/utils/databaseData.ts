@@ -1,4 +1,4 @@
-import { TakeBlock } from "../components/BlockEditor";
+import { TakeBlock } from "../server/api";
 
 /**
  * Constraints:

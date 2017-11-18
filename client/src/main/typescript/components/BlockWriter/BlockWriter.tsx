@@ -1,11 +1,12 @@
 import * as React from "react";
-import BlockEditor, {
+import {
   DocumentBlock,
   ParagraphBlock,
   TakeBlock,
   TakeDocument,
   VideoBlock
-} from "../BlockEditor";
+} from "../../server/api";
+import BlockEditor from "../BlockEditor";
 import TimelineView from "../TimelineView";
 import Banner from "../Banner";
 

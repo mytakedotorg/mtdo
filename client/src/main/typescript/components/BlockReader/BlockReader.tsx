@@ -1,6 +1,7 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import BlockEditor, { TakeDocument } from "../BlockEditor";
+import BlockEditor from "../BlockEditor";
+import { TakeDocument } from "../../server/api";
 
 interface BlockReaderProps {
   initState: TakeDocument;

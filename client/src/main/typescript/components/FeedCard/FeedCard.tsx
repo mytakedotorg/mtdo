@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import BlockReader from "../BlockReader";
-import { TakeDocument } from "../BlockEditor";
+import { TakeDocument } from "../../server/api";
 import DocumentTextNodeList from "../DocumentTextNodeList";
 import { getDocumentFactTitle } from "../../utils/databaseAPI";
 import { Article } from "../../utils/databaseData";

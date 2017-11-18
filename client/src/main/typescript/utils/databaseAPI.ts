@@ -8,7 +8,7 @@ import database, {
   Article
 } from "./databaseData";
 import { slugify } from "./functions";
-import { TakeBlock } from "../components/BlockEditor";
+import { TakeBlock } from "../server/api";
 
 export function getAllVideoFacts(): VideoFact[] {
   return database.videos;

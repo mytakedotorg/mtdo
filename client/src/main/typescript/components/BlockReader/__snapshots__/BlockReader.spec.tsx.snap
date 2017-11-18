@@ -2,6 +2,12 @@
 
 exports[`Read only 1`] = `
 <div>
+  <button
+    className="editor__button video__button--save"
+    onClick={[Function]}
+  >
+    Save
+  </button>
   <div
     className="editor__wrapper"
   >
