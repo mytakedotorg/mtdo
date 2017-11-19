@@ -1,4 +1,5 @@
 /client/loaders/dist
+/client/test/scripts/dist
 /client/src/main/typescript/java2ts/
 /client/src/main/resources/assets/
 /client/src/main/resources/assets-dev/
