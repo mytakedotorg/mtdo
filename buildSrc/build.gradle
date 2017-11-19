@@ -4,10 +4,8 @@ apply plugin: 'java-gradle-plugin'
 
 repositories {
 	maven { url 'https://plugins.gradle.org/m2/' }
-	// TODO: when jsweet releases jsweet-candy-generator, we should switch to libs-release-local
-	// to ensure that builds stay forever repeatable
 	//maven { url 'http://repository.jsweet.org/artifactory/libs-release-local' }
-	maven { url 'http://repository.jsweet.org/artifactory/libs-snapshot-local' }
+	//maven { url 'http://repository.jsweet.org/artifactory/libs-snapshot-local' }
 }
 
 dependencies {
@@ -17,8 +15,6 @@ dependencies {
 	compile 'org.jooq:jooq-codegen:3.10.1'
 	// db migration
 	compile 'org.flywaydb:flyway-core:4.2.0'
-	// jsweet ts2java
-	compile 'org.jsweet:jsweet-candy-generator:+'
 	// java8 utilities
 	compile 'com.diffplug.durian:durian-core:1.2.0'
 }

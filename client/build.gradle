@@ -77,20 +77,6 @@ repositories { maven { url 'http://repository.jsweet.org/artifactory/libs-releas
 dependencies { compile 'org.jsweet:jsweet-core:5-20170726' }
 apply plugin: 'eclipse'
 eclipse { project { name = 'mytake-client' } }
-sourceSets.main.java {
-	srcDir 'src/main/typescript'
-	srcDir 'src/main/ts2java'
-}
-
-// generate java files for the typescript in the server folder
-task ts2java(type: org.mytake.gradle.ts2java.Ts2JavaTask) {
-	input = file('src/main/typescript/ts2java')
-	output = file('src/main/ts2java')
-	pkg = 'json'
-}
-clean { delete 'src/main/ts2java' }
-
-compileJava.dependsOn(ts2java)
 
 // make sure that the gulp tasks are run
 processResources.dependsOn(gulp_buildProd)

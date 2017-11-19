@@ -1,5 +1,4 @@
 /client/loaders/dist
-/client/src/main/ts2java/
 /client/src/main/resources/assets/
 /client/src/main/resources/assets-dev/
 /server/src/main/jooq-generated/
