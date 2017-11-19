@@ -1,7 +1,4 @@
-export interface LoginCookie {
-  username: string;
-}
-
+// TakeDocument API
 export interface ParagraphBlock {
   kind: "paragraph";
   text: string;
@@ -21,4 +18,20 @@ export type TakeBlock = ParagraphBlock | DocumentBlock | VideoBlock;
 export interface TakeDocument {
   title: string;
   blocks: TakeBlock[];
+}
+
+// UI-only login cookie
+export interface LoginCookie {
+  username: string;
+}
+
+// For submitting drafts
+export interface DraftRev {
+  draftid: number;
+  lastrevid: number;
+}
+export interface DraftPost {
+  parentRev?: DraftRev;
+  title: string;
+  blocks: any;
 }

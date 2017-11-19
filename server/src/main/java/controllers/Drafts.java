@@ -10,19 +10,17 @@ import static db.Tables.TAKEDRAFT;
 import static db.Tables.TAKEREVISION;
 
 import auth.AuthUser;
-import com.google.common.base.Preconditions;
 import com.google.inject.Binder;
 import com.typesafe.config.Config;
 import common.NotFound;
-import common.SimpleJson;
 import common.Time;
-import db.VarChars;
 import db.tables.records.TakedraftRecord;
 import db.tables.records.TakerevisionRecord;
 import java.sql.Timestamp;
+import json.DraftPost;
+import json.DraftRev;
 import org.jooby.Env;
 import org.jooby.Jooby;
-import org.jooby.Mutant;
 import org.jooq.DSLContext;
 import org.jooq.Record3;
 import org.jooq.Result;
@@ -58,18 +56,14 @@ public class Drafts implements Jooby.Module {
 			// the user has to be logged-in
 			AuthUser user = AuthUser.auth(req);
 			// if we're updating an existing draft, these will be set, but not for an initial save
-			Mutant draftid = req.param(SAVE_draftid);
-			Mutant lastrevid = req.param(SAVE_lastrevid);
-			// the title and blocks must be set
-			String title = req.param(SAVE_title).value();
-			Preconditions.checkArgument(title.length() < VarChars.TITLE);
-			String blocks = req.param(SAVE_blocks).value();
+			DraftPost post = req.body(DraftPost.class);
 
 			try (DSLContext dsl = req.require(DSLContext.class)) {
 				TakedraftRecord draft;
-				if (draftid.isSet()) {
+				if (post.parentRev != null) {
 					draft = dsl.selectFrom(TAKEDRAFT)
-							.where(TAKEDRAFT.ID.eq(draftid.intValue()))
+							// TODO: casting doubles to ints is nasty in java
+							.where(TAKEDRAFT.ID.eq((int) post.parentRev.draftid))
 							.fetchOne();
 					if (draft.getUserId().equals(user.id())) {
 						return NotFound.result();
@@ -79,18 +73,18 @@ public class Drafts implements Jooby.Module {
 				}
 
 				TakerevisionRecord rev = dsl.newRecord(TAKEREVISION);
-				rev.setTitle(title);
-				rev.setBlocks(blocks);
+				rev.setTitle(post.title);
+				rev.setBlocks(post.blocks.toString());
 				rev.setCreatedAt(req.require(Time.class).nowTimestamp());
 				rev.setCreatedIp(req.ip());
 
-				if (draft != null && draft.getLastRevision().equals(lastrevid.intValue())) {
+				if (draft != null && draft.getLastRevision().equals((int) post.parentRev.lastrevid)) {
 					// update an existing draft
 					rev.setParentId(draft.getLastRevision());
 					rev.insert();
 					draft.setLastRevision(rev.getId());
 					draft.update();
-					return draftLastrev(draft);
+					return postResponse(draft);
 				} else {
 					// insert a new draft
 					rev.insert();
@@ -98,7 +92,7 @@ public class Drafts implements Jooby.Module {
 					newdraft.setUserId(user.id());
 					newdraft.setLastRevision(rev.getId());
 					newdraft.insert();
-					return draftLastrev(draft);
+					return postResponse(draft);
 				}
 			}
 		});
@@ -122,13 +116,10 @@ public class Drafts implements Jooby.Module {
 		});
 	}
 
-	private static Object draftLastrev(TakedraftRecord draft) {
-		return SimpleJson.unescaped(SAVE_draftid, draft.getId().toString(),
-				SAVE_lastrevid, draft.getLastRevision().toString());
+	private static DraftRev postResponse(TakedraftRecord draft) {
+		DraftRev response = new DraftRev();
+		response.draftid = draft.getId();
+		response.lastrevid = draft.getLastRevision();
+		return response;
 	}
-
-	static final String SAVE_draftid = "draftid";
-	static final String SAVE_lastrevid = "lastrevid";
-	static final String SAVE_title = "title";
-	static final String SAVE_blocks = "blocks";
 }
