@@ -46,17 +46,16 @@ jsweet {
 	module = 'commonjs'
 	tsOut = file(JAVA2TS)
 	tsOnly = true
-	excludes = [
-		'java2ts/jsweetcustom/**'
-	]
 	factoryClassName = 'org.mytake.gradle.java2ts.MytakeJsweetFactory'
 }
 tasks.jsweet.doFirst { delete JAVA2TS }
 tasks.jsweet.doLast { com.diffplug.gradle.FileMisc.flatten(file(JAVA2TS + '/java2ts')) }
 tasks.jsweet.inputs.dir(file('build/classes'))
 tasks.jsweet.outputs.dir(file(JAVA2TS))
+clean { delete JAVA2TS }
 tasks.jsweet.dependsOn.remove('classes')
 tasks.jsweet.dependsOn('compileJava')
+tasks.jsweet.dependsOn('nodeSetup')
 // the typescript build depends on jsweet
 gulp_buildDev.dependsOn(tasks.jsweet)
 gulp_buildProd.dependsOn(tasks.jsweet)
