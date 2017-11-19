@@ -1,7 +1,7 @@
 /**
 * Small screen navigation toggle
 **/
-import { LoginCookie } from "../server/api";
+import { LoginCookie } from "../ts2java/api";
 
 const body = document.body;
 const loginDiv = document.getElementById("login");

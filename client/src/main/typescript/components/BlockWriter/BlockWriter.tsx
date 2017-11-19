@@ -5,7 +5,7 @@ import {
   TakeBlock,
   TakeDocument,
   VideoBlock
-} from "../../server/api";
+} from "../../ts2java/api";
 import BlockEditor from "../BlockEditor";
 import TimelineView from "../TimelineView";
 import Banner from "../Banner";

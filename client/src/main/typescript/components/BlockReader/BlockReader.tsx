@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import BlockEditor from "../BlockEditor";
-import { TakeDocument, DraftRev, DraftPost } from "../../server/api";
+import { TakeDocument, DraftRev, DraftPost } from "../../ts2java/api";
 
 interface BlockReaderProps {
   initState: TakeDocument;

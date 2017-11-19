@@ -16,7 +16,7 @@ import {
   VideoBlock,
   TakeBlock,
   TakeDocument
-} from "../../server/api";
+} from "../../ts2java/api";
 
 /////////////////
 // React model //

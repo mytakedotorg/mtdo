@@ -84,7 +84,7 @@ sourceSets.main.java {
 
 // generate java files for the typescript in the server folder
 task ts2java(type: org.mytake.gradle.ts2java.Ts2JavaTask) {
-	input = file('src/main/typescript/server')
+	input = file('src/main/typescript/ts2java')
 	output = file('src/main/ts2java')
 	pkg = 'json'
 }

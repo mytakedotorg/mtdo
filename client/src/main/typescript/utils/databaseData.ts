@@ -1,4 +1,4 @@
-import { TakeBlock } from "../server/api";
+import { TakeBlock } from "../ts2java/api";
 
 /**
  * Constraints:
