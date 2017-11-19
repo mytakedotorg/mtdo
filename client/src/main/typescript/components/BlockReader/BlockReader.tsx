@@ -1,6 +1,8 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import BlockEditor, { TakeDocument } from "../BlockEditor";
+import { DraftRev } from "../../java2ts/DraftRev";
+import { DraftPost } from "../../java2ts/DraftPost";
 
 interface BlockReaderProps {
   initState: TakeDocument;
@@ -8,8 +10,7 @@ interface BlockReaderProps {
 
 interface BlockReaderState {
   takeDocument: TakeDocument;
-  draftId?: number;
-  lastRevId?: number;
+  parentRev?: DraftRev;
 }
 
 class BlockReader extends React.Component<BlockReaderProps, BlockReaderState> {
@@ -49,21 +50,17 @@ class BlockReader extends React.Component<BlockReaderProps, BlockReaderState> {
     headers.append("Content-Type", "application/json"); // This one sends body
 
     //TODO: enforce title length <= 255
+    const bodyJson: DraftPost = {
+      parentRev: this.state.parentRev,
+      title: this.state.takeDocument.title,
+      blocks: this.state.takeDocument.blocks
+    };
     const request: RequestInit = {
       method: "POST",
       credentials: "include",
       headers: headers,
-      body: JSON.stringify({
-        title: this.state.takeDocument.title,
-        blocks: this.state.takeDocument.blocks
-      })
+      body: JSON.stringify(bodyJson)
     };
-
-    if (this.state.draftId && this.state.lastRevId) {
-      request.body.draftid = this.state.draftId;
-      request.body.lastrevid = this.state.lastRevId;
-    }
-
     fetch("/drafts/save", request)
       .then(function(response) {
         const contentType = response.headers.get("content-type");
@@ -73,9 +70,9 @@ class BlockReader extends React.Component<BlockReaderProps, BlockReaderState> {
         throw new TypeError("Oops, we haven't got JSON!");
       })
       .then(function(json) {
+        const parentRev: DraftRev = json;
         this.setState({
-          draftId: json.draftid,
-          lastRevId: json.lastrevid
+          parentRev: parentRev
         });
       })
       .catch(function(error) {

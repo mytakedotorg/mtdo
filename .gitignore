@@ -1,10 +1,11 @@
 /client/loaders/dist
+/client/src/main/ts2java/
+/client/src/main/typescript/java2ts/
 /client/src/main/resources/assets/
 /client/src/main/resources/assets-dev/
 /server/src/main/jooq-generated/
 /server/src/main/rocker-generated/
 /server/src/test/resources/rocker-compiler.conf
-
 
 # OSX
 .DS_Store

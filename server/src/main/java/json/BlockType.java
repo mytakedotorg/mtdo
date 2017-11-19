@@ -6,6 +6,10 @@
  */
 package json;
 
+import java2ts.DocumentBlock;
+import java2ts.ParagraphBlock;
+import java2ts.VideoBlock;
+
 public enum BlockType {
 	PARAGRAPH(ParagraphBlock.class), VIDEO(VideoBlock.class), DOCUMENT(DocumentBlock.class);
 

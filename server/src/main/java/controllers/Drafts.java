@@ -17,8 +17,8 @@ import common.Time;
 import db.tables.records.TakedraftRecord;
 import db.tables.records.TakerevisionRecord;
 import java.sql.Timestamp;
-import json.DraftPost;
-import json.DraftRev;
+import java2ts.DraftPost;
+import java2ts.DraftRev;
 import org.jooby.Env;
 import org.jooby.Jooby;
 import org.jooq.DSLContext;
@@ -62,8 +62,7 @@ public class Drafts implements Jooby.Module {
 				TakedraftRecord draft;
 				if (post.parentRev != null) {
 					draft = dsl.selectFrom(TAKEDRAFT)
-							// TODO: casting doubles to ints is nasty in java
-							.where(TAKEDRAFT.ID.eq((int) post.parentRev.draftid))
+							.where(TAKEDRAFT.ID.eq(post.parentRev.draftid))
 							.fetchOne();
 					if (draft.getUserId().equals(user.id())) {
 						return NotFound.result();
@@ -92,7 +91,7 @@ public class Drafts implements Jooby.Module {
 					newdraft.setUserId(user.id());
 					newdraft.setLastRevision(rev.getId());
 					newdraft.insert();
-					return postResponse(draft);
+					return postResponse(newdraft);
 				}
 			}
 		});
@@ -104,6 +103,7 @@ public class Drafts implements Jooby.Module {
 				TakerevisionRecord rev = dsl.selectFrom(TAKEREVISION)
 						.where(TAKEREVISION.ID.eq(
 								dsl.select(TAKEDRAFT.LAST_REVISION)
+										.from(TAKEDRAFT)
 										.where(TAKEDRAFT.ID.eq(draftId))
 										.and(TAKEDRAFT.USER_ID.eq(user.id()))))
 						.fetchOne();

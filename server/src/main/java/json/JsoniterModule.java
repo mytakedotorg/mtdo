@@ -38,7 +38,7 @@ public class JsoniterModule implements Jooby.Module {
 	static class JsonRenderer implements Renderer {
 		@Override
 		public void render(Object value, Context ctx) throws Exception {
-			if (value instanceof def.js.Object) {
+			if (value instanceof java2ts.Json) {
 				JsonStream stream = JsonStreamPool.borrowJsonStream();
 				try {
 					stream.reset(null);

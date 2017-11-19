@@ -10,25 +10,10 @@ import {
   FoundationNode,
   FoundationNodeProps
 } from "../../utils/functions";
-
-////////////////////
-// Document model //
-////////////////////
-export interface ParagraphBlock {
-  kind: "paragraph";
-  text: string;
-}
-export interface DocumentBlock {
-  kind: "document";
-  excerptId: string;
-  highlightedRange: [number, number];
-  viewRange: [number, number];
-}
-export interface VideoBlock {
-  kind: "video";
-  videoId: string;
-  range?: [number, number];
-}
+import { ParagraphBlock } from "../../java2ts/ParagraphBlock";
+import { DocumentBlock } from "../../java2ts/DocumentBlock";
+import { VideoBlock } from "../../java2ts/VideoBlock";
+export { ParagraphBlock, DocumentBlock, VideoBlock };
 export type TakeBlock = ParagraphBlock | DocumentBlock | VideoBlock;
 export interface TakeDocument {
   title: string;
