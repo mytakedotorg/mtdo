@@ -1,6 +1,8 @@
 import * as React from "react";
-import BlockEditor from "../../components/BlockEditor";
-import { ParagraphBlock, TakeDocument } from "../../ts2java/api";
+import BlockEditor, {
+  ParagraphBlock,
+  TakeDocument
+} from "../../components/BlockEditor";
 
 interface BlockEditorTesterProps {}
 

@@ -1,12 +1,11 @@
 import * as React from "react";
-import {
+import BlockEditor, {
   DocumentBlock,
   ParagraphBlock,
   TakeBlock,
   TakeDocument,
   VideoBlock
-} from "../../ts2java/api";
-import BlockEditor from "../BlockEditor";
+} from "../BlockEditor";
 import TimelineView from "../TimelineView";
 import Banner from "../Banner";
 

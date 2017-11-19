@@ -8,7 +8,7 @@ import database, {
   Article
 } from "./databaseData";
 import { slugify } from "./functions";
-import { TakeBlock } from "../ts2java/api";
+import { TakeBlock } from "../components/BlockEditor";
 
 export function getAllVideoFacts(): VideoFact[] {
   return database.videos;

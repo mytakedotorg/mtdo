@@ -1,4 +1,4 @@
-import { TakeBlock } from "../ts2java/api";
+import { TakeBlock } from "../components/BlockEditor";
 
 /**
  * Constraints:

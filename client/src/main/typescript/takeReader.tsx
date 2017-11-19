@@ -2,7 +2,7 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import BlockReader from "./components/BlockReader";
 import FeedList from "./components/FeedList";
-import { TakeDocument } from "./ts2java/api";
+import { TakeDocument } from "./components/BlockEditor";
 import { getArticle } from "./utils/databaseAPI";
 
 export interface HomeArgs {
