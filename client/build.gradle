@@ -57,8 +57,7 @@ tasks.jsweet.dependsOn.remove('classes')
 tasks.jsweet.dependsOn('compileJava')
 tasks.jsweet.dependsOn('nodeSetup')
 // the typescript build depends on jsweet
-gulp_buildDev.dependsOn(tasks.jsweet)
-gulp_buildProd.dependsOn(tasks.jsweet)
+npm_run_prep.dependsOn(tasks.jsweet)
 
 ///////////////////////////////////////////////////////////////////////
 // node stuff - compiles sass and typescript into src/main/resources //
