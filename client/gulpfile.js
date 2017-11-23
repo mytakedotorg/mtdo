@@ -106,7 +106,7 @@ function fingerprint(mode, stream) {
         })
       )
       .pipe(gulp.dest(config.distProd))
-      .pipe(wait(1000));
+      .pipe(wait(30000));
   } else {
     return stream.pipe(gulp.dest(config.dist));
   }
