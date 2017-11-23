@@ -18,7 +18,6 @@ del = require("del");
 gutil = require("gulp-util");
 rev = require("gulp-rev");
 merge = require("gulp-merge-json");
-wait = require("gulp-wait");
 
 tsLoaders = ts.createProject("./loaders/tsconfig.json");
 tsScripts = ts.createProject("./test/scripts/tsconfig.json");
@@ -60,13 +59,13 @@ function setupPipeline(mode) {
   if (mode === PROD) {
     gulp.task(BUILD + mode, [css, sass, webpack, images], () => {
       return gulp
-          .src(config.distProd + "/*.json")
-          .pipe(
-            merge({
-              fileName: "manifest.json"
-            })
-          )
-          .pipe(gulp.dest(config.distProd));
+        .src(config.distProd + "/*.json")
+        .pipe(
+          merge({
+            fileName: "manifest.json"
+          })
+        )
+        .pipe(gulp.dest(config.distProd));
     });
   } else {
     gulp.task(BUILD + mode, [webpack, sass, images, css]);
@@ -105,8 +104,7 @@ function fingerprint(mode, stream) {
           merge: true
         })
       )
-      .pipe(gulp.dest(config.distProd))
-      .pipe(wait(30000));
+      .pipe(gulp.dest(config.distProd));
   } else {
     return stream.pipe(gulp.dest(config.dist));
   }
@@ -142,19 +140,15 @@ function sassCfg(mode) {
 function webpackCfg(mode) {
   const configFile =
     mode === DEV ? "./webpack.config.dev.js" : "./webpack.config.js";
-  return cb => {
-    fingerprint(
+  return () => {
+    return fingerprint(
       mode,
       gulp.src(config.webpackSrc).pipe(
         webpack(
           {
             config: require(configFile)
           },
-          webpackCore,
-          err => {
-            // makes this task blocking
-            cb(err);
-          }
+          webpackCore
         ).on("error", err => {
           gutil.log("Webpack: " + err.message);
         })
