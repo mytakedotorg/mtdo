@@ -1,4 +1,5 @@
 {
     "workaround": "only",
-    "no": "content"
+    "no": "content",
+    "delete": "once https://github.com/cincheo/jsweet/pull/411 is merged, also delete node buildpack"
 }
