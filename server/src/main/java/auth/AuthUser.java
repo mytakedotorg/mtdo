@@ -12,12 +12,14 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.jsoniter.output.JsonStream;
 import common.Time;
 import common.UrlEncodedPath;
 import db.tables.pojos.Account;
 import java.text.ParseException;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
+import java2ts.LoginCookie;
 import javax.annotation.Nullable;
 import org.jooby.Cookie;
 import org.jooby.Mutant;
@@ -28,15 +30,15 @@ import org.jooby.Response;
 public class AuthUser {
 	public static final int LOGIN_DAYS = 7;
 
-	final long id;
+	final int id;
 	final String username;
 
-	public AuthUser(long id, String username) {
+	public AuthUser(int id, String username) {
 		this.id = id;
 		this.username = username;
 	}
 
-	public long id() {
+	public int id() {
 		return id;
 	}
 
@@ -97,7 +99,7 @@ public class AuthUser {
 			throw new TokenExpiredException("Your login timed out.");
 		}
 		// create the logged-in AuthUser
-		long userId = Long.parseLong(decoded.getSubject());
+		int userId = Integer.parseInt(decoded.getSubject());
 		String username = decoded.getClaim(CLAIM_USERNAME).asString();
 
 		AuthUser user = new AuthUser(userId, username);
@@ -125,12 +127,14 @@ public class AuthUser {
 		Cookie.Definition httpCookie = new Cookie.Definition(LOGIN_COOKIE, jwtToken(req, account));
 		httpCookie.httpOnly(true);
 		httpCookie.secure(isSecurable);
-		httpCookie.maxAge((int) TimeUnit.MINUTES.toSeconds(LOGIN_DAYS));
+		httpCookie.maxAge((int) TimeUnit.DAYS.toSeconds(LOGIN_DAYS));
 		rsp.cookie(httpCookie);
 
-		Cookie.Definition uiCookie = new Cookie.Definition(LOGIN_UI_COOKIE, "{\"username\":\"" + account.getUsername() + "\"}");
+		LoginCookie cookie = new LoginCookie();
+		cookie.username = account.getUsername();
+		Cookie.Definition uiCookie = new Cookie.Definition(LOGIN_UI_COOKIE, JsonStream.serialize(cookie));
 		uiCookie.secure(isSecurable);
-		uiCookie.maxAge((int) TimeUnit.MINUTES.toSeconds(LOGIN_DAYS));
+		uiCookie.maxAge((int) TimeUnit.DAYS.toSeconds(LOGIN_DAYS));
 		rsp.cookie(uiCookie);
 	}
 }

@@ -24,6 +24,7 @@
 	<div class="header__top">
 	<em class="header__logo"><a class="header__logo-link" href="/">MyTake.org</a></em>
 	<div class="header__icon-list header__icon-list--top">
+	<div id="login"></div>
 		<a class="header__icon header__icon--github" href="https://github.com/mytake/mytake"><i class="fa fa-github" aria-hidden="true"></i></a>
 	</div>
 	</div>
@@ -36,7 +37,7 @@
 	<nav class="nav collapse" role="navigation">
 		<ul class="nav__list nav__list--top">
 		<li class="nav__list-item nav__list-item--top"><a class="nav__link nav__link--top" href="/foundation" tabindex="2"><span class="nav__link-text nav__link-text--top">Explore the Foundation</span></a></li>
-		<li class="nav__list-item nav__list-item--top"><a class="nav__link nav__link--top" href="/new-take/" tabindex="3"><span class="nav__link-text nav__link-text--top">Give your Take</span></a></li>
+		<li class="nav__list-item nav__list-item--top"><a class="nav__link nav__link--top" href="/drafts/new" tabindex="3"><span class="nav__link-text nav__link-text--top">Give your Take</span></a></li>
 		<li class="nav__list-item nav__list-item--top"><a class="nav__link nav__link--top" href="/aboutus" tabindex="4"><span class="nav__link-text nav__link-text--top">About us</span></a></li>
 		</ul>
 	</nav>
@@ -53,10 +54,16 @@
 	</div>
 </header>
 
-<h1>Why it&#39;s so hard to have peace</h1>
-[{&quot;kind&quot;:&quot;paragraph&quot;,&quot;text&quot;:&quot;During the cold war, anybody who wanted to negotiate with the evil Communists was “weak”.&quot;},{&quot;kind&quot;:&quot;paragraph&quot;,&quot;text&quot;:&quot;Today, anybody who wants to negotiate with a Muslim country is “weak”.&quot;},{&quot;kind&quot;:&quot;video&quot;,&quot;range&quot;:[304,321],&quot;videoId&quot;:&quot;QuPWV36zqdc&quot;},{&quot;kind&quot;:&quot;paragraph&quot;,&quot;text&quot;:&quot;Thank goodness there&#39;s at least one party who is willing to give peace a chance!&quot;},{&quot;kind&quot;:&quot;video&quot;,&quot;range&quot;:[246,261],&quot;videoId&quot;:&quot;vIZ6w0kMqUA&quot;},{&quot;kind&quot;:&quot;paragraph&quot;,&quot;text&quot;:&quot;Err..  Surely that&#39;s an outlier?&quot;},{&quot;kind&quot;:&quot;video&quot;,&quot;range&quot;:[190,203],&quot;videoId&quot;:&quot;vIZ6w0kMqUA&quot;},{&quot;kind&quot;:&quot;paragraph&quot;,&quot;text&quot;:&quot;Huh.  Too bad Jimmy Carter didn&#39;t think of something as catchy as MAGA.&quot;}]
-<span>Likes: 0</span>
-<span>Views: 1</span>
+<div id="app"></div>
+<script type="text/javascript">
+window.mytake = {
+	type: "showtake",
+	takeDocument: {
+	title: "Why it's so hard to have peace",
+	blocks: [{"kind": "paragraph", "text": "During the cold war, anybody who wanted to negotiate with the evil Communists was “weak”."}, {"kind": "paragraph", "text": "Today, anybody who wants to negotiate with a Muslim country is “weak”."}, {"kind": "video", "range": [304, 321], "videoId": "ApTLB76Nmdg"}, {"kind": "paragraph", "text": "Thank goodness there's at least one party who is willing to give peace a chance!"}, {"kind": "video", "range": [246, 261], "videoId": "GX1kHw2tmtI"}, {"kind": "paragraph", "text": "Err..  Surely that's an outlier?"}, {"kind": "video", "range": [190, 203], "videoId": "GX1kHw2tmtI"}, {"kind": "paragraph", "text": "Huh.  Too bad Jimmy Carter didn't think of something as catchy as MAGA."}]
+	}
+};
+</script>
 
 
 
@@ -69,6 +76,9 @@
 	</ul>
 </footer>
 <script type="text/javascript" src="/assets-dev/window.bundle.js"></script>
+<script type="text/javascript" src="https://unpkg.com/react@15/dist/react.js"></script>
+<script type="text/javascript" src="https://unpkg.com/react-dom@15/dist/react-dom.js"></script>
+<script type="text/javascript" src="/assets-dev/takeReader.bundle.js"></script>
 
 </body>
 </html>

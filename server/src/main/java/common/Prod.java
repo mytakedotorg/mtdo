@@ -8,14 +8,17 @@ package common;
 
 import auth.AuthModule;
 import controllers.AboutUs;
+import controllers.Drafts;
 import controllers.Foundation;
 import controllers.HomeFeed;
 import controllers.Takes;
 import java.security.SecureRandom;
 import java.util.Random;
 import javax.sql.DataSource;
+import json.JsoniterModule;
 import org.flywaydb.core.Flyway;
 import org.jooby.Jooby;
+import org.jooby.Results;
 import org.jooby.jdbc.Jdbc;
 import org.jooby.jooq.jOOQ;
 import org.jooby.mail.CommonsEmail;
@@ -50,15 +53,18 @@ public class Prod extends Jooby {
 		jooby.use(new CommonsEmail());
 		jooby.use(new Jdbc());
 		jooby.use(new jOOQ());
+		jooby.use(new JsoniterModule());
 		CustomAssets.initTemplates(jooby);
 	}
 
 	static void controllers(Jooby jooby) {
+		jooby.get("favicon.ico", () -> Results.noContent());
 		jooby.use(new HomeFeed());
 		jooby.use(new Foundation());
 		jooby.use(new AboutUs());
+		jooby.use(new Drafts());
 		jooby.use(new AuthModule());
-		jooby.use(new RedirectException.Module());
+		jooby.use(new NotFound());
 		// takes needs to be last, because otherwise it will swallow
 		// every `/user/take` URL.
 		jooby.use(new Takes());

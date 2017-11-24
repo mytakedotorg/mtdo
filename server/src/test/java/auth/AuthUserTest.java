@@ -12,7 +12,6 @@ import static org.hamcrest.Matchers.equalTo;
 import common.CustomAssets;
 import common.DevTime;
 import common.JoobyDevRule;
-import common.RedirectException;
 import db.tables.pojos.Account;
 import io.restassured.specification.RequestSpecification;
 import java.util.Optional;
@@ -27,7 +26,6 @@ public class AuthUserTest {
 			CustomAssets.initTemplates(this);
 			use(new DevTime.Module());
 			use(new AuthModule());
-			use(new RedirectException.Module());
 			get("/required", req -> {
 				AuthUser user = AuthUser.auth(req);
 				return user.username();
@@ -63,8 +61,8 @@ public class AuthUserTest {
 				.statusCode(Status.OK.value())
 				.body(equalTo("morty"));
 		given().redirects().follow(false).get("/required").then()
-				.statusCode(Status.FORBIDDEN.value())
-				.header("Location", "/login?redirect=%2Frequired");
+				.statusCode(Status.TEMPORARY_REDIRECT.value())
+				.header("Location", "/login?redirect=%2Frequired&loginreason=We+can+show+that+to+you+after+you+log+in.");
 	}
 
 	@Test

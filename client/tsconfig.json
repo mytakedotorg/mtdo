@@ -7,6 +7,6 @@
 		"jsx": "react",
 		"strictNullChecks": true
   },
-  "include": ["./src/**/*"],
+  "include": ["./src/main/typescript/**/*"],
   "exclude": ["node_modules"]
 }

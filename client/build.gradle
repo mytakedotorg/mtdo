@@ -1,8 +1,67 @@
+buildscript {
+	repositories {
+		maven { url "http://repository.jsweet.org/artifactory/libs-release-local" }
+		maven { url "http://repository.jsweet.org/artifactory/plugins-release-local" }
+	}
+	// https://github.com/lgrignon/jsweet-gradle-plugin/blob/master/src/main/java/org/jsweet/gradle/JSweetPluginExtension.java
+	dependencies { classpath 'org.jsweet:jsweet-gradle-plugin:2.0.0-rc1' }
+}
 plugins {
 	id 'com.moowork.node' version '1.2.0' // https://github.com/srs/gradle-node-plugin/blob/master/docs/node.md
 	id 'com.moowork.gulp' version '1.2.0' // https://github.com/srs/gradle-node-plugin/blob/master/docs/gulp.md
+	id 'com.diffplug.gradle.eclipse.excludebuildfolder'
 }
 
+////////////////////////////////////////
+// java - gets compiled to typescript //
+////////////////////////////////////////
+apply plugin: 'java'
+apply plugin: 'com.diffplug.gradle.spotless'
+spotless {
+	java {
+		licenseHeaderFile(rootProject.file('gradle/spotless.license.java'))
+		importOrder()
+		eclipse().configFile(rootProject.file('gradle/spotless.eclipseformat.xml'))
+		removeUnusedImports()
+	}
+}
+
+repositories {
+	mavenCentral()
+	maven { url 'http://repository.jsweet.org/artifactory/libs-release-local' }
+}
+dependencies {
+	// must match versions in server
+	compile 'com.jsoniter:jsoniter:0.9.17'
+	compile 'org.jsweet:jsweet-core:5-20170726'
+}
+
+apply plugin: 'eclipse'
+eclipse { project { name = 'mytake-client' } }
+
+// generate typescript for the java in the java2ts folder
+def JAVA2TS = 'src/main/typescript/java2ts'
+apply plugin: 'org.jsweet.jsweet-gradle-plugin'
+jsweet {
+	module = 'commonjs'
+	tsOut = file(JAVA2TS)
+	tsOnly = true
+	factoryClassName = 'org.mytake.gradle.java2ts.MytakeJsweetFactory'
+}
+tasks.jsweet.doFirst { delete JAVA2TS }
+tasks.jsweet.doLast { com.diffplug.gradle.FileMisc.flatten(file(JAVA2TS + '/java2ts')) }
+tasks.jsweet.inputs.dir(file('build/classes'))
+tasks.jsweet.outputs.dir(file(JAVA2TS))
+clean { delete JAVA2TS }
+tasks.jsweet.dependsOn.remove('classes')
+tasks.jsweet.dependsOn('compileJava')
+tasks.jsweet.dependsOn('nodeSetup')
+// the typescript build depends on jsweet
+npm_run_prep.dependsOn(tasks.jsweet)
+
+///////////////////////////////////////////////////////////////////////
+// node stuff - compiles sass and typescript into src/main/resources //
+///////////////////////////////////////////////////////////////////////
 node {
 	version = '6.10.2'
 	npmVersion = '5.4.2'
@@ -10,16 +69,30 @@ node {
 	download = true
 }
 
+// prep needs to run before anything else, but is easy to do up-to-date checking on
+npm_run_prep.dependsOn 'npmInstall'
+npm_run_prep.inputs.file('gulpfile.js')
+npm_run_prep.inputs.file('loaders/tsconfig.json')
+npm_run_prep.inputs.dir('loaders/src')
+npm_run_prep.outputs.dir('loaders/dist')
+npm_run_prep.inputs.file('test/scripts/tsconfig.json')
+npm_run_prep.inputs.dir('test/scripts/src')
+npm_run_prep.outputs.dir('test/scripts/dist')
+clean {
+	delete 'loaders/dist'
+	delete 'test/scripts/dist'
+}
+
 // make the gulp_buildProd have accurate up-to-date checking
 def setInputs(targetTask) {
-	targetTask.dependsOn 'npmInstall'
+	targetTask.dependsOn npm_run_prep
 	def inputs = [
 		'assets',
-		'loaders',
-		'src',
+		'src/main/typescript',
 		'gulpfile.js',
 		'postcss.config.js',
 		'tsconfig.json',
+		'webpack.config.dev.js',
 		'webpack.config.js'
 	]
 	for (input in inputs) {
@@ -33,17 +106,26 @@ def setInputs(targetTask) {
 }
 setInputs(gulp_buildDev)
 setInputs(gulp_buildProd)
-gulp_buildDev.outputs.dir('../server/src/main/resources/assets-dev')
-gulp_buildProd.outputs.dir('../server/src/main/resources/assets')
+gulp_buildDev.outputs.dir('src/main/resources/assets-dev')
+gulp_buildProd.outputs.dir('src/main/resources/assets')
+clean {
+	delete 'src/main/resources/assets-dev'
+	delete 'src/main/resources/assets'
+}
 
 // map prettier to spotless (to match server)
 setInputs(npm_run_formatlist)
 setInputs(npm_run_formatwrite)
-task spotlessCheck(dependsOn: npm_run_formatlist)
-task spotlessApply(dependsOn: npm_run_formatwrite)
+afterEvaluate {
+	tasks.spotlessCheck.dependsOn(npm_run_formatlist)
+	tasks.spotlessApply.dependsOn(npm_run_formatwrite)
+}
 
 // check should run all tests
-task check(dependsOn: [
-	npm_run_test,
-	spotlessCheck
-])
+npm_run_test.dependsOn(npm_run_prep)
+check.dependsOn(npm_run_test)
+// make sure that the gulp tasks are run
+processResources.dependsOn(gulp_buildProd)
+if (!Env.isHeroku()) {
+	processResources.dependsOn(gulp_buildDev)
+}

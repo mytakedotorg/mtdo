@@ -11,17 +11,19 @@ import static db.Tables.TAKEPUBLISHED;
 
 import com.google.inject.Binder;
 import com.typesafe.config.Config;
-import common.RedirectException;
+import common.NotFound;
 import common.Text;
-import db.tables.pojos.Takepublished;
 import db.tables.records.TakepublishedRecord;
 import org.jooby.Env;
 import org.jooby.Jooby;
 import org.jooby.internal.RoutePattern;
 import org.jooq.DSLContext;
+import org.jooq.Record;
+import org.jooq.Result;
 
 public class Takes implements Jooby.Module {
 	public static final RoutePattern USER_TITLE = new RoutePattern("GET", "/:user/:title");
+	public static final RoutePattern USER = new RoutePattern("GET", "/:user");
 
 	@Override
 	public void configure(Env env, Config conf, Binder binder) throws Throwable {
@@ -29,27 +31,43 @@ public class Takes implements Jooby.Module {
 			String user = Text.lowercase(req, "user");
 			String title = Text.lowercase(req, "title");
 			try (DSLContext dsl = req.require(DSLContext.class)) {
-				TakepublishedRecord record = dsl.selectFrom(TAKEPUBLISHED)
+				TakepublishedRecord take = dsl.selectFrom(TAKEPUBLISHED)
 						.where(TAKEPUBLISHED.TITLE_SLUG.eq(title))
 						.and(TAKEPUBLISHED.USER_ID.eq(dsl.select(ACCOUNT.ID)
 								.from(ACCOUNT)
 								.where(ACCOUNT.USERNAME.eq(user))))
 						.fetchOne();
+				if (take == null) {
+					return NotFound.result();
+				} else {
+					// increment the view
+					take.setCountView(take.getCountView() + 1);
+					take.update();
 
-				assertNotNull(record);
-				// increment the view
-				record.setCountView(record.getCountView() + 1);
-				record.update();
-
-				Takepublished take = record.into(Takepublished.class);
-				return views.Takes.showTake.template(take);
+					return views.Takes.showTake.template(take);
+				}
 			}
 		});
-	}
-
-	static void assertNotNull(Object obj) {
-		if (obj == null) {
-			throw RedirectException.notFoundError("No such take.");
-		}
+		env.router().get(USER.pattern(), req -> {
+			String username = Text.lowercase(req, "user");
+			try (DSLContext dsl = req.require(DSLContext.class)) {
+				Record account = dsl.select(ACCOUNT.ID)
+						.from(ACCOUNT)
+						.where(ACCOUNT.USERNAME.eq(username))
+						.fetchOne();
+				if (account == null) {
+					return NotFound.result();
+				} else {
+					int userId = account.get(ACCOUNT.ID);
+					Result<?> takes = dsl
+							.select(TAKEPUBLISHED.TITLE, TAKEPUBLISHED.TITLE_SLUG, TAKEPUBLISHED.PUBLISHED_AT)
+							.from(TAKEPUBLISHED)
+							.where(TAKEPUBLISHED.USER_ID.eq(userId))
+							.orderBy(TAKEPUBLISHED.PUBLISHED_AT.desc())
+							.fetch();
+					return views.Takes.listTakes.template(username, takes);
+				}
+			}
+		});
 	}
 }

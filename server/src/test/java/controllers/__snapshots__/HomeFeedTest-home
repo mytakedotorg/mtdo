@@ -24,6 +24,7 @@
 	<div class="header__top">
 	<em class="header__logo"><a class="header__logo-link" href="/">MyTake.org</a></em>
 	<div class="header__icon-list header__icon-list--top">
+	<div id="login"></div>
 		<a class="header__icon header__icon--github" href="https://github.com/mytake/mytake"><i class="fa fa-github" aria-hidden="true"></i></a>
 	</div>
 	</div>
@@ -36,7 +37,7 @@
 	<nav class="nav collapse" role="navigation">
 		<ul class="nav__list nav__list--top">
 		<li class="nav__list-item nav__list-item--top"><a class="nav__link nav__link--top" href="/foundation" tabindex="2"><span class="nav__link-text nav__link-text--top">Explore the Foundation</span></a></li>
-		<li class="nav__list-item nav__list-item--top"><a class="nav__link nav__link--top" href="/new-take/" tabindex="3"><span class="nav__link-text nav__link-text--top">Give your Take</span></a></li>
+		<li class="nav__list-item nav__list-item--top"><a class="nav__link nav__link--top" href="/drafts/new" tabindex="3"><span class="nav__link-text nav__link-text--top">Give your Take</span></a></li>
 		<li class="nav__list-item nav__list-item--top"><a class="nav__link nav__link--top" href="/aboutus" tabindex="4"><span class="nav__link-text nav__link-text--top">About us</span></a></li>
 		</ul>
 	</nav>
@@ -66,10 +67,9 @@
 </div>
 <div id="app"></div>
 <script type="text/javascript">
-	var app = document.getElementById('app')
-	app.setAttribute('data-init', JSON.stringify({
-		"route": "/"
-	}))
+	window.mytake = {
+	type: "home"
+};
 </script>
 
 

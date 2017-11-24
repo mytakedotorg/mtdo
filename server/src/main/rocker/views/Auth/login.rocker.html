@@ -1,10 +1,12 @@
 @import auth.AuthModule
 @import forms.api.FormMarkup
 
-@args(FormMarkup loginForm, FormMarkup createAccount)
+@args(String loginReason, FormMarkup loginForm, FormMarkup createAccount)
 
 @views.base.template("Log in", "Login or create an account") -> {
-
+	@if (loginReason != null) {
+		<div class="alert alert-success">@loginReason</div>
+	}
 	<section id="login">
 		<div class="heading-line">
 			<h2>Log in</h2>

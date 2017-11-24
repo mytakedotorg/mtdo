@@ -29,10 +29,10 @@ public class LoginLogoutTest {
 	public void login() throws MessagingException {
 		PageAssert.assertThat(MetaFormSubmit.create(LoginForm.class)
 				.set(REDIRECT, "/redirectTarget")
-				.set(LOGIN_EMAIL, "sample@email.com")
+				.set(LOGIN_EMAIL, "samples@email.com")
 				.post("/login"), Status.OK)
 				.bodyAssert(asserter -> {
-					asserter.contains("A login email has been sent to sample@email.com");
+					asserter.contains("A login email has been sent to samples@email.com");
 				}).responseAssert(response -> {
 					// no cookies
 					Assertions.assertThat(response.extract().cookies().keySet()).isEmpty();
@@ -40,10 +40,10 @@ public class LoginLogoutTest {
 
 		EmailAssert loginEmail = dev.waitForEmail();
 		loginEmail.subject().isEqualTo("MyTake.org login link");
-		loginEmail.body().contains("Welcome back to MyTake.org, sample!");
+		loginEmail.body().contains("Welcome back to MyTake.org, samples!");
 		String link = loginEmail.extractLink("Visit ");
 
-		String loginCookie = AuthModuleHarness.authTokenValue(dev, "sample");
+		String loginCookie = AuthModuleHarness.authTokenValue(dev, "samples");
 		RestAssured.given()
 				.redirects().follow(false)
 				.get(link)
@@ -55,7 +55,7 @@ public class LoginLogoutTest {
 
 	@Test
 	public void logout() throws MessagingException {
-		String loginCookie = AuthModuleHarness.authTokenValue(dev, "sample");
+		String loginCookie = AuthModuleHarness.authTokenValue(dev, "samples");
 		RestAssured.given()
 				.redirects().follow(false)
 				.cookie(AuthUser.LOGIN_COOKIE, loginCookie)

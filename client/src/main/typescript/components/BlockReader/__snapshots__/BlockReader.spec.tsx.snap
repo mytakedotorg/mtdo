@@ -1,0 +1,70 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Read only 1`] = `
+<div>
+  <button
+    className="editor__button video__button--save"
+    onClick={[Function]}
+  >
+    Save
+  </button>
+  <div
+    className="editor__wrapper"
+  >
+    <div
+      className="editor"
+    >
+      <div
+        className="editor__inner"
+      >
+        <div
+          className="editor__text-container"
+        >
+          <h1
+            className="editor__title"
+            style={
+              Object {
+                "height": undefined,
+              }
+            }
+          >
+            My take title
+          </h1>
+          <div
+            className="editor__title-height-div"
+          />
+        </div>
+        <div
+          className="editor__block-list"
+        >
+          <div
+            className="editor__block editor__block--base"
+          >
+            <div
+              className="editor__text-container"
+            >
+              <p
+                className="editor__paragraph"
+                style={
+                  Object {
+                    "height": undefined,
+                  }
+                }
+              >
+                
+              </p>
+              <div
+                className="editor__paragraph-height-div"
+              >
+                <p>
+                  <br />
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

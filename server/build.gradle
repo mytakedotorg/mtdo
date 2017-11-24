@@ -31,8 +31,8 @@ flywayJooqEmbeddedPg {
 	}
 	// https://www.jooq.org/doc/latest/manual/code-generation/custom-data-type-bindings/
 	forcedType {
-		userType = 'com.google.gson.JsonElement'
-		binding = 'db.bindings.PostgresJSONGsonBinding'
+		userType = 'java.lang.String'
+		binding = 'db.bindings.PostgresJsonStringBinding'
 		expression = '.*'
 		types = 'jsonb'
 	}
@@ -70,6 +70,9 @@ spotless {
 	}
 }
 
+//////////////////
+// normal stuff //
+//////////////////
 apply plugin: 'eclipse'
 eclipse { project { name = 'mytake-server' } }
 tasks.eclipse.dependsOn([
@@ -78,7 +81,10 @@ tasks.eclipse.dependsOn([
 	'compileRocker'
 ])
 
-repositories { mavenCentral() }
+repositories {
+	mavenCentral()
+	maven { url 'http://repository.jsweet.org/artifactory/libs-release-local' }
+}
 
 dependencies {
 	String JOOBY_VER = '1.2.2'
@@ -90,10 +96,15 @@ dependencies {
 	compile "org.jooby:jooby-assets:$JOOBY_VER"
 	testCompile "org.jooby:jooby-whoops:$JOOBY_VER"
 
+	// json (must match versions in client)
+	compile 'com.jsoniter:jsoniter:0.9.17'
+	compile 'org.jsweet:jsweet-core:5-20170726'
+	compile project(':client')
+
 	// jooq (version is set by jooq DSL)
 	compile 'org.jooq:jooq'
 
-	// db connector for postgres and h2
+	// db connector for postgres
 	compile 'org.postgresql:postgresql:42.1.4'
 	jooqRuntime 'org.postgresql:postgresql:42.1.4'
 
@@ -103,7 +114,6 @@ dependencies {
 	// common libs
 	compile 'commons-validator:commons-validator:1.6'
 	compile 'com.diffplug.durian:durian-core:1.2.0'
-	compile 'com.google.code.gson:gson:2.8.2'
 
 	// code quality annotations, especially @Nullable
 	compileOnly 'com.google.code.findbugs:jsr305:3.0.2'
@@ -122,11 +132,6 @@ dependencies {
 sourceSets {
 	test.compileClasspath += configurations.compileOnly
 	test.runtimeClasspath += configurations.compileOnly
-}
-
-processResources.dependsOn ':client:gulp_buildProd'
-if (!Env.isHeroku()) {
-	processResources.dependsOn ':client:gulp_buildDev'
 }
 
 //////////////

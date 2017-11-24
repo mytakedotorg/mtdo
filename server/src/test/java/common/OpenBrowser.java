@@ -31,7 +31,15 @@ class OpenBrowser {
 		return this;
 	}
 
+	public void waitForOk(String message) {
+		blockAndGet(message, JOptionPane.DEFAULT_OPTION);
+	}
+
 	public boolean isYes(String message) {
+		return blockAndGet(message, JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION;
+	}
+
+	private int blockAndGet(String message, int kind) {
 		try {
 			ServerSocket socket = new ServerSocket(0);
 			int port = socket.getLocalPort();
@@ -50,9 +58,9 @@ class OpenBrowser {
 			}
 
 			JOptionPane.getRootFrame().setAlwaysOnTop(true);
-			int dialogResult = JOptionPane.showConfirmDialog(null, message);
+			int dialogResult = JOptionPane.showConfirmDialog(null, message, message, kind);
 			jooby.stop();
-			return dialogResult == JOptionPane.YES_OPTION;
+			return dialogResult;
 		} catch (Exception e) {
 			throw Errors.asRuntime(e);
 		}

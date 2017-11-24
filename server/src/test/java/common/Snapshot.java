@@ -7,6 +7,7 @@
 package common;
 
 import com.diffplug.common.base.Errors;
+import io.restassured.response.Response;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -17,6 +18,11 @@ import org.assertj.core.api.Assertions;
 import org.junit.Assert;
 
 public class Snapshot {
+	/** See {@link #match(String, String) */
+	public static void match(String id, Response response) {
+		match(id, response.asString());
+	}
+
 	/**
 	 * If the snapshot doesn't match, it will block and spawn a browser
 	 * to display the snapshots.
@@ -49,7 +55,7 @@ public class Snapshot {
 			} else {
 				Assert.assertTrue("No snapshot for " + id, OpenBrowser.isInteractive());
 				boolean writeSnapshot = new OpenBrowser()
-						.add("/", actual)
+						.add("/first", actual)
 						.isYes("Is this snapshot okay for " + snapshot.label());
 				if (writeSnapshot) {
 					Files.createDirectories(snapshot.testFile.getParent());
@@ -76,9 +82,13 @@ public class Snapshot {
 			Assertions.assertThat(trace[0].getClassName()).isEqualTo("java.lang.Thread");
 			Assertions.assertThat(trace[1].getClassName()).isEqualTo("common.Snapshot$IdSnapshot");
 			Assertions.assertThat(trace[2].getClassName()).isEqualTo("common.Snapshot");
-			Assertions.assertThat(trace[3].getClassName()).doesNotContain("common.Snapshot");
+			StackTraceElement last;
+			if (trace[3].getClassName().contains("common.Snapshot")) {
+				last = trace[4];
+			} else {
+				last = trace[3];
+			}
 
-			StackTraceElement last = trace[3];
 			int lastSlash = last.getClassName().lastIndexOf('.');
 			String className = last.getClassName().substring(lastSlash + 1);
 			String pkg = last.getClassName().substring(0, lastSlash);

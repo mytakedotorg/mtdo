@@ -1,0 +1,33 @@
+@*
+New draft -> Strings are null, ids are meaningless
+Existing draft -> Strings are not-null, all ids are meaningful
+*@
+
+@args(String title, String blocksJson, int draftid, int lastrevid)
+
+@views.naked.template("MyTake.org", "Your bicycle for politics", "react") -> {
+<div id="app"></div>
+<script type="text/javascript">
+window.mytake = {
+	type: "new-take"
+};
+</script>
+@* TODO
+A save button.  When you click it, it makes a post with these fields:
+
+title="Why it's so hard to have peace" enforce length <= 255
+blocks=JSON.stringify(take.blocks)
+(FOR UPDATING AN EXISTING DRAFT)
+draftid = draftid
+lastrevid = lastrevid
+(/FOR UPDATING AN EXISTING DRAFT))
+
+The post will respond with:
+
+{ "draftid": "123", "lastrevid": "123"}
+
+The next time the user presses save, we need to send those values along.
+
+*@
+
+}
