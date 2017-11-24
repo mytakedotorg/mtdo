@@ -11,7 +11,6 @@ ts = require("gulp-typescript");
 // misc
 browserSync = require("browser-sync").create();
 tasklisting = require("gulp-task-listing");
-del = require("del");
 gutil = require("gulp-util");
 rev = require("gulp-rev");
 merge = require("gulp-merge-json");
