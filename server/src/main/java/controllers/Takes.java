@@ -32,6 +32,7 @@ public class Takes implements Jooby.Module {
 			String title = Text.lowercase(req, "title");
 			try (DSLContext dsl = req.require(DSLContext.class)) {
 				TakepublishedRecord take = dsl.selectFrom(TAKEPUBLISHED)
+						// needs to be titleslug then userid for the postgres index to work
 						.where(TAKEPUBLISHED.TITLE_SLUG.eq(title))
 						.and(TAKEPUBLISHED.USER_ID.eq(dsl.select(ACCOUNT.ID)
 								.from(ACCOUNT)
@@ -40,10 +41,6 @@ public class Takes implements Jooby.Module {
 				if (take == null) {
 					return NotFound.result();
 				} else {
-					// increment the view
-					take.setCountView(take.getCountView() + 1);
-					take.update();
-
 					return views.Takes.showTake.template(take);
 				}
 			}
