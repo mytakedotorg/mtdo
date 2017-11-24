@@ -9,11 +9,27 @@ package common;
 import com.fizzed.rocker.RockerModel;
 import com.google.common.base.Preconditions;
 import forms.api.RockerRaw;
+import java.util.Iterator;
 import org.jooby.rocker.RequestRockerTemplate;
 
 public abstract class CustomRockerTemplate extends RequestRockerTemplate {
 	public CustomRockerTemplate(RockerModel model) {
 		super(model);
+	}
+
+	/** Returns the single or plural stream as appropriate, based on the size of the iterable. */
+	public String singlePlural(String single, String plural, Iterable<?> iterable) {
+		Iterator<?> iter = iterable.iterator();
+		if (!iter.hasNext()) {
+			return plural;
+		} else {
+			iter.next();
+			if (!iter.hasNext()) {
+				return single;
+			} else {
+				return plural;
+			}
+		}
 	}
 
 	/** Returns link tags for the css files with the given fileset. */

@@ -1,0 +1,21 @@
+@import java.sql.Timestamp
+@import org.jooq.Result
+@import static db.Tables.TAKEPUBLISHED
+
+@args(String username, Result<?> takes)
+
+@views.naked.template("MyTake.org", username, "base") -> {
+
+<h1>@username</h1>
+
+@for (take : takes) {
+	@with(	String title = take.get(TAKEPUBLISHED.TITLE),
+			String titleSlug = take.get(TAKEPUBLISHED.TITLE_SLUG),
+			Timestamp publishedAt = take.get(TAKEPUBLISHED.PUBLISHED_AT)
+			) {
+		<h2><a href="/@(username)/@(titleSlug)">@title</a></h2>
+		<span>Published on @common.Time.formatCompact().format(publishedAt)</span>
+	}
+}
+
+}

@@ -16,13 +16,11 @@ import common.NotFound;
 import common.Time;
 import db.tables.records.TakedraftRecord;
 import db.tables.records.TakerevisionRecord;
-import java.sql.Timestamp;
 import java2ts.DraftPost;
 import java2ts.DraftRev;
 import org.jooby.Env;
 import org.jooby.Jooby;
 import org.jooq.DSLContext;
-import org.jooq.Record3;
 import org.jooq.Result;
 
 public class Drafts implements Jooby.Module {
@@ -42,13 +40,13 @@ public class Drafts implements Jooby.Module {
 			AuthUser user = AuthUser.auth(req);
 			try (DSLContext dsl = req.require(DSLContext.class)) {
 				// draftid, timestamp, title
-				Result<Record3<Integer, Timestamp, String>> drafts = dsl.select(TAKEDRAFT.ID, TAKEREVISION.CREATED_AT, TAKEREVISION.TITLE)
+				Result<?> drafts = dsl.select(TAKEDRAFT.ID, TAKEREVISION.CREATED_AT, TAKEREVISION.TITLE)
 						.from(TAKEREVISION)
 						.join(TAKEDRAFT).on(TAKEDRAFT.LAST_REVISION.eq(TAKEREVISION.ID))
 						.where(TAKEDRAFT.USER_ID.eq(user.id()))
 						.orderBy(TAKEREVISION.CREATED_AT.desc())
 						.fetch();
-				return drafts;
+				return views.Drafts.listDrafts.template(drafts);
 			}
 		});
 		// save a draft
@@ -121,5 +119,9 @@ public class Drafts implements Jooby.Module {
 		response.draftid = draft.getId();
 		response.lastrevid = draft.getLastRevision();
 		return response;
+	}
+
+	public static String urlEdit(int draftId) {
+		return URL + "/" + draftId;
 	}
 }

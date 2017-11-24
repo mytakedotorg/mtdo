@@ -14,13 +14,11 @@ import com.typesafe.config.Config;
 import common.NotFound;
 import common.Text;
 import db.tables.records.TakepublishedRecord;
-import java.sql.Timestamp;
 import org.jooby.Env;
 import org.jooby.Jooby;
 import org.jooby.internal.RoutePattern;
 import org.jooq.DSLContext;
-import org.jooq.Record2;
-import org.jooq.Record4;
+import org.jooq.Record;
 import org.jooq.Result;
 
 public class Takes implements Jooby.Module {
@@ -53,22 +51,21 @@ public class Takes implements Jooby.Module {
 		env.router().get(USER.pattern(), req -> {
 			String username = Text.lowercase(req, "user");
 			try (DSLContext dsl = req.require(DSLContext.class)) {
-				Record2<Integer, String> account = dsl.select(ACCOUNT.ID, ACCOUNT.NAME)
+				Record account = dsl.select(ACCOUNT.ID)
 						.from(ACCOUNT)
 						.where(ACCOUNT.USERNAME.eq(username))
 						.fetchOne();
 				if (account == null) {
 					return NotFound.result();
 				} else {
-					int userId = account.component1();
-					String name = account.component2(); // nullable
-					Result<Record4<String, String, Timestamp, Integer>> takes = dsl
-							.select(TAKEPUBLISHED.TITLE, TAKEPUBLISHED.TITLE_SLUG, TAKEPUBLISHED.PUBLISHED_AT, TAKEPUBLISHED.COUNT_LIKE)
+					int userId = account.get(ACCOUNT.ID);
+					Result<?> takes = dsl
+							.select(TAKEPUBLISHED.TITLE, TAKEPUBLISHED.TITLE_SLUG, TAKEPUBLISHED.PUBLISHED_AT)
 							.from(TAKEPUBLISHED)
 							.where(TAKEPUBLISHED.USER_ID.eq(userId))
 							.orderBy(TAKEPUBLISHED.PUBLISHED_AT.desc())
 							.fetch();
-					return takes;
+					return views.Takes.listTakes.template(username, takes);
 				}
 			}
 		});
