@@ -61,8 +61,9 @@ public class Drafts implements Jooby.Module {
 				if (post.parentRev != null) {
 					draft = dsl.selectFrom(TAKEDRAFT)
 							.where(TAKEDRAFT.ID.eq(post.parentRev.draftid))
+							.and(TAKEDRAFT.USER_ID.eq(user.id()))
 							.fetchOne();
-					if (draft.getUserId().equals(user.id())) {
+					if (draft == null) {
 						return NotFound.result();
 					}
 				} else {
