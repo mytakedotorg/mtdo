@@ -6,8 +6,6 @@ notify = require("gulp-notify");
 // webpack
 webpackCore = require("webpack");
 webpack = require("webpack-stream");
-path = require("path");
-fs = require("fs");
 // file loaders
 ts = require("gulp-typescript");
 // misc
