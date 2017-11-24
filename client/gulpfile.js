@@ -2,7 +2,6 @@ const gulp = require("gulp");
 // sass
 sass = require("gulp-sass");
 autoprefixer = require("gulp-autoprefixer");
-concat = require("gulp-concat");
 notify = require("gulp-notify");
 // webpack
 webpackCore = require("webpack");

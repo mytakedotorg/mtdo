@@ -46,7 +46,6 @@
     "fs": "0.0.1-security",
     "gulp": "^3.9.1",
     "gulp-autoprefixer": "^4.0.0",
-    "gulp-concat": "^2.6.1",
     "gulp-merge-json": "^1.2.0",
     "gulp-notify": "^3.0.0",
     "gulp-rev": "^8.1.0",
