@@ -22,8 +22,8 @@ import org.jooq.Record;
 import org.jooq.Result;
 
 public class Takes implements Jooby.Module {
-	public static final RoutePattern USER_TITLE = new RoutePattern("GET", "/:user/:title");
-	public static final RoutePattern USER = new RoutePattern("GET", "/:user");
+	private static final RoutePattern USER_TITLE = new RoutePattern("GET", "/:user/:title");
+	private static final RoutePattern USER = new RoutePattern("GET", "/:user");
 
 	@Override
 	public void configure(Env env, Config conf, Binder binder) throws Throwable {
@@ -66,5 +66,9 @@ public class Takes implements Jooby.Module {
 				}
 			}
 		});
+	}
+
+	public static String userTitleSlug(String user, String titleSlug) {
+		return "/" + user + "/" + titleSlug;
 	}
 }
