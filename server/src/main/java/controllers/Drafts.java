@@ -68,7 +68,7 @@ public class Drafts implements Jooby.Module {
 						.from(TAKEREVISION)
 						.join(TAKEDRAFT).on(TAKEDRAFT.LAST_REVISION.eq(TAKEREVISION.ID))
 						.where(TAKEDRAFT.USER_ID.eq(user.id()))
-						.orderBy(TAKEREVISION.CREATED_AT.desc())
+						.orderBy(TAKEREVISION.CREATED_AT.desc(), TAKEDRAFT.ID.asc())
 						.fetch();
 				return views.Drafts.listDrafts.template(drafts);
 			}

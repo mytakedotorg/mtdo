@@ -60,7 +60,7 @@ public class Takes implements Jooby.Module {
 							.select(TAKEPUBLISHED.TITLE, TAKEPUBLISHED.TITLE_SLUG, TAKEPUBLISHED.PUBLISHED_AT)
 							.from(TAKEPUBLISHED)
 							.where(TAKEPUBLISHED.USER_ID.eq(userId))
-							.orderBy(TAKEPUBLISHED.PUBLISHED_AT.desc())
+							.orderBy(TAKEPUBLISHED.PUBLISHED_AT.desc(), TAKEPUBLISHED.TITLE_SLUG.asc())
 							.fetch();
 					return views.Takes.listTakes.template(username, takes);
 				}
