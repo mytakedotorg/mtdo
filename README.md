@@ -21,6 +21,7 @@ Run `gradlew live`, and you'll get:
 - proxied by browsersync, with instant asset reloading
 - and a continuous build hotswapping any code or template changes
 - **exit by navigating to `/exit` or you'll have zombie processes all over the place**
+    + `./kill_zombies.sh` will save you if you have zombies
 
 Takes 30-60s to launch.
 
