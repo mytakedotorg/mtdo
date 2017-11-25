@@ -6,8 +6,13 @@
  */
 package java2ts;
 
+import com.jsoniter.output.JsonStream;
+
 /** Marker interface so JsoniterModule can know that an object is Json. */
 @jsweet.lang.Interface
 public interface Json {
-
+	@jsweet.lang.Erased
+	default String toJson() {
+		return JsonStream.serialize(this);
+	}
 }

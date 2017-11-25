@@ -6,9 +6,14 @@
  */
 package common;
 
+import com.jsoniter.any.Any;
 import java.util.function.Consumer;
 
 public class TakeBuilder {
+	public static TakeBuilder builder() {
+		return new TakeBuilder();
+	}
+
 	public static TakeBuilder builder(Consumer<TakeBuilder> builderConsumer) {
 		TakeBuilder builder = new TakeBuilder();
 		builderConsumer.accept(builder);
@@ -25,6 +30,10 @@ public class TakeBuilder {
 		builder.append("\"\n");
 		builder.append("  },\n");
 		return this;
+	}
+
+	public Any buildAny() {
+		return Any.wrap(buildString());
 	}
 
 	public String buildString() {

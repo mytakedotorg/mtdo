@@ -57,8 +57,8 @@ public class JsoniterModule implements Jooby.Module {
 	static class JsonParser implements Parser {
 		@Override
 		public Object parse(com.google.inject.TypeLiteral<?> type, Context ctx) throws Throwable {
-			if (ctx.type().equals(MediaType.json)) {
-				return ctx.body(body -> {
+			if (ctx.type().matches(MediaType.json)) {
+				return ctx.ifbody(body -> {
 					return JsonIterator.deserialize(body.bytes(), type.getRawType());
 				});
 			} else {

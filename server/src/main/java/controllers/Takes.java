@@ -22,8 +22,8 @@ import org.jooq.Record;
 import org.jooq.Result;
 
 public class Takes implements Jooby.Module {
-	public static final RoutePattern USER_TITLE = new RoutePattern("GET", "/:user/:title");
-	public static final RoutePattern USER = new RoutePattern("GET", "/:user");
+	private static final RoutePattern USER_TITLE = new RoutePattern("GET", "/:user/:title");
+	private static final RoutePattern USER = new RoutePattern("GET", "/:user");
 
 	@Override
 	public void configure(Env env, Config conf, Binder binder) throws Throwable {
@@ -32,6 +32,7 @@ public class Takes implements Jooby.Module {
 			String title = Text.lowercase(req, "title");
 			try (DSLContext dsl = req.require(DSLContext.class)) {
 				TakepublishedRecord take = dsl.selectFrom(TAKEPUBLISHED)
+						// needs to be titleslug then userid for the postgres index to work
 						.where(TAKEPUBLISHED.TITLE_SLUG.eq(title))
 						.and(TAKEPUBLISHED.USER_ID.eq(dsl.select(ACCOUNT.ID)
 								.from(ACCOUNT)
@@ -40,10 +41,6 @@ public class Takes implements Jooby.Module {
 				if (take == null) {
 					return NotFound.result();
 				} else {
-					// increment the view
-					take.setCountView(take.getCountView() + 1);
-					take.update();
-
 					return views.Takes.showTake.template(take);
 				}
 			}
@@ -63,11 +60,15 @@ public class Takes implements Jooby.Module {
 							.select(TAKEPUBLISHED.TITLE, TAKEPUBLISHED.TITLE_SLUG, TAKEPUBLISHED.PUBLISHED_AT)
 							.from(TAKEPUBLISHED)
 							.where(TAKEPUBLISHED.USER_ID.eq(userId))
-							.orderBy(TAKEPUBLISHED.PUBLISHED_AT.desc())
+							.orderBy(TAKEPUBLISHED.PUBLISHED_AT.desc(), TAKEPUBLISHED.TITLE_SLUG.asc())
 							.fetch();
 					return views.Takes.listTakes.template(username, takes);
 				}
 			}
 		});
+	}
+
+	public static String userTitleSlug(String user, String titleSlug) {
+		return "/" + user + "/" + titleSlug;
 	}
 }
