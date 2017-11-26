@@ -110,7 +110,8 @@ if (typeof window.mytake != "undefined") {
                   { kind: "paragraph", text: "" }
                 ]
               },
-              activeBlockIndex: -1
+              activeBlockIndex: -1,
+              status: "INITIAL"
             };
           } else {
             initJson = config.initialState;
@@ -129,7 +130,8 @@ if (typeof window.mytake != "undefined") {
                   { kind: "paragraph", text: "" }
                 ]
               },
-              activeBlockIndex: -1
+              activeBlockIndex: -1,
+              status: "INITIAL"
             };
           } else {
             initJson = config.initialState;

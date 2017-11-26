@@ -19,6 +19,7 @@ export interface BlockWriterState {
   takeDocument: TakeDocument;
   activeBlockIndex: number;
   parentRev?: DraftRev;
+  status: "INITIAL" | "SAVED" | "UNSAVED" | "ERROR";
 }
 
 class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
@@ -106,7 +107,8 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
         ...this.state.takeDocument,
         blocks: newBlocks
       },
-      activeBlockIndex: activeBlockIndex + indexAddition
+      activeBlockIndex: activeBlockIndex + indexAddition,
+      status: "UNSAVED"
     });
   };
   addDocument = (
@@ -153,7 +155,8 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
         ...this.state.takeDocument,
         blocks: newBlocks
       },
-      activeBlockIndex: newIndex
+      activeBlockIndex: newIndex,
+      status: "UNSAVED"
     });
   };
   addVideo = (id: string, range: [number, number]): void => {
@@ -201,7 +204,8 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
         takeDocument: {
           ...this.state.takeDocument,
           blocks: [...blocks.slice(0, idx), ...blocks.slice(idx + 1)]
-        }
+        },
+        status: "UNSAVED"
       });
     } else {
       if (blocks.length === 1 && blocks[0].kind === "document") {
@@ -210,7 +214,8 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
           takeDocument: {
             ...this.state.takeDocument,
             blocks: [{ kind: "paragraph", text: "" }]
-          }
+          },
+          status: "UNSAVED"
         });
       }
     }
@@ -234,24 +239,35 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
       body: JSON.stringify(bodyJson)
     };
     fetch("/drafts/save", request)
-      .then(function(response) {
-        const contentType = response.headers.get("content-type");
-        if (contentType && contentType.indexOf("application/json") >= 0) {
-          return response.json();
-        }
-        throw new TypeError("Oops, we haven't got JSON!");
-      })
       .then(
-        function(json) {
+        function(response) {
+          const contentType = response.headers.get("content-type");
+          if (contentType && contentType.indexOf("application/json") >= 0) {
+            return response.json();
+          }
+          this.setState({
+            status: "ERROR"
+          });
+          throw new TypeError("Oops, we haven't got JSON!");
+        }.bind(this)
+      )
+      .then(
+        function(json: DraftRev) {
           const parentRev: DraftRev = json;
           this.setState({
-            parentRev: parentRev
+            parentRev: parentRev,
+            status: "SAVED"
           });
         }.bind(this)
       )
-      .catch(function(error) {
-        throw error;
-      });
+      .catch(
+        function(error: Error) {
+          this.setState({
+            status: "ERROR"
+          });
+          throw error;
+        }.bind(this)
+      );
   };
   handleTakeBlockChange = (stateIndex: number, value: string): void => {
     if (stateIndex === -1) {
@@ -261,7 +277,8 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
           ...this.state.takeDocument,
           title: value
         },
-        activeBlockIndex: -1
+        activeBlockIndex: -1,
+        status: "UNSAVED"
       });
     } else {
       const blocks = [...this.state.takeDocument.blocks];
@@ -296,7 +313,8 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
           ...this.state.takeDocument,
           blocks: newBlocks
         },
-        activeBlockIndex: newIndex
+        activeBlockIndex: newIndex,
+        status: "UNSAVED"
       });
     }
   };
@@ -321,6 +339,34 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
       handleVideoSetClick: this.addVideo
     };
 
+    let metaBlock;
+    switch (this.state.status) {
+      case "INITIAL":
+        metaBlock = null;
+        break;
+      case "SAVED":
+        metaBlock = <Banner isSuccess={true}>Save successful!</Banner>;
+        break;
+      case "UNSAVED":
+        metaBlock = (
+          <button
+            className="editor__button video__button--save"
+            onClick={this.handleSaveClick}
+          >
+            Save
+          </button>
+        );
+        break;
+      case "ERROR":
+        metaBlock = (
+          <Banner isSuccess={false}>
+            There was an error saving your take.
+          </Banner>
+        );
+      default:
+        metaBlock = null;
+    }
+
     return (
       <div>
         <BlockEditor
@@ -328,12 +374,7 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
           takeDocument={(Object as any).assign({}, this.state.takeDocument)}
           active={this.state.activeBlockIndex}
         />
-        <button
-          className="editor__button video__button--save"
-          onClick={this.handleSaveClick}
-        >
-          Save
-        </button>
+        {metaBlock}
         <TimelineView setFactHandlers={setFactHandlers} />
       </div>
     );

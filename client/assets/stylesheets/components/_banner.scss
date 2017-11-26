@@ -16,10 +16,10 @@
   @include body--small('sans');
 }
 
-.banner__text--reg {
-  color: palette(banner, text);
+.banner__text--red {
+  color: palette(banner, text--red);
 }
 
-.banner__text--link {
-  color: palette(banner, text--link);
+.banner__text--green {
+  color: palette(banner, text--green);
 }

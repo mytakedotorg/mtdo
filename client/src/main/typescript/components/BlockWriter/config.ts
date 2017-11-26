@@ -5,7 +5,8 @@ let initialState: BlockWriterState = {
     title: "",
     blocks: [{ kind: "paragraph", text: "" }]
   },
-  activeBlockIndex: -1
+  activeBlockIndex: -1,
+  status: "INITIAL"
 };
 
 export default { initialState };

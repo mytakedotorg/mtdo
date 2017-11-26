@@ -15,7 +15,8 @@ describe("A series of editor actions", () => {
         title: "",
         blocks: [{ kind: "paragraph", text: "" }]
       },
-      activeBlockIndex: -1
+      activeBlockIndex: -1,
+      status: "INITIAL"
     };
 
     wrapper = mount(<BlockWriter initState={initState} />);

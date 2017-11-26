@@ -117,5 +117,5 @@ $palettes: (
       text: $base-darkest,
       text--link: $base-light
     ),
-  banner: (text: $action, text--link: $base-light)
+  banner: (text--red: $action, text--green: $secondary)
 );
