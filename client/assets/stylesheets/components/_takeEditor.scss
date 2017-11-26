@@ -161,3 +161,12 @@
     background: palette(editor, document__background);
   }
 }
+.editor__button {
+  @include button;
+  @include button--blue;
+  @include text-margin;
+}
+.editor__meta {
+  height: 35px;
+  line-height: 35px;
+}

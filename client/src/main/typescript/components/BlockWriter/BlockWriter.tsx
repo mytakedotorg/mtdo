@@ -350,7 +350,7 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
       case "UNSAVED":
         metaBlock = (
           <button
-            className="editor__button video__button--save"
+            className="editor__button editor__button--save"
             onClick={this.handleSaveClick}
           >
             Save
@@ -374,8 +374,10 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
           takeDocument={(Object as any).assign({}, this.state.takeDocument)}
           active={this.state.activeBlockIndex}
         />
-        {metaBlock}
         <div className="editor__wrapper">
+          <div className="editor__meta">
+            {metaBlock}
+          </div>
           <p className="timeline__instructions">
             Add Facts to your Take from the timeline below.
           </p>
