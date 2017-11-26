@@ -132,12 +132,14 @@ function loadUser() {
         "</a>" +
         '<div class="header__dropdown-container">' +
         '<ul class="header__dropdown header__dropdown--collapse">' +
-        // Be sure to change SASS variable if you add or remove nav links (cd assets && grep -Rn user-nav-items: *
-        '<li class="header__dropdown-list-item"><a class="header__dropdown-link" href="#">New Take</a></li>' +
+        // Be sure to change SASS variable if you add or remove nav links (cd assets && grep -Rn user-nav-items: *)
+        '<li class="header__dropdown-list-item"><a class="header__dropdown-link" href="/drafts/new">New Take</a></li>' +
         '<li class="header__dropdown-list-item"><a class="header__dropdown-link" href="#">Published Takes</a></li>' +
-        '<li class="header__dropdown-list-item"><a class="header__dropdown-link" href="#">Draft Takes</a></li>' +
+        '<li class="header__dropdown-list-item"><a class="header__dropdown-link" href="/drafts">Draft Takes</a></li>' +
         '<li class="header__dropdown-list-item"><a class="header__dropdown-link" href="#">Bookmarks</a></li>' +
-        '<li class="header__dropdown-list-item"><a class="header__dropdown-link" href="#">Profile</a></li>' +
+        '<li class="header__dropdown-list-item"><a class="header__dropdown-link" href="/' +
+        loginUi.username +
+        '">Profile</a></li>' +
         '<li class="header__dropdown-list-item"><a class="header__dropdown-link" href="#">Settings</a></li>' +
         '<li class="header__dropdown-list-item"><a class="header__dropdown-link" href="#">Help</a></li>' +
         '<li class="header__dropdown-list-item"><a class="header__dropdown-link" href="/logout">Logout</a></li>' +
