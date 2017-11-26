@@ -260,9 +260,6 @@ export default class Timeline extends React.Component<
     return (
       <div className={"timeline"}>
         <div className="timeline__inner-container">
-          <p className="timeline__instructions">
-            Choose the type of Fact you wish to explore.
-          </p>
           <div className="timeline__actions">
             <input
               type="radio"

@@ -13,6 +13,9 @@ class Foundation extends React.Component<FoundationProps, {}> {
       <div className="foundation">
         <div className="foundation__inner-container">
           <h1 className="foundation__heading">Foundation of Facts</h1>
+          <p className="timeline__instructions">
+            Explore Facts in the timeline below.
+          </p>
         </div>
         <TimelineView />
       </div>

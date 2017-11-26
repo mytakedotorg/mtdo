@@ -49,6 +49,11 @@ export default class TimelineView extends React.Component<
             ranges={ranges}
             offset={props.initialRange.offset}
           />
+          <div className="editor__wrapper">
+            <p className="timeline__instructions">
+              Explore other Facts in the timeline below.
+            </p>
+          </div>
           <Timeline onItemClick={this.showPreview} />
         </div>
       );

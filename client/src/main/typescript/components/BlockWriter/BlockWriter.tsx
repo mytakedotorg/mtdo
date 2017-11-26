@@ -375,6 +375,11 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
           active={this.state.activeBlockIndex}
         />
         {metaBlock}
+        <div className="editor__wrapper">
+          <p className="timeline__instructions">
+            Add Facts to your Take from the timeline below.
+          </p>
+        </div>
         <TimelineView setFactHandlers={setFactHandlers} />
       </div>
     );
