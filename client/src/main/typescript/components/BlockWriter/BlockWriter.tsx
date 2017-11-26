@@ -240,7 +240,7 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
     };
     fetch("/drafts/save", request)
       .then(
-        function(response) {
+        function(response: Response) {
           const contentType = response.headers.get("content-type");
           if (contentType && contentType.indexOf("application/json") >= 0) {
             return response.json();
