@@ -8,6 +8,8 @@ import BlockEditor, {
 } from "../BlockEditor";
 import TimelineView from "../TimelineView";
 import Banner from "../Banner";
+import { DraftRev } from "../../java2ts/DraftRev";
+import { DraftPost } from "../../java2ts/DraftPost";
 
 interface BlockWriterProps {
   initState: BlockWriterState;
@@ -16,6 +18,7 @@ interface BlockWriterProps {
 export interface BlockWriterState {
   takeDocument: TakeDocument;
   activeBlockIndex: number;
+  parentRev?: DraftRev;
 }
 
 class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
@@ -212,6 +215,44 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
       }
     }
   };
+  handleSaveClick = () => {
+    const headers = new Headers();
+
+    headers.append("Accept", "application/json"); // This one is enough for GET requests
+    headers.append("Content-Type", "application/json"); // This one sends body
+
+    //TODO: enforce title length <= 255
+    const bodyJson: DraftPost = {
+      parentRev: this.state.parentRev,
+      title: this.state.takeDocument.title,
+      blocks: this.state.takeDocument.blocks
+    };
+    const request: RequestInit = {
+      method: "POST",
+      credentials: "include",
+      headers: headers,
+      body: JSON.stringify(bodyJson)
+    };
+    fetch("/drafts/save", request)
+      .then(function(response) {
+        const contentType = response.headers.get("content-type");
+        if (contentType && contentType.indexOf("application/json") >= 0) {
+          return response.json();
+        }
+        throw new TypeError("Oops, we haven't got JSON!");
+      })
+      .then(
+        function(json) {
+          const parentRev: DraftRev = json;
+          this.setState({
+            parentRev: parentRev
+          });
+        }.bind(this)
+      )
+      .catch(function(error) {
+        throw error;
+      });
+  };
   handleTakeBlockChange = (stateIndex: number, value: string): void => {
     if (stateIndex === -1) {
       // Change the title
@@ -287,7 +328,12 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
           takeDocument={(Object as any).assign({}, this.state.takeDocument)}
           active={this.state.activeBlockIndex}
         />
-        <Banner />
+        <button
+          className="editor__button video__button--save"
+          onClick={this.handleSaveClick}
+        >
+          Save
+        </button>
         <TimelineView setFactHandlers={setFactHandlers} />
       </div>
     );
