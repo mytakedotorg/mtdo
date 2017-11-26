@@ -1,0 +1,27 @@
+.form__label {
+  display: block;
+  @include body--small('sans');
+  color: palette(form, text);
+}
+.form__input {
+  box-sizing: border-box;
+  display: block;
+  @include body--small('sans');
+  color: palette(form, text);
+  width: 200px;
+}
+.form__submit {
+  @include button;
+  margin-top: 2rem;
+}
+.form__submit--red {
+  @include button--red;
+}
+.form__submit--blue {
+  @include button--blue;
+}
+.error {
+  @include body--small('sans');
+  font-weight: 700;
+  color: palette(form, text--action);
+}

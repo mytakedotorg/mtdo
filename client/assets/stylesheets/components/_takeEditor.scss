@@ -164,7 +164,8 @@
 .editor__button {
   @include button;
   @include button--blue;
-  @include text-margin;
+  @include text-margin-lr;
+  line-height: 35px;
 }
 .editor__meta {
   height: 35px;
