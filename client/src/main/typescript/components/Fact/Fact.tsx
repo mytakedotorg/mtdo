@@ -21,7 +21,7 @@ class Fact extends React.Component<FactProps, {}> {
     viewRange: [number, number]
   ): void => {
     window.location.href =
-      "/new-take/#" +
+      "/drafts/new/#" +
       excerptTitle +
       "&" +
       highlightedRange[0] +
@@ -42,7 +42,7 @@ class Fact extends React.Component<FactProps, {}> {
     range: [number, number]
   ): void => {
     window.location.href =
-      "/new-take/#" +
+      "/drafts/new/#" +
       excerptTitle +
       "&" +
       range[0] +

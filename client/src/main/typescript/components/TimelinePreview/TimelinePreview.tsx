@@ -133,7 +133,12 @@ export default class TimelinePreview extends React.Component<
         this.props.setFactHandlers.handleVideoSetClick(excerptId, videoRange);
       } else {
         window.location.href =
-          "/new-take/#" + excerptId + "&" + videoRange[0] + "&" + videoRange[1];
+          "/drafts/new/#" +
+          excerptId +
+          "&" +
+          videoRange[0] +
+          "&" +
+          videoRange[1];
       }
     } else {
       let highlightedRange = this.state.highlightedRange;
@@ -146,7 +151,7 @@ export default class TimelinePreview extends React.Component<
         );
       } else {
         window.location.href =
-          "/new-take/#" +
+          "/drafts/new/#" +
           excerptId +
           "&" +
           highlightedRange[0] +
