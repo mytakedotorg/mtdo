@@ -22,7 +22,7 @@ interface NewTakeArgs {
 declare global {
   interface Window {
     mytake?: HomeArgs | ShowTakeArgs | FoundationArgs | NewTakeArgs;
-  }
+  } 
 }
 
 let Root;
@@ -78,8 +78,18 @@ if (typeof window.mytake != "undefined") {
       break;
     case "new-take":
       let initJson: BlockWriterState;
-      if (typeof window.mytake.blockWriterState != "undefined") {
-        initJson = window.mytake.blockWriterState;
+      let windowState = window.mytake.blockWriterState;
+      if (typeof windowState != "undefined") {
+        if (windowState.takeDocument.blocks === null || windowState.takeDocument.blocks.length === 0) {
+          windowState = {
+            ...windowState,
+            takeDocument: {
+              ...windowState.takeDocument,
+              blocks: [...config.initialState.takeDocument.blocks]
+            }
+          }
+        }
+        initJson = windowState;
       } else if (window.location.hash) {
         // Expect hash URL to be like, #{FoundationType}&{highlightRangeStart}&{highlightRangeEnd}&{viewRangeStart}&{viewRangeEnd}&{URL of Take being read}
         // localhost:3000/new-take/#amendments&369&514&/samples/does-a-law-mean-what-it-says-or-what-it-meant/

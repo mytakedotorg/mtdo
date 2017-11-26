@@ -8,9 +8,31 @@ Existing draft -> Strings are not-null, all ids are meaningful
 @views.naked.template("MyTake.org", "Your bicycle for politics", "react") -> {
 <div id="app"></div>
 <script type="text/javascript">
+
+@if (title == null && blocksJson == null) {
 window.mytake = {
 	type: "new-take"
 };
+} else {
+var blockWriterState = {
+	takeDocument: {
+	title: "@title",
+	blocks: @raw(blocksJson)
+	},
+	activeBlockIndex: 1,
+	parentRev: {
+	draftid: @raw(draftid),
+	lastrevid: @raw(lastrevid)
+	},
+	status: "INITIAL"
+};
+
+window.mytake = {
+	type: "new-take",
+	blockWriterState: blockWriterState
+};
+}
+
 </script>
 @* TODO
 A save button.  When you click it, it makes a post with these fields:
