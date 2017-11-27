@@ -2,7 +2,7 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 
 interface BannerProps {
-  isSuccess: boolean;
+  isSuccess?: boolean;
 }
 
 class Banner extends React.Component<BannerProps, {}> {
@@ -21,9 +21,11 @@ class Banner extends React.Component<BannerProps, {}> {
     return (
       <div className="banner">
         <div className="banner__inner-container">
-          <p className={textClasses}>
-            {this.props.children}
-          </p>
+          {this.props.children
+            ? <p className={textClasses}>
+                {this.props.children}
+              </p>
+            : null}
         </div>
       </div>
     );

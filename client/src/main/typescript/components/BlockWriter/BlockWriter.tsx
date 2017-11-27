@@ -10,6 +10,7 @@ import TimelineView from "../TimelineView";
 import Banner from "../Banner";
 import { DraftRev } from "../../java2ts/DraftRev";
 import { DraftPost } from "../../java2ts/DraftPost";
+import { PublishResult } from "../../java2ts/PublishResult";
 
 interface BlockWriterProps {
   initState: BlockWriterState;
@@ -220,44 +221,98 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
       }
     }
   };
+  handleDeleteClick = () => {
+    if (typeof this.state.parentRev != undefined && this.state.parentRev) {
+      const bodyJson: DraftRev = {
+        draftid: this.state.parentRev.draftid,
+        lastrevid: this.state.parentRev.lastrevid
+      };
+      this.postRequest(
+        "/drafts/delete",
+        bodyJson,
+        function(json: any) {
+          // Not expecting a server response, so this will never execute.
+        }.bind(this)
+      );
+    }
+  };
+  handlePublishClick = () => {
+    const bodyJson: DraftPost = {
+      parentRev: this.state.parentRev,
+      title: this.state.takeDocument.title,
+      blocks: this.state.takeDocument.blocks
+    };
+    this.postRequest(
+      "/drafts/publish",
+      bodyJson,
+      function(json: PublishResult) {
+        if (!json.conflict) {
+          window.location.href = json.publishedUrl;
+        } else {
+          this.setState({
+            status: "ERROR"
+          });
+        }
+      }.bind(this)
+    );
+  };
   handleSaveClick = () => {
-    const headers = new Headers();
-
-    headers.append("Accept", "application/json"); // This one is enough for GET requests
-    headers.append("Content-Type", "application/json"); // This one sends body
-
     //TODO: enforce title length <= 255
     const bodyJson: DraftPost = {
       parentRev: this.state.parentRev,
       title: this.state.takeDocument.title,
       blocks: this.state.takeDocument.blocks
     };
+    this.postRequest(
+      "/drafts/save",
+      bodyJson,
+      function(json: DraftRev) {
+        const parentRev: DraftRev = json;
+        this.setState({
+          parentRev: parentRev,
+          status: "SAVED"
+        });
+      }.bind(this)
+    );
+  };
+  postRequest = (
+    route: string,
+    bodyJson: DraftPost | DraftRev,
+    successCb: (json: DraftRev) => void
+  ) => {
+    const headers = new Headers();
+
+    headers.append("Accept", "application/json"); // This one is enough for GET requests
+    headers.append("Content-Type", "application/json"); // This one sends body
+
     const request: RequestInit = {
       method: "POST",
       credentials: "include",
       headers: headers,
       body: JSON.stringify(bodyJson)
     };
-    fetch("/drafts/save", request)
+    fetch(route, request)
       .then(
         function(response: Response) {
           const contentType = response.headers.get("content-type");
-          if (contentType && contentType.indexOf("application/json") >= 0) {
+          if (
+            contentType &&
+            contentType.indexOf("application/json") >= 0 &&
+            response.ok
+          ) {
             return response.json();
+          } else if (route === "/drafts/delete" && response.ok) {
+            window.location.href = "/drafts";
+          } else {
+            this.setState({
+              status: "ERROR"
+            });
           }
-          this.setState({
-            status: "ERROR"
-          });
-          throw new TypeError("Oops, we haven't got JSON!");
         }.bind(this)
       )
       .then(
         function(json: DraftRev) {
-          const parentRev: DraftRev = json;
-          this.setState({
-            parentRev: parentRev,
-            status: "SAVED"
-          });
+          successCb(json);
         }.bind(this)
       )
       .catch(
@@ -265,7 +320,6 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
           this.setState({
             status: "ERROR"
           });
-          throw error;
         }.bind(this)
       );
   };
@@ -339,30 +393,83 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
       handleVideoSetClick: this.addVideo
     };
 
+    let deleteButton = (
+      <button
+        className="editor__button editor__button--delete"
+        onClick={this.handleDeleteClick}
+      >
+        Delete Draft
+      </button>
+    );
+
+    let publishButton = (
+      <button
+        className="editor__button editor__button--publish"
+        onClick={this.handlePublishClick}
+      >
+        Save &amp; Publish
+      </button>
+    );
+
+    let saveButton = (
+      <button
+        className="editor__button editor__button--save"
+        onClick={this.handleSaveClick}
+      >
+        Save
+      </button>
+    );
+
+    let disabledSaveButton = (
+      <button className="editor__button editor__button--disabled" disabled>
+        Save
+      </button>
+    );
+
     let metaBlock;
     switch (this.state.status) {
       case "INITIAL":
-        metaBlock = null;
+        metaBlock = (
+          <div className="editor__meta">
+            <Banner />
+            {disabledSaveButton}
+            {publishButton}
+            {deleteButton}
+          </div>
+        );
         break;
       case "SAVED":
-        metaBlock = <Banner isSuccess={true}>Save successful!</Banner>;
+        metaBlock = (
+          <div className="editor__meta">
+            <Banner isSuccess={true}>Save successful!</Banner>
+            {disabledSaveButton}
+            {publishButton}
+            {deleteButton}
+          </div>
+        );
         break;
       case "UNSAVED":
         metaBlock = (
-          <button
-            className="editor__button editor__button--save"
-            onClick={this.handleSaveClick}
-          >
-            Save
-          </button>
+          <div className="editor__meta">
+            <Banner />
+            {saveButton}
+            {publishButton}
+            {deleteButton}
+          </div>
         );
         break;
       case "ERROR":
         metaBlock = (
-          <Banner isSuccess={false}>
-            There was an error saving your take.
-          </Banner>
+          <div className="editor__meta">
+            <Banner isSuccess={false}>
+              There was an error saving your take.
+            </Banner>
+            {saveButton}
+            {publishButton}
+            {deleteButton}
+          </div>
         );
+        break;
       default:
         metaBlock = null;
     }
@@ -375,9 +482,7 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
           active={this.state.activeBlockIndex}
         />
         <div className="editor__wrapper">
-          <div className="editor__meta">
-            {metaBlock}
-          </div>
+          {metaBlock}
           <p className="timeline__instructions">
             Add Facts to your Take from the timeline below.
           </p>

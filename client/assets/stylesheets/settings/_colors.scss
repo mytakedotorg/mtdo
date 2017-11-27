@@ -105,10 +105,12 @@ $palettes: (
       background--base: $base,
       background--action-hover: $action-light,
       background--base-hover: $base-light,
+      background--disabled: lighten($base-lightest, 20%),
       color--action: $white,
       color--base: $white,
       color--action-shadow: $base,
-      color--base-shadow: $base-darkest
+      color--base-shadow: $base-darkest,
+      color--disabled: $base-lightest
     ),
   about:
     (
