@@ -25,6 +25,7 @@ import javax.annotation.Nullable;
 import org.jooby.Env;
 import org.jooby.Jooby;
 import org.jooby.Results;
+import org.jooby.Status;
 import org.jooq.DSLContext;
 import org.jooq.Result;
 
@@ -34,15 +35,16 @@ public class Drafts implements Jooby.Module {
 	public static final String URL_NEW = URL + "/new";
 	public static final String URL_SAVE = URL + "/save";
 	public static final String URL_PUBLISH = URL + "/publish";
+	public static final String URL_DELETE = URL + "/delete";
 
 	/** Returns the existing draft, if present, for the given draft post. */
 	@Nullable
-	private TakedraftRecord draft(DSLContext dsl, AuthUser user, DraftPost post) {
-		if (post.parentRev == null) {
+	private TakedraftRecord draft(DSLContext dsl, AuthUser user, @Nullable DraftRev parentRev) {
+		if (parentRev == null) {
 			return null;
 		} else {
 			TakedraftRecord draft = dsl.selectFrom(TAKEDRAFT)
-					.where(TAKEDRAFT.ID.eq(post.parentRev.draftid))
+					.where(TAKEDRAFT.ID.eq(parentRev.draftid))
 					.and(TAKEDRAFT.USER_ID.eq(user.id()))
 					.fetchOne();
 			if (draft == null) {
@@ -73,12 +75,24 @@ public class Drafts implements Jooby.Module {
 				return views.Drafts.listDrafts.template(drafts);
 			}
 		});
-		// save a draft
+		env.router().post(URL_DELETE, req -> {
+			AuthUser user = AuthUser.auth(req);
+			DraftRev rev = req.body(DraftRev.class);
+			try (DSLContext dsl = req.require(DSLContext.class)) {
+				TakedraftRecord draft = draft(dsl, user, rev);
+				if (draft.getLastRevision().intValue() == rev.lastrevid) {
+					deleteDraft(dsl, draft);
+					return Status.OK;
+				} else {
+					return NotFound.result();
+				}
+			}
+		});
 		env.router().post(URL_SAVE, req -> {
 			AuthUser user = AuthUser.auth(req);
 			DraftPost post = req.body(DraftPost.class);
 			try (DSLContext dsl = req.require(DSLContext.class)) {
-				TakedraftRecord draft = draft(dsl, user, post);
+				TakedraftRecord draft = draft(dsl, user, post.parentRev);
 
 				TakerevisionRecord rev = dsl.newRecord(TAKEREVISION);
 				rev.setTitle(post.title);
@@ -112,19 +126,9 @@ public class Drafts implements Jooby.Module {
 			AuthUser user = AuthUser.auth(req);
 			DraftPost post = req.body(DraftPost.class);
 			try (DSLContext dsl = req.require(DSLContext.class)) {
-				TakedraftRecord draft = draft(dsl, user, post);
+				TakedraftRecord draft = draft(dsl, user, post.parentRev);
 				if (draft != null) {
-					// delete the draft
-					draft.delete();
-					// and all of its revs
-					Integer parentId = draft.getLastRevision();
-					while (parentId != null) {
-						parentId = dsl.deleteFrom(TAKEREVISION)
-								.where(TAKEREVISION.ID.eq(parentId))
-								.returning(TAKEREVISION.PARENT_ID)
-								.fetchOne()
-								.getParentId();
-					}
+					deleteDraft(dsl, draft);
 				}
 
 				// create a published take
@@ -159,6 +163,20 @@ public class Drafts implements Jooby.Module {
 				}
 			}
 		});
+	}
+
+	private static void deleteDraft(DSLContext dsl, TakedraftRecord draft) {
+		// delete the draft
+		draft.delete();
+		// and all of its revs
+		Integer parentId = draft.getLastRevision();
+		while (parentId != null) {
+			parentId = dsl.deleteFrom(TAKEREVISION)
+					.where(TAKEREVISION.ID.eq(parentId))
+					.returning(TAKEREVISION.PARENT_ID)
+					.fetchOne()
+					.getParentId();
+		}
 	}
 
 	private static DraftRev postResponse(TakedraftRecord draft) {

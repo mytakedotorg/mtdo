@@ -97,4 +97,27 @@ public class DraftsTest {
 				.statusCode(Status.FOUND.value())
 				.header("Location", "/samples/a-test-article");
 	}
+
+	@Test
+	public void _05_deleteDraft() {
+		DraftRev rev = new DraftRev();
+		rev.draftid = 4;
+		rev.lastrevid = 4;
+		// lastrevid is actually 5, so this should fail
+		dev.givenUser("samples")
+				.contentType(ContentType.JSON)
+				.body(rev.toJson())
+				.post("/drafts/delete")
+				.then()
+				.statusCode(Status.NOT_FOUND.value());
+
+		// and this should succeed
+		rev.lastrevid = 5;
+		dev.givenUser("samples")
+				.contentType(ContentType.JSON)
+				.body(rev.toJson())
+				.post("/drafts/delete")
+				.then()
+				.statusCode(Status.OK.value());
+	}
 }
