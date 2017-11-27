@@ -7,7 +7,7 @@
 package java2ts;
 
 @jsweet.lang.Interface
-public class PublishResult {
+public class PublishResult implements Json {
 	public String publishedUrl;
 	public boolean conflict;
 }
