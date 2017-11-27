@@ -1,0 +1,35 @@
+import com.diffplug.gradle.FileMisc;
+
+apply plugin: 'java'
+clean {
+	delete 'src/main/resources'
+}
+
+class FoundationTask {
+	FoundationTask() {
+		dependsOn(':foundation-tools:compile')
+	}
+
+	@InputDirectory File src
+	@OutputDirectory File target
+	@Input String loader
+
+	@TaskAction
+	void execute() {
+		FileMisc.cleanDir(target)
+		src.eachFile {
+			
+		}
+	}
+}
+
+task documents(type: FoundationTask) {
+	src = file('src/main/documents')
+	target = file('src/main/resources/documents')
+	loader = 'foundation-loader.js'
+}
+task video(type: FoundationTask) {
+	src = file('src/main/video')
+	target = file('src/main/resources/video')
+	loader = 'vtt-loader.js'
+}
