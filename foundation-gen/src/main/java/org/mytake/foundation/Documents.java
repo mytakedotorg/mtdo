@@ -1,11 +1,19 @@
 package org.mytake.foundation;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Documents {
-	public static Documents national() {
-		Documents documents = new Documents();
+import org.mytake.foundation.parsers.FoundationParser;
+
+public class Documents extends Database {
+	public static Documents national() throws NoSuchAlgorithmException, IOException {
+		Documents documents = new Documents(
+				new File("src/main/resources/document"),
+				new File("../foundation/src/main/resources/foundation"));
 		documents.add("United States Constitution", "1788-06-21");
 		documents.add("Bill of Rights", "1791-12-15");
 		documents.add("Amendment 11", "1795-02-07");
@@ -28,21 +36,17 @@ public class Documents {
 		return documents;
 	}
 
-	static class DocumentFact {
-		public String title;
-		public String filename;
-		public String primaryDate;
-		public String primaryDateKind;
+	public Documents(File srcDir, File dstDir) {
+		super(srcDir, dstDir);
 	}
 
-	List<DocumentFact> facts = new ArrayList<>();
+	private void add(String title, String date) throws NoSuchAlgorithmException, IOException {
+		add(title, date, "ratified", "document");
+	}
 
-	private DocumentFact add(String title, String date) {
-		DocumentFact fact = new DocumentFact();
-		fact.title = title;
-		fact.primaryDate = date;
-		fact.primaryDateKind = "ratified";
-		facts.add(fact);
-		return fact;
+	@Override
+	protected String titleToContent(String title) {
+		String input = read(slugify(title) + ".foundation.html");
+		return FoundationParser.toJson(input);
 	}
 }

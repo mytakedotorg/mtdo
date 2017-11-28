@@ -4,28 +4,74 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
+import java.util.Locale;
 
+import com.diffplug.common.base.Errors;
 import com.jsoniter.output.JsonStream;
 
-public class Database {
-	List<Videos.VideoFact> videos;
-	List<Documents.DocumentFact> excerpts;
+import java2ts.Foundation;
+import java2ts.Foundation.Fact;
 
-	public static void main(String[] args) throws IOException {
-		Database database = new Database();
-		database.videos = Videos.national().facts;
-		database.excerpts = Documents.national().facts;
+public abstract class Database {
+	final List<Fact> facts = new ArrayList<>();
+	final File dstDir;
+	final File srcDir;
+
+	public Database(File srcDir, File dstDir) {
+		this.srcDir = srcDir;
+		this.dstDir = dstDir;
+	}
+
+	public String read(String filename) {
+		Path path = new File(srcDir, filename).toPath();
+		return Errors.rethrow().get(() -> {
+			return new String(Files.readAllBytes(path), StandardCharsets.UTF_8);
+		});
+	}
+
+	protected static String slugify(String input) {
+		return input.toLowerCase(Locale.ROOT)
+				.replace(' ', '-') // replace spaces with hyphens
+				.replaceAll("[-]+", "-") // replace multiple hypens with a single hyphen
+				.replaceAll("[^\\w-]+", ""); // replace non-alphanumerics and non-hyphens
+	}
+
+	protected abstract String titleToContent(String title);
+
+	protected void add(String title, String date, String dateKind, String kind) throws NoSuchAlgorithmException, IOException {
+		Fact fact = new Fact();
+		fact.title = title;
+		fact.primaryDate = date;
+		fact.primaryDateKind = dateKind;
+		fact.kind = kind;
+		byte[] content = titleToContent(title).getBytes(StandardCharsets.UTF_8);
+
+		MessageDigest digest = MessageDigest.getInstance("SHA-256");
+		byte[] hash = digest.digest(content);
+		String url = Base64.getUrlEncoder().encodeToString(hash);
+		fact.url = url;
+		Files.write(dstDir.toPath().resolve(url), content);
+		facts.add(fact);
+	}
+
+	public static void main(String[] args) throws IOException, NoSuchAlgorithmException {
+		List<Foundation.Fact> documents = Documents.national().facts;
 
 		Path foundation = Paths.get("../foundation/src/main/resources/foundation");
 		try (OutputStream output = new BufferedOutputStream(
 				Files.newOutputStream(foundation.resolve("index.js"))
-						)) {
-			JsonStream.serialize(database, output);
+				)) {
+			JsonStream.serialize(documents, output);
 		}
 
 		Path speakermapSrc = Paths.get("src/main/resources/video/speakermap");

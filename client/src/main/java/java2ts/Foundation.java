@@ -18,7 +18,7 @@ public interface Foundation {
 	@jsweet.lang.Interface
 	public class Fact {
 		public String title;
-		public Date primaryDate;
+		public String primaryDate; // yyyy-mm-dd
 		public String primaryDateKind;
 		public String kind;
 		public String url;

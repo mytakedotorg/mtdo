@@ -2,9 +2,15 @@ apply plugin: 'java'
 apply plugin: 'eclipse'
 eclipse { project { name = 'mytake-foundation-gen' } }
 
-repositories { mavenCentral() }
+repositories {
+	mavenCentral()
+	maven { url 'http://repository.jsweet.org/artifactory/libs-release-local' }
+}
 dependencies {
+	compile project(':client')
 	compile "com.jsoniter:jsoniter:$JSONITER_VER"
+	compile 'org.jsoup:jsoup:1.11.2'
+	compile 'com.diffplug.durian:durian-core:1.2.0'
 	testCompile "junit:junit:$JUNIT_VER"
 	testCompile "org.assertj:assertj-core:$ASSERTJ_VER"
 }

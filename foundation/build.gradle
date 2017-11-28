@@ -41,11 +41,6 @@ class FoundationTask extends DefaultTask {
 	}
 }
 
-task documents(type: FoundationTask) {
-	src = file('../foundation-gen/src/main/resources/document')
-	target = file('src/main/resources/foundation/document')
-	loader = 'foundation-loader.js'
-}
 task video(type: FoundationTask) {
 	src = file('../foundation-gen/src/main/resources/video/vtt')
 	target = file('src/main/resources/foundation/video/vtt')
