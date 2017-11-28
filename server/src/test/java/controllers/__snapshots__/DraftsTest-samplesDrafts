@@ -54,21 +54,26 @@
 	</div>
 </header>
 
-You have 2 drafts.
+<div class="takelist">
+<p class="takelist__text">You have 2 drafts.</p>
 
-		<h2><a href="/drafts/1">In my opinion</a></h2>
-		<span>Last edited Jan 01 1970</span>
-		<h2><a href="/drafts/2">In other words</a></h2>
-		<span>Last edited Jan 01 1970</span>
-
+	<div class="takelist__take">
+	<h2 class="takelist__title"><a class="takelist__link" href="/drafts/1">In my opinion</a></h2>
+	<span class="takelist__aside">Last edited Jan 01 1970</span>
+	</div>
+	<div class="takelist__take">
+	<h2 class="takelist__title"><a class="takelist__link" href="/drafts/2">In other words</a></h2>
+	<span class="takelist__aside">Last edited Jan 01 1970</span>
+	</div>
+</div>
 
 
 <footer class="footer">
 <hr class="footer__hr" />
 	<ul class="nav__list nav__list--bottom">
-	<li class="nav__list-item nav__list-item--bottom"><a class="nav__link nav__link--bottom" href="/foundation/" tabindex="5"><span class="nav__link-text nav__link-text--bottom">Explore the Foundation</span></a></li>
-	<li class="nav__list-item nav__list-item--bottom"><a class="nav__link nav__link--bottom" href="/new-take/" tabindex="6"><span class="nav__link-text nav__link-text--bottom">Give your Take</span></a></li>
-	<li class="nav__list-item nav__list-item--bottom"><a class="nav__link nav__link--bottom" href="/about/" tabindex="7"><span class="nav__link-text nav__link-text--bottom">About us</span></a></li>
+	<li class="nav__list-item nav__list-item--bottom"><a class="nav__link nav__link--bottom" href="/foundation" tabindex="5"><span class="nav__link-text nav__link-text--bottom">Explore the Foundation</span></a></li>
+	<li class="nav__list-item nav__list-item--bottom"><a class="nav__link nav__link--bottom" href="/drafts/new" tabindex="6"><span class="nav__link-text nav__link-text--bottom">Give your Take</span></a></li>
+	<li class="nav__list-item nav__list-item--bottom"><a class="nav__link nav__link--bottom" href="/aboutus" tabindex="7"><span class="nav__link-text nav__link-text--bottom">About us</span></a></li>
 	</ul>
 </footer>
 <script type="text/javascript" src="/assets-dev/window.bundle.js"></script>
