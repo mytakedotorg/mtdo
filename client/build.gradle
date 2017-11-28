@@ -31,9 +31,8 @@ repositories {
 	maven { url 'http://repository.jsweet.org/artifactory/libs-release-local' }
 }
 dependencies {
-	// must match versions in server
-	compile 'com.jsoniter:jsoniter:0.9.17'
-	compile 'org.jsweet:jsweet-core:5-20170726'
+	compile "com.jsoniter:jsoniter:$JSONITER_VER"
+	compile "org.jsweet:jsweet-core:$JSWEET_CORE_VER"
 }
 
 apply plugin: 'eclipse'

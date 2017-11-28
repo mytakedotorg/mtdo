@@ -96,9 +96,9 @@ dependencies {
 	compile "org.jooby:jooby-assets:$JOOBY_VER"
 	testCompile "org.jooby:jooby-whoops:$JOOBY_VER"
 
-	// json (must match versions in client)
-	compile 'com.jsoniter:jsoniter:0.9.17'
-	compile 'org.jsweet:jsweet-core:5-20170726'
+	// json
+	compile "com.jsoniter:jsoniter:$JSONITER_VER"
+	compile "org.jsweet:jsweet-core:$JSWEET_CORE_VER"
 	compile project(':client')
 	compile project(':foundation')
 

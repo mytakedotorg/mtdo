@@ -1,13 +1,11 @@
-import com.diffplug.gradle.FileMisc;
-import com.diffplug.gradle.CmdLine;
+import com.diffplug.gradle.FileMisc
+import com.diffplug.gradle.CmdLine
 
 apply plugin: 'java'
 apply plugin: 'eclipse'
 eclipse { project { name = 'mytake-foundation' } }
 
-clean {
-	delete 'src/main/resources'
-}
+clean { delete 'src/main/resources' }
 
 class FoundationTask extends DefaultTask {
 	FoundationTask() {
@@ -33,7 +31,13 @@ class FoundationTask extends DefaultTask {
 		src.eachFile { file ->
 			project.exec {
 				environment = ['NODE_PATH': nodeModules.absolutePath]
-				commandLine = [node.absolutePath, harness.absolutePath, loader, file.absolutePath, target.absolutePath + '/' + file.name]
+				commandLine = [
+					node.absolutePath,
+					harness.absolutePath,
+					loader,
+					file.absolutePath,
+					target.absolutePath + '/' + file.name
+				]
 			}
 		}
 	}

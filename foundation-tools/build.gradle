@@ -1,3 +1,6 @@
+apply plugin: 'java'
+apply plugin: 'eclipse'
+eclipse { project { name = 'mytake-foundation-tools' } }
 
-// TODO: compile typescript somewhere, and use it in the foundation project
-task compile
+repositories { mavenCentral() }
+dependencies { compile "com.jsoniter:jsoniter:$JSONITER_VER" }

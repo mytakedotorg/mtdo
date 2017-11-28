@@ -1,4 +1,9 @@
 import { TakeBlock } from "../components/BlockEditor";
+import { Foundation } from "../java2ts/Foundation";
+import Person = Foundation.Person;
+import SpeakerMap = Foundation.SpeakerMap;
+import CaptionWord = Foundation.CaptionWord;
+import CaptionMeta = Foundation.CaptionMeta;
 
 /**
  * Constraints:
@@ -43,28 +48,6 @@ export interface VideoFact {
   primaryDateKind: "recorded";
   captionFile?: string; //JSON.stringify(CaptionWord[])
   captionMeta?: CaptionMeta;
-}
-
-export interface CaptionMeta {
-  speakers: Person[];
-  speakerMap: SpeakerMap[];
-}
-
-export interface CaptionWord {
-  idx: number;
-  word: string;
-  timestamp: number;
-}
-
-interface Person {
-  firstname: string;
-  middlename?: string;
-  lastname: string;
-}
-
-export interface SpeakerMap {
-  speaker: string; //Last name of Person object
-  range: [number, number];
 }
 
 export function isDocument(
