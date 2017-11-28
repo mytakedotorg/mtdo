@@ -68,12 +68,12 @@
  * @easyTrial.openForm("id", "htmlForm")
  * // <form action="/url/for/post" method="post" id="htmlForm">
  * 
- * @easyTrial.field("email").errorSpan().label("Email").input("email", "class", "form-control")
+ * @easyTrial.field("email").errorSpan("class", "error").label("Email").input("email", "class", "form-control")
  * // <span class="error">Some error message</span>  // only if there is an error
  * // <label for="email">Email</label>
  * // <input name="email" type="email" class="form-control"
- * @easyTrial.field("phone").errorSpan().label("Phone").input("tel", "class", "form-control")
- * @easyTrial.field("mailinglist").errorSpan().label("Notify me about new features via email").input("checkbox", "checked", null)
+ * @easyTrial.field("phone").errorSpan("class", "error").label("Phone").input("tel", "class", "form-control")
+ * @easyTrial.field("mailinglist").errorSpan("class", "error").label("Notify me about new features via email").input("checkbox", "checked", null)
  * <input type="submit" value="Send me a trial right now" name="subscribe" id="mc-embedded-subscribe"
  *         class="button btn btn-primary pull-right">
  * @easyTrial.closeForm()
