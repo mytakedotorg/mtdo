@@ -1,6 +1,7 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import TimelineView from "../TimelineView";
+import { routes } from "../../utils/routes";
 
 interface FactProps {
   articleTitle: string;
@@ -21,7 +22,8 @@ class Fact extends React.Component<FactProps, {}> {
     viewRange: [number, number]
   ): void => {
     window.location.href =
-      "/new-take/#" +
+      routes.DRAFTS_NEW +
+      "/#" +
       excerptTitle +
       "&" +
       highlightedRange[0] +
@@ -42,7 +44,8 @@ class Fact extends React.Component<FactProps, {}> {
     range: [number, number]
   ): void => {
     window.location.href =
-      "/new-take/#" +
+      routes.DRAFTS_NEW +
+      "/#" +
       excerptTitle +
       "&" +
       range[0] +

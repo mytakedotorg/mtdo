@@ -8,6 +8,10 @@ import BlockEditor, {
 } from "../BlockEditor";
 import TimelineView from "../TimelineView";
 import Banner from "../Banner";
+import { DraftRev } from "../../java2ts/DraftRev";
+import { DraftPost } from "../../java2ts/DraftPost";
+import { PublishResult } from "../../java2ts/PublishResult";
+import { routes } from "../../utils/routes";
 
 interface BlockWriterProps {
   initState: BlockWriterState;
@@ -16,6 +20,8 @@ interface BlockWriterProps {
 export interface BlockWriterState {
   takeDocument: TakeDocument;
   activeBlockIndex: number;
+  parentRev?: DraftRev;
+  status: "INITIAL" | "SAVED" | "UNSAVED" | "ERROR";
 }
 
 class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
@@ -103,7 +109,8 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
         ...this.state.takeDocument,
         blocks: newBlocks
       },
-      activeBlockIndex: activeBlockIndex + indexAddition
+      activeBlockIndex: activeBlockIndex + indexAddition,
+      status: "UNSAVED"
     });
   };
   addDocument = (
@@ -150,7 +157,8 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
         ...this.state.takeDocument,
         blocks: newBlocks
       },
-      activeBlockIndex: newIndex
+      activeBlockIndex: newIndex,
+      status: "UNSAVED"
     });
   };
   addVideo = (id: string, range: [number, number]): void => {
@@ -198,7 +206,8 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
         takeDocument: {
           ...this.state.takeDocument,
           blocks: [...blocks.slice(0, idx), ...blocks.slice(idx + 1)]
-        }
+        },
+        status: "UNSAVED"
       });
     } else {
       if (blocks.length === 1 && blocks[0].kind === "document") {
@@ -207,10 +216,113 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
           takeDocument: {
             ...this.state.takeDocument,
             blocks: [{ kind: "paragraph", text: "" }]
-          }
+          },
+          status: "UNSAVED"
         });
       }
     }
+  };
+  handleDeleteClick = () => {
+    if (typeof this.state.parentRev != undefined && this.state.parentRev) {
+      const bodyJson: DraftRev = {
+        draftid: this.state.parentRev.draftid,
+        lastrevid: this.state.parentRev.lastrevid
+      };
+      this.postRequest(
+        routes.DRAFTS_DELETE,
+        bodyJson,
+        function(json: any) {
+          // Not expecting a server response, so this will never execute.
+        }.bind(this)
+      );
+    }
+  };
+  handlePublishClick = () => {
+    const bodyJson: DraftPost = {
+      parentRev: this.state.parentRev,
+      title: this.state.takeDocument.title,
+      blocks: this.state.takeDocument.blocks
+    };
+    this.postRequest(
+      routes.DRAFTS_PUBLISH,
+      bodyJson,
+      function(json: PublishResult) {
+        if (!json.conflict) {
+          window.location.href = json.publishedUrl;
+        } else {
+          this.setState({
+            status: "ERROR"
+          });
+        }
+      }.bind(this)
+    );
+  };
+  handleSaveClick = () => {
+    //TODO: enforce title length <= 255
+    const bodyJson: DraftPost = {
+      parentRev: this.state.parentRev,
+      title: this.state.takeDocument.title,
+      blocks: this.state.takeDocument.blocks
+    };
+    this.postRequest(
+      routes.DRAFTS_SAVE,
+      bodyJson,
+      function(json: DraftRev) {
+        const parentRev: DraftRev = json;
+        this.setState({
+          parentRev: parentRev,
+          status: "SAVED"
+        });
+      }.bind(this)
+    );
+  };
+  postRequest = (
+    route: string,
+    bodyJson: DraftPost | DraftRev,
+    successCb: (json: DraftRev) => void
+  ) => {
+    const headers = new Headers();
+
+    headers.append("Accept", "application/json"); // This one is enough for GET requests
+    headers.append("Content-Type", "application/json"); // This one sends body
+
+    const request: RequestInit = {
+      method: "POST",
+      credentials: "include",
+      headers: headers,
+      body: JSON.stringify(bodyJson)
+    };
+    fetch(route, request)
+      .then(
+        function(response: Response) {
+          const contentType = response.headers.get("content-type");
+          if (
+            contentType &&
+            contentType.indexOf("application/json") >= 0 &&
+            response.ok
+          ) {
+            return response.json();
+          } else if (route === "/drafts/delete" && response.ok) {
+            window.location.href = "/drafts";
+          } else {
+            this.setState({
+              status: "ERROR"
+            });
+          }
+        }.bind(this)
+      )
+      .then(
+        function(json: DraftRev) {
+          successCb(json);
+        }.bind(this)
+      )
+      .catch(
+        function(error: Error) {
+          this.setState({
+            status: "ERROR"
+          });
+        }.bind(this)
+      );
   };
   handleTakeBlockChange = (stateIndex: number, value: string): void => {
     if (stateIndex === -1) {
@@ -220,7 +332,8 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
           ...this.state.takeDocument,
           title: value
         },
-        activeBlockIndex: -1
+        activeBlockIndex: -1,
+        status: "UNSAVED"
       });
     } else {
       const blocks = [...this.state.takeDocument.blocks];
@@ -255,7 +368,8 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
           ...this.state.takeDocument,
           blocks: newBlocks
         },
-        activeBlockIndex: newIndex
+        activeBlockIndex: newIndex,
+        status: "UNSAVED"
       });
     }
   };
@@ -280,6 +394,87 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
       handleVideoSetClick: this.addVideo
     };
 
+    let deleteButton = (
+      <button
+        className="editor__button editor__button--delete"
+        onClick={this.handleDeleteClick}
+      >
+        Delete Draft
+      </button>
+    );
+
+    let publishButton = (
+      <button
+        className="editor__button editor__button--publish"
+        onClick={this.handlePublishClick}
+      >
+        Save &amp; Publish
+      </button>
+    );
+
+    let saveButton = (
+      <button
+        className="editor__button editor__button--save"
+        onClick={this.handleSaveClick}
+      >
+        Save
+      </button>
+    );
+
+    let disabledSaveButton = (
+      <button className="editor__button editor__button--disabled" disabled>
+        Save
+      </button>
+    );
+
+    let metaBlock;
+    switch (this.state.status) {
+      case "INITIAL":
+        metaBlock = (
+          <div className="editor__meta">
+            <Banner />
+            {disabledSaveButton}
+            {publishButton}
+            {deleteButton}
+          </div>
+        );
+        break;
+      case "SAVED":
+        metaBlock = (
+          <div className="editor__meta">
+            <Banner isSuccess={true}>Save successful!</Banner>
+            {disabledSaveButton}
+            {publishButton}
+            {deleteButton}
+          </div>
+        );
+        break;
+      case "UNSAVED":
+        metaBlock = (
+          <div className="editor__meta">
+            <Banner />
+            {saveButton}
+            {publishButton}
+            {deleteButton}
+          </div>
+        );
+        break;
+      case "ERROR":
+        metaBlock = (
+          <div className="editor__meta">
+            <Banner isSuccess={false}>
+              There was an error saving your take.
+            </Banner>
+            {saveButton}
+            {publishButton}
+            {deleteButton}
+          </div>
+        );
+        break;
+      default:
+        metaBlock = null;
+    }
+
     return (
       <div>
         <BlockEditor
@@ -287,7 +482,12 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
           takeDocument={(Object as any).assign({}, this.state.takeDocument)}
           active={this.state.activeBlockIndex}
         />
-        <Banner />
+        <div className="editor__wrapper">
+          {metaBlock}
+          <p className="timeline__instructions">
+            Add Facts to your Take from the timeline below.
+          </p>
+        </div>
         <TimelineView setFactHandlers={setFactHandlers} />
       </div>
     );

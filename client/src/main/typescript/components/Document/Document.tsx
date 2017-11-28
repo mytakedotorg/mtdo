@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import * as _ from "lodash";
+import isEqual = require("lodash/isEqual");
 import {
   getNodeArray,
   getCaptionNodeArray,
@@ -53,7 +53,7 @@ class Document extends React.Component<DocumentProps, DocumentState> {
 
   componentWillReceiveProps(nextProps: DocumentProps) {
     if (
-      !_.isEqual(this.state.documentNodes, nextProps.nodes) &&
+      !isEqual(this.state.documentNodes, nextProps.nodes) &&
       nextProps.nodes !== undefined
     ) {
       this.setState({

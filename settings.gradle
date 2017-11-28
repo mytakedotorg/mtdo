@@ -1,2 +1,4 @@
 include 'client'
+include 'foundation'
+include 'foundation-tools'
 include 'server'

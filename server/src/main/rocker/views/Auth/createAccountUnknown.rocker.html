@@ -12,8 +12,8 @@
 		<div class="content-bg">
 			@createAccount.formError()
 			@createAccount.openForm("id", "create")
-				@createAccount.field(AuthModule.CREATE_USERNAME).label("Username").errorSpan().input("text", "class", "form-control")
-				@createAccount.field(AuthModule.CREATE_EMAIL).label("Email").errorSpan().input("email", "class", "form-control")
+				@createAccount.field(AuthModule.CREATE_USERNAME).label("Username").errorSpan("class", "form__error").input("text", "class", "form-control")
+				@createAccount.field(AuthModule.CREATE_EMAIL).label("Email").errorSpan("class", "form__error").input("email", "class", "form-control")
 				@createAccount.field(AuthModule.REDIRECT).input("hidden")
 				<input type="submit" class="btn btn-success" value="Try again" />
 			@createAccount.closeForm()

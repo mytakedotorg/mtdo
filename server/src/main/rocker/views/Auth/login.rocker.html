@@ -5,33 +5,33 @@
 
 @views.base.template("Log in", "Login or create an account") -> {
 	@if (loginReason != null) {
-		<div class="alert alert-success">@loginReason</div>
-	}
-	<section id="login">
-		<div class="heading-line">
-			<h2>Log in</h2>
-		</div>
-		<div class="content-bg">
-			@loginForm.openForm("id", "login")
-				@loginForm.field(AuthModule.LOGIN_EMAIL).label("Email").errorSpan().input("text", "class", "form-control")
-				@loginForm.field(AuthModule.REDIRECT).input("hidden")
-				<input type="submit" class="btn btn-success" value="Log in" />
-			@loginForm.closeForm()
-		</div>
+		<section class="section">
+	<p class="section__text section__text--alert">@loginReason</p>
 	</section>
+}
+<section class="section">
+	<div class="section__inner section__inner--login">
+	<h2 class="section__heading">Log in</h2>
+	<div class="section__content">
+		@loginForm.openForm("class", "form form--login")
+		@loginForm.field(AuthModule.LOGIN_EMAIL).label("Email", "class", "form__label form__label--email").errorSpan("class", "form__error").input("email", "class", "form__input form__input--email")
+		@loginForm.field(AuthModule.REDIRECT).input("hidden")
+		<input type="submit" class="form__submit form__submit--blue" value="Log in" />
+		@loginForm.closeForm()
+	</div>
+	</div>
 
-	<section id="create">
-		<div class="heading-line">
-			<h2>Create account</h2>
-		</div>
-		<div class="content-bg">
-			@createAccount.openForm("id", "create")
-				@createAccount.field(AuthModule.CREATE_USERNAME).label("Username").errorSpan().input("text", "class", "form-control")
-				@createAccount.field(AuthModule.CREATE_EMAIL).label("Email").errorSpan().input("email", "class", "form-control")
-				@createAccount.field(AuthModule.REDIRECT).input("hidden")
-				<input type="submit" class="btn btn-success" value="Claim username" />
-			@createAccount.closeForm()
-		</div>
-	</section>
+	<div class="section__inner section__inner--create">
+	<h2 class="section__heading">Create account</h2>
+	<div class="section__content">
+		@createAccount.openForm("class", "form form--create")
+		@createAccount.field(AuthModule.CREATE_USERNAME).label("Username", "class", "form__label form__label--username").errorSpan("class", "form__error").input("text", "class", "form__input form__input--username")
+		@createAccount.field(AuthModule.CREATE_EMAIL).label("Email", "class", "form__label form__label--email").errorSpan("class", "form__error").input("email", "class", "form__input form__input--email")
+		@createAccount.field(AuthModule.REDIRECT).input("hidden")
+		<input type="submit" class="form__submit form__submit--red" value="Claim username" />
+		@createAccount.closeForm()
+	</div>
+	</div>
+</section>
 
 }

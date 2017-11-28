@@ -12,12 +12,9 @@ module.exports = {
     path: __dirname + "/dist/"
   },
 
-  // Enable sourcemaps for debugging webpack's output.
-  //devtool: "source-map",
-
   resolve: {
     // Add '.ts' and '.tsx' as resolvable extensions.
-    extensions: [".ts", ".tsx", ".js", ".json", ".jpg"]
+    extensions: [".ts", ".tsx", ".js", ".json"]
   },
   resolveLoader: {
     modules: ["node_modules", __dirname + "/loaders/dist"]
@@ -31,28 +28,10 @@ module.exports = {
         loader: "awesome-typescript-loader"
       },
 
-      // All output '.js' files will have any sourcemaps re-processed by 'source-map-loader'.
-      {
-        enforce: "pre",
-        test: /\.js$/,
-        exclude: /node_modules/,
-        loader: "source-map-loader"
-      },
-
       // All files with a '.html' extension will be handled by 'html-loader'.
       {
         test: /\.foundation\.html$/,
         loaders: ["html-loader", "foundation-loader"]
-      },
-
-      {
-        test: /\.(png|jpg)$/,
-        loader: "url-loader?limit=8192"
-      }, // inline base64 URLs for <=8k images, direct URLs for the rest
-
-      {
-        test: /\.sbv$/,
-        loader: ["html-loader", "sbv-loader"]
       },
 
       {
@@ -68,11 +47,8 @@ module.exports = {
   // dependencies, which allows browsers to cache those libraries between builds.
   externals: {
     react: "React",
-    "react-dom": "ReactDOM"
+    "react-dom": "ReactDOM",
+    vis: "vis"
   },
-  plugins: [
-    new UglifyJSPlugin({
-      sourceMap: true
-    })
-  ]
+  plugins: [new UglifyJSPlugin()]
 };

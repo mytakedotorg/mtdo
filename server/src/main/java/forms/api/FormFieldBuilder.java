@@ -18,10 +18,12 @@ public class FormFieldBuilder extends RockerRaw {
 		this.validation = validation;
 	}
 
-	public FormFieldBuilder errorSpan() {
+	public FormFieldBuilder errorSpan(String... attributes) {
 		String error = validation.errorForField(field);
 		if (error != null) {
-			appendRaw("<span class=\"error\">");
+			appendRaw("<span");
+			appendAttr(attributes);
+			appendRaw(">");
 			appendSafe(validation.errorForField(field));
 			appendRaw("</span>\n");
 		}

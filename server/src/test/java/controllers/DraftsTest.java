@@ -14,6 +14,7 @@ import io.restassured.http.ContentType;
 import java.util.function.Consumer;
 import java2ts.DraftPost;
 import java2ts.DraftRev;
+import java2ts.PublishResult;
 import org.assertj.core.api.Assertions;
 import org.jooby.Status;
 import org.junit.ClassRule;
@@ -89,12 +90,38 @@ public class DraftsTest {
 		post.parentRev.draftid = 5;
 		post.parentRev.lastrevid = 6;
 
-		dev.givenUser("samples")
+		byte[] body = dev.givenUser("samples")
 				.contentType(ContentType.JSON)
 				.body(post.toJson())
 				.post("/drafts/publish")
 				.then()
-				.statusCode(Status.FOUND.value())
-				.header("Location", "/samples/a-test-article");
+				.statusCode(Status.OK.value())
+				.extract().asByteArray();
+		PublishResult result = JsonIterator.deserialize(body, PublishResult.class);
+		Assertions.assertThat(result.publishedUrl).isEqualTo("/samples/a-test-article");
+		Assertions.assertThat(result.conflict).isFalse();
+	}
+
+	@Test
+	public void _05_deleteDraft() {
+		DraftRev rev = new DraftRev();
+		rev.draftid = 4;
+		rev.lastrevid = 4;
+		// lastrevid is actually 5, so this should fail
+		dev.givenUser("samples")
+				.contentType(ContentType.JSON)
+				.body(rev.toJson())
+				.post("/drafts/delete")
+				.then()
+				.statusCode(Status.NOT_FOUND.value());
+
+		// and this should succeed
+		rev.lastrevid = 5;
+		dev.givenUser("samples")
+				.contentType(ContentType.JSON)
+				.body(rev.toJson())
+				.post("/drafts/delete")
+				.then()
+				.statusCode(Status.OK.value());
 	}
 }

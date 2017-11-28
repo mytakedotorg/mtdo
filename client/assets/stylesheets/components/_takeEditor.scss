@@ -161,3 +161,29 @@
     background: palette(editor, document__background);
   }
 }
+.editor__button {
+  @include button;
+  @include text-margin-lr;
+  line-height: 35px;
+}
+.editor__button--save {
+  @include button--blue;
+}
+.editor__button--publish {
+  @include button--red;
+}
+.editor__button--delete {
+  @include button--red;
+}
+.editor__button--disabled {
+  border: none;
+  color: palette(button, color--disabled);
+  background: palette(button, background--disabled);
+  &:hover {
+    cursor: not-allowed;
+  }
+}
+.editor__meta {
+  height: 70px;
+  line-height: 35px;
+}

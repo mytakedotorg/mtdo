@@ -1,25 +1,22 @@
 .banner {
   margin: 0 auto;
   background-color: palette(about, background);
-  width: $column-width;
   max-width: 100%;
-}
-
-.banner__inner-container {
-  padding: 0 $page-margin-mobile;
-  @media #{$mq-medium} {
-    padding: 0 $page-margin;
-  }
+  height: 35px;
 }
 
 .banner__text {
   @include body--small('sans');
+  @include text-margin;
+  margin-top: 0;
+  margin-bottom: 0;
+  line-height: 35px;
 }
 
-.banner__text--reg {
-  color: palette(banner, text);
+.banner__text--red {
+  color: palette(banner, text--red);
 }
 
-.banner__text--link {
-  color: palette(banner, text--link);
+.banner__text--green {
+  color: palette(banner, text--green);
 }

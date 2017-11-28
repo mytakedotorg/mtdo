@@ -1,0 +1,28 @@
+.section {
+  width: $column-width;
+  max-width: 100%;
+  margin: $content-margin auto;
+  background-color: palette(section, background);
+  @include clearfix;
+}
+.section__heading {
+  @include heading2;
+  margin-top: 0;
+  margin-bottom: $content-margin;
+  color: palette(section, text);
+}
+.section__inner {
+  float: left;
+  width: 368px;
+  height: 230px;
+}
+.section__inner--login {
+  border-right: 1px solid palette(section, border);
+  margin-right: 30px;
+}
+.section__text {
+  @include body--lead;
+}
+.section__text--alert {
+  color: palette(section, text--alert);
+}

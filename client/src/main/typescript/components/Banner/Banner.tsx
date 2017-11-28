@@ -1,32 +1,31 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
-interface BannerProps {}
+interface BannerProps {
+  isSuccess?: boolean;
+}
 
 class Banner extends React.Component<BannerProps, {}> {
   constructor(props: BannerProps) {
     super(props);
   }
   render() {
+    let textClasses: string = "banner__text";
+
+    if (this.props.isSuccess) {
+      textClasses += " banner__text--green";
+    } else {
+      textClasses += " banner__text--red";
+    }
+
     return (
       <div className="banner">
         <div className="banner__inner-container">
-          <p className="banner__text banner__text--reg">
-            Unfortunately Takes can't be saved yet. If you really like what you
-            wrote, feel free to screenshot it and share it with us at {" "}
-            <a
-              className="banner__text banner__text--link"
-              href="mailto:edgar.twigg@gmail.com?Subject=Take%20Screenshot"
-            >
-              edgar.twigg@gmail.com
-            </a>. For more information please refer to{" "}
-            <a
-              className="banner__text banner__text--link"
-              href="https://github.com/mytake/mytake/blob/master/WORK_IN_PROGRESS.md"
-            >
-              how to use the MyTake.org prototype
-            </a>.
-          </p>
+          {this.props.children
+            ? <p className={textClasses}>
+                {this.props.children}
+              </p>
+            : null}
         </div>
       </div>
     );

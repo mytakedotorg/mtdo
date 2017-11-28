@@ -19,6 +19,7 @@ import {
   isDocument,
   isVideo
 } from "../../utils/databaseData";
+import { routes } from "../../utils/routes";
 
 export interface SetFactHandlers {
   handleDocumentSetClick: (
@@ -133,7 +134,13 @@ export default class TimelinePreview extends React.Component<
         this.props.setFactHandlers.handleVideoSetClick(excerptId, videoRange);
       } else {
         window.location.href =
-          "/new-take/#" + excerptId + "&" + videoRange[0] + "&" + videoRange[1];
+          routes.DRAFTS_NEW +
+          "/#" +
+          excerptId +
+          "&" +
+          videoRange[0] +
+          "&" +
+          videoRange[1];
       }
     } else {
       let highlightedRange = this.state.highlightedRange;
@@ -146,7 +153,8 @@ export default class TimelinePreview extends React.Component<
         );
       } else {
         window.location.href =
-          "/new-take/#" +
+          routes.DRAFTS_NEW +
+          "/#" +
           excerptId +
           "&" +
           highlightedRange[0] +

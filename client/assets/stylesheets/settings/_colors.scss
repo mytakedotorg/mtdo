@@ -105,10 +105,12 @@ $palettes: (
       background--base: $base,
       background--action-hover: $action-light,
       background--base-hover: $base-light,
+      background--disabled: lighten($base-lightest, 20%),
       color--action: $white,
       color--base: $white,
       color--action-shadow: $base,
-      color--base-shadow: $base-darkest
+      color--base-shadow: $base-darkest,
+      color--disabled: $base-lightest
     ),
   about:
     (
@@ -117,5 +119,13 @@ $palettes: (
       text: $base-darkest,
       text--link: $base-light
     ),
-  banner: (text: $action, text--link: $base-light)
+  banner: (text--red: $action, text--green: $secondary),
+  section:
+    (
+      background: $white,
+      border: $base,
+      text: $base-darkest,
+      text--alert: $action
+    ),
+  form: (text: $base-darkest, text--action: $action)
 );
