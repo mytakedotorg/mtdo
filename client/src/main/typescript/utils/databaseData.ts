@@ -4,7 +4,11 @@ import Person = Foundation.Person;
 import SpeakerMap = Foundation.SpeakerMap;
 import CaptionWord = Foundation.CaptionWord;
 import CaptionMeta = Foundation.CaptionMeta;
-export { Person, SpeakerMap, CaptionWord, CaptionMeta };
+
+export type CaptionMeta = CaptionMeta;
+export type CaptionWord = CaptionWord;
+export type Person = Person;
+export type SpeakerMap = SpeakerMap;
 
 /**
  * Constraints:
