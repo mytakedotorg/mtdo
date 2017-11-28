@@ -4,6 +4,7 @@ import Person = Foundation.Person;
 import SpeakerMap = Foundation.SpeakerMap;
 import CaptionWord = Foundation.CaptionWord;
 import CaptionMeta = Foundation.CaptionMeta;
+export { Person, SpeakerMap, CaptionWord, CaptionMeta };
 
 /**
  * Constraints:
