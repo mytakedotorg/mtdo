@@ -120,6 +120,12 @@ $palettes: (
       text--link: $base-light
     ),
   banner: (text--red: $action, text--green: $secondary),
-  section: (background: $white, border: $base, text: $base-darkest),
+  section:
+    (
+      background: $white,
+      border: $base,
+      text: $base-darkest,
+      text--alert: $action
+    ),
   form: (text: $base-darkest, text--action: $action)
 );

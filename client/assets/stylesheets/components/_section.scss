@@ -20,3 +20,9 @@
   border-right: 1px solid palette(section, border);
   margin-right: 30px;
 }
+.section__text {
+  @include body--lead;
+}
+.section__text--alert {
+  color: palette(section, text--alert);
+}

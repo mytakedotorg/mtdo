@@ -20,7 +20,7 @@
 .form__submit--blue {
   @include button--blue;
 }
-.error {
+.form__error {
   @include body--small('sans');
   font-weight: 700;
   color: palette(form, text--action);
