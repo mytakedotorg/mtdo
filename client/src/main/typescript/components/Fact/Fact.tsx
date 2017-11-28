@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import TimelineView from "../TimelineView";
-import { routes } from "../../utils/routes";
+import { Routes } from "../../java2ts/Routes";
 
 interface FactProps {
   articleTitle: string;
@@ -22,7 +22,7 @@ class Fact extends React.Component<FactProps, {}> {
     viewRange: [number, number]
   ): void => {
     window.location.href =
-      routes.DRAFTS_NEW +
+      Routes.DRAFTS_NEW +
       "/#" +
       excerptTitle +
       "&" +
@@ -44,7 +44,7 @@ class Fact extends React.Component<FactProps, {}> {
     range: [number, number]
   ): void => {
     window.location.href =
-      routes.DRAFTS_NEW +
+      Routes.DRAFTS_NEW +
       "/#" +
       excerptTitle +
       "&" +

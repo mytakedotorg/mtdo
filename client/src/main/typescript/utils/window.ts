@@ -2,7 +2,7 @@
 * Small screen navigation toggle
 **/
 import { LoginCookie } from "../java2ts/LoginCookie";
-import { routes } from "./routes";
+import { Routes } from "../java2ts/Routes";
 
 const body = document.body;
 const loginDiv = document.getElementById("login");
@@ -135,20 +135,20 @@ function loadUser() {
         '<ul class="header__dropdown header__dropdown--collapse">' +
         // Be sure to change SASS variable if you add or remove nav links (cd assets && grep -Rn user-nav-items: *)
         '<li class="header__dropdown-list-item"><a class="header__dropdown-link" href="' +
-        routes.DRAFTS_NEW +
+        Routes.DRAFTS_NEW +
         '">New Take</a></li>' +
         '<li class="header__dropdown-list-item"><a class="header__dropdown-link" href="/' +
         loginUi.username +
         '">Published Takes</a></li>' +
         '<li class="header__dropdown-list-item"><a class="header__dropdown-link" href="' +
-        routes.DRAFTS +
+        Routes.DRAFTS +
         '">Drafts</a></li>' +
         '<li class="header__dropdown-list-item"><a class="header__dropdown-link" href="#">Bookmarks</a></li>' +
         '<li class="header__dropdown-list-item"><a class="header__dropdown-link" href="#">Profile</a></li>' +
         '<li class="header__dropdown-list-item"><a class="header__dropdown-link" href="#">Settings</a></li>' +
         '<li class="header__dropdown-list-item"><a class="header__dropdown-link" href="#">Help</a></li>' +
         '<li class="header__dropdown-list-item"><a class="header__dropdown-link" href="' +
-        routes.LOGOUT +
+        Routes.LOGOUT +
         '">Logout</a></li>' +
         "</ul>" +
         "</div>";
@@ -158,7 +158,7 @@ function loadUser() {
     if (loginDiv) {
       loginDiv.innerHTML =
         '<a class="header__icon header__icon--login" href="' +
-        routes.LOGIN +
+        Routes.LOGIN +
         '">Login</a>';
     }
   }

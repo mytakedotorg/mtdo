@@ -12,7 +12,7 @@ import EditorButtons from "./EditorButtons";
 import { DraftRev } from "../../java2ts/DraftRev";
 import { DraftPost } from "../../java2ts/DraftPost";
 import { PublishResult } from "../../java2ts/PublishResult";
-import { routes } from "../../utils/routes";
+import { Routes } from "../../java2ts/Routes";
 
 interface BlockWriterProps {
   initState: BlockWriterState;
@@ -238,7 +238,7 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
         lastrevid: this.state.parentRev.lastrevid
       };
       this.postRequest(
-        routes.DRAFTS_DELETE,
+        Routes.DRAFTS_DELETE,
         bodyJson,
         function(json: any) {
           // Not expecting a server response, so this will never execute.
@@ -253,7 +253,7 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
       blocks: this.state.takeDocument.blocks
     };
     this.postRequest(
-      routes.DRAFTS_PUBLISH,
+      Routes.DRAFTS_PUBLISH,
       bodyJson,
       function(json: PublishResult) {
         if (!json.conflict) {
@@ -274,7 +274,7 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
       blocks: this.state.takeDocument.blocks
     };
     this.postRequest(
-      routes.DRAFTS_SAVE,
+      Routes.DRAFTS_SAVE,
       bodyJson,
       function(json: DraftRev) {
         const parentRev: DraftRev = json;

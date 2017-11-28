@@ -19,7 +19,7 @@ import {
   isDocument,
   isVideo
 } from "../../utils/databaseData";
-import { routes } from "../../utils/routes";
+import { Routes } from "../../java2ts/Routes";
 
 export interface SetFactHandlers {
   handleDocumentSetClick: (
@@ -134,7 +134,7 @@ export default class TimelinePreview extends React.Component<
         this.props.setFactHandlers.handleVideoSetClick(excerptId, videoRange);
       } else {
         window.location.href =
-          routes.DRAFTS_NEW +
+          Routes.DRAFTS_NEW +
           "/#" +
           excerptId +
           "&" +
@@ -153,7 +153,7 @@ export default class TimelinePreview extends React.Component<
         );
       } else {
         window.location.href =
-          routes.DRAFTS_NEW +
+          Routes.DRAFTS_NEW +
           "/#" +
           excerptId +
           "&" +
