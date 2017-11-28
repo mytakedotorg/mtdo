@@ -12,6 +12,38 @@ import java2ts.StringTypes.recorded;
 import jsweet.util.tuple.Tuple2;
 
 public interface Foundation {
+	///////////////////////////////
+	// Unused, but what I'd like //
+	///////////////////////////////
+	@jsweet.lang.Interface
+	public class Fact {
+		public String title;
+		public Date primaryDate;
+		public String primaryDateKind;
+		public String content;
+	}
+
+	@jsweet.lang.Interface
+	public class VideoFactContent {
+		public List<Person> speakers;
+		public List<CaptionWord> transcript;
+		public List<SpeakerMap> speakerMap;
+	}
+
+	@jsweet.lang.Interface
+	public class DocumentComponent {
+		public String component;
+		public String innerHTML;
+	}
+
+	@jsweet.lang.Interface
+	public class DocumentFactContent {
+		public List<DocumentComponent> components;
+	}
+
+	//////////////////
+	// What we have //
+	//////////////////
 	@jsweet.lang.Interface
 	public class DocumentFact {
 		public String title;
