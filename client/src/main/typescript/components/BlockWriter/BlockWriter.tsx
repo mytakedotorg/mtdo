@@ -8,6 +8,7 @@ import BlockEditor, {
 } from "../BlockEditor";
 import TimelineView from "../TimelineView";
 import Banner from "../Banner";
+import EditorButtons from "./EditorButtons";
 import { DraftRev } from "../../java2ts/DraftRev";
 import { DraftPost } from "../../java2ts/DraftPost";
 import { PublishResult } from "../../java2ts/PublishResult";
@@ -17,11 +18,19 @@ interface BlockWriterProps {
   initState: BlockWriterState;
 }
 
+export type Status = "INITIAL" | "SAVED" | "UNSAVED" | "ERROR";
+
 export interface BlockWriterState {
   takeDocument: TakeDocument;
   activeBlockIndex: number;
   parentRev?: DraftRev;
-  status: "INITIAL" | "SAVED" | "UNSAVED" | "ERROR";
+  status: Status;
+}
+
+export interface ButtonEventHandlers {
+  handleDeleteClick: () => void;
+  handlePublishClick: () => void;
+  handleSaveClick: () => void;
 }
 
 class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
@@ -394,86 +403,11 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
       handleVideoSetClick: this.addVideo
     };
 
-    let deleteButton = (
-      <button
-        className="editor__button editor__button--delete"
-        onClick={this.handleDeleteClick}
-      >
-        Delete Draft
-      </button>
-    );
-
-    let publishButton = (
-      <button
-        className="editor__button editor__button--publish"
-        onClick={this.handlePublishClick}
-      >
-        Save &amp; Publish
-      </button>
-    );
-
-    let saveButton = (
-      <button
-        className="editor__button editor__button--save"
-        onClick={this.handleSaveClick}
-      >
-        Save
-      </button>
-    );
-
-    let disabledSaveButton = (
-      <button className="editor__button editor__button--disabled" disabled>
-        Save
-      </button>
-    );
-
-    let metaBlock;
-    switch (this.state.status) {
-      case "INITIAL":
-        metaBlock = (
-          <div className="editor__meta">
-            <Banner />
-            {disabledSaveButton}
-            {publishButton}
-            {deleteButton}
-          </div>
-        );
-        break;
-      case "SAVED":
-        metaBlock = (
-          <div className="editor__meta">
-            <Banner isSuccess={true}>Save successful!</Banner>
-            {disabledSaveButton}
-            {publishButton}
-            {deleteButton}
-          </div>
-        );
-        break;
-      case "UNSAVED":
-        metaBlock = (
-          <div className="editor__meta">
-            <Banner />
-            {saveButton}
-            {publishButton}
-            {deleteButton}
-          </div>
-        );
-        break;
-      case "ERROR":
-        metaBlock = (
-          <div className="editor__meta">
-            <Banner isSuccess={false}>
-              There was an error saving your take.
-            </Banner>
-            {saveButton}
-            {publishButton}
-            {deleteButton}
-          </div>
-        );
-        break;
-      default:
-        metaBlock = null;
-    }
+    const buttonEventHandlers: ButtonEventHandlers = {
+      handleDeleteClick: this.handleDeleteClick,
+      handlePublishClick: this.handlePublishClick,
+      handleSaveClick: this.handleSaveClick
+    };
 
     return (
       <div>
@@ -483,7 +417,10 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
           active={this.state.activeBlockIndex}
         />
         <div className="editor__wrapper">
-          {metaBlock}
+          <EditorButtons
+            status={this.state.status}
+            eventHandlers={buttonEventHandlers}
+          />
           <p className="timeline__instructions">
             Add Facts to your Take from the timeline below.
           </p>
