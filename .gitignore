@@ -3,6 +3,7 @@
 /client/src/main/typescript/java2ts/
 /client/src/main/resources/assets/
 /client/src/main/resources/assets-dev/
+/foundation/src/main/resources/
 /server/src/main/jooq-generated/
 /server/src/main/rocker-generated/
 /server/src/test/resources/rocker-compiler.conf

@@ -100,6 +100,7 @@ dependencies {
 	compile 'com.jsoniter:jsoniter:0.9.17'
 	compile 'org.jsweet:jsweet-core:5-20170726'
 	compile project(':client')
+	compile project(':foundation')
 
 	// jooq (version is set by jooq DSL)
 	compile 'org.jooq:jooq'

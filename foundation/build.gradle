@@ -1,13 +1,19 @@
 import com.diffplug.gradle.FileMisc;
+import com.diffplug.gradle.CmdLine;
 
 apply plugin: 'java'
 clean {
 	delete 'src/main/resources'
 }
 
-class FoundationTask {
+class FoundationTask extends DefaultTask {
 	FoundationTask() {
+		// need node_modules
+		dependsOn(':client:npmInstall')
+		// need compile to be done
 		dependsOn(':foundation-tools:compile')
+		// processResources uses this
+		project.tasks.getByName('processResources').dependsOn(this)
 	}
 
 	@InputDirectory File src
@@ -15,21 +21,27 @@ class FoundationTask {
 	@Input String loader
 
 	@TaskAction
-	void execute() {
+	void convert() {
 		FileMisc.cleanDir(target)
-		src.eachFile {
-			
+		File node = project.project(':client').file(".gradle/nodejs/node-v6.10.2-darwin-x64/bin/node")
+		File nodeModules = project.project(':client').file('node_modules')
+		File harness = project.project(':foundation-tools').file('src/main/typescript-compiled/harness.js')
+		src.eachFile { file ->
+			project.exec {
+				environment = ['NODE_PATH': nodeModules.absolutePath]
+				commandLine = ['node', harness.absolutePath, loader, file.absolutePath, target.absolutePath + '/' + file.name]
+			}
 		}
 	}
 }
 
 task documents(type: FoundationTask) {
-	src = file('src/main/documents')
-	target = file('src/main/resources/documents')
+	src = file('src/main/document')
+	target = file('src/main/resources/foundation/document')
 	loader = 'foundation-loader.js'
 }
 task video(type: FoundationTask) {
 	src = file('src/main/video')
-	target = file('src/main/resources/video')
+	target = file('src/main/resources/foundation/video')
 	loader = 'vtt-loader.js'
 }
