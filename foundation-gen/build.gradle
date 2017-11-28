@@ -1,0 +1,27 @@
+apply plugin: 'java'
+apply plugin: 'eclipse'
+eclipse { project { name = 'mytake-foundation-gen' } }
+
+repositories { mavenCentral() }
+dependencies {
+	compile "com.jsoniter:jsoniter:$JSONITER_VER"
+	testCompile "junit:junit:$JUNIT_VER"
+	testCompile "org.assertj:assertj-core:$ASSERTJ_VER"
+}
+
+task generateFoundation(type: JavaExec) {
+	description = 'Generates the foundation'
+	classpath = sourceSets.main.runtimeClasspath
+	main = 'org.mytake.foundation.Database'
+}
+generateFoundation.dependsOn(classes)
+generateFoundation.outputs.file('../foundation/src/main/resources/foundation/index.js')
+
+spotless {
+	java {
+		licenseHeaderFile(rootProject.file('gradle/spotless.license.java'))
+		importOrder()
+		eclipse().configFile(rootProject.file('gradle/spotless.eclipseformat.xml'))
+		removeUnusedImports()
+	}
+}

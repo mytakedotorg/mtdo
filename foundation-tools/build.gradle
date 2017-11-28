@@ -1,6 +1,0 @@
-apply plugin: 'java'
-apply plugin: 'eclipse'
-eclipse { project { name = 'mytake-foundation-tools' } }
-
-repositories { mavenCentral() }
-dependencies { compile "com.jsoniter:jsoniter:$JSONITER_VER" }

@@ -7,7 +7,7 @@ plugins {
 // format build files
 spotless {
 	groovyGradle {
-		target 'build.gradle', 'buildSrc/build.gradle', 'client/build.gradle', 'server/build.gradle'
+		target 'build.gradle', '*/build.gradle'
 		greclipse().configFile(
 				'gradle/spotless.eclipseformat.xml',
 				'gradle/spotless.greclipse.properties'
@@ -28,6 +28,8 @@ eclipseResourceFilters {
 	exclude().folders().name('buildSrc')
 	exclude().folders().name('client')
 	exclude().folders().name('server')
+	exclude().folders().name('foundation')
+	exclude().folders().name('foundation-gen')
 }
 tasks.eclipse.dependsOn(tasks.cleanEclipse)
 

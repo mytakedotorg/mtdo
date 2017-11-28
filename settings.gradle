@@ -1,4 +1,4 @@
 include 'client'
 include 'foundation'
-include 'foundation-tools'
+include 'foundation-gen'
 include 'server'

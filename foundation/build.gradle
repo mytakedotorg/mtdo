@@ -11,8 +11,6 @@ class FoundationTask extends DefaultTask {
 	FoundationTask() {
 		// need node_modules
 		dependsOn(':client:npmInstall')
-		// need compile to be done
-		dependsOn(':foundation-tools:compile')
 		// processResources uses this
 		project.tasks.getByName('processResources').dependsOn(this)
 	}
@@ -27,7 +25,7 @@ class FoundationTask extends DefaultTask {
 		Project client = project.project(':client')
 		File node = MooworkNode.nodeExe(client)
 		File nodeModules = MooworkNode.nodeModules(client)
-		File harness = project.project(':foundation-tools').file('src/main/typescript-compiled/harness.js')
+		File harness = project.project(':foundation-gen').file('src/main/typescript-compiled/harness.js')
 		src.eachFile { file ->
 			project.exec {
 				environment = ['NODE_PATH': nodeModules.absolutePath]
@@ -44,12 +42,13 @@ class FoundationTask extends DefaultTask {
 }
 
 task documents(type: FoundationTask) {
-	src = file('src/main/document')
+	src = file('../foundation-gen/src/main/resources/document')
 	target = file('src/main/resources/foundation/document')
 	loader = 'foundation-loader.js'
 }
 task video(type: FoundationTask) {
-	src = file('src/main/video')
-	target = file('src/main/resources/foundation/video')
+	src = file('../foundation-gen/src/main/resources/video/vtt')
+	target = file('src/main/resources/foundation/video/vtt')
 	loader = 'vtt-loader.js'
 }
+processResources.dependsOn(':foundation-gen:generateFoundation')
