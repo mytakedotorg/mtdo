@@ -1,12 +1,11 @@
 .footer {
-  margin: 0 2rem;
-  @media #{$mq-medium} {
-    margin: 0 auto;
-    width: $column-width;
-  }
+  width: $column-width;
+  max-width: 100%;
+  margin: auto;
   clear: both;
 }
 
 .footer__hr {
+  @include text-margin-lr;
   line-height: 35px;
 }

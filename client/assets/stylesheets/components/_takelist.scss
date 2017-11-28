@@ -1,0 +1,38 @@
+.takelist {
+  width: $column-width;
+  max-width: 100%;
+  margin: auto;
+}
+.takelist__text {
+  @include body--lead;
+  @include text-margin-lr;
+}
+.takelist__user {
+  @include heading1;
+  @include text-margin-lr;
+}
+.takelist__take {
+  @include text-margin-lr;
+  border-top: 1px solid black;
+  margin-bottom: 2rem;
+}
+.takelist__title {
+  @include typography($sans, 700, 24px, 2.5rem);
+  @media #{$mq-small} {
+    @include typography($sans, 700, 24px, 2.5rem);
+  }
+  @media #{$mq-medium} {
+    @include typography($sans, 700, 30px, 3rem);
+  }
+  @media #{$mq-large} {
+    @include typography($sans, 700, 34px, 3.4rem);
+  }
+}
+.takelist__link {
+  text-decoration: none;
+  color: palette(takelist, text);
+}
+.takelist__aside {
+  @include body--small;
+  line-height: 2rem;
+}

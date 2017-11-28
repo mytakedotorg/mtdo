@@ -127,5 +127,6 @@ $palettes: (
       text: $base-darkest,
       text--alert: $action
     ),
-  form: (text: $base-darkest, text--action: $action)
+  form: (text: $base-darkest, text--action: $action),
+  takelist: (text: $base-darkest)
 );
