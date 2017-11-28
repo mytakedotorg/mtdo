@@ -20,11 +20,13 @@ public interface Foundation {
 		public String title;
 		public Date primaryDate;
 		public String primaryDateKind;
-		public String content;
+		public String kind;
+		public String url;
 	}
 
 	@jsweet.lang.Interface
 	public class VideoFactContent {
+		public String youtubeId;
 		public List<Person> speakers;
 		public List<CaptionWord> transcript;
 		public List<SpeakerMap> speakerMap;
