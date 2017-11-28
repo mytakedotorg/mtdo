@@ -11,6 +11,7 @@ import Banner from "../Banner";
 import { DraftRev } from "../../java2ts/DraftRev";
 import { DraftPost } from "../../java2ts/DraftPost";
 import { PublishResult } from "../../java2ts/PublishResult";
+import { routes } from "../../utils/routes";
 
 interface BlockWriterProps {
   initState: BlockWriterState;
@@ -228,7 +229,7 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
         lastrevid: this.state.parentRev.lastrevid
       };
       this.postRequest(
-        "/drafts/delete",
+        routes.DRAFTS_DELETE,
         bodyJson,
         function(json: any) {
           // Not expecting a server response, so this will never execute.
@@ -243,7 +244,7 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
       blocks: this.state.takeDocument.blocks
     };
     this.postRequest(
-      "/drafts/publish",
+      routes.DRAFTS_PUBLISH,
       bodyJson,
       function(json: PublishResult) {
         if (!json.conflict) {
@@ -264,7 +265,7 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
       blocks: this.state.takeDocument.blocks
     };
     this.postRequest(
-      "/drafts/save",
+      routes.DRAFTS_SAVE,
       bodyJson,
       function(json: DraftRev) {
         const parentRev: DraftRev = json;

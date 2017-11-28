@@ -2,6 +2,7 @@
 * Small screen navigation toggle
 **/
 import { LoginCookie } from "../java2ts/LoginCookie";
+import { routes } from "./routes";
 
 const body = document.body;
 const loginDiv = document.getElementById("login");
@@ -133,16 +134,22 @@ function loadUser() {
         '<div class="header__dropdown-container">' +
         '<ul class="header__dropdown header__dropdown--collapse">' +
         // Be sure to change SASS variable if you add or remove nav links (cd assets && grep -Rn user-nav-items: *)
-        '<li class="header__dropdown-list-item"><a class="header__dropdown-link" href="/drafts/new">New Take</a></li>' +
+        '<li class="header__dropdown-list-item"><a class="header__dropdown-link" href="' +
+        routes.DRAFTS_NEW +
+        '">New Take</a></li>' +
         '<li class="header__dropdown-list-item"><a class="header__dropdown-link" href="/' +
         loginUi.username +
         '">Published Takes</a></li>' +
-        '<li class="header__dropdown-list-item"><a class="header__dropdown-link" href="/drafts">Draft Takes</a></li>' +
+        '<li class="header__dropdown-list-item"><a class="header__dropdown-link" href="' +
+        routes.DRAFTS +
+        '">Drafts</a></li>' +
         '<li class="header__dropdown-list-item"><a class="header__dropdown-link" href="#">Bookmarks</a></li>' +
         '<li class="header__dropdown-list-item"><a class="header__dropdown-link" href="#">Profile</a></li>' +
         '<li class="header__dropdown-list-item"><a class="header__dropdown-link" href="#">Settings</a></li>' +
         '<li class="header__dropdown-list-item"><a class="header__dropdown-link" href="#">Help</a></li>' +
-        '<li class="header__dropdown-list-item"><a class="header__dropdown-link" href="/logout">Logout</a></li>' +
+        '<li class="header__dropdown-list-item"><a class="header__dropdown-link" href="' +
+        routes.LOGOUT +
+        '">Logout</a></li>' +
         "</ul>" +
         "</div>";
       return true;
@@ -150,7 +157,9 @@ function loadUser() {
   } else {
     if (loginDiv) {
       loginDiv.innerHTML =
-        '<a class="header__icon header__icon--login" href="/login">Login</a>';
+        '<a class="header__icon header__icon--login" href="' +
+        routes.LOGIN +
+        '">Login</a>';
     }
   }
   return false;
