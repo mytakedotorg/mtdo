@@ -2,6 +2,9 @@ import com.diffplug.gradle.FileMisc;
 import com.diffplug.gradle.CmdLine;
 
 apply plugin: 'java'
+apply plugin: 'eclipse'
+eclipse { project { name = 'mytake-foundation' } }
+
 clean {
 	delete 'src/main/resources'
 }
@@ -23,13 +26,14 @@ class FoundationTask extends DefaultTask {
 	@TaskAction
 	void convert() {
 		FileMisc.cleanDir(target)
-		File node = project.project(':client').file(".gradle/nodejs/node-v6.10.2-darwin-x64/bin/node")
-		File nodeModules = project.project(':client').file('node_modules')
+		Project client = project.project(':client')
+		File node = MooworkNode.nodeExe(client)
+		File nodeModules = MooworkNode.nodeModules(client)
 		File harness = project.project(':foundation-tools').file('src/main/typescript-compiled/harness.js')
 		src.eachFile { file ->
 			project.exec {
 				environment = ['NODE_PATH': nodeModules.absolutePath]
-				commandLine = ['node', harness.absolutePath, loader, file.absolutePath, target.absolutePath + '/' + file.name]
+				commandLine = [node.absolutePath, harness.absolutePath, loader, file.absolutePath, target.absolutePath + '/' + file.name]
 			}
 		}
 	}

@@ -7,8 +7,8 @@ buildscript {
 	dependencies { classpath 'org.jsweet:jsweet-gradle-plugin:2.0.0-rc1' }
 }
 plugins {
-	id 'com.moowork.node' version '1.2.0' // https://github.com/srs/gradle-node-plugin/blob/master/docs/node.md
-	id 'com.moowork.gulp' version '1.2.0' // https://github.com/srs/gradle-node-plugin/blob/master/docs/gulp.md
+	id 'com.moowork.node' // https://github.com/srs/gradle-node-plugin/blob/master/docs/node.md
+	id 'com.moowork.gulp' // https://github.com/srs/gradle-node-plugin/blob/master/docs/gulp.md
 	id 'com.diffplug.gradle.eclipse.excludebuildfolder'
 }
 

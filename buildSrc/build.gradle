@@ -8,6 +8,8 @@ repositories {
 }
 
 dependencies {
+	// https://github.com/sothmann/typescript-gradle-plugin
+	compile 'com.moowork.gradle:gradle-node-plugin:1.2.0'
 	// https://github.com/opentable/otj-pg-embedded
 	compile 'com.opentable.components:otj-pg-embedded:0.10.0'
 	// jooq codegen
