@@ -1,12 +1,14 @@
+/*
+ * MyTake.org
+ *
+ *  Copyright 2017 by its authors.
+ *  Some rights reserved. See LICENSE, https://github.com/mytake/mytake/graphs/contributors
+ */
 package org.mytake.foundation;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.mytake.foundation.parsers.FoundationParser;
 
 public class Documents extends Database {

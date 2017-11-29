@@ -1,3 +1,9 @@
+/*
+ * MyTake.org
+ *
+ *  Copyright 2017 by its authors.
+ *  Some rights reserved. See LICENSE, https://github.com/mytake/mytake/graphs/contributors
+ */
 package org.mytake.foundation;
 
 import java.util.ArrayList;
@@ -13,7 +19,7 @@ public class Videos {
 	}
 
 	List<VideoFact> facts = new ArrayList<>();
-	
+
 	private VideoFact add(String id, String title, String date) {
 		VideoFact fact = new VideoFact();
 		fact.id = id;
@@ -32,8 +38,8 @@ public class Videos {
 		videos.add("LN8F1FGZfzA", "John F. Kennedy - Nixon (4/4)", "1960-10-21");
 		videos.add("GlPjW_2_LXI", "Jimmy Carter - Gerald Ford (1/3)", "1976-09-23");
 
-	//id: "TjHjU0Eu26Y",  // Original video
-	//id: "vIZ6w0kMqUA", // Trimmed for dev work, with captions
+		//id: "TjHjU0Eu26Y",  // Original video
+		//id: "vIZ6w0kMqUA", // Trimmed for dev work, with captions
 		videos.add("GX1kHw2tmtI", "Jimmy Carter - Gerald Ford (2/3)", "1976-10-06").hasCaptions = true;
 
 		videos.add("CipT04S0bVE", "Jimmy Carter - Gerald Ford (3/3)", "1976-10-22");

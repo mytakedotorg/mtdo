@@ -23,6 +23,7 @@ task generateFoundation(type: JavaExec) {
 generateFoundation.dependsOn(classes)
 generateFoundation.outputs.file('../foundation/src/main/resources/foundation/index.js')
 
+apply plugin: 'com.diffplug.gradle.spotless'
 spotless {
 	java {
 		licenseHeaderFile(rootProject.file('gradle/spotless.license.java'))

@@ -1,16 +1,19 @@
+/*
+ * MyTake.org
+ *
+ *  Copyright 2017 by its authors.
+ *  Some rights reserved. See LICENSE, https://github.com/mytake/mytake/graphs/contributors
+ */
 package org.mytake.foundation.parsers;
 
+import com.jsoniter.output.JsonStream;
 import java.util.ArrayList;
 import java.util.List;
-
+import java2ts.Foundation.DocumentComponent;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.mytake.foundation.JsonInit;
-
-import com.jsoniter.output.JsonStream;
-
-import java2ts.Foundation.DocumentComponent;
 
 public class FoundationParser {
 	static {

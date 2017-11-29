@@ -1,5 +1,13 @@
+/*
+ * MyTake.org
+ *
+ *  Copyright 2017 by its authors.
+ *  Some rights reserved. See LICENSE, https://github.com/mytake/mytake/graphs/contributors
+ */
 package org.mytake.foundation;
 
+import com.diffplug.common.base.Errors;
+import com.jsoniter.output.JsonStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.IOException;
@@ -15,10 +23,6 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 import java.util.Locale;
-
-import com.diffplug.common.base.Errors;
-import com.jsoniter.output.JsonStream;
-
 import java2ts.Foundation;
 import java2ts.Foundation.Fact;
 
@@ -69,8 +73,7 @@ public abstract class Database {
 
 		Path foundation = Paths.get("../foundation/src/main/resources/foundation");
 		try (OutputStream output = new BufferedOutputStream(
-				Files.newOutputStream(foundation.resolve("index.js"))
-				)) {
+				Files.newOutputStream(foundation.resolve("index.js")))) {
 			JsonStream.serialize(documents, output);
 		}
 
