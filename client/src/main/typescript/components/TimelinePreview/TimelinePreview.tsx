@@ -13,12 +13,8 @@ import {
   getStartRangeOffsetTop,
   highlightTextTwo
 } from "../../utils/functions";
-import {
-  DocumentFact,
-  VideoFact,
-  isDocument,
-  isVideo
-} from "../../utils/databaseData";
+import { VideoFact, isDocument, isVideo } from "../../utils/databaseData";
+import { Foundation } from "../../java2ts/Foundation";
 import { Routes } from "../../java2ts/Routes";
 
 export interface SetFactHandlers {
@@ -48,7 +44,7 @@ interface TimelinePreviewState {
   textIsHighlighted: boolean;
   highlightedNodes: FoundationNode[];
   offsetTop: number;
-  fact: DocumentFact | VideoFact | null;
+  fact: Foundation.DocumentFact | VideoFact | null;
   headerHidden: boolean;
 }
 

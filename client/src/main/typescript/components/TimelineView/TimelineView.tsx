@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import Timeline from "../Timeline";
+import TimelineContainer from "../TimelineContainer";
 import TimelinePreview, { SetFactHandlers } from "../TimelinePreview";
 
 interface InitialRangeOptions {
@@ -54,13 +54,13 @@ export default class TimelineView extends React.Component<
               Explore other Facts in the timeline below.
             </p>
           </div>
-          <Timeline onItemClick={this.showPreview} />
+          <TimelineContainer onItemClick={this.showPreview} />
         </div>
       );
     } else {
       return (
         <div className={"timeline__view"}>
-          <Timeline onItemClick={this.showPreview} />
+          <TimelineContainer onItemClick={this.showPreview} />
           {this.state.excerptId
             ? <TimelinePreview
                 excerptId={this.state.excerptId}

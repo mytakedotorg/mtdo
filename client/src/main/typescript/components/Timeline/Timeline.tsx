@@ -24,7 +24,7 @@ class TimelineItem extends React.Component<TimelineItemProps, {}> {
   }
 }
 
-interface TimelineItemData {
+export interface TimelineItemData {
   id: string;
   idx: string;
   start: Date;
@@ -36,7 +36,7 @@ interface TimelineRange {
   end: Date;
 }
 
-interface TimelineSelectEventHandlerProps {
+export interface TimelineSelectEventHandlerProps {
   items: TimelineItemData["id"][];
   event: Event;
 }
@@ -104,11 +104,11 @@ interface TimelineOptions {
 
 interface TimelineProps {
   onItemClick: (excerptId: string) => void;
+  selectedOption: "Debates" | "Documents";
+  timelineItems: TimelineItemData[];
 }
 
-interface TimelineState {
-  selectedOption: "Debates" | "Documents";
-}
+interface TimelineState {}
 
 export default class Timeline extends React.Component<
   TimelineProps,
@@ -117,14 +117,9 @@ export default class Timeline extends React.Component<
   private timeline: vis.Timeline;
   constructor(props: TimelineProps) {
     super(props);
-
-    this.state = {
-      selectedOption: "Debates"
-    };
   }
   initTimeline = () => {
     let container = document.getElementById("mytimeline");
-    let timelineItems = this.getTimelineItems();
     let range = this.getTimelineRange();
     let options: TimelineOptions = {
       orientation: "top",
@@ -143,7 +138,7 @@ export default class Timeline extends React.Component<
     if (container) {
       this.timeline = new vis.Timeline(
         container,
-        new vis.DataSet(timelineItems),
+        new vis.DataSet(this.props.timelineItems),
         options as vis.TimelineOptions
       );
       this.timeline.on("select", this.handleClick);
@@ -155,48 +150,13 @@ export default class Timeline extends React.Component<
     }
     return 1;
   };
-  getTimelineItems = (): TimelineItemData[] => {
-    let timelineItems: TimelineItemData[] = [];
-
-    if (this.state.selectedOption === "Debates") {
-      for (let video of getAllVideoFacts()) {
-        let idx = slugify(video.title);
-        timelineItems = [
-          ...timelineItems,
-          {
-            id: video.id,
-            idx: idx,
-            start: video.primaryDate,
-            content: video.title
-          }
-        ];
-      }
-    }
-
-    if (this.state.selectedOption === "Documents") {
-      for (let excerpt of getAllDocumentFacts()) {
-        let idx = slugify(excerpt.title);
-        timelineItems = [
-          ...timelineItems,
-          {
-            id: idx,
-            idx: idx,
-            start: excerpt.primaryDate,
-            content: excerpt.title
-          }
-        ];
-      }
-    }
-
-    return timelineItems;
-  };
   getTimelineRange = (): TimelineRange => {
     let start: Date = new Date();
     let end: Date = new Date();
 
     let width = document.body.getBoundingClientRect().width;
 
-    if (this.state.selectedOption === "Debates") {
+    if (this.props.selectedOption === "Debates") {
       if (width < 480) {
         start = new Date(2013, 0, 1);
       } else if (width < 768) {
@@ -209,7 +169,7 @@ export default class Timeline extends React.Component<
       end = new Date(2021, 0, 1);
     }
 
-    if (this.state.selectedOption === "Documents") {
+    if (this.props.selectedOption === "Documents") {
       start = new Date(1770, 0, 1);
       end = new Date();
     }
@@ -218,14 +178,6 @@ export default class Timeline extends React.Component<
       start: start,
       end: end
     };
-  };
-  handleChange = (ev: React.ChangeEvent<HTMLInputElement>) => {
-    const value = ev.target.value;
-    if (value === "Debates" || value === "Documents") {
-      this.setState({
-        selectedOption: value
-      });
-    }
   };
   handleClick = (properties: TimelineSelectEventHandlerProps) => {
     let dataSetId = properties.items[0];
@@ -237,7 +189,7 @@ export default class Timeline extends React.Component<
     window.addEventListener("orientationchange", this.updateRange.bind(this));
   }
   componentDidUpdate(prevProps: TimelineProps, prevState: TimelineState) {
-    if (this.state.selectedOption !== prevState.selectedOption) {
+    if (this.props.selectedOption !== prevProps.selectedOption) {
       this.updateTimeline();
     }
   }
@@ -254,41 +206,9 @@ export default class Timeline extends React.Component<
   }
   updateTimeline() {
     this.updateRange();
-    this.timeline.setItems(this.getTimelineItems());
+    this.timeline.setItems(this.props.timelineItems);
   }
   render() {
-    return (
-      <div className={"timeline"}>
-        <div className="timeline__inner-container">
-          <div className="timeline__actions">
-            <input
-              type="radio"
-              id="radio--debates"
-              className="timeline__radio"
-              name="type"
-              value="Debates"
-              onChange={this.handleChange}
-              checked={this.state.selectedOption === "Debates"}
-            />
-            <label htmlFor="radio--debates" className="timeline__radio-label">
-              Debates
-            </label>
-            <input
-              type="radio"
-              id="radio--documents"
-              className="timeline__radio"
-              name="type"
-              value="Documents"
-              onChange={this.handleChange}
-              checked={this.state.selectedOption === "Documents"}
-            />
-            <label htmlFor="radio--documents" className="timeline__radio-label">
-              Founding Documents
-            </label>
-          </div>
-        </div>
-        <div id="mytimeline" />
-      </div>
-    );
+    return <div id="mytimeline" />;
   }
 }

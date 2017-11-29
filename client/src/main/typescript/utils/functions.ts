@@ -1,5 +1,6 @@
 import * as React from "react";
-import { CaptionWord, DocumentFact, VideoFact } from "./databaseData";
+import { CaptionWord, VideoFact } from "./databaseData";
+import { Foundation } from "../java2ts/Foundation";
 import {
   getVideoCaptionWordMap,
   getVideoFact,
@@ -821,7 +822,7 @@ function slugify(text: string): string {
     .replace(/[^\w-]+/g, ""); //remove non-alphanumics and non-hyphens
 }
 
-function getFact(factId: string): DocumentFact | VideoFact {
+function getFact(factId: string): Foundation.DocumentFact | VideoFact {
   try {
     return getDocumentFact(factId);
   } catch (err) {

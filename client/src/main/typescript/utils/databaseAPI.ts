@@ -3,12 +3,13 @@ import database, {
   CaptionWord,
   Database,
   VideoFact,
-  DocumentFact,
   User,
   Article
 } from "./databaseData";
+import { Foundation } from "../java2ts/Foundation";
 import { slugify } from "./functions";
 import { TakeBlock } from "../components/BlockEditor";
+import { documents } from "./newDb";
 
 export function getAllVideoFacts(): VideoFact[] {
   return database.videos;
@@ -79,11 +80,11 @@ export function getVideoCaptionWordMap(videoId: string): CaptionWord[] {
   throw "Cannot get video caption word-map for video with id: " + videoId;
 }
 
-export function getAllDocumentFacts(): DocumentFact[] {
-  return database.excerpts;
+export function getAllDocumentFacts(): Foundation.Fact[] {
+  return documents;
 }
 
-export function getDocumentFact(excerptId: string): DocumentFact {
+export function getDocumentFact(excerptId: string): Foundation.DocumentFact {
   for (let excerpt of database.excerpts) {
     if (slugify(excerpt.title) === excerptId) {
       return excerpt;

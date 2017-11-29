@@ -56,17 +56,17 @@ export interface VideoFact {
 }
 
 export function isDocument(
-  fact: DocumentFact | VideoFact | null
-): fact is DocumentFact {
+  fact: Foundation.DocumentFact | VideoFact | null
+): fact is Foundation.DocumentFact {
   if (fact) {
-    return (fact as DocumentFact).filename !== undefined;
+    return (fact as Foundation.DocumentFact).filename !== undefined;
   } else {
     return false;
   }
 }
 
 export function isVideo(
-  fact: DocumentFact | VideoFact | null
+  fact: Foundation.DocumentFact | VideoFact | null
 ): fact is VideoFact {
   if (fact) {
     return (fact as VideoFact).id !== undefined;
