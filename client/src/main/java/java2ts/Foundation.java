@@ -37,8 +37,11 @@ public interface Foundation {
 	@jsweet.lang.Interface
 	public class VideoFactContent extends FactContent {
 		public String youtubeId;
+		@jsweet.lang.Optional
 		public List<Person> speakers;
+		@jsweet.lang.Optional
 		public List<CaptionWord> transcript;
+		@jsweet.lang.Optional
 		public List<SpeakerMap> speakerMap;
 	}
 
@@ -51,6 +54,7 @@ public interface Foundation {
 	public class DocumentComponent {
 		public String component;
 		public String innerHTML;
+		public int offset;
 	}
 
 	//////////////////

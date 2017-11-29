@@ -20,9 +20,10 @@ public class FoundationParser {
 		JsonInit.init();
 	}
 
-	public static String toJson(String input) {
+	public static List<DocumentComponent> toComponents(String input) {
 		List<DocumentComponent> components = new ArrayList<>();
 		Document doc = Jsoup.parse(input);
+		int offset = 0;
 		for (Element child : doc.body().children()) {
 			if (child.childNodeSize() != 1) {
 				throw new IllegalArgumentException("cannot have nested HTML tags: " + child.outerHtml());
@@ -30,8 +31,15 @@ public class FoundationParser {
 			DocumentComponent component = new DocumentComponent();
 			component.component = child.tagName();
 			component.innerHTML = child.text();
+			component.offset = offset;
 			components.add(component);
+			// java and javascript both use the UTF-16 length
+			offset += component.innerHTML.length();
 		}
-		return JsonStream.serialize(components);
+		return components;
+	}
+
+	public static String toJson(String input) {
+		return JsonStream.serialize(toComponents(input));
 	}
 }

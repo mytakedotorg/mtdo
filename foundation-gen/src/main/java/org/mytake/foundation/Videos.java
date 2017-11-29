@@ -6,32 +6,17 @@
  */
 package org.mytake.foundation;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
+import java.util.Map;
+import java2ts.Foundation.Fact;
+import java2ts.Foundation.VideoFactContent;
 
-public class Videos {
-	static class VideoFact {
-		public String id;
-		public String title;
-		public String primaryDate;
-		public String primaryDateKind;
-		public boolean hasCaptions;
-	}
-
-	List<VideoFact> facts = new ArrayList<>();
-
-	private VideoFact add(String id, String title, String date) {
-		VideoFact fact = new VideoFact();
-		fact.id = id;
-		fact.title = title;
-		fact.primaryDate = date;
-		fact.primaryDateKind = "recorded";
-		facts.add(fact);
-		return fact;
-	}
-
-	public static Videos national() {
-		Videos videos = new Videos();
+public class Videos extends Database<VideoFactContent> {
+	public static Videos national() throws NoSuchAlgorithmException, IOException {
+		Videos videos = new Videos(Folders.SRC_VIDEO, Folders.DST_FOUNDATION);
 		videos.add("Txkwp5AUfCg", "John F. Kennedy - Nixon (1/4)", "1960-09-26");
 		videos.add("z-4VeDta7Mo", "John F. Kennedy - Nixon (2/4)", "1960-10-07");
 		videos.add("8SdDhojNT2o", "John F. Kennedy - Nixon (3/4)", "1960-10-13");
@@ -40,7 +25,7 @@ public class Videos {
 
 		//id: "TjHjU0Eu26Y",  // Original video
 		//id: "vIZ6w0kMqUA", // Trimmed for dev work, with captions
-		videos.add("GX1kHw2tmtI", "Jimmy Carter - Gerald Ford (2/3)", "1976-10-06").hasCaptions = true;
+		hasTranscript(videos.add("GX1kHw2tmtI", "Jimmy Carter - Gerald Ford (2/3)", "1976-10-06"));
 
 		videos.add("CipT04S0bVE", "Jimmy Carter - Gerald Ford (3/3)", "1976-10-22");
 		videos.add("_8YxFc_1b_0", "Ronald Reagan - Jimmy Carter (1/1)", "1980-10-28");
@@ -68,9 +53,32 @@ public class Videos {
 		videos.add("NscjkqaJ8wI", "Donald Trump - Hillary Clinton (1/3)", "2016-09-26");
 		//id: "qkk1lrLQl9Q",  // Original video
 		//id: "QuPWV36zqdc",  // Trimmed for dev work, with captions
-		videos.add("ApTLB76Nmdg", "Donald Trump - Hillary Clinton (2/3)", "2016-10-09").hasCaptions = true;
+		hasTranscript(videos.add("ApTLB76Nmdg", "Donald Trump - Hillary Clinton (2/3)", "2016-10-09"));
 		videos.add("fT0spjjJOK8", "Donald Trump - Hillary Clinton (3/3)", "2016-10-16");
 
 		return videos;
+	}
+
+	private static void hasTranscript(VideoFactContent content) {
+		// TODO: suck in the transcript
+	}
+
+	private Videos(Path srcDir, Path dstDir) {
+		super(srcDir, dstDir);
+	}
+
+	Map<String, VideoFactContent> byTitle = new HashMap<>();
+
+	private VideoFactContent add(String youtubeId, String title, String date) throws NoSuchAlgorithmException, IOException {
+		VideoFactContent content = new VideoFactContent();
+		content.youtubeId = youtubeId;
+		byTitle.put(title, content);
+		add(title, date, "recorded", "video");
+		return content;
+	}
+
+	@Override
+	protected VideoFactContent factToContent(Fact fact) {
+		return byTitle.get(fact.title);
 	}
 }

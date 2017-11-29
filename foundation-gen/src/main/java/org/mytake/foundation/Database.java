@@ -9,6 +9,7 @@ package org.mytake.foundation;
 import com.diffplug.common.base.Errors;
 import com.jsoniter.output.JsonStream;
 import java.io.BufferedOutputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
@@ -27,7 +28,11 @@ import java2ts.Foundation;
 import java2ts.Foundation.Fact;
 import java2ts.Foundation.FactLink;
 
-public abstract class Database {
+public abstract class Database<T extends Foundation.FactContent> {
+	static {
+		JsonInit.init();
+	}
+
 	final List<FactLink> factLinks = new ArrayList<>();
 	final Path dstDir;
 	final Path srcDir;
@@ -51,7 +56,7 @@ public abstract class Database {
 				.replaceAll("[^\\w-]+", ""); // replace non-alphanumerics and non-hyphens
 	}
 
-	protected abstract String factToContent(Fact fact);
+	protected abstract T factToContent(Fact fact);
 
 	protected void add(String title, String date, String dateKind, String kind) throws NoSuchAlgorithmException, IOException {
 		Fact fact = new Fact();
@@ -60,12 +65,17 @@ public abstract class Database {
 		fact.primaryDateKind = dateKind;
 		fact.kind = kind;
 
-		byte[] content = factToContent(fact).getBytes(StandardCharsets.UTF_8);
+		T content = factToContent(fact);
+		content.fact = fact;
+
+		ByteArrayOutputStream output = new ByteArrayOutputStream();
+		JsonStream.serialize(content, output);
+		byte[] contentBytes = output.toByteArray();
 		MessageDigest digest = MessageDigest.getInstance("SHA-256");
-		byte[] hash = digest.digest(content);
+		byte[] hash = digest.digest(contentBytes);
 
 		String hashStr = Base64.getUrlEncoder().encodeToString(hash);
-		Files.write(dstDir.resolve(hashStr + ".json"), content);
+		Files.write(dstDir.resolve(hashStr + ".json"), contentBytes);
 
 		FactLink link = new FactLink();
 		link.fact = fact;

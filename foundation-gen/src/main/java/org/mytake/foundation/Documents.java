@@ -9,10 +9,11 @@ package org.mytake.foundation;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.security.NoSuchAlgorithmException;
+import java2ts.Foundation.DocumentFactContent;
 import java2ts.Foundation.Fact;
 import org.mytake.foundation.parsers.FoundationParser;
 
-public class Documents extends Database {
+public class Documents extends Database<DocumentFactContent> {
 	public static Documents national() throws NoSuchAlgorithmException, IOException {
 		Documents documents = new Documents(Folders.SRC_DOCUMENT, Folders.DST_FOUNDATION);
 		documents.add("United States Constitution", "1788-06-21");
@@ -37,7 +38,7 @@ public class Documents extends Database {
 		return documents;
 	}
 
-	public Documents(Path srcDir, Path dstDir) {
+	private Documents(Path srcDir, Path dstDir) {
 		super(srcDir, dstDir);
 	}
 
@@ -46,8 +47,10 @@ public class Documents extends Database {
 	}
 
 	@Override
-	protected String factToContent(Fact fact) {
+	protected DocumentFactContent factToContent(Fact fact) {
+		DocumentFactContent content = new DocumentFactContent();
 		String input = read(slugify(fact.title) + ".foundation.html");
-		return FoundationParser.toJson(input);
+		content.components = FoundationParser.toComponents(input);
+		return content;
 	}
 }
