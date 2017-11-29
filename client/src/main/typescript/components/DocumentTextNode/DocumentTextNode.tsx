@@ -26,23 +26,24 @@ class DocumentTextNode extends React.Component<
       "data-char-offset": documentNode.props.offset
     };
 
-    switch (documentNode.component) {
+    switch (documentNode.original.component) {
+      const content = splitNodes(documentNode);
       case "h2":
         return (
           <h2 {...attributes}>
-            {documentNode.innerHTML}
+            {content}
           </h2>
         );
       case "h3":
         return (
           <h3 {...attributes}>
-            {documentNode.innerHTML}
+            {content}
           </h3>
         );
       case "p":
         return (
           <p {...attributes}>
-            {documentNode.innerHTML}
+            {content}
           </p>
         );
       default:

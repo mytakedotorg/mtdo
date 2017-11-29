@@ -11,13 +11,28 @@ import {
 var htmlparser = require("htmlparser2");
 
 export interface FoundationNode {
-  component: string;
-  props: FoundationNodeProps;
-  innerHTML: Array<string | React.ReactNode>;
+  original: Foundation.DocumentComponent;
+  selected?: [number, number]
 }
 
-export interface FoundationNodeProps {
-  offset: number;
+export function splitNodes(node: FoundationNode): string | Array<string | React.ReactNode> {
+  if (node.selected) {
+    let newSpan: React.ReactNode = React.createElement(
+      "span",
+      {
+        className: "editor__document-highlight",
+        key: "somekey"
+      },
+      node.original.innerHTML.substring(node.selected[0], node.selected[1])
+    );
+    return [
+      node.original.innerHTML.substring(0, node.selected[0]),
+      newSpan,
+      node.original.innerHTML.substring(node.selected[1], node.original.innerHTML.length)
+    ];
+  } else {
+    return node.original.innerHTML;
+  }
 }
 
 function clearDefaultDOMSelection(): void {
@@ -43,7 +58,7 @@ function getNodesInRange(
   let documentNodes: FoundationNode[] = [];
   for (let idx = 0; idx < nodes.length; idx++) {
     if (nodes[idx + 1]) {
-      if (nodes[idx + 1].props.offset <= startRange) {
+      if (nodes[idx + 1].original.offset <= startRange) {
         continue;
       }
     }
