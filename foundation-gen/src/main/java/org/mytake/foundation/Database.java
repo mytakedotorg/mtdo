@@ -64,7 +64,7 @@ public abstract class Database {
 		byte[] hash = digest.digest(content);
 		String url = Base64.getUrlEncoder().encodeToString(hash);
 		fact.url = url;
-		Files.write(dstDir.resolve(url), content);
+		Files.write(dstDir.resolve(url + ".json"), content);
 		facts.add(fact);
 	}
 
@@ -72,7 +72,7 @@ public abstract class Database {
 		deleteDir(Folders.DST_FOUNDATION);
 		List<Foundation.Fact> documents = Documents.national().facts;
 		try (OutputStream output = new BufferedOutputStream(
-				Files.newOutputStream(Folders.DST_FOUNDATION.resolve("index")))) {
+				Files.newOutputStream(Folders.DST_FOUNDATION.resolve("index.json")))) {
 			JsonStream.serialize(documents, output);
 		}
 	}
