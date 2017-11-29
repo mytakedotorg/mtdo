@@ -9,14 +9,14 @@ package org.mytake.foundation;
 import com.diffplug.common.base.Errors;
 import com.jsoniter.output.JsonStream;
 import java.io.BufferedOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
+import java.nio.file.SimpleFileVisitor;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -28,18 +28,18 @@ import java2ts.Foundation.Fact;
 
 public abstract class Database {
 	final List<Fact> facts = new ArrayList<>();
-	final File dstDir;
-	final File srcDir;
+	final Path dstDir;
+	final Path srcDir;
 
-	public Database(File srcDir, File dstDir) {
+	public Database(Path srcDir, Path dstDir) {
 		this.srcDir = srcDir;
 		this.dstDir = dstDir;
+		Errors.rethrow().run(() -> Files.createDirectories(dstDir));
 	}
 
 	public String read(String filename) {
-		Path path = new File(srcDir, filename).toPath();
 		return Errors.rethrow().get(() -> {
-			return new String(Files.readAllBytes(path), StandardCharsets.UTF_8);
+			return new String(Files.readAllBytes(srcDir.resolve(filename)), StandardCharsets.UTF_8);
 		});
 	}
 
@@ -64,24 +64,39 @@ public abstract class Database {
 		byte[] hash = digest.digest(content);
 		String url = Base64.getUrlEncoder().encodeToString(hash);
 		fact.url = url;
-		Files.write(dstDir.toPath().resolve(url), content);
+		Files.write(dstDir.resolve(url), content);
 		facts.add(fact);
 	}
 
 	public static void main(String[] args) throws IOException, NoSuchAlgorithmException {
+		deleteDir(Folders.DST_FOUNDATION);
 		List<Foundation.Fact> documents = Documents.national().facts;
-
-		Path foundation = Paths.get("../foundation/src/main/resources/foundation");
 		try (OutputStream output = new BufferedOutputStream(
-				Files.newOutputStream(foundation.resolve("index.js")))) {
+				Files.newOutputStream(Folders.DST_FOUNDATION.resolve("index")))) {
 			JsonStream.serialize(documents, output);
 		}
+	}
 
-		Path speakermapSrc = Paths.get("src/main/resources/video/speakermap");
-		Path speakermapDst = Paths.get("../foundation/src/main/resources/foundation/video/speakermap");
-		Files.createDirectories(speakermapDst);
-		for (File file : speakermapSrc.toFile().listFiles()) {
-			Files.copy(file.toPath(), speakermapDst.resolve(file.getName()), StandardCopyOption.REPLACE_EXISTING);
+	private static void deleteDir(Path folder) throws IOException {
+		if (!Files.exists(folder)) {
+			return;
 		}
+		Files.walkFileTree(folder, new SimpleFileVisitor<Path>() {
+			@Override
+			public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+				Files.delete(file);
+				return FileVisitResult.CONTINUE;
+			}
+
+			@Override
+			public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException {
+				if (exc == null) {
+					Files.delete(dir);
+					return FileVisitResult.CONTINUE;
+				} else {
+					throw exc;
+				}
+			}
+		});
 	}
 }

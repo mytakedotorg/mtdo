@@ -6,16 +6,14 @@
  */
 package org.mytake.foundation;
 
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.security.NoSuchAlgorithmException;
 import org.mytake.foundation.parsers.FoundationParser;
 
 public class Documents extends Database {
 	public static Documents national() throws NoSuchAlgorithmException, IOException {
-		Documents documents = new Documents(
-				new File("src/main/resources/document"),
-				new File("../foundation/src/main/resources/foundation"));
+		Documents documents = new Documents(Folders.SRC_DOCUMENT, Folders.DST_FOUNDATION);
 		documents.add("United States Constitution", "1788-06-21");
 		documents.add("Bill of Rights", "1791-12-15");
 		documents.add("Amendment 11", "1795-02-07");
@@ -38,7 +36,7 @@ public class Documents extends Database {
 		return documents;
 	}
 
-	public Documents(File srcDir, File dstDir) {
+	public Documents(Path srcDir, Path dstDir) {
 		super(srcDir, dstDir);
 	}
 
