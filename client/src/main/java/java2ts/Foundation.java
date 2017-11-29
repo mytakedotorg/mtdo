@@ -21,11 +21,21 @@ public interface Foundation {
 		public String primaryDate; // yyyy-mm-dd
 		public String primaryDateKind;
 		public String kind;
-		public String url;
 	}
 
 	@jsweet.lang.Interface
-	public class VideoFactContent {
+	public class FactLink {
+		public Fact fact;
+		public String hash;
+	}
+
+	@jsweet.lang.Interface
+	public class FactContent {
+		public Fact fact;
+	}
+
+	@jsweet.lang.Interface
+	public class VideoFactContent extends FactContent {
 		public String youtubeId;
 		public List<Person> speakers;
 		public List<CaptionWord> transcript;
@@ -33,14 +43,14 @@ public interface Foundation {
 	}
 
 	@jsweet.lang.Interface
-	public class DocumentComponent {
-		public String component;
-		public String innerHTML;
+	public class DocumentFactContent extends FactContent {
+		public List<DocumentComponent> components;
 	}
 
 	@jsweet.lang.Interface
-	public class DocumentFactContent {
-		public List<DocumentComponent> components;
+	public class DocumentComponent {
+		public String component;
+		public String innerHTML;
 	}
 
 	//////////////////
