@@ -28,6 +28,7 @@ import forms.meta.MetaFormValidation;
 import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
+import java2ts.Routes;
 import org.apache.commons.mail.HtmlEmail;
 import org.jooby.Mutant;
 import org.jooby.Request;
@@ -101,7 +102,7 @@ public class LoginForm extends MetaFormDef.HandleValid {
 					LoginlinkRecord::getExpiresAt, LoginlinkRecord::getRequestorIp);
 			if (validation != null) {
 				// show a "try again" login form
-				rsp.send(views.Auth.loginUnknown.template(validation.markup(AuthModule.URL_login)));
+				rsp.send(views.Auth.loginUnknown.template(validation.markup(Routes.LOGIN)));
 			} else {
 				// delete all login links for this account
 				dsl.deleteFrom(LOGINLINK)
