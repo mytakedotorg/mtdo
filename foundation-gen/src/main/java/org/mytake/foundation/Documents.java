@@ -9,6 +9,7 @@ package org.mytake.foundation;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.security.NoSuchAlgorithmException;
+import java2ts.Foundation.Fact;
 import org.mytake.foundation.parsers.FoundationParser;
 
 public class Documents extends Database {
@@ -45,8 +46,8 @@ public class Documents extends Database {
 	}
 
 	@Override
-	protected String titleToContent(String title) {
-		String input = read(slugify(title) + ".foundation.html");
+	protected String factToContent(Fact fact) {
+		String input = read(slugify(fact.title) + ".foundation.html");
 		return FoundationParser.toJson(input);
 	}
 }

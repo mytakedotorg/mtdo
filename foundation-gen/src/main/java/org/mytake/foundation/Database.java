@@ -25,9 +25,10 @@ import java.util.List;
 import java.util.Locale;
 import java2ts.Foundation;
 import java2ts.Foundation.Fact;
+import java2ts.Foundation.FactLink;
 
 public abstract class Database {
-	final List<Fact> facts = new ArrayList<>();
+	final List<FactLink> factLinks = new ArrayList<>();
 	final Path dstDir;
 	final Path srcDir;
 
@@ -50,7 +51,7 @@ public abstract class Database {
 				.replaceAll("[^\\w-]+", ""); // replace non-alphanumerics and non-hyphens
 	}
 
-	protected abstract String titleToContent(String title);
+	protected abstract String factToContent(Fact fact);
 
 	protected void add(String title, String date, String dateKind, String kind) throws NoSuchAlgorithmException, IOException {
 		Fact fact = new Fact();
@@ -58,19 +59,23 @@ public abstract class Database {
 		fact.primaryDate = date;
 		fact.primaryDateKind = dateKind;
 		fact.kind = kind;
-		byte[] content = titleToContent(title).getBytes(StandardCharsets.UTF_8);
 
+		byte[] content = factToContent(fact).getBytes(StandardCharsets.UTF_8);
 		MessageDigest digest = MessageDigest.getInstance("SHA-256");
 		byte[] hash = digest.digest(content);
-		String url = Base64.getUrlEncoder().encodeToString(hash);
-		fact.url = url;
-		Files.write(dstDir.resolve(url + ".json"), content);
-		facts.add(fact);
+
+		String hashStr = Base64.getUrlEncoder().encodeToString(hash);
+		Files.write(dstDir.resolve(hashStr + ".json"), content);
+
+		FactLink link = new FactLink();
+		link.fact = fact;
+		link.hash = hashStr;
+		factLinks.add(link);
 	}
 
 	public static void main(String[] args) throws IOException, NoSuchAlgorithmException {
 		deleteDir(Folders.DST_FOUNDATION);
-		List<Foundation.Fact> documents = Documents.national().facts;
+		List<Foundation.FactLink> documents = Documents.national().factLinks;
 		try (OutputStream output = new BufferedOutputStream(
 				Files.newOutputStream(Folders.DST_FOUNDATION.resolve("index.json")))) {
 			JsonStream.serialize(documents, output);
