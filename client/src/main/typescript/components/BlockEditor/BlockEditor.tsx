@@ -7,8 +7,10 @@ import { getDocumentFactTitle, getVideoFact } from "../../utils/databaseAPI";
 import {
   getNodeArray,
   getHighlightedNodes,
+  fetchFact,
   FoundationNode
 } from "../../utils/functions";
+import { Foundation } from "../../java2ts/Foundation";
 import { ParagraphBlock } from "../../java2ts/ParagraphBlock";
 import { DocumentBlock } from "../../java2ts/DocumentBlock";
 import { VideoBlock } from "../../java2ts/VideoBlock";
@@ -58,11 +60,15 @@ interface DocumentBlockProps {
   idx: number;
   active: boolean;
   block: DocumentBlock;
+  document: {
+    title: string;
+    nodes: FoundationNode[];
+  };
   eventHandlers: WritingEventHandlers | ReadingEventHandlers;
 }
-interface DocumentBlockState {
-  documentNodes: FoundationNode[];
-}
+
+interface DocumentBlockState {}
+
 interface VideoBlockProps {
   idx: number;
   active: boolean;
@@ -193,14 +199,95 @@ class Paragraph extends React.Component<
   }
 }
 
+interface DocumentContainerProps {
+  idx: number;
+  active: boolean;
+  block: DocumentBlock;
+  eventHandlers: WritingEventHandlers | ReadingEventHandlers;
+}
+
+interface DocumentContainerState {
+  loading: boolean;
+  document?: {
+    title: string;
+    nodes: FoundationNode[];
+  };
+}
+class DocumentContainer extends React.Component<
+  DocumentContainerProps,
+  DocumentContainerState
+> {
+  constructor(props: DocumentContainerProps) {
+    super(props);
+
+    this.state = {
+      loading: true
+    };
+  }
+  getFact = (factHash: string) => {
+    fetchFact(
+      factHash,
+      (
+        error: string | Error | null,
+        factContent: Foundation.DocumentFactContent
+      ) => {
+        if (error) throw error;
+        let nodes: FoundationNode[] = [];
+
+        for (let documentComponent of factContent.components) {
+          nodes.push({
+            component: documentComponent.component,
+            innerHTML: [documentComponent.innerHTML],
+            offset: documentComponent.offset
+          });
+        }
+
+        this.setState({
+          loading: false,
+          document: {
+            title: factContent.fact.title,
+            nodes: nodes
+          }
+        });
+      }
+    );
+  };
+  componentDidMount() {
+    this.getFact(this.props.block.excerptId);
+  }
+  componentWillReceiveProps(nextProps: DocumentContainerProps) {
+    if (this.props.block.excerptId !== nextProps.block.excerptId) {
+      this.getFact(nextProps.block.excerptId);
+    }
+  }
+  render() {
+    return (
+      <div>
+        {this.state.loading || !this.state.document
+          ? <DocumentLoading />
+          : <Document {...this.props} document={this.state.document} />}
+      </div>
+    );
+  }
+}
+
+class DocumentLoading extends React.Component<{}, {}> {
+  constructor(props: DocumentBlockProps) {
+    super(props);
+  }
+  render() {
+    return (
+      <div className="editor__document editor__document--base editor__document--hover">
+        <h2 className="editor__document-title">Loading</h2>
+      </div>
+    );
+  }
+}
+
 class Document extends React.Component<DocumentBlockProps, DocumentBlockState> {
   private div: HTMLDivElement;
   constructor(props: DocumentBlockProps) {
     super(props);
-
-    this.state = {
-      documentNodes: getNodeArray(props.block.excerptId)
-    };
   }
   blocksAreEqual(b1: DocumentBlock, b2: DocumentBlock): boolean {
     if (b1.excerptId !== b2.excerptId) {
@@ -214,9 +301,6 @@ class Document extends React.Component<DocumentBlockProps, DocumentBlockState> {
     }
     return true;
   }
-  getTitle = () => {
-    return getDocumentFactTitle(this.props.block.excerptId);
-  };
   handleClick = () => {
     if (isWriteOnly(this.props.eventHandlers)) {
       this.props.eventHandlers.handleFocus(this.props.idx);
@@ -250,17 +334,20 @@ class Document extends React.Component<DocumentBlockProps, DocumentBlockState> {
         break;
     }
   };
-  componentWillReceiveProps(nextProps: DocumentBlockProps) {
+  shouldComponentUpdate(
+    nextProps: DocumentBlockProps,
+    nextState: DocumentBlockState
+  ) {
     if (!this.blocksAreEqual(this.props.block, nextProps.block)) {
-      this.setState({
-        documentNodes: getNodeArray(nextProps.block.excerptId)
-      });
+      return true;
+    } else {
+      return false;
     }
   }
   render() {
     const { props } = this;
     let highlightedNodes = getHighlightedNodes(
-      [...this.state.documentNodes],
+      [...this.props.document.nodes],
       props.block.highlightedRange,
       props.block.viewRange
     );
@@ -272,7 +359,7 @@ class Document extends React.Component<DocumentBlockProps, DocumentBlockState> {
     const innerContent = (
       <div>
         <h2 className="editor__document-title">
-          {this.getTitle()}
+          {this.props.document.title}
         </h2>
         <DocumentTextNodeList documentNodes={highlightedNodes} />
       </div>
@@ -401,7 +488,7 @@ class BlockContainer extends React.Component<BlockContainerProps, {}> {
         break;
       case "document":
         inner = (
-          <Document
+          <DocumentContainer
             block={props.block}
             idx={props.index}
             active={props.active}

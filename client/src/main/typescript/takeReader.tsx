@@ -20,7 +20,8 @@ if (typeof window.mytake != "undefined") {
   switch (window.mytake.type) {
     case "home":
       Root = <FeedList />;
-      break;
+      throw "TODO: populate the news feed from server data";
+      //break;
     case "showtake":
       Root = <BlockReader initState={window.mytake.takeDocument} />;
       break;
