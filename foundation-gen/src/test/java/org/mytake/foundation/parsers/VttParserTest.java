@@ -13,7 +13,7 @@ import org.junit.Test;
 
 public class VttParserTest {
 	@Test
-	public void doSomeTest() {
+	public void carterFord2() {
 		List<CaptionWord> words = VttParser.parse("WEBVTT\n" +
 				"Kind: captions\n" +
 				"Language: en\n" +
@@ -57,6 +57,40 @@ public class VttParserTest {
 		//				5.279, "second",
 		//				5.759, "of",
 		//				5.910, "the");
+	}
+
+	@Test
+	public void trumpHillary2() {
+		List<CaptionWord> words = VttParser.parse("WEBVTT\n" +
+				"Kind: captions\n" +
+				"Language: en\n" +
+				"Style:\n" +
+				"::cue(c.colorCCCCCC) { color: rgb(204,204,204);\n" +
+				" }\n" +
+				"::cue(c.colorE5E5E5) { color: rgb(229,229,229);\n" +
+				" }\n" +
+				"##\n" +
+				"\n" +
+				"00:00:00.060 --> 00:00:05.310 align:start position:19%\n" +
+				"Good<00:00:00.750><c>evening</c><c><00:00:00.960><c>I'm</c><00:00:01.560><c>Martha</c></c><c><00:00:01.920><c>Raddatz</c><00:00:02.129><c>from</c><00:00:02.520><c>ABC</c></c>\n" +
+				"\n" +
+				"00:00:03.060 --> 00:00:06.240 align:start position:19%\n" +
+				"News.<c><00:00:03.090><c>And</c><00:00:03.659><c>I'm</c><00:00:03.870><c>Anderson</c><00:00:04.259><c>Cooper</c><00:00:04.529><c>from</c><00:00:04.680><c>CNN.</c><00:00:05.100><c>We</c></c>");
+		assertWords(words,
+				0.750, "Good",
+				0.960, "evening",
+				1.560, "I'm",
+				1.920, "Martha",
+				2.129, "Raddatz",
+				2.520, "from",
+				3.060, "ABC",
+				3.090, "News.",
+				3.659, "And",
+				3.870, "I'm",
+				4.259, "Anderson",
+				4.529, "Cooper",
+				4.680, "from",
+				5.100, "CNN.");
 	}
 
 	private void assertWords(List<CaptionWord> words, Object... args) {

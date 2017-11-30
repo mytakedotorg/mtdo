@@ -94,9 +94,10 @@ public class VttParser {
 							timestamp += c;
 							continue;
 						}
-					} else if (c != '>') {
+					} else if (c == '>') {
 						isWord = true;
 						isTimestamp = false;
+						continue;
 					}
 				}
 			}
