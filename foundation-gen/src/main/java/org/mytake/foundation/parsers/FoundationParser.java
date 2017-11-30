@@ -6,19 +6,17 @@
  */
 package org.mytake.foundation.parsers;
 
-import com.jsoniter.output.JsonStream;
+import com.diffplug.common.base.Preconditions;
+import com.diffplug.common.collect.ImmutableSet;
 import java.util.ArrayList;
 import java.util.List;
 import java2ts.Foundation.DocumentComponent;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.mytake.foundation.JsonInit;
 
 public class FoundationParser {
-	static {
-		JsonInit.init();
-	}
+	private static final ImmutableSet<String> ALLOWED_TAGS = ImmutableSet.of("p", "h2", "h3");
 
 	public static List<DocumentComponent> toComponents(String input) {
 		List<DocumentComponent> components = new ArrayList<>();
@@ -30,6 +28,7 @@ public class FoundationParser {
 			}
 			DocumentComponent component = new DocumentComponent();
 			component.component = child.tagName();
+			Preconditions.checkArgument(ALLOWED_TAGS.contains(component.component));
 			component.innerHTML = child.text();
 			component.offset = offset;
 			components.add(component);
@@ -37,9 +36,5 @@ public class FoundationParser {
 			offset += component.innerHTML.length();
 		}
 		return components;
-	}
-
-	public static String toJson(String input) {
-		return JsonStream.serialize(toComponents(input));
 	}
 }

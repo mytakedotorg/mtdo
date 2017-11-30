@@ -8,6 +8,7 @@ package org.mytake.foundation.parsers;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.mytake.foundation.JsonMisc;
 
 public class FoundationParserTest {
 	@Test
@@ -29,11 +30,11 @@ public class FoundationParserTest {
 	}
 
 	private void testCase(String input, String expected) {
-		Assert.assertEquals(expected, FoundationParser.toJson(input));
+		Assert.assertEquals(expected, JsonMisc.toJson(FoundationParser.toComponents(input)));
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void noNesting() {
-		FoundationParser.toJson("<p><strong>We the people</strong> of the United States</p>");
+		FoundationParser.toComponents("<p><strong>We the people</strong> of the United States</p>");
 	}
 }

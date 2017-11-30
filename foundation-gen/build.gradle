@@ -11,6 +11,7 @@ dependencies {
 	compile "com.jsoniter:jsoniter:$JSONITER_VER"
 	compile 'org.jsoup:jsoup:1.11.2'
 	compile 'com.diffplug.durian:durian-core:1.2.0'
+	compile 'com.diffplug.durian:durian-collect:1.2.0'
 	testCompile "junit:junit:$JUNIT_VER"
 	testCompile "org.assertj:assertj-core:$ASSERTJ_VER"
 }

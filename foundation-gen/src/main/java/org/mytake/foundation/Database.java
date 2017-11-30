@@ -29,10 +29,6 @@ import java2ts.Foundation.Fact;
 import java2ts.Foundation.FactLink;
 
 public abstract class Database<T extends Foundation.FactContent> {
-	static {
-		JsonInit.init();
-	}
-
 	final List<FactLink> factLinks = new ArrayList<>();
 	final Path dstDir;
 	final Path srcDir;
