@@ -7,7 +7,6 @@
 package org.mytake.foundation;
 
 import com.diffplug.common.base.Errors;
-import com.jsoniter.output.JsonStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -24,6 +23,10 @@ import java2ts.Foundation.Fact;
 import java2ts.Foundation.FactLink;
 
 public abstract class FactWriter<T extends Foundation.FactContent> {
+	static {
+		JsonMisc.init();
+	}
+
 	final List<FactLink> factLinks = new ArrayList<>();
 	final Path dstDir;
 	final Path srcDir;
@@ -60,7 +63,7 @@ public abstract class FactWriter<T extends Foundation.FactContent> {
 		content.fact = fact;
 
 		ByteArrayOutputStream output = new ByteArrayOutputStream();
-		JsonStream.serialize(content, output);
+		JsonMisc.toJson(content, output);
 		byte[] contentBytes = output.toByteArray();
 		MessageDigest digest = MessageDigest.getInstance("SHA-256");
 		byte[] hash = digest.digest(contentBytes);

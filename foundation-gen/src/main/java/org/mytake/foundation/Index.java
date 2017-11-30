@@ -26,7 +26,7 @@ public class Index {
 
 		List<FactLink> facts = new ArrayList<>();
 		facts.addAll(Documents.national().factLinks);
-		//facts.addAll(Videos.national().factLinks);
+		facts.addAll(Videos.national().factLinks);
 
 		try (OutputStream output = new BufferedOutputStream(
 				Files.newOutputStream(Folders.DST_FOUNDATION.resolve("index.json")))) {

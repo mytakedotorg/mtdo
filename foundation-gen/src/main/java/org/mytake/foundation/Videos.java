@@ -70,20 +70,25 @@ public class Videos extends FactWriter<VideoFactContent> {
 
 	Map<String, VideoFactContent> byTitle = new HashMap<>();
 
-	private VideoFactContent add(String youtubeId, String title, String date) throws NoSuchAlgorithmException, IOException {
+	private void add(String youtubeId, String title, String date, boolean withTranscript) throws NoSuchAlgorithmException, IOException {
 		VideoFactContent content = new VideoFactContent();
 		content.youtubeId = youtubeId;
+		if (withTranscript) {
+			content.transcript = VttParser.parse(read(slugify(title) + ".vtt"));
+			Speakers speakers = JsonIterator.deserialize(read(slugify(title) + ".speakermap.json"), Speakers.class);
+			content.speakers = speakers.speakers;
+			content.speakerMap = speakers.speakerMap;
+		}
 		byTitle.put(title, content);
 		add(title, date, "recorded", "video");
-		return content;
 	}
 
 	private void addWithTranscript(String youtubeId, String title, String date) throws NoSuchAlgorithmException, IOException {
-		VideoFactContent factContent = add(youtubeId, title, date);
-		factContent.transcript = VttParser.parse(read(slugify(title) + ".vtt"));
-		Speakers speakers = JsonIterator.deserialize(read(slugify(title) + ".speakermap.json"), Speakers.class);
-		factContent.speakers = speakers.speakers;
-		factContent.speakerMap = speakers.speakerMap;
+		add(youtubeId, title, date, true);
+	}
+
+	private void add(String youtubeId, String title, String date) throws NoSuchAlgorithmException, IOException {
+		add(youtubeId, title, date, false);
 	}
 
 	static class Speakers {
