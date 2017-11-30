@@ -1,13 +1,15 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import TimelineContainer from "../TimelineContainer";
-import TimelinePreview, { SetFactHandlers } from "../TimelinePreview";
+import TimelinePreviewContainer from "../TimelinePreviewContainer";
+import { SetFactHandlers } from "../TimelinePreview";
+import { Foundation } from "../../java2ts/Foundation";
 
 interface InitialRangeOptions {
   offset: number;
   highlightedRange: [number, number];
   viewRange: [number, number];
-  excerptId: string;
+  factLink: Foundation.FactLink;
 }
 
 interface TimelineViewProps {
@@ -16,7 +18,7 @@ interface TimelineViewProps {
 }
 
 interface TimelineViewState {
-  excerptId: string;
+  factLink: Foundation.FactLink | null;
 }
 
 export default class TimelineView extends React.Component<
@@ -26,25 +28,25 @@ export default class TimelineView extends React.Component<
   constructor(props: TimelineViewProps) {
     super(props);
     this.state = {
-      excerptId: props.initialRange ? props.initialRange.excerptId : ""
+      factLink: props.initialRange ? props.initialRange.factLink : null
     };
   }
-  showPreview = (excerptId: string) => {
+  showPreview = (factLink: Foundation.FactLink) => {
     this.setState({
-      excerptId: excerptId
+      factLink: factLink
     });
   };
   render() {
     const { props } = this;
-    if (props.initialRange) {
+    if (props.initialRange && this.state.factLink) {
       const ranges = {
         highlightedRange: props.initialRange.highlightedRange,
         viewRange: props.initialRange.viewRange
       };
       return (
         <div className={"timeline__view"}>
-          <TimelinePreview
-            excerptId={this.state.excerptId}
+          <TimelinePreviewContainer
+            factLink={this.state.factLink}
             setFactHandlers={props.setFactHandlers}
             ranges={ranges}
             offset={props.initialRange.offset}
@@ -61,9 +63,9 @@ export default class TimelineView extends React.Component<
       return (
         <div className={"timeline__view"}>
           <TimelineContainer onItemClick={this.showPreview} />
-          {this.state.excerptId
-            ? <TimelinePreview
-                excerptId={this.state.excerptId}
+          {this.state.factLink
+            ? <TimelinePreviewContainer
+                factLink={this.state.factLink}
                 setFactHandlers={props.setFactHandlers}
               />
             : null}

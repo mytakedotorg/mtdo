@@ -7,8 +7,7 @@ import { getDocumentFactTitle, getVideoFact } from "../../utils/databaseAPI";
 import {
   getNodeArray,
   getHighlightedNodes,
-  FoundationNode,
-  FoundationNodeProps
+  FoundationNode
 } from "../../utils/functions";
 import { ParagraphBlock } from "../../java2ts/ParagraphBlock";
 import { DocumentBlock } from "../../java2ts/DocumentBlock";

@@ -18,60 +18,20 @@ interface CaptionData {
 
 interface DocumentProps {
   onMouseUp: () => void;
-  excerptId: string;
+  nodes: FoundationNode[];
   className?: string;
-  nodes?: FoundationNode[];
   captionData?: CaptionData;
 }
 
-interface DocumentState {
-  documentNodes: FoundationNode[];
-}
+interface DocumentState {}
 
 class Document extends React.Component<DocumentProps, DocumentState> {
   constructor(props: DocumentProps) {
     super(props);
-
-    let nodes: FoundationNode[];
-    if (!props.nodes) {
-      if (props.captionData) {
-        nodes = getCaptionNodeArray(props.excerptId);
-      } else {
-        nodes = getNodeArray(props.excerptId);
-      }
-    } else {
-      nodes = props.nodes;
-    }
-
-    this.state = {
-      documentNodes: nodes
-    };
   }
   getDocumentNodes = () => {
-    return [...this.state.documentNodes];
+    return [...this.props.nodes];
   };
-
-  componentWillReceiveProps(nextProps: DocumentProps) {
-    if (
-      !isEqual(this.state.documentNodes, nextProps.nodes) &&
-      nextProps.nodes !== undefined
-    ) {
-      this.setState({
-        documentNodes: nextProps.nodes
-      });
-    } else if (this.props.excerptId !== nextProps.excerptId) {
-      let nodes: FoundationNode[];
-      if (this.props.captionData) {
-        nodes = getCaptionNodeArray(nextProps.excerptId);
-      } else {
-        nodes = getNodeArray(nextProps.excerptId);
-      }
-
-      this.setState({
-        documentNodes: nodes
-      });
-    }
-  }
   render() {
     let classes = "document document--static";
     let documentClass = this.props.className
@@ -80,22 +40,23 @@ class Document extends React.Component<DocumentProps, DocumentState> {
 
     let childComponent;
     if (this.props.captionData) {
-      childComponent = (
-        <CaptionTextNodeList
-          className="document__text document__text--caption"
-          onMouseUp={this.props.onMouseUp}
-          documentNodes={this.state.documentNodes}
-          captionTimer={this.props.captionData.captionTimer}
-          captionWordMap={this.props.captionData.captionMap}
-          captionMeta={this.props.captionData.captionMeta}
-        />
-      );
+      throw "TODO";
+      // childComponent = (
+      //   <CaptionTextNodeList
+      //     className="document__text document__text--caption"
+      //     onMouseUp={this.props.onMouseUp}
+      //     documentNodes={this.props.documentNodes}
+      //     captionTimer={this.props.captionData.captionTimer}
+      //     captionWordMap={this.props.captionData.captionMap}
+      //     captionMeta={this.props.captionData.captionMeta}
+      //   />
+      // );
     } else {
       childComponent = (
         <DocumentTextNodeList
           className="document__text"
           onMouseUp={this.props.onMouseUp}
-          documentNodes={this.state.documentNodes}
+          documentNodes={this.props.nodes}
         />
       );
     }

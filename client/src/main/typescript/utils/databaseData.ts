@@ -56,20 +56,20 @@ export interface VideoFact {
 }
 
 export function isDocument(
-  fact: Foundation.DocumentFact | VideoFact | null
-): fact is Foundation.DocumentFact {
+  fact: Foundation.DocumentFactContent | Foundation.VideoFactContent | null
+): fact is Foundation.DocumentFactContent {
   if (fact) {
-    return (fact as Foundation.DocumentFact).filename !== undefined;
+    return (fact as Foundation.DocumentFactContent).components !== undefined;
   } else {
     return false;
   }
 }
 
 export function isVideo(
-  fact: Foundation.DocumentFact | VideoFact | null
-): fact is VideoFact {
+  fact: Foundation.DocumentFactContent | Foundation.VideoFactContent | null
+): fact is Foundation.VideoFactContent {
   if (fact) {
-    return (fact as VideoFact).id !== undefined;
+    return (fact as Foundation.VideoFactContent).youtubeId !== undefined;
   } else {
     return false;
   }

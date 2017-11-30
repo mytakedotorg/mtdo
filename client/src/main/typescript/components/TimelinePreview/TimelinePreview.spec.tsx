@@ -1,5 +1,7 @@
 import * as React from "react";
 import { mount, ReactWrapper } from "enzyme";
+import { Foundation } from "../../java2ts/Foundation";
+import { FoundationNode } from "../../utils/functions";
 
 import TimelinePreview from "./TimelinePreview";
 
@@ -17,12 +19,38 @@ function getMockWindow() {
 
 let mockWindow = getMockWindow();
 
-describe("Constitution", () => {
+describe("Foundation Document", () => {
   let wrapper: ReactWrapper;
   const offset = 399;
   const highlightedRange: [number, number] = [327, 500];
   const viewRange: [number, number] = [327, 500];
-  const excerptId = "united-states-constitution";
+  const factLink: Foundation.FactLink = {
+    fact: {
+      title: "Amendment 13",
+      primaryDate: "1865-12-06",
+      primaryDateKind: "ratified",
+      kind: "document"
+    },
+    hash: "o_dRqrNJ62wzlgLilTrLxkHqGmvAS9qTpa4z4pjyFqA="
+  };
+
+  const nodes: FoundationNode[] = [
+    {
+      component: "p",
+      innerHTML: [
+        "Section 1. Neither slavery nor involuntary servitude, except as a punishment for crime whereof the party shall have been duly convicted, shall exist within the United States, or any place subject to their jurisdiction."
+      ],
+      offset: 0
+    },
+    {
+      component: "p",
+      innerHTML: [
+        "Section 2. Congress shall have power to enforce this article by appropriate legislation."
+      ],
+      offset: 218
+    }
+  ];
+
   const setFactHandlers = {
     handleDocumentSetClick: onDocumentSetClick,
     handleVideoSetClick: onVideoSetClick
@@ -35,7 +63,8 @@ describe("Constitution", () => {
   beforeAll(() => {
     wrapper = mount(
       <TimelinePreview
-        excerptId={excerptId}
+        factLink={factLink}
+        nodes={nodes}
         setFactHandlers={setFactHandlers}
         ranges={ranges}
         offset={offset}
@@ -65,7 +94,7 @@ describe("Constitution", () => {
 
   test("Heading text renders properly", () => {
     expect(wrapper.find(".document__heading").first().text()).toBe(
-      "United States Constitution"
+      "Amendment 13"
     );
   });
 
@@ -101,8 +130,8 @@ describe("Constitution", () => {
     expect(onDocumentSetClick).toHaveBeenCalled();
   });
 
-  test("Constitution text renders", () => {
-    expect(wrapper.find(".document__text").children().length).toBe(168);
+  test("Amendment text renders", () => {
+    expect(wrapper.find(".document__text").children().length).toBe(2);
   });
 
   test("Initial highlights render", () => {

@@ -1,7 +1,5 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { getAllVideoFacts, getAllDocumentFacts } from "../../utils/databaseAPI";
-import { slugify } from "../../utils/functions";
 import * as vis from "vis";
 
 interface TimelineItemProps {
@@ -125,7 +123,7 @@ export default class Timeline extends React.Component<
       orientation: "top",
       start: range.start,
       end: range.end,
-      order: this.orderById,
+      order: this.orderBy,
       template: (item: TimelineItemData, element: HTMLElement) => {
         if (!item) {
           return;
@@ -144,8 +142,8 @@ export default class Timeline extends React.Component<
       this.timeline.on("select", this.handleClick);
     }
   };
-  orderById = (a: TimelineItemData, b: TimelineItemData): number => {
-    if (a.idx < b.idx) {
+  orderBy = (a: TimelineItemData, b: TimelineItemData): number => {
+    if (a.start < b.start) {
       return -1;
     }
     return 1;

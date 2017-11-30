@@ -196,7 +196,7 @@ class CaptionTextNodeList extends React.Component<
           ) {
             return (
               <CaptionTextNode
-                key={element.props.offset}
+                key={element.offset}
                 documentNode={element}
                 speaker={speakerMap[index].speaker}
               />

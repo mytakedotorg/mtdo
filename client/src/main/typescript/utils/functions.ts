@@ -12,12 +12,8 @@ var htmlparser = require("htmlparser2");
 
 export interface FoundationNode {
   component: string;
-  props: FoundationNodeProps;
-  innerHTML: Array<string | React.ReactNode>;
-}
-
-export interface FoundationNodeProps {
   offset: number;
+  innerHTML: Array<string | React.ReactNode>;
 }
 
 function clearDefaultDOMSelection(): void {
@@ -43,11 +39,11 @@ function getNodesInRange(
   let documentNodes: FoundationNode[] = [];
   for (let idx = 0; idx < nodes.length; idx++) {
     if (nodes[idx + 1]) {
-      if (nodes[idx + 1].props.offset <= startRange) {
+      if (nodes[idx + 1].offset <= startRange) {
         continue;
       }
     }
-    if (nodes[idx].props.offset >= endRange) {
+    if (nodes[idx].offset >= endRange) {
       break;
     }
     documentNodes = [...documentNodes, ...nodes.slice(idx, idx + 1)];
@@ -70,7 +66,7 @@ function getHighlightedNodes(
   let highlightedNodes: FoundationNode[] = [];
   // documentNodes is a new array with only the nodes containing text to be highlighted
   if (documentNodes.length === 1) {
-    const offset = documentNodes[0].props.offset;
+    const offset = documentNodes[0].offset;
     const startIndex = startRange - offset;
     const endIndex = endRange - offset;
     let newSpan: React.ReactNode = React.createElement(
@@ -91,7 +87,7 @@ function getHighlightedNodes(
     highlightedNodes = [newNode];
   } else if (documentNodes.length > 1) {
     // More than one DOM node highlighted
-    let offset = documentNodes[0].props.offset;
+    let offset = documentNodes[0].offset;
     let length = documentNodes[0].innerHTML.toString().length;
     let startIndex = startRange - offset;
     let endIndex = length;
@@ -114,7 +110,7 @@ function getHighlightedNodes(
     highlightedNodes = [newNode];
 
     for (let index: number = 1; index < documentNodes.length; index++) {
-      offset = documentNodes[index].props.offset;
+      offset = documentNodes[index].offset;
       length = documentNodes[index].innerHTML.toString().length;
       startIndex = 0;
 
@@ -521,7 +517,7 @@ function highlightText(
 
   let startData = nodes[indexOfStartContainer];
   if (startData) {
-    viewRangeStart = startData.props.offset;
+    viewRangeStart = startData.offset;
     highlightedCharacterRangeStart = viewRangeStart + indexOfSelectionStart;
   } else {
     viewRangeStart = -1;
@@ -530,8 +526,8 @@ function highlightText(
 
   let endData = nodes[indexOfEndContainer];
   if (endData) {
-    viewRangeEnd = endData.props.offset + endData.innerHTML.toString().length;
-    highlightedCharacterRangeEnd = endData.props.offset + indexOfSelectionEnd;
+    viewRangeEnd = endData.offset + endData.innerHTML.toString().length;
+    highlightedCharacterRangeEnd = endData.offset + indexOfSelectionEnd;
   } else {
     viewRangeEnd = -1;
     highlightedCharacterRangeEnd = -1;
@@ -669,33 +665,34 @@ interface FoundationComponent {
 
 function getNodeArray(excerptId: string): FoundationNode[] {
   // Fetch the excerpt from the DB by its ID
-  const excerpt = getDocumentFact(excerptId);
-  let source;
-  if (excerpt) {
-    source = require("../foundation/" + excerpt.filename);
-  } else {
-    throw "Error retrieving Foundation document";
-  }
+  throw "TODO";
+  // const excerpt = getDocumentFact(excerptId);
+  // let source;
+  // if (excerpt) {
+  //   source = require("../foundation/" + excerpt.filename);
+  // } else {
+  //   throw "Error retrieving Foundation document";
+  // }
 
-  if (source) {
-    const output: Array<FoundationNode> = [];
-    const components: FoundationComponent[] = JSON.parse(source);
-    let offset = 0;
-    for (const component of components) {
-      output.push({
-        component: component.component,
-        props: {
-          offset: offset
-        },
-        innerHTML: [component.innerHTML]
-      });
-      offset += component.innerHTML.length;
-    }
+  // if (source) {
+  //   const output: Array<FoundationNode> = [];
+  //   const components: FoundationComponent[] = JSON.parse(source);
+  //   let offset = 0;
+  //   for (const component of components) {
+  //     output.push({
+  //       component: component.component,
+  //       props: {
+  //         offset: offset
+  //       },
+  //       innerHTML: [component.innerHTML]
+  //     });
+  //     offset += component.innerHTML.length;
+  //   }
 
-    return output;
-  } else {
-    throw "Error retrieving Foundation document";
-  }
+  //   return output;
+  // } else {
+  //   throw "Error retrieving Foundation document";
+  // }
 }
 function convertTimestampToSeconds(timestamp: string): number {
   // Parse data string in form HH:MM:SS.SSS
@@ -774,9 +771,7 @@ function getCaptionNodeArray(videoId: string): Array<FoundationNode> {
           if (innerHTML.length > 0) {
             output.push({
               component: "p",
-              props: {
-                offset: offset
-              },
+              offset: offset,
               innerHTML: [innerHTML]
             });
 
@@ -822,15 +817,19 @@ function slugify(text: string): string {
     .replace(/[^\w-]+/g, ""); //remove non-alphanumics and non-hyphens
 }
 
-function getFact(factId: string): Foundation.DocumentFact | VideoFact {
+function fetchFact(
+  factHash: string,
+  cb: (err: Error | string | null, fact: Foundation.DocumentFactContent) => any
+): void {
   try {
-    return getDocumentFact(factId);
+    return getDocumentFact(factHash, cb);
   } catch (err) {
-    try {
-      return getVideoFact(factId);
-    } catch (err) {
-      throw err;
-    }
+    throw "TODO";
+    // try {
+    //   return getVideoFact(factHash);
+    // } catch (err) {
+    //   throw err;
+    // }
   }
 }
 
@@ -1299,7 +1298,7 @@ export {
   convertTimestampToSeconds,
   getCaptionNodeArray,
   getCharRangeFromVideoRange,
-  getFact,
+  fetchFact,
   getSimpleRangesFromHTMLRange,
   getStartRangeOffsetTop,
   getHighlightedNodes,

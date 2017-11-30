@@ -72,10 +72,10 @@ class Fact extends React.Component<FactProps, {}> {
 
     return (
       <div className="DocumentReader">
-        <TimelineView
+        {/* <TimelineView
           initialRange={initialRange}
           setFactHandlers={setFactHandlers}
-        />
+        /> */}
       </div>
     );
   }

@@ -23,7 +23,7 @@ class DocumentTextNode extends React.Component<
     const { documentNode } = this.props;
 
     let attributes: DataAttributes = {
-      "data-char-offset": documentNode.props.offset
+      "data-char-offset": documentNode.offset
     };
 
     switch (documentNode.component) {
@@ -46,8 +46,7 @@ class DocumentTextNode extends React.Component<
           </p>
         );
       default:
-        // Unknown element, silently throw error here
-        return <div />;
+        throw "Unknown documentNode.component";
     }
   }
 }

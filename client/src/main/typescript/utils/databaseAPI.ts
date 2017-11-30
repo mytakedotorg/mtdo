@@ -7,9 +7,9 @@ import database, {
   Article
 } from "./databaseData";
 import { Foundation } from "../java2ts/Foundation";
+import { Routes } from "../java2ts/Routes";
 import { slugify } from "./functions";
 import { TakeBlock } from "../components/BlockEditor";
-import { documents } from "./newDb";
 
 export function getAllVideoFacts(): VideoFact[] {
   return database.videos;
@@ -80,18 +80,81 @@ export function getVideoCaptionWordMap(videoId: string): CaptionWord[] {
   throw "Cannot get video caption word-map for video with id: " + videoId;
 }
 
-export function getAllDocumentFacts(): Foundation.Fact[] {
-  return documents;
+export function getAllDocumentFacts(
+  callback: (
+    error: string | Error | null,
+    documents: Foundation.FactLink[]
+  ) => any
+): void {
+  const headers = new Headers();
+
+  headers.append("Accept", "application/json"); // This one is enough for GET requests
+
+  const request: RequestInit = {
+    method: "GET",
+    headers: headers,
+    cache: "default"
+  };
+
+  fetch(Routes.FOUNDATION_DATA_INDEX, request)
+    .then(function(response: Response) {
+      const contentType = response.headers.get("content-type");
+      if (
+        contentType &&
+        contentType.indexOf("application/json") >= 0 &&
+        response.ok
+      ) {
+        return response.json();
+      } else {
+        callback("Error retrieving Document Facts", []);
+      }
+    })
+    .then(function(json: any) {
+      callback(null, json);
+    })
+    .catch(function(error: Error) {
+      // Network error
+      callback(error, []);
+    });
 }
 
-export function getDocumentFact(excerptId: string): Foundation.DocumentFact {
-  for (let excerpt of database.excerpts) {
-    if (slugify(excerpt.title) === excerptId) {
-      return excerpt;
-    }
-  }
+export function getDocumentFact(
+  factHash: string,
+  callback: (
+    error: string | Error | null,
+    documentFact: Foundation.DocumentFactContent | null
+  ) => any
+): void {
+  const headers = new Headers();
 
-  throw "Cannot get DocumentFact for document with id: " + excerptId;
+  headers.append("Accept", "application/json"); // This one is enough for GET requests
+
+  const request: RequestInit = {
+    method: "GET",
+    headers: headers,
+    cache: "default"
+  };
+
+  fetch(Routes.FOUNDATION_DATA + "/" + factHash + ".json", request)
+    .then(function(response: Response) {
+      const contentType = response.headers.get("content-type");
+      if (
+        contentType &&
+        contentType.indexOf("application/json") >= 0 &&
+        response.ok
+      ) {
+        return response.json();
+      } else {
+        callback("Error retrieving Document Fact", null);
+      }
+    })
+    .then(function(json: any) {
+      callback(null, json);
+    })
+    .catch(function(error: Error) {
+      // Network error
+      callback(error, null);
+    });
 }
 
 export function getDocumentFactTitle(excerptId: string): string {

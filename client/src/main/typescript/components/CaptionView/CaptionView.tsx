@@ -220,18 +220,19 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
         {this.state.captionMap &&
         this.state.captionMeta &&
         this.state.highlightedNodes
-          ? <Document
-              excerptId={this.props.videoId}
-              onMouseUp={this.handleMouseUp}
-              ref={(document: Document) => (this.document = document)}
-              className="document__row"
-              captionData={{
-                captionTimer: this.props.timer,
-                captionMap: this.state.captionMap,
-                captionMeta: this.state.captionMeta
-              }}
-              nodes={this.state.highlightedNodes}
-            />
+          ? // <Document
+            //     excerptId={this.props.videoId}
+            //     onMouseUp={this.handleMouseUp}
+            //     ref={(document: Document) => (this.document = document)}
+            //     className="document__row"
+            //     captionData={{
+            //       captionTimer: this.props.timer,
+            //       captionMap: this.state.captionMap,
+            //       captionMeta: this.state.captionMeta
+            //     }}
+            //     nodes={this.state.highlightedNodes}
+            //   />
+            null
           : <p className="video__instructions">
               We're still working on adding captions for this video
             </p>}

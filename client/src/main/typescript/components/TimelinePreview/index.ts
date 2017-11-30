@@ -1,4 +1,4 @@
-import TimelinePreview, { SetFactHandlers } from "./TimelinePreview";
+import TimelinePreview, { Ranges, SetFactHandlers } from "./TimelinePreview";
 
-export { SetFactHandlers };
+export { Ranges, SetFactHandlers };
 export default TimelinePreview;

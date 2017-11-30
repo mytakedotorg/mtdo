@@ -6,7 +6,7 @@ import BlockWriter, {
 } from "./components/BlockWriter";
 import Foundation from "./components/Foundation";
 import Fact from "./components/Fact";
-import { getFact, validators } from "./utils/functions";
+import { fetchFact, validators } from "./utils/functions";
 import { isDocument, isVideo } from "./utils/databaseData";
 import { HomeArgs, ShowTakeArgs } from "./takeReader";
 
@@ -104,51 +104,52 @@ if (typeof window.mytake != "undefined") {
           parseFloat(hashes[4])
         ];
 
-        let fact = getFact(excerptId);
-        if (isDocument(fact)) {
-          if (!isNaN(highlightedRange[0]) && !isNaN(highlightedRange[1])) {
-            initJson = {
-              takeDocument: {
-                title: "",
-                blocks: [
-                  {
-                    kind: "document",
-                    excerptId: excerptId,
-                    highlightedRange: highlightedRange,
-                    viewRange: viewRange
-                  },
-                  { kind: "paragraph", text: "" }
-                ]
-              },
-              activeBlockIndex: -1,
-              status: "INITIAL"
-            };
-          } else {
-            initJson = config.initialState;
-          }
-        } else if (isVideo(fact)) {
-          if (!isNaN(highlightedRange[0]) && !isNaN(highlightedRange[1])) {
-            initJson = {
-              takeDocument: {
-                title: "",
-                blocks: [
-                  {
-                    kind: "video",
-                    videoId: excerptId,
-                    range: highlightedRange
-                  },
-                  { kind: "paragraph", text: "" }
-                ]
-              },
-              activeBlockIndex: -1,
-              status: "INITIAL"
-            };
-          } else {
-            initJson = config.initialState;
-          }
-        } else {
-          initJson = config.initialState;
-        }
+        throw "todo";
+        // let fact = getFact(excerptId);
+        // if (isDocument(fact)) {
+        //   if (!isNaN(highlightedRange[0]) && !isNaN(highlightedRange[1])) {
+        //     initJson = {
+        //       takeDocument: {
+        //         title: "",
+        //         blocks: [
+        //           {
+        //             kind: "document",
+        //             excerptId: excerptId,
+        //             highlightedRange: highlightedRange,
+        //             viewRange: viewRange
+        //           },
+        //           { kind: "paragraph", text: "" }
+        //         ]
+        //       },
+        //       activeBlockIndex: -1,
+        //       status: "INITIAL"
+        //     };
+        //   } else {
+        //     initJson = config.initialState;
+        //   }
+        // } else if (isVideo(fact)) {
+        //   if (!isNaN(highlightedRange[0]) && !isNaN(highlightedRange[1])) {
+        //     initJson = {
+        //       takeDocument: {
+        //         title: "",
+        //         blocks: [
+        //           {
+        //             kind: "video",
+        //             videoId: excerptId,
+        //             range: highlightedRange
+        //           },
+        //           { kind: "paragraph", text: "" }
+        //         ]
+        //       },
+        //       activeBlockIndex: -1,
+        //       status: "INITIAL"
+        //     };
+        //   } else {
+        //     initJson = config.initialState;
+        //   }
+        // } else {
+        //   initJson = config.initialState;
+        // }
       } else {
         initJson = config.initialState;
       }

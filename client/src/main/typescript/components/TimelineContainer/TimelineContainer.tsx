@@ -1,14 +1,14 @@
 import * as React from "react";
 import { getAllVideoFacts, getAllDocumentFacts } from "../../utils/databaseAPI";
-import { slugify } from "../../utils/functions";
 import Timeline, {
   TimelineItemData,
   TimelineSelectEventHandlerProps
 } from "../Timeline";
 import TimelineLoadingView from "../TimelineLoadingView";
+import { Foundation } from "../../java2ts/Foundation";
 
 interface TimelineContainerProps {
-  onItemClick: (excerptId: string) => void;
+  onItemClick: (factLink: Foundation.FactLink) => void;
 }
 
 interface TimelineContainerState {
@@ -21,6 +21,7 @@ export default class TimelineContainer extends React.Component<
   TimelineContainerProps,
   TimelineContainerState
 > {
+  private factLinks: Foundation.FactLink[] = [];
   constructor(props: TimelineContainerProps) {
     super(props);
 
@@ -50,25 +51,29 @@ export default class TimelineContainer extends React.Component<
     }
 
     if (this.state.selectedOption === "Documents") {
-      for (let fact of getAllDocumentFacts()) {
-        let idx = slugify(fact.title);
-        timelineItems = [
-          ...timelineItems,
-          {
-            id: idx,
-            idx: idx,
-            start: new Date(fact.primaryDate),
-            content: fact.title
+      getAllDocumentFacts(
+        (error: string | Error | null, factlinks: Foundation.FactLink[]) => {
+          if (error) throw error;
+          for (let factlink of factlinks) {
+            let idx = factlink.hash;
+            timelineItems = [
+              ...timelineItems,
+              {
+                id: idx,
+                idx: idx,
+                start: new Date(factlink.fact.primaryDate),
+                content: factlink.fact.title
+              }
+            ];
           }
-        ];
-      }
+          this.factLinks = factlinks;
+          this.setState({
+            loading: false,
+            timelineItems: timelineItems
+          });
+        }
+      );
     }
-    setTimeout(() => {
-      this.setState({
-        loading: false,
-        timelineItems: timelineItems
-      });
-    }, 2000);
   };
   handleChange = (ev: React.ChangeEvent<HTMLInputElement>) => {
     const value = ev.target.value;
@@ -81,8 +86,12 @@ export default class TimelineContainer extends React.Component<
       }
     }
   };
-  handleClick = (excerptId: string) => {
-    this.props.onItemClick(excerptId);
+  handleClick = (factHash: string) => {
+    for (let factLink of this.factLinks) {
+      if (factLink.hash === factHash) {
+        this.props.onItemClick(factLink);
+      }
+    }
   };
   componentDidMount() {
     this.getTimelineItems();

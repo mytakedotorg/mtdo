@@ -6,7 +6,6 @@ import DocumentTextNodeList from "../DocumentTextNodeList";
 import Video from "../Video";
 import {
   FoundationNode,
-  getFact,
   getNodesInRange,
   getHighlightedNodes,
   getSimpleRangesFromHTMLRange,
@@ -26,13 +25,14 @@ export interface SetFactHandlers {
   handleVideoSetClick: (id: string, range: [number, number]) => void;
 }
 
-interface Ranges {
+export interface Ranges {
   highlightedRange: [number, number];
   viewRange: [number, number];
 }
 
 interface TimelinePreviewProps {
-  excerptId: string;
+  factLink: Foundation.FactLink;
+  nodes: FoundationNode[];
   setFactHandlers?: SetFactHandlers;
   ranges?: Ranges;
   offset?: number;
@@ -44,7 +44,6 @@ interface TimelinePreviewState {
   textIsHighlighted: boolean;
   highlightedNodes: FoundationNode[];
   offsetTop: number;
-  fact: Foundation.DocumentFact | VideoFact | null;
   headerHidden: boolean;
 }
 
@@ -62,7 +61,6 @@ export default class TimelinePreview extends React.Component<
       textIsHighlighted: props.ranges ? true : false,
       highlightedNodes: [],
       offsetTop: 0,
-      fact: getFact(props.excerptId),
       headerHidden: false
     };
   }
@@ -76,13 +74,6 @@ export default class TimelinePreview extends React.Component<
     );
 
     return offsetTop;
-  };
-  getTitle = () => {
-    let excerpt = getFact(this.props.excerptId);
-    if (excerpt) {
-      return excerpt.title;
-    }
-    return "";
   };
   handleClearClick = () => {
     this.setState({
@@ -124,15 +115,15 @@ export default class TimelinePreview extends React.Component<
     }
   };
   handleSetClick = (videoRange?: [number, number]) => {
-    let excerptId = this.props.excerptId;
+    let factHash = this.props.factLink.hash;
     if (videoRange) {
       if (this.props.setFactHandlers) {
-        this.props.setFactHandlers.handleVideoSetClick(excerptId, videoRange);
+        this.props.setFactHandlers.handleVideoSetClick(factHash, videoRange);
       } else {
         window.location.href =
           Routes.DRAFTS_NEW +
           "/#" +
-          excerptId +
+          factHash +
           "&" +
           videoRange[0] +
           "&" +
@@ -143,7 +134,7 @@ export default class TimelinePreview extends React.Component<
       let viewRange = this.state.viewRange;
       if (this.props.setFactHandlers) {
         this.props.setFactHandlers.handleDocumentSetClick(
-          excerptId,
+          factHash,
           highlightedRange,
           viewRange
         );
@@ -151,7 +142,7 @@ export default class TimelinePreview extends React.Component<
         window.location.href =
           Routes.DRAFTS_NEW +
           "/#" +
-          excerptId +
+          factHash +
           "&" +
           highlightedRange[0] +
           "&" +
@@ -201,9 +192,8 @@ export default class TimelinePreview extends React.Component<
     }
   };
   componentWillReceiveProps(nextProps: TimelinePreviewProps) {
-    if (this.props.excerptId !== nextProps.excerptId) {
+    if (this.props.factLink.fact.title !== nextProps.factLink.fact.title) {
       this.setState({
-        fact: getFact(nextProps.excerptId),
         textIsHighlighted: false,
         highlightedNodes: []
       });
@@ -218,17 +208,19 @@ export default class TimelinePreview extends React.Component<
     return (
       <div className={"timeline__preview"}>
         <FactHeader
-          heading={this.getTitle()}
+          heading={this.props.factLink.fact.title}
           isFixed={this.state.headerHidden}
           onClearClick={this.handleClearClick}
           onSetClick={this.handleSetClick}
           onScroll={this.handleScroll}
           textIsHighlighted={this.state.textIsHighlighted}
-          isDocument={isDocument(this.state.fact)}
+          isDocument={
+            this.props.factLink.fact.kind === "document" ? true : false
+          }
         />
-        {isDocument(this.state.fact)
+        {this.props.factLink.fact.kind === "document"
           ? <Document
-              excerptId={this.props.excerptId}
+              nodes={this.props.nodes}
               onMouseUp={this.handleMouseUp}
               ref={(document: Document) => (this.document = document)}
               className={
@@ -251,16 +243,17 @@ export default class TimelinePreview extends React.Component<
                 : null}
             </Document>
           : null}
-        {isVideo(this.state.fact)
-          ? <Video
-              onSetClick={this.handleSetClick}
-              video={this.state.fact}
-              className={
-                this.state.headerHidden
-                  ? "video__inner-container video__inner-container--push"
-                  : "video__inner-container"
-              }
-            />
+        {this.props.factLink.fact.kind === "video"
+          ? // <Video
+            //     onSetClick={this.handleSetClick}
+            //     video={this.state.fact}
+            //     className={
+            //       this.state.headerHidden
+            //         ? "video__inner-container video__inner-container--push"
+            //         : "video__inner-container"
+            //     }
+            //   />
+            null
           : null}
       </div>
     );

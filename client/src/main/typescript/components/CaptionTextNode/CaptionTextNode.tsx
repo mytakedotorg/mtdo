@@ -24,7 +24,7 @@ class CaptionTextNode extends React.Component<
     const { documentNode } = this.props;
 
     let attributes: DataAttributes = {
-      "data-char-offset": documentNode.props.offset
+      "data-char-offset": documentNode.offset
     };
     return (
       <div className="document__node">

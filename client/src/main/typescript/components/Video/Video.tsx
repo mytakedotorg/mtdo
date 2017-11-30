@@ -1,6 +1,6 @@
 import * as React from "react";
 import YouTube from "react-youtube";
-import { getCharRangeFromVideoRange, getFact } from "../../utils/functions";
+import { getCharRangeFromVideoRange } from "../../utils/functions";
 import { VideoFact } from "../../utils/databaseData";
 import CaptionView from "../CaptionView";
 
