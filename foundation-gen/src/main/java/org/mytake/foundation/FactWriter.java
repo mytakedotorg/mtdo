@@ -8,16 +8,11 @@ package org.mytake.foundation;
 
 import com.diffplug.common.base.Errors;
 import com.jsoniter.output.JsonStream;
-import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.SimpleFileVisitor;
-import java.nio.file.attribute.BasicFileAttributes;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -28,12 +23,12 @@ import java2ts.Foundation;
 import java2ts.Foundation.Fact;
 import java2ts.Foundation.FactLink;
 
-public abstract class Database<T extends Foundation.FactContent> {
+public abstract class FactWriter<T extends Foundation.FactContent> {
 	final List<FactLink> factLinks = new ArrayList<>();
 	final Path dstDir;
 	final Path srcDir;
 
-	public Database(Path srcDir, Path dstDir) {
+	public FactWriter(Path srcDir, Path dstDir) {
 		this.srcDir = srcDir;
 		this.dstDir = dstDir;
 		Errors.rethrow().run(() -> Files.createDirectories(dstDir));
@@ -77,37 +72,5 @@ public abstract class Database<T extends Foundation.FactContent> {
 		link.fact = fact;
 		link.hash = hashStr;
 		factLinks.add(link);
-	}
-
-	public static void main(String[] args) throws IOException, NoSuchAlgorithmException {
-		deleteDir(Folders.DST_FOUNDATION);
-		List<Foundation.FactLink> documents = Documents.national().factLinks;
-		try (OutputStream output = new BufferedOutputStream(
-				Files.newOutputStream(Folders.DST_FOUNDATION.resolve("index.json")))) {
-			JsonStream.serialize(documents, output);
-		}
-	}
-
-	private static void deleteDir(Path folder) throws IOException {
-		if (!Files.exists(folder)) {
-			return;
-		}
-		Files.walkFileTree(folder, new SimpleFileVisitor<Path>() {
-			@Override
-			public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-				Files.delete(file);
-				return FileVisitResult.CONTINUE;
-			}
-
-			@Override
-			public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException {
-				if (exc == null) {
-					Files.delete(dir);
-					return FileVisitResult.CONTINUE;
-				} else {
-					throw exc;
-				}
-			}
-		});
 	}
 }

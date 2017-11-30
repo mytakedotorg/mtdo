@@ -6,15 +6,20 @@
  */
 package org.mytake.foundation;
 
+import com.jsoniter.JsonIterator;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java2ts.Foundation.Fact;
+import java2ts.Foundation.Person;
+import java2ts.Foundation.SpeakerMap;
 import java2ts.Foundation.VideoFactContent;
+import org.mytake.foundation.parsers.VttParser;
 
-public class Videos extends Database<VideoFactContent> {
+public class Videos extends FactWriter<VideoFactContent> {
 	public static Videos national() throws NoSuchAlgorithmException, IOException {
 		Videos videos = new Videos(Folders.SRC_VIDEO, Folders.DST_FOUNDATION);
 		videos.add("Txkwp5AUfCg", "John F. Kennedy - Nixon (1/4)", "1960-09-26");
@@ -25,7 +30,7 @@ public class Videos extends Database<VideoFactContent> {
 
 		//id: "TjHjU0Eu26Y",  // Original video
 		//id: "vIZ6w0kMqUA", // Trimmed for dev work, with captions
-		hasTranscript(videos.add("GX1kHw2tmtI", "Jimmy Carter - Gerald Ford (2/3)", "1976-10-06"));
+		videos.addWithTranscript("GX1kHw2tmtI", "Jimmy Carter - Gerald Ford (2/3)", "1976-10-06");
 
 		videos.add("CipT04S0bVE", "Jimmy Carter - Gerald Ford (3/3)", "1976-10-22");
 		videos.add("_8YxFc_1b_0", "Ronald Reagan - Jimmy Carter (1/1)", "1980-10-28");
@@ -53,14 +58,10 @@ public class Videos extends Database<VideoFactContent> {
 		videos.add("NscjkqaJ8wI", "Donald Trump - Hillary Clinton (1/3)", "2016-09-26");
 		//id: "qkk1lrLQl9Q",  // Original video
 		//id: "QuPWV36zqdc",  // Trimmed for dev work, with captions
-		hasTranscript(videos.add("ApTLB76Nmdg", "Donald Trump - Hillary Clinton (2/3)", "2016-10-09"));
+		videos.addWithTranscript("ApTLB76Nmdg", "Donald Trump - Hillary Clinton (2/3)", "2016-10-09");
 		videos.add("fT0spjjJOK8", "Donald Trump - Hillary Clinton (3/3)", "2016-10-16");
 
 		return videos;
-	}
-
-	private static void hasTranscript(VideoFactContent content) {
-		// TODO: suck in the transcript
 	}
 
 	private Videos(Path srcDir, Path dstDir) {
@@ -75,6 +76,19 @@ public class Videos extends Database<VideoFactContent> {
 		byTitle.put(title, content);
 		add(title, date, "recorded", "video");
 		return content;
+	}
+
+	private void addWithTranscript(String youtubeId, String title, String date) throws NoSuchAlgorithmException, IOException {
+		VideoFactContent factContent = add(youtubeId, title, date);
+		factContent.transcript = VttParser.parse(read(slugify(title) + ".vtt"));
+		Speakers speakers = JsonIterator.deserialize(read(slugify(title) + ".speakermap.json"), Speakers.class);
+		factContent.speakers = speakers.speakers;
+		factContent.speakerMap = speakers.speakerMap;
+	}
+
+	static class Speakers {
+		public List<Person> speakers;
+		public List<SpeakerMap> speakerMap;
 	}
 
 	@Override

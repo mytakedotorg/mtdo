@@ -9,6 +9,7 @@ repositories {
 dependencies {
 	compile project(':client')
 	compile "com.jsoniter:jsoniter:$JSONITER_VER"
+	compile "org.jsweet:jsweet-core:$JSWEET_CORE_VER"
 	compile 'org.jsoup:jsoup:1.11.2'
 	compile 'com.diffplug.durian:durian-core:1.2.0'
 	compile 'com.diffplug.durian:durian-collect:1.2.0'
@@ -19,7 +20,7 @@ dependencies {
 task generateFoundation(type: JavaExec) {
 	description = 'Generates the foundation'
 	classpath = sourceSets.main.runtimeClasspath
-	main = 'org.mytake.foundation.Database'
+	main = 'org.mytake.foundation.Index'
 }
 generateFoundation.dependsOn(classes)
 generateFoundation.outputs.file('../foundation/src/main/resources/foundation/index.js')

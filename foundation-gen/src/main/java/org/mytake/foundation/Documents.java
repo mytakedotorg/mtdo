@@ -13,7 +13,7 @@ import java2ts.Foundation.DocumentFactContent;
 import java2ts.Foundation.Fact;
 import org.mytake.foundation.parsers.FoundationParser;
 
-public class Documents extends Database<DocumentFactContent> {
+public class Documents extends FactWriter<DocumentFactContent> {
 	public static Documents national() throws NoSuchAlgorithmException, IOException {
 		Documents documents = new Documents(Folders.SRC_DOCUMENT, Folders.DST_FOUNDATION);
 		documents.add("United States Constitution", "1788-06-21");
