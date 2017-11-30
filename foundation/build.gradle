@@ -1,49 +1,6 @@
-import com.diffplug.gradle.FileMisc
-import com.diffplug.gradle.CmdLine
-
 apply plugin: 'java'
 apply plugin: 'eclipse'
 eclipse { project { name = 'mytake-foundation' } }
 
 clean { delete 'src/main/resources' }
-
-class FoundationTask extends DefaultTask {
-	FoundationTask() {
-		// need node_modules
-		dependsOn(':client:npmInstall')
-		// processResources uses this
-		project.tasks.getByName('processResources').dependsOn(this)
-	}
-
-	@InputDirectory File src
-	@OutputDirectory File target
-	@Input String loader
-
-	@TaskAction
-	void convert() {
-		FileMisc.cleanDir(target)
-		Project client = project.project(':client')
-		File node = MooworkNode.nodeExe(client)
-		File nodeModules = MooworkNode.nodeModules(client)
-		File harness = project.project(':foundation-gen').file('src/main/typescript-compiled/harness.js')
-		src.eachFile { file ->
-			project.exec {
-				environment = ['NODE_PATH': nodeModules.absolutePath]
-				commandLine = [
-					node.absolutePath,
-					harness.absolutePath,
-					loader,
-					file.absolutePath,
-					target.absolutePath + '/' + file.name
-				]
-			}
-		}
-	}
-}
-
-task video(type: FoundationTask) {
-	src = file('../foundation-gen/src/main/resources/video/vtt')
-	target = file('src/main/resources/foundation/video/vtt')
-	loader = 'vtt-loader.js'
-}
 processResources.dependsOn(':foundation-gen:generateFoundation')
