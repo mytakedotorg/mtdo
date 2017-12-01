@@ -80,7 +80,7 @@ export function getVideoCaptionWordMap(videoId: string): CaptionWord[] {
   throw "Cannot get video caption word-map for video with id: " + videoId;
 }
 
-export function getAllDocumentFacts(
+export function getAllFacts(
   callback: (
     error: string | Error | null,
     documents: Foundation.FactLink[]
