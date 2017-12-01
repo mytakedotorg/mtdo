@@ -27,6 +27,7 @@ export interface TimelineItemData {
   idx: string;
   start: Date;
   content: string;
+  kind: string;
 }
 
 interface TimelineRange {
@@ -136,7 +137,7 @@ export default class Timeline extends React.Component<
     if (container) {
       this.timeline = new vis.Timeline(
         container,
-        new vis.DataSet(this.props.timelineItems),
+        new vis.DataSet(this.props.timelineItems.filter(this.filterTimeline)),
         options as vis.TimelineOptions
       );
       this.timeline.on("select", this.handleClick);
@@ -147,6 +148,14 @@ export default class Timeline extends React.Component<
       return -1;
     }
     return 1;
+  };
+  filterTimeline = (timelineItem: TimelineItemData) => {
+    return (
+      (this.props.selectedOption === "Debates" &&
+        timelineItem.kind === "video") ||
+      (this.props.selectedOption === "Documents" &&
+        timelineItem.kind === "document")
+    );
   };
   getTimelineRange = (): TimelineRange => {
     let start: Date = new Date();
@@ -204,7 +213,9 @@ export default class Timeline extends React.Component<
   }
   updateTimeline() {
     this.updateRange();
-    this.timeline.setItems(this.props.timelineItems);
+    this.timeline.setItems(
+      this.props.timelineItems.filter(this.filterTimeline)
+    );
   }
   render() {
     return <div id="mytimeline" />;
