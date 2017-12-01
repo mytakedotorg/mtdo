@@ -4,9 +4,7 @@ import BlockWriter, {
   BlockWriterState,
   config
 } from "./components/BlockWriter";
-import Foundation from "./components/Foundation";
-import Fact from "./components/Fact";
-import { fetchFact, validators } from "./utils/functions";
+import FoundationView from "./components/FoundationView";
 import { isDocument, isVideo } from "./utils/databaseData";
 import { HomeArgs, ShowTakeArgs } from "./takeReader";
 
@@ -30,51 +28,7 @@ let Root;
 if (typeof window.mytake != "undefined") {
   switch (window.mytake.type) {
     case "foundation":
-      let url = window.location.pathname;
-      let excerptId = url.split("/")[2];
-
-      if (!excerptId) {
-        // mytake.org/foundation/ route
-        Root = <Foundation />;
-      } else {
-        // e.g. mytake.org/foundation/bill-of-rights
-        let hashes = window.location.hash.substring(1).split("&");
-        let user = hashes[0].split("/")[1];
-        let articleTitle = hashes[0].split("/")[2];
-        let highlighedRange: [number, number] = [
-          parseInt(hashes[1]),
-          parseInt(hashes[2])
-        ];
-        let viewRange: [number, number] = [
-          parseInt(hashes[3]),
-          parseInt(hashes[4])
-        ];
-        let scrollTop = parseInt(hashes[5]);
-
-        // Validate all Props here
-        if (
-          validators.isValidUser(user) &&
-          validators.isValidTitle(articleTitle) &&
-          !isNaN(highlighedRange[0]) &&
-          !isNaN(highlighedRange[1]) &&
-          !isNaN(viewRange[0]) &&
-          !isNaN(viewRange[1]) &&
-          !isNaN(scrollTop)
-        ) {
-          Root = (
-            <Fact
-              articleTitle={articleTitle}
-              articleUser={user}
-              scrollTop={scrollTop}
-              highlightedRange={highlighedRange}
-              viewRange={viewRange}
-              excerptId={excerptId}
-            />
-          );
-        } else {
-          throw "TODO: Render route like /foundation/bill-of-rights with empty hash URL";
-        }
-      }
+      Root = <FoundationView hashUrl={window.location.hash} />;
       break;
     case "new-take":
       let initJson: BlockWriterState;
