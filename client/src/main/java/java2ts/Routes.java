@@ -16,6 +16,7 @@ public class Routes {
 	public static final String LOGIN = "/login";
 	public static final String LOGOUT = "/logout";
 
+	public static final String FOUNDATION = "/foundation";
 	public static final String FOUNDATION_DATA = "/foundation-data";
 	public static final String FOUNDATION_DATA_INDEX = "/foundation-data/index.json";
 }
