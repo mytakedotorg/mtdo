@@ -1,6 +1,7 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { fetchFact, FoundationNode } from "../../utils/functions";
+import { isVideo, isDocument } from "../../utils/databaseData";
 import TimelinePreview, { Ranges, SetFactHandlers } from "../TimelinePreview";
 import TimelinePreviewLoadingView from "../TimelinePreviewLoadingView";
 import { Foundation } from "../../java2ts/Foundation";
@@ -34,23 +35,31 @@ export default class TimelinePreviewContainer extends React.Component<
       factHash,
       (
         error: string | Error | null,
-        factContent: Foundation.DocumentFactContent
+        factContent:
+          | Foundation.DocumentFactContent
+          | Foundation.VideoFactContent
       ) => {
         if (error) throw error;
         let nodes: FoundationNode[] = [];
 
-        for (let documentComponent of factContent.components) {
-          nodes.push({
-            component: documentComponent.component,
-            innerHTML: [documentComponent.innerHTML],
-            offset: documentComponent.offset
-          });
-        }
+        if (isDocument(factContent)) {
+          for (let documentComponent of factContent.components) {
+            nodes.push({
+              component: documentComponent.component,
+              innerHTML: [documentComponent.innerHTML],
+              offset: documentComponent.offset
+            });
+          }
 
-        this.setState({
-          loading: false,
-          nodes: nodes
-        });
+          this.setState({
+            loading: false,
+            nodes: nodes
+          });
+        } else if (isVideo(factContent)) {
+          throw "TODO";
+        } else {
+          throw "Unknown kind of Fact";
+        }
       }
     );
   };
