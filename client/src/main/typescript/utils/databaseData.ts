@@ -59,7 +59,7 @@ export function isDocument(
   fact: Foundation.DocumentFactContent | Foundation.VideoFactContent | null
 ): fact is Foundation.DocumentFactContent {
   if (fact) {
-    return (fact as Foundation.DocumentFactContent).components !== undefined;
+    return (fact as Foundation.DocumentFactContent).fact.kind === "document";
   } else {
     return false;
   }
@@ -69,7 +69,7 @@ export function isVideo(
   fact: Foundation.DocumentFactContent | Foundation.VideoFactContent | null
 ): fact is Foundation.VideoFactContent {
   if (fact) {
-    return (fact as Foundation.VideoFactContent).youtubeId !== undefined;
+    return (fact as Foundation.VideoFactContent).fact.kind === "video";
   } else {
     return false;
   }
