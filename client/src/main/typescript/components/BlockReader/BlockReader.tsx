@@ -1,6 +1,8 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import BlockEditor, { TakeDocument } from "../BlockEditor";
+import { slugify } from "../../utils/functions";
+import { Foundation } from "../../java2ts/Foundation";
 
 interface BlockReaderProps {
   initState: TakeDocument;
@@ -19,15 +21,17 @@ class BlockReader extends React.Component<BlockReaderProps, BlockReaderState> {
     };
   }
   handleClick = (
-    excerptId: string,
+    factLink: Foundation.FactLink,
     offset: number,
     highlightedRange: [number, number],
     viewRange: [number, number]
   ) => {
+    const { title } = factLink.fact;
     window.location.href =
-      "/foundation/" +
-      excerptId +
+      "/foundation" +
       "#" +
+      slugify(title) +
+      "&" +
       window.location.pathname +
       "&" +
       highlightedRange[0] +
