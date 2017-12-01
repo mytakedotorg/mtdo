@@ -41,7 +41,7 @@ interface ParagraphBlockState {
 }
 interface ReadingEventHandlers {
   onDocumentClick: (
-    excerptId: string,
+    fact: Foundation.FactLink,
     offset: number,
     highlightedRange: [number, number],
     viewRange: [number, number]
@@ -61,7 +61,7 @@ interface DocumentBlockProps {
   active: boolean;
   block: DocumentBlock;
   document: {
-    title: string;
+    fact: Foundation.Fact;
     nodes: FoundationNode[];
   };
   eventHandlers: WritingEventHandlers | ReadingEventHandlers;
@@ -209,7 +209,7 @@ interface DocumentContainerProps {
 interface DocumentContainerState {
   loading: boolean;
   document?: {
-    title: string;
+    fact: Foundation.Fact;
     nodes: FoundationNode[];
   };
 }
@@ -245,7 +245,7 @@ class DocumentContainer extends React.Component<
         this.setState({
           loading: false,
           document: {
-            title: factContent.fact.title,
+            fact: factContent.fact,
             nodes: nodes
           }
         });
@@ -305,8 +305,12 @@ class Document extends React.Component<DocumentBlockProps, DocumentBlockState> {
     if (isWriteOnly(this.props.eventHandlers)) {
       this.props.eventHandlers.handleFocus(this.props.idx);
     } else {
+      const factlink: Foundation.FactLink = {
+        fact: this.props.document.fact,
+        hash: this.props.block.excerptId
+      };
       this.props.eventHandlers.onDocumentClick(
-        this.props.block.excerptId,
+        factlink,
         this.div.getBoundingClientRect().top,
         this.props.block.highlightedRange,
         this.props.block.viewRange
@@ -359,7 +363,7 @@ class Document extends React.Component<DocumentBlockProps, DocumentBlockState> {
     const innerContent = (
       <div>
         <h2 className="editor__document-title">
-          {this.props.document.title}
+          {this.props.document.fact.title}
         </h2>
         <DocumentTextNodeList documentNodes={highlightedNodes} />
       </div>
