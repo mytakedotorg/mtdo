@@ -65,7 +65,6 @@ export default class TimelinePreviewContainer extends React.Component<
               nodes: nodes
             });
           } else if (isVideo(factContent)) {
-            console.log("HERE I AM");
             this.setState({
               loading: false,
               videoFact: factContent
