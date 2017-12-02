@@ -11,14 +11,14 @@ import { DocumentBlock } from "../../../java2ts/DocumentBlock";
 import { Foundation } from "../../../java2ts/Foundation";
 import { isWriteOnly, ReadingEventHandlers, WritingEventHandlers } from "../";
 
-interface DocumentContainerProps {
+interface EditorDocumentContainerProps {
   idx: number;
   active: boolean;
   block: DocumentBlock;
   eventHandlers: WritingEventHandlers | ReadingEventHandlers;
 }
 
-interface DocumentContainerState {
+interface EditorDocumentContainerState {
   loading: boolean;
   error: boolean;
   document?: {
@@ -28,10 +28,10 @@ interface DocumentContainerState {
 }
 
 class EditorDocumentContainer extends React.Component<
-  DocumentContainerProps,
-  DocumentContainerState
+  EditorDocumentContainerProps,
+  EditorDocumentContainerState
 > {
-  constructor(props: DocumentContainerProps) {
+  constructor(props: EditorDocumentContainerProps) {
     super(props);
 
     this.state = {
@@ -81,7 +81,7 @@ class EditorDocumentContainer extends React.Component<
   componentDidMount() {
     this.getFact(this.props.block.excerptId);
   }
-  componentWillReceiveProps(nextProps: DocumentContainerProps) {
+  componentWillReceiveProps(nextProps: EditorDocumentContainerProps) {
     if (this.props.block.excerptId !== nextProps.block.excerptId) {
       this.getFact(nextProps.block.excerptId);
     }
