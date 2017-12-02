@@ -1,7 +1,6 @@
 import * as React from "react";
 import * as keycode from "keycode";
 import DocumentTextNodeList from "../../DocumentTextNodeList";
-import DocumentErrorView from "../../DocumentErrorView";
 import { getHighlightedNodes, FoundationNode } from "../../../utils/functions";
 import { fetchFact } from "../../../utils/databaseAPI";
 import { DocumentBlock } from "../../../java2ts/DocumentBlock";
@@ -108,6 +107,25 @@ class DocumentLoading extends React.Component<{}, {}> {
     );
   }
 }
+
+interface DocumentErrorViewProps {
+  onRetryClick: () => any;
+}
+
+const DocumentErrorView: React.StatelessComponent<
+  DocumentErrorViewProps
+> = props =>
+  <div className="editor__document editor__document--base editor__document--hover">
+    <h2 className="editor__document-title">
+      Error loading Foundation Document
+    </h2>
+    <button
+      className="editor__button editor__button--reload"
+      onClick={props.onRetryClick}
+    >
+      retry?
+    </button>
+  </div>;
 
 interface DocumentProps {
   idx: number;
