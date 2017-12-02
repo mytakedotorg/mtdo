@@ -116,7 +116,7 @@ export default class TimelineView extends React.Component<
     }
   };
   handleDocumentSetClick = (
-    excerptTitle: string,
+    excerptHash: string,
     highlightedRange: [number, number],
     viewRange: [number, number]
   ): void => {
@@ -134,7 +134,7 @@ export default class TimelineView extends React.Component<
     window.location.href =
       Routes.DRAFTS_NEW +
       "/#" +
-      excerptTitle +
+      excerptHash +
       "&" +
       highlightedRange[0] +
       "&" +
