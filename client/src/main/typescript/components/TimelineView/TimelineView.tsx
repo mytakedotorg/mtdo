@@ -2,6 +2,7 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import Timeline, { TimelineItemData } from "../Timeline";
 import TimelineLoadingView from "../TimelineLoadingView";
+import TimelineErrorView from "../TimelineErrorView";
 import TimelinePreviewContainer from "../TimelinePreviewContainer";
 import TimelineRadioButtons from "./TimelineRadioButtons";
 import { SetFactHandlers } from "../TimelinePreview";
@@ -27,6 +28,7 @@ interface TimelineViewProps {
 }
 
 interface TimelineViewState {
+  error: boolean;
   factLink: Foundation.FactLink | null;
   loading: boolean;
   selectedOption: SelectionOptions;
@@ -46,6 +48,7 @@ export default class TimelineView extends React.Component<
     this.hashIsValid = props.hashUrl ? false : true;
 
     this.state = {
+      error: false,
       factLink: null,
       loading: true,
       selectedOption: "Documents",
@@ -57,41 +60,47 @@ export default class TimelineView extends React.Component<
     let timelineItems: TimelineItemData[] = [];
     getAllFacts(
       (error: string | Error | null, factlinks: Foundation.FactLink[]) => {
-        if (error) throw error;
-        let currentFactLink: Foundation.FactLink | null = null;
-        for (let factlink of factlinks) {
-          if (!this.hashIsValid) {
-            // Try to find the match the fact title from the hash with a valid title from the server
-            if (
-              this.state.hashValues &&
-              this.state.hashValues.factTitleSlug ===
-                slugify(factlink.fact.title)
-            ) {
-              currentFactLink = factlink;
-              this.hashIsValid = true;
-            }
-          }
-          let idx = factlink.hash;
-          timelineItems = [
-            ...timelineItems,
-            {
-              id: idx,
-              idx: idx,
-              start: new Date(factlink.fact.primaryDate),
-              content: factlink.fact.title,
-              kind: factlink.fact.kind
-            }
-          ];
-        }
-        if (this.hashIsValid) {
-          this.factLinks = factlinks;
+        if (error) {
           this.setState({
             loading: false,
-            factLink: currentFactLink ? currentFactLink : null,
-            timelineItems: timelineItems
+            error: true
           });
         } else {
-          window.location.hash = "";
+          let currentFactLink: Foundation.FactLink | null = null;
+          for (let factlink of factlinks) {
+            if (!this.hashIsValid) {
+              // Try to find the match the fact title from the hash with a valid title from the server
+              if (
+                this.state.hashValues &&
+                this.state.hashValues.factTitleSlug ===
+                  slugify(factlink.fact.title)
+              ) {
+                currentFactLink = factlink;
+                this.hashIsValid = true;
+              }
+            }
+            let idx = factlink.hash;
+            timelineItems = [
+              ...timelineItems,
+              {
+                id: idx,
+                idx: idx,
+                start: new Date(factlink.fact.primaryDate),
+                content: factlink.fact.title,
+                kind: factlink.fact.kind
+              }
+            ];
+          }
+          if (this.hashIsValid) {
+            this.factLinks = factlinks;
+            this.setState({
+              loading: false,
+              factLink: currentFactLink ? currentFactLink : null,
+              timelineItems: timelineItems
+            });
+          } else {
+            window.location.hash = "";
+          }
         }
       }
     );
@@ -223,7 +232,30 @@ export default class TimelineView extends React.Component<
             </p>
           </div>
           <div className={"timeline"}>
-            {this.state.loading
+            {this.state.error
+              ? <TimelineErrorView />
+              : this.state.loading
+                ? <TimelineLoadingView />
+                : <div>
+                    <TimelineRadioButtons
+                      selectedOption={this.state.selectedOption}
+                      onChange={this.handleChange}
+                    />
+                    <Timeline
+                      onItemClick={this.handleClick}
+                      selectedOption={this.state.selectedOption}
+                      timelineItems={this.state.timelineItems}
+                    />
+                  </div>}
+          </div>
+        </div>
+      );
+    } else {
+      return (
+        <div className={"timeline__view"}>
+          {this.state.error
+            ? <TimelineErrorView />
+            : this.state.loading
               ? <TimelineLoadingView />
               : <div>
                   <TimelineRadioButtons
@@ -236,25 +268,6 @@ export default class TimelineView extends React.Component<
                     timelineItems={this.state.timelineItems}
                   />
                 </div>}
-          </div>
-        </div>
-      );
-    } else {
-      return (
-        <div className={"timeline__view"}>
-          {this.state.loading
-            ? <TimelineLoadingView />
-            : <div>
-                <TimelineRadioButtons
-                  selectedOption={this.state.selectedOption}
-                  onChange={this.handleChange}
-                />
-                <Timeline
-                  onItemClick={this.handleClick}
-                  selectedOption={this.state.selectedOption}
-                  timelineItems={this.state.timelineItems}
-                />
-              </div>}
           {this.state.factLink
             ? <TimelinePreviewContainer
                 factLink={this.state.factLink}
