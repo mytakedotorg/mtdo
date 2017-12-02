@@ -2,6 +2,7 @@ import * as React from "react";
 import * as keycode from "keycode";
 import YouTube from "react-youtube";
 import DocumentTextNodeList from "../DocumentTextNodeList";
+import DocumentErrorView from "../DocumentErrorView";
 import CaptionedVideo from "../Video";
 import { getVideoFact } from "../../utils/databaseAPI";
 import {
@@ -207,6 +208,7 @@ interface DocumentContainerProps {
 
 interface DocumentContainerState {
   loading: boolean;
+  error: boolean;
   document?: {
     fact: Foundation.Fact;
     nodes: FoundationNode[];
@@ -220,7 +222,8 @@ class DocumentContainer extends React.Component<
     super(props);
 
     this.state = {
-      loading: true
+      loading: true,
+      error: false
     };
   }
   getFact = (factHash: string) => {
@@ -230,26 +233,37 @@ class DocumentContainer extends React.Component<
         error: string | Error | null,
         factContent: Foundation.DocumentFactContent
       ) => {
-        if (error) throw error;
-        let nodes: FoundationNode[] = [];
+        if (error) {
+          this.setState({
+            error: true
+          });
+        } else {
+          let nodes: FoundationNode[] = [];
 
-        for (let documentComponent of factContent.components) {
-          nodes.push({
-            component: documentComponent.component,
-            innerHTML: [documentComponent.innerHTML],
-            offset: documentComponent.offset
+          for (let documentComponent of factContent.components) {
+            nodes.push({
+              component: documentComponent.component,
+              innerHTML: [documentComponent.innerHTML],
+              offset: documentComponent.offset
+            });
+          }
+
+          this.setState({
+            loading: false,
+            document: {
+              fact: factContent.fact,
+              nodes: nodes
+            }
           });
         }
-
-        this.setState({
-          loading: false,
-          document: {
-            fact: factContent.fact,
-            nodes: nodes
-          }
-        });
       }
     );
+  };
+  handleRetryClick = () => {
+    this.setState({
+      error: false
+    });
+    this.getFact(this.props.block.excerptId);
   };
   componentDidMount() {
     this.getFact(this.props.block.excerptId);
@@ -262,9 +276,11 @@ class DocumentContainer extends React.Component<
   render() {
     return (
       <div>
-        {this.state.loading || !this.state.document
-          ? <DocumentLoading />
-          : <Document {...this.props} document={this.state.document} />}
+        {this.state.error
+          ? <DocumentErrorView onRetryClick={this.handleRetryClick} />
+          : this.state.loading || !this.state.document
+            ? <DocumentLoading />
+            : <Document {...this.props} document={this.state.document} />}
       </div>
     );
   }

@@ -175,6 +175,10 @@
 .editor__button--delete {
   @include button--red;
 }
+.editor__button--reload {
+  @include button--blue;
+  margin-bottom: 8px;
+}
 .editor__button--disabled {
   border: none;
   color: palette(button, color--disabled);
