@@ -88,25 +88,17 @@ class EditorDocumentContainer extends React.Component<
         {this.state.error
           ? <DocumentErrorView onRetryClick={this.handleRetryClick} />
           : this.state.loading || !this.state.document
-            ? <DocumentLoading />
+            ? <DocumentLoadingView />
             : <Document {...this.props} document={this.state.document} />}
       </div>
     );
   }
 }
 
-class DocumentLoading extends React.Component<{}, {}> {
-  constructor(props: {}) {
-    super(props);
-  }
-  render() {
-    return (
-      <div className="editor__document editor__document--base editor__document--hover">
-        <h2 className="editor__document-title">Loading</h2>
-      </div>
-    );
-  }
-}
+const DocumentLoadingView: React.StatelessComponent<{}> = props =>
+  <div className="editor__document editor__document--base editor__document--hover">
+    <h2 className="editor__document-title">Loading</h2>
+  </div>;
 
 interface DocumentErrorViewProps {
   onRetryClick: () => any;
