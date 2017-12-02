@@ -21,7 +21,7 @@ interface BlockWriterProps {
 interface BlockWriterHashValues {
   factHash: string;
   highlightedRange: [number, number];
-  viewRange: [number, number];
+  viewRange: [number, number] | null;
   articleUser: string | null;
   articleTitle: string | null;
 }
@@ -302,10 +302,14 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
       parseInt(hashArr[1]),
       parseInt(hashArr[2])
     ];
-    const viewRange: [number, number] = [
-      parseInt(hashArr[3]),
-      parseInt(hashArr[4])
-    ];
+
+    let viewRange: [number, number] | null;
+
+    if (hashArr[3] && hashArr[4]) {
+      viewRange = [parseInt(hashArr[3]), parseInt(hashArr[4])];
+    } else {
+      viewRange = null;
+    }
 
     let articleUser;
     let articleTitle;
@@ -437,11 +441,18 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
         const hashParams: BlockWriterHashValues = this.parseHashURL(
           this.props.hashUrl
         );
-        this.addDocument(
-          hashParams.factHash,
-          hashParams.highlightedRange,
-          hashParams.viewRange
-        );
+        console.log(hashParams);
+        if (hashParams.viewRange) {
+          console.log("adding document");
+          this.addDocument(
+            hashParams.factHash,
+            hashParams.highlightedRange,
+            hashParams.viewRange
+          );
+        } else {
+          console.log("adding video");
+          this.addVideo(hashParams.factHash, hashParams.highlightedRange);
+        }
       } catch (e) {
         // Couldn't parse hash URL, clear it
         window.location.hash = "";
