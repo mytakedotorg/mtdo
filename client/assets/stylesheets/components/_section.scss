@@ -21,6 +21,9 @@
   margin-right: 30px;
 }
 .section__text {
+  @include body;
+}
+.section__text--lead {
   @include body--lead;
 }
 .section__text--alert {

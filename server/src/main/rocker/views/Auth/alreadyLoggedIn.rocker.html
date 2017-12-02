@@ -1,10 +1,12 @@
 @args(String username)
 
 @views.base.template("Already logged in", "You're already logged in") -> {
-	<p>
-		You are already logged in as <strong>@username</strong>.
-	</p>
-	<p>
-		If you'd like to login as someone else, you have to <a href="@java2ts.Routes.LOGOUT">logout</a> first.
-	</p>
+<section class="section">
+<p class="section__text">
+	You are already logged in as <strong class="section__strong">@username</strong>.
+</p>
+<p class="section__text">
+	If you'd like to login as someone else, you have to <a class="section__link" href="@java2ts.Routes.LOGOUT">logout</a> first.
+</p>
+</section>
 }
