@@ -96,7 +96,7 @@ class EditorDocumentContainer extends React.Component<
 }
 
 class DocumentLoading extends React.Component<{}, {}> {
-  constructor(props: DocumentProps) {
+  constructor(props: {}) {
     super(props);
   }
   render() {
