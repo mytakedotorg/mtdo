@@ -1,12 +1,5 @@
 import * as React from "react";
-import { CaptionWord, VideoFact } from "./databaseData";
 import { Foundation } from "../java2ts/Foundation";
-import {
-  getVideoCaptionWordMap,
-  getVideoFact,
-  getVideoFactCaptionFile,
-  getVideoCaptionMetaData
-} from "./databaseAPI";
 var htmlparser = require("htmlparser2");
 
 export interface FoundationNode {
@@ -744,51 +737,38 @@ function convertSecondsToTimestamp(totalSeconds: number): string {
   }
 }
 
-function getCaptionNodeArray(videoId: string): Array<FoundationNode> {
+function getCaptionNodeArray(
+  transcript: Foundation.CaptionWord[],
+  speakerMap: Foundation.SpeakerMap[]
+): Array<FoundationNode> {
   // Fetch the excerpt from the DB by its ID
-  const captionFile = getVideoFactCaptionFile(videoId);
-  let source;
-  if (captionFile) {
-    source = require("../foundation/" + captionFile);
-    if (source) {
-      const captionMeta = getVideoCaptionMetaData(videoId);
-      let output: Array<FoundationNode> = [];
-      let offset = 0;
-      if (captionMeta) {
-        const speakerMap = captionMeta.speakerMap;
-        const captions: CaptionWord[] = JSON.parse(source);
-        for (const speaker of speakerMap) {
-          let innerHTML = "";
-          for (let i = speaker.range[0]; i <= speaker.range[1]; i++) {
-            if (captions[i]) {
-              innerHTML += captions[i].word;
-            }
-          }
-
-          innerHTML = innerHTML.trim(); //Replace extra whitespace with a single space
-
-          if (innerHTML.length > 0) {
-            output.push({
-              component: "p",
-              offset: offset,
-              innerHTML: [innerHTML]
-            });
-
-            // Character count offset
-            offset += innerHTML.length;
-          } else {
-            throw "A speaker's start range can't be greater than the end range, offending range: " +
-              speaker.range;
-          }
-        }
+  let output: Array<FoundationNode> = [];
+  let offset = 0;
+  for (const speaker of speakerMap) {
+    let innerHTML = "";
+    for (let i = speaker.range[0]; i <= speaker.range[1]; i++) {
+      if (transcript[i]) {
+        innerHTML += transcript[i].word;
       }
-      return output;
-    } else {
-      throw "Error retrieving Caption document";
     }
-  } else {
-    throw "Error retrieving Caption document";
+
+    innerHTML = innerHTML.trim(); //Replace extra whitespace with a single space
+
+    if (innerHTML.length > 0) {
+      output.push({
+        component: "p",
+        offset: offset,
+        innerHTML: [innerHTML]
+      });
+
+      // Character count offset
+      offset += innerHTML.length;
+    } else {
+      throw "A speaker's start range can't be greater than the end range, offending range: " +
+        speaker.range;
+    }
   }
+  return output;
 }
 
 const validators = {
@@ -859,21 +839,19 @@ function getWordCount(selection: Selection): number {
 }
 
 function getCharRangeFromVideoRange(
-  videoId: string,
+  transcript: Foundation.CaptionWord[],
+  speakerMap: Foundation.SpeakerMap[],
   timeRange: [number, number]
 ): [number, number] {
   const startTime = timeRange[0];
   const endTime = timeRange[1];
-
-  const wordMap = getVideoCaptionWordMap(videoId);
-  const speakerMap = getVideoCaptionMetaData(videoId).speakerMap;
 
   let charCount = 0;
   let startCharIndex: number = -1;
   let isStartSet = false;
   let endCharIndex: number = -1;
 
-  for (const captionWord of wordMap) {
+  for (const captionWord of transcript) {
     if (captionWord.timestamp < startTime) {
       charCount += captionWord.word.length;
       continue;

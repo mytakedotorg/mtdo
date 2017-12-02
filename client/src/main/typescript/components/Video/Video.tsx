@@ -1,7 +1,7 @@
 import * as React from "react";
 import YouTube from "react-youtube";
 import { getCharRangeFromVideoRange } from "../../utils/functions";
-import { VideoFact } from "../../utils/databaseData";
+import { Foundation } from "../../java2ts/Foundation";
 import CaptionView from "../CaptionView";
 
 interface YTPlayerParameters {
@@ -18,7 +18,7 @@ interface YTPlayerParameters {
 
 interface VideoProps {
   onSetClick: (range: [number, number]) => void;
-  video: VideoFact;
+  videoFact: Foundation.VideoFactContent;
   className?: string;
   timeRange?: [number, number];
 }
@@ -38,7 +38,7 @@ class Video extends React.Component<VideoProps, VideoState> {
     super(props);
 
     let charRange: [number, number] = this.getCharRange(
-      props.video.id,
+      props.videoFact,
       props.timeRange
     );
 
@@ -53,19 +53,27 @@ class Video extends React.Component<VideoProps, VideoState> {
   }
   cueVideo = () => {
     this.player.cueVideoById({
-      videoId: this.props.video.id,
+      videoId: this.props.videoFact.youtubeId,
       startSeconds: this.state.startTime,
       endSeconds: this.state.endTime,
       suggestedQuality: "default"
     });
   };
   getCharRange = (
-    videoId: string,
+    videoFact: Foundation.VideoFactContent,
     timeRange?: [number, number]
   ): [number, number] => {
     if (timeRange) {
       try {
-        return getCharRangeFromVideoRange(videoId, timeRange);
+        if (videoFact.transcript && videoFact.speakerMap) {
+          return getCharRangeFromVideoRange(
+            videoFact.transcript,
+            videoFact.speakerMap,
+            timeRange
+          );
+        } else {
+          throw "TODO";
+        }
       } catch (err) {
         console.warn(err);
       }
@@ -180,9 +188,12 @@ class Video extends React.Component<VideoProps, VideoState> {
     this.stopTimer();
   }
   componentWillReceiveProps(nextProps: VideoProps) {
-    if (nextProps.video.id !== this.props.video.id && nextProps.timeRange) {
+    if (
+      nextProps.videoFact.youtubeId !== this.props.videoFact.youtubeId &&
+      nextProps.timeRange
+    ) {
       const charRange = this.getCharRange(
-        nextProps.video.id,
+        nextProps.videoFact,
         nextProps.timeRange
       );
       let isHighlighted: boolean;
@@ -249,11 +260,11 @@ class Video extends React.Component<VideoProps, VideoState> {
                   </button>
                 : null}
               <p className="video__date">
-                {this.props.video.primaryDate.toDateString()}
+                {this.props.videoFact.fact.primaryDate}
               </p>
             </div>
             <YouTube
-              videoId={this.props.video.id}
+              videoId={this.props.videoFact.youtubeId}
               opts={opts}
               onReady={this.handleReady}
               onPause={this.handlePause}
@@ -263,7 +274,7 @@ class Video extends React.Component<VideoProps, VideoState> {
           </div>
           <CaptionView
             timer={this.state.currentTime}
-            videoId={this.props.video.id}
+            videoFact={this.props.videoFact}
             captionIsHighlighted={this.state.captionIsHighlighted}
             videoStart={this.state.startTime}
             videoEnd={this.state.endTime}

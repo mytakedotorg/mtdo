@@ -6,14 +6,14 @@ import {
   getCaptionNodeArray,
   FoundationNode
 } from "../../utils/functions";
-import { CaptionWord, CaptionMeta } from "../../utils/databaseData";
+import { Foundation } from "../../java2ts/Foundation";
 import DocumentTextNodeList from "../DocumentTextNodeList";
 import CaptionTextNodeList from "../CaptionTextNodeList";
 
 interface CaptionData {
   captionTimer: number;
-  captionMap: CaptionWord[];
-  captionMeta: CaptionMeta;
+  transcript: Foundation.CaptionWord[];
+  speakerMap: Foundation.SpeakerMap[];
 }
 
 interface DocumentProps {
@@ -40,17 +40,16 @@ class Document extends React.Component<DocumentProps, DocumentState> {
 
     let childComponent;
     if (this.props.captionData) {
-      throw "TODO";
-      // childComponent = (
-      //   <CaptionTextNodeList
-      //     className="document__text document__text--caption"
-      //     onMouseUp={this.props.onMouseUp}
-      //     documentNodes={this.props.documentNodes}
-      //     captionTimer={this.props.captionData.captionTimer}
-      //     captionWordMap={this.props.captionData.captionMap}
-      //     captionMeta={this.props.captionData.captionMeta}
-      //   />
-      // );
+      childComponent = (
+        <CaptionTextNodeList
+          className="document__text document__text--caption"
+          onMouseUp={this.props.onMouseUp}
+          documentNodes={this.props.nodes}
+          captionTimer={this.props.captionData.captionTimer}
+          captionTranscript={this.props.captionData.transcript}
+          speakerMap={this.props.captionData.speakerMap}
+        />
+      );
     } else {
       childComponent = (
         <DocumentTextNodeList

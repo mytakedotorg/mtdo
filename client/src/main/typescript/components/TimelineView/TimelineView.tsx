@@ -51,7 +51,7 @@ export default class TimelineView extends React.Component<
       error: false,
       factLink: null,
       loading: true,
-      selectedOption: "Documents",
+      selectedOption: "Debates",
       timelineItems: [],
       hashValues: props.hashUrl ? this.parseHashURL(props.hashUrl) : null
     };

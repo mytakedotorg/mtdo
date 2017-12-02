@@ -1,8 +1,7 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { FoundationNode } from "../../utils/functions";
-import { isVideo, isDocument } from "../../utils/databaseData";
-import { fetchFact } from "../../utils/databaseAPI";
+import { isVideo, isDocument, fetchFact } from "../../utils/databaseAPI";
 import TimelinePreview, { Ranges, SetFactHandlers } from "../TimelinePreview";
 import TimelinePreviewLoadingView from "../TimelinePreviewLoadingView";
 import TimelinePreviewErrorView from "../TimelinePreviewErrorView";
@@ -19,6 +18,7 @@ interface TimelinePreviewContainerProps {
 interface TimelinePreviewContainerState {
   error: boolean;
   loading: boolean;
+  videoFact?: Foundation.VideoFactContent;
   nodes?: FoundationNode[];
 }
 
@@ -65,7 +65,11 @@ export default class TimelinePreviewContainer extends React.Component<
               nodes: nodes
             });
           } else if (isVideo(factContent)) {
-            throw "TODO";
+            console.log("HERE I AM");
+            this.setState({
+              loading: false,
+              videoFact: factContent
+            });
           } else {
             throw "Unknown kind of Fact";
           }
@@ -90,10 +94,11 @@ export default class TimelinePreviewContainer extends React.Component<
       <div>
         {this.state.error
           ? <TimelinePreviewErrorView />
-          : this.state.loading || !this.state.nodes
+          : this.state.loading
             ? <TimelinePreviewLoadingView />
             : <TimelinePreview
                 factLink={this.props.factLink}
+                videoFact={this.state.videoFact}
                 nodes={this.state.nodes}
                 setFactHandlers={this.props.setFactHandlers}
                 ranges={this.props.ranges}

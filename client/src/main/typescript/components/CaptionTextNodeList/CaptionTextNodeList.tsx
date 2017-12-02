@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { FoundationNode } from "../../utils/functions";
-import { CaptionWord, CaptionMeta, SpeakerMap } from "../../utils/databaseData";
+import { Foundation } from "../../java2ts/Foundation";
 import CaptionTextNode from "../CaptionTextNode";
 var bs = require("binary-search");
 
@@ -10,8 +10,8 @@ interface CaptionTextNodeListProps {
   onMouseUp: () => void;
   captionTimer: number;
   documentNodes: FoundationNode[];
-  captionWordMap: CaptionWord[];
-  captionMeta: CaptionMeta;
+  captionTranscript: Foundation.CaptionWord[];
+  speakerMap: Foundation.SpeakerMap[];
 }
 
 interface CaptionTextNodeListState {
@@ -65,7 +65,7 @@ class CaptionTextNodeList extends React.Component<
         }
 
         this.setState({
-          currentSpeaker: this.props.captionMeta.speakerMap[speakerIdx].speaker
+          currentSpeaker: this.props.speakerMap[speakerIdx].speaker
         });
 
         this.timerId = window.setTimeout(this.clearTimer, 500);
@@ -77,9 +77,9 @@ class CaptionTextNodeList extends React.Component<
       const timer = this.props.captionTimer;
 
       let wordIdx = bs(
-        this.props.captionWordMap,
+        this.props.captionTranscript,
         timer,
-        (word: CaptionWord, time: number) => {
+        (word: Foundation.CaptionWord, time: number) => {
           return word.timestamp - time;
         }
       );
@@ -91,9 +91,9 @@ class CaptionTextNodeList extends React.Component<
 
       // find the speaker for that word
       let speakerIdx = bs(
-        this.props.captionMeta.speakerMap,
+        this.props.speakerMap,
         wordIdx,
-        (speaker: SpeakerMap, idx: number) => {
+        (speaker: Foundation.SpeakerMap, idx: number) => {
           return speaker.range[0] - idx;
         }
       );
@@ -105,7 +105,7 @@ class CaptionTextNodeList extends React.Component<
         }
       }
 
-      let speakerRange = this.props.captionMeta.speakerMap[speakerIdx];
+      let speakerRange = this.props.speakerMap[speakerIdx];
       const captionTextContainer = this.captionNodeContainer.children[
         speakerIdx
       ].children[1];
@@ -121,7 +121,7 @@ class CaptionTextNodeList extends React.Component<
       let numberOfLines = -1;
       hiddenTextElement.innerHTML = "";
       for (let i = speakerRange.range[0]; i < wordIdx; ++i) {
-        hiddenTextElement.innerHTML += this.props.captionWordMap[i].word;
+        hiddenTextElement.innerHTML += this.props.captionTranscript[i].word;
         if (hiddenTextElement.clientHeight !== height) {
           height = hiddenTextElement.clientHeight;
           numberOfLines++;
@@ -171,13 +171,10 @@ class CaptionTextNodeList extends React.Component<
   render() {
     let wordCount: number;
     let nextWordCount: number;
-    if (
-      this.props.captionMeta.speakerMap.length !==
-      this.props.documentNodes.length
-    ) {
+    if (this.props.speakerMap.length !== this.props.documentNodes.length) {
       throw "Speaker map length not equal to number of caption nodes.";
     }
-    const speakerMap = this.props.captionMeta.speakerMap;
+    const speakerMap = this.props.speakerMap;
     return (
       <div className="document__text">
         <h3 className="document__node-text document__node-text--speaker-top">

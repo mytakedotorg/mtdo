@@ -12,7 +12,6 @@ import {
   getStartRangeOffsetTop,
   highlightTextTwo
 } from "../../utils/functions";
-import { VideoFact, isDocument, isVideo } from "../../utils/databaseData";
 import { Foundation } from "../../java2ts/Foundation";
 import { Routes } from "../../java2ts/Routes";
 
@@ -32,7 +31,8 @@ export interface Ranges {
 
 interface TimelinePreviewProps {
   factLink: Foundation.FactLink;
-  nodes: FoundationNode[];
+  nodes?: FoundationNode[];
+  videoFact?: Foundation.VideoFactContent;
   setFactHandlers?: SetFactHandlers;
   ranges?: Ranges;
   offset?: number;
@@ -218,7 +218,7 @@ export default class TimelinePreview extends React.Component<
             this.props.factLink.fact.kind === "document" ? true : false
           }
         />
-        {this.props.factLink.fact.kind === "document"
+        {this.props.factLink.fact.kind === "document" && this.props.nodes
           ? <Document
               nodes={this.props.nodes}
               onMouseUp={this.handleMouseUp}
@@ -243,17 +243,16 @@ export default class TimelinePreview extends React.Component<
                 : null}
             </Document>
           : null}
-        {this.props.factLink.fact.kind === "video"
-          ? // <Video
-            //     onSetClick={this.handleSetClick}
-            //     video={this.state.fact}
-            //     className={
-            //       this.state.headerHidden
-            //         ? "video__inner-container video__inner-container--push"
-            //         : "video__inner-container"
-            //     }
-            //   />
-            null
+        {this.props.factLink.fact.kind === "video" && this.props.videoFact
+          ? <Video
+              onSetClick={this.handleSetClick}
+              videoFact={this.props.videoFact}
+              className={
+                this.state.headerHidden
+                  ? "video__inner-container video__inner-container--push"
+                  : "video__inner-container"
+              }
+            />
           : null}
       </div>
     );

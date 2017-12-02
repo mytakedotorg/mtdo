@@ -9,11 +9,7 @@ import {
   highlightTextTwo,
   FoundationNode
 } from "../../utils/functions";
-import {
-  getVideoCaptionWordMap,
-  getVideoCaptionMetaData
-} from "../../utils/databaseAPI";
-import { CaptionWord, CaptionMeta } from "../../utils/databaseData";
+import { Foundation } from "../../java2ts/Foundation";
 
 interface EventHandlers {
   onHighlight: (
@@ -27,7 +23,7 @@ interface EventHandlers {
 }
 
 interface CaptionViewProps {
-  videoId: string;
+  videoFact: Foundation.VideoFactContent;
   timer: number;
   captionIsHighlighted: boolean;
   videoStart: number;
@@ -40,8 +36,6 @@ interface CaptionViewState {
   viewRange: [number, number];
   highlightedNodes?: FoundationNode[];
   currentIndex: number;
-  captionMap?: CaptionWord[];
-  captionMeta?: CaptionMeta;
 }
 
 class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
@@ -55,52 +49,80 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
     };
   }
   getCaptionData = (
-    npVideoId?: string,
-    npCaptionIsHighlighted?: boolean,
-    npHighlightedCharRange?: [number, number]
+    nextPropsVideoFact?: Foundation.VideoFactContent,
+    nextPropsCaptionIsHighlighted?: boolean,
+    nextPropsHighlightedCharRange?: [number, number]
   ) => {
-    const videoId = npVideoId ? npVideoId : this.props.videoId;
-    const captionIsHighlighted = npCaptionIsHighlighted
-      ? npCaptionIsHighlighted
-      : this.props.captionIsHighlighted;
-    const highlightedCharRange = npHighlightedCharRange
-      ? npHighlightedCharRange
-      : this.props.highlightedCharRange;
+    let captionIsHighlighted: boolean;
+    let highlightedCharRange: [number, number] | undefined;
+    let transcript: Foundation.CaptionWord[] | undefined;
+    let speakerMap: Foundation.SpeakerMap[] | undefined;
+
+    if (typeof nextPropsCaptionIsHighlighted == "boolean") {
+      captionIsHighlighted = nextPropsCaptionIsHighlighted;
+    } else {
+      captionIsHighlighted = this.props.captionIsHighlighted;
+    }
+
+    if (nextPropsHighlightedCharRange) {
+      highlightedCharRange = nextPropsHighlightedCharRange;
+    } else {
+      highlightedCharRange = this.props.highlightedCharRange;
+    }
+
+    if (nextPropsVideoFact) {
+      transcript = nextPropsVideoFact.transcript;
+      speakerMap = nextPropsVideoFact.speakerMap;
+    } else {
+      transcript = this.props.videoFact.transcript;
+      speakerMap = this.props.videoFact.speakerMap;
+    }
+
     try {
-      let captionMap = getVideoCaptionWordMap(videoId);
-      let captionMeta = getVideoCaptionMetaData(videoId);
-      let captionNodes = getCaptionNodeArray(videoId);
-      if (captionIsHighlighted && highlightedCharRange) {
-        captionNodes = highlightTextTwo(
-          captionNodes,
-          highlightedCharRange,
-          () => {
-            throw "todo";
-          }
-        );
+      if (transcript && speakerMap) {
+        let captionNodes = getCaptionNodeArray(transcript, speakerMap);
+        if (captionIsHighlighted && highlightedCharRange) {
+          captionNodes = highlightTextTwo(
+            captionNodes,
+            highlightedCharRange,
+            () => {
+              throw "todo";
+            }
+          );
+        }
+        this.setState({
+          highlightedNodes: captionNodes
+        });
+      } else {
+        this.setState({
+          highlightedNodes: undefined
+        });
+        throw "Captions not yet done for this video -- delete this throw";
       }
-      this.setState({
-        highlightedNodes: captionNodes,
-        captionMap: captionMap,
-        captionMeta: captionMeta
-      });
     } catch (e) {
       console.warn(e);
       this.setState({
-        highlightedNodes: undefined,
-        captionMap: undefined,
-        captionMeta: undefined
+        highlightedNodes: undefined
       });
     }
   };
   handleClearClick = () => {
-    this.setState({
-      highlightedNodes: getCaptionNodeArray(this.props.videoId)
-    });
+    const transcript = this.props.videoFact.transcript;
+    const speakerMap = this.props.videoFact.speakerMap;
+    if (transcript && speakerMap) {
+      this.setState({
+        highlightedNodes: getCaptionNodeArray(transcript, speakerMap)
+      });
+    } else {
+      this.setState({
+        highlightedNodes: undefined
+      });
+    }
     this.props.eventHandlers.onClearPress();
   };
   handleMouseUp = () => {
-    if (this.state.captionMap) {
+    const transcript = this.props.videoFact.transcript;
+    if (transcript) {
       if (window.getSelection && !this.props.captionIsHighlighted) {
         // Pre IE9 will always be false
         const selection: Selection = window.getSelection();
@@ -125,10 +147,8 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
             highlightedNodes: newNodes
           });
 
-          let startTime = this.state.captionMap[simpleRanges.wordRange[0]]
-            .timestamp;
-          let endTime = this.state.captionMap[simpleRanges.wordRange[1]]
-            .timestamp;
+          let startTime = transcript[simpleRanges.wordRange[0]].timestamp;
+          let endTime = transcript[simpleRanges.wordRange[1]].timestamp;
 
           this.props.eventHandlers.onHighlight(
             [startTime, endTime],
@@ -136,25 +156,35 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
           );
         } else if (selection) {
           let wordCount = getWordCount(selection);
-          let videoTime = this.state.captionMap[wordCount].timestamp;
+          let videoTime = transcript[wordCount].timestamp;
           this.props.eventHandlers.onCursorPlace(videoTime);
         }
       }
     }
   };
   componentDidMount() {
-    if (this.props.videoId) {
+    if (this.props.videoFact.youtubeId) {
       this.getCaptionData();
     }
   }
   componentWillReceiveProps(nextProps: CaptionViewProps) {
-    if (nextProps.videoId !== this.props.videoId && this.props.videoId) {
-      this.getCaptionData(nextProps.videoId);
+    if (
+      nextProps.videoFact.youtubeId !== this.props.videoFact.youtubeId &&
+      this.props.videoFact.youtubeId
+    ) {
+      this.getCaptionData(
+        nextProps.videoFact,
+        nextProps.captionIsHighlighted,
+        nextProps.highlightedCharRange
+      );
     }
   }
   render() {
     const startTime = convertSecondsToTimestamp(this.props.videoStart);
     const endTime = convertSecondsToTimestamp(this.props.videoEnd);
+
+    const transcript = this.props.videoFact.transcript;
+    const speakerMap = this.props.videoFact.speakerMap;
 
     return (
       <div className="captions">
@@ -217,22 +247,18 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
               </div>
             </div>
           : null}
-        {this.state.captionMap &&
-        this.state.captionMeta &&
-        this.state.highlightedNodes
-          ? // <Document
-            //     excerptId={this.props.videoId}
-            //     onMouseUp={this.handleMouseUp}
-            //     ref={(document: Document) => (this.document = document)}
-            //     className="document__row"
-            //     captionData={{
-            //       captionTimer: this.props.timer,
-            //       captionMap: this.state.captionMap,
-            //       captionMeta: this.state.captionMeta
-            //     }}
-            //     nodes={this.state.highlightedNodes}
-            //   />
-            null
+        {transcript && speakerMap && this.state.highlightedNodes
+          ? <Document
+              onMouseUp={this.handleMouseUp}
+              ref={(document: Document) => (this.document = document)}
+              className="document__row"
+              captionData={{
+                captionTimer: this.props.timer,
+                transcript: transcript,
+                speakerMap: speakerMap
+              }}
+              nodes={this.state.highlightedNodes}
+            />
           : <p className="video__instructions">
               We're still working on adding captions for this video
             </p>}
