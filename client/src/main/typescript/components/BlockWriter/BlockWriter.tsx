@@ -441,16 +441,13 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
         const hashParams: BlockWriterHashValues = this.parseHashURL(
           this.props.hashUrl
         );
-        console.log(hashParams);
         if (hashParams.viewRange) {
-          console.log("adding document");
           this.addDocument(
             hashParams.factHash,
             hashParams.highlightedRange,
             hashParams.viewRange
           );
         } else {
-          console.log("adding video");
           this.addVideo(hashParams.factHash, hashParams.highlightedRange);
         }
       } catch (e) {
