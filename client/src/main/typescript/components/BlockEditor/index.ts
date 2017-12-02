@@ -1,10 +1,22 @@
 import BlockEditor, {
   DocumentBlock,
+  isWriteOnly,
+  ReadingEventHandlers,
   ParagraphBlock,
   TakeBlock,
   TakeDocument,
-  VideoBlock
+  VideoBlock,
+  WritingEventHandlers
 } from "./BlockEditor";
 
-export { DocumentBlock, ParagraphBlock, TakeBlock, TakeDocument, VideoBlock };
+export {
+  DocumentBlock,
+  isWriteOnly,
+  ParagraphBlock,
+  ReadingEventHandlers,
+  TakeBlock,
+  TakeDocument,
+  VideoBlock,
+  WritingEventHandlers
+};
 export default BlockEditor;
