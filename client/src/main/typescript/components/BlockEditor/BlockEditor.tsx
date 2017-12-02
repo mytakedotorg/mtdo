@@ -3,9 +3,8 @@ import * as keycode from "keycode";
 import YouTube from "react-youtube";
 import DocumentTextNodeList from "../DocumentTextNodeList";
 import CaptionedVideo from "../Video";
-import { getDocumentFactTitle, getVideoFact } from "../../utils/databaseAPI";
+import { getVideoFact } from "../../utils/databaseAPI";
 import {
-  getNodeArray,
   getHighlightedNodes,
   fetchFact,
   FoundationNode
