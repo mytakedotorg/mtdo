@@ -3,12 +3,12 @@
 @args(String username, String loginUrl)
 
 @views.email.template() -> {
-	<section class="section">
-			<p class="section__text">
+	<div>
+			<p>
 				Welcome back to MyTake.org, @username!
 			</p>
-			<p class="section__text">
-				Visit <a class="section__link" href="@raw(loginUrl)">this link</a> to login!
+			<p>
+				Visit <a href="@raw(loginUrl)">this link</a> to login!
 			</p>
-	</section>
+	</div>
 }
