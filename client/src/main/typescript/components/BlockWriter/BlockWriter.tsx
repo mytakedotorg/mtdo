@@ -7,7 +7,6 @@ import BlockEditor, {
   VideoBlock
 } from "../BlockEditor";
 import TimelineView from "../TimelineView";
-import Banner from "../Banner";
 import EditorButtons from "./EditorButtons";
 import { DraftRev } from "../../java2ts/DraftRev";
 import { DraftPost } from "../../java2ts/DraftPost";
@@ -16,6 +15,15 @@ import { Routes } from "../../java2ts/Routes";
 
 interface BlockWriterProps {
   initState: BlockWriterState;
+  hashUrl?: string;
+}
+
+interface BlockWriterHashValues {
+  factHash: string;
+  highlightedRange: [number, number];
+  viewRange: [number, number];
+  articleUser: string | null;
+  articleTitle: string | null;
 }
 
 export type Status = "INITIAL" | "SAVED" | "UNSAVED" | "ERROR";
@@ -285,6 +293,39 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
       }.bind(this)
     );
   };
+  parseHashURL = (hash: string): BlockWriterHashValues => {
+    // Expect hash URL to be like, #{FoundationType}&{highlightRangeStart}&{highlightRangeEnd}&{viewRangeStart}&{viewRangeEnd}&{URL of Take being read}
+    // localhost:3000/drafts/new/#LWbZHJ0sfeTMwVNXfB44e7Vn7QRilZkbh7aEYjMFLEA=&369&514&369&514&/samples/does-a-law-mean-what-it-says-or-what-it-meant/
+    const hashArr = hash.substring(1).split("&");
+    const factHash = hashArr[0];
+    const highlightedRange: [number, number] = [
+      parseInt(hashArr[1]),
+      parseInt(hashArr[2])
+    ];
+    const viewRange: [number, number] = [
+      parseInt(hashArr[3]),
+      parseInt(hashArr[4])
+    ];
+
+    let articleUser;
+    let articleTitle;
+
+    if (hashArr[5]) {
+      articleUser = hashArr[5].split("/")[1];
+      articleTitle = hashArr[5].split("/")[2];
+    } else {
+      articleUser = null;
+      articleTitle = null;
+    }
+
+    return {
+      factHash,
+      articleUser,
+      articleTitle,
+      highlightedRange,
+      viewRange
+    };
+  };
   postRequest = (
     route: string,
     bodyJson: DraftPost | DraftRev,
@@ -390,6 +431,24 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
       activeBlockIndex: idx
     });
   };
+  componentDidMount() {
+    if (this.props.hashUrl) {
+      try {
+        const hashParams: BlockWriterHashValues = this.parseHashURL(
+          this.props.hashUrl
+        );
+        console.log(hashParams);
+        this.addDocument(
+          hashParams.factHash,
+          hashParams.highlightedRange,
+          hashParams.viewRange
+        );
+      } catch (e) {
+        // Couldn't parse hash URL, clear it
+        window.location.hash = "";
+      }
+    }
+  }
   render() {
     const eventHandlers = {
       handleChange: this.handleTakeBlockChange,
