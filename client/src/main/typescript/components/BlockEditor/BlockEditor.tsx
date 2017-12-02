@@ -1,9 +1,7 @@
 import * as React from "react";
 import * as keycode from "keycode";
-import YouTube from "react-youtube";
 import EditorDocumentContainer from "./EditorDocumentContainer";
-import CaptionedVideo from "../Video";
-import { getVideoFact } from "../../utils/databaseAPI";
+import EditorVideoContainer from "./EditorVideoContainer";
 import { Foundation } from "../../java2ts/Foundation";
 import { ParagraphBlock } from "../../java2ts/ParagraphBlock";
 import { DocumentBlock } from "../../java2ts/DocumentBlock";
@@ -50,13 +48,6 @@ export function isWriteOnly(
     return false;
   }
 }
-interface VideoBlockProps {
-  idx: number;
-  active: boolean;
-  block: VideoBlock;
-  eventHandlers?: WritingEventHandlers;
-}
-interface VideoBlockState {}
 
 class Paragraph extends React.Component<
   ParagraphBlockProps,
@@ -180,65 +171,6 @@ class Paragraph extends React.Component<
   }
 }
 
-class Video extends React.Component<VideoBlockProps, VideoBlockState> {
-  constructor(props: VideoBlockProps) {
-    super(props);
-  }
-  handleClick = () => {
-    if (isWriteOnly(this.props.eventHandlers)) {
-      this.props.eventHandlers.handleFocus(this.props.idx);
-    }
-  };
-  handleFocus = () => {
-    if (isWriteOnly(this.props.eventHandlers)) {
-      this.props.eventHandlers.handleFocus(this.props.idx);
-    }
-  };
-  handleKeyDown = (ev: React.KeyboardEvent<HTMLDivElement>) => {
-    switch (ev.keyCode) {
-      case keycode("enter"):
-        if (isWriteOnly(this.props.eventHandlers)) {
-          this.props.eventHandlers.handleEnterPress();
-        }
-        break;
-      case keycode("backspace") || keycode("delete"):
-        if (isWriteOnly(this.props.eventHandlers)) {
-          this.props.eventHandlers.handleDelete(this.props.idx);
-        }
-        break;
-      default:
-        break;
-    }
-  };
-  handleSetClick = (range: [number, number]): void => {
-    throw "TODO";
-  };
-  handleVideoEnd = (event: any) => {
-    event.target.stopVideo();
-  };
-  render() {
-    const { props } = this;
-
-    let classes = "editor__video-container";
-
-    return (
-      <div
-        tabIndex={0}
-        className={classes}
-        onClick={this.handleClick}
-        onFocus={this.handleFocus}
-        onKeyDown={this.handleKeyDown}
-      >
-        <CaptionedVideo
-          onSetClick={this.handleSetClick}
-          video={getVideoFact(this.props.block.videoId)}
-          timeRange={this.props.block.range}
-        />
-      </div>
-    );
-  }
-}
-
 interface BlockContainerProps {
   block: TakeBlock;
   index: number;
@@ -287,7 +219,7 @@ class BlockContainer extends React.Component<BlockContainerProps, {}> {
       case "video":
         if (isWriteOnly(props.eventHandlers)) {
           inner = (
-            <Video
+            <EditorVideoContainer
               block={props.block as VideoBlock}
               idx={props.index}
               active={props.active}
@@ -296,7 +228,7 @@ class BlockContainer extends React.Component<BlockContainerProps, {}> {
           );
         } else {
           inner = (
-            <Video
+            <EditorVideoContainer
               block={props.block as VideoBlock}
               idx={props.index}
               active={props.active}
