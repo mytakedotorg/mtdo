@@ -5,7 +5,6 @@ import BlockWriter, {
   config
 } from "./components/BlockWriter";
 import FoundationView from "./components/FoundationView";
-import { isDocument, isVideo } from "./utils/databaseData";
 import { HomeArgs, ShowTakeArgs } from "./takeReader";
 
 interface FoundationArgs {

@@ -3,8 +3,7 @@ import * as ReactDOM from "react-dom";
 import BlockReader from "../BlockReader";
 import { TakeDocument } from "../BlockEditor";
 import DocumentTextNodeList from "../DocumentTextNodeList";
-import { getDocumentFactTitle } from "../../utils/databaseAPI";
-import { Article } from "../../utils/databaseData";
+import { Article } from "../FeedList";
 import { getNodeArray, getHighlightedNodes } from "../../utils/functions";
 
 interface FeedCardProps {
@@ -48,7 +47,7 @@ class FeedCard extends React.Component<FeedCardProps, {}> {
               >
                 <div className="feed__card-document">
                   <h2 className="feed__card-document-title">
-                    {getDocumentFactTitle(block.excerptId)}
+                    {this.props.article.title}
                   </h2>
                   <DocumentTextNodeList
                     className="feed__card-document-text"

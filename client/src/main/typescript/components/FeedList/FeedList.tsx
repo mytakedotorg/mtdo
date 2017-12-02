@@ -1,15 +1,28 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import FeedCard from "../FeedCard";
-import { getAllUsers } from "../../utils/databaseAPI";
-import { Article } from "../../utils/databaseData";
+import { TakeBlock } from "../BlockEditor";
+
+export interface Article {
+  title: string;
+  titleSlug: string;
+  blocks: TakeBlock[];
+  previewBlocks: number[];
+}
+
+interface User {
+  name: string;
+  articles: Article[] | null;
+}
 
 interface Card {
   username: string;
   article: Article;
 }
 
-interface FeedListProps {}
+interface FeedListProps {
+  users: User[];
+}
 
 interface FeedListState {
   cards: Card[];
@@ -26,7 +39,7 @@ class FeedList extends React.Component<FeedListProps, FeedListState> {
   getCards = () => {
     let cards: Card[] = [];
 
-    for (let user of getAllUsers()) {
+    for (let user of this.props.users) {
       if (user.articles) {
         cards = user.articles.map(article => {
           return {

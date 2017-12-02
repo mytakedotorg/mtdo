@@ -3,7 +3,6 @@ import * as ReactDOM from "react-dom";
 import BlockReader from "./components/BlockReader";
 import FeedList from "./components/FeedList";
 import { TakeDocument } from "./components/BlockEditor";
-import { getArticle } from "./utils/databaseAPI";
 
 export interface HomeArgs {
   type: "home";
@@ -19,7 +18,7 @@ let Root;
 if (typeof window.mytake != "undefined") {
   switch (window.mytake.type) {
     case "home":
-      Root = <FeedList />;
+      Root = <FeedList users={[]}/>;
       throw "TODO: populate the news feed from server data";
       //break;
     case "showtake":
