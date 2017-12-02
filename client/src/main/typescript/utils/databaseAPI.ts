@@ -118,11 +118,14 @@ export function getAllFacts(
     });
 }
 
-export function getDocumentFact(
+export function fetchFact(
   factHash: string,
   callback: (
     error: string | Error | null,
-    documentFact: Foundation.DocumentFactContent | null
+    documentFact:
+      | Foundation.DocumentFactContent
+      | Foundation.VideoFactContent
+      | null
   ) => any
 ): void {
   const headers = new Headers();
@@ -145,7 +148,7 @@ export function getDocumentFact(
       ) {
         return response.json();
       } else {
-        callback("Error retrieving Document Fact", null);
+        callback("Error retrieving Fact", null);
       }
     })
     .then(function(json: any) {

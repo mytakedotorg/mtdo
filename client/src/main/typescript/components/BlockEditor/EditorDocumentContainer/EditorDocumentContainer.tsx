@@ -2,11 +2,8 @@ import * as React from "react";
 import * as keycode from "keycode";
 import DocumentTextNodeList from "../../DocumentTextNodeList";
 import DocumentErrorView from "../../DocumentErrorView";
-import {
-  getHighlightedNodes,
-  fetchFact,
-  FoundationNode
-} from "../../../utils/functions";
+import { getHighlightedNodes, FoundationNode } from "../../../utils/functions";
+import { fetchFact } from "../../../utils/databaseAPI";
 import { DocumentBlock } from "../../../java2ts/DocumentBlock";
 import { Foundation } from "../../../java2ts/Foundation";
 import { isWriteOnly, ReadingEventHandlers, WritingEventHandlers } from "../";

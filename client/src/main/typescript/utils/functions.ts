@@ -4,7 +4,6 @@ import { Foundation } from "../java2ts/Foundation";
 import {
   getVideoCaptionWordMap,
   getVideoFact,
-  getDocumentFact,
   getVideoFactCaptionFile,
   getVideoCaptionMetaData
 } from "./databaseAPI";
@@ -817,22 +816,6 @@ function slugify(text: string): string {
     .replace(/[^\w-]+/g, ""); //remove non-alphanumics and non-hyphens
 }
 
-function fetchFact(
-  factHash: string,
-  cb: (err: Error | string | null, fact: Foundation.DocumentFactContent) => any
-): void {
-  try {
-    return getDocumentFact(factHash, cb);
-  } catch (err) {
-    throw "TODO";
-    // try {
-    //   return getVideoFact(factHash);
-    // } catch (err) {
-    //   throw err;
-    // }
-  }
-}
-
 function getWordCount(selection: Selection): number {
   // Cursor is in a block of caption text
 
@@ -1298,7 +1281,6 @@ export {
   convertTimestampToSeconds,
   getCaptionNodeArray,
   getCharRangeFromVideoRange,
-  fetchFact,
   getSimpleRangesFromHTMLRange,
   getStartRangeOffsetTop,
   getHighlightedNodes,

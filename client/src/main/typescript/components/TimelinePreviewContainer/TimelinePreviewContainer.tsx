@@ -1,7 +1,8 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { fetchFact, FoundationNode } from "../../utils/functions";
+import { FoundationNode } from "../../utils/functions";
 import { isVideo, isDocument } from "../../utils/databaseData";
+import { fetchFact } from "../../utils/databaseAPI";
 import TimelinePreview, { Ranges, SetFactHandlers } from "../TimelinePreview";
 import TimelinePreviewLoadingView from "../TimelinePreviewLoadingView";
 import TimelinePreviewErrorView from "../TimelinePreviewErrorView";
