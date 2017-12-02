@@ -44,71 +44,11 @@ if (typeof window.mytake != "undefined") {
           }
         }
         initJson = windowState;
-      } else if (window.location.hash) {
-        // Expect hash URL to be like, #{FoundationType}&{highlightRangeStart}&{highlightRangeEnd}&{viewRangeStart}&{viewRangeEnd}&{URL of Take being read}
-        // localhost:3000/new-take/#amendments&369&514&/samples/does-a-law-mean-what-it-says-or-what-it-meant/
-        let hashes = window.location.hash.split("&");
-        let excerptId = hashes[0].substring(1);
-        let highlightedRange: [number, number] = [
-          parseFloat(hashes[1]),
-          parseFloat(hashes[2])
-        ];
-        let viewRange: [number, number] = [
-          parseFloat(hashes[3]),
-          parseFloat(hashes[4])
-        ];
-
-        throw "todo";
-        // let fact = getFact(excerptId);
-        // if (isDocument(fact)) {
-        //   if (!isNaN(highlightedRange[0]) && !isNaN(highlightedRange[1])) {
-        //     initJson = {
-        //       takeDocument: {
-        //         title: "",
-        //         blocks: [
-        //           {
-        //             kind: "document",
-        //             excerptId: excerptId,
-        //             highlightedRange: highlightedRange,
-        //             viewRange: viewRange
-        //           },
-        //           { kind: "paragraph", text: "" }
-        //         ]
-        //       },
-        //       activeBlockIndex: -1,
-        //       status: "INITIAL"
-        //     };
-        //   } else {
-        //     initJson = config.initialState;
-        //   }
-        // } else if (isVideo(fact)) {
-        //   if (!isNaN(highlightedRange[0]) && !isNaN(highlightedRange[1])) {
-        //     initJson = {
-        //       takeDocument: {
-        //         title: "",
-        //         blocks: [
-        //           {
-        //             kind: "video",
-        //             videoId: excerptId,
-        //             range: highlightedRange
-        //           },
-        //           { kind: "paragraph", text: "" }
-        //         ]
-        //       },
-        //       activeBlockIndex: -1,
-        //       status: "INITIAL"
-        //     };
-        //   } else {
-        //     initJson = config.initialState;
-        //   }
-        // } else {
-        //   initJson = config.initialState;
-        // }
       } else {
         initJson = config.initialState;
       }
 
-      Root = <BlockWriter initState={initJson} />;
+      Root = <BlockWriter initState={initJson} hashUrl={window.location.hash} />;
       break;
     default:
       throw "Unknown argument structure";
