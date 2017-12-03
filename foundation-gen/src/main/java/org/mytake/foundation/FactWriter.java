@@ -70,10 +70,13 @@ public abstract class FactWriter<T extends Foundation.FactContent> {
 
 		String hashStr = Base64.getUrlEncoder().encodeToString(hash);
 		Files.write(dstDir.resolve(hashStr + ".json"), contentBytes);
+		postProcess(content, hashStr);
 
 		FactLink link = new FactLink();
 		link.fact = fact;
 		link.hash = hashStr;
 		factLinks.add(link);
 	}
+
+	protected void postProcess(T value, String hashStr) {}
 }

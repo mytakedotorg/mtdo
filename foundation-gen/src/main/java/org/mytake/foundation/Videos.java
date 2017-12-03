@@ -6,17 +6,26 @@
  */
 package org.mytake.foundation;
 
+import com.diffplug.common.base.Errors;
 import com.jsoniter.JsonIterator;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.security.NoSuchAlgorithmException;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java2ts.Foundation.CaptionWord;
 import java2ts.Foundation.Fact;
+import java2ts.Foundation.FactContent;
 import java2ts.Foundation.Person;
 import java2ts.Foundation.SpeakerMap;
 import java2ts.Foundation.VideoFactContent;
+import java2ts.Foundation.VideoFactContentEncoded;
 import org.mytake.foundation.parsers.VttParser;
 
 public class Videos extends FactWriter<VideoFactContent> {
@@ -83,12 +92,116 @@ public class Videos extends FactWriter<VideoFactContent> {
 		add(title, date, "recorded", "video");
 	}
 
+	@Override
+	protected void postProcess(VideoFactContent slow, String hashStr) {
+		if (slow.speakers == null) {
+			return;
+		}
+		VideoFactContentJava fast = createFast(slow);
+		write(hashStr + "-fast", fast);
+		VideoFactContentEncoded encoded = createEncoded(fast);
+		write(hashStr + "-encoded", encoded);
+	}
+
+	private void write(String name, Object value) {
+		ByteArrayOutputStream output = new ByteArrayOutputStream();
+		JsonMisc.toJson(value, output);
+		byte[] contentBytes = output.toByteArray();
+		Errors.rethrow().run(() -> {
+			Files.write(dstDir.resolve(name + ".json"), contentBytes);
+		});
+	}
+
+	/** Convert to the arrays. */
+	private VideoFactContentJava createFast(VideoFactContent slow) {
+		VideoFactContentJava fast = new VideoFactContentJava();
+		fast.fact = slow.fact;
+		fast.youtubeId = slow.youtubeId;
+		fast.charOffsets = new int[slow.transcript.size()];
+		fast.timestamps = new float[slow.transcript.size()];
+		fast.speakerPerson = new int[slow.speakerMap.size()];
+		fast.speakerWord = new int[slow.speakerMap.size()];
+
+		StringBuilder plainText = new StringBuilder();
+		for (int i = 0; i < slow.transcript.size(); ++i) {
+			CaptionWord word = slow.transcript.get(i);
+			fast.charOffsets[i] = plainText.length();
+			fast.timestamps[i] = (float) word.timestamp;
+			plainText.append(word.word);
+		}
+		fast.speakers = slow.speakers;
+		fast.plainText = plainText.toString();
+		Map<String, Integer> lastnameToIdx = new HashMap<>();
+		for (int i = 0; i < slow.speakers.size(); ++i) {
+			lastnameToIdx.put(slow.speakers.get(i).lastname, i);
+		}
+		for (int i = 0; i < slow.speakerMap.size(); ++i) {
+			SpeakerMap speakerMap = slow.speakerMap.get(i);
+			fast.speakerWord[i] = speakerMap.range.$0;
+			fast.speakerPerson[i] = lastnameToIdx.get(speakerMap.speaker);
+		}
+		return fast;
+	}
+
+	/** Encode the arrays into a byte array. */
+	private VideoFactContentEncoded createEncoded(VideoFactContentJava fast) {
+		VideoFactContentEncoded encoded = new VideoFactContentEncoded();
+		encoded.fact = fast.fact;
+		encoded.youtubeId = fast.youtubeId;
+		encoded.speakers = fast.speakers;
+		encoded.plainText = fast.plainText;
+		encoded.numWords = fast.charOffsets.length;
+		encoded.numSpeakerSections = fast.speakerPerson.length;
+		encoded.data = fast.arraysToBase64();
+		return encoded;
+	}
+
 	private void addWithTranscript(String youtubeId, String title, String date) throws NoSuchAlgorithmException, IOException {
 		add(youtubeId, title, date, true);
 	}
 
 	private void add(String youtubeId, String title, String date) throws NoSuchAlgorithmException, IOException {
 		add(youtubeId, title, date, false);
+	}
+
+	static class VideoFactContentJava extends FactContent {
+		public String youtubeId;
+		public List<Person> speakers;
+		public String plainText;
+		public int[] charOffsets;
+		public float[] timestamps;
+		public int[] speakerPerson;
+		public int[] speakerWord;
+
+		public String arraysToBase64() {
+			int numWords = charOffsets.length;
+			int numSpeakerSections = speakerPerson.length;
+
+			int size = 8 * numWords + 8 * numSpeakerSections;
+			ByteBuffer buffer = ByteBuffer.allocate(size);
+			buffer.order(ByteOrder.LITTLE_ENDIAN);
+			putAll(buffer, charOffsets);
+			putAll(buffer, timestamps);
+			putAll(buffer, speakerPerson);
+			putAll(buffer, speakerWord);
+
+			byte[] bytes = new byte[buffer.capacity()];
+			buffer.flip();
+			buffer.get(bytes);
+			return Base64.getEncoder().encodeToString(bytes);
+		}
+
+		static void putAll(ByteBuffer buffer, int[] array) {
+			for (int value : array) {
+				buffer.putInt(value);
+			}
+		}
+
+		static void putAll(ByteBuffer buffer, float[] array) {
+			for (float value : array) {
+				buffer.putFloat(value);
+			}
+		}
 	}
 
 	static class Speakers {
