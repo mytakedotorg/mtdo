@@ -15,8 +15,6 @@ gutil = require("gulp-util");
 rev = require("gulp-rev");
 merge = require("gulp-merge-json");
 
-tsLoaders = ts.createProject("./loaders/tsconfig.json");
-tsScripts = ts.createProject("./test/scripts/tsconfig.json");
 const config = {
   dist: "./src/main/resources/assets-dev",
   distProd: "./src/main/resources/assets",
@@ -26,11 +24,7 @@ const config = {
   webpackSrc: [
     "./src/main/typescript/**/*",
     "!src/main/typescript/**/*.spec.js"
-  ],
-  loadersSrc: "./loaders/src/**/*.ts",
-  loadersDist: "./loaders/dist",
-  scriptsSrc: "./test/scripts/src/**/*.ts",
-  scriptsDist: "./test/scripts/dist"
+  ]
 };
 
 ///////////////////////////////
@@ -71,9 +65,7 @@ function setupPipeline(mode) {
 
 gulp.task(
   "default",
-  tasklisting.withFilters(
-    /clean|default|css|sass|webpack|images|loaders|rev|scripts|default/
-  )
+  tasklisting.withFilters(/clean|default|css|sass|webpack|images|rev|default/)
 );
 
 // these resources are fingerprinted in PROD and in DEV,
@@ -175,22 +167,5 @@ function proxyCfg(mode) {
     gulp.watch(config.sassSrc, ["sass" + mode]);
     gulp.watch(config.cssSrc, ["css" + mode]);
     gulp.watch(config.imagesSrc, ["images" + mode]);
-    gulp.watch(config.loadersSrc, ["webpack" + mode, "loaders" + mode]);
   };
 }
-
-//////////////////////////////
-// Non-asset-pipeline tasks //
-//////////////////////////////
-gulp.task("loaders", () => {
-  return tsLoaders
-    .src()
-    .pipe(tsLoaders())
-    .js.pipe(gulp.dest(config.loadersDist));
-});
-gulp.task("scripts", () => {
-  return tsScripts
-    .src()
-    .pipe(tsScripts())
-    .js.pipe(gulp.dest(config.scriptsDist));
-});

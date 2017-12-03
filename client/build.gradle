@@ -55,8 +55,6 @@ clean { delete JAVA2TS }
 tasks.jsweet.dependsOn.remove('classes')
 tasks.jsweet.dependsOn('compileJava')
 tasks.jsweet.dependsOn('nodeSetup')
-// the typescript build depends on jsweet
-npm_run_prep.dependsOn(tasks.jsweet)
 
 ///////////////////////////////////////////////////////////////////////
 // node stuff - compiles sass and typescript into src/main/resources //
@@ -68,23 +66,8 @@ node {
 	download = true
 }
 
-// prep needs to run before anything else, but is easy to do up-to-date checking on
-npm_run_prep.dependsOn 'npmInstall'
-npm_run_prep.inputs.file('gulpfile.js')
-npm_run_prep.inputs.file('loaders/tsconfig.json')
-npm_run_prep.inputs.dir('loaders/src')
-npm_run_prep.outputs.dir('loaders/dist')
-npm_run_prep.inputs.file('test/scripts/tsconfig.json')
-npm_run_prep.inputs.dir('test/scripts/src')
-npm_run_prep.outputs.dir('test/scripts/dist')
-clean {
-	delete 'loaders/dist'
-	delete 'test/scripts/dist'
-}
-
 // make the gulp_buildProd have accurate up-to-date checking
 def setInputs(targetTask) {
-	targetTask.dependsOn npm_run_prep
 	def inputs = [
 		'assets',
 		'src/main/typescript',
@@ -121,7 +104,6 @@ afterEvaluate {
 }
 
 // check should run all tests
-npm_run_test.dependsOn(npm_run_prep)
 check.dependsOn(npm_run_test)
 // make sure that the gulp tasks are run
 processResources.dependsOn(gulp_buildProd)

@@ -14,7 +14,6 @@
     "deploy": "gulp buildProd",
     "formatlist": "prettier --list-different '*.js' 'assets/**/*.scss' 'src/main/typescript/!(java2ts)/**/*.ts?(x)' 'loaders/**/*.ts' 'test/**/*.ts'",
     "formatwrite": "prettier --write         '*.js' 'assets/**/*.scss' 'src/main/typescript/!(java2ts)/**/*.ts?(x)' 'loaders/**/*.ts' 'test/**/*.ts'",
-    "prep": "gulp loaders scripts",
     "test": "jest"
   },
   "author": "",
@@ -69,17 +68,13 @@
   },
   "jest": {
     "transform": {
-      "^.+\\.(ts|tsx)$": "./node_modules/ts-jest/preprocessor.js",
-      "^.+\\.foundation\\.html$": "./test/transformers/foundationTransformer.js",
-      "\\.vtt$": "./test/transformers/vttTransformer.js"
+      "^.+\\.(ts|tsx)$": "./node_modules/ts-jest/preprocessor.js"
     },
     "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
     "moduleFileExtensions": [
-      "html",
       "ts",
       "tsx",
-      "js",
-      "vtt"
+      "js"
     ],
     "verbose": true
   }
