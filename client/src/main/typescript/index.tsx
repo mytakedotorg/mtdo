@@ -4,8 +4,19 @@ import BlockWriter, {
   BlockWriterState,
   config
 } from "./components/BlockWriter";
+import BlockReader from "./components/BlockReader";
+import FeedList from "./components/FeedList";
 import FoundationView from "./components/FoundationView";
-import { HomeArgs, ShowTakeArgs } from "./takeReader";
+import { TakeDocument } from "./components/BlockEditor";
+
+interface HomeArgs {
+  type: "home";
+}
+
+interface ShowTakeArgs {
+  type: "showtake";
+  takeDocument: TakeDocument;
+}
 
 interface FoundationArgs {
   type: "foundation";
@@ -48,6 +59,13 @@ if (typeof window.mytake != "undefined") {
       }
 
       Root = <BlockWriter initState={initJson} hashUrl={window.location.hash} />;
+      break;
+    case "home":
+      Root = <FeedList users={[]}/>;
+      throw "TODO: populate the news feed from server data";
+      //break;
+    case "showtake":
+      Root = <BlockReader initState={window.mytake.takeDocument} />;
       break;
     default:
       throw "Unknown argument structure";

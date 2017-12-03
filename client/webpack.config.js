@@ -3,7 +3,6 @@ const UglifyJSPlugin = require("uglifyjs-webpack-plugin");
 module.exports = {
   entry: {
     app: __dirname + "/src/main/typescript/index.tsx",
-    takeReader: __dirname + "/src/main/typescript/takeReader.tsx",
     window: __dirname + "/src/main/typescript/utils/window.ts"
   },
 
@@ -14,11 +13,9 @@ module.exports = {
 
   resolve: {
     // Add '.ts' and '.tsx' as resolvable extensions.
-    extensions: [".ts", ".tsx", ".js", ".json"]
+    extensions: [".ts", ".tsx", ".js"]
   },
-  resolveLoader: {
-    modules: ["node_modules", __dirname + "/loaders/dist"]
-  },
+
   module: {
     rules: [
       // All files with a '.ts' or '.tsx' extension will be handled by 'awesome-typescript-loader'.
@@ -26,17 +23,6 @@ module.exports = {
         test: /\.tsx?$/,
         exclude: /node_modules/,
         loader: "awesome-typescript-loader"
-      },
-
-      // All files with a '.html' extension will be handled by 'html-loader'.
-      {
-        test: /\.foundation\.html$/,
-        loaders: ["html-loader", "foundation-loader"]
-      },
-
-      {
-        test: /\.vtt$/,
-        loader: ["html-loader", "vtt-loader"]
       }
     ]
   },
