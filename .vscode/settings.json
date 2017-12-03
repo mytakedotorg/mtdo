@@ -1,0 +1,10 @@
+{
+    "files.exclude": {
+        "**/.gradle": true,
+        "**/.jsweet": true,
+        "**/.settings": true,
+        "**/node_modules": true,
+        "**/bin": true,
+        "**/build": true
+    }
+}
