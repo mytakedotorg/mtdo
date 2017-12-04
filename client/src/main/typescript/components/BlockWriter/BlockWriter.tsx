@@ -14,8 +14,13 @@ import { PublishResult } from "../../java2ts/PublishResult";
 import { Routes } from "../../java2ts/Routes";
 
 interface BlockWriterProps {
-  initState: BlockWriterState;
+  initState: InitialBlockWriterState;
   hashUrl?: string;
+}
+
+export interface InitialBlockWriterState {
+  takeDocument: TakeDocument;
+  activeBlockIndex: number;
 }
 
 interface BlockWriterHashValues {
@@ -26,9 +31,14 @@ interface BlockWriterHashValues {
   articleTitle: string | null;
 }
 
-export type Status = "INITIAL" | "SAVED" | "UNSAVED" | "ERROR";
+export interface Status {
+  saved: boolean;
+  saving: boolean;
+  error: boolean;
+  message: string;
+}
 
-export interface BlockWriterState {
+interface BlockWriterState {
   takeDocument: TakeDocument;
   activeBlockIndex: number;
   parentRev?: DraftRev;
@@ -46,7 +56,13 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
     super(props);
 
     this.state = {
-      ...props.initState
+      ...props.initState,
+      status: {
+        saved: true,
+        saving: false,
+        error: false,
+        message: ""
+      }
     };
   }
   shouldAppendParagraph = (): boolean => {
@@ -127,7 +143,12 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
         blocks: newBlocks
       },
       activeBlockIndex: activeBlockIndex + indexAddition,
-      status: "UNSAVED"
+      status: {
+        ...this.state.status,
+        saved: false,
+        error: false,
+        message: ""
+      }
     });
   };
   addDocument = (
@@ -175,7 +196,12 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
         blocks: newBlocks
       },
       activeBlockIndex: newIndex,
-      status: "UNSAVED"
+      status: {
+        ...this.state.status,
+        saved: false,
+        error: false,
+        message: ""
+      }
     });
   };
   addVideo = (id: string, range: [number, number]): void => {
@@ -224,7 +250,12 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
           ...this.state.takeDocument,
           blocks: [...blocks.slice(0, idx), ...blocks.slice(idx + 1)]
         },
-        status: "UNSAVED"
+        status: {
+          ...this.state.status,
+          saved: false,
+          error: false,
+          message: ""
+        }
       });
     } else {
       if (blocks.length === 1 && blocks[0].kind === "document") {
@@ -234,7 +265,12 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
             ...this.state.takeDocument,
             blocks: [{ kind: "paragraph", text: "" }]
           },
-          status: "UNSAVED"
+          status: {
+            ...this.state.status,
+            saved: false,
+            error: false,
+            message: ""
+          }
         });
       }
     }
@@ -256,6 +292,14 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
   };
   handlePublishClick = () => {
     if (this.state.takeDocument.title.length <= 255) {
+      this.setState({
+        status: {
+          ...this.state.status,
+          saving: true,
+          error: false,
+          message: "Publishing Take."
+        }
+      });
       const bodyJson: DraftPost = {
         parentRev: this.state.parentRev,
         title: this.state.takeDocument.title,
@@ -269,17 +313,36 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
             window.location.href = json.publishedUrl;
           } else {
             this.setState({
-              status: "ERROR"
+              status: {
+                saved: false,
+                saving: false,
+                error: true,
+                message: "There was an error publishing your Take."
+              }
             });
           }
         }.bind(this)
       );
     } else {
-      throw "Title cannot be longer than 255 characters";
+      this.setState({
+        status: {
+          ...this.state.status,
+          error: true,
+          message: "Title cannot be longer than 255 characters."
+        }
+      });
     }
   };
   handleSaveClick = () => {
     if (this.state.takeDocument.title.length <= 255) {
+      this.setState({
+        status: {
+          ...this.state.status,
+          saving: true,
+          error: false,
+          message: "Saving Take."
+        }
+      });
       const bodyJson: DraftPost = {
         parentRev: this.state.parentRev,
         title: this.state.takeDocument.title,
@@ -292,12 +355,23 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
           const parentRev: DraftRev = json;
           this.setState({
             parentRev: parentRev,
-            status: "SAVED"
+            status: {
+              saved: true,
+              saving: false,
+              error: false,
+              message: "Save successful!"
+            }
           });
         }.bind(this)
       );
     } else {
-      throw "Title cannot be longer than 255 characters";
+      this.setState({
+        status: {
+          ...this.state.status,
+          error: true,
+          message: "Title cannot be longer than 255 characters."
+        }
+      });
     }
   };
   parseHashURL = (hash: string): BlockWriterHashValues => {
@@ -366,9 +440,7 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
           } else if (route === "/drafts/delete" && response.ok) {
             window.location.href = "/drafts";
           } else {
-            this.setState({
-              status: "ERROR"
-            });
+            throw "Unexpected response from server.";
           }
         }.bind(this)
       )
@@ -380,7 +452,11 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
       .catch(
         function(error: Error) {
           this.setState({
-            status: "ERROR"
+            status: {
+              ...this.state.status,
+              error: true,
+              message: "There was an error modifying your Take."
+            }
           });
         }.bind(this)
       );
@@ -394,7 +470,12 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
           title: value
         },
         activeBlockIndex: -1,
-        status: "UNSAVED"
+        status: {
+          ...this.state.status,
+          saved: false,
+          error: false,
+          message: ""
+        }
       });
     } else {
       const blocks = [...this.state.takeDocument.blocks];
@@ -430,7 +511,12 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
           blocks: newBlocks
         },
         activeBlockIndex: newIndex,
-        status: "UNSAVED"
+        status: {
+          ...this.state.status,
+          saved: false,
+          error: false,
+          message: ""
+        }
       });
     }
   };
@@ -491,8 +577,8 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
         />
         <div className="editor__wrapper">
           <EditorButtons
-            status={this.state.status}
             eventHandlers={buttonEventHandlers}
+            status={this.state.status}
           />
           <p className="timeline__instructions">
             Add Facts to your Take from the timeline below.

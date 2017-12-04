@@ -1,12 +1,11 @@
-import { BlockWriterState } from "../../components/BlockWriter";
+import { InitialBlockWriterState } from "../../components/BlockWriter";
 
-let initialState: BlockWriterState = {
+let initialState: InitialBlockWriterState = {
   takeDocument: {
     title: "",
     blocks: [{ kind: "paragraph", text: "" }]
   },
-  activeBlockIndex: -1,
-  status: "INITIAL"
+  activeBlockIndex: -1
 };
 
 export default { initialState };

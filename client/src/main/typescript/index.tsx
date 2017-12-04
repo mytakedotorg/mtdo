@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import BlockWriter, {
-  BlockWriterState,
+  InitialBlockWriterState,
   config
 } from "./components/BlockWriter";
 import BlockReader from "./components/BlockReader";
@@ -24,7 +24,7 @@ interface FoundationArgs {
 
 interface NewTakeArgs {
   type: "new-take";
-  blockWriterState?: BlockWriterState;
+  blockWriterState?: InitialBlockWriterState;
 }
 
 declare global {
@@ -41,7 +41,7 @@ if (typeof window.mytake != "undefined") {
       Root = <FoundationView hashUrl={window.location.hash} />;
       break;
     case "new-take":
-      let initJson: BlockWriterState;
+      let initJson: InitialBlockWriterState;
       let windowState = window.mytake.blockWriterState;
       if (typeof windowState != "undefined") {
         if (windowState.takeDocument.blocks === null || windowState.takeDocument.blocks.length === 0) {
