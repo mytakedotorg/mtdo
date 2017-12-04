@@ -6,10 +6,10 @@ notify = require("gulp-notify");
 // webpack
 webpackCore = require("webpack");
 webpack = require("webpack-stream");
+webpackServer = require("webpack-dev-server");
 // file loaders
 ts = require("gulp-typescript");
 // misc
-browserSync = require("browser-sync").create();
 tasklisting = require("gulp-task-listing");
 gutil = require("gulp-util");
 rev = require("gulp-rev");
@@ -42,6 +42,7 @@ function setupPipeline(mode) {
   const sass = "sass" + mode;
   const webpack = "webpack" + mode;
   const images = "images" + mode;
+  const proxy = "proxy" + mode;
   gulp.task(css, cssCfg(mode));
   gulp.task(sass, sassCfg(mode));
   gulp.task(webpack, webpackCfg(mode));
@@ -59,7 +60,7 @@ function setupPipeline(mode) {
     });
   } else {
     gulp.task(BUILD + mode, [webpack, sass, images, css]);
-    gulp.task("proxy" + mode, [BUILD + mode], proxyCfg(mode));
+    gulp.task(proxy, [BUILD + mode], proxyCfg(mode));
   }
 }
 
@@ -152,20 +153,24 @@ function imagesCfg(mode) {
 }
 
 function proxyCfg(mode) {
+  const configFile =
+    mode === DEV ? "./webpack.config.dev.js" : "./webpack.config.js";
+  const contentBase =
+    mode === DEV
+      ? "/src/main/resources/assets-dev/"
+      : "/src/main/resources/assets/";
+  const webpackConfig = require(configFile);
   return () => {
-    browserSync.init({
-      proxy: "localhost:8080",
-      files: config.dist + "/**",
-      serveStatic: [
-        {
-          route: "/assets-dev",
-          dir: config.dist
-        }
-      ]
+    var compiler = webpackCore(webpackConfig);
+
+    var server = new webpackServer(compiler, {
+      inline: true,
+      hot: true,
+      contentBase: __dirname + contentBase,
+      publicPath: "/assets",
+      filename: "app.bundle.js"
     });
-    gulp.watch(config.webpackSrc, ["webpack" + mode]);
-    gulp.watch(config.sassSrc, ["sass" + mode]);
-    gulp.watch(config.cssSrc, ["css" + mode]);
-    gulp.watch(config.imagesSrc, ["images" + mode]);
+
+    server.listen(2000);
   };
 }
