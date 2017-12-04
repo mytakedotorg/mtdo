@@ -1,6 +1,5 @@
 import * as React from "react";
 import { Foundation } from "../java2ts/Foundation";
-var htmlparser = require("htmlparser2");
 var base64toArrayBuffer = require("base64-arraybuffer");
 
 function decodeVideoFact(
