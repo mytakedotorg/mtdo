@@ -329,6 +329,7 @@ class BlockEditor extends React.Component<BlockEditorProps, BlockEditorState> {
                     value={props.takeDocument.title}
                     style={this.state.style}
                     ref={(text: HTMLTextAreaElement) => (this.text = text)}
+                    maxLength={255}
                   />}
               <div
                 className="editor__title-height-div"

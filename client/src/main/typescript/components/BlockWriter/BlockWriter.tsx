@@ -255,43 +255,50 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
     }
   };
   handlePublishClick = () => {
-    const bodyJson: DraftPost = {
-      parentRev: this.state.parentRev,
-      title: this.state.takeDocument.title,
-      blocks: this.state.takeDocument.blocks
-    };
-    this.postRequest(
-      Routes.DRAFTS_PUBLISH,
-      bodyJson,
-      function(json: PublishResult) {
-        if (!json.conflict) {
-          window.location.href = json.publishedUrl;
-        } else {
-          this.setState({
-            status: "ERROR"
-          });
-        }
-      }.bind(this)
-    );
+    if (this.state.takeDocument.title.length <= 255) {
+      const bodyJson: DraftPost = {
+        parentRev: this.state.parentRev,
+        title: this.state.takeDocument.title,
+        blocks: this.state.takeDocument.blocks
+      };
+      this.postRequest(
+        Routes.DRAFTS_PUBLISH,
+        bodyJson,
+        function(json: PublishResult) {
+          if (!json.conflict) {
+            window.location.href = json.publishedUrl;
+          } else {
+            this.setState({
+              status: "ERROR"
+            });
+          }
+        }.bind(this)
+      );
+    } else {
+      throw "Title cannot be longer than 255 characters";
+    }
   };
   handleSaveClick = () => {
-    //TODO: enforce title length <= 255
-    const bodyJson: DraftPost = {
-      parentRev: this.state.parentRev,
-      title: this.state.takeDocument.title,
-      blocks: this.state.takeDocument.blocks
-    };
-    this.postRequest(
-      Routes.DRAFTS_SAVE,
-      bodyJson,
-      function(json: DraftRev) {
-        const parentRev: DraftRev = json;
-        this.setState({
-          parentRev: parentRev,
-          status: "SAVED"
-        });
-      }.bind(this)
-    );
+    if (this.state.takeDocument.title.length <= 255) {
+      const bodyJson: DraftPost = {
+        parentRev: this.state.parentRev,
+        title: this.state.takeDocument.title,
+        blocks: this.state.takeDocument.blocks
+      };
+      this.postRequest(
+        Routes.DRAFTS_SAVE,
+        bodyJson,
+        function(json: DraftRev) {
+          const parentRev: DraftRev = json;
+          this.setState({
+            parentRev: parentRev,
+            status: "SAVED"
+          });
+        }.bind(this)
+      );
+    } else {
+      throw "Title cannot be longer than 255 characters";
+    }
   };
   parseHashURL = (hash: string): BlockWriterHashValues => {
     // Expect hash URL to be like, #{FoundationType}&{highlightRangeStart}&{highlightRangeEnd}&{viewRangeStart}&{viewRangeEnd}&{URL of Take being read}
