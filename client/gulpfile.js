@@ -4,11 +4,13 @@ sass = require("gulp-sass");
 autoprefixer = require("gulp-autoprefixer");
 notify = require("gulp-notify");
 // webpack
-webpackCore = require("webpack");
-webpack = require("webpack-stream");
-webpackServer = require("webpack-dev-server");
-// file loaders
-ts = require("gulp-typescript");
+webpack = require("webpack");
+webpackStream = require("webpack-stream");
+browserSync = require("browser-sync");
+UglifyJSPlugin = require("uglifyjs-webpack-plugin");
+const { CheckerPlugin } = require("awesome-typescript-loader");
+webpackDevMiddleware = require("webpack-dev-middleware");
+webpackHotMiddleware = require("webpack-hot-middleware");
 // misc
 tasklisting = require("gulp-task-listing");
 gutil = require("gulp-util");
@@ -60,13 +62,68 @@ function setupPipeline(mode) {
     });
   } else {
     gulp.task(BUILD + mode, [webpack, sass, images, css]);
-    gulp.task(proxy, [BUILD + mode], proxyCfg(mode));
+    gulp.task(proxy, proxyCfg(mode));
   }
+}
+
+function webpackEntryFor(mode, filename) {
+  if (mode === DEV) {
+    return [
+      "webpack/hot/dev-server",
+      "webpack-hot-middleware/client",
+      __dirname + filename
+    ];
+  } else {
+    return [__dirname + filename];
+  }
+}
+
+function webpackSettings(mode) {
+  return {
+    entry: {
+      app: webpackEntryFor(mode, "/src/main/typescript/index.tsx"),
+      window: webpackEntryFor(mode, "/src/main/typescript/utils/window.ts")
+    },
+    output: {
+      filename: "[name].bundle.js"
+    },
+    resolve: {
+      // Add '.ts' and '.tsx' as resolvable extensions.
+      extensions: [".ts", ".tsx", ".js"]
+    },
+    plugins:
+      mode === PROD
+        ? [new webpack.optimize.UglifyJsPlugin()]
+        : [
+            new CheckerPlugin(), // needed for hotreload on typescript
+            new webpack.HotModuleReplacementPlugin()
+          ],
+    resolve: {
+      extensions: [".ts", ".tsx", ".js"]
+    },
+    module: {
+      rules: [
+        {
+          test: /\.tsx?$/,
+          exclude: /node_modules/,
+          include: __dirname + "/src/main/typescript",
+          loaders:
+            mode === PROD
+              ? ["awesome-typescript-loader"]
+              : [
+                  "react-hot-loader/webpack",
+                  "awesome-typescript-loader",
+                  "webpack-module-hot-accept"
+                ]
+        }
+      ]
+    }
+  };
 }
 
 gulp.task(
   "default",
-  tasklisting.withFilters(/clean|default|css|sass|webpack|images|rev|default/)
+  tasklisting.withFilters(/clean|css|sass|webpack|images|proxy|default/)
 );
 
 // these resources are fingerprinted in PROD and in DEV,
@@ -127,17 +184,15 @@ function sassCfg(mode) {
 }
 
 function webpackCfg(mode) {
-  const configFile =
-    mode === DEV ? "./webpack.config.dev.js" : "./webpack.config.js";
   return () => {
     return fingerprint(
       mode,
       gulp.src(config.webpackSrc).pipe(
-        webpack(
+        webpackStream(
           {
-            config: require(configFile)
+            config: webpackSettings(mode)
           },
-          webpackCore
+          webpack
         ).on("error", err => {
           gutil.log("Webpack: " + err.message);
         })
@@ -154,21 +209,25 @@ function imagesCfg(mode) {
 
 function proxyCfg(mode) {
   if (mode !== DEV) throw "proxyCfg is a dev-only task";
-
-  const configFile = "./webpack.config.dev.js";
-  const contentBase = "/src/main/resources/assets-dev/";
   return () => {
-    var compiler = webpackCore(require(configFile));
-
-    var server = new webpackServer(compiler, {
-      inline: true,
-      hot: true,
-      contentBase: __dirname + contentBase,
-      publicPath: contentBase,
-      filename: "app.bundle.js"
+    const bundler = webpack(webpackSettings(mode));
+    browserSync.init({
+      proxy: "localhost:8080",
+      files: config.dist + "/**",
+      serveStatic: [
+        {
+          route: "/assets-dev",
+          dir: config.dist
+        }
+      ],
+      middleware: [
+        webpackDevMiddleware(bundler, {
+          publicPath: "/assets-dev/",
+          stats: { colors: true }
+        }),
+        webpackHotMiddleware(bundler)
+      ]
     });
-
-    server.listen(2000);
     gulp.watch(config.sassSrc, ["sass" + mode]);
     gulp.watch(config.cssSrc, ["css" + mode]);
     gulp.watch(config.imagesSrc, ["images" + mode]);

@@ -8,5 +8,8 @@
 		"strictNullChecks": true
   },
   "include": ["./src/main/typescript/**/*"],
-  "exclude": ["node_modules"]
+  "exclude": ["./node_modules/**", "**/*.spec.*"],
+  "awesomeTypescriptLoaderOptions": {
+    "useCache": true
+  }
 }
