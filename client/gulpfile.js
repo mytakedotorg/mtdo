@@ -7,6 +7,7 @@ notify = require("gulp-notify");
 webpack = require("webpack");
 webpackStream = require("webpack-stream");
 browserSync = require("browser-sync");
+serveStatic = require("serve-static");
 UglifyJSPlugin = require("uglifyjs-webpack-plugin");
 const { CheckerPlugin } = require("awesome-typescript-loader");
 webpackDevMiddleware = require("webpack-dev-middleware");
@@ -213,23 +214,19 @@ function proxyCfg(mode) {
     const bundler = webpack(webpackSettings(mode));
     browserSync.init({
       proxy: "localhost:8080",
-      files: config.dist + "/**",
-      serveStatic: [
-        {
-          route: "/assets-dev",
-          dir: config.dist
-        }
-      ],
       middleware: [
         webpackDevMiddleware(bundler, {
           publicPath: "/assets-dev/",
           stats: { colors: true }
         }),
-        webpackHotMiddleware(bundler)
+        webpackHotMiddleware(bundler),
+        {
+          route: "/assets-dev",
+          handle: serveStatic(config.dist)
+        }
       ]
     });
     gulp.watch(config.sassSrc, ["sass" + mode]);
     gulp.watch(config.cssSrc, ["css" + mode]);
-    gulp.watch(config.imagesSrc, ["images" + mode]);
   };
 }
