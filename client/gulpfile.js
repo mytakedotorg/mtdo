@@ -153,24 +153,24 @@ function imagesCfg(mode) {
 }
 
 function proxyCfg(mode) {
-  const configFile =
-    mode === DEV ? "./webpack.config.dev.js" : "./webpack.config.js";
-  const contentBase =
-    mode === DEV
-      ? "/src/main/resources/assets-dev/"
-      : "/src/main/resources/assets/";
-  const webpackConfig = require(configFile);
+  if (mode !== DEV) throw "proxyCfg is a dev-only task";
+
+  const configFile = "./webpack.config.dev.js";
+  const contentBase = "/src/main/resources/assets-dev/";
   return () => {
-    var compiler = webpackCore(webpackConfig);
+    var compiler = webpackCore(require(configFile));
 
     var server = new webpackServer(compiler, {
       inline: true,
       hot: true,
       contentBase: __dirname + contentBase,
-      publicPath: "/assets",
+      publicPath: contentBase,
       filename: "app.bundle.js"
     });
 
     server.listen(2000);
+    gulp.watch(config.sassSrc, ["sass" + mode]);
+    gulp.watch(config.cssSrc, ["css" + mode]);
+    gulp.watch(config.imagesSrc, ["images" + mode]);
   };
 }
