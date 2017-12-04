@@ -1,0 +1,21 @@
+apply plugin: 'com.diffplug.gradle.oomph.ide'
+oomphIde {
+	repoEclipseLatest()
+	jdt {}
+	splash rootProject.file('_imgs/bias_overlap.png')
+	style {
+		classicTheme()	// oldschool cool
+		niceText()		// nice fonts and visible whitespace
+	}
+
+	addAllProjects()	// we want a project for *everything*
+
+	thirdParty {
+		tmTerminal {}
+		minimalistGradleEditor {}
+	}
+
+	// https://github.com/palantir/eclipse-typescript
+	repo 'http://eclipse-update.palantir.com/eclipse-typescript/'
+	feature 'com.palantir.typescript.feature'
+}
