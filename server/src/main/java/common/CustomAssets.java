@@ -59,7 +59,7 @@ public class CustomAssets implements Jooby.Module {
 		} else {
 			byte[] manifest = Resources.toByteArray(CustomAssets.class.getResource("/assets/manifest.json"));
 			Map<String, String> map = JsonIterator.deserialize(manifest, new TypeLiteral<HashMap<String, String>>() {});
-			url = (type, raw) -> "/assets/" + type + Objects.requireNonNull(map.get(raw.substring(1)), "No fingerprinted version of " + raw + ", only has: " + map.keySet());
+			url = (type, raw) -> "/assets/" + type + "/" + Objects.requireNonNull(map.get(raw.substring(1)), "No fingerprinted version of " + raw + ", only has: " + map.keySet());
 			env.router().assets("/assets/**");
 		}
 		// key, style, key, script
