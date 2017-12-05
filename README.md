@@ -15,35 +15,50 @@ Here's what we have so far:
 
 ## Quickstart
 
-Run `gradlew live`, and you'll get:
+- Run `./gradlew runDev`, and you'll get a server running at `localhost:8080`.
+- If you `cd` into the `client` directory and run `gulp proxyDev`, you'll get a [Browsersync](https://www.browsersync.io/) instance proxying `localhost:8080`.
+    + Changes to sass files in [`/client/src/main/styles`](client/src/main/styles) will be pushed to the browser instantly. 
+    + Changes to typescript files in [`/client/src/main/scripts`](client/src/main/scripts) will be compiled by webpack hot reload, but require a browser refresh to see their effects.
+- We use [VSCode](https://code.visualstudio.com/) for client-side development.
+- For server development, run `gradlew ide`, and it will launch an Eclipse IDE preconfigured for the MyTake.org project.
+- You can see the full task dependencies in [gradleTaskGraph.pdf](gradleTaskGraph.pdf).
 
-- a server running at localhost:8080
-- proxied by browsersync, with instant asset reloading
-- and a continuous build hotswapping any code or template changes
-- **exit by navigating to `/exit` or you'll have zombie processes all over the place**
-    + `./kill_zombies.sh` will save you if you have zombies
+### Code sharing between java and typescript (jsweet)
 
-Takes 30-60s to launch.
+The `:client:jsweet` task transpiles the java in [`/client/src/main/java/java2ts`](client/src/main/java/java2ts) into TypeScript that lives in `/client/src/main/typescript/java2ts`, using [jsweet](http://www.jsweet.org/).  This ensures that the structured data sent back and forth between the server and browser is typed correctly.
 
-## styling
+### Database schema management and typesafe queries (Postgres, Flyway, and jOOQ)
 
-styling is all in `/client/assets/stylesheets/main.scss`
+The `:server:jooq` task:
 
-## client-side js
+- Starts a Postgres process using [otj-pg-embedded](https://github.com/opentable/otj-pg-embedded)
+- Runs the SQL scripts in `/server/src/main/resources/db/migration` using [flyway](https://flywaydb.org/) to set the database's schema.
+- Generates java code for all tables using [jooq](https://www.jooq.org/), and puts the result in `/server/src/main/jooq-generated`.
 
-all js lives in `/client/src`
+### Typesafe server templates (rocker)
 
-## server-side java
+The `:server:compileRocker` task transpiles the [rocker templates](https://github.com/fizzed/rocker) in `/server/src/main/rocker` into java code in `/server/src/main/rocker-generated`.
 
-all lives in `/server/`
+### Live (broken)
 
-## CI
+If you run `./gradlew live`, you'll get:
 
-- Travis runs `gradlew check`
+- a server at `localhost:8080` with hot reload on its rocker templates
+- a browsersync proxying it with hot reload for sass and typescript
+
+But it's unreliable.  1 in 2 starts works, and it crashes itself quickly.  Not recommended for use, but it would be great to have help getting it to work.  The code [lives here](buildSrc/src/main/java/org/mytake/gradle/live/LivePlugin.java), and uses [spring-loaded](https://github.com/spring-projects/spring-loaded) for hot reloading.
+
+## Travis CI
+
+Travis runs `./gradlew check`
+
+## Heroku deployment
+
+Every PR is deployed in a test instance on Heroku.  The code is deployed as a fat jar, which you can preview using `./gradlew shadowJar`.
 
 ## update deps
 
-Update gradle deps with `gradlew dependencyUpdates` ([ref](https://github.com/ben-manes/gradle-versions-plugin)).
+Update gradle deps with `./gradlew dependencyUpdates` ([ref](https://github.com/ben-manes/gradle-versions-plugin)).
 
 Update npm deps in client folder with
 
@@ -51,19 +66,3 @@ Update npm deps in client folder with
 npm outdated               - shows which packages are out of date
 npm update <packagename>   - updates packagename to "Wanted", but won't pass semver
 ```
-
-## troubleshooting
-
-OUTDATED: gradle handled NPM now, TBD how we recommend using it
-
-If `npm install` generates EINTEGRITY warnings, try the following
-
-```
-npm install -g npm@5.2.0
-rm package-lock.json
-rm -rf node_modules/
-npm cache clear --force
-npm install
-```
-
-npm5 has some key features, but apparently lots of bugs.
