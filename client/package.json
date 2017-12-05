@@ -56,7 +56,6 @@
     "serve-static": "^1.13.1",
     "ts-jest": "^21.1.4",
     "typescript": "^2.3.3",
-    "uglifyjs-webpack-plugin": "^0.4.6",
     "webpack": "^3.4.0",
     "webpack-dev-middleware": "^1.12.2",
     "webpack-hot-middleware": "^2.21.0",

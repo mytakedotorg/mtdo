@@ -66,38 +66,47 @@ node {
 	download = true
 }
 
+gulp_permanent.inputs.dir('src/main/permanent')
+gulp_permanent.inputs.file('gulpfile.js')
+gulp_permanent.outputs.dir('src/main/resources/assets/permanent')
+gulp_permanent.dependsOn('npmInstall')
+
+gulp_stylesDev.inputs.dir('src/main/styles')
+gulp_scriptsDev.inputs.dir('src/main/scripts')
+
 // make the gulp_buildProd have accurate up-to-date checking
-def setInputs(targetTask) {
-	def inputs = [
-		'assets',
-		'src/main/typescript',
-		'gulpfile.js',
-		'postcss.config.js',
-		'tsconfig.json',
-		'webpack.config.dev.js',
-		'webpack.config.js'
+def devProd(taskName) {
+	Task devTask = tasks.getByName("gulp_${taskName}Dev")
+	devTask.inputs.file('gulpfile.js')
+	devTask.inputs.dir("src/main/$taskName")
+	devTask.outputs.dir("src/main/resources/assets-dev/$taskName")
+	devTask.dependsOn(gulp_permanent)
+
+	Task prodTask = tasks.getByName("gulp_${taskName}Prod")
+	prodTask.inputs.file('gulpfile.js')
+	prodTask.inputs.dir("src/main/$taskName")
+	prodTask.outputs.dir("src/main/resources/assets/$taskName")
+	prodTask.dependsOn(gulp_permanent)
+
+	return [
+		devTask,
+		prodTask
 	]
-	for (input in inputs) {
-		File file = file(input)
-		if (file.isFile()) {
-			targetTask.inputs.file(file)
-		} else {
-			targetTask.inputs.dir(file)
-		}
-	}
 }
-setInputs(gulp_buildDev)
-setInputs(gulp_buildProd)
-gulp_buildDev.outputs.dir('src/main/resources/assets-dev')
-gulp_buildProd.outputs.dir('src/main/resources/assets')
-clean {
-	delete 'src/main/resources/assets-dev'
-	delete 'src/main/resources/assets'
+devProd('styles')
+devProd('scripts').each {
+	it.dependsOn(tasks.jsweet)
+	it.inputs.file('tsconfig.json')
 }
+gulp_rev.dependsOn([
+	gulp_stylesProd,
+	gulp_scriptsProd
+])
+gulp_rev.outputs.file('src/main/resources/assets/manifest.json')
+
+clean { delete 'src/main/resources' }
 
 // map prettier to spotless (to match server)
-setInputs(npm_run_formatlist)
-setInputs(npm_run_formatwrite)
 afterEvaluate {
 	tasks.spotlessCheck.dependsOn(npm_run_formatlist)
 	tasks.spotlessApply.dependsOn(npm_run_formatwrite)
@@ -105,8 +114,28 @@ afterEvaluate {
 
 // check should run all tests
 check.dependsOn(npm_run_test)
-// make sure that the gulp tasks are run
-processResources.dependsOn(gulp_buildProd)
-if (!Env.isHeroku()) {
-	processResources.dependsOn(gulp_buildDev)
+// make sure that all the gulp tasks are run
+processResources.dependsOn([
+	gulp_permanent,
+	gulp_stylesDev,
+	gulp_stylesProd,
+	gulp_scriptsDev,
+	gulp_scriptsProd
+])
+// on Heroku, we can ignore the dev tasks
+if (Env.isHeroku()) {
+	gulp_stylesDev.enabled = false
+	gulp_scriptsDev.enabled = false
+}
+gradle.taskGraph.whenReady { taskGraph ->
+	// for runDev, we don't need prod
+	if (taskGraph.hasTask(':server:runDev')) {
+		gulp_stylesProd.enabled = false
+		gulp_scriptsProd.enabled = false
+	}
+	if (taskGraph.hasTask(':server:live')) {
+		gulp_stylesProd.enabled = false
+		gulp_scriptsProd.enabled = false
+		gulp_scriptsDev.enabled = false
+	}
 }

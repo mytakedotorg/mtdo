@@ -8,7 +8,6 @@ webpack = require("webpack");
 webpackStream = require("webpack-stream");
 browserSync = require("browser-sync");
 serveStatic = require("serve-static");
-UglifyJSPlugin = require("uglifyjs-webpack-plugin");
 const { CheckerPlugin } = require("awesome-typescript-loader");
 webpackDevMiddleware = require("webpack-dev-middleware");
 webpackHotMiddleware = require("webpack-hot-middleware");
@@ -19,41 +18,40 @@ rev = require("gulp-rev");
 merge = require("gulp-merge-json");
 
 const config = {
-  dist: "./src/main/resources/assets-dev",
-  distProd: "./src/main/resources/assets",
-  cssSrc: "./assets/public/**/*.css",
-  sassSrc: "./assets/stylesheets/**/*.?(s)css",
-  imgSrc: "./assets/images/**/*.{jpg,png}",
-  webpackSrc: [
-    "./src/main/typescript/**/*",
-    "!src/main/typescript/**/*.spec.js"
-  ]
+  distDev: "./src/main/resources/assets-dev",
+  distProd: "./src/main/resources/assets"
 };
+
+function src(type) {
+  return "./src/main/" + type + "/";
+}
+
+function dst(mode, type) {
+  return (mode === DEV ? config.distDev : config.distProd) + "/" + type;
+}
 
 ///////////////////////////////
 // Create dev and prod tasks //
 ///////////////////////////////
-const BUILD = "build";
 const DEV = "Dev";
 const PROD = "Prod";
+const STYLES = "styles";
+const SCRIPTS = "scripts";
+const PERMANENT = "permanent";
 
 setupPipeline(DEV);
 setupPipeline(PROD);
 
 function setupPipeline(mode) {
-  const css = "css" + mode;
-  const sass = "sass" + mode;
-  const webpack = "webpack" + mode;
-  const images = "images" + mode;
-  const proxy = "proxy" + mode;
-  gulp.task(css, cssCfg(mode));
-  gulp.task(sass, sassCfg(mode));
-  gulp.task(webpack, webpackCfg(mode));
-  gulp.task(images, imagesCfg(mode));
+  const styles = STYLES + mode;
+  const scripts = SCRIPTS + mode;
+  gulp.task(styles, stylesTask(mode, STYLES));
+  gulp.task(scripts, scriptsTask(mode, SCRIPTS));
   if (mode === PROD) {
-    gulp.task(BUILD + mode, [css, sass, webpack, images], () => {
+    // depends on styles and scripts, inside of build.gradle
+    gulp.task("rev" + PROD, () => {
       return gulp
-        .src(config.distProd + "/*.json")
+        .src(config.distProd + "/*/manifest.json")
         .pipe(
           merge({
             fileName: "manifest.json"
@@ -62,28 +60,87 @@ function setupPipeline(mode) {
         .pipe(gulp.dest(config.distProd));
     });
   } else {
-    gulp.task(BUILD + mode, [webpack, sass, images, css]);
-    gulp.task(proxy, proxyCfg(mode));
+    gulp.task("proxy" + mode, proxyTask(mode));
   }
 }
 
-function webpackEntryFor(mode, filename) {
-  if (mode === DEV) {
-    return [
-      "webpack/hot/dev-server",
-      "webpack-hot-middleware/client",
-      __dirname + filename
-    ];
+gulp.task(
+  "default",
+  tasklisting.withFilters(/clean|styles|scripts|proxy|default/)
+);
+
+// these resources end up with a translation to their name
+// in the manifest.json, which our app will translate to the
+// correct links for us in prod
+function fingerprint(mode, type, stream) {
+  if (mode === PROD) {
+    // workaround for https://github.com/sindresorhus/gulp-rev/issues/205
+    return stream
+      .pipe(rev())
+      .pipe(gulp.dest(dst(mode, type)))
+      .pipe(
+        rev.manifest(type + "/manifest.json", {
+          merge: false
+        })
+      )
+      .pipe(gulp.dest(config.distProd));
   } else {
-    return [__dirname + filename];
+    return stream.pipe(gulp.dest(dst(mode, type)));
   }
 }
 
-function webpackSettings(mode) {
+// these resources are fingerprinted in PROD and in DEV,
+// and don't show up in the manifest.mf
+//
+// they need to be referred to only by their fingerprinted value
+gulp.task(PERMANENT, () => {
+  return gulp
+    .src(src(PERMANENT) + "**")
+    .pipe(rev())
+    .pipe(gulp.dest(dst(PROD, PERMANENT)));
+});
+
+function stylesTask(mode, type) {
+  return () => {
+    return fingerprint(
+      mode,
+      type,
+      gulp
+        .src(src(type) + "*")
+        .pipe(
+          sass({
+            style: "compressed"
+          }).on(
+            "error",
+            notify.onError(function(error) {
+              return "Error: " + error.message;
+            })
+          )
+        )
+        .pipe(autoprefixer({ cascade: false, browsers: ["> 0.25%"] }))
+    );
+  };
+}
+
+/////////////
+// WEBPACK //
+/////////////
+function webpackCfg(mode) {
+  function entryFor(mode, filename) {
+    if (mode === DEV) {
+      return [
+        "webpack/hot/dev-server",
+        "webpack-hot-middleware/client",
+        __dirname + filename
+      ];
+    } else {
+      return [__dirname + filename];
+    }
+  }
   return {
     entry: {
-      app: webpackEntryFor(mode, "/src/main/typescript/index.tsx"),
-      window: webpackEntryFor(mode, "/src/main/typescript/utils/window.ts")
+      app: entryFor(mode, "/src/main/scripts/index.tsx"),
+      window: entryFor(mode, "/src/main/scripts/utils/window.ts")
     },
     output: {
       filename: "[name].bundle.js"
@@ -107,7 +164,7 @@ function webpackSettings(mode) {
         {
           test: /\.tsx?$/,
           exclude: /node_modules/,
-          include: __dirname + "/src/main/typescript",
+          include: __dirname + "/src/main/scripts",
           loaders:
             mode === PROD
               ? ["awesome-typescript-loader"]
@@ -122,111 +179,41 @@ function webpackSettings(mode) {
   };
 }
 
-gulp.task(
-  "default",
-  tasklisting.withFilters(/clean|css|sass|webpack|images|proxy|default/)
-);
-
-// these resources are fingerprinted in PROD and in DEV,
-// and don't show up in the manifest.mf
-//
-// they need to be referred to only by their fingerprinted value
-function fingerprintAlways(mode, stream) {
-  return stream.pipe(rev()).pipe(gulp.dest(config.distProd));
-}
-
-// these resources end up with a translation to their name
-// in the manifest.json, which our app will translate to the
-// correct links for us in prod
-var revCount = 0;
-function fingerprint(mode, stream) {
-  ++revCount;
-  if (mode === PROD) {
-    // workaround for https://github.com/sindresorhus/gulp-rev/issues/205
-    return stream
-      .pipe(rev())
-      .pipe(gulp.dest(config.distProd))
-      .pipe(
-        rev.manifest(revCount + ".json", {
-          merge: true
-        })
-      )
-      .pipe(gulp.dest(config.distProd));
-  } else {
-    return stream.pipe(gulp.dest(config.dist));
-  }
-}
-
-function cssCfg(mode) {
-  return () => {
-    return fingerprint(mode, gulp.src(config.cssSrc));
-  };
-}
-
-function sassCfg(mode) {
+function scriptsTask(mode, type) {
   return () => {
     return fingerprint(
       mode,
-      gulp
-        .src(config.sassSrc)
-        .pipe(
-          sass({
-            style: "compressed"
-          }).on(
-            "error",
-            notify.onError(function(error) {
-              return "Error: " + error.message;
-            })
-          )
-        )
-        .pipe(autoprefixer({ cascade: false, browsers: ["> 0.25%"] }))
-    );
-  };
-}
-
-function webpackCfg(mode) {
-  return () => {
-    return fingerprint(
-      mode,
-      gulp.src(config.webpackSrc).pipe(
+      type,
+      gulp.src(src(type) + "**").pipe(
         webpackStream(
           {
-            config: webpackSettings(mode)
+            config: webpackCfg(mode)
           },
           webpack
-        ).on("error", err => {
-          gutil.log("Webpack: " + err.message);
-        })
+        )
       )
     );
   };
 }
 
-function imagesCfg(mode) {
-  return () => {
-    return fingerprintAlways(mode, gulp.src(config.imgSrc));
-  };
-}
-
-function proxyCfg(mode) {
+function proxyTask(mode) {
   if (mode !== DEV) throw "proxyCfg is a dev-only task";
   return () => {
-    const bundler = webpack(webpackSettings(mode));
+    const bundler = webpack(webpackCfg(mode));
     browserSync.init({
       proxy: "localhost:8080",
       middleware: [
         webpackDevMiddleware(bundler, {
-          publicPath: "/assets-dev/",
+          publicPath: "/assets-dev/scripts",
           stats: { colors: true }
         }),
         webpackHotMiddleware(bundler),
         {
           route: "/assets-dev",
-          handle: serveStatic(config.dist)
+          handle: serveStatic(__dirname + config.dist)
         }
       ]
     });
-    gulp.watch(config.sassSrc, ["sass" + mode]);
-    gulp.watch(config.cssSrc, ["css" + mode]);
+    gulp.watch(src(SCRIPTS) + "**", [SCRIPTS + mode]);
   };
 }

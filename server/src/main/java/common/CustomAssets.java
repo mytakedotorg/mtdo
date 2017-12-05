@@ -18,7 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.function.Function;
+import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 import org.jooby.Env;
 import org.jooby.Jooby;
@@ -51,15 +51,15 @@ public class CustomAssets implements Jooby.Module {
 	public void configure(Env env, Config conf, Binder binder) throws Throwable {
 		Config config = ConfigFactory.parseResources("assets.conf");
 		AssetCompiler compiler = new AssetCompiler(config);
-		Function<String, String> url;
+		BiFunction<String, String, String> url;
 		if (env.name().equals("dev")) {
-			url = raw -> "/assets-dev" + raw;
+			url = (type, raw) -> "/assets-dev/" + type + raw;
 			env.router().assets("/assets-dev/**");
 			env.router().assets("/assets/**");
 		} else {
 			byte[] manifest = Resources.toByteArray(CustomAssets.class.getResource("/assets/manifest.json"));
 			Map<String, String> map = JsonIterator.deserialize(manifest, new TypeLiteral<HashMap<String, String>>() {});
-			url = raw -> "/assets/" + Objects.requireNonNull(map.get(raw.substring(1)), "No fingerprinted version of " + raw + ", only has: " + map.keySet());
+			url = (type, raw) -> "/assets/" + type + Objects.requireNonNull(map.get(raw.substring(1)), "No fingerprinted version of " + raw + ", only has: " + map.keySet());
 			env.router().assets("/assets/**");
 		}
 		// key, style, key, script
@@ -79,16 +79,16 @@ public class CustomAssets implements Jooby.Module {
 		});
 	}
 
-	private static String styles(Function<String, String> urlMapper, AssetCompiler compiler, String fileset) {
+	private static String styles(BiFunction<String, String, String> urlMapper, AssetCompiler compiler, String fileset) {
 		return compiler.styles(fileset).stream()
-				.map(url -> url.startsWith("/https://") ? url.substring(1) : urlMapper.apply(url))
+				.map(url -> url.startsWith("/https://") ? url.substring(1) : urlMapper.apply("styles", url))
 				.map(script -> "<link rel=\"stylesheet\" href=\"" + script + "\">")
 				.collect(Collectors.joining("\n"));
 	}
 
-	private static String scripts(Function<String, String> urlMapper, AssetCompiler compiler, String fileset) {
+	private static String scripts(BiFunction<String, String, String> urlMapper, AssetCompiler compiler, String fileset) {
 		return compiler.scripts(fileset).stream()
-				.map(url -> url.startsWith("/https://") ? url.substring(1) : urlMapper.apply(url))
+				.map(url -> url.startsWith("/https://") ? url.substring(1) : urlMapper.apply("scripts", url))
 				.map(script -> "<script type=\"text/javascript\" src=\"" + script + "\"></script>")
 				.collect(Collectors.joining("\n"));
 	}
