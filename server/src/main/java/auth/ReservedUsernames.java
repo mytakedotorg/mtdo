@@ -10,8 +10,8 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableSet;
 import common.Text;
 import controllers.AboutUs;
-import controllers.Drafts;
 import controllers.Foundation;
+import java2ts.Routes;
 
 /** Usernames that we reserve for ourselves, for routing or other reasons. */
 class ReservedUsernames {
@@ -20,7 +20,7 @@ class ReservedUsernames {
 	}
 
 	private static final ImmutableSet<String> RESERVED_USERNAMES = ImmutableSet.of(
-			url(Drafts.URL),		// drafts
+			url(Routes.DRAFTS),		// drafts
 			"import",			// import from e.g. Google docs?
 			"api",				// for api access
 			"settings",			// for user settings
@@ -28,8 +28,8 @@ class ReservedUsernames {
 			"blog",				// for a blog
 			url(AboutUs.URL),	// for us
 			"legal",				// for legal attributes
-			url(AuthModule.URL_login),
-			url(AuthModule.URL_logout),
+			url(Routes.LOGIN),
+			url(Routes.LOGOUT),
 			url(AuthModule.URL_confirm));
 
 	private static String url(String url) {

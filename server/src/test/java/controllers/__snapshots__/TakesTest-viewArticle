@@ -10,7 +10,8 @@
 <meta name="description" content="Why it&#39;s so hard to have peace | MyTake.org">
 <meta name="author" content="MyTake.org">
 
-<link rel="stylesheet" href="/assets-dev/main.css">
+<link rel="stylesheet" href="/assets-dev/styles/main.css">
+<link rel="stylesheet" href="/assets-dev/styles/vis.css">
 <link href="https://fonts.googleapis.com/css?family=Merriweather:400,400i,700|Source+Sans+Pro:300,400,700" rel="stylesheet">
 <script src="https://use.fontawesome.com/be03d6dcba.js"></script>
 <!--[if lt IE 9]>
@@ -60,7 +61,7 @@ window.mytake = {
 	type: "showtake",
 	takeDocument: {
 	title: "Why it's so hard to have peace",
-	blocks: [{"kind": "paragraph", "text": "During the cold war, anybody who wanted to negotiate with the evil Communists was “weak”."}, {"kind": "paragraph", "text": "Today, anybody who wants to negotiate with a Muslim country is “weak”."}, {"kind": "video", "range": [304, 321], "videoId": "ApTLB76Nmdg"}, {"kind": "paragraph", "text": "Thank goodness there's at least one party who is willing to give peace a chance!"}, {"kind": "video", "range": [246, 261], "videoId": "GX1kHw2tmtI"}, {"kind": "paragraph", "text": "Err..  Surely that's an outlier?"}, {"kind": "video", "range": [190, 203], "videoId": "GX1kHw2tmtI"}, {"kind": "paragraph", "text": "Huh.  Too bad Jimmy Carter didn't think of something as catchy as MAGA."}]
+	blocks: [{"kind": "paragraph", "text": "During the cold war, anybody who wanted to negotiate with the evil Communists was “weak”."}, {"kind": "paragraph", "text": "Today, anybody who wants to negotiate with a Muslim country is “weak”."}, {"kind": "video", "range": [304, 321], "videoId": "U8MV5KDDaxumxZOCJOzExAUAAkSoYNhycVXq7jZ59_0="}, {"kind": "paragraph", "text": "Thank goodness there's at least one party who is willing to give peace a chance!"}, {"kind": "video", "range": [246, 261], "videoId": "qQjcS7ARkHHdKnDXfS3OkX5f78l81M1OWu5y_IziPA0="}, {"kind": "paragraph", "text": "Err..  Surely that's an outlier?"}, {"kind": "video", "range": [190, 203], "videoId": "qQjcS7ARkHHdKnDXfS3OkX5f78l81M1OWu5y_IziPA0="}, {"kind": "paragraph", "text": "Huh.  Too bad Jimmy Carter didn't think of something as catchy as MAGA."}]
 	}
 };
 </script>
@@ -70,15 +71,16 @@ window.mytake = {
 <footer class="footer">
 <hr class="footer__hr" />
 	<ul class="nav__list nav__list--bottom">
-	<li class="nav__list-item nav__list-item--bottom"><a class="nav__link nav__link--bottom" href="/foundation/" tabindex="5"><span class="nav__link-text nav__link-text--bottom">Explore the Foundation</span></a></li>
-	<li class="nav__list-item nav__list-item--bottom"><a class="nav__link nav__link--bottom" href="/new-take/" tabindex="6"><span class="nav__link-text nav__link-text--bottom">Give your Take</span></a></li>
-	<li class="nav__list-item nav__list-item--bottom"><a class="nav__link nav__link--bottom" href="/about/" tabindex="7"><span class="nav__link-text nav__link-text--bottom">About us</span></a></li>
+	<li class="nav__list-item nav__list-item--bottom"><a class="nav__link nav__link--bottom" href="/foundation" tabindex="5"><span class="nav__link-text nav__link-text--bottom">Explore the Foundation</span></a></li>
+	<li class="nav__list-item nav__list-item--bottom"><a class="nav__link nav__link--bottom" href="/drafts/new" tabindex="6"><span class="nav__link-text nav__link-text--bottom">Give your Take</span></a></li>
+	<li class="nav__list-item nav__list-item--bottom"><a class="nav__link nav__link--bottom" href="/aboutus" tabindex="7"><span class="nav__link-text nav__link-text--bottom">About us</span></a></li>
 	</ul>
 </footer>
-<script type="text/javascript" src="/assets-dev/window.bundle.js"></script>
+<script type="text/javascript" src="/assets-dev/scripts/window.bundle.js"></script>
 <script type="text/javascript" src="https://unpkg.com/react@15/dist/react.js"></script>
 <script type="text/javascript" src="https://unpkg.com/react-dom@15/dist/react-dom.js"></script>
-<script type="text/javascript" src="/assets-dev/takeReader.bundle.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.js"></script>
+<script type="text/javascript" src="/assets-dev/scripts/app.bundle.js"></script>
 
 </body>
 </html>

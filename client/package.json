@@ -12,9 +12,8 @@
   "scripts": {
     "clean": "gulp clean",
     "deploy": "gulp buildProd",
-    "formatlist": "prettier --list-different '*.js' 'assets/**/*.scss' 'src/main/typescript/!(java2ts)/**/*.ts?(x)' 'loaders/**/*.ts' 'test/**/*.ts'",
-    "formatwrite": "prettier --write         '*.js' 'assets/**/*.scss' 'src/main/typescript/!(java2ts)/**/*.ts?(x)' 'loaders/**/*.ts' 'test/**/*.ts'",
-    "prep": "gulp loaders scripts",
+    "formatlist": "prettier --list-different '*.js' 'src/main/styles/**/*.scss' 'src/main/typescript/!(java2ts)/**/*.ts?(x)'",
+    "formatwrite": "prettier --write         '*.js' 'src/main/styles/**/*.scss' 'src/main/typescript/!(java2ts)/**/*.ts?(x)'",
     "test": "jest"
   },
   "author": "",
@@ -23,6 +22,8 @@
     "@types/lodash": "^4.14.77",
     "@types/react": "^15.0.25",
     "@types/react-dom": "^15.5.0",
+    "@types/vis": "^4.18.4",
+    "base64-arraybuffer": "^0.1.5",
     "binary-search": "^1.3.2",
     "keycode": "^2.1.9",
     "lodash": "^4.17.4",
@@ -36,12 +37,10 @@
     "@types/jest": "20.0.2",
     "@types/node": "^7.0.22",
     "@types/react-test-renderer": "^15.5.2",
-    "@types/vis": "^4.18.4",
+    "@types/webpack-env": "^1.13.2",
     "awesome-typescript-loader": "^3.1.3",
-    "browser-sync": "^2.18.12",
-    "cli-interact": "^0.1.9",
+    "browser-sync": "^2.18.13",
     "enzyme": "^2.9.1",
-    "file-loader": "^0.11.2",
     "gulp": "^3.9.1",
     "gulp-autoprefixer": "^4.0.0",
     "gulp-merge-json": "^1.2.0",
@@ -49,36 +48,29 @@
     "gulp-rev": "^8.1.0",
     "gulp-sass": "^3.1.0",
     "gulp-task-listing": "^1.0.1",
-    "gulp-typescript": "^3.2.2",
     "gulp-util": "^3.0.8",
-    "html-loader": "^0.5.1",
-    "htmlparser2": "^3.9.2",
     "jest": "^21.2.1",
-    "node-sass": "^4.5.3",
     "prettier": "^1.5.3",
-    "raw-loader": "^0.5.1",
+    "react-hot-loader": "^3.1.3",
     "react-test-renderer": "^15.6.1",
-    "source-map-loader": "^0.2.1",
+    "serve-static": "^1.13.1",
     "ts-jest": "^21.1.4",
     "typescript": "^2.3.3",
-    "uglifyjs-webpack-plugin": "^0.4.6",
-    "url-loader": "^0.5.9",
     "webpack": "^3.4.0",
+    "webpack-dev-middleware": "^1.12.2",
+    "webpack-hot-middleware": "^2.21.0",
+    "webpack-module-hot-accept": "^1.0.5",
     "webpack-stream": "^4.0.0"
   },
   "jest": {
     "transform": {
-      "^.+\\.(ts|tsx)$": "./node_modules/ts-jest/preprocessor.js",
-      "^.+\\.foundation\\.html$": "./test/transformers/foundationTransformer.js",
-      "\\.vtt$": "./test/transformers/vttTransformer.js"
+      "^.+\\.(ts|tsx)$": "./node_modules/ts-jest/preprocessor.js"
     },
     "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
     "moduleFileExtensions": [
-      "html",
       "ts",
       "tsx",
-      "js",
-      "vtt"
+      "js"
     ],
     "verbose": true
   }

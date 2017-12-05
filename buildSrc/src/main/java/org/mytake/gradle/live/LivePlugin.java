@@ -61,7 +61,7 @@ public class LivePlugin implements Plugin<Project> {
 					"-noverify");
 			cfg.setClasspath(classpathForSourceSet(proj, SourceSet.TEST_SOURCE_SET_NAME));
 		});
-		live.dependsOn(":server:testClasses", ":client:gulp_buildDev");
+		live.dependsOn(":server:testClasses");
 		classWatcher(live);
 		assetWatcher(live);
 		live.setDescription("Runs common.Dev with hotswap via springloaded and browserSync on assets");

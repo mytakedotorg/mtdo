@@ -1,0 +1,36 @@
+apply plugin: 'java'
+
+repositories {
+	mavenCentral()
+	maven { url 'http://repository.jsweet.org/artifactory/libs-release-local' }
+}
+dependencies {
+	compile project(':client')
+	compile "com.jsoniter:jsoniter:$JSONITER_VER"
+	compile "org.jsweet:jsweet-core:$JSWEET_CORE_VER"
+	compile 'org.jsoup:jsoup:1.11.2'
+	compile 'com.diffplug.durian:durian-core:1.2.0'
+	compile 'com.diffplug.durian:durian-collect:1.2.0'
+	testCompile "junit:junit:$JUNIT_VER"
+	testCompile "org.assertj:assertj-core:$ASSERTJ_VER"
+}
+
+eclipse { project { referencedProjects = ['mytake-client'] } }
+
+task generateFoundation(type: JavaExec) {
+	description = 'Generates the foundation'
+	classpath = sourceSets.main.runtimeClasspath
+	main = 'org.mytake.foundation.Index'
+}
+generateFoundation.dependsOn(classes)
+generateFoundation.outputs.file('../foundation/src/main/resources/foundation/index.js')
+
+apply plugin: 'com.diffplug.gradle.spotless'
+spotless {
+	java {
+		licenseHeaderFile(rootProject.file('gradle/spotless.license.java'))
+		importOrder()
+		eclipse().configFile(rootProject.file('gradle/spotless.eclipseformat.xml'))
+		removeUnusedImports()
+	}
+}

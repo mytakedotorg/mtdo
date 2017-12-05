@@ -43,6 +43,10 @@ public class Dev extends Jooby {
 		use(new DevTime.Module());
 		use(new GreenMailModule());
 		use(new EmbeddedPostgresModule());
+		// exit has to come before the "/user" route
+		get("/exit", (req, rsp) -> {
+			stop();
+		});
 		Prod.common(this);
 		Prod.controllers(this);
 		use(new JooqDebugRenderer());
@@ -150,9 +154,6 @@ public class Dev extends Jooby {
 	public static class DevWithInitialData extends Dev {
 		{
 			use(new InitialData.Module());
-			get("/exit", (req, rsp) -> {
-				stop();
-			});
 		}
 	}
 }

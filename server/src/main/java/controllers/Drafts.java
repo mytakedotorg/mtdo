@@ -22,6 +22,7 @@ import db.tables.records.TakerevisionRecord;
 import java2ts.DraftPost;
 import java2ts.DraftRev;
 import java2ts.PublishResult;
+import java2ts.Routes;
 import javax.annotation.Nullable;
 import org.jooby.Env;
 import org.jooby.Jooby;
@@ -30,13 +31,6 @@ import org.jooq.DSLContext;
 import org.jooq.Result;
 
 public class Drafts implements Jooby.Module {
-	/** special url for anonymous drafts */
-	public static final String URL = "/drafts";
-	public static final String URL_NEW = URL + "/new";
-	public static final String URL_SAVE = URL + "/save";
-	public static final String URL_PUBLISH = URL + "/publish";
-	public static final String URL_DELETE = URL + "/delete";
-
 	/** Returns the existing draft, if present, for the given draft post. */
 	@Nullable
 	private TakedraftRecord draft(DSLContext dsl, AuthUser user, @Nullable DraftRev parentRev) {
@@ -58,11 +52,11 @@ public class Drafts implements Jooby.Module {
 	@Override
 	public void configure(Env env, Config conf, Binder binder) throws Throwable {
 		// brand new template
-		env.router().get(URL_NEW, req -> {
+		env.router().get(Routes.DRAFTS_NEW, req -> {
 			return views.Drafts.editTake.template(null, null, -1, -1);
 		});
 		// list drafts for the logged-in user
-		env.router().get(URL, req -> {
+		env.router().get(Routes.DRAFTS, req -> {
 			AuthUser user = AuthUser.auth(req);
 			try (DSLContext dsl = req.require(DSLContext.class)) {
 				// draftid, timestamp, title
@@ -75,7 +69,7 @@ public class Drafts implements Jooby.Module {
 				return views.Drafts.listDrafts.template(drafts);
 			}
 		});
-		env.router().post(URL_DELETE, req -> {
+		env.router().post(Routes.DRAFTS_DELETE, req -> {
 			AuthUser user = AuthUser.auth(req);
 			DraftRev rev = req.body(DraftRev.class);
 			try (DSLContext dsl = req.require(DSLContext.class)) {
@@ -88,7 +82,7 @@ public class Drafts implements Jooby.Module {
 				}
 			}
 		});
-		env.router().post(URL_SAVE, req -> {
+		env.router().post(Routes.DRAFTS_SAVE, req -> {
 			AuthUser user = AuthUser.auth(req);
 			DraftPost post = req.body(DraftPost.class);
 			try (DSLContext dsl = req.require(DSLContext.class)) {
@@ -121,7 +115,7 @@ public class Drafts implements Jooby.Module {
 				}
 			}
 		});
-		env.router().post(URL_PUBLISH, req -> {
+		env.router().post(Routes.DRAFTS_PUBLISH, req -> {
 			// the user has to be logged-in
 			AuthUser user = AuthUser.auth(req);
 			DraftPost post = req.body(DraftPost.class);
@@ -160,7 +154,7 @@ public class Drafts implements Jooby.Module {
 			}
 		});
 		// reopen an existing draft (MUST BE LAST so ":id" doesn't clobber other routes)
-		env.router().get(URL + "/:id", req -> {
+		env.router().get(Routes.DRAFTS + "/:id", req -> {
 			AuthUser user = AuthUser.auth(req);
 			int draftId = req.param("id").intValue();
 			try (DSLContext dsl = req.require(DSLContext.class)) {
@@ -202,6 +196,6 @@ public class Drafts implements Jooby.Module {
 	}
 
 	public static String urlEdit(int draftId) {
-		return URL + "/" + draftId;
+		return Routes.DRAFTS + "/" + draftId;
 	}
 }

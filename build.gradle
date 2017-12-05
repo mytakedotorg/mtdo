@@ -2,12 +2,24 @@ plugins {
 	id 'com.diffplug.gradle.eclipse.resourcefilters' version '3.8.1'
 	id 'com.diffplug.gradle.spotless' version '3.6.0'	// https://github.com/diffplug/spotless/blob/master/plugin-gradle/README.md
 	id 'com.github.ben-manes.versions' version '0.17.0'	// https://github.com/ben-manes/gradle-versions-plugin
+	id 'cz.malohlava' version '1.0.3' // https://github.com/mmalohlava/gradle-visteg
+}
+
+// set enabled to true to get a report.  Only needed if the task graph
+// changes, see build_deps.pdf for an example
+// dot -Tpdf build/reports/visteg.dot > output.pdf
+visteg {
+	enabled = false
+	nodeShape = 'box'
+	startNodeShape = 'box'
+	endNodeShape = 'box'
+	colorscheme = 'pastel24' // http://www.graphviz.org/doc/info/colors.html
 }
 
 // format build files
 spotless {
 	groovyGradle {
-		target 'build.gradle', 'buildSrc/build.gradle', 'client/build.gradle', 'server/build.gradle'
+		target 'build.gradle', '*/build.gradle'
 		greclipse().configFile(
 				'gradle/spotless.eclipseformat.xml',
 				'gradle/spotless.greclipse.properties'
@@ -16,18 +28,23 @@ spotless {
 	}
 }
 
-// exclude the gradle build folder
-allprojects {
+// create eclipse project for all projects
+allprojects { proj ->
 	buildscript { repositories { mavenCentral() } }
+	apply plugin: 'eclipse'
+	eclipse { project { name = "mytake-$proj.name" } }
 	apply plugin: 'com.diffplug.gradle.eclipse.excludebuildfolder'
+	tasks.eclipse.dependsOn(tasks.cleanEclipse)
 }
 
 // root eclipse project
-eclipse { project { name = 'mytake-root' } }
 eclipseResourceFilters {
 	exclude().folders().name('buildSrc')
+	exclude().folders().name('ide')
 	exclude().folders().name('client')
 	exclude().folders().name('server')
+	exclude().folders().name('foundation')
+	exclude().folders().name('foundation-gen')
 }
 tasks.eclipse.dependsOn(tasks.cleanEclipse)
 

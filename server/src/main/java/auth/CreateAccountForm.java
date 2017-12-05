@@ -30,6 +30,7 @@ import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
+import java2ts.Routes;
 import org.apache.commons.mail.HtmlEmail;
 import org.jooby.Request;
 import org.jooby.Response;
@@ -152,7 +153,7 @@ public class CreateAccountForm extends MetaFormDef.HandleValid {
 				String username = getNullToEmpty(req, CREATE_USERNAME);
 				String email = getNullToEmpty(req, CREATE_EMAIL);
 				validateUsernameEmail(username, email, dsl, validation);
-				rsp.send(views.Auth.createAccountUnknown.template(validation.markup(AuthModule.URL_login)));
+				rsp.send(views.Auth.createAccountUnknown.template(validation.markup(Routes.LOGIN)));
 			} else {
 				AccountRecord account = dsl.newRecord(ACCOUNT);
 				account.setUsername(link.getUsername());

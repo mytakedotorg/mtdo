@@ -17,6 +17,7 @@ import forms.meta.MetaFormDef;
 import forms.meta.MetaFormValidation;
 import java.util.List;
 import java.util.Optional;
+import java2ts.Routes;
 import org.jooby.Env;
 import org.jooby.Jooby;
 import org.jooby.Status;
@@ -33,8 +34,6 @@ public class AuthModule implements Jooby.Module {
 	public static final MetaField<String> CREATE_EMAIL = MetaField.string("createemail");
 
 	/** The URLs for this. */
-	public static final String URL_login = "/login";
-	public static final String URL_logout = "/logout";
 	static final String URL_confirm = "/confirm";
 	public static final String URL_confirm_login = URL_confirm + "/login/";
 	public static final String URL_confirm_account = URL_confirm + "/account/";
@@ -46,7 +45,7 @@ public class AuthModule implements Jooby.Module {
 		Algorithm algorithm = Algorithm.HMAC256(secret);
 		binder.bind(Algorithm.class).toInstance(algorithm);
 
-		env.router().get(URL_login, req -> {
+		env.router().get(Routes.LOGIN, req -> {
 			Optional<AuthUser> userOpt = AuthUser.authOpt(req);
 			if (userOpt.isPresent()) {
 				return views.Auth.alreadyLoggedIn.template(userOpt.get().username());
@@ -58,16 +57,16 @@ public class AuthModule implements Jooby.Module {
 						.initIfPresent(req, REDIRECT, LOGIN_EMAIL);
 				MetaFormValidation createAccount = MetaFormValidation.empty(CreateAccountForm.class)
 						.initIfPresent(req, REDIRECT, CREATE_USERNAME, CREATE_EMAIL);
-				return views.Auth.login.template(loginReason, login.markup(URL_login), createAccount.markup(URL_login));
+				return views.Auth.login.template(loginReason, login.markup(Routes.LOGIN), createAccount.markup(Routes.LOGIN));
 			}
 		});
-		env.router().post(URL_login, (req, rsp) -> {
+		env.router().post(Routes.LOGIN, (req, rsp) -> {
 			List<MetaFormValidation> validations = MetaFormDef.HandleValid.validation(req, rsp, LoginForm.class, CreateAccountForm.class);
 			if (!validations.isEmpty()) {
 				String loginReason = null;
 				MetaFormValidation login = validations.get(0);
 				MetaFormValidation createAccount = validations.get(1);
-				rsp.send(views.Auth.login.template(loginReason, login.markup(URL_login), createAccount.markup(URL_login)));
+				rsp.send(views.Auth.login.template(loginReason, login.markup(Routes.LOGIN), createAccount.markup(Routes.LOGIN)));
 			}
 		});
 		env.router().get(URL_confirm_account + ":code", (req, rsp) -> {
@@ -76,7 +75,7 @@ public class AuthModule implements Jooby.Module {
 		env.router().get(URL_confirm_login + ":code", (req, rsp) -> {
 			LoginForm.confirm(req.param("code").value(), req, rsp);
 		});
-		env.router().get(URL_logout, (req, rsp) -> {
+		env.router().get(Routes.LOGOUT, (req, rsp) -> {
 			rsp.clearCookie(AuthUser.LOGIN_COOKIE);
 			rsp.clearCookie(AuthUser.LOGIN_UI_COOKIE);
 			rsp.redirect(HomeFeed.URL);
@@ -85,7 +84,7 @@ public class AuthModule implements Jooby.Module {
 		env.router().err(JWTVerificationException.class, (req, rsp, err) -> {
 			rsp.clearCookie(AuthUser.LOGIN_COOKIE);
 			rsp.clearCookie(AuthUser.LOGIN_UI_COOKIE);
-			rsp.redirect(Status.TEMPORARY_REDIRECT, UrlEncodedPath.path(URL_login)
+			rsp.redirect(Status.TEMPORARY_REDIRECT, UrlEncodedPath.path(Routes.LOGIN)
 					.paramIfPresent(LOGIN_EMAIL, AuthUser.usernameForError(req))
 					.paramPathAndQuery(REDIRECT, req)
 					.param(LOGIN_REASON, err.getCause().getMessage())

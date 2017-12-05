@@ -5,17 +5,15 @@
 
 @views.base.template("Account confirmation unknown", "Account confirmation unknown") -> {
 
-	<section id="create">
-		<div class="heading-line">
-			<h2>Create account</h2>
-		</div>
-		<div class="content-bg">
+	<section class="section">
+		<h2 class="section__heading">Create account</h2>
+		<div class="section__content">
 			@createAccount.formError()
-			@createAccount.openForm("id", "create")
-				@createAccount.field(AuthModule.CREATE_USERNAME).label("Username").errorSpan("class", "form__error").input("text", "class", "form-control")
-				@createAccount.field(AuthModule.CREATE_EMAIL).label("Email").errorSpan("class", "form__error").input("email", "class", "form-control")
+			@createAccount.openForm("class", "form form--create")
+				@createAccount.field(AuthModule.CREATE_USERNAME).label("Username", "class", "form__label form__label--username").errorSpan("class", "form__error").input("text", "class", "form__input form__input--username")
+				@createAccount.field(AuthModule.CREATE_EMAIL).label("Email", "class", "form__label form__label--email").errorSpan("class", "form__error").input("email", "class", "form__input form__input--email")
 				@createAccount.field(AuthModule.REDIRECT).input("hidden")
-				<input type="submit" class="btn btn-success" value="Try again" />
+				<input type="submit" class="form__submit form__submit--red" value="Try again" />
 			@createAccount.closeForm()
 		</div>
 	</section>

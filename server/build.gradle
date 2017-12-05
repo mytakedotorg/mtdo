@@ -66,15 +66,15 @@ rocker {
 spotless {
 	format 'rocker', {
 		target 'src/main/rocker/**/*.rocker.html'
-		indentWithTabs(4)
+		indentWithTabs(2)
+		trimTrailingWhitespace()
+		endWithNewline()
 	}
 }
 
 //////////////////
 // normal stuff //
 //////////////////
-apply plugin: 'eclipse'
-eclipse { project { name = 'mytake-server' } }
 tasks.eclipse.dependsOn([
 	tasks.cleanEclipse,
 	'jooq',
@@ -96,9 +96,9 @@ dependencies {
 	compile "org.jooby:jooby-assets:$JOOBY_VER"
 	testCompile "org.jooby:jooby-whoops:$JOOBY_VER"
 
-	// json (must match versions in client)
-	compile 'com.jsoniter:jsoniter:0.9.17'
-	compile 'org.jsweet:jsweet-core:5-20170726'
+	// json
+	compile "com.jsoniter:jsoniter:$JSONITER_VER"
+	compile "org.jsweet:jsweet-core:$JSWEET_CORE_VER"
 	compile project(':client')
 	compile project(':foundation')
 
@@ -120,8 +120,8 @@ dependencies {
 	compileOnly 'com.google.code.findbugs:jsr305:3.0.2'
 	compileOnly 'com.google.errorprone:error_prone_annotations:2.1.2'
 
-	testCompile 'junit:junit:4.12'
-	testCompile 'org.assertj:assertj-core:3.8.0'
+	testCompile "junit:junit:$JUNIT_VER"
+	testCompile "org.assertj:assertj-core:$ASSERTJ_VER"
 	testCompile 'io.rest-assured:rest-assured:3.0.5'
 	testCompile 'com.icegreen:greenmail:1.5.5'					// http://www.icegreen.com/greenmail/
 	testCompile 'com.opentable.components:otj-pg-embedded:0.10.0'	// https://github.com/opentable/otj-pg-embedded

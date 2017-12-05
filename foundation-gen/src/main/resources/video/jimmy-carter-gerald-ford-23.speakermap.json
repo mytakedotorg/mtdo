@@ -1,0 +1,649 @@
+{
+    "speakers": [
+      {
+        "firstname": "Pauline",
+        "lastname": "Frederick"
+      },
+      {
+        "firstname": "Max",
+        "lastname": "Frankel"
+      },
+      {
+        "firstname": "Jimmy",
+        "lastname": "Carter"
+      },
+      {
+        "firstname": "Gerald",
+        "middlename": "R",
+        "lastname": "Ford"
+      },
+      {
+        "firstname": "Henry",
+        "middlename": "L",
+        "lastname": "Trewhitt"
+      },
+      {
+        "firstname": "Richard",
+        "lastname": "Valeriani"
+      }
+    ],
+    "speakerMap": [
+      {
+        "speaker": "Frederick",
+        "range": [
+          0,
+          292
+        ]
+      },
+      {
+        "speaker": "Frankel",
+        "range": [
+          293,
+          416
+        ]
+      },
+      {
+        "speaker": "Carter",
+        "range": [
+          417,
+          849
+        ]
+      },
+      {
+        "speaker": "Frederick",
+        "range": [
+          850,
+          856
+        ]
+      },
+      {
+        "speaker": "Ford",
+        "range": [
+          857,
+          1148
+        ]
+      },
+      {
+        "speaker": "Frederick",
+        "range": [
+          1149,
+          1155
+        ]
+      },
+      {
+        "speaker": "Trewhitt",
+        "range": [
+          1156,
+          1265
+        ]
+      },
+      {
+        "speaker": "Ford",
+        "range": [
+          1266,
+          1700
+        ]
+      },
+      {
+        "speaker": "Carter",
+        "range": [
+          1701,
+          2014
+        ]
+      },
+      {
+        "speaker": "Frederick",
+        "range": [
+          2015,
+          2021
+        ]
+      },
+      {
+        "speaker": "Valeriani",
+        "range": [
+          2022,
+          2128
+        ]
+      },
+      {
+        "speaker": "Carter",
+        "range": [
+          2129,
+          2619
+        ]
+      },
+      {
+        "speaker": "Valeriani",
+        "range": [
+          2620,
+          2641
+        ]
+      },
+      {
+        "speaker": "Carter",
+        "range": [
+          2642,
+          2896
+        ]
+      },
+      {
+        "speaker": "Frederick",
+        "range": [
+          2897,
+          2903
+        ]
+      },
+      {
+        "speaker": "Ford",
+        "range": [
+          2904,
+          3187
+        ]
+      },
+      {
+        "speaker": "Frederick",
+        "range": [
+          3188,
+          3194
+        ]
+      },
+      {
+        "speaker": "Frankel",
+        "range": [
+          3195,
+          3343
+        ]
+      },
+      {
+        "speaker": "Ford",
+        "range": [
+          3344,
+          3734
+        ]
+      },
+      {
+        "speaker": "Frankel",
+        "range": [
+          3735,
+          3808
+        ]
+      },
+      {
+        "speaker": "Ford",
+        "range": [
+          3809,
+          3925
+        ]
+      },
+      {
+        "speaker": "Frederick",
+        "range": [
+          3926,
+          3932
+        ]
+      },
+      {
+        "speaker": "Carter",
+        "range": [
+          3933,
+          4294
+        ]
+      },
+      {
+        "speaker": "Frederick",
+        "range": [
+          4295,
+          4301
+        ]
+      },
+      {
+        "speaker": "Trewhitt",
+        "range": [
+          4302,
+          4414
+        ]
+      },
+      {
+        "speaker": "Carter",
+        "range": [
+          4415,
+          4933
+        ]
+      },
+      {
+        "speaker": "Trewhitt",
+        "range": [
+          4934,
+          4996
+        ]
+      },
+      {
+        "speaker": "Carter",
+        "range": [
+          4997,
+          5079
+        ]
+      },
+      {
+        "speaker": "Frederick",
+        "range": [
+          5080,
+          5081
+        ]
+      },
+      {
+        "speaker": "Ford",
+        "range": [
+          5082,
+          5348
+        ]
+      },
+      {
+        "speaker": "Frederick",
+        "range": [
+          5349,
+          5355
+        ]
+      },
+      {
+        "speaker": "Valeriani",
+        "range": [
+          5356,
+          5434
+        ]
+      },
+      {
+        "speaker": "Ford",
+        "range": [
+          5435,
+          5639
+        ]
+      },
+      {
+        "speaker": "Valeriani",
+        "range": [
+          5640,
+          5648
+        ]
+      },
+      {
+        "speaker": "Ford",
+        "range": [
+          5649,
+          5708
+        ]
+      },
+      {
+        "speaker": "Frederick",
+        "range": [
+          5709,
+          5710
+        ]
+      },
+      {
+        "speaker": "Carter",
+        "range": [
+          5711,
+          5951
+        ]
+      },
+      {
+        "speaker": "Frederick",
+        "range": [
+          5952,
+          5958
+        ]
+      },
+      {
+        "speaker": "Frankel",
+        "range": [
+          5959,
+          6067
+        ]
+      },
+      {
+        "speaker": "Carter",
+        "range": [
+          6068,
+          6531
+        ]
+      },
+      {
+        "speaker": "Frankel",
+        "range": [
+          6532,
+          6596
+        ]
+      },
+      {
+        "speaker": "Carter",
+        "range": [
+          6597,
+          6761
+        ]
+      },
+      {
+        "speaker": "Frederick",
+        "range": [
+          6762,
+          6763
+        ]
+      },
+      {
+        "speaker": "Ford",
+        "range": [
+          6764,
+          7041
+        ]
+      },
+      {
+        "speaker": "Frederick",
+        "range": [
+          7042,
+          7048
+        ]
+      },
+      {
+        "speaker": "Trewhitt",
+        "range": [
+          7049,
+          7161
+        ]
+      },
+      {
+        "speaker": "Ford",
+        "range": [
+          7162,
+          7522
+        ]
+      },
+      {
+        "speaker": "Trewhitt",
+        "range": [
+          7523,
+          7627
+        ]
+      },
+      {
+        "speaker": "Ford",
+        "range": [
+          7628,
+          7797
+        ]
+      },
+      {
+        "speaker": "Frederick",
+        "range": [
+          7798,
+          7799
+        ]
+      },
+      {
+        "speaker": "Carter",
+        "range": [
+          7800,
+          8127
+        ]
+      },
+      {
+        "speaker": "Frederick",
+        "range": [
+          8128,
+          8134
+        ]
+      },
+      {
+        "speaker": "Valeriani",
+        "range": [
+          8135,
+          8195
+        ]
+      },
+      {
+        "speaker": "Carter",
+        "range": [
+          8196,
+          8532
+        ]
+      },
+      {
+        "speaker": "Frederick",
+        "range": [
+          8533,
+          8534
+        ]
+      },
+      {
+        "speaker": "Ford",
+        "range": [
+          8535,
+          8795
+        ]
+      },
+      {
+        "speaker": "Frederick",
+        "range": [
+          8796,
+          8802
+        ]
+      },
+      {
+        "speaker": "Frankel",
+        "range": [
+          8803,
+          9040
+        ]
+      },
+      {
+        "speaker": "Ford",
+        "range": [
+          9041,
+          9444
+        ]
+      },
+      {
+        "speaker": "Frankel",
+        "range": [
+          9445,
+          9508
+        ]
+      },
+      {
+        "speaker": "Ford",
+        "range": [
+          9509,
+          9774
+        ]
+      },
+      {
+        "speaker": "Frederick",
+        "range": [
+          9775,
+          9776
+        ]
+      },
+      {
+        "speaker": "Carter",
+        "range": [
+          9777,
+          10118
+        ]
+      },
+      {
+        "speaker": "Frederick",
+        "range": [
+          10119,
+          10180
+        ]
+      },
+      {
+        "speaker": "Trewhitt",
+        "range": [
+          10181,
+          10235
+        ]
+      },
+      {
+        "speaker": "Carter",
+        "range": [
+          10236,
+          10441
+        ]
+      },
+      {
+        "speaker": "Frederick",
+        "range": [
+          10442,
+          10443
+        ]
+      },
+      {
+        "speaker": "Ford",
+        "range": [
+          10444,
+          10578
+        ]
+      },
+      {
+        "speaker": "Frederick",
+        "range": [
+          10579,
+          10585
+        ]
+      },
+      {
+        "speaker": "Valeriani",
+        "range": [
+          10586,
+          10648
+        ]
+      },
+      {
+        "speaker": "Ford",
+        "range": [
+          10649,
+          10944
+        ]
+      },
+      {
+        "speaker": "Frederick",
+        "range": [
+          10945,
+          10946
+        ]
+      },
+      {
+        "speaker": "Carter",
+        "range": [
+          10947,
+          11209
+        ]
+      },
+      {
+        "speaker": "Frederick",
+        "range": [
+          11210,
+          11229
+        ]
+      },
+      {
+        "speaker": "Frankel",
+        "range": [
+          11230,
+          11257
+        ]
+      },
+      {
+        "speaker": "Carter",
+        "range": [
+          11258,
+          11461
+        ]
+      },
+      {
+        "speaker": "Frederick",
+        "range": [
+          11462,
+          11463
+        ]
+      },
+      {
+        "speaker": "Ford",
+        "range": [
+          11464,
+          11714
+        ]
+      },
+      {
+        "speaker": "Frederick",
+        "range": [
+          11715,
+          11723
+        ]
+      },
+      {
+        "speaker": "Trewhitt",
+        "range": [
+          11724,
+          11760
+        ]
+      },
+      {
+        "speaker": "Ford",
+        "range": [
+          11761,
+          11844
+        ]
+      },
+      {
+        "speaker": "Frederick",
+        "range": [
+          11845,
+          11846
+        ]
+      },
+      {
+        "speaker": "Carter",
+        "range": [
+          11847,
+          12034
+        ]
+      },
+      {
+        "speaker": "Frederick",
+        "range": [
+          12035,
+          12085
+        ]
+      },
+      {
+        "speaker": "Carter",
+        "range": [
+          12086,
+          12554
+        ]
+      },
+      {
+        "speaker": "Frederick",
+        "range": [
+          12555,
+          12556
+        ]
+      },
+      {
+        "speaker": "Ford",
+        "range": [
+          12557,
+          12671
+        ]
+      },
+      {
+        "speaker": "Frederick",
+        "range": [
+          12672,
+          12780
+        ]
+      }
+    ]
+  }
+  

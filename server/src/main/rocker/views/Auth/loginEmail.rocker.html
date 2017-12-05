@@ -3,11 +3,12 @@
 @args(String username, String loginUrl)
 
 @views.email.template() -> {
-<p>
-Welcome back to MyTake.org, @username!
-</p>
-<p>
-Visit <a href="@raw(loginUrl)">this link</a> to login!
-</p>
-
+	<div>
+			<p>
+				Welcome back to MyTake.org, @username!
+			</p>
+			<p>
+				Visit <a href="@raw(loginUrl)">this link</a> to login!
+			</p>
+	</div>
 }

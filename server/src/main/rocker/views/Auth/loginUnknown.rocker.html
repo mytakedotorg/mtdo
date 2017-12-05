@@ -5,16 +5,14 @@
 
 @views.base.template("Try again", "Try again") -> {
 
-	<section id="login">
-		<div class="heading-line">
-			<h2>Log in</h2>
-		</div>
-		<div class="content-bg">
+	<section class="section">
+		<h2 class="section__heading">Log in</h2>
+		<div class="section__content">
 			@loginForm.formError()
-			@loginForm.openForm("id", "login")
-				@loginForm.field(AuthModule.LOGIN_EMAIL).label("Email").errorSpan("class", "form__error").input("text", "class", "form-control")
+			@loginForm.openForm("class", "form form--login")
+			@loginForm.field(AuthModule.LOGIN_EMAIL).label("Email", "class", "form__label form__label--email").errorSpan("class", "form__error").input("email", "class", "form__input form__input--email")
 				@loginForm.field(AuthModule.REDIRECT).input("hidden")
-				<input type="submit" class="btn btn-success" value="Try again" />
+				<input type="submit" class="form__submit form__submit--blue" value="Try again" />
 			@loginForm.closeForm()
 		</div>
 	</section>

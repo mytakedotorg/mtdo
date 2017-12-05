@@ -6,17 +6,19 @@
 @args(Result<?> drafts)
 
 @views.naked.template("MyTake.org", "Your drafts", "base") -> {
-
-You have @drafts.size() @(singlePlural("draft", "drafts", drafts)).
+<div class="takelist">
+<p class="takelist__text">You have @drafts.size() @(singlePlural("draft", "drafts", drafts)).</p>
 
 @for (draft : drafts) {
 	@with(	int draftId = draft.get(TAKEDRAFT.ID),
 			Timestamp lastEdited = draft.get(TAKEREVISION.CREATED_AT),
 			String title = draft.get(TAKEREVISION.TITLE)
 			) {
-		<h2><a href="@controllers.Drafts.urlEdit(draftId)">@title</a></h2>
-		<span>Last edited @common.Time.formatCompact().format(lastEdited)</span>
+	<div class="takelist__take">
+	<h2 class="takelist__title"><a class="takelist__link" href="@controllers.Drafts.urlEdit(draftId)">@title</a></h2>
+	<span class="takelist__aside">Last edited @common.Time.formatCompact().format(lastEdited)</span>
+	</div>
 	}
 }
-
+</div>
 }

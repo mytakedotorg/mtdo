@@ -31,13 +31,9 @@ repositories {
 	maven { url 'http://repository.jsweet.org/artifactory/libs-release-local' }
 }
 dependencies {
-	// must match versions in server
-	compile 'com.jsoniter:jsoniter:0.9.17'
-	compile 'org.jsweet:jsweet-core:5-20170726'
+	compile "com.jsoniter:jsoniter:$JSONITER_VER"
+	compile "org.jsweet:jsweet-core:$JSWEET_CORE_VER"
 }
-
-apply plugin: 'eclipse'
-eclipse { project { name = 'mytake-client' } }
 
 // generate typescript for the java in the java2ts folder
 def JAVA2TS = 'src/main/typescript/java2ts'
@@ -56,8 +52,6 @@ clean { delete JAVA2TS }
 tasks.jsweet.dependsOn.remove('classes')
 tasks.jsweet.dependsOn('compileJava')
 tasks.jsweet.dependsOn('nodeSetup')
-// the typescript build depends on jsweet
-npm_run_prep.dependsOn(tasks.jsweet)
 
 ///////////////////////////////////////////////////////////////////////
 // node stuff - compiles sass and typescript into src/main/resources //
@@ -69,63 +63,77 @@ node {
 	download = true
 }
 
-// prep needs to run before anything else, but is easy to do up-to-date checking on
-npm_run_prep.dependsOn 'npmInstall'
-npm_run_prep.inputs.file('gulpfile.js')
-npm_run_prep.inputs.file('loaders/tsconfig.json')
-npm_run_prep.inputs.dir('loaders/src')
-npm_run_prep.outputs.dir('loaders/dist')
-npm_run_prep.inputs.file('test/scripts/tsconfig.json')
-npm_run_prep.inputs.dir('test/scripts/src')
-npm_run_prep.outputs.dir('test/scripts/dist')
-clean {
-	delete 'loaders/dist'
-	delete 'test/scripts/dist'
-}
+gulp_permanent.inputs.dir('src/main/permanent')
+gulp_permanent.inputs.file('gulpfile.js')
+gulp_permanent.outputs.dir('src/main/resources/assets/permanent')
+gulp_permanent.dependsOn('npmInstall')
+
+gulp_stylesDev.inputs.dir('src/main/styles')
+gulp_scriptsDev.inputs.dir('src/main/scripts')
 
 // make the gulp_buildProd have accurate up-to-date checking
-def setInputs(targetTask) {
-	targetTask.dependsOn npm_run_prep
-	def inputs = [
-		'assets',
-		'src/main/typescript',
-		'gulpfile.js',
-		'postcss.config.js',
-		'tsconfig.json',
-		'webpack.config.dev.js',
-		'webpack.config.js'
+def devProd(taskName) {
+	Task devTask = tasks.getByName("gulp_${taskName}Dev")
+	devTask.inputs.file('gulpfile.js')
+	devTask.inputs.dir("src/main/$taskName")
+	devTask.outputs.dir("src/main/resources/assets-dev/$taskName")
+	devTask.dependsOn(gulp_permanent)
+
+	Task prodTask = tasks.getByName("gulp_${taskName}Prod")
+	prodTask.inputs.file('gulpfile.js')
+	prodTask.inputs.dir("src/main/$taskName")
+	prodTask.outputs.dir("src/main/resources/assets/$taskName")
+	prodTask.dependsOn(gulp_permanent)
+
+	return [
+		devTask,
+		prodTask
 	]
-	for (input in inputs) {
-		File file = file(input)
-		if (file.isFile()) {
-			targetTask.inputs.file(file)
-		} else {
-			targetTask.inputs.dir(file)
-		}
-	}
 }
-setInputs(gulp_buildDev)
-setInputs(gulp_buildProd)
-gulp_buildDev.outputs.dir('src/main/resources/assets-dev')
-gulp_buildProd.outputs.dir('src/main/resources/assets')
-clean {
-	delete 'src/main/resources/assets-dev'
-	delete 'src/main/resources/assets'
+devProd('styles')
+devProd('scripts').each {
+	it.dependsOn(tasks.jsweet)
+	it.inputs.file('tsconfig.json')
 }
+gulp_revProd.dependsOn([
+	gulp_stylesProd,
+	gulp_scriptsProd
+])
+gulp_revProd.outputs.file('src/main/resources/assets/manifest.json')
+
+clean { delete 'src/main/resources' }
 
 // map prettier to spotless (to match server)
-setInputs(npm_run_formatlist)
-setInputs(npm_run_formatwrite)
 afterEvaluate {
 	tasks.spotlessCheck.dependsOn(npm_run_formatlist)
 	tasks.spotlessApply.dependsOn(npm_run_formatwrite)
 }
 
 // check should run all tests
-npm_run_test.dependsOn(npm_run_prep)
 check.dependsOn(npm_run_test)
-// make sure that the gulp tasks are run
-processResources.dependsOn(gulp_buildProd)
-if (!Env.isHeroku()) {
-	processResources.dependsOn(gulp_buildDev)
+// make sure that all the gulp tasks are run
+processResources.dependsOn([
+	gulp_stylesDev,
+	gulp_scriptsDev,
+	gulp_revProd
+])
+// on Heroku, we can ignore the dev tasks
+if (Env.isHeroku()) {
+	gulp_stylesDev.enabled = false
+	gulp_scriptsDev.enabled = false
+}
+gradle.taskGraph.whenReady { taskGraph ->
+	boolean disableProd = false
+	if (taskGraph.hasTask(':server:runDev')) {
+		disableProd = true
+	}
+	if (taskGraph.hasTask(':server:live')) {
+		disableProd = true
+		gulp_scriptsDev.enabled = false
+	}
+	if (disableProd) {
+		gulp_revProd.enabled = false
+		gulp_stylesProd.enabled = false
+		gulp_scriptsProd.enabled = false
+	}
 }

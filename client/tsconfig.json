@@ -1,12 +1,15 @@
 {
   "compilerOptions": {
     "sourceMap": true,
-    "noImplicitAny": true,
+    "noImplicitAny": false,
     "module": "commonjs",
     "target": "es5",
-		"jsx": "react",
-		"strictNullChecks": true
+    "jsx": "react",
+    "strictNullChecks": true
   },
-  "include": ["./src/main/typescript/**/*"],
-  "exclude": ["node_modules"]
+  "include": ["./src/main/scripts/**/*"],
+  "exclude": ["./node_modules/**", "**/*.spec.*"],
+  "awesomeTypescriptLoaderOptions": {
+    "useCache": true
+  }
 }
