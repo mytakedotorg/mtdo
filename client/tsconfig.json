@@ -4,8 +4,8 @@
     "noImplicitAny": false,
     "module": "commonjs",
     "target": "es5",
-		"jsx": "react",
-		"strictNullChecks": true
+    "jsx": "react",
+    "strictNullChecks": true
   },
   "include": ["./src/main/typescript/**/*"],
   "exclude": ["./node_modules/**", "**/*.spec.*"],
