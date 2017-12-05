@@ -31,13 +31,13 @@ The `:client:jsweet` task transpiles the java in [`/client/src/main/java/java2ts
 
 The `:server:jooq` task:
 
-- Starts a Postgres process using [otj-pg-embedded](https://github.com/opentable/otj-pg-embedded)
-- Runs the SQL scripts in `/server/src/main/resources/db/migration` using [flyway](https://flywaydb.org/) to set the database's schema.
+- Starts a Postgres process using [otj-pg-embedded](https://github.com/opentable/otj-pg-embedded).
+- Runs the SQL scripts in [`/server/src/main/resources/db/migration`](server/src/main/resources/db/migration) using [flyway](https://flywaydb.org/) to set the database's schema.
 - Generates java code for all tables using [jooq](https://www.jooq.org/), and puts the result in `/server/src/main/jooq-generated`.
 
 ### Typesafe server templates (rocker)
 
-The `:server:compileRocker` task transpiles the [rocker templates](https://github.com/fizzed/rocker) in `/server/src/main/rocker` into java code in `/server/src/main/rocker-generated`.
+The `:server:compileRocker` task transpiles the [rocker templates](https://github.com/fizzed/rocker) in [`/server/src/main/rocker`](server/src/main/rocker) into java code in `/server/src/main/rocker-generated`.
 
 ### Live (broken)
 
