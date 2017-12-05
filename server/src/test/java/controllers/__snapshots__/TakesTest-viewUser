@@ -10,7 +10,7 @@
 <meta name="description" content="samples | MyTake.org">
 <meta name="author" content="MyTake.org">
 
-<link rel="stylesheet" href="/assets-dev/main.css">
+<link rel="stylesheet" href="/assets-dev/styles/main.css">
 <link href="https://fonts.googleapis.com/css?family=Merriweather:400,400i,700|Source+Sans+Pro:300,400,700" rel="stylesheet">
 <script src="https://use.fontawesome.com/be03d6dcba.js"></script>
 <!--[if lt IE 9]>
@@ -80,7 +80,7 @@
 	<li class="nav__list-item nav__list-item--bottom"><a class="nav__link nav__link--bottom" href="/aboutus" tabindex="7"><span class="nav__link-text nav__link-text--bottom">About us</span></a></li>
 	</ul>
 </footer>
-<script type="text/javascript" src="/assets-dev/window.bundle.js"></script>
+<script type="text/javascript" src="/assets-dev/scripts/window.bundle.js"></script>
 
 </body>
 </html>

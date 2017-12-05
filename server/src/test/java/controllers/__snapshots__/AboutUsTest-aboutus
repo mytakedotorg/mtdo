@@ -10,7 +10,7 @@
 <meta name="description" content="Your bicycle for politics | MyTake.org">
 <meta name="author" content="MyTake.org">
 
-<link rel="stylesheet" href="/assets-dev/main.css">
+<link rel="stylesheet" href="/assets-dev/styles/main.css">
 <link href="https://fonts.googleapis.com/css?family=Merriweather:400,400i,700|Source+Sans+Pro:300,400,700" rel="stylesheet">
 <script src="https://use.fontawesome.com/be03d6dcba.js"></script>
 <!--[if lt IE 9]>
@@ -57,18 +57,18 @@
 <div class="about">
 <p class="about__text">We Americans can't agree which way is up anymore. Here's why:</p>
 <div class="about__image-container">
-	<img class="about__image" src="/assets/left1-151d14412c.jpg" width="750" height="332" alt="Hillary Clinton saying 'We need more clean energy jobs'."/>
-	<img class="about__image" src="/assets/left2-1def3ac295.jpg" width="750" height="332" alt="Sean Hannity saying 'Hillary Clinton wants to kill coal jobs'."/>
+	<img class="about__image" src="/assets/permanent/left1-151d14412c.jpg" width="750" height="332" alt="Hillary Clinton saying 'We need more clean energy jobs'."/>
+	<img class="about__image" src="/assets/permanent/left2-1def3ac295.jpg" width="750" height="332" alt="Sean Hannity saying 'Hillary Clinton wants to kill coal jobs'."/>
 </div>
 <p class="about__text">Our politicians say one thing, the media twists it around, and our fellow citizens believe the lies. The trouble is, politicians and advertisers are selling us each our own set of lies, tailored to divide us further.</p>
 <p class="about__text">Take the cartoon above. We showed it to you because, based on where you live, you probably voted for Clinton.  Here's what we show your fellow citizens in conservative Texas:</p>
 <div class="about__image-container">
-	<img class="about__image" src="/assets/right1-958db900d8.jpg" width="750" height="332" alt="Donald Trump saying 'We need to protect our borders'."/>
-	<img class="about__image" src="/assets/right2-437e5d030e.jpg" width="750" height="332" alt="Rachel Maddow saying 'Donald Trump says all Mexicans are rapists.'"/>
+	<img class="about__image" src="/assets/permanent/right1-958db900d8.jpg" width="750" height="332" alt="Donald Trump saying 'We need to protect our borders'."/>
+	<img class="about__image" src="/assets/permanent/right2-437e5d030e.jpg" width="750" height="332" alt="Rachel Maddow saying 'Donald Trump says all Mexicans are rapists.'"/>
 </div>
 <p class="about__text">MyTake.org is a radically transparent platform for citizens to speak their mind without political parties getting in the way. Here's how it works:<p>
 <div class="about__image-container">
-	<img class="about__image" src="/assets/bias_overlap-547e900409.png" width="323" height="219"/>
+	<img class="about__image" src="/assets/permanent/bias_overlap-547e900409.png" width="323" height="219"/>
 </div>
 <ul class="about__list">
 	<li class="about__list-item">We start with a <span class="about__text about__text--special">Foundation</span> of unbiased <span class="about__text about__text--special">Facts</span> everyone can agree on. Only the following make the cut:
@@ -97,7 +97,7 @@
 	<li class="nav__list-item nav__list-item--bottom"><a class="nav__link nav__link--bottom" href="/aboutus" tabindex="7"><span class="nav__link-text nav__link-text--bottom">About us</span></a></li>
 	</ul>
 </footer>
-<script type="text/javascript" src="/assets-dev/window.bundle.js"></script>
+<script type="text/javascript" src="/assets-dev/scripts/window.bundle.js"></script>
 
 </body>
 </html>
