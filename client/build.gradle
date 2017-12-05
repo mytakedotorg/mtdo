@@ -98,11 +98,11 @@ devProd('scripts').each {
 	it.dependsOn(tasks.jsweet)
 	it.inputs.file('tsconfig.json')
 }
-gulp_rev.dependsOn([
+gulp_revProd.dependsOn([
 	gulp_stylesProd,
 	gulp_scriptsProd
 ])
-gulp_rev.outputs.file('src/main/resources/assets/manifest.json')
+gulp_revProd.outputs.file('src/main/resources/assets/manifest.json')
 
 clean { delete 'src/main/resources' }
 
@@ -116,11 +116,9 @@ afterEvaluate {
 check.dependsOn(npm_run_test)
 // make sure that all the gulp tasks are run
 processResources.dependsOn([
-	gulp_permanent,
 	gulp_stylesDev,
-	gulp_stylesProd,
 	gulp_scriptsDev,
-	gulp_scriptsProd
+	gulp_revProd
 ])
 // on Heroku, we can ignore the dev tasks
 if (Env.isHeroku()) {
@@ -128,14 +126,17 @@ if (Env.isHeroku()) {
 	gulp_scriptsDev.enabled = false
 }
 gradle.taskGraph.whenReady { taskGraph ->
-	// for runDev, we don't need prod
+	boolean disableProd = false
 	if (taskGraph.hasTask(':server:runDev')) {
-		gulp_stylesProd.enabled = false
-		gulp_scriptsProd.enabled = false
+		disableProd = true
 	}
 	if (taskGraph.hasTask(':server:live')) {
+		disableProd = true
+		gulp_scriptsDev.enabled = false
+	}
+	if (disableProd) {
+		gulp_revProd.enabled = false
 		gulp_stylesProd.enabled = false
 		gulp_scriptsProd.enabled = false
-		gulp_scriptsDev.enabled = false
 	}
 }
