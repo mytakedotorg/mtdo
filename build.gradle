@@ -28,14 +28,16 @@ spotless {
 	}
 }
 
-// exclude the gradle build folder
-allprojects {
+// create eclipse project for all projects
+allprojects { proj ->
 	buildscript { repositories { mavenCentral() } }
+	apply plugin: 'eclipse'
+	eclipse { project { name = "mytake-$proj.name" } }
 	apply plugin: 'com.diffplug.gradle.eclipse.excludebuildfolder'
+	tasks.eclipse.dependsOn(tasks.cleanEclipse)
 }
 
 // root eclipse project
-eclipse { project { name = 'mytake-root' } }
 eclipseResourceFilters {
 	exclude().folders().name('buildSrc')
 	exclude().folders().name('ide')

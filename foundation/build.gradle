@@ -1,6 +1,4 @@
 apply plugin: 'java'
-apply plugin: 'eclipse'
-eclipse { project { name = 'mytake-foundation' } }
 
 clean { delete 'src/main/resources' }
 processResources.dependsOn(':foundation-gen:generateFoundation')

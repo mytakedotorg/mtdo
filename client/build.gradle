@@ -35,9 +35,6 @@ dependencies {
 	compile "org.jsweet:jsweet-core:$JSWEET_CORE_VER"
 }
 
-apply plugin: 'eclipse'
-eclipse { project { name = 'mytake-client' } }
-
 // generate typescript for the java in the java2ts folder
 def JAVA2TS = 'src/main/typescript/java2ts'
 apply plugin: 'org.jsweet.jsweet-gradle-plugin'

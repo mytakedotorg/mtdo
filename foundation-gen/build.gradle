@@ -1,6 +1,4 @@
 apply plugin: 'java'
-apply plugin: 'eclipse'
-eclipse { project { name = 'mytake-foundation-gen' } }
 
 repositories {
 	mavenCentral()
@@ -16,6 +14,8 @@ dependencies {
 	testCompile "junit:junit:$JUNIT_VER"
 	testCompile "org.assertj:assertj-core:$ASSERTJ_VER"
 }
+
+eclipse { project { referencedProjects = ['mytake-client'] } }
 
 task generateFoundation(type: JavaExec) {
 	description = 'Generates the foundation'
