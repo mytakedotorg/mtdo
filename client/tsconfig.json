@@ -7,7 +7,7 @@
     "jsx": "react",
     "strictNullChecks": true
   },
-  "include": ["./src/main/typescript/**/*"],
+  "include": ["./src/main/scripts/**/*"],
   "exclude": ["./node_modules/**", "**/*.spec.*"],
   "awesomeTypescriptLoaderOptions": {
     "useCache": true
