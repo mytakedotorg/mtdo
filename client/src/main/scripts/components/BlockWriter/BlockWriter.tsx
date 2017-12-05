@@ -101,8 +101,7 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
       text: ""
     };
 
-    let newBlocks = [];
-
+    let newBlocks: TakeBlock[];
     let indexAddition = 2;
 
     if (this.shouldAppendParagraph() && this.shouldPrependParagraph()) {
@@ -176,8 +175,7 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
       text: ""
     };
 
-    let newBlocks = [];
-
+    let newBlocks: TakeBlock[];
     if (isTitle) {
       newBlocks = [newBlock, ...blocks.slice(0)];
       newIndex = 0;
