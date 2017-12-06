@@ -75,11 +75,11 @@
 .editor__paragraph {
   position: relative;
   @include overrideDefaultTextArea;
-  @include body('sans');
+  @include body("sans");
 }
 .editor__paragraph-height-div > p {
   @include textareaHeightDiv;
-  @include body('sans');
+  @include body("sans");
 }
 .editor__document {
   position: relative;

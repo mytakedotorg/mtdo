@@ -41,5 +41,5 @@
   @media #{$mq-medium} {
     margin-right: $content-margin;
   }
-  @include body('sans');
+  @include body("sans");
 }

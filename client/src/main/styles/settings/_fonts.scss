@@ -1,5 +1,5 @@
-$sans: 'Source Sans Pro', sans-serif;
-$serif: 'Merriweather', serif;
+$sans: "Source Sans Pro", sans-serif;
+$serif: "Merriweather", serif;
 
 /**
 *	https://standards.usa.gov/components/typography/#section-/typography/02-pairing-and-styles
@@ -91,16 +91,16 @@ $serif: 'Merriweather', serif;
   text-transform: uppercase;
 }
 
-@mixin body ($font: 'serif') {
-  @if $font == 'serif' {
+@mixin body ($font: "serif") {
+  @if $font == "serif" {
     @include typography($serif, 400, 15px, 1.7em);
   } @else {
     @include typography($sans, 400, 16px, 1.7em);
   }
 }
 
-@mixin body--small ($font: 'serif') {
-  @if $font == 'serif' {
+@mixin body--small ($font: "serif") {
+  @if $font == "serif" {
     @include typography($serif, 400, 13px, 1.7em);
   } @else {
     @include typography($sans, 400, 13px, 1.7em);

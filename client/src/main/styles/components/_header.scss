@@ -19,11 +19,11 @@ $fa-size: 16px;
   padding: 2px 5px;
   @include body;
   color: palette(header, skip-text);
-  transition: top .1s ease-in, background .5s linear;
+  transition: top 0.1s ease-in, background 0.5s linear;
   &:focus {
     top: 0px;
     background-color: palette(header, skip-bg);
-    transition: top .1s ease-in, background .5s linear;
+    transition: top 0.1s ease-in, background 0.5s linear;
   }
 }
 .header__logo {
