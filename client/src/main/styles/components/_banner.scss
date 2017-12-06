@@ -6,7 +6,7 @@
 }
 
 .banner__text {
-  @include body--small('sans');
+  @include body--small("sans");
   @include text-margin;
   margin-top: 0;
   margin-bottom: 0;

@@ -9,7 +9,7 @@
   max-width: 100%;
 }
 .about__text {
-  @include body('sans');
+  @include body("sans");
   color: palette(about, text);
 }
 .about__text--aside {
@@ -17,7 +17,7 @@
 }
 .about__list-item,
 .about__sub-list-item {
-  @include body('sans');
+  @include body("sans");
 }
 .about__text--special {
   color: palette(about, text--special);

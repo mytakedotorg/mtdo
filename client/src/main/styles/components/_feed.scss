@@ -72,7 +72,7 @@
 .feed__card-text {
   margin-top: 0;
   margin-bottom: 0;
-  @include body('sans');
+  @include body("sans");
   color: palette(feed, text--faded);
 }
 .feed__more {

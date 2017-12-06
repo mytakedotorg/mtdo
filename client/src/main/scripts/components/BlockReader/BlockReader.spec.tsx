@@ -4,6 +4,7 @@ import * as React from "react";
 import * as renderer from "react-test-renderer";
 import BlockReader from "./BlockReader";
 import { TakeDocument } from "../BlockEditor";
+import {} from "jest";
 
 const doc: TakeDocument = {
   title: "My take title",
