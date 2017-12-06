@@ -36,7 +36,7 @@ dependencies {
 }
 
 // generate typescript for the java in the java2ts folder
-def JAVA2TS = 'src/main/typescript/java2ts'
+def JAVA2TS = 'src/main/scripts/java2ts'
 apply plugin: 'org.jsweet.jsweet-gradle-plugin'
 jsweet {
 	module = 'commonjs'
@@ -110,6 +110,7 @@ afterEvaluate {
 }
 
 // check should run all tests
+npm_run_test.dependsOn(tasks.jsweet)
 check.dependsOn(npm_run_test)
 // make sure that all the gulp tasks are run
 processResources.dependsOn([
