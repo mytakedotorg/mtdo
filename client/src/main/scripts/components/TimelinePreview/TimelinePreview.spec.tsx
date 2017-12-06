@@ -2,6 +2,7 @@ import * as React from "react";
 import { mount, ReactWrapper } from "enzyme";
 import { Foundation } from "../../java2ts/Foundation";
 import { FoundationNode } from "../../utils/functions";
+import {} from "jest";
 
 import TimelinePreview from "./TimelinePreview";
 
@@ -131,7 +132,7 @@ describe("Foundation Document", () => {
   });
 
   test("Amendment text renders", () => {
-    expect(wrapper.find(".document__text").children().length).toBe(2);
+    expect(wrapper.find(".document__text").length).toBe(2);
   });
 
   test("Initial highlights render", () => {
