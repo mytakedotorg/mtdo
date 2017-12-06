@@ -28,7 +28,7 @@
     "lodash": "^4.17.4",
     "react": "^15.6.2",
     "react-dom": "^15.6.2",
-    "react-youtube": "^7.4.0",
+    "react-youtube": "^7.5.0",
     "vis": "^4.21.0"
   },
   "devDependencies": {
