@@ -1,0 +1,85 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Document component 1`] = `
+<div
+  className="document document--static"
+>
+  <div
+    className="document__row"
+  >
+    <div
+      className="document__row-inner"
+    >
+      <div
+        className="document__text"
+        onMouseUp={[Function]}
+      >
+        <p
+          data-char-offset={0}
+        >
+          Section 1. Neither slavery nor involuntary servitude, except as a punishment for crime whereof the party shall have been duly convicted, shall exist within the United States, or any place subject to their jurisdiction.
+        </p>
+        <p
+          data-char-offset={218}
+        >
+          Section 2. Congress shall have power to enforce this article by appropriate legislation.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Document component with highlights 1`] = `
+<div
+  className="document document--static"
+>
+  <div
+    className="document__row"
+  >
+    <div
+      className="document__row-inner"
+    >
+      <div
+        className="document__text"
+        onMouseUp={[Function]}
+      >
+        <p
+          data-char-offset={0}
+        >
+          Section 1. Neither slavery nor involuntary servitude, except as a punishment for crime whereof the party shall have been duly convicted, shall exist within the United States, or any place subject to their jurisdiction.
+        </p>
+        <p
+          data-char-offset={218}
+        >
+          Section 2. Congress shall have power to enforce this article by appropriate legislation.
+        </p>
+      </div>
+      <div
+        className="editor__block editor__block--overlay"
+        style={
+          Object {
+            "top": "16px",
+          }
+        }
+      >
+        <div
+          className="editor__document editor__document--hover"
+        >
+          <p
+            data-char-offset="0"
+          >
+            Section 1. 
+            <span
+              className="document__text--selected"
+            >
+              Neither slavery nor involuntary servitude
+            </span>
+            , except as a punishment for crime whereof the party shall have been duly convicted, shall exist within the United States, or any place subject to their jurisdiction.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
