@@ -69,7 +69,8 @@ exports[`Document component with highlights 1`] = `
           <p
             data-char-offset="0"
           >
-            Section 1. 
+            Section 1.
+             
             <span
               className="document__text--selected"
             >
