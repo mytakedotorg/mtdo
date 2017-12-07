@@ -1,15 +1,15 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import Timeline, { TimelineItemData } from "../Timeline";
-import TimelineLoadingView from "../TimelineLoadingView";
-import TimelineErrorView from "../TimelineErrorView";
-import TimelinePreviewContainer from "../TimelinePreviewContainer";
+import Timeline, { TimelineItemData } from "./Timeline";
+import TimelineLoadingView from "./TimelineLoadingView";
+import TimelineErrorView from "./TimelineErrorView";
+import TimelinePreviewContainer from "./TimelinePreviewContainer";
 import TimelineRadioButtons from "./TimelineRadioButtons";
-import { SetFactHandlers } from "../TimelinePreview";
-import { getAllFacts } from "../../utils/databaseAPI";
-import { Foundation } from "../../java2ts/Foundation";
-import { Routes } from "../../java2ts/Routes";
-import { slugify } from "../../utils/functions";
+import { SetFactHandlers } from "./TimelinePreview";
+import { getAllFacts } from "../utils/databaseAPI";
+import { Foundation } from "../java2ts/Foundation";
+import { Routes } from "../java2ts/Routes";
+import { slugify } from "../utils/functions";
 
 interface HashValues {
   factTitleSlug: string;

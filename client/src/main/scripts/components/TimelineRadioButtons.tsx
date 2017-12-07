@@ -1,5 +1,5 @@
 import * as React from "react";
-import { SelectionOptions } from "../TimelineView";
+import { SelectionOptions } from "./TimelineView";
 
 interface TimelineRadioButtonsProps {
   onChange: (ev: React.ChangeEvent<HTMLInputElement>) => any;
