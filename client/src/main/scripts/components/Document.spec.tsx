@@ -22,6 +22,14 @@ const nodes = [
 const className = "document__row";
 const onMouseUp = jest.fn();
 
+jest.mock("./DocumentTextNodeList", () => ({
+  default: "DocumentTextNodeList"
+}));
+
+jest.mock("./CaptionTextNodeList", () => ({
+  default: "CaptionTextNodeList"
+}));
+
 test("Document component", () => {
   const tree = renderer
     .create(
