@@ -1,28 +1,46 @@
 import * as React from "react";
-import { mount, ReactWrapper } from "enzyme";
+import * as renderer from "react-test-renderer";
+// import { mount, ReactWrapper } from "enzyme";
 import BlockWriter, { InitialBlockWriterState } from "./BlockWriter";
-import { DocumentBlock, ParagraphBlock, VideoBlock } from "./BlockEditor";
+// import { DocumentBlock, ParagraphBlock, VideoBlock } from "./BlockEditor";
 import {} from "jest";
 
 const onBackClick = jest.fn();
 const onSetClick = jest.fn();
 
-let wrapper: ReactWrapper;
+jest.mock("./BlockEditor", () => ({
+  default: "BlockEditor"
+}));
 
-test("Will always pass", () => {
-  expect(1 + 1).toEqual(2);
+jest.mock("./TimelineView", () => ({
+  default: "TimelineView"
+}));
+
+const initState: InitialBlockWriterState = {
+  takeDocument: {
+    title: "",
+    blocks: [{ kind: "paragraph", text: "" }]
+  },
+  activeBlockIndex: -1
+};
+
+test("Simple block writer model", () => {
+  const tree = renderer.create(<BlockWriter initState={initState} />).toJSON();
+  expect(tree).toMatchSnapshot();
 });
 
+// let wrapper: ReactWrapper;
+
 // describe("A series of editor actions", () => {
+
 //   beforeAll(() => {
-//     let initState: BlockWriterState = {
-//       takeDocument: {
-//         title: "",
-//         blocks: [{ kind: "paragraph", text: "" }]
-//       },
-//       activeBlockIndex: -1,
-//       status: "INITIAL"
-//     };
+// let initState: InitialBlockWriterState = {
+//   takeDocument: {
+//     title: "",
+//     blocks: [{ kind: "paragraph", text: "" }]
+//   },
+//   activeBlockIndex: -1
+// };
 
 //     wrapper = mount(<BlockWriter initState={initState} />);
 //   });
@@ -37,7 +55,7 @@ test("Will always pass", () => {
 //       [294, 368],
 //       [294, 439]
 //     );
-//     const newState = wrapper.state() as BlockWriterState;
+//     const newState = wrapper.state() as InitialBlockWriterState;
 //     const docBlock = newState.takeDocument.blocks[0] as DocumentBlock;
 //     expect(docBlock.kind).toBe("document");
 //     expect(docBlock.excerptId).toBe("bill-of-rights");
@@ -67,7 +85,7 @@ test("Will always pass", () => {
 //       .find(".editor__paragraph")
 //       .simulate("change", { target: { value: "test" } });
 
-//     const newTakeDocument = (wrapper.state() as BlockWriterState).takeDocument;
+//     const newTakeDocument = (wrapper.state() as InitialBlockWriterState).takeDocument;
 //     const paragraphBlock = newTakeDocument.blocks[1] as ParagraphBlock;
 //     expect(paragraphBlock.kind).toBe("paragraph");
 //     expect(paragraphBlock.text).toBe("test");
@@ -92,7 +110,7 @@ test("Will always pass", () => {
 //       .at(1)
 //       .find(".editor__paragraph")
 //       .simulate("keyDown", { keyCode: 13 });
-//     const newTakeDocument = (wrapper.state() as BlockWriterState).takeDocument;
+//     const newTakeDocument = (wrapper.state() as InitialBlockWriterState).takeDocument;
 
 //     const newBlock = newTakeDocument.blocks[2] as ParagraphBlock;
 //     expect(newBlock.kind).toBe("paragraph");
@@ -113,7 +131,7 @@ test("Will always pass", () => {
 //     // ];
 
 //     expect(
-//       (wrapper.state() as BlockWriterState).takeDocument.blocks.length
+//       (wrapper.state() as InitialBlockWriterState).takeDocument.blocks.length
 //     ).toBe(3);
 
 //     // When the last empty paragraph block loses focus...
@@ -126,7 +144,7 @@ test("Will always pass", () => {
 
 //     // Expect it to be removed from the state
 //     expect(
-//       (wrapper.state() as BlockWriterState).takeDocument.blocks.length
+//       (wrapper.state() as InitialBlockWriterState).takeDocument.blocks.length
 //     ).toBe(2);
 //   });
 
@@ -143,7 +161,7 @@ test("Will always pass", () => {
 //     // ];
 //     const videoId = "ApTLB76Nmdg";
 //     (wrapper.instance() as BlockWriter).addVideo(videoId, [0, 6]);
-//     const newState = wrapper.state() as BlockWriterState;
+//     const newState = wrapper.state() as InitialBlockWriterState;
 //     const vidBlock = newState.takeDocument.blocks[2] as VideoBlock;
 //     expect(vidBlock.kind).toBe("video");
 //     expect(vidBlock.videoId).toBe(videoId);
