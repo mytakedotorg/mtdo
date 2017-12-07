@@ -90,7 +90,6 @@ public class CreateAccountForm extends MetaFormDef.HandleValid {
 	public boolean handleSuccessful(MetaFormValidation validation, Request req, Response rsp) throws Throwable {
 		String username = Text.lowercase(validation.parsed(CREATE_USERNAME));
 		String email = Text.lowercase(validation.parsed(CREATE_EMAIL));
-		String from = Emails.TEAM;
 		if (ReservedUsernames.isReserved(username)) {
 			validation.errorForField(msg_USERNAME_NOT_AVAILABLE);
 		} else {
@@ -120,10 +119,10 @@ public class CreateAccountForm extends MetaFormDef.HandleValid {
 							.setHtmlMsg(html)
 							.setSubject("MyTake.org account confirmation")
 							.addTo(email)
-							.setFrom(from)
+							.setFrom(Emails.TEAM, Emails.TEAM_NAME)
 							.send();
 
-					rsp.send(views.Auth.createAccountEmailSent.template(email, from));
+					rsp.send(views.Auth.createAccountEmailSent.template(email, Emails.TEAM));
 					return true;
 				}
 			}

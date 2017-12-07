@@ -8,4 +8,5 @@ package common;
 
 public class Emails {
 	public static final String TEAM = "team@mytake.org";
+	public static final String TEAM_NAME = "The MyTake.org Team";
 }
