@@ -1,0 +1,33 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Error Banner 1`] = `
+<div
+  className="banner"
+>
+  <div
+    className="banner__inner-container"
+  >
+    <p
+      className="banner__text banner__text--red"
+    >
+      Banner message
+    </p>
+  </div>
+</div>
+`;
+
+exports[`Success Banner 1`] = `
+<div
+  className="banner"
+>
+  <div
+    className="banner__inner-container"
+  >
+    <p
+      className="banner__text banner__text--green"
+    >
+      Banner message
+    </p>
+  </div>
+</div>
+`;
