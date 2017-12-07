@@ -8,6 +8,7 @@ package common;
 
 import auth.AuthModule;
 import controllers.AboutUs;
+import controllers.DiscourseAuth;
 import controllers.Drafts;
 import controllers.Foundation;
 import controllers.HomeFeed;
@@ -60,6 +61,7 @@ public class Prod extends Jooby {
 
 	static void controllers(Jooby jooby) {
 		jooby.get("favicon.ico", () -> Results.noContent());
+		jooby.use(new DiscourseAuth());
 		jooby.use(new HomeFeed());
 		jooby.use(new Foundation());
 		jooby.use(new AboutUs());
