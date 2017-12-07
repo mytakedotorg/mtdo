@@ -1,10 +1,10 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import BlockReader from "../BlockReader";
-import { TakeDocument } from "../BlockEditor";
-import DocumentTextNodeList from "../DocumentTextNodeList";
-import { Article } from "../FeedList";
-import { getNodeArray, getHighlightedNodes } from "../../utils/functions";
+import BlockReader from "./BlockReader";
+import { TakeDocument } from "./BlockEditor";
+import DocumentTextNodeList from "./DocumentTextNodeList";
+import { Article } from "./FeedList";
+import { getNodeArray, getHighlightedNodes } from "../utils/functions";
 
 interface FeedCardProps {
   username: string;
