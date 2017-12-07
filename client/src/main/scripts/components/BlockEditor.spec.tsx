@@ -93,29 +93,29 @@ test("Simple block editor model", () => {
   expect(tree).toMatchSnapshot();
 });
 
-// test("With active", () => {
-//   const tree = renderer
-//     .create(
-//       <BlockEditor
-//         takeDocument={doc}
-//         active={0}
-//         eventHandlers={WritingEventHandlers}
-//       />,
-//       { createNodeMock }
-//     )
-//     .toJSON();
-//   expect(tree).toMatchSnapshot();
-// });
+test("With active", () => {
+  const tree = renderer
+    .create(
+      <BlockEditor
+        takeDocument={doc}
+        active={0}
+        eventHandlers={WritingEventHandlers}
+      />,
+      { createNodeMock }
+    )
+    .toJSON();
+  expect(tree).toMatchSnapshot();
+});
 
-// test("Read only", () => {
-//   const tree = renderer
-//     .create(
-//       <BlockEditor takeDocument={doc} eventHandlers={ReadingEventHandler} />,
-//       { createNodeMock }
-//     )
-//     .toJSON();
-//   expect(tree).toMatchSnapshot();
-// });
+test("Read only", () => {
+  const tree = renderer
+    .create(
+      <BlockEditor takeDocument={doc} eventHandlers={ReadingEventHandler} />,
+      { createNodeMock }
+    )
+    .toJSON();
+  expect(tree).toMatchSnapshot();
+});
 
 /**
  * TODO:
