@@ -1,0 +1,30 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CaptionTextNode 1`] = `
+<div
+  className="document__node"
+>
+  <h3
+    className="document__node-text document__node-text--speaker"
+  >
+    Raddatz
+  </h3>
+  <div
+    className="document__node-text-container"
+  >
+    <p
+      className="document__node-text document__node-text--p"
+      data-char-offset={0}
+    >
+      Good evening I'm Martha Raddatz from ABC News.
+    </p>
+    <div
+      className="document__node-height-div"
+    >
+      <p
+        className="document__node-text document__node-text--hidden-p"
+      />
+    </div>
+  </div>
+</div>
+`;
