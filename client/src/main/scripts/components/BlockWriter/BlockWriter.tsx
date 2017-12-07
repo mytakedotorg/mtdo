@@ -386,23 +386,28 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
       parseInt(hashArr[2])
     ];
 
-    let viewRange: [number, number] | null;
-
-    if (hashArr[3] && hashArr[4]) {
-      viewRange = [parseInt(hashArr[3]), parseInt(hashArr[4])];
-    } else {
-      viewRange = null;
-    }
-
     let articleUser;
     let articleTitle;
+    let viewRange: [number, number] | null;
 
-    if (hashArr[5]) {
-      articleUser = hashArr[5].split("/")[1];
-      articleTitle = hashArr[5].split("/")[2];
+    if (hashArr[3] && hashArr[3].indexOf("/") > -1) {
+      articleUser = hashArr[3].split("/")[1];
+      articleTitle = hashArr[3].split("/")[2];
+      viewRange = null;
     } else {
-      articleUser = null;
-      articleTitle = null;
+      if (hashArr[3] && hashArr[4]) {
+        viewRange = [parseInt(hashArr[3]), parseInt(hashArr[4])];
+      } else {
+        viewRange = null;
+      }
+
+      if (hashArr[5]) {
+        articleUser = hashArr[5].split("/")[1];
+        articleTitle = hashArr[5].split("/")[2];
+      } else {
+        articleUser = null;
+        articleTitle = null;
+      }
     }
 
     return {
