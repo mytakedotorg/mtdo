@@ -1,9 +1,9 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import Document from "../Document";
-import FactHeader from "../FactHeader";
-import DocumentTextNodeList from "../DocumentTextNodeList";
-import Video from "../Video";
+import Document from "./Document";
+import FactHeader from "./FactHeader";
+import DocumentTextNodeList from "./DocumentTextNodeList";
+import Video from "./Video";
 import {
   FoundationNode,
   getNodesInRange,
@@ -11,9 +11,9 @@ import {
   getSimpleRangesFromHTMLRange,
   getStartRangeOffsetTop,
   highlightTextTwo
-} from "../../utils/functions";
-import { Foundation } from "../../java2ts/Foundation";
-import { Routes } from "../../java2ts/Routes";
+} from "../utils/functions";
+import { Foundation } from "../java2ts/Foundation";
+import { Routes } from "../java2ts/Routes";
 
 export interface SetFactHandlers {
   handleDocumentSetClick: (
