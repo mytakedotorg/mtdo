@@ -70,17 +70,13 @@ class FeedCard extends React.Component<FeedCardProps, {}> {
           }
         })}
         <div className="feed__card-excerpt">
-          <h2 className="feed__card-title">
-            {props.article.title}
-          </h2>
+          <h2 className="feed__card-title">{props.article.title}</h2>
           {props.article.previewBlocks.map((blockIdx, mapIdx) => {
             let block = props.article.blocks[blockIdx];
             if (block.kind === "paragraph") {
               return (
                 <div className="feed__card-text-container" key={mapIdx}>
-                  <p className="feed__card-text">
-                    {block.text}
-                  </p>
+                  <p className="feed__card-text">{block.text}</p>
                 </div>
               );
             }

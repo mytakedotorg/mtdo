@@ -94,9 +94,12 @@ describe("Foundation Document", () => {
   });
 
   test("Heading text renders properly", () => {
-    expect(wrapper.find(".document__heading").first().text()).toBe(
-      "Amendment 13"
-    );
+    expect(
+      wrapper
+        .find(".document__heading")
+        .first()
+        .text()
+    ).toBe("Amendment 13");
   });
 
   test("Header buttons render", () => {
@@ -104,7 +107,11 @@ describe("Foundation Document", () => {
 
     // On initial render, there is 1 button
     expect(
-      wrapper.find(".document__header").first().childAt(0).children().length
+      wrapper
+        .find(".document__header")
+        .first()
+        .childAt(0)
+        .children().length
     ).toBe(2);
 
     // When the button, "Clear Selection" is clicked, it is hidden and a paragraph is shown instead
@@ -116,13 +123,21 @@ describe("Foundation Document", () => {
       .childAt(0)
       .simulate("click");
     expect(
-      wrapper.find(".document__header").first().childAt(0).children().length
+      wrapper
+        .find(".document__header")
+        .first()
+        .childAt(0)
+        .children().length
     ).toBe(2);
 
     // When some more text is highlighted, the "Clear Selection" button is shown again
     wrapper.setState({ textIsHighlighted: true });
     expect(
-      wrapper.find(".document__header").first().childAt(0).children().length
+      wrapper
+        .find(".document__header")
+        .first()
+        .childAt(0)
+        .children().length
     ).toBe(2);
   });
 
@@ -164,11 +179,11 @@ describe("Foundation Document", () => {
   // });
 
   /**
-	 * TODO: 
-	 *   - Add the following test cases:
-	 *     + Some text is highlighted by user
-	 * 	   + Set text click works for user highlights
-	 *   - Fix test cases:
-	 *     + Window autoscrolls (See comments inside test block)
-	 */
+   * TODO:
+   *   - Add the following test cases:
+   *     + Some text is highlighted by user
+   * 	   + Set text click works for user highlights
+   *   - Fix test cases:
+   *     + Window autoscrolls (See comments inside test block)
+   */
 });

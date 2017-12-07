@@ -29,9 +29,7 @@ interface EditorButtonsProps {
 const EditorButtons: React.StatelessComponent<EditorButtonsProps> = props => {
   return (
     <div className="editor__meta">
-      <Banner isSuccess={!props.status.error}>
-        {props.status.message}
-      </Banner>
+      <Banner isSuccess={!props.status.error}>{props.status.message}</Banner>
       <Button
         onClick={props.eventHandlers.handleSaveClick}
         classModifier="editor__button--save"

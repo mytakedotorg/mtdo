@@ -91,18 +91,20 @@ export default class TimelinePreviewContainer extends React.Component<
   render() {
     return (
       <div>
-        {this.state.error
-          ? <TimelinePreviewErrorView />
-          : this.state.loading
-            ? <TimelinePreviewLoadingView />
-            : <TimelinePreview
-                factLink={this.props.factLink}
-                videoFact={this.state.videoFact}
-                nodes={this.state.nodes}
-                setFactHandlers={this.props.setFactHandlers}
-                ranges={this.props.ranges}
-                offset={this.props.offset}
-              />}
+        {this.state.error ? (
+          <TimelinePreviewErrorView />
+        ) : this.state.loading ? (
+          <TimelinePreviewLoadingView />
+        ) : (
+          <TimelinePreview
+            factLink={this.props.factLink}
+            videoFact={this.state.videoFact}
+            nodes={this.state.nodes}
+            setFactHandlers={this.props.setFactHandlers}
+            ranges={this.props.ranges}
+            offset={this.props.offset}
+          />
+        )}
       </div>
     );
   }

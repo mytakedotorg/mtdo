@@ -232,48 +232,52 @@ export default class TimelineView extends React.Component<
             </p>
           </div>
           <div className={"timeline"}>
-            {this.state.error
-              ? <TimelineErrorView />
-              : this.state.loading
-                ? <TimelineLoadingView />
-                : <div>
-                    <TimelineRadioButtons
-                      selectedOption={this.state.selectedOption}
-                      onChange={this.handleChange}
-                    />
-                    <Timeline
-                      onItemClick={this.handleClick}
-                      selectedOption={this.state.selectedOption}
-                      timelineItems={this.state.timelineItems}
-                    />
-                  </div>}
+            {this.state.error ? (
+              <TimelineErrorView />
+            ) : this.state.loading ? (
+              <TimelineLoadingView />
+            ) : (
+              <div>
+                <TimelineRadioButtons
+                  selectedOption={this.state.selectedOption}
+                  onChange={this.handleChange}
+                />
+                <Timeline
+                  onItemClick={this.handleClick}
+                  selectedOption={this.state.selectedOption}
+                  timelineItems={this.state.timelineItems}
+                />
+              </div>
+            )}
           </div>
         </div>
       );
     } else {
       return (
         <div className={"timeline__view"}>
-          {this.state.error
-            ? <TimelineErrorView />
-            : this.state.loading
-              ? <TimelineLoadingView />
-              : <div>
-                  <TimelineRadioButtons
-                    selectedOption={this.state.selectedOption}
-                    onChange={this.handleChange}
-                  />
-                  <Timeline
-                    onItemClick={this.handleClick}
-                    selectedOption={this.state.selectedOption}
-                    timelineItems={this.state.timelineItems}
-                  />
-                </div>}
-          {this.state.factLink
-            ? <TimelinePreviewContainer
-                factLink={this.state.factLink}
-                setFactHandlers={setFactHandlers}
+          {this.state.error ? (
+            <TimelineErrorView />
+          ) : this.state.loading ? (
+            <TimelineLoadingView />
+          ) : (
+            <div>
+              <TimelineRadioButtons
+                selectedOption={this.state.selectedOption}
+                onChange={this.handleChange}
               />
-            : null}
+              <Timeline
+                onItemClick={this.handleClick}
+                selectedOption={this.state.selectedOption}
+                timelineItems={this.state.timelineItems}
+              />
+            </div>
+          )}
+          {this.state.factLink ? (
+            <TimelinePreviewContainer
+              factLink={this.state.factLink}
+              setFactHandlers={setFactHandlers}
+            />
+          ) : null}
         </div>
       );
     }

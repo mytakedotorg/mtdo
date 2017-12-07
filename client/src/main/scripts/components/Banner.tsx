@@ -21,11 +21,9 @@ class Banner extends React.Component<BannerProps, {}> {
     return (
       <div className="banner">
         <div className="banner__inner-container">
-          {this.props.children
-            ? <p className={textClasses}>
-                {this.props.children}
-              </p>
-            : null}
+          {this.props.children ? (
+            <p className={textClasses}>{this.props.children}</p>
+          ) : null}
         </div>
       </div>
     );

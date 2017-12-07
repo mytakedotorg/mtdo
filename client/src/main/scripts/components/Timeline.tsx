@@ -14,9 +14,7 @@ class TimelineItem extends React.Component<TimelineItemProps, {}> {
     var { item } = this.props;
     return (
       <div className="timeline__item">
-        <label>
-          {item.content}
-        </label>
+        <label>{item.content}</label>
       </div>
     );
   }

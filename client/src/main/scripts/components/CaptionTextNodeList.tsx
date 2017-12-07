@@ -184,7 +184,8 @@ class CaptionTextNodeList extends React.Component<
           className={this.props.className}
           onMouseUp={this.props.onMouseUp}
           ref={(captionNodeContainer: HTMLDivElement) =>
-            (this.captionNodeContainer = captionNodeContainer)}
+            (this.captionNodeContainer = captionNodeContainer)
+          }
           onScroll={this.handleScroll}
         >
           {this.props.documentNodes.map(function(

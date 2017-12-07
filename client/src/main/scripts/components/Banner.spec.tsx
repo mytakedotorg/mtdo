@@ -3,29 +3,16 @@ import * as renderer from "react-test-renderer";
 import {} from "jest";
 import Banner from "./Banner";
 
-
 test("Success Banner", () => {
   const tree = renderer
-    .create(
-      <Banner
-        isSuccess={true}
-      >
-        Banner message
-      </Banner>
-    )
+    .create(<Banner isSuccess={true}>Banner message</Banner>)
     .toJSON();
   expect(tree).toMatchSnapshot();
 });
 
 test("Error Banner", () => {
   const tree = renderer
-    .create(
-      <Banner
-        isSuccess={false}
-      >
-        Banner message
-      </Banner>
-    )
+    .create(<Banner isSuccess={false}>Banner message</Banner>)
     .toJSON();
   expect(tree).toMatchSnapshot();
 });

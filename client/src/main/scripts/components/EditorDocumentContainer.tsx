@@ -5,7 +5,11 @@ import { getHighlightedNodes, FoundationNode } from "../utils/functions";
 import { fetchFact } from "../utils/databaseAPI";
 import { DocumentBlock } from "../java2ts/DocumentBlock";
 import { Foundation } from "../java2ts/Foundation";
-import { isWriteOnly, ReadingEventHandlers, WritingEventHandlers } from "./BlockEditor";
+import {
+  isWriteOnly,
+  ReadingEventHandlers,
+  WritingEventHandlers
+} from "./BlockEditor";
 
 interface EditorDocumentContainerProps {
   idx: number;
@@ -85,20 +89,23 @@ class EditorDocumentContainer extends React.Component<
   render() {
     return (
       <div>
-        {this.state.error
-          ? <DocumentErrorView onRetryClick={this.handleRetryClick} />
-          : this.state.loading || !this.state.document
-            ? <DocumentLoadingView />
-            : <Document {...this.props} document={this.state.document} />}
+        {this.state.error ? (
+          <DocumentErrorView onRetryClick={this.handleRetryClick} />
+        ) : this.state.loading || !this.state.document ? (
+          <DocumentLoadingView />
+        ) : (
+          <Document {...this.props} document={this.state.document} />
+        )}
       </div>
     );
   }
 }
 
-const DocumentLoadingView: React.StatelessComponent<{}> = props =>
+const DocumentLoadingView: React.StatelessComponent<{}> = props => (
   <div className="editor__document editor__document--base editor__document--hover">
     <h2 className="editor__document-title">Loading</h2>
-  </div>;
+  </div>
+);
 
 interface DocumentErrorViewProps {
   onRetryClick: () => any;
@@ -106,7 +113,7 @@ interface DocumentErrorViewProps {
 
 const DocumentErrorView: React.StatelessComponent<
   DocumentErrorViewProps
-> = props =>
+> = props => (
   <div className="editor__document editor__document--base editor__document--hover">
     <h2 className="editor__document-title">
       Error loading Foundation Document
@@ -117,7 +124,8 @@ const DocumentErrorView: React.StatelessComponent<
     >
       retry?
     </button>
-  </div>;
+  </div>
+);
 
 interface DocumentProps {
   idx: number;

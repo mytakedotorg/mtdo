@@ -1,8 +1,9 @@
 import * as React from "react";
 
-const TimelineErrorView: React.StatelessComponent<{}> = props =>
+const TimelineErrorView: React.StatelessComponent<{}> = props => (
   <div>
     <p>Error loading timeline</p>
-  </div>;
+  </div>
+);
 
 export default TimelineErrorView;

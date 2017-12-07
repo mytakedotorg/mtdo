@@ -25,7 +25,8 @@ class DocumentTextNodeList extends React.Component<
         className={this.props.className}
         onMouseUp={this.props.onMouseUp}
         ref={(scrollWindow: HTMLDivElement) =>
-          (this.scrollWindow = scrollWindow)}
+          (this.scrollWindow = scrollWindow)
+        }
       >
         {this.props.documentNodes.map(function(
           element: FoundationNode,

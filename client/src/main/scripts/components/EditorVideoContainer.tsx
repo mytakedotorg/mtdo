@@ -69,33 +69,36 @@ class EditorVideoContainer extends React.Component<
   render() {
     return (
       <div>
-        {this.state.error
-          ? <VideoErrorView onRetryClick={this.handleRetryClick} />
-          : this.state.loading || !this.state.videoFact
-            ? <VideoLoadingView />
-            : <EditorVideo
-                idx={this.props.idx}
-                active={this.props.active}
-                videoFact={this.state.videoFact}
-                factHash={this.props.block.videoId}
-                range={this.props.block.range}
-                eventHandlers={this.props.eventHandlers}
-              />}
+        {this.state.error ? (
+          <VideoErrorView onRetryClick={this.handleRetryClick} />
+        ) : this.state.loading || !this.state.videoFact ? (
+          <VideoLoadingView />
+        ) : (
+          <EditorVideo
+            idx={this.props.idx}
+            active={this.props.active}
+            videoFact={this.state.videoFact}
+            factHash={this.props.block.videoId}
+            range={this.props.block.range}
+            eventHandlers={this.props.eventHandlers}
+          />
+        )}
       </div>
     );
   }
 }
 
-const VideoLoadingView: React.StatelessComponent<{}> = props =>
+const VideoLoadingView: React.StatelessComponent<{}> = props => (
   <div className="editor__document editor__document--base editor__document--hover">
     <h2 className="editor__document-title">Loading</h2>
-  </div>;
+  </div>
+);
 
 interface VideoErrorViewProps {
   onRetryClick: () => any;
 }
 
-const VideoErrorView: React.StatelessComponent<VideoErrorViewProps> = props =>
+const VideoErrorView: React.StatelessComponent<VideoErrorViewProps> = props => (
   <div className="editor__document editor__document--base editor__document--hover">
     <h2 className="editor__document-title">Error loading Foundation Video</h2>
     <button
@@ -104,7 +107,8 @@ const VideoErrorView: React.StatelessComponent<VideoErrorViewProps> = props =>
     >
       retry?
     </button>
-  </div>;
+  </div>
+);
 
 interface EditorVideoBlockProps {
   idx: number;

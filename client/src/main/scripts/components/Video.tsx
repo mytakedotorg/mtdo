@@ -251,14 +251,14 @@ class Video extends React.Component<VideoProps, VideoState> {
         >
           <div className="video__container">
             <div className="video__header">
-              {this.state.endTime > this.state.startTime
-                ? <button
-                    className="video__button video__button--top"
-                    onClick={this.handleSetClick}
-                  >
-                    Give your Take on this
-                  </button>
-                : null}
+              {this.state.endTime > this.state.startTime ? (
+                <button
+                  className="video__button video__button--top"
+                  onClick={this.handleSetClick}
+                >
+                  Give your Take on this
+                </button>
+              ) : null}
               <p className="video__date">
                 {this.props.videoFact.fact.primaryDate}
               </p>

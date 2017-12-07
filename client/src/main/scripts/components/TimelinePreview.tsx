@@ -218,42 +218,42 @@ export default class TimelinePreview extends React.Component<
             this.props.factLink.fact.kind === "document" ? true : false
           }
         />
-        {this.props.factLink.fact.kind === "document" && this.props.nodes
-          ? <Document
-              nodes={this.props.nodes}
-              onMouseUp={this.handleMouseUp}
-              ref={(document: Document) => (this.document = document)}
-              className={
-                this.state.headerHidden
-                  ? "document__row document__row--push"
-                  : "document__row"
-              }
-            >
-              {this.state.textIsHighlighted
-                ? <div
-                    className="editor__block editor__block--overlay"
-                    style={{ top: this.state.offsetTop }}
-                    onClick={() => this.handleSetClick()}
-                  >
-                    <DocumentTextNodeList
-                      className="editor__document editor__document--hover"
-                      documentNodes={this.state.highlightedNodes}
-                    />
-                  </div>
-                : null}
-            </Document>
-          : null}
-        {this.props.factLink.fact.kind === "video" && this.props.videoFact
-          ? <Video
-              onSetClick={this.handleSetClick}
-              videoFact={this.props.videoFact}
-              className={
-                this.state.headerHidden
-                  ? "video__inner-container video__inner-container--push"
-                  : "video__inner-container"
-              }
-            />
-          : null}
+        {this.props.factLink.fact.kind === "document" && this.props.nodes ? (
+          <Document
+            nodes={this.props.nodes}
+            onMouseUp={this.handleMouseUp}
+            ref={(document: Document) => (this.document = document)}
+            className={
+              this.state.headerHidden
+                ? "document__row document__row--push"
+                : "document__row"
+            }
+          >
+            {this.state.textIsHighlighted ? (
+              <div
+                className="editor__block editor__block--overlay"
+                style={{ top: this.state.offsetTop }}
+                onClick={() => this.handleSetClick()}
+              >
+                <DocumentTextNodeList
+                  className="editor__document editor__document--hover"
+                  documentNodes={this.state.highlightedNodes}
+                />
+              </div>
+            ) : null}
+          </Document>
+        ) : null}
+        {this.props.factLink.fact.kind === "video" && this.props.videoFact ? (
+          <Video
+            onSetClick={this.handleSetClick}
+            videoFact={this.props.videoFact}
+            className={
+              this.state.headerHidden
+                ? "video__inner-container video__inner-container--push"
+                : "video__inner-container"
+            }
+          />
+        ) : null}
       </div>
     );
   }

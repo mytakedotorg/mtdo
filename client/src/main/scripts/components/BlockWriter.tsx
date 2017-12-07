@@ -282,7 +282,11 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
     }
   };
   handleDeleteClick = () => {
-    if (confirm('This action cannot be undone. Are you sure you want to delete this draft?')) {
+    if (
+      confirm(
+        "This action cannot be undone. Are you sure you want to delete this draft?"
+      )
+    ) {
       if (typeof this.state.parentRev != undefined && this.state.parentRev) {
         const bodyJson: DraftRev = {
           draftid: this.state.parentRev.draftid,
@@ -299,7 +303,11 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
     }
   };
   handlePublishClick = () => {
-    if (confirm('This action cannot be undone. Are you sure you want to publish this draft?')) {
+    if (
+      confirm(
+        "This action cannot be undone. Are you sure you want to publish this draft?"
+      )
+    ) {
       if (this.state.takeDocument.title.length <= 255) {
         this.setState({
           status: {

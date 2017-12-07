@@ -1,8 +1,9 @@
 import * as React from "react";
 
-const TimelineLoadingView: React.StatelessComponent<{}> = props =>
+const TimelineLoadingView: React.StatelessComponent<{}> = props => (
   <div>
     <p>Loading</p>
-  </div>;
+  </div>
+);
 
 export default TimelineLoadingView;

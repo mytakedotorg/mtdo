@@ -28,23 +28,11 @@ class DocumentTextNode extends React.Component<
 
     switch (documentNode.component) {
       case "h2":
-        return (
-          <h2 {...attributes}>
-            {documentNode.innerHTML}
-          </h2>
-        );
+        return <h2 {...attributes}>{documentNode.innerHTML}</h2>;
       case "h3":
-        return (
-          <h3 {...attributes}>
-            {documentNode.innerHTML}
-          </h3>
-        );
+        return <h3 {...attributes}>{documentNode.innerHTML}</h3>;
       case "p":
-        return (
-          <p {...attributes}>
-            {documentNode.innerHTML}
-          </p>
-        );
+        return <p {...attributes}>{documentNode.innerHTML}</p>;
       default:
         throw "Unknown documentNode.component";
     }

@@ -1,7 +1,7 @@
 // https://facebook.github.io/jest/docs/snapshot-testing.html#content
 
 import * as React from "react";
-import * as renderer from "react-test-renderer"; 
+import * as renderer from "react-test-renderer";
 import {} from "jest";
 import {} from "node";
 import BlockEditor from "./BlockEditor";
@@ -42,7 +42,7 @@ jest.mock("./EditorDocumentContainer", () => ({
   default: "EditorDocumentContainer"
 }));
 
-jest.mock("./EditorVideoContainer",  () => ({
+jest.mock("./EditorVideoContainer", () => ({
   default: "EditorVideoContainer"
 }));
 

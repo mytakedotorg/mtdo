@@ -188,80 +188,76 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
 
     return (
       <div className="captions">
-        {this.props.captionIsHighlighted
-          ? <div className="video__actions">
-              <div className="video__action">
-                <p className="video__instructions">Fine tune your clip</p>
-                <button
-                  className="video__button video__button--bottom"
-                  onClick={this.handleClearClick}
-                >
-                  Clear Selection
-                </button>
-              </div>
-              <div className="video__action">
-                <div className="video__tuning">
-                  <div className="video__action">
-                    <p className="video__instructions">Start Time</p>
-                    <div className="video__tuning-buttons">
-                      <button
-                        className="video__button video__button--small"
-                        onClick={() =>
-                          this.props.eventHandlers.onFineTuneDown(0)}
-                      >
-                        <i className="fa fa-arrow-down" aria-hidden="true" />
-                      </button>
-                      <span className="video__time">
-                        {startTime}
-                      </span>
-                      <button
-                        className="video__button video__button--small"
-                        onClick={() => this.props.eventHandlers.onFineTuneUp(0)}
-                      >
-                        <i className="fa fa-arrow-up" aria-hidden="true" />
-                      </button>
-                    </div>
+        {this.props.captionIsHighlighted ? (
+          <div className="video__actions">
+            <div className="video__action">
+              <p className="video__instructions">Fine tune your clip</p>
+              <button
+                className="video__button video__button--bottom"
+                onClick={this.handleClearClick}
+              >
+                Clear Selection
+              </button>
+            </div>
+            <div className="video__action">
+              <div className="video__tuning">
+                <div className="video__action">
+                  <p className="video__instructions">Start Time</p>
+                  <div className="video__tuning-buttons">
+                    <button
+                      className="video__button video__button--small"
+                      onClick={() => this.props.eventHandlers.onFineTuneDown(0)}
+                    >
+                      <i className="fa fa-arrow-down" aria-hidden="true" />
+                    </button>
+                    <span className="video__time">{startTime}</span>
+                    <button
+                      className="video__button video__button--small"
+                      onClick={() => this.props.eventHandlers.onFineTuneUp(0)}
+                    >
+                      <i className="fa fa-arrow-up" aria-hidden="true" />
+                    </button>
                   </div>
-                  <div className="video__action">
-                    <p className="video__instructions">End Time</p>
-                    <div className="video__tuning-buttons">
-                      <button
-                        className="video__button video__button--small"
-                        onClick={() =>
-                          this.props.eventHandlers.onFineTuneDown(1)}
-                      >
-                        <i className="fa fa-arrow-down" aria-hidden="true" />
-                      </button>
-                      <span className="video__time">
-                        {endTime}
-                      </span>
-                      <button
-                        className="video__button video__button--small"
-                        onClick={() => this.props.eventHandlers.onFineTuneUp(1)}
-                      >
-                        <i className="fa fa-arrow-up" aria-hidden="true" />
-                      </button>
-                    </div>
+                </div>
+                <div className="video__action">
+                  <p className="video__instructions">End Time</p>
+                  <div className="video__tuning-buttons">
+                    <button
+                      className="video__button video__button--small"
+                      onClick={() => this.props.eventHandlers.onFineTuneDown(1)}
+                    >
+                      <i className="fa fa-arrow-down" aria-hidden="true" />
+                    </button>
+                    <span className="video__time">{endTime}</span>
+                    <button
+                      className="video__button video__button--small"
+                      onClick={() => this.props.eventHandlers.onFineTuneUp(1)}
+                    >
+                      <i className="fa fa-arrow-up" aria-hidden="true" />
+                    </button>
                   </div>
                 </div>
               </div>
             </div>
-          : null}
-        {transcript && speakerMap && this.state.highlightedNodes
-          ? <Document
-              onMouseUp={this.handleMouseUp}
-              ref={(document: Document) => (this.document = document)}
-              className="document__row"
-              captionData={{
-                captionTimer: this.props.timer,
-                transcript: transcript,
-                speakerMap: speakerMap
-              }}
-              nodes={this.state.highlightedNodes}
-            />
-          : <p className="video__instructions">
-              We're still working on adding captions for this video
-            </p>}
+          </div>
+        ) : null}
+        {transcript && speakerMap && this.state.highlightedNodes ? (
+          <Document
+            onMouseUp={this.handleMouseUp}
+            ref={(document: Document) => (this.document = document)}
+            className="document__row"
+            captionData={{
+              captionTimer: this.props.timer,
+              transcript: transcript,
+              speakerMap: speakerMap
+            }}
+            nodes={this.state.highlightedNodes}
+          />
+        ) : (
+          <p className="video__instructions">
+            We're still working on adding captions for this video
+          </p>
+        )}
       </div>
     );
   }

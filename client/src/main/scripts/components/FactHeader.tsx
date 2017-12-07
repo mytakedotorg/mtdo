@@ -48,42 +48,38 @@ class FactHeader extends React.Component<FactHeaderProps, FactHeaderState> {
 
     const headerContent = (
       <div>
-        <h2 className={"document__heading"}>
-          {this.props.heading}
-        </h2>
+        <h2 className={"document__heading"}>{this.props.heading}</h2>
         <div className="document__header-actions">
-          {this.props.textIsHighlighted
-            ? <button
-                className="document__button document__button--blue"
-                onClick={this.handleClearClick}
-              >
-                Clear Selection
-              </button>
-            : <p className="document__instructions">
-                {this.props.isDocument
-                  ? "Highlight something to give your Take"
-                  : "Highlight captions to create a video clip"}
-              </p>}
-          {this.props.textIsHighlighted
-            ? <button
-                className="document__button document__button--red"
-                onClick={this.handleSetClick}
-              >
-                Give your Take on this
-              </button>
-            : null}
+          {this.props.textIsHighlighted ? (
+            <button
+              className="document__button document__button--blue"
+              onClick={this.handleClearClick}
+            >
+              Clear Selection
+            </button>
+          ) : (
+            <p className="document__instructions">
+              {this.props.isDocument
+                ? "Highlight something to give your Take"
+                : "Highlight captions to create a video clip"}
+            </p>
+          )}
+          {this.props.textIsHighlighted ? (
+            <button
+              className="document__button document__button--red"
+              onClick={this.handleSetClick}
+            >
+              Give your Take on this
+            </button>
+          ) : null}
         </div>
       </div>
     );
 
     return (
       <div ref={(header: HTMLDivElement) => (this.header = header)}>
-        <div className={scrollingHeaderClass}>
-          {headerContent}
-        </div>
-        <div className={fixedHeaderClass}>
-          {headerContent}
-        </div>
+        <div className={scrollingHeaderClass}>{headerContent}</div>
+        <div className={fixedHeaderClass}>{headerContent}</div>
       </div>
     );
   }
