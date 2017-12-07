@@ -10,7 +10,7 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableSet;
 import common.Text;
 import controllers.AboutUs;
-import controllers.Foundation;
+import controllers.FoundationAssets;
 import java2ts.Routes;
 
 /** Usernames that we reserve for ourselves, for routing or other reasons. */
@@ -24,7 +24,7 @@ class ReservedUsernames {
 			"import",			// import from e.g. Google docs?
 			Routes.API,			// for api access
 			"settings",			// for user settings
-			url(Foundation.URL),	// for serving evidence
+			url(FoundationAssets.URL),	// for serving evidence
 			"blog",				// for a blog
 			url(AboutUs.URL),	// for us
 			"legal",				// for legal attributes

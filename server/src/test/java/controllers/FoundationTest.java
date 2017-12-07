@@ -17,7 +17,7 @@ import org.junit.Test;
 public class FoundationTest {
 	static {
 		Jooby jooby = new Jooby();
-		jooby.use(new Foundation());
+		jooby.use(new FoundationAssets());
 		app = new JoobyDevRule(jooby);
 	}
 

@@ -10,7 +10,7 @@ import auth.AuthModule;
 import controllers.AboutUs;
 import controllers.DiscourseAuth;
 import controllers.Drafts;
-import controllers.Foundation;
+import controllers.FoundationAssets;
 import controllers.HomeFeed;
 import controllers.Takes;
 import java.security.SecureRandom;
@@ -63,13 +63,13 @@ public class Prod extends Jooby {
 		jooby.get("favicon.ico", () -> Results.noContent());
 		jooby.use(new DiscourseAuth());
 		jooby.use(new HomeFeed());
-		jooby.use(new Foundation());
+		jooby.use(new FoundationAssets());
 		jooby.use(new AboutUs());
 		jooby.use(new Drafts());
 		jooby.use(new AuthModule());
 		jooby.use(new NotFound());
-		// takes needs to be last, because otherwise it will swallow
-		// every `/user/take` URL.
+		// Takes controller needs to be last, because otherwise
+		// it will swallow every `/user` and `/user/take` URL.
 		jooby.use(new Takes());
 	}
 

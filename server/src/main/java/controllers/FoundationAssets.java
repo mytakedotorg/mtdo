@@ -13,7 +13,7 @@ import org.jooby.Env;
 import org.jooby.Jooby;
 import org.jooby.handlers.AssetHandler;
 
-public class Foundation implements Jooby.Module {
+public class FoundationAssets implements Jooby.Module {
 	public static final String URL = "/foundation";
 
 	@Override
