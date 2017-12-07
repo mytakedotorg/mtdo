@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import Document from "../Document";
+import Document from "./Document";
 import {
   convertSecondsToTimestamp,
   getCaptionNodeArray,
@@ -8,8 +8,8 @@ import {
   getWordCount,
   highlightTextTwo,
   FoundationNode
-} from "../../utils/functions";
-import { Foundation } from "../../java2ts/Foundation";
+} from "../utils/functions";
+import { Foundation } from "../java2ts/Foundation";
 
 interface EventHandlers {
   onHighlight: (

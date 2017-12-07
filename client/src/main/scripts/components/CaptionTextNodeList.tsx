@@ -1,8 +1,8 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { FoundationNode } from "../../utils/functions";
-import { Foundation } from "../../java2ts/Foundation";
-import CaptionTextNode from "../CaptionTextNode";
+import { FoundationNode } from "../utils/functions";
+import { Foundation } from "../java2ts/Foundation";
+import CaptionTextNode from "./CaptionTextNode";
 var bs = require("binary-search");
 
 interface CaptionTextNodeListProps {

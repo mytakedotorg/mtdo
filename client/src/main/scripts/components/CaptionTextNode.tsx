@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { FoundationNode } from "../../utils/functions";
+import { FoundationNode } from "../utils/functions";
 
 interface DataAttributes {
   "data-char-offset": number;
