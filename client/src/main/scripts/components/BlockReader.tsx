@@ -1,8 +1,8 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import BlockEditor, { TakeDocument } from "../BlockEditor";
-import { slugify } from "../../utils/functions";
-import { Foundation } from "../../java2ts/Foundation";
+import BlockEditor, { TakeDocument } from "./BlockEditor";
+import { slugify } from "../utils/functions";
+import { Foundation } from "../java2ts/Foundation";
 
 interface BlockReaderProps {
   initState: TakeDocument;
