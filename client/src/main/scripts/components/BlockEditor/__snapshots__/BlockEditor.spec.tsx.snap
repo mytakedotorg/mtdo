@@ -1,0 +1,102 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Simple block editor model 1`] = `
+<div
+  className="editor__wrapper"
+>
+  <div
+    className="editor"
+  >
+    <div
+      className="editor__inner"
+    >
+      <div
+        className="editor__text-container"
+      >
+        <textarea
+          className="editor__title"
+          maxLength={255}
+          onChange={[Function]}
+          onKeyDown={[Function]}
+          onKeyUp={[Function]}
+          placeholder="Title"
+          style={
+            Object {
+              "height": undefined,
+            }
+          }
+          value="My take title"
+        />
+        <div
+          className="editor__title-height-div"
+        />
+      </div>
+      <div
+        className="editor__block-list"
+      >
+        <div
+          className="editor__block editor__block--base"
+        >
+          <div
+            className="editor__text-container"
+          >
+            <textarea
+              className="editor__paragraph"
+              onBlur={[Function]}
+              onChange={[Function]}
+              onClick={[Function]}
+              onFocus={[Function]}
+              onKeyDown={[Function]}
+              onKeyUp={[Function]}
+              placeholder="Use your voice here."
+              style={
+                Object {
+                  "height": undefined,
+                }
+              }
+              value="Some text"
+            />
+            <div
+              className="editor__paragraph-height-div"
+            >
+              <p>
+                <br />
+              </p>
+            </div>
+          </div>
+        </div>
+        <div
+          className="editor__block editor__block--base"
+        >
+          <EditorDocumentContainer
+            active={false}
+            block={
+              Object {
+                "excerptId": "united-states-constitution",
+                "highlightedRange": Array [
+                  335,
+                  438,
+                ],
+                "kind": "document",
+                "viewRange": Array [
+                  327,
+                  500,
+                ],
+              }
+            }
+            eventHandlers={
+              Object {
+                "handleChange": [Function],
+                "handleDelete": [Function],
+                "handleEnterPress": [Function],
+                "handleFocus": [Function],
+              }
+            }
+            idx={1}
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

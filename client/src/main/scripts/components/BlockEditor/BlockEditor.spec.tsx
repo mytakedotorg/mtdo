@@ -1,7 +1,7 @@
 // https://facebook.github.io/jest/docs/snapshot-testing.html#content
 
 import * as React from "react";
-import * as renderer from "react-test-renderer";
+import * as renderer from "react-test-renderer"; 
 import {} from "jest";
 import {} from "node";
 import BlockEditor from "./BlockEditor";
@@ -38,36 +38,13 @@ const ReadingEventHandler = {
   onDocumentClick
 };
 
-// jest.mock("./EditorDocumentContainer", () => {
-//   const EditorDocumentContainer = () => <div className="EditorDocumentContainer" />;
-//   return EditorDocumentContainer;
-// });
-// jest.mock("./EditorVideoContainer", () => {
-//   const EditorVideoContainer = () => <div className="EditorVideoContainer" />;
-//   return EditorVideoContainer;
-// });
+jest.mock("./EditorDocumentContainer", () => ({
+  default: "EditorDocumentContainer"
+}));
 
-jest.mock("./EditorDocumentContainer", () => () => {
-  const React = require("react");
-  <span>EditorDocumentContainer</span>;
-});
-jest.mock("./EditorVideoContainer", () => () => {
-  const React = require("react");
-  <span>EditorVideoContainer</span>;
-});
-
-// jest.mock("./EditorDocumentContainer", () => {
-//   const React = require("react");
-//   return {
-//     default: <span>EditorDocumentContainer</span>
-//   };
-// });
-// jest.mock("./EditorVideoContainer", () => {
-//   const React = require("react");
-//   return {
-//     default: <span>EditorVideoContainer</span>
-//   };
-// });
+jest.mock("./EditorVideoContainer",  () => ({
+  default: "EditorVideoContainer"
+}));
 
 function createNodeMock(element: React.ReactElement<HTMLElement>) {
   switch (element.type) {
