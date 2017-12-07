@@ -52,7 +52,7 @@ public class LoginForm extends MetaFormDef.HandleValid {
 	@Override
 	public boolean handleSuccessful(MetaFormValidation validation, Request req, Response rsp) throws Throwable {
 		String email = Text.lowercase(validation.parsed(LOGIN_EMAIL));
-		String from = Emails.FEEDBACK;
+		String from = Emails.TEAM;
 		try (DSLContext dsl = req.require(DSLContext.class)) {
 			AccountRecord account = dsl.selectFrom(ACCOUNT)
 					.where(ACCOUNT.EMAIL.eq(email))
