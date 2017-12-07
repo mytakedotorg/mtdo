@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import FeedCard from "../FeedCard";
-import { TakeBlock } from "../BlockEditor";
+import FeedCard from "./FeedCard";
+import { TakeBlock } from "./BlockEditor";
 
 export interface Article {
   title: string;
