@@ -5,10 +5,10 @@ import {
   getNodeArray,
   getCaptionNodeArray,
   FoundationNode
-} from "../../utils/functions";
-import { Foundation } from "../../java2ts/Foundation";
-import DocumentTextNodeList from "../DocumentTextNodeList";
-import CaptionTextNodeList from "../CaptionTextNodeList";
+} from "../utils/functions";
+import { Foundation } from "../java2ts/Foundation";
+import DocumentTextNodeList from "./DocumentTextNodeList";
+import CaptionTextNodeList from "./CaptionTextNodeList";
 
 interface CaptionData {
   captionTimer: number;
