@@ -70,6 +70,14 @@ spotless {
 		trimTrailingWhitespace()
 		endWithNewline()
 	}
+	java {
+		// see common.IpGetter
+		custom 'useIpGetter', {
+			if (it.contains('req.ip()') && !it.contains('interface IpGetter {')) {
+				throw new Error('Use IpGetter instead of Request.ip()')
+			}
+		}
+	}
 }
 
 //////////////////

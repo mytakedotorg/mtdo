@@ -13,6 +13,7 @@ import static db.Tables.LOGINLINK;
 
 import com.google.common.collect.ImmutableSet;
 import common.Emails;
+import common.IpGetter;
 import common.RandomString;
 import common.Text;
 import common.Time;
@@ -68,7 +69,7 @@ public class LoginForm extends MetaFormDef.HandleValid {
 				Time time = req.require(Time.class);
 				login.setCreatedAt(time.nowTimestamp());
 				login.setExpiresAt(time.nowTimestamp().plus(EXPIRES_MINUTES, TimeUnit.MINUTES));
-				login.setRequestorIp(req.ip());
+				login.setRequestorIp(req.require(IpGetter.class).ip(req));
 				login.setAccountId(account.getId());
 				login.insert();
 
@@ -112,7 +113,7 @@ public class LoginForm extends MetaFormDef.HandleValid {
 				AccountRecord account = dsl.selectFrom(ACCOUNT)
 						.where(ACCOUNT.ID.eq(link.getAccountId()))
 						.fetchOne();
-				account.setLastSeenIp(req.ip());
+				account.setLastSeenIp(req.require(IpGetter.class).ip(req));
 				account.setLastSeenAt(time.nowTimestamp());
 				account.update();
 				// set the login cookies

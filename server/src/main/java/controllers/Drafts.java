@@ -13,6 +13,7 @@ import static db.Tables.TAKEREVISION;
 import auth.AuthUser;
 import com.google.inject.Binder;
 import com.typesafe.config.Config;
+import common.IpGetter;
 import common.NotFound;
 import common.Text;
 import common.Time;
@@ -92,7 +93,7 @@ public class Drafts implements Jooby.Module {
 				rev.setTitle(post.title);
 				rev.setBlocks(post.blocks.toString());
 				rev.setCreatedAt(req.require(Time.class).nowTimestamp());
-				rev.setCreatedIp(req.ip());
+				rev.setCreatedIp(req.require(IpGetter.class).ip(req));
 
 				if (draft != null && draft.getLastRevision().intValue() == post.parentRev.lastrevid) {
 					// update an existing draft
@@ -147,7 +148,7 @@ public class Drafts implements Jooby.Module {
 				published.setTitleSlug(titleSlug);
 				published.setBlocks(post.blocks.toString());
 				published.setPublishedAt(req.require(Time.class).nowTimestamp());
-				published.setPublishedIp(req.ip());
+				published.setPublishedIp(req.require(IpGetter.class).ip(req));
 				published.insert();
 
 				return result;

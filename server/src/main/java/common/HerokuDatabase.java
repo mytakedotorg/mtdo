@@ -19,6 +19,8 @@ import org.jooby.Jooby;
 
 /** Parses the Heroke database env variable format. */
 public class HerokuDatabase {
+	public static final String ENV = "heroku";
+
 	/** Parses the database settings from a Heroku env variable. */
 	public static class Module implements Jooby.Module {
 		@Override

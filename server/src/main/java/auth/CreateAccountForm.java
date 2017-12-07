@@ -14,6 +14,7 @@ import static db.Tables.CONFIRMACCOUNTLINK;
 
 import com.google.common.collect.ImmutableSet;
 import common.Emails;
+import common.IpGetter;
 import common.RandomString;
 import common.Text;
 import common.Time;
@@ -104,7 +105,7 @@ public class CreateAccountForm extends MetaFormDef.HandleValid {
 					Time time = req.require(Time.class);
 					confirm.setCreatedAt(time.nowTimestamp());
 					confirm.setExpiresAt(time.nowTimestamp().plus(CONFIRM_WITHIN_MINUTES, TimeUnit.MINUTES));
-					confirm.setRequestorIp(req.ip());
+					confirm.setRequestorIp(req.require(IpGetter.class).ip(req));
 					confirm.setUsername(username);
 					confirm.setEmail(email);
 					confirm.insert();
@@ -143,6 +144,7 @@ public class CreateAccountForm extends MetaFormDef.HandleValid {
 		// account insertion won't hit uniqueness constraints on username
 		// and email
 		Time time = req.require(Time.class);
+		String ip = req.require(IpGetter.class).ip(req);
 		try (DSLContext dsl = req.require(DSLContext.class)) {
 			ConfirmaccountlinkRecord link = dsl.selectFrom(CONFIRMACCOUNTLINK)
 					.where(CONFIRMACCOUNTLINK.CODE.eq(code))
@@ -159,11 +161,11 @@ public class CreateAccountForm extends MetaFormDef.HandleValid {
 				account.setUsername(link.getUsername());
 				account.setEmail(link.getEmail());
 				account.setCreatedAt(time.nowTimestamp());
-				account.setCreatedIp(req.ip());
+				account.setCreatedIp(ip);
 				account.setUpdatedAt(time.nowTimestamp());
-				account.setUpdatedIp(req.ip());
+				account.setUpdatedIp(ip);
 				account.setLastSeenAt(time.nowTimestamp());
-				account.setLastSeenIp(req.ip());
+				account.setLastSeenIp(ip);
 				account.setLastEmailedAt(time.nowTimestamp());
 				account.insert();
 

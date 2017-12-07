@@ -8,6 +8,7 @@ package auth;
 
 import static auth.AuthModule.REDIRECT;
 
+import common.IpGetter;
 import common.Time;
 import common.UrlEncodedPath;
 import forms.meta.MetaFormDef;
@@ -32,14 +33,11 @@ class EmailConfirmationForm {
 		MetaFormValidation validation = MetaFormValidation.empty(formClazz)
 				.initAllIfPresent(req);
 		Time time = req.require(Time.class);
+		IpGetter ipGetter = req.require(IpGetter.class);
 		if (link == null || time.nowTimestamp().after(expiresAt.apply(link))) {
 			validation.errorForForm("This link expired");
 			return validation;
-		} else if (!req.ip().equals(requestorIp.apply(link))) {
-			// localhost workaround for dev - allow anything
-			if (req.ip().equals("0:0:0:0:0:0:0:1")) {
-				return null;
-			}
+		} else if (!ipGetter.ip(req).equals(requestorIp.apply(link))) {
 			validation.errorForForm("Make sure to open the link from the same computer you requested it from");
 			return validation;
 		} else {
