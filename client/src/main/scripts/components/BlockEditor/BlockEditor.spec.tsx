@@ -2,6 +2,8 @@
 
 import * as React from "react";
 import * as renderer from "react-test-renderer";
+import {} from "jest";
+import {} from "node";
 import BlockEditor from "./BlockEditor";
 import { TakeDocument } from "./BlockEditor";
 
@@ -21,10 +23,10 @@ const doc: TakeDocument = {
   ]
 };
 
-const handleChange = (id: number, value: string): void => {};
-const handleDelete = (id: number): void => {};
-const handleEnterPress = (): void => {};
-const handleFocus = (id: number): void => {};
+const handleChange = jest.fn();
+const handleDelete = jest.fn();
+const handleEnterPress = jest.fn();
+const handleFocus = jest.fn();
 const onDocumentClick = jest.fn();
 const WritingEventHandlers = {
   handleChange,
@@ -35,6 +37,37 @@ const WritingEventHandlers = {
 const ReadingEventHandler = {
   onDocumentClick
 };
+
+// jest.mock("./EditorDocumentContainer", () => {
+//   const EditorDocumentContainer = () => <div className="EditorDocumentContainer" />;
+//   return EditorDocumentContainer;
+// });
+// jest.mock("./EditorVideoContainer", () => {
+//   const EditorVideoContainer = () => <div className="EditorVideoContainer" />;
+//   return EditorVideoContainer;
+// });
+
+jest.mock("./EditorDocumentContainer", () => () => {
+  const React = require("react");
+  <span>EditorDocumentContainer</span>;
+});
+jest.mock("./EditorVideoContainer", () => () => {
+  const React = require("react");
+  <span>EditorVideoContainer</span>;
+});
+
+// jest.mock("./EditorDocumentContainer", () => {
+//   const React = require("react");
+//   return {
+//     default: <span>EditorDocumentContainer</span>
+//   };
+// });
+// jest.mock("./EditorVideoContainer", () => {
+//   const React = require("react");
+//   return {
+//     default: <span>EditorVideoContainer</span>
+//   };
+// });
 
 function createNodeMock(element: React.ReactElement<HTMLElement>) {
   switch (element.type) {
@@ -69,23 +102,19 @@ function createNodeMock(element: React.ReactElement<HTMLElement>) {
   }
 }
 
-test("Will always pass", () => {
-  expect(1 + 1).toEqual(2);
+test("Simple block editor model", () => {
+  const tree = renderer
+    .create(
+      <BlockEditor
+        takeDocument={doc}
+        active={-1}
+        eventHandlers={WritingEventHandlers}
+      />,
+      { createNodeMock }
+    )
+    .toJSON();
+  expect(tree).toMatchSnapshot();
 });
-
-// test("Simple block editor model", () => {
-//   const tree = renderer
-//     .create(
-//       <BlockEditor
-//         takeDocument={doc}
-//         active={-1}
-//         eventHandlers={WritingEventHandlers}
-//       />,
-//       { createNodeMock }
-//     )
-//     .toJSON();
-//   expect(tree).toMatchSnapshot();
-// });
 
 // test("With active", () => {
 //   const tree = renderer
@@ -112,7 +141,7 @@ test("Will always pass", () => {
 // });
 
 /**
- * TODO: 
+ * TODO:
  *   - Add the following test cases:
  *     + 'No text in editor, cursor in title, press enter'
  *     + 'Title only in editor, cursor in title, press enter'
