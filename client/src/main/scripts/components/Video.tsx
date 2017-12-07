@@ -1,8 +1,8 @@
 import * as React from "react";
 import YouTube from "react-youtube";
-import { getCharRangeFromVideoRange } from "../../utils/functions";
-import { Foundation } from "../../java2ts/Foundation";
-import CaptionView from "../CaptionView";
+import { getCharRangeFromVideoRange } from "../utils/functions";
+import { Foundation } from "../java2ts/Foundation";
+import CaptionView from "./CaptionView";
 
 interface YTPlayerParameters {
   rel: number;
