@@ -7,5 +7,5 @@
 package common;
 
 public class Emails {
-	public static final String FEEDBACK = "ned.twigg@diffplug.com";
+	public static final String TEAM = "team@mytake.org";
 }

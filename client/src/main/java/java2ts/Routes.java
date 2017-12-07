@@ -8,6 +8,8 @@ package java2ts;
 
 @jsweet.lang.Interface
 public class Routes {
+	public static final String API = "/api";
+
 	public static final String DRAFTS = "/drafts";
 	public static final String DRAFTS_NEW = "/drafts/new";
 	public static final String DRAFTS_DELETE = "/drafts/delete";

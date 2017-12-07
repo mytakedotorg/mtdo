@@ -22,7 +22,7 @@ class ReservedUsernames {
 	private static final ImmutableSet<String> RESERVED_USERNAMES = ImmutableSet.of(
 			url(Routes.DRAFTS),		// drafts
 			"import",			// import from e.g. Google docs?
-			"api",				// for api access
+			Routes.API,			// for api access
 			"settings",			// for user settings
 			url(Foundation.URL),	// for serving evidence
 			"blog",				// for a blog
