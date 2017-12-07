@@ -1,7 +1,8 @@
 import * as React from "react";
 import { mount, ReactWrapper } from "enzyme";
 import BlockWriter, { InitialBlockWriterState } from "./BlockWriter";
-import { DocumentBlock, ParagraphBlock, VideoBlock } from "../BlockEditor";
+import { DocumentBlock, ParagraphBlock, VideoBlock } from "./BlockEditor";
+import {} from "jest";
 
 const onBackClick = jest.fn();
 const onSetClick = jest.fn();

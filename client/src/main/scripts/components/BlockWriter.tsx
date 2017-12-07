@@ -5,13 +5,13 @@ import BlockEditor, {
   TakeBlock,
   TakeDocument,
   VideoBlock
-} from "../BlockEditor";
-import TimelineView from "../TimelineView";
+} from "./BlockEditor";
+import TimelineView from "./TimelineView";
 import EditorButtons from "./EditorButtons";
-import { DraftRev } from "../../java2ts/DraftRev";
-import { DraftPost } from "../../java2ts/DraftPost";
-import { PublishResult } from "../../java2ts/PublishResult";
-import { Routes } from "../../java2ts/Routes";
+import { DraftRev } from "../java2ts/DraftRev";
+import { DraftPost } from "../java2ts/DraftPost";
+import { PublishResult } from "../java2ts/PublishResult";
+import { Routes } from "../java2ts/Routes";
 
 interface BlockWriterProps {
   initState: InitialBlockWriterState;
@@ -50,6 +50,14 @@ export interface ButtonEventHandlers {
   handlePublishClick: () => void;
   handleSaveClick: () => void;
 }
+
+export const initialState: InitialBlockWriterState = {
+  takeDocument: {
+    title: "",
+    blocks: [{ kind: "paragraph", text: "" }]
+  },
+  activeBlockIndex: -1
+};
 
 class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
   constructor(props: BlockWriterProps) {

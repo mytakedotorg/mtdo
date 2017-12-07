@@ -1,6 +1,6 @@
 import * as React from "react";
-import { ButtonEventHandlers, Status } from "../BlockWriter";
-import Banner from "../../Banner";
+import { ButtonEventHandlers, Status } from "./BlockWriter";
+import Banner from "./Banner";
 
 interface ButtonProps {
   onClick: () => void;

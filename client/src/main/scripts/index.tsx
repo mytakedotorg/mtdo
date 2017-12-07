@@ -2,7 +2,7 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import BlockWriter, {
   InitialBlockWriterState,
-  config
+  initialState
 } from "./components/BlockWriter";
 import BlockReader from "./components/BlockReader";
 import FeedList from "./components/FeedList";
@@ -49,13 +49,13 @@ if (typeof window.mytake != "undefined") {
             ...windowState,
             takeDocument: {
               ...windowState.takeDocument,
-              blocks: [...config.initialState.takeDocument.blocks]
+              blocks: [...initialState.takeDocument.blocks]
             }
           }
         }
         initJson = windowState;
       } else {
-        initJson = config.initialState;
+        initJson = initialState;
       }
 
       Root = <BlockWriter initState={initJson} hashUrl={window.location.hash} />;
