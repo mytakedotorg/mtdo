@@ -2,10 +2,10 @@ import * as React from "react";
 import * as keycode from "keycode";
 import EditorDocumentContainer from "./EditorDocumentContainer";
 import EditorVideoContainer from "./EditorVideoContainer";
-import { Foundation } from "../../java2ts/Foundation";
-import { ParagraphBlock } from "../../java2ts/ParagraphBlock";
-import { DocumentBlock } from "../../java2ts/DocumentBlock";
-import { VideoBlock } from "../../java2ts/VideoBlock";
+import { Foundation } from "../java2ts/Foundation";
+import { ParagraphBlock } from "../java2ts/ParagraphBlock";
+import { DocumentBlock } from "../java2ts/DocumentBlock";
+import { VideoBlock } from "../java2ts/VideoBlock";
 export { ParagraphBlock, DocumentBlock, VideoBlock };
 export type TakeBlock = ParagraphBlock | DocumentBlock | VideoBlock;
 export interface TakeDocument {

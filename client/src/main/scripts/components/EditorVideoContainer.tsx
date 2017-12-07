@@ -1,12 +1,12 @@
 import * as React from "react";
 import * as keycode from "keycode";
 import YouTube from "react-youtube";
-import Video from "../../Video";
-import { fetchFact } from "../../../utils/databaseAPI";
-import { Foundation } from "../../../java2ts/Foundation";
-import { Routes } from "../../../java2ts/Routes";
-import { VideoBlock } from "../../../java2ts/VideoBlock";
-import { isWriteOnly, WritingEventHandlers } from "../";
+import Video from "./Video";
+import { fetchFact } from "../utils/databaseAPI";
+import { Foundation } from "../java2ts/Foundation";
+import { Routes } from "../java2ts/Routes";
+import { VideoBlock } from "../java2ts/VideoBlock";
+import { isWriteOnly, WritingEventHandlers } from "./BlockEditor";
 
 interface EditorVideoContainerProps {
   idx: number;
