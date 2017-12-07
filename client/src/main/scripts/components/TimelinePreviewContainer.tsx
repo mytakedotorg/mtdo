@@ -1,12 +1,12 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { FoundationNode } from "../../utils/functions";
-import { isVideo, isDocument, fetchFact } from "../../utils/databaseAPI";
-import TimelinePreview, { Ranges, SetFactHandlers } from "../TimelinePreview";
-import TimelinePreviewLoadingView from "../TimelinePreviewLoadingView";
-import TimelinePreviewErrorView from "../TimelinePreviewErrorView";
-import { Foundation } from "../../java2ts/Foundation";
-import { Routes } from "../../java2ts/Routes";
+import { FoundationNode } from "../utils/functions";
+import { isVideo, isDocument, fetchFact } from "../utils/databaseAPI";
+import TimelinePreview, { Ranges, SetFactHandlers } from "./TimelinePreview";
+import TimelinePreviewLoadingView from "./TimelinePreviewLoadingView";
+import TimelinePreviewErrorView from "./TimelinePreviewErrorView";
+import { Foundation } from "../java2ts/Foundation";
+import { Routes } from "../java2ts/Routes";
 
 interface TimelinePreviewContainerProps {
   factLink: Foundation.FactLink;
