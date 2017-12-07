@@ -4,6 +4,7 @@ import YouTube from "react-youtube";
 import Video from "../../Video";
 import { fetchFact } from "../../../utils/databaseAPI";
 import { Foundation } from "../../../java2ts/Foundation";
+import { Routes } from "../../../java2ts/Routes";
 import { VideoBlock } from "../../../java2ts/VideoBlock";
 import { isWriteOnly, WritingEventHandlers } from "../";
 
@@ -76,6 +77,7 @@ class EditorVideoContainer extends React.Component<
                 idx={this.props.idx}
                 active={this.props.active}
                 videoFact={this.state.videoFact}
+                factHash={this.props.block.videoId}
                 range={this.props.block.range}
                 eventHandlers={this.props.eventHandlers}
               />}
@@ -108,6 +110,7 @@ interface EditorVideoBlockProps {
   idx: number;
   active: boolean;
   videoFact: Foundation.VideoFactContent;
+  factHash: string;
   range?: [number, number];
   eventHandlers?: WritingEventHandlers;
 }
@@ -147,7 +150,15 @@ class EditorVideo extends React.Component<
     }
   };
   handleSetClick = (range: [number, number]): void => {
-    throw "TODO";
+    window.location.href =
+      Routes.DRAFTS_NEW +
+      "/#" +
+      this.props.factHash +
+      "&" +
+      range[0] +
+      "&" +
+      range[1] +
+      window.location.pathname;
   };
   handleVideoEnd = (event: any) => {
     event.target.stopVideo();

@@ -274,61 +274,65 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
     }
   };
   handleDeleteClick = () => {
-    if (typeof this.state.parentRev != undefined && this.state.parentRev) {
-      const bodyJson: DraftRev = {
-        draftid: this.state.parentRev.draftid,
-        lastrevid: this.state.parentRev.lastrevid
-      };
-      this.postRequest(
-        Routes.DRAFTS_DELETE,
-        bodyJson,
-        function(json: any) {
-          // Not expecting a server response, so this will never execute.
-        }.bind(this)
-      );
+    if (confirm('This action cannot be undone. Are you sure you want to delete this draft?')) {
+      if (typeof this.state.parentRev != undefined && this.state.parentRev) {
+        const bodyJson: DraftRev = {
+          draftid: this.state.parentRev.draftid,
+          lastrevid: this.state.parentRev.lastrevid
+        };
+        this.postRequest(
+          Routes.DRAFTS_DELETE,
+          bodyJson,
+          function(json: any) {
+            // Not expecting a server response, so this will never execute.
+          }.bind(this)
+        );
+      }
     }
   };
   handlePublishClick = () => {
-    if (this.state.takeDocument.title.length <= 255) {
-      this.setState({
-        status: {
-          ...this.state.status,
-          saving: true,
-          error: false,
-          message: "Publishing Take."
-        }
-      });
-      const bodyJson: DraftPost = {
-        parentRev: this.state.parentRev,
-        title: this.state.takeDocument.title,
-        blocks: this.state.takeDocument.blocks
-      };
-      this.postRequest(
-        Routes.DRAFTS_PUBLISH,
-        bodyJson,
-        function(json: PublishResult) {
-          if (!json.conflict) {
-            window.location.href = json.publishedUrl;
-          } else {
-            this.setState({
-              status: {
-                saved: false,
-                saving: false,
-                error: true,
-                message: "There was an error publishing your Take."
-              }
-            });
+    if (confirm('This action cannot be undone. Are you sure you want to publish this draft?')) {
+      if (this.state.takeDocument.title.length <= 255) {
+        this.setState({
+          status: {
+            ...this.state.status,
+            saving: true,
+            error: false,
+            message: "Publishing Take."
           }
-        }.bind(this)
-      );
-    } else {
-      this.setState({
-        status: {
-          ...this.state.status,
-          error: true,
-          message: "Title cannot be longer than 255 characters."
-        }
-      });
+        });
+        const bodyJson: DraftPost = {
+          parentRev: this.state.parentRev,
+          title: this.state.takeDocument.title,
+          blocks: this.state.takeDocument.blocks
+        };
+        this.postRequest(
+          Routes.DRAFTS_PUBLISH,
+          bodyJson,
+          function(json: PublishResult) {
+            if (!json.conflict) {
+              window.location.href = json.publishedUrl;
+            } else {
+              this.setState({
+                status: {
+                  saved: false,
+                  saving: false,
+                  error: true,
+                  message: "There was an error publishing your Take."
+                }
+              });
+            }
+          }.bind(this)
+        );
+      } else {
+        this.setState({
+          status: {
+            ...this.state.status,
+            error: true,
+            message: "Title cannot be longer than 255 characters."
+          }
+        });
+      }
     }
   };
   handleSaveClick = () => {
@@ -382,23 +386,28 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
       parseInt(hashArr[2])
     ];
 
-    let viewRange: [number, number] | null;
-
-    if (hashArr[3] && hashArr[4]) {
-      viewRange = [parseInt(hashArr[3]), parseInt(hashArr[4])];
-    } else {
-      viewRange = null;
-    }
-
     let articleUser;
     let articleTitle;
+    let viewRange: [number, number] | null;
 
-    if (hashArr[5]) {
-      articleUser = hashArr[5].split("/")[1];
-      articleTitle = hashArr[5].split("/")[2];
+    if (hashArr[3] && hashArr[3].indexOf("/") > -1) {
+      articleUser = hashArr[3].split("/")[1];
+      articleTitle = hashArr[3].split("/")[2];
+      viewRange = null;
     } else {
-      articleUser = null;
-      articleTitle = null;
+      if (hashArr[3] && hashArr[4]) {
+        viewRange = [parseInt(hashArr[3]), parseInt(hashArr[4])];
+      } else {
+        viewRange = null;
+      }
+
+      if (hashArr[5]) {
+        articleUser = hashArr[5].split("/")[1];
+        articleTitle = hashArr[5].split("/")[2];
+      } else {
+        articleUser = null;
+        articleTitle = null;
+      }
     }
 
     return {
