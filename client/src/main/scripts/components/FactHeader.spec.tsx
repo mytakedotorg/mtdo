@@ -41,7 +41,11 @@ test("Scrolling with text highlighted", () => {
 test("Scrolling without text highlighted", () => {
   const tree = renderer
     .create(
-      <FactHeader {...documentProps} isFixed={false} textIsHighlighted={false} />
+      <FactHeader
+        {...documentProps}
+        isFixed={false}
+        textIsHighlighted={false}
+      />
     )
     .toJSON();
   expect(tree).toMatchSnapshot();
