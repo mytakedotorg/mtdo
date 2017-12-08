@@ -11,14 +11,14 @@ import {
   WritingEventHandlers
 } from "./BlockEditor";
 
-interface EditorDocumentContainerProps {
+export interface EditorDocumentContainerProps {
   idx: number;
   active: boolean;
   block: DocumentBlock;
   eventHandlers: WritingEventHandlers | ReadingEventHandlers;
 }
 
-interface EditorDocumentContainerState {
+export interface EditorDocumentContainerState {
   loading: boolean;
   error: boolean;
   document?: {
@@ -88,18 +88,37 @@ class EditorDocumentContainer extends React.Component<
   }
   render() {
     return (
-      <div>
-        {this.state.error ? (
-          <DocumentErrorView onRetryClick={this.handleRetryClick} />
-        ) : this.state.loading || !this.state.document ? (
-          <DocumentLoadingView />
-        ) : (
-          <Document {...this.props} document={this.state.document} />
-        )}
-      </div>
+      <EditorDocumentBranch
+        containerProps={this.props}
+        containerState={this.state}
+        handleRetryClick={this.handleRetryClick}
+      />
     );
   }
 }
+
+interface EditorDocumentBranchProps {
+  containerProps: EditorDocumentContainerProps;
+  containerState: EditorDocumentContainerState;
+  handleRetryClick: () => any;
+}
+
+export const EditorDocumentBranch: React.StatelessComponent<
+  EditorDocumentBranchProps
+> = props => {
+  if (props.containerState.error) {
+    return <DocumentErrorView onRetryClick={props.handleRetryClick} />;
+  } else if (props.containerState.loading || !props.containerState.document) {
+    return <DocumentLoadingView />;
+  } else {
+    return (
+      <Document
+        {...props.containerProps}
+        document={props.containerState.document}
+      />
+    );
+  }
+};
 
 const DocumentLoadingView: React.StatelessComponent<{}> = props => (
   <div className="editor__document editor__document--base editor__document--hover">
