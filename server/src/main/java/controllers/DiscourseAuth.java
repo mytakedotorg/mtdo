@@ -41,6 +41,7 @@ import org.postgresql.util.Base64;
 public class DiscourseAuth implements Jooby.Module {
 	private static final String DISCOURSE = "https://meta.mytake.org";
 	private static final String DISCOURSE_SSO = DISCOURSE + "/session/sso_login";
+	protected static final String SECRET_KEY = "discourse.secret";
 
 	/** Appends the user's info to the Nonce, fields from. */
 	protected String appendUserInfoToNonce(Request req, String nonce) throws UnsupportedEncodingException {
@@ -63,7 +64,10 @@ public class DiscourseAuth implements Jooby.Module {
 
 	@Override
 	public void configure(Env env, Config conf, Binder binder) throws Throwable {
-		byte[] keyBytes = conf.getString("discourse.secret").getBytes(StandardCharsets.UTF_8);
+		if (!conf.hasPath(SECRET_KEY)) {
+			return;
+		}
+		byte[] keyBytes = conf.getString(SECRET_KEY).getBytes(StandardCharsets.UTF_8);
 		SecretKeySpec key = new SecretKeySpec(keyBytes, "HmacSHA256");
 		env.router().get(Routes.API + "/discourseAuth", req -> {
 			// validate request from server
@@ -84,18 +88,17 @@ public class DiscourseAuth implements Jooby.Module {
 	}
 
 	protected static String urlEncode(String input) throws UnsupportedEncodingException {
-		return URLEncoder.encode(input, "UTF-8");
+		return URLEncoder.encode(input, StandardCharsets.UTF_8.name());
 	}
 
 	protected static String urlDecode(String input) throws UnsupportedEncodingException {
-		return URLDecoder.decode(input, "UTF-8");
+		return URLDecoder.decode(input, StandardCharsets.UTF_8.name());
 	}
 
 	private static String checksum(SecretKeySpec key, String macData) throws NoSuchAlgorithmException, UnsupportedEncodingException, InvalidKeyException {
 		Mac mac = Mac.getInstance("HmacSHA256");
-		byte[] dataBytes = macData.getBytes("UTF-8");
 		mac.init(key);
-		byte[] doFinal = mac.doFinal(dataBytes);
+		byte[] doFinal = mac.doFinal(macData.getBytes(StandardCharsets.UTF_8));
 		return Hex.encodeHexString(doFinal);
 	}
 

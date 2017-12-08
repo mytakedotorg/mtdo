@@ -22,21 +22,22 @@ import org.junit.Assert;
 import org.junit.ClassRule;
 import org.junit.Test;
 
+/** The Discourse SSO example from the docs. https://meta.discourse.org/t/official-single-sign-on-for-discourse-sso/13045 */
 public class DiscourseAuthTest {
-	private static final String SECRET = "d836444a9e4084d5b224a60c208dce14";
-
 	static class App extends Jooby {
 		{
 			use(new DiscourseAuth() {
 				@Override
 				public Config config() {
+					// insert the secret from the example
 					Map<String, String> map = new HashMap<>();
-					map.put("discourse.secret", SECRET);
+					map.put(SECRET_KEY, "d836444a9e4084d5b224a60c208dce14");
 					return ConfigFactory.parseMap(map);
 				}
 
 				@Override
 				protected String appendUserInfoToNonce(Request req, String nonce) throws UnsupportedEncodingException {
+					// insert the data from the example
 					return nonce
 							+ "&name=" + urlEncode("sam")
 							+ "&username=" + urlEncode("samsam")
@@ -61,6 +62,7 @@ public class DiscourseAuthTest {
 		// The Discourse docs say signature = "1c884222282f3feacd76802a9dd94e8bc8deba5d619b292bed75d63eb3152c0b" and then say "whoops nevermind, not that".
 		// We're calculating "3a8dd1a73254003d616d610f66049cf741dfcb924c76b9e75efa01b2507ad0d0", I'll see if they're getting the same or not
 		//                   https://meta.mytake.org/session/sso_login?sso=bm9uY2U9Y2I2ODI1MWVlZmI1MjExZTU4YzAwZmYxMzk1ZjBjMGImbmFtZT1zYW0mdXNlcm5hbWU9%0Ac2Ftc2FtJmVtYWlsPXRlc3QlNDB0ZXN0LmNvbSZleHRlcm5hbF9pZD1oZWxsbzEyMyZyZXF1aXJl%0AX2FjdGl2YXRpb249dHJ1ZQ%3D%3D%0A&sig=1c884222282f3feacd76802a9dd94e8bc8deba5d619b292bed75d63eb3152c0b
+		// https://meta.discourse.org/t/official-single-sign-on-for-discourse-sso/13045/381?u=nedtwigg
 		Assert.assertEquals("https://meta.mytake.org/session/sso_login?sso=bm9uY2U9Y2I2ODI1MWVlZmI1MjExZTU4YzAwZmYxMzk1ZjBjMGImbmFtZT1zYW0mdXNlcm5hbWU9%0Ac2Ftc2FtJmVtYWlsPXRlc3QlNDB0ZXN0LmNvbSZleHRlcm5hbF9pZD1oZWxsbzEyMyZyZXF1aXJl%0AX2FjdGl2YXRpb249dHJ1ZQ%3D%3D%0A&sig=3a8dd1a73254003d616d610f66049cf741dfcb924c76b9e75efa01b2507ad0d0", location);
 	}
 }
