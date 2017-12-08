@@ -15,7 +15,11 @@ const Button: React.StatelessComponent<ButtonProps> = props => {
     : props.classModifier;
   const classes = "editor__button " + classModifier;
   return (
-    <button className={classes} onClick={props.onClick}>
+    <button
+      className={classes}
+      onClick={props.onClick}
+      disabled={props.isDisabled !== undefined ? props.isDisabled : false}
+    >
       {props.text}
     </button>
   );
