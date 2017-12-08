@@ -74,6 +74,7 @@ class EditorDocumentContainer extends React.Component<
   };
   handleRetryClick = () => {
     this.setState({
+      loading: true,
       error: false
     });
     this.getFact(this.props.block.excerptId);
