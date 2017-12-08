@@ -27,35 +27,23 @@ exports[`Simple block writer model 1`] = `
   <div
     className="editor__wrapper"
   >
-    <div
-      className="editor__meta"
-    >
-      <div
-        className="banner"
-      >
-        <div
-          className="banner__inner-container"
-        />
-      </div>
-      <button
-        className="editor__button editor__button--disabled"
-        onClick={[Function]}
-      >
-        Save
-      </button>
-      <button
-        className="editor__button editor__button--publish"
-        onClick={[Function]}
-      >
-        Save & Publish
-      </button>
-      <button
-        className="editor__button editor__button--delete"
-        onClick={[Function]}
-      >
-        Delete Draft
-      </button>
-    </div>
+    <EditorButtons
+      eventHandlers={
+        Object {
+          "handleDeleteClick": [Function],
+          "handlePublishClick": [Function],
+          "handleSaveClick": [Function],
+        }
+      }
+      status={
+        Object {
+          "error": false,
+          "message": "",
+          "saved": true,
+          "saving": false,
+        }
+      }
+    />
     <p
       className="timeline__instructions"
     >

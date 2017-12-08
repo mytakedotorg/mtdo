@@ -16,6 +16,10 @@ jest.mock("./TimelineView", () => ({
   default: "TimelineView"
 }));
 
+jest.mock("./EditorButtons", () => ({
+  default: "EditorButtons"
+}));
+
 const initState: InitialBlockWriterState = {
   takeDocument: {
     title: "",
