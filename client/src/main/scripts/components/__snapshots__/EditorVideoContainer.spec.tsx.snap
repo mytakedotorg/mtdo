@@ -1,0 +1,111 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Error loading Video 1`] = `
+<div
+  className="editor__document editor__document--base editor__document--hover"
+>
+  <h2
+    className="editor__document-title"
+  >
+    Error loading Foundation Video
+  </h2>
+  <button
+    className="editor__button editor__button--reload"
+    onClick={[Function]}
+  >
+    retry?
+  </button>
+</div>
+`;
+
+exports[`Successfully loaded Video 1`] = `
+<div
+  className="editor__video-container"
+  onClick={[Function]}
+  onFocus={[Function]}
+  onKeyDown={[Function]}
+  tabIndex={0}
+>
+  <Video
+    onSetClick={[Function]}
+    timeRange={
+      Array [
+        2,
+        4,
+      ]
+    }
+    videoFact={
+      Object {
+        "fact": Object {
+          "kind": "video",
+          "primaryDate": "2016-10-09",
+          "primaryDateKind": "recorded",
+          "title": "Donald Trump - Hillary Clinton (2/3)",
+        },
+        "speakers": Array [
+          Object {
+            "firstname": "Martha",
+            "lastname": "Raddatz",
+            "middlename": null,
+          },
+        ],
+        "transcript": Array [
+          Object {
+            "idx": 0,
+            "timestamp": 0.75,
+            "word": "Good ",
+          },
+          Object {
+            "idx": 1,
+            "timestamp": 0.96,
+            "word": "evening ",
+          },
+          Object {
+            "idx": 2,
+            "timestamp": 1.56,
+            "word": "I'm ",
+          },
+          Object {
+            "idx": 3,
+            "timestamp": 1.92,
+            "word": "Martha ",
+          },
+          Object {
+            "idx": 4,
+            "timestamp": 2.129,
+            "word": "Raddatz ",
+          },
+          Object {
+            "idx": 5,
+            "timestamp": 2.52,
+            "word": "from ",
+          },
+          Object {
+            "idx": 6,
+            "timestamp": 3.06,
+            "word": "ABC ",
+          },
+          Object {
+            "idx": 7,
+            "timestamp": 3.09,
+            "word": "News. ",
+          },
+        ],
+        "youtubeId": "ApTLB76Nmdg",
+      }
+    }
+  />
+</div>
+`;
+
+exports[`Video loading 1`] = `
+<div
+  className="editor__document editor__document--base editor__document--hover"
+>
+  <h2
+    className="editor__document-title"
+  >
+    Loading
+  </h2>
+</div>
+`;
