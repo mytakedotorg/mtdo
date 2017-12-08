@@ -8,14 +8,14 @@ import { Routes } from "../java2ts/Routes";
 import { VideoBlock } from "../java2ts/VideoBlock";
 import { isWriteOnly, WritingEventHandlers } from "./BlockEditor";
 
-interface EditorVideoContainerProps {
+export interface EditorVideoContainerProps {
   idx: number;
   active: boolean;
   block: VideoBlock;
   eventHandlers?: WritingEventHandlers;
 }
 
-interface EditorVideoContainerState {
+export interface EditorVideoContainerState {
   loading: boolean;
   error: boolean;
   videoFact?: Foundation.VideoFactContent;
@@ -69,25 +69,41 @@ class EditorVideoContainer extends React.Component<
   }
   render() {
     return (
-      <div>
-        {this.state.error ? (
-          <VideoErrorView onRetryClick={this.handleRetryClick} />
-        ) : this.state.loading || !this.state.videoFact ? (
-          <VideoLoadingView />
-        ) : (
-          <EditorVideo
-            idx={this.props.idx}
-            active={this.props.active}
-            videoFact={this.state.videoFact}
-            factHash={this.props.block.videoId}
-            range={this.props.block.range}
-            eventHandlers={this.props.eventHandlers}
-          />
-        )}
-      </div>
+      <EditorVideoBranch
+        containerProps={this.props}
+        containerState={this.state}
+        handleRetryClick={this.handleRetryClick}
+      />
     );
   }
 }
+
+interface EditorVideoBranchProps {
+  containerProps: EditorVideoContainerProps;
+  containerState: EditorVideoContainerState;
+  handleRetryClick: () => any;
+}
+
+export const EditorVideoBranch: React.StatelessComponent<
+  EditorVideoBranchProps
+> = props => {
+  if (props.containerState.error) {
+    return <VideoErrorView onRetryClick={props.handleRetryClick} />;
+  } else if (props.containerState.loading || !props.containerState.videoFact) {
+    return <VideoLoadingView />;
+  } else {
+    return (
+      <EditorVideo
+        idx={props.containerProps.idx}
+        active={props.containerProps.active}
+        videoFact={props.containerState.videoFact}
+        factHash={props.containerProps.block.videoId}
+        range={props.containerProps.block.range}
+        eventHandlers={props.containerProps.eventHandlers}
+      />
+    );
+  }
+};
 
 const VideoLoadingView: React.StatelessComponent<{}> = props => (
   <div className="editor__document editor__document--base editor__document--hover">
