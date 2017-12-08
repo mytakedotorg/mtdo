@@ -47,5 +47,9 @@ gradlePlugin {
 			id = 'org.mytake.gradle.live'
 			implementationClass = 'org.mytake.gradle.live.LivePlugin'
 		}
+		jsoniterCodegen {
+			id = 'org.mytake.gradle.jsonitercodegen'
+			implementationClass = 'org.mytake.gradle.jsonitercodegen.JsoniterCodegenPlugin'
+		}
 	}
 }
