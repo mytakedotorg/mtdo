@@ -1,0 +1,282 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Video 1`] = `
+<div
+  className="video__outer-container"
+>
+  <div
+    className="video__inner-container"
+  >
+    <div
+      className="video__container"
+    >
+      <div
+        className="video__header"
+      >
+        <p
+          className="video__date"
+        >
+          2016-10-09
+        </p>
+      </div>
+      <YouTube
+        className="video__video"
+        onPause={[Function]}
+        onReady={[Function]}
+        onStateChange={[Function]}
+        opts={
+          Object {
+            "height": "315",
+            "playerVars": Object {
+              "autoplay": 1,
+              "cc_lang_pref": "en",
+              "cc_load_policy": 1,
+              "modestbranding": 1,
+              "playsinline": 1,
+              "rel": 0,
+              "showinfo": 0,
+              "start": 0,
+            },
+            "width": "560",
+          }
+        }
+        videoId="ApTLB76Nmdg"
+      />
+    </div>
+    <CaptionView
+      captionIsHighlighted={false}
+      eventHandlers={
+        Object {
+          "onClearPress": [Function],
+          "onCursorPlace": [Function],
+          "onFineTuneDown": [Function],
+          "onFineTuneUp": [Function],
+          "onHighlight": [Function],
+        }
+      }
+      highlightedCharRange={
+        Array [
+          -1,
+          -1,
+        ]
+      }
+      timer={0}
+      videoEnd={-1}
+      videoFact={
+        Object {
+          "fact": Object {
+            "kind": "video",
+            "primaryDate": "2016-10-09",
+            "primaryDateKind": "recorded",
+            "title": "Donald Trump - Hillary Clinton (2/3)",
+          },
+          "speakerMap": Array [
+            Object {
+              "range": Array [
+                0,
+                7,
+              ],
+              "speaker": "Raddatz",
+            },
+          ],
+          "speakers": Array [
+            Object {
+              "firstname": "Martha",
+              "lastname": "Raddatz",
+              "middlename": null,
+            },
+          ],
+          "transcript": Array [
+            Object {
+              "idx": 0,
+              "timestamp": 0.75,
+              "word": "Good ",
+            },
+            Object {
+              "idx": 1,
+              "timestamp": 0.96,
+              "word": "evening ",
+            },
+            Object {
+              "idx": 2,
+              "timestamp": 1.56,
+              "word": "I'm ",
+            },
+            Object {
+              "idx": 3,
+              "timestamp": 1.92,
+              "word": "Martha ",
+            },
+            Object {
+              "idx": 4,
+              "timestamp": 2.129,
+              "word": "Raddatz ",
+            },
+            Object {
+              "idx": 5,
+              "timestamp": 2.52,
+              "word": "from ",
+            },
+            Object {
+              "idx": 6,
+              "timestamp": 3.06,
+              "word": "ABC ",
+            },
+            Object {
+              "idx": 7,
+              "timestamp": 3.09,
+              "word": "News. ",
+            },
+          ],
+          "youtubeId": "ApTLB76Nmdg",
+        }
+      }
+      videoStart={0}
+    />
+  </div>
+</div>
+`;
+
+exports[`Video with highlights 1`] = `
+<div
+  className="video__outer-container"
+>
+  <div
+    className="video__inner-container"
+  >
+    <div
+      className="video__container"
+    >
+      <div
+        className="video__header"
+      >
+        <button
+          className="video__button video__button--top"
+          onClick={[Function]}
+        >
+          Give your Take on this
+        </button>
+        <p
+          className="video__date"
+        >
+          2016-10-09
+        </p>
+      </div>
+      <YouTube
+        className="video__video"
+        onPause={[Function]}
+        onReady={[Function]}
+        onStateChange={[Function]}
+        opts={
+          Object {
+            "height": "315",
+            "playerVars": Object {
+              "autoplay": 1,
+              "cc_lang_pref": "en",
+              "cc_load_policy": 1,
+              "end": 3,
+              "modestbranding": 1,
+              "playsinline": 1,
+              "rel": 0,
+              "showinfo": 0,
+              "start": 0,
+            },
+            "width": "560",
+          }
+        }
+        videoId="ApTLB76Nmdg"
+      />
+    </div>
+    <CaptionView
+      captionIsHighlighted={true}
+      eventHandlers={
+        Object {
+          "onClearPress": [Function],
+          "onCursorPlace": [Function],
+          "onFineTuneDown": [Function],
+          "onFineTuneUp": [Function],
+          "onHighlight": [Function],
+        }
+      }
+      highlightedCharRange={
+        Array [
+          0,
+          37,
+        ]
+      }
+      timer={0}
+      videoEnd={3}
+      videoFact={
+        Object {
+          "fact": Object {
+            "kind": "video",
+            "primaryDate": "2016-10-09",
+            "primaryDateKind": "recorded",
+            "title": "Donald Trump - Hillary Clinton (2/3)",
+          },
+          "speakerMap": Array [
+            Object {
+              "range": Array [
+                0,
+                7,
+              ],
+              "speaker": "Raddatz",
+            },
+          ],
+          "speakers": Array [
+            Object {
+              "firstname": "Martha",
+              "lastname": "Raddatz",
+              "middlename": null,
+            },
+          ],
+          "transcript": Array [
+            Object {
+              "idx": 0,
+              "timestamp": 0.75,
+              "word": "Good ",
+            },
+            Object {
+              "idx": 1,
+              "timestamp": 0.96,
+              "word": "evening ",
+            },
+            Object {
+              "idx": 2,
+              "timestamp": 1.56,
+              "word": "I'm ",
+            },
+            Object {
+              "idx": 3,
+              "timestamp": 1.92,
+              "word": "Martha ",
+            },
+            Object {
+              "idx": 4,
+              "timestamp": 2.129,
+              "word": "Raddatz ",
+            },
+            Object {
+              "idx": 5,
+              "timestamp": 2.52,
+              "word": "from ",
+            },
+            Object {
+              "idx": 6,
+              "timestamp": 3.06,
+              "word": "ABC ",
+            },
+            Object {
+              "idx": 7,
+              "timestamp": 3.09,
+              "word": "News. ",
+            },
+          ],
+          "youtubeId": "ApTLB76Nmdg",
+        }
+      }
+      videoStart={0}
+    />
+  </div>
+</div>
+`;
