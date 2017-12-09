@@ -85,9 +85,7 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
           captionNodes = highlightTextTwo(
             captionNodes,
             highlightedCharRange,
-            () => {
-              throw "todo";
-            }
+            () => {}
           );
         }
         this.setState({
@@ -97,7 +95,7 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
         this.setState({
           highlightedNodes: undefined
         });
-        throw "Captions not yet done for this video -- delete this throw";
+        throw "Captions not yet done for this video";
       }
     } catch (e) {
       console.warn(e);
@@ -138,9 +136,7 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
           const newNodes = highlightTextTwo(
             [...this.document.getDocumentNodes()],
             simpleRanges.charRange,
-            () => {
-              throw "todo";
-            }
+            () => {}
           );
 
           this.setState({
