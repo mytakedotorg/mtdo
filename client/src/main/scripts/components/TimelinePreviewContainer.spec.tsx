@@ -6,7 +6,12 @@ import {
   TimelinePreviewContainerProps,
   TimelinePreviewContainerState
 } from "./TimelinePreviewContainer";
-import { documentFactLink, documentNodes, videoFact, videoFactLink } from "../utils/testUtils";
+import {
+  documentFactLink,
+  documentNodes,
+  videoFact,
+  videoFactLink
+} from "../utils/testUtils";
 
 jest.mock("./TimelinePreview", () => ({
   default: "TimelinePreview"
@@ -17,7 +22,6 @@ const mockFn = jest.fn();
 const containerProps = {
   factLink: documentFactLink
 };
-
 
 test("Preview loading", () => {
   const containerState: TimelinePreviewContainerState = {

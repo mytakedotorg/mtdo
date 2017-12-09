@@ -6,7 +6,11 @@ import {
   TimelineViewState,
   EventHandlers
 } from "./TimelineView";
-import { documentFactLink, timelineItems, videoFactLink } from "../utils/testUtils";
+import {
+  documentFactLink,
+  timelineItems,
+  videoFactLink
+} from "../utils/testUtils";
 import { SetFactHandlers } from "./TimelinePreview";
 import { Foundation } from "../java2ts/Foundation";
 

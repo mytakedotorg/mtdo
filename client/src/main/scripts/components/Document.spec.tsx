@@ -18,7 +18,11 @@ jest.mock("./CaptionTextNodeList", () => ({
 test("Document component", () => {
   const tree = renderer
     .create(
-      <Document nodes={documentNodes} className={className} onMouseUp={onMouseUp} />
+      <Document
+        nodes={documentNodes}
+        className={className}
+        onMouseUp={onMouseUp}
+      />
     )
     .toJSON();
   expect(tree).toMatchSnapshot();
@@ -42,7 +46,11 @@ const children = (
 test("Document component with highlights", () => {
   const tree = renderer
     .create(
-      <Document nodes={documentNodes} className={className} onMouseUp={onMouseUp}>
+      <Document
+        nodes={documentNodes}
+        className={className}
+        onMouseUp={onMouseUp}
+      >
         {children}
       </Document>
     )
