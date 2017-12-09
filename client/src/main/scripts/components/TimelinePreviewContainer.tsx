@@ -8,14 +8,14 @@ import TimelinePreviewErrorView from "./TimelinePreviewErrorView";
 import { Foundation } from "../java2ts/Foundation";
 import { Routes } from "../java2ts/Routes";
 
-interface TimelinePreviewContainerProps {
+export interface TimelinePreviewContainerProps {
   factLink: Foundation.FactLink;
   setFactHandlers?: SetFactHandlers;
   ranges?: Ranges;
   offset?: number;
 }
 
-interface TimelinePreviewContainerState {
+export interface TimelinePreviewContainerState {
   error: boolean;
   loading: boolean;
   videoFact?: Foundation.VideoFactContent;
@@ -90,22 +90,36 @@ export default class TimelinePreviewContainer extends React.Component<
   }
   render() {
     return (
-      <div>
-        {this.state.error ? (
-          <TimelinePreviewErrorView />
-        ) : this.state.loading ? (
-          <TimelinePreviewLoadingView />
-        ) : (
-          <TimelinePreview
-            factLink={this.props.factLink}
-            videoFact={this.state.videoFact}
-            nodes={this.state.nodes}
-            setFactHandlers={this.props.setFactHandlers}
-            ranges={this.props.ranges}
-            offset={this.props.offset}
-          />
-        )}
-      </div>
+      <TimelinePreviewContainerBranch
+        containerProps={this.props}
+        containerState={this.state}
+      />
     );
   }
 }
+
+interface TimelinePreviewContainerBranchProps {
+  containerProps: TimelinePreviewContainerProps;
+  containerState: TimelinePreviewContainerState;
+}
+
+export const TimelinePreviewContainerBranch: React.StatelessComponent<
+  TimelinePreviewContainerBranchProps
+> = props => {
+  if (props.containerState.error) {
+    return <TimelinePreviewErrorView />;
+  } else if (props.containerState.loading) {
+    return <TimelinePreviewLoadingView />;
+  } else {
+    return (
+      <TimelinePreview
+        factLink={props.containerProps.factLink}
+        videoFact={props.containerState.videoFact}
+        nodes={props.containerState.nodes}
+        setFactHandlers={props.containerProps.setFactHandlers}
+        ranges={props.containerProps.ranges}
+        offset={props.containerProps.offset}
+      />
+    );
+  }
+};
