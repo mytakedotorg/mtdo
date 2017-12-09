@@ -27,7 +27,7 @@ interface TimelineViewProps {
   setFactHandlers?: SetFactHandlers;
 }
 
-interface TimelineViewState {
+export interface TimelineViewState {
   error: boolean;
   factLink: Foundation.FactLink | null;
   loading: boolean;
@@ -229,7 +229,7 @@ export default class TimelineView extends React.Component<
   }
 }
 
-interface EventHandlers {
+export interface EventHandlers {
   handleChange: (ev: React.ChangeEvent<HTMLInputElement>) => any;
   handleClick: (excerptId: string) => void;
 }
