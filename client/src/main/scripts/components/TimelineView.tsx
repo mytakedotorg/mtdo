@@ -34,6 +34,7 @@ interface TimelineViewState {
   selectedOption: SelectionOptions;
   timelineItems: TimelineItemData[];
   hashValues: HashValues | null;
+  hashIsValid: boolean;
 }
 
 export default class TimelineView extends React.Component<
@@ -45,15 +46,14 @@ export default class TimelineView extends React.Component<
   constructor(props: TimelineViewProps) {
     super(props);
 
-    this.hashIsValid = props.hashUrl ? false : true;
-
     this.state = {
       error: false,
       factLink: null,
       loading: true,
       selectedOption: "Debates",
       timelineItems: [],
-      hashValues: props.hashUrl ? this.parseHashURL(props.hashUrl) : null
+      hashValues: props.hashUrl ? this.parseHashURL(props.hashUrl) : null,
+      hashIsValid: props.hashUrl ? false : true
     };
   }
   getTimelineItems = () => {
@@ -67,16 +67,17 @@ export default class TimelineView extends React.Component<
           });
         } else {
           let currentFactLink: Foundation.FactLink | null = null;
+          let hashIsValid = this.state.hashIsValid;
           for (let factlink of factlinks) {
-            if (!this.hashIsValid) {
-              // Try to find the match the fact title from the hash with a valid title from the server
+            if (!hashIsValid) {
+              // Try to match the fact title from the hash with a valid title from the server
               if (
                 this.state.hashValues &&
                 this.state.hashValues.factTitleSlug ===
                   slugify(factlink.fact.title)
               ) {
                 currentFactLink = factlink;
-                this.hashIsValid = true;
+                hashIsValid = true;
               }
             }
             let idx = factlink.hash;
@@ -91,12 +92,13 @@ export default class TimelineView extends React.Component<
               }
             ];
           }
-          if (this.hashIsValid) {
+          if (hashIsValid) {
             this.factLinks = factlinks;
             this.setState({
               loading: false,
               factLink: currentFactLink ? currentFactLink : null,
-              timelineItems: timelineItems
+              timelineItems: timelineItems,
+              hashIsValid: true
             });
           } else {
             window.location.hash = "";
@@ -213,73 +215,104 @@ export default class TimelineView extends React.Component<
           handleDocumentSetClick: this.handleDocumentSetClick,
           handleVideoSetClick: this.handleVideoSetClick
         };
-    if (this.hashIsValid && this.state.hashValues && this.state.factLink) {
-      const ranges = {
-        highlightedRange: this.state.hashValues.highlightedRange,
-        viewRange: this.state.hashValues.viewRange
-      };
-      return (
-        <div className={"timeline__view"}>
-          <TimelinePreviewContainer
-            factLink={this.state.factLink}
-            setFactHandlers={setFactHandlers}
-            ranges={ranges}
-            offset={this.state.hashValues.offset}
-          />
-          <div className="editor__wrapper">
-            <p className="timeline__instructions">
-              Explore other Facts in the timeline below.
-            </p>
-          </div>
-          <div className={"timeline"}>
-            {this.state.error ? (
-              <TimelineErrorView />
-            ) : this.state.loading ? (
-              <TimelineLoadingView />
-            ) : (
-              <div>
-                <TimelineRadioButtons
-                  selectedOption={this.state.selectedOption}
-                  onChange={this.handleChange}
-                />
-                <Timeline
-                  onItemClick={this.handleClick}
-                  selectedOption={this.state.selectedOption}
-                  timelineItems={this.state.timelineItems}
-                />
-              </div>
-            )}
-          </div>
+    const eventHandlers: EventHandlers = {
+      handleChange: this.handleChange,
+      handleClick: this.handleClick
+    };
+    return (
+      <TimelineViewBranch
+        containerState={this.state}
+        setFactHandlers={setFactHandlers}
+        eventHandlers={eventHandlers}
+      />
+    );
+  }
+}
+
+interface EventHandlers {
+  handleChange: (ev: React.ChangeEvent<HTMLInputElement>) => any;
+  handleClick: (excerptId: string) => void;
+}
+
+interface TimelineViewBranchProps {
+  containerState: TimelineViewState;
+  setFactHandlers: SetFactHandlers;
+  eventHandlers: EventHandlers;
+}
+
+export const TimelineViewBranch: React.StatelessComponent<
+  TimelineViewBranchProps
+> = props => {
+  if (
+    props.containerState.hashIsValid &&
+    props.containerState.hashValues &&
+    props.containerState.factLink
+  ) {
+    const ranges = {
+      highlightedRange: props.containerState.hashValues.highlightedRange,
+      viewRange: props.containerState.hashValues.viewRange
+    };
+    return (
+      <div className={"timeline__view"}>
+        <TimelinePreviewContainer
+          factLink={props.containerState.factLink}
+          setFactHandlers={props.setFactHandlers}
+          ranges={ranges}
+          offset={props.containerState.hashValues.offset}
+        />
+        <div className="editor__wrapper">
+          <p className="timeline__instructions">
+            Explore other Facts in the timeline below.
+          </p>
         </div>
-      );
-    } else {
-      return (
-        <div className={"timeline__view"}>
-          {this.state.error ? (
+        <div className={"timeline"}>
+          {props.containerState.error ? (
             <TimelineErrorView />
-          ) : this.state.loading ? (
+          ) : props.containerState.loading ? (
             <TimelineLoadingView />
           ) : (
             <div>
               <TimelineRadioButtons
-                selectedOption={this.state.selectedOption}
-                onChange={this.handleChange}
+                selectedOption={props.containerState.selectedOption}
+                onChange={props.eventHandlers.handleChange}
               />
               <Timeline
-                onItemClick={this.handleClick}
-                selectedOption={this.state.selectedOption}
-                timelineItems={this.state.timelineItems}
+                onItemClick={props.eventHandlers.handleClick}
+                selectedOption={props.containerState.selectedOption}
+                timelineItems={props.containerState.timelineItems}
               />
             </div>
           )}
-          {this.state.factLink ? (
-            <TimelinePreviewContainer
-              factLink={this.state.factLink}
-              setFactHandlers={setFactHandlers}
-            />
-          ) : null}
         </div>
-      );
-    }
+      </div>
+    );
+  } else {
+    return (
+      <div className={"timeline__view"}>
+        {props.containerState.error ? (
+          <TimelineErrorView />
+        ) : props.containerState.loading ? (
+          <TimelineLoadingView />
+        ) : (
+          <div>
+            <TimelineRadioButtons
+              selectedOption={props.containerState.selectedOption}
+              onChange={props.eventHandlers.handleChange}
+            />
+            <Timeline
+              onItemClick={props.eventHandlers.handleClick}
+              selectedOption={props.containerState.selectedOption}
+              timelineItems={props.containerState.timelineItems}
+            />
+          </div>
+        )}
+        {props.containerState.factLink ? (
+          <TimelinePreviewContainer
+            factLink={props.containerState.factLink}
+            setFactHandlers={props.setFactHandlers}
+          />
+        ) : null}
+      </div>
+    );
   }
-}
+};
