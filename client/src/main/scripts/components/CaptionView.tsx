@@ -11,7 +11,7 @@ import {
 } from "../utils/functions";
 import { Foundation } from "../java2ts/Foundation";
 
-interface EventHandlers {
+export interface EventHandlers {
   onHighlight: (
     videoRange: [number, number],
     charRange: [number, number]
