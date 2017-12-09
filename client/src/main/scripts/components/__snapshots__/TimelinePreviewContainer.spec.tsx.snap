@@ -1,0 +1,194 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Error loading Preview 1`] = `
+<div>
+  <p>
+    Error loading TimelinePreview
+  </p>
+</div>
+`;
+
+exports[`Preview loading 1`] = `
+<div>
+  <p>
+    Loading TimelinePreview
+  </p>
+</div>
+`;
+
+exports[`Successfully loaded Document Preview 1`] = `
+<TimelinePreview
+  factLink={
+    Object {
+      "fact": Object {
+        "kind": "document",
+        "primaryDate": "1865-12-06",
+        "primaryDateKind": "ratified",
+        "title": "Amendment 13",
+      },
+      "hash": "o_dRqrNJ62wzlgLilTrLxkHqGmvAS9qTpa4z4pjyFqA=",
+    }
+  }
+  nodes={
+    Array [
+      Object {
+        "component": "p",
+        "innerHTML": Array [
+          "Section 1. Neither slavery nor involuntary servitude, except as a punishment for crime whereof the party shall have been duly convicted, shall exist within the United States, or any place subject to their jurisdiction.",
+        ],
+        "offset": 0,
+      },
+      Object {
+        "component": "p",
+        "innerHTML": Array [
+          "Section 2. Congress shall have power to enforce this article by appropriate legislation.",
+        ],
+        "offset": 218,
+      },
+    ]
+  }
+  offset={undefined}
+  ranges={undefined}
+  setFactHandlers={undefined}
+  videoFact={undefined}
+/>
+`;
+
+exports[`Successfully loaded Document Preview with highlights 1`] = `
+<TimelinePreview
+  factLink={
+    Object {
+      "fact": Object {
+        "kind": "document",
+        "primaryDate": "1865-12-06",
+        "primaryDateKind": "ratified",
+        "title": "Amendment 13",
+      },
+      "hash": "o_dRqrNJ62wzlgLilTrLxkHqGmvAS9qTpa4z4pjyFqA=",
+    }
+  }
+  nodes={
+    Array [
+      Object {
+        "component": "p",
+        "innerHTML": Array [
+          "Section 1. Neither slavery nor involuntary servitude, except as a punishment for crime whereof the party shall have been duly convicted, shall exist within the United States, or any place subject to their jurisdiction.",
+        ],
+        "offset": 0,
+      },
+      Object {
+        "component": "p",
+        "innerHTML": Array [
+          "Section 2. Congress shall have power to enforce this article by appropriate legislation.",
+        ],
+        "offset": 218,
+      },
+    ]
+  }
+  offset={248}
+  ranges={
+    Object {
+      "highlightedRange": Array [
+        11,
+        53,
+      ],
+      "viewRange": Array [
+        0,
+        218,
+      ],
+    }
+  }
+  setFactHandlers={
+    Object {
+      "handleDocumentSetClick": [Function],
+      "handleVideoSetClick": [Function],
+    }
+  }
+  videoFact={undefined}
+/>
+`;
+
+exports[`Successfully loaded Video Preview 1`] = `
+<TimelinePreview
+  factLink={
+    Object {
+      "fact": Object {
+        "kind": "video",
+        "primaryDate": "2016-10-09",
+        "primaryDateKind": "recorded",
+        "title": "Donald Trump - Hillary Clinton (2/3)",
+      },
+      "hash": "U8MV5KDDaxumxZOCJOzExAUAAkSoYNhycVXq7jZ59_0=",
+    }
+  }
+  nodes={undefined}
+  offset={undefined}
+  ranges={undefined}
+  setFactHandlers={
+    Object {
+      "handleDocumentSetClick": [Function],
+      "handleVideoSetClick": [Function],
+    }
+  }
+  videoFact={
+    Object {
+      "fact": Object {
+        "kind": "video",
+        "primaryDate": "2016-10-09",
+        "primaryDateKind": "recorded",
+        "title": "Donald Trump - Hillary Clinton (2/3)",
+      },
+      "speakers": Array [
+        Object {
+          "firstname": "Martha",
+          "lastname": "Raddatz",
+          "middlename": null,
+        },
+      ],
+      "transcript": Array [
+        Object {
+          "idx": 0,
+          "timestamp": 0.75,
+          "word": "Good ",
+        },
+        Object {
+          "idx": 1,
+          "timestamp": 0.96,
+          "word": "evening ",
+        },
+        Object {
+          "idx": 2,
+          "timestamp": 1.56,
+          "word": "I'm ",
+        },
+        Object {
+          "idx": 3,
+          "timestamp": 1.92,
+          "word": "Martha ",
+        },
+        Object {
+          "idx": 4,
+          "timestamp": 2.129,
+          "word": "Raddatz ",
+        },
+        Object {
+          "idx": 5,
+          "timestamp": 2.52,
+          "word": "from ",
+        },
+        Object {
+          "idx": 6,
+          "timestamp": 3.06,
+          "word": "ABC ",
+        },
+        Object {
+          "idx": 7,
+          "timestamp": 3.09,
+          "word": "News. ",
+        },
+      ],
+      "youtubeId": "ApTLB76Nmdg",
+    }
+  }
+/>
+`;
