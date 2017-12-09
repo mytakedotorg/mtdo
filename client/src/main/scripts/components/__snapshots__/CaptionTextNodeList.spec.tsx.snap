@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`DocumentTextNodeList 1`] = `
+exports[`CaptionTextNodeList 1`] = `
 <div
   className="document__text"
 >
@@ -25,6 +25,18 @@ exports[`DocumentTextNodeList 1`] = `
         }
       }
       speaker="Raddatz"
+    />
+    <CaptionTextNode
+      documentNode={
+        Object {
+          "component": "p",
+          "innerHTML": Array [
+            "And I'm Anderson Cooper from CNN. We want to welcome you to Washington University in St. Louis for the second presidential debate between Hillary Clinton and Donald Trump sponsored by the Commission on Presidential Debates. tonight's debate is a Town Hall format, which gives voters a chance to directly ask the candidates questions. Martha and I will ask follow-up questions but the night really belongs to the people in this room and to people across the country who have submitted questions online.",
+          ],
+          "offset": 46,
+        }
+      }
+      speaker="Cooper"
     />
   </div>
 </div>
