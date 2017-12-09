@@ -1,5 +1,6 @@
 import { Foundation } from "../java2ts/Foundation";
 import { TimelineItemData } from "../components/Timeline";
+import { FoundationNode } from "./functions";
 
 const videoFact: Foundation.VideoFactContent = {
   youtubeId: "ApTLB76Nmdg",
@@ -106,7 +107,7 @@ const documentFactLink: Foundation.FactLink = {
   hash: "o_dRqrNJ62wzlgLilTrLxkHqGmvAS9qTpa4z4pjyFqA="
 };
 
-const documentNodes = [
+const documentNodes: FoundationNode[] = [
   {
     component: "p",
     innerHTML: [
@@ -133,4 +134,19 @@ const videoFactLink: Foundation.FactLink = {
   hash: "U8MV5KDDaxumxZOCJOzExAUAAkSoYNhycVXq7jZ59_0="
 };
 
-export { documentFactLink, documentNodes, timelineItems, videoFact, videoFactLink};
+const videoNodes: FoundationNode[] = [
+  {
+    component: "p",
+    offset: 0,
+    innerHTML: ["Good evening I'm Martha Raddatz from ABC News."]
+  }
+];
+
+export {
+  documentFactLink,
+  documentNodes,
+  timelineItems,
+  videoFact,
+  videoFactLink,
+  videoNodes
+};

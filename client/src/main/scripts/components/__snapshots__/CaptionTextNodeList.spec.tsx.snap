@@ -1,0 +1,31 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DocumentTextNodeList 1`] = `
+<div
+  className="document__text"
+>
+  <h3
+    className="document__node-text document__node-text--speaker-top"
+  >
+    -
+  </h3>
+  <div
+    className="document__text document__text--caption"
+    onMouseUp={[Function]}
+    onScroll={[Function]}
+  >
+    <CaptionTextNode
+      documentNode={
+        Object {
+          "component": "p",
+          "innerHTML": Array [
+            "Good evening I'm Martha Raddatz from ABC News.",
+          ],
+          "offset": 0,
+        }
+      }
+      speaker="Raddatz"
+    />
+  </div>
+</div>
+`;
