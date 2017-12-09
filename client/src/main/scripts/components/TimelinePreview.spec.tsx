@@ -3,8 +3,8 @@ import { mount, ReactWrapper } from "enzyme";
 import { Foundation } from "../java2ts/Foundation";
 import { FoundationNode } from "../utils/functions";
 import {} from "jest";
-
 import TimelinePreview from "./TimelinePreview";
+import { documentFactLink, documentNodes } from "../utils/testUtils";
 
 const onDocumentSetClick = jest.fn();
 const onVideoSetClick = jest.fn();
@@ -25,32 +25,6 @@ describe("Foundation Document", () => {
   const offset = 399;
   const highlightedRange: [number, number] = [327, 500];
   const viewRange: [number, number] = [327, 500];
-  const factLink: Foundation.FactLink = {
-    fact: {
-      title: "Amendment 13",
-      primaryDate: "1865-12-06",
-      primaryDateKind: "ratified",
-      kind: "document"
-    },
-    hash: "o_dRqrNJ62wzlgLilTrLxkHqGmvAS9qTpa4z4pjyFqA="
-  };
-
-  const nodes: FoundationNode[] = [
-    {
-      component: "p",
-      innerHTML: [
-        "Section 1. Neither slavery nor involuntary servitude, except as a punishment for crime whereof the party shall have been duly convicted, shall exist within the United States, or any place subject to their jurisdiction."
-      ],
-      offset: 0
-    },
-    {
-      component: "p",
-      innerHTML: [
-        "Section 2. Congress shall have power to enforce this article by appropriate legislation."
-      ],
-      offset: 218
-    }
-  ];
 
   const setFactHandlers = {
     handleDocumentSetClick: onDocumentSetClick,
@@ -64,8 +38,8 @@ describe("Foundation Document", () => {
   beforeAll(() => {
     wrapper = mount(
       <TimelinePreview
-        factLink={factLink}
-        nodes={nodes}
+        factLink={documentFactLink}
+        nodes={documentNodes}
         setFactHandlers={setFactHandlers}
         ranges={ranges}
         offset={offset}

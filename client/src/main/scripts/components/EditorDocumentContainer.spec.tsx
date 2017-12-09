@@ -6,6 +6,7 @@ import {
   EditorDocumentContainerProps,
   EditorDocumentContainerState
 } from "./EditorDocumentContainer";
+import { documentFactLink, documentNodes } from "../utils/testUtils";
 
 const mockFn = jest.fn();
 
@@ -24,28 +25,8 @@ const containerProps: EditorDocumentContainerProps = {
 };
 
 const document = {
-  fact: {
-    title: "Amendment 13",
-    primaryDate: "1865-12-06",
-    primaryDateKind: "ratified",
-    kind: "document"
-  },
-  nodes: [
-    {
-      component: "p",
-      innerHTML: [
-        "Section 1. Neither slavery nor involuntary servitude, except as a punishment for crime whereof the party shall have been duly convicted, shall exist within the United States, or any place subject to their jurisdiction."
-      ],
-      offset: 0
-    },
-    {
-      component: "p",
-      innerHTML: [
-        "Section 2. Congress shall have power to enforce this article by appropriate legislation."
-      ],
-      offset: 218
-    }
-  ]
+  fact: documentFactLink.fact,
+  nodes: documentNodes
 };
 
 test("Document loading", () => {

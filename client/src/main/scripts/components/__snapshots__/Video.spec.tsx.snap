@@ -83,7 +83,6 @@ exports[`Video 1`] = `
             Object {
               "firstname": "Martha",
               "lastname": "Raddatz",
-              "middlename": null,
             },
           ],
           "transcript": Array [
@@ -227,7 +226,6 @@ exports[`Video with highlights 1`] = `
             Object {
               "firstname": "Martha",
               "lastname": "Raddatz",
-              "middlename": null,
             },
           ],
           "transcript": Array [

@@ -138,11 +138,19 @@ exports[`Successfully loaded Video Preview 1`] = `
         "primaryDateKind": "recorded",
         "title": "Donald Trump - Hillary Clinton (2/3)",
       },
+      "speakerMap": Array [
+        Object {
+          "range": Array [
+            0,
+            7,
+          ],
+          "speaker": "Raddatz",
+        },
+      ],
       "speakers": Array [
         Object {
           "firstname": "Martha",
           "lastname": "Raddatz",
-          "middlename": null,
         },
       ],
       "transcript": Array [

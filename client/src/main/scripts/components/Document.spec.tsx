@@ -2,23 +2,8 @@ import * as React from "react";
 import * as renderer from "react-test-renderer";
 import {} from "jest";
 import Document from "./Document";
+import { documentNodes } from "../utils/testUtils";
 
-const nodes = [
-  {
-    component: "p",
-    innerHTML: [
-      "Section 1. Neither slavery nor involuntary servitude, except as a punishment for crime whereof the party shall have been duly convicted, shall exist within the United States, or any place subject to their jurisdiction."
-    ],
-    offset: 0
-  },
-  {
-    component: "p",
-    innerHTML: [
-      "Section 2. Congress shall have power to enforce this article by appropriate legislation."
-    ],
-    offset: 218
-  }
-];
 const className = "document__row";
 const onMouseUp = jest.fn();
 
@@ -33,7 +18,7 @@ jest.mock("./CaptionTextNodeList", () => ({
 test("Document component", () => {
   const tree = renderer
     .create(
-      <Document nodes={nodes} className={className} onMouseUp={onMouseUp} />
+      <Document nodes={documentNodes} className={className} onMouseUp={onMouseUp} />
     )
     .toJSON();
   expect(tree).toMatchSnapshot();
@@ -57,7 +42,7 @@ const children = (
 test("Document component with highlights", () => {
   const tree = renderer
     .create(
-      <Document nodes={nodes} className={className} onMouseUp={onMouseUp}>
+      <Document nodes={documentNodes} className={className} onMouseUp={onMouseUp}>
         {children}
       </Document>
     )
