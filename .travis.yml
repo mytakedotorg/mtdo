@@ -1,8 +1,12 @@
-language: node_js
+dist: precise
+jdk: oraclejdk8
+language: java
 
 env:
   - TERM=dumb
 
+install:
+  - "./gradlew :client:npmInstall"
 script:
   - "./gradlew check"
 
