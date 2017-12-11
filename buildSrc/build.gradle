@@ -53,3 +53,11 @@ gradlePlugin {
 		}
 	}
 }
+
+// reproducible buildSrc jar for travis cache
+project.tasks.withType(AbstractArchiveTask) {
+	preserveFileTimestamps = false
+	reproducibleFileOrder = true
+	dirMode = 0775
+	fileMode = 0664
+}
