@@ -1,8 +1,10 @@
-language: node_js
+language: java
 
 env:
   - TERM=dumb
 
+install:
+  - "./gradlew :client:npmInstall"
 script:
   - "./gradlew check"
 
