@@ -20,9 +20,10 @@ public class CodegenConfig implements StaticCodegenConfig {
 	@Override
 	public TypeLiteral[] whatToCodegen() {
 		return new TypeLiteral[]{
-				new TypeLiteral<DraftRev>() {},
-				new TypeLiteral<DraftPost>() {},
-				new TypeLiteral<PublishResult>() {}
+				TypeLiteral.create(DraftRev.class),
+				TypeLiteral.create(DraftPost.class),
+				TypeLiteral.create(LoginCookie.class),
+				TypeLiteral.create(PublishResult.class)
 		};
 	}
 }
