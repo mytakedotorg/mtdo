@@ -17,7 +17,7 @@ dependencies {
 	// db migration
 	compile 'org.flywaydb:flyway-core:4.2.0'
 	// jsweet ts2java
-	compile 'com.jsoniter:jsoniter:0.9.17'
+	compile 'com.jsoniter:jsoniter:0.9.18'
 	compile 'org.jsweet:jsweet-transpiler:2.0.1'
 	compile files("${System.properties['java.home']}/../lib/tools.jar")
 	// java8 utilities
