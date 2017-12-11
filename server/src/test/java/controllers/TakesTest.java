@@ -26,5 +26,6 @@ public class TakesTest {
 	public void viewUser() {
 		Snapshot.match("viewUser", get("/samples"));
 		Snapshot.match("viewUserOther", get("/other"));
+		Snapshot.match("viewUserEmpty", get("/empty"));
 	}
 }

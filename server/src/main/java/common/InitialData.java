@@ -55,6 +55,8 @@ public class InitialData {
 		int otherUser = usernameEmail(dsl, time, "other", "other@email.com");
 		take(dsl, time, otherUser, "I am a strawman", b -> {});
 		draft(dsl, time, otherUser, "To make sure users don't leak", b -> {});
+
+		usernameEmail(dsl, time, "empty", "empty@email.com");
 	}
 
 	static void draft(DSLContext dsl, Time time, int user, String title, Consumer<TakeBuilder> builder) {

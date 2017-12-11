@@ -57,18 +57,19 @@
 <div class="takelist">
 <h1 class="takelist__user">samples</h1>
 
-	<div class="takelist__take">
-	<h2 class="takelist__title"><a class="takelist__link" href="/samples/does-a-law-mean-what-it-says-or-what-it-meant">Does a law mean what it says, or what it meant?</a></h2>
-	<span class="takelist__aside">Published on Jan 01 1970</span>
-	</div>
-	<div class="takelist__take">
-	<h2 class="takelist__title"><a class="takelist__link" href="/samples/dont-worry-well-protect-the-constitution-for-you">Don&#39;t worry, we&#39;ll protect the Constitution for you!</a></h2>
-	<span class="takelist__aside">Published on Jan 01 1970</span>
-	</div>
-	<div class="takelist__take">
-	<h2 class="takelist__title"><a class="takelist__link" href="/samples/why-its-so-hard-to-have-peace">Why it&#39;s so hard to have peace</a></h2>
-	<span class="takelist__aside">Published on Jan 01 1970</span>
-	</div>
+		<div class="takelist__take">
+			<h2 class="takelist__title"><a class="takelist__link" href="/samples/does-a-law-mean-what-it-says-or-what-it-meant">Does a law mean what it says, or what it meant?</a></h2>
+			<span class="takelist__aside">Published on Jan 01 1970</span>
+		</div>
+		<div class="takelist__take">
+			<h2 class="takelist__title"><a class="takelist__link" href="/samples/dont-worry-well-protect-the-constitution-for-you">Don&#39;t worry, we&#39;ll protect the Constitution for you!</a></h2>
+			<span class="takelist__aside">Published on Jan 01 1970</span>
+		</div>
+		<div class="takelist__take">
+			<h2 class="takelist__title"><a class="takelist__link" href="/samples/why-its-so-hard-to-have-peace">Why it&#39;s so hard to have peace</a></h2>
+			<span class="takelist__aside">Published on Jan 01 1970</span>
+		</div>
+
 </div>
 
 
