@@ -1,0 +1,298 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Initial status 1`] = `
+<div
+  className="editor__meta"
+>
+  <Banner
+    isSuccess={true}
+  >
+    
+  </Banner>
+  <button
+    className="editor__button editor__button--disabled"
+    disabled={true}
+    onClick={[Function]}
+  >
+    Save
+  </button>
+  <button
+    className="editor__button editor__button--publish"
+    disabled={false}
+    onClick={[Function]}
+  >
+    Save & Publish
+  </button>
+  <button
+    className="editor__button editor__button--delete"
+    disabled={false}
+    onClick={[Function]}
+  >
+    Delete Draft
+  </button>
+</div>
+`;
+
+exports[`Publishing 1`] = `
+<div
+  className="editor__meta"
+>
+  <Banner
+    isSuccess={true}
+  >
+    Publishing Take.
+  </Banner>
+  <button
+    className="editor__button editor__button--save"
+    disabled={false}
+    onClick={[Function]}
+  >
+    Save
+  </button>
+  <button
+    className="editor__button editor__button--publish"
+    disabled={false}
+    onClick={[Function]}
+  >
+    Save & Publish
+  </button>
+  <button
+    className="editor__button editor__button--delete"
+    disabled={false}
+    onClick={[Function]}
+  >
+    Delete Draft
+  </button>
+</div>
+`;
+
+exports[`Publishing error 1`] = `
+<div
+  className="editor__meta"
+>
+  <Banner
+    isSuccess={false}
+  >
+    There was an error publishing your Take.
+  </Banner>
+  <button
+    className="editor__button editor__button--save"
+    disabled={false}
+    onClick={[Function]}
+  >
+    Save
+  </button>
+  <button
+    className="editor__button editor__button--publish"
+    disabled={false}
+    onClick={[Function]}
+  >
+    Save & Publish
+  </button>
+  <button
+    className="editor__button editor__button--delete"
+    disabled={false}
+    onClick={[Function]}
+  >
+    Delete Draft
+  </button>
+</div>
+`;
+
+exports[`Save successful 1`] = `
+<div
+  className="editor__meta"
+>
+  <Banner
+    isSuccess={true}
+  >
+    Save successful!
+  </Banner>
+  <button
+    className="editor__button editor__button--disabled"
+    disabled={true}
+    onClick={[Function]}
+  >
+    Save
+  </button>
+  <button
+    className="editor__button editor__button--publish"
+    disabled={false}
+    onClick={[Function]}
+  >
+    Save & Publish
+  </button>
+  <button
+    className="editor__button editor__button--delete"
+    disabled={false}
+    onClick={[Function]}
+  >
+    Delete Draft
+  </button>
+</div>
+`;
+
+exports[`Saving 1`] = `
+<div
+  className="editor__meta"
+>
+  <Banner
+    isSuccess={true}
+  >
+    
+  </Banner>
+  <button
+    className="editor__button editor__button--save"
+    disabled={false}
+    onClick={[Function]}
+  >
+    Save
+  </button>
+  <button
+    className="editor__button editor__button--publish"
+    disabled={false}
+    onClick={[Function]}
+  >
+    Save & Publish
+  </button>
+  <button
+    className="editor__button editor__button--delete"
+    disabled={false}
+    onClick={[Function]}
+  >
+    Delete Draft
+  </button>
+</div>
+`;
+
+exports[`Saving 2`] = `
+<div
+  className="editor__meta"
+>
+  <Banner
+    isSuccess={true}
+  >
+    Saving Take.
+  </Banner>
+  <button
+    className="editor__button editor__button--save"
+    disabled={false}
+    onClick={[Function]}
+  >
+    Save
+  </button>
+  <button
+    className="editor__button editor__button--publish"
+    disabled={false}
+    onClick={[Function]}
+  >
+    Save & Publish
+  </button>
+  <button
+    className="editor__button editor__button--delete"
+    disabled={false}
+    onClick={[Function]}
+  >
+    Delete Draft
+  </button>
+</div>
+`;
+
+exports[`Title too long 1`] = `
+<div
+  className="editor__meta"
+>
+  <Banner
+    isSuccess={false}
+  >
+    Title cannot be longer than 255 characters.
+  </Banner>
+  <button
+    className="editor__button editor__button--save"
+    disabled={false}
+    onClick={[Function]}
+  >
+    Save
+  </button>
+  <button
+    className="editor__button editor__button--publish"
+    disabled={false}
+    onClick={[Function]}
+  >
+    Save & Publish
+  </button>
+  <button
+    className="editor__button editor__button--delete"
+    disabled={false}
+    onClick={[Function]}
+  >
+    Delete Draft
+  </button>
+</div>
+`;
+
+exports[`Unknown error 1`] = `
+<div
+  className="editor__meta"
+>
+  <Banner
+    isSuccess={false}
+  >
+    There was an error modifying your Take.
+  </Banner>
+  <button
+    className="editor__button editor__button--save"
+    disabled={false}
+    onClick={[Function]}
+  >
+    Save
+  </button>
+  <button
+    className="editor__button editor__button--publish"
+    disabled={false}
+    onClick={[Function]}
+  >
+    Save & Publish
+  </button>
+  <button
+    className="editor__button editor__button--delete"
+    disabled={false}
+    onClick={[Function]}
+  >
+    Delete Draft
+  </button>
+</div>
+`;
+
+exports[`Unsaved 1`] = `
+<div
+  className="editor__meta"
+>
+  <Banner
+    isSuccess={true}
+  >
+    
+  </Banner>
+  <button
+    className="editor__button editor__button--save"
+    disabled={false}
+    onClick={[Function]}
+  >
+    Save
+  </button>
+  <button
+    className="editor__button editor__button--publish"
+    disabled={false}
+    onClick={[Function]}
+  >
+    Save & Publish
+  </button>
+  <button
+    className="editor__button editor__button--delete"
+    disabled={false}
+    onClick={[Function]}
+  >
+    Delete Draft
+  </button>
+</div>
+`;

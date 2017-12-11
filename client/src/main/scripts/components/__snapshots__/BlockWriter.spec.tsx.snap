@@ -1,0 +1,62 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Simple block writer model 1`] = `
+<div>
+  <BlockEditor
+    active={-1}
+    eventHandlers={
+      Object {
+        "handleChange": [Function],
+        "handleDelete": [Function],
+        "handleEnterPress": [Function],
+        "handleFocus": [Function],
+      }
+    }
+    takeDocument={
+      Object {
+        "blocks": Array [
+          Object {
+            "kind": "paragraph",
+            "text": "",
+          },
+        ],
+        "title": "",
+      }
+    }
+  />
+  <div
+    className="editor__wrapper"
+  >
+    <EditorButtons
+      eventHandlers={
+        Object {
+          "handleDeleteClick": [Function],
+          "handlePublishClick": [Function],
+          "handleSaveClick": [Function],
+        }
+      }
+      status={
+        Object {
+          "error": false,
+          "message": "",
+          "saved": true,
+          "saving": false,
+        }
+      }
+    />
+    <p
+      className="timeline__instructions"
+    >
+      Add Facts to your Take from the timeline below.
+    </p>
+  </div>
+  <TimelineView
+    setFactHandlers={
+      Object {
+        "handleDocumentSetClick": [Function],
+        "handleVideoSetClick": [Function],
+      }
+    }
+  />
+</div>
+`;

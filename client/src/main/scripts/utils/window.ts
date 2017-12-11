@@ -1,6 +1,6 @@
 /**
-* Small screen navigation toggle
-**/
+ * Small screen navigation toggle
+ **/
 import { LoginCookie } from "../java2ts/LoginCookie";
 import { Routes } from "../java2ts/Routes";
 

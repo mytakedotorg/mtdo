@@ -1,0 +1,83 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Debates selected 1`] = `
+<div
+  className="timeline__inner-container"
+>
+  <div
+    className="timeline__actions"
+  >
+    <input
+      checked={true}
+      className="timeline__radio"
+      id="radio--debates"
+      name="type"
+      onChange={[Function]}
+      type="radio"
+      value="Debates"
+    />
+    <label
+      className="timeline__radio-label"
+      htmlFor="radio--debates"
+    >
+      Debates
+    </label>
+    <input
+      checked={false}
+      className="timeline__radio"
+      id="radio--documents"
+      name="type"
+      onChange={[Function]}
+      type="radio"
+      value="Documents"
+    />
+    <label
+      className="timeline__radio-label"
+      htmlFor="radio--documents"
+    >
+      Founding Documents
+    </label>
+  </div>
+</div>
+`;
+
+exports[`Documents selected 1`] = `
+<div
+  className="timeline__inner-container"
+>
+  <div
+    className="timeline__actions"
+  >
+    <input
+      checked={false}
+      className="timeline__radio"
+      id="radio--debates"
+      name="type"
+      onChange={[Function]}
+      type="radio"
+      value="Debates"
+    />
+    <label
+      className="timeline__radio-label"
+      htmlFor="radio--debates"
+    >
+      Debates
+    </label>
+    <input
+      checked={true}
+      className="timeline__radio"
+      id="radio--documents"
+      name="type"
+      onChange={[Function]}
+      type="radio"
+      value="Documents"
+    />
+    <label
+      className="timeline__radio-label"
+      htmlFor="radio--documents"
+    >
+      Founding Documents
+    </label>
+  </div>
+</div>
+`;
