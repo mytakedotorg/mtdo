@@ -1,39 +1,25 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import BlockReader from "./BlockReader";
-import { TakeDocument } from "./BlockEditor";
 import DocumentTextNodeList from "./DocumentTextNodeList";
-import { Article } from "./FeedList";
+import { Card } from "./FeedList";
 import { getNodeArray, getHighlightedNodes } from "../utils/functions";
 
-interface FeedCardProps {
-  username: string;
-  article: Article;
-}
-
-class FeedCard extends React.Component<FeedCardProps, {}> {
-  constructor(props: FeedCardProps) {
+class FeedCard extends React.Component<Card, {}> {
+  constructor(props: Card) {
     super(props);
   }
-  getArticleURL = () => {
-    return "/" + this.props.username + "/" + this.props.article.titleSlug + "/";
-  };
-  getTakeDocument = (): TakeDocument => {
-    let { article } = this.props;
-    return {
-      title: article.title,
-      blocks: article.blocks
-    };
-  };
   render() {
     let { props } = this;
     return (
       <div className="feed__card">
-        <a href={this.getArticleURL()} className="feed__link">
+        <a
+          href={"/" + this.props.username + "/" + this.props.titleSlug}
+          className="feed__link"
+        >
           <span />
         </a>
-        {props.article.previewBlocks.map((blockIdx, mapIdx) => {
-          let block = props.article.blocks[blockIdx];
+        {props.previewBlocks.map((blockIdx, mapIdx) => {
+          let block = props.blocks[blockIdx];
           if (block.kind === "document") {
             let highlightedNodes = getHighlightedNodes(
               getNodeArray(block.excerptId),
@@ -47,7 +33,7 @@ class FeedCard extends React.Component<FeedCardProps, {}> {
               >
                 <div className="feed__card-document">
                   <h2 className="feed__card-document-title">
-                    {this.props.article.title}
+                    {this.props.title}
                   </h2>
                   <DocumentTextNodeList
                     className="feed__card-document-text"
@@ -70,9 +56,9 @@ class FeedCard extends React.Component<FeedCardProps, {}> {
           }
         })}
         <div className="feed__card-excerpt">
-          <h2 className="feed__card-title">{props.article.title}</h2>
-          {props.article.previewBlocks.map((blockIdx, mapIdx) => {
-            let block = props.article.blocks[blockIdx];
+          <h2 className="feed__card-title">{props.title}</h2>
+          {props.previewBlocks.map((blockIdx, mapIdx) => {
+            let block = props.blocks[blockIdx];
             if (block.kind === "paragraph") {
               return (
                 <div className="feed__card-text-container" key={mapIdx}>
