@@ -8,6 +8,7 @@ package controllers;
 
 import com.jsoniter.JsonIterator;
 import common.JoobyDevRule;
+import common.JsonPost;
 import common.Snapshot;
 import common.TakeBuilder;
 import io.restassured.http.ContentType;
@@ -43,15 +44,7 @@ public class DraftsTest {
 	private DraftRev postSave(Consumer<DraftPost> postSetup) {
 		DraftPost post = newPost();
 		postSetup.accept(post);
-
-		byte[] body = dev.givenUser("samples")
-				.contentType(ContentType.JSON)
-				.body(post.toJson())
-				.post("/drafts/save")
-				.then()
-				.statusCode(Status.OK.value())
-				.extract().body().asByteArray();
-		return JsonIterator.deserialize(body, DraftRev.class);
+		return JsonPost.post(dev.givenUser("samples"), post, "/drafts/save", DraftRev.class);
 	}
 
 	@Test

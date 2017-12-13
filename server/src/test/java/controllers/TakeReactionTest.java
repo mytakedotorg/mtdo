@@ -6,16 +6,14 @@
  */
 package controllers;
 
-import com.jsoniter.JsonIterator;
 import common.JoobyDevRule;
+import common.JsonPost;
 import io.restassured.RestAssured;
-import io.restassured.http.ContentType;
 import java2ts.Routes;
 import java2ts.TakeReactionJson;
 import java2ts.TakeReactionJson.UserState;
 import javax.annotation.Nullable;
 import org.assertj.core.api.Assertions;
-import org.jooby.Status;
 import org.junit.ClassRule;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
@@ -31,14 +29,8 @@ public class TakeReactionTest {
 	private static TakeReactionJson.ViewRes viewForUser(@Nullable String username) {
 		TakeReactionJson.ViewReq req = new TakeReactionJson.ViewReq();
 		req.take_id = TEST_TAKE_ID;
-		byte[] body = (username == null ? RestAssured.given() : dev.givenUser(username))
-				.contentType(ContentType.JSON)
-				.body(req.toJson())
-				.post(Routes.API_TAKE_VIEW)
-				.then()
-				.statusCode(Status.OK.value())
-				.extract().body().asByteArray();
-		return JsonIterator.deserialize(body, TakeReactionJson.ViewRes.class);
+		return JsonPost.post(username == null ? RestAssured.given() : dev.givenUser(username),
+				req, Routes.API_TAKE_VIEW, TakeReactionJson.ViewRes.class);
 	}
 
 	@Test
@@ -67,14 +59,7 @@ public class TakeReactionTest {
 		TakeReactionJson.ReactReq req = new TakeReactionJson.ReactReq();
 		req.take_id = TEST_TAKE_ID;
 		req.userState = userState;
-		byte[] body = dev.givenUser(username)
-				.contentType(ContentType.JSON)
-				.body(req.toJson())
-				.post(Routes.API_TAKE_REACT)
-				.then()
-				.statusCode(Status.OK.value())
-				.extract().body().asByteArray();
-		return JsonIterator.deserialize(body, TakeReactionJson.ReactRes.class);
+		return JsonPost.post(dev.givenUser(username), req, Routes.API_TAKE_REACT, TakeReactionJson.ReactRes.class);
 	}
 
 	@Test
