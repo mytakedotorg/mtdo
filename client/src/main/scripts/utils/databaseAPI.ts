@@ -77,6 +77,7 @@ export function fetchFact(
     })
     .catch(function(error: Error) {
       // Network error
+      console.log("In a catch block way over here: ", error);
       callback(error, null);
     });
 }

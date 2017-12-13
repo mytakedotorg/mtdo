@@ -213,6 +213,8 @@ class FeedCard extends React.Component<FeedCardProps, {}> {
             } else {
               throw "videoFact missing in VideoBlock";
             }
+          } else {
+            throw "some wonky error";
           }
         })}
         <div className="feed__card-excerpt">
