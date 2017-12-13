@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import FeedCard from "./FeedCard";
+import FeedCardContainer from "./FeedCardContainer";
 import { TakeBlock } from "./BlockEditor";
 
 export interface Card {
@@ -20,15 +20,17 @@ const FeedList: React.StatelessComponent<FeedListProps> = props => {
     <div className="feed">
       <div className="feed__inner-container">
         {props.cards.map((card, idx) => {
-          console.log("idx=" + idx);
+          let previewBlocks: TakeBlock[] = [];
+          for (let previewIdx of card.previewBlocks) {
+            previewBlocks.push(card.blocks[previewIdx]);
+          }
           return (
-            <FeedCard
+            <FeedCardContainer
               key={idx.toString()}
               username={card.username}
               title={card.title}
               titleSlug={card.titleSlug}
-              blocks={card.blocks}
-              previewBlocks={card.previewBlocks}
+              blocks={previewBlocks}
             />
           );
         })}
