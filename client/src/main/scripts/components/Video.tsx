@@ -75,7 +75,7 @@ class Video extends React.Component<VideoProps, VideoState> {
           throw "TODO";
         }
       } catch (err) {
-        console.warn(err);
+        throw err;
       }
     }
     return [-1, -1];
