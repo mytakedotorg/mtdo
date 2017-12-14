@@ -15,7 +15,6 @@ interface FeedCardContainerProps {
 
 interface FeedCardContainerState {
   loading: boolean;
-  error: boolean;
   document?: {
     fact: Foundation.Fact;
     nodes: FoundationNode[];
@@ -31,8 +30,7 @@ class FeedCardContainer extends React.Component<
     super(props);
 
     this.state = {
-      loading: true,
-      error: false
+      loading: true
     };
   }
   getDocumentFact = (factHash: string) => {
@@ -42,10 +40,10 @@ class FeedCardContainer extends React.Component<
         error: string | Error | null,
         factContent: Foundation.DocumentFactContent
       ) => {
-        if (error || !factContent) {
-          this.setState({
-            error: true
-          });
+        if (error) {
+          throw error;
+        } else if (!factContent) {
+          throw "FeedCardContainer: factContent missing from JSON";
         } else {
           let nodes: FoundationNode[] = [];
           for (let documentComponent of factContent.components) {
@@ -74,10 +72,10 @@ class FeedCardContainer extends React.Component<
         error: string | Error | null,
         factContent: Foundation.VideoFactContent
       ) => {
-        if (error || !factContent) {
-          this.setState({
-            error: true
-          });
+        if (error) {
+          throw error;
+        } else if (!factContent) {
+          throw "FeedCardContainer: factContent missing from JSON";
         } else {
           this.setState({
             loading: false,
@@ -86,13 +84,6 @@ class FeedCardContainer extends React.Component<
         }
       }
     );
-  };
-  handleRetryClick = () => {
-    // this.setState({
-    //   loading: true,
-    //   error: false
-    // });
-    // this.getFact(this.props.block.excerptId);
   };
   componentDidMount() {
     for (let block of this.props.blocks) {
@@ -105,11 +96,7 @@ class FeedCardContainer extends React.Component<
   }
   render() {
     return (
-      <FeedCardBranch
-        containerProps={this.props}
-        containerState={this.state}
-        handleRetryClick={this.handleRetryClick}
-      />
+      <FeedCardBranch containerProps={this.props} containerState={this.state} />
     );
   }
 }
@@ -117,21 +104,13 @@ class FeedCardContainer extends React.Component<
 interface FeedCardBranchProps {
   containerProps: FeedCardContainerProps;
   containerState: FeedCardContainerState;
-  handleRetryClick: () => any;
 }
 
 export const FeedCardBranch: React.StatelessComponent<
   FeedCardBranchProps
 > = props => {
-  if (props.containerState.error) {
-    // return <FeedCardErrorView onRetryClick={props.handleRetryClick} />;
-    return <p>FeedCardErrorView</p>;
-  } else if (
-    props.containerState.loading
-    // || (!props.containerState.document && !props.containerState.videoFact)
-  ) {
-    // return <FeedCardLoadingView />
-    return <p>FeedCardLoadingView</p>;
+  if (props.containerState.loading) {
+    return <FeedCardLoadingView />;
   } else {
     return (
       <FeedCard
@@ -142,6 +121,12 @@ export const FeedCardBranch: React.StatelessComponent<
     );
   }
 };
+
+const FeedCardLoadingView: React.StatelessComponent<{}> = props => (
+  <div className="feed__card">
+    <h2 className="feed__card-title">Loading Take Preview</h2>
+  </div>
+);
 
 interface FeedCardProps {
   username: string;
@@ -194,7 +179,7 @@ class FeedCard extends React.Component<FeedCardProps, {}> {
                 </div>
               );
             } else {
-              throw "documentNodes missing in DocumentBlock";
+              throw "FeedCard: documentNodes missing in DocumentBlock";
             }
           } else if (block.kind === "video") {
             if (props.videoFact) {
@@ -211,7 +196,7 @@ class FeedCard extends React.Component<FeedCardProps, {}> {
                 </div>
               );
             } else {
-              throw "videoFact missing in VideoBlock";
+              throw "FeedCard: videoFact missing in VideoBlock";
             }
           }
         })}
