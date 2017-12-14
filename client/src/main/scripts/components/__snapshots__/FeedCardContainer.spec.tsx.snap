@@ -1,0 +1,116 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Card loading 1`] = `
+<div
+  className="feed__card"
+>
+  <h2
+    className="feed__card-title"
+  >
+    Loading Take Preview
+  </h2>
+</div>
+`;
+
+exports[`Card w/ Document Fact 1`] = `
+<div
+  className="feed__card"
+>
+  <a
+    className="feed__link"
+    href="/samples/does-a-law-mean-what-it-says-or-what-it-meant"
+  >
+    <span />
+  </a>
+  <div
+    className="feed__card-thumb-container feed__card-thumb-container--document"
+  >
+    <div
+      className="feed__card-document"
+    >
+      <h2
+        className="feed__card-document-title"
+      >
+        Amendment 13
+      </h2>
+      <div
+        className="feed__card-document-text"
+        onMouseUp={undefined}
+      >
+        <p
+          data-char-offset={218}
+        >
+          Section 2. Congress shall have power to enforce this article by appropriate legislation.
+        </p>
+      </div>
+    </div>
+  </div>
+  <div
+    className="feed__card-excerpt"
+  >
+    <h2
+      className="feed__card-title"
+    >
+      Does a law mean what it says, or what it meant?
+    </h2>
+    <div
+      className="feed__card-text-container"
+    >
+      <p
+        className="feed__card-text"
+      >
+        If our judges get to decide that the law means whatever they want it to mean, then we still live under a King, we’ve just changed his name to Judge. That’s why it’s important to apply consistent methodology when interpreting the law. But in this case, whether you’re a Textualist or an Originalist, I don’t see how the 2nd amendment allows for any of the gun restrictions in place today.
+      </p>
+    </div>
+  </div>
+  <span
+    className="feed__more"
+  >
+    Read more
+  </span>
+</div>
+`;
+
+exports[`Card w/ Video Fact 1`] = `
+<div
+  className="feed__card"
+>
+  <a
+    className="feed__link"
+    href="/samples/why-its-so-hard-to-have-peace"
+  >
+    <span />
+  </a>
+  <div
+    className="feed__card-thumb-container feed__card-thumb-container--video"
+  >
+    <img
+      className="feed__card-thumb"
+      src="https://img.youtube.com/vi/ApTLB76Nmdg/0.jpg"
+    />
+  </div>
+  <div
+    className="feed__card-excerpt"
+  >
+    <h2
+      className="feed__card-title"
+    >
+      Why it's so hard to have peace
+    </h2>
+    <div
+      className="feed__card-text-container"
+    >
+      <p
+        className="feed__card-text"
+      >
+        Today, anybody who wants to negotiate with a Muslim country is “weak”.
+      </p>
+    </div>
+  </div>
+  <span
+    className="feed__more"
+  >
+    Read more
+  </span>
+</div>
+`;

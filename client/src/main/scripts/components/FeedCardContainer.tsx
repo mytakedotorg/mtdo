@@ -6,14 +6,14 @@ import { Foundation } from "../java2ts/Foundation";
 import { FoundationNode, getHighlightedNodes } from "../utils/functions";
 import { TakeBlock, VideoBlock, DocumentBlock } from "./BlockEditor";
 
-interface FeedCardContainerProps {
+export interface FeedCardContainerProps {
   username: string;
   title: string;
   titleSlug: string;
   blocks: TakeBlock[];
 }
 
-interface FeedCardContainerState {
+export interface FeedCardContainerState {
   loading: boolean;
   document?: {
     fact: Foundation.Fact;
