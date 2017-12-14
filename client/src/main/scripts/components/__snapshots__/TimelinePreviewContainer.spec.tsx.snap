@@ -1,13 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Error loading Preview 1`] = `
-<div>
-  <p>
-    Error loading TimelinePreview
-  </p>
-</div>
-`;
-
 exports[`Preview loading 1`] = `
 <div>
   <p>

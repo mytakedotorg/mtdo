@@ -4,7 +4,6 @@ import { FoundationNode } from "../utils/functions";
 import { isVideo, isDocument, fetchFact } from "../utils/databaseAPI";
 import TimelinePreview, { Ranges, SetFactHandlers } from "./TimelinePreview";
 import TimelinePreviewLoadingView from "./TimelinePreviewLoadingView";
-import TimelinePreviewErrorView from "./TimelinePreviewErrorView";
 import { Foundation } from "../java2ts/Foundation";
 import { Routes } from "../java2ts/Routes";
 
@@ -16,7 +15,6 @@ export interface TimelinePreviewContainerProps {
 }
 
 export interface TimelinePreviewContainerState {
-  error: boolean;
   loading: boolean;
   videoFact?: Foundation.VideoFactContent;
   nodes?: FoundationNode[];
@@ -30,8 +28,7 @@ export default class TimelinePreviewContainer extends React.Component<
     super(props);
 
     this.state = {
-      loading: true,
-      error: false
+      loading: true
     };
   }
   getFact = (factHash: string) => {
@@ -44,10 +41,7 @@ export default class TimelinePreviewContainer extends React.Component<
           | Foundation.VideoFactContent
       ) => {
         if (error) {
-          this.setState({
-            error: true,
-            loading: false
-          });
+          throw error;
         } else {
           let nodes: FoundationNode[] = [];
 
@@ -82,7 +76,6 @@ export default class TimelinePreviewContainer extends React.Component<
   componentWillReceiveProps(nextProps: TimelinePreviewContainerProps) {
     if (this.props.factLink.hash !== nextProps.factLink.hash) {
       this.setState({
-        error: false,
         loading: true
       });
       this.getFact(nextProps.factLink.hash);
@@ -106,9 +99,7 @@ interface TimelinePreviewContainerBranchProps {
 export const TimelinePreviewContainerBranch: React.StatelessComponent<
   TimelinePreviewContainerBranchProps
 > = props => {
-  if (props.containerState.error) {
-    return <TimelinePreviewErrorView />;
-  } else if (props.containerState.loading) {
+  if (props.containerState.loading) {
     return <TimelinePreviewLoadingView />;
   } else {
     return (

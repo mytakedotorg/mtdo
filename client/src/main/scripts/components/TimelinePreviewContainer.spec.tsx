@@ -25,25 +25,7 @@ const containerProps = {
 
 test("Preview loading", () => {
   const containerState: TimelinePreviewContainerState = {
-    loading: true,
-    error: false
-  };
-
-  const tree = renderer
-    .create(
-      <TimelinePreviewContainerBranch
-        containerProps={containerProps}
-        containerState={containerState}
-      />
-    )
-    .toJSON();
-  expect(tree).toMatchSnapshot();
-});
-
-test("Error loading Preview", () => {
-  const containerState: TimelinePreviewContainerState = {
-    loading: false,
-    error: true
+    loading: true
   };
 
   const tree = renderer
@@ -60,7 +42,6 @@ test("Error loading Preview", () => {
 test("Successfully loaded Document Preview", () => {
   const containerState: TimelinePreviewContainerState = {
     loading: false,
-    error: false,
     nodes: documentNodes
   };
 
@@ -90,7 +71,6 @@ test("Successfully loaded Document Preview with highlights", () => {
   };
   const containerState: TimelinePreviewContainerState = {
     loading: false,
-    error: false,
     nodes: documentNodes
   };
 
@@ -115,7 +95,6 @@ test("Successfully loaded Video Preview", () => {
   };
   const containerState: TimelinePreviewContainerState = {
     loading: false,
-    error: false,
     videoFact: videoFact
   };
 
