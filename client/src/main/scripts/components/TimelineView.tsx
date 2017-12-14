@@ -2,7 +2,6 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import Timeline, { TimelineItemData } from "./Timeline";
 import TimelineLoadingView from "./TimelineLoadingView";
-import TimelineErrorView from "./TimelineErrorView";
 import TimelinePreviewContainer from "./TimelinePreviewContainer";
 import TimelineRadioButtons from "./TimelineRadioButtons";
 import { SetFactHandlers } from "./TimelinePreview";
@@ -28,7 +27,6 @@ interface TimelineViewProps {
 }
 
 export interface TimelineViewState {
-  error: boolean;
   factLink: Foundation.FactLink | null;
   loading: boolean;
   selectedOption: SelectionOptions;
@@ -47,7 +45,6 @@ export default class TimelineView extends React.Component<
     super(props);
 
     this.state = {
-      error: false,
       factLink: null,
       loading: true,
       selectedOption: "Debates",
@@ -61,10 +58,7 @@ export default class TimelineView extends React.Component<
     getAllFacts(
       (error: string | Error | null, factlinks: Foundation.FactLink[]) => {
         if (error) {
-          this.setState({
-            loading: false,
-            error: true
-          });
+          throw error;
         } else {
           let currentFactLink: Foundation.FactLink | null = null;
           let hashIsValid = this.state.hashIsValid;
@@ -266,9 +260,7 @@ export const TimelineViewBranch: React.StatelessComponent<
           </p>
         </div>
         <div className={"timeline"}>
-          {props.containerState.error ? (
-            <TimelineErrorView />
-          ) : props.containerState.loading ? (
+          {props.containerState.loading ? (
             <TimelineLoadingView />
           ) : (
             <div>
@@ -289,9 +281,7 @@ export const TimelineViewBranch: React.StatelessComponent<
   } else {
     return (
       <div className={"timeline__view"}>
-        {props.containerState.error ? (
-          <TimelineErrorView />
-        ) : props.containerState.loading ? (
+        {props.containerState.loading ? (
           <TimelineLoadingView />
         ) : (
           <div>

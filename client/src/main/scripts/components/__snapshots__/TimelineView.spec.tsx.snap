@@ -5,9 +5,15 @@ exports[`Error loading view 1`] = `
   className="timeline__view"
 >
   <div>
-    <p>
-      Error loading timeline
-    </p>
+    <TimelineRadioButtons
+      onChange={[Function]}
+      selectedOption="Debates"
+    />
+    <Timeline
+      onItemClick={[Function]}
+      selectedOption="Debates"
+      timelineItems={Array []}
+    />
   </div>
 </div>
 `;
