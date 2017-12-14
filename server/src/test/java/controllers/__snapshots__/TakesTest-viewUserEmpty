@@ -54,28 +54,33 @@
 	</div>
 </header>
 
-<div class="usercard">
-	<img src="/assets/permanent/blankuser-4ea73504e4.png">
-		<h2>empty</h2>
-	<div>I have a little bio that I can put here.</div>
-	<hr>
-	<span>Some city, ST</span>
-	<span>email@domain</span>
-	<span>myhomepage.com</span>
-</div>
-<div class="pages">
-	<div class="profilenav">
-		<a href="/empty" class="active">published</a><a href="/empty?tab=likes" class="inactive">likes</a><a href="/empty?tab=followers" class="inactive">followers</a><a href="/empty?tab=following" class="inactive">following</a>
+<div class="profile">
+	<div class="profile__usercard">
+		<div class="profile__image-container">
+			<img class="profile__image" src="/assets/permanent/blankuser-4ea73504e4.png">
+		</div>
+		<div class="profile__bio-container">
+			<h2 class="profile__text profile__text--username">empty</h2>
+		</div>
+		<p class="profile__text profile__text--bio">I have a little bio that I can put here.</p>
+		<hr />
+		<p class="profile__text profile__text--small">Some city, ST</p>
+		<p class="profile__text profile__text--small">email@domain</p>
+		<p class="profile__text profile__text--small">myhomepage.com</p>
 	</div>
-	<div class="content">
-		<div class="takelist">
+	<div class="profile__tabs">
+		<div class="profile__nav">
+			<a href="/empty" class="active">published</a><a href="/empty?tab=likes" class="inactive">likes</a><a href="/empty?tab=followers" class="inactive">followers</a><a href="/empty?tab=following" class="inactive">following</a>
+		</div>
+		<div class="profile__tab-content">
+			<div class="takelist">
 	<span>Has not published any takes.</span>
 </div>
 
 
+		</div>
 	</div>
 </div>
-
 
 
 <footer class="footer">
