@@ -8,10 +8,11 @@
 
 @views.Profile.profileBase.template(account, isLoggedIn, Mode.published) -> {
 
-<div class="takelist">
+<div class="tab">
 @if (takes.isEmpty()) {
-	<span>Has not published any takes.</span>
+	<h2 class="tab-title">No published Takes.</h2>
 } else {
+	<div class="takelist">
 	@for (take : takes) {
 		@with(	String title = take.get(TAKEPUBLISHED.TITLE),
 				String titleSlug = take.get(TAKEPUBLISHED.TITLE_SLUG),
@@ -23,6 +24,7 @@
 		</div>
 		}
 	}
+	</div>
 }
 </div>
 

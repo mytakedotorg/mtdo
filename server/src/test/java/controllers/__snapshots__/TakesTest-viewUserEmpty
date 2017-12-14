@@ -59,22 +59,26 @@
 		<div class="profile__image-container">
 			<img class="profile__image" src="/assets/permanent/blankuser-4ea73504e4.png">
 		</div>
-		<div class="profile__bio-container">
+		<div class="profile__info">
 			<h2 class="profile__text profile__text--username">empty</h2>
+			<p class="profile__text profile__text--bio">I have a little bio that I can put here.</p>
+			<hr />
+			<p class="profile__text profile__text--small">Some city, ST</p>
+			<p class="profile__text profile__text--small">email@domain</p>
+			<p class="profile__text profile__text--small">myhomepage.com</p>
 		</div>
-		<p class="profile__text profile__text--bio">I have a little bio that I can put here.</p>
-		<hr />
-		<p class="profile__text profile__text--small">Some city, ST</p>
-		<p class="profile__text profile__text--small">email@domain</p>
-		<p class="profile__text profile__text--small">myhomepage.com</p>
 	</div>
 	<div class="profile__tabs">
 		<div class="profile__nav">
-			<a href="/empty" class="active">published</a><a href="/empty?tab=likes" class="inactive">likes</a><a href="/empty?tab=followers" class="inactive">followers</a><a href="/empty?tab=following" class="inactive">following</a>
+			<div class="tab-nav">
+				<ul class="tab-nav__list">
+			<li class="tab-nav__list-item"><a href="/empty" class="tab-nav__link tab-nav__link--active">published</a></li><li class="tab-nav__list-item"><a href="/empty?tab=likes" class="tab-nav__link tab-nav__link--inactive">likes</a></li><li class="tab-nav__list-item"><a href="/empty?tab=followers" class="tab-nav__link tab-nav__link--inactive">followers</a></li><li class="tab-nav__list-item"><a href="/empty?tab=following" class="tab-nav__link tab-nav__link--inactive">following</a></li>
+				</ul>
+			</div>
 		</div>
 		<div class="profile__tab-content">
-			<div class="takelist">
-	<span>Has not published any takes.</span>
+			<div class="tab">
+	<h2 class="tab-title">No published Takes.</h2>
 </div>
 
 

@@ -52,13 +52,13 @@ public class Profile implements Jooby.Module {
 				if (mode.requiresLogin() && !loggedIn) {
 					continue;
 				}
-				builder.append("<a href=\"");
+				builder.append("<li class=\"tab-nav__list-item\"><a href=\"");
 				builder.append(mode.url(account));
-				builder.append("\" class=\"");
+				builder.append("\" class=\"tab-nav__link tab-nav__link--");
 				builder.append(mode == this ? "active" : "inactive");
 				builder.append("\">");
 				builder.append(mode.name());
-				builder.append("</a>");
+				builder.append("</a></li>");
 			}
 			return builder.toString();
 		}

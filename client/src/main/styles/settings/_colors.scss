@@ -31,6 +31,8 @@ $action-darkest: #50000d;
 $action-light: #c86373;
 $action-lightest: #f0a0ad;
 
+$action-highlight: #aa2c22; // $action w/ Hue +10 and Saturation +10
+
 $white: #fff;
 $black: #000;
 
@@ -128,5 +130,11 @@ $palettes: (
       text--alert: $action
     ),
   form: (text: $base-darkest, text--action: $action),
-  takelist: (text: $base-darkest)
+  takelist: (text: $base-darkest),
+  profile:
+    (
+      tab-background: $white,
+      tab-text: $base-darkest,
+      tab-border--active: $action-highlight
+    )
 );
