@@ -1,6 +1,7 @@
 import { Foundation } from "../java2ts/Foundation";
 import { TimelineItemData } from "../components/Timeline";
 import { FoundationNode } from "./functions";
+import { Card } from "../components/FeedList";
 
 const videoFact: Foundation.VideoFactContent = {
   youtubeId: "ApTLB76Nmdg",
@@ -567,7 +568,82 @@ const videoNodes: FoundationNode[] = [
   }
 ];
 
+const cards: Card[] = [
+  {
+    username: "samples",
+    titleSlug: "why-its-so-hard-to-have-peace",
+    title: "Why it's so hard to have peace",
+    blocks: [
+      {
+        kind: "paragraph",
+        text:
+          "During the cold war, anybody who wanted to negotiate with the evil Communists was “weak”."
+      },
+      {
+        kind: "paragraph",
+        text:
+          "Today, anybody who wants to negotiate with a Muslim country is “weak”."
+      },
+      {
+        kind: "video",
+        range: [304, 321],
+        videoId: "U8MV5KDDaxumxZOCJOzExAUAAkSoYNhycVXq7jZ59_0="
+      },
+      {
+        kind: "paragraph",
+        text:
+          "Thank goodness there's at least one party who is willing to give peace a chance!"
+      },
+      {
+        kind: "video",
+        range: [246, 261],
+        videoId: "qQjcS7ARkHHdKnDXfS3OkX5f78l81M1OWu5y_IziPA0="
+      },
+      {
+        kind: "paragraph",
+        text: "Err..  Surely that's an outlier?"
+      },
+      {
+        kind: "video",
+        range: [190, 203],
+        videoId: "qQjcS7ARkHHdKnDXfS3OkX5f78l81M1OWu5y_IziPA0="
+      },
+      {
+        kind: "paragraph",
+        text:
+          "Huh.  Too bad Jimmy Carter didn't think of something as catchy as MAGA."
+      }
+    ],
+    previewBlocks: [1, 2]
+  },
+  {
+    username: "samples",
+    titleSlug: "dont-worry-well-protect-the-constitution-for-you",
+    title: "Don't worry, we'll protect the Constitution for you!",
+    blocks: [
+      {
+        kind: "paragraph",
+        text:
+          "The system for appointing judges to the Supreme Court is quite complex. Only a lawyer with years of experience could understand it. But trust me – this President has no right to make an appointment! We’ll let the people decide in the next election, as demanded by our Constitution!!"
+      },
+      {
+        kind: "document",
+        excerptId: "hAGBMHs7k2yx_cmgp8I7r9VFE_NCuQ-QXsfDxjt9LJA=",
+        viewRange: [17730, 18357],
+        highlightedRange: [17730, 18357]
+      },
+      {
+        kind: "paragraph",
+        text:
+          "Don’t bother reading the Constitution, it’s only for smart people like me. Trust me – the President is way out of line to think the Senate has any obligation to give his candidate a hearing!"
+      }
+    ],
+    previewBlocks: [1, 0]
+  }
+];
+
 export {
+  cards,
   documentFactLink,
   documentNodes,
   timelineItems,
