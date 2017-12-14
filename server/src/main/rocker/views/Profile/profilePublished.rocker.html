@@ -1,15 +1,16 @@
+@import controllers.Profile.Mode
+@import db.tables.records.AccountRecord
 @import java.sql.Timestamp
 @import org.jooq.Result
 @import static db.Tables.TAKEPUBLISHED
 
-@args(String username, Result<?> takes)
+@args(AccountRecord account, boolean isLoggedIn, Result<?> takes)
 
-@views.naked.template("MyTake.org", username, "base") -> {
+@views.Profile.profileBase.template(account, isLoggedIn, Mode.published) -> {
+
 <div class="takelist">
-<h1 class="takelist__user">@username</h1>
-
 @if (takes.isEmpty()) {
-	<span>@username has not published any takes.</span>
+	<span>Has not published any takes.</span>
 } else {
 	@for (take : takes) {
 		@with(	String title = take.get(TAKEPUBLISHED.TITLE),
@@ -17,12 +18,12 @@
 				Timestamp publishedAt = take.get(TAKEPUBLISHED.PUBLISHED_AT)
 				) {
 		<div class="takelist__take">
-			<h2 class="takelist__title"><a class="takelist__link" href="@controllers.Takes.userTitleSlug(username, titleSlug)">@title</a></h2>
+			<h2 class="takelist__title"><a class="takelist__link" href="@controllers.Takes.userTitleSlug(account.getUsername(), titleSlug)">@title</a></h2>
 			<span class="takelist__aside">Published on @common.Time.formatCompact().format(publishedAt)</span>
 		</div>
 		}
 	}
 }
-
 </div>
+
 }

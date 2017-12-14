@@ -1,0 +1,31 @@
+@import controllers.Profile.Mode
+@import db.tables.records.AccountRecord
+
+@args(AccountRecord account, boolean isLoggedIn, Mode activeMode, RockerBody content)
+
+@views.naked.template("MyTake.org", account.getUsername(), "base") -> {
+
+<div class="usercard">
+	<img src="/assets/permanent/blankuser-4ea73504e4.png">
+	@if (account.getName() != null) {
+		<h2>@account.getName()</h2>
+		<h3>@account.getUsername()</h2>
+	} else {
+		<h2>@account.getUsername()</h2>
+	}
+	<div>I have a little bio that I can put here.</div>
+	<hr>
+	<span>Some city, ST</span>
+	<span>email@@domain</span>
+	<span>myhomepage.com</span>
+</div>
+<div class="pages">
+	<div class="profilenav">
+		@raw(activeMode.render(account, isLoggedIn))
+	</div>
+	<div class="content">
+		@content
+	</div>
+</div>
+
+}
