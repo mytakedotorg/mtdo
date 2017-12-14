@@ -85,7 +85,7 @@ function fingerprint(mode, type, stream) {
       )
       .pipe(gulp.dest(config.distProd));
   } else {
-    return stream.pipe(gulp.dest(dst(mode, type)));
+    return stream.pipe(gulp.dest(dst(mode, type))).pipe(browserSync.stream());
   }
 }
 
@@ -220,5 +220,6 @@ function proxyTask(mode) {
       ]
     });
     gulp.watch(src(SCRIPTS) + "**", [SCRIPTS + mode]);
+    gulp.watch(src(STYLES) + "**", [STYLES + mode]);
   };
 }
