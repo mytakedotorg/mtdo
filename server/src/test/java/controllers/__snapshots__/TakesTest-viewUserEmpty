@@ -54,12 +54,28 @@
 	</div>
 </header>
 
-<div class="takelist">
-<h1 class="takelist__user">empty</h1>
-
-	<span>empty has not published any takes.</span>
-
+<div class="usercard">
+	<img src="/assets/permanent/blankuser-4ea73504e4.png">
+		<h2>empty</h2>
+	<div>I have a little bio that I can put here.</div>
+	<hr>
+	<span>Some city, ST</span>
+	<span>email@domain</span>
+	<span>myhomepage.com</span>
 </div>
+<div class="pages">
+	<div class="profilenav">
+		<a href="/empty" class="active">published</a><a href="/empty?tab=likes" class="inactive">likes</a><a href="/empty?tab=followers" class="inactive">followers</a><a href="/empty?tab=following" class="inactive">following</a>
+	</div>
+	<div class="content">
+		<div class="takelist">
+	<span>Has not published any takes.</span>
+</div>
+
+
+	</div>
+</div>
+
 
 
 <footer class="footer">
