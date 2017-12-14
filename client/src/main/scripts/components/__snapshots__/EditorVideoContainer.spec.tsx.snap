@@ -7,14 +7,8 @@ exports[`Error loading Video 1`] = `
   <h2
     className="editor__document-title"
   >
-    Error loading Foundation Video
+    Loading
   </h2>
-  <button
-    className="editor__button editor__button--reload"
-    onClick={[Function]}
-  >
-    retry?
-  </button>
 </div>
 `;
 
