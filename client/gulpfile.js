@@ -207,19 +207,19 @@ function proxyTask(mode) {
     const bundler = webpack(webpackCfg(mode));
     browserSync.init({
       proxy: "localhost:8080",
-      files: config.distDev + "/**",
-      serveStatic: [
-        {
-          route: "/assets-dev",
-          dir: config.distDev
-        }
-      ],
       middleware: [
         webpackDevMiddleware(bundler, {
-          publicPath: "/assets-dev/scripts",
+          publicPath: "/assets-dev/" + SCRIPTS,
           stats: { colors: true }
         }),
         webpackHotMiddleware(bundler)
+      ],
+      files: config.distDev + "/" + STYLES + "/**",
+      serveStatic: [
+        {
+          route: "/assets-dev/" + STYLES,
+          dir: config.distDev + "/" + STYLES
+        }
       ]
     });
     gulp.watch(src(STYLES) + "**", [STYLES + mode]);
