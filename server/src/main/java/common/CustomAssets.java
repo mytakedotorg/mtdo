@@ -10,11 +10,10 @@ import com.fizzed.rocker.runtime.RockerRuntime;
 import com.google.common.io.Resources;
 import com.google.inject.Binder;
 import com.jsoniter.JsonIterator;
-import com.jsoniter.spi.TypeLiteral;
+import com.jsoniter.any.Any;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -58,7 +57,7 @@ public class CustomAssets implements Jooby.Module {
 			env.router().assets("/assets/**");
 		} else {
 			byte[] manifest = Resources.toByteArray(CustomAssets.class.getResource("/assets/manifest.json"));
-			Map<String, String> map = JsonIterator.deserialize(manifest, new TypeLiteral<HashMap<String, String>>() {});
+			Map<String, Any> map = JsonIterator.deserialize(manifest).asMap();
 			url = (type, raw) -> "/assets/" + type + "/" + Objects.requireNonNull(map.get(raw.substring(1)), "No fingerprinted version of " + raw + ", only has: " + map.keySet());
 			env.router().assets("/assets/**");
 		}
