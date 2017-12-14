@@ -25,7 +25,7 @@
 	<em class="header__logo"><a class="header__logo-link" href="/">MyTake.org</a></em>
 	<div class="header__icon-list header__icon-list--top">
 	<div id="login"></div>
-		<a class="header__icon header__icon--github" href="https://github.com/mytake/mytake"><i class="fa fa-github" aria-hidden="true"></i></a>
+		<a class="header__icon header__icon--github" href="https://github.com/mytakedotorg/mytakedotorg" target="_blank"><i class="fa fa-github" aria-hidden="true"></i></a>
 	</div>
 	</div>
 	<div class="header__nav">
@@ -48,8 +48,8 @@
 	</div>
 	<div class="header__banner-links">
 		<p class="header__text">Under construction</p>
-		<p class="header__text"><a class="header__link" href="https://github.com/mytake/mytake/blob/master/WORK_IN_PROGRESS.md">How to use</a></p>
-		<p class="header__text"><a class="header__link" href="https://github.com/mytake/mytake/blob/master/CONTRIBUTING.md">Contribute</a></p>
+		<p class="header__text"><a class="header__link" href="https://github.com/mytakedotorg/mytakedotorg/blob/master/WORK_IN_PROGRESS.md">How to use</a></p>
+		<p class="header__text"><a class="header__link" href="https://github.com/mytakedotorg/mytakedotorg/blob/master/CONTRIBUTING.md">Contribute</a></p>
 	</div>
 	</div>
 </header>
@@ -82,9 +82,9 @@
 </ul>
 <p class="about__text">Our only goal is to build a place where we can have civil disagreements based in reality.  How can you trust us?  You don't, just see for yourself.<p>
 <ul class="about__list">
-	<li class="about__list-item">You can see the full source code for this site, and all the discussions which created it <a class="about__link" href="https://github.com/mytake/mytake">right here</a>.</li>
+	<li class="about__list-item">You can see the full source code for this site, and all the discussions which created it <a class="about__link" href="https://github.com/mytakedotorg/mytakedotorg">right here</a>.</li>
 	<li class="about__list-item">We publish every financial transaction we've ever made <a class="about__link" href="https://docs.google.com/spreadsheets/d/1l1IErsVZNlaVKsZQSubGEaidIp_5z3hQGInchDWn39A/edit?usp=sharing">right here</a>.</li>
-	<li class="about__list-item">Want to help us make the site better? Talk about how MyTake should work over at [TODO: host discourse].</li>
+	<li class="about__list-item">Want to help us make the site better? Talk about how MyTake should work over at <a class="about__linl" href="https://meta.mytake.org/">meta.mytake.org</a>.</li>
 </ul>
 </div>
 
