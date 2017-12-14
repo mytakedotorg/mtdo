@@ -8,9 +8,11 @@ import BlockReader from "./components/BlockReader";
 import FeedList from "./components/FeedList";
 import FoundationView from "./components/FoundationView";
 import { TakeDocument } from "./components/BlockEditor";
+import { Card } from "./components/FeedList";
 
 interface HomeArgs {
   type: "home";
+  cards: Card[];
 }
 
 interface ShowTakeArgs {
@@ -34,7 +36,6 @@ declare global {
 }
 
 let Root;
-
 if (typeof window.mytake != "undefined") {
   switch (window.mytake.type) {
     case "foundation":
@@ -61,9 +62,8 @@ if (typeof window.mytake != "undefined") {
       Root = <BlockWriter initState={initJson} hashUrl={window.location.hash} />;
       break;
     case "home":
-      Root = <FeedList users={[]}/>;
-      throw "TODO: populate the news feed from server data";
-      //break;
+      Root = <FeedList cards={window.mytake.cards} />;
+      break;
     case "showtake":
       Root = <BlockReader initState={window.mytake.takeDocument} />;
       break;

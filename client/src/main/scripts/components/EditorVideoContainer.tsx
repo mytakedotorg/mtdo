@@ -17,7 +17,6 @@ export interface EditorVideoContainerProps {
 
 export interface EditorVideoContainerState {
   loading: boolean;
-  error: boolean;
   videoFact?: Foundation.VideoFactContent;
 }
 
@@ -28,8 +27,7 @@ class EditorVideoContainer extends React.Component<
   constructor(props: EditorVideoContainerProps) {
     super(props);
     this.state = {
-      loading: true,
-      error: false
+      loading: true
     };
   }
   getFact = (factHash: string) => {
@@ -40,9 +38,7 @@ class EditorVideoContainer extends React.Component<
         factContent: Foundation.VideoFactContent
       ) => {
         if (error) {
-          this.setState({
-            error: true
-          });
+          throw error;
         } else {
           this.setState({
             loading: false,
@@ -51,13 +47,6 @@ class EditorVideoContainer extends React.Component<
         }
       }
     );
-  };
-  handleRetryClick = () => {
-    this.setState({
-      loading: true,
-      error: false
-    });
-    this.getFact(this.props.block.videoId);
   };
   componentDidMount() {
     this.getFact(this.props.block.videoId);
@@ -72,7 +61,6 @@ class EditorVideoContainer extends React.Component<
       <EditorVideoBranch
         containerProps={this.props}
         containerState={this.state}
-        handleRetryClick={this.handleRetryClick}
       />
     );
   }
@@ -81,15 +69,12 @@ class EditorVideoContainer extends React.Component<
 interface EditorVideoBranchProps {
   containerProps: EditorVideoContainerProps;
   containerState: EditorVideoContainerState;
-  handleRetryClick: () => any;
 }
 
 export const EditorVideoBranch: React.StatelessComponent<
   EditorVideoBranchProps
 > = props => {
-  if (props.containerState.error) {
-    return <VideoErrorView onRetryClick={props.handleRetryClick} />;
-  } else if (props.containerState.loading || !props.containerState.videoFact) {
+  if (props.containerState.loading || !props.containerState.videoFact) {
     return <VideoLoadingView />;
   } else {
     return (
@@ -108,22 +93,6 @@ export const EditorVideoBranch: React.StatelessComponent<
 const VideoLoadingView: React.StatelessComponent<{}> = props => (
   <div className="editor__document editor__document--base editor__document--hover">
     <h2 className="editor__document-title">Loading</h2>
-  </div>
-);
-
-interface VideoErrorViewProps {
-  onRetryClick: () => any;
-}
-
-const VideoErrorView: React.StatelessComponent<VideoErrorViewProps> = props => (
-  <div className="editor__document editor__document--base editor__document--hover">
-    <h2 className="editor__document-title">Error loading Foundation Video</h2>
-    <button
-      className="editor__button editor__button--reload"
-      onClick={props.onRetryClick}
-    >
-      retry?
-    </button>
   </div>
 );
 

@@ -15,7 +15,9 @@ dependencies {
 	testCompile "org.assertj:assertj-core:$ASSERTJ_VER"
 }
 
-eclipse { project { referencedProjects = ['mytake-client'] } }
+eclipse {
+	project { referencedProjects = [ 'mytake-client'
+		] } }
 
 task generateFoundation(type: JavaExec) {
 	description = 'Generates the foundation'

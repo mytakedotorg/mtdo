@@ -20,7 +20,6 @@ export interface EditorDocumentContainerProps {
 
 export interface EditorDocumentContainerState {
   loading: boolean;
-  error: boolean;
   document?: {
     fact: Foundation.Fact;
     nodes: FoundationNode[];
@@ -35,8 +34,7 @@ class EditorDocumentContainer extends React.Component<
     super(props);
 
     this.state = {
-      loading: true,
-      error: false
+      loading: true
     };
   }
   getFact = (factHash: string) => {
@@ -47,9 +45,7 @@ class EditorDocumentContainer extends React.Component<
         factContent: Foundation.DocumentFactContent
       ) => {
         if (error) {
-          this.setState({
-            error: true
-          });
+          throw error;
         } else {
           let nodes: FoundationNode[] = [];
 
@@ -72,13 +68,6 @@ class EditorDocumentContainer extends React.Component<
       }
     );
   };
-  handleRetryClick = () => {
-    this.setState({
-      loading: true,
-      error: false
-    });
-    this.getFact(this.props.block.excerptId);
-  };
   componentDidMount() {
     this.getFact(this.props.block.excerptId);
   }
@@ -92,7 +81,6 @@ class EditorDocumentContainer extends React.Component<
       <EditorDocumentBranch
         containerProps={this.props}
         containerState={this.state}
-        handleRetryClick={this.handleRetryClick}
       />
     );
   }
@@ -101,15 +89,12 @@ class EditorDocumentContainer extends React.Component<
 interface EditorDocumentBranchProps {
   containerProps: EditorDocumentContainerProps;
   containerState: EditorDocumentContainerState;
-  handleRetryClick: () => any;
 }
 
 export const EditorDocumentBranch: React.StatelessComponent<
   EditorDocumentBranchProps
 > = props => {
-  if (props.containerState.error) {
-    return <DocumentErrorView onRetryClick={props.handleRetryClick} />;
-  } else if (props.containerState.loading || !props.containerState.document) {
+  if (props.containerState.loading || !props.containerState.document) {
     return <DocumentLoadingView />;
   } else {
     return (
@@ -124,26 +109,6 @@ export const EditorDocumentBranch: React.StatelessComponent<
 const DocumentLoadingView: React.StatelessComponent<{}> = props => (
   <div className="editor__document editor__document--base editor__document--hover">
     <h2 className="editor__document-title">Loading</h2>
-  </div>
-);
-
-interface DocumentErrorViewProps {
-  onRetryClick: () => any;
-}
-
-const DocumentErrorView: React.StatelessComponent<
-  DocumentErrorViewProps
-> = props => (
-  <div className="editor__document editor__document--base editor__document--hover">
-    <h2 className="editor__document-title">
-      Error loading Foundation Document
-    </h2>
-    <button
-      className="editor__button editor__button--reload"
-      onClick={props.onRetryClick}
-    >
-      retry?
-    </button>
   </div>
 );
 

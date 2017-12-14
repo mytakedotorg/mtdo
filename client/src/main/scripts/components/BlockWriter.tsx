@@ -322,24 +322,15 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
           title: this.state.takeDocument.title,
           blocks: this.state.takeDocument.blocks
         };
-        this.postRequest(
-          Routes.DRAFTS_PUBLISH,
-          bodyJson,
-          function(json: PublishResult) {
-            if (!json.conflict) {
-              window.location.href = json.publishedUrl;
-            } else {
-              this.setState({
-                status: {
-                  saved: false,
-                  saving: false,
-                  error: true,
-                  message: "There was an error publishing your Take."
-                }
-              });
-            }
-          }.bind(this)
-        );
+        this.postRequest(Routes.DRAFTS_PUBLISH, bodyJson, function(
+          json: PublishResult
+        ) {
+          if (!json.conflict) {
+            window.location.href = json.publishedUrl;
+          } else {
+            throw "There was an error publishing your Take.";
+          }
+        });
       } else {
         this.setState({
           status: {
@@ -437,7 +428,7 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
   postRequest = (
     route: string,
     bodyJson: DraftPost | DraftRev,
-    successCb: (json: DraftRev) => void
+    successCb: (json: DraftRev | PublishResult) => void
   ) => {
     const headers = new Headers();
 
@@ -472,17 +463,9 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
           successCb(json);
         }.bind(this)
       )
-      .catch(
-        function(error: Error) {
-          this.setState({
-            status: {
-              ...this.state.status,
-              error: true,
-              message: "There was an error modifying your Take."
-            }
-          });
-        }.bind(this)
-      );
+      .catch(function(error: Error) {
+        throw error;
+      });
   };
   handleTakeBlockChange = (stateIndex: number, value: string): void => {
     if (stateIndex === -1) {

@@ -39,7 +39,6 @@ const setFactHandlers: SetFactHandlers = {
 };
 
 const initialState: TimelineViewState = {
-  error: false,
   factLink: null,
   loading: true,
   selectedOption: "Debates",
@@ -65,30 +64,10 @@ test("View loading", () => {
   expect(tree).toMatchSnapshot();
 });
 
-test("Error loading view", () => {
-  const containerState: TimelineViewState = {
-    ...initialState,
-    loading: false,
-    error: true
-  };
-
-  const tree = renderer
-    .create(
-      <TimelineViewBranch
-        containerState={containerState}
-        eventHandlers={eventHandlers}
-        setFactHandlers={setFactHandlers}
-      />
-    )
-    .toJSON();
-  expect(tree).toMatchSnapshot();
-});
-
 test("Successfully loaded view", () => {
   const containerState: TimelineViewState = {
     ...initialState,
-    loading: false,
-    error: false
+    loading: false
   };
 
   const tree = renderer
@@ -105,7 +84,6 @@ test("Successfully loaded view", () => {
 
 test("Successfully loaded a Document in view", () => {
   const containerState: TimelineViewState = {
-    error: false,
     factLink: documentFactLink,
     loading: false,
     selectedOption: "Documents",
@@ -128,7 +106,6 @@ test("Successfully loaded a Document in view", () => {
 
 test("Successfully loaded a Video in view", () => {
   const containerState: TimelineViewState = {
-    error: false,
     factLink: videoFactLink,
     loading: false,
     selectedOption: "Debates",

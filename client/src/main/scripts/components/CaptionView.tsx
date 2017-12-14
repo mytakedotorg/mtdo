@@ -95,13 +95,10 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
         this.setState({
           highlightedNodes: undefined
         });
-        throw "Captions not yet done for this video";
+        console.warn("Captions not yet done for this video");
       }
     } catch (e) {
-      console.warn(e);
-      this.setState({
-        highlightedNodes: undefined
-      });
+      throw e;
     }
   };
   handleClearClick = () => {

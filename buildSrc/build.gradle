@@ -17,7 +17,7 @@ dependencies {
 	// db migration
 	compile 'org.flywaydb:flyway-core:4.2.0'
 	// jsweet ts2java
-	compile 'com.jsoniter:jsoniter:0.9.17'
+	compile 'com.jsoniter:jsoniter:0.9.18'
 	compile 'org.jsweet:jsweet-transpiler:2.0.1'
 	compile files("${System.properties['java.home']}/../lib/tools.jar")
 	// java8 utilities
@@ -47,5 +47,17 @@ gradlePlugin {
 			id = 'org.mytake.gradle.live'
 			implementationClass = 'org.mytake.gradle.live.LivePlugin'
 		}
+		jsoniterCodegen {
+			id = 'org.mytake.gradle.jsonitercodegen'
+			implementationClass = 'org.mytake.gradle.jsonitercodegen.JsoniterCodegenPlugin'
+		}
 	}
+}
+
+// reproducible buildSrc jar for travis cache
+project.tasks.withType(AbstractArchiveTask) {
+	preserveFileTimestamps = false
+	reproducibleFileOrder = true
+	dirMode = 0775
+	fileMode = 0664
 }

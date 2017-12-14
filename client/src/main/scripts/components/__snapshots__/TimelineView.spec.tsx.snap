@@ -1,17 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Error loading view 1`] = `
-<div
-  className="timeline__view"
->
-  <div>
-    <p>
-      Error loading timeline
-    </p>
-  </div>
-</div>
-`;
-
 exports[`Successfully loaded a Document in view 1`] = `
 <div
   className="timeline__view"

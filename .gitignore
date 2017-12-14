@@ -1,4 +1,5 @@
 /client/.awcache/
+/client/src/main/java/jsoniter_codegen/
 /client/src/main/scripts/java2ts/
 /client/src/main/resources/
 /foundation/src/main/resources/

@@ -12,6 +12,12 @@ spotless {
 		importOrder()
 		eclipse().configFile(rootProject.file('gradle/spotless.eclipseformat.xml'))
 		removeUnusedImports()
+		// see common.IpGetter
+		custom 'useIpGetter', {
+			if (it.contains('req.ip()') && !it.contains('interface IpGetter {')) {
+				throw new Error('Use IpGetter instead of Request.ip()')
+			}
+		}
 	}
 }
 
@@ -46,6 +52,7 @@ flywayJooqEmbeddedPg {
 sourceSets.main.java {
 	srcDir 'src/main/jooq-generated'
 	srcDir 'src/main/rocker'
+	srcDir 'src/main/jsoniter-generated'
 }
 
 ////////////
@@ -69,14 +76,6 @@ spotless {
 		indentWithTabs(2)
 		trimTrailingWhitespace()
 		endWithNewline()
-	}
-	java {
-		// see common.IpGetter
-		custom 'useIpGetter', {
-			if (it.contains('req.ip()') && !it.contains('interface IpGetter {')) {
-				throw new Error('Use IpGetter instead of Request.ip()')
-			}
-		}
 	}
 }
 

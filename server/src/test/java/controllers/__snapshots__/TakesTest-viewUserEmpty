@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <title>MyTake.org</title>
-<meta name="description" content="other | MyTake.org">
+<meta name="description" content="empty | MyTake.org">
 <meta name="author" content="MyTake.org">
 
 <link rel="stylesheet" href="/assets-dev/styles/main.css">
@@ -55,12 +55,9 @@
 </header>
 
 <div class="takelist">
-<h1 class="takelist__user">other</h1>
+<h1 class="takelist__user">empty</h1>
 
-		<div class="takelist__take">
-			<h2 class="takelist__title"><a class="takelist__link" href="/other/i-am-a-strawman">I am a strawman</a></h2>
-			<span class="takelist__aside">Published on Jan 01 1970</span>
-		</div>
+	<span>empty has not published any takes.</span>
 
 </div>
 

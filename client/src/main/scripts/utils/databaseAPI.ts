@@ -33,8 +33,7 @@ export function getAllFacts(
     .then(function(json: any) {
       callback(null, json);
     })
-    .catch(function(error: Error) {
-      // Network error
+    .catch(function(error: TypeError) {
       callback(error, []);
     });
 }
@@ -75,8 +74,7 @@ export function fetchFact(
     .then(function(json: any) {
       callback(null, json);
     })
-    .catch(function(error: Error) {
-      // Network error
+    .catch(function(error: TypeError) {
       callback(error, null);
     });
 }

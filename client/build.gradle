@@ -19,6 +19,7 @@ apply plugin: 'java'
 apply plugin: 'com.diffplug.gradle.spotless'
 spotless {
 	java {
+		target 'src/main/java/java2ts/**'
 		licenseHeaderFile(rootProject.file('gradle/spotless.license.java'))
 		importOrder()
 		eclipse().configFile(rootProject.file('gradle/spotless.eclipseformat.xml'))
@@ -43,6 +44,9 @@ jsweet {
 	tsOut = file(JAVA2TS)
 	tsOnly = true
 	factoryClassName = 'org.mytake.gradle.java2ts.MytakeJsweetFactory'
+	includes= [
+		'java2ts/**'
+	]
 }
 tasks.jsweet.doFirst { delete JAVA2TS }
 tasks.jsweet.doLast { com.diffplug.gradle.FileMisc.flatten(file(JAVA2TS + '/java2ts')) }
@@ -52,6 +56,12 @@ clean { delete JAVA2TS }
 tasks.jsweet.dependsOn.remove('classes')
 tasks.jsweet.dependsOn('compileJava')
 tasks.jsweet.dependsOn('nodeSetup')
+
+//////////////
+// jsoniter //
+//////////////
+apply plugin: 'org.mytake.gradle.jsonitercodegen'
+jsoniterCodegen { codegenClass = 'java2ts.CodegenConfig' }
 
 ///////////////////////////////////////////////////////////////////////
 // node stuff - compiles sass and typescript into src/main/resources //

@@ -9,8 +9,10 @@ package json;
 import com.google.inject.Binder;
 import com.google.inject.multibindings.Multibinder;
 import com.jsoniter.JsonIterator;
+import com.jsoniter.output.EncodingMode;
 import com.jsoniter.output.JsonStream;
 import com.jsoniter.output.JsonStreamPool;
+import com.jsoniter.spi.DecodingMode;
 import com.jsoniter.spi.Slice;
 import com.typesafe.config.Config;
 import java.util.Arrays;
@@ -27,6 +29,8 @@ import org.jooby.Renderer;
 public class JsoniterModule implements Jooby.Module {
 	@Override
 	public void configure(Env env, Config conf, Binder binder) throws Throwable {
+		JsonIterator.setMode(DecodingMode.STATIC_MODE);
+		JsonStream.setMode(EncodingMode.STATIC_MODE);
 		Multibinder.newSetBinder(binder, Renderer.class)
 				.addBinding()
 				.toInstance(new JsonRenderer());

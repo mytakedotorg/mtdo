@@ -48,13 +48,13 @@ public class JoobyDevRule extends ExternalResource {
 	private final Throwing.Consumer<JoobyDevRule> init;
 
 	@Override
-	protected void before() throws Throwable {
+	public void before() throws Throwable {
 		app.start("server.join=false");
 		init.accept(this);
 	}
 
 	@Override
-	protected void after() {
+	public void after() {
 		app.stop();
 	}
 
