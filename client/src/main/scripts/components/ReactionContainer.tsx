@@ -50,14 +50,13 @@ class ReactionContainer extends React.Component<
 
       const bodyJson: TakeReactionJson.ReactReq = {
         take_id: this.props.takeId,
-        userState: this.state.userState
+        userState: userState
       };
 
       postRequest(
         Routes.API_TAKE_REACT,
         bodyJson,
         (json: TakeReactionJson.ReactRes) => {
-          console.log(json);
           this.setState({
             takeState: json.takeState,
             userState: json.userState
@@ -82,32 +81,31 @@ class ReactionContainer extends React.Component<
             spam: !this.state.userState.spam
           };
           break;
-        // case "harassment":
-        //   userState = {
-        //     ...this.state.userState,
-        //     harassment: !this.state.userState.harassment
-        //   };
-        //   break;
-        // case "rulesviolation":
-        //   userState = {
-        //     ...this.state.userState,
-        //     rulesviolation: !this.state.userState.rulesviolation
-        //   };
-        //   break;
+        case "harassment":
+          userState = {
+            ...this.state.userState,
+            harassment: !this.state.userState.harassment
+          };
+          break;
+        case "rulesviolation":
+          userState = {
+            ...this.state.userState,
+            rulesviolation: !this.state.userState.rulesviolation
+          };
+          break;
         default:
           throw "Unknown report button type";
       }
 
       const bodyJson: TakeReactionJson.ReactReq = {
         take_id: this.props.takeId,
-        userState: this.state.userState
+        userState: userState
       };
 
       postRequest(
         Routes.API_TAKE_REACT,
         bodyJson,
         (json: TakeReactionJson.ReactRes) => {
-          console.log(json);
           this.setState({
             takeState: json.takeState,
             userState: json.userState
@@ -186,9 +184,9 @@ export const Reaction: React.StatelessComponent<ReactionProps> = props => {
           onClick={() => props.eventListeners.onReportPress("harassment")}
           disabled={typeof props.containerState.takeState == "undefined"}
         >
-          {props.containerState.userState
-            ? // && props.containerState.userState.harassment
-              "Marked as harassment. Unmark?"
+          {props.containerState.userState &&
+          props.containerState.userState.harassment
+            ? "Marked as harassment. Unmark?"
             : "Report harassment"}
         </button>
         <button
@@ -196,9 +194,9 @@ export const Reaction: React.StatelessComponent<ReactionProps> = props => {
           onClick={() => props.eventListeners.onReportPress("rulesviolation")}
           disabled={typeof props.containerState.takeState == "undefined"}
         >
-          {props.containerState.userState
-            ? // && props.containerState.userState.rulesviolation
-              "Marked as rules violation. Unmark?"
+          {props.containerState.userState &&
+          props.containerState.userState.rulesviolation
+            ? "Marked as rules violation. Unmark?"
             : "Report rules violation"}
         </button>
       </div>
