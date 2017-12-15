@@ -3,6 +3,7 @@ import { Routes } from "../java2ts/Routes";
 import { DraftRev } from "../java2ts/DraftRev";
 import { DraftPost } from "../java2ts/DraftPost";
 import { PublishResult } from "../java2ts/PublishResult";
+import { TakeReactionJson } from "../java2ts/TakeReactionJson";
 
 function getAllFacts(
   callback: (
@@ -104,8 +105,18 @@ function isVideo(
 
 function postRequest(
   route: string,
-  bodyJson: DraftPost | DraftRev,
-  successCb: (json: DraftRev | PublishResult) => void
+  bodyJson:
+    | DraftPost
+    | DraftRev
+    | TakeReactionJson.ReactReq
+    | TakeReactionJson.ViewReq,
+  successCb: (
+    json:
+      | DraftRev
+      | PublishResult
+      | TakeReactionJson.ReactRes
+      | TakeReactionJson.ViewRes
+  ) => void
 ) {
   const headers = new Headers();
 
@@ -119,27 +130,23 @@ function postRequest(
     body: JSON.stringify(bodyJson)
   };
   fetch(route, request)
-    .then(
-      function(response: Response) {
-        const contentType = response.headers.get("content-type");
-        if (
-          contentType &&
-          contentType.indexOf("application/json") >= 0 &&
-          response.ok
-        ) {
-          return response.json();
-        } else if (route === Routes.DRAFTS_DELETE && response.ok) {
-          window.location.href = Routes.DRAFTS;
-        } else {
-          throw "Unexpected response from server.";
-        }
-      }.bind(this)
-    )
-    .then(
-      function(json: DraftRev) {
-        successCb(json);
-      }.bind(this)
-    )
+    .then(function(response: Response) {
+      const contentType = response.headers.get("content-type");
+      if (
+        contentType &&
+        contentType.indexOf("application/json") >= 0 &&
+        response.ok
+      ) {
+        return response.json();
+      } else if (route === Routes.DRAFTS_DELETE && response.ok) {
+        window.location.href = Routes.DRAFTS;
+      } else {
+        throw "Unexpected response from server.";
+      }
+    })
+    .then((json: DraftRev) => {
+      successCb(json);
+    })
     .catch(function(error: Error) {
       throw error;
     });
