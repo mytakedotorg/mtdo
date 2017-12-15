@@ -39,7 +39,6 @@ public class TakeReactionTest {
 		Assertions.assertThat(res.userState).isNull();
 		Assertions.assertThat(res.takeState.viewCount).isEqualTo(0);
 		Assertions.assertThat(res.takeState.likeCount).isEqualTo(0);
-		Assertions.assertThat(res.takeState.bookmarkCount).isEqualTo(0);
 	}
 
 	@Test
@@ -48,11 +47,11 @@ public class TakeReactionTest {
 		Assertions.assertThat(res.userState).isNotNull();
 		Assertions.assertThat(res.userState.like).isFalse();
 		Assertions.assertThat(res.userState.bookmark).isFalse();
-		Assertions.assertThat(res.userState.illegal).isFalse();
 		Assertions.assertThat(res.userState.spam).isFalse();
+		Assertions.assertThat(res.userState.harassment).isFalse();
+		Assertions.assertThat(res.userState.rulesviolation).isFalse();
 		Assertions.assertThat(res.takeState.viewCount).isEqualTo(1);
 		Assertions.assertThat(res.takeState.likeCount).isEqualTo(0);
-		Assertions.assertThat(res.takeState.bookmarkCount).isEqualTo(0);
 	}
 
 	private static TakeReactionJson.ReactRes reactForUser(String username, UserState userState) {
@@ -70,11 +69,11 @@ public class TakeReactionTest {
 		Assertions.assertThat(res.userState).isNotNull();
 		Assertions.assertThat(res.userState.like).isTrue();
 		Assertions.assertThat(res.userState.bookmark).isFalse();
-		Assertions.assertThat(res.userState.illegal).isFalse();
 		Assertions.assertThat(res.userState.spam).isFalse();
+		Assertions.assertThat(res.userState.harassment).isFalse();
+		Assertions.assertThat(res.userState.rulesviolation).isFalse();
 		Assertions.assertThat(res.takeState.viewCount).isEqualTo(1);
 		Assertions.assertThat(res.takeState.likeCount).isEqualTo(1);
-		Assertions.assertThat(res.takeState.bookmarkCount).isEqualTo(0);
 	}
 
 	@Test
@@ -86,11 +85,11 @@ public class TakeReactionTest {
 		Assertions.assertThat(res.userState).isNotNull();
 		Assertions.assertThat(res.userState.like).isFalse();
 		Assertions.assertThat(res.userState.bookmark).isTrue();
-		Assertions.assertThat(res.userState.illegal).isFalse();
 		Assertions.assertThat(res.userState.spam).isFalse();
+		Assertions.assertThat(res.userState.harassment).isFalse();
+		Assertions.assertThat(res.userState.rulesviolation).isFalse();
 		Assertions.assertThat(res.takeState.viewCount).isEqualTo(1);
 		Assertions.assertThat(res.takeState.likeCount).isEqualTo(0);
-		Assertions.assertThat(res.takeState.bookmarkCount).isEqualTo(1);
 	}
 
 	@Test
@@ -99,10 +98,10 @@ public class TakeReactionTest {
 		Assertions.assertThat(res.userState).isNotNull();
 		Assertions.assertThat(res.userState.like).isFalse();
 		Assertions.assertThat(res.userState.bookmark).isFalse();
-		Assertions.assertThat(res.userState.illegal).isFalse();
 		Assertions.assertThat(res.userState.spam).isFalse();
+		Assertions.assertThat(res.userState.harassment).isFalse();
+		Assertions.assertThat(res.userState.rulesviolation).isFalse();
 		Assertions.assertThat(res.takeState.viewCount).isEqualTo(2);
 		Assertions.assertThat(res.takeState.likeCount).isEqualTo(0);
-		Assertions.assertThat(res.takeState.bookmarkCount).isEqualTo(1);
 	}
 }

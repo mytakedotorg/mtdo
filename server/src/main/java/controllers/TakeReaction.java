@@ -75,7 +75,6 @@ public class TakeReaction implements Jooby.Module {
 		TakeReactionJson.TakeState takeState = new TakeReactionJson.TakeState();
 		takeState.viewCount = countForAllUsers(dsl, take_id, Reaction.view);
 		takeState.likeCount = countForAllUsers(dsl, take_id, Reaction.like);
-		takeState.bookmarkCount = countForAllUsers(dsl, take_id, Reaction.bookmark);
 		return takeState;
 	}
 
@@ -122,29 +121,33 @@ public class TakeReaction implements Jooby.Module {
 	}
 
 	// @formatter:off
+	// Reaction.illegal is cruft, but hard to delete: https://stackoverflow.com/questions/25811017/how-to-delete-an-enum-type-value-in-postgres
 	private static final Reaction[] REACTIONS_NON_VIEW = new Reaction[] {
 			Reaction.like,
 			Reaction.bookmark,
 			Reaction.spam,
-			Reaction.illegal
+			Reaction.harassment,
+			Reaction.rulesviolation
 	};
 
 	private static void setReaction(TakeReactionJson.UserState state, Reaction reaction, boolean value) {
 		switch (reaction) {
-		case like:		state.like = value;		break;
-		case bookmark:	state.bookmark = value;	break;
-		case spam:		state.spam = value;		break;
-		case illegal:	state.illegal = value;	break;
+		case like:			state.like = value;				break;
+		case bookmark:		state.bookmark = value;			break;
+		case spam:			state.spam = value;				break;
+		case harassment:		state.harassment = value;		break;
+		case rulesviolation:	state.rulesviolation = value;	break;
 		default: throw Unhandled.enumException(reaction);
 		}
 	}
 
 	private static boolean getReaction(TakeReactionJson.UserState state, Reaction reaction) {
 		switch (reaction) {
-		case like:		return state.like;
-		case bookmark:	return state.bookmark;
-		case spam:		return state.spam;
-		case illegal:	return state.illegal;
+		case like:			return state.like;
+		case bookmark:		return state.bookmark;
+		case spam:			return state.spam;
+		case harassment:		return state.harassment;
+		case rulesviolation:	return state.rulesviolation;
 		default: throw Unhandled.enumException(reaction);
 		}
 	}
