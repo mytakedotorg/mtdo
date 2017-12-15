@@ -8,6 +8,7 @@ import BlockEditor, {
 } from "./BlockEditor";
 import TimelineView from "./TimelineView";
 import EditorButtons from "./EditorButtons";
+import { postRequest } from "../utils/databaseAPI";
 import { DraftRev } from "../java2ts/DraftRev";
 import { DraftPost } from "../java2ts/DraftPost";
 import { PublishResult } from "../java2ts/PublishResult";
@@ -292,7 +293,7 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
           draftid: this.state.parentRev.draftid,
           lastrevid: this.state.parentRev.lastrevid
         };
-        this.postRequest(
+        postRequest(
           Routes.DRAFTS_DELETE,
           bodyJson,
           function(json: any) {
@@ -322,7 +323,7 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
           title: this.state.takeDocument.title,
           blocks: this.state.takeDocument.blocks
         };
-        this.postRequest(Routes.DRAFTS_PUBLISH, bodyJson, function(
+        postRequest(Routes.DRAFTS_PUBLISH, bodyJson, function(
           json: PublishResult
         ) {
           if (!json.conflict) {
@@ -357,7 +358,7 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
         title: this.state.takeDocument.title,
         blocks: this.state.takeDocument.blocks
       };
-      this.postRequest(
+      postRequest(
         Routes.DRAFTS_SAVE,
         bodyJson,
         function(json: DraftRev) {
@@ -424,48 +425,6 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
       highlightedRange,
       viewRange
     };
-  };
-  postRequest = (
-    route: string,
-    bodyJson: DraftPost | DraftRev,
-    successCb: (json: DraftRev | PublishResult) => void
-  ) => {
-    const headers = new Headers();
-
-    headers.append("Accept", "application/json"); // This one is enough for GET requests
-    headers.append("Content-Type", "application/json"); // This one sends body
-
-    const request: RequestInit = {
-      method: "POST",
-      credentials: "include",
-      headers: headers,
-      body: JSON.stringify(bodyJson)
-    };
-    fetch(route, request)
-      .then(
-        function(response: Response) {
-          const contentType = response.headers.get("content-type");
-          if (
-            contentType &&
-            contentType.indexOf("application/json") >= 0 &&
-            response.ok
-          ) {
-            return response.json();
-          } else if (route === "/drafts/delete" && response.ok) {
-            window.location.href = "/drafts";
-          } else {
-            throw "Unexpected response from server.";
-          }
-        }.bind(this)
-      )
-      .then(
-        function(json: DraftRev) {
-          successCb(json);
-        }.bind(this)
-      )
-      .catch(function(error: Error) {
-        throw error;
-      });
   };
   handleTakeBlockChange = (stateIndex: number, value: string): void => {
     if (stateIndex === -1) {

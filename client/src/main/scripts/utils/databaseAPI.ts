@@ -1,7 +1,10 @@
 import { Foundation } from "../java2ts/Foundation";
 import { Routes } from "../java2ts/Routes";
+import { DraftRev } from "../java2ts/DraftRev";
+import { DraftPost } from "../java2ts/DraftPost";
+import { PublishResult } from "../java2ts/PublishResult";
 
-export function getAllFacts(
+function getAllFacts(
   callback: (
     error: string | Error | null,
     documents: Foundation.FactLink[]
@@ -38,7 +41,7 @@ export function getAllFacts(
     });
 }
 
-export function fetchFact(
+function fetchFact(
   factHash: string,
   callback: (
     error: string | Error | null,
@@ -79,7 +82,7 @@ export function fetchFact(
     });
 }
 
-export function isDocument(
+function isDocument(
   fact: Foundation.DocumentFactContent | Foundation.VideoFactContent | null
 ): fact is Foundation.DocumentFactContent {
   if (fact) {
@@ -89,7 +92,7 @@ export function isDocument(
   }
 }
 
-export function isVideo(
+function isVideo(
   fact: Foundation.DocumentFactContent | Foundation.VideoFactContent | null
 ): fact is Foundation.VideoFactContent {
   if (fact) {
@@ -98,3 +101,48 @@ export function isVideo(
     return false;
   }
 }
+
+function postRequest(
+  route: string,
+  bodyJson: DraftPost | DraftRev,
+  successCb: (json: DraftRev | PublishResult) => void
+) {
+  const headers = new Headers();
+
+  headers.append("Accept", "application/json"); // This one is enough for GET requests
+  headers.append("Content-Type", "application/json"); // This one sends body
+
+  const request: RequestInit = {
+    method: "POST",
+    credentials: "include",
+    headers: headers,
+    body: JSON.stringify(bodyJson)
+  };
+  fetch(route, request)
+    .then(
+      function(response: Response) {
+        const contentType = response.headers.get("content-type");
+        if (
+          contentType &&
+          contentType.indexOf("application/json") >= 0 &&
+          response.ok
+        ) {
+          return response.json();
+        } else if (route === Routes.DRAFTS_DELETE && response.ok) {
+          window.location.href = Routes.DRAFTS;
+        } else {
+          throw "Unexpected response from server.";
+        }
+      }.bind(this)
+    )
+    .then(
+      function(json: DraftRev) {
+        successCb(json);
+      }.bind(this)
+    )
+    .catch(function(error: Error) {
+      throw error;
+    });
+}
+
+export { getAllFacts, fetchFact, isDocument, isVideo, postRequest };
