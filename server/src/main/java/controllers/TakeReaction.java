@@ -122,7 +122,7 @@ public class TakeReaction implements Jooby.Module {
 
 	// @formatter:off
 	// Reaction.illegal is cruft, but hard to delete: https://stackoverflow.com/questions/25811017/how-to-delete-an-enum-type-value-in-postgres
-	private static final Reaction[] REACTIONS_NON_VIEW = new Reaction[] {
+	static final Reaction[] REACTIONS_NON_VIEW = new Reaction[] {
 			Reaction.like,
 			Reaction.bookmark,
 			Reaction.spam,
@@ -141,7 +141,7 @@ public class TakeReaction implements Jooby.Module {
 		}
 	}
 
-	private static boolean getReaction(TakeReactionJson.UserState state, Reaction reaction) {
+	static boolean getReaction(TakeReactionJson.UserState state, Reaction reaction) {
 		switch (reaction) {
 		case like:			return state.like;
 		case bookmark:		return state.bookmark;

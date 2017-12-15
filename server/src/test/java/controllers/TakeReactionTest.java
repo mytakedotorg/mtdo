@@ -8,7 +8,10 @@ package controllers;
 
 import common.JoobyDevRule;
 import common.JsonPost;
+import db.enums.Reaction;
 import io.restassured.RestAssured;
+import java.util.HashSet;
+import java.util.Set;
 import java2ts.Routes;
 import java2ts.TakeReactionJson;
 import java2ts.TakeReactionJson.UserState;
@@ -33,25 +36,34 @@ public class TakeReactionTest {
 				req, Routes.API_TAKE_VIEW, TakeReactionJson.ViewRes.class);
 	}
 
+	private static void assertViewsLikes(TakeReactionJson.TakeState takeState, int views, int likes) {
+		Assertions.assertThat(takeState.viewCount).isEqualTo(views);
+		Assertions.assertThat(takeState.likeCount).isEqualTo(likes);
+	}
+
+	private static void assertUserState(TakeReactionJson.UserState userState, Reaction... expected) {
+		Assertions.assertThat(userState).isNotNull();
+		Set<Reaction> actuals = new HashSet<>();
+		for (Reaction actual : TakeReaction.REACTIONS_NON_VIEW) {
+			if (TakeReaction.getReaction(userState, actual)) {
+				actuals.add(actual);
+			}
+		}
+		Assertions.assertThat(actuals).containsExactlyInAnyOrder(expected);
+	}
+
 	@Test
 	public void _01_viewNotLoggedIn() {
 		TakeReactionJson.ViewRes res = viewForUser(null);
 		Assertions.assertThat(res.userState).isNull();
-		Assertions.assertThat(res.takeState.viewCount).isEqualTo(0);
-		Assertions.assertThat(res.takeState.likeCount).isEqualTo(0);
+		assertViewsLikes(res.takeState, 0, 0);
 	}
 
 	@Test
 	public void _02_viewLoggedIn() {
 		TakeReactionJson.ViewRes res = viewForUser("samples");
-		Assertions.assertThat(res.userState).isNotNull();
-		Assertions.assertThat(res.userState.like).isFalse();
-		Assertions.assertThat(res.userState.bookmark).isFalse();
-		Assertions.assertThat(res.userState.spam).isFalse();
-		Assertions.assertThat(res.userState.harassment).isFalse();
-		Assertions.assertThat(res.userState.rulesviolation).isFalse();
-		Assertions.assertThat(res.takeState.viewCount).isEqualTo(1);
-		Assertions.assertThat(res.takeState.likeCount).isEqualTo(0);
+		assertUserState(res.userState);
+		assertViewsLikes(res.takeState, 1, 0);
 	}
 
 	private static TakeReactionJson.ReactRes reactForUser(String username, UserState userState) {
@@ -66,14 +78,8 @@ public class TakeReactionTest {
 		UserState userState = new UserState();
 		userState.like = true;
 		TakeReactionJson.ReactRes res = reactForUser("samples", userState);
-		Assertions.assertThat(res.userState).isNotNull();
-		Assertions.assertThat(res.userState.like).isTrue();
-		Assertions.assertThat(res.userState.bookmark).isFalse();
-		Assertions.assertThat(res.userState.spam).isFalse();
-		Assertions.assertThat(res.userState.harassment).isFalse();
-		Assertions.assertThat(res.userState.rulesviolation).isFalse();
-		Assertions.assertThat(res.takeState.viewCount).isEqualTo(1);
-		Assertions.assertThat(res.takeState.likeCount).isEqualTo(1);
+		assertUserState(res.userState, Reaction.like);
+		assertViewsLikes(res.takeState, 1, 1);
 	}
 
 	@Test
@@ -82,26 +88,14 @@ public class TakeReactionTest {
 		userState.like = false;
 		userState.bookmark = true;
 		TakeReactionJson.ReactRes res = reactForUser("samples", userState);
-		Assertions.assertThat(res.userState).isNotNull();
-		Assertions.assertThat(res.userState.like).isFalse();
-		Assertions.assertThat(res.userState.bookmark).isTrue();
-		Assertions.assertThat(res.userState.spam).isFalse();
-		Assertions.assertThat(res.userState.harassment).isFalse();
-		Assertions.assertThat(res.userState.rulesviolation).isFalse();
-		Assertions.assertThat(res.takeState.viewCount).isEqualTo(1);
-		Assertions.assertThat(res.takeState.likeCount).isEqualTo(0);
+		assertUserState(res.userState, Reaction.bookmark);
+		assertViewsLikes(res.takeState, 1, 0);
 	}
 
 	@Test
 	public void _05_other_view() {
 		TakeReactionJson.ViewRes res = viewForUser("other");
-		Assertions.assertThat(res.userState).isNotNull();
-		Assertions.assertThat(res.userState.like).isFalse();
-		Assertions.assertThat(res.userState.bookmark).isFalse();
-		Assertions.assertThat(res.userState.spam).isFalse();
-		Assertions.assertThat(res.userState.harassment).isFalse();
-		Assertions.assertThat(res.userState.rulesviolation).isFalse();
-		Assertions.assertThat(res.takeState.viewCount).isEqualTo(2);
-		Assertions.assertThat(res.takeState.likeCount).isEqualTo(0);
+		assertUserState(res.userState);
+		assertViewsLikes(res.takeState, 2, 0);
 	}
 }
