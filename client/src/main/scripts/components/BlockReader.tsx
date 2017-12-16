@@ -1,11 +1,13 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import BlockEditor, { TakeDocument } from "./BlockEditor";
+import ReactionContainer from "./ReactionContainer";
 import { slugify } from "../utils/functions";
 import { Foundation } from "../java2ts/Foundation";
 
 interface BlockReaderProps {
   initState: TakeDocument;
+  takeId: number;
 }
 
 interface BlockReaderState {
@@ -54,6 +56,7 @@ class BlockReader extends React.Component<BlockReaderProps, BlockReaderState> {
           takeDocument={(Object as any).assign({}, this.state.takeDocument)}
           eventHandlers={eventHandlers}
         />
+        <ReactionContainer takeId={this.props.takeId} />
       </div>
     );
   }

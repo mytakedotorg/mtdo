@@ -18,12 +18,9 @@ import org.jooby.Env;
 import org.jooby.Jooby;
 import org.jooby.internal.RoutePattern;
 import org.jooq.DSLContext;
-import org.jooq.Record;
-import org.jooq.Result;
 
 public class Takes implements Jooby.Module {
 	private static final RoutePattern USER_TITLE = new RoutePattern("GET", "/:user/:title");
-	private static final RoutePattern USER = new RoutePattern("GET", "/:user");
 
 	@Override
 	public void configure(Env env, Config conf, Binder binder) throws Throwable {
@@ -42,27 +39,6 @@ public class Takes implements Jooby.Module {
 					return NotFound.result();
 				} else {
 					return views.Takes.showTake.template(take);
-				}
-			}
-		});
-		env.router().get(USER.pattern(), req -> {
-			String username = Text.lowercase(req, "user");
-			try (DSLContext dsl = req.require(DSLContext.class)) {
-				Record account = dsl.select(ACCOUNT.ID)
-						.from(ACCOUNT)
-						.where(ACCOUNT.USERNAME.eq(username))
-						.fetchOne();
-				if (account == null) {
-					return NotFound.result();
-				} else {
-					int userId = account.get(ACCOUNT.ID);
-					Result<?> takes = dsl
-							.select(TAKEPUBLISHED.TITLE, TAKEPUBLISHED.TITLE_SLUG, TAKEPUBLISHED.PUBLISHED_AT)
-							.from(TAKEPUBLISHED)
-							.where(TAKEPUBLISHED.USER_ID.eq(userId))
-							.orderBy(TAKEPUBLISHED.PUBLISHED_AT.desc(), TAKEPUBLISHED.TITLE_SLUG.asc())
-							.fetch();
-					return views.Takes.listTakes.template(username, takes);
 				}
 			}
 		});

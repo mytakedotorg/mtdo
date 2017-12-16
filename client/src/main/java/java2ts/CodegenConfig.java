@@ -22,8 +22,14 @@ public class CodegenConfig implements StaticCodegenConfig {
 		return new TypeLiteral[]{
 				TypeLiteral.create(DraftRev.class),
 				TypeLiteral.create(DraftPost.class),
+				TypeLiteral.create(PublishResult.class),
 				TypeLiteral.create(LoginCookie.class),
-				TypeLiteral.create(PublishResult.class)
+				TypeLiteral.create(TakeReactionJson.UserState.class),
+				TypeLiteral.create(TakeReactionJson.TakeState.class),
+				TypeLiteral.create(TakeReactionJson.ReactReq.class),
+				TypeLiteral.create(TakeReactionJson.ReactRes.class),
+				TypeLiteral.create(TakeReactionJson.ViewReq.class),
+				TypeLiteral.create(TakeReactionJson.ViewRes.class)
 		};
 	}
 }

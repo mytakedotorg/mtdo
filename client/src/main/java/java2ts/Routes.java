@@ -9,6 +9,8 @@ package java2ts;
 @jsweet.lang.Interface
 public class Routes {
 	public static final String API = "/api";
+	public static final String API_TAKE_VIEW = "/api/takeView";
+	public static final String API_TAKE_REACT = "/api/takeReact";
 
 	public static final String DRAFTS = "/drafts";
 	public static final String DRAFTS_NEW = "/drafts/new";
@@ -17,6 +19,10 @@ public class Routes {
 	public static final String DRAFTS_SAVE = "/drafts/save";
 	public static final String LOGIN = "/login";
 	public static final String LOGOUT = "/logout";
+
+	public static final String PROFILE_TAB = "tab";
+	public static final String PROFILE_TAB_LIKES = "likes";
+	public static final String PROFILE_TAB_EDIT = "edit";
 
 	public static final String FOUNDATION = "/foundation";
 	public static final String FOUNDATION_DATA = "/foundation-data";

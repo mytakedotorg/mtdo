@@ -1,0 +1,32 @@
+@import controllers.Profile.Mode
+@import db.tables.records.AccountRecord
+@import java.sql.Timestamp
+@import org.jooq.Result
+@import static db.Tables.TAKEPUBLISHED
+@import static db.Tables.TAKEREACTION
+
+@args(AccountRecord account, boolean isLoggedIn, Result<?> takes)
+
+@views.Profile.profileBase.template(account, isLoggedIn, Mode.stars) -> {
+
+	<div class="tab">
+@if (takes.isEmpty()) {
+	<h2 class="tab-title">No liked Takes.</h2>
+} else {
+	<div class="takelist">
+	@for (take : takes) {
+		@with(	String title = take.get(TAKEPUBLISHED.TITLE),
+				String titleSlug = take.get(TAKEPUBLISHED.TITLE_SLUG),
+				Timestamp reactedAt = take.get(TAKEREACTION.REACTED_AT)
+				) {
+		<div class="takelist__take">
+			<h2 class="takelist__title"><a class="takelist__link" href="@controllers.Takes.userTitleSlug(account.getUsername(), titleSlug)">@title</a></h2>
+			<span class="takelist__aside">Starred on @common.Time.formatCompact().format(reactedAt)</span>
+		</div>
+		}
+	}
+	</div>
+}
+</div>
+
+}

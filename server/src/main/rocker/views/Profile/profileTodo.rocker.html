@@ -1,0 +1,15 @@
+@import controllers.Profile.Mode
+@import db.tables.records.AccountRecord
+@import java.sql.Timestamp
+@import org.jooq.Result
+@import static db.Tables.TAKEPUBLISHED
+
+@args(AccountRecord account, boolean isLoggedIn, Mode mode)
+
+@views.Profile.profileBase.template(account, isLoggedIn, mode) -> {
+
+<div class="tab">
+	<h2 class="tab-title">TODO</h2>
+</div>
+
+}

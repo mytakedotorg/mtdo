@@ -12,6 +12,8 @@ import controllers.DiscourseAuth;
 import controllers.Drafts;
 import controllers.FoundationAssets;
 import controllers.HomeFeed;
+import controllers.Profile;
+import controllers.TakeReaction;
 import controllers.Takes;
 import java.security.SecureRandom;
 import java.util.Random;
@@ -68,9 +70,11 @@ public class Prod extends Jooby {
 		jooby.use(new Drafts());
 		jooby.use(new AuthModule());
 		jooby.use(new NotFound());
-		// Takes controller needs to be last, because otherwise
-		// it will swallow every `/user` and `/user/take` URL.
+		jooby.use(new TakeReaction());
+		// These controllers need to be last, because otherwise
+		// they will swallow every `/user` and `/user/take` URL.
 		jooby.use(new Takes());
+		jooby.use(new Profile());
 	}
 
 	public static void main(String[] args) {

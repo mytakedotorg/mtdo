@@ -18,6 +18,7 @@ interface HomeArgs {
 interface ShowTakeArgs {
   type: "showtake";
   takeDocument: TakeDocument;
+  takeId: number;
 }
 
 interface FoundationArgs {
@@ -65,7 +66,7 @@ if (typeof window.mytake != "undefined") {
       Root = <FeedList cards={window.mytake.cards} />;
       break;
     case "showtake":
-      Root = <BlockReader initState={window.mytake.takeDocument} />;
+      Root = <BlockReader initState={window.mytake.takeDocument} takeId={window.mytake.takeId} />;
       break;
     default:
       throw "Unknown argument structure";

@@ -1,0 +1,575 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Reaction - harassment reported 1`] = `
+<div
+  className="reaction"
+>
+  <div
+    className="reaction__counts"
+  >
+    <p
+      className="reaction__count reaction__count--views"
+    >
+      Views:
+       
+      1
+    </p>
+    <p
+      className="reaction__count reaction__count--stars"
+    >
+      Stars:
+       
+      0
+    </p>
+  </div>
+  <div
+    className="reaction__actions"
+  >
+    <button
+      className="reaction__action reaction__action--star"
+      disabled={false}
+      onClick={[Function]}
+    >
+      <i
+        aria-hidden="true"
+        className="fa fa-star-o"
+      />
+    </button>
+    <button
+      className="reaction__action reaction__action--report"
+      onClick={[Function]}
+    >
+      Report
+    </button>
+    <ul
+      className="reaction__submenu reaction__submenu--collapse"
+    >
+      <li
+        className="reaction__li"
+      >
+        <button
+          className="reaction__action reaction__action--spam"
+          disabled={false}
+          onClick={[Function]}
+        >
+          spam
+        </button>
+      </li>
+      <li
+        className="reaction__li"
+      >
+        <button
+          className="reaction__action reaction__action--harassment"
+          disabled={false}
+          onClick={[Function]}
+        >
+          Marked as harassment. Unmark?
+        </button>
+      </li>
+      <li
+        className="reaction__li"
+      >
+        <button
+          className="reaction__action reaction__action--rules"
+          disabled={false}
+          onClick={[Function]}
+        >
+          rules violation
+        </button>
+      </li>
+    </ul>
+  </div>
+</div>
+`;
+
+exports[`Reaction - initial 1`] = `
+<div
+  className="reaction"
+>
+  <div
+    className="reaction__counts"
+  >
+    <p
+      className="reaction__count reaction__count--views"
+    >
+      Views:
+       
+      1
+    </p>
+    <p
+      className="reaction__count reaction__count--stars"
+    >
+      Stars:
+       
+      0
+    </p>
+  </div>
+  <div
+    className="reaction__actions"
+  >
+    <button
+      className="reaction__action reaction__action--star"
+      disabled={false}
+      onClick={[Function]}
+    >
+      <i
+        aria-hidden="true"
+        className="fa fa-star-o"
+      />
+    </button>
+    <button
+      className="reaction__action reaction__action--report"
+      onClick={[Function]}
+    >
+      Report
+    </button>
+    <ul
+      className="reaction__submenu reaction__submenu--collapse"
+    >
+      <li
+        className="reaction__li"
+      >
+        <button
+          className="reaction__action reaction__action--spam"
+          disabled={false}
+          onClick={[Function]}
+        >
+          spam
+        </button>
+      </li>
+      <li
+        className="reaction__li"
+      >
+        <button
+          className="reaction__action reaction__action--harassment"
+          disabled={false}
+          onClick={[Function]}
+        >
+          harassment
+        </button>
+      </li>
+      <li
+        className="reaction__li"
+      >
+        <button
+          className="reaction__action reaction__action--rules"
+          disabled={false}
+          onClick={[Function]}
+        >
+          rules violation
+        </button>
+      </li>
+    </ul>
+  </div>
+</div>
+`;
+
+exports[`Reaction - initial 2`] = `
+<div
+  className="reaction"
+>
+  <div
+    className="reaction__counts"
+  >
+    <p
+      className="reaction__count reaction__count--views"
+    >
+      Views:
+       
+      1
+    </p>
+    <p
+      className="reaction__count reaction__count--stars"
+    >
+      Stars:
+       
+      0
+    </p>
+  </div>
+  <div
+    className="reaction__actions"
+  >
+    <button
+      className="reaction__action reaction__action--star"
+      disabled={false}
+      onClick={[Function]}
+    >
+      <i
+        aria-hidden="true"
+        className="fa fa-star-o"
+      />
+    </button>
+    <button
+      className="reaction__action reaction__action--report"
+      onClick={[Function]}
+    >
+      Report
+    </button>
+    <ul
+      className="reaction__submenu reaction__submenu--collapse"
+    >
+      <li
+        className="reaction__li"
+      >
+        <button
+          className="reaction__action reaction__action--spam"
+          disabled={false}
+          onClick={[Function]}
+        >
+          spam
+        </button>
+      </li>
+      <li
+        className="reaction__li"
+      >
+        <button
+          className="reaction__action reaction__action--harassment"
+          disabled={false}
+          onClick={[Function]}
+        >
+          harassment
+        </button>
+      </li>
+      <li
+        className="reaction__li"
+      >
+        <button
+          className="reaction__action reaction__action--rules"
+          disabled={false}
+          onClick={[Function]}
+        >
+          rules violation
+        </button>
+      </li>
+    </ul>
+  </div>
+</div>
+`;
+
+exports[`Reaction - liked 1`] = `
+<div
+  className="reaction"
+>
+  <div
+    className="reaction__counts"
+  >
+    <p
+      className="reaction__count reaction__count--views"
+    >
+      Views:
+       
+      1
+    </p>
+    <p
+      className="reaction__count reaction__count--stars"
+    >
+      Stars:
+       
+      0
+    </p>
+  </div>
+  <div
+    className="reaction__actions"
+  >
+    <button
+      className="reaction__action reaction__action--star"
+      disabled={false}
+      onClick={[Function]}
+    >
+      <i
+        aria-hidden="true"
+        className="fa fa-star"
+      />
+    </button>
+    <button
+      className="reaction__action reaction__action--report"
+      onClick={[Function]}
+    >
+      Report
+    </button>
+    <ul
+      className="reaction__submenu reaction__submenu--collapse"
+    >
+      <li
+        className="reaction__li"
+      >
+        <button
+          className="reaction__action reaction__action--spam"
+          disabled={false}
+          onClick={[Function]}
+        >
+          spam
+        </button>
+      </li>
+      <li
+        className="reaction__li"
+      >
+        <button
+          className="reaction__action reaction__action--harassment"
+          disabled={false}
+          onClick={[Function]}
+        >
+          harassment
+        </button>
+      </li>
+      <li
+        className="reaction__li"
+      >
+        <button
+          className="reaction__action reaction__action--rules"
+          disabled={false}
+          onClick={[Function]}
+        >
+          rules violation
+        </button>
+      </li>
+    </ul>
+  </div>
+</div>
+`;
+
+exports[`Reaction - loading 1`] = `
+<div
+  className="reaction"
+>
+  <div
+    className="reaction__counts"
+  >
+    <p
+      className="reaction__count reaction__count--views"
+    >
+      Views:
+       
+      -
+    </p>
+    <p
+      className="reaction__count reaction__count--stars"
+    >
+      Stars:
+       
+      -
+    </p>
+  </div>
+  <div
+    className="reaction__actions"
+  >
+    <button
+      className="reaction__action reaction__action--star"
+      disabled={true}
+      onClick={[Function]}
+    >
+      <i
+        aria-hidden="true"
+        className="fa fa-star-o"
+      />
+    </button>
+    <button
+      className="reaction__action reaction__action--report"
+      onClick={[Function]}
+    >
+      Report
+    </button>
+    <ul
+      className="reaction__submenu reaction__submenu--collapse"
+    >
+      <li
+        className="reaction__li"
+      >
+        <button
+          className="reaction__action reaction__action--spam"
+          disabled={true}
+          onClick={[Function]}
+        >
+          spam
+        </button>
+      </li>
+      <li
+        className="reaction__li"
+      >
+        <button
+          className="reaction__action reaction__action--harassment"
+          disabled={true}
+          onClick={[Function]}
+        >
+          harassment
+        </button>
+      </li>
+      <li
+        className="reaction__li"
+      >
+        <button
+          className="reaction__action reaction__action--rules"
+          disabled={true}
+          onClick={[Function]}
+        >
+          rules violation
+        </button>
+      </li>
+    </ul>
+  </div>
+</div>
+`;
+
+exports[`Reaction - rules violated reported 1`] = `
+<div
+  className="reaction"
+>
+  <div
+    className="reaction__counts"
+  >
+    <p
+      className="reaction__count reaction__count--views"
+    >
+      Views:
+       
+      1
+    </p>
+    <p
+      className="reaction__count reaction__count--stars"
+    >
+      Stars:
+       
+      0
+    </p>
+  </div>
+  <div
+    className="reaction__actions"
+  >
+    <button
+      className="reaction__action reaction__action--star"
+      disabled={false}
+      onClick={[Function]}
+    >
+      <i
+        aria-hidden="true"
+        className="fa fa-star-o"
+      />
+    </button>
+    <button
+      className="reaction__action reaction__action--report"
+      onClick={[Function]}
+    >
+      Report
+    </button>
+    <ul
+      className="reaction__submenu reaction__submenu--collapse"
+    >
+      <li
+        className="reaction__li"
+      >
+        <button
+          className="reaction__action reaction__action--spam"
+          disabled={false}
+          onClick={[Function]}
+        >
+          spam
+        </button>
+      </li>
+      <li
+        className="reaction__li"
+      >
+        <button
+          className="reaction__action reaction__action--harassment"
+          disabled={false}
+          onClick={[Function]}
+        >
+          harassment
+        </button>
+      </li>
+      <li
+        className="reaction__li"
+      >
+        <button
+          className="reaction__action reaction__action--rules"
+          disabled={false}
+          onClick={[Function]}
+        >
+          Marked as rules violation. Unmark?
+        </button>
+      </li>
+    </ul>
+  </div>
+</div>
+`;
+
+exports[`Reaction - spam reported 1`] = `
+<div
+  className="reaction"
+>
+  <div
+    className="reaction__counts"
+  >
+    <p
+      className="reaction__count reaction__count--views"
+    >
+      Views:
+       
+      1
+    </p>
+    <p
+      className="reaction__count reaction__count--stars"
+    >
+      Stars:
+       
+      0
+    </p>
+  </div>
+  <div
+    className="reaction__actions"
+  >
+    <button
+      className="reaction__action reaction__action--star"
+      disabled={false}
+      onClick={[Function]}
+    >
+      <i
+        aria-hidden="true"
+        className="fa fa-star-o"
+      />
+    </button>
+    <button
+      className="reaction__action reaction__action--report"
+      onClick={[Function]}
+    >
+      Report
+    </button>
+    <ul
+      className="reaction__submenu reaction__submenu--collapse"
+    >
+      <li
+        className="reaction__li"
+      >
+        <button
+          className="reaction__action reaction__action--spam"
+          disabled={false}
+          onClick={[Function]}
+        >
+          Marked as spam. Unmark?
+        </button>
+      </li>
+      <li
+        className="reaction__li"
+      >
+        <button
+          className="reaction__action reaction__action--harassment"
+          disabled={false}
+          onClick={[Function]}
+        >
+          harassment
+        </button>
+      </li>
+      <li
+        className="reaction__li"
+      >
+        <button
+          className="reaction__action reaction__action--rules"
+          disabled={false}
+          onClick={[Function]}
+        >
+          rules violation
+        </button>
+      </li>
+    </ul>
+  </div>
+</div>
+`;

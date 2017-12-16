@@ -209,16 +209,19 @@ function proxyTask(mode) {
       proxy: "localhost:8080",
       middleware: [
         webpackDevMiddleware(bundler, {
-          publicPath: "/assets-dev/scripts",
+          publicPath: "/assets-dev/" + SCRIPTS,
           stats: { colors: true }
         }),
-        webpackHotMiddleware(bundler),
+        webpackHotMiddleware(bundler)
+      ],
+      files: config.distDev + "/" + STYLES + "/**",
+      serveStatic: [
         {
-          route: "/assets-dev",
-          handle: serveStatic(__dirname + config.dist)
+          route: "/assets-dev/" + STYLES,
+          dir: config.distDev + "/" + STYLES
         }
       ]
     });
-    gulp.watch(src(SCRIPTS) + "**", [SCRIPTS + mode]);
+    gulp.watch(src(STYLES) + "**", [STYLES + mode]);
   };
 }

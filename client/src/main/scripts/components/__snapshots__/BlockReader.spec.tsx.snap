@@ -60,5 +60,8 @@ exports[`Read only 1`] = `
       </div>
     </div>
   </div>
+  <ReactionContainer
+    takeId={2}
+  />
 </div>
 `;

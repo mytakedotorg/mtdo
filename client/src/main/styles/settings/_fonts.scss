@@ -65,6 +65,19 @@ $serif: "Merriweather", serif;
   }
 }
 
+@mixin heading2--no-lh {
+  @include typography($sans, 700, 24px);
+  @media #{$mq-small} {
+    @include typography($sans, 700, 24px);
+  }
+  @media #{$mq-medium} {
+    @include typography($sans, 700, 30px);
+  }
+  @media #{$mq-large} {
+    @include typography($sans, 700, 34px);
+  }
+}
+
 @mixin heading3 {
   @include typography($sans, 700, 19px, 1.3em);
   @media #{$mq-small} {

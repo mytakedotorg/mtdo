@@ -26,7 +26,7 @@
 	<em class="header__logo"><a class="header__logo-link" href="/">MyTake.org</a></em>
 	<div class="header__icon-list header__icon-list--top">
 	<div id="login"></div>
-		<a class="header__icon header__icon--github" href="https://github.com/mytake/mytake"><i class="fa fa-github" aria-hidden="true"></i></a>
+		<a class="header__icon header__icon--github" href="https://github.com/mytakedotorg/mytakedotorg" target="_blank"><i class="fa fa-github" aria-hidden="true"></i></a>
 	</div>
 	</div>
 	<div class="header__nav">
@@ -49,8 +49,8 @@
 	</div>
 	<div class="header__banner-links">
 		<p class="header__text">Under construction</p>
-		<p class="header__text"><a class="header__link" href="https://github.com/mytake/mytake/blob/master/WORK_IN_PROGRESS.md">How to use</a></p>
-		<p class="header__text"><a class="header__link" href="https://github.com/mytake/mytake/blob/master/CONTRIBUTING.md">Contribute</a></p>
+		<p class="header__text"><a class="header__link" href="https://github.com/mytakedotorg/mytakedotorg/blob/master/WORK_IN_PROGRESS.md">How to use</a></p>
+		<p class="header__text"><a class="header__link" href="https://github.com/mytakedotorg/mytakedotorg/blob/master/CONTRIBUTING.md">Contribute</a></p>
 	</div>
 	</div>
 </header>
@@ -62,7 +62,8 @@ window.mytake = {
 	takeDocument: {
 	title: "Why it's so hard to have peace",
 	blocks: [{"kind": "paragraph", "text": "During the cold war, anybody who wanted to negotiate with the evil Communists was “weak”."}, {"kind": "paragraph", "text": "Today, anybody who wants to negotiate with a Muslim country is “weak”."}, {"kind": "video", "range": [304, 321], "videoId": "U8MV5KDDaxumxZOCJOzExAUAAkSoYNhycVXq7jZ59_0="}, {"kind": "paragraph", "text": "Thank goodness there's at least one party who is willing to give peace a chance!"}, {"kind": "video", "range": [246, 261], "videoId": "qQjcS7ARkHHdKnDXfS3OkX5f78l81M1OWu5y_IziPA0="}, {"kind": "paragraph", "text": "Err..  Surely that's an outlier?"}, {"kind": "video", "range": [190, 203], "videoId": "qQjcS7ARkHHdKnDXfS3OkX5f78l81M1OWu5y_IziPA0="}, {"kind": "paragraph", "text": "Huh.  Too bad Jimmy Carter didn't think of something as catchy as MAGA."}]
-	}
+	},
+	takeId: 1
 };
 </script>
 
@@ -77,8 +78,8 @@ window.mytake = {
 	</ul>
 </footer>
 <script type="text/javascript" src="/assets-dev/scripts/window.bundle.js"></script>
-<script type="text/javascript" src="https://unpkg.com/react@15/dist/react.js"></script>
-<script type="text/javascript" src="https://unpkg.com/react-dom@15/dist/react-dom.js"></script>
+<script type="text/javascript" src="https://unpkg.com/react@15.6.2/dist/react.min.js"></script>
+<script type="text/javascript" src="https://unpkg.com/react-dom@15.6.2/dist/react-dom.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.js"></script>
 <script type="text/javascript" src="/assets-dev/scripts/app.bundle.js"></script>
 

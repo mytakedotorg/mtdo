@@ -7,6 +7,7 @@
   },
   "env": {
     "SKIP_PGCONFIG_INSTALL": "true",
+    "DISCOURSE_SSO": "prod_only",
     "SPARKPOST_APIKEY": {
       "required": true
     },

@@ -134,22 +134,28 @@ function loadUser() {
         '<div class="header__dropdown-container">' +
         '<ul class="header__dropdown header__dropdown--collapse">' +
         // Be sure to change SASS variable if you add or remove nav links (cd assets && grep -Rn user-nav-items: *)
-        '<li class="header__dropdown-list-item"><a class="header__dropdown-link" href="' +
-        Routes.DRAFTS_NEW +
-        '">New Take</a></li>' +
-        '<li class="header__dropdown-list-item"><a class="header__dropdown-link" href="/' +
-        loginUi.username +
-        '">Published Takes</a></li>' +
-        '<li class="header__dropdown-list-item"><a class="header__dropdown-link" href="' +
-        Routes.DRAFTS +
-        '">Drafts</a></li>' +
-        '<li class="header__dropdown-list-item"><a class="header__dropdown-link" href="#">Bookmarks</a></li>' +
-        '<li class="header__dropdown-list-item"><a class="header__dropdown-link" href="#">Profile</a></li>' +
-        '<li class="header__dropdown-list-item"><a class="header__dropdown-link" href="#">Settings</a></li>' +
-        '<li class="header__dropdown-list-item"><a class="header__dropdown-link" href="#">Help</a></li>' +
-        '<li class="header__dropdown-list-item"><a class="header__dropdown-link" href="' +
-        Routes.LOGOUT +
-        '">Logout</a></li>' +
+        dropdown("New Draft", Routes.DRAFTS_NEW) +
+        dropdown("Drafts", Routes.DRAFTS) +
+        dropdown("Published", "/" + loginUi.username) +
+        dropdown(
+          "Likes",
+          "/" +
+            loginUi.username +
+            "?" +
+            Routes.PROFILE_TAB +
+            "=" +
+            Routes.PROFILE_TAB_LIKES
+        ) +
+        dropdown(
+          "Profile",
+          "/" +
+            loginUi.username +
+            "?" +
+            Routes.PROFILE_TAB +
+            "=" +
+            Routes.PROFILE_TAB_EDIT
+        ) +
+        dropdown("Logout", Routes.LOGOUT) +
         "</ul>" +
         "</div>";
       return true;
@@ -163,4 +169,14 @@ function loadUser() {
     }
   }
   return false;
+}
+
+function dropdown(text: string, link: string): string {
+  return (
+    '<li class="header__dropdown-list-item"><a class="header__dropdown-link" href="' +
+    link +
+    '">' +
+    text +
+    "</a></li>"
+  );
 }
