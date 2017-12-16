@@ -16,6 +16,10 @@ const doc: TakeDocument = {
   ]
 };
 
+jest.mock("./ReactionContainer", () => ({
+  default: "ReactionContainer"
+}));
+
 function createNodeMock(element: React.ReactElement<HTMLElement>) {
   switch (element.type) {
     case "div": {
@@ -56,7 +60,7 @@ test("Read only", () => {
   // });
 
   const tree = renderer
-    .create(<BlockReader initState={doc} />, { createNodeMock })
+    .create(<BlockReader initState={doc} takeId={2} />, { createNodeMock })
     .toJSON();
   expect(tree).toMatchSnapshot();
 });

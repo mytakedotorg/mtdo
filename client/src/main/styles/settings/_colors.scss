@@ -136,5 +136,13 @@ $palettes: (
       tab-background: $white,
       tab-text: $base-darkest,
       tab-border--active: $action-highlight
+    ),
+  reaction:
+    (
+      text: $base-darkest,
+      text--link: $base-light,
+      text--hover: $base-lightest,
+      background: $white,
+      border: $base-darkest
     )
 );

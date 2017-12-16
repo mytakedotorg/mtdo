@@ -142,66 +142,137 @@ interface ReactionProps {
   };
 }
 
-export const Reaction: React.StatelessComponent<ReactionProps> = props => {
-  return (
-    <div className="reaction">
-      <div className="reaction__counts">
-        <p className="reaction__count reaction__count--views">
-          Views:{" "}
-          {props.containerState.takeState
-            ? props.containerState.takeState.viewCount
-            : "-"}
-        </p>
-        <p className="reaction__count reaction__count--stars">
-          Stars:{" "}
-          {props.containerState.takeState
-            ? props.containerState.takeState.likeCount
-            : "-"}
-        </p>
-      </div>
+interface ReactionState {
+  subMenuIsOpen: boolean;
+}
 
-      <div className="reaction__actions">
-        <button
-          className="reaction__action reaction__action--star"
-          onClick={props.eventListeners.onStarPress}
-          disabled={typeof props.containerState.takeState == "undefined"}
-        >
-          {props.containerState.userState && props.containerState.userState.like
-            ? "Unstar"
-            : "Star"}
-        </button>
-        <button
-          className="reaction__action reaction__action--report"
-          onClick={() => props.eventListeners.onReportPress("spam")}
-          disabled={typeof props.containerState.takeState == "undefined"}
-        >
-          {props.containerState.userState && props.containerState.userState.spam
-            ? "Marked as spam. Unmark?"
-            : "Report spam"}
-        </button>
-        <button
-          className="reaction__action reaction__action--report"
-          onClick={() => props.eventListeners.onReportPress("harassment")}
-          disabled={typeof props.containerState.takeState == "undefined"}
-        >
-          {props.containerState.userState &&
-          props.containerState.userState.harassment
-            ? "Marked as harassment. Unmark?"
-            : "Report harassment"}
-        </button>
-        <button
-          className="reaction__action reaction__action--report"
-          onClick={() => props.eventListeners.onReportPress("rulesviolation")}
-          disabled={typeof props.containerState.takeState == "undefined"}
-        >
-          {props.containerState.userState &&
-          props.containerState.userState.rulesviolation
-            ? "Marked as rules violation. Unmark?"
-            : "Report rules violation"}
-        </button>
+export class Reaction extends React.Component<ReactionProps, ReactionState> {
+  constructor(props: ReactionProps) {
+    super(props);
+
+    this.state = {
+      subMenuIsOpen: false
+    };
+  }
+  toggleMenu = () => {
+    const menuIsOpen = this.state.subMenuIsOpen;
+    if (!menuIsOpen) {
+      window.addEventListener("mousedown", this.onMouseDown);
+    } else {
+      window.removeEventListener("mousedown", this.onMouseDown);
+    }
+    this.setState({
+      subMenuIsOpen: !menuIsOpen
+    });
+  };
+  onMouseDown = (e: MouseEvent) => {
+    if (e.target) {
+      if (!(e.target as HTMLElement).classList.contains("reaction__action")) {
+        this.setState({
+          subMenuIsOpen: false
+        });
+        window.removeEventListener("mousedown", this.onMouseDown);
+      }
+    }
+  };
+  componentWillUnmount() {
+    window.removeEventListener("mousedown", this.onMouseDown);
+  }
+  render() {
+    const { props } = this;
+    const { userState } = props.containerState;
+
+    let menuClassModifier;
+    if (!this.state.subMenuIsOpen) {
+      menuClassModifier = "reaction__submenu--collapse";
+    } else if (userState) {
+      if (userState.harassment || userState.spam || userState.rulesviolation) {
+        menuClassModifier = "reaction__submenu--wide";
+      }
+    } else {
+      menuClassModifier = "";
+    }
+
+    return (
+      <div className="reaction">
+        <div className="reaction__counts">
+          <p className="reaction__count reaction__count--views">
+            Views:{" "}
+            {props.containerState.takeState
+              ? props.containerState.takeState.viewCount
+              : "-"}
+          </p>
+          <p className="reaction__count reaction__count--stars">
+            Stars:{" "}
+            {props.containerState.takeState
+              ? props.containerState.takeState.likeCount
+              : "-"}
+          </p>
+        </div>
+
+        <div className="reaction__actions">
+          <button
+            className="reaction__action reaction__action--star"
+            onClick={props.eventListeners.onStarPress}
+            disabled={typeof props.containerState.takeState == "undefined"}
+          >
+            {props.containerState.userState &&
+            props.containerState.userState.like ? (
+              <i className="fa fa-star" aria-hidden="true" />
+            ) : (
+              <i className="fa fa-star-o" aria-hidden="true" />
+            )}
+          </button>
+          <button
+            className="reaction__action reaction__action--report"
+            onClick={this.toggleMenu}
+          >
+            Report
+          </button>
+          <ul className={"reaction__submenu " + menuClassModifier}>
+            <li className="reaction__li">
+              <button
+                className="reaction__action reaction__action--spam"
+                onClick={() => props.eventListeners.onReportPress("spam")}
+                disabled={typeof props.containerState.takeState == "undefined"}
+              >
+                {props.containerState.userState &&
+                props.containerState.userState.spam
+                  ? "Marked as spam. Unmark?"
+                  : "spam"}
+              </button>
+            </li>
+            <li className="reaction__li">
+              <button
+                className="reaction__action reaction__action--harassment"
+                onClick={() => props.eventListeners.onReportPress("harassment")}
+                disabled={typeof props.containerState.takeState == "undefined"}
+              >
+                {props.containerState.userState &&
+                props.containerState.userState.harassment
+                  ? "Marked as harassment. Unmark?"
+                  : "harassment"}
+              </button>
+            </li>
+            <li className="reaction__li">
+              <button
+                className="reaction__action reaction__action--rules"
+                onClick={() =>
+                  props.eventListeners.onReportPress("rulesviolation")
+                }
+                disabled={typeof props.containerState.takeState == "undefined"}
+              >
+                {props.containerState.userState &&
+                props.containerState.userState.rulesviolation
+                  ? "Marked as rules violation. Unmark?"
+                  : "rules violation"}
+              </button>
+            </li>
+          </ul>
+        </div>
       </div>
-    </div>
-  );
-};
+    );
+  }
+}
 
 export default ReactionContainer;
