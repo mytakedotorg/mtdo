@@ -7,7 +7,7 @@
 
 @args(AccountRecord account, boolean isLoggedIn, Result<?> takes)
 
-@views.Profile.profileBase.template(account, isLoggedIn, Mode.published) -> {
+@views.Profile.profileBase.template(account, isLoggedIn, Mode.stars) -> {
 
 	<div class="tab">
 @if (takes.isEmpty()) {
@@ -21,7 +21,7 @@
 				) {
 		<div class="takelist__take">
 			<h2 class="takelist__title"><a class="takelist__link" href="@controllers.Takes.userTitleSlug(account.getUsername(), titleSlug)">@title</a></h2>
-			<span class="takelist__aside">Liked on @common.Time.formatCompact().format(reactedAt)</span>
+			<span class="takelist__aside">Starred on @common.Time.formatCompact().format(reactedAt)</span>
 		</div>
 		}
 	}

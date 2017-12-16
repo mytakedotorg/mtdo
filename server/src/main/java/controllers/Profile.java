@@ -31,7 +31,7 @@ import org.jooq.Result;
 public class Profile implements Jooby.Module {
 	/** Represents a single mode in the profile page. */
 	public enum Mode {
-		published, likes, followers, following, edit, drafts;
+		published, stars, followers, following, edit, drafts;
 
 		public boolean requiresLogin() {
 			return this == edit || this == drafts;
@@ -97,7 +97,7 @@ public class Profile implements Jooby.Module {
 								.orderBy(TAKEPUBLISHED.PUBLISHED_AT.desc(), TAKEPUBLISHED.TITLE_SLUG.asc())
 								.fetch();
 						return views.Profile.profilePublished.template(account, isLoggedIn, published);
-					case likes:
+					case stars:
 						Result<?> likes = dsl.select(TAKEPUBLISHED.TITLE, TAKEPUBLISHED.TITLE_SLUG, TAKEREACTION.REACTED_AT)
 								.from(TAKEPUBLISHED)
 								.innerJoin(TAKEREACTION)
@@ -105,7 +105,7 @@ public class Profile implements Jooby.Module {
 								.where(TAKEREACTION.USER_ID.eq(userId).and(TAKEREACTION.KIND.eq(Reaction.like)))
 								.orderBy(TAKEREACTION.REACTED_AT.desc(), TAKEPUBLISHED.TITLE_SLUG.asc())
 								.fetch();
-						return views.Profile.profilePublished.template(account, isLoggedIn, likes);
+						return views.Profile.profileStars.template(account, isLoggedIn, likes);
 					case followers:
 					case following:
 					case edit:
