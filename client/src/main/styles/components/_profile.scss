@@ -58,9 +58,11 @@ $usercard-width: 200px;
   line-height: 1.2rem;
 }
 .profile__tabs {
-  width: $column-width--lg - $usercard-width;
   max-width: 100%;
-  float: left;
+  @media #{$mq-large} {
+    width: $column-width--lg - $usercard-width;
+    float: left;
+  }
 }
 .tab-nav {
   width: $column-width;
