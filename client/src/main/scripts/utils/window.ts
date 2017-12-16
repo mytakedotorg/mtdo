@@ -136,10 +136,11 @@ function loadUser() {
         // Be sure to change SASS variable if you add or remove nav links (cd assets && grep -Rn user-nav-items: *)
         dropdown("New Draft", Routes.DRAFTS_NEW) +
         dropdown("Drafts", Routes.DRAFTS) +
-        dropdown("Published", loginUi.username) +
+        dropdown("Published", "/" + loginUi.username) +
         dropdown(
           "Likes",
-          loginUi.username +
+          "/" +
+            loginUi.username +
             "?" +
             Routes.PROFILE_TAB +
             "=" +
@@ -147,7 +148,8 @@ function loadUser() {
         ) +
         dropdown(
           "Profile",
-          loginUi.username +
+          "/" +
+            loginUi.username +
             "?" +
             Routes.PROFILE_TAB +
             "=" +
