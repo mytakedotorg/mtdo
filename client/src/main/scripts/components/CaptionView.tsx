@@ -6,7 +6,7 @@ import {
   getCaptionNodeArray,
   getSimpleRangesFromHTMLRange,
   getWordCount,
-  highlightTextTwo,
+  highlightText,
   FoundationNode
 } from "../utils/functions";
 import { Foundation } from "../java2ts/Foundation";
@@ -82,7 +82,7 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
       if (transcript && speakerMap) {
         let captionNodes = getCaptionNodeArray(transcript, speakerMap);
         if (captionIsHighlighted && highlightedCharRange) {
-          captionNodes = highlightTextTwo(
+          captionNodes = highlightText(
             captionNodes,
             highlightedCharRange,
             () => {}
@@ -130,7 +130,7 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
             ReactDOM.findDOMNode(this.document).childNodes
           );
 
-          const newNodes = highlightTextTwo(
+          const newNodes = highlightText(
             [...this.document.getDocumentNodes()],
             simpleRanges.charRange,
             () => {}

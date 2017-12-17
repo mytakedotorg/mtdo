@@ -774,7 +774,7 @@ function getSimpleRangesFromHTMLRange(
   }
 }
 
-function highlightTextTwo(
+function highlightText(
   nodes: FoundationNode[],
   range: [number, number],
   handleSetClick: () => void
@@ -899,7 +899,7 @@ export {
   getNodesInRange,
   getNodeArray,
   getWordCount,
-  highlightTextTwo,
+  highlightText,
   slugify
 };
 
