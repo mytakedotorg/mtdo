@@ -19,17 +19,21 @@
 body {
   margin: 0;
   padding: 0;
+  background-color: #fff;
   &.noscroll {
     overflow: hidden;
   }
-  &.fade {
+  &.fade > .fade-overlay {
+    opacity: 0.4;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 9; // Must be less than header z-index, but greater z-index than all other root top level HTML elements under body
     background-color: #000;
-    > :not(.header) {
-      opacity: 0.4;
-    }
   }
 }
-
 #app {
   background-color: #fff;
   position: relative;
@@ -41,7 +45,6 @@ body {
   margin-bottom: 2rem;
   width: 100%;
 }
-
 html {
   font-size: 10px; // For easy rem units
   box-sizing: border-box;
