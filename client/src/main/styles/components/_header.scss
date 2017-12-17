@@ -77,6 +77,7 @@ $fa-size: 16px;
 .header__icon--login {
   line-height: 8rem;
   text-decoration: none;
+  margin-right: 150px;
 }
 .header__nav {
   @include clearfix;
@@ -170,4 +171,14 @@ $fa-size: 16px;
   &:hover {
     color: palette(nav, text--hover);
   }
+}
+.header__fork-link {
+  position: relative;
+}
+.header__fork-img {
+  position: absolute;
+  top: 0;
+  right: 0;
+  border: 0;
+  z-index: 1;
 }
