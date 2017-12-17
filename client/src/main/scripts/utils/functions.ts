@@ -54,20 +54,6 @@ export interface FoundationNode {
   innerHTML: Array<string | React.ReactNode>;
 }
 
-function clearDefaultDOMSelection(): void {
-  if (window.getSelection) {
-    if (window.getSelection().empty) {
-      // Chrome
-      window.getSelection().empty();
-    } else if (window.getSelection().removeAllRanges) {
-      // Firefox
-      window.getSelection().removeAllRanges();
-    }
-  } else {
-    // pre IE 9, unsupported
-  }
-}
-
 function getNodesInRange(
   nodes: FoundationNode[],
   range: [number, number]
@@ -100,14 +86,14 @@ function getHighlightedNodes(
   }
   const startRange = range[0];
   const endRange = range[1];
-  let documentNodes = getNodesInRange(nodes, viewRange);
+  const documentNodes = getNodesInRange(nodes, viewRange);
   let highlightedNodes: FoundationNode[] = [];
   // documentNodes is a new array with only the nodes containing text to be highlighted
   if (documentNodes.length === 1) {
     const offset = documentNodes[0].offset;
     const startIndex = startRange - offset;
     const endIndex = endRange - offset;
-    let newSpan: React.ReactNode = React.createElement(
+    const newSpan: React.ReactNode = React.createElement(
       "span",
       {
         className: "editor__document-highlight",
@@ -125,12 +111,12 @@ function getHighlightedNodes(
     highlightedNodes = [newNode];
   } else if (documentNodes.length > 1) {
     // More than one DOM node highlighted
-    let offset = documentNodes[0].offset;
-    let length = documentNodes[0].innerHTML.toString().length;
-    let startIndex = startRange - offset;
-    let endIndex = length;
+    const offset = documentNodes[0].offset;
+    const length = documentNodes[0].innerHTML.toString().length;
+    const startIndex = startRange - offset;
+    const endIndex = length;
 
-    let newSpan: React.ReactNode = React.createElement(
+    const newSpan: React.ReactNode = React.createElement(
       "span",
       {
         className: "editor__document-highlight",
@@ -148,10 +134,11 @@ function getHighlightedNodes(
     highlightedNodes = [newNode];
 
     for (let index: number = 1; index < documentNodes.length; index++) {
-      offset = documentNodes[index].offset;
-      length = documentNodes[index].innerHTML.toString().length;
-      startIndex = 0;
+      const offset = documentNodes[index].offset;
+      const length = documentNodes[index].innerHTML.toString().length;
+      const startIndex = 0;
 
+      let endIndex;
       if (documentNodes[index + 1]) {
         // The selection continues beyond this one
         endIndex = length;
@@ -160,7 +147,7 @@ function getHighlightedNodes(
         endIndex = endRange - offset;
       }
 
-      let newSpan: React.ReactNode = React.createElement(
+      const newSpan: React.ReactNode = React.createElement(
         "span",
         {
           className: "editor__document-highlight",
@@ -209,12 +196,12 @@ function getStartRangeOffsetTop(
   const startRange = range[0];
   const endRange = range[1];
 
-  let rowIndexClassName = "document__row";
-  let rowInnerIndexClassName = "document__row-inner";
-  let textIndexClassName = "document__text";
+  const rowIndexClassName = "document__row";
+  const rowInnerIndexClassName = "document__row-inner";
+  const textIndexClassName = "document__text";
 
   let rowIndex;
-  let firstNodeList = childNodes;
+  const firstNodeList = childNodes;
   for (let i = 0; i < firstNodeList.length; i++) {
     for (let j = 0; j < firstNodeList[i].attributes.length; j++) {
       if (
@@ -273,11 +260,11 @@ function getStartRangeOffsetTop(
 
   let resultNodes;
   if (thirdNodeList && textIndex !== undefined) {
-    let textNodes = thirdNodeList[textIndex].childNodes;
+    const textNodes = thirdNodeList[textIndex].childNodes;
     for (let idx = 0; idx < textNodes.length; idx++) {
       if ((textNodes[idx] as HTMLElement).dataset) {
         // Get the value of the data-char-offset attribute
-        let dataOffset = (textNodes[idx] as HTMLElement).dataset.charOffset;
+        const dataOffset = (textNodes[idx] as HTMLElement).dataset.charOffset;
         if (textNodes[idx + 1]) {
           if (dataOffset && parseInt(dataOffset) <= startRange) {
             resultNodes = textNodes[idx];
@@ -300,7 +287,7 @@ function getStartRangeOffsetTop(
   }
 
   if (resultNodes) {
-    let offsetTop = (resultNodes as HTMLElement).offsetTop;
+    const offsetTop = (resultNodes as HTMLElement).offsetTop;
     return offsetTop;
   } else {
     return 0;
@@ -311,49 +298,12 @@ function getStartRangeOffsetTop(
  *  Create an array of React elements for each Node in a given object.
  */
 
-interface FoundationComponent {
-  component: "p" | "h2" | "h3";
-  innerHTML: string;
-}
-
-function getNodeArray(excerptId: string): FoundationNode[] {
-  // Fetch the excerpt from the DB by its ID
-  throw "TODO";
-  // const excerpt = getDocumentFact(excerptId);
-  // let source;
-  // if (excerpt) {
-  //   source = require("../foundation/" + excerpt.filename);
-  // } else {
-  //   throw "Error retrieving Foundation document";
-  // }
-
-  // if (source) {
-  //   const output: Array<FoundationNode> = [];
-  //   const components: FoundationComponent[] = JSON.parse(source);
-  //   let offset = 0;
-  //   for (const component of components) {
-  //     output.push({
-  //       component: component.component,
-  //       props: {
-  //         offset: offset
-  //       },
-  //       innerHTML: [component.innerHTML]
-  //     });
-  //     offset += component.innerHTML.length;
-  //   }
-
-  //   return output;
-  // } else {
-  //   throw "Error retrieving Foundation document";
-  // }
-}
-
 function zeroPad(someNumber: number): string {
-  let twoDigitStr: string;
   if (someNumber == 0) {
     return "00";
   }
 
+  let twoDigitStr: string;
   if (someNumber < 10) {
     twoDigitStr = "0" + someNumber.toString();
   } else {
@@ -435,10 +385,10 @@ function getWordCount(selection: Selection): number {
   // Cursor is in a block of caption text
 
   // Get the text Node
-  let textNode = selection.anchorNode;
+  const textNode = selection.anchorNode;
 
   // Get the character offset of the cursor position in the Node
-  let anchorOffset = selection.anchorOffset;
+  const anchorOffset = selection.anchorOffset;
 
   // Get the word offset of the cursor position in the Node
   let wordCount;
@@ -463,7 +413,7 @@ function getWordCount(selection: Selection): number {
 
     while (captionBlock && captionBlock.previousSibling) {
       captionBlock = captionBlock.previousSibling;
-      let prevTextNode = captionBlock.childNodes[1].childNodes[0];
+      const prevTextNode = captionBlock.childNodes[1].childNodes[0];
       if (prevTextNode.textContent) {
         wordCount += prevTextNode.textContent.toString().split(" ").length;
       }
@@ -889,7 +839,6 @@ function highlightText(
 }
 
 export {
-  clearDefaultDOMSelection,
   convertSecondsToTimestamp,
   getCaptionNodeArray,
   getCharRangeFromVideoRange,
@@ -897,10 +846,7 @@ export {
   getStartRangeOffsetTop,
   getHighlightedNodes,
   getNodesInRange,
-  getNodeArray,
   getWordCount,
   highlightText,
   slugify
 };
-
-export default {};
