@@ -57,7 +57,7 @@ if (typeof window.mytake != "undefined") {
         }
         initJson = windowState;
       } else {
-        initJson = initialState;
+        initJson = (Object as any).assign({}, initialState);
       }
 
       Root = <BlockWriter initState={initJson} hashUrl={window.location.hash} />;

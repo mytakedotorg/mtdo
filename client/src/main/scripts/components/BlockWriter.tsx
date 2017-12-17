@@ -64,8 +64,16 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
   constructor(props: BlockWriterProps) {
     super(props);
 
+    let blocks = [
+      (Object as any).assign({}, props.initState.takeDocument.blocks[0])
+    ];
+
     this.state = {
-      ...props.initState,
+      takeDocument: {
+        title: props.initState.takeDocument.title,
+        blocks: blocks
+      },
+      activeBlockIndex: props.initState.activeBlockIndex,
       status: {
         saved: true,
         saving: false,
@@ -298,8 +306,19 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
           bodyJson,
           function(json: any) {
             // Not expecting a server response, so this will never execute.
+            throw "Unexpected JSON response from server.";
           }.bind(this)
         );
+      } else {
+        this.setState({
+          ...initialState,
+          status: {
+            saved: true,
+            saving: false,
+            error: false,
+            message: ""
+          }
+        });
       }
     }
   };
@@ -309,29 +328,40 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
         "This action cannot be undone. Are you sure you want to publish this draft?"
       )
     ) {
-      if (this.state.takeDocument.title.length <= 255) {
-        this.setState({
-          status: {
-            ...this.state.status,
-            saving: true,
-            error: false,
-            message: "Publishing Take."
-          }
-        });
-        const bodyJson: DraftPost = {
-          parentRev: this.state.parentRev,
-          title: this.state.takeDocument.title,
-          blocks: this.state.takeDocument.blocks
-        };
-        postRequest(Routes.DRAFTS_PUBLISH, bodyJson, function(
-          json: PublishResult
-        ) {
-          if (!json.conflict) {
-            window.location.href = json.publishedUrl;
-          } else {
-            throw "There was an error publishing your Take.";
-          }
-        });
+      const { title } = this.state.takeDocument;
+      if (title.length <= 255) {
+        if (title.length > 0) {
+          this.setState({
+            status: {
+              ...this.state.status,
+              saving: true,
+              error: false,
+              message: "Publishing Take."
+            }
+          });
+          const bodyJson: DraftPost = {
+            parentRev: this.state.parentRev,
+            title: title,
+            blocks: this.state.takeDocument.blocks
+          };
+          postRequest(Routes.DRAFTS_PUBLISH, bodyJson, function(
+            json: PublishResult
+          ) {
+            if (!json.conflict) {
+              window.location.href = json.publishedUrl;
+            } else {
+              throw "There was an error publishing your Take.";
+            }
+          });
+        } else {
+          this.setState({
+            status: {
+              ...this.state.status,
+              error: true,
+              message: "Take must have a title."
+            }
+          });
+        }
       } else {
         this.setState({
           status: {
@@ -344,36 +374,47 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
     }
   };
   handleSaveClick = () => {
-    if (this.state.takeDocument.title.length <= 255) {
-      this.setState({
-        status: {
-          ...this.state.status,
-          saving: true,
-          error: false,
-          message: "Saving Take."
-        }
-      });
-      const bodyJson: DraftPost = {
-        parentRev: this.state.parentRev,
-        title: this.state.takeDocument.title,
-        blocks: this.state.takeDocument.blocks
-      };
-      postRequest(
-        Routes.DRAFTS_SAVE,
-        bodyJson,
-        function(json: DraftRev) {
-          const parentRev: DraftRev = json;
-          this.setState({
-            parentRev: parentRev,
-            status: {
-              saved: true,
-              saving: false,
-              error: false,
-              message: "Save successful!"
-            }
-          });
-        }.bind(this)
-      );
+    const { title } = this.state.takeDocument;
+    if (title.length <= 255) {
+      if (title.length > 0) {
+        this.setState({
+          status: {
+            ...this.state.status,
+            saving: true,
+            error: false,
+            message: "Saving Take."
+          }
+        });
+        const bodyJson: DraftPost = {
+          parentRev: this.state.parentRev,
+          title: title,
+          blocks: this.state.takeDocument.blocks
+        };
+        postRequest(
+          Routes.DRAFTS_SAVE,
+          bodyJson,
+          function(json: DraftRev) {
+            const parentRev: DraftRev = json;
+            this.setState({
+              parentRev: parentRev,
+              status: {
+                saved: true,
+                saving: false,
+                error: false,
+                message: "Save successful!"
+              }
+            });
+          }.bind(this)
+        );
+      } else {
+        this.setState({
+          status: {
+            ...this.state.status,
+            error: true,
+            message: "Take must have a title."
+          }
+        });
+      }
     } else {
       this.setState({
         status: {
