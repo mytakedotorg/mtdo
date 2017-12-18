@@ -180,3 +180,30 @@ function dropdown(text: string, link: string): string {
     "</a></li>"
   );
 }
+
+window.onerror = function(
+  message: string,
+  source?: string,
+  lineno?: number,
+  colno?: number,
+  error?: Error
+) {
+  const msg =
+    "Something went wrong. To help us figure it out, please copy and paste the information from below into an email to team@mytake.org. Thank you." +
+    "\n\n" +
+    "Error message: " +
+    message +
+    "\nURL: " +
+    window.location.href +
+    "\nsource: " +
+    source +
+    "\nsource: " +
+    source +
+    "\nlineno: " +
+    lineno +
+    "\ncolno: " +
+    colno +
+    "\nerror: " +
+    JSON.stringify(error);
+  alert(msg);
+};
