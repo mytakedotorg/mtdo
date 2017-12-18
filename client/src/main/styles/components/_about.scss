@@ -11,6 +11,7 @@
 .about__text {
   @include body("sans");
   color: palette(about, text);
+  @include text-margin-lr;
 }
 .about__text--aside {
   font-size: 10px;
@@ -28,6 +29,7 @@
 }
 .about__image-container {
   text-align: center;
+  @include text-margin-lr;
 }
 .about__image {
   max-width: 100%;
