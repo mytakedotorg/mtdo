@@ -1,9 +1,7 @@
 $video-container-width: 540px;
 $video-header-height: 60px;
 .video__outer-container {
-  width: $column-width;
-  max-width: 100%;
-  margin: auto;
+  @include content-column;
 }
 .video__inner-container {
   padding: 15px $page-margin-mobile;

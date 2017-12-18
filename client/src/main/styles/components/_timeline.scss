@@ -10,9 +10,7 @@
 }
 
 .timeline__inner-container {
-  width: $column-width;
-  max-width: 100%;
-  margin: auto;
+  @include content-column;
 }
 
 .timeline__instructions {

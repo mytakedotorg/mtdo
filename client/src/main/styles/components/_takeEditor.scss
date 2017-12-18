@@ -24,13 +24,11 @@
   @include text-margin;
 }
 .editor__wrapper {
-  margin: auto;
+  @include content-column;
   padding-top: $page-margin-mobile * $vertical-margin-multiplier;
   @media #{$mq-medium} {
     padding-top: $content-margin * $vertical-margin-multiplier;
   }
-  width: $column-width;
-  max-width: 100%;
   background-color: palette(editor, background);
   position: relative;
   z-index: 10;
