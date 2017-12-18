@@ -24,7 +24,6 @@ import org.jooby.Jooby;
 import org.jooby.Results;
 import org.jooby.jdbc.Jdbc;
 import org.jooby.jooq.jOOQ;
-import org.jooby.mail.CommonsEmail;
 
 /**
  * The app that we run in production.  See {@link Dev} in the test
@@ -54,7 +53,7 @@ public class Prod extends Jooby {
 
 	static void common(Jooby jooby) {
 		jooby.use(new IpGetter.Module());
-		jooby.use(new CommonsEmail());
+		EmailSender.init(jooby);
 		jooby.use(new Jdbc());
 		jooby.use(new jOOQ());
 		jooby.use(new JsoniterModule());

@@ -13,6 +13,7 @@ import static db.Tables.ACCOUNT;
 import static db.Tables.CONFIRMACCOUNTLINK;
 
 import com.google.common.collect.ImmutableSet;
+import common.EmailSender;
 import common.Emails;
 import common.IpGetter;
 import common.RandomString;
@@ -32,7 +33,6 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 import java2ts.Routes;
-import org.apache.commons.mail.HtmlEmail;
 import org.jooby.Request;
 import org.jooby.Response;
 import org.jooq.DSLContext;
@@ -114,13 +114,11 @@ public class CreateAccountForm extends MetaFormDef.HandleValid {
 					path.param(CREATE_USERNAME, username);
 					path.param(CREATE_EMAIL, email);
 
-					String html = views.Auth.createAccountEmail.template(username, path.build()).renderToString();
-					req.require(HtmlEmail.class)
-							.setHtmlMsg(html)
+					req.require(EmailSender.class).send(req, htmlEmail -> htmlEmail
+							.setHtmlMsg(views.Auth.createAccountEmail.template(username, path.build()).renderToString())
 							.setSubject("MyTake.org account confirmation")
 							.addTo(email)
-							.setFrom(Emails.TEAM, Emails.TEAM_NAME)
-							.send();
+							.setFrom(Emails.TEAM, Emails.TEAM_NAME));
 
 					rsp.send(views.Auth.createAccountEmailSent.template(email, Emails.TEAM));
 					return true;
