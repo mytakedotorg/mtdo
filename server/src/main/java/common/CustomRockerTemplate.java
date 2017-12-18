@@ -45,14 +45,4 @@ public abstract class CustomRockerTemplate extends RequestRockerTemplate {
 		Preconditions.checkNotNull(scriptTags, "No such scripts %s, available: %s", fileset, locals.keySet());
 		return new RockerRaw().appendRaw(scriptTags);
 	}
-
-	/** Returns a liveReload script, if there is one. */
-	public RockerRaw liveReload() {
-		RockerRaw result = new RockerRaw();
-		String liveReload = (String) locals.get("liveReload");
-		if (liveReload != null) {
-			result.appendRaw(liveReload);
-		}
-		return result;
-	}
 }
