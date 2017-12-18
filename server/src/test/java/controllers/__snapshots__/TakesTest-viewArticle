@@ -82,6 +82,9 @@ window.mytake = {
 <script type="text/javascript" src="https://unpkg.com/react-dom@15.6.2/dist/react-dom.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.js"></script>
 <script type="text/javascript" src="/assets-dev/scripts/app.bundle.js"></script>
-
+<script type="text/javascript">
+(function() { var s = document.createElement("script"); s.type = "text/javascript"; s.async = true; s.src = '//api.usersnap.com/load/9e09b129-6a59-485b-9003-cb6c38e3cc1f.js';
+var x = document.getElementsByTagName('script')[0]; x.parentNode.insertBefore(s, x); })();
+</script>
 </body>
 </html>
