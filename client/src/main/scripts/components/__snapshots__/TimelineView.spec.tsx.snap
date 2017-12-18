@@ -158,10 +158,18 @@ exports[`View loading 1`] = `
 <div
   className="timeline__view"
 >
-  <div>
-    <p>
-      Loading
-    </p>
+  <div
+    className="timeline__preview"
+  >
+    <div
+      className="document document--static"
+    >
+      <p
+        className="document__text"
+      >
+        Loading Timeline
+      </p>
+    </div>
   </div>
 </div>
 `;
