@@ -1,6 +1,7 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { FoundationNode } from "../utils/functions";
+import { alertErr } from "../utils/functions";
 
 interface DataAttributes {
   "data-char-offset": number;
@@ -34,6 +35,7 @@ class DocumentTextNode extends React.Component<
       case "p":
         return <p {...attributes}>{documentNode.innerHTML}</p>;
       default:
+        alertErr("DocumentTextNode: Unknown documentNode.component");
         throw "Unknown documentNode.component";
     }
   }

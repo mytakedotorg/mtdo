@@ -3,6 +3,7 @@ import * as ReactDOM from "react-dom";
 import { Routes } from "../java2ts/Routes";
 import { TakeReactionJson } from "../java2ts/TakeReactionJson";
 import { postRequest } from "../utils/databaseAPI";
+import { alertErr } from "../utils/functions";
 
 interface ReactionContainerProps {
   takeId: number;
@@ -94,6 +95,7 @@ class ReactionContainer extends React.Component<
           };
           break;
         default:
+          alertErr("ReactionContainer: Unknown report button type");
           throw "Unknown report button type";
       }
 

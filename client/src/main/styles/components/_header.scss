@@ -11,6 +11,7 @@ $fa-size: 16px;
 }
 .header__top {
   height: 8rem;
+  @include content-column;
 }
 .header__skip-link {
   position: absolute;
@@ -31,7 +32,7 @@ $fa-size: 16px;
   font-style: normal;
   margin-left: $page-margin-mobile;
   @media #{$mq-medium} {
-    margin-left: $page-margin;
+    margin-left: 2rem;
   }
   line-height: 8rem; // cd src && grep -Rn "headerHeight =" *
 }
@@ -56,14 +57,6 @@ $fa-size: 16px;
     color: palette(header, text--hover);
   }
 }
-.header__icon--github {
-  font-size: 4rem;
-  line-height: 8rem; // cd src && grep -Rn "headerHeight =" *
-  margin-right: $page-margin-mobile;
-  @media #{$mq-medium} {
-    margin-right: $page-margin;
-  }
-}
 .header__icon--triangle {
   font-size: 2rem;
   line-height: 3.5rem;
@@ -71,18 +64,27 @@ $fa-size: 16px;
   margin-left: $page-margin-mobile;
   @media #{$mq-medium} {
     margin-right: 3rem;
-    margin-left: $page-margin;
+    margin-left: 2rem;
   }
 }
 .header__icon--login {
   line-height: 8rem;
   text-decoration: none;
+  margin-right: $page-margin-mobile;
+  float: right;
+  @media #{$mq-medium} {
+    margin-right: 2rem;
+  }
 }
 .header__nav {
   @include clearfix;
   position: relative;
   border-top: 1px solid palette(header, border);
   border-bottom: 2px solid palette(header, border);
+}
+.header__nav-inner {
+  @include content-column;
+  position: relative;
   height: $nav-height;
   line-height: 1rem;
 }
@@ -91,6 +93,9 @@ $fa-size: 16px;
   float: left;
   width: 100%;
   background-color: palette(header, banner__background);
+}
+.header__banner-inner {
+  @include content-column;
 }
 .header__text {
   @include body--lead;
@@ -127,7 +132,8 @@ $fa-size: 16px;
   }
 }
 #login {
-  float: left;
+  float: right;
+  width: 150px + $page-margin-mobile;
 }
 .header__dropdown-container {
   position: relative;
@@ -136,7 +142,7 @@ $fa-size: 16px;
 .header__dropdown {
   position: absolute;
   width: 150px;
-  top: -3px;
+  top: 5.5rem;
   left: 0;
   right: 0;
   border: 1px solid palette(header, border);
@@ -169,5 +175,16 @@ $fa-size: 16px;
   color: palette(nav, text);
   &:hover {
     color: palette(nav, text--hover);
+  }
+}
+.header__fork-img {
+  display: none;
+  @media #{$mq-large} {
+    display: initial;
+    position: absolute;
+    top: 0;
+    right: 0;
+    border: 0;
+    z-index: 1;
   }
 }

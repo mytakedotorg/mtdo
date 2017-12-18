@@ -1,16 +1,15 @@
 .about {
-  margin: 0 auto;
   padding: 0 $page-margin-mobile;
   background-color: palette(about, background);
   @media #{$mq-medium} {
     padding: 0 $page-margin;
   }
-  width: $column-width;
-  max-width: 100%;
+  @include content-column;
 }
 .about__text {
   @include body("sans");
   color: palette(about, text);
+  @include text-margin-lr;
 }
 .about__text--aside {
   font-size: 10px;
@@ -28,6 +27,7 @@
 }
 .about__image-container {
   text-align: center;
+  @include text-margin-lr;
 }
 .about__image {
   max-width: 100%;

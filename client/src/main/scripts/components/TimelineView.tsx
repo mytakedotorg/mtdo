@@ -8,7 +8,7 @@ import { SetFactHandlers } from "./TimelinePreview";
 import { getAllFacts } from "../utils/databaseAPI";
 import { Foundation } from "../java2ts/Foundation";
 import { Routes } from "../java2ts/Routes";
-import { slugify } from "../utils/functions";
+import { alertErr, slugify } from "../utils/functions";
 
 interface HashValues {
   factTitleSlug: string;
@@ -58,6 +58,11 @@ export default class TimelineView extends React.Component<
     getAllFacts(
       (error: string | Error | null, factlinks: Foundation.FactLink[]) => {
         if (error) {
+          if (typeof error != "string") {
+            alertErr("TimelineView: " + error.message);
+          } else {
+            alertErr("TimelineView: " + error);
+          }
           throw error;
         } else {
           let currentFactLink: Foundation.FactLink | null = null;
@@ -115,7 +120,8 @@ export default class TimelineView extends React.Component<
     for (let factLink of this.factLinks) {
       if (factLink.hash === factHash) {
         this.setState({
-          factLink: factLink
+          factLink: factLink,
+          hashValues: null
         });
       }
     }
@@ -234,32 +240,75 @@ interface TimelineViewBranchProps {
   eventHandlers: EventHandlers;
 }
 
-export const TimelineViewBranch: React.StatelessComponent<
-  TimelineViewBranchProps
-> = props => {
-  if (
-    props.containerState.hashIsValid &&
-    props.containerState.hashValues &&
-    props.containerState.factLink
-  ) {
-    const ranges = {
-      highlightedRange: props.containerState.hashValues.highlightedRange,
-      viewRange: props.containerState.hashValues.viewRange
+interface TimelineViewBranchState {
+  isInverted: boolean;
+}
+
+export class TimelineViewBranch extends React.Component<
+  TimelineViewBranchProps,
+  TimelineViewBranchState
+> {
+  constructor(props: TimelineViewBranchProps) {
+    super(props);
+
+    let isInverted;
+    if (props.containerState.hashValues) {
+      isInverted = true;
+    } else {
+      isInverted = false;
+    }
+
+    this.state = {
+      isInverted: isInverted
     };
-    return (
-      <div className={"timeline__view"}>
-        <TimelinePreviewContainer
-          factLink={props.containerState.factLink}
-          setFactHandlers={props.setFactHandlers}
-          ranges={ranges}
-          offset={props.containerState.hashValues.offset}
-        />
-        <div className="editor__wrapper">
-          <p className="timeline__instructions">
-            Explore other Facts in the timeline below.
-          </p>
+  }
+  render() {
+    const { props } = this;
+    if (this.state.isInverted && props.containerState.factLink) {
+      let ranges;
+      let offset;
+      if (props.containerState.hashValues) {
+        ranges = {
+          highlightedRange: props.containerState.hashValues.highlightedRange,
+          viewRange: props.containerState.hashValues.viewRange
+        };
+        offset = props.containerState.hashValues.offset;
+      }
+      return (
+        <div className={"timeline__view"}>
+          <TimelinePreviewContainer
+            factLink={props.containerState.factLink}
+            setFactHandlers={props.setFactHandlers}
+            ranges={ranges}
+            offset={offset}
+          />
+          <div className="editor__wrapper">
+            <p className="timeline__instructions">
+              Explore other Facts in the timeline below.
+            </p>
+          </div>
+          <div className={"timeline"}>
+            {props.containerState.loading ? (
+              <TimelineLoadingView />
+            ) : (
+              <div>
+                <TimelineRadioButtons
+                  selectedOption={props.containerState.selectedOption}
+                  onChange={props.eventHandlers.handleChange}
+                />
+                <Timeline
+                  onItemClick={props.eventHandlers.handleClick}
+                  selectedOption={props.containerState.selectedOption}
+                  timelineItems={props.containerState.timelineItems}
+                />
+              </div>
+            )}
+          </div>
         </div>
-        <div className={"timeline"}>
+      );
+    } else {
+      return (
+        <div className={"timeline__view"}>
           {props.containerState.loading ? (
             <TimelineLoadingView />
           ) : (
@@ -275,34 +324,14 @@ export const TimelineViewBranch: React.StatelessComponent<
               />
             </div>
           )}
+          {props.containerState.factLink ? (
+            <TimelinePreviewContainer
+              factLink={props.containerState.factLink}
+              setFactHandlers={props.setFactHandlers}
+            />
+          ) : null}
         </div>
-      </div>
-    );
-  } else {
-    return (
-      <div className={"timeline__view"}>
-        {props.containerState.loading ? (
-          <TimelineLoadingView />
-        ) : (
-          <div>
-            <TimelineRadioButtons
-              selectedOption={props.containerState.selectedOption}
-              onChange={props.eventHandlers.handleChange}
-            />
-            <Timeline
-              onItemClick={props.eventHandlers.handleClick}
-              selectedOption={props.containerState.selectedOption}
-              timelineItems={props.containerState.timelineItems}
-            />
-          </div>
-        )}
-        {props.containerState.factLink ? (
-          <TimelinePreviewContainer
-            factLink={props.containerState.factLink}
-            setFactHandlers={props.setFactHandlers}
-          />
-        ) : null}
-      </div>
-    );
+      );
+    }
   }
-};
+}

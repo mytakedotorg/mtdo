@@ -9,6 +9,7 @@ import FeedList from "./components/FeedList";
 import FoundationView from "./components/FoundationView";
 import { TakeDocument } from "./components/BlockEditor";
 import { Card } from "./components/FeedList";
+import { alertErr } from "./utils/functions";
 
 interface HomeArgs {
   type: "home";
@@ -57,7 +58,7 @@ if (typeof window.mytake != "undefined") {
         }
         initJson = windowState;
       } else {
-        initJson = initialState;
+        initJson = (Object as any).assign({}, initialState);
       }
 
       Root = <BlockWriter initState={initJson} hashUrl={window.location.hash} />;
@@ -69,9 +70,11 @@ if (typeof window.mytake != "undefined") {
       Root = <BlockReader initState={window.mytake.takeDocument} takeId={window.mytake.takeId} />;
       break;
     default:
+      alertErr("index: unknown argument structure");
       throw "Unknown argument structure";
   }
 } else {
+  alertErr("index: window.mytake is undefined");
   throw "window.mytake is undefined";
 }
 
@@ -80,5 +83,6 @@ const app: HTMLElement | null = document.getElementById("app");
 if (app) {
   ReactDOM.render(Root, app);
 } else {
+  alertErr("index: couldn't find div#app");
   throw "Couldn't find div#app";
 }

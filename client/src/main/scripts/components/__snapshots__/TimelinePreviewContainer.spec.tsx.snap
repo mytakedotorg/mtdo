@@ -1,10 +1,18 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Preview loading 1`] = `
-<div>
-  <p>
-    Loading TimelinePreview
-  </p>
+<div
+  className="timeline__preview"
+>
+  <div
+    className="document document--static"
+  >
+    <p
+      className="document__text"
+    >
+      Loading TimelinePreview
+    </p>
+  </div>
 </div>
 `;
 

@@ -1,11 +1,3 @@
-.vis-item-content {
-  //position: relative;
-}
-
-.timeline__item {
-  //z-index: 100;
-}
-
 .timeline__preview {
   position: relative;
   z-index: 1;
@@ -18,9 +10,7 @@
 }
 
 .timeline__inner-container {
-  width: $column-width;
-  max-width: 100%;
-  margin: auto;
+  @include content-column;
 }
 
 .timeline__instructions {

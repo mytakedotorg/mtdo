@@ -59,6 +59,12 @@
   -webkit-box-sizing: border-box;
 }
 
+@mixin content-column {
+  width: $column-width;
+  max-width: 100%;
+  margin: auto;
+}
+
 @mixin text-margin-lr {
   margin-left: $page-margin-mobile;
   margin-right: $page-margin-mobile;

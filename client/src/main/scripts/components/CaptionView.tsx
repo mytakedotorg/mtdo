@@ -6,7 +6,7 @@ import {
   getCaptionNodeArray,
   getSimpleRangesFromHTMLRange,
   getWordCount,
-  highlightTextTwo,
+  highlightText,
   FoundationNode
 } from "../utils/functions";
 import { Foundation } from "../java2ts/Foundation";
@@ -78,27 +78,23 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
       speakerMap = this.props.videoFact.speakerMap;
     }
 
-    try {
-      if (transcript && speakerMap) {
-        let captionNodes = getCaptionNodeArray(transcript, speakerMap);
-        if (captionIsHighlighted && highlightedCharRange) {
-          captionNodes = highlightTextTwo(
-            captionNodes,
-            highlightedCharRange,
-            () => {}
-          );
-        }
-        this.setState({
-          highlightedNodes: captionNodes
-        });
-      } else {
-        this.setState({
-          highlightedNodes: undefined
-        });
-        console.warn("Captions not yet done for this video");
+    if (transcript && speakerMap) {
+      let captionNodes = getCaptionNodeArray(transcript, speakerMap);
+      if (captionIsHighlighted && highlightedCharRange) {
+        captionNodes = highlightText(
+          captionNodes,
+          highlightedCharRange,
+          () => {}
+        );
       }
-    } catch (e) {
-      throw e;
+      this.setState({
+        highlightedNodes: captionNodes
+      });
+    } else {
+      this.setState({
+        highlightedNodes: undefined
+      });
+      console.warn("Captions not yet done for this video");
     }
   };
   handleClearClick = () => {
@@ -130,7 +126,7 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
             ReactDOM.findDOMNode(this.document).childNodes
           );
 
-          const newNodes = highlightTextTwo(
+          const newNodes = highlightText(
             [...this.document.getDocumentNodes()],
             simpleRanges.charRange,
             () => {}

@@ -1,7 +1,7 @@
 .section {
-  width: $column-width;
-  max-width: 100%;
-  margin: $content-margin auto;
+  @include content-column;
+  margin-top: $content-margin;
+  margin-bottom: $content-margin;
   background-color: palette(section, background);
   @include clearfix;
 }

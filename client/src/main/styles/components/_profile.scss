@@ -65,11 +65,8 @@ $usercard-width: 200px;
   }
 }
 .tab-nav {
-  width: $column-width;
+  @include content-column;
   margin-top: $content-margin;
-  margin-left: auto;
-  margin-right: auto;
-  max-width: 100%;
 }
 .tab-nav__list {
   list-style: none;
@@ -107,9 +104,7 @@ $usercard-width: 200px;
   border-bottom: 3px solid palette(profile, tab-border--active);
 }
 .tab {
-  width: $column-width;
-  margin: auto;
-  max-width: 100%;
+  @include content-column;
 }
 .tab-title {
   @include heading2;

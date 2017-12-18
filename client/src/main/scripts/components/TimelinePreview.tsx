@@ -10,7 +10,7 @@ import {
   getHighlightedNodes,
   getSimpleRangesFromHTMLRange,
   getStartRangeOffsetTop,
-  highlightTextTwo
+  highlightText
 } from "../utils/functions";
 import { Foundation } from "../java2ts/Foundation";
 import { Routes } from "../java2ts/Routes";
@@ -93,7 +93,7 @@ export default class TimelinePreview extends React.Component<
           range,
           ReactDOM.findDOMNode(this.document).childNodes
         );
-        const newNodes = highlightTextTwo(
+        const newNodes = highlightText(
           [...this.document.getDocumentNodes()],
           simpleRanges.charRange,
           this.handleSetClick
