@@ -279,7 +279,7 @@ function getStartRangeOffsetTop(
           }
         }
 
-        if (dataOffset && parseInt(dataOffset) > endRange) {
+        if (dataOffset && parseInt(dataOffset) > startRange) {
           break;
         }
         resultNodes = textNodes[idx];
