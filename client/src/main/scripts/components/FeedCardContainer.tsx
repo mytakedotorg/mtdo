@@ -3,7 +3,11 @@ import * as ReactDOM from "react-dom";
 import DocumentTextNodeList from "./DocumentTextNodeList";
 import { fetchFact } from "../utils/databaseAPI";
 import { Foundation } from "../java2ts/Foundation";
-import { FoundationNode, getHighlightedNodes } from "../utils/functions";
+import {
+  alertErr,
+  FoundationNode,
+  getHighlightedNodes
+} from "../utils/functions";
 import { TakeBlock, VideoBlock, DocumentBlock } from "./BlockEditor";
 
 export interface FeedCardContainerProps {
@@ -41,8 +45,14 @@ class FeedCardContainer extends React.Component<
         factContent: Foundation.DocumentFactContent
       ) => {
         if (error) {
+          if (typeof error != "string") {
+            alertErr("FeedCardContainer: " + error.message);
+          } else {
+            alertErr("FeedCardContainer: " + error);
+          }
           throw error;
         } else if (!factContent) {
+          alertErr("FeedCardContainer: factContent missing from JSON");
           throw "FeedCardContainer: factContent missing from JSON";
         } else {
           let nodes: FoundationNode[] = [];
@@ -73,8 +83,14 @@ class FeedCardContainer extends React.Component<
         factContent: Foundation.VideoFactContent
       ) => {
         if (error) {
+          if (typeof error != "string") {
+            alertErr("FeedCardContainer: " + error.message);
+          } else {
+            alertErr("FeedCardContainer: " + error);
+          }
           throw error;
         } else if (!factContent) {
+          alertErr("FeedCardContainer: factContent missing from JSON");
           throw "FeedCardContainer: factContent missing from JSON";
         } else {
           this.setState({
@@ -179,7 +195,10 @@ class FeedCard extends React.Component<FeedCardProps, {}> {
                 </div>
               );
             } else {
-              throw "FeedCard: documentNodes missing in DocumentBlock";
+              alertErr(
+                "FeedCardContainer: documentNodes missing in DocumentBlock"
+              );
+              throw "FeedCardContainer: documentNodes missing in DocumentBlock";
             }
           } else if (block.kind === "video") {
             if (props.videoFact) {
@@ -196,7 +215,8 @@ class FeedCard extends React.Component<FeedCardProps, {}> {
                 </div>
               );
             } else {
-              throw "FeedCard: videoFact missing in VideoBlock";
+              alertErr("FeedCardContainer: videoFact missing in VideoBlock");
+              throw "FeedCardContainer: videoFact missing in VideoBlock";
             }
           }
         })}

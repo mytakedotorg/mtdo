@@ -1,7 +1,11 @@
 import * as React from "react";
 import * as keycode from "keycode";
 import DocumentTextNodeList from "./DocumentTextNodeList";
-import { getHighlightedNodes, FoundationNode } from "../utils/functions";
+import {
+  alertErr,
+  getHighlightedNodes,
+  FoundationNode
+} from "../utils/functions";
 import { fetchFact } from "../utils/databaseAPI";
 import { DocumentBlock } from "../java2ts/DocumentBlock";
 import { Foundation } from "../java2ts/Foundation";
@@ -45,6 +49,11 @@ class EditorDocumentContainer extends React.Component<
         factContent: Foundation.DocumentFactContent
       ) => {
         if (error) {
+          if (typeof error != "string") {
+            alertErr("EditorDocumentContainer: " + error.message);
+          } else {
+            alertErr("EditorDocumentContainer: " + error);
+          }
           throw error;
         } else {
           let nodes: FoundationNode[] = [];

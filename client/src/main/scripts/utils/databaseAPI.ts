@@ -4,6 +4,7 @@ import { DraftRev } from "../java2ts/DraftRev";
 import { DraftPost } from "../java2ts/DraftPost";
 import { PublishResult } from "../java2ts/PublishResult";
 import { TakeReactionJson } from "../java2ts/TakeReactionJson";
+import { alertErr } from "../utils/functions";
 
 function getAllFacts(
   callback: (
@@ -141,6 +142,9 @@ function postRequest(
       } else if (route === Routes.DRAFTS_DELETE && response.ok) {
         window.location.href = Routes.DRAFTS;
       } else {
+        alertErr(
+          "databaseAPI + " + route + ": Unexpected response from server."
+        );
         throw "Unexpected response from server.";
       }
     })
@@ -148,6 +152,7 @@ function postRequest(
       successCb(json);
     })
     .catch(function(error: Error) {
+      alertErr("databaseAPI + " + route + ": " + error.message);
       throw error;
     });
 }

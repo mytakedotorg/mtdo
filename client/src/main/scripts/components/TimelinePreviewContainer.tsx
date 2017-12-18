@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { FoundationNode } from "../utils/functions";
+import { alertErr, FoundationNode } from "../utils/functions";
 import { isVideo, isDocument, fetchFact } from "../utils/databaseAPI";
 import TimelinePreview, { Ranges, SetFactHandlers } from "./TimelinePreview";
 import TimelinePreviewLoadingView from "./TimelinePreviewLoadingView";
@@ -41,6 +41,11 @@ export default class TimelinePreviewContainer extends React.Component<
           | Foundation.VideoFactContent
       ) => {
         if (error) {
+          if (typeof error != "string") {
+            alertErr("TimelinePreviewContainer: " + error.message);
+          } else {
+            alertErr("TimelinePreviewContainer: " + error);
+          }
           throw error;
         } else {
           let nodes: FoundationNode[] = [];
@@ -64,6 +69,7 @@ export default class TimelinePreviewContainer extends React.Component<
               videoFact: factContent
             });
           } else {
+            alertErr("TimelinePreviewContainer: Unknown kind of Fact");
             throw "Unknown kind of Fact";
           }
         }

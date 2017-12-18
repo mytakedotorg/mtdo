@@ -13,6 +13,7 @@ import { DraftRev } from "../java2ts/DraftRev";
 import { DraftPost } from "../java2ts/DraftPost";
 import { PublishResult } from "../java2ts/PublishResult";
 import { Routes } from "../java2ts/Routes";
+import { alertErr } from "../utils/functions";
 
 interface BlockWriterProps {
   initState: InitialBlockWriterState;
@@ -306,6 +307,7 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
           bodyJson,
           function(json: any) {
             // Not expecting a server response, so this will never execute.
+            alertErr("BlockWriter: Unexpected JSON response from server.");
             throw "Unexpected JSON response from server.";
           }.bind(this)
         );
@@ -350,6 +352,7 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
             if (!json.conflict) {
               window.location.href = json.publishedUrl;
             } else {
+              alertErr("BlockWriter: error publishing Take.");
               throw "There was an error publishing your Take.";
             }
           });

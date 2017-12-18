@@ -8,7 +8,7 @@ import { SetFactHandlers } from "./TimelinePreview";
 import { getAllFacts } from "../utils/databaseAPI";
 import { Foundation } from "../java2ts/Foundation";
 import { Routes } from "../java2ts/Routes";
-import { slugify } from "../utils/functions";
+import { alertErr, slugify } from "../utils/functions";
 
 interface HashValues {
   factTitleSlug: string;
@@ -58,6 +58,11 @@ export default class TimelineView extends React.Component<
     getAllFacts(
       (error: string | Error | null, factlinks: Foundation.FactLink[]) => {
         if (error) {
+          if (typeof error != "string") {
+            alertErr("TimelineView: " + error.message);
+          } else {
+            alertErr("TimelineView: " + error);
+          }
           throw error;
         } else {
           let currentFactLink: Foundation.FactLink | null = null;

@@ -64,18 +64,14 @@ class Video extends React.Component<VideoProps, VideoState> {
     timeRange?: [number, number]
   ): [number, number] => {
     if (timeRange) {
-      try {
-        if (videoFact.transcript && videoFact.speakerMap) {
-          return getCharRangeFromVideoRange(
-            videoFact.transcript,
-            videoFact.speakerMap,
-            timeRange
-          );
-        } else {
-          throw "TODO";
-        }
-      } catch (err) {
-        throw err;
+      if (videoFact.transcript && videoFact.speakerMap) {
+        return getCharRangeFromVideoRange(
+          videoFact.transcript,
+          videoFact.speakerMap,
+          timeRange
+        );
+      } else {
+        console.warn("Captions not yet done for this video");
       }
     }
     return [-1, -1];

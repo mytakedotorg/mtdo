@@ -34,6 +34,7 @@ function decodeVideoFact(
     (offset += encoded.numSpeakerSections * Int32Array.BYTES_PER_ELEMENT)
   );
   if (offset != data.byteLength) {
+    alertErr("functions: sizes don't match");
     throw Error("Sizes don't match");
   }
   return {
@@ -366,6 +367,10 @@ function getCaptionNodeArray(
       // Character count offset
       offset += innerHTML.length;
     } else {
+      alertErr(
+        "functions: A speaker's start range can't be greater than the end range, offending range: " +
+          speaker.range
+      );
       throw "A speaker's start range can't be greater than the end range, offending range: " +
         speaker.range;
     }
@@ -405,6 +410,7 @@ function getWordCount(selection: Selection): number {
   if (textNode.parentNode) {
     paragraphNode = textNode.parentNode.parentNode;
   } else {
+    alertErr("functions: Unknown HTML Structure");
     throw "Unknown HTML Structure";
   }
 
@@ -488,6 +494,7 @@ function getCharRangeFromVideoRange(
   if (startCharIndex >= 0 && endCharIndex >= 0) {
     return [startCharIndex, endCharIndex];
   } else {
+    alertErr("functions: Index not found");
     throw "Index not found";
   }
 }
@@ -523,6 +530,7 @@ function getContainer(
       if (rowIndex !== undefined) {
         nodeList = nodeList[rowIndex].childNodes;
       } else {
+        alertErr("functions: Couldn't find nodes in " + classNames[i]);
         throw "Couldn't find nodes in " + classNames[i];
       }
     }
@@ -531,6 +539,9 @@ function getContainer(
   if (rowIndex !== undefined) {
     return nodeList[rowIndex].childNodes[containerIndex];
   } else {
+    alertErr(
+      "functions: Couldn't find nodes in " + classNames[classNames.length]
+    );
     throw "Couldn't find nodes in " + classNames[classNames.length];
   }
 }
@@ -561,7 +572,8 @@ function getSimpleRangesFromHTMLRange(
         htmlRange.startContainer.parentNode.parentNode.parentNode;
       endChildNode = htmlRange.endContainer.parentNode.parentNode.parentNode;
     } else {
-      throw "Unexpcected HTML structure";
+      alertErr("functions: Unexpected HTML structure");
+      throw "Unexpected HTML structure";
     }
     classNames = [
       "document__row",
@@ -587,6 +599,7 @@ function getSimpleRangesFromHTMLRange(
       startChildNode
     ); //Find indexOf current Node
   } else {
+    alertErr("functions: Couldn't find start container");
     throw "Couldn't find start container";
   }
 
@@ -602,6 +615,7 @@ function getSimpleRangesFromHTMLRange(
       endChildNode
     ); //Find indexOf current Node
   } else {
+    alertErr("functions: Couldn't find end container");
     throw "Couldn't find end container";
   }
 
@@ -629,11 +643,13 @@ function getSimpleRangesFromHTMLRange(
           wordCountBeforeSelection += text.split(" ").length;
           charCountBeforeSelection += text.length;
         } else {
+          alertErr("functions: Unexpcected HTML structure");
           throw "Unexpected HTML structure";
         }
         prevSib = prevSib.previousSibling;
       }
     } else {
+      alertErr("functions: Unexpcected HTML structure");
       throw "Unexpected HTML structure";
     }
   } else {
@@ -664,6 +680,7 @@ function getSimpleRangesFromHTMLRange(
     charStart = charCountBeforeSelection + textBeforeStart.length;
     viewStart = charCountBeforeSelection;
   } else {
+    alertErr("functions: Unexpcected HTML structure");
     throw "Unexpected HTML structure";
   }
 
@@ -701,6 +718,7 @@ function getSimpleRangesFromHTMLRange(
           charCountBeforeSelection += textOfMiddleContainer.length;
         }
       } else {
+        alertErr("functions: Unexpcected HTML structure");
         throw "Unexpected HTML structure";
       }
     }
@@ -719,6 +737,7 @@ function getSimpleRangesFromHTMLRange(
         viewRange: [viewStart, viewEnd]
       };
     } else {
+      alertErr("functions: Unexpcected HTML structure");
       throw "Unexpected HTML structure";
     }
   }
@@ -838,7 +857,18 @@ function highlightText(
   return newNodes;
 }
 
+function alertErr(errMsg: string) {
+  const msg =
+    "Something went wrong. To help us figure it out, please copy and paste the information from below into an email to team@mytake.org. Thank you." +
+    "\n\n" +
+    "Error message: " +
+    errMsg +
+    "\nURL: " +
+    window.location.href;
+  alert(msg);
+}
 export {
+  alertErr,
   convertSecondsToTimestamp,
   getCaptionNodeArray,
   getCharRangeFromVideoRange,

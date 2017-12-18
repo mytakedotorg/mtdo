@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { FoundationNode } from "../utils/functions";
+import { alertErr, FoundationNode } from "../utils/functions";
 import { Foundation } from "../java2ts/Foundation";
 import CaptionTextNode from "./CaptionTextNode";
 var bs = require("binary-search");
@@ -114,6 +114,10 @@ class CaptionTextNodeList extends React.Component<
       if (captionTextContainer && captionTextContainer.children[1]) {
         hiddenTextElement = captionTextContainer.children[1];
       } else {
+        alertErr(
+          "CaptionTextNodeList: Couldn't find caption node at index " +
+            speakerIdx
+        );
         throw "Couldn't find caption node at index " + speakerIdx;
       }
 
@@ -172,6 +176,9 @@ class CaptionTextNodeList extends React.Component<
     let wordCount: number;
     let nextWordCount: number;
     if (this.props.speakerMap.length !== this.props.documentNodes.length) {
+      alertErr(
+        "CaptionTextNodeList: Speaker map length not equal to number of caption nodes."
+      );
       throw "Speaker map length not equal to number of caption nodes.";
     }
     const speakerMap = this.props.speakerMap;
