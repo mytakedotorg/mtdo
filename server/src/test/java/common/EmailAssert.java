@@ -7,8 +7,11 @@
 package common;
 
 import com.icegreen.greenmail.util.GreenMailUtil;
+import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import javax.mail.Address;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import org.assertj.core.api.AbstractAssert;
@@ -16,9 +19,19 @@ import org.assertj.core.api.AbstractCharSequenceAssert;
 import org.assertj.core.api.Assertions;
 
 public class EmailAssert extends AbstractAssert<EmailAssert, MimeMessage> {
-
 	public EmailAssert(MimeMessage actual) {
 		super(actual, EmailAssert.class);
+	}
+
+	public MimeMessage getActual() {
+		return actual;
+	}
+
+	public AbstractCharSequenceAssert<?, String> allRecipients() throws MessagingException {
+		String recipients = Arrays.stream(actual.getAllRecipients())
+				.map(Address::toString)
+				.collect(Collectors.joining(","));
+		return Assertions.assertThat(recipients);
 	}
 
 	public AbstractCharSequenceAssert<?, String> subject() throws MessagingException {

@@ -13,6 +13,9 @@ import com.diffplug.common.base.Throwing;
 import com.icegreen.greenmail.util.GreenMail;
 import db.tables.pojos.Account;
 import io.restassured.specification.RequestSpecification;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 import javax.mail.internet.MimeMessage;
 import org.assertj.core.api.Assertions;
 import org.jooby.Jooby;
@@ -78,12 +81,16 @@ public class JoobyDevRule extends ExternalResource {
 		}
 	}
 
-	public EmailAssert waitForEmail() {
+	public List<EmailAssert> waitForEmails(int count) {
 		GreenMail greenmail = app.require(GreenMail.class);
 		Assertions.assertThat(greenmail.waitForIncomingEmail(1)).isTrue();
 		MimeMessage[] messages = greenmail.getReceivedMessages();
-		Assertions.assertThat(messages).hasSize(1);
-		return new EmailAssert(messages[0]);
+		Assertions.assertThat(messages).hasSize(count);
+		return Arrays.stream(messages).map(EmailAssert::new).collect(Collectors.toList());
+	}
+
+	public EmailAssert waitForEmail() {
+		return waitForEmails(1).get(0);
 	}
 
 	public Jooby app() {
