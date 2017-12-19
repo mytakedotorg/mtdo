@@ -7,6 +7,7 @@
 package common;
 
 import static db.Tables.ACCOUNT;
+import static db.Tables.MODERATOR;
 import static db.Tables.TAKEDRAFT;
 import static db.Tables.TAKEPUBLISHED;
 import static db.Tables.TAKEREVISION;
@@ -57,6 +58,11 @@ public class InitialData {
 		draft(dsl, time, otherUser, "To make sure users don't leak", b -> {});
 
 		usernameEmail(dsl, time, "empty", "empty@email.com");
+
+		dsl.insertInto(MODERATOR).columns(MODERATOR.ID)
+				.values(usernameEmail(dsl, time, "mod1", "mod1@email.com"))
+				.values(usernameEmail(dsl, time, "mod2", "mod2@email.com"))
+				.execute();
 	}
 
 	static void draft(DSLContext dsl, Time time, int user, String title, Consumer<TakeBuilder> builder) {

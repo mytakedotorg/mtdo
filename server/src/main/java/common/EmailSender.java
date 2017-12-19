@@ -54,5 +54,6 @@ public class EmailSender {
 	public static void init(Jooby jooby) {
 		jooby.use(new CommonsEmail());
 		jooby.use(new Module());
+		jooby.use(new Mods.Module());
 	}
 }
