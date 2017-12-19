@@ -114,11 +114,10 @@ public class CreateAccountForm extends MetaFormDef.HandleValid {
 					path.param(CREATE_USERNAME, username);
 					path.param(CREATE_EMAIL, email);
 
-					req.require(EmailSender.class).send(req, htmlEmail -> htmlEmail
+					req.require(EmailSender.class).send(htmlEmail -> htmlEmail
 							.setHtmlMsg(views.Auth.createAccountEmail.template(username, path.build()).renderToString())
 							.setSubject("MyTake.org account confirmation")
-							.addTo(email)
-							.setFrom(Emails.TEAM, Emails.TEAM_NAME));
+							.addTo(email));
 
 					rsp.send(views.Auth.createAccountEmailSent.template(email, Emails.TEAM));
 					return true;

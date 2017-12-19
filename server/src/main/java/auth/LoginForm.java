@@ -75,11 +75,10 @@ public class LoginForm extends MetaFormDef.HandleValid {
 				UrlEncodedPath path = EmailConfirmationForm.generateLink(req, validation, AuthModule.URL_confirm_login + code);
 				path.param(LOGIN_EMAIL, email);
 
-				req.require(EmailSender.class).send(req, htmlEmail -> htmlEmail
+				req.require(EmailSender.class).send(htmlEmail -> htmlEmail
 						.setHtmlMsg(views.Auth.loginEmail.template(account.getUsername(), path.build()).renderToString())
 						.setSubject("MyTake.org login link")
-						.addTo(email)
-						.setFrom(Emails.TEAM, Emails.TEAM_NAME));
+						.addTo(email));
 
 				account.setLastEmailedAt(time.nowTimestamp());
 				account.update();
