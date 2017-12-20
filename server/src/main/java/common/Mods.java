@@ -22,7 +22,7 @@ import org.jooq.DSLContext;
 public class Mods {
 	private Registry registry;
 
-	/** Sends an email to all of the moderators.  Don't need to set "to" or "from". */
+	/** Sends an email to all of the moderators.  Don't need to set "to" or "from", and subject will automatically have [MyTake.org mod] prepended. */
 	public void send(Throwing.Consumer<HtmlEmail> sender) throws Throwable {
 		List<String> moderatorEmails;
 		try (DSLContext dsl = registry.require(DSLContext.class)) {
@@ -36,6 +36,7 @@ public class Mods {
 				htmlEmail.addTo(moderatorEmail);
 			}
 			sender.accept(htmlEmail);
+			htmlEmail.setSubject("[MyTake.org mod] " + htmlEmail.getSubject());
 		});
 	}
 
