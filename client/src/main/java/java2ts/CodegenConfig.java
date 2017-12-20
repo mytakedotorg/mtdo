@@ -6,6 +6,10 @@
  */
 package java2ts;
 
+import com.jsoniter.JsonIterator;
+import com.jsoniter.output.EncodingMode;
+import com.jsoniter.output.JsonStream;
+import com.jsoniter.spi.DecodingMode;
 import com.jsoniter.spi.TypeLiteral;
 import com.jsoniter.static_codegen.StaticCodegenConfig;
 
@@ -13,7 +17,8 @@ import com.jsoniter.static_codegen.StaticCodegenConfig;
 public class CodegenConfig implements StaticCodegenConfig {
 	@Override
 	public void setup() {
-		// calls to JsoniterSpi
+		JsonIterator.setMode(DecodingMode.STATIC_MODE);
+		JsonStream.setMode(EncodingMode.STATIC_MODE);
 	}
 
 	@SuppressWarnings("rawtypes")
@@ -31,5 +36,10 @@ public class CodegenConfig implements StaticCodegenConfig {
 				TypeLiteral.create(TakeReactionJson.ViewReq.class),
 				TypeLiteral.create(TakeReactionJson.ViewRes.class)
 		};
+	}
+
+	@Override
+	public String toString() {
+		return "stable";
 	}
 }
