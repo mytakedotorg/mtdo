@@ -16,6 +16,7 @@ import com.google.common.collect.ImmutableSet;
 import common.EmailSender;
 import common.Emails;
 import common.IpGetter;
+import common.Mods;
 import common.RandomString;
 import common.Text;
 import common.Time;
@@ -173,6 +174,14 @@ public class CreateAccountForm extends MetaFormDef.HandleValid {
 
 				AuthUser.login(account.into(Account.class), req, rsp);
 				rsp.send(views.Auth.createAccountSuccess.template(account.getUsername()));
+
+				req.require(Mods.class).send(email -> email
+						.setSubject("New user " + account.getUsername())
+						.setMsg(Mods.table(
+								"Username", link.getUsername(),
+								"Email", link.getEmail(),
+								"User id", account.getId().toString(),
+								"Link", "https://mytake.org/" + account.getUsername())));
 			}
 		}
 	}

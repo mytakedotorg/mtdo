@@ -49,4 +49,23 @@ public class Mods {
 			});
 		}
 	}
+
+	public static String table(String... keyValue) {
+		StringBuilder builder = new StringBuilder();
+		builder.append("<body><table>");
+		for (int i = 0; i < keyValue.length / 2; ++i) {
+			String key = keyValue[2 * i];
+			String value = keyValue[2 * i + 1];
+			builder.append("<tr>");
+			builder.append("<th>");
+			builder.append(key);
+			builder.append("</th>");
+			builder.append("<td>");
+			builder.append(value);
+			builder.append("</td>");
+			builder.append("</tr>");
+		}
+		builder.append("</table></body>");
+		return builder.toString();
+	}
 }

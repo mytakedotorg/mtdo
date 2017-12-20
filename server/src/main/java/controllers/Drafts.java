@@ -14,6 +14,7 @@ import auth.AuthUser;
 import com.google.inject.Binder;
 import com.typesafe.config.Config;
 import common.IpGetter;
+import common.Mods;
 import common.NotFound;
 import common.Text;
 import common.Time;
@@ -151,6 +152,14 @@ public class Drafts implements Jooby.Module {
 				published.setPublishedIp(req.require(IpGetter.class).ip(req));
 				published.insert();
 
+				req.require(Mods.class).send(email -> email
+						.setSubject("New take '" + post.title + "' by " + user.username())
+						.setMsg(Mods.table(
+								"Username", user.username(),
+								"User id", Integer.toString(user.id()),
+								"Title", post.title,
+								"Take id", published.getId().toString(),
+								"Link", "https://mytake.org/" + user.username() + "/" + titleSlug)));
 				return result;
 			}
 		});
