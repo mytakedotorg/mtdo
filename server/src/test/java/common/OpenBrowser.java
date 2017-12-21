@@ -8,6 +8,7 @@ package common;
 
 import com.diffplug.common.base.Errors;
 import com.google.common.base.Preconditions;
+import controllers.FoundationAssets;
 import java.net.ServerSocket;
 import java.net.URI;
 import java.util.LinkedHashMap;
@@ -47,6 +48,8 @@ class OpenBrowser {
 
 			Jooby jooby = new Jooby();
 			CustomAssets.initTemplates(jooby);
+			jooby.use(new FoundationAssets());
+
 			jooby.port(port);
 			map.forEach((url, content) -> {
 				jooby.get(url, () -> content);
