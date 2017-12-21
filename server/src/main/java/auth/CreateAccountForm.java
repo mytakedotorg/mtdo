@@ -2,10 +2,11 @@
  * MyTake.org
  *
  *  Copyright 2017 by its authors.
- *  Some rights reserved. See LICENSE, https://github.com/mytake/mytake/graphs/contributors
+ *  Some rights reserved. See LICENSE, https://github.com/mytakedotorg/mytakedotorg/graphs/contributors
  */
 package auth;
 
+import static auth.AuthModule.ACCEPT_TERMS;
 import static auth.AuthModule.CREATE_EMAIL;
 import static auth.AuthModule.CREATE_USERNAME;
 import static auth.AuthModule.REDIRECT;
@@ -13,8 +14,10 @@ import static db.Tables.ACCOUNT;
 import static db.Tables.CONFIRMACCOUNTLINK;
 
 import com.google.common.collect.ImmutableSet;
+import common.EmailSender;
 import common.Emails;
 import common.IpGetter;
+import common.Mods;
 import common.RandomString;
 import common.Text;
 import common.Time;
@@ -32,7 +35,6 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 import java2ts.Routes;
-import org.apache.commons.mail.HtmlEmail;
 import org.jooby.Request;
 import org.jooby.Response;
 import org.jooq.DSLContext;
@@ -51,13 +53,17 @@ public class CreateAccountForm extends MetaFormDef.HandleValid {
 
 	@Override
 	public Set<MetaField<?>> fields() {
-		return ImmutableSet.of(CREATE_USERNAME, CREATE_EMAIL, REDIRECT);
+		return ImmutableSet.of(ACCEPT_TERMS, CREATE_USERNAME, CREATE_EMAIL, REDIRECT);
 	}
 
 	@Override
 	protected void validate(MetaFormValidation validation) {
-		// keep the fields in the reply
-		validation.keepAll();
+		// keep all fields except ACCEPT_TERMS
+		validation.keep(CREATE_USERNAME, CREATE_EMAIL, REDIRECT);
+
+		if (!validation.parsed(ACCEPT_TERMS)) {
+			validation.errorForField(ACCEPT_TERMS, "Must accept the terms to create an account");
+		}
 
 		validateUsername(validation, CREATE_USERNAME);
 
@@ -114,13 +120,10 @@ public class CreateAccountForm extends MetaFormDef.HandleValid {
 					path.param(CREATE_USERNAME, username);
 					path.param(CREATE_EMAIL, email);
 
-					String html = views.Auth.createAccountEmail.template(username, path.build()).renderToString();
-					req.require(HtmlEmail.class)
-							.setHtmlMsg(html)
+					req.require(EmailSender.class).send(htmlEmail -> htmlEmail
+							.setHtmlMsg(views.Auth.createAccountEmail.template(username, path.build()).renderToString())
 							.setSubject("MyTake.org account confirmation")
-							.addTo(email)
-							.setFrom(Emails.TEAM, Emails.TEAM_NAME)
-							.send();
+							.addTo(email));
 
 					rsp.send(views.Auth.createAccountEmailSent.template(email, Emails.TEAM));
 					return true;
@@ -176,6 +179,14 @@ public class CreateAccountForm extends MetaFormDef.HandleValid {
 
 				AuthUser.login(account.into(Account.class), req, rsp);
 				rsp.send(views.Auth.createAccountSuccess.template(account.getUsername()));
+
+				req.require(Mods.class).send(email -> email
+						.setSubject("New user " + account.getUsername())
+						.setMsg(Mods.table(
+								"Username", link.getUsername(),
+								"Email", link.getEmail(),
+								"User id", account.getId().toString(),
+								"Link", "https://mytake.org/" + account.getUsername())));
 			}
 		}
 	}

@@ -2,7 +2,7 @@
  * MyTake.org
  *
  *  Copyright 2017 by its authors.
- *  Some rights reserved. See LICENSE, https://github.com/mytake/mytake/graphs/contributors
+ *  Some rights reserved. See LICENSE, https://github.com/mytakedotorg/mytakedotorg/graphs/contributors
  */
 package auth;
 
@@ -12,6 +12,7 @@ import static db.Tables.ACCOUNT;
 import static db.Tables.LOGINLINK;
 
 import com.google.common.collect.ImmutableSet;
+import common.EmailSender;
 import common.Emails;
 import common.IpGetter;
 import common.RandomString;
@@ -30,7 +31,6 @@ import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java2ts.Routes;
-import org.apache.commons.mail.HtmlEmail;
 import org.jooby.Mutant;
 import org.jooby.Request;
 import org.jooby.Response;
@@ -75,13 +75,10 @@ public class LoginForm extends MetaFormDef.HandleValid {
 				UrlEncodedPath path = EmailConfirmationForm.generateLink(req, validation, AuthModule.URL_confirm_login + code);
 				path.param(LOGIN_EMAIL, email);
 
-				String html = views.Auth.loginEmail.template(account.getUsername(), path.build()).renderToString();
-				req.require(HtmlEmail.class)
-						.setHtmlMsg(html)
+				req.require(EmailSender.class).send(htmlEmail -> htmlEmail
+						.setHtmlMsg(views.Auth.loginEmail.template(account.getUsername(), path.build()).renderToString())
 						.setSubject("MyTake.org login link")
-						.addTo(email)
-						.setFrom(Emails.TEAM, Emails.TEAM_NAME)
-						.send();
+						.addTo(email));
 
 				account.setLastEmailedAt(time.nowTimestamp());
 				account.update();

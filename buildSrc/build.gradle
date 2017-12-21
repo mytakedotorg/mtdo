@@ -11,13 +11,13 @@ dependencies {
 	// https://github.com/srs/gradle-node-plugin
 	compile 'com.moowork.gradle:gradle-node-plugin:1.2.0'
 	// https://github.com/opentable/otj-pg-embedded
-	compile 'com.opentable.components:otj-pg-embedded:0.10.0'
+	compile 'com.opentable.components:otj-pg-embedded:0.11.0'
 	// jooq codegen
 	compile 'org.jooq:jooq-codegen:3.10.2'
 	// db migration
 	compile 'org.flywaydb:flyway-core:4.2.0'
 	// jsweet ts2java
-	compile 'com.jsoniter:jsoniter:0.9.18'
+	compile 'com.jsoniter:jsoniter:0.9.19'
 	compile 'org.jsweet:jsweet-transpiler:2.0.1'
 	compile files("${System.properties['java.home']}/../lib/tools.jar")
 	// java8 utilities

@@ -2,7 +2,7 @@
  * MyTake.org
  *
  *  Copyright 2017 by its authors.
- *  Some rights reserved. See LICENSE, https://github.com/mytake/mytake/graphs/contributors
+ *  Some rights reserved. See LICENSE, https://github.com/mytakedotorg/mytakedotorg/graphs/contributors
  */
 package auth;
 
@@ -32,6 +32,7 @@ public class AuthModule implements Jooby.Module {
 	/** Used by {@link CreateAccountForm} only. */
 	public static final MetaField<String> CREATE_USERNAME = MetaField.string("createuser");
 	public static final MetaField<String> CREATE_EMAIL = MetaField.string("createemail");
+	public static final MetaField<Boolean> ACCEPT_TERMS = MetaField.bool("acceptterms");
 
 	/** The URLs for this. */
 	static final String URL_confirm = "/confirm";

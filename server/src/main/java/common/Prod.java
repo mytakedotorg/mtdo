@@ -2,17 +2,18 @@
  * MyTake.org
  *
  *  Copyright 2017 by its authors.
- *  Some rights reserved. See LICENSE, https://github.com/mytake/mytake/graphs/contributors
+ *  Some rights reserved. See LICENSE, https://github.com/mytakedotorg/mytakedotorg/graphs/contributors
  */
 package common;
 
 import auth.AuthModule;
-import controllers.AboutUs;
+import controllers.About;
 import controllers.DiscourseAuth;
 import controllers.Drafts;
 import controllers.FoundationAssets;
 import controllers.HomeFeed;
 import controllers.Profile;
+import controllers.Redirects;
 import controllers.TakeReaction;
 import controllers.Takes;
 import java.security.SecureRandom;
@@ -24,7 +25,6 @@ import org.jooby.Jooby;
 import org.jooby.Results;
 import org.jooby.jdbc.Jdbc;
 import org.jooby.jooq.jOOQ;
-import org.jooby.mail.CommonsEmail;
 
 /**
  * The app that we run in production.  See {@link Dev} in the test
@@ -54,19 +54,21 @@ public class Prod extends Jooby {
 
 	static void common(Jooby jooby) {
 		jooby.use(new IpGetter.Module());
-		jooby.use(new CommonsEmail());
+		CustomAssets.initTemplates(jooby);
+		EmailSender.init(jooby);
+		Mods.init(jooby);
 		jooby.use(new Jdbc());
 		jooby.use(new jOOQ());
 		jooby.use(new JsoniterModule());
-		CustomAssets.initTemplates(jooby);
 	}
 
 	static void controllers(Jooby jooby) {
 		jooby.get("favicon.ico", () -> Results.noContent());
+		jooby.use(new Redirects());
 		jooby.use(new DiscourseAuth());
 		jooby.use(new HomeFeed());
 		jooby.use(new FoundationAssets());
-		jooby.use(new AboutUs());
+		jooby.use(new About());
 		jooby.use(new Drafts());
 		jooby.use(new AuthModule());
 		jooby.use(new NotFound());

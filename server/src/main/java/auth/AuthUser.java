@@ -2,9 +2,11 @@
  * MyTake.org
  *
  *  Copyright 2017 by its authors.
- *  Some rights reserved. See LICENSE, https://github.com/mytake/mytake/graphs/contributors
+ *  Some rights reserved. See LICENSE, https://github.com/mytakedotorg/mytakedotorg/graphs/contributors
  */
 package auth;
+
+import static db.Tables.MODERATOR;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTCreator;
@@ -13,6 +15,7 @@ import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.jsoniter.output.JsonStream;
+import common.NotFound;
 import common.Time;
 import common.UrlEncodedPath;
 import db.tables.pojos.Account;
@@ -26,6 +29,7 @@ import org.jooby.Mutant;
 import org.jooby.Registry;
 import org.jooby.Request;
 import org.jooby.Response;
+import org.jooq.DSLContext;
 
 public class AuthUser {
 	public static final int LOGIN_DAYS = 7;
@@ -44,6 +48,13 @@ public class AuthUser {
 
 	public String username() {
 		return username;
+	}
+
+	public void requireMod(DSLContext dsl) {
+		boolean isMod = dsl.fetchCount(dsl.selectFrom(MODERATOR).where(MODERATOR.ID.eq(id))) == 1;
+		if (!isMod) {
+			throw NotFound.exception();
+		}
 	}
 
 	static JWTCreator.Builder forUser(Account account, Time time) {

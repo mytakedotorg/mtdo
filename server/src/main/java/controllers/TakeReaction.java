@@ -2,17 +2,21 @@
  * MyTake.org
  *
  *  Copyright 2017 by its authors.
- *  Some rights reserved. See LICENSE, https://github.com/mytake/mytake/graphs/contributors
+ *  Some rights reserved. See LICENSE, https://github.com/mytakedotorg/mytakedotorg/graphs/contributors
  */
 package controllers;
 
+import static db.Tables.ACCOUNT;
+import static db.Tables.TAKEPUBLISHED;
 import static db.Tables.TAKEREACTION;
 
 import auth.AuthUser;
 import com.diffplug.common.base.Unhandled;
+import com.google.common.collect.ImmutableSet;
 import com.google.inject.Binder;
 import com.typesafe.config.Config;
 import common.IpGetter;
+import common.Mods;
 import common.Time;
 import db.enums.Reaction;
 import db.tables.records.TakereactionRecord;
@@ -23,6 +27,7 @@ import org.jooby.Env;
 import org.jooby.Jooby;
 import org.jooby.Request;
 import org.jooq.DSLContext;
+import org.jooq.Record;
 
 /**
  * - when a take is first opened, post to {@link Routes#API_TAKE_VIEW}.
@@ -53,11 +58,28 @@ public class TakeReaction implements Jooby.Module {
 			AuthUser user = AuthUser.auth(req);
 			TakeReactionJson.ReactReq reactReq = req.body(TakeReactionJson.ReactReq.class);
 			try (DSLContext dsl = req.require(DSLContext.class)) {
+				String email = dsl.selectFrom(ACCOUNT)
+						.where(ACCOUNT.ID.eq(user.id()))
+						.fetchOne(ACCOUNT.EMAIL);
+				Record titleRecord = dsl.select(TAKEPUBLISHED.TITLE, TAKEPUBLISHED.TITLE_SLUG)
+						.from(TAKEPUBLISHED)
+						.where(TAKEPUBLISHED.ID.eq(reactReq.take_id))
+						.fetchOne();
+
 				TakeReactionJson.ReactRes reactRes = new TakeReactionJson.ReactRes();
 				List<Reaction> reactions = reactionsForUser(dsl, reactReq.take_id, user);
 				for (Reaction reaction : REACTIONS_NON_VIEW) {
 					boolean command = getReaction(reactReq.userState, reaction);
 					if (command != reactions.contains(reaction)) {
+						if (ABUSE.contains(reaction)) {
+							req.require(Mods.class).send(htmlEmail -> htmlEmail
+									.setSubject(user.username() + " " + (command ? "marked" : "unmarked") + " '" + titleRecord.get(TAKEPUBLISHED.TITLE) + "' as " + reaction)
+									.setMsg(Mods.table(
+											"user", user.username(),
+											"email", email,
+											"reaction", reaction.toString(),
+											"link", "https://mytake.org/" + user.username() + "/" + titleRecord.get(TAKEPUBLISHED.TITLE_SLUG))));
+						}
 						setReaction(dsl, req, reactReq.take_id, user, reaction, command);
 					}
 				}
@@ -129,6 +151,8 @@ public class TakeReaction implements Jooby.Module {
 			Reaction.harassment,
 			Reaction.rulesviolation
 	};
+
+	static final ImmutableSet<Reaction> ABUSE = ImmutableSet.of(Reaction.spam, Reaction.harassment, Reaction.rulesviolation);
 
 	private static void setReaction(TakeReactionJson.UserState state, Reaction reaction, boolean value) {
 		switch (reaction) {
