@@ -1,0 +1,50 @@
+<html><body>
+<h2>Today's views and stars</h2>
+<table>
+	<tr>
+		<th align="left">Take</th><th align="left">Views</th><th align="left">Stars</th><th align="right">Star ratio</th>
+	</tr>
+	<tr>
+		<td align="left"><a href="https://mytake.org/samples/does-a-law-mean-what-it-says-or-what-it-meant">samples/does-a-law-mean-what-it-says-or-what-it-meant</a></td><td align="left">1</td><td align="left">0</td><td align="right">0%</td>
+	</tr>
+	<tr>
+		<td align="left"><a href="https://mytake.org/other/i-am-a-strawman">other/i-am-a-strawman</a></td><td align="left">1</td><td align="left">1</td><td align="right">100%</td>
+	</tr>
+	<tr>
+		<td align="left"><a href="https://mytake.org/samples/why-its-so-hard-to-have-peace">samples/why-its-so-hard-to-have-peace</a></td><td align="left">3</td><td align="left">2</td><td align="right">66%</td>
+	</tr>
+</table>
+
+<h2>Today's drafts</h2>
+<table>
+	<tr>
+		<th align="left">Title</th><th align="left">User</th>
+	</tr>
+	<tr>
+		<td align="left"><a href="/mods/drafts/6">DRAFT</a></td>
+		<td align="left">other</td>
+	</tr>
+	<tr>
+		<td align="left"><a href="/mods/drafts/5">My other draft</a></td>
+		<td align="left">empty</td>
+	</tr>
+	<tr>
+		<td align="left"><a href="/mods/drafts/4">My draft</a></td>
+		<td align="left">empty</td>
+	</tr>
+	<tr>
+		<td align="left"><a href="/mods/drafts/3">To make sure users don&#39;t leak</a></td>
+		<td align="left">other</td>
+	</tr>
+	<tr>
+		<td align="left"><a href="/mods/drafts/2">In other words</a></td>
+		<td align="left">samples</td>
+	</tr>
+	<tr>
+		<td align="left"><a href="/mods/drafts/1">In my opinion</a></td>
+		<td align="left">samples</td>
+	</tr>
+</table>
+
+
+</body></html>

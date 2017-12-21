@@ -12,6 +12,9 @@ public class Routes {
 	public static final String API_TAKE_VIEW = "/api/takeView";
 	public static final String API_TAKE_REACT = "/api/takeReact";
 
+	public static final String MODS = "/mods";
+	public static final String MODS_DRAFTS = "/mods/drafts/";
+
 	public static final String DRAFTS = "/drafts";
 	public static final String DRAFTS_NEW = "/drafts/new";
 	public static final String DRAFTS_DELETE = "/drafts/delete";

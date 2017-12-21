@@ -1,0 +1,38 @@
+@import static db.Tables.ACCOUNT
+@import static db.Tables.TAKEDRAFT
+@import static db.Tables.TAKEREVISION
+@import common.Mods.ViewsStars
+@import java.util.List
+@import org.jooq.Record
+@import org.jooq.Result
+
+@args(List<ViewsStars> viewsStars, Result<?> recentDrafts)
+
+@views.email.template() -> {
+
+<h2>Today's views and stars</h2>
+<table>
+	<tr>
+		<th align="left">Take</th><th align="left">Views</th><th align="left">Stars</th><th align="right">Star ratio</th>
+	</tr>
+	@for (vs : viewsStars) {
+	<tr>
+		<td align="left">@raw(vs.link())</td><td align="left">@vs.views</td><td align="left">@vs.stars</td><td align="right">@(vs.percentRatio())%</td>
+	</tr>
+	}
+</table>
+
+<h2>Today's drafts</h2>
+<table>
+	<tr>
+		<th align="left">Title</th><th align="left">User</th>
+	</tr>
+	@for (Record draft : recentDrafts) {
+	<tr>
+		<td align="left"><a href="@(java2ts.Routes.MODS_DRAFTS + draft.get(TAKEDRAFT.ID))">@draft.get(TAKEREVISION.TITLE)</a></td>
+		<td align="left">@draft.get(ACCOUNT.USERNAME)</td>
+	</tr>
+	}
+</table>
+
+}

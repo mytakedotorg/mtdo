@@ -39,7 +39,7 @@ public class EmailSender {
 		});
 	}
 
-	public static class Module implements Jooby.Module {
+	private static class Module implements Jooby.Module {
 		@Override
 		public void configure(Env env, Config conf, Binder binder) throws Throwable {
 			Executor executor = Executors.newCachedThreadPool();
@@ -54,6 +54,5 @@ public class EmailSender {
 	public static void init(Jooby jooby) {
 		jooby.use(new CommonsEmail());
 		jooby.use(new Module());
-		jooby.use(new Mods.Module());
 	}
 }

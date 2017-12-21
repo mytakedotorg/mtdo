@@ -23,6 +23,7 @@ class ReservedUsernames {
 			url(Routes.DRAFTS),		// drafts
 			"import",			// import from e.g. Google docs?
 			Routes.API,			// for api access
+			Routes.MODS,			// for moderator access
 			"settings",			// for user settings
 			url(FoundationAssets.URL),	// for serving evidence
 			"blog",				// for a blog

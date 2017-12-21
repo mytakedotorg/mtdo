@@ -101,6 +101,7 @@ dependencies {
 	compile "org.jooby:jooby-jooq:$JOOBY_VER"
 	compile "org.jooby:jooby-commons-email:$JOOBY_VER"
 	compile "org.jooby:jooby-assets:$JOOBY_VER"
+	compile "org.jooby:jooby-quartz:$JOOBY_VER"
 	testCompile "org.jooby:jooby-whoops:$JOOBY_VER"
 
 	// json

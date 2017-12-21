@@ -52,12 +52,13 @@ public class Prod extends Jooby {
 	}
 
 	static void common(Jooby jooby) {
+		CustomAssets.initTemplates(jooby);
 		jooby.use(new IpGetter.Module());
 		EmailSender.init(jooby);
+		Mods.init(jooby);
 		jooby.use(new Jdbc());
 		jooby.use(new jOOQ());
 		jooby.use(new JsoniterModule());
-		CustomAssets.initTemplates(jooby);
 	}
 
 	static void controllers(Jooby jooby) {
