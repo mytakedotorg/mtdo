@@ -61,10 +61,13 @@ public class TakeReaction implements Jooby.Module {
 				String email = dsl.selectFrom(ACCOUNT)
 						.where(ACCOUNT.ID.eq(user.id()))
 						.fetchOne(ACCOUNT.EMAIL);
-				Record titleRecord = dsl.select(TAKEPUBLISHED.TITLE, TAKEPUBLISHED.TITLE_SLUG)
+				Record titleRecord = dsl.select(TAKEPUBLISHED.TITLE, TAKEPUBLISHED.TITLE_SLUG, TAKEPUBLISHED.USER_ID)
 						.from(TAKEPUBLISHED)
 						.where(TAKEPUBLISHED.ID.eq(reactReq.take_id))
 						.fetchOne();
+				String authorUsername = dsl.selectFrom(ACCOUNT)
+						.where(ACCOUNT.ID.eq(titleRecord.get(TAKEPUBLISHED.USER_ID)))
+						.fetchOne(ACCOUNT.USERNAME);
 
 				TakeReactionJson.ReactRes reactRes = new TakeReactionJson.ReactRes();
 				List<Reaction> reactions = reactionsForUser(dsl, reactReq.take_id, user);
@@ -78,7 +81,7 @@ public class TakeReaction implements Jooby.Module {
 											"user", user.username(),
 											"email", email,
 											"reaction", reaction.toString(),
-											"link", "https://mytake.org/" + user.username() + "/" + titleRecord.get(TAKEPUBLISHED.TITLE_SLUG))));
+											"link", "https://mytake.org/" + authorUsername + "/" + titleRecord.get(TAKEPUBLISHED.TITLE_SLUG))));
 						}
 						setReaction(dsl, req, reactReq.take_id, user, reaction, command);
 					}
