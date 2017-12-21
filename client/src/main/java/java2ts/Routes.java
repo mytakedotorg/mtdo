@@ -24,7 +24,7 @@ public class Routes {
 	public static final String LOGOUT = "/logout";
 
 	public static final String PROFILE_TAB = "tab";
-	public static final String PROFILE_TAB_LIKES = "likes";
+	public static final String PROFILE_TAB_STARS = "stars";
 	public static final String PROFILE_TAB_EDIT = "edit";
 
 	public static final String FOUNDATION = "/foundation";

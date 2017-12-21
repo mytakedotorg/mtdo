@@ -138,13 +138,13 @@ function loadUser() {
         dropdown("Drafts", Routes.DRAFTS) +
         dropdown("Published", "/" + loginUi.username) +
         dropdown(
-          "Likes",
+          "Stars",
           "/" +
             loginUi.username +
             "?" +
             Routes.PROFILE_TAB +
             "=" +
-            Routes.PROFILE_TAB_LIKES
+            Routes.PROFILE_TAB_STARS
         ) +
         dropdown(
           "Profile",
