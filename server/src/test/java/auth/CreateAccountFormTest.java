@@ -15,9 +15,11 @@ public class CreateAccountFormTest {
 		MetaFormValidationAssert.assertThat(CreateAccountForm.class,
 				"createuser", "a",
 				"createemail", "nope",
+				"acceptterms", "off",
 				"redirect", "")
 				.hasFieldErrors(
 						"createuser", "Must be at least 5 characters long",
+						"acceptterms", "Must accept the terms to create an account",
 						"createemail", "Invalid email");
 	}
 
@@ -38,6 +40,7 @@ public class CreateAccountFormTest {
 		MetaFormValidationAssert assertion = MetaFormValidationAssert.assertThat(CreateAccountForm.class,
 				"createuser", username,
 				"createemail", "name@email.com",
+				"acceptterms", "on",
 				"redirect", "");
 		if (error == null) {
 			assertion.noError();

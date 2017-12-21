@@ -6,6 +6,7 @@
  */
 package auth;
 
+import static auth.AuthModule.ACCEPT_TERMS;
 import static auth.AuthModule.CREATE_EMAIL;
 import static auth.AuthModule.CREATE_USERNAME;
 import static auth.AuthModule.REDIRECT;
@@ -52,13 +53,17 @@ public class CreateAccountForm extends MetaFormDef.HandleValid {
 
 	@Override
 	public Set<MetaField<?>> fields() {
-		return ImmutableSet.of(CREATE_USERNAME, CREATE_EMAIL, REDIRECT);
+		return ImmutableSet.of(ACCEPT_TERMS, CREATE_USERNAME, CREATE_EMAIL, REDIRECT);
 	}
 
 	@Override
 	protected void validate(MetaFormValidation validation) {
-		// keep the fields in the reply
-		validation.keepAll();
+		// keep all fields except ACCEPT_TERMS
+		validation.keep(CREATE_USERNAME, CREATE_EMAIL, REDIRECT);
+
+		if (!validation.parsed(ACCEPT_TERMS)) {
+			validation.errorForField(ACCEPT_TERMS, "Must accept the terms to create an account");
+		}
 
 		validateUsername(validation, CREATE_USERNAME);
 

@@ -6,6 +6,7 @@
  */
 package auth;
 
+import static auth.AuthModule.ACCEPT_TERMS;
 import static auth.AuthModule.CREATE_EMAIL;
 import static auth.AuthModule.CREATE_USERNAME;
 import static auth.AuthModule.REDIRECT;
@@ -31,6 +32,7 @@ public class CreateAccountTest {
 		PageAssert.assertThat(MetaFormSubmit.create(CreateAccountForm.class)
 				.set(CREATE_USERNAME, "alexander")
 				.set(CREATE_EMAIL, "alexander@hamilton.com")
+				.set(ACCEPT_TERMS, true)
 				.set(REDIRECT, "")
 				.post("/login"), Status.OK)
 				.bodyAssert(asserter -> {
