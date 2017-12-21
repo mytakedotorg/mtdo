@@ -20,6 +20,7 @@ public class Routes {
 	public static final String DRAFTS_DELETE = "/drafts/delete";
 	public static final String DRAFTS_PUBLISH = "/drafts/publish";
 	public static final String DRAFTS_SAVE = "/drafts/save";
+
 	public static final String LOGIN = "/login";
 	public static final String LOGOUT = "/logout";
 
@@ -27,10 +28,13 @@ public class Routes {
 	public static final String PROFILE_TAB_STARS = "stars";
 	public static final String PROFILE_TAB_EDIT = "edit";
 
+	public static final String TIMELINE = "/timeline";
 	public static final String FOUNDATION = "/foundation";
 	public static final String FOUNDATION_DATA = "/foundation-data";
 	public static final String FOUNDATION_DATA_INDEX = "/foundation-data/index.json";
 
+	public static final String ABOUT = "/about";
+	public static final String ABOUTUS = "/aboutus";
 	public static final String PRIVACY = "/privacy";
 	public static final String TERMS = "/terms";
 	public static final String TOS = "/tos";

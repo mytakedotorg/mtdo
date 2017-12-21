@@ -16,6 +16,8 @@ import org.jooby.Results;
 public class Redirects implements Jooby.Module {
 	@Override
 	public void configure(Env env, Config conf, Binder binder) throws Throwable {
+		env.router().get(Routes.TIMELINE, () -> Results.redirect("https://mytake.org" + Routes.FOUNDATION));
+		env.router().get(Routes.ABOUTUS, () -> Results.redirect("https://mytake.org" + Routes.ABOUT));
 		env.router().get(Routes.PRIVACY, () -> Results.redirect("https://meta.mytake.org/privacy"));
 		env.router().get(Routes.TERMS, () -> Results.redirect("https://meta.mytake.org/tos"));
 		env.router().get(Routes.TOS, () -> Results.redirect("https://meta.mytake.org/tos"));

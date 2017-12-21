@@ -8,14 +8,13 @@ package controllers;
 
 import com.google.inject.Binder;
 import com.typesafe.config.Config;
+import java2ts.Routes;
 import org.jooby.Env;
 import org.jooby.Jooby;
 
 public class AboutUs implements Jooby.Module {
-	public static final String URL = "/aboutus";
-
 	@Override
 	public void configure(Env env, Config conf, Binder binder) throws Throwable {
-		env.router().get(URL, () -> views.Placeholder.aboutUs.template());
+		env.router().get(Routes.ABOUT, () -> views.Placeholder.aboutUs.template());
 	}
 }

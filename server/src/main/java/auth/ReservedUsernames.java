@@ -9,8 +9,6 @@ package auth;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableSet;
 import common.Text;
-import controllers.AboutUs;
-import controllers.FoundationAssets;
 import java2ts.Routes;
 
 /** Usernames that we reserve for ourselves, for routing or other reasons. */
@@ -20,23 +18,27 @@ class ReservedUsernames {
 	}
 
 	private static final ImmutableSet<String> RESERVED_USERNAMES = ImmutableSet.of(
-			url(Routes.DRAFTS),		// drafts
 			"import",			// import from e.g. Google docs?
-			Routes.API,			// for api access
-			Routes.MODS,			// for moderator access
 			"settings",			// for user settings
-			url(FoundationAssets.URL),	// for serving evidence
 			"blog",				// for a blog
-			url(AboutUs.URL),	// for us
 			"legal",				// for legal attributes
+			url(Routes.API),
+			url(Routes.MODS),
+			url(Routes.DRAFTS),
+			url(Routes.LOGIN),
+			url(Routes.LOGOUT),
+			url(AuthModule.URL_confirm),
+
+			url(Routes.TIMELINE),
+			url(Routes.FOUNDATION),
+			url(Routes.FOUNDATION_DATA),
+
+			url(Routes.ABOUT),
 			url(Routes.PRIVACY),
 			url(Routes.TERMS),
 			url(Routes.TOS),
 			url(Routes.FAQ),
-			url(Routes.RULES),
-			url(Routes.LOGIN),
-			url(Routes.LOGOUT),
-			url(AuthModule.URL_confirm));
+			url(Routes.RULES));
 
 	private static String url(String url) {
 		Preconditions.checkArgument(url.startsWith("/"));
