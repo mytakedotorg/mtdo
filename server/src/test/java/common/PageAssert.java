@@ -8,6 +8,8 @@ package common;
 
 import com.diffplug.common.base.Errors;
 import com.diffplug.common.base.Throwing;
+
+import controllers.FoundationAssets;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import io.restassured.response.ValidatableResponse;
@@ -35,6 +37,7 @@ public class PageAssert {
 	public static PageAssert assertThatStaticUrl(Jooby.Module module, String url) {
 		Jooby jooby = new Jooby();
 		CustomAssets.initTemplates(jooby);
+		jooby.use(new FoundationAssets());
 		jooby.use(module);
 		jooby.start("server.join=false");
 		Response response = RestAssured.get(url);
