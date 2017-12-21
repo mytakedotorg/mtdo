@@ -13,6 +13,7 @@ import controllers.Drafts;
 import controllers.FoundationAssets;
 import controllers.HomeFeed;
 import controllers.Profile;
+import controllers.Redirects;
 import controllers.TakeReaction;
 import controllers.Takes;
 import java.security.SecureRandom;
@@ -52,8 +53,8 @@ public class Prod extends Jooby {
 	}
 
 	static void common(Jooby jooby) {
-		CustomAssets.initTemplates(jooby);
 		jooby.use(new IpGetter.Module());
+		CustomAssets.initTemplates(jooby);
 		EmailSender.init(jooby);
 		Mods.init(jooby);
 		jooby.use(new Jdbc());
@@ -63,6 +64,7 @@ public class Prod extends Jooby {
 
 	static void controllers(Jooby jooby) {
 		jooby.get("favicon.ico", () -> Results.noContent());
+		jooby.use(new Redirects());
 		jooby.use(new DiscourseAuth());
 		jooby.use(new HomeFeed());
 		jooby.use(new FoundationAssets());

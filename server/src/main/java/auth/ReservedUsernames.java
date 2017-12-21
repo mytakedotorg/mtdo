@@ -29,6 +29,11 @@ class ReservedUsernames {
 			"blog",				// for a blog
 			url(AboutUs.URL),	// for us
 			"legal",				// for legal attributes
+			url(Routes.PRIVACY),
+			url(Routes.TERMS),
+			url(Routes.TOS),
+			url(Routes.FAQ),
+			url(Routes.RULES),
 			url(Routes.LOGIN),
 			url(Routes.LOGOUT),
 			url(AuthModule.URL_confirm));
