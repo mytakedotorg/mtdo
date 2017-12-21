@@ -10,11 +10,11 @@ import common.PageAssert;
 import common.Snapshot;
 import org.junit.Test;
 
-public class AboutUsTest {
+public class AboutTest {
 	@Test
 	public void template() {
-		PageAssert.assertThatStaticUrl(new AboutUs(), "/aboutus").bodyAssertRaw(body -> {
-			Snapshot.match("aboutus", body);
+		PageAssert.assertThatStaticUrl(new About(), "/about").bodyAssertRaw(body -> {
+			Snapshot.match("about", body);
 		});
 	}
 }

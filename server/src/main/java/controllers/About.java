@@ -12,9 +12,9 @@ import java2ts.Routes;
 import org.jooby.Env;
 import org.jooby.Jooby;
 
-public class AboutUs implements Jooby.Module {
+public class About implements Jooby.Module {
 	@Override
 	public void configure(Env env, Config conf, Binder binder) throws Throwable {
-		env.router().get(Routes.ABOUT, () -> views.Placeholder.aboutUs.template());
+		env.router().get(Routes.ABOUT, () -> views.Placeholder.about.template());
 	}
 }

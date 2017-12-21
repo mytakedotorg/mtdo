@@ -39,7 +39,7 @@
 		<ul class="nav__list nav__list--top">
 		<li class="nav__list-item nav__list-item--top"><a class="nav__link nav__link--top" href="/foundation" tabindex="2"><span class="nav__link-text nav__link-text--top">Explore the Foundation</span></a></li>
 		<li class="nav__list-item nav__list-item--top"><a class="nav__link nav__link--top" href="/drafts/new" tabindex="3"><span class="nav__link-text nav__link-text--top">Give your Take</span></a></li>
-		<li class="nav__list-item nav__list-item--top"><a class="nav__link nav__link--top" href="/aboutus" tabindex="4"><span class="nav__link-text nav__link-text--top">About us</span></a></li>
+		<li class="nav__list-item nav__list-item--top"><a class="nav__link nav__link--top" href="/about" tabindex="4"><span class="nav__link-text nav__link-text--top">About us</span></a></li>
 		</ul>
 	</nav>
 	</div>
@@ -51,8 +51,8 @@
 	</div>
 	<div class="header__banner-links">
 		<p class="header__text">Under construction</p>
-		<p class="header__text"><a class="header__link" href="https://github.com/mytakedotorg/mytakedotorg/blob/master/WORK_IN_PROGRESS.md">How to use</a></p>
-		<p class="header__text"><a class="header__link" href="https://github.com/mytakedotorg/mytakedotorg/blob/master/CONTRIBUTING.md">Contribute</a></p>
+		<p class="header__text"><a class="header__link" href="https://meta.mytake.org/t/how-to-use-mytake-org/28">How to use</a></p>
+		<p class="header__text"><a class="header__link" href="https://meta.mytake.org/t/how-to-contribute-to-mytake-org/29">Contribute</a></p>
 	</div>
 </div>
 	</div>
@@ -98,7 +98,7 @@
 	<ul class="nav__list nav__list--bottom">
 	<li class="nav__list-item nav__list-item--bottom"><a class="nav__link nav__link--bottom" href="/foundation" tabindex="5"><span class="nav__link-text nav__link-text--bottom">Explore the Foundation</span></a></li>
 	<li class="nav__list-item nav__list-item--bottom"><a class="nav__link nav__link--bottom" href="/drafts/new" tabindex="6"><span class="nav__link-text nav__link-text--bottom">Give your Take</span></a></li>
-	<li class="nav__list-item nav__list-item--bottom"><a class="nav__link nav__link--bottom" href="/aboutus" tabindex="7"><span class="nav__link-text nav__link-text--bottom">About us</span></a></li>
+	<li class="nav__list-item nav__list-item--bottom"><a class="nav__link nav__link--bottom" href="/about" tabindex="7"><span class="nav__link-text nav__link-text--bottom">About us</span></a></li>
 	</ul>
 </footer>
 <div class="fade-overlay"></div>

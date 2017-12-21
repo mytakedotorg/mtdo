@@ -7,7 +7,7 @@
 package common;
 
 import auth.AuthModule;
-import controllers.AboutUs;
+import controllers.About;
 import controllers.DiscourseAuth;
 import controllers.Drafts;
 import controllers.FoundationAssets;
@@ -68,7 +68,7 @@ public class Prod extends Jooby {
 		jooby.use(new DiscourseAuth());
 		jooby.use(new HomeFeed());
 		jooby.use(new FoundationAssets());
-		jooby.use(new AboutUs());
+		jooby.use(new About());
 		jooby.use(new Drafts());
 		jooby.use(new AuthModule());
 		jooby.use(new NotFound());
