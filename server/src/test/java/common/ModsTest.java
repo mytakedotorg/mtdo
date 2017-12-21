@@ -7,16 +7,35 @@
 package common;
 
 import db.enums.Reaction;
+import java.util.List;
 import org.jooby.Status;
 import org.junit.ClassRule;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.runners.MethodSorters;
 
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class ModsTest {
 	@ClassRule
 	public static JoobyDevRule dev = JoobyDevRule.initialData();
 
 	@Test
-	public void testEmail() throws Throwable {
+	public void _01_sendToMods() throws Throwable {
+		Mods mods = dev.app().require(Mods.class);
+		mods.send(htmlEmail -> {
+			htmlEmail.setSubject("The site is down!!!");
+			htmlEmail.setHtmlMsg("OH NOES!");
+		});
+		List<EmailAssert> emails = dev.waitForEmails(2);
+		for (EmailAssert email : emails) {
+			email.subject().isEqualTo("[MyTake.org mod] The site is down!!!");
+			email.body().contains("OH NOES!");
+			email.allRecipients().isEqualTo("mod1@email.com,mod2@email.com");
+		}
+	}
+
+	@Test
+	public void _02_testEmail() throws Throwable {
 		DataHarness $ = new DataHarness(dev.app());
 		// @formatter:off
 		$.reactTake($.userId("samples"), "Why it's so hard to have peace", $.userId("samples"), Reaction.view, Reaction.like);
@@ -33,7 +52,7 @@ public class ModsTest {
 	}
 
 	@Test
-	public void viewDraft() {
+	public void _03_viewDraft() {
 		dev.givenUser("other").get("/mods/drafts/1")
 				.then()
 				.statusCode(Status.NOT_FOUND.value());

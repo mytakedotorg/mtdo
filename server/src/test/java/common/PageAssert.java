@@ -8,7 +8,6 @@ package common;
 
 import com.diffplug.common.base.Errors;
 import com.diffplug.common.base.Throwing;
-
 import controllers.FoundationAssets;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
