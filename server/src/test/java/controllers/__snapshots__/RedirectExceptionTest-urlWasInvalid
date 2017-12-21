@@ -25,7 +25,7 @@
 	<em class="header__logo"><a class="header__logo-link" href="/">MyTake.org</a></em>
 	<div class="header__icon-list header__icon-list--top">
 	<div id="login"></div>
-		<a class="header__icon header__icon--github" href="https://github.com/mytake/mytake"><i class="fa fa-github" aria-hidden="true"></i></a>
+		<a class="header__icon header__icon--github" href="https://github.com/mytakedotorg/mytakedotorg"><i class="fa fa-github" aria-hidden="true"></i></a>
 	</div>
 	</div>
 	<div class="header__nav">
@@ -48,8 +48,8 @@
 	</div>
 	<div class="header__banner-links">
 		<p class="header__text">Under construction</p>
-		<p class="header__text"><a class="header__link" href="https://github.com/mytake/mytake/blob/master/WORK_IN_PROGRESS.md">How to use</a></p>
-		<p class="header__text"><a class="header__link" href="https://github.com/mytake/mytake/blob/master/CONTRIBUTING.md">Contribute</a></p>
+		<p class="header__text"><a class="header__link" href="https://github.com/mytakedotorg/mytakedotorg/blob/master/WORK_IN_PROGRESS.md">How to use</a></p>
+		<p class="header__text"><a class="header__link" href="https://github.com/mytakedotorg/mytakedotorg/blob/master/CONTRIBUTING.md">Contribute</a></p>
 	</div>
 	</div>
 </header>
