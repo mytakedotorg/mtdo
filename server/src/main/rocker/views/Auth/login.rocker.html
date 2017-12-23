@@ -5,8 +5,10 @@
 
 @views.base.template("Log in", "Login or create an account") -> {
 	@if (loginReason != null) {
-		<section class="section">
-	<p class="section__text section__text--alert">@loginReason</p>
+	<section class="section">
+		<div class="section__inner">
+			<p class="section__text section__text--alert">@loginReason</p>
+		</div>
 	</section>
 }
 <section class="section">
