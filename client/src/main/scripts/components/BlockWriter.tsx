@@ -434,8 +434,8 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
     const hashArr = hash.substring(1).split("&");
     const factHash = hashArr[0];
     const highlightedRange: [number, number] = [
-      parseInt(hashArr[1]),
-      parseInt(hashArr[2])
+      parseFloat(hashArr[1]),
+      parseFloat(hashArr[2])
     ];
 
     let articleUser;
