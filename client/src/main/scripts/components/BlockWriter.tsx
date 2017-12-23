@@ -298,6 +298,7 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
       )
     ) {
       if (typeof this.state.parentRev != undefined && this.state.parentRev) {
+        // Draft has been saved
         const bodyJson: DraftRev = {
           draftid: this.state.parentRev.draftid,
           lastrevid: this.state.parentRev.lastrevid
@@ -312,15 +313,8 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
           }.bind(this)
         );
       } else {
-        this.setState({
-          ...initialState,
-          status: {
-            saved: true,
-            saving: false,
-            error: false,
-            message: ""
-          }
-        });
+        // Draft is unsaved, server doesn't know about it.
+        window.location.href = Routes.DRAFTS;
       }
     }
   };
