@@ -12,7 +12,7 @@
 }
 .form__submit {
   @include button;
-  margin-top: 2rem;
+  margin-top: 1rem;
 }
 .form__submit--red {
   @include button--red;
@@ -24,4 +24,14 @@
   @include body--small("sans");
   font-weight: 700;
   color: palette(form, text--action);
+}
+.form__input--terms {
+  width: auto;
+  margin-left: 0;
+  margin-top: $content-margin;
+  margin-right: 5px;
+  float: left;
+}
+.form__label--terms {
+  margin-top: $content-margin - 5px;
 }

@@ -12,13 +12,25 @@
   color: palette(section, text);
 }
 .section__inner {
-  float: left;
-  width: 368px;
-  height: 230px;
+  width: 200px;
+  margin: auto;
+  padding-left: $page-margin-mobile;
+  padding-right: $page-margin-mobile;
+  @media #{$mq-medium} {
+    float: left;
+    width: 338px;
+    padding: 0;
+    min-height: 238px;
+    margin-left: 2rem;
+    margin-right: 2rem;
+  }
 }
 .section__inner--login {
-  border-right: 1px solid palette(section, border);
-  margin-right: 30px;
+  margin-bottom: 2rem;
+  @media #{$mq-medium} {
+    border-right: 1px solid palette(section, border);
+    margin-right: 30px;
+  }
 }
 .section__text {
   @include body;
