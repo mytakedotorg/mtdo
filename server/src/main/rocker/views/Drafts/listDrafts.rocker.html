@@ -7,7 +7,10 @@
 
 @views.naked.template("MyTake.org", "Your drafts", "base") -> {
 <div class="takelist">
-<p class="takelist__text">You have @drafts.size() @(singlePlural("draft", "drafts", drafts)).</p>
+	<div class="takelist__header">
+		<p class="takelist__text takelist__text--top">You have @drafts.size() @(singlePlural("draft", "drafts", drafts)).</p>
+		<a class="takelist__button takelist__button--new" href="@java2ts.Routes.DRAFTS_NEW" >New Draft</a>
+	</div>
 
 @for (draft : drafts) {
 	@with(	int draftId = draft.get(TAKEDRAFT.ID),

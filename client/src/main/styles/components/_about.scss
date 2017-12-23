@@ -1,5 +1,5 @@
 .about {
-  padding: 0 $page-margin-mobile;
+  padding: 0;
   background-color: palette(about, background);
   @media #{$mq-medium} {
     padding: 0 $page-margin;

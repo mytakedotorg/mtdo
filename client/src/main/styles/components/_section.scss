@@ -11,14 +11,34 @@
   margin-bottom: $content-margin;
   color: palette(section, text);
 }
-.section__inner {
-  float: left;
-  width: 368px;
-  height: 230px;
+@mixin loginSection {
+  width: 200px;
+  margin: auto;
+  @media #{$mq-medium} {
+    float: left;
+    width: 338px;
+    min-height: 238px;
+  }
 }
 .section__inner--login {
-  border-right: 1px solid palette(section, border);
-  margin-right: 30px;
+  @include loginSection;
+  margin-bottom: 2rem;
+  @media #{$mq-medium} {
+    border-right: 1px solid palette(section, border);
+    margin-right: 30px;
+  }
+}
+.section__inner--create {
+  @include loginSection();
+}
+.section__inner {
+  padding-left: $page-margin-mobile;
+  padding-right: $page-margin-mobile;
+  @media #{$mq-medium} {
+    padding: 0;
+    margin-left: 2rem;
+    margin-right: 2rem;
+  }
 }
 .section__text {
   @include body;

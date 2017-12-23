@@ -59,7 +59,10 @@
 </header>
 
 <div class="takelist">
-<p class="takelist__text">You have 2 drafts.</p>
+	<div class="takelist__header">
+		<p class="takelist__text takelist__text--top">You have 2 drafts.</p>
+		<a class="takelist__button takelist__button--new" href="/drafts/new" >New Draft</a>
+	</div>
 
 	<div class="takelist__take">
 	<h2 class="takelist__title"><a class="takelist__link" href="/drafts/1">In my opinion</a></h2>

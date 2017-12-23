@@ -5,6 +5,9 @@
   @include body--lead;
   @include text-margin-lr;
 }
+.takelist__text--top {
+  float: left;
+}
 .takelist__user {
   @include heading1;
   @include text-margin-lr;
@@ -33,4 +36,18 @@
 .takelist__aside {
   @include body--small;
   line-height: 2rem;
+}
+.takelist__button {
+  @include button;
+  @include button--blue;
+  float: right;
+  margin-top: 0.7em;
+  margin-right: $page-margin-mobile;
+  @media #{$mq-small} {
+    margin-top: 1.4em;
+    margin-right: 2rem;
+  }
+}
+.takelist__header {
+  @include clearfix;
 }

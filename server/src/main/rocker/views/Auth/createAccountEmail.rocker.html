@@ -3,12 +3,14 @@
 @views.email.template() -> {
 
 <section class="section">
-<p class="section__text">
-	Welcome to MyTake.org, @username!
-</p>
-<p>
-<p class="section__text">
-	Visit the <a href="@raw(confirmUrl)" class="section__link">confirmation page</a> to confirm your account and give your take!
-</p>
+	<div class="section__inner">
+		<p class="section__text">
+			Welcome to MyTake.org, @username!
+		</p>
+		<p>
+		<p class="section__text">
+			Visit the <a href="@raw(confirmUrl)" class="section__link">confirmation page</a> to confirm your account and give your take!
+		</p>
+	</div>
 </section>
 }

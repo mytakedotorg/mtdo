@@ -5,8 +5,10 @@
 
 @views.base.template("Log in", "Login or create an account") -> {
 	@if (loginReason != null) {
-		<section class="section">
-	<p class="section__text section__text--alert">@loginReason</p>
+	<section class="section">
+		<div class="section__inner">
+			<p class="section__text section__text--alert">@loginReason</p>
+		</div>
 	</section>
 }
 <section class="section">
@@ -27,8 +29,8 @@
 		@createAccount.openForm("class", "form form--create")
 		@createAccount.field(AuthModule.CREATE_USERNAME).label("Username", "class", "form__label form__label--username").errorSpan("class", "form__error").input("text", "class", "form__input form__input--username")
 		@createAccount.field(AuthModule.CREATE_EMAIL).label("Email", "class", "form__label form__label--email").errorSpan("class", "form__error").input("email", "class", "form__input form__input--email")
+		@createAccount.field(AuthModule.ACCEPT_TERMS).errorSpan("class", "form__error").input("checkbox", "id", "acceptterms", "class", "form__input form__input--terms")
 		<label for="@AuthModule.ACCEPT_TERMS.name()" class="form__label form__label--terms">I agree to the <a href="@java2ts.Routes.TOS">terms of service</a></label>
-		@createAccount.field(AuthModule.ACCEPT_TERMS).errorSpan("class", "form__error").input("checkbox", "class", "form__input form__input--terms")
 		@createAccount.field(AuthModule.REDIRECT).input("hidden")
 		<input type="submit" class="form__submit form__submit--red" value="Claim username" />
 		@createAccount.closeForm()

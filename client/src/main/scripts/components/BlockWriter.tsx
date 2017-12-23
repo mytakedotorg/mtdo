@@ -298,6 +298,7 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
       )
     ) {
       if (typeof this.state.parentRev != undefined && this.state.parentRev) {
+        // Draft has been saved
         const bodyJson: DraftRev = {
           draftid: this.state.parentRev.draftid,
           lastrevid: this.state.parentRev.lastrevid
@@ -312,15 +313,8 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
           }.bind(this)
         );
       } else {
-        this.setState({
-          ...initialState,
-          status: {
-            saved: true,
-            saving: false,
-            error: false,
-            message: ""
-          }
-        });
+        // Draft is unsaved, server doesn't know about it.
+        window.location.href = Routes.DRAFTS;
       }
     }
   };
@@ -434,8 +428,8 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
     const hashArr = hash.substring(1).split("&");
     const factHash = hashArr[0];
     const highlightedRange: [number, number] = [
-      parseInt(hashArr[1]),
-      parseInt(hashArr[2])
+      parseFloat(hashArr[1]),
+      parseFloat(hashArr[2])
     ];
 
     let articleUser;
