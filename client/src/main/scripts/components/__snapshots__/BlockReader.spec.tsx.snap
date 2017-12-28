@@ -2,6 +2,19 @@
 
 exports[`Read only 1`] = `
 <div>
+  <ShareContainer
+    takeDocument={
+      Object {
+        "blocks": Array [
+          Object {
+            "kind": "paragraph",
+            "text": "",
+          },
+        ],
+        "title": "My take title",
+      }
+    }
+  />
   <div
     className="editor__wrapper"
   >

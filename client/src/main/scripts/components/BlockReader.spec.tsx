@@ -20,6 +20,10 @@ jest.mock("./ReactionContainer", () => ({
   default: "ReactionContainer"
 }));
 
+jest.mock("./ShareContainer", () => ({
+  default: "ShareContainer"
+}));
+
 function createNodeMock(element: React.ReactElement<HTMLElement>) {
   switch (element.type) {
     case "div": {
