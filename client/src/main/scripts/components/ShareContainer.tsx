@@ -18,7 +18,7 @@ interface ShareContainerState {
   emailHTML: {
     __html: string;
   };
-  documentFacts?: StaticDocument[];
+  documentFacts?: string[];
   videoFacts?: Foundation.VideoFactContent[];
 }
 
@@ -44,7 +44,7 @@ class ShareContainer extends React.Component<
   getFacts = (
     done: (
       error: string | Error | null,
-      documentFacts: StaticDocument[],
+      documentFacts: string[],
       videoFacts: Foundation.VideoFactContent[]
     ) => any
   ) => {
@@ -68,7 +68,7 @@ class ShareContainer extends React.Component<
     // Initialize callback counter
     let factCallbacks = 0;
 
-    let documentFacts: StaticDocument[] = [];
+    let documentFacts: string[] = [];
     let videoFacts: Foundation.VideoFactContent[] = [];
 
     // Fetch facts and increment callback counter when complete
@@ -90,13 +90,57 @@ class ShareContainer extends React.Component<
                 throw error;
               } else {
                 factCallbacks++;
-                documentFacts.push({
-                  content: factContent,
-                  highlightedRange: (block as DocumentBlock).highlightedRange,
-                  viewRange: (block as DocumentBlock).viewRange
-                });
-                if (factCallbacks === factCount) {
-                  done(null, documentFacts, videoFacts);
+
+                let nodes: FoundationNode[] = [];
+
+                for (let documentComponent of factContent.components) {
+                  nodes.push({
+                    component: documentComponent.component,
+                    innerHTML: [documentComponent.innerHTML],
+                    offset: documentComponent.offset
+                  });
+                }
+
+                let highlightedNodes = getHighlightedNodes(
+                  [...nodes],
+                  (block as DocumentBlock).highlightedRange,
+                  (block as DocumentBlock).viewRange
+                );
+
+                const canvas = document.createElement("canvas");
+                const width = 768;
+                const height = 250;
+
+                canvas.width = width;
+                canvas.height = height;
+
+                const ctx = canvas.getContext("2d");
+                if (ctx) {
+                  // Draw grey background
+                  ctx.fillStyle = "#f2f4f7";
+                  ctx.fillRect(0, 0, width, height);
+
+                  // Set text color
+                  ctx.fillStyle = "#051a38";
+
+                  // Draw fact title
+                  ctx.font = "Bold 24px Source Sans Pro";
+                  ctx.fillText(factContent.fact.title, 0, 25);
+
+                  // Draw highlighted nodes
+                  ctx.font = "15px Merriweather";
+                  let textHeight = 25;
+                  for (let node of highlightedNodes) {
+                    ctx.fillText(node.innerHTML.toString(), 0, textHeight);
+                    textHeight += 25;
+                  }
+
+                  const url = canvas.toDataURL("image/png");
+                  documentFacts.push(url);
+
+                  if (factCallbacks === factCount) {
+                    done(null, documentFacts, videoFacts);
+                  }
                 }
               }
             }
@@ -133,7 +177,7 @@ class ShareContainer extends React.Component<
     this.getFacts(
       (
         error: string | Error | null,
-        documentFacts: StaticDocument[],
+        documentFacts: string[],
         videoFacts: Foundation.VideoFactContent[]
       ) => {
         if (error) {
@@ -162,9 +206,7 @@ class ShareContainer extends React.Component<
               case "document":
                 try {
                   htmlStr +=
-                    "<canvas id='document" +
-                    documentFactCount.toString() +
-                    "' width='768' height='250'></canvas>";
+                    "<img src='" + documentFacts[documentFactCount] + "' />";
                   documentFactCount++;
                 } catch (e) {
                   const errMsg =
@@ -204,85 +246,6 @@ class ShareContainer extends React.Component<
       }
     );
   };
-  drawCanvases = () => {
-    if (this.state.documentFacts) {
-      for (let i = 0; i < this.state.documentFacts.length; i++) {
-        let canvas = document.getElementById("document" + i.toString());
-        if (canvas) {
-          let ctx = (canvas as HTMLCanvasElement).getContext("2d");
-          const currentFact = this.state.documentFacts[i];
-          let nodes: FoundationNode[] = [];
-
-          for (let documentComponent of currentFact.content.components) {
-            nodes.push({
-              component: documentComponent.component,
-              innerHTML: [documentComponent.innerHTML],
-              offset: documentComponent.offset
-            });
-          }
-
-          let highlightedNodes = getHighlightedNodes(
-            [...nodes],
-            currentFact.highlightedRange,
-            currentFact.viewRange
-          );
-
-          let data =
-            '<svg xmlns="http://www.w3.org/2000/svg" width="768" height="250">' +
-            '<foreignObject width="100%" height="100%">' +
-            '<div xmlns="http://www.w3.org/1999/xhtml" style="font-size:40px">' +
-            "<div style=\"background-color: rgb(242, 244, 247);color: #051a38;border-radius: 3px;font-family: 'Merriweather', serif;font-weight: 400;font-size: 15px;line-height: 1.7em;margin-bottom: 19.2px;padding-left: 16px;padding-right: 16px;\" >" +
-            "<h2 style=\"font-family: 'Source Sans Pro', sans-serif;font-weight: 700;font-size: 24px;line-height: 1.3em;\" >" +
-            currentFact.content.fact.title +
-            "</h2>";
-
-          data += "</div></div></foreignObject></svg>";
-
-          let DOMURL = window.URL || (window as any).webkitURL || window;
-
-          let img = new Image();
-          img.crossOrigin = "anonymous";
-          let svg = new Blob([data], { type: "image/svg+xml" });
-          let url = DOMURL.createObjectURL(svg);
-          img.onload = () => {
-            if (ctx) {
-              ctx.drawImage(img, 0, 0);
-              DOMURL.revokeObjectURL(url);
-              try {
-                let pngSrc = (canvas as HTMLCanvasElement).toDataURL(
-                  "image/png"
-                );
-                console.log(pngSrc);
-              } catch (e) {
-                // toDataURL throws an error on localhost, but should work in production
-                console.warn(e);
-              }
-            } else {
-              const errMsg =
-                "ShareContainer: error getting canvas context " + i.toString();
-              alertErr(errMsg);
-              throw errMsg;
-            }
-          };
-          img.src = url;
-        } else {
-          const errMsg =
-            "ShareContainer: error getting canvas element " + i.toString();
-          alertErr(errMsg);
-          throw errMsg;
-        }
-      }
-    }
-  };
-  componentDidUpdate(
-    prevProps: ShareContainerProps,
-    prevState: ShareContainerState
-  ) {
-    const emailHTML = this.state.emailHTML.__html;
-    if (emailHTML.length > 0 && emailHTML !== prevState.emailHTML.__html) {
-      this.drawCanvases();
-    }
-  }
   render() {
     return (
       <div className="share__container">
