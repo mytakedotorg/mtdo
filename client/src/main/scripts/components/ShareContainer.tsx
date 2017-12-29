@@ -9,6 +9,7 @@ import {
 import { fetchFact } from "../utils/databaseAPI";
 import { Foundation } from "../java2ts/Foundation";
 import { videoFact } from "../utils/testUtils";
+import { ReactElement } from "react";
 
 interface ShareContainerProps {
   takeDocument: TakeDocument;
@@ -108,14 +109,86 @@ class ShareContainer extends React.Component<
                 );
 
                 const canvas = document.createElement("canvas");
-                const width = 768;
-                const height = 250;
-
-                canvas.width = width;
-                canvas.height = height;
-
                 const ctx = canvas.getContext("2d");
+                const width = 768;
+
+                canvas.width = width * window.devicePixelRatio;
+                canvas.style.width = width + "px";
+
+                const titleSize = 20;
+                let textSize = titleSize;
+                let y = textSize;
+
+                // Loop through once to calculate height
+                const linewidth = 60; //number of characters in a line
+                const lineheight = 1.5; //multiplier
+                for (let node of highlightedNodes) {
+                  if (node.component === "h2") {
+                    textSize = 22.5;
+                    y += textSize * lineheight;
+                  } else if (node.component === "p") {
+                    textSize = 15;
+
+                    // Loop through the innerHTML array to search for React Elements
+                    for (let idx in node.innerHTML) {
+                      let text = node.innerHTML[idx];
+                      if (text) {
+                        let textStr = text.toString();
+                        let words = "";
+                        if (textStr === "[object Object]") {
+                          // Can't find a better conditional test
+                          // Found a React Element
+                          words += (text as ReactElement<HTMLSpanElement>).props
+                            .children;
+                        } else {
+                          words += textStr.trim();
+                        }
+                        let wordsArr = words.split(" ");
+                        let charCount = 0;
+                        let line = "";
+                        let isFirstLine = true;
+
+                        for (let word of wordsArr) {
+                          charCount += word.length + 1; //count the space
+                          if (charCount > 60) {
+                            // Start a new line
+                            y += textSize * lineheight;
+                            if (isFirstLine) {
+                              y += textSize; //top margin of new paragraph
+                              isFirstLine = false;
+                            }
+                            line = word + " ";
+                            charCount = word.length + 1;
+                          } else {
+                            line += word + " ";
+                          }
+                        }
+
+                        if (line.length > 0) {
+                          y += textSize * lineheight;
+                          if (isFirstLine) {
+                            y += textSize; //top margin of new paragraph
+                            isFirstLine = false;
+                          }
+                          line = "";
+                          charCount = 0;
+                        }
+                      }
+                    }
+                  } else {
+                    const errStr = "Unknown component";
+                    alertErr(errStr);
+                    throw errStr;
+                  }
+                }
+
+                y += textSize / 2; //bottom margin
+                const height = y;
+                canvas.height = height * window.devicePixelRatio;
+                canvas.style.height = height + "px";
+
                 if (ctx) {
+                  ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
                   // Draw grey background
                   ctx.fillStyle = "#f2f4f7";
                   ctx.fillRect(0, 0, width, height);
@@ -124,15 +197,96 @@ class ShareContainer extends React.Component<
                   ctx.fillStyle = "#051a38";
 
                   // Draw fact title
-                  ctx.font = "Bold 24px Source Sans Pro";
-                  ctx.fillText(factContent.fact.title, 0, 25);
+                  textSize = titleSize;
+                  ctx.font =
+                    "Bold " + textSize.toString() + "px Source Sans Pro";
+                  let x = 16;
+                  y = textSize;
+                  ctx.fillText(factContent.fact.title, x, y);
 
-                  // Draw highlighted nodes
-                  ctx.font = "15px Merriweather";
-                  let textHeight = 25;
+                  // Loop again to draw the text
                   for (let node of highlightedNodes) {
-                    ctx.fillText(node.innerHTML.toString(), 0, textHeight);
-                    textHeight += 25;
+                    if (node.component === "h2") {
+                      textSize = 22.5;
+                      ctx.font =
+                        "Bold " + textSize.toString() + "px Merriweather";
+                      y += textSize * lineheight;
+                      let line = "";
+                      for (let idx in node.innerHTML) {
+                        // Loop through the innerHTML array to search for React Elements
+                        let text = node.innerHTML[idx];
+                        if (text) {
+                          let textStr = text.toString();
+                          if (textStr === "[object Object]") {
+                            // Can't find a better conditional test
+                            // Found a React Element
+                            line += (text as ReactElement<HTMLSpanElement>)
+                              .props.children;
+                          } else {
+                            line += textStr;
+                          }
+                        }
+                      }
+                      ctx.fillText(line, x, y);
+                    } else if (node.component === "p") {
+                      textSize = 15;
+
+                      // Loop through the innerHTML array to search for React Elements
+                      for (let idx in node.innerHTML) {
+                        let text = node.innerHTML[idx];
+                        if (text) {
+                          let textStr = text.toString();
+                          let words = "";
+                          if (textStr === "[object Object]") {
+                            // Can't find a better conditional test
+                            // Found a React Element
+                            words += (text as ReactElement<HTMLSpanElement>)
+                              .props.children;
+                            ctx.font =
+                              "Bold " + textSize.toString() + "px Merriweather";
+                          } else {
+                            words += textStr.trim();
+                            ctx.font = textSize.toString() + "px Merriweather";
+                          }
+                          let wordsArr = words.split(" ");
+                          let charCount = 0;
+                          let line = "";
+                          let isFirstLine = true;
+
+                          for (let word of wordsArr) {
+                            charCount += word.length + 1; //count the space
+                            if (charCount > 60) {
+                              // Start a new line
+                              y += textSize * lineheight;
+                              if (isFirstLine) {
+                                y += textSize; //top margin of new paragraph
+                                isFirstLine = false;
+                              }
+                              ctx.fillText(line, x, y);
+                              line = word + " ";
+                              charCount = word.length + 1;
+                            } else {
+                              line += word + " ";
+                            }
+                          }
+
+                          if (line.length > 0) {
+                            y += textSize * lineheight;
+                            if (isFirstLine) {
+                              y += textSize; //top margin of new paragraph
+                              isFirstLine = false;
+                            }
+                            ctx.fillText(line, x, y);
+                            line = "";
+                            charCount = 0;
+                          }
+                        }
+                      }
+                    } else {
+                      const errStr = "Unknown component";
+                      alertErr(errStr);
+                      throw errStr;
+                    }
                   }
 
                   const url = canvas.toDataURL("image/png");
@@ -206,7 +360,9 @@ class ShareContainer extends React.Component<
               case "document":
                 try {
                   htmlStr +=
-                    "<img src='" + documentFacts[documentFactCount] + "' />";
+                    "<img style='width:768px;height:auto;' src='" +
+                    documentFacts[documentFactCount] +
+                    "' />";
                   documentFactCount++;
                 } catch (e) {
                   const errMsg =
