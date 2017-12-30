@@ -50,8 +50,10 @@ function fetchFact(
     documentFact:
       | Foundation.DocumentFactContent
       | Foundation.VideoFactContent
-      | null
-  ) => any
+      | null,
+    index?: number | null
+  ) => any,
+  index?: number
 ): void {
   const headers = new Headers();
 
@@ -77,7 +79,11 @@ function fetchFact(
       }
     })
     .then(function(json: any) {
-      callback(null, json);
+      if (index !== undefined) {
+        callback(null, json, index);
+      } else {
+        callback(null, json);
+      }
     })
     .catch(function(error: TypeError) {
       callback(error, null);
