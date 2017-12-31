@@ -463,22 +463,73 @@ class ShareContainer extends React.Component<
           let videoFactCount = 0;
 
           // Initialize HTML string
-          let htmlStr = "<h1>" + this.props.takeDocument.title + "</h1>";
+          let htmlStr =
+            '<table width="100%" border="0" cellspacing="0" cellpadding="0">';
+
+          // Add the title
+          htmlStr +=
+            "<tr>" +
+            "<td align='center'>" +
+            '<table width="768" border="0" cellspacing="0" cellpadding="0">' +
+            "<tr>" +
+            "<td>" +
+            "<h1 style=\"font-family: 'Source Sans Pro', sans-serif;" +
+            "font-weight: 700;" +
+            "font-size: 44px;" +
+            "line-height: 1.3em;" +
+            "margin-bottom: 19.2px;" +
+            "margin-left: 16px;" +
+            "margin-right: 16px;" +
+            '">' +
+            this.props.takeDocument.title +
+            "</h1>" +
+            "</td>" +
+            "</tr>" +
+            "</table>" +
+            "</td>" +
+            "</tr>";
+
+          const imageStyles =
+            "width:" + this.width + "px;" + "height:auto;" + "max-width:100%;";
 
           // Loop through blocks
           for (const block of this.props.takeDocument.blocks) {
             switch (block.kind) {
               case "paragraph":
-                htmlStr += "<p>" + block.text + "</p>";
+                htmlStr +=
+                  "<tr>" +
+                  "<td align='center'>" +
+                  '<table width="768" border="0" cellspacing="0" cellpadding="0">' +
+                  "<tr>" +
+                  "<td>" +
+                  "<p style=\"font-family: 'Source Sans Pro', sans-serif;" +
+                  "margin-bottom: 19.2px;" +
+                  "margin-left: 16px;" +
+                  "margin-right: 16px;" +
+                  "font-weight: 400;" +
+                  "font-size: 16px;" +
+                  "line-height: 1.7em;" +
+                  '">' +
+                  block.text +
+                  "</p>" +
+                  "</td>" +
+                  "</tr>" +
+                  "</table>" +
+                  "</td>" +
+                  "</tr>";
                 break;
               case "document":
                 try {
                   htmlStr +=
-                    "<img style='width:" +
-                    this.width +
-                    "px;height:auto;' src='" +
+                    "<tr>" +
+                    "<td align='center'>" +
+                    '<img style="' +
+                    imageStyles +
+                    '" src="' +
                     documentFacts[documentFactCount] +
-                    "' />";
+                    '" />' +
+                    "</td>" +
+                    "</tr>";
                   documentFactCount++;
                 } catch (e) {
                   const errMsg =
@@ -490,17 +541,27 @@ class ShareContainer extends React.Component<
               case "video":
                 try {
                   htmlStr +=
-                    "<img style='width:" +
-                    this.width +
-                    "px;height:auto;' src='https://img.youtube.com/vi/" +
+                    "<tr>" +
+                    "<td align='center'>" +
+                    '<img style="' +
+                    imageStyles +
+                    '" src="' +
+                    "https://img.youtube.com/vi/" +
                     videoFacts[videoFactCount].youtube +
-                    "/0.jpg' />";
+                    '/0.jpg" />' +
+                    "</td>" +
+                    "</tr>";
+
                   htmlStr +=
-                    "<img style='width:" +
-                    this.width +
-                    "px;height:auto;' src='" +
+                    "<tr>" +
+                    "<td align='center'>" +
+                    '<img style="' +
+                    imageStyles +
+                    '" src="' +
                     videoFacts[videoFactCount].captions +
-                    "' />";
+                    '" />' +
+                    "</td>" +
+                    "</tr>";
                   videoFactCount++;
                 } catch (e) {
                   const errMsg =
@@ -515,6 +576,8 @@ class ShareContainer extends React.Component<
                 throw errStr;
             }
           }
+
+          htmlStr += "</table>";
 
           const emailHTML = {
             __html: htmlStr
