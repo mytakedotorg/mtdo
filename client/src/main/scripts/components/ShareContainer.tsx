@@ -3,12 +3,14 @@ import * as ReactDOM from "react-dom";
 import { TakeDocument, DocumentBlock, VideoBlock } from "./BlockEditor";
 import {
   alertErr,
+  getCaptionNodeArray,
+  getCharRangeFromVideoRange,
   getHighlightedNodes,
+  highlightText,
   FoundationNode
 } from "../utils/functions";
 import { fetchFact } from "../utils/databaseAPI";
 import { Foundation } from "../java2ts/Foundation";
-import { videoFact } from "../utils/testUtils";
 import { ReactElement } from "react";
 
 interface ShareContainerProps {
@@ -19,14 +21,27 @@ interface ShareContainerState {
   emailHTML: {
     __html: string;
   };
-  documentFacts?: string[];
-  videoFacts?: Foundation.VideoFactContent[];
+}
+
+interface VideoImageURIs {
+  youtube: string;
+  captions: string | null;
+}
+
+interface Dimensions {
+  x: number;
+  y: number;
+  totalHeight: number;
 }
 
 class ShareContainer extends React.Component<
   ShareContainerProps,
   ShareContainerState
 > {
+  private textMargin: number = 16;
+  private width = 500;
+  private linewidth = 468;
+  private lineheight = 1.5; //multiplier
   constructor(props: ShareContainerProps) {
     super(props);
 
@@ -41,26 +56,26 @@ class ShareContainer extends React.Component<
     nodes: FoundationNode[],
     title: string
   ): number => {
+    // Draw fact title
     const titleSize = 20;
     let textSize = titleSize;
-    let y = textSize;
-    const linewidth = 60; //number of characters in a line
-    const lineheight = 1.5; //multiplier
-
-    // Draw fact title
-    textSize = titleSize;
     ctx.font = "Bold " + textSize.toString() + "px Source Sans Pro";
-    let x = 16;
-    y = textSize;
+    let x = this.textMargin;
+    let y = textSize;
     ctx.fillText(title, x, y);
 
-    for (let node of nodes) {
+    for (const node of nodes) {
       if (node.component === "h2") {
+        // Set the font style
         textSize = 22.5;
         ctx.font = "Bold " + textSize.toString() + "px Merriweather";
-        y += textSize * lineheight;
+
+        // Add a margin above the new line of text
+        y += textSize * this.lineheight;
+
+        // Initialize an empty line of texxt
         let line = "";
-        for (let text of node.innerHTML) {
+        for (const text of node.innerHTML) {
           // Loop through the innerHTML array to search for React Elements
           if (text) {
             let textStr = text.toString();
@@ -73,12 +88,19 @@ class ShareContainer extends React.Component<
             }
           }
         }
-        ctx.fillText(line, x, y);
+
+        // Write the line of text at the coordinates
+        ctx.fillText(line, this.textMargin, y);
       } else if (node.component === "p") {
+        // Set font size
         textSize = 15;
 
+        // Initialize the coorindates
+        x = this.textMargin; // Left margin of text
+        y += textSize * this.lineheight * this.lineheight; // Top margin
+
         // Loop through the innerHTML array to search for React Elements
-        for (let text of node.innerHTML) {
+        for (const text of node.innerHTML) {
           if (text) {
             let textStr = text.toString();
             let words = "";
@@ -86,43 +108,17 @@ class ShareContainer extends React.Component<
               // Can't find a better conditional test
               // Found a React Element
               words += (text as ReactElement<HTMLSpanElement>).props.children;
+              // This text is highlighted, so make it bold
               ctx.font = "Bold " + textSize.toString() + "px Merriweather";
             } else {
               words += textStr.trim();
               ctx.font = textSize.toString() + "px Merriweather";
             }
-            let wordsArr = words.split(" ");
-            let charCount = 0;
-            let line = "";
-            let isFirstLine = true;
 
-            for (let word of wordsArr) {
-              charCount += word.length + 1; //count the space
-              if (charCount > 60) {
-                // Start a new line
-                y += textSize * lineheight;
-                if (isFirstLine) {
-                  y += textSize; //top margin of new paragraph
-                  isFirstLine = false;
-                }
-                ctx.fillText(line, x, y);
-                line = word + " ";
-                charCount = word.length + 1;
-              } else {
-                line += word + " ";
-              }
-            }
-
-            if (line.length > 0) {
-              y += textSize * lineheight;
-              if (isFirstLine) {
-                y += textSize; //top margin of new paragraph
-                isFirstLine = false;
-              }
-              ctx.fillText(line, x, y);
-              line = "";
-              charCount = 0;
-            }
+            const dimensions = this.drawText(ctx, words, textSize, x, y);
+            // Set the dimensions of the next line to be drawn where the previous line left off
+            y = dimensions.y;
+            x = this.textMargin + dimensions.x;
           }
         }
         y += textSize / 2; //bottom margin
@@ -137,49 +133,151 @@ class ShareContainer extends React.Component<
   drawDocument = (nodes: FoundationNode[], title: string): string => {
     const canvas = document.createElement("canvas");
     const ctx = canvas.getContext("2d");
-    const width = 768;
 
-    canvas.width = width * window.devicePixelRatio;
-    canvas.style.width = width + "px";
+    canvas.width = this.width * window.devicePixelRatio;
+    canvas.style.width = this.width + "px";
 
     if (ctx) {
-      // Loop through once to calculate height
+      // Draw the document once to calculate height
       const height = this.drawDocumentText(ctx, [...nodes], title);
 
       canvas.height = height * window.devicePixelRatio;
       canvas.style.height = height + "px";
 
       ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+
       // Draw grey background
       ctx.fillStyle = "#f2f4f7";
-      ctx.fillRect(0, 0, width, height);
+      ctx.fillRect(0, 0, this.width, height);
 
       // Set text color
       ctx.fillStyle = "#051a38";
 
-      // Loop again to draw the text
+      // Draw document again to draw the text
       this.drawDocumentText(ctx, [...nodes], title);
 
-      const url = canvas.toDataURL("image/png");
-      return url;
+      return canvas.toDataURL("image/png");
     } else {
       const errStr = "Error getting canvas context";
       alertErr(errStr);
       throw errStr;
     }
   };
+  drawCaption = (text: string): string => {
+    const canvas = document.createElement("canvas");
+    const ctx = canvas.getContext("2d");
+
+    canvas.width = this.width * window.devicePixelRatio;
+    canvas.style.width = this.width + "px";
+
+    if (ctx) {
+      // Set font styles
+      const textSize = 15;
+      ctx.font = "Bold " + textSize.toString() + "px Merriweather";
+
+      // Draw text once to calculate height
+      const height = this.drawText(ctx, text, textSize).totalHeight;
+
+      canvas.height = height * window.devicePixelRatio;
+      canvas.style.height = height + "px";
+
+      ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+
+      // Draw grey background
+      ctx.fillStyle = "#f2f4f7";
+      ctx.fillRect(0, 0, this.width, height);
+      ctx.fillStyle = "#051a38";
+
+      // Not sure why, but font has been reset at this point, so must set it again
+      ctx.font = "Bold " + textSize.toString() + "px Merriweather";
+      this.drawText(ctx, text, textSize);
+
+      return canvas.toDataURL("image/png");
+    } else {
+      const errStr = "Error getting canvas context";
+      alertErr(errStr);
+      throw errStr;
+    }
+  };
+  drawText = (
+    ctx: CanvasRenderingContext2D,
+    words: string,
+    fontsize: number,
+    initialX?: number,
+    initialY?: number
+  ): Dimensions => {
+    let wordsArr = words.split(" ");
+    // Initialize variables
+    let currentLineWidth = 0;
+    let isFirstLine = true;
+    let line = "";
+    let x = initialX ? initialX : this.textMargin;
+    let y = initialY ? initialY : fontsize;
+    let totalHeight = fontsize;
+
+    for (const word of wordsArr) {
+      if (isFirstLine && initialX) {
+        // Need to include width of previous line in this case
+        currentLineWidth = ctx.measureText(line + word).width + initialX;
+      } else {
+        currentLineWidth = ctx.measureText(line + word).width;
+      }
+
+      if (currentLineWidth > this.linewidth) {
+        // Start a new line
+        if (isFirstLine) {
+          if (!initialX) {
+            y += fontsize / 2; //top margin of new paragraph
+          }
+          isFirstLine = false;
+        } else {
+          y += fontsize * this.lineheight;
+        }
+        ctx.fillText(line, x, y);
+        totalHeight += fontsize * this.lineheight;
+        x = this.textMargin;
+        line = word + " ";
+      } else {
+        line += word + " ";
+      }
+    }
+
+    // Draw the last line
+    if (line.length > 0) {
+      if (isFirstLine) {
+        if (!initialX) {
+          y += fontsize / 2; //top margin of new paragraph
+        }
+        isFirstLine = false;
+      } else {
+        y += fontsize * this.lineheight;
+      }
+      totalHeight += fontsize * this.lineheight;
+      ctx.fillText(line, x, y);
+      x = this.textMargin;
+    }
+
+    totalHeight += fontsize / 2; // add bottom margin
+
+    return {
+      x: ctx.measureText(line).width,
+      y: y,
+      totalHeight: totalHeight
+    };
+  };
   getFacts = (
     done: (
       error: string | Error | null,
       documentFacts: string[],
-      videoFacts: Foundation.VideoFactContent[]
+      videoFacts: VideoImageURIs[]
     ) => any
   ) => {
     // Count documents and videos
     let factCount = 0;
 
     let factBlocks: Array<DocumentBlock | VideoBlock> = [];
-    for (let block of this.props.takeDocument.blocks) {
+    for (const block of this.props.takeDocument.blocks) {
+      // We only care about document/video blocks for this
       switch (block.kind) {
         case "document":
           factCount++;
@@ -196,7 +294,7 @@ class ShareContainer extends React.Component<
     let factCallbacks = 0;
 
     let documentFacts: string[] = [];
-    let videoFacts: Foundation.VideoFactContent[] = [];
+    let videoFacts: VideoImageURIs[] = [];
 
     // Fetch facts and increment callback counter when complete
     for (let idx = 0; idx < factBlocks.length; idx++) {
@@ -208,7 +306,8 @@ class ShareContainer extends React.Component<
             (
               error: string | Error | null,
               factContent: Foundation.DocumentFactContent,
-              index: number
+              index: number,
+              blockInScope: DocumentBlock
             ) => {
               if (error) {
                 if (typeof error != "string") {
@@ -222,7 +321,7 @@ class ShareContainer extends React.Component<
 
                 let nodes: FoundationNode[] = [];
 
-                for (let documentComponent of factContent.components) {
+                for (const documentComponent of factContent.components) {
                   nodes.push({
                     component: documentComponent.component,
                     innerHTML: [documentComponent.innerHTML],
@@ -232,8 +331,8 @@ class ShareContainer extends React.Component<
 
                 let highlightedNodes = getHighlightedNodes(
                   [...nodes],
-                  (block as DocumentBlock).highlightedRange,
-                  (block as DocumentBlock).viewRange
+                  blockInScope.highlightedRange,
+                  blockInScope.viewRange
                 );
 
                 const url = this.drawDocument(
@@ -248,10 +347,11 @@ class ShareContainer extends React.Component<
                 }
               }
             },
-            // Pass in the block index to guarantee order even if
+            // Pass in the block and index to guarantee order even if
             // the fetches don't return in the order in which they
             // were called.
-            idx
+            idx,
+            block
           );
           break;
         case "video":
@@ -260,7 +360,8 @@ class ShareContainer extends React.Component<
             (
               error: string | Error | null,
               factContent: Foundation.VideoFactContent,
-              index: number
+              index: number,
+              blockInScope: VideoBlock
             ) => {
               if (error) {
                 if (typeof error != "string") {
@@ -271,13 +372,70 @@ class ShareContainer extends React.Component<
                 throw error;
               } else {
                 factCallbacks++;
-                videoFacts.push(factContent);
+
+                if (
+                  factContent.transcript &&
+                  factContent.speakerMap &&
+                  blockInScope.range
+                ) {
+                  const captionNodes = getCaptionNodeArray(
+                    factContent.transcript,
+                    factContent.speakerMap
+                  );
+
+                  const characterRange = getCharRangeFromVideoRange(
+                    factContent.transcript,
+                    factContent.speakerMap,
+                    blockInScope.range
+                  );
+
+                  const highlightedCaptionNodes = highlightText(
+                    captionNodes,
+                    characterRange,
+                    () => {}
+                  );
+
+                  let highlightedText = '"';
+                  for (const node of highlightedCaptionNodes) {
+                    for (const text of node.innerHTML) {
+                      if (text) {
+                        let textStr = text.toString();
+                        if (textStr === "[object Object]") {
+                          // Can't find a better conditional test
+                          // Found a React Element, which is highlighted text
+                          highlightedText += (text as ReactElement<
+                            HTMLSpanElement
+                          >).props.children;
+                        }
+                      }
+                    }
+                  }
+                  highlightedText = highlightedText.trimRight();
+                  highlightedText += '"';
+
+                  const uri = this.drawCaption(highlightedText);
+
+                  videoFacts[index] = {
+                    youtube: factContent.youtubeId,
+                    captions: uri
+                  };
+                } else {
+                  videoFacts[index] = {
+                    youtube: factContent.youtubeId,
+                    captions: null
+                  };
+                }
+
                 if (factCallbacks === factCount) {
                   done(null, documentFacts, videoFacts);
                 }
               }
             },
-            idx
+            // Pass in the block and index to guarantee order even if
+            // the fetches don't return in the order in which they
+            // were called.
+            idx,
+            block
           );
           break;
       }
@@ -288,7 +446,7 @@ class ShareContainer extends React.Component<
       (
         error: string | Error | null,
         documentFacts: string[],
-        videoFacts: Foundation.VideoFactContent[]
+        videoFacts: VideoImageURIs[]
       ) => {
         if (error) {
           if (typeof error != "string") {
@@ -308,8 +466,7 @@ class ShareContainer extends React.Component<
           let htmlStr = "<h1>" + this.props.takeDocument.title + "</h1>";
 
           // Loop through blocks
-          console.log(documentFacts);
-          for (let block of this.props.takeDocument.blocks) {
+          for (const block of this.props.takeDocument.blocks) {
             switch (block.kind) {
               case "paragraph":
                 htmlStr += "<p>" + block.text + "</p>";
@@ -317,24 +474,37 @@ class ShareContainer extends React.Component<
               case "document":
                 try {
                   htmlStr +=
-                    "<img style='width:768px;height:auto;' src='" +
+                    "<img style='width:" +
+                    this.width +
+                    "px;height:auto;' src='" +
                     documentFacts[documentFactCount] +
                     "' />";
                   documentFactCount++;
                 } catch (e) {
                   const errMsg =
-                    "ShareContainer: number of documentFacts doesn't match number of document blocks";
+                    "ShareContainer: array index out of bounds - number of documentFacts doesn't match number of document blocks";
                   alertErr(errMsg);
                   throw errMsg;
                 }
                 break;
               case "video":
                 try {
+                  htmlStr +=
+                    "<img style='width:" +
+                    this.width +
+                    "px;height:auto;' src='https://img.youtube.com/vi/" +
+                    videoFacts[videoFactCount].youtube +
+                    "/0.jpg' />";
+                  htmlStr +=
+                    "<img style='width:" +
+                    this.width +
+                    "px;height:auto;' src='" +
+                    videoFacts[videoFactCount].captions +
+                    "' />";
                   videoFactCount++;
-                  htmlStr += "<p>VIDEO FACT</p>";
                 } catch (e) {
                   const errMsg =
-                    "ShareContainer: number of videoFacts doesn't match number of video blocks";
+                    "ShareContainer: array index out of bounds - number of videoFacts doesn't match number of video blocks";
                   alertErr(errMsg);
                   throw errMsg;
                 }
@@ -351,9 +521,7 @@ class ShareContainer extends React.Component<
           };
 
           this.setState({
-            emailHTML: emailHTML,
-            documentFacts: documentFacts
-            // videoFacts: videoFacts
+            emailHTML: emailHTML
           });
         }
       }

@@ -5,6 +5,7 @@ import { DraftPost } from "../java2ts/DraftPost";
 import { PublishResult } from "../java2ts/PublishResult";
 import { TakeReactionJson } from "../java2ts/TakeReactionJson";
 import { alertErr } from "../utils/functions";
+import { DocumentBlock, VideoBlock } from "../components/BlockEditor";
 
 function getAllFacts(
   callback: (
@@ -51,9 +52,11 @@ function fetchFact(
       | Foundation.DocumentFactContent
       | Foundation.VideoFactContent
       | null,
-    index?: number | null
+    index?: number | null,
+    block?: DocumentBlock | VideoBlock | null
   ) => any,
-  index?: number
+  index?: number,
+  block?: DocumentBlock | VideoBlock
 ): void {
   const headers = new Headers();
 
@@ -80,7 +83,11 @@ function fetchFact(
     })
     .then(function(json: any) {
       if (index !== undefined) {
-        callback(null, json, index);
+        if (block !== undefined) {
+          callback(null, json, index, block);
+        } else {
+          callback(null, json, index);
+        }
       } else {
         callback(null, json);
       }
