@@ -190,6 +190,8 @@ export class Reaction extends React.Component<ReactionProps, ReactionState> {
     } else if (userState) {
       if (userState.harassment || userState.spam || userState.rulesviolation) {
         menuClassModifier = "reaction__submenu--wide";
+      } else {
+        menuClassModifier = "";
       }
     } else {
       menuClassModifier = "";
