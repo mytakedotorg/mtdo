@@ -18,9 +18,11 @@ interface YTPlayerParameters {
 
 interface VideoProps {
   onSetClick: (range: [number, number]) => void;
+  onRangeSet?: (videoRange: [number, number]) => void;
+  onClearClick?: () => void;
   videoFact: Foundation.VideoFactContent;
   className?: string;
-  timeRange?: [number, number];
+  timeRange?: [number, number] | null;
 }
 
 interface VideoState {
@@ -61,7 +63,7 @@ class Video extends React.Component<VideoProps, VideoState> {
   };
   getCharRange = (
     videoFact: Foundation.VideoFactContent,
-    timeRange?: [number, number]
+    timeRange?: [number, number] | null
   ): [number, number] => {
     if (timeRange) {
       if (videoFact.transcript && videoFact.speakerMap) {
@@ -86,11 +88,17 @@ class Video extends React.Component<VideoProps, VideoState> {
       startTime: videoRange[0],
       endTime: videoRange[1]
     });
+    if (this.props.onRangeSet) {
+      this.props.onRangeSet([videoRange[0], videoRange[1]]);
+    }
   };
   handleClearClick = (): void => {
     this.setState({
       captionIsHighlighted: false
     });
+    if (this.props.onClearClick) {
+      this.props.onClearClick();
+    }
   };
   handleCursorPlacement = (videoTime: number): void => {
     this.setState({

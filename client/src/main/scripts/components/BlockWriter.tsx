@@ -562,7 +562,9 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
 
     const setFactHandlers = {
       handleDocumentSetClick: this.addDocument,
-      handleVideoSetClick: this.addVideo
+      handleVideoSetClick: this.addVideo,
+      handleRangeSet: () => {},
+      handleRangeCleared: () => {}
     };
 
     const buttonEventHandlers: ButtonEventHandlers = {

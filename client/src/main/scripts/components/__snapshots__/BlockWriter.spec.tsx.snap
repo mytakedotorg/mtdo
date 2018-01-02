@@ -54,6 +54,8 @@ exports[`Simple block writer model 1`] = `
     setFactHandlers={
       Object {
         "handleDocumentSetClick": [Function],
+        "handleRangeCleared": [Function],
+        "handleRangeSet": [Function],
         "handleVideoSetClick": [Function],
       }
     }

@@ -123,7 +123,39 @@ export default class TimelineView extends React.Component<
           factLink: factLink,
           hashValues: null
         });
+        window.location.hash = slugify(factLink.fact.title);
       }
+    }
+  };
+  handleRangeSet = (
+    highlightedRange: [number, number],
+    viewRange?: [number, number]
+  ) => {
+    if (this.state.factLink) {
+      let newHash =
+        slugify(this.state.factLink.fact.title) +
+        "&" +
+        highlightedRange[0].toString() +
+        "&" +
+        highlightedRange[1].toString();
+      if (viewRange) {
+        newHash +=
+          "&" + viewRange[0].toString() + "&" + viewRange[1].toString();
+      }
+      window.location.hash = newHash;
+    } else {
+      const msg = "TimelineView: can't set a range when factLink is null";
+      alertErr(msg);
+      throw msg;
+    }
+  };
+  handleRangeCleared = () => {
+    if (this.state.factLink) {
+      window.location.hash = slugify(this.state.factLink.fact.title);
+    } else {
+      const msg = "TimelineView: can't clear a range when factLink is null";
+      alertErr(msg);
+      throw msg;
     }
   };
   handleDocumentSetClick = (
@@ -200,7 +232,7 @@ export default class TimelineView extends React.Component<
         articleUser = hashArr[1].split("/")[1];
         articleTitle = hashArr[1].split("/")[2];
         if (hashArr[2] && hashArr[3]) {
-          highlightedRange = [parseInt(hashArr[2]), parseInt(hashArr[3])];
+          highlightedRange = [parseFloat(hashArr[2]), parseFloat(hashArr[3])];
           if (hashArr[4] && hashArr[5]) {
             viewRange = [parseInt(hashArr[4]), parseInt(hashArr[5])];
             if (hashArr[6]) {
@@ -211,7 +243,7 @@ export default class TimelineView extends React.Component<
       } else {
         // No username/article-title to reference
         if (hashArr[2]) {
-          highlightedRange = [parseInt(hashArr[1]), parseInt(hashArr[2])];
+          highlightedRange = [parseFloat(hashArr[1]), parseFloat(hashArr[2])];
           if (hashArr[3] && hashArr[4]) {
             viewRange = [parseInt(hashArr[3]), parseInt(hashArr[4])];
             if (hashArr[5]) {
@@ -236,10 +268,14 @@ export default class TimelineView extends React.Component<
   }
   render() {
     const setFactHandlers: SetFactHandlers = this.props.setFactHandlers
-      ? this.props.setFactHandlers
+      ? {
+          ...this.props.setFactHandlers
+        }
       : {
           handleDocumentSetClick: this.handleDocumentSetClick,
-          handleVideoSetClick: this.handleVideoSetClick
+          handleVideoSetClick: this.handleVideoSetClick,
+          handleRangeSet: this.handleRangeSet,
+          handleRangeCleared: this.handleRangeCleared
         };
     const eventHandlers: EventHandlers = {
       handleChange: this.handleChange,
@@ -295,15 +331,20 @@ export class TimelineViewBranch extends React.Component<
       let offset;
       if (
         props.containerState.hashValues &&
-        props.containerState.hashValues.highlightedRange &&
-        props.containerState.hashValues.viewRange
+        props.containerState.hashValues.highlightedRange
       ) {
-        ranges = {
-          highlightedRange: props.containerState.hashValues.highlightedRange,
-          viewRange: props.containerState.hashValues.viewRange
-        };
-        if (props.containerState.hashValues.offset) {
-          offset = props.containerState.hashValues.offset;
+        if (props.containerState.hashValues.viewRange) {
+          ranges = {
+            highlightedRange: props.containerState.hashValues.highlightedRange,
+            viewRange: props.containerState.hashValues.viewRange
+          };
+          if (props.containerState.hashValues.offset) {
+            offset = props.containerState.hashValues.offset;
+          }
+        } else {
+          ranges = {
+            highlightedRange: props.containerState.hashValues.highlightedRange
+          };
         }
       }
 
