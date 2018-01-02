@@ -1,0 +1,49 @@
+$share__height: 35px;
+
+.share {
+  @include content-column;
+  position: relative;
+  z-index: 15;
+  height: $share__height;
+  line-height: $share__height;
+}
+.share__action--toggle {
+  @include button--borderless;
+  margin-left: $content-margin;
+}
+.share__action--email {
+  @include button--blue;
+  @include text-margin-lr;
+}
+.share__modal {
+  position: absolute;
+  top: $share__height;
+  left: $content-margin;
+  max-height: 300px;
+  overflow: hidden;
+  border: 1px solid palette(share, border);
+  background-color: palette(share, background);
+  border-radius: 3px;
+  float: none;
+  text-align: left;
+}
+.share__modal--hidden {
+  max-height: 0;
+  border: none;
+  padding: 0;
+}
+.share__form-line {
+  height: $share__height;
+  line-height: $share__height;
+}
+.share__label {
+  @include body--small("sans");
+  @include text-margin-lr;
+}
+.share__input {
+  @include text-margin-lr;
+}
+.share__html {
+  max-height: 300px - $share__height;
+  overflow: scroll;
+}

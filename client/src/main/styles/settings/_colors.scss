@@ -112,7 +112,9 @@ $palettes: (
       color--base: $white,
       color--action-shadow: $base,
       color--base-shadow: $base-darkest,
-      color--disabled: $base-lightest
+      color--disabled: $base-lightest,
+      color--borderless: $base-light,
+      color--borderless-hover: $base-lightest
     ),
   about:
     (
@@ -137,12 +139,6 @@ $palettes: (
       tab-text: $base-darkest,
       tab-border--active: $action-highlight
     ),
-  reaction:
-    (
-      text: $base-darkest,
-      text--link: $base-light,
-      text--hover: $base-lightest,
-      background: $white,
-      border: $base-darkest
-    )
+  reaction: (text: $base-darkest, background: $white, border: $base-darkest),
+  share: (text: $base-darkest, background: $white, border: $base-darkest)
 );

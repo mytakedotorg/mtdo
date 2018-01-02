@@ -19,16 +19,7 @@
   position: relative;
 }
 .reaction__action {
-  -webkit-appearance: none;
-  border: none;
-  &:focus {
-    outline: 0;
-  }
-  color: palette(reaction, text--link);
-  &:hover {
-    color: palette(reaction, text--hover);
-    cursor: pointer;
-  }
+  @include button--borderless;
 }
 .reaction__action--star {
   margin-right: $content-margin;
