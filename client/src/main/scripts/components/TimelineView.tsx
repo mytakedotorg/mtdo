@@ -12,11 +12,11 @@ import { alertErr, slugify } from "../utils/functions";
 
 interface HashValues {
   factTitleSlug: string;
-  articleUser: string;
-  articleTitle: string;
-  highlightedRange: [number, number];
-  viewRange: [number, number];
-  offset: number;
+  articleUser?: string;
+  articleTitle?: string;
+  highlightedRange?: [number, number];
+  viewRange?: [number, number];
+  offset?: number;
 }
 
 export type SelectionOptions = "Debates" | "Documents";
@@ -100,7 +100,7 @@ export default class TimelineView extends React.Component<
               hashIsValid: true
             });
           } else {
-            window.location.hash = "";
+            window.location.href = Routes.FOUNDATION;
           }
         }
       }
@@ -184,24 +184,50 @@ export default class TimelineView extends React.Component<
   parseHashURL = (hash: string): HashValues => {
     const hashArr = hash.substring(1).split("&");
     const factTitleSlug = hashArr[0];
-    const articleUser = hashArr[1].split("/")[1];
-    const articleTitle = hashArr[1].split("/")[2];
-    const highlightedRange: [number, number] = [
-      parseInt(hashArr[2]),
-      parseInt(hashArr[3])
-    ];
-    const viewRange: [number, number] = [
-      parseInt(hashArr[4]),
-      parseInt(hashArr[5])
-    ];
-    const offset = parseInt(hashArr[6]);
+
+    let articleUser;
+    let articleTitle;
+    let highlightedRange: [number, number] | undefined;
+    let viewRange: [number, number] | undefined;
+    let offset;
+
+    if (hashArr[1]) {
+      if (
+        hashArr[1].charAt(0) === "(" &&
+        hashArr[1].charAt(hashArr[1].length - 1) === ")"
+      ) {
+        // Wrapped in parentheses, so username/article-title is present
+        articleUser = hashArr[1].split("/")[1];
+        articleTitle = hashArr[1].split("/")[2];
+        if (hashArr[2] && hashArr[3]) {
+          highlightedRange = [parseInt(hashArr[2]), parseInt(hashArr[3])];
+          if (hashArr[4] && hashArr[5]) {
+            viewRange = [parseInt(hashArr[4]), parseInt(hashArr[5])];
+            if (hashArr[6]) {
+              offset = parseFloat(hashArr[6]);
+            }
+          }
+        }
+      } else {
+        // No username/article-title to reference
+        if (hashArr[2]) {
+          highlightedRange = [parseInt(hashArr[1]), parseInt(hashArr[2])];
+          if (hashArr[3] && hashArr[4]) {
+            viewRange = [parseInt(hashArr[3]), parseInt(hashArr[4])];
+            if (hashArr[5]) {
+              offset = parseFloat(hashArr[5]);
+            }
+          }
+        }
+      }
+    }
 
     return {
-      factTitleSlug,
-      articleUser,
-      articleTitle,
-      highlightedRange,
-      viewRange,
+      factTitleSlug: factTitleSlug,
+      articleUser: articleUser,
+      articleTitle: articleTitle,
+      highlightedRange: highlightedRange,
+      viewRange: viewRange,
       offset
     };
   };
@@ -267,13 +293,20 @@ export class TimelineViewBranch extends React.Component<
     if (this.state.isInverted && props.containerState.factLink) {
       let ranges;
       let offset;
-      if (props.containerState.hashValues) {
+      if (
+        props.containerState.hashValues &&
+        props.containerState.hashValues.highlightedRange &&
+        props.containerState.hashValues.viewRange
+      ) {
         ranges = {
           highlightedRange: props.containerState.hashValues.highlightedRange,
           viewRange: props.containerState.hashValues.viewRange
         };
-        offset = props.containerState.hashValues.offset;
+        if (props.containerState.hashValues.offset) {
+          offset = props.containerState.hashValues.offset;
+        }
       }
+
       return (
         <div className={"timeline__view"}>
           <TimelinePreviewContainer

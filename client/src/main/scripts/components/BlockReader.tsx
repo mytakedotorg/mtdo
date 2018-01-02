@@ -34,9 +34,9 @@ class BlockReader extends React.Component<BlockReaderProps, BlockReaderState> {
       "/foundation" +
       "#" +
       slugify(title) +
-      "&" +
+      "&(" +
       window.location.pathname +
-      "&" +
+      ")&" +
       highlightedRange[0] +
       "&" +
       highlightedRange[1] +
