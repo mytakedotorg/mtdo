@@ -428,6 +428,15 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
     // localhost:3000/drafts/new/#LWbZHJ0sfeTMwVNXfB44e7Vn7QRilZkbh7aEYjMFLEA=&369&514&369&514&/samples/does-a-law-mean-what-it-says-or-what-it-meant/
     const hashArr = hash.substring(1).split("&");
     const factHash = hashArr[0];
+
+    const regex = /^[A-Za-z0-9\-\=\/\+\_]+$/; //URL encoded base 64
+
+    if (factHash.length != 44 || !regex.test(factHash)) {
+      const error = "BlockWriter: Invalid fact hash in hash URL";
+      alertErr(error);
+      throw error;
+    }
+
     const highlightedRange: [number, number] = [
       parseFloat(hashArr[1]),
       parseFloat(hashArr[2])
