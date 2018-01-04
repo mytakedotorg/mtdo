@@ -4,15 +4,13 @@ import { TakeDocument } from "./BlockEditor";
 import { sendEmail } from "../utils/databaseAPI";
 import { getUserCookieString } from "../utils/functions";
 import { Routes } from "../java2ts/Routes";
+import isEqual = require("lodash/isEqual");
 
 interface ShareContainerProps {
   takeDocument: TakeDocument;
 }
 
 interface ShareContainerState {
-  emailHTML: {
-    __html: string;
-  };
   isLoggedIn: boolean;
   emailSent: boolean;
   modalIsOpen: boolean;
@@ -29,9 +27,6 @@ class ShareContainer extends React.Component<
     const isLoggedIn = getUserCookieString().length > 0;
 
     this.state = {
-      emailHTML: {
-        __html: ""
-      },
       isLoggedIn: isLoggedIn,
       emailSent: false,
       modalIsOpen: false
@@ -39,19 +34,11 @@ class ShareContainer extends React.Component<
   }
   handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     if (this.state.isLoggedIn) {
-      sendEmail(
-        (Object as any).assign({}, this.props.takeDocument),
-        (htmlStr: string) => {
-          const emailHTML = {
-            __html: htmlStr
-          };
-
-          this.setState({
-            emailSent: true,
-            emailHTML: emailHTML
-          });
-        }
-      );
+      sendEmail((Object as any).assign({}, this.props.takeDocument), () => {
+        this.setState({
+          emailSent: true
+        });
+      });
       event.preventDefault();
     } else {
       window.location.href =
@@ -109,6 +96,15 @@ class ShareContainer extends React.Component<
       }
     }
   };
+  componentWillReceiveProps(nextProps: ShareContainerProps) {
+    if (this.state.emailSent) {
+      if (!isEqual(nextProps.takeDocument, this.props.takeDocument)) {
+        this.setState({
+          emailSent: false
+        });
+      }
+    }
+  }
   componentWillUnmount() {
     this.div.removeEventListener("mousedown", this.onMouseDown);
     window.removeEventListener("mousedown", this.onMouseDown);
@@ -144,10 +140,6 @@ class ShareContainer extends React.Component<
                 {this.state.isLoggedIn ? "Send Email" : "Login"}
               </button>
             )}
-            <div
-              className="share__html"
-              dangerouslySetInnerHTML={this.state.emailHTML}
-            />
           </div>
         </div>
       </div>

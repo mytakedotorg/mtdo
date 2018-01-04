@@ -376,10 +376,7 @@ function drawFacts(
   }
 }
 
-function sendEmail(
-  takeDocument: TakeDocument,
-  done: (htmlString: string) => void
-): void {
+function sendEmail(takeDocument: TakeDocument, done: () => void): void {
   drawFacts(
     takeDocument,
     (
@@ -528,7 +525,7 @@ function sendEmail(
         };
 
         postRequest(Routes.API_EMAIL_SELF, body, function() {
-          done(htmlStr);
+          done();
         });
       }
     }
