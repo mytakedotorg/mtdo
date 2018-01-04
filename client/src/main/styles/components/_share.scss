@@ -1,6 +1,9 @@
 .share {
-  float: right;
+  float: left;
   line-height: 35px;
+}
+.share__inner-container {
+  position: relative;
 }
 .share__action--toggle {
   @include button--borderless;
@@ -27,7 +30,7 @@
 .share__modal {
   position: absolute;
   top: -35px * 2 - 2;
-  width: 300px;
+  width: 195px;
   right: 0;
   max-height: 300px;
   overflow: hidden;

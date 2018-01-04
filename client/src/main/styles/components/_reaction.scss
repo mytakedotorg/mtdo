@@ -26,10 +26,10 @@
   margin-right: $content-margin;
   font-size: 20px;
   margin-top: 2px;
+  float: left;
 }
 .reaction__action--report {
   @include body("sans");
-  margin-right: $content-margin;
 }
 .reaction__action--spam,
 .reaction__action--harassment,
@@ -71,4 +71,10 @@ $report-link-count: 3;
   &:not(:first-of-type) {
     border-top: 1px solid palette(header, border);
   }
+}
+.reaction__action-container {
+  position: relative;
+  line-height: 35px;
+  float: left;
+  margin-right: $content-margin;
 }

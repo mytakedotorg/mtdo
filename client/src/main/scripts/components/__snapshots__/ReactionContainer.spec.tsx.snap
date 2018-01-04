@@ -108,49 +108,53 @@ exports[`Reaction - harassment reported 1`] = `
         }
       }
     />
-    <button
-      className="reaction__action reaction__action--report"
-      onClick={[Function]}
+    <div
+      className="reaction__action-container"
     >
-      Report
-    </button>
-    <ul
-      className="reaction__submenu reaction__submenu--collapse"
-    >
-      <li
-        className="reaction__li"
+      <button
+        className="reaction__action reaction__action--report"
+        onClick={[Function]}
       >
-        <button
-          className="reaction__action reaction__action--spam"
-          disabled={false}
-          onClick={[Function]}
-        >
-          spam
-        </button>
-      </li>
-      <li
-        className="reaction__li"
+        Report
+      </button>
+      <ul
+        className="reaction__submenu reaction__submenu--collapse"
       >
-        <button
-          className="reaction__action reaction__action--harassment"
-          disabled={false}
-          onClick={[Function]}
+        <li
+          className="reaction__li"
         >
-          Marked as harassment. Unmark?
-        </button>
-      </li>
-      <li
-        className="reaction__li"
-      >
-        <button
-          className="reaction__action reaction__action--rules"
-          disabled={false}
-          onClick={[Function]}
+          <button
+            className="reaction__action reaction__action--spam"
+            disabled={false}
+            onClick={[Function]}
+          >
+            spam
+          </button>
+        </li>
+        <li
+          className="reaction__li"
         >
-          rules violation
-        </button>
-      </li>
-    </ul>
+          <button
+            className="reaction__action reaction__action--harassment"
+            disabled={false}
+            onClick={[Function]}
+          >
+            Marked as harassment. Unmark?
+          </button>
+        </li>
+        <li
+          className="reaction__li"
+        >
+          <button
+            className="reaction__action reaction__action--rules"
+            disabled={false}
+            onClick={[Function]}
+          >
+            rules violation
+          </button>
+        </li>
+      </ul>
+    </div>
   </div>
 </div>
 `;
@@ -263,49 +267,53 @@ exports[`Reaction - initial 1`] = `
         }
       }
     />
-    <button
-      className="reaction__action reaction__action--report"
-      onClick={[Function]}
+    <div
+      className="reaction__action-container"
     >
-      Report
-    </button>
-    <ul
-      className="reaction__submenu reaction__submenu--collapse"
-    >
-      <li
-        className="reaction__li"
+      <button
+        className="reaction__action reaction__action--report"
+        onClick={[Function]}
       >
-        <button
-          className="reaction__action reaction__action--spam"
-          disabled={false}
-          onClick={[Function]}
-        >
-          spam
-        </button>
-      </li>
-      <li
-        className="reaction__li"
+        Report
+      </button>
+      <ul
+        className="reaction__submenu reaction__submenu--collapse"
       >
-        <button
-          className="reaction__action reaction__action--harassment"
-          disabled={false}
-          onClick={[Function]}
+        <li
+          className="reaction__li"
         >
-          harassment
-        </button>
-      </li>
-      <li
-        className="reaction__li"
-      >
-        <button
-          className="reaction__action reaction__action--rules"
-          disabled={false}
-          onClick={[Function]}
+          <button
+            className="reaction__action reaction__action--spam"
+            disabled={false}
+            onClick={[Function]}
+          >
+            spam
+          </button>
+        </li>
+        <li
+          className="reaction__li"
         >
-          rules violation
-        </button>
-      </li>
-    </ul>
+          <button
+            className="reaction__action reaction__action--harassment"
+            disabled={false}
+            onClick={[Function]}
+          >
+            harassment
+          </button>
+        </li>
+        <li
+          className="reaction__li"
+        >
+          <button
+            className="reaction__action reaction__action--rules"
+            disabled={false}
+            onClick={[Function]}
+          >
+            rules violation
+          </button>
+        </li>
+      </ul>
+    </div>
   </div>
 </div>
 `;
@@ -418,49 +426,53 @@ exports[`Reaction - initial 2`] = `
         }
       }
     />
-    <button
-      className="reaction__action reaction__action--report"
-      onClick={[Function]}
+    <div
+      className="reaction__action-container"
     >
-      Report
-    </button>
-    <ul
-      className="reaction__submenu reaction__submenu--collapse"
-    >
-      <li
-        className="reaction__li"
+      <button
+        className="reaction__action reaction__action--report"
+        onClick={[Function]}
       >
-        <button
-          className="reaction__action reaction__action--spam"
-          disabled={false}
-          onClick={[Function]}
-        >
-          spam
-        </button>
-      </li>
-      <li
-        className="reaction__li"
+        Report
+      </button>
+      <ul
+        className="reaction__submenu reaction__submenu--collapse"
       >
-        <button
-          className="reaction__action reaction__action--harassment"
-          disabled={false}
-          onClick={[Function]}
+        <li
+          className="reaction__li"
         >
-          harassment
-        </button>
-      </li>
-      <li
-        className="reaction__li"
-      >
-        <button
-          className="reaction__action reaction__action--rules"
-          disabled={false}
-          onClick={[Function]}
+          <button
+            className="reaction__action reaction__action--spam"
+            disabled={false}
+            onClick={[Function]}
+          >
+            spam
+          </button>
+        </li>
+        <li
+          className="reaction__li"
         >
-          rules violation
-        </button>
-      </li>
-    </ul>
+          <button
+            className="reaction__action reaction__action--harassment"
+            disabled={false}
+            onClick={[Function]}
+          >
+            harassment
+          </button>
+        </li>
+        <li
+          className="reaction__li"
+        >
+          <button
+            className="reaction__action reaction__action--rules"
+            disabled={false}
+            onClick={[Function]}
+          >
+            rules violation
+          </button>
+        </li>
+      </ul>
+    </div>
   </div>
 </div>
 `;
@@ -573,49 +585,53 @@ exports[`Reaction - liked 1`] = `
         }
       }
     />
-    <button
-      className="reaction__action reaction__action--report"
-      onClick={[Function]}
+    <div
+      className="reaction__action-container"
     >
-      Report
-    </button>
-    <ul
-      className="reaction__submenu reaction__submenu--collapse"
-    >
-      <li
-        className="reaction__li"
+      <button
+        className="reaction__action reaction__action--report"
+        onClick={[Function]}
       >
-        <button
-          className="reaction__action reaction__action--spam"
-          disabled={false}
-          onClick={[Function]}
-        >
-          spam
-        </button>
-      </li>
-      <li
-        className="reaction__li"
+        Report
+      </button>
+      <ul
+        className="reaction__submenu reaction__submenu--collapse"
       >
-        <button
-          className="reaction__action reaction__action--harassment"
-          disabled={false}
-          onClick={[Function]}
+        <li
+          className="reaction__li"
         >
-          harassment
-        </button>
-      </li>
-      <li
-        className="reaction__li"
-      >
-        <button
-          className="reaction__action reaction__action--rules"
-          disabled={false}
-          onClick={[Function]}
+          <button
+            className="reaction__action reaction__action--spam"
+            disabled={false}
+            onClick={[Function]}
+          >
+            spam
+          </button>
+        </li>
+        <li
+          className="reaction__li"
         >
-          rules violation
-        </button>
-      </li>
-    </ul>
+          <button
+            className="reaction__action reaction__action--harassment"
+            disabled={false}
+            onClick={[Function]}
+          >
+            harassment
+          </button>
+        </li>
+        <li
+          className="reaction__li"
+        >
+          <button
+            className="reaction__action reaction__action--rules"
+            disabled={false}
+            onClick={[Function]}
+          >
+            rules violation
+          </button>
+        </li>
+      </ul>
+    </div>
   </div>
 </div>
 `;
@@ -728,49 +744,53 @@ exports[`Reaction - loading 1`] = `
         }
       }
     />
-    <button
-      className="reaction__action reaction__action--report"
-      onClick={[Function]}
+    <div
+      className="reaction__action-container"
     >
-      Report
-    </button>
-    <ul
-      className="reaction__submenu reaction__submenu--collapse"
-    >
-      <li
-        className="reaction__li"
+      <button
+        className="reaction__action reaction__action--report"
+        onClick={[Function]}
       >
-        <button
-          className="reaction__action reaction__action--spam"
-          disabled={true}
-          onClick={[Function]}
-        >
-          spam
-        </button>
-      </li>
-      <li
-        className="reaction__li"
+        Report
+      </button>
+      <ul
+        className="reaction__submenu reaction__submenu--collapse"
       >
-        <button
-          className="reaction__action reaction__action--harassment"
-          disabled={true}
-          onClick={[Function]}
+        <li
+          className="reaction__li"
         >
-          harassment
-        </button>
-      </li>
-      <li
-        className="reaction__li"
-      >
-        <button
-          className="reaction__action reaction__action--rules"
-          disabled={true}
-          onClick={[Function]}
+          <button
+            className="reaction__action reaction__action--spam"
+            disabled={true}
+            onClick={[Function]}
+          >
+            spam
+          </button>
+        </li>
+        <li
+          className="reaction__li"
         >
-          rules violation
-        </button>
-      </li>
-    </ul>
+          <button
+            className="reaction__action reaction__action--harassment"
+            disabled={true}
+            onClick={[Function]}
+          >
+            harassment
+          </button>
+        </li>
+        <li
+          className="reaction__li"
+        >
+          <button
+            className="reaction__action reaction__action--rules"
+            disabled={true}
+            onClick={[Function]}
+          >
+            rules violation
+          </button>
+        </li>
+      </ul>
+    </div>
   </div>
 </div>
 `;
@@ -883,49 +903,53 @@ exports[`Reaction - rules violated reported 1`] = `
         }
       }
     />
-    <button
-      className="reaction__action reaction__action--report"
-      onClick={[Function]}
+    <div
+      className="reaction__action-container"
     >
-      Report
-    </button>
-    <ul
-      className="reaction__submenu reaction__submenu--collapse"
-    >
-      <li
-        className="reaction__li"
+      <button
+        className="reaction__action reaction__action--report"
+        onClick={[Function]}
       >
-        <button
-          className="reaction__action reaction__action--spam"
-          disabled={false}
-          onClick={[Function]}
-        >
-          spam
-        </button>
-      </li>
-      <li
-        className="reaction__li"
+        Report
+      </button>
+      <ul
+        className="reaction__submenu reaction__submenu--collapse"
       >
-        <button
-          className="reaction__action reaction__action--harassment"
-          disabled={false}
-          onClick={[Function]}
+        <li
+          className="reaction__li"
         >
-          harassment
-        </button>
-      </li>
-      <li
-        className="reaction__li"
-      >
-        <button
-          className="reaction__action reaction__action--rules"
-          disabled={false}
-          onClick={[Function]}
+          <button
+            className="reaction__action reaction__action--spam"
+            disabled={false}
+            onClick={[Function]}
+          >
+            spam
+          </button>
+        </li>
+        <li
+          className="reaction__li"
         >
-          Marked as rules violation. Unmark?
-        </button>
-      </li>
-    </ul>
+          <button
+            className="reaction__action reaction__action--harassment"
+            disabled={false}
+            onClick={[Function]}
+          >
+            harassment
+          </button>
+        </li>
+        <li
+          className="reaction__li"
+        >
+          <button
+            className="reaction__action reaction__action--rules"
+            disabled={false}
+            onClick={[Function]}
+          >
+            Marked as rules violation. Unmark?
+          </button>
+        </li>
+      </ul>
+    </div>
   </div>
 </div>
 `;
@@ -1038,49 +1062,53 @@ exports[`Reaction - spam reported 1`] = `
         }
       }
     />
-    <button
-      className="reaction__action reaction__action--report"
-      onClick={[Function]}
+    <div
+      className="reaction__action-container"
     >
-      Report
-    </button>
-    <ul
-      className="reaction__submenu reaction__submenu--collapse"
-    >
-      <li
-        className="reaction__li"
+      <button
+        className="reaction__action reaction__action--report"
+        onClick={[Function]}
       >
-        <button
-          className="reaction__action reaction__action--spam"
-          disabled={false}
-          onClick={[Function]}
-        >
-          Marked as spam. Unmark?
-        </button>
-      </li>
-      <li
-        className="reaction__li"
+        Report
+      </button>
+      <ul
+        className="reaction__submenu reaction__submenu--collapse"
       >
-        <button
-          className="reaction__action reaction__action--harassment"
-          disabled={false}
-          onClick={[Function]}
+        <li
+          className="reaction__li"
         >
-          harassment
-        </button>
-      </li>
-      <li
-        className="reaction__li"
-      >
-        <button
-          className="reaction__action reaction__action--rules"
-          disabled={false}
-          onClick={[Function]}
+          <button
+            className="reaction__action reaction__action--spam"
+            disabled={false}
+            onClick={[Function]}
+          >
+            Marked as spam. Unmark?
+          </button>
+        </li>
+        <li
+          className="reaction__li"
         >
-          rules violation
-        </button>
-      </li>
-    </ul>
+          <button
+            className="reaction__action reaction__action--harassment"
+            disabled={false}
+            onClick={[Function]}
+          >
+            harassment
+          </button>
+        </li>
+        <li
+          className="reaction__li"
+        >
+          <button
+            className="reaction__action reaction__action--rules"
+            disabled={false}
+            onClick={[Function]}
+          >
+            rules violation
+          </button>
+        </li>
+      </ul>
+    </div>
   </div>
 </div>
 `;

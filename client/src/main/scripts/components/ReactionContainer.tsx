@@ -241,52 +241,62 @@ export class Reaction extends React.Component<ReactionProps, ReactionState> {
               props.containerProps.takeDocument
             )}
           />
-          <button
-            className="reaction__action reaction__action--report"
-            onClick={this.toggleMenu}
-          >
-            Report
-          </button>
-          <ul className={"reaction__submenu " + menuClassModifier}>
-            <li className="reaction__li">
-              <button
-                className="reaction__action reaction__action--spam"
-                onClick={() => props.eventListeners.onReportPress("spam")}
-                disabled={typeof props.containerState.takeState == "undefined"}
-              >
-                {props.containerState.userState &&
-                props.containerState.userState.spam
-                  ? "Marked as spam. Unmark?"
-                  : "spam"}
-              </button>
-            </li>
-            <li className="reaction__li">
-              <button
-                className="reaction__action reaction__action--harassment"
-                onClick={() => props.eventListeners.onReportPress("harassment")}
-                disabled={typeof props.containerState.takeState == "undefined"}
-              >
-                {props.containerState.userState &&
-                props.containerState.userState.harassment
-                  ? "Marked as harassment. Unmark?"
-                  : "harassment"}
-              </button>
-            </li>
-            <li className="reaction__li">
-              <button
-                className="reaction__action reaction__action--rules"
-                onClick={() =>
-                  props.eventListeners.onReportPress("rulesviolation")
-                }
-                disabled={typeof props.containerState.takeState == "undefined"}
-              >
-                {props.containerState.userState &&
-                props.containerState.userState.rulesviolation
-                  ? "Marked as rules violation. Unmark?"
-                  : "rules violation"}
-              </button>
-            </li>
-          </ul>
+          <div className="reaction__action-container">
+            <button
+              className="reaction__action reaction__action--report"
+              onClick={this.toggleMenu}
+            >
+              Report
+            </button>
+            <ul className={"reaction__submenu " + menuClassModifier}>
+              <li className="reaction__li">
+                <button
+                  className="reaction__action reaction__action--spam"
+                  onClick={() => props.eventListeners.onReportPress("spam")}
+                  disabled={
+                    typeof props.containerState.takeState == "undefined"
+                  }
+                >
+                  {props.containerState.userState &&
+                  props.containerState.userState.spam
+                    ? "Marked as spam. Unmark?"
+                    : "spam"}
+                </button>
+              </li>
+              <li className="reaction__li">
+                <button
+                  className="reaction__action reaction__action--harassment"
+                  onClick={() =>
+                    props.eventListeners.onReportPress("harassment")
+                  }
+                  disabled={
+                    typeof props.containerState.takeState == "undefined"
+                  }
+                >
+                  {props.containerState.userState &&
+                  props.containerState.userState.harassment
+                    ? "Marked as harassment. Unmark?"
+                    : "harassment"}
+                </button>
+              </li>
+              <li className="reaction__li">
+                <button
+                  className="reaction__action reaction__action--rules"
+                  onClick={() =>
+                    props.eventListeners.onReportPress("rulesviolation")
+                  }
+                  disabled={
+                    typeof props.containerState.takeState == "undefined"
+                  }
+                >
+                  {props.containerState.userState &&
+                  props.containerState.userState.rulesviolation
+                    ? "Marked as rules violation. Unmark?"
+                    : "rules violation"}
+                </button>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
     );
