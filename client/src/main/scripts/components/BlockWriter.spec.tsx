@@ -20,6 +20,10 @@ jest.mock("./EditorButtons", () => ({
   default: "EditorButtons"
 }));
 
+jest.mock("./ShareContainer", () => ({
+  default: "ShareContainer"
+}));
+
 const initState: InitialBlockWriterState = {
   takeDocument: {
     title: "",

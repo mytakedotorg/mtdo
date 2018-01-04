@@ -8,6 +8,7 @@ import BlockEditor, {
 } from "./BlockEditor";
 import TimelineView from "./TimelineView";
 import EditorButtons from "./EditorButtons";
+import ShareContainer from "./ShareContainer";
 import { postRequest } from "../utils/databaseAPI";
 import { DraftRev } from "../java2ts/DraftRev";
 import { DraftPost } from "../java2ts/DraftPost";
@@ -490,7 +491,10 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
 
       valuesArr.forEach((element, arrIdx) => {
         if (arrIdx === 0) {
-          newBlock = blocks[stateIndex] as ParagraphBlock;
+          newBlock = (Object as any).assign(
+            {},
+            blocks[stateIndex]
+          ) as ParagraphBlock;
           newBlock.text = element;
         } else {
           newBlock = {
@@ -581,10 +585,20 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
           active={this.state.activeBlockIndex}
         />
         <div className="editor__wrapper">
-          <EditorButtons
-            eventHandlers={buttonEventHandlers}
-            status={this.state.status}
-          />
+          <div className="editor__row">
+            <EditorButtons
+              eventHandlers={buttonEventHandlers}
+              status={this.state.status}
+            />
+            <div className="editor__share">
+              <ShareContainer
+                takeDocument={(Object as any).assign(
+                  {},
+                  this.state.takeDocument
+                )}
+              />
+            </div>
+          </div>
           <p className="timeline__instructions">
             Add Facts to your Take from the timeline below.
           </p>
