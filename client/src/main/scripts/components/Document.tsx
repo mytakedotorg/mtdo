@@ -1,6 +1,5 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import isEqual = require("lodash/isEqual");
 import { FoundationNode } from "../utils/functions";
 import { Foundation } from "../java2ts/Foundation";
 import DocumentTextNodeList from "./DocumentTextNodeList";
