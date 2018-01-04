@@ -13,6 +13,7 @@ interface ShareContainerProps {
 interface ShareContainerState {
   isLoggedIn: boolean;
   emailSent: boolean;
+  emailSending: boolean;
   modalIsOpen: boolean;
 }
 
@@ -29,16 +30,23 @@ class ShareContainer extends React.Component<
     this.state = {
       isLoggedIn: isLoggedIn,
       emailSent: false,
+      emailSending: false,
       modalIsOpen: false
     };
   }
   handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     if (this.state.isLoggedIn) {
-      sendEmail((Object as any).assign({}, this.props.takeDocument), () => {
+      if (!this.state.emailSending) {
         this.setState({
-          emailSent: true
+          emailSending: true
         });
-      });
+        sendEmail((Object as any).assign({}, this.props.takeDocument), () => {
+          this.setState({
+            emailSent: true,
+            emailSending: false
+          });
+        });
+      }
       event.preventDefault();
     } else {
       window.location.href =
@@ -117,6 +125,29 @@ class ShareContainer extends React.Component<
       modalClassModifier = "";
     }
 
+    let innerContent;
+
+    if (this.state.emailSent) {
+      innerContent = (
+        <span className="share__action share__action--sent">Email sent</span>
+      );
+    } else if (this.state.emailSending) {
+      innerContent = (
+        <span className="share__action share__action--sent">
+          Sending email...
+        </span>
+      );
+    } else {
+      innerContent = (
+        <button
+          className="share__action share__action--email"
+          onClick={this.handleClick}
+        >
+          {this.state.isLoggedIn ? "Send Email" : "Login"}
+        </button>
+      );
+    }
+
     return (
       <div className="share" ref={(div: HTMLDivElement) => (this.div = div)}>
         <div className="share__inner-container">
@@ -128,18 +159,7 @@ class ShareContainer extends React.Component<
           </button>
           <div className={"share__modal " + modalClassModifier}>
             <p className="share__text">Email this Take to yourself.</p>
-            {this.state.emailSent ? (
-              <span className="share__action share__action--sent">
-                Email sent
-              </span>
-            ) : (
-              <button
-                className="share__action share__action--email"
-                onClick={this.handleClick}
-              >
-                {this.state.isLoggedIn ? "Send Email" : "Login"}
-              </button>
-            )}
+            {innerContent}
           </div>
         </div>
       </div>
