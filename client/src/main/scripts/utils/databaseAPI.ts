@@ -220,155 +220,159 @@ function drawFacts(
     }
   }
 
-  // Initialize callback counter
-  let factCallbacks = 0;
+  if (factCount > 0) {
+    // Initialize callback counter
+    let factCallbacks = 0;
 
-  let documentFacts: string[] = [];
-  let videoFacts: VideoImageURIs[] = [];
+    let documentFacts: string[] = [];
+    let videoFacts: VideoImageURIs[] = [];
 
-  // Fetch facts and increment callback counter when complete
-  for (let idx = 0; idx < factBlocks.length; idx++) {
-    const block = factBlocks[idx];
-    switch (block.kind) {
-      case "document":
-        fetchFact(
-          block.excerptId,
-          (
-            error: string | Error | null,
-            factContent: Foundation.DocumentFactContent,
-            index: number,
-            blockInScope: DocumentBlock
-          ) => {
-            if (error) {
-              if (typeof error != "string") {
-                alertErr("databaseAPI: " + error.message);
+    // Fetch facts and increment callback counter when complete
+    for (let idx = 0; idx < factBlocks.length; idx++) {
+      const block = factBlocks[idx];
+      switch (block.kind) {
+        case "document":
+          fetchFact(
+            block.excerptId,
+            (
+              error: string | Error | null,
+              factContent: Foundation.DocumentFactContent,
+              index: number,
+              blockInScope: DocumentBlock
+            ) => {
+              if (error) {
+                if (typeof error != "string") {
+                  alertErr("databaseAPI: " + error.message);
+                } else {
+                  alertErr("databaseAPI: " + error);
+                }
+                throw error;
               } else {
-                alertErr("databaseAPI: " + error);
-              }
-              throw error;
-            } else {
-              factCallbacks++;
+                factCallbacks++;
 
-              let nodes: FoundationNode[] = [];
+                let nodes: FoundationNode[] = [];
 
-              for (const documentComponent of factContent.components) {
-                nodes.push({
-                  component: documentComponent.component,
-                  innerHTML: [documentComponent.innerHTML],
-                  offset: documentComponent.offset
-                });
-              }
+                for (const documentComponent of factContent.components) {
+                  nodes.push({
+                    component: documentComponent.component,
+                    innerHTML: [documentComponent.innerHTML],
+                    offset: documentComponent.offset
+                  });
+                }
 
-              let highlightedNodes = getHighlightedNodes(
-                [...nodes],
-                blockInScope.highlightedRange,
-                blockInScope.viewRange
-              );
-
-              const url = drawDocument(
-                [...highlightedNodes],
-                factContent.fact.title
-              );
-
-              documentFacts[index] = url;
-
-              if (factCallbacks === factCount) {
-                callback(null, documentFacts, videoFacts);
-              }
-            }
-          },
-          // Pass in the block and index to guarantee order even if
-          // the fetches don't return in the order in which they
-          // were called.
-          idx,
-          block
-        );
-        break;
-      case "video":
-        fetchFact(
-          block.videoId,
-          (
-            error: string | Error | null,
-            factContent: Foundation.VideoFactContent,
-            index: number,
-            blockInScope: VideoBlock
-          ) => {
-            if (error) {
-              if (typeof error != "string") {
-                alertErr("databaseAPI: " + error.message);
-              } else {
-                alertErr("databaseAPI: " + error);
-              }
-              throw error;
-            } else {
-              factCallbacks++;
-
-              if (
-                factContent.transcript &&
-                factContent.speakerMap &&
-                blockInScope.range
-              ) {
-                const captionNodes = getCaptionNodeArray(
-                  factContent.transcript,
-                  factContent.speakerMap
+                let highlightedNodes = getHighlightedNodes(
+                  [...nodes],
+                  blockInScope.highlightedRange,
+                  blockInScope.viewRange
                 );
 
-                const characterRange = getCharRangeFromVideoRange(
-                  factContent.transcript,
-                  factContent.speakerMap,
+                const url = drawDocument(
+                  [...highlightedNodes],
+                  factContent.fact.title
+                );
+
+                documentFacts[index] = url;
+
+                if (factCallbacks === factCount) {
+                  callback(null, documentFacts, videoFacts);
+                }
+              }
+            },
+            // Pass in the block and index to guarantee order even if
+            // the fetches don't return in the order in which they
+            // were called.
+            idx,
+            block
+          );
+          break;
+        case "video":
+          fetchFact(
+            block.videoId,
+            (
+              error: string | Error | null,
+              factContent: Foundation.VideoFactContent,
+              index: number,
+              blockInScope: VideoBlock
+            ) => {
+              if (error) {
+                if (typeof error != "string") {
+                  alertErr("databaseAPI: " + error.message);
+                } else {
+                  alertErr("databaseAPI: " + error);
+                }
+                throw error;
+              } else {
+                factCallbacks++;
+
+                if (
+                  factContent.transcript &&
+                  factContent.speakerMap &&
                   blockInScope.range
-                );
+                ) {
+                  const captionNodes = getCaptionNodeArray(
+                    factContent.transcript,
+                    factContent.speakerMap
+                  );
 
-                const highlightedCaptionNodes = highlightText(
-                  captionNodes,
-                  characterRange,
-                  () => {}
-                );
+                  const characterRange = getCharRangeFromVideoRange(
+                    factContent.transcript,
+                    factContent.speakerMap,
+                    blockInScope.range
+                  );
 
-                let highlightedText = '"';
-                for (const node of highlightedCaptionNodes) {
-                  for (const text of node.innerHTML) {
-                    if (text) {
-                      let textStr = text.toString();
-                      if (textStr === "[object Object]") {
-                        // Can't find a better conditional test
-                        // Found a React Element, which is highlighted text
-                        highlightedText += (text as ReactElement<
-                          HTMLSpanElement
-                        >).props.children;
+                  const highlightedCaptionNodes = highlightText(
+                    captionNodes,
+                    characterRange,
+                    () => {}
+                  );
+
+                  let highlightedText = '"';
+                  for (const node of highlightedCaptionNodes) {
+                    for (const text of node.innerHTML) {
+                      if (text) {
+                        let textStr = text.toString();
+                        if (textStr === "[object Object]") {
+                          // Can't find a better conditional test
+                          // Found a React Element, which is highlighted text
+                          highlightedText += (text as ReactElement<
+                            HTMLSpanElement
+                          >).props.children;
+                        }
                       }
                     }
                   }
+                  highlightedText = highlightedText.trimRight();
+                  highlightedText += '"';
+
+                  const uri = drawCaption(highlightedText);
+
+                  videoFacts[index] = {
+                    youtube: factContent.youtubeId,
+                    captions: uri
+                  };
+                } else {
+                  videoFacts[index] = {
+                    youtube: factContent.youtubeId,
+                    captions: null
+                  };
                 }
-                highlightedText = highlightedText.trimRight();
-                highlightedText += '"';
 
-                const uri = drawCaption(highlightedText);
-
-                videoFacts[index] = {
-                  youtube: factContent.youtubeId,
-                  captions: uri
-                };
-              } else {
-                videoFacts[index] = {
-                  youtube: factContent.youtubeId,
-                  captions: null
-                };
+                if (factCallbacks === factCount) {
+                  callback(null, documentFacts, videoFacts);
+                }
               }
-
-              if (factCallbacks === factCount) {
-                callback(null, documentFacts, videoFacts);
-              }
-            }
-          },
-          // Pass in the block and index to guarantee order even if
-          // the fetches don't return in the order in which they
-          // were called.
-          idx,
-          block
-        );
-        break;
+            },
+            // Pass in the block and index to guarantee order even if
+            // the fetches don't return in the order in which they
+            // were called.
+            idx,
+            block
+          );
+          break;
+      }
     }
+  } else {
+    callback(null, [], []);
   }
 }
 
@@ -385,9 +389,9 @@ function sendEmail(
     ) => {
       if (error) {
         if (typeof error != "string") {
-          alertErr("databaseAPI: " + error.message);
+          alertErr("databaseAPI - sendEmail: " + error.message);
         } else {
-          alertErr("databaseAPI: " + error);
+          alertErr("databaseAPI - sendEmail: " + error);
         }
         throw error;
       } else {
