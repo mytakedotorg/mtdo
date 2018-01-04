@@ -2,7 +2,6 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import BlockEditor, { TakeDocument } from "./BlockEditor";
 import ReactionContainer from "./ReactionContainer";
-import ShareContainer from "./ShareContainer";
 import { slugify } from "../utils/functions";
 import { Foundation } from "../java2ts/Foundation";
 
@@ -53,14 +52,14 @@ class BlockReader extends React.Component<BlockReaderProps, BlockReaderState> {
     };
     return (
       <div>
-        <ShareContainer
-          takeDocument={(Object as any).assign({}, this.state.takeDocument)}
-        />
         <BlockEditor
           takeDocument={(Object as any).assign({}, this.state.takeDocument)}
           eventHandlers={eventHandlers}
         />
-        <ReactionContainer takeId={this.props.takeId} />
+        <ReactionContainer
+          takeId={this.props.takeId}
+          takeDocument={(Object as any).assign({}, this.state.takeDocument)}
+        />
       </div>
     );
   }

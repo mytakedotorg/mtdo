@@ -2,6 +2,7 @@
   @include content-column;
   position: relative;
   z-index: 20;
+  @include clearfix;
 }
 .reaction__counts {
   margin-left: $content-margin;
@@ -41,15 +42,16 @@
   margin-left: $page-margin-mobile;
   margin-right: $page-margin-mobile;
 }
+$report-link-count: 3;
 .reaction__submenu {
   position: absolute;
   width: 128px;
-  top: -35px * 3 - 4;
+  top: -35px * $report-link-count - $report-link-count - 1;
   right: 0;
   list-style: none;
   margin: 0;
   padding: 0;
-  max-height: 35px * 3 + 4;
+  max-height: 35px * $report-link-count + $report-link-count + 1;
   overflow: hidden;
   border: 1px solid palette(reaction, border);
   border-radius: 3px;

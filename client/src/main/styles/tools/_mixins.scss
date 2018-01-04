@@ -48,6 +48,7 @@
 @mixin button--borderless {
   -webkit-appearance: none;
   border: none;
+  padding: 0;
   &:focus {
     outline: 0;
   }

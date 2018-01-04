@@ -4,6 +4,7 @@ import { DraftRev } from "../java2ts/DraftRev";
 import { DraftPost } from "../java2ts/DraftPost";
 import { PublishResult } from "../java2ts/PublishResult";
 import { TakeReactionJson } from "../java2ts/TakeReactionJson";
+import { EmailSelf } from "../java2ts/EmailSelf";
 import {
   alertErr,
   FoundationNode,
@@ -138,9 +139,10 @@ function postRequest(
     | DraftPost
     | DraftRev
     | TakeReactionJson.ReactReq
-    | TakeReactionJson.ViewReq,
+    | TakeReactionJson.ViewReq
+    | EmailSelf,
   successCb: (
-    json:
+    json?:
       | DraftRev
       | PublishResult
       | TakeReactionJson.ReactRes
@@ -169,6 +171,8 @@ function postRequest(
         return response.json();
       } else if (route === Routes.DRAFTS_DELETE && response.ok) {
         window.location.href = Routes.DRAFTS;
+      } else if (route === Routes.API_EMAIL_SELF && response.ok) {
+        successCb();
       } else {
         alertErr(
           "databaseAPI + " + route + ": Unexpected response from server."
@@ -514,7 +518,14 @@ function sendEmail(
 
         htmlStr += "</table>";
 
-        done(htmlStr);
+        const body: EmailSelf = {
+          subject: takeDocument.title,
+          body: htmlStr
+        };
+
+        postRequest(Routes.API_EMAIL_SELF, body, function() {
+          done(htmlStr);
+        });
       }
     }
   );

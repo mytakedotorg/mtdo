@@ -1099,7 +1099,19 @@ function drawCaption(text: string): string {
     throw errStr;
   }
 }
+function getUserCookieString(): string {
+  function getCookieValue(a: string): string {
+    // https://stackoverflow.com/questions/5639346/what-is-the-shortest-function-for-reading-a-cookie-by-name-in-javascript?noredirect=1&lq=1
+    const b = document.cookie.match("(^|;)\\s*" + a + "\\s*=\\s*([^;]+)");
+    if (b) {
+      const c = b.pop();
+      return c ? c : "";
+    }
+    return "";
+  }
 
+  return getCookieValue("loginui");
+}
 export {
   alertErr,
   convertSecondsToTimestamp,
@@ -1114,6 +1126,7 @@ export {
   getStartRangeOffsetTop,
   getHighlightedNodes,
   getNodesInRange,
+  getUserCookieString,
   getWordCount,
   highlightText,
   slugify

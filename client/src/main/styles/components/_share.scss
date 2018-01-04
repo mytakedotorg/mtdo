@@ -1,24 +1,34 @@
-$share__height: 35px;
-
 .share {
-  @include content-column;
-  position: relative;
-  z-index: 15;
-  height: $share__height;
-  line-height: $share__height;
+  float: right;
+  line-height: 35px;
 }
 .share__action--toggle {
   @include button--borderless;
-  margin-left: $content-margin;
+  @include body("sans");
+  margin-right: $content-margin;
 }
 .share__action--email {
-  @include button--blue;
-  @include text-margin-lr;
+  @include button--borderless;
+  @include heading6;
+  line-height: 35px;
+  background-color: transparent;
+  width: 100%;
+  text-align: left;
+  margin-left: $page-margin-mobile;
+  margin-right: $page-margin-mobile;
+}
+.share__action--sent {
+  color: palette(share, text--green);
+  @include body("sans");
+  text-align: left;
+  margin-left: $page-margin-mobile;
+  margin-right: $page-margin-mobile;
 }
 .share__modal {
   position: absolute;
-  top: $share__height;
-  left: $content-margin;
+  top: -35px * 2 - 2;
+  width: 300px;
+  right: 0;
   max-height: 300px;
   overflow: hidden;
   border: 1px solid palette(share, border);
@@ -32,18 +42,12 @@ $share__height: 35px;
   border: none;
   padding: 0;
 }
-.share__form-line {
-  height: $share__height;
-  line-height: $share__height;
-}
-.share__label {
-  @include body--small("sans");
-  @include text-margin-lr;
-}
-.share__input {
-  @include text-margin-lr;
-}
 .share__html {
-  max-height: 300px - $share__height;
+  max-height: 300px - 35px;
   overflow: scroll;
+}
+.share__text {
+  @include body("sans");
+  margin: 0 $page-margin-mobile;
+  line-height: 35px;
 }

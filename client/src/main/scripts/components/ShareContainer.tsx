@@ -2,17 +2,19 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { TakeDocument } from "./BlockEditor";
 import { sendEmail } from "../utils/databaseAPI";
+import { getUserCookieString } from "../utils/functions";
+import { Routes } from "../java2ts/Routes";
 
 interface ShareContainerProps {
   takeDocument: TakeDocument;
 }
 
 interface ShareContainerState {
-  emailAddress: string;
-  ccSelf: boolean;
   emailHTML: {
     __html: string;
   };
+  isLoggedIn: boolean;
+  emailSent: boolean;
   modalIsOpen: boolean;
 }
 
@@ -24,39 +26,40 @@ class ShareContainer extends React.Component<
   constructor(props: ShareContainerProps) {
     super(props);
 
+    const isLoggedIn = getUserCookieString().length > 0;
+
     this.state = {
-      emailAddress: "",
-      ccSelf: false,
       emailHTML: {
         __html: ""
       },
+      isLoggedIn: isLoggedIn,
+      emailSent: false,
       modalIsOpen: false
     };
   }
-  handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({
-      ccSelf: event.target.checked
-    });
-  };
-  handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({
-      emailAddress: event.target.value
-    });
-  };
-  handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    sendEmail(
-      (Object as any).assign({}, this.props.takeDocument),
-      (htmlStr: string) => {
-        const emailHTML = {
-          __html: htmlStr
-        };
+  handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    if (this.state.isLoggedIn) {
+      sendEmail(
+        (Object as any).assign({}, this.props.takeDocument),
+        (htmlStr: string) => {
+          const emailHTML = {
+            __html: htmlStr
+          };
 
-        this.setState({
-          emailHTML: emailHTML
-        });
-      }
-    );
-    event.preventDefault();
+          this.setState({
+            emailSent: true,
+            emailHTML: emailHTML
+          });
+        }
+      );
+      event.preventDefault();
+    } else {
+      window.location.href =
+        Routes.LOGIN +
+        "?redirect=" +
+        window.location.pathname +
+        "&loginreason=You+must+have+an+account+to+email+a+Take.";
+    }
   };
   toggleMenu = () => {
     const modalIsOpen = this.state.modalIsOpen;
@@ -128,41 +131,19 @@ class ShareContainer extends React.Component<
             Email
           </button>
           <div className={"share__modal " + modalClassModifier}>
-            <form onSubmit={this.handleSubmit}>
-              <div className="share__form-line">
-                <label htmlFor="share--email" className="share__label">
-                  To
-                </label>
-                <input
-                  type="email"
-                  id="share--email"
-                  className="share__input"
-                  onChange={this.handleEmailChange}
-                  value={this.state.emailAddress}
-                  required
-                />
-              </div>
-              <div className="share__form-line">
-                <label htmlFor="share--email" className="share__label">
-                  Send a copy to yourself
-                </label>
-                <input
-                  type="checkbox"
-                  id="share--cc"
-                  className="share__input"
-                  onChange={this.handleCheckboxChange}
-                  checked={this.state.ccSelf}
-                />
-              </div>
-              <div className="share__form-line">
-                <input
-                  type="submit"
-                  className="share__action share__action--email"
-                  disabled={this.state.emailHTML.__html.length > 0}
-                  value="Generate Email"
-                />
-              </div>
-            </form>
+            <p className="share__text">Email this Take to yourself.</p>
+            {this.state.emailSent ? (
+              <span className="share__action share__action--sent">
+                Email sent
+              </span>
+            ) : (
+              <button
+                className="share__action share__action--email"
+                onClick={this.handleClick}
+              >
+                {this.state.isLoggedIn ? "Send Email" : "Login"}
+              </button>
+            )}
             <div
               className="share__html"
               dangerouslySetInnerHTML={this.state.emailHTML}

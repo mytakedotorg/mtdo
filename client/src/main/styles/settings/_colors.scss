@@ -140,5 +140,11 @@ $palettes: (
       tab-border--active: $action-highlight
     ),
   reaction: (text: $base-darkest, background: $white, border: $base-darkest),
-  share: (text: $base-darkest, background: $white, border: $base-darkest)
+  share:
+    (
+      text: $base-darkest,
+      text--green: $secondary,
+      background: $white,
+      border: $base-darkest
+    )
 );

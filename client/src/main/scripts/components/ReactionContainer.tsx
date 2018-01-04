@@ -4,9 +4,12 @@ import { Routes } from "../java2ts/Routes";
 import { TakeReactionJson } from "../java2ts/TakeReactionJson";
 import { postRequest } from "../utils/databaseAPI";
 import { alertErr } from "../utils/functions";
+import { TakeDocument } from "./BlockEditor";
+import ShareContainer from "./ShareContainer";
 
 interface ReactionContainerProps {
   takeId: number;
+  takeDocument: TakeDocument;
 }
 
 interface ReactionContainerState {
@@ -131,12 +134,17 @@ class ReactionContainer extends React.Component<
       onReportPress: this.reportButtonPress
     };
     return (
-      <Reaction containerState={this.state} eventListeners={eventListeners} />
+      <Reaction
+        containerProps={this.props}
+        containerState={this.state}
+        eventListeners={eventListeners}
+      />
     );
   }
 }
 
 interface ReactionProps {
+  containerProps: ReactionContainerProps;
   containerState: ReactionContainerState;
   eventListeners: {
     onStarPress: () => any;
@@ -227,6 +235,12 @@ export class Reaction extends React.Component<ReactionProps, ReactionState> {
               <i className="fa fa-star-o" aria-hidden="true" />
             )}
           </button>
+          <ShareContainer
+            takeDocument={(Object as any).assign(
+              {},
+              props.containerProps.takeDocument
+            )}
+          />
           <button
             className="reaction__action reaction__action--report"
             onClick={this.toggleMenu}
