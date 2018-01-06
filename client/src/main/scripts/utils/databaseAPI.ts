@@ -26,7 +26,7 @@ import { ReactElement } from "react";
 function getAllFacts(
   callback: (
     error: string | Error | null,
-    documents: Foundation.FactLink[]
+    factLinks: Foundation.FactLink[]
   ) => any
 ): void {
   const headers = new Headers();
@@ -49,7 +49,7 @@ function getAllFacts(
       ) {
         return response.json();
       } else {
-        callback("Error retrieving Document Facts", []);
+        callback("Error retrieving Facts", []);
       }
     })
     .then(function(json: any) {
