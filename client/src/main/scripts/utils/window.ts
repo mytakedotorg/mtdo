@@ -207,3 +207,8 @@ window.onerror = function(
     JSON.stringify(error);
   alert(msg);
 };
+if (!String.prototype.startsWith) {
+  String.prototype.startsWith = function(search: string, pos = 0) {
+    return this.substr(!pos || pos < 0 ? 0 : +pos, search.length) === search;
+  };
+}

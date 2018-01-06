@@ -5,7 +5,8 @@ exports[`With hash URL 1`] = `
   className="foundation"
 >
   <TimelineView
-    hashUrl="#bill-of-rights&/samples/does-a-law-mean-what-it-says-or-what-it-meant&294&368&283&439&479.734375"
+    hashUrl="#/samples/does-a-law-mean-what-it-says-or-what-it-meant&294&368&283&439&479.734375"
+    path="/foundation/bill-of-rights"
   />
 </div>
 `;
@@ -29,7 +30,9 @@ exports[`Without hash URL 1`] = `
         Explore Facts in the timeline below.
       </p>
     </div>
-    <TimelineView />
+    <TimelineView
+      path="/foundation"
+    />
   </div>
 </div>
 `;

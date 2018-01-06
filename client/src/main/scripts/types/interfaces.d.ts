@@ -34,3 +34,7 @@ declare module "base64-arraybuffer" {
   }
   export default Base64ArrayBuffer;
 }
+
+declare interface String {
+  startsWith(search: string, pos?: number): boolean;
+}
