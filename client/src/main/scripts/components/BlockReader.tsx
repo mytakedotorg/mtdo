@@ -30,10 +30,9 @@ class BlockReader extends React.Component<BlockReaderProps, BlockReaderState> {
   ) => {
     const { title } = factLink.fact;
     window.location.href =
-      "/foundation" +
-      "#" +
+      "/foundation/" +
       slugify(title) +
-      "&(" +
+      "#(" +
       window.location.pathname +
       ")&" +
       highlightedRange[0] +
