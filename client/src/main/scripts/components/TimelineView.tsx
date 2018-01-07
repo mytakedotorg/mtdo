@@ -10,7 +10,7 @@ import { Foundation } from "../java2ts/Foundation";
 import { Routes } from "../java2ts/Routes";
 import { alertErr, slugify } from "../utils/functions";
 
-interface HashValues {
+interface URLValues {
   factTitleSlug: string;
   articleUser?: string;
   articleTitle?: string;
@@ -32,7 +32,7 @@ export interface TimelineViewState {
   loading: boolean;
   selectedOption: SelectionOptions;
   timelineItems: TimelineItemData[];
-  hashValues: HashValues | null;
+  urlValues: URLValues | null;
   URLIsValid: boolean;
 }
 
@@ -45,7 +45,7 @@ export default class TimelineView extends React.Component<
   constructor(props: TimelineViewProps) {
     super(props);
 
-    const hashValues = this.parseURL(props.path, props.hashUrl);
+    const urlValues = this.parseURL(props.path, props.hashUrl);
 
     this.updatingHash = false;
 
@@ -54,8 +54,8 @@ export default class TimelineView extends React.Component<
       loading: true,
       selectedOption: "Debates",
       timelineItems: [],
-      hashValues: hashValues,
-      URLIsValid: hashValues === null ? true : false
+      urlValues: urlValues,
+      URLIsValid: urlValues === null ? true : false
     };
   }
   initializeTimeline = (
@@ -77,8 +77,8 @@ export default class TimelineView extends React.Component<
         if (!URLIsValid) {
           // Try to match the fact title from the hash with a valid title from the server
           if (
-            this.state.hashValues &&
-            this.state.hashValues.factTitleSlug === slugify(factlink.fact.title)
+            this.state.urlValues &&
+            this.state.urlValues.factTitleSlug === slugify(factlink.fact.title)
           ) {
             currentFactLink = factlink;
             URLIsValid = true;
@@ -135,7 +135,7 @@ export default class TimelineView extends React.Component<
         const stateObject: TimelineViewState = {
           ...this.state,
           factLink: factLink,
-          hashValues: {
+          urlValues: {
             factTitleSlug: factTitleSlug
           }
         };
@@ -148,7 +148,7 @@ export default class TimelineView extends React.Component<
         }
         this.setState({
           factLink: factLink,
-          hashValues: {
+          urlValues: {
             factTitleSlug: factTitleSlug
           }
         });
@@ -183,12 +183,12 @@ export default class TimelineView extends React.Component<
             "&" + viewRange[0].toString() + "&" + viewRange[1].toString();
         }
 
-        const oldHashValues = this.state.hashValues;
+        const oldURLValues = this.state.urlValues;
 
-        if (oldHashValues) {
+        if (oldURLValues) {
           this.setState({
-            hashValues: {
-              ...oldHashValues,
+            urlValues: {
+              ...oldURLValues,
               highlightedRange: highlightedRange,
               viewRange: viewRange
             }
@@ -227,13 +227,13 @@ export default class TimelineView extends React.Component<
     viewRange: [number, number]
   ): void => {
     let endOfUrl: string;
-    if (this.state.hashValues) {
+    if (this.state.urlValues) {
       endOfUrl =
         "&" +
         "/" +
-        this.state.hashValues.articleUser +
+        this.state.urlValues.articleUser +
         "/" +
-        this.state.hashValues.articleTitle;
+        this.state.urlValues.articleTitle;
     } else {
       endOfUrl = "";
     }
@@ -256,13 +256,13 @@ export default class TimelineView extends React.Component<
     range: [number, number]
   ): void => {
     let endOfUrl: string;
-    if (this.state.hashValues) {
+    if (this.state.urlValues) {
       endOfUrl =
         "&" +
         "/" +
-        this.state.hashValues.articleUser +
+        this.state.urlValues.articleUser +
         "/" +
-        this.state.hashValues.articleTitle;
+        this.state.urlValues.articleTitle;
     } else {
       endOfUrl = "";
     }
@@ -276,7 +276,7 @@ export default class TimelineView extends React.Component<
       range[1] +
       endOfUrl;
   };
-  parseURL = (path: string, hash?: string): HashValues | null => {
+  parseURL = (path: string, hash?: string): URLValues | null => {
     const pathArr = path.substring(1).split("/");
     if (pathArr.length > 1) {
       if (Routes.FOUNDATION.indexOf(pathArr[0]) !== -1) {
@@ -394,7 +394,7 @@ export class TimelineViewBranch extends React.Component<
     super(props);
 
     let isInverted;
-    if (props.containerState.hashValues) {
+    if (props.containerState.urlValues) {
       isInverted = true;
     } else {
       isInverted = false;
@@ -410,20 +410,20 @@ export class TimelineViewBranch extends React.Component<
       let ranges;
       let offset;
       if (
-        props.containerState.hashValues &&
-        props.containerState.hashValues.highlightedRange
+        props.containerState.urlValues &&
+        props.containerState.urlValues.highlightedRange
       ) {
-        if (props.containerState.hashValues.viewRange) {
+        if (props.containerState.urlValues.viewRange) {
           ranges = {
-            highlightedRange: props.containerState.hashValues.highlightedRange,
-            viewRange: props.containerState.hashValues.viewRange
+            highlightedRange: props.containerState.urlValues.highlightedRange,
+            viewRange: props.containerState.urlValues.viewRange
           };
-          if (props.containerState.hashValues.offset) {
-            offset = props.containerState.hashValues.offset;
+          if (props.containerState.urlValues.offset) {
+            offset = props.containerState.urlValues.offset;
           }
         } else {
           ranges = {
-            highlightedRange: props.containerState.hashValues.highlightedRange
+            highlightedRange: props.containerState.urlValues.highlightedRange
           };
         }
       }
