@@ -41,13 +41,13 @@ export default class TimelineView extends React.Component<
   TimelineViewState
 > {
   private factLinks: Foundation.FactLink[] = [];
-  private updatingHash: boolean;
+  private updatingURL: boolean;
   constructor(props: TimelineViewProps) {
     super(props);
 
     const urlValues = this.parseURL(props.path, props.hashUrl);
 
-    this.updatingHash = false;
+    this.updatingURL = false;
 
     this.state = {
       factLink: null,
@@ -157,13 +157,15 @@ export default class TimelineView extends React.Component<
   };
   handlePopState = (event: PopStateEvent) => {
     if (event.state) {
+      // Back button was pressed, set state to popped state
       this.setState({
         ...event.state
       });
-    } else if (this.updatingHash) {
-      // do nothing
-      this.updatingHash = false;
+    } else if (this.updatingURL) {
+      // Application is updating URL, state is ok, do nothing
+      this.updatingURL = false;
     } else {
+      // Back button was pressed to get here but no state was pushed, reinitialize state
       this.initializeTimeline(null, this.factLinks);
     }
   };
@@ -172,18 +174,34 @@ export default class TimelineView extends React.Component<
     viewRange?: [number, number]
   ) => {
     if (this.props.path.startsWith(Routes.FOUNDATION)) {
-      if (this.state.factLink) {
-        let newHash =
-          "!/" +
-          highlightedRange[0].toString() +
-          "&" +
-          highlightedRange[1].toString();
-        if (viewRange) {
-          newHash +=
-            "&" + viewRange[0].toString() + "&" + viewRange[1].toString();
-        }
+      const factLink = this.state.factLink;
+      if (factLink) {
+        const factTitleSlug = slugify(factLink.fact.title);
 
         const oldURLValues = this.state.urlValues;
+
+        const stateObject: TimelineViewState = {
+          ...this.state,
+          urlValues: {
+            ...oldURLValues,
+            factTitleSlug: factTitleSlug,
+            highlightedRange: highlightedRange,
+            viewRange: viewRange
+          }
+        };
+
+        let newURL =
+          Routes.FOUNDATION +
+          "/" +
+          factTitleSlug +
+          "/" +
+          highlightedRange[0].toString() +
+          "-" +
+          highlightedRange[1].toString();
+        if (viewRange) {
+          newURL +=
+            "/" + viewRange[0].toString() + "-" + viewRange[1].toString();
+        }
 
         if (oldURLValues) {
           this.setState({
@@ -194,8 +212,7 @@ export default class TimelineView extends React.Component<
             }
           });
 
-          this.updatingHash = true;
-          window.location.hash = newHash;
+          window.history.pushState(stateObject, "UnusedTitle", newURL);
         } else {
           const msg =
             "TimelineView: can't set a range when factLink is null (1)";
@@ -210,10 +227,41 @@ export default class TimelineView extends React.Component<
     }
   };
   handleRangeCleared = () => {
-    if (this.props.path.startsWith("/foundation")) {
-      if (this.state.factLink) {
-        this.updatingHash = true;
-        window.location.hash = "!/";
+    if (this.props.path.startsWith(Routes.FOUNDATION)) {
+      const factLink = this.state.factLink;
+      if (factLink) {
+        const factTitleSlug = slugify(factLink.fact.title);
+
+        const oldURLValues = this.state.urlValues;
+
+        const stateObject: TimelineViewState = {
+          ...this.state,
+          urlValues: {
+            ...oldURLValues,
+            factTitleSlug: factTitleSlug,
+            highlightedRange: undefined,
+            viewRange: undefined
+          }
+        };
+
+        let newURL = Routes.FOUNDATION + "/" + factTitleSlug;
+
+        if (oldURLValues) {
+          this.setState({
+            urlValues: {
+              ...oldURLValues,
+              highlightedRange: undefined,
+              viewRange: undefined
+            }
+          });
+
+          window.history.pushState(stateObject, "UnusedTitle", newURL);
+        } else {
+          const msg =
+            "TimelineView: can't set a range when factLink is null (1)";
+          alertErr(msg);
+          throw msg;
+        }
       } else {
         const msg = "TimelineView: can't clear a range when factLink is null";
         alertErr(msg);
@@ -286,44 +334,28 @@ export default class TimelineView extends React.Component<
         let highlightedRange: [number, number] | undefined;
         let viewRange: [number, number] | undefined;
         let offset;
-        if (hash) {
-          const hashArr = hash.substring(3).split("&");
-
-          if (hashArr[1]) {
-            if (
-              hashArr[1].charAt(0) === "(" &&
-              hashArr[1].charAt(hashArr[1].length - 1) === ")"
-            ) {
-              // Wrapped in parentheses, so username/article-title is present
-              articleUser = hashArr[1].split("/")[1];
-              articleTitle = hashArr[1].split("/")[2];
-              if (hashArr[2] && hashArr[3]) {
-                highlightedRange = [
-                  parseFloat(hashArr[2]),
-                  parseFloat(hashArr[3])
-                ];
-                if (hashArr[4] && hashArr[5]) {
-                  viewRange = [parseInt(hashArr[4]), parseInt(hashArr[5])];
-                  if (hashArr[6]) {
-                    offset = parseFloat(hashArr[6]);
-                  }
-                }
-              }
-            } else {
-              // No username/article-title to reference
-              if (hashArr[2]) {
-                highlightedRange = [
-                  parseFloat(hashArr[1]),
-                  parseFloat(hashArr[2])
-                ];
-                if (hashArr[3] && hashArr[4]) {
-                  viewRange = [parseInt(hashArr[3]), parseInt(hashArr[4])];
-                  if (hashArr[5]) {
-                    offset = parseFloat(hashArr[5]);
-                  }
-                }
-              }
+        if (pathArr[2] && pathArr[2].indexOf("-") !== -1) {
+          highlightedRange = [
+            parseFloat(pathArr[2].split("-")[0]),
+            parseFloat(pathArr[2].split("-")[1])
+          ];
+          if (pathArr[3] && pathArr[3].indexOf("-") !== -1) {
+            viewRange = [
+              parseInt(pathArr[3].split("-")[0]),
+              parseInt(pathArr[3].split("-")[1])
+            ];
+            if (pathArr[6]) {
+              offset = parseFloat(pathArr[6]);
             }
+          } else if (pathArr[3]) {
+            offset = parseFloat(pathArr[3]);
+          }
+        }
+        if (hash) {
+          const hashArr = hash.split("/");
+          if (hashArr[0] && hashArr[1]) {
+            articleUser = hashArr[0];
+            articleTitle = hashArr[1];
           }
         }
         return {
@@ -344,7 +376,10 @@ export default class TimelineView extends React.Component<
   };
   componentDidMount() {
     this.getTimelineItems();
-    window.onpopstate = this.handlePopState;
+    window.addEventListener("popstate", this.handlePopState);
+  }
+  componentWillUnmount() {
+    window.removeEventListener("popstate", this.handlePopState);
   }
   render() {
     const setFactHandlers: SetFactHandlers = this.props.setFactHandlers

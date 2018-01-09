@@ -32,18 +32,19 @@ class BlockReader extends React.Component<BlockReaderProps, BlockReaderState> {
     window.location.href =
       "/foundation/" +
       slugify(title) +
-      "#(" +
-      window.location.pathname +
-      ")&" +
+      "/" +
       highlightedRange[0] +
-      "&" +
+      "-" +
       highlightedRange[1] +
-      "&" +
+      "/" +
       viewRange[0] +
-      "&" +
+      "-" +
       viewRange[1] +
-      "&" +
-      offset;
+      "/" +
+      offset +
+      "#" +
+      window.location.pathname +
+      "/";
   };
   render() {
     const eventHandlers = {
