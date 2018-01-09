@@ -14,7 +14,8 @@ import {
   highlightText,
   drawDocument,
   drawCaption,
-  drawSpecs
+  drawSpecs,
+  slugify
 } from "../utils/functions";
 import {
   TakeDocument,
@@ -189,16 +190,22 @@ function postRequest(
     });
 }
 
+interface DocumentImageURI {
+  dataUri: string;
+  url: string;
+}
+
 interface VideoImageURIs {
-  youtube: string;
-  captions: string | null;
+  youtubeUri: string;
+  captionsUri: string | null;
+  url: string;
 }
 
 function drawFacts(
   takeDocument: TakeDocument,
   callback: (
     error: string | Error | null,
-    documentFacts: string[],
+    documentFacts: DocumentImageURI[],
     videoFacts: VideoImageURIs[]
   ) => void
 ): void {
@@ -224,7 +231,7 @@ function drawFacts(
     // Initialize callback counter
     let factCallbacks = 0;
 
-    let documentFacts: string[] = [];
+    let documentFacts: DocumentImageURI[] = [];
     let videoFacts: VideoImageURIs[] = [];
 
     // Fetch facts and increment callback counter when complete
@@ -266,12 +273,29 @@ function drawFacts(
                   blockInScope.viewRange
                 );
 
-                const url = drawDocument(
+                const dataUri = drawDocument(
                   [...highlightedNodes],
                   factContent.fact.title
                 );
 
-                documentFacts[index] = url;
+                const documentURL =
+                  Routes.FOUNDATION +
+                  "/" +
+                  slugify(factContent.fact.title) +
+                  "/" +
+                  blockInScope.highlightedRange[0] +
+                  "-" +
+                  blockInScope.highlightedRange[1] +
+                  "/" +
+                  blockInScope.viewRange[0] +
+                  "-" +
+                  blockInScope.viewRange[1] +
+                  "/";
+
+                documentFacts[index] = {
+                  dataUri: dataUri,
+                  url: documentURL
+                };
 
                 if (factCallbacks === factCount) {
                   callback(null, documentFacts, videoFacts);
@@ -346,14 +370,28 @@ function drawFacts(
 
                   const uri = drawCaption(highlightedText);
 
+                  const videoURL =
+                    Routes.FOUNDATION +
+                    "/" +
+                    slugify(factContent.fact.title) +
+                    "/" +
+                    blockInScope.range[0] +
+                    "-" +
+                    blockInScope.range[1];
+
                   videoFacts[index] = {
-                    youtube: factContent.youtubeId,
-                    captions: uri
+                    youtubeUri: factContent.youtubeId,
+                    captionsUri: uri,
+                    url: videoURL
                   };
                 } else {
+                  const videoURL =
+                    Routes.FOUNDATION + "/" + slugify(factContent.fact.title);
+
                   videoFacts[index] = {
-                    youtube: factContent.youtubeId,
-                    captions: null
+                    youtubeUri: factContent.youtubeId,
+                    captionsUri: null,
+                    url: videoURL
                   };
                 }
 
@@ -381,7 +419,7 @@ function sendEmail(takeDocument: TakeDocument, done: () => void): void {
     takeDocument,
     (
       error: string | Error | null,
-      documentFacts: string[],
+      documentFacts: DocumentImageURI[],
       videoFacts: VideoImageURIs[]
     ) => {
       if (error) {
@@ -460,14 +498,19 @@ function sendEmail(takeDocument: TakeDocument, done: () => void): void {
               break;
             case "document":
               try {
+                const documentImageURI = documentFacts[documentFactCount];
                 htmlStr +=
                   "<tr>" +
                   "<td align='center'>" +
+                  '<a href="' +
+                  documentImageURI.url +
+                  '">' +
                   '<img style="' +
                   imageStyles +
                   '" src="' +
-                  documentFacts[documentFactCount] +
+                  documentImageURI.dataUri +
                   '" />' +
+                  "</a>" +
                   "</td>" +
                   "</tr>";
                 documentFactCount++;
@@ -480,28 +523,40 @@ function sendEmail(takeDocument: TakeDocument, done: () => void): void {
               break;
             case "video":
               try {
-                htmlStr +=
-                  "<tr>" +
-                  "<td align='center'>" +
-                  '<img style="' +
-                  imageStyles +
-                  '" src="' +
-                  "https://img.youtube.com/vi/" +
-                  videoFacts[videoFactCount].youtube +
-                  '/0.jpg" />' +
-                  "</td>" +
-                  "</tr>";
+                const videoImageURI = videoFacts[videoFactCount];
 
                 htmlStr +=
                   "<tr>" +
                   "<td align='center'>" +
+                  '<a href="' +
+                  videoImageURI.url +
+                  '">' +
                   '<img style="' +
                   imageStyles +
                   '" src="' +
-                  videoFacts[videoFactCount].captions +
-                  '" />' +
+                  "https://img.youtube.com/vi/" +
+                  videoImageURI.youtubeUri +
+                  '/0.jpg" />' +
+                  "</a>" +
                   "</td>" +
                   "</tr>";
+
+                if (videoImageURI.captionsUri) {
+                  htmlStr +=
+                    "<tr>" +
+                    "<td align='center'>" +
+                    '<a href="' +
+                    videoImageURI.url +
+                    '">' +
+                    '<img style="' +
+                    imageStyles +
+                    '" src="' +
+                    videoImageURI.captionsUri +
+                    '" />' +
+                    "</a>" +
+                    "</td>" +
+                    "</tr>";
+                }
                 videoFactCount++;
               } catch (e) {
                 const errMsg =
