@@ -6,8 +6,11 @@
  */
 package java2ts;
 
+import com.jsoniter.any.Any;
+
 @jsweet.lang.Interface
 public class EmailSelf implements Json {
 	public String subject;
 	public String body;
+	public Any cidMap;
 }

@@ -194,12 +194,18 @@ function postRequest(
 interface DocumentImageURI {
   imageProps: ImageProps;
   url: string;
+  title: string;
+  alt: string;
+  cid: string;
 }
 
 interface VideoImageURIs {
   youtubeUri: string;
   imageProps: ImageProps | null;
   url: string;
+  title: string;
+  alt: string;
+  cid: string;
 }
 
 function drawFacts(
@@ -274,17 +280,15 @@ function drawFacts(
                   blockInScope.viewRange
                 );
 
-                const imageProps = drawDocument(
-                  [...highlightedNodes],
-                  factContent.fact.title
-                );
-                imageProps.title = factContent.fact.title;
-                imageProps.alt = factContent.fact.title;
+                const title = factContent.fact.title;
+                const titleSlug = slugify(title);
+
+                const imageProps = drawDocument([...highlightedNodes], title);
 
                 const documentURL =
                   Routes.FOUNDATION +
                   "/" +
-                  slugify(factContent.fact.title) +
+                  titleSlug +
                   "/" +
                   blockInScope.highlightedRange[0] +
                   "-" +
@@ -297,7 +301,10 @@ function drawFacts(
 
                 documentFacts[index] = {
                   imageProps: imageProps,
-                  url: documentURL
+                  url: documentURL,
+                  title: title,
+                  alt: title,
+                  cid: "doc" + index.toString()
                 };
 
                 if (factCallbacks === factCount) {
@@ -331,6 +338,8 @@ function drawFacts(
               } else {
                 factCallbacks++;
 
+                const title = factContent.fact.title;
+                const titleSlug = slugify(title);
                 if (
                   factContent.transcript &&
                   factContent.speakerMap &&
@@ -372,13 +381,11 @@ function drawFacts(
                   highlightedText += '"';
 
                   const imageProps = drawCaption(highlightedText);
-                  imageProps.title = factContent.fact.title;
-                  imageProps.alt = factContent.fact.title;
 
                   const videoURL =
                     Routes.FOUNDATION +
                     "/" +
-                    slugify(factContent.fact.title) +
+                    titleSlug +
                     "/" +
                     blockInScope.range[0] +
                     "-" +
@@ -387,7 +394,10 @@ function drawFacts(
                   videoFacts[index] = {
                     youtubeUri: factContent.youtubeId,
                     imageProps: imageProps,
-                    url: videoURL
+                    url: videoURL,
+                    title: title,
+                    alt: title,
+                    cid: "vid" + index.toString()
                   };
                 } else {
                   const videoURL =
@@ -396,7 +406,10 @@ function drawFacts(
                   videoFacts[index] = {
                     youtubeUri: factContent.youtubeId,
                     imageProps: null,
-                    url: videoURL
+                    url: videoURL,
+                    title: title,
+                    alt: title,
+                    cid: "vid" + index.toString()
                   };
                 }
 
@@ -417,6 +430,10 @@ function drawFacts(
   } else {
     callback(null, [], []);
   }
+}
+
+interface cidMap {
+  [key: string]: string;
 }
 
 function sendEmail(takeDocument: TakeDocument, done: () => void): void {
@@ -440,6 +457,9 @@ function sendEmail(takeDocument: TakeDocument, done: () => void): void {
         // Initialize counters
         let documentFactCount = 0;
         let videoFactCount = 0;
+
+        // Intialize map of cids to URLs
+        let cidUriMap: cidMap = {};
 
         // Initialize HTML string
         let htmlStr =
@@ -514,21 +534,23 @@ function sendEmail(takeDocument: TakeDocument, done: () => void): void {
                   '">' +
                   '<img style="' +
                   imageStyles +
-                  '" src="' +
-                  documentImageURI.imageProps.src +
+                  '" src="cid:' +
+                  documentImageURI.cid +
                   '" width="' +
                   documentImageURI.imageProps.width +
                   '" height="' +
                   documentImageURI.imageProps.height +
                   '" alt="' +
-                  documentImageURI.imageProps.alt +
+                  documentImageURI.alt +
                   '" title="' +
-                  documentImageURI.imageProps.title +
+                  documentImageURI.title +
                   '" />' +
                   "</a>" +
                   "</td>" +
                   "</tr>";
                 documentFactCount++;
+                cidUriMap[documentImageURI.cid] =
+                  documentImageURI.imageProps.dataUri;
               } catch (e) {
                 const errMsg =
                   "databaseAPI: array index out of bounds - number of documentFacts doesn't match number of document blocks";
@@ -567,20 +589,22 @@ function sendEmail(takeDocument: TakeDocument, done: () => void): void {
                     '">' +
                     '<img style="' +
                     imageStyles +
-                    '" src="' +
-                    videoImageURI.imageProps.src +
+                    '" src="cid:' +
+                    videoImageURI.cid +
                     '" width="' +
                     videoImageURI.imageProps.width +
                     '" height="' +
                     videoImageURI.imageProps.height +
                     '" alt="' +
-                    videoImageURI.imageProps.alt +
+                    videoImageURI.alt +
                     '" title="' +
-                    videoImageURI.imageProps.title +
+                    videoImageURI.title +
                     '" />' +
                     "</a>" +
                     "</td>" +
                     "</tr>";
+                  cidUriMap[videoImageURI.cid] =
+                    videoImageURI.imageProps.dataUri;
                 }
                 videoFactCount++;
               } catch (e) {
@@ -601,7 +625,8 @@ function sendEmail(takeDocument: TakeDocument, done: () => void): void {
 
         const body: EmailSelf = {
           subject: takeDocument.title,
-          body: htmlStr
+          body: htmlStr,
+          cidMap: cidUriMap
         };
 
         postRequest(Routes.API_EMAIL_SELF, body, function() {

@@ -8,8 +8,13 @@ package controllers;
 
 import static db.Tables.ACCOUNT;
 
+import java.util.Map;
+
+import javax.activation.DataSource;
+
 import auth.AuthUser;
 import com.google.inject.Binder;
+import com.jsoniter.any.Any;
 import com.typesafe.config.Config;
 import common.EmailSender;
 import java2ts.EmailSelf;
@@ -31,10 +36,16 @@ public class TakeEmail implements Jooby.Module {
 						.fetchOne(ACCOUNT.EMAIL);
 			}
 			EmailSelf emailSelf = req.body(EmailSelf.class);
+			Map<String, Any> map = emailSelf.cidMap.asMap();
+			
 			req.require(EmailSender.class).send(htmlEmail -> {
 				htmlEmail.addTo(email);
 				htmlEmail.setSubject(emailSelf.subject);
 				htmlEmail.setHtmlMsg(emailSelf.body);
+				for (String key : map.keySet()) {
+					htmlEmail.embed((DataSource) map.get(key), key.toString());
+//					htmlEmail.embed((DataSource) map.get(key), key.toString(), key.toString());
+				}
 			});
 			return Status.OK;
 		});

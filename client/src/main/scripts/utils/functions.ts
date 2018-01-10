@@ -1030,11 +1030,9 @@ function drawDocumentText(
 }
 
 export interface ImageProps {
-  src: string;
+  dataUri: string;
   width: string;
   height: string;
-  title?: string;
-  alt?: string;
 }
 
 function drawDocument(nodes: FoundationNode[], title: string): ImageProps {
@@ -1064,7 +1062,7 @@ function drawDocument(nodes: FoundationNode[], title: string): ImageProps {
     drawDocumentText(ctx, [...nodes], title);
 
     return {
-      src: canvas.toDataURL("image/jpeg", 0.5),
+      dataUri: canvas.toDataURL("image/png"),
       width: drawSpecs.width.toString(),
       height: height.toString()
     };
@@ -1105,7 +1103,7 @@ function drawCaption(text: string): ImageProps {
     drawText(ctx, text, textSize);
 
     return {
-      src: canvas.toDataURL("image/jpeg", 0.5),
+      dataUri: canvas.toDataURL("image/png"),
       width: drawSpecs.width.toString(),
       height: height.toString()
     };
