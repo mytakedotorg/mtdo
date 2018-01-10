@@ -1033,6 +1033,8 @@ export interface ImageProps {
   src: string;
   width: string;
   height: string;
+  title?: string;
+  alt?: string;
 }
 
 function drawDocument(nodes: FoundationNode[], title: string): ImageProps {

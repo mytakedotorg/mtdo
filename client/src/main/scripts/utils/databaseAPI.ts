@@ -278,6 +278,8 @@ function drawFacts(
                   [...highlightedNodes],
                   factContent.fact.title
                 );
+                imageProps.title = factContent.fact.title;
+                imageProps.alt = factContent.fact.title;
 
                 const documentURL =
                   Routes.FOUNDATION +
@@ -370,6 +372,8 @@ function drawFacts(
                   highlightedText += '"';
 
                   const imageProps = drawCaption(highlightedText);
+                  imageProps.title = factContent.fact.title;
+                  imageProps.alt = factContent.fact.title;
 
                   const videoURL =
                     Routes.FOUNDATION +
@@ -515,6 +519,10 @@ function sendEmail(takeDocument: TakeDocument, done: () => void): void {
                   documentImageURI.imageProps.width +
                   '" height="' +
                   documentImageURI.imageProps.height +
+                  '" alt="' +
+                  documentImageURI.imageProps.alt +
+                  '" title="' +
+                  documentImageURI.imageProps.title +
                   '" />' +
                   "</a>" +
                   "</td>" +
@@ -562,6 +570,10 @@ function sendEmail(takeDocument: TakeDocument, done: () => void): void {
                     videoImageURI.imageProps.width +
                     '" height="' +
                     videoImageURI.imageProps.height +
+                    '" alt="' +
+                    videoImageURI.imageProps.alt +
+                    '" title="' +
+                    videoImageURI.imageProps.title +
                     '" />' +
                     "</a>" +
                     "</td>" +
