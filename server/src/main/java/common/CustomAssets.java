@@ -78,17 +78,41 @@ public class CustomAssets implements Jooby.Module {
 		});
 	}
 
+	private static final String SLASH_SHA_384 = "/sha384-";
+
 	private static String styles(BiFunction<String, String, String> urlMapper, AssetCompiler compiler, String fileset) {
 		return compiler.styles(fileset).stream()
-				.map(url -> url.startsWith("/https://") ? url.substring(1) : urlMapper.apply("styles", url))
-				.map(script -> "<link rel=\"stylesheet\" href=\"" + script + "\">")
+				.map(url -> url.startsWith(SLASH_SHA_384) ? url : urlMapper.apply("styles", url))
+				.map(CustomAssets::subresourceIntegrityStyle)
 				.collect(Collectors.joining("\n"));
 	}
 
 	private static String scripts(BiFunction<String, String, String> urlMapper, AssetCompiler compiler, String fileset) {
 		return compiler.scripts(fileset).stream()
-				.map(url -> url.startsWith("/https://") ? url.substring(1) : urlMapper.apply("scripts", url))
-				.map(script -> "<script type=\"text/javascript\" src=\"" + script + "\"></script>")
+				.map(url -> url.startsWith(SLASH_SHA_384) ? url : urlMapper.apply("scripts", url))
+				.map(CustomAssets::subresourceIntegrityScript)
 				.collect(Collectors.joining("\n"));
+	}
+
+	private static String subresourceIntegrityStyle(String input) {
+		if (input.startsWith(SLASH_SHA_384)) {
+			int barIdx = input.indexOf('|');
+			String integrity = input.substring(1, barIdx); // 1=remove slash
+			String url = input.substring(barIdx + 1);
+			return "<link rel=\"stylesheet\" href=\"" + url + "\" integrity=\"" + integrity + "\" crossorigin=\"anonymous\">";
+		} else {
+			return "<link rel=\"stylesheet\" href=\"" + input + "\">";
+		}
+	}
+
+	private static String subresourceIntegrityScript(String input) {
+		if (input.startsWith(SLASH_SHA_384)) {
+			int barIdx = input.indexOf('|');
+			String integrity = input.substring(1, barIdx); // 1=remove slash
+			String url = input.substring(barIdx + 1);
+			return "<script type=\"text/javascript\" src=\"" + url + "\" integrity=\"" + integrity + "\" crossorigin=\"anonymous\"></script>";
+		} else {
+			return "<script type=\"text/javascript\" src=\"" + input + "\"></script>";
+		}
 	}
 }
