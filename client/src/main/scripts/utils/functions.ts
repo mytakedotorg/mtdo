@@ -1055,7 +1055,7 @@ function drawDocument(nodes: FoundationNode[], title: string): string {
     // Draw document again to draw the text
     drawDocumentText(ctx, [...nodes], title);
 
-    return canvas.toDataURL("image/png");
+    return canvas.toDataURL("image/jpeg", 0.5);
   } else {
     const errStr = "Error getting canvas context";
     alertErr(errStr);
@@ -1092,7 +1092,7 @@ function drawCaption(text: string): string {
     ctx.font = "Bold " + textSize.toString() + "px Merriweather";
     drawText(ctx, text, textSize);
 
-    return canvas.toDataURL("image/png");
+    return canvas.toDataURL("image/jpeg", 0.5);
   } else {
     const errStr = "Error getting canvas context";
     alertErr(errStr);
