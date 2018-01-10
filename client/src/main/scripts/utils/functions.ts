@@ -1062,7 +1062,7 @@ function drawDocument(nodes: FoundationNode[], title: string): ImageProps {
     drawDocumentText(ctx, [...nodes], title);
 
     return {
-      src: canvas.toDataURL("image/jpeg", 0.5),
+      src: "https://mytake.org/" + canvas.toDataURL("image/jpeg", 0.5),
       width: drawSpecs.width.toString(),
       height: height.toString()
     };
@@ -1103,7 +1103,7 @@ function drawCaption(text: string): ImageProps {
     drawText(ctx, text, textSize);
 
     return {
-      src: canvas.toDataURL("image/jpeg", 0.5),
+      src: "https://mytake.org/" + canvas.toDataURL("image/jpeg", 0.5),
       width: drawSpecs.width.toString(),
       height: height.toString()
     };
