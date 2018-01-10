@@ -12,6 +12,7 @@ import {
   getCaptionNodeArray,
   getCharRangeFromVideoRange,
   highlightText,
+  ImageProps,
   drawDocument,
   drawCaption,
   drawSpecs,
@@ -191,13 +192,13 @@ function postRequest(
 }
 
 interface DocumentImageURI {
-  dataUri: string;
+  imageProps: ImageProps;
   url: string;
 }
 
 interface VideoImageURIs {
   youtubeUri: string;
-  captionsUri: string | null;
+  imageProps: ImageProps | null;
   url: string;
 }
 
@@ -273,7 +274,7 @@ function drawFacts(
                   blockInScope.viewRange
                 );
 
-                const dataUri = drawDocument(
+                const imageProps = drawDocument(
                   [...highlightedNodes],
                   factContent.fact.title
                 );
@@ -293,7 +294,7 @@ function drawFacts(
                   "/";
 
                 documentFacts[index] = {
-                  dataUri: dataUri,
+                  imageProps: imageProps,
                   url: documentURL
                 };
 
@@ -368,7 +369,7 @@ function drawFacts(
                   highlightedText = highlightedText.trimRight();
                   highlightedText += '"';
 
-                  const uri = drawCaption(highlightedText);
+                  const imageProps = drawCaption(highlightedText);
 
                   const videoURL =
                     Routes.FOUNDATION +
@@ -381,7 +382,7 @@ function drawFacts(
 
                   videoFacts[index] = {
                     youtubeUri: factContent.youtubeId,
-                    captionsUri: uri,
+                    imageProps: imageProps,
                     url: videoURL
                   };
                 } else {
@@ -390,7 +391,7 @@ function drawFacts(
 
                   videoFacts[index] = {
                     youtubeUri: factContent.youtubeId,
-                    captionsUri: null,
+                    imageProps: null,
                     url: videoURL
                   };
                 }
@@ -464,6 +465,7 @@ function sendEmail(takeDocument: TakeDocument, done: () => void): void {
           "</tr>";
 
         const imageStyles =
+          "display:block;" +
           "width:" +
           drawSpecs.width +
           "px;" +
@@ -508,7 +510,11 @@ function sendEmail(takeDocument: TakeDocument, done: () => void): void {
                   '<img style="' +
                   imageStyles +
                   '" src="' +
-                  documentImageURI.dataUri +
+                  documentImageURI.imageProps.src +
+                  '" width="' +
+                  documentImageURI.imageProps.width +
+                  '" height="' +
+                  documentImageURI.imageProps.height +
                   '" />' +
                   "</a>" +
                   "</td>" +
@@ -541,7 +547,7 @@ function sendEmail(takeDocument: TakeDocument, done: () => void): void {
                   "</td>" +
                   "</tr>";
 
-                if (videoImageURI.captionsUri) {
+                if (videoImageURI.imageProps) {
                   htmlStr +=
                     "<tr>" +
                     "<td align='center'>" +
@@ -551,7 +557,11 @@ function sendEmail(takeDocument: TakeDocument, done: () => void): void {
                     '<img style="' +
                     imageStyles +
                     '" src="' +
-                    videoImageURI.captionsUri +
+                    videoImageURI.imageProps.src +
+                    '" width="' +
+                    videoImageURI.imageProps.width +
+                    '" height="' +
+                    videoImageURI.imageProps.height +
                     '" />' +
                     "</a>" +
                     "</td>" +

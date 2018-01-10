@@ -1029,7 +1029,13 @@ function drawDocumentText(
   return y;
 }
 
-function drawDocument(nodes: FoundationNode[], title: string): string {
+export interface ImageProps {
+  src: string;
+  width: string;
+  height: string;
+}
+
+function drawDocument(nodes: FoundationNode[], title: string): ImageProps {
   const canvas = document.createElement("canvas");
   const ctx = canvas.getContext("2d");
 
@@ -1055,7 +1061,11 @@ function drawDocument(nodes: FoundationNode[], title: string): string {
     // Draw document again to draw the text
     drawDocumentText(ctx, [...nodes], title);
 
-    return canvas.toDataURL("image/jpeg", 0.5);
+    return {
+      src: canvas.toDataURL("image/jpeg", 0.5),
+      width: drawSpecs.width.toString(),
+      height: height.toString()
+    };
   } else {
     const errStr = "Error getting canvas context";
     alertErr(errStr);
@@ -1063,7 +1073,7 @@ function drawDocument(nodes: FoundationNode[], title: string): string {
   }
 }
 
-function drawCaption(text: string): string {
+function drawCaption(text: string): ImageProps {
   const canvas = document.createElement("canvas");
   const ctx = canvas.getContext("2d");
 
@@ -1092,7 +1102,11 @@ function drawCaption(text: string): string {
     ctx.font = "Bold " + textSize.toString() + "px Merriweather";
     drawText(ctx, text, textSize);
 
-    return canvas.toDataURL("image/jpeg", 0.5);
+    return {
+      src: canvas.toDataURL("image/jpeg", 0.5),
+      width: drawSpecs.width.toString(),
+      height: height.toString()
+    };
   } else {
     const errStr = "Error getting canvas context";
     alertErr(errStr);
