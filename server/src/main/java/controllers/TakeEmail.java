@@ -51,7 +51,9 @@ public class TakeEmail implements Jooby.Module {
 					byte[] valueBinary = Base64.getDecoder().decode(valueBase64);
 					ByteArrayDataSource data = new ByteArrayDataSource(valueBinary, "image/png");
 					String cid = htmlEmail.embed(data, key.toString());
-					emailBody = emailBody.replace("<img src=\"cid:" + key + "\"", "<img src=\"cid:" + cid + "\"");
+					String nextEmailBody = emailBody.replace("<img src=\"cid:" + key, "<img src=\"cid:" + cid);
+					Preconditions.checkArgument(!nextEmailBody.equals(emailBody), "Error %s", key);
+					emailBody = nextEmailBody;
 				}
 				htmlEmail.setHtmlMsg(emailBody);
 			});

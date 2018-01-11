@@ -532,9 +532,7 @@ function sendEmail(takeDocument: TakeDocument, done: () => void): void {
                   "https://mytake.org/" +
                   documentImageURI.url +
                   '">' +
-                  '<img style="' +
-                  imageStyles +
-                  '" src="cid:' +
+                  '<img src="cid:' +
                   documentImageURI.cid +
                   '" width="' +
                   documentImageURI.imageProps.width +
@@ -544,6 +542,8 @@ function sendEmail(takeDocument: TakeDocument, done: () => void): void {
                   documentImageURI.alt +
                   '" title="' +
                   documentImageURI.title +
+                  '" style="' +
+                  imageStyles +
                   '" />' +
                   "</a>" +
                   "</td>" +
@@ -587,9 +587,7 @@ function sendEmail(takeDocument: TakeDocument, done: () => void): void {
                     "https://mytake.org/" +
                     videoImageURI.url +
                     '">' +
-                    '<img style="' +
-                    imageStyles +
-                    '" src="cid:' +
+                    '<img src="cid:' +
                     videoImageURI.cid +
                     '" width="' +
                     videoImageURI.imageProps.width +
@@ -599,6 +597,8 @@ function sendEmail(takeDocument: TakeDocument, done: () => void): void {
                     videoImageURI.alt +
                     '" title="' +
                     videoImageURI.title +
+                    '" style="' +
+                    imageStyles +
                     '" />' +
                     "</a>" +
                     "</td>" +
