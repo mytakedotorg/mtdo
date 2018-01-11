@@ -148,4 +148,9 @@ public class AuthUser {
 		uiCookie.maxAge((int) TimeUnit.DAYS.toSeconds(LOGIN_DAYS));
 		rsp.cookie(uiCookie);
 	}
+
+	static void clearCookies(Response rsp) {
+		rsp.clearCookie(AuthUser.LOGIN_COOKIE);
+		rsp.clearCookie(AuthUser.LOGIN_UI_COOKIE);
+	}
 }
