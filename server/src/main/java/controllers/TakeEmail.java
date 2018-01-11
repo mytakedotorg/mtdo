@@ -9,7 +9,6 @@ package controllers;
 import static db.Tables.ACCOUNT;
 
 import auth.AuthUser;
-
 import com.google.common.base.Preconditions;
 import com.google.inject.Binder;
 import com.jsoniter.any.Any;
@@ -42,17 +41,19 @@ public class TakeEmail implements Jooby.Module {
 			Map<String, Any> map = emailSelf.cidMap.asMap();
 
 			req.require(EmailSender.class).send(htmlEmail -> {
+				String emailBody = emailSelf.body;
 				htmlEmail.addTo(email);
 				htmlEmail.setSubject(emailSelf.subject);
-				htmlEmail.setHtmlMsg(emailSelf.body);
 				for (String key : map.keySet()) {
 					String valueBase64WithHeader = map.get(key).toString();
 					Preconditions.checkArgument(valueBase64WithHeader.startsWith(DATA_PREFIX));
 					String valueBase64 = valueBase64WithHeader.substring(DATA_PREFIX.length());
 					byte[] valueBinary = Base64.getDecoder().decode(valueBase64);
 					ByteArrayDataSource data = new ByteArrayDataSource(valueBinary, "image/png");
-					htmlEmail.embed(data, key.toString());
+					String cid = htmlEmail.embed(data, key.toString());
+					emailBody = emailBody.replace("<img src=\"cid:" + key + "\"", "<img src=\"cid:" + cid + "\"");
 				}
+				htmlEmail.setHtmlMsg(emailBody);
 			});
 			return Status.OK;
 		});
