@@ -15,19 +15,25 @@ import static db.Tables.ACCOUNT;
 import common.EmailAssert;
 import common.JoobyDevRule;
 import common.PageAssert;
+import common.UrlEncodedPath;
 import db.tables.pojos.Account;
 import forms.meta.MetaFormSubmit;
+import io.restassured.RestAssured;
+import java.util.Collections;
 import javax.mail.MessagingException;
 import org.jooby.Status;
 import org.junit.ClassRule;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.runners.MethodSorters;
 
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class CreateAccountTest {
 	@ClassRule
-	public static JoobyDevRule dev = JoobyDevRule.empty();
+	public static JoobyDevRule dev = JoobyDevRule.initialDataNoMods();
 
 	@Test
-	public void createAccount() throws MessagingException {
+	public void _01_createAccount() throws MessagingException {
 		// post the account form
 		PageAssert.assertThat(MetaFormSubmit.create(CreateAccountForm.class)
 				.set(CREATE_USERNAME, "alexander")
@@ -55,6 +61,40 @@ public class CreateAccountTest {
 				// and the right message
 				.bodyAssert(body -> {
 					body.contains("Thanks for confirming your account, alexander.");
+				});
+	}
+
+	@Test
+	public void _02_doubleConfirmLoggedInSameUser() throws MessagingException {
+		EmailAssert confirmationEmail = dev.waitForEmail();
+		String link = confirmationEmail.extractLink("Visit the ");
+
+		PageAssert.assertThat(dev.givenUser("alexander").get(link), Status.OK)
+				// no change to cookies
+				.responseAssert(response -> {
+					response.cookies(Collections.emptyMap());
+				})
+				// and the right message 
+				.bodyAssert(body -> {
+					body.contains("account has already been confirmed, and you are logged in.");
+				});
+	}
+
+	@Test
+	public void _03_doubleConfirmNotLoggedIn() throws MessagingException {
+		EmailAssert confirmationEmail = dev.waitForEmail();
+		String link = confirmationEmail.extractLink("Visit the ");
+
+		PageAssert.assertThat(RestAssured.given()
+				.redirects().follow(false)
+				.get(link), Status.FOUND)
+				// it should remove the login cookie
+				.responseAssert(response -> {
+					String redirect = UrlEncodedPath.path("/login")
+							.param(AuthModule.LOGIN_EMAIL, "alexander@hamilton.com")
+							.param(AuthModule.LOGIN_REASON, "Your account is already confirmed, you can login.")
+							.build();
+					response.header("Location", redirect);
 				});
 	}
 }

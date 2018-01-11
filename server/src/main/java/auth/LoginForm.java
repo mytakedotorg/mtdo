@@ -95,7 +95,7 @@ public class LoginForm extends MetaFormDef.HandleValid {
 			LoginlinkRecord link = dsl.selectFrom(LOGINLINK)
 					.where(LOGINLINK.CODE.eq(code))
 					.fetchOne();
-			MetaFormValidation validation = EmailConfirmationForm.validate(LoginForm.class, req, link,
+			MetaFormValidation validation = EmailConfirmationForm.nullIfValid(LoginForm.class, req, link,
 					LoginlinkRecord::getExpiresAt, LoginlinkRecord::getRequestorIp);
 			if (validation != null) {
 				// show a "try again" login form

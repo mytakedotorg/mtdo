@@ -30,6 +30,10 @@ import forms.meta.MetaField;
 import forms.meta.MetaFormDef;
 import forms.meta.MetaFormValidation;
 import forms.meta.Validator;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
+import java.util.Optional;
 import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
@@ -88,9 +92,11 @@ public class CreateAccountForm extends MetaFormDef.HandleValid {
 				.where(ACCOUNT.EMAIL.eq(email))
 				.fetchOne(ACCOUNT.ID);
 		if (accountId != null) {
-			validation.errorForField(CREATE_EMAIL, "This email is already used by another account");
+			validation.errorForField(CREATE_EMAIL, msg_EMAIL_ALREADY_USED);
 		}
 	}
+
+	private static final String msg_EMAIL_ALREADY_USED = "This email is already used by another account";
 
 	@Override
 	public boolean handleSuccessful(MetaFormValidation validation, Request req, Response rsp) throws Throwable {
@@ -133,11 +139,12 @@ public class CreateAccountForm extends MetaFormDef.HandleValid {
 		return false;
 	}
 
-	private static String getNullToEmpty(Request req, MetaField<String> field) {
-		return req.param(field.name()).value("");
+	private static String getNullToEmpty(Request req, MetaField<String> field) throws UnsupportedEncodingException {
+		return URLDecoder.decode(req.param(field.name()).value(""), StandardCharsets.UTF_8.name());
 	}
 
 	public static void confirm(String code, Request req, Response rsp) throws Throwable {
+		Optional<AuthUser> userOpt = AuthUser.authOpt(req);
 		// might be a race condition here, depending on issue #97
 		//    - fetch code
 		//    - create account
@@ -151,13 +158,34 @@ public class CreateAccountForm extends MetaFormDef.HandleValid {
 			ConfirmaccountlinkRecord link = dsl.selectFrom(CONFIRMACCOUNTLINK)
 					.where(CONFIRMACCOUNTLINK.CODE.eq(code))
 					.fetchOne();
-			MetaFormValidation validation = EmailConfirmationForm.validate(CreateAccountForm.class, req, link,
+			MetaFormValidation createAccountValidation = EmailConfirmationForm.nullIfValid(CreateAccountForm.class, req, link,
 					ConfirmaccountlinkRecord::getExpiresAt, ConfirmaccountlinkRecord::getRequestorIp);
-			if (validation != null) {
+			if (createAccountValidation != null) {
 				String username = getNullToEmpty(req, CREATE_USERNAME);
-				String email = getNullToEmpty(req, CREATE_EMAIL);
-				validateUsernameEmail(username, email, dsl, validation);
-				rsp.send(views.Auth.createAccountUnknown.template(validation.markup(Routes.LOGIN)));
+				if (userOpt.isPresent() && userOpt.get().username().equals(username)) {
+					rsp.send(views.Auth.alreadyConfirmed.template(username));
+				} else {
+					if (userOpt.isPresent() && !userOpt.get().username().equals(username)) {
+						// clear the user's existing cookies if they're clicking a "confirm" link for someone else
+						AuthUser.clearCookies(rsp);
+					}
+					String email = getNullToEmpty(req, CREATE_EMAIL);
+					validateUsernameEmail(username, email, dsl, createAccountValidation);
+					boolean emailAlreadyUsed = msg_EMAIL_ALREADY_USED.equals(
+							createAccountValidation.errorForField(AuthModule.CREATE_EMAIL.name()));
+					if (emailAlreadyUsed) {
+						// since the email is already used, they probably just need to login
+						UrlEncodedPath path = UrlEncodedPath.path(Routes.LOGIN)
+								.param(AuthModule.LOGIN_EMAIL, email)
+								.param(AuthModule.LOGIN_REASON, "Your account is already confirmed, you can login.")
+								.paramIfPresent(AuthModule.LOGIN_REASON, req)
+								.paramIfPresent(AuthModule.REDIRECT, req);
+						rsp.redirect(path.build());
+					} else {
+						// we'll let them try to create their account again
+						rsp.send(views.Auth.createAccountUnknown.template(createAccountValidation.markup(Routes.LOGIN)));
+					}
+				}
 			} else {
 				AccountRecord account = dsl.newRecord(ACCOUNT);
 				account.setUsername(link.getUsername());

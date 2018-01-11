@@ -28,8 +28,9 @@ class EmailConfirmationForm {
 		return url;
 	}
 
+	/** Returns null if there's a validation error. */
 	@Nullable
-	static <T> MetaFormValidation validate(Class<? extends MetaFormDef> formClazz, Request req, T link, Function<T, Timestamp> expiresAt, Function<T, String> requestorIp) {
+	static <T> MetaFormValidation nullIfValid(Class<? extends MetaFormDef> formClazz, Request req, T link, Function<T, Timestamp> expiresAt, Function<T, String> requestorIp) {
 		MetaFormValidation validation = MetaFormValidation.empty(formClazz)
 				.initAllIfPresent(req);
 		Time time = req.require(Time.class);
