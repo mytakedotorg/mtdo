@@ -9,6 +9,8 @@ package controllers;
 import static db.Tables.ACCOUNT;
 
 import auth.AuthUser;
+
+import com.google.common.base.Preconditions;
 import com.google.inject.Binder;
 import com.jsoniter.any.Any;
 import com.typesafe.config.Config;
@@ -24,6 +26,8 @@ import org.jooby.Status;
 import org.jooq.DSLContext;
 
 public class TakeEmail implements Jooby.Module {
+	private static final String DATA_PREFIX = "data:img/png;base64,";
+
 	@Override
 	public void configure(Env env, Config conf, Binder binder) throws Throwable {
 		env.router().post(Routes.API_EMAIL_SELF, req -> {
@@ -42,8 +46,10 @@ public class TakeEmail implements Jooby.Module {
 				htmlEmail.setSubject(emailSelf.subject);
 				htmlEmail.setHtmlMsg(emailSelf.body);
 				for (String key : map.keySet()) {
-					String valueBase64 = map.get(key).toString();
-					byte[] valueBinary = Base64.getUrlDecoder().decode(valueBase64);
+					String valueBase64WithHeader = map.get(key).toString();
+					Preconditions.checkArgument(valueBase64WithHeader.startsWith(DATA_PREFIX));
+					String valueBase64 = valueBase64WithHeader.substring(DATA_PREFIX.length());
+					byte[] valueBinary = Base64.getDecoder().decode(valueBase64);
 					ByteArrayDataSource data = new ByteArrayDataSource(valueBinary, "image/png");
 					htmlEmail.embed(data, key.toString());
 				}
