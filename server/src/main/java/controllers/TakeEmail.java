@@ -8,17 +8,16 @@ package controllers;
 
 import static db.Tables.ACCOUNT;
 
-import java.util.Map;
-
-import javax.activation.DataSource;
-
 import auth.AuthUser;
 import com.google.inject.Binder;
 import com.jsoniter.any.Any;
 import com.typesafe.config.Config;
 import common.EmailSender;
+import java.util.Base64;
+import java.util.Map;
 import java2ts.EmailSelf;
 import java2ts.Routes;
+import javax.mail.util.ByteArrayDataSource;
 import org.jooby.Env;
 import org.jooby.Jooby;
 import org.jooby.Status;
@@ -37,14 +36,16 @@ public class TakeEmail implements Jooby.Module {
 			}
 			EmailSelf emailSelf = req.body(EmailSelf.class);
 			Map<String, Any> map = emailSelf.cidMap.asMap();
-			
+
 			req.require(EmailSender.class).send(htmlEmail -> {
 				htmlEmail.addTo(email);
 				htmlEmail.setSubject(emailSelf.subject);
 				htmlEmail.setHtmlMsg(emailSelf.body);
 				for (String key : map.keySet()) {
-					htmlEmail.embed((DataSource) map.get(key), key.toString());
-//					htmlEmail.embed((DataSource) map.get(key), key.toString(), key.toString());
+					String valueBase64 = map.get(key).toString();
+					byte[] valueBinary = Base64.getUrlDecoder().decode(valueBase64);
+					ByteArrayDataSource data = new ByteArrayDataSource(valueBinary, "image/png");
+					htmlEmail.embed(data, key.toString());
 				}
 			});
 			return Status.OK;
