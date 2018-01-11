@@ -26,7 +26,7 @@ import org.jooby.Status;
 import org.jooq.DSLContext;
 
 public class TakeEmail implements Jooby.Module {
-	private static final String DATA_PREFIX = "data:img/png;base64,";
+	private static final String DATA_PREFIX = "data:image/png;base64,";
 
 	@Override
 	public void configure(Env env, Config conf, Binder binder) throws Throwable {
