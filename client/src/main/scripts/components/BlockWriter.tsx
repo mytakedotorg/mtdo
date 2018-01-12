@@ -24,6 +24,7 @@ interface BlockWriterProps {
 export interface InitialBlockWriterState {
   takeDocument: TakeDocument;
   activeBlockIndex: number;
+  parentRev?: DraftRev;
 }
 
 interface BlockWriterHashValues {
@@ -72,19 +73,34 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
       }
     );
 
-    this.state = {
-      takeDocument: {
-        title: props.initState.takeDocument.title,
-        blocks: blocks
-      },
-      activeBlockIndex: props.initState.activeBlockIndex,
-      status: {
-        saved: true,
-        saving: false,
-        error: false,
-        message: ""
-      }
+    const takeDocument = {
+      title: props.initState.takeDocument.title,
+      blocks: blocks
     };
+
+    const initialStatus = {
+      saved: true,
+      saving: false,
+      error: false,
+      message: ""
+    };
+
+    if (props.initState.parentRev) {
+      this.state = {
+        takeDocument: takeDocument,
+        activeBlockIndex: props.initState.activeBlockIndex,
+        parentRev: {
+          ...props.initState.parentRev
+        },
+        status: initialStatus
+      };
+    } else {
+      this.state = {
+        takeDocument: takeDocument,
+        activeBlockIndex: props.initState.activeBlockIndex,
+        status: initialStatus
+      };
+    }
   }
   shouldAppendParagraph = (): boolean => {
     const blocks = this.state.takeDocument.blocks;
