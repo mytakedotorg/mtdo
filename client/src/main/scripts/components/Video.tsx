@@ -1,8 +1,10 @@
 import * as React from "react";
 import YouTube from "react-youtube";
+import isEqual = require("lodash/isEqual");
 import { getCharRangeFromVideoRange } from "../utils/functions";
 import { Foundation } from "../java2ts/Foundation";
 import CaptionView from "./CaptionView";
+import { Routes } from "../java2ts/Routes";
 
 interface YTPlayerParameters {
   rel: number;
@@ -18,9 +20,11 @@ interface YTPlayerParameters {
 
 interface VideoProps {
   onSetClick: (range: [number, number]) => void;
+  onRangeSet?: (videoRange: [number, number]) => void;
+  onClearClick?: () => void;
   videoFact: Foundation.VideoFactContent;
   className?: string;
-  timeRange?: [number, number];
+  timeRange?: [number, number] | null;
 }
 
 interface VideoState {
@@ -61,7 +65,7 @@ class Video extends React.Component<VideoProps, VideoState> {
   };
   getCharRange = (
     videoFact: Foundation.VideoFactContent,
-    timeRange?: [number, number]
+    timeRange?: [number, number] | null
   ): [number, number] => {
     if (timeRange) {
       if (videoFact.transcript && videoFact.speakerMap) {
@@ -86,11 +90,17 @@ class Video extends React.Component<VideoProps, VideoState> {
       startTime: videoRange[0],
       endTime: videoRange[1]
     });
+    if (this.props.onRangeSet) {
+      this.props.onRangeSet([videoRange[0], videoRange[1]]);
+    }
   };
   handleClearClick = (): void => {
     this.setState({
       captionIsHighlighted: false
     });
+    if (this.props.onClearClick) {
+      this.props.onClearClick();
+    }
   };
   handleCursorPlacement = (videoTime: number): void => {
     this.setState({
@@ -135,7 +145,6 @@ class Video extends React.Component<VideoProps, VideoState> {
   };
   handleReady = (event: any) => {
     this.player = event.target;
-    this.player.pauseVideo();
     this.cueVideo();
   };
   handleSetClick = () => {
@@ -188,6 +197,7 @@ class Video extends React.Component<VideoProps, VideoState> {
       nextProps.videoFact.youtubeId !== this.props.videoFact.youtubeId &&
       nextProps.timeRange
     ) {
+      // Component has a new youtube video and a time range
       const charRange = this.getCharRange(
         nextProps.videoFact,
         nextProps.timeRange
@@ -202,6 +212,36 @@ class Video extends React.Component<VideoProps, VideoState> {
         highlightedCharRange: charRange,
         captionIsHighlighted: isHighlighted
       });
+    } else if (
+      !nextProps.timeRange &&
+      window.location.pathname.startsWith(Routes.FOUNDATION)
+    ) {
+      // No time range and on a /foundation route or sub-route
+      this.setState({
+        startTime: 0,
+        endTime: -1,
+        captionIsHighlighted: false,
+        highlightedCharRange: [-1, -1]
+      });
+      this.player.pauseVideo();
+    } else if (
+      nextProps.timeRange &&
+      !isEqual(nextProps.timeRange, this.props.timeRange)
+    ) {
+      // There is a time range and it's different than the previous range
+      let charRange: [number, number] = this.getCharRange(
+        nextProps.videoFact,
+        nextProps.timeRange
+      );
+
+      this.state = {
+        currentTime: nextProps.timeRange[0],
+        startTime: nextProps.timeRange[0],
+        endTime: nextProps.timeRange[1],
+        captionIsHighlighted:
+          charRange[0] === -1 && charRange[1] === -1 ? false : true,
+        highlightedCharRange: charRange
+      };
     }
   }
   render() {

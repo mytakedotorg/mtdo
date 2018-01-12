@@ -61,6 +61,17 @@ exports[`Read only 1`] = `
     </div>
   </div>
   <ReactionContainer
+    takeDocument={
+      Object {
+        "blocks": Array [
+          Object {
+            "kind": "paragraph",
+            "text": "",
+          },
+        ],
+        "title": "My take title",
+      }
+    }
     takeId={2}
   />
 </div>

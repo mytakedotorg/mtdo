@@ -4,6 +4,7 @@ import BlockEditor, { TakeDocument } from "./BlockEditor";
 import ReactionContainer from "./ReactionContainer";
 import { slugify } from "../utils/functions";
 import { Foundation } from "../java2ts/Foundation";
+import { Routes } from "../java2ts/Routes";
 
 interface BlockReaderProps {
   initState: TakeDocument;
@@ -30,21 +31,17 @@ class BlockReader extends React.Component<BlockReaderProps, BlockReaderState> {
   ) => {
     const { title } = factLink.fact;
     window.location.href =
-      "/foundation" +
-      "#" +
+      Routes.FOUNDATION_V1 +
+      "/" +
       slugify(title) +
-      "&" +
-      window.location.pathname +
-      "&" +
+      "/" +
       highlightedRange[0] +
-      "&" +
+      "-" +
       highlightedRange[1] +
-      "&" +
+      "/" +
       viewRange[0] +
-      "&" +
-      viewRange[1] +
-      "&" +
-      offset;
+      "-" +
+      viewRange[1];
   };
   render() {
     const eventHandlers = {
@@ -56,7 +53,10 @@ class BlockReader extends React.Component<BlockReaderProps, BlockReaderState> {
           takeDocument={(Object as any).assign({}, this.state.takeDocument)}
           eventHandlers={eventHandlers}
         />
-        <ReactionContainer takeId={this.props.takeId} />
+        <ReactionContainer
+          takeId={this.props.takeId}
+          takeDocument={(Object as any).assign({}, this.state.takeDocument)}
+        />
       </div>
     );
   }

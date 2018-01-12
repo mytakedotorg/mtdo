@@ -45,6 +45,19 @@
   }
 }
 
+@mixin button--borderless {
+  -webkit-appearance: none;
+  border: none;
+  padding: 0;
+  &:focus {
+    outline: 0;
+  }
+  color: palette(button, color--borderless);
+  &:hover {
+    color: palette(button, color--borderless-hover);
+    cursor: pointer;
+  }
+}
 @mixin clearfix {
   &::after {
     clear: both;

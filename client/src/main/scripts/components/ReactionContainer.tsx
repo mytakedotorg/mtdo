@@ -4,9 +4,12 @@ import { Routes } from "../java2ts/Routes";
 import { TakeReactionJson } from "../java2ts/TakeReactionJson";
 import { postRequest } from "../utils/databaseAPI";
 import { alertErr } from "../utils/functions";
+import { TakeDocument } from "./BlockEditor";
+import ShareContainer from "./ShareContainer";
 
 interface ReactionContainerProps {
   takeId: number;
+  takeDocument: TakeDocument;
 }
 
 interface ReactionContainerState {
@@ -131,12 +134,17 @@ class ReactionContainer extends React.Component<
       onReportPress: this.reportButtonPress
     };
     return (
-      <Reaction containerState={this.state} eventListeners={eventListeners} />
+      <Reaction
+        containerProps={this.props}
+        containerState={this.state}
+        eventListeners={eventListeners}
+      />
     );
   }
 }
 
 interface ReactionProps {
+  containerProps: ReactionContainerProps;
   containerState: ReactionContainerState;
   eventListeners: {
     onStarPress: () => any;
@@ -190,6 +198,8 @@ export class Reaction extends React.Component<ReactionProps, ReactionState> {
     } else if (userState) {
       if (userState.harassment || userState.spam || userState.rulesviolation) {
         menuClassModifier = "reaction__submenu--wide";
+      } else {
+        menuClassModifier = "";
       }
     } else {
       menuClassModifier = "";
@@ -225,52 +235,68 @@ export class Reaction extends React.Component<ReactionProps, ReactionState> {
               <i className="fa fa-star-o" aria-hidden="true" />
             )}
           </button>
-          <button
-            className="reaction__action reaction__action--report"
-            onClick={this.toggleMenu}
-          >
-            Report
-          </button>
-          <ul className={"reaction__submenu " + menuClassModifier}>
-            <li className="reaction__li">
-              <button
-                className="reaction__action reaction__action--spam"
-                onClick={() => props.eventListeners.onReportPress("spam")}
-                disabled={typeof props.containerState.takeState == "undefined"}
-              >
-                {props.containerState.userState &&
-                props.containerState.userState.spam
-                  ? "Marked as spam. Unmark?"
-                  : "spam"}
-              </button>
-            </li>
-            <li className="reaction__li">
-              <button
-                className="reaction__action reaction__action--harassment"
-                onClick={() => props.eventListeners.onReportPress("harassment")}
-                disabled={typeof props.containerState.takeState == "undefined"}
-              >
-                {props.containerState.userState &&
-                props.containerState.userState.harassment
-                  ? "Marked as harassment. Unmark?"
-                  : "harassment"}
-              </button>
-            </li>
-            <li className="reaction__li">
-              <button
-                className="reaction__action reaction__action--rules"
-                onClick={() =>
-                  props.eventListeners.onReportPress("rulesviolation")
-                }
-                disabled={typeof props.containerState.takeState == "undefined"}
-              >
-                {props.containerState.userState &&
-                props.containerState.userState.rulesviolation
-                  ? "Marked as rules violation. Unmark?"
-                  : "rules violation"}
-              </button>
-            </li>
-          </ul>
+          <ShareContainer
+            takeDocument={(Object as any).assign(
+              {},
+              props.containerProps.takeDocument
+            )}
+          />
+          <div className="reaction__action-container">
+            <button
+              className="reaction__action reaction__action--report"
+              onClick={this.toggleMenu}
+            >
+              Report
+            </button>
+            <ul className={"reaction__submenu " + menuClassModifier}>
+              <li className="reaction__li">
+                <button
+                  className="reaction__action reaction__action--spam"
+                  onClick={() => props.eventListeners.onReportPress("spam")}
+                  disabled={
+                    typeof props.containerState.takeState == "undefined"
+                  }
+                >
+                  {props.containerState.userState &&
+                  props.containerState.userState.spam
+                    ? "Marked as spam. Unmark?"
+                    : "spam"}
+                </button>
+              </li>
+              <li className="reaction__li">
+                <button
+                  className="reaction__action reaction__action--harassment"
+                  onClick={() =>
+                    props.eventListeners.onReportPress("harassment")
+                  }
+                  disabled={
+                    typeof props.containerState.takeState == "undefined"
+                  }
+                >
+                  {props.containerState.userState &&
+                  props.containerState.userState.harassment
+                    ? "Marked as harassment. Unmark?"
+                    : "harassment"}
+                </button>
+              </li>
+              <li className="reaction__li">
+                <button
+                  className="reaction__action reaction__action--rules"
+                  onClick={() =>
+                    props.eventListeners.onReportPress("rulesviolation")
+                  }
+                  disabled={
+                    typeof props.containerState.takeState == "undefined"
+                  }
+                >
+                  {props.containerState.userState &&
+                  props.containerState.userState.rulesviolation
+                    ? "Marked as rules violation. Unmark?"
+                    : "rules violation"}
+                </button>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
     );

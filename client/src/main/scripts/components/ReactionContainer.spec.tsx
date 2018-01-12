@@ -2,6 +2,7 @@ import * as React from "react";
 import * as renderer from "react-test-renderer";
 import {} from "jest";
 import { Reaction } from "./ReactionContainer";
+import { takeDocument } from "../utils/testUtils";
 
 const initialState = {
   takeState: {
@@ -17,14 +18,29 @@ const initialState = {
   }
 };
 
+const containerProps = {
+  takeId: 1,
+  takeDocument: takeDocument
+};
+
 const eventListeners = {
   onReportPress: jest.fn(),
   onStarPress: jest.fn()
 };
 
+jest.mock("./ShareContainer", () => ({
+  default: "ShareContainer"
+}));
+
 test("Reaction - loading", () => {
   const tree = renderer
-    .create(<Reaction containerState={{}} eventListeners={eventListeners} />)
+    .create(
+      <Reaction
+        containerState={{}}
+        eventListeners={eventListeners}
+        containerProps={containerProps}
+      />
+    )
     .toJSON();
   expect(tree).toMatchSnapshot();
 });
@@ -32,7 +48,11 @@ test("Reaction - loading", () => {
 test("Reaction - initial", () => {
   const tree = renderer
     .create(
-      <Reaction containerState={initialState} eventListeners={eventListeners} />
+      <Reaction
+        containerState={initialState}
+        eventListeners={eventListeners}
+        containerProps={containerProps}
+      />
     )
     .toJSON();
   expect(tree).toMatchSnapshot();
@@ -51,6 +71,7 @@ test("Reaction - liked", () => {
       <Reaction
         containerState={containerState}
         eventListeners={eventListeners}
+        containerProps={containerProps}
       />
     )
     .toJSON();
@@ -60,7 +81,11 @@ test("Reaction - liked", () => {
 test("Reaction - initial", () => {
   const tree = renderer
     .create(
-      <Reaction containerState={initialState} eventListeners={eventListeners} />
+      <Reaction
+        containerState={initialState}
+        eventListeners={eventListeners}
+        containerProps={containerProps}
+      />
     )
     .toJSON();
   expect(tree).toMatchSnapshot();
@@ -79,6 +104,7 @@ test("Reaction - spam reported", () => {
       <Reaction
         containerState={containerState}
         eventListeners={eventListeners}
+        containerProps={containerProps}
       />
     )
     .toJSON();
@@ -98,6 +124,7 @@ test("Reaction - harassment reported", () => {
       <Reaction
         containerState={containerState}
         eventListeners={eventListeners}
+        containerProps={containerProps}
       />
     )
     .toJSON();
@@ -117,6 +144,7 @@ test("Reaction - rules violated reported", () => {
       <Reaction
         containerState={containerState}
         eventListeners={eventListeners}
+        containerProps={containerProps}
       />
     )
     .toJSON();

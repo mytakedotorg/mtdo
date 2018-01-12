@@ -8,6 +8,8 @@ import { documentFactLink, documentNodes } from "../utils/testUtils";
 
 const onDocumentSetClick = jest.fn();
 const onVideoSetClick = jest.fn();
+const onRangeSet = jest.fn();
+const onRangeCleared = jest.fn();
 
 interface MockWindow extends Window {
   scrollTo: jest.Mock<{}> & typeof window.scrollTo;
@@ -28,7 +30,9 @@ describe("Foundation Document", () => {
 
   const setFactHandlers = {
     handleDocumentSetClick: onDocumentSetClick,
-    handleVideoSetClick: onVideoSetClick
+    handleVideoSetClick: onVideoSetClick,
+    handleRangeSet: onRangeSet,
+    handleRangeCleared: onRangeCleared
   };
   const ranges = {
     highlightedRange: highlightedRange,

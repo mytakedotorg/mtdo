@@ -186,6 +186,20 @@
   }
 }
 .editor__meta {
-  height: 70px;
+  height: 80px;
   line-height: 35px;
+  float: left;
+}
+.editor__share {
+  margin-top: 43px;
+  line-height: 35px;
+  float: right;
+  position: relative;
+  margin-right: $page-margin-mobile;
+  @media #{$mq-medium} {
+    margin-right: $content-margin;
+  }
+}
+.editor__row {
+  @include clearfix;
 }

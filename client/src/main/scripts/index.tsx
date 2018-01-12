@@ -41,7 +41,7 @@ let Root;
 if (typeof window.mytake != "undefined") {
   switch (window.mytake.type) {
     case "foundation":
-      Root = <FoundationView hashUrl={window.location.hash} />;
+      Root = <FoundationView path={window.location.pathname} />;
       break;
     case "new-take":
       let initJson: InitialBlockWriterState;

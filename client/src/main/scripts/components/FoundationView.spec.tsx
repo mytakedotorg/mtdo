@@ -7,15 +7,15 @@ jest.mock("./TimelineView", () => ({
   default: "TimelineView"
 }));
 
-test("With hash URL", () => {
-  const hashURL =
-    "#bill-of-rights&/samples/does-a-law-mean-what-it-says-or-what-it-meant&294&368&283&439&479.734375";
-  const tree = renderer.create(<FoundationView hashUrl={hashURL} />).toJSON();
+test("With fact in URL", () => {
+  const path = "/foundation/bill-of-rights";
+  const tree = renderer.create(<FoundationView path={path} />).toJSON();
   expect(tree).toMatchSnapshot();
 });
 
-test("Without hash URL", () => {
+test("Without fact in URL", () => {
+  const path = "/foundation";
   const hashURL = "";
-  const tree = renderer.create(<FoundationView hashUrl={hashURL} />).toJSON();
+  const tree = renderer.create(<FoundationView path={path} />).toJSON();
   expect(tree).toMatchSnapshot();
 });

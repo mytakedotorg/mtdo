@@ -133,7 +133,7 @@ function loadUser() {
         "</a>" +
         '<div class="header__dropdown-container">' +
         '<ul class="header__dropdown header__dropdown--collapse">' +
-        // Be sure to change SASS variable if you add or remove nav links (cd assets && grep -Rn user-nav-items: *)
+        // Be sure to change SASS variable if you add or remove nav links (cd /client/src/main/styles && grep -Rn user-nav-items: *)
         dropdown("New Draft", Routes.DRAFTS_NEW) +
         dropdown("Drafts", Routes.DRAFTS) +
         dropdown("Published", "/" + loginUi.username) +
@@ -207,3 +207,8 @@ window.onerror = function(
     JSON.stringify(error);
   alert(msg);
 };
+if (!String.prototype.startsWith) {
+  String.prototype.startsWith = function(search: string, pos = 0) {
+    return this.substr(!pos || pos < 0 ? 0 : +pos, search.length) === search;
+  };
+}

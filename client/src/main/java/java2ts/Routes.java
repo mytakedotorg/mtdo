@@ -11,6 +11,7 @@ public class Routes {
 	public static final String API = "/api";
 	public static final String API_TAKE_VIEW = "/api/takeView";
 	public static final String API_TAKE_REACT = "/api/takeReact";
+	public static final String API_EMAIL_SELF = "/api/emailSelf";
 
 	public static final String MODS = "/mods";
 	public static final String MODS_DRAFTS = "/mods/drafts/";
@@ -30,6 +31,7 @@ public class Routes {
 
 	public static final String TIMELINE = "/timeline";
 	public static final String FOUNDATION = "/foundation";
+	public static final String FOUNDATION_V1 = "/foundation-v1";
 	public static final String FOUNDATION_DATA = "/foundation-data";
 	public static final String FOUNDATION_DATA_INDEX = "/foundation-data/index.json";
 

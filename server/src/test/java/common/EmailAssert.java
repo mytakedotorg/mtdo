@@ -38,7 +38,7 @@ public class EmailAssert extends AbstractAssert<EmailAssert, MimeMessage> {
 		return Assertions.assertThat(actual.getSubject());
 	}
 
-	private String bodyRaw() {
+	public String bodyRaw() {
 		return GreenMailUtil.getBody(actual);
 	}
 

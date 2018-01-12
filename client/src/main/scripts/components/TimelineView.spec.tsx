@@ -29,13 +29,15 @@ jest.mock("./TimelineRadioButtons", () => ({
 const mockFn = jest.fn();
 
 const eventHandlers: EventHandlers = {
-  handleChange: jest.fn(),
-  handleClick: jest.fn()
+  handleChange: mockFn,
+  handleClick: mockFn
 };
 
 const setFactHandlers: SetFactHandlers = {
-  handleDocumentSetClick: jest.fn(),
-  handleVideoSetClick: jest.fn()
+  handleDocumentSetClick: mockFn,
+  handleVideoSetClick: mockFn,
+  handleRangeCleared: mockFn,
+  handleRangeSet: mockFn
 };
 
 const initialState: TimelineViewState = {
@@ -43,8 +45,8 @@ const initialState: TimelineViewState = {
   loading: true,
   selectedOption: "Debates",
   timelineItems: [],
-  hashValues: null,
-  hashIsValid: false
+  urlValues: null,
+  URLIsValid: false
 };
 
 test("View loading", () => {
@@ -88,8 +90,8 @@ test("Successfully loaded a Document in view", () => {
     loading: false,
     selectedOption: "Documents",
     timelineItems: timelineItems,
-    hashValues: null,
-    hashIsValid: true
+    urlValues: null,
+    URLIsValid: true
   };
 
   const tree = renderer
@@ -110,8 +112,8 @@ test("Successfully loaded a Video in view", () => {
     loading: false,
     selectedOption: "Debates",
     timelineItems: timelineItems,
-    hashValues: null,
-    hashIsValid: true
+    urlValues: null,
+    URLIsValid: true
   };
 
   const tree = renderer

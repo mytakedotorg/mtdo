@@ -2,6 +2,7 @@
   @include content-column;
   position: relative;
   z-index: 20;
+  @include clearfix;
 }
 .reaction__counts {
   margin-left: $content-margin;
@@ -19,25 +20,16 @@
   position: relative;
 }
 .reaction__action {
-  -webkit-appearance: none;
-  border: none;
-  &:focus {
-    outline: 0;
-  }
-  color: palette(reaction, text--link);
-  &:hover {
-    color: palette(reaction, text--hover);
-    cursor: pointer;
-  }
+  @include button--borderless;
 }
 .reaction__action--star {
   margin-right: $content-margin;
   font-size: 20px;
   margin-top: 2px;
+  float: left;
 }
 .reaction__action--report {
   @include body("sans");
-  margin-right: $content-margin;
 }
 .reaction__action--spam,
 .reaction__action--harassment,
@@ -50,15 +42,16 @@
   margin-left: $page-margin-mobile;
   margin-right: $page-margin-mobile;
 }
+$report-link-count: 3;
 .reaction__submenu {
   position: absolute;
   width: 128px;
-  top: -35px * 3 - 4;
+  top: -35px * $report-link-count - $report-link-count - 1;
   right: 0;
   list-style: none;
   margin: 0;
   padding: 0;
-  max-height: 35px * 3 + 4;
+  max-height: 35px * $report-link-count + $report-link-count + 1;
   overflow: hidden;
   border: 1px solid palette(reaction, border);
   border-radius: 3px;
@@ -78,4 +71,10 @@
   &:not(:first-of-type) {
     border-top: 1px solid palette(header, border);
   }
+}
+.reaction__action-container {
+  position: relative;
+  line-height: 35px;
+  float: left;
+  margin-right: $content-margin;
 }

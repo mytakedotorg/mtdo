@@ -1,5 +1,6 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
+import isEqual = require("lodash/isEqual");
 import Document from "./Document";
 import {
   convertSecondsToTimestamp,
@@ -158,8 +159,9 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
   }
   componentWillReceiveProps(nextProps: CaptionViewProps) {
     if (
-      nextProps.videoFact.youtubeId !== this.props.videoFact.youtubeId &&
-      this.props.videoFact.youtubeId
+      (nextProps.videoFact.youtubeId !== this.props.videoFact.youtubeId &&
+        this.props.videoFact.youtubeId) ||
+      !isEqual(nextProps.highlightedCharRange, this.props.highlightedCharRange)
     ) {
       this.getCaptionData(
         nextProps.videoFact,

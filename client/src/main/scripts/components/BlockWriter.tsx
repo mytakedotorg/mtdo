@@ -8,6 +8,7 @@ import BlockEditor, {
 } from "./BlockEditor";
 import TimelineView from "./TimelineView";
 import EditorButtons from "./EditorButtons";
+import ShareContainer from "./ShareContainer";
 import { postRequest } from "../utils/databaseAPI";
 import { DraftRev } from "../java2ts/DraftRev";
 import { DraftPost } from "../java2ts/DraftPost";
@@ -427,6 +428,15 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
     // localhost:3000/drafts/new/#LWbZHJ0sfeTMwVNXfB44e7Vn7QRilZkbh7aEYjMFLEA=&369&514&369&514&/samples/does-a-law-mean-what-it-says-or-what-it-meant/
     const hashArr = hash.substring(1).split("&");
     const factHash = hashArr[0];
+
+    const regex = /^[A-Za-z0-9\-\=\/\+\_]+$/; //URL encoded base 64
+
+    if (factHash.length != 44 || !regex.test(factHash)) {
+      const error = "BlockWriter: Invalid fact hash in hash URL";
+      alertErr(error);
+      throw error;
+    }
+
     const highlightedRange: [number, number] = [
       parseFloat(hashArr[1]),
       parseFloat(hashArr[2])
@@ -490,7 +500,10 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
 
       valuesArr.forEach((element, arrIdx) => {
         if (arrIdx === 0) {
-          newBlock = blocks[stateIndex] as ParagraphBlock;
+          newBlock = (Object as any).assign(
+            {},
+            blocks[stateIndex]
+          ) as ParagraphBlock;
           newBlock.text = element;
         } else {
           newBlock = {
@@ -562,7 +575,9 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
 
     const setFactHandlers = {
       handleDocumentSetClick: this.addDocument,
-      handleVideoSetClick: this.addVideo
+      handleVideoSetClick: this.addVideo,
+      handleRangeSet: () => {},
+      handleRangeCleared: () => {}
     };
 
     const buttonEventHandlers: ButtonEventHandlers = {
@@ -579,15 +594,28 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
           active={this.state.activeBlockIndex}
         />
         <div className="editor__wrapper">
-          <EditorButtons
-            eventHandlers={buttonEventHandlers}
-            status={this.state.status}
-          />
+          <div className="editor__row">
+            <EditorButtons
+              eventHandlers={buttonEventHandlers}
+              status={this.state.status}
+            />
+            <div className="editor__share">
+              <ShareContainer
+                takeDocument={(Object as any).assign(
+                  {},
+                  this.state.takeDocument
+                )}
+              />
+            </div>
+          </div>
           <p className="timeline__instructions">
             Add Facts to your Take from the timeline below.
           </p>
         </div>
-        <TimelineView setFactHandlers={setFactHandlers} />
+        <TimelineView
+          path={window.location.pathname}
+          setFactHandlers={setFactHandlers}
+        />
       </div>
     );
   }

@@ -1,16 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`With hash URL 1`] = `
-<div
-  className="foundation"
->
-  <TimelineView
-    hashUrl="#bill-of-rights&/samples/does-a-law-mean-what-it-says-or-what-it-meant&294&368&283&439&479.734375"
-  />
-</div>
-`;
-
-exports[`Without hash URL 1`] = `
+exports[`With fact in URL 1`] = `
 <div
   className="foundation"
 >
@@ -29,7 +19,35 @@ exports[`Without hash URL 1`] = `
         Explore Facts in the timeline below.
       </p>
     </div>
-    <TimelineView />
+    <TimelineView
+      path="/foundation/bill-of-rights"
+    />
+  </div>
+</div>
+`;
+
+exports[`Without fact in URL 1`] = `
+<div
+  className="foundation"
+>
+  <div>
+    <div
+      className="foundation__inner-container"
+    >
+      <h1
+        className="foundation__heading"
+      >
+        Foundation of Facts
+      </h1>
+      <p
+        className="timeline__instructions"
+      >
+        Explore Facts in the timeline below.
+      </p>
+    </div>
+    <TimelineView
+      path="/foundation"
+    />
   </div>
 </div>
 `;

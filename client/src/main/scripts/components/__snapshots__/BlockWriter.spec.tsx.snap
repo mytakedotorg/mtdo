@@ -27,23 +27,44 @@ exports[`Simple block writer model 1`] = `
   <div
     className="editor__wrapper"
   >
-    <EditorButtons
-      eventHandlers={
-        Object {
-          "handleDeleteClick": [Function],
-          "handlePublishClick": [Function],
-          "handleSaveClick": [Function],
+    <div
+      className="editor__row"
+    >
+      <EditorButtons
+        eventHandlers={
+          Object {
+            "handleDeleteClick": [Function],
+            "handlePublishClick": [Function],
+            "handleSaveClick": [Function],
+          }
         }
-      }
-      status={
-        Object {
-          "error": false,
-          "message": "",
-          "saved": true,
-          "saving": false,
+        status={
+          Object {
+            "error": false,
+            "message": "",
+            "saved": true,
+            "saving": false,
+          }
         }
-      }
-    />
+      />
+      <div
+        className="editor__share"
+      >
+        <ShareContainer
+          takeDocument={
+            Object {
+              "blocks": Array [
+                Object {
+                  "kind": "paragraph",
+                  "text": "",
+                },
+              ],
+              "title": "",
+            }
+          }
+        />
+      </div>
+    </div>
     <p
       className="timeline__instructions"
     >
@@ -51,9 +72,12 @@ exports[`Simple block writer model 1`] = `
     </p>
   </div>
   <TimelineView
+    path="/drafts/new"
     setFactHandlers={
       Object {
         "handleDocumentSetClick": [Function],
+        "handleRangeCleared": [Function],
+        "handleRangeSet": [Function],
         "handleVideoSetClick": [Function],
       }
     }
