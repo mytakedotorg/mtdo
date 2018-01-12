@@ -942,8 +942,16 @@ function drawText(
 
   totalHeight += fontsize / 2; // add bottom margin
 
+  let finalLineWidth;
+  if (initialX) {
+    finalLineWidth =
+      ctx.measureText(line).width + initialX - drawSpecs.textMargin;
+  } else {
+    finalLineWidth = ctx.measureText(line).width;
+  }
+
   return {
-    x: ctx.measureText(line).width,
+    x: finalLineWidth,
     y: y,
     totalHeight: totalHeight
   };
