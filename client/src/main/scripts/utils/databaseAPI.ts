@@ -238,6 +238,10 @@ function drawFacts(
     // Initialize callback counter
     let factCallbacks = 0;
 
+    // Initialize fact counters
+    let documentFactCount = 0;
+    let videoFactCount = 0;
+
     let documentFacts: DocumentImageURI[] = [];
     let videoFacts: VideoImageURIs[] = [];
 
@@ -299,13 +303,14 @@ function drawFacts(
                   blockInScope.viewRange[1] +
                   "/";
 
-                documentFacts[index] = {
+                documentFacts[documentFactCount] = {
                   imageProps: imageProps,
                   url: documentURL,
                   title: title,
                   alt: title,
-                  cid: "doc" + index.toString()
+                  cid: "doc" + documentFactCount.toString()
                 };
+                documentFactCount++;
 
                 if (factCallbacks === factCount) {
                   callback(null, documentFacts, videoFacts);
@@ -391,26 +396,28 @@ function drawFacts(
                     "-" +
                     blockInScope.range[1].toFixed(3);
 
-                  videoFacts[index] = {
+                  videoFacts[videoFactCount] = {
                     youtubeUri: factContent.youtubeId,
                     imageProps: imageProps,
                     url: videoURL,
                     title: title,
                     alt: title,
-                    cid: "vid" + index.toString()
+                    cid: "vid" + videoFactCount.toString()
                   };
+                  videoFactCount++;
                 } else {
                   const videoURL =
                     Routes.FOUNDATION + "/" + slugify(factContent.fact.title);
 
-                  videoFacts[index] = {
+                  videoFacts[videoFactCount] = {
                     youtubeUri: factContent.youtubeId,
                     imageProps: null,
                     url: videoURL,
                     title: title,
                     alt: title,
-                    cid: "vid" + index.toString()
+                    cid: "vid" + videoFactCount.toString()
                   };
+                  videoFactCount++;
                 }
 
                 if (factCallbacks === factCount) {
