@@ -290,7 +290,7 @@ function drawFacts(
                 const imageProps = drawDocument([...highlightedNodes], title);
 
                 const documentURL =
-                  Routes.FOUNDATION +
+                  Routes.FOUNDATION_V1 +
                   "/" +
                   titleSlug +
                   "/" +
@@ -388,7 +388,7 @@ function drawFacts(
                   const imageProps = drawCaption(highlightedText);
 
                   const videoURL =
-                    Routes.FOUNDATION +
+                    Routes.FOUNDATION_V1 +
                     "/" +
                     titleSlug +
                     "/" +
@@ -407,7 +407,9 @@ function drawFacts(
                   videoFactCount++;
                 } else {
                   const videoURL =
-                    Routes.FOUNDATION + "/" + slugify(factContent.fact.title);
+                    Routes.FOUNDATION_V1 +
+                    "/" +
+                    slugify(factContent.fact.title);
 
                   videoFacts[videoFactCount] = {
                     youtubeUri: factContent.youtubeId,
