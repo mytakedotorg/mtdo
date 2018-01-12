@@ -387,9 +387,9 @@ function drawFacts(
                     "/" +
                     titleSlug +
                     "/" +
-                    blockInScope.range[0] +
+                    blockInScope.range[0].toFixed(3) +
                     "-" +
-                    blockInScope.range[1];
+                    blockInScope.range[1].toFixed(3);
 
                   videoFacts[index] = {
                     youtubeUri: factContent.youtubeId,
@@ -529,31 +529,30 @@ function sendEmail(
             case "document":
               try {
                 const documentImageURI = documentFacts[documentFactCount];
+                const linkUrl = url ? url : documentImageURI.url;
                 htmlStr +=
                   "<tr>" +
                   "<td align='center'>" +
                   '<a href="' +
                   "https://mytake.org" +
-                  url
-                    ? url
-                    : documentImageURI.url +
-                      '">' +
-                      '<img src="cid:' +
-                      documentImageURI.cid +
-                      '" width="' +
-                      documentImageURI.imageProps.width +
-                      '" height="' +
-                      documentImageURI.imageProps.height +
-                      '" alt="' +
-                      documentImageURI.alt +
-                      '" title="' +
-                      documentImageURI.title +
-                      '" style="' +
-                      imageStyles +
-                      '" />' +
-                      "</a>" +
-                      "</td>" +
-                      "</tr>";
+                  linkUrl +
+                  '">' +
+                  '<img src="cid:' +
+                  documentImageURI.cid +
+                  '" width="' +
+                  documentImageURI.imageProps.width +
+                  '" height="' +
+                  documentImageURI.imageProps.height +
+                  '" alt="' +
+                  documentImageURI.alt +
+                  '" title="' +
+                  documentImageURI.title +
+                  '" style="' +
+                  imageStyles +
+                  '" />' +
+                  "</a>" +
+                  "</td>" +
+                  "</tr>";
                 documentFactCount++;
                 cidUriMap[documentImageURI.cid] =
                   documentImageURI.imageProps.dataUri;
@@ -567,25 +566,24 @@ function sendEmail(
             case "video":
               try {
                 const videoImageURI = videoFacts[videoFactCount];
+                const linkUrl = url ? url : videoImageURI.url;
 
                 htmlStr +=
                   "<tr>" +
                   "<td align='center'>" +
                   '<a href="' +
                   "https://mytake.org" +
-                  url
-                    ? url
-                    : videoImageURI.url +
-                      '">' +
-                      '<img style="' +
-                      imageStyles +
-                      '" src="' +
-                      "https://img.youtube.com/vi/" +
-                      videoImageURI.youtubeUri +
-                      '/0.jpg" />' +
-                      "</a>" +
-                      "</td>" +
-                      "</tr>";
+                  linkUrl +
+                  '">' +
+                  '<img style="' +
+                  imageStyles +
+                  '" src="' +
+                  "https://img.youtube.com/vi/" +
+                  videoImageURI.youtubeUri +
+                  '/0.jpg" />' +
+                  "</a>" +
+                  "</td>" +
+                  "</tr>";
 
                 if (videoImageURI.imageProps) {
                   htmlStr +=
@@ -593,26 +591,24 @@ function sendEmail(
                     "<td align='center'>" +
                     '<a href="' +
                     "https://mytake.org" +
-                    url
-                      ? url
-                      : videoImageURI.url +
-                        '">' +
-                        '<img src="cid:' +
-                        videoImageURI.cid +
-                        '" width="' +
-                        videoImageURI.imageProps.width +
-                        '" height="' +
-                        videoImageURI.imageProps.height +
-                        '" alt="' +
-                        videoImageURI.alt +
-                        '" title="' +
-                        videoImageURI.title +
-                        '" style="' +
-                        imageStyles +
-                        '" />' +
-                        "</a>" +
-                        "</td>" +
-                        "</tr>";
+                    linkUrl +
+                    '">' +
+                    '<img src="cid:' +
+                    videoImageURI.cid +
+                    '" width="' +
+                    videoImageURI.imageProps.width +
+                    '" height="' +
+                    videoImageURI.imageProps.height +
+                    '" alt="' +
+                    videoImageURI.alt +
+                    '" title="' +
+                    videoImageURI.title +
+                    '" style="' +
+                    imageStyles +
+                    '" />' +
+                    "</a>" +
+                    "</td>" +
+                    "</tr>";
                   cidUriMap[videoImageURI.cid] =
                     videoImageURI.imageProps.dataUri;
                 }
