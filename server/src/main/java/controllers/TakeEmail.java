@@ -38,21 +38,25 @@ public class TakeEmail implements Jooby.Module {
 						.fetchOne(ACCOUNT.EMAIL);
 			}
 			EmailSelf emailSelf = req.body(EmailSelf.class);
-			Map<String, Any> map = emailSelf.cidMap.asMap();
 
 			req.require(EmailSender.class).send(htmlEmail -> {
 				String emailBody = emailSelf.body;
 				htmlEmail.addTo(email);
 				htmlEmail.setSubject(emailSelf.subject);
+				// convert data uri's to attachments for Gmail
+				Map<String, Any> map = emailSelf.cidMap.asMap();
 				for (String key : map.keySet()) {
+					// convert data uri to binary
 					String valueBase64WithHeader = map.get(key).toString();
 					Preconditions.checkArgument(valueBase64WithHeader.startsWith(DATA_PREFIX));
 					String valueBase64 = valueBase64WithHeader.substring(DATA_PREFIX.length());
 					byte[] valueBinary = Base64.getDecoder().decode(valueBase64);
+					// attach to email
 					ByteArrayDataSource data = new ByteArrayDataSource(valueBinary, "image/png");
-					String cid = htmlEmail.embed(data, key.toString());
-					String nextEmailBody = emailBody.replace("<img src=\"cid:" + key, "<img src=\"cid:" + cid);
-					Preconditions.checkArgument(!nextEmailBody.equals(emailBody), "Error %s", key);
+					String cid = htmlEmail.embed(data, key);
+					// replace img src with the contentid generated when attached
+					String nextEmailBody = emailBody.replace("<img src=\"cid:" + key + "\"", "<img src=\"cid:" + cid + "\"");
+					Preconditions.checkArgument(!nextEmailBody.equals(emailBody), "Failed to replace src URL for img %s", key);
 					emailBody = nextEmailBody;
 				}
 				htmlEmail.setHtmlMsg(emailBody);
