@@ -1,5 +1,6 @@
 import * as React from "react";
 import YouTube from "react-youtube";
+import isEqual = require("lodash/isEqual");
 import { getCharRangeFromVideoRange } from "../utils/functions";
 import { Foundation } from "../java2ts/Foundation";
 import CaptionView from "./CaptionView";
@@ -210,6 +211,30 @@ class Video extends React.Component<VideoProps, VideoState> {
         highlightedCharRange: charRange,
         captionIsHighlighted: isHighlighted
       });
+    } else if (!nextProps.timeRange) {
+      // No time range
+      this.setState({
+        startTime: 0,
+        endTime: -1,
+        captionIsHighlighted: false,
+        highlightedCharRange: [-1, -1]
+      });
+      this.player.pauseVideo();
+    } else if (!isEqual(nextProps.timeRange, this.props.timeRange)) {
+      // There is a time range and it's different than the previous range
+      let charRange: [number, number] = this.getCharRange(
+        nextProps.videoFact,
+        nextProps.timeRange
+      );
+
+      this.state = {
+        currentTime: nextProps.timeRange[0],
+        startTime: nextProps.timeRange[0],
+        endTime: nextProps.timeRange[1],
+        captionIsHighlighted:
+          charRange[0] === -1 && charRange[1] === -1 ? false : true,
+        highlightedCharRange: charRange
+      };
     }
   }
   render() {

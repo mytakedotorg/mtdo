@@ -12,18 +12,14 @@ import { alertErr, slugify } from "../utils/functions";
 
 interface URLValues {
   factTitleSlug: string;
-  articleUser?: string;
-  articleTitle?: string;
   highlightedRange?: [number, number];
   viewRange?: [number, number];
-  offset?: number;
 }
 
 export type SelectionOptions = "Debates" | "Documents";
 
 interface TimelineViewProps {
   path: string;
-  hashUrl?: string;
   setFactHandlers?: SetFactHandlers;
 }
 
@@ -45,7 +41,7 @@ export default class TimelineView extends React.Component<
   constructor(props: TimelineViewProps) {
     super(props);
 
-    const urlValues = this.parseURL(props.path, props.hashUrl);
+    const urlValues = this.parseURL(props.path);
 
     this.updatingURL = false;
 
@@ -139,11 +135,11 @@ export default class TimelineView extends React.Component<
             factTitleSlug: factTitleSlug
           }
         };
-        if (this.props.path.startsWith("/foundation")) {
+        if (this.props.path.startsWith(Routes.FOUNDATION)) {
           window.history.pushState(
             stateObject,
             "UnusedTitle",
-            Routes.FOUNDATION + "/" + factTitleSlug
+            Routes.FOUNDATION_V1 + "/" + factTitleSlug
           );
         }
         this.setState({
@@ -191,7 +187,7 @@ export default class TimelineView extends React.Component<
         };
 
         let newURL =
-          Routes.FOUNDATION +
+          Routes.FOUNDATION_V1 +
           "/" +
           factTitleSlug +
           "/" +
@@ -244,7 +240,7 @@ export default class TimelineView extends React.Component<
           }
         };
 
-        let newURL = Routes.FOUNDATION + "/" + factTitleSlug;
+        let newURL = Routes.FOUNDATION_V1 + "/" + factTitleSlug;
 
         if (oldURLValues) {
           this.setState({
@@ -274,17 +270,6 @@ export default class TimelineView extends React.Component<
     highlightedRange: [number, number],
     viewRange: [number, number]
   ): void => {
-    let endOfUrl: string;
-    if (this.state.urlValues) {
-      endOfUrl =
-        "&" +
-        "/" +
-        this.state.urlValues.articleUser +
-        "/" +
-        this.state.urlValues.articleTitle;
-    } else {
-      endOfUrl = "";
-    }
     window.location.href =
       Routes.DRAFTS_NEW +
       "/#" +
@@ -296,44 +281,22 @@ export default class TimelineView extends React.Component<
       "&" +
       viewRange[0] +
       "&" +
-      viewRange[1] +
-      endOfUrl;
+      viewRange[1];
   };
   handleVideoSetClick = (
     excerptTitle: string,
     range: [number, number]
   ): void => {
-    let endOfUrl: string;
-    if (this.state.urlValues) {
-      endOfUrl =
-        "&" +
-        "/" +
-        this.state.urlValues.articleUser +
-        "/" +
-        this.state.urlValues.articleTitle;
-    } else {
-      endOfUrl = "";
-    }
     window.location.href =
-      Routes.DRAFTS_NEW +
-      "/#" +
-      excerptTitle +
-      "&" +
-      range[0] +
-      "&" +
-      range[1] +
-      endOfUrl;
+      Routes.DRAFTS_NEW + "/#" + excerptTitle + "&" + range[0] + "&" + range[1];
   };
-  parseURL = (path: string, hash?: string): URLValues | null => {
+  parseURL = (path: string): URLValues | null => {
     const pathArr = path.substring(1).split("/");
     if (pathArr.length > 1) {
-      if (Routes.FOUNDATION.indexOf(pathArr[0]) !== -1) {
+      if (Routes.FOUNDATION_V1.indexOf(pathArr[0]) !== -1) {
         const factTitleSlug = pathArr[1];
-        let articleUser;
-        let articleTitle;
         let highlightedRange: [number, number] | undefined;
         let viewRange: [number, number] | undefined;
-        let offset;
         if (pathArr[2] && pathArr[2].indexOf("-") !== -1) {
           highlightedRange = [
             parseFloat(pathArr[2].split("-")[0]),
@@ -344,30 +307,15 @@ export default class TimelineView extends React.Component<
               parseInt(pathArr[3].split("-")[0]),
               parseInt(pathArr[3].split("-")[1])
             ];
-            if (pathArr[6]) {
-              offset = parseFloat(pathArr[6]);
-            }
-          } else if (pathArr[3]) {
-            offset = parseFloat(pathArr[3]);
-          }
-        }
-        if (hash) {
-          const hashArr = hash.split("/");
-          if (hashArr[0] && hashArr[1]) {
-            articleUser = hashArr[0];
-            articleTitle = hashArr[1];
           }
         }
         return {
           factTitleSlug: factTitleSlug,
-          articleUser: articleUser,
-          articleTitle: articleTitle,
           highlightedRange: highlightedRange,
-          viewRange: viewRange,
-          offset
+          viewRange: viewRange
         };
       } else {
-        //route not /foundation
+        //route not /foundation-v1
         return null;
       }
     } else {
@@ -417,9 +365,7 @@ interface TimelineViewBranchProps {
   eventHandlers: EventHandlers;
 }
 
-interface TimelineViewBranchState {
-  isInverted: boolean;
-}
+interface TimelineViewBranchState {}
 
 export class TimelineViewBranch extends React.Component<
   TimelineViewBranchProps,
@@ -427,100 +373,50 @@ export class TimelineViewBranch extends React.Component<
 > {
   constructor(props: TimelineViewBranchProps) {
     super(props);
-
-    let isInverted;
-    if (props.containerState.urlValues) {
-      isInverted = true;
-    } else {
-      isInverted = false;
-    }
-
-    this.state = {
-      isInverted: isInverted
-    };
   }
   render() {
     const { props } = this;
-    if (this.state.isInverted && props.containerState.factLink) {
-      let ranges;
-      let offset;
-      if (
-        props.containerState.urlValues &&
-        props.containerState.urlValues.highlightedRange
-      ) {
-        if (props.containerState.urlValues.viewRange) {
-          ranges = {
-            highlightedRange: props.containerState.urlValues.highlightedRange,
-            viewRange: props.containerState.urlValues.viewRange
-          };
-          if (props.containerState.urlValues.offset) {
-            offset = props.containerState.urlValues.offset;
-          }
-        } else {
-          ranges = {
-            highlightedRange: props.containerState.urlValues.highlightedRange
-          };
-        }
+    let ranges;
+    if (
+      props.containerState.urlValues &&
+      props.containerState.urlValues.highlightedRange
+    ) {
+      if (props.containerState.urlValues.viewRange) {
+        ranges = {
+          highlightedRange: props.containerState.urlValues.highlightedRange,
+          viewRange: props.containerState.urlValues.viewRange
+        };
+      } else {
+        ranges = {
+          highlightedRange: props.containerState.urlValues.highlightedRange
+        };
       }
-
-      return (
-        <div className={"timeline__view"}>
+    }
+    return (
+      <div className={"timeline__view"}>
+        {props.containerState.loading ? (
+          <TimelineLoadingView />
+        ) : (
+          <div>
+            <TimelineRadioButtons
+              selectedOption={props.containerState.selectedOption}
+              onChange={props.eventHandlers.handleChange}
+            />
+            <Timeline
+              onItemClick={props.eventHandlers.handleClick}
+              selectedOption={props.containerState.selectedOption}
+              timelineItems={props.containerState.timelineItems}
+            />
+          </div>
+        )}
+        {props.containerState.factLink ? (
           <TimelinePreviewContainer
             factLink={props.containerState.factLink}
             setFactHandlers={props.setFactHandlers}
             ranges={ranges}
-            offset={offset}
           />
-          <div className="editor__wrapper">
-            <p className="timeline__instructions">
-              Explore other Facts in the timeline below.
-            </p>
-          </div>
-          <div className={"timeline"}>
-            {props.containerState.loading ? (
-              <TimelineLoadingView />
-            ) : (
-              <div>
-                <TimelineRadioButtons
-                  selectedOption={props.containerState.selectedOption}
-                  onChange={props.eventHandlers.handleChange}
-                />
-                <Timeline
-                  onItemClick={props.eventHandlers.handleClick}
-                  selectedOption={props.containerState.selectedOption}
-                  timelineItems={props.containerState.timelineItems}
-                />
-              </div>
-            )}
-          </div>
-        </div>
-      );
-    } else {
-      return (
-        <div className={"timeline__view"}>
-          {props.containerState.loading ? (
-            <TimelineLoadingView />
-          ) : (
-            <div>
-              <TimelineRadioButtons
-                selectedOption={props.containerState.selectedOption}
-                onChange={props.eventHandlers.handleChange}
-              />
-              <Timeline
-                onItemClick={props.eventHandlers.handleClick}
-                selectedOption={props.containerState.selectedOption}
-                timelineItems={props.containerState.timelineItems}
-              />
-            </div>
-          )}
-          {props.containerState.factLink ? (
-            <TimelinePreviewContainer
-              factLink={props.containerState.factLink}
-              setFactHandlers={props.setFactHandlers}
-            />
-          ) : null}
-        </div>
-      );
-    }
+        ) : null}
+      </div>
+    );
   }
 }

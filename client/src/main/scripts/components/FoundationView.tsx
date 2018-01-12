@@ -1,10 +1,10 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import TimelineView from "./TimelineView";
+import { Routes } from "../java2ts/Routes";
 
 interface FoundationViewProps {
   path: string;
-  hashUrl?: string;
 }
 
 class FoundationView extends React.Component<FoundationViewProps, {}> {
@@ -14,8 +14,8 @@ class FoundationView extends React.Component<FoundationViewProps, {}> {
   render() {
     return (
       <div className="foundation">
-        {this.props.hashUrl || this.props.path.length > 11 ? (
-          <TimelineView path={this.props.path} hashUrl={this.props.hashUrl} />
+        {!this.props.path.startsWith(Routes.FOUNDATION) ? (
+          <TimelineView path={this.props.path} />
         ) : (
           <div>
             <div className="foundation__inner-container">

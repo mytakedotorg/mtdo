@@ -58,9 +58,12 @@ exports[`Successfully loaded a Document in view 1`] = `
         "hash": "o_dRqrNJ62wzlgLilTrLxkHqGmvAS9qTpa4z4pjyFqA=",
       }
     }
+    ranges={undefined}
     setFactHandlers={
       Object {
         "handleDocumentSetClick": [Function],
+        "handleRangeCleared": [Function],
+        "handleRangeSet": [Function],
         "handleVideoSetClick": [Function],
       }
     }
@@ -126,9 +129,12 @@ exports[`Successfully loaded a Video in view 1`] = `
         "hash": "U8MV5KDDaxumxZOCJOzExAUAAkSoYNhycVXq7jZ59_0=",
       }
     }
+    ranges={undefined}
     setFactHandlers={
       Object {
         "handleDocumentSetClick": [Function],
+        "handleRangeCleared": [Function],
+        "handleRangeSet": [Function],
         "handleVideoSetClick": [Function],
       }
     }
