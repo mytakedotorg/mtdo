@@ -186,17 +186,24 @@ export default class TimelineView extends React.Component<
           }
         };
 
-        let newURL =
-          Routes.FOUNDATION_V1 +
-          "/" +
-          factTitleSlug +
-          "/" +
-          highlightedRange[0].toString() +
-          "-" +
-          highlightedRange[1].toString();
-        if (viewRange) {
+        let newURL = Routes.FOUNDATION_V1 + "/" + factTitleSlug + "/";
+
+        if (!viewRange) {
+          // Video fact
           newURL +=
-            "/" + viewRange[0].toString() + "-" + viewRange[1].toString();
+            highlightedRange[0].toFixed(3) +
+            "-" +
+            highlightedRange[1].toFixed(3);
+        } else {
+          // Document fact
+          newURL +=
+            highlightedRange[0].toString() +
+            "-" +
+            highlightedRange[1].toString() +
+            "/" +
+            viewRange[0].toString() +
+            "-" +
+            viewRange[1].toString();
         }
 
         if (oldURLValues) {
