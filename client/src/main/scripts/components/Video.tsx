@@ -4,6 +4,7 @@ import isEqual = require("lodash/isEqual");
 import { getCharRangeFromVideoRange } from "../utils/functions";
 import { Foundation } from "../java2ts/Foundation";
 import CaptionView from "./CaptionView";
+import { Routes } from "../java2ts/Routes";
 
 interface YTPlayerParameters {
   rel: number;
@@ -144,7 +145,6 @@ class Video extends React.Component<VideoProps, VideoState> {
   };
   handleReady = (event: any) => {
     this.player = event.target;
-    this.player.pauseVideo();
     this.cueVideo();
   };
   handleSetClick = () => {
@@ -197,6 +197,7 @@ class Video extends React.Component<VideoProps, VideoState> {
       nextProps.videoFact.youtubeId !== this.props.videoFact.youtubeId &&
       nextProps.timeRange
     ) {
+      // Component has a new youtube video and a time range
       const charRange = this.getCharRange(
         nextProps.videoFact,
         nextProps.timeRange
@@ -211,8 +212,11 @@ class Video extends React.Component<VideoProps, VideoState> {
         highlightedCharRange: charRange,
         captionIsHighlighted: isHighlighted
       });
-    } else if (!nextProps.timeRange) {
-      // No time range
+    } else if (
+      !nextProps.timeRange &&
+      window.location.pathname.startsWith(Routes.FOUNDATION)
+    ) {
+      // No time range and on a /foundation route or sub-route
       this.setState({
         startTime: 0,
         endTime: -1,
@@ -220,7 +224,10 @@ class Video extends React.Component<VideoProps, VideoState> {
         highlightedCharRange: [-1, -1]
       });
       this.player.pauseVideo();
-    } else if (!isEqual(nextProps.timeRange, this.props.timeRange)) {
+    } else if (
+      nextProps.timeRange &&
+      !isEqual(nextProps.timeRange, this.props.timeRange)
+    ) {
       // There is a time range and it's different than the previous range
       let charRange: [number, number] = this.getCharRange(
         nextProps.videoFact,
