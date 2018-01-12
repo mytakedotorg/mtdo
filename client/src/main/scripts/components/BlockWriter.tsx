@@ -66,9 +66,11 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
   constructor(props: BlockWriterProps) {
     super(props);
 
-    let blocks = [
-      (Object as any).assign({}, props.initState.takeDocument.blocks[0])
-    ];
+    let blocks = props.initState.takeDocument.blocks.map(
+      (block: TakeBlock, index: number) => {
+        return (Object as any).assign({}, block);
+      }
+    );
 
     this.state = {
       takeDocument: {
