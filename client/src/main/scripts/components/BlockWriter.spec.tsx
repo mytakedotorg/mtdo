@@ -42,6 +42,39 @@ test("Simple block writer model", () => {
   expect(tree).toMatchSnapshot();
 });
 
+const biggerInitState: InitialBlockWriterState = {
+  takeDocument: {
+    title: "00new take",
+    blocks: [
+      {
+        kind: "paragraph",
+        text: "Some text."
+      },
+      {
+        kind: "document",
+        excerptId: "o_dRqrNJ62wzlgLilTrLxkHqGmvAS9qTpa4z4pjyFqA=",
+        viewRange: [0, 218],
+        highlightedRange: [31, 42]
+      },
+      {
+        kind: "paragraph",
+        text: ""
+      }
+    ]
+  },
+  activeBlockIndex: 1,
+  parentRev: {
+    draftid: 11,
+    lastrevid: 11
+  }
+};
+
+test("Bigger block writer model", () => {
+  const tree = renderer
+    .create(<BlockWriter initState={biggerInitState} />)
+    .toJSON();
+  expect(tree).toMatchSnapshot();
+});
 // let wrapper: ReactWrapper;
 
 // describe("A series of editor actions", () => {

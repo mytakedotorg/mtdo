@@ -1,5 +1,122 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Bigger block writer model 1`] = `
+<div>
+  <BlockEditor
+    active={1}
+    eventHandlers={
+      Object {
+        "handleChange": [Function],
+        "handleDelete": [Function],
+        "handleEnterPress": [Function],
+        "handleFocus": [Function],
+      }
+    }
+    takeDocument={
+      Object {
+        "blocks": Array [
+          Object {
+            "kind": "paragraph",
+            "text": "Some text.",
+          },
+          Object {
+            "excerptId": "o_dRqrNJ62wzlgLilTrLxkHqGmvAS9qTpa4z4pjyFqA=",
+            "highlightedRange": Array [
+              31,
+              42,
+            ],
+            "kind": "document",
+            "viewRange": Array [
+              0,
+              218,
+            ],
+          },
+          Object {
+            "kind": "paragraph",
+            "text": "",
+          },
+        ],
+        "title": "00new take",
+      }
+    }
+  />
+  <div
+    className="editor__wrapper"
+  >
+    <div
+      className="editor__row"
+    >
+      <EditorButtons
+        eventHandlers={
+          Object {
+            "handleDeleteClick": [Function],
+            "handlePublishClick": [Function],
+            "handleSaveClick": [Function],
+          }
+        }
+        status={
+          Object {
+            "error": false,
+            "message": "",
+            "saved": true,
+            "saving": false,
+          }
+        }
+      />
+      <div
+        className="editor__share"
+      >
+        <ShareContainer
+          takeDocument={
+            Object {
+              "blocks": Array [
+                Object {
+                  "kind": "paragraph",
+                  "text": "Some text.",
+                },
+                Object {
+                  "excerptId": "o_dRqrNJ62wzlgLilTrLxkHqGmvAS9qTpa4z4pjyFqA=",
+                  "highlightedRange": Array [
+                    31,
+                    42,
+                  ],
+                  "kind": "document",
+                  "viewRange": Array [
+                    0,
+                    218,
+                  ],
+                },
+                Object {
+                  "kind": "paragraph",
+                  "text": "",
+                },
+              ],
+              "title": "00new take",
+            }
+          }
+        />
+      </div>
+    </div>
+    <p
+      className="timeline__instructions"
+    >
+      Add Facts to your Take from the timeline below.
+    </p>
+  </div>
+  <TimelineView
+    path="/drafts/new"
+    setFactHandlers={
+      Object {
+        "handleDocumentSetClick": [Function],
+        "handleRangeCleared": [Function],
+        "handleRangeSet": [Function],
+        "handleVideoSetClick": [Function],
+      }
+    }
+  />
+</div>
+`;
+
 exports[`Simple block writer model 1`] = `
 <div>
   <BlockEditor
