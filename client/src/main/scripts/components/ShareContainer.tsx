@@ -40,12 +40,23 @@ class ShareContainer extends React.Component<
         this.setState({
           emailSending: true
         });
-        sendEmail((Object as any).assign({}, this.props.takeDocument), () => {
-          this.setState({
-            emailSent: true,
-            emailSending: false
-          });
-        });
+
+        let url;
+        if (!window.location.pathname.startsWith(Routes.DRAFTS)) {
+          url = window.location.pathname;
+        } else {
+          url = null;
+        }
+        sendEmail(
+          (Object as any).assign({}, this.props.takeDocument),
+          url,
+          () => {
+            this.setState({
+              emailSent: true,
+              emailSending: false
+            });
+          }
+        );
       }
       event.preventDefault();
     } else {
