@@ -178,10 +178,7 @@ function getHighlightedNodes(
 function findAncestor(node: Node, className: string): Node | null {
   while (node.parentNode) {
     node = node.parentNode;
-    if (
-      (node as HTMLElement).className &&
-      (node as HTMLElement).className.indexOf(className) >= 0
-    ) {
+    if ((node as HTMLElement).classList.contains(className)) {
       return node;
     }
   }
@@ -547,7 +544,7 @@ function getContainer(
   }
 }
 
-interface SimpleRanges {
+export interface SimpleRanges {
   charRange: [number, number];
   wordRange: [number, number];
   viewRange: [number, number];
@@ -563,19 +560,8 @@ function getSimpleRangesFromHTMLRange(
   let endChildNode: Node | null;
   const isCaption = isCaptionNode(htmlRange);
   if (isCaption) {
-    if (
-      htmlRange.startContainer.parentNode &&
-      htmlRange.startContainer.parentNode.parentNode &&
-      htmlRange.endContainer.parentNode &&
-      htmlRange.endContainer.parentNode.parentNode
-    ) {
-      startChildNode =
-        htmlRange.startContainer.parentNode.parentNode.parentNode;
-      endChildNode = htmlRange.endContainer.parentNode.parentNode.parentNode;
-    } else {
-      alertErr("functions: Unexpected HTML structure");
-      throw "Unexpected HTML structure";
-    }
+    startChildNode = findAncestor(htmlRange.startContainer, "document__node");
+    endChildNode = findAncestor(htmlRange.endContainer, "document__node");
     classNames = [
       "document__row",
       "document__row-inner",
@@ -672,10 +658,10 @@ function getSimpleRangesFromHTMLRange(
   let viewEnd: number;
 
   if (startContainer.textContent) {
-    const textBeforeStart = startContainer.textContent.substring(
-      0,
-      htmlRange.startOffset
-    );
+    const preCaretRange = htmlRange.cloneRange();
+    preCaretRange.selectNodeContents(startContainer);
+    preCaretRange.setEnd(htmlRange.startContainer, htmlRange.startOffset);
+    const textBeforeStart = preCaretRange.toString();
     wordStart =
       wordCountBeforeSelection + textBeforeStart.split(" ").length - 1;
     charStart = charCountBeforeSelection + textBeforeStart.length;
@@ -686,10 +672,10 @@ function getSimpleRangesFromHTMLRange(
   }
 
   if (startContainer === endContainer && endContainer.textContent) {
-    const textBeforeEnd = endContainer.textContent.substr(
-      0,
-      htmlRange.endOffset
-    );
+    const preCaretRange = htmlRange.cloneRange();
+    preCaretRange.selectNodeContents(endContainer);
+    preCaretRange.setEnd(htmlRange.endContainer, htmlRange.endOffset);
+    const textBeforeEnd = preCaretRange.toString();
     wordEnd = wordCountBeforeSelection + textBeforeEnd.split(" ").length - 1;
     charEnd = charCountBeforeSelection + textBeforeEnd.length;
     viewEnd = charCountBeforeSelection + endContainer.textContent.length;
@@ -727,7 +713,10 @@ function getSimpleRangesFromHTMLRange(
     // Count words/chars at the end of the selection
     const textOfEndContainer = endContainer.textContent;
     if (textOfEndContainer) {
-      const textBeforeEnd = textOfEndContainer.substr(0, htmlRange.endOffset);
+      const preCaretRange = htmlRange.cloneRange();
+      preCaretRange.selectNodeContents(endContainer);
+      preCaretRange.setEnd(htmlRange.endContainer, htmlRange.endOffset);
+      const textBeforeEnd = preCaretRange.toString();
       wordEnd = wordCountBeforeSelection + textBeforeEnd.split(" ").length - 1;
       charEnd = charCountBeforeSelection + textBeforeEnd.length;
       viewEnd = charCountBeforeSelection + textOfEndContainer.length;
