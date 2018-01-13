@@ -90,5 +90,17 @@ public class AuthModule implements Jooby.Module {
 					.param(LOGIN_REASON, err.getCause().getMessage())
 					.build());
 		});
+		// page for tinfoil agent to gain access
+		env.router().get(TinfoilLoginForm.URL, req -> {
+			MetaFormValidation login = MetaFormValidation.empty(TinfoilLoginForm.class);
+			return views.Auth.tinfoilLogin.template(login.markup(TinfoilLoginForm.URL));
+		});
+		env.router().post(TinfoilLoginForm.URL, (req, rsp) -> {
+			List<MetaFormValidation> validations = MetaFormDef.HandleValid.validation(req, rsp, TinfoilLoginForm.class);
+			if (!validations.isEmpty()) {
+				MetaFormValidation login = validations.get(0);
+				rsp.send(views.Auth.tinfoilLogin.template(login.markup(TinfoilLoginForm.URL)));
+			}
+		});
 	}
 }
