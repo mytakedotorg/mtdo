@@ -13,7 +13,7 @@
 				@login.formError()
 				@login.openForm("class", "form form--create")
 					@login.field(TinfoilLoginForm.USERNAME).label("Username", "class", "form__label form__label--username").errorSpan("class", "form__error").input("text", "class", "form__input form__input--username")
-					@login.field(TinfoilLoginForm.PASSWORD).label("Password", "class", "form__label form__label--email").errorSpan("class", "form__error").input("email", "class", "form__input form__input--email")
+					@login.field(TinfoilLoginForm.PASSWORD).label("Password", "class", "form__label form__label--email").errorSpan("class", "form__error").input("password", "class", "form__input")
 					<input type="submit" class="form__submit form__submit--red" value="Login" />
 				@login.closeForm()
 			</div>
