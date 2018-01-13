@@ -210,7 +210,12 @@ export default class TimelinePreview extends React.Component<
 
       // Get the scrollTop value of the top most HTML element containing the same highlighted nodes
       let theseDOMNodes = ReactDOM.findDOMNode(this).childNodes;
-      let offsetTop = this.getScrollTop();
+      let offsetTop;
+      if (nextProps && nextProps.ranges) {
+        offsetTop = this.getScrollTop(nextProps.ranges.highlightedRange);
+      } else {
+        offsetTop = this.getScrollTop();
+      }
 
       // Scroll the Document to this offset
       let scrollTop = offsetTop + FactHeader.headerHeight;
