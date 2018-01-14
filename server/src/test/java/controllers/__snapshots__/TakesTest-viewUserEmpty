@@ -11,7 +11,7 @@
 <meta name="author" content="MyTake.org">
 
 <link rel="stylesheet" href="/assets-dev/styles/main.css">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Merriweather:400,400i,700|Source+Sans+Pro:300,400,700" integrity="sha384-7zLO8geAHvT3JEh4LlzmFW65e/bYDHQCZrta6XsA7qv2aET01Wy48uDbo7WpoPzv" crossorigin="anonymous">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Merriweather:400,400i,700|Source+Sans+Pro:300,400,700" crossorigin="anonymous">
 <script src="https://use.fontawesome.com/be03d6dcba.js"></script>
 <!--[if lt IE 9]>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
