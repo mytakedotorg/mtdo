@@ -12,6 +12,7 @@ import {
   SimpleRanges
 } from "../utils/functions";
 import { Foundation } from "../java2ts/Foundation";
+import { Routes } from "../java2ts/Routes";
 
 export interface EventHandlers {
   onHighlight: (
@@ -276,9 +277,20 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
             nodes={this.state.highlightedNodes}
           />
         ) : (
-          <p className="video__instructions">
-            We're still working on adding captions for this video
-          </p>
+          <div className="video__actions">
+            <p className="video__instructions">
+              For now, we only have captions for{" "}
+              <a
+                href={Routes.FOUNDATION_V1 + "/donald-trump-hillary-clinton-23"}
+              >
+                Trump/Hillary 2
+              </a>{" "}
+              and{" "}
+              <a href={Routes.FOUNDATION_V1 + "/jimmy-carter-gerald-ford-23"}>
+                Carter/Ford 2
+              </a>.
+            </p>
+          </div>
         )}
       </div>
     );
