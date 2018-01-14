@@ -38,6 +38,16 @@ public class JoobyDevRule extends ExternalResource {
 		});
 	}
 
+	/** To prevent noise from moderator emails. */
+	public static JoobyDevRule initialDataNoMods() {
+		return new JoobyDevRule(new Dev(), app -> {
+			try (DSLContext dsl = app.dsl()) {
+				InitialData.init(dsl, app.app().require(Time.class));
+				dsl.deleteFrom(db.Tables.MODERATOR).execute();
+			}
+		});
+	}
+
 	public JoobyDevRule(Jooby app) {
 		this(app, unused -> {});
 	}

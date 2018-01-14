@@ -1,0 +1,11 @@
+@args(String username)
+
+@views.base.template("Already logged in", "You're already logged in") -> {
+<section class="section">
+	<div class="section__inner">
+		<p class="section__text">
+			Your <strong class="section__strong">@username</strong> account has already been confirmed, and you are logged in.
+		</p>
+	</div>
+</section>
+}

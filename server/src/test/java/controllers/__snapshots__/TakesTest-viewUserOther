@@ -11,7 +11,7 @@
 <meta name="author" content="MyTake.org">
 
 <link rel="stylesheet" href="/assets-dev/styles/main.css">
-<link href="https://fonts.googleapis.com/css?family=Merriweather:400,400i,700|Source+Sans+Pro:300,400,700" rel="stylesheet">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Merriweather:400,400i,700|Source+Sans+Pro:300,400,700" integrity="sha384-7zLO8geAHvT3JEh4LlzmFW65e/bYDHQCZrta6XsA7qv2aET01Wy48uDbo7WpoPzv" crossorigin="anonymous">
 <script src="https://use.fontawesome.com/be03d6dcba.js"></script>
 <!--[if lt IE 9]>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
@@ -106,9 +106,5 @@
 </footer>
 <div class="fade-overlay"></div>
 <script type="text/javascript" src="/assets-dev/scripts/window.bundle.js"></script>
-<script type="text/javascript">
-(function() { var s = document.createElement("script"); s.type = "text/javascript"; s.async = true; s.src = '//api.usersnap.com/load/9e09b129-6a59-485b-9003-cb6c38e3cc1f.js';
-var x = document.getElementsByTagName('script')[0]; x.parentNode.insertBefore(s, x); })();
-</script>
 </body>
 </html>
