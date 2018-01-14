@@ -8,9 +8,11 @@ import {
   getSimpleRangesFromHTMLRange,
   getWordCount,
   highlightText,
-  FoundationNode
+  FoundationNode,
+  SimpleRanges
 } from "../utils/functions";
 import { Foundation } from "../java2ts/Foundation";
+import { Routes } from "../java2ts/Routes";
 
 export interface EventHandlers {
   onHighlight: (
@@ -41,6 +43,8 @@ interface CaptionViewState {
 
 class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
   private document: Document;
+  private unhighlightedNodes: FoundationNode[];
+  private simpleRanges: SimpleRanges | null;
   constructor(props: CaptionViewProps) {
     super(props);
 
@@ -53,7 +57,7 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
     nextPropsVideoFact?: Foundation.VideoFactContent,
     nextPropsCaptionIsHighlighted?: boolean,
     nextPropsHighlightedCharRange?: [number, number]
-  ) => {
+  ): FoundationNode[] => {
     let captionIsHighlighted: boolean;
     let highlightedCharRange: [number, number] | undefined;
     let transcript: Foundation.CaptionWord[] | undefined;
@@ -81,6 +85,7 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
 
     if (transcript && speakerMap) {
       let captionNodes = getCaptionNodeArray(transcript, speakerMap);
+      const unhighlightedNodes = [...captionNodes];
       if (captionIsHighlighted && highlightedCharRange) {
         captionNodes = highlightText(
           captionNodes,
@@ -91,11 +96,13 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
       this.setState({
         highlightedNodes: captionNodes
       });
+      return unhighlightedNodes;
     } else {
       this.setState({
         highlightedNodes: undefined
       });
       console.warn("Captions not yet done for this video");
+      return [];
     }
   };
   handleClearClick = () => {
@@ -115,7 +122,7 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
   handleMouseUp = () => {
     const transcript = this.props.videoFact.transcript;
     if (transcript) {
-      if (window.getSelection && !this.props.captionIsHighlighted) {
+      if (window.getSelection) {
         // Pre IE9 will always be false
         const selection: Selection = window.getSelection();
         if (selection.toString().length) {
@@ -127,24 +134,19 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
             ReactDOM.findDOMNode(this.document).childNodes
           );
 
-          const newNodes = highlightText(
-            [...this.document.getDocumentNodes()],
-            simpleRanges.charRange,
-            () => {}
-          );
-
-          this.setState({
-            highlightedNodes: newNodes
-          });
-
-          let startTime = transcript[simpleRanges.wordRange[0]].timestamp;
-          let endTime = transcript[simpleRanges.wordRange[1]].timestamp;
-
-          this.props.eventHandlers.onHighlight(
-            [startTime, endTime],
-            simpleRanges.charRange
-          );
+          if (this.props.captionIsHighlighted) {
+            // Must clear existing highlights before adding new ones
+            // Store the ranges for use in next componentDidUpdate
+            this.simpleRanges = (Object as any).assign({}, simpleRanges);
+            // Clear all highlights
+            this.setState({
+              highlightedNodes: [...this.unhighlightedNodes]
+            });
+          } else {
+            this.highlightNodes(simpleRanges);
+          }
         } else if (selection) {
+          // Text was clicked, but not selected
           let wordCount = getWordCount(selection);
           let videoTime = transcript[wordCount].timestamp;
           this.props.eventHandlers.onCursorPlace(videoTime);
@@ -152,9 +154,39 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
       }
     }
   };
+  highlightNodes(simpleRanges: SimpleRanges) {
+    const transcript = this.props.videoFact.transcript;
+    if (transcript) {
+      const newNodes = highlightText(
+        [...this.document.getDocumentNodes()],
+        simpleRanges.charRange,
+        () => {}
+      );
+
+      this.setState({
+        highlightedNodes: newNodes
+      });
+
+      let startTime = transcript[simpleRanges.wordRange[0]].timestamp;
+      let endTime = transcript[simpleRanges.wordRange[1]].timestamp;
+
+      this.props.eventHandlers.onHighlight(
+        [startTime, endTime],
+        simpleRanges.charRange
+      );
+    }
+  }
   componentDidMount() {
     if (this.props.videoFact.youtubeId) {
-      this.getCaptionData();
+      this.unhighlightedNodes = this.getCaptionData();
+    }
+  }
+  componentDidUpdate() {
+    if (this.simpleRanges) {
+      // A new selection was made, highlight nodes...
+      this.highlightNodes(this.simpleRanges);
+      // ...and clear the temporarily stored ranges
+      this.simpleRanges = null;
     }
   }
   componentWillReceiveProps(nextProps: CaptionViewProps) {
@@ -245,9 +277,20 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
             nodes={this.state.highlightedNodes}
           />
         ) : (
-          <p className="video__instructions">
-            We're still working on adding captions for this video
-          </p>
+          <div className="video__actions">
+            <p className="video__instructions">
+              For now, we only have captions for{" "}
+              <a
+                href={Routes.FOUNDATION_V1 + "/donald-trump-hillary-clinton-23"}
+              >
+                Trump/Hillary 2
+              </a>{" "}
+              and{" "}
+              <a href={Routes.FOUNDATION_V1 + "/jimmy-carter-gerald-ford-23"}>
+                Carter/Ford 2
+              </a>.
+            </p>
+          </div>
         )}
       </div>
     );
