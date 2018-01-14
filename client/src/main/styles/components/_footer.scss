@@ -7,7 +7,7 @@
   line-height: 35px;
 }
 .footer__nav {
-  @media #{$mq-small} {
+  @media only screen and (min-width: 481px) {
     display: flex;
     justify-content: space-between;
   }

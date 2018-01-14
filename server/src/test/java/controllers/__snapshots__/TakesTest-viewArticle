@@ -81,6 +81,7 @@ window.mytake = {
 			<li class="nav__list-item nav__list-item--bottom1"><a class="nav__link nav__link--bottom" href="/drafts/new" tabindex="6"><span class="nav__link-text nav__link-text--bottom">Give your Take</span></a></li>
 		</ul>
 		<ul class="nav__list nav__list--bottom2">
+			<li class="nav__list-item nav__list-item--bottom2"><a class="nav__link nav__link--bottom" href="/faq" tabindex="7"><span class="nav__link-text nav__link-text--bottom">Frequently Asked Questions</span></a></li>
 			<li class="nav__list-item nav__list-item--bottom2"><a class="nav__link nav__link--bottom" href="/about" tabindex="7"><span class="nav__link-text nav__link-text--bottom">About us</span></a></li>
 		</ul>
 		<ul class="nav__list nav__list--bottom3">
