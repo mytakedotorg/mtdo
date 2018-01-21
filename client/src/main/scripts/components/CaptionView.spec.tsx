@@ -1,14 +1,18 @@
 import * as React from "react";
 import * as renderer from "react-test-renderer";
 import {} from "jest";
-import CaptionView, { EventHandlers } from "./CaptionView";
+import CaptionView, { CaptionViewEventHandlers } from "./CaptionView";
 import { videoFact } from "../utils/testUtils";
 
 jest.mock("./Document", () => ({
   default: "Document"
 }));
 
-const eventHandlers: EventHandlers = {
+jest.mock("./ClipEditor", () => ({
+  default: "ClipEditor"
+}));
+
+const eventHandlers: CaptionViewEventHandlers = {
   onHighlight: jest.fn(),
   onClearPress: jest.fn(),
   onCursorPlace: jest.fn(),

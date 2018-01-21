@@ -506,105 +506,17 @@ exports[`CaptionTextNodeList with highlights from props 1`] = `
 <div
   className="captions"
 >
-  <div
-    className="video__actions"
-  >
-    <div
-      className="video__action"
-    >
-      <p
-        className="video__instructions"
-      >
-        Fine tune your clip
-      </p>
-      <button
-        className="video__button video__button--bottom"
-        onClick={[Function]}
-      >
-        Clear Selection
-      </button>
-    </div>
-    <div
-      className="video__action"
-    >
-      <div
-        className="video__tuning"
-      >
-        <div
-          className="video__action"
-        >
-          <p
-            className="video__instructions"
-          >
-            Start Time
-          </p>
-          <div
-            className="video__tuning-buttons"
-          >
-            <button
-              className="video__button video__button--small"
-              onClick={[Function]}
-            >
-              <i
-                aria-hidden="true"
-                className="fa fa-arrow-down"
-              />
-            </button>
-            <span
-              className="video__time"
-            >
-              5.3
-            </span>
-            <button
-              className="video__button video__button--small"
-              onClick={[Function]}
-            >
-              <i
-                aria-hidden="true"
-                className="fa fa-arrow-up"
-              />
-            </button>
-          </div>
-        </div>
-        <div
-          className="video__action"
-        >
-          <p
-            className="video__instructions"
-          >
-            End Time
-          </p>
-          <div
-            className="video__tuning-buttons"
-          >
-            <button
-              className="video__button video__button--small"
-              onClick={[Function]}
-            >
-              <i
-                aria-hidden="true"
-                className="fa fa-arrow-down"
-              />
-            </button>
-            <span
-              className="video__time"
-            >
-              7.2
-            </span>
-            <button
-              className="video__button video__button--small"
-              onClick={[Function]}
-            >
-              <i
-                aria-hidden="true"
-                className="fa fa-arrow-up"
-              />
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+  <ClipEditor
+    endTime="7.2"
+    eventHandlers={
+      Object {
+        "onClearPress": [Function],
+        "onFineTuneDown": [Function],
+        "onFineTuneUp": [Function],
+      }
+    }
+    startTime="5.3"
+  />
   <Document
     captionData={
       Object {
