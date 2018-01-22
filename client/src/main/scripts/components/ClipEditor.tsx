@@ -1,15 +1,19 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
+import { Range } from "rc-slider";
+import { convertSecondsToTimestamp } from "../utils/functions";
 
-interface ClipEditorEventHandlers {
-  onClearPress: () => void;
+export interface ClipEditorEventHandlers {
+  onClearPress: () => any;
+  onRangeChange: (range: [number, number]) => any;
   onFineTuneUp: (rangeIdx: 0 | 1) => void;
   onFineTuneDown: (rangeIdx: 0 | 1) => void;
 }
 
 interface ClipEditorProps {
-  startTime: string;
-  endTime: string;
+  clipStart: number;
+  clipEnd: number;
+  videoDuration: number;
   eventHandlers: ClipEditorEventHandlers;
 }
 
@@ -21,9 +25,19 @@ class ClipEditor extends React.Component<ClipEditorProps, ClipEditorState> {
 
     this.state = {};
   }
+  handleRangeChange = (value: [number, number]) => {
+    this.props.eventHandlers.onRangeChange(value);
+  };
   render() {
+    const startTime = convertSecondsToTimestamp(this.props.clipStart);
+    const endTime = convertSecondsToTimestamp(this.props.clipEnd);
     return (
       <div className="video__actions">
+        <Range
+          defaultValue={[0, this.props.videoDuration]}
+          max={this.props.videoDuration}
+          onAfterChange={this.handleRangeChange}
+        />
         <div className="video__action">
           <p className="video__instructions">Fine tune your clip</p>
           <button
@@ -44,7 +58,7 @@ class ClipEditor extends React.Component<ClipEditorProps, ClipEditorState> {
                 >
                   <i className="fa fa-arrow-down" aria-hidden="true" />
                 </button>
-                <span className="video__time">{this.props.startTime}</span>
+                <span className="video__time">{startTime}</span>
                 <button
                   className="video__button video__button--small"
                   onClick={() => this.props.eventHandlers.onFineTuneUp(0)}
@@ -62,7 +76,7 @@ class ClipEditor extends React.Component<ClipEditorProps, ClipEditorState> {
                 >
                   <i className="fa fa-arrow-down" aria-hidden="true" />
                 </button>
-                <span className="video__time">{this.props.endTime}</span>
+                <span className="video__time">{endTime}</span>
                 <button
                   className="video__button video__button--small"
                   onClick={() => this.props.eventHandlers.onFineTuneUp(1)}

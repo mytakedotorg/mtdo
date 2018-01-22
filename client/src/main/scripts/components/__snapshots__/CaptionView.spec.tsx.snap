@@ -4,6 +4,19 @@ exports[`CaptionTextNodeList 1`] = `
 <div
   className="captions"
 >
+  <ClipEditor
+    clipEnd={-1}
+    clipStart={0}
+    eventHandlers={
+      Object {
+        "onClearPress": [Function],
+        "onFineTuneDown": [Function],
+        "onFineTuneUp": [Function],
+        "onRangeChange": [Function],
+      }
+    }
+    videoDuration={5224}
+  />
   <Document
     captionData={
       Object {
@@ -507,15 +520,17 @@ exports[`CaptionTextNodeList with highlights from props 1`] = `
   className="captions"
 >
   <ClipEditor
-    endTime="7.2"
+    clipEnd={7.2}
+    clipStart={5.31}
     eventHandlers={
       Object {
         "onClearPress": [Function],
         "onFineTuneDown": [Function],
         "onFineTuneUp": [Function],
+        "onRangeChange": [Function],
       }
     }
-    startTime="5.3"
+    videoDuration={5224}
   />
   <Document
     captionData={

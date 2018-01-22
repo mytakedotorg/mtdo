@@ -3,7 +3,7 @@ import YouTube from "react-youtube";
 import isEqual = require("lodash/isEqual");
 import { getCharRangeFromVideoRange } from "../utils/functions";
 import { Foundation } from "../java2ts/Foundation";
-import CaptionView from "./CaptionView";
+import CaptionView, { CaptionViewEventHandlers } from "./CaptionView";
 import { Routes } from "../java2ts/Routes";
 
 interface YTPlayerParameters {
@@ -31,6 +31,7 @@ interface VideoState {
   currentTime: number;
   startTime: number;
   endTime: number;
+  duration: number;
   captionIsHighlighted: boolean;
   highlightedCharRange: [number, number];
 }
@@ -49,7 +50,8 @@ class Video extends React.Component<VideoProps, VideoState> {
     this.state = {
       currentTime: props.timeRange ? props.timeRange[0] : 0,
       startTime: props.timeRange ? props.timeRange[0] : 0,
-      endTime: props.timeRange ? props.timeRange[1] : -1,
+      endTime: props.timeRange ? props.timeRange[1] : 0,
+      duration: 5224,
       captionIsHighlighted:
         charRange[0] === -1 && charRange[1] === -1 ? false : true,
       highlightedCharRange: charRange
@@ -143,6 +145,16 @@ class Video extends React.Component<VideoProps, VideoState> {
       currentTime: Math.round(event.target.getCurrentTime())
     });
   };
+  handleRangeChange = (range: [number, number]) => {
+    // Get highlighted character range from the video time range
+    // All fine tunings are lost after a range change.
+    // If range is at max, set captionIsHighlighted to false
+    this.setState({
+      startTime: range[0],
+      endTime: range[1],
+      captionIsHighlighted: true
+    });
+  };
   handleReady = (event: any) => {
     this.player = event.target;
     this.cueVideo();
@@ -219,7 +231,7 @@ class Video extends React.Component<VideoProps, VideoState> {
       // No time range and on a /foundation route or sub-route
       this.setState({
         startTime: 0,
-        endTime: -1,
+        endTime: 0,
         captionIsHighlighted: false,
         highlightedCharRange: [-1, -1]
       });
@@ -234,14 +246,14 @@ class Video extends React.Component<VideoProps, VideoState> {
         nextProps.timeRange
       );
 
-      this.state = {
+      this.setState({
         currentTime: nextProps.timeRange[0],
         startTime: nextProps.timeRange[0],
         endTime: nextProps.timeRange[1],
         captionIsHighlighted:
           charRange[0] === -1 && charRange[1] === -1 ? false : true,
         highlightedCharRange: charRange
-      };
+      });
     }
   }
   render() {
@@ -257,7 +269,7 @@ class Video extends React.Component<VideoProps, VideoState> {
 
     playerVars.start = this.state.startTime;
     if (this.state.captionIsHighlighted) {
-      if (this.state.endTime >= 0) {
+      if (this.state.endTime > 0) {
         playerVars.end = this.state.endTime;
       }
     }
@@ -268,12 +280,13 @@ class Video extends React.Component<VideoProps, VideoState> {
       playerVars: playerVars
     };
 
-    const captionEventHandlers = {
+    const captionEventHandlers: CaptionViewEventHandlers = {
       onHighlight: this.handleCaptionHighlight,
       onClearPress: this.handleClearClick,
       onCursorPlace: this.handleCursorPlacement,
       onFineTuneUp: this.handleFineTuneUp,
-      onFineTuneDown: this.handleFineTuneDown
+      onFineTuneDown: this.handleFineTuneDown,
+      onRangeChange: this.handleRangeChange
     };
 
     return (
@@ -312,8 +325,9 @@ class Video extends React.Component<VideoProps, VideoState> {
             timer={this.state.currentTime}
             videoFact={this.props.videoFact}
             captionIsHighlighted={this.state.captionIsHighlighted}
-            videoStart={this.state.startTime}
-            videoEnd={this.state.endTime}
+            clipStart={this.state.startTime}
+            clipEnd={this.state.endTime}
+            videoDuration={this.state.duration}
             eventHandlers={captionEventHandlers}
             highlightedCharRange={this.state.highlightedCharRange}
           />

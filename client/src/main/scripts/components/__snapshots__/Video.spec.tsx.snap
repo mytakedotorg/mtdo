@@ -45,6 +45,8 @@ exports[`Video 1`] = `
     </div>
     <CaptionView
       captionIsHighlighted={false}
+      clipEnd={0}
+      clipStart={0}
       eventHandlers={
         Object {
           "onClearPress": [Function],
@@ -52,6 +54,7 @@ exports[`Video 1`] = `
           "onFineTuneDown": [Function],
           "onFineTuneUp": [Function],
           "onHighlight": [Function],
+          "onRangeChange": [Function],
         }
       }
       highlightedCharRange={
@@ -61,7 +64,7 @@ exports[`Video 1`] = `
         ]
       }
       timer={0}
-      videoEnd={-1}
+      videoDuration={5224}
       videoFact={
         Object {
           "fact": Object {
@@ -551,7 +554,6 @@ exports[`Video 1`] = `
           "youtubeId": "ApTLB76Nmdg",
         }
       }
-      videoStart={0}
     />
   </div>
 </div>
@@ -609,6 +611,8 @@ exports[`Video with highlights 1`] = `
     </div>
     <CaptionView
       captionIsHighlighted={true}
+      clipEnd={3}
+      clipStart={0}
       eventHandlers={
         Object {
           "onClearPress": [Function],
@@ -616,6 +620,7 @@ exports[`Video with highlights 1`] = `
           "onFineTuneDown": [Function],
           "onFineTuneUp": [Function],
           "onHighlight": [Function],
+          "onRangeChange": [Function],
         }
       }
       highlightedCharRange={
@@ -625,7 +630,7 @@ exports[`Video with highlights 1`] = `
         ]
       }
       timer={0}
-      videoEnd={3}
+      videoDuration={5224}
       videoFact={
         Object {
           "fact": Object {
@@ -1115,7 +1120,6 @@ exports[`Video with highlights 1`] = `
           "youtubeId": "ApTLB76Nmdg",
         }
       }
-      videoStart={0}
     />
   </div>
 </div>

@@ -2,9 +2,8 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import isEqual = require("lodash/isEqual");
 import Document from "./Document";
-import ClipEditor from "./ClipEditor";
+import ClipEditor, { ClipEditorEventHandlers } from "./ClipEditor";
 import {
-  convertSecondsToTimestamp,
   getCaptionNodeArray,
   getSimpleRangesFromHTMLRange,
   getWordCount,
@@ -24,20 +23,21 @@ export interface CaptionViewEventHandlers {
   onCursorPlace: (videoTime: number) => void;
   onFineTuneUp: (rangeIdx: 0 | 1) => void;
   onFineTuneDown: (rangeIdx: 0 | 1) => void;
+  onRangeChange: (range: [number, number]) => any;
 }
 
 interface CaptionViewProps {
   videoFact: Foundation.VideoFactContent;
   timer: number;
   captionIsHighlighted: boolean;
-  videoStart: number;
-  videoEnd: number;
+  clipStart: number;
+  clipEnd: number;
+  videoDuration: number;
   eventHandlers: CaptionViewEventHandlers;
   highlightedCharRange?: [number, number];
 }
 
 interface CaptionViewState {
-  viewRange: [number, number];
   highlightedNodes?: FoundationNode[];
   currentIndex: number;
 }
@@ -50,7 +50,6 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
     super(props);
 
     this.state = {
-      viewRange: [0, 0],
       currentIndex: 0
     };
   }
@@ -204,27 +203,24 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
     }
   }
   render() {
-    const startTime = convertSecondsToTimestamp(this.props.videoStart);
-    const endTime = convertSecondsToTimestamp(this.props.videoEnd);
-
     const transcript = this.props.videoFact.transcript;
     const speakerMap = this.props.videoFact.speakerMap;
 
-    const clipEditorEventHandlers = {
-      onClearPress: this.handleClearClick,
+    const clipEditorEventHandlers: ClipEditorEventHandlers = {
+      onClearPress: this.props.eventHandlers.onClearPress,
       onFineTuneDown: this.props.eventHandlers.onFineTuneDown,
-      onFineTuneUp: this.props.eventHandlers.onFineTuneUp
+      onFineTuneUp: this.props.eventHandlers.onFineTuneUp,
+      onRangeChange: this.props.eventHandlers.onRangeChange
     };
 
     return (
       <div className="captions">
-        {this.props.captionIsHighlighted ? (
-          <ClipEditor
-            eventHandlers={clipEditorEventHandlers}
-            startTime={startTime}
-            endTime={endTime}
-          />
-        ) : null}
+        <ClipEditor
+          eventHandlers={clipEditorEventHandlers}
+          clipStart={this.props.clipStart}
+          clipEnd={this.props.clipEnd}
+          videoDuration={this.props.videoDuration}
+        />
         {transcript && speakerMap && this.state.highlightedNodes ? (
           <Document
             onMouseUp={this.handleMouseUp}
