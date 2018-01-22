@@ -58,6 +58,8 @@ exports[`Video 1`] = `
           "onPlayPausePress": [Function],
           "onRangeChange": [Function],
           "onRestartPress": [Function],
+          "onSkipBackPress": [Function],
+          "onSkipForwardPress": [Function],
         }
       }
       highlightedCharRange={
@@ -628,6 +630,8 @@ exports[`Video with highlights 1`] = `
           "onPlayPausePress": [Function],
           "onRangeChange": [Function],
           "onRestartPress": [Function],
+          "onSkipBackPress": [Function],
+          "onSkipForwardPress": [Function],
         }
       }
       highlightedCharRange={

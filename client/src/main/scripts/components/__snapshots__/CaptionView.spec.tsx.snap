@@ -16,6 +16,8 @@ exports[`CaptionTextNodeList 1`] = `
         "onPlayPausePress": [Function],
         "onRangeChange": [Function],
         "onRestartPress": [Function],
+        "onSkipBackPress": [Function],
+        "onSkipForwardPress": [Function],
       }
     }
     isPaused={true}
@@ -535,6 +537,8 @@ exports[`CaptionTextNodeList with highlights from props 1`] = `
         "onPlayPausePress": [Function],
         "onRangeChange": [Function],
         "onRestartPress": [Function],
+        "onSkipBackPress": [Function],
+        "onSkipForwardPress": [Function],
       }
     }
     isPaused={true}

@@ -20,7 +20,9 @@ const eventHandlers: CaptionViewEventHandlers = {
   onFineTuneUp: jest.fn(),
   onPlayPausePress: jest.fn(),
   onRangeChange: jest.fn(),
-  onRestartPress: jest.fn()
+  onRestartPress: jest.fn(),
+  onSkipBackPress: jest.fn(),
+  onSkipForwardPress: jest.fn()
 };
 
 test("CaptionTextNodeList", () => {
