@@ -1,0 +1,56 @@
+.clipEditor {
+  @include clearfix;
+  width: $video-container-width;
+  max-width: 100%;
+  margin: 15px auto;
+}
+.clipEditor__actions {
+  width: 100%;
+}
+.clipEditor__actions--range {
+  height: 35px;
+}
+.clipEditor__actions--controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.clipEditor__actions--zoom {
+  text-align: center;
+}
+.clipEditor__text {
+  color: palette(video, text);
+  @include body;
+}
+.clipEditor__text--min,
+.clipEditor__text--max {
+  width: 68px;
+}
+.clipEditor__button {
+  @include button--borderless;
+  @include button;
+}
+.video__tuning-buttons {
+  float: left;
+  padding-top: 6px;
+}
+.video__button--small {
+  @include button--small;
+  float: left;
+  padding: 2px 5px;
+  width: 21px;
+  text-align: center;
+  border: none;
+  color: palette(button, color--base);
+  background: palette(button, background--base);
+  &:hover {
+    background: palette(button, background--base-hover);
+  }
+}
+
+.video__time {
+  float: left;
+  @include body--small;
+  margin-left: 2px;
+  margin-right: 2px;
+}

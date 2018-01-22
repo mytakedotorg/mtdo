@@ -23,7 +23,9 @@ export interface CaptionViewEventHandlers {
   onCursorPlace: (videoTime: number) => void;
   onFineTuneUp: (rangeIdx: 0 | 1) => void;
   onFineTuneDown: (rangeIdx: 0 | 1) => void;
+  onPlayPausePress: () => any;
   onRangeChange: (range: [number, number]) => any;
+  onRestartPress: () => any;
 }
 
 interface CaptionViewProps {
@@ -32,6 +34,7 @@ interface CaptionViewProps {
   captionIsHighlighted: boolean;
   clipStart: number;
   clipEnd: number;
+  isPaused: boolean;
   videoDuration: number;
   eventHandlers: CaptionViewEventHandlers;
   highlightedCharRange?: [number, number];
@@ -210,7 +213,9 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
       onClearPress: this.props.eventHandlers.onClearPress,
       onFineTuneDown: this.props.eventHandlers.onFineTuneDown,
       onFineTuneUp: this.props.eventHandlers.onFineTuneUp,
-      onRangeChange: this.props.eventHandlers.onRangeChange
+      onPlayPausePress: this.props.eventHandlers.onPlayPausePress,
+      onRangeChange: this.props.eventHandlers.onRangeChange,
+      onRestartPress: this.props.eventHandlers.onRestartPress
     };
 
     return (
@@ -219,6 +224,8 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
           eventHandlers={clipEditorEventHandlers}
           clipStart={this.props.clipStart}
           clipEnd={this.props.clipEnd}
+          currentTime={this.props.timer}
+          isPaused={this.props.isPaused}
           videoDuration={this.props.videoDuration}
         />
         {transcript && speakerMap && this.state.highlightedNodes ? (

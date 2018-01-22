@@ -10,6 +10,7 @@ interface YTPlayerParameters {
   rel: number;
   cc_load_policy: number;
   cc_lang_pref: string;
+  controls: number;
   start?: number;
   end?: number;
   autoplay: number;
@@ -32,6 +33,7 @@ interface VideoState {
   startTime: number;
   endTime: number;
   duration: number;
+  isPaused: boolean;
   captionIsHighlighted: boolean;
   highlightedCharRange: [number, number];
 }
@@ -51,6 +53,7 @@ class Video extends React.Component<VideoProps, VideoState> {
       currentTime: props.timeRange ? props.timeRange[0] : 0,
       startTime: props.timeRange ? props.timeRange[0] : 0,
       endTime: props.timeRange ? props.timeRange[1] : 0,
+      isPaused: true,
       duration: 5224,
       captionIsHighlighted:
         charRange[0] === -1 && charRange[1] === -1 ? false : true,
@@ -140,7 +143,20 @@ class Video extends React.Component<VideoProps, VideoState> {
       }
     }
   };
+  handlePlayPausePress = () => {
+    // External play/pause button was pressed
+    const isPaused = this.state.isPaused;
+    if (isPaused) {
+      this.player.playVideo();
+    } else {
+      this.player.pauseVideo();
+    }
+    this.setState({
+      isPaused: !isPaused
+    });
+  };
   handlePause = (event: any) => {
+    // Player was paused with player controls
     this.setState({
       currentTime: Math.round(event.target.getCurrentTime())
     });
@@ -159,6 +175,20 @@ class Video extends React.Component<VideoProps, VideoState> {
     this.player = event.target;
     this.cueVideo();
   };
+  handleRestartPress = () => {
+    if (this.state.captionIsHighlighted) {
+      const clipStart = this.state.startTime;
+      this.setState({
+        currentTime: clipStart
+      });
+      this.player.seekTo(clipStart);
+    } else {
+      this.setState({
+        currentTime: 0
+      });
+      this.player.seekTo(0);
+    }
+  };
   handleSetClick = () => {
     if (this.state.endTime > this.state.startTime) {
       this.props.onSetClick([this.state.startTime, this.state.endTime]);
@@ -173,19 +203,22 @@ class Video extends React.Component<VideoProps, VideoState> {
       // Video playing
       this.startTimer();
       this.setState({
-        currentTime: Math.round(event.target.getCurrentTime())
+        currentTime: Math.round(event.target.getCurrentTime()),
+        isPaused: false
       });
     } else if (event.data === 2) {
       // Video paused
       this.stopTimer();
       this.setState({
-        currentTime: Math.round(event.target.getCurrentTime())
+        currentTime: Math.round(event.target.getCurrentTime()),
+        isPaused: true
       });
     } else if (event.data === 3) {
       // Video buffering
       this.stopTimer();
       this.setState({
-        currentTime: Math.round(event.target.getCurrentTime())
+        currentTime: Math.round(event.target.getCurrentTime()),
+        isPaused: false
       });
     }
   };
@@ -222,7 +255,8 @@ class Video extends React.Component<VideoProps, VideoState> {
       }
       this.setState({
         highlightedCharRange: charRange,
-        captionIsHighlighted: isHighlighted
+        captionIsHighlighted: isHighlighted,
+        isPaused: true
       });
     } else if (
       !nextProps.timeRange &&
@@ -233,7 +267,8 @@ class Video extends React.Component<VideoProps, VideoState> {
         startTime: 0,
         endTime: 0,
         captionIsHighlighted: false,
-        highlightedCharRange: [-1, -1]
+        highlightedCharRange: [-1, -1],
+        isPaused: true
       });
       this.player.pauseVideo();
     } else if (
@@ -261,6 +296,7 @@ class Video extends React.Component<VideoProps, VideoState> {
       rel: 0,
       cc_load_policy: 1,
       cc_lang_pref: "en",
+      controls: 0,
       playsinline: 1,
       autoplay: 1,
       showinfo: 0,
@@ -286,7 +322,9 @@ class Video extends React.Component<VideoProps, VideoState> {
       onCursorPlace: this.handleCursorPlacement,
       onFineTuneUp: this.handleFineTuneUp,
       onFineTuneDown: this.handleFineTuneDown,
-      onRangeChange: this.handleRangeChange
+      onPlayPausePress: this.handlePlayPausePress,
+      onRangeChange: this.handleRangeChange,
+      onRestartPress: this.handleRestartPress
     };
 
     return (
@@ -327,6 +365,7 @@ class Video extends React.Component<VideoProps, VideoState> {
             captionIsHighlighted={this.state.captionIsHighlighted}
             clipStart={this.state.startTime}
             clipEnd={this.state.endTime}
+            isPaused={this.state.isPaused}
             videoDuration={this.state.duration}
             eventHandlers={captionEventHandlers}
             highlightedCharRange={this.state.highlightedCharRange}

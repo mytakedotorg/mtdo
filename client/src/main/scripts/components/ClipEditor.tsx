@@ -5,7 +5,9 @@ import { convertSecondsToTimestamp } from "../utils/functions";
 
 export interface ClipEditorEventHandlers {
   onClearPress: () => any;
+  onPlayPausePress: () => any;
   onRangeChange: (range: [number, number]) => any;
+  onRestartPress: () => any;
   onFineTuneUp: (rangeIdx: 0 | 1) => void;
   onFineTuneDown: (rangeIdx: 0 | 1) => void;
 }
@@ -13,79 +15,115 @@ export interface ClipEditorEventHandlers {
 interface ClipEditorProps {
   clipStart: number;
   clipEnd: number;
+  currentTime: number;
   videoDuration: number;
+  isPaused: boolean;
   eventHandlers: ClipEditorEventHandlers;
 }
 
-interface ClipEditorState {}
+interface ClipEditorState {
+  min: number;
+  max: number;
+}
 
 class ClipEditor extends React.Component<ClipEditorProps, ClipEditorState> {
   constructor(props: ClipEditorProps) {
     super(props);
 
-    this.state = {};
+    this.state = {
+      min: 0,
+      max: props.videoDuration
+    };
   }
+  handleBack = () => {
+    console.log("back");
+  };
+  handleForward = () => {
+    console.log("forward");
+  };
+  handlePlayPause = () => {
+    this.props.eventHandlers.onPlayPausePress();
+  };
   handleRangeChange = (value: [number, number]) => {
     this.props.eventHandlers.onRangeChange(value);
   };
+  handleRestart = () => {
+    this.props.eventHandlers.onRestartPress();
+  };
+  handleZoomIn = () => {
+    console.log("zoom in");
+  };
+  handleZoomOut = () => {
+    console.log("zoom out");
+  };
   render() {
+    const min = convertSecondsToTimestamp(this.state.min);
+    const max = convertSecondsToTimestamp(this.state.max);
     const startTime = convertSecondsToTimestamp(this.props.clipStart);
     const endTime = convertSecondsToTimestamp(this.props.clipEnd);
+    const marks = {
+      [this.props.currentTime]: convertSecondsToTimestamp(
+        this.props.currentTime
+      )
+    };
     return (
-      <div className="video__actions">
-        <Range
-          defaultValue={[0, this.props.videoDuration]}
-          max={this.props.videoDuration}
-          onAfterChange={this.handleRangeChange}
-        />
-        <div className="video__action">
-          <p className="video__instructions">Fine tune your clip</p>
+      <div className="clipEditor">
+        <div className="clipEditor__actions clipEditor__actions--range">
+          <Range
+            defaultValue={[0, this.state.max]}
+            min={this.state.min}
+            max={this.state.max}
+            onAfterChange={this.handleRangeChange}
+            marks={marks}
+          />
+        </div>
+        <div className="clipEditor__actions clipEditor__actions--zoom">
           <button
-            className="video__button video__button--bottom"
-            onClick={this.props.eventHandlers.onClearPress}
+            className="clipEditor__button clipEditor__button--small"
+            onClick={this.handleZoomOut}
           >
-            Clear Selection
+            <i className="fa fa-search-minus" aria-hidden="true" />
+          </button>
+          <button
+            className="clipEditor__button clipEditor__button--small"
+            onClick={this.handleZoomIn}
+          >
+            <i className="fa fa-search-plus" aria-hidden="true" />
           </button>
         </div>
-        <div className="video__action">
-          <div className="video__tuning">
-            <div className="video__action">
-              <p className="video__instructions">Start Time</p>
-              <div className="video__tuning-buttons">
-                <button
-                  className="video__button video__button--small"
-                  onClick={() => this.props.eventHandlers.onFineTuneDown(0)}
-                >
-                  <i className="fa fa-arrow-down" aria-hidden="true" />
-                </button>
-                <span className="video__time">{startTime}</span>
-                <button
-                  className="video__button video__button--small"
-                  onClick={() => this.props.eventHandlers.onFineTuneUp(0)}
-                >
-                  <i className="fa fa-arrow-up" aria-hidden="true" />
-                </button>
-              </div>
-            </div>
-            <div className="video__action">
-              <p className="video__instructions">End Time</p>
-              <div className="video__tuning-buttons">
-                <button
-                  className="video__button video__button--small"
-                  onClick={() => this.props.eventHandlers.onFineTuneDown(1)}
-                >
-                  <i className="fa fa-arrow-down" aria-hidden="true" />
-                </button>
-                <span className="video__time">{endTime}</span>
-                <button
-                  className="video__button video__button--small"
-                  onClick={() => this.props.eventHandlers.onFineTuneUp(1)}
-                >
-                  <i className="fa fa-arrow-up" aria-hidden="true" />
-                </button>
-              </div>
-            </div>
+        <div className="clipEditor__actions clipEditor__actions--controls">
+          <p className="clipEditor__text clipEditor__text--min">{min}</p>
+          <div className="clipEditor__controls">
+            <button
+              className="clipEditor__button clipEditor__button--small"
+              onClick={this.handleRestart}
+            >
+              <i className="fa fa-fast-backward" aria-hidden="true" />
+            </button>
+            <button
+              className="clipEditor__button clipEditor__button--small"
+              onClick={this.handleBack}
+            >
+              <i className="fa fa-undo" aria-hidden="true" />
+            </button>
+            <button
+              className="clipEditor__button clipEditor__button--small"
+              onClick={this.handlePlayPause}
+            >
+              {this.props.isPaused ? (
+                <i className="fa fa-play" aria-hidden="true" />
+              ) : (
+                <i className="fa fa-pause" aria-hidden="true" />
+              )}
+            </button>
+            <button
+              className="clipEditor__button clipEditor__button--small"
+              onClick={this.handleForward}
+            >
+              <i className="fa fa-repeat" aria-hidden="true" />
+            </button>
           </div>
+          <p className="clipEditor__text clipEditor__text--max">{max}</p>
         </div>
       </div>
     );
