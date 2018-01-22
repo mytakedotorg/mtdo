@@ -17,10 +17,17 @@
 }
 .clipEditor__actions--zoom {
   text-align: center;
+  @include clearfix;
 }
 .clipEditor__text {
   color: palette(video, text);
   @include body;
+}
+.clipEditor__text--zoom {
+  line-height: 35px;
+  margin: 0;
+  float: left;
+  text-align: left;
 }
 .clipEditor__text--min,
 .clipEditor__text--max {

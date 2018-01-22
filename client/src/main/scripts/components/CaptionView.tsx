@@ -24,7 +24,7 @@ export interface CaptionViewEventHandlers {
   onFineTuneUp: (rangeIdx: 0 | 1) => void;
   onFineTuneDown: (rangeIdx: 0 | 1) => void;
   onPlayPausePress: () => any;
-  onRangeChange: (range: [number, number]) => any;
+  onRangeChange: (range: [number, number], rangeIsMax: boolean) => any;
   onRestartPress: () => any;
 }
 

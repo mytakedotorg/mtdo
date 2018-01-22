@@ -161,15 +161,25 @@ class Video extends React.Component<VideoProps, VideoState> {
       currentTime: Math.round(event.target.getCurrentTime())
     });
   };
-  handleRangeChange = (range: [number, number]) => {
-    // Get highlighted character range from the video time range
-    // All fine tunings are lost after a range change.
-    // If range is at max, set captionIsHighlighted to false
-    this.setState({
-      startTime: range[0],
-      endTime: range[1],
-      captionIsHighlighted: true
-    });
+  handleRangeChange = (range: [number, number], rangeIsMax: boolean) => {
+    if (rangeIsMax) {
+      this.setState({
+        startTime: range[0],
+        endTime: range[1],
+        captionIsHighlighted: false
+      });
+    } else {
+      const charRange: [number, number] = this.getCharRange(
+        this.props.videoFact,
+        range
+      );
+      this.setState({
+        startTime: range[0],
+        endTime: range[1],
+        captionIsHighlighted: true,
+        highlightedCharRange: charRange
+      });
+    }
   };
   handleReady = (event: any) => {
     this.player = event.target;
