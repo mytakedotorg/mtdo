@@ -8,6 +8,8 @@ export interface ClipEditorEventHandlers {
   onPlayPausePress: () => any;
   onRangeChange: (range: [number, number], rangeIsMax: boolean) => any;
   onRestartPress: () => any;
+  onSkipBackPress: () => any;
+  onSkipForwardPress: () => any;
   onFineTuneUp: (rangeIdx: 0 | 1) => void;
   onFineTuneDown: (rangeIdx: 0 | 1) => void;
 }
@@ -40,10 +42,10 @@ class ClipEditor extends React.Component<ClipEditorProps, ClipEditorState> {
     };
   }
   handleBack = () => {
-    console.log("back");
+    this.props.eventHandlers.onSkipBackPress();
   };
   handleForward = () => {
-    console.log("forward");
+    this.props.eventHandlers.onSkipForwardPress();
   };
   handlePlayPause = () => {
     this.props.eventHandlers.onPlayPausePress();

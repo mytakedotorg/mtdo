@@ -204,6 +204,19 @@ class Video extends React.Component<VideoProps, VideoState> {
       this.props.onSetClick([this.state.startTime, this.state.endTime]);
     }
   };
+  handleSkipBackPress = () => {
+    this.skipSeconds(-15);
+  };
+  handleSkipForwardPress = () => {
+    this.skipSeconds(15);
+  };
+  skipSeconds = (seconds: number) => {
+    const newTime = this.state.currentTime + seconds;
+    this.setState({
+      currentTime: newTime
+    });
+    this.player.seekTo(newTime);
+  };
   handleStateChange = (event: any) => {
     if (event.data === 0) {
       // Video ended
@@ -334,7 +347,9 @@ class Video extends React.Component<VideoProps, VideoState> {
       onFineTuneDown: this.handleFineTuneDown,
       onPlayPausePress: this.handlePlayPausePress,
       onRangeChange: this.handleRangeChange,
-      onRestartPress: this.handleRestartPress
+      onRestartPress: this.handleRestartPress,
+      onSkipBackPress: this.handleSkipBackPress,
+      onSkipForwardPress: this.handleSkipForwardPress
     };
 
     return (

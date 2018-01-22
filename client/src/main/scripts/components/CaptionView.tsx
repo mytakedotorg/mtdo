@@ -26,6 +26,8 @@ export interface CaptionViewEventHandlers {
   onPlayPausePress: () => any;
   onRangeChange: (range: [number, number], rangeIsMax: boolean) => any;
   onRestartPress: () => any;
+  onSkipBackPress: () => any;
+  onSkipForwardPress: () => any;
 }
 
 interface CaptionViewProps {
@@ -215,7 +217,9 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
       onFineTuneUp: this.props.eventHandlers.onFineTuneUp,
       onPlayPausePress: this.props.eventHandlers.onPlayPausePress,
       onRangeChange: this.props.eventHandlers.onRangeChange,
-      onRestartPress: this.props.eventHandlers.onRestartPress
+      onRestartPress: this.props.eventHandlers.onRestartPress,
+      onSkipBackPress: this.props.eventHandlers.onSkipBackPress,
+      onSkipForwardPress: this.props.eventHandlers.onSkipForwardPress
     };
 
     return (
