@@ -31,6 +31,7 @@ exports[`Video 1`] = `
               "autoplay": 1,
               "cc_lang_pref": "en",
               "cc_load_policy": 1,
+              "controls": 0,
               "modestbranding": 1,
               "playsinline": 1,
               "rel": 0,
@@ -54,7 +55,9 @@ exports[`Video 1`] = `
           "onFineTuneDown": [Function],
           "onFineTuneUp": [Function],
           "onHighlight": [Function],
+          "onPlayPausePress": [Function],
           "onRangeChange": [Function],
+          "onRestartPress": [Function],
         }
       }
       highlightedCharRange={
@@ -63,6 +66,7 @@ exports[`Video 1`] = `
           -1,
         ]
       }
+      isPaused={true}
       timer={0}
       videoDuration={5224}
       videoFact={
@@ -596,6 +600,7 @@ exports[`Video with highlights 1`] = `
               "autoplay": 1,
               "cc_lang_pref": "en",
               "cc_load_policy": 1,
+              "controls": 0,
               "end": 3,
               "modestbranding": 1,
               "playsinline": 1,
@@ -620,7 +625,9 @@ exports[`Video with highlights 1`] = `
           "onFineTuneDown": [Function],
           "onFineTuneUp": [Function],
           "onHighlight": [Function],
+          "onPlayPausePress": [Function],
           "onRangeChange": [Function],
+          "onRestartPress": [Function],
         }
       }
       highlightedCharRange={
@@ -629,6 +636,7 @@ exports[`Video with highlights 1`] = `
           37,
         ]
       }
+      isPaused={true}
       timer={0}
       videoDuration={5224}
       videoFact={

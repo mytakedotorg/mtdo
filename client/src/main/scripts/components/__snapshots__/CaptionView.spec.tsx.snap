@@ -7,14 +7,18 @@ exports[`CaptionTextNodeList 1`] = `
   <ClipEditor
     clipEnd={-1}
     clipStart={0}
+    currentTime={0}
     eventHandlers={
       Object {
         "onClearPress": [Function],
         "onFineTuneDown": [Function],
         "onFineTuneUp": [Function],
+        "onPlayPausePress": [Function],
         "onRangeChange": [Function],
+        "onRestartPress": [Function],
       }
     }
+    isPaused={true}
     videoDuration={5224}
   />
   <Document
@@ -522,14 +526,18 @@ exports[`CaptionTextNodeList with highlights from props 1`] = `
   <ClipEditor
     clipEnd={7.2}
     clipStart={5.31}
+    currentTime={5.31}
     eventHandlers={
       Object {
         "onClearPress": [Function],
         "onFineTuneDown": [Function],
         "onFineTuneUp": [Function],
+        "onPlayPausePress": [Function],
         "onRangeChange": [Function],
+        "onRestartPress": [Function],
       }
     }
+    isPaused={true}
     videoDuration={5224}
   />
   <Document

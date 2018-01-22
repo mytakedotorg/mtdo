@@ -17,7 +17,10 @@ const eventHandlers: CaptionViewEventHandlers = {
   onClearPress: jest.fn(),
   onCursorPlace: jest.fn(),
   onFineTuneDown: jest.fn(),
-  onFineTuneUp: jest.fn()
+  onFineTuneUp: jest.fn(),
+  onPlayPausePress: jest.fn(),
+  onRangeChange: jest.fn(),
+  onRestartPress: jest.fn()
 };
 
 test("CaptionTextNodeList", () => {
@@ -27,10 +30,12 @@ test("CaptionTextNodeList", () => {
         videoFact={videoFact}
         timer={0}
         captionIsHighlighted={false}
-        videoStart={0}
-        videoEnd={-1}
+        clipStart={0}
+        clipEnd={-1}
         highlightedCharRange={[-1, -1]}
         eventHandlers={eventHandlers}
+        videoDuration={5224}
+        isPaused={true}
       />
     )
     .toJSON();
@@ -44,10 +49,12 @@ test("CaptionTextNodeList with highlights from props", () => {
         videoFact={videoFact}
         timer={5.31}
         captionIsHighlighted={true}
-        videoStart={5.31}
-        videoEnd={7.2}
+        clipStart={5.31}
+        clipEnd={7.2}
         highlightedCharRange={[80, 128]}
         eventHandlers={eventHandlers}
+        videoDuration={5224}
+        isPaused={true}
       />
     )
     .toJSON();
