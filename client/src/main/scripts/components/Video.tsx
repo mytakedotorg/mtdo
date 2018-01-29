@@ -61,12 +61,14 @@ class Video extends React.Component<VideoProps, VideoState> {
     };
   }
   cueVideo = () => {
-    this.player.cueVideoById({
-      videoId: this.props.videoFact.youtubeId,
-      startSeconds: this.state.startTime,
-      endSeconds: this.state.endTime,
-      suggestedQuality: "default"
-    });
+    if (this.player) {
+      this.player.cueVideoById({
+        videoId: this.props.videoFact.youtubeId,
+        startSeconds: this.state.startTime,
+        endSeconds: this.state.endTime,
+        suggestedQuality: "default"
+      });
+    }
   };
   getCharRange = (
     videoFact: Foundation.VideoFactContent,
@@ -147,9 +149,13 @@ class Video extends React.Component<VideoProps, VideoState> {
     // External play/pause button was pressed
     const isPaused = this.state.isPaused;
     if (isPaused) {
-      this.player.playVideo();
+      if (this.player) {
+        this.player.playVideo();
+      }
     } else {
-      this.player.pauseVideo();
+      if (this.player) {
+        this.player.pauseVideo();
+      }
     }
     this.setState({
       isPaused: !isPaused
@@ -161,24 +167,32 @@ class Video extends React.Component<VideoProps, VideoState> {
       currentTime: Math.round(event.target.getCurrentTime())
     });
   };
-  handleRangeChange = (range: [number, number], rangeIsMax: boolean) => {
+  handleRangeChange = (
+    range: [number, number, number],
+    rangeIsMax: boolean
+  ) => {
     if (rangeIsMax) {
       this.setState({
+        currentTime: range[1],
         startTime: range[0],
-        endTime: range[1],
+        endTime: range[2],
         captionIsHighlighted: false
       });
     } else {
       const charRange: [number, number] = this.getCharRange(
         this.props.videoFact,
-        range
+        [range[0], range[2]]
       );
       this.setState({
+        currentTime: range[1],
         startTime: range[0],
-        endTime: range[1],
+        endTime: range[2],
         captionIsHighlighted: true,
         highlightedCharRange: charRange
       });
+    }
+    if (this.player) {
+      this.player.seekTo(range[1]);
     }
   };
   handleReady = (event: any) => {
@@ -191,12 +205,16 @@ class Video extends React.Component<VideoProps, VideoState> {
       this.setState({
         currentTime: clipStart
       });
-      this.player.seekTo(clipStart);
+      if (this.player) {
+        this.player.seekTo(clipStart);
+      }
     } else {
       this.setState({
         currentTime: 0
       });
-      this.player.seekTo(0);
+      if (this.player) {
+        this.player.seekTo(0);
+      }
     }
   };
   handleSetClick = () => {
@@ -215,7 +233,9 @@ class Video extends React.Component<VideoProps, VideoState> {
     this.setState({
       currentTime: newTime
     });
-    this.player.seekTo(newTime);
+    if (this.player) {
+      this.player.seekTo(newTime);
+    }
   };
   handleStateChange = (event: any) => {
     if (event.data === 0) {
@@ -293,7 +313,9 @@ class Video extends React.Component<VideoProps, VideoState> {
         highlightedCharRange: [-1, -1],
         isPaused: true
       });
-      this.player.pauseVideo();
+      if (this.player) {
+        this.player.pauseVideo();
+      }
     } else if (
       nextProps.timeRange &&
       !isEqual(nextProps.timeRange, this.props.timeRange)

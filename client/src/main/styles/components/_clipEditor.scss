@@ -1,19 +1,25 @@
 .clipEditor {
   @include clearfix;
-  width: $video-container-width;
   max-width: 100%;
   margin: 15px auto;
 }
 .clipEditor__actions {
   width: 100%;
+  @include clearfix;
 }
 .clipEditor__actions--range {
-  height: 35px;
-}
-.clipEditor__actions--controls {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  height: 50px;
+}
+.clipEditor__range {
+  width: $video-container-width;
+}
+.clipEditor__controls {
+  margin-left: auto;
+  margin-right: auto;
+  width: 200px;
 }
 .clipEditor__actions--zoom {
   text-align: center;
@@ -23,15 +29,18 @@
   color: palette(video, text);
   @include body;
 }
-.clipEditor__text--zoom {
+.clipEditor__text--range {
   line-height: 35px;
-  margin: 0;
-  float: left;
-  text-align: left;
+  width: $video-container-width;
+  margin: 0 auto;
+  text-align: center;
 }
-.clipEditor__text--min,
+.clipEditor__text--min {
+  width: 68px;
+}
 .clipEditor__text--max {
   width: 68px;
+  text-align: right;
 }
 .clipEditor__button {
   @include button--borderless;
