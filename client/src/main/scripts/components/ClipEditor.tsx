@@ -79,8 +79,9 @@ class ClipEditor extends React.Component<ClipEditorProps, ClipEditorState> {
   };
   componentWillReceiveProps(nextProps: ClipEditorProps) {
     if (
-      nextProps.clipStart !== this.state.selection[0] ||
-      nextProps.clipEnd !== this.state.selection[1] ||
+      ((nextProps.clipStart !== this.state.selection[0] ||
+        nextProps.clipEnd !== this.state.selection[1]) &&
+        nextProps.clipEnd > nextProps.clipStart) ||
       nextProps.currentTime !== this.state.currentTime
     ) {
       this.setState({
