@@ -216,11 +216,11 @@ class Video extends React.Component<VideoProps, VideoState> {
       this.props.onSetClick([this.state.startTime, this.state.endTime]);
     }
   };
-  handleSkipBackPress = () => {
-    this.skipSeconds(-15);
+  handleSkipBackPress = (seconds: number) => {
+    this.skipSeconds(-seconds);
   };
-  handleSkipForwardPress = () => {
-    this.skipSeconds(15);
+  handleSkipForwardPress = (seconds: number) => {
+    this.skipSeconds(seconds);
   };
   skipSeconds = (seconds: number) => {
     const newTime = this.state.currentTime + seconds;

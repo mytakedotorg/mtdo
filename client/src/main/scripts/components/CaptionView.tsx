@@ -24,8 +24,8 @@ export interface CaptionViewEventHandlers {
   onPlayPausePress: () => any;
   onRangeChange: (range: [number, number], rangeIsMax: boolean) => any;
   onRestartPress: () => any;
-  onSkipBackPress: () => any;
-  onSkipForwardPress: () => any;
+  onSkipBackPress: (seconds: number) => any;
+  onSkipForwardPress: (seconds: number) => any;
 }
 
 interface CaptionViewProps {
