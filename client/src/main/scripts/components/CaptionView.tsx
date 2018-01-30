@@ -6,7 +6,6 @@ import ClipEditor, { ClipEditorEventHandlers } from "./ClipEditor";
 import {
   getCaptionNodeArray,
   getSimpleRangesFromHTMLRange,
-  getWordCount,
   highlightText,
   FoundationNode,
   SimpleRanges
@@ -20,7 +19,6 @@ export interface CaptionViewEventHandlers {
     charRange: [number, number]
   ) => void;
   onClearPress: () => void;
-  onCursorPlace: (videoTime: number) => void;
   onFineTuneUp: (rangeIdx: 0 | 1) => void;
   onFineTuneDown: (rangeIdx: 0 | 1) => void;
   onPlayPausePress: () => any;
@@ -150,11 +148,6 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
           } else {
             this.highlightNodes(simpleRanges);
           }
-        } else if (selection) {
-          // Text was clicked, but not selected
-          let wordCount = getWordCount(selection);
-          let videoTime = transcript[wordCount].timestamp;
-          this.props.eventHandlers.onCursorPlace(videoTime);
         }
       }
     }

@@ -109,12 +109,6 @@ class Video extends React.Component<VideoProps, VideoState> {
       this.props.onClearClick();
     }
   };
-  handleCursorPlacement = (videoTime: number): void => {
-    this.setState({
-      startTime: videoTime,
-      endTime: -1
-    });
-  };
   handleFineTuneUp = (rangeIdx: 0 | 1): void => {
     if (rangeIdx === 0) {
       let startTime = this.state.startTime;
@@ -364,7 +358,6 @@ class Video extends React.Component<VideoProps, VideoState> {
     const captionEventHandlers: CaptionViewEventHandlers = {
       onHighlight: this.handleCaptionHighlight,
       onClearPress: this.handleClearClick,
-      onCursorPlace: this.handleCursorPlacement,
       onFineTuneUp: this.handleFineTuneUp,
       onFineTuneDown: this.handleFineTuneDown,
       onPlayPausePress: this.handlePlayPausePress,
