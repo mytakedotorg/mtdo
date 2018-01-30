@@ -1123,6 +1123,44 @@ function getUserCookieString(): string {
 
   return getCookieValue("loginui");
 }
+function getRawHighlightedText(
+  nodes: FoundationNode[],
+  charRange: [number, number]
+): string {
+  const startRange = charRange[0];
+  const endRange = charRange[1];
+  let output = "";
+  for (let idx = 0; idx < nodes.length; idx++) {
+    if (nodes[idx + 1]) {
+      if (nodes[idx + 1].offset <= startRange) {
+        continue;
+      }
+    }
+    if (nodes[idx].offset >= endRange) {
+      break;
+    }
+    const text = nodes[idx].innerHTML.toString();
+    const offset = nodes[idx].offset;
+    if (offset + nodes[idx].innerHTML.toString().length > endRange) {
+      // highlight ends in this node
+      if (offset < startRange) {
+        // highlight starts in this node
+        output += text.substring(startRange - offset, endRange - offset);
+      } else {
+        output += text.substring(0, endRange - offset);
+      }
+    } else {
+      // highlight continues after this node
+      if (offset < startRange) {
+        // highlight starts in this node
+        output += text.substring(startRange - offset, text.length) + " ";
+      } else {
+        output += text + " ";
+      }
+    }
+  }
+  return output;
+}
 export {
   alertErr,
   convertSecondsToTimestamp,
@@ -1137,6 +1175,7 @@ export {
   getStartRangeOffsetTop,
   getHighlightedNodes,
   getNodesInRange,
+  getRawHighlightedText,
   getUserCookieString,
   getWordCount,
   highlightText,

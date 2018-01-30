@@ -14,6 +14,11 @@ export interface ClipEditorEventHandlers {
   onFineTuneDown: (rangeIdx: 0 | 1) => void;
 }
 
+export interface ZoomedRangeData {
+  viewRange: [number, number];
+  text: string;
+}
+
 interface ClipEditorProps {
   clipStart: number;
   clipEnd: number;
@@ -21,12 +26,12 @@ interface ClipEditorProps {
   videoDuration: number;
   isPaused: boolean;
   eventHandlers: ClipEditorEventHandlers;
+  zoomedRangeData?: ZoomedRangeData;
 }
 
 interface ClipEditorState {
   currentTime: number;
   selection: [number, number];
-  rangeIsSet: boolean;
 }
 
 class ClipEditor extends React.Component<ClipEditorProps, ClipEditorState> {
@@ -38,25 +43,12 @@ class ClipEditor extends React.Component<ClipEditorProps, ClipEditorState> {
       selection:
         props.clipEnd > props.clipStart
           ? [props.clipStart, props.clipEnd]
-          : [0, props.videoDuration],
-      rangeIsSet: props.clipEnd > props.clipStart ? true : false
+          : [0, props.videoDuration]
     };
   }
   getTenPercent = (): number => {
     const duration = this.props.clipEnd - this.props.clipStart;
     return duration * 0.1;
-  };
-  getZoomedViewRange = (): [number, number] => {
-    const tenPercent = this.getTenPercent();
-    let zoomStart = this.props.clipStart - tenPercent;
-    if (zoomStart < 0) {
-      zoomStart = 0;
-    }
-    let zoomEnd = this.props.clipEnd + tenPercent;
-    if (zoomEnd > this.props.videoDuration) {
-      zoomEnd = this.props.videoDuration;
-    }
-    return [zoomStart, zoomEnd];
   };
   handleBack = () => {
     this.props.eventHandlers.onSkipBackPress(this.getTenPercent());
@@ -82,9 +74,6 @@ class ClipEditor extends React.Component<ClipEditorProps, ClipEditorState> {
       rangeIsSet = true;
     }
     this.props.eventHandlers.onRangeChange(value, !rangeIsSet);
-    this.setState({
-      rangeIsSet: rangeIsSet
-    });
   };
   handleRestart = () => {
     this.props.eventHandlers.onRestartPress();
@@ -105,9 +94,15 @@ class ClipEditor extends React.Component<ClipEditorProps, ClipEditorState> {
   render() {
     const wideMin = convertSecondsToTimestamp(0);
     const wideMax = convertSecondsToTimestamp(this.props.videoDuration);
-    const zoomedRange = this.getZoomedViewRange();
-    const zoomStart = convertSecondsToTimestamp(zoomedRange[0]);
-    const zoomEnd = convertSecondsToTimestamp(zoomedRange[1]);
+    let zoomStart, zoomEnd;
+    if (this.props.zoomedRangeData) {
+      zoomStart = convertSecondsToTimestamp(
+        this.props.zoomedRangeData.viewRange[0]
+      );
+      zoomEnd = convertSecondsToTimestamp(
+        this.props.zoomedRangeData.viewRange[1]
+      );
+    }
     const marks = {
       [this.props.currentTime]: convertSecondsToTimestamp(
         this.props.currentTime
@@ -135,28 +130,35 @@ class ClipEditor extends React.Component<ClipEditorProps, ClipEditorState> {
           </div>
           <p className="clipEditor__text clipEditor__text--max">{wideMax}</p>
         </div>
-        {this.state.rangeIsSet ? (
-          <div className="clipEditor__actions clipEditor__actions--range">
-            <p className="clipEditor__text clipEditor__text--min">
-              {zoomStart}
+        {this.props.zoomedRangeData ? (
+          <div>
+            <p className="clipEditor__text">
+              {this.props.zoomedRangeData.text}
             </p>
-            <div className="clipEditor__range">
-              <Range
-                defaultValue={[this.props.clipStart, this.props.clipEnd]}
-                min={zoomedRange[0]}
-                max={zoomedRange[1]}
-                onChange={this.handleRangeChange}
-                onAfterChange={this.handleAfterRangeChange}
-                marks={marks}
-                step={0.1}
-                value={[
-                  this.state.selection[0],
-                  this.state.currentTime,
-                  this.state.selection[1]
-                ]}
-              />
+            <div className="clipEditor__actions clipEditor__actions--range">
+              <p className="clipEditor__text clipEditor__text--min">
+                {zoomStart}
+              </p>
+              <div className="clipEditor__range">
+                <Range
+                  defaultValue={[this.props.clipStart, this.props.clipEnd]}
+                  min={this.props.zoomedRangeData.viewRange[0]}
+                  max={this.props.zoomedRangeData.viewRange[1]}
+                  onChange={this.handleRangeChange}
+                  onAfterChange={this.handleAfterRangeChange}
+                  marks={marks}
+                  step={0.1}
+                  value={[
+                    this.state.selection[0],
+                    this.state.currentTime,
+                    this.state.selection[1]
+                  ]}
+                />
+              </div>
+              <p className="clipEditor__text clipEditor__text--max">
+                {zoomEnd}
+              </p>
             </div>
-            <p className="clipEditor__text clipEditor__text--max">{zoomEnd}</p>
           </div>
         ) : (
           <div className="clipEditor__actions clipEditor__actions--range">

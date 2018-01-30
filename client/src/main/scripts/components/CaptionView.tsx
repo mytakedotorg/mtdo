@@ -2,9 +2,14 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import isEqual = require("lodash/isEqual");
 import Document from "./Document";
-import ClipEditor, { ClipEditorEventHandlers } from "./ClipEditor";
+import ClipEditor, {
+  ClipEditorEventHandlers,
+  ZoomedRangeData
+} from "./ClipEditor";
 import {
   getCaptionNodeArray,
+  getCharRangeFromVideoRange,
+  getRawHighlightedText,
   getSimpleRangesFromHTMLRange,
   highlightText,
   FoundationNode,
@@ -43,6 +48,7 @@ interface CaptionViewProps {
 interface CaptionViewState {
   highlightedNodes?: FoundationNode[];
   currentIndex: number;
+  zoomedRangeData?: ZoomedRangeData;
 }
 
 class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
@@ -56,57 +62,98 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
       currentIndex: 0
     };
   }
-  getCaptionData = (
-    nextPropsVideoFact?: Foundation.VideoFactContent,
-    nextPropsCaptionIsHighlighted?: boolean,
-    nextPropsHighlightedCharRange?: [number, number]
-  ): FoundationNode[] => {
+  getCaptionData = (nextProps?: CaptionViewProps): FoundationNode[] => {
     let captionIsHighlighted: boolean;
     let highlightedCharRange: [number, number] | undefined;
     let transcript: Foundation.CaptionWord[] | undefined;
     let speakerMap: Foundation.SpeakerMap[] | undefined;
+    let clipStart: number;
+    let clipEnd: number;
+    let videoDuration: number;
 
-    if (typeof nextPropsCaptionIsHighlighted == "boolean") {
-      captionIsHighlighted = nextPropsCaptionIsHighlighted;
+    if (nextProps) {
+      captionIsHighlighted = nextProps.captionIsHighlighted;
+      highlightedCharRange = nextProps.highlightedCharRange;
+      transcript = nextProps.videoFact.transcript;
+      speakerMap = nextProps.videoFact.speakerMap;
+      clipStart = nextProps.clipStart;
+      clipEnd = nextProps.clipEnd;
+      videoDuration = nextProps.videoDuration;
     } else {
       captionIsHighlighted = this.props.captionIsHighlighted;
-    }
-
-    if (nextPropsHighlightedCharRange) {
-      highlightedCharRange = nextPropsHighlightedCharRange;
-    } else {
       highlightedCharRange = this.props.highlightedCharRange;
-    }
-
-    if (nextPropsVideoFact) {
-      transcript = nextPropsVideoFact.transcript;
-      speakerMap = nextPropsVideoFact.speakerMap;
-    } else {
       transcript = this.props.videoFact.transcript;
       speakerMap = this.props.videoFact.speakerMap;
+      clipStart = this.props.clipStart;
+      clipEnd = this.props.clipEnd;
+      videoDuration = this.props.videoDuration;
     }
 
     if (transcript && speakerMap) {
       let captionNodes = getCaptionNodeArray(transcript, speakerMap);
       const unhighlightedNodes = [...captionNodes];
+      let rawHighlightedText;
       if (captionIsHighlighted && highlightedCharRange) {
         captionNodes = highlightText(
           captionNodes,
           highlightedCharRange,
           () => {}
         );
+        const zoomedViewRange = this.getZoomedViewRange(
+          clipStart,
+          clipEnd,
+          videoDuration
+        );
+        const zoomedCharRange = getCharRangeFromVideoRange(
+          transcript,
+          speakerMap,
+          zoomedViewRange
+        );
+        rawHighlightedText = getRawHighlightedText(
+          [...unhighlightedNodes],
+          zoomedCharRange
+        );
+        this.setState({
+          highlightedNodes: captionNodes,
+          zoomedRangeData: {
+            text: rawHighlightedText,
+            viewRange: zoomedViewRange
+          }
+        });
+      } else {
+        this.setState({
+          highlightedNodes: captionNodes
+        });
       }
-      this.setState({
-        highlightedNodes: captionNodes
-      });
       return unhighlightedNodes;
     } else {
       this.setState({
-        highlightedNodes: undefined
+        highlightedNodes: undefined,
+        zoomedRangeData: undefined
       });
       console.warn("Captions not yet done for this video");
       return [];
     }
+  };
+  getTenPercent = (clipStart: number, clipEnd: number): number => {
+    const duration = clipEnd - clipStart;
+    return duration * 0.1;
+  };
+  getZoomedViewRange = (
+    clipStart: number,
+    clipEnd: number,
+    videoDuration: number
+  ): [number, number] => {
+    const tenPercent = this.getTenPercent(clipStart, clipEnd);
+    let zoomStart = clipStart - tenPercent;
+    if (zoomStart < 0) {
+      zoomStart = 0;
+    }
+    let zoomEnd = clipEnd + tenPercent;
+    if (zoomEnd > videoDuration) {
+      zoomEnd = videoDuration;
+    }
+    return [zoomStart, zoomEnd];
   };
   handleClearClick = () => {
     const transcript = this.props.videoFact.transcript;
@@ -154,15 +201,38 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
   };
   highlightNodes(simpleRanges: SimpleRanges) {
     const transcript = this.props.videoFact.transcript;
-    if (transcript) {
+    const speakerMap = this.props.videoFact.speakerMap;
+    if (transcript && speakerMap) {
       const newNodes = highlightText(
         [...this.document.getDocumentNodes()],
         simpleRanges.charRange,
         () => {}
       );
 
+      const zoomedViewRange = this.getZoomedViewRange(
+        this.props.clipStart,
+        this.props.clipEnd,
+        this.props.videoDuration
+      );
+      const zoomedCharRange = getCharRangeFromVideoRange(
+        transcript,
+        speakerMap,
+        zoomedViewRange
+      );
+      const rawText = getRawHighlightedText(
+        [...this.document.getDocumentNodes()],
+        zoomedCharRange
+      );
       this.setState({
-        highlightedNodes: newNodes
+        highlightedNodes: newNodes,
+        zoomedRangeData: {
+          text: rawText,
+          viewRange: this.getZoomedViewRange(
+            this.props.clipStart,
+            this.props.clipEnd,
+            this.props.videoDuration
+          )
+        }
       });
 
       let startTime = transcript[simpleRanges.wordRange[0]].timestamp;
@@ -193,11 +263,7 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
         this.props.videoFact.youtubeId) ||
       !isEqual(nextProps.highlightedCharRange, this.props.highlightedCharRange)
     ) {
-      this.getCaptionData(
-        nextProps.videoFact,
-        nextProps.captionIsHighlighted,
-        nextProps.highlightedCharRange
-      );
+      this.getCaptionData(nextProps);
     }
   }
   render() {
@@ -224,6 +290,7 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
           currentTime={this.props.timer}
           isPaused={this.props.isPaused}
           videoDuration={this.props.videoDuration}
+          zoomedRangeData={this.state.zoomedRangeData}
         />
         {transcript && speakerMap && this.state.highlightedNodes ? (
           <Document
