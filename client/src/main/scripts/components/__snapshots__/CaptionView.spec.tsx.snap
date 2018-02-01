@@ -22,6 +22,7 @@ exports[`CaptionTextNodeList 1`] = `
     }
     isPaused={true}
     videoDuration={5224}
+    zoomedRangeData={undefined}
   />
   <Document
     captionData={
@@ -543,6 +544,15 @@ exports[`CaptionTextNodeList with highlights from props 1`] = `
     }
     isPaused={true}
     videoDuration={5224}
+    zoomedRangeData={
+      Object {
+        "text": "We want to welcome you to Washington University in ",
+        "viewRange": Array [
+          5.1209999999999996,
+          7.389,
+        ],
+      }
+    }
   />
   <Document
     captionData={

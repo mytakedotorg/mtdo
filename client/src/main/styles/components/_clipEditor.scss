@@ -46,6 +46,31 @@
   @include button--borderless;
   @include button;
 }
+.clipEditor__caption {
+  position: relative;
+  height: 35px;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+.clipEditor__caption-text {
+  @include body;
+  position: absolute;
+  top: 0;
+  left: 0;
+  line-height: 35px;
+  margin: 0;
+  text-align: justify;
+  min-width: 100%;
+  &:after {
+    content: "";
+    display: inline-block;
+    width: 100%;
+  }
+}
+.clipEditor__caption-text--hidden {
+  white-space: nowrap;
+  visibility: hidden;
+}
 .video__tuning-buttons {
   float: left;
   padding-top: 6px;
@@ -63,7 +88,6 @@
     background: palette(button, background--base-hover);
   }
 }
-
 .video__time {
   float: left;
   @include body--small;

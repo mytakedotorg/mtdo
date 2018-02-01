@@ -2,6 +2,7 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { Range } from "rc-slider";
 import { convertSecondsToTimestamp } from "../utils/functions";
+import isEqual = require("lodash/isEqual");
 
 export interface ClipEditorEventHandlers {
   onClearPress: () => any;
@@ -32,9 +33,12 @@ interface ClipEditorProps {
 interface ClipEditorState {
   currentTime: number;
   selection: [number, number];
+  style: any;
 }
 
 class ClipEditor extends React.Component<ClipEditorProps, ClipEditorState> {
+  private parentDiv: HTMLDivElement;
+  private hiddenDiv: HTMLDivElement;
   constructor(props: ClipEditorProps) {
     super(props);
 
@@ -43,7 +47,8 @@ class ClipEditor extends React.Component<ClipEditorProps, ClipEditorState> {
       selection:
         props.clipEnd > props.clipStart
           ? [props.clipStart, props.clipEnd]
-          : [0, props.videoDuration]
+          : [0, props.videoDuration],
+      style: {}
     };
   }
   getTenPercent = (): number => {
@@ -78,6 +83,48 @@ class ClipEditor extends React.Component<ClipEditorProps, ClipEditorState> {
   handleRestart = () => {
     this.props.eventHandlers.onRestartPress();
   };
+  resizeCaption = () => {
+    const clipStart = this.props.clipStart;
+    const clipEnd = this.props.clipEnd;
+
+    // There are 28 words spoken every 10 seconds in Trump/Hillary
+    // 25 words every 10 seconds in Carter/Ford
+    if (
+      clipEnd - clipStart <= 10 && //clip less than 10 seconds
+      this.hiddenDiv
+    ) {
+      const parentWidth = this.parentDiv.offsetWidth;
+      const hiddenWidth = this.hiddenDiv.offsetWidth;
+      const origFontSize = 15;
+      if (hiddenWidth > parentWidth) {
+        // set new font size as a proportion of the width of the
+        // hidden div with text to the width of the container
+        const newFontSize = parentWidth * origFontSize / hiddenWidth;
+        this.setState({
+          style: {
+            fontSize: newFontSize.toString() + "px",
+            visibility: "block"
+          }
+        });
+      } else {
+        this.setState({
+          style: {
+            fontSize: origFontSize.toString() + "px",
+            display: "block"
+          }
+        });
+      }
+    } else {
+      this.setState({
+        style: { display: "none" }
+      });
+    }
+  };
+  componentDidUpdate(prevProps: ClipEditorProps) {
+    if (!isEqual(this.props.zoomedRangeData, prevProps.zoomedRangeData)) {
+      this.resizeCaption();
+    }
+  }
   componentWillReceiveProps(nextProps: ClipEditorProps) {
     if (
       ((nextProps.clipStart !== this.state.selection[0] ||
@@ -109,7 +156,10 @@ class ClipEditor extends React.Component<ClipEditorProps, ClipEditorState> {
       )
     };
     return (
-      <div className="clipEditor">
+      <div
+        className="clipEditor"
+        ref={(parentDiv: HTMLDivElement) => (this.parentDiv = parentDiv)}
+      >
         <div className="clipEditor__actions clipEditor__actions--range">
           <p className="clipEditor__text clipEditor__text--min">{wideMin}</p>
           <div className="clipEditor__range">
@@ -132,9 +182,20 @@ class ClipEditor extends React.Component<ClipEditorProps, ClipEditorState> {
         </div>
         {this.props.zoomedRangeData ? (
           <div>
-            <p className="clipEditor__text">
-              {this.props.zoomedRangeData.text}
-            </p>
+            <div className="clipEditor__caption">
+              <p className="clipEditor__caption-text" style={this.state.style}>
+                {this.props.zoomedRangeData.text}
+              </p>
+              <div
+                className="clipEditor__caption-text clipEditor__caption-text--hidden"
+                ref={(hiddenDiv: HTMLDivElement) =>
+                  (this.hiddenDiv = hiddenDiv)
+                }
+                style={this.state.style}
+              >
+                {this.props.zoomedRangeData.text}
+              </div>
+            </div>
             <div className="clipEditor__actions clipEditor__actions--range">
               <p className="clipEditor__text clipEditor__text--min">
                 {zoomStart}
