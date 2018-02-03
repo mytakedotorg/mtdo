@@ -36,12 +36,11 @@ class CaptionTextNodeList extends React.Component<
       window.clearTimeout(this.timerId);
       this.timerId = null;
       // Call it one more time to be sure the result is correct when the user scroll has stopped.
-      this.handleScroll();
+      this.getCurrentSpeaker();
     }
   };
-  handleScroll = () => {
-    // Only allow this function to execute no more than twice per second
-    if (!this.timerId && this.captionNodeContainer) {
+  getCurrentSpeaker = () => {
+    if (this.captionNodeContainer) {
       const parentTop = this.captionNodeContainer.scrollTop;
       if (parentTop === 0) {
         this.setState({
@@ -67,9 +66,14 @@ class CaptionTextNodeList extends React.Component<
         this.setState({
           currentSpeaker: this.props.speakerMap[speakerIdx].speaker
         });
-
-        this.timerId = window.setTimeout(this.clearTimer, 500);
       }
+    }
+  };
+  handleScroll = () => {
+    // Only allow this function to execute no more than twice per second
+    if (!this.timerId) {
+      this.getCurrentSpeaker();
+      this.timerId = window.setTimeout(this.clearTimer, 500);
     }
   };
   setScrollView = () => {
