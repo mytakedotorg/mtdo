@@ -17,7 +17,12 @@ jest.mock("./TimelinePreview", () => ({
   default: "TimelinePreview"
 }));
 
-const mockFn = jest.fn();
+const setFactHandlers = {
+  handleDocumentSetClick: jest.fn(),
+  handleVideoSetClick: jest.fn(),
+  handleRangeSet: jest.fn(),
+  handleRangeCleared: jest.fn()
+};
 
 const containerProps = {
   factLink: documentFactLink
@@ -64,10 +69,7 @@ test("Successfully loaded Document Preview with highlights", () => {
       highlightedRange: [11, 53],
       viewRange: [0, 218]
     },
-    setFactHandlers: {
-      handleDocumentSetClick: jest.fn(),
-      handleVideoSetClick: jest.fn()
-    }
+    setFactHandlers: setFactHandlers
   };
   const containerState: TimelinePreviewContainerState = {
     loading: false,
@@ -88,10 +90,7 @@ test("Successfully loaded Document Preview with highlights", () => {
 test("Successfully loaded Video Preview", () => {
   const videoProps: TimelinePreviewContainerProps = {
     factLink: videoFactLink,
-    setFactHandlers: {
-      handleDocumentSetClick: jest.fn(),
-      handleVideoSetClick: jest.fn()
-    }
+    setFactHandlers: setFactHandlers
   };
   const containerState: TimelinePreviewContainerState = {
     loading: false,

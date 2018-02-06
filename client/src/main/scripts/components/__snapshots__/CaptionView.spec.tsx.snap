@@ -8,18 +8,26 @@ exports[`CaptionTextNodeList 1`] = `
     currentTime={0}
     eventHandlers={
       Object {
+        "onAfterRangeChange": [Function],
         "onClearPress": [Function],
         "onFineTuneDown": [Function],
         "onFineTuneUp": [Function],
         "onPlayPausePress": [Function],
+        "onRangeChange": [Function],
         "onRestartPress": [Function],
-        "onSelectionRangeChange": undefined,
         "onSkipBackPress": [Function],
         "onSkipForwardPress": [Function],
-        "onViewRangeChange": [Function],
       }
     }
     isPaused={true}
+    rangeSliders={
+      Object {
+        "transcriptViewRange": Object {
+          "end": undefined,
+          "start": 0,
+        },
+      }
+    }
     selection={
       Array [
         0,
@@ -27,12 +35,6 @@ exports[`CaptionTextNodeList 1`] = `
       ]
     }
     videoDuration={5224}
-    view={
-      Array [
-        0,
-        0,
-      ]
-    }
   />
   <Document
     captionData={
@@ -533,6 +535,12 @@ exports[`CaptionTextNodeList 1`] = `
         },
       ]
     }
+    view={
+      Object {
+        "end": undefined,
+        "start": 0,
+      }
+    }
   />
 </div>
 `;
@@ -545,18 +553,26 @@ exports[`CaptionTextNodeList with highlights from props 1`] = `
     currentTime={5.31}
     eventHandlers={
       Object {
+        "onAfterRangeChange": [Function],
         "onClearPress": [Function],
         "onFineTuneDown": [Function],
         "onFineTuneUp": [Function],
         "onPlayPausePress": [Function],
+        "onRangeChange": [Function],
         "onRestartPress": [Function],
-        "onSelectionRangeChange": undefined,
         "onSkipBackPress": [Function],
         "onSkipForwardPress": [Function],
-        "onViewRangeChange": [Function],
       }
     }
     isPaused={true}
+    rangeSliders={
+      Object {
+        "transcriptViewRange": Object {
+          "end": undefined,
+          "start": 0,
+        },
+      }
+    }
     selection={
       Array [
         5.31,
@@ -564,12 +580,6 @@ exports[`CaptionTextNodeList with highlights from props 1`] = `
       ]
     }
     videoDuration={5224}
-    view={
-      Array [
-        0,
-        0,
-      ]
-    }
   />
   <Document
     captionData={
@@ -1076,6 +1086,12 @@ exports[`CaptionTextNodeList with highlights from props 1`] = `
           "offset": 46,
         },
       ]
+    }
+    view={
+      Object {
+        "end": undefined,
+        "start": 0,
+      }
     }
   />
 </div>

@@ -17,6 +17,11 @@ jest.mock("./CaptionTextNode", () => ({
   default: "CaptionTextNode"
 }));
 
+const view = {
+  start: 0,
+  end: 5
+};
+
 test("CaptionTextNodeList", () => {
   const tree = renderer
     .create(
@@ -27,6 +32,7 @@ test("CaptionTextNodeList", () => {
         captionTimer={0}
         captionTranscript={videoFact.transcript}
         speakerMap={videoFact.speakerMap}
+        view={view}
       />
     )
     .toJSON();

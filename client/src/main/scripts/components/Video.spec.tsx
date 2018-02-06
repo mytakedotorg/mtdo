@@ -34,7 +34,7 @@ test("Video with highlights", () => {
         videoFact={videoFact}
         onSetClick={mockFn}
         className={"video__inner-container"}
-        timeRange={[0, 3]} // Test range can't go outside of videoFact.transcript range
+        clipRange={[0, 3]} // Test range can't go outside of videoFact.transcript range
       />
     )
     .toJSON();

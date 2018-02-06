@@ -13,18 +13,25 @@ jest.mock("./ClipEditor", () => ({
 }));
 
 const eventHandlers: CaptionViewEventHandlers = {
-  onHighlight: jest.fn(),
+  onAfterRangeChange: jest.fn(),
   onClearPress: jest.fn(),
-  onCursorPlace: jest.fn(),
   onFineTuneDown: jest.fn(),
   onFineTuneUp: jest.fn(),
+  onHighlight: jest.fn(),
   onPlayPausePress: jest.fn(),
   onRangeChange: jest.fn(),
   onRestartPress: jest.fn(),
+  onScroll: jest.fn(),
   onSkipBackPress: jest.fn(),
   onSkipForwardPress: jest.fn()
 };
 
+const rangeSliders = {
+  transcriptViewRange: {
+    start: 0,
+    end: this.viewRangeDuration
+  }
+};
 test("CaptionTextNodeList", () => {
   const tree = renderer
     .create(
@@ -38,6 +45,7 @@ test("CaptionTextNodeList", () => {
         eventHandlers={eventHandlers}
         videoDuration={5224}
         isPaused={true}
+        rangeSliders={rangeSliders}
       />
     )
     .toJSON();
@@ -57,6 +65,7 @@ test("CaptionTextNodeList with highlights from props", () => {
         eventHandlers={eventHandlers}
         videoDuration={5224}
         isPaused={true}
+        rangeSliders={rangeSliders}
       />
     )
     .toJSON();

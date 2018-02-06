@@ -50,13 +50,15 @@ exports[`Video 1`] = `
       clipStart={0}
       eventHandlers={
         Object {
+          "onAfterRangeChange": [Function],
           "onClearPress": [Function],
           "onFineTuneDown": [Function],
           "onFineTuneUp": [Function],
           "onHighlight": [Function],
           "onPlayPausePress": [Function],
+          "onRangeChange": [Function],
           "onRestartPress": [Function],
-          "onSelectionRangeChange": [Function],
+          "onScroll": [Function],
           "onSkipBackPress": [Function],
           "onSkipForwardPress": [Function],
         }
@@ -68,6 +70,14 @@ exports[`Video 1`] = `
         ]
       }
       isPaused={true}
+      rangeSliders={
+        Object {
+          "transcriptViewRange": Object {
+            "end": 5,
+            "start": 0,
+          },
+        }
+      }
       timer={0}
       videoDuration={5224}
       videoFact={
@@ -621,13 +631,15 @@ exports[`Video with highlights 1`] = `
       clipStart={0}
       eventHandlers={
         Object {
+          "onAfterRangeChange": [Function],
           "onClearPress": [Function],
           "onFineTuneDown": [Function],
           "onFineTuneUp": [Function],
           "onHighlight": [Function],
           "onPlayPausePress": [Function],
+          "onRangeChange": [Function],
           "onRestartPress": [Function],
-          "onSelectionRangeChange": [Function],
+          "onScroll": [Function],
           "onSkipBackPress": [Function],
           "onSkipForwardPress": [Function],
         }
@@ -639,6 +651,14 @@ exports[`Video with highlights 1`] = `
         ]
       }
       isPaused={true}
+      rangeSliders={
+        Object {
+          "transcriptViewRange": Object {
+            "end": 5,
+            "start": 0,
+          },
+        }
+      }
       timer={0}
       videoDuration={5224}
       videoFact={
