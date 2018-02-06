@@ -1,7 +1,7 @@
 import * as React from "react";
 import YouTube from "react-youtube";
 import isEqual = require("lodash/isEqual");
-import { getCharRangeFromVideoRange } from "../utils/functions";
+import { alertErr, getCharRangeFromVideoRange } from "../utils/functions";
 import { Foundation } from "../java2ts/Foundation";
 import CaptionView, { CaptionViewEventHandlers } from "./CaptionView";
 import { Routes } from "../java2ts/Routes";
@@ -19,13 +19,14 @@ interface YTPlayerParameters {
   playsinline: 1;
 }
 
-interface TimeRange {
+export interface TimeRange {
   start: number;
   end: number;
-  fixedDuration: boolean;
 }
 
-interface RangeSliders {
+export type RangeType = "SELECTION" | "VIEW" | "ZOOM";
+
+export interface RangeSliders {
   transcriptViewRange: TimeRange;
   zoomedRange?: TimeRange;
 }
@@ -48,11 +49,13 @@ interface VideoState {
   captionIsHighlighted: boolean;
   highlightedCharRange: [number, number];
   rangeSliders: RangeSliders;
+  rangeIsChanging: RangeType | null;
 }
 
 class Video extends React.Component<VideoProps, VideoState> {
   private timerId: number | null;
   private player: any;
+  private viewRangeDuration: number;
   constructor(props: VideoProps) {
     super(props);
 
@@ -60,6 +63,8 @@ class Video extends React.Component<VideoProps, VideoState> {
       props.videoFact,
       props.clipRange
     );
+
+    this.viewRangeDuration = 5;
 
     this.state = {
       currentTime: props.clipRange ? props.clipRange[0] : 0,
@@ -73,10 +78,10 @@ class Video extends React.Component<VideoProps, VideoState> {
       rangeSliders: {
         transcriptViewRange: {
           start: 0,
-          end: 20,
-          fixedDuration: true
+          end: this.viewRangeDuration
         }
-      }
+      },
+      rangeIsChanging: null
     };
   }
   cueVideo = () => {
@@ -114,11 +119,23 @@ class Video extends React.Component<VideoProps, VideoState> {
     this.setState({
       captionIsHighlighted: true,
       clipStart: videoRange[0],
-      clipEnd: videoRange[1]
+      clipEnd: videoRange[1],
+      highlightedCharRange: charRange
     });
     if (this.props.onRangeSet) {
       this.props.onRangeSet([videoRange[0], videoRange[1]]);
     }
+  };
+  handleCaptionScroll = (viewRangeStart: number) => {
+    this.setState({
+      rangeSliders: {
+        ...this.state.rangeSliders,
+        transcriptViewRange: {
+          start: viewRangeStart,
+          end: viewRangeStart + this.viewRangeDuration
+        }
+      }
+    });
   };
   handleClearClick = (): void => {
     this.setState({
@@ -180,7 +197,122 @@ class Video extends React.Component<VideoProps, VideoState> {
       currentTime: Math.round(event.target.getCurrentTime())
     });
   };
-  handleSelectionRangeChange = (range: [number, number]) => {
+  handleAfterRangeChange = (range: [number, number], type: RangeType) => {
+    this.setState({
+      rangeIsChanging: null
+    });
+  };
+  handleRangeChange = (range: [number, number], type: RangeType) => {
+    const { rangeIsChanging } = this.state;
+    if (rangeIsChanging == null || rangeIsChanging === type) {
+      const { transcriptViewRange, zoomedRange } = this.state.rangeSliders;
+      switch (type) {
+        case "SELECTION":
+          // Determine which handle is being changed
+          const currentSelectionStart = this.state.clipStart;
+          const currentSelectionEnd = this.state.clipEnd;
+          let nextSelectionStart;
+          let nextSelectionEnd;
+          if (zoomedRange) {
+            if (
+              range[0] !== currentSelectionStart &&
+              range[0] !== zoomedRange.start
+            ) {
+              // Lower handle is being changed
+              nextSelectionStart = range[0];
+              nextSelectionEnd = currentSelectionEnd;
+            } else if (
+              range[1] !== currentSelectionEnd &&
+              range[1] !== zoomedRange.end
+            ) {
+              // Upper handle is being changed
+              nextSelectionStart = currentSelectionStart;
+              nextSelectionEnd = range[1];
+            } else {
+              const msg =
+                "Video: Can't determine which selection handle is changing.";
+              alertErr(msg);
+              throw msg;
+            }
+          } else {
+            const msg = "Video: Unknown zoom range.";
+            alertErr(msg);
+            throw msg;
+          }
+
+          const charRange: [number, number] = this.getCharRange(
+            this.props.videoFact,
+            [nextSelectionStart, nextSelectionEnd]
+          );
+          this.setState({
+            clipStart: nextSelectionStart,
+            clipEnd: nextSelectionEnd,
+            captionIsHighlighted: true,
+            highlightedCharRange: charRange,
+            rangeIsChanging: "SELECTION"
+          });
+          break;
+        case "VIEW":
+          // Determine which handle is being changed
+          const currentViewStart = transcriptViewRange.start;
+          const currentViewEnd = transcriptViewRange.end;
+          let nextViewStart;
+          let nextViewEnd;
+          if (zoomedRange) {
+            if (
+              range[0] !== currentViewStart &&
+              range[0] !== zoomedRange.start
+            ) {
+              // Lower handle is being changed
+              nextViewStart = range[0];
+              nextViewEnd = range[0] + this.viewRangeDuration;
+            } else if (
+              range[1] !== currentViewEnd &&
+              range[1] !== zoomedRange.end
+            ) {
+              // Upper handle is being changed
+              nextViewStart = range[1] - this.viewRangeDuration;
+              nextViewEnd = range[1];
+            } else {
+              const msg =
+                "Video: Can't determine which view handle is changing.";
+              alertErr(msg);
+              throw msg;
+            }
+          } else {
+            const msg = "Video: Unknown zoom range.";
+            alertErr(msg);
+            throw msg;
+          }
+          this.setState({
+            rangeSliders: {
+              ...this.state.rangeSliders,
+              transcriptViewRange: {
+                start: nextViewStart,
+                end: nextViewEnd
+              }
+            },
+            rangeIsChanging: "VIEW"
+          });
+          break;
+        case "ZOOM":
+          this.setState({
+            rangeSliders: {
+              ...this.state.rangeSliders,
+              zoomedRange: {
+                start: range[0],
+                end: range[1]
+              }
+            },
+            rangeIsChanging: "ZOOM"
+          });
+          break;
+        default:
+          const msg = "Video: Unknown range type.";
+          alertErr(msg);
+          throw msg;
+      }
+    }
     // // Clear the selection
     // this.setState({
     //   currentTime: range[1],
@@ -188,16 +320,6 @@ class Video extends React.Component<VideoProps, VideoState> {
     //   endTime: range[2],
     //   captionIsHighlighted: false
     // });
-    const charRange: [number, number] = this.getCharRange(
-      this.props.videoFact,
-      [range[0], range[1]]
-    );
-    this.setState({
-      clipStart: range[0],
-      clipEnd: range[1],
-      captionIsHighlighted: true,
-      highlightedCharRange: charRange
-    });
   };
   handleReady = (event: any) => {
     this.player = event.target;
@@ -366,13 +488,15 @@ class Video extends React.Component<VideoProps, VideoState> {
     };
 
     const captionEventHandlers: CaptionViewEventHandlers = {
+      onAfterRangeChange: this.handleAfterRangeChange,
       onHighlight: this.handleCaptionHighlight,
       onClearPress: this.handleClearClick,
       onFineTuneUp: this.handleFineTuneUp,
       onFineTuneDown: this.handleFineTuneDown,
       onPlayPausePress: this.handlePlayPausePress,
-      onSelectionRangeChange: this.handleSelectionRangeChange,
+      onRangeChange: this.handleRangeChange,
       onRestartPress: this.handleRestartPress,
+      onScroll: this.handleCaptionScroll,
       onSkipBackPress: this.handleSkipBackPress,
       onSkipForwardPress: this.handleSkipForwardPress
     };
@@ -419,6 +543,7 @@ class Video extends React.Component<VideoProps, VideoState> {
             videoDuration={this.state.duration}
             eventHandlers={captionEventHandlers}
             highlightedCharRange={this.state.highlightedCharRange}
+            rangeSliders={this.state.rangeSliders}
           />
         </div>
       </div>

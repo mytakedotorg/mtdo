@@ -3,12 +3,13 @@ import * as ReactDOM from "react-dom";
 import { alertErr, FoundationNode } from "../utils/functions";
 import { Foundation } from "../java2ts/Foundation";
 import CaptionTextNode from "./CaptionTextNode";
+import { TimeRange } from "./Video";
 import isEqual = require("lodash/isEqual");
 var bs = require("binary-search");
 
 export interface CaptionTextNodeListEventHandlers {
   onMouseUp: () => any;
-  onScroll: (viewRange: [number, number]) => any;
+  onScroll: (viewRangeStart: number) => any;
 }
 
 interface CaptionTextNodeListProps {
@@ -18,7 +19,7 @@ interface CaptionTextNodeListProps {
   documentNodes: FoundationNode[];
   eventHandlers: CaptionTextNodeListEventHandlers;
   speakerMap: Foundation.SpeakerMap[];
-  view: [number, number];
+  view: TimeRange;
 }
 
 interface CaptionTextNodeListState {
@@ -258,10 +259,9 @@ class CaptionTextNodeList extends React.Component<
           indexOfLastWord = captionTranscript.length;
         }
 
-        this.props.eventHandlers.onScroll([
-          captionTranscript[indexOfFirstWord].timestamp,
-          captionTranscript[indexOfLastWord].timestamp
-        ]);
+        this.props.eventHandlers.onScroll(
+          captionTranscript[indexOfFirstWord].timestamp
+        );
       }
     }
   };
@@ -363,7 +363,7 @@ class CaptionTextNodeList extends React.Component<
   }
   componentWillReceiveProps(nextProps: CaptionTextNodeListProps) {
     if (!isEqual(this.props.view, nextProps.view)) {
-      this.setScrollView(nextProps.view[0]);
+      this.setScrollView(nextProps.view.start);
     }
   }
   render() {

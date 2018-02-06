@@ -11,10 +11,12 @@ import {
   FoundationNode,
   SimpleRanges
 } from "../utils/functions";
+import { RangeSliders, RangeType } from "./Video";
 import { Foundation } from "../java2ts/Foundation";
 import { Routes } from "../java2ts/Routes";
 
 export interface CaptionViewEventHandlers {
+  onAfterRangeChange: (range: [number, number], type: RangeType) => any;
   onClearPress: () => void;
   onFineTuneDown: (rangeIdx: 0 | 1) => void;
   onFineTuneUp: (rangeIdx: 0 | 1) => void;
@@ -23,8 +25,9 @@ export interface CaptionViewEventHandlers {
     charRange: [number, number]
   ) => void;
   onPlayPausePress: () => any;
+  onRangeChange: (range: [number, number], type: RangeType) => any;
   onRestartPress: () => any;
-  onSelectionRangeChange: (range: [number, number]) => any;
+  onScroll: (viewRangeStart: number) => any;
   onSkipBackPress: (seconds: number) => any;
   onSkipForwardPress: (seconds: number) => any;
 }
@@ -39,11 +42,11 @@ interface CaptionViewProps {
   videoDuration: number;
   eventHandlers: CaptionViewEventHandlers;
   highlightedCharRange?: [number, number];
+  rangeSliders: RangeSliders;
 }
 
 interface CaptionViewState {
   highlightedNodes?: FoundationNode[];
-  view: [number, number]; // time in seconds
 }
 
 class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
@@ -53,9 +56,7 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
   constructor(props: CaptionViewProps) {
     super(props);
 
-    this.state = {
-      view: [0, 0]
-    };
+    this.state = {};
   }
   getCaptionData = (nextProps?: CaptionViewProps): FoundationNode[] => {
     let captionIsHighlighted: boolean;
@@ -156,16 +157,6 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
       }
     }
   };
-  handleScroll = (viewRange: [number, number]) => {
-    this.setState({
-      view: viewRange
-    });
-  };
-  handleViewRangeChange = (range: [number, number]) => {
-    this.setState({
-      view: range
-    });
-  };
   highlightNodes(simpleRanges: SimpleRanges) {
     const transcript = this.props.videoFact.transcript;
     const speakerMap = this.props.videoFact.speakerMap;
@@ -216,20 +207,20 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
     const speakerMap = this.props.videoFact.speakerMap;
 
     const clipEditorEventHandlers: ClipEditorEventHandlers = {
+      onAfterRangeChange: this.props.eventHandlers.onAfterRangeChange,
       onClearPress: this.props.eventHandlers.onClearPress,
       onFineTuneDown: this.props.eventHandlers.onFineTuneDown,
       onFineTuneUp: this.props.eventHandlers.onFineTuneUp,
       onPlayPausePress: this.props.eventHandlers.onPlayPausePress,
       onRestartPress: this.props.eventHandlers.onRestartPress,
-      onSelectionRangeChange: this.props.eventHandlers.onSelectionRangeChange,
+      onRangeChange: this.props.eventHandlers.onRangeChange,
       onSkipBackPress: this.props.eventHandlers.onSkipBackPress,
-      onSkipForwardPress: this.props.eventHandlers.onSkipForwardPress,
-      onViewRangeChange: this.handleViewRangeChange
+      onSkipForwardPress: this.props.eventHandlers.onSkipForwardPress
     };
 
     const documentEventHandlers: DocumentEventHandlers = {
       onMouseUp: this.handleMouseUp,
-      onScroll: this.handleScroll
+      onScroll: this.props.eventHandlers.onScroll
     };
 
     return (
@@ -240,7 +231,7 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
           currentTime={this.props.timer}
           isPaused={this.props.isPaused}
           videoDuration={this.props.videoDuration}
-          view={this.state.view}
+          rangeSliders={this.props.rangeSliders}
         />
         {transcript && speakerMap && this.state.highlightedNodes ? (
           <Document
@@ -253,7 +244,7 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
               speakerMap: speakerMap
             }}
             nodes={this.state.highlightedNodes}
-            view={this.state.view}
+            view={this.props.rangeSliders.transcriptViewRange}
           />
         ) : (
           <div className="video__actions">

@@ -6,6 +6,7 @@ import DocumentTextNodeList from "./DocumentTextNodeList";
 import CaptionTextNodeList, {
   CaptionTextNodeListEventHandlers
 } from "./CaptionTextNodeList";
+import { TimeRange } from "./Video";
 
 interface CaptionData {
   captionTimer: number;
@@ -15,7 +16,7 @@ interface CaptionData {
 
 export interface DocumentEventHandlers {
   onMouseUp: () => any;
-  onScroll?: (viewRange: [number, number]) => any;
+  onScroll?: (viewRangeStart: number) => any;
 }
 
 interface DocumentProps {
@@ -23,7 +24,7 @@ interface DocumentProps {
   nodes: FoundationNode[];
   className?: string;
   captionData?: CaptionData;
-  view?: [number, number];
+  view?: TimeRange;
 }
 
 interface DocumentState {}
