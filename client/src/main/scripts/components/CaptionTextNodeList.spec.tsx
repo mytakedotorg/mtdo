@@ -5,6 +5,12 @@ import CaptionTextNodeList from "./CaptionTextNodeList";
 import { videoFact, videoNodes } from "../utils/testUtils";
 
 const onMouseUp = jest.fn();
+const onScroll = jest.fn();
+
+const eventHandlers = {
+  onMouseUp: onMouseUp,
+  onScroll: onScroll
+};
 const className = "document__text document__text--caption";
 
 jest.mock("./CaptionTextNode", () => ({
@@ -16,7 +22,7 @@ test("CaptionTextNodeList", () => {
     .create(
       <CaptionTextNodeList
         documentNodes={videoNodes}
-        onMouseUp={onMouseUp}
+        eventHandlers={eventHandlers}
         className={className}
         captionTimer={0}
         captionTranscript={videoFact.transcript}

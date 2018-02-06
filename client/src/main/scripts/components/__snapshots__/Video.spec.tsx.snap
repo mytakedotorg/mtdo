@@ -55,8 +55,8 @@ exports[`Video 1`] = `
           "onFineTuneUp": [Function],
           "onHighlight": [Function],
           "onPlayPausePress": [Function],
-          "onRangeChange": [Function],
           "onRestartPress": [Function],
+          "onSelectionRangeChange": [Function],
           "onSkipBackPress": [Function],
           "onSkipForwardPress": [Function],
         }
@@ -626,8 +626,8 @@ exports[`Video with highlights 1`] = `
           "onFineTuneUp": [Function],
           "onHighlight": [Function],
           "onPlayPausePress": [Function],
-          "onRangeChange": [Function],
           "onRestartPress": [Function],
+          "onSelectionRangeChange": [Function],
           "onSkipBackPress": [Function],
           "onSkipForwardPress": [Function],
         }
