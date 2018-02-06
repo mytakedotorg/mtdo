@@ -3,6 +3,7 @@ import * as ReactDOM from "react-dom";
 import { alertErr, FoundationNode } from "../utils/functions";
 import { Foundation } from "../java2ts/Foundation";
 import CaptionTextNode from "./CaptionTextNode";
+import isEqual = require("lodash/isEqual");
 var bs = require("binary-search");
 
 export interface CaptionTextNodeListEventHandlers {
@@ -17,6 +18,7 @@ interface CaptionTextNodeListProps {
   documentNodes: FoundationNode[];
   eventHandlers: CaptionTextNodeListEventHandlers;
   speakerMap: Foundation.SpeakerMap[];
+  view: [number, number];
 }
 
 interface CaptionTextNodeListState {
@@ -194,7 +196,7 @@ class CaptionTextNodeList extends React.Component<
         numberOfLinesIntoParagraph
       );
 
-      // If we didn't find the index, then we went too far
+      // If we didn't find the index, then we might have gone too far
       while (indexOfFirstWord === -1) {
         if (speakerIdx > 0) {
           speakerIdx--;
@@ -208,57 +210,59 @@ class CaptionTextNodeList extends React.Component<
             numberOfLinesIntoParagraph
           );
         } else {
-          // Or we are at the top of the video
-          indexOfFirstWord = 0;
+          // Don't change the scroll view
+          indexOfFirstWord = -1;
         }
       }
 
-      const lastSpeakerMap = this.props.speakerMap[speakerIdx];
-      let triesSoFar = 0;
-      let wordsSoFar = 0;
-      let heightSoFar = 0;
-      documentNode = this.captionNodeContainer.children[speakerIdx];
-      hiddenTextElement = this.getHiddenDiv(documentNode);
-      // let indexOfLastWord = this.getIdxOfLastWord(
-      //   hiddenTextElement,
-      //   lastSpeakerMap,
-      //   0,
-      //   0
-      // );
-      // while (indexOfLastWord.idx === -1) {
-      //   wordsSoFar = this.props.speakerMap[speakerIdx].range[1];
-      //   speakerIdx++;
-      //   let nextSpeakerMap = this.props.speakerMap[speakerIdx];
-      //   triesSoFar++;
-      //   if (speakerIdx >= this.props.speakerMap.length) {
-      //     // We are at the end of the video
-      //     throw "TODO";
-      //   } else {
-      //     heightSoFar +=
-      //       indexOfLastWord.height + totalSpeakerHeight * triesSoFar;
-      //     documentNode = this.captionNodeContainer.children[speakerIdx];
-      //     hiddenTextElement = this.getHiddenDiv(documentNode);
-      //     indexOfLastWord = this.getIdxOfLastWord(
-      //       hiddenTextElement,
-      //       nextSpeakerMap,
-      //       heightSoFar,
-      //       wordsSoFar
-      //     );
-      //   }
-      // }
+      if (indexOfFirstWord !== -1) {
+        const lastSpeakerMap = this.props.speakerMap[speakerIdx];
+        let triesSoFar = 0;
+        let wordsSoFar = 0;
+        let heightSoFar = 0;
+        documentNode = this.captionNodeContainer.children[speakerIdx];
+        hiddenTextElement = this.getHiddenDiv(documentNode);
+        // let indexOfLastWord = this.getIdxOfLastWord(
+        //   hiddenTextElement,
+        //   lastSpeakerMap,
+        //   0,
+        //   0
+        // );
+        // while (indexOfLastWord.idx === -1) {
+        //   wordsSoFar = this.props.speakerMap[speakerIdx].range[1];
+        //   speakerIdx++;
+        //   let nextSpeakerMap = this.props.speakerMap[speakerIdx];
+        //   triesSoFar++;
+        //   if (speakerIdx >= this.props.speakerMap.length) {
+        //     // We are at the end of the video
+        //     throw "TODO";
+        //   } else {
+        //     heightSoFar +=
+        //       indexOfLastWord.height + totalSpeakerHeight * triesSoFar;
+        //     documentNode = this.captionNodeContainer.children[speakerIdx];
+        //     hiddenTextElement = this.getHiddenDiv(documentNode);
+        //     indexOfLastWord = this.getIdxOfLastWord(
+        //       hiddenTextElement,
+        //       nextSpeakerMap,
+        //       heightSoFar,
+        //       wordsSoFar
+        //     );
+        //   }
+        // }
 
-      let indexOfLastWord = indexOfFirstWord + 20;
+        let indexOfLastWord = indexOfFirstWord + 20;
 
-      const { captionTranscript } = this.props;
+        const { captionTranscript } = this.props;
 
-      if (indexOfLastWord >= captionTranscript.length) {
-        indexOfLastWord = captionTranscript.length;
+        if (indexOfLastWord >= captionTranscript.length) {
+          indexOfLastWord = captionTranscript.length;
+        }
+
+        this.props.eventHandlers.onScroll([
+          captionTranscript[indexOfFirstWord].timestamp,
+          captionTranscript[indexOfLastWord].timestamp
+        ]);
       }
-
-      this.props.eventHandlers.onScroll([
-        captionTranscript[indexOfFirstWord].timestamp,
-        captionTranscript[indexOfLastWord].timestamp
-      ]);
     }
   };
   handleScroll = () => {
@@ -268,9 +272,9 @@ class CaptionTextNodeList extends React.Component<
       this.timerId = window.setTimeout(this.clearTimer, 500);
     }
   };
-  setScrollView = () => {
+  setScrollView = (time?: number) => {
     if (this.captionNodeContainer) {
-      const timer = this.props.captionTimer;
+      const timer = time ? time : this.props.captionTimer;
 
       let wordIdx = bs(
         this.props.captionTranscript,
@@ -356,6 +360,11 @@ class CaptionTextNodeList extends React.Component<
   };
   componentDidMount() {
     this.setScrollView();
+  }
+  componentWillReceiveProps(nextProps: CaptionTextNodeListProps) {
+    if (!isEqual(this.props.view, nextProps.view)) {
+      this.setScrollView(nextProps.view[0]);
+    }
   }
   render() {
     let wordCount: number;

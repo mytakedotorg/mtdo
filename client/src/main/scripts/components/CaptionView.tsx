@@ -253,6 +253,7 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
               speakerMap: speakerMap
             }}
             nodes={this.state.highlightedNodes}
+            view={this.state.view}
           />
         ) : (
           <div className="video__actions">

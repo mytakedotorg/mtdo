@@ -23,6 +23,7 @@ interface DocumentProps {
   nodes: FoundationNode[];
   className?: string;
   captionData?: CaptionData;
+  view?: [number, number];
 }
 
 interface DocumentState {}
@@ -41,7 +42,11 @@ class Document extends React.Component<DocumentProps, DocumentState> {
       : "document__row";
 
     let childComponent;
-    if (this.props.captionData && this.props.eventHandlers.onScroll) {
+    if (
+      this.props.captionData &&
+      this.props.eventHandlers.onScroll &&
+      this.props.view
+    ) {
       const eventHandlers: CaptionTextNodeListEventHandlers = {
         onMouseUp: this.props.eventHandlers.onMouseUp,
         onScroll: this.props.eventHandlers.onScroll
@@ -54,6 +59,7 @@ class Document extends React.Component<DocumentProps, DocumentState> {
           documentNodes={this.props.nodes}
           eventHandlers={eventHandlers}
           speakerMap={this.props.captionData.speakerMap}
+          view={this.props.view}
         />
       );
     } else {
