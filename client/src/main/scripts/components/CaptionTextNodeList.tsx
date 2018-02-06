@@ -5,12 +5,17 @@ import { Foundation } from "../java2ts/Foundation";
 import CaptionTextNode from "./CaptionTextNode";
 var bs = require("binary-search");
 
+export interface CaptionTextNodeListEventHandlers {
+  onMouseUp: () => any;
+  onScroll: (viewRange: [number, number]) => any;
+}
+
 interface CaptionTextNodeListProps {
-  className: string;
-  onMouseUp: () => void;
   captionTimer: number;
-  documentNodes: FoundationNode[];
   captionTranscript: Foundation.CaptionWord[];
+  className: string;
+  documentNodes: FoundationNode[];
+  eventHandlers: CaptionTextNodeListEventHandlers;
   speakerMap: Foundation.SpeakerMap[];
 }
 
@@ -43,6 +48,7 @@ class CaptionTextNodeList extends React.Component<
     if (this.captionNodeContainer) {
       const parentTop = this.captionNodeContainer.scrollTop;
       if (parentTop === 0) {
+        this.getViewRange(0);
         this.setState({
           currentSpeaker: "-"
         });
@@ -63,10 +69,196 @@ class CaptionTextNodeList extends React.Component<
           }
         }
 
+        this.getViewRange(speakerIdx);
+
         this.setState({
           currentSpeaker: this.props.speakerMap[speakerIdx].speaker
         });
       }
+    }
+  };
+  getHiddenDiv = (documentNode: Element): Element => {
+    // Find the hidden div element
+    const captionTextContainer = documentNode.children[1];
+    let hiddenTextElement;
+    // This lookup should match the DOM structure of CaptionTextNode
+    if (captionTextContainer && captionTextContainer.children[1]) {
+      hiddenTextElement = captionTextContainer.children[1];
+    } else {
+      const msg = "CaptionTextNodeList: Couldn't find caption node";
+      alertErr(msg);
+      throw msg;
+    }
+
+    return hiddenTextElement;
+  };
+  getIdxOfFirstWord = (
+    hiddenDiv: Element,
+    speakerMap: Foundation.SpeakerMap,
+    lineAtViewTop: number
+  ): number => {
+    let height = 0;
+    let indexOfFirstWord;
+    let numberOfLinesIntoDiv = -1;
+    let numberOfLinesIntoView = 0;
+    hiddenDiv.innerHTML = "";
+    for (let i = speakerMap.range[0]; i <= speakerMap.range[1]; ++i) {
+      hiddenDiv.innerHTML += this.props.captionTranscript[i].word;
+      if (hiddenDiv.clientHeight !== height) {
+        if (numberOfLinesIntoView > 0) {
+          numberOfLinesIntoView++;
+        } else {
+          height = hiddenDiv.clientHeight;
+          numberOfLinesIntoDiv++;
+          if (numberOfLinesIntoDiv === lineAtViewTop) {
+            // We found the index of the first word in the scroll view
+            indexOfFirstWord = i;
+            numberOfLinesIntoView++;
+            break;
+          }
+        }
+      }
+    }
+    return typeof indexOfFirstWord != "undefined" ? indexOfFirstWord : -1;
+  };
+  getIdxOfLastWord = (
+    hiddenDiv: Element,
+    speakerMap: Foundation.SpeakerMap,
+    additionalHeight: number,
+    wordsSoFar: number
+  ): { idx: number; height: number } => {
+    const totalViewHeight = 200;
+    let height = 0;
+    let indexOfLastWord;
+    hiddenDiv.innerHTML = "";
+    for (let i = speakerMap.range[0]; i <= speakerMap.range[1]; ++i) {
+      hiddenDiv.innerHTML += this.props.captionTranscript[i].word;
+      if (hiddenDiv.clientHeight !== height) {
+        height = hiddenDiv.clientHeight;
+        const total = height + additionalHeight;
+        if (height + additionalHeight >= totalViewHeight) {
+          // We found the index of the last word in the scroll view
+          indexOfLastWord = i + wordsSoFar - 1;
+          break;
+        }
+      }
+    }
+
+    if (typeof indexOfLastWord != "undefined") {
+      return {
+        idx: indexOfLastWord,
+        height: height
+      };
+    } else {
+      return {
+        idx: -1,
+        height: height
+      };
+    }
+  };
+  getViewRange = (speakerIdx: number) => {
+    if (this.captionNodeContainer) {
+      // Document node currently in the scroll view
+      let documentNode = this.captionNodeContainer.children[speakerIdx];
+
+      // Calculate the total height of the speaker inside the document node
+      const speakerNameHeight = documentNode.children[0].clientHeight;
+      let totalSpeakerHeight;
+      const lineHeight = 25.5;
+      if (speakerNameHeight === 31) {
+        // Large screen, margin-bottom is 24px;
+        totalSpeakerHeight = 55;
+      } else {
+        // Small screen, margin-bottom is 19px;
+        totalSpeakerHeight = 43;
+      }
+
+      // Get the scroll offset of the paragraph text inside the document node relative to the scroll view
+      const parentTop = this.captionNodeContainer.scrollTop;
+      const scrollHeight =
+        (documentNode as HTMLDivElement).offsetTop -
+        parentTop +
+        totalSpeakerHeight;
+
+      // Get the number of lines we have scrolled into the paragraph
+      const numberOfLinesIntoParagraph =
+        Math.floor(scrollHeight / lineHeight) * -1;
+
+      let hiddenTextElement = this.getHiddenDiv(documentNode);
+
+      // Add text to the hidden div element one line at a time
+      const speakerMap = this.props.speakerMap[speakerIdx];
+      let indexOfFirstWord = this.getIdxOfFirstWord(
+        hiddenTextElement,
+        speakerMap,
+        numberOfLinesIntoParagraph
+      );
+
+      // If we didn't find the index, then we went too far
+      while (indexOfFirstWord === -1) {
+        if (speakerIdx > 0) {
+          speakerIdx--;
+          // Do it again for the previous speaker
+          const prevSpeaker = this.props.speakerMap[speakerIdx];
+          documentNode = this.captionNodeContainer.children[speakerIdx];
+          hiddenTextElement = this.getHiddenDiv(documentNode);
+          indexOfFirstWord = this.getIdxOfFirstWord(
+            hiddenTextElement,
+            speakerMap,
+            numberOfLinesIntoParagraph
+          );
+        } else {
+          // Or we are at the top of the video
+          indexOfFirstWord = 0;
+        }
+      }
+
+      const lastSpeakerMap = this.props.speakerMap[speakerIdx];
+      let triesSoFar = 0;
+      let wordsSoFar = 0;
+      let heightSoFar = 0;
+      documentNode = this.captionNodeContainer.children[speakerIdx];
+      hiddenTextElement = this.getHiddenDiv(documentNode);
+      // let indexOfLastWord = this.getIdxOfLastWord(
+      //   hiddenTextElement,
+      //   lastSpeakerMap,
+      //   0,
+      //   0
+      // );
+      // while (indexOfLastWord.idx === -1) {
+      //   wordsSoFar = this.props.speakerMap[speakerIdx].range[1];
+      //   speakerIdx++;
+      //   let nextSpeakerMap = this.props.speakerMap[speakerIdx];
+      //   triesSoFar++;
+      //   if (speakerIdx >= this.props.speakerMap.length) {
+      //     // We are at the end of the video
+      //     throw "TODO";
+      //   } else {
+      //     heightSoFar +=
+      //       indexOfLastWord.height + totalSpeakerHeight * triesSoFar;
+      //     documentNode = this.captionNodeContainer.children[speakerIdx];
+      //     hiddenTextElement = this.getHiddenDiv(documentNode);
+      //     indexOfLastWord = this.getIdxOfLastWord(
+      //       hiddenTextElement,
+      //       nextSpeakerMap,
+      //       heightSoFar,
+      //       wordsSoFar
+      //     );
+      //   }
+      // }
+
+      let indexOfLastWord = indexOfFirstWord + 20;
+
+      const { captionTranscript } = this.props;
+
+      if (indexOfLastWord >= captionTranscript.length) {
+        indexOfLastWord = captionTranscript.length;
+      }
+
+      this.props.eventHandlers.onScroll([
+        captionTranscript[indexOfFirstWord].timestamp,
+        captionTranscript[indexOfLastWord].timestamp
+      ]);
     }
   };
   handleScroll = () => {
@@ -165,17 +357,6 @@ class CaptionTextNodeList extends React.Component<
   componentDidMount() {
     this.setScrollView();
   }
-  componentDidUpdate(
-    prevProps: CaptionTextNodeListProps,
-    prevState: CaptionTextNodeListState
-  ) {
-    if (
-      this.props.captionTimer &&
-      prevProps.captionTimer !== this.props.captionTimer
-    ) {
-      this.setScrollView();
-    }
-  }
   render() {
     let wordCount: number;
     let nextWordCount: number;
@@ -193,7 +374,7 @@ class CaptionTextNodeList extends React.Component<
         </h3>
         <div
           className={this.props.className}
-          onMouseUp={this.props.onMouseUp}
+          onMouseUp={this.props.eventHandlers.onMouseUp}
           ref={(captionNodeContainer: HTMLDivElement) =>
             (this.captionNodeContainer = captionNodeContainer)
           }

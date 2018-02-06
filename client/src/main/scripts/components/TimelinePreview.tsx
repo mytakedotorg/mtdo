@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import isEqual = require("lodash/isEqual");
-import Document from "./Document";
+import Document, { DocumentEventHandlers } from "./Document";
 import FactHeader from "./FactHeader";
 import DocumentTextNodeList from "./DocumentTextNodeList";
 import Video from "./Video";
@@ -260,6 +260,10 @@ export default class TimelinePreview extends React.Component<
       documentClass += " document__row--push";
     }
 
+    const documentEventHandlers: DocumentEventHandlers = {
+      onMouseUp: this.handleMouseUp
+    };
+
     return (
       <div className={"timeline__preview"}>
         <FactHeader
@@ -276,7 +280,7 @@ export default class TimelinePreview extends React.Component<
         {this.props.factLink.fact.kind === "document" && this.props.nodes ? (
           <Document
             nodes={this.props.nodes}
-            onMouseUp={this.handleMouseUp}
+            eventHandlers={documentEventHandlers}
             ref={(document: Document) => (this.document = document)}
             className={
               this.state.headerHidden

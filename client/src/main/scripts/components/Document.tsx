@@ -3,7 +3,9 @@ import * as ReactDOM from "react-dom";
 import { FoundationNode } from "../utils/functions";
 import { Foundation } from "../java2ts/Foundation";
 import DocumentTextNodeList from "./DocumentTextNodeList";
-import CaptionTextNodeList from "./CaptionTextNodeList";
+import CaptionTextNodeList, {
+  CaptionTextNodeListEventHandlers
+} from "./CaptionTextNodeList";
 
 interface CaptionData {
   captionTimer: number;
@@ -11,8 +13,13 @@ interface CaptionData {
   speakerMap: Foundation.SpeakerMap[];
 }
 
+export interface DocumentEventHandlers {
+  onMouseUp: () => any;
+  onScroll?: (viewRange: [number, number]) => any;
+}
+
 interface DocumentProps {
-  onMouseUp: () => void;
+  eventHandlers: DocumentEventHandlers;
   nodes: FoundationNode[];
   className?: string;
   captionData?: CaptionData;
@@ -34,14 +41,18 @@ class Document extends React.Component<DocumentProps, DocumentState> {
       : "document__row";
 
     let childComponent;
-    if (this.props.captionData) {
+    if (this.props.captionData && this.props.eventHandlers.onScroll) {
+      const eventHandlers: CaptionTextNodeListEventHandlers = {
+        onMouseUp: this.props.eventHandlers.onMouseUp,
+        onScroll: this.props.eventHandlers.onScroll
+      };
       childComponent = (
         <CaptionTextNodeList
-          className="document__text document__text--caption"
-          onMouseUp={this.props.onMouseUp}
-          documentNodes={this.props.nodes}
           captionTimer={this.props.captionData.captionTimer}
           captionTranscript={this.props.captionData.transcript}
+          className="document__text document__text--caption"
+          documentNodes={this.props.nodes}
+          eventHandlers={eventHandlers}
           speakerMap={this.props.captionData.speakerMap}
         />
       );
@@ -49,7 +60,7 @@ class Document extends React.Component<DocumentProps, DocumentState> {
       childComponent = (
         <DocumentTextNodeList
           className="document__text"
-          onMouseUp={this.props.onMouseUp}
+          onMouseUp={this.props.eventHandlers.onMouseUp}
           documentNodes={this.props.nodes}
         />
       );

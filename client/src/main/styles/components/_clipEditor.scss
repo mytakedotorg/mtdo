@@ -15,6 +15,9 @@
 }
 .clipEditor__range {
   width: $video-container-width;
+  padding-left: 8px;
+  padding-right: 8px;
+  overflow: hidden;
 }
 .clipEditor__controls {
   margin-left: auto;

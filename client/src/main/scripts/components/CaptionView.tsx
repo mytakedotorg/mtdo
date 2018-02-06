@@ -1,15 +1,11 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import isEqual = require("lodash/isEqual");
-import Document from "./Document";
-import ClipEditor, {
-  ClipEditorEventHandlers,
-  ZoomedRangeData
-} from "./ClipEditor";
+import Document, { DocumentEventHandlers } from "./Document";
+import ClipEditor, { ClipEditorEventHandlers } from "./ClipEditor";
 import {
   getCaptionNodeArray,
   getCharRangeFromVideoRange,
-  getRawHighlightedText,
   getSimpleRangesFromHTMLRange,
   highlightText,
   FoundationNode,
@@ -19,16 +15,16 @@ import { Foundation } from "../java2ts/Foundation";
 import { Routes } from "../java2ts/Routes";
 
 export interface CaptionViewEventHandlers {
+  onClearPress: () => void;
+  onFineTuneDown: (rangeIdx: 0 | 1) => void;
+  onFineTuneUp: (rangeIdx: 0 | 1) => void;
   onHighlight: (
     videoRange: [number, number],
     charRange: [number, number]
   ) => void;
-  onClearPress: () => void;
-  onFineTuneUp: (rangeIdx: 0 | 1) => void;
-  onFineTuneDown: (rangeIdx: 0 | 1) => void;
   onPlayPausePress: () => any;
-  onRangeChange: (range: [number, number], rangeIsMax: boolean) => any;
   onRestartPress: () => any;
+  onSelectionRangeChange: (range: [number, number]) => any;
   onSkipBackPress: (seconds: number) => any;
   onSkipForwardPress: (seconds: number) => any;
 }
@@ -47,8 +43,7 @@ interface CaptionViewProps {
 
 interface CaptionViewState {
   highlightedNodes?: FoundationNode[];
-  currentIndex: number;
-  zoomedRangeData?: ZoomedRangeData;
+  view: [number, number]; // time in seconds
 }
 
 class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
@@ -59,7 +54,7 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
     super(props);
 
     this.state = {
-      currentIndex: 0
+      view: [0, 0]
     };
   }
   getCaptionData = (nextProps?: CaptionViewProps): FoundationNode[] => {
@@ -99,26 +94,9 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
           highlightedCharRange,
           () => {}
         );
-        const zoomedViewRange = this.getZoomedViewRange(
-          clipStart,
-          clipEnd,
-          videoDuration
-        );
-        const zoomedCharRange = getCharRangeFromVideoRange(
-          transcript,
-          speakerMap,
-          zoomedViewRange
-        );
-        rawHighlightedText = getRawHighlightedText(
-          [...unhighlightedNodes],
-          zoomedCharRange
-        );
+
         this.setState({
-          highlightedNodes: captionNodes,
-          zoomedRangeData: {
-            text: rawHighlightedText,
-            viewRange: zoomedViewRange
-          }
+          highlightedNodes: captionNodes
         });
       } else {
         this.setState({
@@ -128,32 +106,11 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
       return unhighlightedNodes;
     } else {
       this.setState({
-        highlightedNodes: undefined,
-        zoomedRangeData: undefined
+        highlightedNodes: undefined
       });
       console.warn("Captions not yet done for this video");
       return [];
     }
-  };
-  getTenPercent = (clipStart: number, clipEnd: number): number => {
-    const duration = clipEnd - clipStart;
-    return duration * 0.1;
-  };
-  getZoomedViewRange = (
-    clipStart: number,
-    clipEnd: number,
-    videoDuration: number
-  ): [number, number] => {
-    const tenPercent = this.getTenPercent(clipStart, clipEnd);
-    let zoomStart = clipStart - tenPercent;
-    if (zoomStart < 0) {
-      zoomStart = 0;
-    }
-    let zoomEnd = clipEnd + tenPercent;
-    if (zoomEnd > videoDuration) {
-      zoomEnd = videoDuration;
-    }
-    return [zoomStart, zoomEnd];
   };
   handleClearClick = () => {
     const transcript = this.props.videoFact.transcript;
@@ -199,6 +156,16 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
       }
     }
   };
+  handleScroll = (viewRange: [number, number]) => {
+    this.setState({
+      view: viewRange
+    });
+  };
+  handleViewRangeChange = (range: [number, number]) => {
+    this.setState({
+      view: range
+    });
+  };
   highlightNodes(simpleRanges: SimpleRanges) {
     const transcript = this.props.videoFact.transcript;
     const speakerMap = this.props.videoFact.speakerMap;
@@ -209,30 +176,8 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
         () => {}
       );
 
-      const zoomedViewRange = this.getZoomedViewRange(
-        this.props.clipStart,
-        this.props.clipEnd,
-        this.props.videoDuration
-      );
-      const zoomedCharRange = getCharRangeFromVideoRange(
-        transcript,
-        speakerMap,
-        zoomedViewRange
-      );
-      const rawText = getRawHighlightedText(
-        [...this.document.getDocumentNodes()],
-        zoomedCharRange
-      );
       this.setState({
-        highlightedNodes: newNodes,
-        zoomedRangeData: {
-          text: rawText,
-          viewRange: this.getZoomedViewRange(
-            this.props.clipStart,
-            this.props.clipEnd,
-            this.props.videoDuration
-          )
-        }
+        highlightedNodes: newNodes
       });
 
       let startTime = transcript[simpleRanges.wordRange[0]].timestamp;
@@ -275,27 +220,32 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
       onFineTuneDown: this.props.eventHandlers.onFineTuneDown,
       onFineTuneUp: this.props.eventHandlers.onFineTuneUp,
       onPlayPausePress: this.props.eventHandlers.onPlayPausePress,
-      onRangeChange: this.props.eventHandlers.onRangeChange,
       onRestartPress: this.props.eventHandlers.onRestartPress,
+      onSelectionRangeChange: this.props.eventHandlers.onSelectionRangeChange,
       onSkipBackPress: this.props.eventHandlers.onSkipBackPress,
-      onSkipForwardPress: this.props.eventHandlers.onSkipForwardPress
+      onSkipForwardPress: this.props.eventHandlers.onSkipForwardPress,
+      onViewRangeChange: this.handleViewRangeChange
+    };
+
+    const documentEventHandlers: DocumentEventHandlers = {
+      onMouseUp: this.handleMouseUp,
+      onScroll: this.handleScroll
     };
 
     return (
       <div className="captions">
         <ClipEditor
           eventHandlers={clipEditorEventHandlers}
-          clipStart={this.props.clipStart}
-          clipEnd={this.props.clipEnd}
+          selection={[this.props.clipStart, this.props.clipEnd]}
           currentTime={this.props.timer}
           isPaused={this.props.isPaused}
           videoDuration={this.props.videoDuration}
-          zoomedRangeData={this.state.zoomedRangeData}
+          view={this.state.view}
         />
         {transcript && speakerMap && this.state.highlightedNodes ? (
           <Document
-            onMouseUp={this.handleMouseUp}
             ref={(document: Document) => (this.document = document)}
+            eventHandlers={documentEventHandlers}
             className="document__row"
             captionData={{
               captionTimer: this.props.timer,

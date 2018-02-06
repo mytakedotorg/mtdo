@@ -161,33 +161,24 @@ class Video extends React.Component<VideoProps, VideoState> {
       currentTime: Math.round(event.target.getCurrentTime())
     });
   };
-  handleRangeChange = (
-    range: [number, number, number],
-    rangeIsMax: boolean
-  ) => {
-    if (rangeIsMax) {
-      this.setState({
-        currentTime: range[1],
-        startTime: range[0],
-        endTime: range[2],
-        captionIsHighlighted: false
-      });
-    } else {
-      const charRange: [number, number] = this.getCharRange(
-        this.props.videoFact,
-        [range[0], range[2]]
-      );
-      this.setState({
-        currentTime: range[1],
-        startTime: range[0],
-        endTime: range[2],
-        captionIsHighlighted: true,
-        highlightedCharRange: charRange
-      });
-    }
-    if (this.player) {
-      this.player.seekTo(range[1]);
-    }
+  handleSelectionRangeChange = (range: [number, number]) => {
+    // // Clear the selection
+    // this.setState({
+    //   currentTime: range[1],
+    //   startTime: range[0],
+    //   endTime: range[2],
+    //   captionIsHighlighted: false
+    // });
+    const charRange: [number, number] = this.getCharRange(
+      this.props.videoFact,
+      [range[0], range[1]]
+    );
+    this.setState({
+      startTime: range[0],
+      endTime: range[1],
+      captionIsHighlighted: true,
+      highlightedCharRange: charRange
+    });
   };
   handleReady = (event: any) => {
     this.player = event.target;
@@ -361,7 +352,7 @@ class Video extends React.Component<VideoProps, VideoState> {
       onFineTuneUp: this.handleFineTuneUp,
       onFineTuneDown: this.handleFineTuneDown,
       onPlayPausePress: this.handlePlayPausePress,
-      onRangeChange: this.handleRangeChange,
+      onSelectionRangeChange: this.handleSelectionRangeChange,
       onRestartPress: this.handleRestartPress,
       onSkipBackPress: this.handleSkipBackPress,
       onSkipForwardPress: this.handleSkipForwardPress
