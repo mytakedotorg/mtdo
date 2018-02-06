@@ -308,7 +308,7 @@ export default class TimelinePreview extends React.Component<
             onRangeSet={this.handleVideoRangeSet}
             onClearClick={this.handleClearClick}
             videoFact={this.props.videoFact}
-            timeRange={
+            clipRange={
               this.props.ranges && !this.props.ranges.viewRange
                 ? this.props.ranges.highlightedRange
                 : null
