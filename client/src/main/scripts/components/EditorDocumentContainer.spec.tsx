@@ -30,35 +30,13 @@ const document = {
 };
 
 test("Document loading", () => {
-  const containerState: EditorDocumentContainerState = {
-    loading: true,
-    error: false
-  };
+  const containerState: EditorDocumentContainerState = { loading: true };
 
   const tree = renderer
     .create(
       <EditorDocumentBranch
         containerProps={containerProps}
         containerState={containerState}
-        handleRetryClick={mockFn}
-      />
-    )
-    .toJSON();
-  expect(tree).toMatchSnapshot();
-});
-
-test("Error loading Document", () => {
-  const containerState: EditorDocumentContainerState = {
-    loading: false,
-    error: true
-  };
-
-  const tree = renderer
-    .create(
-      <EditorDocumentBranch
-        containerProps={containerProps}
-        containerState={containerState}
-        handleRetryClick={mockFn}
       />
     )
     .toJSON();
@@ -68,7 +46,6 @@ test("Error loading Document", () => {
 test("Successfully loaded Document", () => {
   const containerState: EditorDocumentContainerState = {
     loading: false,
-    error: false,
     document: document
   };
 
@@ -77,7 +54,6 @@ test("Successfully loaded Document", () => {
       <EditorDocumentBranch
         containerProps={containerProps}
         containerState={containerState}
-        handleRetryClick={mockFn}
       />
     )
     .toJSON();

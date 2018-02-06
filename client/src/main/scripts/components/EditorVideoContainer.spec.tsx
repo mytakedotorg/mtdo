@@ -26,35 +26,13 @@ const containerProps: EditorVideoContainerProps = {
 };
 
 test("Video loading", () => {
-  const containerState: EditorVideoContainerState = {
-    loading: true,
-    error: false
-  };
+  const containerState: EditorVideoContainerState = { loading: true };
 
   const tree = renderer
     .create(
       <EditorVideoBranch
         containerProps={containerProps}
         containerState={containerState}
-        handleRetryClick={mockFn}
-      />
-    )
-    .toJSON();
-  expect(tree).toMatchSnapshot();
-});
-
-test("Error loading Video", () => {
-  const containerState: EditorVideoContainerState = {
-    loading: false,
-    error: true
-  };
-
-  const tree = renderer
-    .create(
-      <EditorVideoBranch
-        containerProps={containerProps}
-        containerState={containerState}
-        handleRetryClick={mockFn}
       />
     )
     .toJSON();
@@ -64,7 +42,6 @@ test("Error loading Video", () => {
 test("Successfully loaded Video", () => {
   const containerState: EditorVideoContainerState = {
     loading: false,
-    error: false,
     videoFact: videoFact
   };
 
@@ -73,7 +50,6 @@ test("Successfully loaded Video", () => {
       <EditorVideoBranch
         containerProps={containerProps}
         containerState={containerState}
-        handleRetryClick={mockFn}
       />
     )
     .toJSON();
