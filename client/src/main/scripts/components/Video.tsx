@@ -201,6 +201,11 @@ class Video extends React.Component<VideoProps, VideoState> {
     this.setState({
       rangeIsChanging: null
     });
+    if (type === "SELECTION") {
+      if (this.props.onRangeSet) {
+        this.props.onRangeSet([range[0], range[1]]);
+      }
+    }
   };
   handleRangeChange = (range: [number, number], type: RangeType) => {
     const { rangeIsChanging } = this.state;
