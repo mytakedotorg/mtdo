@@ -158,99 +158,12 @@ class CaptionTextNodeList extends React.Component<
       const numberLineTransform = new NumberLineTransform();
       numberLineTransform.setBefore(0, totalLinesInParagraph);
       numberLineTransform.setAfter(speakerMap.range[0], speakerMap.range[1]);
-      const approximateWordIdx = numberLineTransform.toAfter(
-        numberOfLinesIntoParagraph
+      const approximateWordIdx = Math.round(
+        numberLineTransform.toAfter(numberOfLinesIntoParagraph)
       );
 
-      // Get the hidden div
-      let hiddenDiv = this.getHiddenDiv(documentNode);
-
-      let seedSentence = "";
-      let currentIndex;
-      let min = speakerMap.range[0];
-      let max = speakerMap.range[1];
-      for (let i = min; i <= max; ++i) {
-        const captionWord = this.props.captionTranscript[i];
-        if (captionWord.idx === approximateWordIdx) {
-          // Capture index where loop breaks
-          currentIndex = i;
-          break;
-        } else {
-          seedSentence += captionWord.word + " ";
-        }
-      }
-
-      if (!currentIndex) {
-        // Loop didn't break
-        currentIndex = speakerMap.range[1];
-      }
-
-      hiddenDiv.innerHTML = seedSentence;
-      const targetHeight =
-        numberOfLinesIntoParagraph * this.lineHeight + totalSpeakerHeight;
-      let loopLimit = 500;
-      while (
-        !this.isCloseTo(hiddenDiv.clientHeight, targetHeight, 5) &&
-        loopLimit > 0
-      ) {
-        if (hiddenDiv.clientHeight < targetHeight) {
-          // Add words to the div
-          currentIndex++;
-          if (this.props.captionTranscript[currentIndex]) {
-            // Make sure currentIndex hasn't gone negative or past the length of the array
-            hiddenDiv.innerHTML +=
-              this.props.captionTranscript[currentIndex].word + " ";
-          }
-        } else {
-          // Subtract words from the div
-          currentIndex--;
-          const currentText = hiddenDiv.innerHTML;
-          const lastIndex = currentText.lastIndexOf(" ");
-          const nextText = currentText.substring(0, lastIndex);
-          hiddenDiv.innerHTML = nextText;
-        }
-        // Check current index against smallest word index of current speaker
-        if (currentIndex < min) {
-          // We need to get the previous speaker
-          speakerIdx--;
-          if (speakerIdx === 0) {
-            // We're at the first speaker
-            break;
-          }
-          documentNode = this.captionNodeContainer.children[speakerIdx];
-          hiddenDiv = this.getHiddenDiv(documentNode);
-          // And fill it with all of its words
-          seedSentence = "";
-          // Get the next speaker
-          speakerMap = this.props.speakerMap[speakerIdx];
-          // Get min/max of next speaker's word range
-          min = speakerMap.range[0];
-          max = speakerMap.range[1];
-          for (let i = min; i <= max; ++i) {
-            seedSentence += this.props.captionTranscript[i].word + " ";
-          }
-          hiddenDiv.innerHTML = seedSentence;
-          // Check current index against largest word index of current speaker
-        } else if (currentIndex > max) {
-          // We need to check the next speaker
-          // We need to get the previous speaker
-          speakerIdx++;
-          if (!this.props.speakerMap[speakerIdx]) {
-            // We're at the last speaker
-            break;
-          }
-          documentNode = this.captionNodeContainer.children[speakerIdx];
-          hiddenDiv = this.getHiddenDiv(documentNode);
-          // Get the next speaker
-          speakerMap = this.props.speakerMap[speakerIdx];
-          // Get min/max of next speaker's word range
-          min = speakerMap.range[0];
-          max = speakerMap.range[1];
-        }
-        loopLimit--;
-      }
       // Find the index of the first word
-      const indexOfFirstWord = currentIndex;
+      const indexOfFirstWord = approximateWordIdx;
       const firstWord = this.props.captionTranscript[indexOfFirstWord];
 
       if (typeof firstWord != "undefined") {
