@@ -178,7 +178,7 @@ class CaptionTextNodeList extends React.Component<
     // Only allow this function to execute no more than twice per second
     if (!this.timerId) {
       this.getCurrentSpeaker();
-      this.timerId = window.setTimeout(this.clearTimer, 500);
+      this.timerId = window.setTimeout(this.clearTimer, 50);
     }
   };
   isCloseTo = (n0: number, n1: number, margin: number): boolean => {
