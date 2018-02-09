@@ -46,14 +46,10 @@ exports[`Video 1`] = `
     </div>
     <CaptionView
       captionIsHighlighted={false}
-      clipEnd={0}
-      clipStart={0}
       eventHandlers={
         Object {
           "onAfterRangeChange": [Function],
           "onClearPress": [Function],
-          "onFineTuneDown": [Function],
-          "onFineTuneUp": [Function],
           "onHighlight": [Function],
           "onPlayPausePress": [Function],
           "onRangeChange": [Function],
@@ -71,12 +67,18 @@ exports[`Video 1`] = `
       }
       isPaused={true}
       rangeSliders={
-        Object {
-          "transcriptViewRange": Object {
+        Array [
+          Object {
+            "end": 0,
+            "start": 0,
+            "type": "SELECTION",
+          },
+          Object {
             "end": 5,
             "start": 0,
+            "type": "VIEW",
           },
-        }
+        ]
       }
       timer={0}
       videoDuration={5224}
@@ -627,14 +629,10 @@ exports[`Video with highlights 1`] = `
     </div>
     <CaptionView
       captionIsHighlighted={true}
-      clipEnd={3}
-      clipStart={0}
       eventHandlers={
         Object {
           "onAfterRangeChange": [Function],
           "onClearPress": [Function],
-          "onFineTuneDown": [Function],
-          "onFineTuneUp": [Function],
           "onHighlight": [Function],
           "onPlayPausePress": [Function],
           "onRangeChange": [Function],
@@ -652,12 +650,18 @@ exports[`Video with highlights 1`] = `
       }
       isPaused={true}
       rangeSliders={
-        Object {
-          "transcriptViewRange": Object {
+        Array [
+          Object {
+            "end": 3,
+            "start": 0,
+            "type": "SELECTION",
+          },
+          Object {
             "end": 5,
             "start": 0,
+            "type": "VIEW",
           },
-        }
+        ]
       }
       timer={0}
       videoDuration={5224}

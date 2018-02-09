@@ -22,14 +22,10 @@ interface YTPlayerParameters {
 export interface TimeRange {
   start: number;
   end: number;
+  type: RangeType;
 }
 
 export type RangeType = "SELECTION" | "VIEW" | "ZOOM";
-
-export interface RangeSliders {
-  transcriptViewRange: TimeRange;
-  zoomedRange?: TimeRange;
-}
 
 interface VideoProps {
   onSetClick: (range: [number, number]) => void;
@@ -42,13 +38,11 @@ interface VideoProps {
 
 interface VideoState {
   currentTime: number;
-  clipStart: number;
-  clipEnd: number;
   duration: number;
   isPaused: boolean;
   captionIsHighlighted: boolean;
   highlightedCharRange: [number, number];
-  rangeSliders: RangeSliders;
+  rangeSliders: TimeRange[];
   rangeIsChanging: RangeType | null;
 }
 
@@ -68,30 +62,30 @@ class Video extends React.Component<VideoProps, VideoState> {
 
     this.state = {
       currentTime: props.clipRange ? props.clipRange[0] : 0,
-      clipStart: props.clipRange ? props.clipRange[0] : 0,
-      clipEnd: props.clipRange ? props.clipRange[1] : 0,
       isPaused: true,
       duration: 5224,
       captionIsHighlighted:
         charRange[0] === -1 && charRange[1] === -1 ? false : true,
       highlightedCharRange: charRange,
-      rangeSliders: {
-        transcriptViewRange: {
-          start: 0,
-          end: this.viewRangeDuration
-        }
-      },
+      rangeSliders: this.initializeRangeSliders(props),
       rangeIsChanging: null
     };
   }
   cueVideo = () => {
     if (this.player) {
-      this.player.cueVideoById({
-        videoId: this.props.videoFact.youtubeId,
-        startSeconds: this.state.clipStart,
-        endSeconds: this.state.clipEnd,
-        suggestedQuality: "default"
-      });
+      const selectionRange = this.getRangeSlider("SELECTION");
+      if (selectionRange) {
+        this.player.cueVideoById({
+          videoId: this.props.videoFact.youtubeId,
+          startSeconds: selectionRange.start,
+          endSeconds: selectionRange.end,
+          suggestedQuality: "default"
+        });
+      } else {
+        const msg = "Video: Can't find selection range. (1)";
+        alertErr(msg);
+        throw msg;
+      }
     }
   };
   getCharRange = (
@@ -111,30 +105,57 @@ class Video extends React.Component<VideoProps, VideoState> {
     }
     return [-1, -1];
   };
+  getRangeSlider = (type: RangeType): TimeRange | null => {
+    for (const rangeSlider of this.state.rangeSliders) {
+      if (rangeSlider.type === type) {
+        return { ...rangeSlider };
+      }
+    }
+    return null;
+  };
+  initializeRangeSliders = (props: VideoProps): TimeRange[] => {
+    const transcriptViewRange: TimeRange = {
+      start: 0,
+      end: this.viewRangeDuration,
+      type: "VIEW"
+    };
+
+    const selectionRange: TimeRange = {
+      start: props.clipRange ? props.clipRange[0] : 0,
+      end: props.clipRange ? props.clipRange[1] : 0,
+      type: "SELECTION"
+    };
+
+    return [selectionRange, transcriptViewRange];
+  };
   handleCaptionHighlight = (
     videoRange: [number, number],
     charRange: [number, number]
   ): void => {
     //Set video times
+    const newSelection: TimeRange = {
+      start: videoRange[0],
+      end: videoRange[1],
+      type: "SELECTION"
+    };
     this.setState({
       captionIsHighlighted: true,
-      clipStart: videoRange[0],
-      clipEnd: videoRange[1],
-      highlightedCharRange: charRange
+      highlightedCharRange: charRange,
+      rangeSliders: this.updateRangeSlider(newSelection)
     });
     if (this.props.onRangeSet) {
       this.props.onRangeSet([videoRange[0], videoRange[1]]);
     }
   };
   handleCaptionScroll = (viewRangeStart: number) => {
+    const newView: TimeRange = {
+      start: viewRangeStart,
+      end: viewRangeStart + this.viewRangeDuration,
+      type: "VIEW"
+    };
+
     this.setState({
-      rangeSliders: {
-        ...this.state.rangeSliders,
-        transcriptViewRange: {
-          start: viewRangeStart,
-          end: viewRangeStart + this.viewRangeDuration
-        }
-      }
+      rangeSliders: this.updateRangeSlider(newView)
     });
   };
   handleClearClick = (): void => {
@@ -143,36 +164,6 @@ class Video extends React.Component<VideoProps, VideoState> {
     });
     if (this.props.onClearClick) {
       this.props.onClearClick();
-    }
-  };
-  handleFineTuneUp = (rangeIdx: 0 | 1): void => {
-    if (rangeIdx === 0) {
-      let startTime = this.state.clipStart;
-      this.setState({
-        clipStart: startTime + 0.1
-      });
-    } else {
-      let endTime = this.state.clipEnd;
-      if (endTime >= 0) {
-        this.setState({
-          clipEnd: endTime + 0.1
-        });
-      }
-    }
-  };
-  handleFineTuneDown = (rangeIdx: 0 | 1): void => {
-    if (rangeIdx === 0) {
-      let startTime = this.state.clipStart;
-      this.setState({
-        clipStart: startTime - 0.1
-      });
-    } else {
-      let endTime = this.state.clipEnd;
-      if (endTime >= 0) {
-        this.setState({
-          clipEnd: endTime - 0.1
-        });
-      }
     }
   };
   handlePlayPausePress = () => {
@@ -210,28 +201,27 @@ class Video extends React.Component<VideoProps, VideoState> {
   handleRangeChange = (range: [number, number], type: RangeType) => {
     const { rangeIsChanging } = this.state;
     if (rangeIsChanging == null || rangeIsChanging === type) {
-      const { transcriptViewRange, zoomedRange } = this.state.rangeSliders;
+      const zoomedRange = this.getRangeSlider("ZOOM");
       switch (type) {
         case "SELECTION":
-          // Determine which handle is being changed
-          const currentSelectionStart = this.state.clipStart;
-          const currentSelectionEnd = this.state.clipEnd;
-          let nextSelectionStart;
-          let nextSelectionEnd;
-          if (zoomedRange) {
+          const selectionRange = this.getRangeSlider("SELECTION");
+          if (selectionRange && zoomedRange) {
+            // Determine which handle is being changed
+            let nextSelectionStart;
+            let nextSelectionEnd;
             if (
-              range[0] !== currentSelectionStart &&
+              range[0] !== selectionRange.start &&
               range[0] !== zoomedRange.start
             ) {
               // Lower handle is being changed
               nextSelectionStart = range[0];
-              nextSelectionEnd = currentSelectionEnd;
+              nextSelectionEnd = selectionRange.end;
             } else if (
-              range[1] !== currentSelectionEnd &&
+              range[1] !== selectionRange.end &&
               range[1] !== zoomedRange.end
             ) {
               // Upper handle is being changed
-              nextSelectionStart = currentSelectionStart;
+              nextSelectionStart = selectionRange.start;
               nextSelectionEnd = range[1];
             } else {
               const msg =
@@ -239,40 +229,42 @@ class Video extends React.Component<VideoProps, VideoState> {
               alertErr(msg);
               throw msg;
             }
+            const nextSelection: TimeRange = {
+              start: nextSelectionStart,
+              end: nextSelectionEnd,
+              type: "SELECTION"
+            };
+            const charRange: [number, number] = this.getCharRange(
+              this.props.videoFact,
+              [nextSelectionStart, nextSelectionEnd]
+            );
+            this.setState({
+              captionIsHighlighted: true,
+              highlightedCharRange: charRange,
+              rangeIsChanging: "SELECTION",
+              rangeSliders: this.updateRangeSlider(nextSelection)
+            });
           } else {
-            const msg = "Video: Unknown zoom range.";
+            const msg = "Video: Can't find selection or zoom range.";
             alertErr(msg);
             throw msg;
           }
-
-          const charRange: [number, number] = this.getCharRange(
-            this.props.videoFact,
-            [nextSelectionStart, nextSelectionEnd]
-          );
-          this.setState({
-            clipStart: nextSelectionStart,
-            clipEnd: nextSelectionEnd,
-            captionIsHighlighted: true,
-            highlightedCharRange: charRange,
-            rangeIsChanging: "SELECTION"
-          });
           break;
         case "VIEW":
-          // Determine which handle is being changed
-          const currentViewStart = transcriptViewRange.start;
-          const currentViewEnd = transcriptViewRange.end;
-          let nextViewStart;
-          let nextViewEnd;
-          if (zoomedRange) {
+          const transcriptViewRange = this.getRangeSlider("VIEW");
+          if (transcriptViewRange && zoomedRange) {
+            // Determine which handle is being changed
+            let nextViewStart;
+            let nextViewEnd;
             if (
-              range[0] !== currentViewStart &&
+              range[0] !== transcriptViewRange.start &&
               range[0] !== zoomedRange.start
             ) {
               // Lower handle is being changed
               nextViewStart = range[0];
               nextViewEnd = range[0] + this.viewRangeDuration;
             } else if (
-              range[1] !== currentViewEnd &&
+              range[1] !== transcriptViewRange.end &&
               range[1] !== zoomedRange.end
             ) {
               // Upper handle is being changed
@@ -284,32 +276,30 @@ class Video extends React.Component<VideoProps, VideoState> {
               alertErr(msg);
               throw msg;
             }
+            const nextView: TimeRange = {
+              start: nextViewStart,
+              end: nextViewEnd,
+              type: "VIEW"
+            };
+            this.setState({
+              rangeIsChanging: "VIEW",
+              rangeSliders: this.updateRangeSlider(nextView)
+            });
           } else {
-            const msg = "Video: Unknown zoom range.";
+            const msg = "Video: Can't find view or zoom range.";
             alertErr(msg);
             throw msg;
           }
-          this.setState({
-            rangeSliders: {
-              ...this.state.rangeSliders,
-              transcriptViewRange: {
-                start: nextViewStart,
-                end: nextViewEnd
-              }
-            },
-            rangeIsChanging: "VIEW"
-          });
           break;
         case "ZOOM":
+          const nextZoom: TimeRange = {
+            start: range[0],
+            end: range[1],
+            type: "ZOOM"
+          };
           this.setState({
-            rangeSliders: {
-              ...this.state.rangeSliders,
-              zoomedRange: {
-                start: range[0],
-                end: range[1]
-              }
-            },
-            rangeIsChanging: "ZOOM"
+            rangeIsChanging: "ZOOM",
+            rangeSliders: this.updateRangeSlider(nextZoom)
           });
           break;
         default:
@@ -332,12 +322,21 @@ class Video extends React.Component<VideoProps, VideoState> {
   };
   handleRestartPress = () => {
     if (this.state.captionIsHighlighted) {
-      const clipStart = this.state.clipStart;
-      this.setState({
-        currentTime: clipStart
-      });
-      if (this.player) {
-        this.player.seekTo(clipStart);
+      const selectionRange = this.getRangeSlider("SELECTION");
+      if (selectionRange) {
+        const clipStart = selectionRange.start;
+        this.setState({
+          currentTime: clipStart
+        });
+        if (this.player) {
+          this.player.seekTo(clipStart);
+        } else {
+          console.warn("Player not ready");
+        }
+      } else {
+        const msg = "Video: Can't find selection range. (2)";
+        alertErr(msg);
+        throw msg;
       }
     } else {
       this.setState({
@@ -345,12 +344,23 @@ class Video extends React.Component<VideoProps, VideoState> {
       });
       if (this.player) {
         this.player.seekTo(0);
+      } else {
+        console.warn("Player not ready");
       }
     }
   };
   handleSetClick = () => {
-    if (this.state.clipEnd > this.state.clipStart) {
-      this.props.onSetClick([this.state.clipStart, this.state.clipEnd]);
+    const selectionRange = this.getRangeSlider("SELECTION");
+    if (selectionRange) {
+      const clipStart = selectionRange.start;
+      const clipEnd = selectionRange.end;
+      if (clipEnd > clipStart) {
+        this.props.onSetClick([clipStart, clipEnd]);
+      }
+    } else {
+      const msg = "Video: Can't find selection range. (3)";
+      alertErr(msg);
+      throw msg;
     }
   };
   handleSkipBackPress = (seconds: number) => {
@@ -408,6 +418,22 @@ class Video extends React.Component<VideoProps, VideoState> {
       this.timerId = null;
     }
   };
+  updateRangeSlider = (newRangeSlider: TimeRange): TimeRange[] => {
+    let newRangeSliderArr: TimeRange[] = [];
+    let rangeAlreadyExists = false;
+    for (const rangeSlider of this.state.rangeSliders) {
+      if (rangeSlider.type === newRangeSlider.type) {
+        newRangeSliderArr = [...newRangeSliderArr, newRangeSlider];
+        rangeAlreadyExists = true;
+      } else {
+        newRangeSliderArr = [...newRangeSliderArr, rangeSlider];
+      }
+    }
+    if (!rangeAlreadyExists) {
+      newRangeSliderArr = [...newRangeSliderArr, newRangeSlider];
+    }
+    return newRangeSliderArr;
+  };
   componentWillUnmount() {
     this.stopTimer();
   }
@@ -437,12 +463,12 @@ class Video extends React.Component<VideoProps, VideoState> {
       window.location.pathname.startsWith(Routes.FOUNDATION)
     ) {
       // No time range and on a /foundation route or sub-route
+
       this.setState({
-        clipStart: 0,
-        clipEnd: 0,
         captionIsHighlighted: false,
         highlightedCharRange: [-1, -1],
-        isPaused: true
+        isPaused: true,
+        rangeSliders: this.initializeRangeSliders(nextProps)
       });
       if (this.player) {
         this.player.pauseVideo();
@@ -452,6 +478,12 @@ class Video extends React.Component<VideoProps, VideoState> {
       !isEqual(nextProps.clipRange, this.props.clipRange)
     ) {
       // There is a time range and it's different than the previous range
+      const selection: TimeRange = {
+        start: nextProps.clipRange[0],
+        end: nextProps.clipRange[1],
+        type: "SELECTION"
+      };
+
       let charRange: [number, number] = this.getCharRange(
         nextProps.videoFact,
         nextProps.clipRange
@@ -459,11 +491,10 @@ class Video extends React.Component<VideoProps, VideoState> {
 
       this.setState({
         currentTime: nextProps.clipRange[0],
-        clipStart: nextProps.clipRange[0],
-        clipEnd: nextProps.clipRange[1],
         captionIsHighlighted:
           charRange[0] === -1 && charRange[1] === -1 ? false : true,
-        highlightedCharRange: charRange
+        highlightedCharRange: charRange,
+        rangeSliders: this.updateRangeSlider(selection)
       });
     }
   }
@@ -479,10 +510,13 @@ class Video extends React.Component<VideoProps, VideoState> {
       modestbranding: 1
     };
 
-    playerVars.start = this.state.clipStart;
-    if (this.state.captionIsHighlighted) {
-      if (this.state.clipEnd > 0) {
-        playerVars.end = this.state.clipEnd;
+    const selection = this.getRangeSlider("SELECTION");
+    if (selection) {
+      playerVars.start = selection.start;
+      if (this.state.captionIsHighlighted) {
+        if (selection.end > 0) {
+          playerVars.end = selection.end;
+        }
       }
     }
 
@@ -496,8 +530,6 @@ class Video extends React.Component<VideoProps, VideoState> {
       onAfterRangeChange: this.handleAfterRangeChange,
       onHighlight: this.handleCaptionHighlight,
       onClearPress: this.handleClearClick,
-      onFineTuneUp: this.handleFineTuneUp,
-      onFineTuneDown: this.handleFineTuneDown,
       onPlayPausePress: this.handlePlayPausePress,
       onRangeChange: this.handleRangeChange,
       onRestartPress: this.handleRestartPress,
@@ -517,7 +549,7 @@ class Video extends React.Component<VideoProps, VideoState> {
         >
           <div className="video__container">
             <div className="video__header">
-              {this.state.clipEnd > this.state.clipStart ? (
+              {selection && selection.end > selection.start ? (
                 <button
                   className="video__button video__button--top"
                   onClick={this.handleSetClick}
@@ -542,8 +574,6 @@ class Video extends React.Component<VideoProps, VideoState> {
             timer={this.state.currentTime}
             videoFact={this.props.videoFact}
             captionIsHighlighted={this.state.captionIsHighlighted}
-            clipStart={this.state.clipStart}
-            clipEnd={this.state.clipEnd}
             isPaused={this.state.isPaused}
             videoDuration={this.state.duration}
             eventHandlers={captionEventHandlers}

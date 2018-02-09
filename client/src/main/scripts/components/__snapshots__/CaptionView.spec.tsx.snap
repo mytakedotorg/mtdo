@@ -10,8 +10,6 @@ exports[`CaptionTextNodeList 1`] = `
       Object {
         "onAfterRangeChange": [Function],
         "onClearPress": [Function],
-        "onFineTuneDown": [Function],
-        "onFineTuneUp": [Function],
         "onPlayPausePress": [Function],
         "onRangeChange": [Function],
         "onRestartPress": [Function],
@@ -21,17 +19,17 @@ exports[`CaptionTextNodeList 1`] = `
     }
     isPaused={true}
     rangeSliders={
-      Object {
-        "transcriptViewRange": Object {
-          "end": undefined,
-          "start": 0,
-        },
-      }
-    }
-    selection={
       Array [
-        0,
-        -1,
+        Object {
+          "end": 25,
+          "start": 0,
+          "type": "VIEW",
+        },
+        Object {
+          "end": 0,
+          "start": 0,
+          "type": "SELECTION",
+        },
       ]
     }
     videoDuration={5224}
@@ -537,8 +535,9 @@ exports[`CaptionTextNodeList 1`] = `
     }
     view={
       Object {
-        "end": undefined,
+        "end": 25,
         "start": 0,
+        "type": "VIEW",
       }
     }
   />
@@ -555,8 +554,6 @@ exports[`CaptionTextNodeList with highlights from props 1`] = `
       Object {
         "onAfterRangeChange": [Function],
         "onClearPress": [Function],
-        "onFineTuneDown": [Function],
-        "onFineTuneUp": [Function],
         "onPlayPausePress": [Function],
         "onRangeChange": [Function],
         "onRestartPress": [Function],
@@ -566,17 +563,17 @@ exports[`CaptionTextNodeList with highlights from props 1`] = `
     }
     isPaused={true}
     rangeSliders={
-      Object {
-        "transcriptViewRange": Object {
-          "end": undefined,
-          "start": 0,
-        },
-      }
-    }
-    selection={
       Array [
-        5.31,
-        7.2,
+        Object {
+          "end": 8.7,
+          "start": 3.6,
+          "type": "VIEW",
+        },
+        Object {
+          "end": 7.2,
+          "start": 5.3,
+          "type": "SELECTION",
+        },
       ]
     }
     videoDuration={5224}
@@ -1089,8 +1086,9 @@ exports[`CaptionTextNodeList with highlights from props 1`] = `
     }
     view={
       Object {
-        "end": undefined,
-        "start": 0,
+        "end": 8.7,
+        "start": 3.6,
+        "type": "VIEW",
       }
     }
   />

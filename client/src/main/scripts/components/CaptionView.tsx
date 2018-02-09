@@ -4,6 +4,7 @@ import isEqual = require("lodash/isEqual");
 import Document, { DocumentEventHandlers } from "./Document";
 import ClipEditor, { ClipEditorEventHandlers } from "./ClipEditor";
 import {
+  alertErr,
   getCaptionNodeArray,
   getCharRangeFromVideoRange,
   getSimpleRangesFromHTMLRange,
@@ -11,15 +12,13 @@ import {
   FoundationNode,
   SimpleRanges
 } from "../utils/functions";
-import { RangeSliders, RangeType } from "./Video";
+import { RangeType, TimeRange } from "./Video";
 import { Foundation } from "../java2ts/Foundation";
 import { Routes } from "../java2ts/Routes";
 
 export interface CaptionViewEventHandlers {
   onAfterRangeChange: (range: [number, number], type: RangeType) => any;
   onClearPress: () => void;
-  onFineTuneDown: (rangeIdx: 0 | 1) => void;
-  onFineTuneUp: (rangeIdx: 0 | 1) => void;
   onHighlight: (
     videoRange: [number, number],
     charRange: [number, number]
@@ -36,13 +35,11 @@ interface CaptionViewProps {
   videoFact: Foundation.VideoFactContent;
   timer: number;
   captionIsHighlighted: boolean;
-  clipStart: number;
-  clipEnd: number;
   isPaused: boolean;
   videoDuration: number;
   eventHandlers: CaptionViewEventHandlers;
   highlightedCharRange?: [number, number];
-  rangeSliders: RangeSliders;
+  rangeSliders: TimeRange[];
 }
 
 interface CaptionViewState {
@@ -63,26 +60,17 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
     let highlightedCharRange: [number, number] | undefined;
     let transcript: Foundation.CaptionWord[] | undefined;
     let speakerMap: Foundation.SpeakerMap[] | undefined;
-    let clipStart: number;
-    let clipEnd: number;
-    let videoDuration: number;
 
     if (nextProps) {
       captionIsHighlighted = nextProps.captionIsHighlighted;
       highlightedCharRange = nextProps.highlightedCharRange;
       transcript = nextProps.videoFact.transcript;
       speakerMap = nextProps.videoFact.speakerMap;
-      clipStart = nextProps.clipStart;
-      clipEnd = nextProps.clipEnd;
-      videoDuration = nextProps.videoDuration;
     } else {
       captionIsHighlighted = this.props.captionIsHighlighted;
       highlightedCharRange = this.props.highlightedCharRange;
       transcript = this.props.videoFact.transcript;
       speakerMap = this.props.videoFact.speakerMap;
-      clipStart = this.props.clipStart;
-      clipEnd = this.props.clipEnd;
-      videoDuration = this.props.videoDuration;
     }
 
     if (transcript && speakerMap) {
@@ -112,6 +100,16 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
       console.warn("Captions not yet done for this video");
       return [];
     }
+  };
+  getRangeSlider = (type: RangeType, rangeSliders: TimeRange[]): TimeRange => {
+    for (const rangeSlider of rangeSliders) {
+      if (rangeSlider.type === type) {
+        return { ...rangeSlider };
+      }
+    }
+    const msg = "Video: Can't find range of type " + type;
+    alertErr(msg);
+    throw msg;
   };
   handleClearClick = () => {
     const transcript = this.props.videoFact.transcript;
@@ -209,8 +207,6 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
     const clipEditorEventHandlers: ClipEditorEventHandlers = {
       onAfterRangeChange: this.props.eventHandlers.onAfterRangeChange,
       onClearPress: this.props.eventHandlers.onClearPress,
-      onFineTuneDown: this.props.eventHandlers.onFineTuneDown,
-      onFineTuneUp: this.props.eventHandlers.onFineTuneUp,
       onPlayPausePress: this.props.eventHandlers.onPlayPausePress,
       onRestartPress: this.props.eventHandlers.onRestartPress,
       onRangeChange: this.props.eventHandlers.onRangeChange,
@@ -223,11 +219,15 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
       onScroll: this.props.eventHandlers.onScroll
     };
 
+    const transcriptViewRange = this.getRangeSlider(
+      "VIEW",
+      this.props.rangeSliders
+    );
+
     return (
       <div className="captions">
         <ClipEditor
           eventHandlers={clipEditorEventHandlers}
-          selection={[this.props.clipStart, this.props.clipEnd]}
           currentTime={this.props.timer}
           isPaused={this.props.isPaused}
           videoDuration={this.props.videoDuration}
@@ -244,7 +244,7 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
               speakerMap: speakerMap
             }}
             nodes={this.state.highlightedNodes}
-            view={this.props.rangeSliders.transcriptViewRange}
+            view={transcriptViewRange}
           />
         ) : (
           <div className="video__actions">
