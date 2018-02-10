@@ -1,7 +1,8 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { Range } from "rc-slider";
-import { RangeType, TimeRange } from "./Video";
+import { RangeType, TimeRange, TRACKSTYLES__ZOOM } from "./Video";
+import TrackSlider, { TrackSliderEventHandlers } from "./TrackSlider";
 import { alertErr, convertSecondsToTimestamp } from "../utils/functions";
 import isEqual = require("lodash/isEqual");
 
@@ -64,153 +65,66 @@ class ClipEditor extends React.Component<ClipEditorProps, ClipEditorState> {
   handlePlayPause = () => {
     this.props.eventHandlers.onPlayPausePress();
   };
-  handleZoomRangeChange = (value: [number, number]) => {
-    this.props.eventHandlers.onRangeChange(value, "ZOOM");
-  };
-  handleAfterZoomRangeChange = (value: [number, number]) => {
-    this.props.eventHandlers.onAfterRangeChange(value, "ZOOM");
-  };
-  handleSelectionRangeChange = (value: [number, number]) => {
-    this.props.eventHandlers.onRangeChange(value, "SELECTION");
-  };
-  handleAfterSelectionRangeChange = (value: [number, number]) => {
-    this.props.eventHandlers.onAfterRangeChange(value, "SELECTION");
-  };
-  handleViewRangeChange = (value: [number, number]) => {
-    this.props.eventHandlers.onRangeChange(value, "VIEW");
-  };
-  handleAfterViewRangeChange = (value: [number, number]) => {
-    this.props.eventHandlers.onAfterRangeChange(value, "VIEW");
-  };
   handleRestart = () => {
     this.props.eventHandlers.onRestartPress();
   };
   render() {
     const { props } = this;
     // Can move these calculations to constructor and componentDidUpdate for minor render performance boost
-    const wideMin = convertSecondsToTimestamp(0);
-    const wideMax = convertSecondsToTimestamp(this.props.videoDuration);
 
-    let selectionStart, selectionEnd;
-    let viewStart, viewEnd;
-    let zoomStartPretty, zoomEndPretty;
+    let selectionRange = this.getRangeSlider("SELECTION", props.rangeSliders);
+    let viewRange = this.getRangeSlider("VIEW", props.rangeSliders);
+    let zoomRange = this.getRangeSlider("ZOOM", props.rangeSliders);
 
-    const zoomedRange = this.getRangeSlider("ZOOM", this.props.rangeSliders);
-    const selectionRange = this.getRangeSlider(
-      "SELECTION",
-      this.props.rangeSliders
-    );
-    const transcriptViewRange = this.getRangeSlider(
-      "VIEW",
-      this.props.rangeSliders
-    );
+    let isZoomed: boolean;
 
-    if (zoomedRange && selectionRange && transcriptViewRange) {
-      zoomStartPretty = convertSecondsToTimestamp(zoomedRange.start);
-      zoomEndPretty = convertSecondsToTimestamp(zoomedRange.end);
-
-      if (selectionRange.start < zoomedRange.start) {
-        selectionStart = zoomedRange.start;
-      } else {
-        selectionStart = selectionRange.start;
-      }
-
-      if (selectionRange.end > zoomedRange.end) {
-        selectionEnd = zoomedRange.end;
-      } else {
-        selectionEnd = selectionRange.end;
-      }
-
-      if (transcriptViewRange.start < zoomedRange.start) {
-        viewStart = zoomedRange.start;
-      } else {
-        viewStart = transcriptViewRange.start;
-      }
-
-      if (transcriptViewRange.end > zoomedRange.end) {
-        viewEnd = zoomedRange.end;
-      } else {
-        viewEnd = transcriptViewRange.end;
-      }
-    }
-    const marks = {
-      [props.currentTime]: convertSecondsToTimestamp(props.currentTime)
-    };
-
-    let topRangeMarks = {};
-    if (transcriptViewRange) {
-      topRangeMarks = {
-        [transcriptViewRange.start]: "view"
+    if (!zoomRange) {
+      isZoomed = false;
+      zoomRange = {
+        start: 0,
+        end: props.videoDuration,
+        type: "ZOOM",
+        styles: TRACKSTYLES__ZOOM
       };
+    } else {
+      isZoomed = true;
     }
-    topRangeMarks = {
-      ...topRangeMarks,
-      ...marks
+
+    if (!viewRange || !selectionRange) {
+      const msg = "ClipEditor: view and selection ranges are required";
+      alertErr(msg);
+      throw msg;
+    }
+
+    const eventHandlers: TrackSliderEventHandlers = {
+      onAfterRangeChange: this.props.eventHandlers.onAfterRangeChange,
+      onRangeChange: this.props.eventHandlers.onRangeChange
     };
+
+    const topTrack: TimeRange[] = [zoomRange, viewRange];
+    const bottomTrack: TimeRange[] = [selectionRange, viewRange];
 
     return (
       <div className="clipEditor">
         <div className="clipEditor__actions clipEditor__actions--range">
-          <p className="clipEditor__text clipEditor__text--min">{wideMin}</p>
-          <div className="clipEditor__range">
-            <Range
-              defaultValue={[0, props.videoDuration]}
-              min={0}
-              max={props.videoDuration}
-              onChange={this.handleZoomRangeChange}
-              onAfterChange={this.handleAfterZoomRangeChange}
-              marks={topRangeMarks}
-              step={1}
-              value={
-                zoomedRange
-                  ? [zoomedRange.start, zoomedRange.end]
-                  : [0, props.videoDuration]
-              }
-            />
-          </div>
-          <p className="clipEditor__text clipEditor__text--max">{wideMax}</p>
+          <TrackSlider
+            start={0}
+            end={props.videoDuration}
+            eventHandlers={eventHandlers}
+            rangeSliders={topTrack}
+            step={1}
+          />
         </div>
-        {zoomedRange ? (
+        {isZoomed ? (
           <div>
             <div className="clipEditor__actions clipEditor__actions--range">
-              <p className="clipEditor__text clipEditor__text--min">
-                {zoomStartPretty}
-              </p>
-              <div className="clipEditor__range">
-                <Range
-                  defaultValue={[selectionStart, selectionEnd]}
-                  min={zoomedRange.start}
-                  max={zoomedRange.end}
-                  onChange={this.handleSelectionRangeChange}
-                  onAfterChange={this.handleAfterSelectionRangeChange}
-                  marks={marks}
-                  step={0.1}
-                  value={[selectionStart, selectionEnd]}
-                />
-              </div>
-              <p className="clipEditor__text clipEditor__text--max">
-                {zoomEndPretty}
-              </p>
-            </div>
-            <div className="clipEditor__actions clipEditor__actions--range">
-              <p className="clipEditor__text clipEditor__text--min">
-                {zoomStartPretty}
-              </p>
-              <div className="clipEditor__range">
-                <Range
-                  defaultValue={[viewStart, viewEnd]}
-                  min={zoomedRange.start}
-                  max={zoomedRange.end}
-                  onChange={this.handleViewRangeChange}
-                  onAfterChange={this.handleAfterViewRangeChange}
-                  marks={marks}
-                  step={0.1}
-                  value={[viewStart, viewEnd]}
-                />
-              </div>
-              <p className="clipEditor__text clipEditor__text--max">
-                {zoomEndPretty}
-              </p>
+              <TrackSlider
+                start={zoomRange.start}
+                end={zoomRange.end}
+                eventHandlers={eventHandlers}
+                rangeSliders={bottomTrack}
+                step={0.1}
+              />
             </div>
           </div>
         ) : (

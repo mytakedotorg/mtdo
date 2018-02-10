@@ -23,7 +23,61 @@ export interface TimeRange {
   start: number;
   end: number;
   type: RangeType;
+  styles: TrackStyles;
 }
+
+interface TrackStyles {
+  rail: stylesObject;
+  track: stylesObject;
+  handle: stylesObject;
+}
+
+interface stylesObject {
+  [key: string]: string;
+}
+
+export const TRACKSTYLES__ZOOM: TrackStyles = {
+  rail: {
+    backgroundColor: "#d3dae3" // lighten($base-lightest, 30%)
+  },
+  track: {
+    backgroundColor: "#758aa8" // $base--lightest
+  },
+  handle: {
+    backgroundColor: "#758aa8", // $base--lightest
+    border: "2px solid #2c4770" // $base
+  }
+};
+
+const TRACKSTYLES__VIEW: TrackStyles = {
+  rail: {
+    backgroundColor: "#758aa8", // $base--lightest
+    borderRight: "2px solid #2c4770",
+    borderLeft: "2px solid #2c4770"
+  },
+  track: {
+    backgroundColor: "#d3dae3" // lighten($base-lightest, 30%)
+  },
+  handle: {
+    backgroundColor: "#d3dae3", // lighten($base-lightest, 30%)
+    border: "none"
+  }
+};
+
+const TRACKSTYLES__SELECTION: TrackStyles = {
+  rail: {
+    backgroundColor: "#758aa8", // $base--lightest
+    borderRight: "2px solid #2c4770",
+    borderLeft: "2px solid #2c4770"
+  },
+  track: {
+    backgroundColor: "#2c4770" // $base
+  },
+  handle: {
+    backgroundColor: "#2c4770", // $base
+    border: "none"
+  }
+};
 
 export type RangeType = "SELECTION" | "VIEW" | "ZOOM";
 
@@ -117,13 +171,15 @@ class Video extends React.Component<VideoProps, VideoState> {
     const transcriptViewRange: TimeRange = {
       start: 0,
       end: this.viewRangeDuration,
-      type: "VIEW"
+      type: "VIEW",
+      styles: TRACKSTYLES__VIEW
     };
 
     const selectionRange: TimeRange = {
       start: props.clipRange ? props.clipRange[0] : 0,
       end: props.clipRange ? props.clipRange[1] : 0,
-      type: "SELECTION"
+      type: "SELECTION",
+      styles: TRACKSTYLES__SELECTION
     };
 
     return [selectionRange, transcriptViewRange];
@@ -136,7 +192,8 @@ class Video extends React.Component<VideoProps, VideoState> {
     const newSelection: TimeRange = {
       start: videoRange[0],
       end: videoRange[1],
-      type: "SELECTION"
+      type: "SELECTION",
+      styles: TRACKSTYLES__SELECTION
     };
     this.setState({
       captionIsHighlighted: true,
@@ -151,7 +208,8 @@ class Video extends React.Component<VideoProps, VideoState> {
     const newView: TimeRange = {
       start: viewRangeStart,
       end: viewRangeStart + this.viewRangeDuration,
-      type: "VIEW"
+      type: "VIEW",
+      styles: TRACKSTYLES__VIEW
     };
 
     this.setState({
@@ -232,7 +290,8 @@ class Video extends React.Component<VideoProps, VideoState> {
             const nextSelection: TimeRange = {
               start: nextSelectionStart,
               end: nextSelectionEnd,
-              type: "SELECTION"
+              type: "SELECTION",
+              styles: TRACKSTYLES__SELECTION
             };
             const charRange: [number, number] = this.getCharRange(
               this.props.videoFact,
@@ -279,7 +338,8 @@ class Video extends React.Component<VideoProps, VideoState> {
             const nextView: TimeRange = {
               start: nextViewStart,
               end: nextViewEnd,
-              type: "VIEW"
+              type: "VIEW",
+              styles: TRACKSTYLES__VIEW
             };
             this.setState({
               rangeIsChanging: "VIEW",
@@ -295,7 +355,8 @@ class Video extends React.Component<VideoProps, VideoState> {
           const nextZoom: TimeRange = {
             start: range[0],
             end: range[1],
-            type: "ZOOM"
+            type: "ZOOM",
+            styles: TRACKSTYLES__ZOOM
           };
           this.setState({
             rangeIsChanging: "ZOOM",
@@ -463,7 +524,7 @@ class Video extends React.Component<VideoProps, VideoState> {
       window.location.pathname.startsWith(Routes.FOUNDATION)
     ) {
       // No time range and on a /foundation route or sub-route
-
+      console.log("receiving props");
       this.setState({
         captionIsHighlighted: false,
         highlightedCharRange: [-1, -1],
@@ -481,7 +542,8 @@ class Video extends React.Component<VideoProps, VideoState> {
       const selection: TimeRange = {
         start: nextProps.clipRange[0],
         end: nextProps.clipRange[1],
-        type: "SELECTION"
+        type: "SELECTION",
+        styles: TRACKSTYLES__SELECTION
       };
 
       let charRange: [number, number] = this.getCharRange(
