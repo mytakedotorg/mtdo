@@ -311,24 +311,42 @@ class Video extends React.Component<VideoProps, VideoState> {
           break;
         case "VIEW":
           const transcriptViewRange = this.getRangeSlider("VIEW");
-          if (transcriptViewRange && zoomedRange) {
+          if (transcriptViewRange) {
             // Determine which handle is being changed
             let nextViewStart;
             let nextViewEnd;
-            if (
-              range[0] !== transcriptViewRange.start &&
-              range[0] !== zoomedRange.start
-            ) {
-              // Lower handle is being changed
-              nextViewStart = range[0];
-              nextViewEnd = range[0] + this.viewRangeDuration;
-            } else if (
-              range[1] !== transcriptViewRange.end &&
-              range[1] !== zoomedRange.end
-            ) {
-              // Upper handle is being changed
-              nextViewStart = range[1] - this.viewRangeDuration;
-              nextViewEnd = range[1];
+            if (range[0] !== transcriptViewRange.start) {
+              if (zoomedRange) {
+                if (range[0] !== zoomedRange.start) {
+                  // Lower handle is being changed
+                  nextViewStart = range[0];
+                  nextViewEnd = range[0] + this.viewRangeDuration;
+                } else {
+                  // Upper handle is being changed
+                  nextViewStart = range[1] - this.viewRangeDuration;
+                  nextViewEnd = range[1];
+                }
+              } else {
+                // Lower handle is being changed
+                nextViewStart = range[0];
+                nextViewEnd = range[0] + this.viewRangeDuration;
+              }
+            } else if (range[1] !== transcriptViewRange.end) {
+              if (zoomedRange) {
+                if (range[1] !== zoomedRange.end) {
+                  // Upper handle is being changed
+                  nextViewStart = range[1] - this.viewRangeDuration;
+                  nextViewEnd = range[1];
+                } else {
+                  // Lower handle is being changed
+                  nextViewStart = range[0];
+                  nextViewEnd = range[0] + this.viewRangeDuration;
+                }
+              } else {
+                // Upper handle is being changed
+                nextViewStart = range[1] - this.viewRangeDuration;
+                nextViewEnd = range[1];
+              }
             } else {
               const msg =
                 "Video: Can't determine which view handle is changing.";
@@ -346,7 +364,7 @@ class Video extends React.Component<VideoProps, VideoState> {
               rangeSliders: this.updateRangeSlider(nextView)
             });
           } else {
-            const msg = "Video: Can't find view or zoom range.";
+            const msg = "Video: Can't find view range.";
             alertErr(msg);
             throw msg;
           }
