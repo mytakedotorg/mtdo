@@ -29,9 +29,16 @@ interface ClipEditorProps {
 interface ClipEditorState {}
 
 class ClipEditor extends React.Component<ClipEditorProps, ClipEditorState> {
+  private timerId: number | null;
   constructor(props: ClipEditorProps) {
     super(props);
   }
+  clearTimer = () => {
+    if (this.timerId) {
+      window.clearTimeout(this.timerId);
+      this.timerId = null;
+    }
+  };
   getRangeSlider = (
     type: RangeType,
     rangeSliders: TimeRange[]
@@ -64,6 +71,13 @@ class ClipEditor extends React.Component<ClipEditorProps, ClipEditorState> {
   };
   handlePlayPause = () => {
     this.props.eventHandlers.onPlayPausePress();
+  };
+  handleRangeChange = (value: [number, number], type: RangeType) => {
+    // Throttle the event a bit
+    if (!this.timerId) {
+      this.props.eventHandlers.onRangeChange(value, type);
+      this.timerId = window.setTimeout(this.clearTimer, 16.67); // 60hz
+    }
   };
   handleRestart = () => {
     this.props.eventHandlers.onRestartPress();
@@ -98,7 +112,7 @@ class ClipEditor extends React.Component<ClipEditorProps, ClipEditorState> {
 
     const eventHandlers: TrackSliderEventHandlers = {
       onAfterRangeChange: this.props.eventHandlers.onAfterRangeChange,
-      onRangeChange: this.props.eventHandlers.onRangeChange
+      onRangeChange: this.handleRangeChange
     };
 
     const topTrack: TimeRange[] = [zoomRange, viewRange];

@@ -23,7 +23,6 @@ interface TrackSliderState {
 }
 
 class TrackSlider extends React.Component<TrackSliderProps, TrackSliderState> {
-  private timerId: number | null;
   constructor(props: TrackSliderProps) {
     super(props);
 
@@ -32,18 +31,8 @@ class TrackSlider extends React.Component<TrackSliderProps, TrackSliderState> {
       prettyEnd: convertSecondsToTimestamp(props.end)
     };
   }
-  clearTimer = () => {
-    if (this.timerId) {
-      window.clearTimeout(this.timerId);
-      this.timerId = null;
-    }
-  };
   handleRangeChange = (value: [number, number], type: RangeType) => {
-    // Throttle the event a bit
-    if (!this.timerId) {
-      this.props.eventHandlers.onRangeChange(value, type);
-      this.timerId = window.setTimeout(this.clearTimer, 10);
-    }
+    this.props.eventHandlers.onRangeChange(value, type);
   };
   handleAfterRangeChange = (value: [number, number], type: RangeType) => {
     this.props.eventHandlers.onAfterRangeChange(value, type);

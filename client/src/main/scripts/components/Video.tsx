@@ -524,7 +524,6 @@ class Video extends React.Component<VideoProps, VideoState> {
       window.location.pathname.startsWith(Routes.FOUNDATION)
     ) {
       // No time range and on a /foundation route or sub-route
-      console.log("receiving props");
       this.setState({
         captionIsHighlighted: false,
         highlightedCharRange: [-1, -1],
