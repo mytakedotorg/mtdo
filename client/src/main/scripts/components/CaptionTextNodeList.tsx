@@ -35,10 +35,12 @@ class CaptionTextNodeList extends React.Component<
   private captionNodeContainer: HTMLDivElement | null;
   private timerId: number | null;
   private lineHeight: number;
+  private preventScroll: boolean;
   constructor(props: CaptionTextNodeListProps) {
     super(props);
 
     this.lineHeight = 25.5;
+    this.preventScroll = false;
 
     this.state = {
       currentSpeaker: "-",
@@ -93,7 +95,14 @@ class CaptionTextNodeList extends React.Component<
           }
         }
 
-        this.getViewRange(speakerIdx);
+        if (!this.preventScroll) {
+          // is this.preventScroll = true, then we already have the view range
+          // from the range slider. Don't calculate it from the text.
+          this.getViewRange(speakerIdx);
+        } else {
+          // Turn scroll event handler back on
+          this.preventScroll = false;
+        }
 
         this.setState({
           currentSpeaker: this.props.speakerMap[speakerIdx].speaker
@@ -178,7 +187,7 @@ class CaptionTextNodeList extends React.Component<
     // Only allow this function to execute no more than twice per second
     if (!this.timerId) {
       this.getCurrentSpeaker();
-      this.timerId = window.setTimeout(this.clearTimer, 50);
+      this.timerId = window.setTimeout(this.clearTimer, 16.67); // 60hz
     }
   };
   isCloseTo = (n0: number, n1: number, margin: number): boolean => {
@@ -279,6 +288,7 @@ class CaptionTextNodeList extends React.Component<
     this.setScrollView();
   }
   componentWillReceiveProps(nextProps: CaptionTextNodeListProps) {
+    // If our next prop is close to our current state, don't scroll.
     if (
       !this.isCloseTo(
         nextProps.view.start,
@@ -286,9 +296,12 @@ class CaptionTextNodeList extends React.Component<
         5
       )
     ) {
-      // If our next prop is close to our current state, don't scroll.
-      // It's also likely the number nextProps.view.start was set by
-      // the callback in this.getViewRange anyway.
+      // Since we're setting the scrollView this will trigger the onScroll handler
+      // which will set the scrollView and trigerr the onScroll handler until
+      // nextProps.view.start is close to this.state.wordAtViewStart.timestamp
+      // set a flag to prevent this loop of heavy code from executing
+      this.preventScroll = true;
+
       this.setScrollView(nextProps.view.start);
     }
   }
