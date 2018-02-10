@@ -708,10 +708,40 @@ const takeDocument: TakeDocument = {
   ]
 };
 
+function logMeasurements(measures: any) {
+  let highest;
+  let lowest;
+  let sum = 0;
+  for (const measure of measures) {
+    const duration = measure.duration;
+    sum += duration;
+    if (!highest && !lowest) {
+      highest = duration;
+      lowest = duration;
+    } else {
+      if (duration > highest) {
+        highest = duration;
+      }
+      if (duration < lowest) {
+        lowest = duration;
+      }
+    }
+  }
+
+  console.log("Fastest: ", lowest);
+  console.log("Slowest: ", highest);
+  console.log("Avg: ", sum / measures.length);
+
+  // Clean up the stored markers.
+  performance.clearMarks();
+  performance.clearMeasures();
+}
+
 export {
   cards,
   documentFactLink,
   documentNodes,
+  logMeasurements,
   takeDocument,
   timelineItems,
   videoFact,
