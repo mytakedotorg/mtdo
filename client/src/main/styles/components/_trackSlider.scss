@@ -1,28 +1,34 @@
+$trackHeight: 20px;
 .trackSlider {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: center;
   width: 100%;
+  @media #{$mq-medium} {
+    justify-content: space-between;
+  }
 }
 .trackSlider__text {
+  display: none;
   color: palette(video, text);
-  @include body;
-}
-.trackSlider__text--min {
   width: 68px;
+  @include body;
+  line-height: 2 * $trackHeight;
+  margin: 0;
+  @media #{$mq-medium} {
+    display: block;
+  }
 }
 .trackSlider__text--max {
-  width: 68px;
   text-align: right;
 }
-$trackHeight: 20px;
 .trackSlider__range-container {
   position: relative;
   width: $video-container-width;
   overflow: hidden;
   height: 2 * $trackHeight;
-  padding-left: $trackHeight;
-  padding-right: $trackHeight;
+  padding-left: 8px;
+  padding-right: 14px;
 }
 .trackSlider__range {
   width: 100%;

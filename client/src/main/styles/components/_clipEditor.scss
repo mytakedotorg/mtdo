@@ -7,10 +7,16 @@
   width: 100%;
   @include clearfix;
 }
+.clipEditor__actions--range {
+  margin-bottom: 15px;
+}
 .clipEditor__controls {
   margin-left: auto;
   margin-right: auto;
-  width: 200px;
+  width: 140px;
+  @media #{$mq-medium} {
+    width: 200px;
+  }
 }
 .clipEditor__text {
   color: palette(video, text);
@@ -19,6 +25,7 @@
 .clipEditor__text--range {
   line-height: 35px;
   width: $video-container-width;
+  max-width: 100%;
   margin: 0 auto;
   text-align: center;
 }
