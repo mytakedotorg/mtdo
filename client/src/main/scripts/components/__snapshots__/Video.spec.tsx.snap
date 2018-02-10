@@ -71,11 +71,39 @@ exports[`Video 1`] = `
           Object {
             "end": 0,
             "start": 0,
+            "styles": Object {
+              "handle": Object {
+                "backgroundColor": "#2c4770",
+                "border": "none",
+              },
+              "rail": Object {
+                "backgroundColor": "#758aa8",
+                "borderLeft": "2px solid #2c4770",
+                "borderRight": "2px solid #2c4770",
+              },
+              "track": Object {
+                "backgroundColor": "#2c4770",
+              },
+            },
             "type": "SELECTION",
           },
           Object {
             "end": 5,
             "start": 0,
+            "styles": Object {
+              "handle": Object {
+                "backgroundColor": "#d3dae3",
+                "border": "none",
+              },
+              "rail": Object {
+                "backgroundColor": "#758aa8",
+                "borderLeft": "2px solid #2c4770",
+                "borderRight": "2px solid #2c4770",
+              },
+              "track": Object {
+                "backgroundColor": "#d3dae3",
+              },
+            },
             "type": "VIEW",
           },
         ]
@@ -654,11 +682,39 @@ exports[`Video with highlights 1`] = `
           Object {
             "end": 3,
             "start": 0,
+            "styles": Object {
+              "handle": Object {
+                "backgroundColor": "#2c4770",
+                "border": "none",
+              },
+              "rail": Object {
+                "backgroundColor": "#758aa8",
+                "borderLeft": "2px solid #2c4770",
+                "borderRight": "2px solid #2c4770",
+              },
+              "track": Object {
+                "backgroundColor": "#2c4770",
+              },
+            },
             "type": "SELECTION",
           },
           Object {
             "end": 5,
             "start": 0,
+            "styles": Object {
+              "handle": Object {
+                "backgroundColor": "#d3dae3",
+                "border": "none",
+              },
+              "rail": Object {
+                "backgroundColor": "#758aa8",
+                "borderLeft": "2px solid #2c4770",
+                "borderRight": "2px solid #2c4770",
+              },
+              "track": Object {
+                "backgroundColor": "#d3dae3",
+              },
+            },
             "type": "VIEW",
           },
         ]

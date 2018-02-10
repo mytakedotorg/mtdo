@@ -2,7 +2,7 @@ import * as React from "react";
 import * as renderer from "react-test-renderer";
 import {} from "jest";
 import CaptionView, { CaptionViewEventHandlers } from "./CaptionView";
-import { TimeRange } from "./Video";
+import { TimeRange, TRACKSTYLES__ZOOM } from "./Video";
 import { videoFact } from "../utils/testUtils";
 
 jest.mock("./Document", () => ({
@@ -29,12 +29,14 @@ test("CaptionTextNodeList", () => {
   const viewRange: TimeRange = {
     start: 0,
     end: 25,
-    type: "VIEW"
+    type: "VIEW",
+    styles: TRACKSTYLES__ZOOM
   };
   const selectionRange: TimeRange = {
     start: 0,
     end: 0,
-    type: "SELECTION"
+    type: "SELECTION",
+    styles: TRACKSTYLES__ZOOM
   };
   const rangeSliders = [viewRange, selectionRange];
 
@@ -59,12 +61,14 @@ test("CaptionTextNodeList with highlights from props", () => {
   const viewRange: TimeRange = {
     start: 3.6,
     end: 8.7,
-    type: "VIEW"
+    type: "VIEW",
+    styles: TRACKSTYLES__ZOOM
   };
   const selectionRange: TimeRange = {
     start: 5.3,
     end: 7.2,
-    type: "SELECTION"
+    type: "SELECTION",
+    styles: TRACKSTYLES__ZOOM
   };
   const rangeSliders = [viewRange, selectionRange];
 
