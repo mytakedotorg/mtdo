@@ -57,7 +57,8 @@ $palettes: (
     ),
   document:
     (
-      background: $white,
+      background: lighten($base-lightest, 40%),
+      background--header: $white,
       background--highlight: lighten($base-lightest, 10%),
       background--scrollbar-track: $base-lightest,
       background--scrollbar-thumb: $white,

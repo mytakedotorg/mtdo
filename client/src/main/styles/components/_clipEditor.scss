@@ -7,26 +7,10 @@
   width: 100%;
   @include clearfix;
 }
-.clipEditor__actions--range {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  height: 50px;
-}
-.clipEditor__range {
-  width: $video-container-width;
-  padding-left: 8px;
-  padding-right: 8px;
-  overflow: hidden;
-}
 .clipEditor__controls {
   margin-left: auto;
   margin-right: auto;
   width: 200px;
-}
-.clipEditor__actions--zoom {
-  text-align: center;
-  @include clearfix;
 }
 .clipEditor__text {
   color: palette(video, text);
@@ -38,62 +22,8 @@
   margin: 0 auto;
   text-align: center;
 }
-.clipEditor__text--min {
-  width: 68px;
-}
-.clipEditor__text--max {
-  width: 68px;
-  text-align: right;
-}
 .clipEditor__button {
   @include button--borderless;
   @include button;
-}
-.clipEditor__caption {
-  position: relative;
-  height: 35px;
-  overflow-x: hidden;
-  overflow-y: scroll;
-}
-.clipEditor__caption-text {
-  @include body;
-  position: absolute;
-  top: 0;
-  left: 0;
-  line-height: 35px;
-  margin: 0;
-  text-align: justify;
-  min-width: 100%;
-  &:after {
-    content: "";
-    display: inline-block;
-    width: 100%;
-  }
-}
-.clipEditor__caption-text--hidden {
-  white-space: nowrap;
-  visibility: hidden;
-}
-.video__tuning-buttons {
-  float: left;
-  padding-top: 6px;
-}
-.video__button--small {
-  @include button--small;
-  float: left;
-  padding: 2px 5px;
-  width: 21px;
-  text-align: center;
-  border: none;
-  color: palette(button, color--base);
-  background: palette(button, background--base);
-  &:hover {
-    background: palette(button, background--base-hover);
-  }
-}
-.video__time {
-  float: left;
-  @include body--small;
-  margin-left: 2px;
-  margin-right: 2px;
+  background: none;
 }

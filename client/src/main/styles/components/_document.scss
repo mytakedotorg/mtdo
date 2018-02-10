@@ -23,7 +23,7 @@ $document-margin-top: 0px;
   width: $column-width;
   max-width: 100%;
   margin: 0 auto;
-  background-color: palette(document, background);
+  background-color: palette(document, background--header);
   overflow: hidden;
   height: $document-header-height - 1; //Subtract border bottom width
   border-bottom: 1px solid palette(header, border);
@@ -150,7 +150,12 @@ $document-margin-top: 0px;
 .document__node-text--speaker-top {
   user-select: none;
   @include heading3;
-  @include text-margin;
+  @include text-margin-lr;
+  margin-bottom: 0;
+  padding-bottom: $page-margin-mobile * $vertical-margin-multiplier;
+  @media #{$mq-medium} {
+    padding-bottom: $content-margin * $vertical-margin-multiplier;
+  }
 }
 .document__node-text--h2 {
   @include heading2;

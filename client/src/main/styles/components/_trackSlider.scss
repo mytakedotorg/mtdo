@@ -1,0 +1,51 @@
+.trackSlider {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+.trackSlider__text {
+  color: palette(video, text);
+  @include body;
+}
+.trackSlider__text--min {
+  width: 68px;
+}
+.trackSlider__text--max {
+  width: 68px;
+  text-align: right;
+}
+$trackHeight: 20px;
+.trackSlider__range-container {
+  position: relative;
+  width: $video-container-width;
+  overflow: hidden;
+  height: 2 * $trackHeight;
+  padding-left: $trackHeight;
+  padding-right: $trackHeight;
+}
+.trackSlider__range {
+  width: 100%;
+  height: $trackHeight;
+}
+// Begin rc-slider.css overrides
+.rc-slider {
+  height: $trackHeight !important;
+}
+.rc-slider-rail {
+  height: $trackHeight !important;
+  border-radius: 0 !important;
+  top: 0 !important;
+}
+.rc-slider-track {
+  height: $trackHeight !important;
+  border-radius: 0 !important;
+  top: 0 !important;
+}
+.rc-slider-handle {
+  top: 0 !important;
+  margin-top: 0 !important;
+  width: $trackHeight !important;
+  height: $trackHeight !important;
+  // border: 2px solid palette(trackSlider, border--handle) !important;
+}
