@@ -182,6 +182,17 @@ class Video extends React.Component<VideoProps, VideoState> {
       styles: TRACKSTYLES__SELECTION
     };
 
+    if (props.clipRange) {
+      const tenPercent = (props.clipRange[1] - props.clipRange[0]) * 0.1;
+      const zoomRange: TimeRange = {
+        start: props.clipRange[0] - tenPercent,
+        end: props.clipRange[1] + tenPercent,
+        type: "ZOOM",
+        styles: TRACKSTYLES__ZOOM
+      };
+      return [selectionRange, transcriptViewRange, zoomRange];
+    }
+
     return [selectionRange, transcriptViewRange];
   };
   handleCaptionHighlight = (
