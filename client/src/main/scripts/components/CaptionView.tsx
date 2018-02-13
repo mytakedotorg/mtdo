@@ -29,7 +29,7 @@ export interface CaptionViewEventHandlers {
   onPlayPausePress: () => any;
   onRangeChange: (value: [number, number] | number, type: RangeType) => any;
   onRestartPress: () => any;
-  onScroll: (viewRangeStart: number) => any;
+  onScroll: (viewRange: [number, number]) => any;
   onSkipBackPress: (seconds: number) => any;
   onSkipForwardPress: (seconds: number) => any;
 }

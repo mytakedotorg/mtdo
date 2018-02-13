@@ -10,7 +10,7 @@ var bs = require("binary-search");
 
 export interface CaptionTextNodeListEventHandlers {
   onMouseUp: () => any;
-  onScroll: (viewRangeStart: number) => any;
+  onScroll: (viewRange: [number, number]) => any;
 }
 
 interface CaptionTextNodeListProps {
@@ -145,41 +145,139 @@ class CaptionTextNodeList extends React.Component<
 
       // Get the scroll offset of the paragraph text inside the document node relative to the scroll view
       const parentTop = this.captionNodeContainer.scrollTop;
-      const scrollHeight =
+      const scrollHeightTop =
         (documentNode as HTMLDivElement).offsetTop -
         parentTop +
         totalSpeakerHeight;
 
+      // Get the scroll offset of the last line of visible paragraph text inside the document node relative to the scroll view
+      const scrollHeightBottom = scrollHeightTop - 200;
+
       // Get the number of lines we have scrolled into the paragraph
-      const numberOfLinesIntoParagraph =
-        Math.floor(scrollHeight / lineHeight) * -1;
+      const numberOfLinesIntoParagraphTop =
+        Math.floor(scrollHeightTop / lineHeight) * -1;
+
+      // And the number of lines to the bottom of the view
+      const numberOfLinesIntoParagraphBottom =
+        Math.floor(scrollHeightBottom / lineHeight) * -1;
 
       // Get the height of the current paragraph
       const paragraphElement = this.getParagraphEl(documentNode);
       const height = paragraphElement.clientHeight;
 
       // Calculate the number of lines in it based on the lineHeight
-      const totalLinesInParagraph = Math.ceil(height / this.lineHeight);
+      const totalLinesInParagraph = Math.ceil(height / lineHeight);
 
       // Get the speakerMap
       let speakerMap = this.props.speakerMap[speakerIdx];
+
       // Create a number line transform of number of lines in the paragraph to word index in speakerMap
       const numberLineTransform = new NumberLineTransform();
+
       numberLineTransform.setBefore(0, totalLinesInParagraph);
       numberLineTransform.setAfter(speakerMap.range[0], speakerMap.range[1]);
-      const approximateWordIdx = Math.round(
-        numberLineTransform.toAfter(numberOfLinesIntoParagraph)
+      const approximateWordIdxTop = Math.round(
+        numberLineTransform.toAfter(numberOfLinesIntoParagraphTop)
       );
 
       // Find the index of the first word
-      const indexOfFirstWord = approximateWordIdx;
+      const indexOfFirstWord = approximateWordIdxTop;
       const firstWord = this.props.captionTranscript[indexOfFirstWord];
 
-      if (typeof firstWord != "undefined") {
+      let indexOfLastWord;
+
+      let totalLinesInNextParagraph = totalLinesInParagraph;
+      let numberOfNextLinesInView = numberOfLinesIntoParagraphBottom;
+      // Get the height of the first paragraph in the view + the height of the next speaker's name
+      let heightOfLinesInView =
+        (totalLinesInParagraph - numberOfLinesIntoParagraphTop) * lineHeight + // Height of lines in previous paragraph
+        15 + // Margin after previous paragraph
+        totalSpeakerHeight; // Height of next speaker
+      let loopCounter = 0;
+
+      while (totalLinesInNextParagraph < numberOfNextLinesInView) {
+        loopCounter++;
+        // There are multiple speakers in the view
+        if (heightOfLinesInView > 195) {
+          // First line of next speaker isn't visible
+          indexOfLastWord = speakerMap.range[1];
+          break;
+        } else {
+          // Last word is spoken by a new speaker
+          // Get the next document node
+          documentNode = this.captionNodeContainer.children[speakerIdx + 1];
+          if (typeof documentNode === "undefined") {
+            // We're at the last speaker anyway
+            indexOfLastWord = speakerMap.range[1];
+            break;
+          } else {
+            const remainingHeight = 200 - heightOfLinesInView;
+
+            // Get the height of the next paragraph
+            const nextParagraphElement = this.getParagraphEl(documentNode);
+            const heightOfNextParagraph = nextParagraphElement.clientHeight;
+
+            // Calculate the number of lines in it based on the lineHeight
+            totalLinesInNextParagraph = Math.ceil(
+              heightOfNextParagraph / lineHeight
+            );
+
+            numberOfNextLinesInView = Math.floor(remainingHeight / lineHeight);
+
+            if (numberOfNextLinesInView <= totalLinesInNextParagraph) {
+              // calculate the word idx
+              speakerMap = this.props.speakerMap[speakerIdx + loopCounter];
+              if (typeof speakerMap === "undefined") {
+                const msg =
+                  "CaptionTextNodeList: Couldn't find next speakerMap";
+                alertErr(msg);
+                throw msg;
+              }
+              numberLineTransform.setBefore(0, totalLinesInNextParagraph);
+              numberLineTransform.setAfter(
+                speakerMap.range[0],
+                speakerMap.range[1]
+              );
+              const approximateWordIdx = Math.ceil(
+                numberLineTransform.toAfter(numberOfNextLinesInView)
+              );
+              indexOfLastWord = approximateWordIdx;
+              break;
+            }
+            heightOfLinesInView +=
+              heightOfNextParagraph + 15 + totalSpeakerHeight;
+          }
+        }
+      }
+
+      if (loopCounter === 0) {
+        // There is only one speaker in the view
+        const approximateWordIdx = Math.round(
+          numberLineTransform.toAfter(numberOfLinesIntoParagraphBottom)
+        );
+        indexOfLastWord = approximateWordIdx;
+      }
+
+      if (typeof indexOfLastWord === "undefined") {
+        const msg = "CaptionTextNodeList: Couldn't find index of last word";
+        alertErr(msg);
+        throw msg;
+      }
+
+      const lastWord = this.props.captionTranscript[indexOfLastWord];
+
+      if (typeof firstWord !== "undefined" && typeof lastWord !== "undefined") {
         this.setState({
           wordAtViewStart: firstWord
         });
-        this.props.eventHandlers.onScroll(firstWord.timestamp);
+        this.props.eventHandlers.onScroll([
+          firstWord.timestamp,
+          lastWord.timestamp
+        ]);
+      } else {
+        const msg = "CaptionTextNodeList: Couldn't find words in view range";
+        alertErr(msg);
+        throw msg;
       }
     }
   };
@@ -293,7 +391,7 @@ class CaptionTextNodeList extends React.Component<
       !this.isCloseTo(
         nextProps.view.start,
         this.state.wordAtViewStart.timestamp,
-        5
+        10
       )
     ) {
       // Since we're setting the scrollView this will trigger the onScroll handler

@@ -16,7 +16,7 @@ interface CaptionData {
 
 export interface DocumentEventHandlers {
   onMouseUp: () => any;
-  onScroll?: (viewRangeStart: number) => any;
+  onScroll?: (viewRange: [number, number]) => any;
 }
 
 interface DocumentProps {

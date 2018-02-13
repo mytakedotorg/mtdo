@@ -215,10 +215,10 @@ class Video extends React.Component<VideoProps, VideoState> {
       this.props.onRangeSet([videoRange[0], videoRange[1]]);
     }
   };
-  handleCaptionScroll = (viewRangeStart: number) => {
+  handleCaptionScroll = (viewRange: [number, number]) => {
     const newView: TimeRange = {
-      start: viewRangeStart,
-      end: viewRangeStart + this.viewRangeDuration,
+      start: viewRange[0],
+      end: viewRange[1],
       type: "VIEW",
       styles: TRACKSTYLES__VIEW
     };
