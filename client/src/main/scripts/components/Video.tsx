@@ -21,7 +21,7 @@ interface YTPlayerParameters {
 
 export interface TimeRange {
   start: number;
-  end: number;
+  end?: number;
   type: RangeType;
   styles: TrackStyles;
 }
@@ -79,7 +79,7 @@ const TRACKSTYLES__SELECTION: TrackStyles = {
   }
 };
 
-export type RangeType = "SELECTION" | "VIEW" | "ZOOM";
+export type RangeType = "SELECTION" | "VIEW" | "ZOOM" | "CURRENT_TIME";
 
 interface VideoProps {
   onSetClick: (range: [number, number]) => void;
@@ -190,10 +190,10 @@ class Video extends React.Component<VideoProps, VideoState> {
         type: "ZOOM",
         styles: TRACKSTYLES__ZOOM
       };
-      return [selectionRange, transcriptViewRange, zoomRange];
+      return [transcriptViewRange, selectionRange, zoomRange];
     }
 
-    return [selectionRange, transcriptViewRange];
+    return [transcriptViewRange, selectionRange];
   };
   handleCaptionHighlight = (
     videoRange: [number, number],
@@ -257,17 +257,20 @@ class Video extends React.Component<VideoProps, VideoState> {
       currentTime: Math.round(event.target.getCurrentTime())
     });
   };
-  handleAfterRangeChange = (range: [number, number], type: RangeType) => {
+  handleAfterRangeChange = (
+    value: [number, number] | number,
+    type: RangeType
+  ) => {
     this.setState({
       rangeIsChanging: null
     });
-    if (type === "SELECTION") {
+    if (type === "SELECTION" && typeof value === "object") {
       if (this.props.onRangeSet) {
-        this.props.onRangeSet([range[0], range[1]]);
+        this.props.onRangeSet([value[0], value[1]]);
       }
     }
   };
-  handleRangeChange = (range: [number, number], type: RangeType) => {
+  handleRangeChange = (value: [number, number] | number, type: RangeType) => {
     const { rangeIsChanging } = this.state;
     if (rangeIsChanging == null || rangeIsChanging === type) {
       const zoomedRange = this.getRangeSlider("ZOOM");
@@ -275,23 +278,31 @@ class Video extends React.Component<VideoProps, VideoState> {
         case "SELECTION":
           const selectionRange = this.getRangeSlider("SELECTION");
           if (selectionRange && zoomedRange) {
+            if (
+              typeof selectionRange.end !== "number" ||
+              typeof value !== "object"
+            ) {
+              const msg = "Video.tsx. Expect SELECTION range to have an end";
+              alertErr(msg);
+              throw msg;
+            }
             // Determine which handle is being changed
             let nextSelectionStart;
             let nextSelectionEnd;
             if (
-              range[0] !== selectionRange.start &&
-              range[0] !== zoomedRange.start
+              value[0] !== selectionRange.start &&
+              value[0] !== zoomedRange.start
             ) {
               // Lower handle is being changed
-              nextSelectionStart = range[0];
+              nextSelectionStart = value[0];
               nextSelectionEnd = selectionRange.end;
             } else if (
-              range[1] !== selectionRange.end &&
-              range[1] !== zoomedRange.end
+              value[1] !== selectionRange.end &&
+              value[1] !== zoomedRange.end
             ) {
               // Upper handle is being changed
               nextSelectionStart = selectionRange.start;
-              nextSelectionEnd = range[1];
+              nextSelectionEnd = value[1];
             } else {
               const msg =
                 "Video: Can't determine which selection handle is changing.";
@@ -326,37 +337,45 @@ class Video extends React.Component<VideoProps, VideoState> {
             // Determine which handle is being changed
             let nextViewStart;
             let nextViewEnd;
-            if (range[0] !== transcriptViewRange.start) {
+            if (
+              typeof transcriptViewRange.end !== "number" ||
+              typeof value !== "object"
+            ) {
+              const msg = "Video.tsx. Expect VIEW range to have an end";
+              alertErr(msg);
+              throw msg;
+            }
+            if (value[0] !== transcriptViewRange.start) {
               if (zoomedRange) {
-                if (range[0] !== zoomedRange.start) {
+                if (value[0] !== zoomedRange.start) {
                   // Lower handle is being changed
-                  nextViewStart = range[0];
-                  nextViewEnd = range[0] + this.viewRangeDuration;
+                  nextViewStart = value[0];
+                  nextViewEnd = value[0] + this.viewRangeDuration;
                 } else {
                   // Upper handle is being changed
-                  nextViewStart = range[1] - this.viewRangeDuration;
-                  nextViewEnd = range[1];
+                  nextViewStart = value[1] - this.viewRangeDuration;
+                  nextViewEnd = value[1];
                 }
               } else {
                 // Lower handle is being changed
-                nextViewStart = range[0];
-                nextViewEnd = range[0] + this.viewRangeDuration;
+                nextViewStart = value[0];
+                nextViewEnd = value[0] + this.viewRangeDuration;
               }
-            } else if (range[1] !== transcriptViewRange.end) {
+            } else if (value[1] !== transcriptViewRange.end) {
               if (zoomedRange) {
-                if (range[1] !== zoomedRange.end) {
+                if (value[1] !== zoomedRange.end) {
                   // Upper handle is being changed
-                  nextViewStart = range[1] - this.viewRangeDuration;
-                  nextViewEnd = range[1];
+                  nextViewStart = value[1] - this.viewRangeDuration;
+                  nextViewEnd = value[1];
                 } else {
                   // Lower handle is being changed
-                  nextViewStart = range[0];
-                  nextViewEnd = range[0] + this.viewRangeDuration;
+                  nextViewStart = value[0];
+                  nextViewEnd = value[0] + this.viewRangeDuration;
                 }
               } else {
                 // Upper handle is being changed
-                nextViewStart = range[1] - this.viewRangeDuration;
-                nextViewEnd = range[1];
+                nextViewStart = value[1] - this.viewRangeDuration;
+                nextViewEnd = value[1];
               }
             } else {
               const msg =
@@ -381,9 +400,14 @@ class Video extends React.Component<VideoProps, VideoState> {
           }
           break;
         case "ZOOM":
+          if (typeof value !== "object") {
+            const msg = "Video.tsx. Expect ZOOM range to be an array";
+            alertErr(msg);
+            throw msg;
+          }
           const nextZoom: TimeRange = {
-            start: range[0],
-            end: range[1],
+            start: value[0],
+            end: value[1],
             type: "ZOOM",
             styles: TRACKSTYLES__ZOOM
           };
@@ -391,6 +415,21 @@ class Video extends React.Component<VideoProps, VideoState> {
             rangeIsChanging: "ZOOM",
             rangeSliders: this.updateRangeSlider(nextZoom)
           });
+          break;
+        case "CURRENT_TIME":
+          if (typeof value !== "number") {
+            const msg = "Video.tsx. Expect CURRENT_TIME value to be a number";
+            alertErr(msg);
+            throw msg;
+          }
+          this.setState({
+            currentTime: value
+          });
+          if (this.player) {
+            this.player.seekTo(value);
+          } else {
+            console.warn("Player not ready");
+          }
           break;
         default:
           const msg = "Video: Unknown range type.";
@@ -441,7 +480,7 @@ class Video extends React.Component<VideoProps, VideoState> {
   };
   handleSetClick = () => {
     const selectionRange = this.getRangeSlider("SELECTION");
-    if (selectionRange) {
+    if (selectionRange && selectionRange.end) {
       const clipStart = selectionRange.start;
       const clipEnd = selectionRange.end;
       if (clipEnd > clipStart) {
@@ -601,7 +640,7 @@ class Video extends React.Component<VideoProps, VideoState> {
     };
 
     const selection = this.getRangeSlider("SELECTION");
-    if (selection) {
+    if (selection && selection.end) {
       playerVars.start = selection.start;
       if (this.state.captionIsHighlighted) {
         if (selection.end > 0) {
@@ -640,6 +679,7 @@ class Video extends React.Component<VideoProps, VideoState> {
           <div className="video__container">
             <div className="video__header">
               {selection &&
+              selection.end &&
               selection.end > selection.start &&
               !window.location.pathname.startsWith(Routes.DRAFTS) ? (
                 <button

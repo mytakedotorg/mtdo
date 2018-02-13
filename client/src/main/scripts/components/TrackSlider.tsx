@@ -1,12 +1,15 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { Range } from "rc-slider";
+import Slider, { Range } from "rc-slider";
 import { RangeType, TimeRange } from "./Video";
 import { convertSecondsToTimestamp } from "../utils/functions";
 
 export interface TrackSliderEventHandlers {
-  onAfterRangeChange: (range: [number, number], type: RangeType) => any;
-  onRangeChange: (range: [number, number], type: RangeType) => any;
+  onAfterRangeChange: (
+    value: [number, number] | number,
+    type: RangeType
+  ) => any;
+  onRangeChange: (value: [number, number] | number, type: RangeType) => any;
 }
 
 interface TrackSliderProps {
@@ -31,10 +34,13 @@ class TrackSlider extends React.Component<TrackSliderProps, TrackSliderState> {
       prettyEnd: convertSecondsToTimestamp(props.end)
     };
   }
-  handleRangeChange = (value: [number, number], type: RangeType) => {
+  handleRangeChange = (value: [number, number] | number, type: RangeType) => {
     this.props.eventHandlers.onRangeChange(value, type);
   };
-  handleAfterRangeChange = (value: [number, number], type: RangeType) => {
+  handleAfterRangeChange = (
+    value: [number, number] | number,
+    type: RangeType
+  ) => {
     this.props.eventHandlers.onAfterRangeChange(value, type);
   };
   componentWillReceiveProps(nextProps: TrackSliderProps) {
@@ -60,31 +66,54 @@ class TrackSlider extends React.Component<TrackSliderProps, TrackSliderState> {
           {props.rangeSliders.map(rangeSlider => {
             const start =
               rangeSlider.start < props.start ? props.start : rangeSlider.start;
-            const end =
-              rangeSlider.end > props.end ? props.end : rangeSlider.end;
-            return (
-              <div className="trackSlider__range">
-                <Range
-                  defaultValue={[0, props.end]}
-                  min={props.start}
-                  max={props.end}
-                  onChange={(value: [number, number]) =>
-                    this.handleRangeChange(value, rangeSlider.type)
-                  }
-                  onAfterChange={(value: [number, number]) =>
-                    this.handleAfterRangeChange(value, rangeSlider.type)
-                  }
-                  step={props.step}
-                  value={[start, end]}
-                  railStyle={rangeSlider.styles.rail}
-                  trackStyle={[rangeSlider.styles.track]}
-                  handleStyle={[
-                    rangeSlider.styles.handle,
-                    rangeSlider.styles.handle
-                  ]}
-                />
-              </div>
-            );
+            if (typeof rangeSlider.end !== "undefined") {
+              const end =
+                rangeSlider.end > props.end ? props.end : rangeSlider.end;
+              return (
+                <div className="trackSlider__range">
+                  <Range
+                    defaultValue={[0, props.end]}
+                    min={props.start}
+                    max={props.end}
+                    onChange={(value: [number, number]) =>
+                      this.handleRangeChange(value, rangeSlider.type)
+                    }
+                    onAfterChange={(value: [number, number]) =>
+                      this.handleAfterRangeChange(value, rangeSlider.type)
+                    }
+                    step={props.step}
+                    value={[start, end]}
+                    railStyle={rangeSlider.styles.rail}
+                    trackStyle={[rangeSlider.styles.track]}
+                    handleStyle={[
+                      rangeSlider.styles.handle,
+                      rangeSlider.styles.handle
+                    ]}
+                  />
+                </div>
+              );
+            } else {
+              return (
+                <div className="trackSlider__range">
+                  <Slider
+                    defaultValue={[0, props.end]}
+                    min={props.start}
+                    max={props.end}
+                    onChange={(value: number) =>
+                      this.handleRangeChange(value, rangeSlider.type)
+                    }
+                    onAfterChange={(value: number) =>
+                      this.handleAfterRangeChange(value, rangeSlider.type)
+                    }
+                    step={props.step}
+                    value={start}
+                    railStyle={rangeSlider.styles.rail}
+                    trackStyle={rangeSlider.styles.track}
+                    handleStyle={rangeSlider.styles.handle}
+                  />
+                </div>
+              );
+            }
           })}
         </div>
         <p className="trackSlider__text trackSlider__text--max">

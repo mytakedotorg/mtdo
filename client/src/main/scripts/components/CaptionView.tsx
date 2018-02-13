@@ -17,14 +17,17 @@ import { Foundation } from "../java2ts/Foundation";
 import { Routes } from "../java2ts/Routes";
 
 export interface CaptionViewEventHandlers {
-  onAfterRangeChange: (range: [number, number], type: RangeType) => any;
+  onAfterRangeChange: (
+    value: [number, number] | number,
+    type: RangeType
+  ) => any;
   onClearPress: () => void;
   onHighlight: (
     videoRange: [number, number],
     charRange: [number, number]
   ) => void;
   onPlayPausePress: () => any;
-  onRangeChange: (range: [number, number], type: RangeType) => any;
+  onRangeChange: (value: [number, number] | number, type: RangeType) => any;
   onRestartPress: () => any;
   onScroll: (viewRangeStart: number) => any;
   onSkipBackPress: (seconds: number) => any;

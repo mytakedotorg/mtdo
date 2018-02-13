@@ -36,7 +36,6 @@ exports[`Video 1`] = `
               "playsinline": 1,
               "rel": 0,
               "showinfo": 0,
-              "start": 0,
             },
             "width": "560",
           }
@@ -69,25 +68,6 @@ exports[`Video 1`] = `
       rangeSliders={
         Array [
           Object {
-            "end": 0,
-            "start": 0,
-            "styles": Object {
-              "handle": Object {
-                "backgroundColor": "#2c4770",
-                "border": "none",
-              },
-              "rail": Object {
-                "backgroundColor": "#758aa8",
-                "borderLeft": "2px solid #2c4770",
-                "borderRight": "2px solid #2c4770",
-              },
-              "track": Object {
-                "backgroundColor": "#2c4770",
-              },
-            },
-            "type": "SELECTION",
-          },
-          Object {
             "end": 5,
             "start": 0,
             "styles": Object {
@@ -105,6 +85,25 @@ exports[`Video 1`] = `
               },
             },
             "type": "VIEW",
+          },
+          Object {
+            "end": 0,
+            "start": 0,
+            "styles": Object {
+              "handle": Object {
+                "backgroundColor": "#2c4770",
+                "border": "none",
+              },
+              "rail": Object {
+                "backgroundColor": "#758aa8",
+                "borderLeft": "2px solid #2c4770",
+                "borderRight": "2px solid #2c4770",
+              },
+              "track": Object {
+                "backgroundColor": "#2c4770",
+              },
+            },
+            "type": "SELECTION",
           },
         ]
       }
@@ -680,6 +679,25 @@ exports[`Video with highlights 1`] = `
       rangeSliders={
         Array [
           Object {
+            "end": 5,
+            "start": 0,
+            "styles": Object {
+              "handle": Object {
+                "backgroundColor": "#d3dae3",
+                "border": "none",
+              },
+              "rail": Object {
+                "backgroundColor": "#758aa8",
+                "borderLeft": "2px solid #2c4770",
+                "borderRight": "2px solid #2c4770",
+              },
+              "track": Object {
+                "backgroundColor": "#d3dae3",
+              },
+            },
+            "type": "VIEW",
+          },
+          Object {
             "end": 3,
             "start": 0,
             "styles": Object {
@@ -699,23 +717,21 @@ exports[`Video with highlights 1`] = `
             "type": "SELECTION",
           },
           Object {
-            "end": 5,
-            "start": 0,
+            "end": 3.3,
+            "start": -0.30000000000000004,
             "styles": Object {
               "handle": Object {
-                "backgroundColor": "#d3dae3",
-                "border": "none",
+                "backgroundColor": "#758aa8",
+                "border": "2px solid #2c4770",
               },
               "rail": Object {
-                "backgroundColor": "#758aa8",
-                "borderLeft": "2px solid #2c4770",
-                "borderRight": "2px solid #2c4770",
-              },
-              "track": Object {
                 "backgroundColor": "#d3dae3",
               },
+              "track": Object {
+                "backgroundColor": "#758aa8",
+              },
             },
-            "type": "VIEW",
+            "type": "ZOOM",
           },
         ]
       }

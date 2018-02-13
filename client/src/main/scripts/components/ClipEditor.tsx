@@ -7,10 +7,13 @@ import { alertErr, convertSecondsToTimestamp } from "../utils/functions";
 import isEqual = require("lodash/isEqual");
 
 export interface ClipEditorEventHandlers {
-  onAfterRangeChange: (range: [number, number], type: RangeType) => any;
+  onAfterRangeChange: (
+    value: [number, number] | number,
+    type: RangeType
+  ) => any;
   onClearPress: () => any;
   onPlayPausePress: () => any;
-  onRangeChange: (range: [number, number], type: RangeType) => any;
+  onRangeChange: (value: [number, number] | number, type: RangeType) => any;
   onRestartPress: () => any;
   onSkipBackPress: (seconds: number) => any;
   onSkipForwardPress: (seconds: number) => any;
@@ -56,7 +59,7 @@ class ClipEditor extends React.Component<ClipEditorProps, ClipEditorState> {
       this.props.rangeSliders
     );
     let duration;
-    if (selectionRange) {
+    if (selectionRange && typeof selectionRange.end === "number") {
       duration = selectionRange.end - selectionRange.start;
     } else {
       duration = this.props.videoDuration;
@@ -72,7 +75,7 @@ class ClipEditor extends React.Component<ClipEditorProps, ClipEditorState> {
   handlePlayPause = () => {
     this.props.eventHandlers.onPlayPausePress();
   };
-  handleRangeChange = (value: [number, number], type: RangeType) => {
+  handleRangeChange = (value: [number, number] | number, type: RangeType) => {
     // Throttle the event a bit
     if (!this.timerId) {
       this.props.eventHandlers.onRangeChange(value, type);
@@ -89,6 +92,11 @@ class ClipEditor extends React.Component<ClipEditorProps, ClipEditorState> {
     let selectionRange = this.getRangeSlider("SELECTION", props.rangeSliders);
     let viewRange = this.getRangeSlider("VIEW", props.rangeSliders);
     let zoomRange = this.getRangeSlider("ZOOM", props.rangeSliders);
+    let currentTime: TimeRange = {
+      start: props.currentTime,
+      type: "CURRENT_TIME",
+      styles: TRACKSTYLES__ZOOM
+    };
 
     let isZoomed: boolean;
 
@@ -115,8 +123,8 @@ class ClipEditor extends React.Component<ClipEditorProps, ClipEditorState> {
       onRangeChange: this.handleRangeChange
     };
 
-    const topTrack: TimeRange[] = [zoomRange, viewRange];
-    const bottomTrack: TimeRange[] = [selectionRange, viewRange];
+    const topTrack: TimeRange[] = [currentTime, viewRange, zoomRange];
+    const bottomTrack: TimeRange[] = [currentTime, viewRange, selectionRange];
 
     return (
       <div className="clipEditor">
@@ -129,7 +137,7 @@ class ClipEditor extends React.Component<ClipEditorProps, ClipEditorState> {
             step={1}
           />
         </div>
-        {isZoomed ? (
+        {isZoomed && typeof zoomRange.end === "number" ? (
           <div>
             <div className="clipEditor__actions clipEditor__actions--range">
               <TrackSlider

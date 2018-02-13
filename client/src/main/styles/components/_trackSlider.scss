@@ -13,7 +13,7 @@ $trackHeight: 20px;
   color: palette(video, text);
   width: 68px;
   @include body;
-  line-height: 2 * $trackHeight;
+  line-height: 3 * $trackHeight;
   margin: 0;
   @media #{$mq-medium} {
     display: block;
@@ -26,9 +26,9 @@ $trackHeight: 20px;
   position: relative;
   width: $video-container-width;
   overflow: hidden;
-  height: 2 * $trackHeight;
-  padding-left: 20px;
-  padding-right: 20px;
+  height: 3 * $trackHeight;
+  padding-left: 30px;
+  padding-right: 30px;
   @media #{$mq-medium} {
     padding-left: 8px;
     padding-right: 14px;
