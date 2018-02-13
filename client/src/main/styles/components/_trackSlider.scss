@@ -27,8 +27,12 @@ $trackHeight: 20px;
   width: $video-container-width;
   overflow: hidden;
   height: 2 * $trackHeight;
-  padding-left: 8px;
-  padding-right: 14px;
+  padding-left: 20px;
+  padding-right: 20px;
+  @media #{$mq-medium} {
+    padding-left: 8px;
+    padding-right: 14px;
+  }
 }
 .trackSlider__range {
   width: 100%;
