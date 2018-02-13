@@ -312,8 +312,6 @@ function zeroPad(someNumber: number): string {
 }
 
 function convertSecondsToTimestamp(totalSeconds: number): string {
-  const DD = totalSeconds.toFixed(1).split(".")[1];
-
   let truncated = totalSeconds | 0;
 
   const hours = Math.floor(truncated / 3600);
@@ -329,12 +327,12 @@ function convertSecondsToTimestamp(totalSeconds: number): string {
   let MM;
   if (hours > 0) {
     MM = zeroPad(minutes);
-    return HH + ":" + MM + ":" + SS + "." + DD;
+    return HH + ":" + MM + ":" + SS;
   } else if (minutes > 0) {
     MM = minutes.toString();
-    return MM + ":" + SS + "." + DD;
+    return MM + ":" + SS;
   } else {
-    return seconds.toString() + "." + DD;
+    return seconds.toString();
   }
 }
 
