@@ -37,6 +37,14 @@ $trackHeight: 20px;
 .trackSlider__range {
   width: 100%;
   height: $trackHeight;
+  position: relative;
+}
+.trackSlider__label {
+  position: absolute;
+  top: 0;
+  left: 5px;
+  @include body--small;
+  line-height: $trackHeight;
 }
 // Begin rc-slider.css overrides
 .rc-slider {

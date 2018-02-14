@@ -95,7 +95,8 @@ class ClipEditor extends React.Component<ClipEditorProps, ClipEditorState> {
     let currentTime: TimeRange = {
       start: props.currentTime,
       type: "CURRENT_TIME",
-      styles: TRACKSTYLES__ZOOM
+      styles: TRACKSTYLES__ZOOM,
+      label: "Now playing"
     };
 
     let isZoomed: boolean;
@@ -106,7 +107,8 @@ class ClipEditor extends React.Component<ClipEditorProps, ClipEditorState> {
         start: 0,
         end: props.videoDuration,
         type: "ZOOM",
-        styles: TRACKSTYLES__ZOOM
+        styles: TRACKSTYLES__ZOOM,
+        label: "Zoom"
       };
     } else {
       isZoomed = true;

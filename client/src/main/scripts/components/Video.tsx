@@ -24,6 +24,7 @@ export interface TimeRange {
   end?: number;
   type: RangeType;
   styles: TrackStyles;
+  label: string;
 }
 
 interface TrackStyles {
@@ -172,14 +173,16 @@ class Video extends React.Component<VideoProps, VideoState> {
       start: 0,
       end: this.viewRangeDuration,
       type: "VIEW",
-      styles: TRACKSTYLES__VIEW
+      styles: TRACKSTYLES__VIEW,
+      label: "Transcript"
     };
 
     const selectionRange: TimeRange = {
       start: props.clipRange ? props.clipRange[0] : 0,
       end: props.clipRange ? props.clipRange[1] : 0,
       type: "SELECTION",
-      styles: TRACKSTYLES__SELECTION
+      styles: TRACKSTYLES__SELECTION,
+      label: "Clip"
     };
 
     if (props.clipRange) {
@@ -188,7 +191,8 @@ class Video extends React.Component<VideoProps, VideoState> {
         start: props.clipRange[0] - tenPercent,
         end: props.clipRange[1] + tenPercent,
         type: "ZOOM",
-        styles: TRACKSTYLES__ZOOM
+        styles: TRACKSTYLES__ZOOM,
+        label: "Zoom"
       };
       return [transcriptViewRange, selectionRange, zoomRange];
     }
@@ -204,7 +208,8 @@ class Video extends React.Component<VideoProps, VideoState> {
       start: videoRange[0],
       end: videoRange[1],
       type: "SELECTION",
-      styles: TRACKSTYLES__SELECTION
+      styles: TRACKSTYLES__SELECTION,
+      label: "Clip"
     };
     this.setState({
       captionIsHighlighted: true,
@@ -220,7 +225,8 @@ class Video extends React.Component<VideoProps, VideoState> {
       start: viewRange[0],
       end: viewRange[1],
       type: "VIEW",
-      styles: TRACKSTYLES__VIEW
+      styles: TRACKSTYLES__VIEW,
+      label: "Transcript"
     };
 
     this.setState({
@@ -313,7 +319,8 @@ class Video extends React.Component<VideoProps, VideoState> {
               start: nextSelectionStart,
               end: nextSelectionEnd,
               type: "SELECTION",
-              styles: TRACKSTYLES__SELECTION
+              styles: TRACKSTYLES__SELECTION,
+              label: "Clip"
             };
             const charRange: [number, number] = this.getCharRange(
               this.props.videoFact,
@@ -387,7 +394,8 @@ class Video extends React.Component<VideoProps, VideoState> {
               start: nextViewStart,
               end: nextViewEnd,
               type: "VIEW",
-              styles: TRACKSTYLES__VIEW
+              styles: TRACKSTYLES__VIEW,
+              label: "Transcript"
             };
             this.setState({
               rangeIsChanging: "VIEW",
@@ -409,7 +417,8 @@ class Video extends React.Component<VideoProps, VideoState> {
             start: value[0],
             end: value[1],
             type: "ZOOM",
-            styles: TRACKSTYLES__ZOOM
+            styles: TRACKSTYLES__ZOOM,
+            label: "Zoom"
           };
           this.setState({
             rangeIsChanging: "ZOOM",
@@ -610,7 +619,8 @@ class Video extends React.Component<VideoProps, VideoState> {
         start: nextProps.clipRange[0],
         end: nextProps.clipRange[1],
         type: "SELECTION",
-        styles: TRACKSTYLES__SELECTION
+        styles: TRACKSTYLES__SELECTION,
+        label: "Clip"
       };
 
       let charRange: [number, number] = this.getCharRange(

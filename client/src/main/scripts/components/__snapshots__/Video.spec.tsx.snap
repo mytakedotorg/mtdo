@@ -69,6 +69,7 @@ exports[`Video 1`] = `
         Array [
           Object {
             "end": 5,
+            "label": "Transcript",
             "start": 0,
             "styles": Object {
               "handle": Object {
@@ -88,6 +89,7 @@ exports[`Video 1`] = `
           },
           Object {
             "end": 0,
+            "label": "Clip",
             "start": 0,
             "styles": Object {
               "handle": Object {
@@ -680,6 +682,7 @@ exports[`Video with highlights 1`] = `
         Array [
           Object {
             "end": 5,
+            "label": "Transcript",
             "start": 0,
             "styles": Object {
               "handle": Object {
@@ -699,6 +702,7 @@ exports[`Video with highlights 1`] = `
           },
           Object {
             "end": 3,
+            "label": "Clip",
             "start": 0,
             "styles": Object {
               "handle": Object {
@@ -718,6 +722,7 @@ exports[`Video with highlights 1`] = `
           },
           Object {
             "end": 3.3,
+            "label": "Zoom",
             "start": -0.30000000000000004,
             "styles": Object {
               "handle": Object {

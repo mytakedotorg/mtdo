@@ -90,6 +90,9 @@ class TrackSlider extends React.Component<TrackSliderProps, TrackSliderState> {
                       rangeSlider.styles.handle
                     ]}
                   />
+                  <span className="trackSlider__label">
+                    {rangeSlider.label}
+                  </span>
                 </div>
               );
             } else {
@@ -111,6 +114,9 @@ class TrackSlider extends React.Component<TrackSliderProps, TrackSliderState> {
                     trackStyle={rangeSlider.styles.track}
                     handleStyle={rangeSlider.styles.handle}
                   />
+                  <span className="trackSlider__label">
+                    {rangeSlider.label}
+                  </span>
                 </div>
               );
             }
