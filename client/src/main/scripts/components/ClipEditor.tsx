@@ -68,24 +68,11 @@ class ClipEditor extends React.Component<ClipEditorProps, ClipEditorState> {
     }
     return null;
   };
-  getTenPercent = (): number => {
-    const selectionRange = this.getRangeSlider(
-      "SELECTION",
-      this.props.rangeSliders
-    );
-    let duration;
-    if (selectionRange && typeof selectionRange.end === "number") {
-      duration = selectionRange.end - selectionRange.start;
-    } else {
-      duration = this.props.videoDuration;
-    }
-    return duration * 0.1;
-  };
   handleBack = () => {
-    this.props.eventHandlers.onSkipBackPress(this.getTenPercent());
+    this.props.eventHandlers.onSkipBackPress(15);
   };
   handleForward = () => {
-    this.props.eventHandlers.onSkipForwardPress(this.getTenPercent());
+    this.props.eventHandlers.onSkipForwardPress(15);
   };
   handlePlayPause = () => {
     this.props.eventHandlers.onPlayPausePress();
