@@ -15,43 +15,23 @@ exports[`CaptionTextNodeList 1`] = `
         "onRestartPress": [Function],
         "onSkipBackPress": [Function],
         "onSkipForwardPress": [Function],
+        "onZoomToClipPress": undefined,
       }
     }
     isPaused={true}
+    isZoomedToClip={undefined}
     rangeSliders={
       Array [
         Object {
           "end": 25,
           "start": 0,
-          "styles": Object {
-            "handle": Object {
-              "backgroundColor": "#758aa8",
-              "border": "2px solid #2c4770",
-            },
-            "rail": Object {
-              "backgroundColor": "#d3dae3",
-            },
-            "track": Object {
-              "backgroundColor": "#758aa8",
-            },
-          },
+          "styles": undefined,
           "type": "VIEW",
         },
         Object {
           "end": 0,
           "start": 0,
-          "styles": Object {
-            "handle": Object {
-              "backgroundColor": "#758aa8",
-              "border": "2px solid #2c4770",
-            },
-            "rail": Object {
-              "backgroundColor": "#d3dae3",
-            },
-            "track": Object {
-              "backgroundColor": "#758aa8",
-            },
-          },
+          "styles": undefined,
           "type": "SELECTION",
         },
       ]
@@ -561,18 +541,7 @@ exports[`CaptionTextNodeList 1`] = `
       Object {
         "end": 25,
         "start": 0,
-        "styles": Object {
-          "handle": Object {
-            "backgroundColor": "#758aa8",
-            "border": "2px solid #2c4770",
-          },
-          "rail": Object {
-            "backgroundColor": "#d3dae3",
-          },
-          "track": Object {
-            "backgroundColor": "#758aa8",
-          },
-        },
+        "styles": undefined,
         "type": "VIEW",
       }
     }
@@ -595,43 +564,23 @@ exports[`CaptionTextNodeList with highlights from props 1`] = `
         "onRestartPress": [Function],
         "onSkipBackPress": [Function],
         "onSkipForwardPress": [Function],
+        "onZoomToClipPress": undefined,
       }
     }
     isPaused={true}
+    isZoomedToClip={undefined}
     rangeSliders={
       Array [
         Object {
           "end": 8.7,
           "start": 3.6,
-          "styles": Object {
-            "handle": Object {
-              "backgroundColor": "#758aa8",
-              "border": "2px solid #2c4770",
-            },
-            "rail": Object {
-              "backgroundColor": "#d3dae3",
-            },
-            "track": Object {
-              "backgroundColor": "#758aa8",
-            },
-          },
+          "styles": undefined,
           "type": "VIEW",
         },
         Object {
           "end": 7.2,
           "start": 5.3,
-          "styles": Object {
-            "handle": Object {
-              "backgroundColor": "#758aa8",
-              "border": "2px solid #2c4770",
-            },
-            "rail": Object {
-              "backgroundColor": "#d3dae3",
-            },
-            "track": Object {
-              "backgroundColor": "#758aa8",
-            },
-          },
+          "styles": undefined,
           "type": "SELECTION",
         },
       ]
@@ -1148,18 +1097,7 @@ exports[`CaptionTextNodeList with highlights from props 1`] = `
       Object {
         "end": 8.7,
         "start": 3.6,
-        "styles": Object {
-          "handle": Object {
-            "backgroundColor": "#758aa8",
-            "border": "2px solid #2c4770",
-          },
-          "rail": Object {
-            "backgroundColor": "#d3dae3",
-          },
-          "track": Object {
-            "backgroundColor": "#758aa8",
-          },
-        },
+        "styles": undefined,
         "type": "VIEW",
       }
     }

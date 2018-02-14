@@ -32,6 +32,7 @@ export interface CaptionViewEventHandlers {
   onScroll: (viewRange: [number, number]) => any;
   onSkipBackPress: (seconds: number) => any;
   onSkipForwardPress: (seconds: number) => any;
+  onZoomToClipPress: () => any;
 }
 
 interface CaptionViewProps {
@@ -39,6 +40,7 @@ interface CaptionViewProps {
   timer: number;
   captionIsHighlighted: boolean;
   isPaused: boolean;
+  isZoomedToClip: boolean;
   videoDuration: number;
   eventHandlers: CaptionViewEventHandlers;
   highlightedCharRange?: [number, number];
@@ -214,7 +216,8 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
       onRestartPress: this.props.eventHandlers.onRestartPress,
       onRangeChange: this.props.eventHandlers.onRangeChange,
       onSkipBackPress: this.props.eventHandlers.onSkipBackPress,
-      onSkipForwardPress: this.props.eventHandlers.onSkipForwardPress
+      onSkipForwardPress: this.props.eventHandlers.onSkipForwardPress,
+      onZoomToClipPress: this.props.eventHandlers.onZoomToClipPress
     };
 
     const documentEventHandlers: DocumentEventHandlers = {
@@ -233,6 +236,7 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
           eventHandlers={clipEditorEventHandlers}
           currentTime={this.props.timer}
           isPaused={this.props.isPaused}
+          isZoomedToClip={this.props.isZoomedToClip}
           videoDuration={this.props.videoDuration}
           rangeSliders={this.props.rangeSliders}
         />

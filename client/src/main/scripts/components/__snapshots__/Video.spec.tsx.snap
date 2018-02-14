@@ -56,6 +56,7 @@ exports[`Video 1`] = `
           "onScroll": [Function],
           "onSkipBackPress": [Function],
           "onSkipForwardPress": [Function],
+          "onZoomToClipPress": [Function],
         }
       }
       highlightedCharRange={
@@ -65,6 +66,7 @@ exports[`Video 1`] = `
         ]
       }
       isPaused={true}
+      isZoomedToClip={false}
       rangeSliders={
         Array [
           Object {
@@ -73,16 +75,14 @@ exports[`Video 1`] = `
             "start": 0,
             "styles": Object {
               "handle": Object {
-                "backgroundColor": "#d3dae3",
-                "border": "none",
+                "backgroundColor": "#758aa8",
+                "border": "1px solid #2c4770",
               },
               "rail": Object {
-                "backgroundColor": "#758aa8",
-                "borderLeft": "2px solid #2c4770",
-                "borderRight": "2px solid #2c4770",
+                "backgroundColor": "#d3dae3",
               },
               "track": Object {
-                "backgroundColor": "#d3dae3",
+                "backgroundColor": "#758aa8",
               },
             },
             "type": "VIEW",
@@ -93,16 +93,14 @@ exports[`Video 1`] = `
             "start": 0,
             "styles": Object {
               "handle": Object {
-                "backgroundColor": "#2c4770",
-                "border": "none",
+                "backgroundColor": "#758aa8",
+                "border": "1px solid #2c4770",
               },
               "rail": Object {
-                "backgroundColor": "#758aa8",
-                "borderLeft": "2px solid #2c4770",
-                "borderRight": "2px solid #2c4770",
+                "backgroundColor": "#d3dae3",
               },
               "track": Object {
-                "backgroundColor": "#2c4770",
+                "backgroundColor": "#758aa8",
               },
             },
             "type": "SELECTION",
@@ -669,6 +667,7 @@ exports[`Video with highlights 1`] = `
           "onScroll": [Function],
           "onSkipBackPress": [Function],
           "onSkipForwardPress": [Function],
+          "onZoomToClipPress": [Function],
         }
       }
       highlightedCharRange={
@@ -678,6 +677,7 @@ exports[`Video with highlights 1`] = `
         ]
       }
       isPaused={true}
+      isZoomedToClip={true}
       rangeSliders={
         Array [
           Object {
@@ -686,16 +686,14 @@ exports[`Video with highlights 1`] = `
             "start": 0,
             "styles": Object {
               "handle": Object {
-                "backgroundColor": "#d3dae3",
-                "border": "none",
+                "backgroundColor": "#758aa8",
+                "border": "1px solid #2c4770",
               },
               "rail": Object {
-                "backgroundColor": "#758aa8",
-                "borderLeft": "2px solid #2c4770",
-                "borderRight": "2px solid #2c4770",
+                "backgroundColor": "#d3dae3",
               },
               "track": Object {
-                "backgroundColor": "#d3dae3",
+                "backgroundColor": "#758aa8",
               },
             },
             "type": "VIEW",
@@ -706,16 +704,14 @@ exports[`Video with highlights 1`] = `
             "start": 0,
             "styles": Object {
               "handle": Object {
-                "backgroundColor": "#2c4770",
-                "border": "none",
+                "backgroundColor": "#758aa8",
+                "border": "1px solid #2c4770",
               },
               "rail": Object {
-                "backgroundColor": "#758aa8",
-                "borderLeft": "2px solid #2c4770",
-                "borderRight": "2px solid #2c4770",
+                "backgroundColor": "#d3dae3",
               },
               "track": Object {
-                "backgroundColor": "#2c4770",
+                "backgroundColor": "#758aa8",
               },
             },
             "type": "SELECTION",
@@ -727,7 +723,7 @@ exports[`Video with highlights 1`] = `
             "styles": Object {
               "handle": Object {
                 "backgroundColor": "#758aa8",
-                "border": "2px solid #2c4770",
+                "border": "1px solid #2c4770",
               },
               "rail": Object {
                 "backgroundColor": "#d3dae3",

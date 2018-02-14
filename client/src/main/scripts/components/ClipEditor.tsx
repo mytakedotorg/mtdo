@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { Range } from "rc-slider";
-import { RangeType, TimeRange, TRACKSTYLES__ZOOM } from "./Video";
+import { RangeType, TimeRange, TrackStyles, TRACKSTYLES__RANGE } from "./Video";
 import TrackSlider, { TrackSliderEventHandlers } from "./TrackSlider";
 import { alertErr, convertSecondsToTimestamp } from "../utils/functions";
 import isEqual = require("lodash/isEqual");
@@ -17,7 +17,21 @@ export interface ClipEditorEventHandlers {
   onRestartPress: () => any;
   onSkipBackPress: (seconds: number) => any;
   onSkipForwardPress: (seconds: number) => any;
+  onZoomToClipPress: () => any;
 }
+
+const TRACKSTYLES__SLIDER: TrackStyles = {
+  rail: {
+    backgroundColor: "#d3dae3" // lighten($base-lightest, 30%)
+  },
+  track: {
+    backgroundColor: "#d3dae3" // lighten($base-lightest, 30%)
+  },
+  handle: {
+    backgroundColor: "#758aa8", // $base--lightest
+    border: "1px solid #2c4770" // $base
+  }
+};
 
 type IsChanging = "zoom" | "selection" | "view";
 
@@ -25,6 +39,7 @@ interface ClipEditorProps {
   currentTime: number;
   videoDuration: number;
   isPaused: boolean;
+  isZoomedToClip: boolean;
   eventHandlers: ClipEditorEventHandlers;
   rangeSliders: TimeRange[];
 }
@@ -95,7 +110,7 @@ class ClipEditor extends React.Component<ClipEditorProps, ClipEditorState> {
     let currentTime: TimeRange = {
       start: props.currentTime,
       type: "CURRENT_TIME",
-      styles: TRACKSTYLES__ZOOM,
+      styles: TRACKSTYLES__SLIDER,
       label: "Now playing"
     };
 
@@ -107,7 +122,7 @@ class ClipEditor extends React.Component<ClipEditorProps, ClipEditorState> {
         start: 0,
         end: props.videoDuration,
         type: "ZOOM",
-        styles: TRACKSTYLES__ZOOM,
+        styles: TRACKSTYLES__RANGE,
         label: "Zoom"
       };
     } else {
@@ -160,17 +175,27 @@ class ClipEditor extends React.Component<ClipEditorProps, ClipEditorState> {
         )}
         <div className="clipEditor__actions clipEditor__actions--controls">
           <div className="clipEditor__controls">
-            <button
-              className="clipEditor__button clipEditor__button--small"
-              onClick={this.handleRestart}
-            >
-              <i className="fa fa-fast-backward" aria-hidden="true" />
-            </button>
+            {props.isZoomedToClip ? (
+              <button
+                className="clipEditor__button clipEditor__button--zoom"
+                onClick={this.handleRestart}
+              >
+                Play Clip
+              </button>
+            ) : (
+              <button
+                className="clipEditor__button clipEditor__button--zoom"
+                onClick={this.props.eventHandlers.onZoomToClipPress}
+              >
+                Zoom to Clip
+              </button>
+            )}
+
             <button
               className="clipEditor__button clipEditor__button--small"
               onClick={this.handleBack}
             >
-              <i className="fa fa-undo" aria-hidden="true" />
+              <i className="fa fa-undo" aria-hidden="true" /> 15s
             </button>
             <button
               className="clipEditor__button clipEditor__button--small"
@@ -186,7 +211,7 @@ class ClipEditor extends React.Component<ClipEditorProps, ClipEditorState> {
               className="clipEditor__button clipEditor__button--small"
               onClick={this.handleForward}
             >
-              <i className="fa fa-repeat" aria-hidden="true" />
+              <i className="fa fa-repeat" aria-hidden="true" /> 15s
             </button>
           </div>
         </div>

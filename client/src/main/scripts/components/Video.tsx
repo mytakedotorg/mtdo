@@ -27,7 +27,7 @@ export interface TimeRange {
   label: string;
 }
 
-interface TrackStyles {
+export interface TrackStyles {
   rail: stylesObject;
   track: stylesObject;
   handle: stylesObject;
@@ -37,7 +37,7 @@ interface stylesObject {
   [key: string]: string;
 }
 
-export const TRACKSTYLES__ZOOM: TrackStyles = {
+export const TRACKSTYLES__RANGE: TrackStyles = {
   rail: {
     backgroundColor: "#d3dae3" // lighten($base-lightest, 30%)
   },
@@ -46,37 +46,7 @@ export const TRACKSTYLES__ZOOM: TrackStyles = {
   },
   handle: {
     backgroundColor: "#758aa8", // $base--lightest
-    border: "2px solid #2c4770" // $base
-  }
-};
-
-const TRACKSTYLES__VIEW: TrackStyles = {
-  rail: {
-    backgroundColor: "#758aa8", // $base--lightest
-    borderRight: "2px solid #2c4770",
-    borderLeft: "2px solid #2c4770"
-  },
-  track: {
-    backgroundColor: "#d3dae3" // lighten($base-lightest, 30%)
-  },
-  handle: {
-    backgroundColor: "#d3dae3", // lighten($base-lightest, 30%)
-    border: "none"
-  }
-};
-
-const TRACKSTYLES__SELECTION: TrackStyles = {
-  rail: {
-    backgroundColor: "#758aa8", // $base--lightest
-    borderRight: "2px solid #2c4770",
-    borderLeft: "2px solid #2c4770"
-  },
-  track: {
-    backgroundColor: "#2c4770" // $base
-  },
-  handle: {
-    backgroundColor: "#2c4770", // $base
-    border: "none"
+    border: "1px solid #2c4770" // $base
   }
 };
 
@@ -95,6 +65,8 @@ interface VideoState {
   currentTime: number;
   duration: number;
   isPaused: boolean;
+  isPlayingClip: boolean;
+  isZoomedToClip: boolean;
   captionIsHighlighted: boolean;
   highlightedCharRange: [number, number];
   rangeSliders: TimeRange[];
@@ -118,6 +90,8 @@ class Video extends React.Component<VideoProps, VideoState> {
     this.state = {
       currentTime: props.clipRange ? props.clipRange[0] : 0,
       isPaused: true,
+      isPlayingClip: props.clipRange ? true : false,
+      isZoomedToClip: props.clipRange ? true : false,
       duration: 5224,
       captionIsHighlighted:
         charRange[0] === -1 && charRange[1] === -1 ? false : true,
@@ -173,7 +147,7 @@ class Video extends React.Component<VideoProps, VideoState> {
       start: 0,
       end: this.viewRangeDuration,
       type: "VIEW",
-      styles: TRACKSTYLES__VIEW,
+      styles: TRACKSTYLES__RANGE,
       label: "Transcript"
     };
 
@@ -181,7 +155,7 @@ class Video extends React.Component<VideoProps, VideoState> {
       start: props.clipRange ? props.clipRange[0] : 0,
       end: props.clipRange ? props.clipRange[1] : 0,
       type: "SELECTION",
-      styles: TRACKSTYLES__SELECTION,
+      styles: TRACKSTYLES__RANGE,
       label: "Clip"
     };
 
@@ -191,7 +165,7 @@ class Video extends React.Component<VideoProps, VideoState> {
         start: props.clipRange[0] - tenPercent,
         end: props.clipRange[1] + tenPercent,
         type: "ZOOM",
-        styles: TRACKSTYLES__ZOOM,
+        styles: TRACKSTYLES__RANGE,
         label: "Zoom"
       };
       return [transcriptViewRange, selectionRange, zoomRange];
@@ -208,7 +182,7 @@ class Video extends React.Component<VideoProps, VideoState> {
       start: videoRange[0],
       end: videoRange[1],
       type: "SELECTION",
-      styles: TRACKSTYLES__SELECTION,
+      styles: TRACKSTYLES__RANGE,
       label: "Clip"
     };
     this.setState({
@@ -225,7 +199,7 @@ class Video extends React.Component<VideoProps, VideoState> {
       start: viewRange[0],
       end: viewRange[1],
       type: "VIEW",
-      styles: TRACKSTYLES__VIEW,
+      styles: TRACKSTYLES__RANGE,
       label: "Transcript"
     };
 
@@ -280,9 +254,9 @@ class Video extends React.Component<VideoProps, VideoState> {
     const { rangeIsChanging } = this.state;
     if (rangeIsChanging == null || rangeIsChanging === type) {
       const zoomedRange = this.getRangeSlider("ZOOM");
+      const selectionRange = this.getRangeSlider("SELECTION");
       switch (type) {
         case "SELECTION":
-          const selectionRange = this.getRangeSlider("SELECTION");
           if (selectionRange && zoomedRange) {
             if (
               typeof selectionRange.end !== "number" ||
@@ -319,7 +293,7 @@ class Video extends React.Component<VideoProps, VideoState> {
               start: nextSelectionStart,
               end: nextSelectionEnd,
               type: "SELECTION",
-              styles: TRACKSTYLES__SELECTION,
+              styles: TRACKSTYLES__RANGE,
               label: "Clip"
             };
             const charRange: [number, number] = this.getCharRange(
@@ -329,6 +303,12 @@ class Video extends React.Component<VideoProps, VideoState> {
             this.setState({
               captionIsHighlighted: true,
               highlightedCharRange: charRange,
+              isZoomedToClip: zoomedRange.end
+                ? this.isZoomedToClip(
+                    [nextSelectionStart, nextSelectionEnd],
+                    [zoomedRange.start, zoomedRange.end]
+                  )
+                : false,
               rangeIsChanging: "SELECTION",
               rangeSliders: this.updateRangeSlider(nextSelection)
             });
@@ -394,7 +374,7 @@ class Video extends React.Component<VideoProps, VideoState> {
               start: nextViewStart,
               end: nextViewEnd,
               type: "VIEW",
-              styles: TRACKSTYLES__VIEW,
+              styles: TRACKSTYLES__RANGE,
               label: "Transcript"
             };
             this.setState({
@@ -417,10 +397,17 @@ class Video extends React.Component<VideoProps, VideoState> {
             start: value[0],
             end: value[1],
             type: "ZOOM",
-            styles: TRACKSTYLES__ZOOM,
+            styles: TRACKSTYLES__RANGE,
             label: "Zoom"
           };
           this.setState({
+            isZoomedToClip:
+              selectionRange && selectionRange.end
+                ? this.isZoomedToClip(
+                    [selectionRange.start, selectionRange.end],
+                    [value[0], value[1]]
+                  )
+                : false,
             rangeIsChanging: "ZOOM",
             rangeSliders: this.updateRangeSlider(nextZoom)
           });
@@ -506,6 +493,44 @@ class Video extends React.Component<VideoProps, VideoState> {
   };
   handleSkipForwardPress = (seconds: number) => {
     this.skipSeconds(seconds);
+  };
+  handleZoomToClipPress = () => {
+    if (this.state.captionIsHighlighted) {
+      const selection = this.getRangeSlider("SELECTION");
+      if (selection && selection.end) {
+        const tenPercent = (selection.end - selection.start) * 0.1;
+        const zoomRange: TimeRange = {
+          start: selection.start - tenPercent,
+          end: selection.end + tenPercent,
+          type: "ZOOM",
+          styles: TRACKSTYLES__RANGE,
+          label: "Zoom"
+        };
+        this.setState({
+          isZoomedToClip: true,
+          rangeSliders: this.updateRangeSlider(zoomRange)
+        });
+      } else {
+        const msg = "Video: Error getting clip. Cannot zoom to clip.";
+        alertErr(msg);
+        throw msg;
+      }
+    } else {
+      const msg = "Video: Clip not set. Cannot zoom to clip.";
+      alertErr(msg);
+      throw msg;
+    }
+  };
+  isZoomedToClip = (
+    clip: [number, number],
+    zoom: [number, number]
+  ): boolean => {
+    const tenPercent = (clip[1] - clip[0]) * 0.1;
+    if (zoom[0] === clip[0] - tenPercent && zoom[1] === clip[1] + tenPercent) {
+      return true;
+    } else {
+      return false;
+    }
   };
   skipSeconds = (seconds: number) => {
     const newTime = this.state.currentTime + seconds;
@@ -619,7 +644,7 @@ class Video extends React.Component<VideoProps, VideoState> {
         start: nextProps.clipRange[0],
         end: nextProps.clipRange[1],
         type: "SELECTION",
-        styles: TRACKSTYLES__SELECTION,
+        styles: TRACKSTYLES__RANGE,
         label: "Clip"
       };
 
@@ -674,7 +699,8 @@ class Video extends React.Component<VideoProps, VideoState> {
       onRestartPress: this.handleRestartPress,
       onScroll: this.handleCaptionScroll,
       onSkipBackPress: this.handleSkipBackPress,
-      onSkipForwardPress: this.handleSkipForwardPress
+      onSkipForwardPress: this.handleSkipForwardPress,
+      onZoomToClipPress: this.handleZoomToClipPress
     };
 
     return (
@@ -717,6 +743,7 @@ class Video extends React.Component<VideoProps, VideoState> {
             videoFact={this.props.videoFact}
             captionIsHighlighted={this.state.captionIsHighlighted}
             isPaused={this.state.isPaused}
+            isZoomedToClip={this.state.isZoomedToClip}
             videoDuration={this.state.duration}
             eventHandlers={captionEventHandlers}
             highlightedCharRange={this.state.highlightedCharRange}

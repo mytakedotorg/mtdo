@@ -26,7 +26,7 @@ $trackHeight: 20px;
   position: relative;
   width: $video-container-width;
   overflow: hidden;
-  height: 3 * $trackHeight;
+  height: 3 * $trackHeight + 2;
   padding-left: 30px;
   padding-right: 30px;
   @media #{$mq-medium} {
@@ -38,6 +38,7 @@ $trackHeight: 20px;
   width: 100%;
   height: $trackHeight;
   position: relative;
+  border-bottom: 1px solid palette(trackSlider, border);
 }
 .trackSlider__label {
   position: absolute;
@@ -45,6 +46,7 @@ $trackHeight: 20px;
   left: 5px;
   @include body--small;
   line-height: $trackHeight;
+  z-index: 1;
 }
 // Begin rc-slider.css overrides
 .rc-slider {
@@ -63,7 +65,11 @@ $trackHeight: 20px;
 .rc-slider-handle {
   top: 0 !important;
   margin-top: 0 !important;
-  width: $trackHeight !important;
+  margin-left: 0 !important;
+  // width: $trackHeight !important;
+  width: 2px !important;
   height: $trackHeight !important;
+  z-index: 10 !important;
+  border-radius: 0 !important;
   // border: 2px solid palette(trackSlider, border--handle) !important;
 }

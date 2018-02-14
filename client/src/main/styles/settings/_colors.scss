@@ -147,5 +147,6 @@ $palettes: (
       text--green: $secondary,
       background: $white,
       border: $base-darkest
-    )
+    ),
+  trackSlider: (color--handle: $base-dark, border: $base-darkest)
 );
