@@ -12,7 +12,7 @@ interface YTPlayerParameters {
   cc_lang_pref: string;
   controls: number;
   start?: number;
-  end?: number;
+  end?: number | null;
   autoplay: number;
   showinfo: number;
   modestbranding: number;
@@ -65,7 +65,6 @@ interface VideoState {
   currentTime: number;
   duration: number;
   isPaused: boolean;
-  isPlayingClip: boolean;
   isZoomedToClip: boolean;
   captionIsHighlighted: boolean;
   highlightedCharRange: [number, number];
@@ -77,6 +76,7 @@ class Video extends React.Component<VideoProps, VideoState> {
   private timerId: number | null;
   private player: any;
   private viewRangeDuration: number;
+  private playerVars: YTPlayerParameters;
   constructor(props: VideoProps) {
     super(props);
 
@@ -85,12 +85,24 @@ class Video extends React.Component<VideoProps, VideoState> {
       props.clipRange
     );
 
+    this.playerVars = {
+      rel: 0,
+      cc_load_policy: 1,
+      cc_lang_pref: "en",
+      controls: 0,
+      playsinline: 1,
+      autoplay: 1,
+      showinfo: 0,
+      modestbranding: 1,
+      start: props.clipRange ? props.clipRange[0] : 0,
+      end: props.clipRange ? props.clipRange[1] : null
+    };
+
     this.viewRangeDuration = 5;
 
     this.state = {
       currentTime: props.clipRange ? props.clipRange[0] : 0,
       isPaused: true,
-      isPlayingClip: props.clipRange ? true : false,
       isZoomedToClip: props.clipRange ? true : false,
       duration: 5224,
       captionIsHighlighted:
@@ -110,6 +122,8 @@ class Video extends React.Component<VideoProps, VideoState> {
           endSeconds: selectionRange.end,
           suggestedQuality: "default"
         });
+        this.playerVars.start = selectionRange.start;
+        this.playerVars.end = selectionRange.end;
       } else {
         const msg = "Video: Can't find selection range. (1)";
         alertErr(msg);
@@ -266,6 +280,11 @@ class Video extends React.Component<VideoProps, VideoState> {
               alertErr(msg);
               throw msg;
             }
+            if (typeof zoomedRange.end !== "number") {
+              const msg = "Video.tsx. Expect ZOOM range to have an end";
+              alertErr(msg);
+              throw msg;
+            }
             // Determine which handle is being changed
             let nextSelectionStart;
             let nextSelectionEnd;
@@ -274,7 +293,7 @@ class Video extends React.Component<VideoProps, VideoState> {
               value[0] !== zoomedRange.start
             ) {
               // Lower handle is being changed
-              nextSelectionStart = value[0];
+              nextSelectionStart = Math.max(value[0], zoomedRange.start + 0.1);
               nextSelectionEnd = selectionRange.end;
             } else if (
               value[1] !== selectionRange.end &&
@@ -282,12 +301,29 @@ class Video extends React.Component<VideoProps, VideoState> {
             ) {
               // Upper handle is being changed
               nextSelectionStart = selectionRange.start;
-              nextSelectionEnd = value[1];
+              nextSelectionEnd = Math.min(value[1], zoomedRange.end - 0.1);
             } else {
-              const msg =
-                "Video: Can't determine which selection handle is changing.";
-              alertErr(msg);
-              throw msg;
+              // Selection matches zoom range
+              if (value[0] % 1 === 0 && value[1] % 1 !== 0) {
+                // Lower handle is a whole number, upper handle isn't
+                // Lower handle is moving
+                // Lower handle is being changed
+                nextSelectionStart = Math.max(
+                  value[0],
+                  zoomedRange.start + 0.1
+                );
+                nextSelectionEnd = selectionRange.end;
+              } else if (value[0] % 1 !== 0 && value[1] % 1 === 0) {
+                // Upper handle is a whole number, lower handle isn't
+                // Upper handle is moving
+                nextSelectionStart = selectionRange.start;
+                nextSelectionEnd = Math.min(value[1], zoomedRange.end - 0.1);
+              } else {
+                const msg =
+                  "Video: Can't determine which selection handle is changing.";
+                alertErr(msg);
+                throw msg;
+              }
             }
             const nextSelection: TimeRange = {
               start: nextSelectionStart,
@@ -418,13 +454,34 @@ class Video extends React.Component<VideoProps, VideoState> {
             alertErr(msg);
             throw msg;
           }
-          this.setState({
-            currentTime: value
-          });
-          if (this.player) {
-            this.player.seekTo(value);
+          if (
+            zoomedRange &&
+            zoomedRange.end &&
+            Math.round(value) === Math.round(zoomedRange.end)
+          ) {
+            // Now playing has reached the end of the zoom range, let it continue by doing nothing
           } else {
-            console.warn("Player not ready");
+            if (selectionRange && selectionRange.end) {
+              if (value >= selectionRange.end) {
+                this.playerVars.end = null;
+              } else {
+                this.player.cueVideoById({
+                  videoId: this.props.videoFact.youtubeId,
+                  startSeconds: value,
+                  endSeconds: selectionRange.end,
+                  suggestedQuality: "default"
+                });
+                this.playerVars.end = selectionRange.end;
+              }
+            }
+            this.setState({
+              currentTime: value
+            });
+            if (this.player) {
+              this.player.seekTo(value);
+            } else {
+              console.warn("Player not ready");
+            }
           }
           break;
         default:
@@ -447,6 +504,7 @@ class Video extends React.Component<VideoProps, VideoState> {
   };
   handleRestartPress = () => {
     if (this.state.captionIsHighlighted) {
+      this.cueVideo();
       const selectionRange = this.getRangeSlider("SELECTION");
       if (selectionRange) {
         const clipStart = selectionRange.start;
@@ -545,7 +603,14 @@ class Video extends React.Component<VideoProps, VideoState> {
     if (event.data === 0) {
       // Video ended
       this.stopTimer();
-      this.cueVideo();
+      this.player.cueVideoById({
+        videoId: this.props.videoFact.youtubeId,
+        startSeconds: this.state.currentTime,
+        suggestedQuality: "default"
+      });
+      this.setState({
+        isPaused: true
+      });
     } else if (event.data === 1) {
       // Video playing
       this.startTimer();
@@ -663,31 +728,12 @@ class Video extends React.Component<VideoProps, VideoState> {
     }
   }
   render() {
-    let playerVars: YTPlayerParameters = {
-      rel: 0,
-      cc_load_policy: 1,
-      cc_lang_pref: "en",
-      controls: 0,
-      playsinline: 1,
-      autoplay: 1,
-      showinfo: 0,
-      modestbranding: 1
-    };
-
     const selection = this.getRangeSlider("SELECTION");
-    if (selection && selection.end) {
-      playerVars.start = selection.start;
-      if (this.state.captionIsHighlighted) {
-        if (selection.end > 0) {
-          playerVars.end = selection.end;
-        }
-      }
-    }
 
     const opts = {
       height: "315",
       width: "560",
-      playerVars: playerVars
+      playerVars: this.playerVars
     };
 
     const captionEventHandlers: CaptionViewEventHandlers = {

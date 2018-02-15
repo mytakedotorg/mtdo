@@ -32,10 +32,12 @@ exports[`Video 1`] = `
               "cc_lang_pref": "en",
               "cc_load_policy": 1,
               "controls": 0,
+              "end": null,
               "modestbranding": 1,
               "playsinline": 1,
               "rel": 0,
               "showinfo": 0,
+              "start": 0,
             },
             "width": "560",
           }
