@@ -718,12 +718,32 @@ class Video extends React.Component<VideoProps, VideoState> {
         nextProps.clipRange
       );
 
+      let newRangeSliders: TimeRange[] = [];
+      let isZoomedToClip;
+      if (this.getRangeSlider("ZOOM") === null) {
+        const tenPercent =
+          (nextProps.clipRange[1] - nextProps.clipRange[0]) * 0.1;
+        const zoomRange: TimeRange = {
+          start: nextProps.clipRange[0] - tenPercent,
+          end: nextProps.clipRange[1] + tenPercent,
+          type: "ZOOM",
+          styles: TRACKSTYLES__RANGE,
+          label: "Zoom"
+        };
+        newRangeSliders = this.updateRangeSlider(selection).concat([zoomRange]);
+        isZoomedToClip = true;
+      } else {
+        newRangeSliders = this.updateRangeSlider(selection);
+        isZoomedToClip = false;
+      }
+
       this.setState({
         currentTime: nextProps.clipRange[0],
         captionIsHighlighted:
           charRange[0] === -1 && charRange[1] === -1 ? false : true,
         highlightedCharRange: charRange,
-        rangeSliders: this.updateRangeSlider(selection)
+        isZoomedToClip: isZoomedToClip,
+        rangeSliders: newRangeSliders
       });
     }
   }
