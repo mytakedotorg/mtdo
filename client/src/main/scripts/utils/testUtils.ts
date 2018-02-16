@@ -3,6 +3,7 @@ import { TimelineItemData } from "../components/Timeline";
 import { FoundationNode } from "./functions";
 import { Card } from "../components/FeedList";
 import { TakeDocument } from "../components/BlockEditor";
+import { TimeRange } from "../components/Video";
 
 const videoFact: Foundation.VideoFactContent = {
   youtubeId: "ApTLB76Nmdg",
@@ -737,14 +738,190 @@ function logMeasurements(measures: any) {
   performance.clearMeasures();
 }
 
+const initialRangeSliders: TimeRange[] = [
+  {
+    start: 0.75,
+    end: 18.119,
+    type: "VIEW",
+    styles: {
+      rail: {
+        backgroundColor: "#d3dae3"
+      },
+      track: {
+        backgroundColor: "#758aa8"
+      },
+      handle: {
+        backgroundColor: "#758aa8",
+        border: "1px solid #2c4770"
+      }
+    },
+    label: "Transcript"
+  },
+  {
+    start: 0,
+    end: 0,
+    type: "SELECTION",
+    styles: {
+      rail: {
+        backgroundColor: "#d3dae3"
+      },
+      track: {
+        backgroundColor: "#758aa8"
+      },
+      handle: {
+        backgroundColor: "#758aa8",
+        border: "1px solid #2c4770"
+      }
+    },
+    label: "Clip"
+  }
+];
+
+const zoomedRangeSliders: TimeRange[] = [
+  {
+    start: 3.659,
+    end: 28.17,
+    type: "VIEW",
+    styles: {
+      rail: {
+        backgroundColor: "#d3dae3"
+      },
+      track: {
+        backgroundColor: "#758aa8"
+      },
+      handle: {
+        backgroundColor: "#758aa8",
+        border: "1px solid #2c4770"
+      }
+    },
+    label: "Transcript"
+  },
+  {
+    start: 3.87,
+    end: 5.1,
+    type: "SELECTION",
+    styles: {
+      rail: {
+        backgroundColor: "#d3dae3"
+      },
+      track: {
+        backgroundColor: "#758aa8"
+      },
+      handle: {
+        backgroundColor: "#758aa8",
+        border: "1px solid #2c4770"
+      }
+    },
+    label: "Clip"
+  },
+  {
+    start: 3.7470000000000003,
+    end: 5.223,
+    type: "ZOOM",
+    styles: {
+      rail: {
+        backgroundColor: "#d3dae3"
+      },
+      track: {
+        backgroundColor: "#758aa8"
+      },
+      handle: {
+        backgroundColor: "#758aa8",
+        border: "1px solid #2c4770"
+      }
+    },
+    label: "Zoom"
+  }
+];
+
+const unzoomedRangeSliders: TimeRange[] = [
+  {
+    start: 3.659,
+    end: 28.17,
+    type: "VIEW",
+    styles: {
+      rail: {
+        backgroundColor: "#d3dae3"
+      },
+      track: {
+        backgroundColor: "#758aa8"
+      },
+      handle: {
+        backgroundColor: "#758aa8",
+        border: "1px solid #2c4770"
+      }
+    },
+    label: "Transcript"
+  },
+  {
+    start: 3.87,
+    end: 5.1,
+    type: "SELECTION",
+    styles: {
+      rail: {
+        backgroundColor: "#d3dae3"
+      },
+      track: {
+        backgroundColor: "#758aa8"
+      },
+      handle: {
+        backgroundColor: "#758aa8",
+        border: "1px solid #2c4770"
+      }
+    },
+    label: "Clip"
+  },
+  {
+    start: 4,
+    end: 82,
+    type: "ZOOM",
+    styles: {
+      rail: {
+        backgroundColor: "#d3dae3"
+      },
+      track: {
+        backgroundColor: "#758aa8"
+      },
+      handle: {
+        backgroundColor: "#758aa8",
+        border: "1px solid #2c4770"
+      }
+    },
+    label: "Zoom"
+  }
+];
+
+const zoomRange: TimeRange = {
+  start: 4,
+  end: 82,
+  type: "ZOOM",
+  styles: {
+    rail: {
+      backgroundColor: "#d3dae3"
+    },
+    track: {
+      backgroundColor: "#758aa8"
+    },
+    handle: {
+      backgroundColor: "#758aa8",
+      border: "1px solid #2c4770"
+    }
+  },
+  label: "Zoom"
+};
+
 export {
   cards,
   documentFactLink,
   documentNodes,
+  initialRangeSliders,
   logMeasurements,
   takeDocument,
   timelineItems,
+  unzoomedRangeSliders,
   videoFact,
   videoFactLink,
-  videoNodes
+  videoNodes,
+  zoomedRangeSliders,
+  zoomRange
 };

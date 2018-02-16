@@ -1,0 +1,563 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ClipEditor with zoomed selection 1`] = `
+<div
+  className="clipEditor"
+>
+  <div
+    className="clipEditor__actions clipEditor__actions--range"
+  >
+    <TrackSlider
+      end={5224}
+      eventHandlers={
+        Object {
+          "onAfterRangeChange": [Function],
+          "onRangeChange": [Function],
+        }
+      }
+      rangeSliders={
+        Array [
+          Object {
+            "label": "Now playing",
+            "start": 3.87,
+            "styles": Object {
+              "handle": Object {
+                "backgroundColor": "#758aa8",
+                "border": "1px solid #2c4770",
+              },
+              "rail": Object {
+                "backgroundColor": "#d3dae3",
+              },
+              "track": Object {
+                "backgroundColor": "#d3dae3",
+              },
+            },
+            "type": "CURRENT_TIME",
+          },
+          Object {
+            "end": 28.17,
+            "label": "Transcript",
+            "start": 3.659,
+            "styles": Object {
+              "handle": Object {
+                "backgroundColor": "#758aa8",
+                "border": "1px solid #2c4770",
+              },
+              "rail": Object {
+                "backgroundColor": "#d3dae3",
+              },
+              "track": Object {
+                "backgroundColor": "#758aa8",
+              },
+            },
+            "type": "VIEW",
+          },
+          Object {
+            "end": 5.223,
+            "label": "Zoom",
+            "start": 3.7470000000000003,
+            "styles": Object {
+              "handle": Object {
+                "backgroundColor": "#758aa8",
+                "border": "1px solid #2c4770",
+              },
+              "rail": Object {
+                "backgroundColor": "#d3dae3",
+              },
+              "track": Object {
+                "backgroundColor": "#758aa8",
+              },
+            },
+            "type": "ZOOM",
+          },
+        ]
+      }
+      start={0}
+      step={1}
+    />
+  </div>
+  <ZoomViewer
+    duration={5224}
+    zoomRange={
+      Object {
+        "end": 5.223,
+        "label": "Zoom",
+        "start": 3.7470000000000003,
+        "styles": Object {
+          "handle": Object {
+            "backgroundColor": "#758aa8",
+            "border": "1px solid #2c4770",
+          },
+          "rail": Object {
+            "backgroundColor": "#d3dae3",
+          },
+          "track": Object {
+            "backgroundColor": "#758aa8",
+          },
+        },
+        "type": "ZOOM",
+      }
+    }
+  />
+  <div
+    className="clipEditor__actions clipEditor__actions--range"
+  >
+    <TrackSlider
+      end={5.223}
+      eventHandlers={
+        Object {
+          "onAfterRangeChange": [Function],
+          "onRangeChange": [Function],
+        }
+      }
+      rangeSliders={
+        Array [
+          Object {
+            "label": "Now playing",
+            "start": 3.87,
+            "styles": Object {
+              "handle": Object {
+                "backgroundColor": "#758aa8",
+                "border": "1px solid #2c4770",
+              },
+              "rail": Object {
+                "backgroundColor": "#d3dae3",
+              },
+              "track": Object {
+                "backgroundColor": "#d3dae3",
+              },
+            },
+            "type": "CURRENT_TIME",
+          },
+          Object {
+            "end": 28.17,
+            "label": "Transcript",
+            "start": 3.659,
+            "styles": Object {
+              "handle": Object {
+                "backgroundColor": "#758aa8",
+                "border": "1px solid #2c4770",
+              },
+              "rail": Object {
+                "backgroundColor": "#d3dae3",
+              },
+              "track": Object {
+                "backgroundColor": "#758aa8",
+              },
+            },
+            "type": "VIEW",
+          },
+          Object {
+            "end": 5.1,
+            "label": "Clip",
+            "start": 3.87,
+            "styles": Object {
+              "handle": Object {
+                "backgroundColor": "#758aa8",
+                "border": "1px solid #2c4770",
+              },
+              "rail": Object {
+                "backgroundColor": "#d3dae3",
+              },
+              "track": Object {
+                "backgroundColor": "#758aa8",
+              },
+            },
+            "type": "SELECTION",
+          },
+        ]
+      }
+      start={3.7470000000000003}
+      step={0.1}
+    />
+  </div>
+  <div
+    className="clipEditor__actions clipEditor__actions--controls"
+  >
+    <div
+      className="clipEditor__controls"
+    >
+      <button
+        className="clipEditor__button clipEditor__button--zoom"
+        onClick={[Function]}
+      >
+        Play Clip
+      </button>
+      <button
+        className="clipEditor__button clipEditor__button--small"
+        onClick={[Function]}
+      >
+        <i
+          aria-hidden="true"
+          className="fa fa-undo"
+        />
+         15s
+      </button>
+      <button
+        className="clipEditor__button clipEditor__button--small"
+        onClick={[Function]}
+      >
+        <i
+          aria-hidden="true"
+          className="fa fa-play"
+        />
+      </button>
+      <button
+        className="clipEditor__button clipEditor__button--small"
+        onClick={[Function]}
+      >
+        <i
+          aria-hidden="true"
+          className="fa fa-repeat"
+        />
+         15s
+      </button>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`ClipEditor with zoomed selection 2`] = `
+<div
+  className="clipEditor"
+>
+  <div
+    className="clipEditor__actions clipEditor__actions--range"
+  >
+    <TrackSlider
+      end={5224}
+      eventHandlers={
+        Object {
+          "onAfterRangeChange": [Function],
+          "onRangeChange": [Function],
+        }
+      }
+      rangeSliders={
+        Array [
+          Object {
+            "label": "Now playing",
+            "start": 3.87,
+            "styles": Object {
+              "handle": Object {
+                "backgroundColor": "#758aa8",
+                "border": "1px solid #2c4770",
+              },
+              "rail": Object {
+                "backgroundColor": "#d3dae3",
+              },
+              "track": Object {
+                "backgroundColor": "#d3dae3",
+              },
+            },
+            "type": "CURRENT_TIME",
+          },
+          Object {
+            "end": 28.17,
+            "label": "Transcript",
+            "start": 3.659,
+            "styles": Object {
+              "handle": Object {
+                "backgroundColor": "#758aa8",
+                "border": "1px solid #2c4770",
+              },
+              "rail": Object {
+                "backgroundColor": "#d3dae3",
+              },
+              "track": Object {
+                "backgroundColor": "#758aa8",
+              },
+            },
+            "type": "VIEW",
+          },
+          Object {
+            "end": 82,
+            "label": "Zoom",
+            "start": 4,
+            "styles": Object {
+              "handle": Object {
+                "backgroundColor": "#758aa8",
+                "border": "1px solid #2c4770",
+              },
+              "rail": Object {
+                "backgroundColor": "#d3dae3",
+              },
+              "track": Object {
+                "backgroundColor": "#758aa8",
+              },
+            },
+            "type": "ZOOM",
+          },
+        ]
+      }
+      start={0}
+      step={1}
+    />
+  </div>
+  <ZoomViewer
+    duration={5224}
+    zoomRange={
+      Object {
+        "end": 82,
+        "label": "Zoom",
+        "start": 4,
+        "styles": Object {
+          "handle": Object {
+            "backgroundColor": "#758aa8",
+            "border": "1px solid #2c4770",
+          },
+          "rail": Object {
+            "backgroundColor": "#d3dae3",
+          },
+          "track": Object {
+            "backgroundColor": "#758aa8",
+          },
+        },
+        "type": "ZOOM",
+      }
+    }
+  />
+  <div
+    className="clipEditor__actions clipEditor__actions--range"
+  >
+    <TrackSlider
+      end={82}
+      eventHandlers={
+        Object {
+          "onAfterRangeChange": [Function],
+          "onRangeChange": [Function],
+        }
+      }
+      rangeSliders={
+        Array [
+          Object {
+            "label": "Now playing",
+            "start": 3.87,
+            "styles": Object {
+              "handle": Object {
+                "backgroundColor": "#758aa8",
+                "border": "1px solid #2c4770",
+              },
+              "rail": Object {
+                "backgroundColor": "#d3dae3",
+              },
+              "track": Object {
+                "backgroundColor": "#d3dae3",
+              },
+            },
+            "type": "CURRENT_TIME",
+          },
+          Object {
+            "end": 28.17,
+            "label": "Transcript",
+            "start": 3.659,
+            "styles": Object {
+              "handle": Object {
+                "backgroundColor": "#758aa8",
+                "border": "1px solid #2c4770",
+              },
+              "rail": Object {
+                "backgroundColor": "#d3dae3",
+              },
+              "track": Object {
+                "backgroundColor": "#758aa8",
+              },
+            },
+            "type": "VIEW",
+          },
+          Object {
+            "end": 5.1,
+            "label": "Clip",
+            "start": 3.87,
+            "styles": Object {
+              "handle": Object {
+                "backgroundColor": "#758aa8",
+                "border": "1px solid #2c4770",
+              },
+              "rail": Object {
+                "backgroundColor": "#d3dae3",
+              },
+              "track": Object {
+                "backgroundColor": "#758aa8",
+              },
+            },
+            "type": "SELECTION",
+          },
+        ]
+      }
+      start={4}
+      step={0.1}
+    />
+  </div>
+  <div
+    className="clipEditor__actions clipEditor__actions--controls"
+  >
+    <div
+      className="clipEditor__controls"
+    >
+      <button
+        className="clipEditor__button clipEditor__button--zoom"
+        onClick={[Function]}
+      >
+        Zoom to Clip
+      </button>
+      <button
+        className="clipEditor__button clipEditor__button--small"
+        onClick={[Function]}
+      >
+        <i
+          aria-hidden="true"
+          className="fa fa-undo"
+        />
+         15s
+      </button>
+      <button
+        className="clipEditor__button clipEditor__button--small"
+        onClick={[Function]}
+      >
+        <i
+          aria-hidden="true"
+          className="fa fa-play"
+        />
+      </button>
+      <button
+        className="clipEditor__button clipEditor__button--small"
+        onClick={[Function]}
+      >
+        <i
+          aria-hidden="true"
+          className="fa fa-repeat"
+        />
+         15s
+      </button>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Initial ClipEditor 1`] = `
+<div
+  className="clipEditor"
+>
+  <div
+    className="clipEditor__actions clipEditor__actions--range"
+  >
+    <TrackSlider
+      end={5224}
+      eventHandlers={
+        Object {
+          "onAfterRangeChange": [Function],
+          "onRangeChange": [Function],
+        }
+      }
+      rangeSliders={
+        Array [
+          Object {
+            "label": "Now playing",
+            "start": 0,
+            "styles": Object {
+              "handle": Object {
+                "backgroundColor": "#758aa8",
+                "border": "1px solid #2c4770",
+              },
+              "rail": Object {
+                "backgroundColor": "#d3dae3",
+              },
+              "track": Object {
+                "backgroundColor": "#d3dae3",
+              },
+            },
+            "type": "CURRENT_TIME",
+          },
+          Object {
+            "end": 18.119,
+            "label": "Transcript",
+            "start": 0.75,
+            "styles": Object {
+              "handle": Object {
+                "backgroundColor": "#758aa8",
+                "border": "1px solid #2c4770",
+              },
+              "rail": Object {
+                "backgroundColor": "#d3dae3",
+              },
+              "track": Object {
+                "backgroundColor": "#758aa8",
+              },
+            },
+            "type": "VIEW",
+          },
+          Object {
+            "end": 5224,
+            "label": "Zoom",
+            "start": 0,
+            "styles": Object {
+              "handle": Object {
+                "backgroundColor": "#758aa8",
+                "border": "1px solid #2c4770",
+              },
+              "rail": Object {
+                "backgroundColor": "#d3dae3",
+              },
+              "track": Object {
+                "backgroundColor": "#758aa8",
+              },
+            },
+            "type": "ZOOM",
+          },
+        ]
+      }
+      start={0}
+      step={1}
+    />
+  </div>
+  <div
+    className="clipEditor__actions clipEditor__actions--range"
+  >
+    <p
+      className="clipEditor__text clipEditor__text--range"
+    >
+      Drag the range handles to create a clip
+    </p>
+  </div>
+  <div
+    className="clipEditor__actions clipEditor__actions--controls"
+  >
+    <div
+      className="clipEditor__controls"
+    >
+      <div
+        className="clipEditor__spacer"
+      />
+      <button
+        className="clipEditor__button clipEditor__button--small"
+        onClick={[Function]}
+      >
+        <i
+          aria-hidden="true"
+          className="fa fa-undo"
+        />
+         15s
+      </button>
+      <button
+        className="clipEditor__button clipEditor__button--small"
+        onClick={[Function]}
+      >
+        <i
+          aria-hidden="true"
+          className="fa fa-play"
+        />
+      </button>
+      <button
+        className="clipEditor__button clipEditor__button--small"
+        onClick={[Function]}
+      >
+        <i
+          aria-hidden="true"
+          className="fa fa-repeat"
+        />
+         15s
+      </button>
+    </div>
+  </div>
+</div>
+`;
