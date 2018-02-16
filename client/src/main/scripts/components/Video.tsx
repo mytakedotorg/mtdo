@@ -105,8 +105,7 @@ class Video extends React.Component<VideoProps, VideoState> {
       isPaused: true,
       isZoomedToClip: props.clipRange ? true : false,
       duration: 5224,
-      captionIsHighlighted:
-        charRange[0] === -1 && charRange[1] === -1 ? false : true,
+      captionIsHighlighted: props.clipRange ? true : false,
       highlightedCharRange: charRange,
       rangeSliders: this.initializeRangeSliders(props),
       rangeIsChanging: null
@@ -675,15 +674,9 @@ class Video extends React.Component<VideoProps, VideoState> {
         nextProps.videoFact,
         nextProps.clipRange
       );
-      let isHighlighted: boolean;
-      if (charRange[0] === -1 && charRange[1] === -1) {
-        isHighlighted = false;
-      } else {
-        isHighlighted = true;
-      }
       this.setState({
         highlightedCharRange: charRange,
-        captionIsHighlighted: isHighlighted,
+        captionIsHighlighted: true,
         isPaused: true
       });
     } else if (
@@ -739,8 +732,7 @@ class Video extends React.Component<VideoProps, VideoState> {
 
       this.setState({
         currentTime: nextProps.clipRange[0],
-        captionIsHighlighted:
-          charRange[0] === -1 && charRange[1] === -1 ? false : true,
+        captionIsHighlighted: true,
         highlightedCharRange: charRange,
         isZoomedToClip: isZoomedToClip,
         rangeSliders: newRangeSliders
