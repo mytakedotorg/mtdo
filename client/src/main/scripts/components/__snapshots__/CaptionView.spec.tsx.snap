@@ -5,6 +5,7 @@ exports[`CaptionTextNodeList 1`] = `
   className="captions"
 >
   <ClipEditor
+    captionIsHighlighted={false}
     currentTime={0}
     eventHandlers={
       Object {
@@ -554,6 +555,7 @@ exports[`CaptionTextNodeList with highlights from props 1`] = `
   className="captions"
 >
   <ClipEditor
+    captionIsHighlighted={true}
     currentTime={5.31}
     eventHandlers={
       Object {

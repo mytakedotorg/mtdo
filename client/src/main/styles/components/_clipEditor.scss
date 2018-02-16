@@ -2,15 +2,17 @@
   @include clearfix;
   max-width: 100%;
   margin: 15px auto;
+  position: relative;
 }
 .clipEditor__actions {
   width: 100%;
   @include clearfix;
 }
 .clipEditor__actions--range {
-  margin-bottom: 15px;
+  margin-bottom: 0;
 }
 .clipEditor__controls {
+  margin-top: 15px;
   margin-left: auto;
   margin-right: auto;
   width: $video-container-width - 32px;
@@ -40,6 +42,7 @@
   @include button;
   @include button--blue;
 }
-.clipEditor__button--zoom {
+.clipEditor__button--zoom,
+.clipEditor__spacer {
   width: 129px;
 }

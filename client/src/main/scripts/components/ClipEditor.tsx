@@ -2,6 +2,7 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { Range } from "rc-slider";
 import { RangeType, TimeRange, TrackStyles, TRACKSTYLES__RANGE } from "./Video";
+import ZoomViewer from "./ZoomViewer";
 import TrackSlider, { TrackSliderEventHandlers } from "./TrackSlider";
 import { alertErr, convertSecondsToTimestamp } from "../utils/functions";
 import isEqual = require("lodash/isEqual");
@@ -36,6 +37,7 @@ const TRACKSTYLES__SLIDER: TrackStyles = {
 type IsChanging = "zoom" | "selection" | "view";
 
 interface ClipEditorProps {
+  captionIsHighlighted: boolean;
   currentTime: number;
   videoDuration: number;
   isPaused: boolean;
@@ -130,6 +132,32 @@ class ClipEditor extends React.Component<ClipEditorProps, ClipEditorState> {
     const topTrack: TimeRange[] = [currentTime, viewRange, zoomRange];
     const bottomTrack: TimeRange[] = [currentTime, viewRange, selectionRange];
 
+    let leftButton;
+
+    if (props.captionIsHighlighted) {
+      if (props.isZoomedToClip) {
+        leftButton = (
+          <button
+            className="clipEditor__button clipEditor__button--zoom"
+            onClick={this.handleRestart}
+          >
+            Play Clip
+          </button>
+        );
+      } else {
+        leftButton = (
+          <button
+            className="clipEditor__button clipEditor__button--zoom"
+            onClick={props.eventHandlers.onZoomToClipPress}
+          >
+            Zoom to Clip
+          </button>
+        );
+      }
+    } else {
+      leftButton = <div className="clipEditor__spacer" />;
+    }
+
     return (
       <div className="clipEditor">
         <div className="clipEditor__actions clipEditor__actions--range">
@@ -141,17 +169,18 @@ class ClipEditor extends React.Component<ClipEditorProps, ClipEditorState> {
             step={1}
           />
         </div>
+        {isZoomed ? (
+          <ZoomViewer duration={props.videoDuration} zoomRange={zoomRange} />
+        ) : null}
         {isZoomed && typeof zoomRange.end === "number" ? (
-          <div>
-            <div className="clipEditor__actions clipEditor__actions--range">
-              <TrackSlider
-                start={zoomRange.start}
-                end={zoomRange.end}
-                eventHandlers={eventHandlers}
-                rangeSliders={bottomTrack}
-                step={0.1}
-              />
-            </div>
+          <div className="clipEditor__actions clipEditor__actions--range">
+            <TrackSlider
+              start={zoomRange.start}
+              end={zoomRange.end}
+              eventHandlers={eventHandlers}
+              rangeSliders={bottomTrack}
+              step={0.1}
+            />
           </div>
         ) : (
           <div className="clipEditor__actions clipEditor__actions--range">
@@ -162,22 +191,7 @@ class ClipEditor extends React.Component<ClipEditorProps, ClipEditorState> {
         )}
         <div className="clipEditor__actions clipEditor__actions--controls">
           <div className="clipEditor__controls">
-            {props.isZoomedToClip ? (
-              <button
-                className="clipEditor__button clipEditor__button--zoom"
-                onClick={this.handleRestart}
-              >
-                Play Clip
-              </button>
-            ) : (
-              <button
-                className="clipEditor__button clipEditor__button--zoom"
-                onClick={this.props.eventHandlers.onZoomToClipPress}
-              >
-                Zoom to Clip
-              </button>
-            )}
-
+            {leftButton}
             <button
               className="clipEditor__button clipEditor__button--small"
               onClick={this.handleBack}

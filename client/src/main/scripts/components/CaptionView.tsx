@@ -234,6 +234,7 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
       <div className="captions">
         <ClipEditor
           eventHandlers={clipEditorEventHandlers}
+          captionIsHighlighted={this.props.captionIsHighlighted}
           currentTime={this.props.timer}
           isPaused={this.props.isPaused}
           isZoomedToClip={this.props.isZoomedToClip}
