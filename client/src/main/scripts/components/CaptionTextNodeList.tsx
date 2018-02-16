@@ -264,6 +264,10 @@ class CaptionTextNodeList extends React.Component<
         throw msg;
       }
 
+      if (indexOfFirstWord === indexOfLastWord) {
+        indexOfLastWord += 5;
+      }
+
       const lastWord = this.props.captionTranscript[indexOfLastWord];
 
       if (typeof firstWord !== "undefined" && typeof lastWord !== "undefined") {
