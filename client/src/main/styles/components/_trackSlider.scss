@@ -1,0 +1,75 @@
+$trackHeight: 20px;
+.trackSlider {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+  @media #{$mq-medium} {
+    justify-content: space-between;
+  }
+}
+.trackSlider__text {
+  display: none;
+  color: palette(video, text);
+  width: 68px;
+  @include body;
+  line-height: 3 * $trackHeight;
+  margin: 0;
+  @media #{$mq-medium} {
+    display: block;
+  }
+}
+.trackSlider__text--max {
+  text-align: right;
+}
+.trackSlider__range-container {
+  position: relative;
+  width: $video-container-width;
+  overflow: hidden;
+  height: 3 * $trackHeight + 2;
+  padding-left: 30px;
+  padding-right: 30px;
+  @media #{$mq-medium} {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+}
+.trackSlider__range {
+  width: 100%;
+  height: $trackHeight;
+  position: relative;
+  border-bottom: 1px solid palette(trackSlider, border);
+}
+.trackSlider__label {
+  position: absolute;
+  top: 0;
+  left: 5px;
+  @include body--small;
+  line-height: $trackHeight;
+  z-index: 1;
+}
+// Begin rc-slider.css overrides
+.rc-slider {
+  height: $trackHeight !important;
+}
+.rc-slider-rail {
+  height: $trackHeight !important;
+  border-radius: 0 !important;
+  top: 0 !important;
+}
+.rc-slider-track {
+  height: $trackHeight !important;
+  border-radius: 0 !important;
+  top: 0 !important;
+}
+.rc-slider-handle {
+  top: 0 !important;
+  margin-top: 0 !important;
+  margin-left: 0 !important;
+  // width: $trackHeight !important;
+  width: 2px !important;
+  height: $trackHeight !important;
+  z-index: 10 !important;
+  border-radius: 0 !important;
+  // border: 2px solid palette(trackSlider, border--handle) !important;
+}

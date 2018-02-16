@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as renderer from "react-test-renderer";
 import {} from "jest";
-import FactHeader from "./FactHeader";
+import { StickyFactHeader } from "./FactHeader";
 
 const documentProps = {
   heading: "Bill of Rights",
@@ -14,7 +14,11 @@ const documentProps = {
 test("Fixed with text highlighted", () => {
   const tree = renderer
     .create(
-      <FactHeader {...documentProps} isFixed={true} textIsHighlighted={true} />
+      <StickyFactHeader
+        {...documentProps}
+        isFixed={true}
+        textIsHighlighted={true}
+      />
     )
     .toJSON();
   expect(tree).toMatchSnapshot();
@@ -23,7 +27,11 @@ test("Fixed with text highlighted", () => {
 test("Fixed without text highlighted", () => {
   const tree = renderer
     .create(
-      <FactHeader {...documentProps} isFixed={true} textIsHighlighted={false} />
+      <StickyFactHeader
+        {...documentProps}
+        isFixed={true}
+        textIsHighlighted={false}
+      />
     )
     .toJSON();
   expect(tree).toMatchSnapshot();
@@ -32,7 +40,11 @@ test("Fixed without text highlighted", () => {
 test("Scrolling with text highlighted", () => {
   const tree = renderer
     .create(
-      <FactHeader {...documentProps} isFixed={false} textIsHighlighted={true} />
+      <StickyFactHeader
+        {...documentProps}
+        isFixed={false}
+        textIsHighlighted={true}
+      />
     )
     .toJSON();
   expect(tree).toMatchSnapshot();
@@ -41,7 +53,7 @@ test("Scrolling with text highlighted", () => {
 test("Scrolling without text highlighted", () => {
   const tree = renderer
     .create(
-      <FactHeader
+      <StickyFactHeader
         {...documentProps}
         isFixed={false}
         textIsHighlighted={false}

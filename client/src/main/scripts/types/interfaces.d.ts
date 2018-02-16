@@ -1,4 +1,5 @@
 declare module "react-youtube";
+declare module "rc-slider";
 declare module "*.sbv" {
   const content: any;
   export default content;

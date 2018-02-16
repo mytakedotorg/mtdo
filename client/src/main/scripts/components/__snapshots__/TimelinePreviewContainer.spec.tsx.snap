@@ -101,6 +101,8 @@ exports[`Successfully loaded Document Preview with highlights 1`] = `
   setFactHandlers={
     Object {
       "handleDocumentSetClick": [Function],
+      "handleRangeCleared": [Function],
+      "handleRangeSet": [Function],
       "handleVideoSetClick": [Function],
     }
   }
@@ -127,6 +129,8 @@ exports[`Successfully loaded Video Preview 1`] = `
   setFactHandlers={
     Object {
       "handleDocumentSetClick": [Function],
+      "handleRangeCleared": [Function],
+      "handleRangeSet": [Function],
       "handleVideoSetClick": [Function],
     }
   }

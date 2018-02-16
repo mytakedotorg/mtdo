@@ -1,0 +1,18 @@
+.zoomViewer {
+  width: 100%;
+}
+.zoomViewer__canvas-container {
+  max-width: 100%;
+  padding-left: 30px;
+  padding-right: 30px;
+  @media #{$mq-medium} {
+    width: $video-container-width;
+    padding: 0;
+    margin: 0 auto;
+  }
+}
+.zoomViewer__canvas {
+  display: block;
+  width: $video-container-width;
+  max-width: 100%;
+}

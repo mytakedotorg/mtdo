@@ -312,8 +312,6 @@ function zeroPad(someNumber: number): string {
 }
 
 function convertSecondsToTimestamp(totalSeconds: number): string {
-  const DD = totalSeconds.toFixed(1).split(".")[1];
-
   let truncated = totalSeconds | 0;
 
   const hours = Math.floor(truncated / 3600);
@@ -329,12 +327,12 @@ function convertSecondsToTimestamp(totalSeconds: number): string {
   let MM;
   if (hours > 0) {
     MM = zeroPad(minutes);
-    return HH + ":" + MM + ":" + SS + "." + DD;
+    return HH + ":" + MM + ":" + SS;
   } else if (minutes > 0) {
     MM = minutes.toString();
-    return MM + ":" + SS + "." + DD;
+    return MM + ":" + SS;
   } else {
-    return seconds.toString() + "." + DD;
+    return seconds.toString();
   }
 }
 
@@ -691,22 +689,48 @@ function getSimpleRangesFromHTMLRange(
     wordCountBeforeSelection += textOfStartContainer.split(" ").length;
     charCountBeforeSelection += textOfStartContainer.length;
 
-    // Count words/chars in the middle of the selection
-    for (
-      let index: number = indexOfStartContainer + 1;
-      index < indexOfEndContainer;
-      index++
-    ) {
-      if (startContainer.parentNode) {
-        const textOfMiddleContainer =
-          startContainer.parentNode.childNodes[index].textContent;
-        if (textOfMiddleContainer) {
-          wordCountBeforeSelection += textOfMiddleContainer.split(" ").length;
-          charCountBeforeSelection += textOfMiddleContainer.length;
+    if (isCaption) {
+      // Count words/chars in the middle of the selection
+      for (
+        let index: number = indexOfStartContainer + 1;
+        index < indexOfEndContainer;
+        index++
+      ) {
+        if (
+          startContainer.parentNode &&
+          startContainer.parentNode.parentNode &&
+          startContainer.parentNode.parentNode.parentNode
+        ) {
+          const textOfMiddleContainer =
+            startContainer.parentNode.parentNode.parentNode.childNodes[index]
+              .childNodes[1].childNodes[0].textContent;
+          if (textOfMiddleContainer) {
+            wordCountBeforeSelection += textOfMiddleContainer.split(" ").length;
+            charCountBeforeSelection += textOfMiddleContainer.length;
+          }
+        } else {
+          alertErr("functions: Unexpcected HTML structure");
+          throw "Unexpected HTML structure";
         }
-      } else {
-        alertErr("functions: Unexpcected HTML structure");
-        throw "Unexpected HTML structure";
+      }
+    } else {
+      // Count words/chars in the middle of the selection
+      for (
+        let index: number = indexOfStartContainer + 1;
+        index < indexOfEndContainer;
+        index++
+      ) {
+        if (startContainer.parentNode) {
+          const textOfMiddleContainer =
+            startContainer.parentNode.childNodes[index].textContent;
+          if (textOfMiddleContainer) {
+            wordCountBeforeSelection += textOfMiddleContainer.split(" ").length;
+            charCountBeforeSelection += textOfMiddleContainer.length;
+          }
+        } else {
+          alertErr("functions: Unexpcected HTML structure");
+          throw "Unexpected HTML structure";
+        }
       }
     }
 

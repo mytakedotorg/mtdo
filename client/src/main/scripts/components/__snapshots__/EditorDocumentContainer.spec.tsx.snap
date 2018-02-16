@@ -12,18 +12,6 @@ exports[`Document loading 1`] = `
 </div>
 `;
 
-exports[`Error loading Document 1`] = `
-<div
-  className="editor__document editor__document--base editor__document--hover"
->
-  <h2
-    className="editor__document-title"
-  >
-    Loading
-  </h2>
-</div>
-`;
-
 exports[`Successfully loaded Document 1`] = `
 <div
   className="editor__document editor__document--base editor__document--hover"

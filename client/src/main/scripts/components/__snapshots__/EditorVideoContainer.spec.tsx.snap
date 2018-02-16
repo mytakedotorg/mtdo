@@ -1,17 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Error loading Video 1`] = `
-<div
-  className="editor__document editor__document--base editor__document--hover"
->
-  <h2
-    className="editor__document-title"
-  >
-    Loading
-  </h2>
-</div>
-`;
-
 exports[`Successfully loaded Video 1`] = `
 <div
   className="editor__video-container"
@@ -21,13 +9,13 @@ exports[`Successfully loaded Video 1`] = `
   tabIndex={0}
 >
   <Video
-    onSetClick={[Function]}
-    timeRange={
+    clipRange={
       Array [
         2,
         4,
       ]
     }
+    onSetClick={[Function]}
     videoFact={
       Object {
         "fact": Object {

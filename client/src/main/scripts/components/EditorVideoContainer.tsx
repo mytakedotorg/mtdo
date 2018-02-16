@@ -175,7 +175,7 @@ class EditorVideo extends React.Component<
         <Video
           onSetClick={this.handleSetClick}
           videoFact={this.props.videoFact}
-          timeRange={this.props.range}
+          clipRange={this.props.range}
         />
       </div>
     );

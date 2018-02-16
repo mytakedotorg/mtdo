@@ -31,6 +31,8 @@ exports[`Video 1`] = `
               "autoplay": 1,
               "cc_lang_pref": "en",
               "cc_load_policy": 1,
+              "controls": 0,
+              "end": null,
               "modestbranding": 1,
               "playsinline": 1,
               "rel": 0,
@@ -47,11 +49,16 @@ exports[`Video 1`] = `
       captionIsHighlighted={false}
       eventHandlers={
         Object {
+          "onAfterRangeChange": [Function],
           "onClearPress": [Function],
-          "onCursorPlace": [Function],
-          "onFineTuneDown": [Function],
-          "onFineTuneUp": [Function],
           "onHighlight": [Function],
+          "onPlayPausePress": [Function],
+          "onRangeChange": [Function],
+          "onRestartPress": [Function],
+          "onScroll": [Function],
+          "onSkipBackPress": [Function],
+          "onSkipForwardPress": [Function],
+          "onZoomToClipPress": [Function],
         }
       }
       highlightedCharRange={
@@ -60,8 +67,50 @@ exports[`Video 1`] = `
           -1,
         ]
       }
+      isPaused={true}
+      isZoomedToClip={false}
+      rangeSliders={
+        Array [
+          Object {
+            "end": 5,
+            "label": "Transcript",
+            "start": 0,
+            "styles": Object {
+              "handle": Object {
+                "backgroundColor": "#758aa8",
+                "border": "1px solid #2c4770",
+              },
+              "rail": Object {
+                "backgroundColor": "#d3dae3",
+              },
+              "track": Object {
+                "backgroundColor": "#758aa8",
+              },
+            },
+            "type": "VIEW",
+          },
+          Object {
+            "end": 0,
+            "label": "Clip",
+            "start": 0,
+            "styles": Object {
+              "handle": Object {
+                "backgroundColor": "#758aa8",
+                "border": "1px solid #2c4770",
+              },
+              "rail": Object {
+                "backgroundColor": "#d3dae3",
+              },
+              "track": Object {
+                "backgroundColor": "#758aa8",
+              },
+            },
+            "type": "SELECTION",
+          },
+        ]
+      }
       timer={0}
-      videoEnd={-1}
+      videoDuration={5224}
       videoFact={
         Object {
           "fact": Object {
@@ -551,7 +600,6 @@ exports[`Video 1`] = `
           "youtubeId": "ApTLB76Nmdg",
         }
       }
-      videoStart={0}
     />
   </div>
 </div>
@@ -594,6 +642,7 @@ exports[`Video with highlights 1`] = `
               "autoplay": 1,
               "cc_lang_pref": "en",
               "cc_load_policy": 1,
+              "controls": 0,
               "end": 3,
               "modestbranding": 1,
               "playsinline": 1,
@@ -611,11 +660,16 @@ exports[`Video with highlights 1`] = `
       captionIsHighlighted={true}
       eventHandlers={
         Object {
+          "onAfterRangeChange": [Function],
           "onClearPress": [Function],
-          "onCursorPlace": [Function],
-          "onFineTuneDown": [Function],
-          "onFineTuneUp": [Function],
           "onHighlight": [Function],
+          "onPlayPausePress": [Function],
+          "onRangeChange": [Function],
+          "onRestartPress": [Function],
+          "onScroll": [Function],
+          "onSkipBackPress": [Function],
+          "onSkipForwardPress": [Function],
+          "onZoomToClipPress": [Function],
         }
       }
       highlightedCharRange={
@@ -624,8 +678,68 @@ exports[`Video with highlights 1`] = `
           37,
         ]
       }
+      isPaused={true}
+      isZoomedToClip={true}
+      rangeSliders={
+        Array [
+          Object {
+            "end": 5,
+            "label": "Transcript",
+            "start": 0,
+            "styles": Object {
+              "handle": Object {
+                "backgroundColor": "#758aa8",
+                "border": "1px solid #2c4770",
+              },
+              "rail": Object {
+                "backgroundColor": "#d3dae3",
+              },
+              "track": Object {
+                "backgroundColor": "#758aa8",
+              },
+            },
+            "type": "VIEW",
+          },
+          Object {
+            "end": 3,
+            "label": "Clip",
+            "start": 0,
+            "styles": Object {
+              "handle": Object {
+                "backgroundColor": "#758aa8",
+                "border": "1px solid #2c4770",
+              },
+              "rail": Object {
+                "backgroundColor": "#d3dae3",
+              },
+              "track": Object {
+                "backgroundColor": "#758aa8",
+              },
+            },
+            "type": "SELECTION",
+          },
+          Object {
+            "end": 3.3,
+            "label": "Zoom",
+            "start": -0.30000000000000004,
+            "styles": Object {
+              "handle": Object {
+                "backgroundColor": "#758aa8",
+                "border": "1px solid #2c4770",
+              },
+              "rail": Object {
+                "backgroundColor": "#d3dae3",
+              },
+              "track": Object {
+                "backgroundColor": "#758aa8",
+              },
+            },
+            "type": "ZOOM",
+          },
+        ]
+      }
       timer={0}
-      videoEnd={3}
+      videoDuration={5224}
       videoFact={
         Object {
           "fact": Object {
@@ -1115,7 +1229,6 @@ exports[`Video with highlights 1`] = `
           "youtubeId": "ApTLB76Nmdg",
         }
       }
-      videoStart={0}
     />
   </div>
 </div>

@@ -1,44 +1,54 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import isEqual = require("lodash/isEqual");
-import Document from "./Document";
+import Document, { DocumentEventHandlers } from "./Document";
+import ClipEditor, { ClipEditorEventHandlers } from "./ClipEditor";
 import {
-  convertSecondsToTimestamp,
+  alertErr,
   getCaptionNodeArray,
+  getCharRangeFromVideoRange,
   getSimpleRangesFromHTMLRange,
-  getWordCount,
   highlightText,
   FoundationNode,
   SimpleRanges
 } from "../utils/functions";
+import { RangeType, TimeRange } from "./Video";
 import { Foundation } from "../java2ts/Foundation";
 import { Routes } from "../java2ts/Routes";
 
-export interface EventHandlers {
+export interface CaptionViewEventHandlers {
+  onAfterRangeChange: (
+    value: [number, number] | number,
+    type: RangeType
+  ) => any;
+  onClearPress: () => void;
   onHighlight: (
     videoRange: [number, number],
     charRange: [number, number]
   ) => void;
-  onClearPress: () => void;
-  onCursorPlace: (videoTime: number) => void;
-  onFineTuneUp: (rangeIdx: 0 | 1) => void;
-  onFineTuneDown: (rangeIdx: 0 | 1) => void;
+  onPlayPausePress: () => any;
+  onRangeChange: (value: [number, number] | number, type: RangeType) => any;
+  onRestartPress: () => any;
+  onScroll: (viewRange: [number, number]) => any;
+  onSkipBackPress: (seconds: number) => any;
+  onSkipForwardPress: (seconds: number) => any;
+  onZoomToClipPress: () => any;
 }
 
 interface CaptionViewProps {
   videoFact: Foundation.VideoFactContent;
   timer: number;
   captionIsHighlighted: boolean;
-  videoStart: number;
-  videoEnd: number;
-  eventHandlers: EventHandlers;
+  isPaused: boolean;
+  isZoomedToClip: boolean;
+  videoDuration: number;
+  eventHandlers: CaptionViewEventHandlers;
   highlightedCharRange?: [number, number];
+  rangeSliders: TimeRange[];
 }
 
 interface CaptionViewState {
-  viewRange: [number, number];
   highlightedNodes?: FoundationNode[];
-  currentIndex: number;
 }
 
 class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
@@ -48,37 +58,22 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
   constructor(props: CaptionViewProps) {
     super(props);
 
-    this.state = {
-      viewRange: [0, 0],
-      currentIndex: 0
-    };
+    this.state = {};
   }
-  getCaptionData = (
-    nextPropsVideoFact?: Foundation.VideoFactContent,
-    nextPropsCaptionIsHighlighted?: boolean,
-    nextPropsHighlightedCharRange?: [number, number]
-  ): FoundationNode[] => {
+  getCaptionData = (nextProps?: CaptionViewProps): FoundationNode[] => {
     let captionIsHighlighted: boolean;
     let highlightedCharRange: [number, number] | undefined;
     let transcript: Foundation.CaptionWord[] | undefined;
     let speakerMap: Foundation.SpeakerMap[] | undefined;
 
-    if (typeof nextPropsCaptionIsHighlighted == "boolean") {
-      captionIsHighlighted = nextPropsCaptionIsHighlighted;
+    if (nextProps) {
+      captionIsHighlighted = nextProps.captionIsHighlighted;
+      highlightedCharRange = nextProps.highlightedCharRange;
+      transcript = nextProps.videoFact.transcript;
+      speakerMap = nextProps.videoFact.speakerMap;
     } else {
       captionIsHighlighted = this.props.captionIsHighlighted;
-    }
-
-    if (nextPropsHighlightedCharRange) {
-      highlightedCharRange = nextPropsHighlightedCharRange;
-    } else {
       highlightedCharRange = this.props.highlightedCharRange;
-    }
-
-    if (nextPropsVideoFact) {
-      transcript = nextPropsVideoFact.transcript;
-      speakerMap = nextPropsVideoFact.speakerMap;
-    } else {
       transcript = this.props.videoFact.transcript;
       speakerMap = this.props.videoFact.speakerMap;
     }
@@ -86,16 +81,22 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
     if (transcript && speakerMap) {
       let captionNodes = getCaptionNodeArray(transcript, speakerMap);
       const unhighlightedNodes = [...captionNodes];
+      let rawHighlightedText;
       if (captionIsHighlighted && highlightedCharRange) {
         captionNodes = highlightText(
           captionNodes,
           highlightedCharRange,
           () => {}
         );
+
+        this.setState({
+          highlightedNodes: captionNodes
+        });
+      } else {
+        this.setState({
+          highlightedNodes: captionNodes
+        });
       }
-      this.setState({
-        highlightedNodes: captionNodes
-      });
       return unhighlightedNodes;
     } else {
       this.setState({
@@ -104,6 +105,16 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
       console.warn("Captions not yet done for this video");
       return [];
     }
+  };
+  getRangeSlider = (type: RangeType, rangeSliders: TimeRange[]): TimeRange => {
+    for (const rangeSlider of rangeSliders) {
+      if (rangeSlider.type === type) {
+        return { ...rangeSlider };
+      }
+    }
+    const msg = "Video: Can't find range of type " + type;
+    alertErr(msg);
+    throw msg;
   };
   handleClearClick = () => {
     const transcript = this.props.videoFact.transcript;
@@ -145,18 +156,14 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
           } else {
             this.highlightNodes(simpleRanges);
           }
-        } else if (selection) {
-          // Text was clicked, but not selected
-          let wordCount = getWordCount(selection);
-          let videoTime = transcript[wordCount].timestamp;
-          this.props.eventHandlers.onCursorPlace(videoTime);
         }
       }
     }
   };
   highlightNodes(simpleRanges: SimpleRanges) {
     const transcript = this.props.videoFact.transcript;
-    if (transcript) {
+    const speakerMap = this.props.videoFact.speakerMap;
+    if (transcript && speakerMap) {
       const newNodes = highlightText(
         [...this.document.getDocumentNodes()],
         simpleRanges.charRange,
@@ -195,79 +202,49 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
         this.props.videoFact.youtubeId) ||
       !isEqual(nextProps.highlightedCharRange, this.props.highlightedCharRange)
     ) {
-      this.getCaptionData(
-        nextProps.videoFact,
-        nextProps.captionIsHighlighted,
-        nextProps.highlightedCharRange
-      );
+      this.getCaptionData(nextProps);
     }
   }
   render() {
-    const startTime = convertSecondsToTimestamp(this.props.videoStart);
-    const endTime = convertSecondsToTimestamp(this.props.videoEnd);
-
     const transcript = this.props.videoFact.transcript;
     const speakerMap = this.props.videoFact.speakerMap;
 
+    const clipEditorEventHandlers: ClipEditorEventHandlers = {
+      onAfterRangeChange: this.props.eventHandlers.onAfterRangeChange,
+      onClearPress: this.props.eventHandlers.onClearPress,
+      onPlayPausePress: this.props.eventHandlers.onPlayPausePress,
+      onRestartPress: this.props.eventHandlers.onRestartPress,
+      onRangeChange: this.props.eventHandlers.onRangeChange,
+      onSkipBackPress: this.props.eventHandlers.onSkipBackPress,
+      onSkipForwardPress: this.props.eventHandlers.onSkipForwardPress,
+      onZoomToClipPress: this.props.eventHandlers.onZoomToClipPress
+    };
+
+    const documentEventHandlers: DocumentEventHandlers = {
+      onMouseUp: this.handleMouseUp,
+      onScroll: this.props.eventHandlers.onScroll
+    };
+
+    const transcriptViewRange = this.getRangeSlider(
+      "VIEW",
+      this.props.rangeSliders
+    );
+
     return (
       <div className="captions">
-        {this.props.captionIsHighlighted ? (
-          <div className="video__actions">
-            <div className="video__action">
-              <p className="video__instructions">Fine tune your clip</p>
-              <button
-                className="video__button video__button--bottom"
-                onClick={this.handleClearClick}
-              >
-                Clear Selection
-              </button>
-            </div>
-            <div className="video__action">
-              <div className="video__tuning">
-                <div className="video__action">
-                  <p className="video__instructions">Start Time</p>
-                  <div className="video__tuning-buttons">
-                    <button
-                      className="video__button video__button--small"
-                      onClick={() => this.props.eventHandlers.onFineTuneDown(0)}
-                    >
-                      <i className="fa fa-arrow-down" aria-hidden="true" />
-                    </button>
-                    <span className="video__time">{startTime}</span>
-                    <button
-                      className="video__button video__button--small"
-                      onClick={() => this.props.eventHandlers.onFineTuneUp(0)}
-                    >
-                      <i className="fa fa-arrow-up" aria-hidden="true" />
-                    </button>
-                  </div>
-                </div>
-                <div className="video__action">
-                  <p className="video__instructions">End Time</p>
-                  <div className="video__tuning-buttons">
-                    <button
-                      className="video__button video__button--small"
-                      onClick={() => this.props.eventHandlers.onFineTuneDown(1)}
-                    >
-                      <i className="fa fa-arrow-down" aria-hidden="true" />
-                    </button>
-                    <span className="video__time">{endTime}</span>
-                    <button
-                      className="video__button video__button--small"
-                      onClick={() => this.props.eventHandlers.onFineTuneUp(1)}
-                    >
-                      <i className="fa fa-arrow-up" aria-hidden="true" />
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        ) : null}
+        <ClipEditor
+          eventHandlers={clipEditorEventHandlers}
+          captionIsHighlighted={this.props.captionIsHighlighted}
+          currentTime={this.props.timer}
+          isPaused={this.props.isPaused}
+          isZoomedToClip={this.props.isZoomedToClip}
+          videoDuration={this.props.videoDuration}
+          rangeSliders={this.props.rangeSliders}
+        />
         {transcript && speakerMap && this.state.highlightedNodes ? (
           <Document
-            onMouseUp={this.handleMouseUp}
             ref={(document: Document) => (this.document = document)}
+            eventHandlers={documentEventHandlers}
             className="document__row"
             captionData={{
               captionTimer: this.props.timer,
@@ -275,6 +252,7 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
               speakerMap: speakerMap
             }}
             nodes={this.state.highlightedNodes}
+            view={transcriptViewRange}
           />
         ) : (
           <div className="video__actions">

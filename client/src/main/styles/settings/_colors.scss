@@ -57,7 +57,8 @@ $palettes: (
     ),
   document:
     (
-      background: $white,
+      background: lighten($base-lightest, 40%),
+      background--header: $white,
       background--highlight: lighten($base-lightest, 10%),
       background--scrollbar-track: $base-lightest,
       background--scrollbar-thumb: $white,
@@ -146,5 +147,6 @@ $palettes: (
       text--green: $secondary,
       background: $white,
       border: $base-darkest
-    )
+    ),
+  trackSlider: (color--handle: $base-dark, border: $base-darkest)
 );

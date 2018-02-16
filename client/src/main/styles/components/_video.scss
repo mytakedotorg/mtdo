@@ -15,58 +15,10 @@ $video-header-height: 60px;
 .video__header {
   height: $video-header-height;
 }
-.video__actions {
-  @include clearfix;
-  width: $video-container-width;
-  max-width: 100%;
-  margin: 15px auto;
-}
-.video__action {
-  width: 50%;
-  float: left;
-  &:nth-of-type(2) {
-    float: right;
-  }
-}
-.video__instructions {
-  width: 100%;
-  margin-top: 0;
-  margin-bottom: 15px;
-  color: palette(video, text);
-  @include body;
-  float: inherit;
-}
-.video__tuning-buttons {
-  float: left;
-  padding-top: 6px;
-}
-.video__button--small {
-  @include button--small;
-  float: left;
-  padding: 2px 5px;
-  width: 21px;
-  text-align: center;
-  border: none;
-  color: palette(button, color--base);
-  background: palette(button, background--base);
-  &:hover {
-    background: palette(button, background--base-hover);
-  }
-}
 .video__button--top {
   @include button;
   @include button--red;
   margin-top: ($video-header-height - 35px)/2;
-}
-.video__button--bottom {
-  @include button;
-  @include button--blue;
-}
-.video__time {
-  float: left;
-  @include body--small;
-  margin-left: 2px;
-  margin-right: 2px;
 }
 .video__container {
   width: $video-container-width;

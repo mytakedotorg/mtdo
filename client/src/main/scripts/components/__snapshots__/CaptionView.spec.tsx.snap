@@ -4,6 +4,41 @@ exports[`CaptionTextNodeList 1`] = `
 <div
   className="captions"
 >
+  <ClipEditor
+    captionIsHighlighted={false}
+    currentTime={0}
+    eventHandlers={
+      Object {
+        "onAfterRangeChange": [Function],
+        "onClearPress": [Function],
+        "onPlayPausePress": [Function],
+        "onRangeChange": [Function],
+        "onRestartPress": [Function],
+        "onSkipBackPress": [Function],
+        "onSkipForwardPress": [Function],
+        "onZoomToClipPress": undefined,
+      }
+    }
+    isPaused={true}
+    isZoomedToClip={undefined}
+    rangeSliders={
+      Array [
+        Object {
+          "end": 25,
+          "start": 0,
+          "styles": undefined,
+          "type": "VIEW",
+        },
+        Object {
+          "end": 0,
+          "start": 0,
+          "styles": undefined,
+          "type": "SELECTION",
+        },
+      ]
+    }
+    videoDuration={5224}
+  />
   <Document
     captionData={
       Object {
@@ -479,6 +514,12 @@ exports[`CaptionTextNodeList 1`] = `
       }
     }
     className="document__row"
+    eventHandlers={
+      Object {
+        "onMouseUp": [Function],
+        "onScroll": [Function],
+      }
+    }
     nodes={
       Array [
         Object {
@@ -497,7 +538,14 @@ exports[`CaptionTextNodeList 1`] = `
         },
       ]
     }
-    onMouseUp={[Function]}
+    view={
+      Object {
+        "end": 25,
+        "start": 0,
+        "styles": undefined,
+        "type": "VIEW",
+      }
+    }
   />
 </div>
 `;
@@ -506,105 +554,41 @@ exports[`CaptionTextNodeList with highlights from props 1`] = `
 <div
   className="captions"
 >
-  <div
-    className="video__actions"
-  >
-    <div
-      className="video__action"
-    >
-      <p
-        className="video__instructions"
-      >
-        Fine tune your clip
-      </p>
-      <button
-        className="video__button video__button--bottom"
-        onClick={[Function]}
-      >
-        Clear Selection
-      </button>
-    </div>
-    <div
-      className="video__action"
-    >
-      <div
-        className="video__tuning"
-      >
-        <div
-          className="video__action"
-        >
-          <p
-            className="video__instructions"
-          >
-            Start Time
-          </p>
-          <div
-            className="video__tuning-buttons"
-          >
-            <button
-              className="video__button video__button--small"
-              onClick={[Function]}
-            >
-              <i
-                aria-hidden="true"
-                className="fa fa-arrow-down"
-              />
-            </button>
-            <span
-              className="video__time"
-            >
-              5.3
-            </span>
-            <button
-              className="video__button video__button--small"
-              onClick={[Function]}
-            >
-              <i
-                aria-hidden="true"
-                className="fa fa-arrow-up"
-              />
-            </button>
-          </div>
-        </div>
-        <div
-          className="video__action"
-        >
-          <p
-            className="video__instructions"
-          >
-            End Time
-          </p>
-          <div
-            className="video__tuning-buttons"
-          >
-            <button
-              className="video__button video__button--small"
-              onClick={[Function]}
-            >
-              <i
-                aria-hidden="true"
-                className="fa fa-arrow-down"
-              />
-            </button>
-            <span
-              className="video__time"
-            >
-              7.2
-            </span>
-            <button
-              className="video__button video__button--small"
-              onClick={[Function]}
-            >
-              <i
-                aria-hidden="true"
-                className="fa fa-arrow-up"
-              />
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+  <ClipEditor
+    captionIsHighlighted={true}
+    currentTime={5.31}
+    eventHandlers={
+      Object {
+        "onAfterRangeChange": [Function],
+        "onClearPress": [Function],
+        "onPlayPausePress": [Function],
+        "onRangeChange": [Function],
+        "onRestartPress": [Function],
+        "onSkipBackPress": [Function],
+        "onSkipForwardPress": [Function],
+        "onZoomToClipPress": undefined,
+      }
+    }
+    isPaused={true}
+    isZoomedToClip={undefined}
+    rangeSliders={
+      Array [
+        Object {
+          "end": 8.7,
+          "start": 3.6,
+          "styles": undefined,
+          "type": "VIEW",
+        },
+        Object {
+          "end": 7.2,
+          "start": 5.3,
+          "styles": undefined,
+          "type": "SELECTION",
+        },
+      ]
+    }
+    videoDuration={5224}
+  />
   <Document
     captionData={
       Object {
@@ -1080,6 +1064,12 @@ exports[`CaptionTextNodeList with highlights from props 1`] = `
       }
     }
     className="document__row"
+    eventHandlers={
+      Object {
+        "onMouseUp": [Function],
+        "onScroll": [Function],
+      }
+    }
     nodes={
       Array [
         Object {
@@ -1105,7 +1095,14 @@ exports[`CaptionTextNodeList with highlights from props 1`] = `
         },
       ]
     }
-    onMouseUp={[Function]}
+    view={
+      Object {
+        "end": 8.7,
+        "start": 3.6,
+        "styles": undefined,
+        "type": "VIEW",
+      }
+    }
   />
 </div>
 `;

@@ -6,6 +6,12 @@ import { documentNodes } from "../utils/testUtils";
 
 const className = "document__row";
 const onMouseUp = jest.fn();
+const onScroll = jest.fn();
+
+const eventHandlers = {
+  onMouseUp: onMouseUp,
+  onScroll: onScroll
+};
 
 jest.mock("./DocumentTextNodeList", () => ({
   default: "DocumentTextNodeList"
@@ -21,7 +27,7 @@ test("Document component", () => {
       <Document
         nodes={documentNodes}
         className={className}
-        onMouseUp={onMouseUp}
+        eventHandlers={eventHandlers}
       />
     )
     .toJSON();
@@ -49,7 +55,7 @@ test("Document component with highlights", () => {
       <Document
         nodes={documentNodes}
         className={className}
-        onMouseUp={onMouseUp}
+        eventHandlers={eventHandlers}
       >
         {children}
       </Document>
