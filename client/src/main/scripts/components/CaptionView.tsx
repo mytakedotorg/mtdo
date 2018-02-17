@@ -6,7 +6,6 @@ import ClipEditor, { ClipEditorEventHandlers } from "./ClipEditor";
 import {
   alertErr,
   getCaptionNodeArray,
-  getCharRangeFromVideoRange,
   getSimpleRangesFromHTMLRange,
   highlightText,
   FoundationNode,
@@ -36,7 +35,7 @@ export interface CaptionViewEventHandlers {
 }
 
 interface CaptionViewProps {
-  videoFact: Foundation.VideoFactContent;
+  videoFact: Foundation.VideoFactContentFast;
   timer: number;
   captionIsHighlighted: boolean;
   isPaused: boolean;
@@ -63,23 +62,20 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
   getCaptionData = (nextProps?: CaptionViewProps): FoundationNode[] => {
     let captionIsHighlighted: boolean;
     let highlightedCharRange: [number, number] | undefined;
-    let transcript: Foundation.CaptionWord[] | undefined;
-    let speakerMap: Foundation.SpeakerMap[] | undefined;
+    let videoFact: Foundation.VideoFactContentFast | undefined;
 
     if (nextProps) {
       captionIsHighlighted = nextProps.captionIsHighlighted;
       highlightedCharRange = nextProps.highlightedCharRange;
-      transcript = nextProps.videoFact.transcript;
-      speakerMap = nextProps.videoFact.speakerMap;
+      videoFact = nextProps.videoFact;
     } else {
       captionIsHighlighted = this.props.captionIsHighlighted;
       highlightedCharRange = this.props.highlightedCharRange;
-      transcript = this.props.videoFact.transcript;
-      speakerMap = this.props.videoFact.speakerMap;
+      videoFact = this.props.videoFact;
     }
 
-    if (transcript && speakerMap) {
-      let captionNodes = getCaptionNodeArray(transcript, speakerMap);
+    if (videoFact) {
+      let captionNodes = getCaptionNodeArray(videoFact);
       const unhighlightedNodes = [...captionNodes];
       let rawHighlightedText;
       if (captionIsHighlighted && highlightedCharRange) {
@@ -117,11 +113,10 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
     throw msg;
   };
   handleClearClick = () => {
-    const transcript = this.props.videoFact.transcript;
-    const speakerMap = this.props.videoFact.speakerMap;
-    if (transcript && speakerMap) {
+    const { videoFact } = this.props;
+    if (videoFact) {
       this.setState({
-        highlightedNodes: getCaptionNodeArray(transcript, speakerMap)
+        highlightedNodes: getCaptionNodeArray(videoFact)
       });
     } else {
       this.setState({
@@ -131,39 +126,35 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
     this.props.eventHandlers.onClearPress();
   };
   handleMouseUp = () => {
-    const transcript = this.props.videoFact.transcript;
-    if (transcript) {
-      if (window.getSelection) {
-        // Pre IE9 will always be false
-        const selection: Selection = window.getSelection();
-        if (selection.toString().length) {
-          // Some text is selected
-          const range: Range = selection.getRangeAt(0);
+    if (window.getSelection) {
+      // Pre IE9 will always be false
+      const selection: Selection = window.getSelection();
+      if (selection.toString().length) {
+        // Some text is selected
+        const range: Range = selection.getRangeAt(0);
 
-          const simpleRanges = getSimpleRangesFromHTMLRange(
-            range,
-            ReactDOM.findDOMNode(this.document).childNodes
-          );
+        const simpleRanges = getSimpleRangesFromHTMLRange(
+          range,
+          ReactDOM.findDOMNode(this.document).childNodes
+        );
 
-          if (this.props.captionIsHighlighted) {
-            // Must clear existing highlights before adding new ones
-            // Store the ranges for use in next componentDidUpdate
-            this.simpleRanges = (Object as any).assign({}, simpleRanges);
-            // Clear all highlights
-            this.setState({
-              highlightedNodes: [...this.unhighlightedNodes]
-            });
-          } else {
-            this.highlightNodes(simpleRanges);
-          }
+        if (this.props.captionIsHighlighted) {
+          // Must clear existing highlights before adding new ones
+          // Store the ranges for use in next componentDidUpdate
+          this.simpleRanges = (Object as any).assign({}, simpleRanges);
+          // Clear all highlights
+          this.setState({
+            highlightedNodes: [...this.unhighlightedNodes]
+          });
+        } else {
+          this.highlightNodes(simpleRanges);
         }
       }
     }
   };
   highlightNodes(simpleRanges: SimpleRanges) {
-    const transcript = this.props.videoFact.transcript;
-    const speakerMap = this.props.videoFact.speakerMap;
-    if (transcript && speakerMap) {
+    const { videoFact } = this.props;
+    if (videoFact) {
       const newNodes = highlightText(
         [...this.document.getDocumentNodes()],
         simpleRanges.charRange,
@@ -174,8 +165,10 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
         highlightedNodes: newNodes
       });
 
-      let startTime = transcript[simpleRanges.wordRange[0]].timestamp;
-      let endTime = transcript[simpleRanges.wordRange[1]].timestamp;
+      // let startTime = transcript[simpleRanges.wordRange[0]].timestamp;
+      // let endTime = transcript[simpleRanges.wordRange[1]].timestamp;
+      const startTime = videoFact.timestamps[simpleRanges.wordRange[0]];
+      const endTime = videoFact.timestamps[simpleRanges.wordRange[1]];
 
       this.props.eventHandlers.onHighlight(
         [startTime, endTime],
@@ -206,9 +199,6 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
     }
   }
   render() {
-    const transcript = this.props.videoFact.transcript;
-    const speakerMap = this.props.videoFact.speakerMap;
-
     const clipEditorEventHandlers: ClipEditorEventHandlers = {
       onAfterRangeChange: this.props.eventHandlers.onAfterRangeChange,
       onClearPress: this.props.eventHandlers.onClearPress,
@@ -241,15 +231,14 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
           videoDuration={this.props.videoDuration}
           rangeSliders={this.props.rangeSliders}
         />
-        {transcript && speakerMap && this.state.highlightedNodes ? (
+        {this.props.videoFact && this.state.highlightedNodes ? (
           <Document
             ref={(document: Document) => (this.document = document)}
             eventHandlers={documentEventHandlers}
             className="document__row"
             captionData={{
               captionTimer: this.props.timer,
-              transcript: transcript,
-              speakerMap: speakerMap
+              videoFact: this.props.videoFact
             }}
             nodes={this.state.highlightedNodes}
             view={transcriptViewRange}

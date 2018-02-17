@@ -81,3 +81,42 @@ Update npm dependencies in client folder with
 npm outdated               - shows which packages are out of date
 npm update <packagename>   - updates packagename to "Wanted", but won't pass semver
 ```
+
+# Data Model
+
+## VideoFactContentFast
+To help understand the data model, let's build it using a 14 word sample:
+
+**Raddatz:**  Good evening I'm Martha Raddatz from ABC News.
+**Cooper:**  And I'm Anderson Cooper from CNN.
+
+```
+VideoFactContentFast = {
+  speakers: [
+    {
+      firstname: Martha, 
+      lastname: Raddatz
+    }, 
+    {
+      firstname: Anderson, 
+      lastname: Cooper
+    }
+  ],
+  charOffsets: [0, 5, 13, 17, 24, 32, 37, 41, 47, 51, 55, 64, 71, 76], // Length 14, 1 entry for each word
+  timeStamps: [/* Length 14, omitting data for brevity */],
+  speakerPerson: [0, 1], // 2 people have spoken, first Raddatz, then Cooper. 
+  speakerWord: [0, 8], // 2 people have spoken, Raddatz at word 0, Cooper at word 8
+  ... // Other fields are self explanatory, like youtubeId
+}
+```
+
+Now, let's say "Martha Raddatz" has been highlighted:
+
+**Raddatz:**  Good evening I'm **Martha Raddatz** from ABC News.
+**Cooper:**  And I'm Anderson Cooper from CNN.
+
+We represent this in the client code as:
+```
+charRange = [17, 32]
+timeRange = [1.92, 2.129]
+```

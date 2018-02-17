@@ -10,8 +10,7 @@ import { TimeRange } from "./Video";
 
 interface CaptionData {
   captionTimer: number;
-  transcript: Foundation.CaptionWord[];
-  speakerMap: Foundation.SpeakerMap[];
+  videoFact: Foundation.VideoFactContentFast;
 }
 
 export interface DocumentEventHandlers {
@@ -55,11 +54,10 @@ class Document extends React.Component<DocumentProps, DocumentState> {
       childComponent = (
         <CaptionTextNodeList
           captionTimer={this.props.captionData.captionTimer}
-          captionTranscript={this.props.captionData.transcript}
           className="document__text document__text--caption"
           documentNodes={this.props.nodes}
           eventHandlers={eventHandlers}
-          speakerMap={this.props.captionData.speakerMap}
+          videoFact={this.props.captionData.videoFact}
           view={this.props.view}
         />
       );

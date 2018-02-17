@@ -56,7 +56,7 @@ interface VideoProps {
   onSetClick: (range: [number, number]) => void;
   onRangeSet?: (videoRange: [number, number]) => void;
   onClearClick?: () => void;
-  videoFact: Foundation.VideoFactContent;
+  videoFact: Foundation.VideoFactContentFast;
   className?: string;
   clipRange?: [number, number] | null;
 }
@@ -131,14 +131,14 @@ class Video extends React.Component<VideoProps, VideoState> {
     }
   };
   getCharRange = (
-    videoFact: Foundation.VideoFactContent,
+    videoFact: Foundation.VideoFactContentFast,
     timeRange?: [number, number] | null
   ): [number, number] => {
     if (timeRange) {
-      if (videoFact.transcript && videoFact.speakerMap) {
+      if (videoFact.charOffsets && videoFact.timestamps) {
         return getCharRangeFromVideoRange(
-          videoFact.transcript,
-          videoFact.speakerMap,
+          videoFact.charOffsets,
+          videoFact.timestamps,
           timeRange
         );
       } else {

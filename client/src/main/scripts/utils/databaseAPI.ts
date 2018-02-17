@@ -68,7 +68,7 @@ function fetchFact(
     error: string | Error | null,
     documentFact:
       | Foundation.DocumentFactContent
-      | Foundation.VideoFactContent
+      | Foundation.VideoFactContentFast
       | null,
     index?: number | null,
     block?: DocumentBlock | VideoBlock | null
@@ -86,7 +86,7 @@ function fetchFact(
     cache: "default"
   };
 
-  fetch(Routes.FOUNDATION_DATA + "/" + factHash + ".json", request)
+  fetch(Routes.FOUNDATION_DATA + "/" + factHash + "-fast.json", request)
     .then(function(response: Response) {
       const contentType = response.headers.get("content-type");
       if (
@@ -116,7 +116,7 @@ function fetchFact(
 }
 
 function isDocument(
-  fact: Foundation.DocumentFactContent | Foundation.VideoFactContent | null
+  fact: Foundation.DocumentFactContent | Foundation.VideoFactContentFast | null
 ): fact is Foundation.DocumentFactContent {
   if (fact) {
     return (fact as Foundation.DocumentFactContent).fact.kind === "document";
@@ -126,10 +126,10 @@ function isDocument(
 }
 
 function isVideo(
-  fact: Foundation.DocumentFactContent | Foundation.VideoFactContent | null
-): fact is Foundation.VideoFactContent {
+  fact: Foundation.DocumentFactContent | Foundation.VideoFactContentFast | null
+): fact is Foundation.VideoFactContentFast {
   if (fact) {
-    return (fact as Foundation.VideoFactContent).fact.kind === "video";
+    return (fact as Foundation.VideoFactContentFast).fact.kind === "video";
   } else {
     return false;
   }
@@ -329,7 +329,7 @@ function drawFacts(
             block.videoId,
             (
               error: string | Error | null,
-              factContent: Foundation.VideoFactContent,
+              factContent: Foundation.VideoFactContentFast,
               index: number,
               blockInScope: VideoBlock
             ) => {
@@ -345,19 +345,16 @@ function drawFacts(
 
                 const title = factContent.fact.title;
                 const titleSlug = slugify(title);
+
                 if (
-                  factContent.transcript &&
-                  factContent.speakerMap &&
+                  factContent &&
                   blockInScope.range
                 ) {
-                  const captionNodes = getCaptionNodeArray(
-                    factContent.transcript,
-                    factContent.speakerMap
-                  );
+                  const captionNodes = getCaptionNodeArray(factContent);
 
                   const characterRange = getCharRangeFromVideoRange(
-                    factContent.transcript,
-                    factContent.speakerMap,
+                    factContent.charOffsets,
+                    factContent.timestamps,
                     blockInScope.range
                   );
 

@@ -38,7 +38,7 @@ export interface Ranges {
 interface TimelinePreviewProps {
   factLink: Foundation.FactLink;
   nodes?: FoundationNode[];
-  videoFact?: Foundation.VideoFactContent;
+  videoFact?: Foundation.VideoFactContentFast;
   setFactHandlers?: SetFactHandlers;
   ranges?: Ranges;
   offset?: number;

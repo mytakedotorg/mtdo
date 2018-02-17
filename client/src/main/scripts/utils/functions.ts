@@ -2,6 +2,7 @@ import * as React from "react";
 import { ReactElement } from "react";
 import { Foundation } from "../java2ts/Foundation";
 var base64toArrayBuffer = require("base64-arraybuffer");
+var bs = require("binary-search");
 
 function decodeVideoFact(
   encoded: Foundation.VideoFactContentEncoded
@@ -337,40 +338,23 @@ function convertSecondsToTimestamp(totalSeconds: number): string {
 }
 
 function getCaptionNodeArray(
-  transcript: Foundation.CaptionWord[],
-  speakerMap: Foundation.SpeakerMap[]
+  videoFact: Foundation.VideoFactContentFast,
 ): Array<FoundationNode> {
-  // Fetch the excerpt from the DB by its ID
   let output: Array<FoundationNode> = [];
-  let offset = 0;
-  for (const speaker of speakerMap) {
-    let innerHTML = "";
-    for (let i = speaker.range[0]; i <= speaker.range[1]; i++) {
-      if (transcript[i]) {
-        innerHTML += transcript[i].word;
-      }
-    }
+  let prevOffset = 0;
 
-    innerHTML = innerHTML.trim(); //Replace extra whitespace with a single space
-
-    if (innerHTML.length > 0) {
-      output.push({
-        component: "p",
-        offset: offset,
-        innerHTML: [innerHTML]
-      });
-
-      // Character count offset
-      offset += innerHTML.length;
-    } else {
-      alertErr(
-        "functions: A speaker's start range can't be greater than the end range, offending range: " +
-          speaker.range
-      );
-      throw "A speaker's start range can't be greater than the end range, offending range: " +
-        speaker.range;
-    }
+  for (let n = 1; n < videoFact.speakerWord.length; n++) {
+    let wordIdx = videoFact.speakerWord[n];
+    let charOffset = videoFact.charOffsets[wordIdx];
+    let innerHTML = videoFact.plainText.substring(prevOffset, charOffset);
+    output.push({
+      component: "p",
+      offset: charOffset,
+      innerHTML: [innerHTML]
+    });
+    prevOffset = charOffset;
   }
+
   return output;
 }
 
@@ -426,73 +410,49 @@ function getWordCount(selection: Selection): number {
 }
 
 function getCharRangeFromVideoRange(
-  transcript: Foundation.CaptionWord[],
-  speakerMap: Foundation.SpeakerMap[],
+  charOffsets: ArrayLike<number>,
+  timeStamps: ArrayLike<number>,
   timeRange: [number, number]
 ): [number, number] {
   const startTime = timeRange[0];
   const endTime = timeRange[1];
 
-  let charCount = 0;
-  let startCharIndex: number = -1;
-  let isStartSet = false;
-  let endCharIndex: number = -1;
+  const comparator = (element: number, needle: number) => {
+    return element - needle;
+  };
 
-  for (const captionWord of transcript) {
-    if (captionWord.timestamp < startTime) {
-      charCount += captionWord.word.length;
-      continue;
+  let firstWordIdx = bs(
+    timeStamps,
+    startTime,
+    comparator
+  );
+
+  if (firstWordIdx < 0) {
+    firstWordIdx = -firstWordIdx - 2;
+    if (firstWordIdx < 0) {
+      // If still negative, it means we're at the first word
+      firstWordIdx = 0;
     }
-    if (!isStartSet) {
-      // This block only executes once
-      startCharIndex = charCount;
-
-      // Subtract 1 for every paragraph break. HTML removes extra whitespace, but our data model still contains a space.
-      for (const speakerIdx in speakerMap) {
-        if (speakerMap[speakerIdx].range[1] < captionWord.idx) {
-          continue;
-        }
-        const paragraphCount = parseInt(speakerIdx);
-        startCharIndex -= paragraphCount;
-
-        // Don't let index go negative here
-        if (startCharIndex < 0) {
-          startCharIndex = 0;
-        }
-        break;
-      }
-
-      isStartSet = true;
-    }
-    if (captionWord.timestamp <= endTime) {
-      charCount += captionWord.word.length;
-      continue;
-    }
-
-    endCharIndex = charCount;
-    // Subtract 1 for every paragraph break. HTML removes extra whitespace, but our data model still contains a space.
-    for (const speakerIdx in speakerMap) {
-      if (speakerMap[speakerIdx].range[1] < captionWord.idx) {
-        continue;
-      }
-      const paragraphCount = parseInt(speakerIdx);
-      endCharIndex -= paragraphCount;
-
-      // Don't let index go negative here
-      if (endCharIndex < 0) {
-        endCharIndex = 0;
-      }
-      break;
-    }
-    break;
   }
 
-  if (startCharIndex >= 0 && endCharIndex >= 0) {
-    return [startCharIndex, endCharIndex];
-  } else {
-    alertErr("functions: Index not found");
-    throw "Index not found";
+  let lastWordIdx = bs(
+    timeStamps,
+    endTime,
+    comparator
+  );
+
+  if (lastWordIdx < 0) {
+    lastWordIdx = -lastWordIdx - 2;
+    if (lastWordIdx < 0) {
+      // If still negative, it means we're at the first word
+      lastWordIdx = 0;
+    }
   }
+
+  const startCharIndex = charOffsets[firstWordIdx];
+  const endCharIndex = charOffsets[lastWordIdx];
+
+  return [startCharIndex, endCharIndex];
 }
 
 function isCaptionNode(htmlRange: Range): boolean {
