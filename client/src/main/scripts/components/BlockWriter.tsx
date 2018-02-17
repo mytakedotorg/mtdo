@@ -322,15 +322,7 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
           draftid: this.state.parentRev.draftid,
           lastrevid: this.state.parentRev.lastrevid
         };
-        postRequest(
-          Routes.DRAFTS_DELETE,
-          bodyJson,
-          function(json: any) {
-            // Not expecting a server response, so this will never execute.
-            alertErr("BlockWriter: Unexpected JSON response from server.");
-            throw "Unexpected JSON response from server.";
-          }.bind(this)
-        );
+        postRequest(Routes.DRAFTS_DELETE, bodyJson, () => {});
       } else {
         // Draft is unsaved, server doesn't know about it.
         window.location.href = Routes.DRAFTS;
