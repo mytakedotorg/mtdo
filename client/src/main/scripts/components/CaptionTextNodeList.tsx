@@ -41,7 +41,6 @@ class CaptionTextNodeList extends React.Component<
     this.lineHeight = 25.5;
     this.preventScroll = false;
 
-
     this.state = {
       currentSpeaker: "-",
       wordIdxAtViewStart: 0
@@ -90,7 +89,9 @@ class CaptionTextNodeList extends React.Component<
         }
 
         this.setState({
-          currentSpeaker: this.props.videoFact.speakers[this.props.videoFact.speakerPerson[speakerIdx]].lastname
+          currentSpeaker: this.props.videoFact.speakers[
+            this.props.videoFact.speakerPerson[speakerIdx]
+          ].lastname
         });
       }
     }
@@ -408,18 +409,21 @@ class CaptionTextNodeList extends React.Component<
           }
           onScroll={this.handleScroll}
         >
-          {this.props.documentNodes.map(function(
-            element: FoundationNode,
-            index: number
-          ) {
-            return (
-              <CaptionTextNode
-                key={element.offset}
-                documentNode={element}
-                speaker={this.props.videoFact.speakers[this.props.videoFact.speakerPerson[index]].lastname}
-              />
-            );
-          }.bind(this))}
+          {this.props.documentNodes.map(
+            function(element: FoundationNode, index: number) {
+              return (
+                <CaptionTextNode
+                  key={element.offset}
+                  documentNode={element}
+                  speaker={
+                    this.props.videoFact.speakers[
+                      this.props.videoFact.speakerPerson[index]
+                    ].lastname
+                  }
+                />
+              );
+            }.bind(this)
+          )}
         </div>
       </div>
     );

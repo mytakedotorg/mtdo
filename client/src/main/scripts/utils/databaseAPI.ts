@@ -346,10 +346,7 @@ function drawFacts(
                 const title = factContent.fact.title;
                 const titleSlug = slugify(title);
 
-                if (
-                  factContent &&
-                  blockInScope.range
-                ) {
+                if (factContent && blockInScope.range) {
                   const captionNodes = getCaptionNodeArray(factContent);
 
                   const characterRange = getCharRangeFromVideoRange(

@@ -338,7 +338,7 @@ function convertSecondsToTimestamp(totalSeconds: number): string {
 }
 
 function getCaptionNodeArray(
-  videoFact: Foundation.VideoFactContentFast,
+  videoFact: Foundation.VideoFactContentFast
 ): Array<FoundationNode> {
   let output: Array<FoundationNode> = [];
   let prevOffset = 0;
@@ -421,11 +421,7 @@ function getCharRangeFromVideoRange(
     return element - needle;
   };
 
-  let firstWordIdx = bs(
-    timeStamps,
-    startTime,
-    comparator
-  );
+  let firstWordIdx = bs(timeStamps, startTime, comparator);
 
   if (firstWordIdx < 0) {
     firstWordIdx = -firstWordIdx - 2;
@@ -435,11 +431,7 @@ function getCharRangeFromVideoRange(
     }
   }
 
-  let lastWordIdx = bs(
-    timeStamps,
-    endTime,
-    comparator
-  );
+  let lastWordIdx = bs(timeStamps, endTime, comparator);
 
   if (lastWordIdx < 0) {
     lastWordIdx = -lastWordIdx - 2;
