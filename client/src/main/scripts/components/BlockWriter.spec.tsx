@@ -24,10 +24,10 @@ jest.mock("./ShareContainer", () => ({
   default: "ShareContainer"
 }));
 
-Object.defineProperty(window.location, "pathname", {
-  writable: true,
-  value: "/drafts/new"
-});
+// Object.defineProperty(window.location, "pathname", {
+//   writable: true,
+//   value: "/drafts/new"
+// });
 
 const initState: InitialBlockWriterState = {
   takeDocument: {

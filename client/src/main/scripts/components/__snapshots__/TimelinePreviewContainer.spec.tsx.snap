@@ -100,10 +100,10 @@ exports[`Successfully loaded Document Preview with highlights 1`] = `
   }
   setFactHandlers={
     Object {
-      "handleDocumentSetClick": [Function],
-      "handleRangeCleared": [Function],
-      "handleRangeSet": [Function],
-      "handleVideoSetClick": [Function],
+      "handleDocumentSetClick": [MockFunction],
+      "handleRangeCleared": [MockFunction],
+      "handleRangeSet": [MockFunction],
+      "handleVideoSetClick": [MockFunction],
     }
   }
   videoFact={undefined}
@@ -128,10 +128,10 @@ exports[`Successfully loaded Video Preview 1`] = `
   ranges={undefined}
   setFactHandlers={
     Object {
-      "handleDocumentSetClick": [Function],
-      "handleRangeCleared": [Function],
-      "handleRangeSet": [Function],
-      "handleVideoSetClick": [Function],
+      "handleDocumentSetClick": [MockFunction],
+      "handleRangeCleared": [MockFunction],
+      "handleRangeSet": [MockFunction],
+      "handleVideoSetClick": [MockFunction],
     }
   }
   videoFact={
