@@ -12,21 +12,21 @@ exports[`Initial status 1`] = `
   <button
     className="editor__button editor__button--disabled"
     disabled={true}
-    onClick={[Function]}
+    onClick={[MockFunction]}
   >
     Save
   </button>
   <button
     className="editor__button editor__button--publish"
     disabled={false}
-    onClick={[Function]}
+    onClick={[MockFunction]}
   >
     Save & Publish
   </button>
   <button
     className="editor__button editor__button--delete"
     disabled={false}
-    onClick={[Function]}
+    onClick={[MockFunction]}
   >
     Delete Draft
   </button>
@@ -45,21 +45,21 @@ exports[`Publishing 1`] = `
   <button
     className="editor__button editor__button--save"
     disabled={false}
-    onClick={[Function]}
+    onClick={[MockFunction]}
   >
     Save
   </button>
   <button
     className="editor__button editor__button--publish"
     disabled={false}
-    onClick={[Function]}
+    onClick={[MockFunction]}
   >
     Save & Publish
   </button>
   <button
     className="editor__button editor__button--delete"
     disabled={false}
-    onClick={[Function]}
+    onClick={[MockFunction]}
   >
     Delete Draft
   </button>
@@ -78,21 +78,21 @@ exports[`Publishing error 1`] = `
   <button
     className="editor__button editor__button--save"
     disabled={false}
-    onClick={[Function]}
+    onClick={[MockFunction]}
   >
     Save
   </button>
   <button
     className="editor__button editor__button--publish"
     disabled={false}
-    onClick={[Function]}
+    onClick={[MockFunction]}
   >
     Save & Publish
   </button>
   <button
     className="editor__button editor__button--delete"
     disabled={false}
-    onClick={[Function]}
+    onClick={[MockFunction]}
   >
     Delete Draft
   </button>
@@ -111,21 +111,21 @@ exports[`Save successful 1`] = `
   <button
     className="editor__button editor__button--disabled"
     disabled={true}
-    onClick={[Function]}
+    onClick={[MockFunction]}
   >
     Save
   </button>
   <button
     className="editor__button editor__button--publish"
     disabled={false}
-    onClick={[Function]}
+    onClick={[MockFunction]}
   >
     Save & Publish
   </button>
   <button
     className="editor__button editor__button--delete"
     disabled={false}
-    onClick={[Function]}
+    onClick={[MockFunction]}
   >
     Delete Draft
   </button>
@@ -144,21 +144,21 @@ exports[`Saving 1`] = `
   <button
     className="editor__button editor__button--save"
     disabled={false}
-    onClick={[Function]}
+    onClick={[MockFunction]}
   >
     Save
   </button>
   <button
     className="editor__button editor__button--publish"
     disabled={false}
-    onClick={[Function]}
+    onClick={[MockFunction]}
   >
     Save & Publish
   </button>
   <button
     className="editor__button editor__button--delete"
     disabled={false}
-    onClick={[Function]}
+    onClick={[MockFunction]}
   >
     Delete Draft
   </button>
@@ -177,21 +177,21 @@ exports[`Saving 2`] = `
   <button
     className="editor__button editor__button--save"
     disabled={false}
-    onClick={[Function]}
+    onClick={[MockFunction]}
   >
     Save
   </button>
   <button
     className="editor__button editor__button--publish"
     disabled={false}
-    onClick={[Function]}
+    onClick={[MockFunction]}
   >
     Save & Publish
   </button>
   <button
     className="editor__button editor__button--delete"
     disabled={false}
-    onClick={[Function]}
+    onClick={[MockFunction]}
   >
     Delete Draft
   </button>
@@ -210,21 +210,21 @@ exports[`Title too long 1`] = `
   <button
     className="editor__button editor__button--save"
     disabled={false}
-    onClick={[Function]}
+    onClick={[MockFunction]}
   >
     Save
   </button>
   <button
     className="editor__button editor__button--publish"
     disabled={false}
-    onClick={[Function]}
+    onClick={[MockFunction]}
   >
     Save & Publish
   </button>
   <button
     className="editor__button editor__button--delete"
     disabled={false}
-    onClick={[Function]}
+    onClick={[MockFunction]}
   >
     Delete Draft
   </button>
@@ -243,21 +243,21 @@ exports[`Unknown error 1`] = `
   <button
     className="editor__button editor__button--save"
     disabled={false}
-    onClick={[Function]}
+    onClick={[MockFunction]}
   >
     Save
   </button>
   <button
     className="editor__button editor__button--publish"
     disabled={false}
-    onClick={[Function]}
+    onClick={[MockFunction]}
   >
     Save & Publish
   </button>
   <button
     className="editor__button editor__button--delete"
     disabled={false}
-    onClick={[Function]}
+    onClick={[MockFunction]}
   >
     Delete Draft
   </button>
@@ -276,21 +276,21 @@ exports[`Unsaved 1`] = `
   <button
     className="editor__button editor__button--save"
     disabled={false}
-    onClick={[Function]}
+    onClick={[MockFunction]}
   >
     Save
   </button>
   <button
     className="editor__button editor__button--publish"
     disabled={false}
-    onClick={[Function]}
+    onClick={[MockFunction]}
   >
     Save & Publish
   </button>
   <button
     className="editor__button editor__button--delete"
     disabled={false}
-    onClick={[Function]}
+    onClick={[MockFunction]}
   >
     Delete Draft
   </button>

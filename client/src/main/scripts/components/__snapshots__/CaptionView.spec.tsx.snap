@@ -9,13 +9,13 @@ exports[`CaptionTextNodeList 1`] = `
     currentTime={0}
     eventHandlers={
       Object {
-        "onAfterRangeChange": [Function],
-        "onClearPress": [Function],
-        "onPlayPausePress": [Function],
-        "onRangeChange": [Function],
-        "onRestartPress": [Function],
-        "onSkipBackPress": [Function],
-        "onSkipForwardPress": [Function],
+        "onAfterRangeChange": [MockFunction],
+        "onClearPress": [MockFunction],
+        "onPlayPausePress": [MockFunction],
+        "onRangeChange": [MockFunction],
+        "onRestartPress": [MockFunction],
+        "onSkipBackPress": [MockFunction],
+        "onSkipForwardPress": [MockFunction],
         "onZoomToClipPress": undefined,
       }
     }
@@ -517,7 +517,7 @@ exports[`CaptionTextNodeList 1`] = `
     eventHandlers={
       Object {
         "onMouseUp": [Function],
-        "onScroll": [Function],
+        "onScroll": [MockFunction],
       }
     }
     nodes={
@@ -559,13 +559,13 @@ exports[`CaptionTextNodeList with highlights from props 1`] = `
     currentTime={5.31}
     eventHandlers={
       Object {
-        "onAfterRangeChange": [Function],
-        "onClearPress": [Function],
-        "onPlayPausePress": [Function],
-        "onRangeChange": [Function],
-        "onRestartPress": [Function],
-        "onSkipBackPress": [Function],
-        "onSkipForwardPress": [Function],
+        "onAfterRangeChange": [MockFunction],
+        "onClearPress": [MockFunction],
+        "onPlayPausePress": [MockFunction],
+        "onRangeChange": [MockFunction],
+        "onRestartPress": [MockFunction],
+        "onSkipBackPress": [MockFunction],
+        "onSkipForwardPress": [MockFunction],
         "onZoomToClipPress": undefined,
       }
     }
@@ -1067,7 +1067,7 @@ exports[`CaptionTextNodeList with highlights from props 1`] = `
     eventHandlers={
       Object {
         "onMouseUp": [Function],
-        "onScroll": [Function],
+        "onScroll": [MockFunction],
       }
     }
     nodes={

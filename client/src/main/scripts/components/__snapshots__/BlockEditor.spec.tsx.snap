@@ -76,7 +76,7 @@ exports[`Read only 1`] = `
             }
             eventHandlers={
               Object {
-                "onDocumentClick": [Function],
+                "onDocumentClick": [MockFunction],
               }
             }
             idx={1}
@@ -174,10 +174,10 @@ exports[`Simple block editor model 1`] = `
             }
             eventHandlers={
               Object {
-                "handleChange": [Function],
-                "handleDelete": [Function],
-                "handleEnterPress": [Function],
-                "handleFocus": [Function],
+                "handleChange": [MockFunction],
+                "handleDelete": [MockFunction],
+                "handleEnterPress": [MockFunction],
+                "handleFocus": [MockFunction],
               }
             }
             idx={1}
@@ -275,10 +275,10 @@ exports[`With active 1`] = `
             }
             eventHandlers={
               Object {
-                "handleChange": [Function],
-                "handleDelete": [Function],
-                "handleEnterPress": [Function],
-                "handleFocus": [Function],
+                "handleChange": [MockFunction],
+                "handleDelete": [MockFunction],
+                "handleEnterPress": [MockFunction],
+                "handleFocus": [MockFunction],
               }
             }
             idx={1}

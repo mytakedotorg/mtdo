@@ -104,7 +104,7 @@ exports[`Bigger block writer model 1`] = `
     </p>
   </div>
   <TimelineView
-    path="/drafts/new"
+    path="blank"
     setFactHandlers={
       Object {
         "handleDocumentSetClick": [Function],
@@ -189,7 +189,7 @@ exports[`Simple block writer model 1`] = `
     </p>
   </div>
   <TimelineView
-    path="/drafts/new"
+    path="blank"
     setFactHandlers={
       Object {
         "handleDocumentSetClick": [Function],
