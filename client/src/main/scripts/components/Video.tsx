@@ -74,6 +74,7 @@ interface VideoState {
 
 class Video extends React.Component<VideoProps, VideoState> {
   private timerId: number | null;
+  private scrollTimer: number | null;
   private player: any;
   private viewRangeDuration: number;
   private playerVars: YTPlayerParameters;
@@ -136,11 +137,12 @@ class Video extends React.Component<VideoProps, VideoState> {
   ): [number, number] => {
     if (timeRange) {
       if (videoFact.charOffsets && videoFact.timestamps) {
-        return getCharRangeFromVideoRange(
+        const charRange = getCharRangeFromVideoRange(
           videoFact.charOffsets,
           videoFact.timestamps,
           timeRange
         );
+        return charRange;
       } else {
         console.warn("Captions not yet done for this video");
       }
@@ -216,9 +218,17 @@ class Video extends React.Component<VideoProps, VideoState> {
       label: "Transcript"
     };
 
+    if (this.scrollTimer) {
+      window.clearTimeout(this.scrollTimer);
+    }
+    this.scrollTimer = window.setTimeout(this.handleCaptionScrollEnd, 500);
+
     this.setState({
       rangeSliders: this.updateRangeSlider(newView)
     });
+  };
+  handleCaptionScrollEnd = () => {
+    this.scrollTimer = null;
   };
   handleClearClick = (): void => {
     this.setState({
@@ -265,7 +275,10 @@ class Video extends React.Component<VideoProps, VideoState> {
   };
   handleRangeChange = (value: [number, number] | number, type: RangeType) => {
     const { rangeIsChanging } = this.state;
-    if (rangeIsChanging == null || rangeIsChanging === type) {
+    if (
+      this.scrollTimer == null &&
+      (rangeIsChanging == null || rangeIsChanging === type)
+    ) {
       const zoomedRange = this.getRangeSlider("ZOOM");
       const selectionRange = this.getRangeSlider("SELECTION");
       switch (type) {

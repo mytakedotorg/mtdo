@@ -349,7 +349,7 @@ function getCaptionNodeArray(
     let innerHTML = videoFact.plainText.substring(prevOffset, charOffset);
     output.push({
       component: "p",
-      offset: charOffset,
+      offset: prevOffset,
       innerHTML: [innerHTML]
     });
     prevOffset = charOffset;
@@ -442,7 +442,7 @@ function getCharRangeFromVideoRange(
   }
 
   const startCharIndex = charOffsets[firstWordIdx];
-  const endCharIndex = charOffsets[lastWordIdx];
+  const endCharIndex = charOffsets[lastWordIdx + 1];
 
   return [startCharIndex, endCharIndex];
 }
@@ -577,7 +577,7 @@ function getSimpleRangesFromHTMLRange(
         const prevSibChild = prevSib.childNodes[1].childNodes[0];
         if (prevSibChild && prevSibChild.textContent) {
           const text = prevSibChild.textContent;
-          wordCountBeforeSelection += text.split(" ").length;
+          wordCountBeforeSelection += text.split(" ").length - 1; //There is an extra space at the end we don't count
           charCountBeforeSelection += text.length;
         } else {
           alertErr("functions: Unexpcected HTML structure");
@@ -638,7 +638,7 @@ function getSimpleRangesFromHTMLRange(
   } else {
     // Count words/chars where selection begins
     const textOfStartContainer = startContainer.textContent;
-    wordCountBeforeSelection += textOfStartContainer.split(" ").length;
+    wordCountBeforeSelection += textOfStartContainer.split(" ").length - 1;
     charCountBeforeSelection += textOfStartContainer.length;
 
     if (isCaption) {

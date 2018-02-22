@@ -165,8 +165,6 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
         highlightedNodes: newNodes
       });
 
-      // let startTime = transcript[simpleRanges.wordRange[0]].timestamp;
-      // let endTime = transcript[simpleRanges.wordRange[1]].timestamp;
       const startTime = videoFact.timestamps[simpleRanges.wordRange[0]];
       const endTime = videoFact.timestamps[simpleRanges.wordRange[1]];
 
