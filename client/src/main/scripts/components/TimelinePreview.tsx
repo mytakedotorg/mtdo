@@ -140,6 +140,9 @@ export default class TimelinePreview extends React.Component<
     if (this.props.setFactHandlers) {
       this.props.setFactHandlers.handleRangeSet(videoRange);
     }
+    this.setState({
+      textIsHighlighted: true
+    });
   };
   handleSetClick = (videoRange?: [number, number]) => {
     let factHash = this.props.factLink.hash;
