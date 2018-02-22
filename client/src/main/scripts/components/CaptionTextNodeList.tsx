@@ -24,7 +24,7 @@ interface CaptionTextNodeListProps {
 
 interface CaptionTextNodeListState {
   currentSpeaker: string;
-  wordIdxAtViewStart: number;
+  wordTimestampAtViewStart: number;
 }
 
 class CaptionTextNodeList extends React.Component<
@@ -43,7 +43,7 @@ class CaptionTextNodeList extends React.Component<
 
     this.state = {
       currentSpeaker: "-",
-      wordIdxAtViewStart: 0
+      wordTimestampAtViewStart: 0
     };
   }
   clearTimer = () => {
@@ -270,7 +270,7 @@ class CaptionTextNodeList extends React.Component<
         typeof timeOfLastWord !== "undefined"
       ) {
         this.setState({
-          wordIdxAtViewStart: indexOfFirstWord
+          wordTimestampAtViewStart: timeOfFirstWord
         });
         this.props.eventHandlers.onScroll([timeOfFirstWord, timeOfLastWord]);
       } else {
@@ -278,6 +278,22 @@ class CaptionTextNodeList extends React.Component<
         alertErr(msg);
         throw msg;
       }
+    }
+  };
+  getWord = (wordIdx: number) => {
+    const { videoFact } = this.props;
+    const transcript = videoFact.plainText;
+    const charStart = videoFact.charOffsets[wordIdx];
+    const charEnd = videoFact.charOffsets[wordIdx + 1];
+
+    if (charEnd) {
+      return transcript.substring(charStart, charEnd);
+    } else {
+      // last word
+      return transcript.substring(
+        transcript.lastIndexOf(" "),
+        transcript.length
+      );
     }
   };
   handleScroll = () => {
@@ -295,113 +311,118 @@ class CaptionTextNodeList extends React.Component<
       return false;
     }
   };
-  // setScrollView = (time?: number) => {
-  //   if (this.captionNodeContainer) {
-  //     const timer = time ? time : this.props.captionTimer;
+  setScrollView = (time?: number) => {
+    if (this.captionNodeContainer) {
+      const timer = time ? time : this.props.captionTimer;
 
-  //     let wordIdx = bs(
-  //       this.props.captionTranscript,
-  //       timer,
-  //       (word: Foundation.CaptionWord, time: number) => {
-  //         return word.timestamp - time;
-  //       }
-  //     );
+      let wordIdx = bs(
+        this.props.videoFact.timestamps, // haystack
+        timer, // needle
+        (element: number, needle: number) => {
+          return element - needle;
+        }
+      );
 
-  //     // usually the timestamp is between two words, in which case it returns (-insertionPoint - 2)
-  //     if (wordIdx < 0) {
-  //       wordIdx = -wordIdx - 2;
-  //     }
+      // usually the timestamp is between two words, in which case it returns (-insertionPoint - 2)
+      if (wordIdx < 0) {
+        wordIdx = -wordIdx - 2;
+      }
 
-  //     // find the speaker for that word
-  //     let speakerIdx = bs(
-  //       this.props.speakerMap,
-  //       wordIdx,
-  //       (speaker: Foundation.SpeakerMap, idx: number) => {
-  //         return speaker.range[0] - idx;
-  //       }
-  //     );
-  //     if (speakerIdx < 0) {
-  //       speakerIdx = -speakerIdx - 2;
-  //       if (speakerIdx < 0) {
-  //         // If still negative, it means we're at the first node
-  //         speakerIdx = 0;
-  //       }
-  //     }
+      // find the speaker for that word
+      let speakerIdx = bs(
+        this.props.videoFact.speakerWord, // haystack
+        wordIdx, // needle
+        (element: number, needle: number) => {
+          return element - needle;
+        }
+      );
 
-  //     let speakerRange = this.props.speakerMap[speakerIdx];
-  //     const captionTextContainer = this.captionNodeContainer.children[
-  //       speakerIdx
-  //     ].children[1];
-  //     let hiddenTextElement;
-  //     // This lookup should match the DOM structure of CaptionTextNode
-  //     if (captionTextContainer && captionTextContainer.children[1]) {
-  //       hiddenTextElement = captionTextContainer.children[1];
-  //     } else {
-  //       alertErr(
-  //         "CaptionTextNodeList: Couldn't find caption node at index " +
-  //           speakerIdx
-  //       );
-  //       throw "Couldn't find caption node at index " + speakerIdx;
-  //     }
+      if (speakerIdx < 0) {
+        speakerIdx = -speakerIdx - 2;
+        if (speakerIdx < 0) {
+          // If still negative, it means we're at the first node
+          speakerIdx = 0;
+        }
+      }
 
-  //     let height = 0;
-  //     let numberOfLines = -1;
-  //     hiddenTextElement.innerHTML = "";
-  //     for (let i = speakerRange.range[0]; i < wordIdx; ++i) {
-  //       hiddenTextElement.innerHTML += this.props.captionTranscript[i].word;
-  //       if (hiddenTextElement.clientHeight !== height) {
-  //         height = hiddenTextElement.clientHeight;
-  //         numberOfLines++;
-  //       }
-  //     }
+      // let speakerRange = this.props.speakerMap[speakerIdx];
+      const captionTextContainer = this.captionNodeContainer.children[
+        speakerIdx
+      ].children[1];
+      let hiddenTextElement;
+      // This lookup should match the DOM structure of CaptionTextNode
+      if (captionTextContainer && captionTextContainer.children[1]) {
+        hiddenTextElement = captionTextContainer.children[1];
+      } else {
+        alertErr(
+          "CaptionTextNodeList: Couldn't find caption node at index " +
+            speakerIdx
+        );
+        throw "Couldn't find caption node at index " + speakerIdx;
+      }
 
-  //     const speakerNameHeight = this.captionNodeContainer.children[speakerIdx]
-  //       .children[0].clientHeight;
-  //     let totalSpeakerHeight;
-  //     if (speakerNameHeight === 31) {
-  //       // Large screen, margin-bottom is 24px;
-  //       totalSpeakerHeight = 55;
-  //     } else {
-  //       // Small screen, margin-bottom is 19px;
-  //       totalSpeakerHeight = 43;
-  //     }
+      let height = 0;
+      let numberOfLines = -1;
+      hiddenTextElement.innerHTML = "";
+      const speakerWord = this.props.videoFact.speakerWord;
+      if (speakerWord[speakerIdx + 1]) {
+        for (let i = speakerWord[speakerIdx]; i < wordIdx; i++) {
+          hiddenTextElement.innerHTML += this.getWord(i);
+          if (hiddenTextElement.clientHeight !== height) {
+            height = hiddenTextElement.clientHeight;
+            numberOfLines++;
+          }
+        }
 
-  //     // Get the offsetTop value of the child element.
-  //     // The line height is 25px, so add 25 for each
-  //     // time the line has wrapped, which is equal to
-  //     // the value of the `idx` variable.
-  //     // Add the height and margin of the speaker name
-  //     const childTop =
-  //       (this.captionNodeContainer.children[speakerIdx] as HTMLElement)
-  //         .offsetTop +
-  //       25 * numberOfLines +
-  //       totalSpeakerHeight;
+        const speakerNameHeight = this.captionNodeContainer.children[speakerIdx]
+          .children[0].clientHeight;
+        let totalSpeakerHeight;
+        if (speakerNameHeight === 31) {
+          // Large screen, margin-bottom is 24px;
+          totalSpeakerHeight = 55;
+        } else {
+          // Small screen, margin-bottom is 19px;
+          totalSpeakerHeight = 43;
+        }
 
-  //     // Set the parent container's scrollTop value to the offsetTop
-  //     this.captionNodeContainer.scrollTop = childTop;
-  //   }
-  // };
-  // componentDidMount() {
-  //   this.setScrollView();
-  // }
-  // componentWillReceiveProps(nextProps: CaptionTextNodeListProps) {
-  //   // If our next prop is close to our current state, don't scroll.
-  //   if (
-  //     !this.isCloseTo(
-  //       nextProps.view.start,
-  //       this.state.wordAtViewStart.timestamp,
-  //       10
-  //     )
-  //   ) {
-  //     // Since we're setting the scrollView this will trigger the onScroll handler
-  //     // which will set the scrollView and trigerr the onScroll handler until
-  //     // nextProps.view.start is close to this.state.wordAtViewStart.timestamp
-  //     // set a flag to prevent this loop of heavy code from executing
-  //     this.preventScroll = true;
+        // Get the offsetTop value of the child element.
+        // The line height is 25px, so add 25 for each
+        // time the line has wrapped, which is equal to
+        // the value of the `idx` variable.
+        // Add the height and margin of the speaker name
+        const childTop =
+          (this.captionNodeContainer.children[speakerIdx] as HTMLElement)
+            .offsetTop +
+          25 * numberOfLines +
+          totalSpeakerHeight;
 
-  //     this.setScrollView(nextProps.view.start);
-  //   }
-  // }
+        // Set the parent container's scrollTop value to the offsetTop
+        this.captionNodeContainer.scrollTop = childTop;
+      } else {
+        throw "TODO: last paragraph";
+      }
+    }
+  };
+  componentDidMount() {
+    this.setScrollView();
+  }
+  componentWillReceiveProps(nextProps: CaptionTextNodeListProps) {
+    // If our next prop is close to our current state, don't scroll.
+    if (
+      !this.isCloseTo(
+        nextProps.view.start,
+        this.state.wordTimestampAtViewStart,
+        10
+      )
+    ) {
+      // Since we're setting the scrollView this will trigger the onScroll handler
+      // which will set the scrollView and trigerr the onScroll handler until
+      // nextProps.view.start is close to this.state.wordAtViewStart.timestamp
+      // set a flag to prevent this loop of heavy code from executing
+      this.preventScroll = true;
+      this.setScrollView(nextProps.view.start);
+    }
+  }
   render() {
     let wordCount: number;
     let nextWordCount: number;

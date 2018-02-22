@@ -210,22 +210,25 @@ class Video extends React.Component<VideoProps, VideoState> {
     }
   };
   handleCaptionScroll = (viewRange: [number, number]) => {
-    const newView: TimeRange = {
-      start: viewRange[0],
-      end: viewRange[1],
-      type: "VIEW",
-      styles: TRACKSTYLES__RANGE,
-      label: "Transcript"
-    };
+    if (this.state.rangeIsChanging == null) {
+      // Don't let this fire if the range sliders are being changed
+      const newView: TimeRange = {
+        start: viewRange[0],
+        end: viewRange[1],
+        type: "VIEW",
+        styles: TRACKSTYLES__RANGE,
+        label: "Transcript"
+      };
 
-    if (this.scrollTimer) {
-      window.clearTimeout(this.scrollTimer);
+      if (this.scrollTimer) {
+        window.clearTimeout(this.scrollTimer);
+      }
+      this.scrollTimer = window.setTimeout(this.handleCaptionScrollEnd, 500);
+
+      this.setState({
+        rangeSliders: this.updateRangeSlider(newView)
+      });
     }
-    this.scrollTimer = window.setTimeout(this.handleCaptionScrollEnd, 500);
-
-    this.setState({
-      rangeSliders: this.updateRangeSlider(newView)
-    });
   };
   handleCaptionScrollEnd = () => {
     this.scrollTimer = null;
@@ -276,7 +279,7 @@ class Video extends React.Component<VideoProps, VideoState> {
   handleRangeChange = (value: [number, number] | number, type: RangeType) => {
     const { rangeIsChanging } = this.state;
     if (
-      this.scrollTimer == null &&
+      this.scrollTimer == null && // Don't let this fire if the transcript is being scrolled
       (rangeIsChanging == null || rangeIsChanging === type)
     ) {
       const zoomedRange = this.getRangeSlider("ZOOM");
