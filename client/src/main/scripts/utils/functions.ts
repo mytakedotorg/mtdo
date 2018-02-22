@@ -15,26 +15,18 @@ function decodeVideoFact(
   // with.
 
   var offset = 0;
-  const charOffsets = new Int32Array(
-    data,
-    offset,
-    (offset += encoded.numWords * Int32Array.BYTES_PER_ELEMENT)
-  );
-  const timestamps = new Float32Array(
-    data,
-    offset,
-    (offset += encoded.numWords * Float32Array.BYTES_PER_ELEMENT)
-  );
+  const charOffsets = new Int32Array(data, offset, encoded.numWords);
+  offset += encoded.numWords * Int32Array.BYTES_PER_ELEMENT;
+  const timestamps = new Float32Array(data, offset, encoded.numWords);
+  offset += encoded.numWords * Float32Array.BYTES_PER_ELEMENT;
   const speakerPerson = new Int32Array(
     data,
     offset,
-    (offset += encoded.numSpeakerSections * Int32Array.BYTES_PER_ELEMENT)
+    encoded.numSpeakerSections
   );
-  const speakerWord = new Int32Array(
-    data,
-    offset,
-    (offset += encoded.numSpeakerSections * Int32Array.BYTES_PER_ELEMENT)
-  );
+  offset += encoded.numSpeakerSections * Int32Array.BYTES_PER_ELEMENT;
+  const speakerWord = new Int32Array(data, offset, encoded.numSpeakerSections);
+  offset += encoded.numSpeakerSections * Int32Array.BYTES_PER_ELEMENT;
   if (offset != data.byteLength) {
     alertErr("functions: sizes don't match");
     throw Error("Sizes don't match");
@@ -1102,6 +1094,7 @@ function getUserCookieString(): string {
 export {
   alertErr,
   convertSecondsToTimestamp,
+  decodeVideoFact,
   drawCaption,
   drawDocument,
   drawDocumentText,

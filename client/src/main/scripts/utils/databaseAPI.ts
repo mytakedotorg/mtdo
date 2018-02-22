@@ -7,6 +7,7 @@ import { TakeReactionJson } from "../java2ts/TakeReactionJson";
 import { EmailSelf } from "../java2ts/EmailSelf";
 import {
   alertErr,
+  decodeVideoFact,
   FoundationNode,
   getHighlightedNodes,
   getCaptionNodeArray,
@@ -86,7 +87,18 @@ function fetchFact(
     cache: "default"
   };
 
-  fetch(Routes.FOUNDATION_DATA + "/" + factHash + "-fast.json", request)
+  let isEncoded: boolean;
+  if (
+    factHash === "U8MV5KDDaxumxZOCJOzExAUAAkSoYNhycVXq7jZ59_0=" ||
+    factHash === "qQjcS7ARkHHdKnDXfS3OkX5f78l81M1OWu5y_IziPA0="
+  ) {
+    factHash += "-encoded";
+    isEncoded = true;
+  } else {
+    isEncoded = false;
+  }
+
+  fetch(Routes.FOUNDATION_DATA + "/" + factHash + ".json", request)
     .then(function(response: Response) {
       const contentType = response.headers.get("content-type");
       if (
@@ -100,7 +112,9 @@ function fetchFact(
       }
     })
     .then(function(json: any) {
-      if (index !== undefined) {
+      if (isEncoded) {
+        callback(null, decodeVideoFact(json));
+      } else if (index !== undefined) {
         if (block !== undefined) {
           callback(null, json, index, block);
         } else {
