@@ -158,8 +158,15 @@ class CaptionTextNodeList extends React.Component<
       const idxOfFirstWordInParagraph = speakerWordMap[speakerIdx];
       const idxOfLastWordInParagraph = speakerWordMap[speakerIdx + 1];
       if (!idxOfLastWordInParagraph) {
-        // We're at the end
-        throw "TODO: we're at the end";
+        // We're at the end, return the last paragraph
+        const timestamps = this.props.videoFact.timestamps;
+        const timeOfFirstWord = timestamps[timestamps.length - 2];
+        const timeOfLastWord = timestamps[timestamps.length - 1];
+        this.setState({
+          wordTimestampAtViewStart: timeOfFirstWord
+        });
+        this.props.eventHandlers.onScroll([timeOfFirstWord, timeOfLastWord]);
+        return;
       }
 
       // Create a number line transform of number of lines in the paragraph to word index in speakerMap
@@ -196,12 +203,22 @@ class CaptionTextNodeList extends React.Component<
         } else {
           // Last word is spoken by a new speaker
           // Get the next document node
-          documentNode = this.captionNodeContainer.children[speakerIdx + 1];
+          documentNode = this.captionNodeContainer.children[
+            speakerIdx + loopCounter + 1
+          ];
           if (typeof documentNode === "undefined") {
             // We're at the last speaker anyway
-            indexOfLastWord = idxOfLastWordInParagraph;
-            throw "TODO: we're at the end. This case has been handled already. Should never execute";
-            // break;
+            const timestamps = this.props.videoFact.timestamps;
+            const timeOfFirstWord = timestamps[timestamps.length - 2];
+            const timeOfLastWord = timestamps[timestamps.length - 1];
+            this.setState({
+              wordTimestampAtViewStart: timeOfFirstWord
+            });
+            this.props.eventHandlers.onScroll([
+              timeOfFirstWord,
+              timeOfLastWord
+            ]);
+            return;
           } else {
             const remainingHeight = 200 - heightOfLinesInView;
 
@@ -221,12 +238,6 @@ class CaptionTextNodeList extends React.Component<
                 speakerWordMap[speakerIdx + loopCounter];
               const idxOfLastWordOfNextSpeaker =
                 speakerWordMap[speakerIdx + loopCounter + 1];
-              if (typeof idxOfLastWordOfNextSpeaker === "undefined") {
-                const msg =
-                  "CaptionTextNodeList: Couldn't find next speakerWordMap";
-                alertErr(msg);
-                throw msg;
-              }
               // calculate the word idx
               numberLineTransform.setBefore(0, totalLinesInNextParagraph);
               numberLineTransform.setAfter(
@@ -255,11 +266,6 @@ class CaptionTextNodeList extends React.Component<
         const msg = "CaptionTextNodeList: Couldn't find index of last word";
         alertErr(msg);
         throw msg;
-      }
-
-      if (indexOfFirstWord === indexOfLastWord) {
-        // Don't let these be the same
-        indexOfLastWord += 5;
       }
 
       const timeOfFirstWord = this.props.videoFact.timestamps[indexOfFirstWord];
@@ -297,7 +303,7 @@ class CaptionTextNodeList extends React.Component<
     }
   };
   handleScroll = () => {
-    // Only allow this function to execute no more than twice per second
+    // Only allow this function to execute no more than 60x per second
     if (!this.timerId) {
       this.getCurrentSpeaker();
       this.timerId = window.setTimeout(this.clearTimer, 16.67); // 60hz
@@ -345,7 +351,13 @@ class CaptionTextNodeList extends React.Component<
         }
       }
 
-      // let speakerRange = this.props.speakerMap[speakerIdx];
+      if (
+        typeof this.captionNodeContainer.children[speakerIdx] == "undefined"
+      ) {
+        // If we're at the end, it can be length + 1. Just return the last valid speakername
+        speakerIdx--;
+      }
+
       const captionTextContainer = this.captionNodeContainer.children[
         speakerIdx
       ].children[1];
