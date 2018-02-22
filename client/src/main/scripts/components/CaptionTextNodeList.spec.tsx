@@ -2,7 +2,8 @@ import * as React from "react";
 import * as renderer from "react-test-renderer";
 import {} from "jest";
 import CaptionTextNodeList from "./CaptionTextNodeList";
-import { videoFact, videoNodes } from "../utils/testUtils";
+import { TimeRange, TRACKSTYLES__RANGE } from "./Video";
+import { videoFactFast, videoNodes } from "../utils/testUtils";
 
 const onMouseUp = jest.fn();
 const onScroll = jest.fn();
@@ -17,21 +18,23 @@ jest.mock("./CaptionTextNode", () => ({
   default: "CaptionTextNode"
 }));
 
-const view = {
+const view: TimeRange = {
   start: 0,
-  end: 5
+  end: 25,
+  type: "VIEW",
+  styles: TRACKSTYLES__RANGE,
+  label: "Zoom"
 };
 
 test("CaptionTextNodeList", () => {
   const tree = renderer
     .create(
       <CaptionTextNodeList
+        captionTimer={0}
+        className={className}
         documentNodes={videoNodes}
         eventHandlers={eventHandlers}
-        className={className}
-        captionTimer={0}
-        captionTranscript={videoFact.transcript}
-        speakerMap={videoFact.speakerMap}
+        videoFact={videoFactFast}
         view={view}
       />
     )
