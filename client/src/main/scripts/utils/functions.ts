@@ -49,6 +49,17 @@ export interface FoundationNode {
   innerHTML: Array<string | React.ReactNode>;
 }
 
+export type CaptionNodeArr = Array<CaptionNode | Array<CaptionNode>>;
+
+export type CaptionNode =
+  | string
+  | React.DetailedReactHTMLElement<
+      {
+        className: string;
+      },
+      HTMLElement
+    >;
+
 function getNodesInRange(
   nodes: FoundationNode[],
   range: [number, number]
@@ -331,19 +342,15 @@ function convertSecondsToTimestamp(totalSeconds: number): string {
 
 function getCaptionNodeArray(
   videoFact: Foundation.VideoFactContentFast
-): Array<FoundationNode> {
-  let output: Array<FoundationNode> = [];
+): Array<string> {
+  let output: Array<string> = [];
   let prevOffset = 0;
 
   for (let n = 1; n < videoFact.speakerWord.length; n++) {
     let wordIdx = videoFact.speakerWord[n];
     let charOffset = videoFact.charOffsets[wordIdx];
     let innerHTML = videoFact.plainText.substring(prevOffset, charOffset);
-    output.push({
-      component: "p",
-      offset: prevOffset,
-      innerHTML: [innerHTML]
-    });
+    output.push(innerHTML);
     prevOffset = charOffset;
   }
 
@@ -815,6 +822,94 @@ function highlightText(
   return newNodes;
 }
 
+function highlightCaption(
+  nodes: string[],
+  range: [number, number]
+): CaptionNodeArr {
+  const foundationClassName = "document__text--selected";
+  let charCount = 0;
+  const newNodes: CaptionNodeArr = [];
+  let isFirstNodeWithHighlights = true;
+  let isFinished = false;
+  for (const node of nodes) {
+    const nodeLength = node.length;
+    if (charCount + nodeLength <= range[0]) {
+      // Before the range start, output is same as input
+      charCount += nodeLength;
+      newNodes.push(node);
+      continue;
+    }
+    if (isFirstNodeWithHighlights) {
+      if (charCount + nodeLength <= range[1]) {
+        isFirstNodeWithHighlights = false;
+        const startOffset = range[0] - charCount;
+        charCount += nodeLength;
+        const textBefore = node.substring(0, startOffset);
+        const textContent = node.substring(startOffset);
+        // First span
+        const newSpan = React.createElement(
+          "span",
+          { className: foundationClassName, key: "someKey" },
+          textContent
+        );
+
+        const newNode = [textBefore, newSpan];
+        newNodes.push(newNode);
+        continue;
+      } else {
+        isFirstNodeWithHighlights = false;
+        // A single node contains the full range
+        const startOffset = range[0] - charCount;
+        const endOffset = range[1] - charCount;
+        charCount += nodeLength;
+        const textBefore = node.substring(0, startOffset);
+        const textContent = node.substring(startOffset, endOffset);
+        const textAfter = node.substring(endOffset);
+
+        const newSpan = React.createElement(
+          "span",
+          { className: foundationClassName, key: "someKey" },
+          textContent
+        );
+
+        const newNode = [textBefore, newSpan, textAfter];
+        newNodes.push(newNode);
+        isFinished = true;
+        continue;
+      }
+    }
+    if (charCount + nodeLength <= range[1] && !isFinished) {
+      charCount += nodeLength;
+
+      const newSpan = React.createElement(
+        "span",
+        { className: foundationClassName, key: "someKey" },
+        node
+      );
+
+      newNodes.push(newSpan);
+      continue;
+    } else if (!isFinished) {
+      const endOffset = range[1] - charCount;
+      const textContent = node.substring(0, endOffset);
+      const textAfter = node.substring(endOffset);
+
+      const newSpan = React.createElement(
+        "span",
+        { className: foundationClassName, key: "someKey" },
+        textContent
+      );
+
+      const newNode = [newSpan, textAfter];
+      newNodes.push(node);
+      isFinished = true;
+    } else {
+      newNodes.push(node);
+    }
+  }
+  return newNodes;
+}
+
 function alertErr(errMsg: string) {
   const msg =
     "Something went wrong. To help us figure it out, please copy and paste the information from below into an email to team@mytake.org. Thank you." +
@@ -1108,6 +1203,7 @@ export {
   getNodesInRange,
   getUserCookieString,
   getWordCount,
+  highlightCaption,
   highlightText,
   slugify
 };

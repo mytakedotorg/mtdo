@@ -1,13 +1,16 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import isEqual = require("lodash/isEqual");
-import Document, { DocumentEventHandlers } from "./Document";
+import CaptionTextNodeList, {
+  CaptionTextNodeListEventHandlers
+} from "./CaptionTextNodeList";
 import ClipEditor, { ClipEditorEventHandlers } from "./ClipEditor";
 import {
   alertErr,
+  CaptionNodeArr,
   getCaptionNodeArray,
   getSimpleRangesFromHTMLRange,
-  highlightText,
+  highlightCaption,
   FoundationNode,
   SimpleRanges
 } from "../utils/functions";
@@ -47,19 +50,19 @@ interface CaptionViewProps {
 }
 
 interface CaptionViewState {
-  highlightedNodes?: FoundationNode[];
+  highlightedNodes?: CaptionNodeArr;
 }
 
 class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
-  private document: Document;
-  private unhighlightedNodes: FoundationNode[];
+  private captionNodesDiv: HTMLDivElement;
+  private unhighlightedNodes: Array<string>;
   private simpleRanges: SimpleRanges | null;
   constructor(props: CaptionViewProps) {
     super(props);
 
     this.state = {};
   }
-  getCaptionData = (nextProps?: CaptionViewProps): FoundationNode[] => {
+  getCaptionData = (nextProps?: CaptionViewProps): string[] => {
     let captionIsHighlighted: boolean;
     let highlightedCharRange: [number, number] | undefined;
     let videoFact: Foundation.VideoFactContentFast | undefined;
@@ -75,14 +78,13 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
     }
 
     if (videoFact) {
-      let captionNodes = getCaptionNodeArray(videoFact);
-      const unhighlightedNodes = [...captionNodes];
+      const rawCaptionNodes = getCaptionNodeArray(videoFact);
+      const unhighlightedNodes = [...rawCaptionNodes];
       let rawHighlightedText;
       if (captionIsHighlighted && highlightedCharRange) {
-        captionNodes = highlightText(
-          captionNodes,
-          highlightedCharRange,
-          () => {}
+        const captionNodes = highlightCaption(
+          rawCaptionNodes,
+          highlightedCharRange
         );
 
         this.setState({
@@ -90,7 +92,7 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
         });
       } else {
         this.setState({
-          highlightedNodes: captionNodes
+          highlightedNodes: rawCaptionNodes
         });
       }
       return unhighlightedNodes;
@@ -135,7 +137,7 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
 
         const simpleRanges = getSimpleRangesFromHTMLRange(
           range,
-          ReactDOM.findDOMNode(this.document).childNodes
+          ReactDOM.findDOMNode(this.captionNodesDiv).childNodes
         );
 
         if (this.props.captionIsHighlighted) {
@@ -155,10 +157,9 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
   highlightNodes(simpleRanges: SimpleRanges) {
     const { videoFact } = this.props;
     if (videoFact) {
-      const newNodes = highlightText(
-        [...this.document.getDocumentNodes()],
-        simpleRanges.charRange,
-        () => {}
+      const newNodes = highlightCaption(
+        [...this.unhighlightedNodes],
+        simpleRanges.charRange
       );
 
       this.setState({
@@ -208,7 +209,7 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
       onZoomToClipPress: this.props.eventHandlers.onZoomToClipPress
     };
 
-    const documentEventHandlers: DocumentEventHandlers = {
+    const captionTextNodeListEventHandlers: CaptionTextNodeListEventHandlers = {
       onMouseUp: this.handleMouseUp,
       onScroll: this.props.eventHandlers.onScroll
     };
@@ -230,17 +231,23 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
           rangeSliders={this.props.rangeSliders}
         />
         {this.props.videoFact && this.state.highlightedNodes ? (
-          <Document
-            ref={(document: Document) => (this.document = document)}
-            eventHandlers={documentEventHandlers}
-            className="document__row"
-            captionData={{
-              captionTimer: this.props.timer,
-              videoFact: this.props.videoFact
-            }}
-            nodes={this.state.highlightedNodes}
-            view={transcriptViewRange}
-          />
+          <div
+            className="document document--static"
+            ref={(div: HTMLDivElement) => (this.captionNodesDiv = div)}
+          >
+            <div className="document__row">
+              <div className={"document__row-inner"}>
+                <CaptionTextNodeList
+                  captionTimer={this.props.timer}
+                  className="document__text document__text--caption"
+                  documentNodes={this.state.highlightedNodes}
+                  eventHandlers={captionTextNodeListEventHandlers}
+                  videoFact={this.props.videoFact}
+                  view={transcriptViewRange}
+                />
+              </div>
+            </div>
+          </div>
         ) : (
           <div className="video__actions">
             <p className="video__instructions">

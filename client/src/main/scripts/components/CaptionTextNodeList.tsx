@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { alertErr, FoundationNode } from "../utils/functions";
+import { alertErr, CaptionNode, CaptionNodeArr } from "../utils/functions";
 import NumberLineTransform from "../utils/numberLineTransform";
 import { Foundation } from "../java2ts/Foundation";
 import CaptionTextNode from "./CaptionTextNode";
@@ -16,7 +16,7 @@ export interface CaptionTextNodeListEventHandlers {
 interface CaptionTextNodeListProps {
   captionTimer: number;
   className: string;
-  documentNodes: FoundationNode[];
+  documentNodes: CaptionNodeArr;
   eventHandlers: CaptionTextNodeListEventHandlers;
   videoFact: Foundation.VideoFactContentFast;
   view: TimeRange;
@@ -435,6 +435,15 @@ class CaptionTextNodeList extends React.Component<
       this.setScrollView(nextProps.view.start);
     }
   }
+  shouldComponentUpdate(
+    nextProps: CaptionTextNodeListProps,
+    nextState: CaptionTextNodeListState
+  ) {
+    if (isEqual(this.props.documentNodes, nextProps.documentNodes)) {
+      return false;
+    }
+    return true;
+  }
   render() {
     let wordCount: number;
     let nextWordCount: number;
@@ -452,10 +461,10 @@ class CaptionTextNodeList extends React.Component<
           onScroll={this.handleScroll}
         >
           {this.props.documentNodes.map(
-            function(element: FoundationNode, index: number) {
+            function(element: CaptionNode, index: number) {
               return (
                 <CaptionTextNode
-                  key={element.offset}
+                  key={index}
                   documentNode={element}
                   speaker={
                     this.props.videoFact.speakers[

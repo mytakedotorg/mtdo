@@ -8,11 +8,12 @@ import { EmailSelf } from "../java2ts/EmailSelf";
 import {
   alertErr,
   decodeVideoFact,
+  CaptionNode,
   FoundationNode,
   getHighlightedNodes,
   getCaptionNodeArray,
   getCharRangeFromVideoRange,
-  highlightText,
+  highlightCaption,
   ImageProps,
   drawDocument,
   drawCaption,
@@ -24,7 +25,7 @@ import {
   DocumentBlock,
   VideoBlock
 } from "../components/BlockEditor";
-import { ReactElement } from "react";
+import { ReactElement, DetailedReactHTMLElement } from "react";
 
 function getAllFacts(
   callback: (
@@ -369,25 +370,15 @@ function drawFacts(
                     blockInScope.range
                   );
 
-                  const highlightedCaptionNodes = highlightText(
+                  const highlightedCaptionNodes = highlightCaption(
                     captionNodes,
-                    characterRange,
-                    () => {}
+                    characterRange
                   );
 
                   let highlightedText = '"';
                   for (const node of highlightedCaptionNodes) {
-                    for (const text of node.innerHTML) {
-                      if (text) {
-                        let textStr = text.toString();
-                        if (textStr === "[object Object]") {
-                          // Can't find a better conditional test
-                          // Found a React Element, which is highlighted text
-                          highlightedText += (text as ReactElement<
-                            HTMLSpanElement
-                          >).props.children;
-                        }
-                      }
+                    if (typeof node === "object") {
+                      throw "TODO";
                     }
                   }
                   highlightedText = highlightedText.trimRight();
