@@ -11,7 +11,7 @@ exports[`CaptionTextNodeList 1`] = `
   </h3>
   <div
     className="document__text document__text--caption"
-    onMouseUp={[MockFunction]}
+    onMouseUp={[Function]}
     onScroll={[Function]}
   >
     <CaptionTextNode
