@@ -70,7 +70,7 @@ class TrackSlider extends React.Component<TrackSliderProps, TrackSliderState> {
               const end =
                 rangeSlider.end > props.end ? props.end : rangeSlider.end;
               return (
-                <div className="trackSlider__range">
+                <div className="trackSlider__range" key={rangeSlider.type}>
                   <Range
                     defaultValue={[0, props.end]}
                     min={props.start}
@@ -97,9 +97,9 @@ class TrackSlider extends React.Component<TrackSliderProps, TrackSliderState> {
               );
             } else {
               return (
-                <div className="trackSlider__range">
+                <div className="trackSlider__range" key={rangeSlider.type}>
                   <Slider
-                    defaultValue={[0, props.end]}
+                    defaultValue={0}
                     min={props.start}
                     max={props.end}
                     onChange={(value: number) =>
