@@ -73,7 +73,6 @@ exports[`ClipEditor with zoomed selection 1`] = `
         ]
       }
       start={0}
-      stateAuthority="SCROLL"
       step={1}
     />
   </div>
@@ -169,7 +168,6 @@ exports[`ClipEditor with zoomed selection 1`] = `
         ]
       }
       start={3.7470000000000003}
-      stateAuthority="SCROLL"
       step={0.1}
     />
   </div>
@@ -292,7 +290,6 @@ exports[`ClipEditor with zoomed selection 2`] = `
         ]
       }
       start={0}
-      stateAuthority="SCROLL"
       step={1}
     />
   </div>
@@ -388,7 +385,6 @@ exports[`ClipEditor with zoomed selection 2`] = `
         ]
       }
       start={4}
-      stateAuthority="SCROLL"
       step={0.1}
     />
   </div>
@@ -511,7 +507,6 @@ exports[`Initial ClipEditor 1`] = `
         ]
       }
       start={0}
-      stateAuthority="SCROLL"
       step={1}
     />
   </div>

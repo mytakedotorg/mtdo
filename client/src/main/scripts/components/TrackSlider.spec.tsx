@@ -25,7 +25,6 @@ test("Initial render", () => {
         end={5224}
         eventHandlers={eventHandlers}
         rangeSliders={initialRangeSliders}
-        stateAuthority={"SCROLL"}
         step={1}
       />
     )
@@ -41,7 +40,6 @@ test("Zoomed render", () => {
         end={82}
         eventHandlers={eventHandlers}
         rangeSliders={zoomedRangeSliders}
-        stateAuthority={"SCROLL"}
         step={0.1}
       />
     )
@@ -57,7 +55,6 @@ test("Unzoomed render", () => {
         end={82}
         eventHandlers={eventHandlers}
         rangeSliders={unzoomedRangeSliders}
-        stateAuthority={"SCROLL"}
         step={0.1}
       />
     )

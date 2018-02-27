@@ -38,7 +38,6 @@ test("Initial ClipEditor", () => {
         isPaused={true}
         isZoomedToClip={false}
         rangeSliders={initialRangeSliders}
-        stateAuthority={"SCROLL"}
       />
     )
     .toJSON();
@@ -56,7 +55,6 @@ test("ClipEditor with zoomed selection", () => {
         isPaused={true}
         isZoomedToClip={true}
         rangeSliders={zoomedRangeSliders}
-        stateAuthority={"SCROLL"}
       />
     )
     .toJSON();
@@ -74,7 +72,6 @@ test("ClipEditor with zoomed selection", () => {
         isPaused={true}
         isZoomedToClip={false}
         rangeSliders={unzoomedRangeSliders}
-        stateAuthority={"SCROLL"}
       />
     )
     .toJSON();
