@@ -1,7 +1,13 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { Range } from "rc-slider";
-import { RangeType, TimeRange, TrackStyles, TRACKSTYLES__RANGE } from "./Video";
+import {
+  RangeType,
+  StateAuthority,
+  TimeRange,
+  TrackStyles,
+  TRACKSTYLES__RANGE
+} from "./Video";
 import ZoomViewer from "./ZoomViewer";
 import TrackSlider, { TrackSliderEventHandlers } from "./TrackSlider";
 import { alertErr, convertSecondsToTimestamp } from "../utils/functions";
@@ -44,6 +50,7 @@ interface ClipEditorProps {
   isZoomedToClip: boolean;
   eventHandlers: ClipEditorEventHandlers;
   rangeSliders: TimeRange[];
+  stateAuthority: StateAuthority;
 }
 
 interface ClipEditorState {}
@@ -166,6 +173,7 @@ class ClipEditor extends React.Component<ClipEditorProps, ClipEditorState> {
             end={props.videoDuration}
             eventHandlers={eventHandlers}
             rangeSliders={topTrack}
+            stateAuthority={props.stateAuthority}
             step={1}
           />
         </div>
@@ -179,6 +187,7 @@ class ClipEditor extends React.Component<ClipEditorProps, ClipEditorState> {
               end={zoomRange.end}
               eventHandlers={eventHandlers}
               rangeSliders={bottomTrack}
+              stateAuthority={props.stateAuthority}
               step={0.1}
             />
           </div>

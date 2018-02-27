@@ -230,6 +230,7 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
           isZoomedToClip={this.props.isZoomedToClip}
           videoDuration={this.props.videoDuration}
           rangeSliders={this.props.rangeSliders}
+          stateAuthority={this.props.stateAuthority}
         />
         {this.props.videoFact && this.state.highlightedNodes ? (
           <div

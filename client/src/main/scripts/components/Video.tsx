@@ -28,12 +28,12 @@ export interface TimeRange {
 }
 
 export interface TrackStyles {
-  rail: stylesObject;
-  track: stylesObject;
-  handle: stylesObject;
+  rail: StylesObject;
+  track: StylesObject;
+  handle: StylesObject;
 }
 
-interface stylesObject {
+export interface StylesObject {
   [key: string]: string;
 }
 
