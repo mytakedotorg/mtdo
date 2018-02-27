@@ -61,6 +61,7 @@ exports[`CaptionTextNodeList 1`] = `
         },
       ]
     }
+    stateAuthority="SCROLL"
     videoDuration={5224}
   />
   <div
@@ -179,6 +180,7 @@ exports[`CaptionTextNodeList with highlights from props 1`] = `
         },
       ]
     }
+    stateAuthority="SCROLL"
     videoDuration={5224}
   />
   <div

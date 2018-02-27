@@ -39,6 +39,7 @@ exports[`Initial render 1`] = `
           "backgroundColor": "#d3dae3",
         }
       }
+      stateAuthority="SCROLL"
       step={1}
       trackStyle={
         Object {
@@ -80,6 +81,7 @@ exports[`Initial render 1`] = `
           "backgroundColor": "#d3dae3",
         }
       }
+      stateAuthority="SCROLL"
       step={1}
       trackStyle={
         Object {
@@ -142,6 +144,7 @@ exports[`Unzoomed render 1`] = `
           "backgroundColor": "#d3dae3",
         }
       }
+      stateAuthority="SCROLL"
       step={0.1}
       trackStyle={
         Object {
@@ -183,6 +186,7 @@ exports[`Unzoomed render 1`] = `
           "backgroundColor": "#d3dae3",
         }
       }
+      stateAuthority="SCROLL"
       step={0.1}
       trackStyle={
         Object {
@@ -224,6 +228,7 @@ exports[`Unzoomed render 1`] = `
           "backgroundColor": "#d3dae3",
         }
       }
+      stateAuthority="SCROLL"
       step={0.1}
       trackStyle={
         Object {
@@ -286,6 +291,7 @@ exports[`Zoomed render 1`] = `
           "backgroundColor": "#d3dae3",
         }
       }
+      stateAuthority="SCROLL"
       step={0.1}
       trackStyle={
         Object {
@@ -327,6 +333,7 @@ exports[`Zoomed render 1`] = `
           "backgroundColor": "#d3dae3",
         }
       }
+      stateAuthority="SCROLL"
       step={0.1}
       trackStyle={
         Object {
@@ -368,6 +375,7 @@ exports[`Zoomed render 1`] = `
           "backgroundColor": "#d3dae3",
         }
       }
+      stateAuthority="SCROLL"
       step={0.1}
       trackStyle={
         Object {
