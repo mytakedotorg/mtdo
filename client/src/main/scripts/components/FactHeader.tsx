@@ -4,9 +4,6 @@ import { FoundationNode } from "../utils/functions";
 
 interface FactHeaderProps {
   heading: string;
-  onClearClick: () => void;
-  onSetClick: () => void;
-  textIsHighlighted: boolean;
 }
 
 interface FactHeaderState {}
@@ -17,38 +14,15 @@ class FactHeader extends React.Component<FactHeaderProps, FactHeaderState> {
   constructor(props: FactHeaderProps) {
     super(props);
   }
-  handleClearClick = () => {
-    this.props.onClearClick();
-  };
-  handleSetClick = () => {
-    this.props.onSetClick();
-  };
   render() {
     return (
       <div className="document__header document__header--visible">
         <div>
           <h2 className={"document__heading"}>{this.props.heading}</h2>
           <div className="document__header-actions">
-            {this.props.textIsHighlighted ? (
-              <button
-                className="document__button document__button--blue"
-                onClick={this.handleClearClick}
-              >
-                Clear Selection
-              </button>
-            ) : (
-              <p className="document__instructions">
-                Highlight captions to create a video clip
-              </p>
-            )}
-            {this.props.textIsHighlighted ? (
-              <button
-                className="document__button document__button--red"
-                onClick={this.handleSetClick}
-              >
-                Give your Take on this
-              </button>
-            ) : null}
+            <p className="document__instructions">
+              Highlight captions to create a video clip
+            </p>
           </div>
         </div>
       </div>

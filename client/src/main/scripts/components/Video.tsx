@@ -807,10 +807,7 @@ class Video extends React.Component<VideoProps, VideoState> {
         >
           <div className="video__container">
             <div className="video__header">
-              {selection &&
-              selection.end &&
-              selection.end > selection.start &&
-              !window.location.pathname.startsWith(Routes.DRAFTS) ? (
+              {selection && selection.end && selection.end > selection.start ? (
                 <button
                   className="video__button video__button--top"
                   onClick={this.handleSetClick}
