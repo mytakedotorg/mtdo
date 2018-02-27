@@ -885,7 +885,7 @@ function highlightCaption(
         node
       );
 
-      newNodes.push(newSpan);
+      newNodes.push([newSpan]);
       continue;
     } else if (!isFinished) {
       const endOffset = range[1] - charCount;
