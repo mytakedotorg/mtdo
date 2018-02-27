@@ -14,7 +14,9 @@ exports[`CaptionTextNode 1`] = `
   >
     <p
       className="document__node-text document__node-text--p"
-    />
+    >
+      Good evening I'm Martha Raddatz from ABC News.
+    </p>
     <div
       className="document__node-height-div"
     >

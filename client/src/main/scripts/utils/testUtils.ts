@@ -1,6 +1,6 @@
 import { Foundation } from "../java2ts/Foundation";
 import { TimelineItemData } from "../components/Timeline";
-import { FoundationNode } from "./functions";
+import { CaptionNodeArr, FoundationNode } from "./functions";
 import { Card } from "../components/FeedList";
 import { TakeDocument } from "../components/BlockEditor";
 import { TimeRange } from "../components/Video";
@@ -775,19 +775,9 @@ const videoFactLink: Foundation.FactLink = {
   hash: "U8MV5KDDaxumxZOCJOzExAUAAkSoYNhycVXq7jZ59_0="
 };
 
-const videoNodes: FoundationNode[] = [
-  {
-    component: "p",
-    offset: 0,
-    innerHTML: ["Good evening I'm Martha Raddatz from ABC News."]
-  },
-  {
-    component: "p",
-    offset: 46,
-    innerHTML: [
-      "And I'm Anderson Cooper from CNN. We want to welcome you to Washington University in St. Louis for the second presidential debate between Hillary Clinton and Donald Trump sponsored by the Commission on Presidential Debates. tonight's debate is a Town Hall format, which gives voters a chance to directly ask the candidates questions. Martha and I will ask follow-up questions but the night really belongs to the people in this room and to people across the country who have submitted questions online."
-    ]
-  }
+const videoNodes: CaptionNodeArr = [
+  "Good evening I'm Martha Raddatz from ABC News.",
+  "And I'm Anderson Cooper from CNN. We want to welcome you to Washington University in St. Louis for the second presidential debate between Hillary Clinton and Donald Trump sponsored by the Commission on Presidential Debates. tonight's debate is a Town Hall format, which gives voters a chance to directly ask the candidates questions. Martha and I will ask follow-up questions but the night really belongs to the people in this room and to people across the country who have submitted questions online."
 ];
 
 const cards: Card[] = [
