@@ -52,7 +52,7 @@ export const TRACKSTYLES__RANGE: TrackStyles = {
 
 export type RangeType = "SELECTION" | "VIEW" | "ZOOM" | "CURRENT_TIME";
 
-export type StateAuthority = RangeType | "SCROLL" | null;
+export type StateAuthority = RangeType | "SCROLL" | "BUTTON" | null;
 
 interface VideoProps {
   onSetClick: (range: [number, number]) => void;
@@ -77,6 +77,7 @@ interface VideoState {
 class Video extends React.Component<VideoProps, VideoState> {
   private timerId: number | null;
   private scrollTimer: number | null;
+  private buttonTimer: number | null;
   private player: any;
   private viewRangeDuration: number;
   private playerVars: YTPlayerParameters;
@@ -587,8 +588,14 @@ class Video extends React.Component<VideoProps, VideoState> {
         };
         this.setState({
           isZoomedToClip: true,
-          rangeSliders: this.updateRangeSlider(zoomRange)
+          rangeSliders: this.updateRangeSlider(zoomRange),
+          stateAuthority: "BUTTON"
         });
+
+        if (this.buttonTimer) {
+          window.clearTimeout(this.buttonTimer);
+        }
+        this.buttonTimer = window.setTimeout(this.handleAfterButtonPress, 200);
       } else {
         const msg = "Video: Error getting clip. Cannot zoom to clip.";
         alertErr(msg);
@@ -599,6 +606,12 @@ class Video extends React.Component<VideoProps, VideoState> {
       alertErr(msg);
       throw msg;
     }
+  };
+  handleAfterButtonPress = () => {
+    this.buttonTimer = null;
+    this.setState({
+      stateAuthority: null
+    });
   };
   isZoomedToClip = (
     clip: [number, number],

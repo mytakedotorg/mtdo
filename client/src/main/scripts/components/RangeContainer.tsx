@@ -13,6 +13,7 @@ interface RangeContainerProps {
   min: number;
   max: number;
   railStyle: StylesObject;
+  stateAuthority: StateAuthority;
   step: number;
   trackStyle: StylesObject;
   type: RangeType;
@@ -43,7 +44,12 @@ class RangeContainer extends React.Component<
     nextProps: RangeContainerProps,
     nextState: RangeContainerState
   ) {
-    if (isEqual(nextProps.value, this.props.value)) {
+    if (
+      isEqual(nextProps.value, this.props.value) &&
+      nextProps.stateAuthority !== "ZOOM" &&
+      this.props.min === nextProps.min &&
+      this.props.max === nextProps.max
+    ) {
       return false;
     }
     return true;
