@@ -55,6 +55,7 @@ test("CaptionTextNodeList", () => {
         isPaused={true}
         isZoomedToClip={false}
         rangeSliders={rangeSliders}
+        stateAuthority={"SCROLL"}
       />
     )
     .toJSON();
@@ -90,6 +91,7 @@ test("CaptionTextNodeList with highlights from props", () => {
         isPaused={true}
         isZoomedToClip={true}
         rangeSliders={rangeSliders}
+        stateAuthority={"SCROLL"}
       />
     )
     .toJSON();

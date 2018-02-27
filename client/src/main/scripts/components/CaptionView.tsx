@@ -14,7 +14,7 @@ import {
   FoundationNode,
   SimpleRanges
 } from "../utils/functions";
-import { RangeType, TimeRange } from "./Video";
+import { RangeType, StateAuthority, TimeRange } from "./Video";
 import { Foundation } from "../java2ts/Foundation";
 import { Routes } from "../java2ts/Routes";
 
@@ -47,6 +47,7 @@ interface CaptionViewProps {
   eventHandlers: CaptionViewEventHandlers;
   highlightedCharRange?: [number, number];
   rangeSliders: TimeRange[];
+  stateAuthority: StateAuthority;
 }
 
 interface CaptionViewState {
@@ -241,6 +242,7 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
                   captionTimer={this.props.timer}
                   documentNodes={this.state.highlightedNodes}
                   eventHandlers={captionTextNodeListContainerEventHandlers}
+                  stateAuthority={this.props.stateAuthority}
                   videoFact={this.props.videoFact}
                   view={transcriptViewRange}
                 />

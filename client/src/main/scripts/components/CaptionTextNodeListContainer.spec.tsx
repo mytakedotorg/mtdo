@@ -32,6 +32,7 @@ test("CaptionTextNodeListContainer", () => {
         captionTimer={0}
         documentNodes={videoNodes}
         eventHandlers={eventHandlers}
+        stateAuthority={"SCROLL"}
         videoFact={videoFactFast}
         view={view}
       />

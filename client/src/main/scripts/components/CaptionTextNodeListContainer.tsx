@@ -6,7 +6,7 @@ import { Foundation } from "../java2ts/Foundation";
 import CaptionTextNodeList, {
   CaptionTextNodeListEventHandlers
 } from "./CaptionTextNodeList";
-import { TimeRange } from "./Video";
+import { StateAuthority, TimeRange } from "./Video";
 import isEqual = require("lodash/isEqual");
 var bs = require("binary-search");
 
@@ -19,6 +19,7 @@ interface CaptionTextNodeListContainerProps {
   captionTimer: number;
   documentNodes: CaptionNodeArr;
   eventHandlers: CaptionTextNodeListContainerEventHandlers;
+  stateAuthority: StateAuthority;
   videoFact: Foundation.VideoFactContentFast;
   view: TimeRange;
 }
@@ -431,17 +432,9 @@ class CaptionTextNodeListContainer extends React.Component<
   }
   componentWillReceiveProps(nextProps: CaptionTextNodeListContainerProps) {
     // If our next prop is close to our current state, don't scroll.
-    if (
-      !this.isCloseTo(
-        nextProps.view.start,
-        this.state.wordTimestampAtViewStart,
-        10
-      )
-    ) {
-      // Since we're setting the scrollView this will trigger the onScroll handler
-      // which will set the scrollView and trigerr the onScroll handler until
-      // nextProps.view.start is close to this.state.wordAtViewStart.timestamp
-      // set a flag to prevent this loop of heavy code from executing
+    const { stateAuthority } = this.props;
+    if (stateAuthority !== "SCROLL" && stateAuthority != null) {
+      // Prevent this loop of heavy code from executing until necessary
       this.preventScroll = true;
       this.setScrollView(nextProps.view.start);
     }

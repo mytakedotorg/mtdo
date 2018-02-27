@@ -109,6 +109,7 @@ exports[`Video 1`] = `
           },
         ]
       }
+      stateAuthority={null}
       timer={0}
       videoDuration={5224}
       videoFact={
@@ -469,6 +470,7 @@ exports[`Video with highlights 1`] = `
           },
         ]
       }
+      stateAuthority={null}
       timer={0}
       videoDuration={5224}
       videoFact={

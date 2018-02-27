@@ -52,6 +52,8 @@ export const TRACKSTYLES__RANGE: TrackStyles = {
 
 export type RangeType = "SELECTION" | "VIEW" | "ZOOM" | "CURRENT_TIME";
 
+export type StateAuthority = RangeType | "SCROLL" | null;
+
 interface VideoProps {
   onSetClick: (range: [number, number]) => void;
   onRangeSet?: (videoRange: [number, number]) => void;
@@ -69,7 +71,7 @@ interface VideoState {
   captionIsHighlighted: boolean;
   highlightedCharRange: [number, number];
   rangeSliders: TimeRange[];
-  rangeIsChanging: RangeType | null;
+  stateAuthority: StateAuthority;
 }
 
 class Video extends React.Component<VideoProps, VideoState> {
@@ -109,7 +111,7 @@ class Video extends React.Component<VideoProps, VideoState> {
       captionIsHighlighted: props.clipRange ? true : false,
       highlightedCharRange: charRange,
       rangeSliders: this.initializeRangeSliders(props),
-      rangeIsChanging: null
+      stateAuthority: null
     };
   }
   cueVideo = () => {
@@ -210,7 +212,7 @@ class Video extends React.Component<VideoProps, VideoState> {
     }
   };
   handleCaptionScroll = (viewRange: [number, number]) => {
-    if (this.state.rangeIsChanging == null) {
+    if (this.state.stateAuthority == null) {
       // Don't let this fire if the range sliders are being changed
       const newView: TimeRange = {
         start: viewRange[0],
@@ -226,12 +228,16 @@ class Video extends React.Component<VideoProps, VideoState> {
       this.scrollTimer = window.setTimeout(this.handleCaptionScrollEnd, 500);
 
       this.setState({
-        rangeSliders: this.updateRangeSlider(newView)
+        rangeSliders: this.updateRangeSlider(newView),
+        stateAuthority: "SCROLL"
       });
     }
   };
   handleCaptionScrollEnd = () => {
     this.scrollTimer = null;
+    this.setState({
+      stateAuthority: null
+    });
   };
   handleClearClick = (): void => {
     this.setState({
@@ -268,7 +274,7 @@ class Video extends React.Component<VideoProps, VideoState> {
     type: RangeType
   ) => {
     this.setState({
-      rangeIsChanging: null
+      stateAuthority: null
     });
     if (type === "SELECTION" && typeof value === "object") {
       if (this.props.onRangeSet) {
@@ -277,10 +283,10 @@ class Video extends React.Component<VideoProps, VideoState> {
     }
   };
   handleRangeChange = (value: [number, number] | number, type: RangeType) => {
-    const { rangeIsChanging } = this.state;
+    const { stateAuthority } = this.state;
     if (
       this.scrollTimer == null && // Don't let this fire if the transcript is being scrolled
-      (rangeIsChanging == null || rangeIsChanging === type)
+      (stateAuthority == null || stateAuthority === type)
     ) {
       const zoomedRange = this.getRangeSlider("ZOOM");
       const selectionRange = this.getRangeSlider("SELECTION");
@@ -360,7 +366,7 @@ class Video extends React.Component<VideoProps, VideoState> {
                     [zoomedRange.start, zoomedRange.end]
                   )
                 : false,
-              rangeIsChanging: "SELECTION",
+              stateAuthority: "SELECTION",
               rangeSliders: this.updateRangeSlider(nextSelection)
             });
           } else {
@@ -429,7 +435,7 @@ class Video extends React.Component<VideoProps, VideoState> {
               label: "Transcript"
             };
             this.setState({
-              rangeIsChanging: "VIEW",
+              stateAuthority: "VIEW",
               rangeSliders: this.updateRangeSlider(nextView)
             });
           } else {
@@ -459,7 +465,7 @@ class Video extends React.Component<VideoProps, VideoState> {
                     [value[0], value[1]]
                   )
                 : false,
-            rangeIsChanging: "ZOOM",
+            stateAuthority: "ZOOM",
             rangeSliders: this.updateRangeSlider(nextZoom)
           });
           break;
@@ -822,6 +828,7 @@ class Video extends React.Component<VideoProps, VideoState> {
             eventHandlers={captionEventHandlers}
             highlightedCharRange={this.state.highlightedCharRange}
             rangeSliders={this.state.rangeSliders}
+            stateAuthority={this.state.stateAuthority}
           />
         </div>
       </div>
