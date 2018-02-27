@@ -25,7 +25,6 @@ import {
   DocumentBlock,
   VideoBlock
 } from "../components/BlockEditor";
-import { ReactElement, DetailedReactHTMLElement } from "react";
 
 function getAllFacts(
   callback: (
@@ -114,7 +113,7 @@ function fetchFact(
     })
     .then(function(json: any) {
       if (isEncoded) {
-        callback(null, decodeVideoFact(json));
+        callback(null, decodeVideoFact(json), index, block);
       } else if (index !== undefined) {
         if (block !== undefined) {
           callback(null, json, index, block);
@@ -378,7 +377,19 @@ function drawFacts(
                   let highlightedText = '"';
                   for (const node of highlightedCaptionNodes) {
                     if (typeof node === "object") {
-                      throw "TODO";
+                      for (const subnode of node as Array<CaptionNode>) {
+                        if (typeof subnode === "object") {
+                          const { children } = subnode.props;
+                          if (typeof children === "string") {
+                            highlightedText += children;
+                          } else {
+                            const msg =
+                              "databaseApi: unrecognized structure of highlightedCaptionNodes";
+                            alertErr(msg);
+                            throw msg;
+                          }
+                        }
+                      }
                     }
                   }
                   highlightedText = highlightedText.trimRight();
