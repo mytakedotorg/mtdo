@@ -840,11 +840,11 @@ function highlightCaption(
       continue;
     }
     if (isFirstNodeWithHighlights) {
+      isFirstNodeWithHighlights = false;
+      const startOffset = range[0] - charCount;
+      const textBefore = node.substring(0, startOffset);
       if (charCount + nodeLength <= range[1]) {
-        isFirstNodeWithHighlights = false;
-        const startOffset = range[0] - charCount;
         charCount += nodeLength;
-        const textBefore = node.substring(0, startOffset);
         const textContent = node.substring(startOffset);
         // First span
         const newSpan = React.createElement(
@@ -857,12 +857,9 @@ function highlightCaption(
         newNodes.push(newNode);
         continue;
       } else {
-        isFirstNodeWithHighlights = false;
         // A single node contains the full range
-        const startOffset = range[0] - charCount;
         const endOffset = range[1] - charCount;
         charCount += nodeLength;
-        const textBefore = node.substring(0, startOffset);
         const textContent = node.substring(startOffset, endOffset);
         const textAfter = node.substring(endOffset);
 
@@ -901,7 +898,7 @@ function highlightCaption(
       );
 
       const newNode = [newSpan, textAfter];
-      newNodes.push(node);
+      newNodes.push(newNode);
       isFinished = true;
     } else {
       newNodes.push(node);
