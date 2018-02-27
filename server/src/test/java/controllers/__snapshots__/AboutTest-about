@@ -87,7 +87,7 @@
 <p class="about__text">Our only goal is to build a place where we can have civil disagreements based in reality.  How can you trust us?  You don't, just see for yourself.<p>
 <ul class="about__list">
 	<li class="about__list-item">You can see the full source code for this site, and all the discussions which created it <a class="about__link" href="https://github.com/mytakedotorg/mytakedotorg">right here</a>.</li>
-	<li class="about__list-item">We publish every financial transaction we've ever made <a class="about__link" href="https://docs.google.com/spreadsheets/d/1l1IErsVZNlaVKsZQSubGEaidIp_5z3hQGInchDWn39A/edit?usp=sharing">right here</a>.</li>
+	<li class="about__list-item">We publish every financial transaction we've ever made <a class="about__link" href="https://drive.google.com/open?id=1SZtK9ajcQAs8la1dqnHtc9yAWJK7j-26HBrAx-gtUDY">right here</a>.</li>
 	<li class="about__list-item">Want to help us make the site better? Talk about how MyTake should work over at <a class="about__linl" href="https://meta.mytake.org/">meta.mytake.org</a>.</li>
 </ul>
 </div>
