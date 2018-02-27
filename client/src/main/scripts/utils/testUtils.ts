@@ -3,7 +3,7 @@ import { TimelineItemData } from "../components/Timeline";
 import { CaptionNodeArr, FoundationNode } from "./functions";
 import { Card } from "../components/FeedList";
 import { TakeDocument } from "../components/BlockEditor";
-import { TimeRange } from "../components/Video";
+import { StylesObject, TimeRange } from "../components/Video";
 
 const videoFact: Foundation.VideoFactContent = {
   youtubeId: "ApTLB76Nmdg",
@@ -1120,12 +1120,17 @@ const zoomRange: TimeRange = {
   label: "Zoom"
 };
 
+const rangeStyle: StylesObject = {
+  backgroundColor: "#758aa8"
+};
+
 export {
   cards,
   documentFactLink,
   documentNodes,
   initialRangeSliders,
   logMeasurements,
+  rangeStyle,
   takeDocument,
   timelineItems,
   unzoomedRangeSliders,
