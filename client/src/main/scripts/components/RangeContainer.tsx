@@ -3,6 +3,7 @@ import * as ReactDOM from "react-dom";
 import Slider, { Range } from "rc-slider";
 import { TrackSliderEventHandlers } from "./TrackSlider";
 import { RangeType, StateAuthority, StylesObject, TimeRange } from "./Video";
+import isEqual = require("lodash/isEqual");
 
 interface RangeContainerProps {
   defaultValue: number | [number, number];
@@ -12,7 +13,6 @@ interface RangeContainerProps {
   min: number;
   max: number;
   railStyle: StylesObject;
-  stateAuthority: StateAuthority;
   step: number;
   trackStyle: StylesObject;
   type: RangeType;
@@ -29,7 +29,9 @@ class RangeContainer extends React.Component<
     super(props);
   }
   handleRangeChange = (value: [number, number] | number, type: RangeType) => {
-    this.props.eventHandlers.onRangeChange(value, type);
+    if (!isEqual(value, this.props.value)) {
+      this.props.eventHandlers.onRangeChange(value, type);
+    }
   };
   handleAfterRangeChange = (
     value: [number, number] | number,
@@ -37,6 +39,15 @@ class RangeContainer extends React.Component<
   ) => {
     this.props.eventHandlers.onAfterRangeChange(value, type);
   };
+  shouldComponentUpdate(
+    nextProps: RangeContainerProps,
+    nextState: RangeContainerState
+  ) {
+    if (isEqual(nextProps.value, this.props.value)) {
+      return false;
+    }
+    return true;
+  }
   render() {
     const { props } = this;
     if (props.type === "CURRENT_TIME") {

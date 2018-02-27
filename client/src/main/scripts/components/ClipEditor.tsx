@@ -50,7 +50,6 @@ interface ClipEditorProps {
   isZoomedToClip: boolean;
   eventHandlers: ClipEditorEventHandlers;
   rangeSliders: TimeRange[];
-  stateAuthority: StateAuthority;
 }
 
 interface ClipEditorState {}
@@ -173,7 +172,6 @@ class ClipEditor extends React.Component<ClipEditorProps, ClipEditorState> {
             end={props.videoDuration}
             eventHandlers={eventHandlers}
             rangeSliders={topTrack}
-            stateAuthority={props.stateAuthority}
             step={1}
           />
         </div>
@@ -187,7 +185,6 @@ class ClipEditor extends React.Component<ClipEditorProps, ClipEditorState> {
               end={zoomRange.end}
               eventHandlers={eventHandlers}
               rangeSliders={bottomTrack}
-              stateAuthority={props.stateAuthority}
               step={0.1}
             />
           </div>

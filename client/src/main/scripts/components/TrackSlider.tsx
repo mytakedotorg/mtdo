@@ -17,7 +17,6 @@ interface TrackSliderProps {
   eventHandlers: TrackSliderEventHandlers;
   rangeSliders: TimeRange[];
   start: number;
-  stateAuthority: StateAuthority;
   step: number;
 }
 
@@ -78,7 +77,6 @@ class TrackSlider extends React.Component<TrackSliderProps, TrackSliderState> {
                 max={props.end}
                 eventHandlers={props.eventHandlers}
                 railStyle={rangeSlider.styles.rail}
-                stateAuthority={props.stateAuthority}
                 step={props.step}
                 trackStyle={rangeSlider.styles.track}
                 type={rangeSlider.type}
