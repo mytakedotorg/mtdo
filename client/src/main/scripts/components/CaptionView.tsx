@@ -1,9 +1,9 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import isEqual = require("lodash/isEqual");
-import CaptionTextNodeList, {
-  CaptionTextNodeListEventHandlers
-} from "./CaptionTextNodeList";
+import CaptionTextNodeListContainer, {
+  CaptionTextNodeListContainerEventHandlers
+} from "./CaptionTextNodeListContainer";
 import ClipEditor, { ClipEditorEventHandlers } from "./ClipEditor";
 import {
   alertErr,
@@ -209,7 +209,7 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
       onZoomToClipPress: this.props.eventHandlers.onZoomToClipPress
     };
 
-    const captionTextNodeListEventHandlers: CaptionTextNodeListEventHandlers = {
+    const captionTextNodeListContainerEventHandlers: CaptionTextNodeListContainerEventHandlers = {
       onMouseUp: this.handleMouseUp,
       onScroll: this.props.eventHandlers.onScroll
     };
@@ -237,11 +237,10 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
           >
             <div className="document__row">
               <div className={"document__row-inner"}>
-                <CaptionTextNodeList
+                <CaptionTextNodeListContainer
                   captionTimer={this.props.timer}
-                  className="document__text document__text--caption"
                   documentNodes={this.state.highlightedNodes}
-                  eventHandlers={captionTextNodeListEventHandlers}
+                  eventHandlers={captionTextNodeListContainerEventHandlers}
                   videoFact={this.props.videoFact}
                   view={transcriptViewRange}
                 />

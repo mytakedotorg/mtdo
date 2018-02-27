@@ -22,13 +22,7 @@ class CaptionTextNode extends React.Component<
     let innerHTML: any = [];
 
     if (typeof documentNode === "object") {
-      for (const subNode of documentNode as Array<
-        | string
-        | React.DetailedReactHTMLElement<
-            { className: string; key: string },
-            HTMLElement
-          >
-      >) {
+      for (const subNode of documentNode as Array<CaptionNode>) {
         innerHTML.push(subNode);
       }
     } else {
