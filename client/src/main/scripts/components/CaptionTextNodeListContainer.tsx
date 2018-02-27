@@ -377,11 +377,11 @@ class CaptionTextNodeListContainer extends React.Component<
         if (captionTextContainer && captionTextContainer.children[1]) {
           hiddenTextElement = captionTextContainer.children[1];
         } else {
-          alertErr(
+          const msg =
             "CaptionTextNodeList: Couldn't find caption node at index " +
-              speakerIdx
-          );
-          throw "Couldn't find caption node at index " + speakerIdx;
+            speakerIdx;
+          alertErr(msg);
+          throw msg;
         }
 
         let height = 0;
@@ -422,7 +422,10 @@ class CaptionTextNodeListContainer extends React.Component<
           // Set the parent container's scrollTop value to the offsetTop
           captionNodeContainer.scrollTop = childTop;
         } else {
-          throw "TODO: last paragraph";
+          const msg =
+            "CaptionTextNodeList: Couldn't find end of word range for last speaker.";
+          alertErr(msg);
+          throw msg;
         }
       }
     }
