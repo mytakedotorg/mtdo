@@ -56,7 +56,7 @@ export type CaptionNode =
   | React.DetailedReactHTMLElement<
       {
         className: string;
-        children: React.ReactNode;
+        children?: React.ReactNode;
       },
       HTMLElement
     >;
