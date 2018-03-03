@@ -350,12 +350,23 @@ exports[`Video with highlights 1`] = `
       <div
         className="video__header"
       >
-        <button
-          className="video__button video__button--top"
-          onClick={[Function]}
+        <DropDown
+          position="BR"
+          text="Share"
         >
-          Give your Take on this
-        </button>
+          <button
+            className="share__action share__action--clickable"
+            onClick={[Function]}
+          >
+            Copy URL
+          </button>
+          <button
+            className="share__action share__action--clickable"
+            onClick={[Function]}
+          >
+            Give your Take on this
+          </button>
+        </DropDown>
         <p
           className="video__date"
         >

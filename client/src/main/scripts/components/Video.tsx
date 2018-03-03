@@ -4,6 +4,7 @@ import isEqual = require("lodash/isEqual");
 import { alertErr, getCharRangeFromVideoRange } from "../utils/functions";
 import { Foundation } from "../java2ts/Foundation";
 import CaptionView, { CaptionViewEventHandlers } from "./CaptionView";
+import DropDown from "./DropDown";
 import { Routes } from "../java2ts/Routes";
 
 interface YTPlayerParameters {
@@ -66,6 +67,7 @@ interface VideoProps {
 interface VideoState {
   currentTime: number;
   duration: number;
+  isCopiedToClipBoard: boolean;
   isPaused: boolean;
   isZoomedToClip: boolean;
   captionIsHighlighted: boolean;
@@ -106,6 +108,7 @@ class Video extends React.Component<VideoProps, VideoState> {
 
     this.state = {
       currentTime: props.clipRange ? props.clipRange[0] : 0,
+      isCopiedToClipBoard: false,
       isPaused: true,
       isZoomedToClip: props.clipRange ? true : false,
       duration: 5224,
@@ -115,6 +118,36 @@ class Video extends React.Component<VideoProps, VideoState> {
       stateAuthority: null
     };
   }
+  copyURL = () => {
+    const textArea = document.createElement("textarea");
+    textArea.style.position = "fixed";
+    textArea.style.top = "0";
+    textArea.style.left = "0";
+    textArea.style.width = "2em";
+    textArea.style.height = "2em";
+    textArea.style.padding = "0";
+    textArea.style.border = "none";
+    textArea.style.outline = "none";
+    textArea.style.boxShadow = "none";
+    textArea.style.background = "transparent";
+
+    const text = window.location.href;
+    textArea.value = text;
+    document.body.appendChild(textArea);
+    textArea.select();
+    try {
+      const success = document.execCommand("copy");
+    } catch (err) {
+      const msg = "Unable to copy text";
+      alertErr(msg);
+      throw msg;
+    }
+    document.body.removeChild(textArea);
+
+    this.setState({
+      isCopiedToClipBoard: true
+    });
+  };
   cueVideo = () => {
     if (this.player) {
       const selectionRange = this.getRangeSlider("SELECTION");
@@ -206,6 +239,7 @@ class Video extends React.Component<VideoProps, VideoState> {
     this.setState({
       captionIsHighlighted: true,
       highlightedCharRange: charRange,
+      isCopiedToClipBoard: false,
       rangeSliders: this.updateRangeSlider(newSelection)
     });
     if (this.props.onRangeSet) {
@@ -242,7 +276,8 @@ class Video extends React.Component<VideoProps, VideoState> {
   };
   handleClearClick = (): void => {
     this.setState({
-      captionIsHighlighted: false
+      captionIsHighlighted: false,
+      isCopiedToClipBoard: false
     });
     if (this.props.onClearClick) {
       this.props.onClearClick();
@@ -361,6 +396,7 @@ class Video extends React.Component<VideoProps, VideoState> {
             this.setState({
               captionIsHighlighted: true,
               highlightedCharRange: charRange,
+              isCopiedToClipBoard: false,
               isZoomedToClip: zoomedRange.end
                 ? this.isZoomedToClip(
                     [nextSelectionStart, nextSelectionEnd],
@@ -711,6 +747,7 @@ class Video extends React.Component<VideoProps, VideoState> {
       );
       this.setState({
         highlightedCharRange: charRange,
+        isCopiedToClipBoard: false,
         captionIsHighlighted: true,
         isPaused: true
       });
@@ -722,6 +759,7 @@ class Video extends React.Component<VideoProps, VideoState> {
       this.setState({
         captionIsHighlighted: false,
         highlightedCharRange: [-1, -1],
+        isCopiedToClipBoard: false,
         isPaused: true,
         rangeSliders: this.initializeRangeSliders(nextProps)
       });
@@ -769,6 +807,7 @@ class Video extends React.Component<VideoProps, VideoState> {
         currentTime: nextProps.clipRange[0],
         captionIsHighlighted: true,
         highlightedCharRange: charRange,
+        isCopiedToClipBoard: false,
         isZoomedToClip: isZoomedToClip,
         rangeSliders: newRangeSliders
       });
@@ -807,13 +846,29 @@ class Video extends React.Component<VideoProps, VideoState> {
         >
           <div className="video__container">
             <div className="video__header">
-              {selection && selection.end && selection.end > selection.start ? (
-                <button
-                  className="video__button video__button--top"
-                  onClick={this.handleSetClick}
-                >
-                  Give your Take on this
-                </button>
+              {selection &&
+              selection.end &&
+              selection.end > selection.start ? (
+                <DropDown text="Share" position="BR">
+                  {this.state.isCopiedToClipBoard ? (
+                    <span className="share__action share__action--success">
+                      Copied to clipboard
+                    </span>
+                  ) : (
+                    <button
+                      className="share__action share__action--clickable"
+                      onClick={this.copyURL}
+                    >
+                      Copy URL
+                    </button>
+                  )}
+                  <button
+                    className="share__action share__action--clickable"
+                    onClick={this.handleSetClick}
+                  >
+                    Give your Take on this
+                  </button>
+                </DropDown>
               ) : null}
               <p className="video__date">
                 {this.props.videoFact.fact.primaryDate}

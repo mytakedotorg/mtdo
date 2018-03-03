@@ -12,6 +12,14 @@ jest.mock("./CaptionView", () => ({
   default: "CaptionView"
 }));
 
+jest.mock("./DropDown", () => ({
+  default: "DropDown"
+}));
+
+jest.mock("./EmailTake", () => ({
+  default: "EmailTake"
+}));
+
 const mockFn = jest.fn();
 
 test("Video", () => {
