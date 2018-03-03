@@ -8,7 +8,8 @@ import BlockEditor, {
 } from "./BlockEditor";
 import TimelineView from "./TimelineView";
 import EditorButtons from "./EditorButtons";
-import ShareContainer from "./ShareContainer";
+import DropDown from "./DropDown";
+import EmailTake from "./EmailTake";
 import PreviewChooser from "./PreviewChooser";
 import { postRequest } from "../utils/databaseAPI";
 import { DraftRev } from "../java2ts/DraftRev";
@@ -615,44 +616,46 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
             active={this.state.activeBlockIndex}
           />
           <div className="editor__wrapper">
-          <div className="editor__row">
-            <EditorButtons
-              eventHandlers={buttonEventHandlers}
-              status={this.state.status}
-            />
-            <div className="editor__share">
-              <ShareContainer
-                takeDocument={(Object as any).assign(
-                  {},
-                  this.state.takeDocument
-                )}
+            <div className="editor__row">
+              <EditorButtons
+                eventHandlers={buttonEventHandlers}
+                status={this.state.status}
               />
+              <div className="editor__share">
+                <DropDown text="Email" position="TL">
+                  <EmailTake
+                    takeDocument={(Object as any).assign(
+                      {},
+                      this.state.takeDocument
+                    )}
+                  />
+                </DropDown>
+              </div>
             </div>
+            <p className="timeline__instructions">
+              Add Facts to your Take from the timeline below.
+            </p>
           </div>
-          <p className="timeline__instructions">
-            Add Facts to your Take from the timeline below.
-          </p>
+          <TimelineView
+            path={window.location.pathname}
+            setFactHandlers={setFactHandlers}
+          />
         </div>
-        <TimelineView
-          path={window.location.pathname}
-          setFactHandlers={setFactHandlers}
-        />
-      </div>
-    );
-  } else {
-    const publishEventHandlers = {
-      handleCancelClick: this.handlePublishCancelClick,
-      handlePublishClick: this.publishTake
-    };
-    return (
-      <div>
-        <PreviewChooser
-          takeDocument={this.state.takeDocument}
-          eventHandlers={publishEventHandlers}
-        />
-      </div>
-    );
-  }
+      );
+    } else {
+      const publishEventHandlers = {
+        handleCancelClick: this.handlePublishCancelClick,
+        handlePublishClick: this.publishTake
+      };
+      return (
+        <div>
+          <PreviewChooser
+            takeDocument={this.state.takeDocument}
+            eventHandlers={publishEventHandlers}
+          />
+        </div>
+      );
+    }
   }
 }
 
