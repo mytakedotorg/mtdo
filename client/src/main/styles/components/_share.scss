@@ -10,6 +10,7 @@
   text-align: left;
   margin-left: $page-margin-mobile;
   margin-right: $page-margin-mobile;
+  background-color: transparent;
 }
 .share__action--toggle {
   @include button--borderless;
@@ -19,7 +20,6 @@
 .share__action--clickable {
   @include button--borderless;
   @include heading6;
-  background-color: transparent;
   width: 100%;
 }
 .share__action--success {
