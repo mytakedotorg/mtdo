@@ -1,7 +1,11 @@
 import * as React from "react";
 import YouTube from "react-youtube";
 import isEqual = require("lodash/isEqual");
-import { alertErr, getCharRangeFromVideoRange } from "../utils/functions";
+import {
+  alertErr,
+  getCharRangeFromVideoRange,
+  slugify
+} from "../utils/functions";
 import { Foundation } from "../java2ts/Foundation";
 import CaptionView, { CaptionViewEventHandlers } from "./CaptionView";
 import DropDown from "./DropDown";
@@ -131,14 +135,32 @@ class Video extends React.Component<VideoProps, VideoState> {
     textArea.style.boxShadow = "none";
     textArea.style.background = "transparent";
 
-    const text = window.location.href;
+    let text =
+      window.location.protocol +
+      "//" +
+      window.location.host +
+      Routes.FOUNDATION_V1 +
+      "/" +
+      slugify(this.props.videoFact.fact.title);
+
+    if (this.state.captionIsHighlighted) {
+      const selection = this.getRangeSlider("SELECTION");
+      if (selection && selection.end) {
+        text +=
+          "/" + selection.start.toFixed(3) + "-" + selection.end.toFixed(3);
+      } else {
+        const msg = "Video: Expect selection to exist.";
+        alertErr(msg);
+        throw msg;
+      }
+    }
     textArea.value = text;
     document.body.appendChild(textArea);
     textArea.select();
     try {
       const success = document.execCommand("copy");
     } catch (err) {
-      const msg = "Unable to copy text";
+      const msg = "Video: Unable to copy text";
       alertErr(msg);
       throw msg;
     }
@@ -846,9 +868,7 @@ class Video extends React.Component<VideoProps, VideoState> {
         >
           <div className="video__container">
             <div className="video__header">
-              {selection &&
-              selection.end &&
-              selection.end > selection.start ? (
+              {selection && selection.end && selection.end > selection.start ? (
                 <DropDown text="Share" position="BR">
                   {this.state.isCopiedToClipBoard ? (
                     <span className="share__action share__action--success">
