@@ -15,7 +15,8 @@
 .share__action--toggle {
   @include button--borderless;
   @include body("sans");
-  margin-right: $content-margin;
+  margin: 0;
+  line-height: 35px;
 }
 .share__action--clickable {
   @include button--borderless;

@@ -45,6 +45,9 @@ exports[`Video 1`] = `
         videoId="ApTLB76Nmdg"
       />
     </div>
+    <div
+      className="video__container video__container--actions"
+    />
     <CaptionView
       captionIsHighlighted={false}
       eventHandlers={
@@ -350,23 +353,6 @@ exports[`Video with highlights 1`] = `
       <div
         className="video__header"
       >
-        <DropDown
-          position="BR"
-          text="Share"
-        >
-          <button
-            className="share__action share__action--clickable"
-            onClick={[Function]}
-          >
-            Copy URL
-          </button>
-          <button
-            className="share__action share__action--clickable"
-            onClick={[Function]}
-          >
-            Give your Take on this
-          </button>
-        </DropDown>
         <p
           className="video__date"
         >
@@ -398,6 +384,31 @@ exports[`Video with highlights 1`] = `
         }
         videoId="ApTLB76Nmdg"
       />
+    </div>
+    <div
+      className="video__container video__container--actions"
+    >
+      <div
+        className="video__float--right"
+      >
+        <DropDown
+          position="BL"
+          text="Share"
+        >
+          <button
+            className="share__action share__action--clickable"
+            onClick={[Function]}
+          >
+            Copy URL
+          </button>
+          <button
+            className="share__action share__action--clickable"
+            onClick={[Function]}
+          >
+            Give your Take on this
+          </button>
+        </DropDown>
+      </div>
     </div>
     <CaptionView
       captionIsHighlighted={true}

@@ -224,26 +224,30 @@ export class Reaction extends React.Component<ReactionProps, ReactionState> {
         </div>
 
         <div className="reaction__actions">
-          <button
-            className="reaction__action reaction__action--star"
-            onClick={props.eventListeners.onStarPress}
-            disabled={typeof props.containerState.takeState == "undefined"}
-          >
-            {props.containerState.userState &&
-            props.containerState.userState.like ? (
-              <i className="fa fa-star" aria-hidden="true" />
-            ) : (
-              <i className="fa fa-star-o" aria-hidden="true" />
-            )}
-          </button>
-          <DropDown text="Email" position="TL">
-            <EmailTake
-              takeDocument={(Object as any).assign(
-                {},
-                props.containerProps.takeDocument
+          <div className="reaction__action-container">
+            <button
+              className="reaction__action reaction__action--star"
+              onClick={props.eventListeners.onStarPress}
+              disabled={typeof props.containerState.takeState == "undefined"}
+            >
+              {props.containerState.userState &&
+              props.containerState.userState.like ? (
+                <i className="fa fa-star" aria-hidden="true" />
+              ) : (
+                <i className="fa fa-star-o" aria-hidden="true" />
               )}
-            />
-          </DropDown>
+            </button>
+          </div>
+          <div className="reaction__action-container">
+            <DropDown text="Email" position="TL">
+              <EmailTake
+                takeDocument={(Object as any).assign(
+                  {},
+                  props.containerProps.takeDocument
+                )}
+              />
+            </DropDown>
+          </div>
           <div className="reaction__action-container">
             <button
               className="reaction__action reaction__action--report"

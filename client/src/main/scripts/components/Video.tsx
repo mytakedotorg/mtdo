@@ -78,6 +78,7 @@ interface VideoState {
   highlightedCharRange: [number, number];
   rangeSliders: TimeRange[];
   stateAuthority: StateAuthority;
+  userHasModifiedRange: boolean;
 }
 
 class Video extends React.Component<VideoProps, VideoState> {
@@ -87,6 +88,7 @@ class Video extends React.Component<VideoProps, VideoState> {
   private player: any;
   private viewRangeDuration: number;
   private playerVars: YTPlayerParameters;
+  private initialClipRange?: [number, number] | null;
   constructor(props: VideoProps) {
     super(props);
 
@@ -94,6 +96,10 @@ class Video extends React.Component<VideoProps, VideoState> {
       props.videoFact,
       props.clipRange
     );
+
+    if (props.clipRange) {
+      this.initialClipRange = props.clipRange;
+    }
 
     this.playerVars = {
       rel: 0,
@@ -118,8 +124,9 @@ class Video extends React.Component<VideoProps, VideoState> {
       duration: 5224,
       captionIsHighlighted: props.clipRange ? true : false,
       highlightedCharRange: charRange,
-      rangeSliders: this.initializeRangeSliders(props),
-      stateAuthority: null
+      rangeSliders: this.initializeRangeSliders(props.clipRange),
+      stateAuthority: null,
+      userHasModifiedRange: false
     };
   }
   copyURL = () => {
@@ -215,7 +222,9 @@ class Video extends React.Component<VideoProps, VideoState> {
     }
     return null;
   };
-  initializeRangeSliders = (props: VideoProps): TimeRange[] => {
+  initializeRangeSliders = (
+    clipRange?: [number, number] | null
+  ): TimeRange[] => {
     const transcriptViewRange: TimeRange = {
       start: 0,
       end: this.viewRangeDuration,
@@ -225,18 +234,18 @@ class Video extends React.Component<VideoProps, VideoState> {
     };
 
     const selectionRange: TimeRange = {
-      start: props.clipRange ? props.clipRange[0] : 0,
-      end: props.clipRange ? props.clipRange[1] : 0,
+      start: clipRange ? clipRange[0] : 0,
+      end: clipRange ? clipRange[1] : 0,
       type: "SELECTION",
       styles: TRACKSTYLES__RANGE,
       label: "Clip"
     };
 
-    if (props.clipRange) {
-      const tenPercent = (props.clipRange[1] - props.clipRange[0]) * 0.1;
+    if (clipRange) {
+      const tenPercent = (clipRange[1] - clipRange[0]) * 0.1;
       const zoomRange: TimeRange = {
-        start: props.clipRange[0] - tenPercent,
-        end: props.clipRange[1] + tenPercent,
+        start: clipRange[0] - tenPercent,
+        end: clipRange[1] + tenPercent,
         type: "ZOOM",
         styles: TRACKSTYLES__RANGE,
         label: "Zoom"
@@ -262,7 +271,8 @@ class Video extends React.Component<VideoProps, VideoState> {
       captionIsHighlighted: true,
       highlightedCharRange: charRange,
       isCopiedToClipBoard: false,
-      rangeSliders: this.updateRangeSlider(newSelection)
+      rangeSliders: this.updateRangeSlider(newSelection),
+      userHasModifiedRange: true
     });
     if (this.props.onRangeSet) {
       this.props.onRangeSet([videoRange[0], videoRange[1]]);
@@ -331,13 +341,18 @@ class Video extends React.Component<VideoProps, VideoState> {
     value: [number, number] | number,
     type: RangeType
   ) => {
-    this.setState({
-      stateAuthority: null
-    });
     if (type === "SELECTION" && typeof value === "object") {
       if (this.props.onRangeSet) {
         this.props.onRangeSet([value[0], value[1]]);
       }
+      this.setState({
+        stateAuthority: null,
+        userHasModifiedRange: true
+      });
+    } else {
+      this.setState({
+        stateAuthority: null
+      });
     }
   };
   handleRangeChange = (value: [number, number] | number, type: RangeType) => {
@@ -612,6 +627,30 @@ class Video extends React.Component<VideoProps, VideoState> {
       }
     }
   };
+  handleResetClick = () => {
+    const selection: TimeRange = {
+      start: this.initialClipRange ? this.initialClipRange[0] : 0,
+      end: this.initialClipRange ? this.initialClipRange[1] : 0,
+      type: "SELECTION",
+      styles: TRACKSTYLES__RANGE,
+      label: "Clip"
+    };
+
+    let charRange: [number, number] = this.getCharRange(
+      this.props.videoFact,
+      this.initialClipRange ? this.initialClipRange : [0, 0]
+    );
+
+    this.setState({
+      currentTime: this.initialClipRange ? this.initialClipRange[0] : 0,
+      captionIsHighlighted: this.initialClipRange ? true : false,
+      highlightedCharRange: charRange,
+      isCopiedToClipBoard: false,
+      isZoomedToClip: this.initialClipRange ? true : false,
+      rangeSliders: this.initializeRangeSliders(this.initialClipRange)
+    });
+    this.handleRestartPress();
+  };
   handleSetClick = () => {
     const selectionRange = this.getRangeSlider("SELECTION");
     if (selectionRange && selectionRange.end) {
@@ -783,7 +822,7 @@ class Video extends React.Component<VideoProps, VideoState> {
         highlightedCharRange: [-1, -1],
         isCopiedToClipBoard: false,
         isPaused: true,
-        rangeSliders: this.initializeRangeSliders(nextProps)
+        rangeSliders: this.initializeRangeSliders(nextProps.clipRange)
       });
       if (this.player) {
         this.player.pauseVideo();
@@ -868,8 +907,23 @@ class Video extends React.Component<VideoProps, VideoState> {
         >
           <div className="video__container">
             <div className="video__header">
-              {selection && selection.end && selection.end > selection.start ? (
-                <DropDown text="Share" position="BR">
+              <p className="video__date">
+                {this.props.videoFact.fact.primaryDate}
+              </p>
+            </div>
+            <YouTube
+              videoId={this.props.videoFact.youtubeId}
+              opts={opts}
+              onReady={this.handleReady}
+              onPause={this.handlePause}
+              onStateChange={this.handleStateChange}
+              className="video__video"
+            />
+          </div>
+          <div className="video__container video__container--actions">
+            {selection && selection.end && selection.end > selection.start ? (
+              <div className="video__float--right">
+                <DropDown text="Share" position="BL">
                   {this.state.isCopiedToClipBoard ? (
                     <span className="share__action share__action--success">
                       Copied to clipboard
@@ -889,19 +943,18 @@ class Video extends React.Component<VideoProps, VideoState> {
                     Give your Take on this
                   </button>
                 </DropDown>
-              ) : null}
-              <p className="video__date">
-                {this.props.videoFact.fact.primaryDate}
-              </p>
-            </div>
-            <YouTube
-              videoId={this.props.videoFact.youtubeId}
-              opts={opts}
-              onReady={this.handleReady}
-              onPause={this.handlePause}
-              onStateChange={this.handleStateChange}
-              className="video__video"
-            />
+              </div>
+            ) : null}
+            {this.state.userHasModifiedRange ? (
+              <div className="video__float--right">
+                <button
+                  className="video__button video__button--reset"
+                  onClick={this.handleResetClick}
+                >
+                  Reset
+                </button>
+              </div>
+            ) : null}
           </div>
           <CaptionView
             timer={this.state.currentTime}
