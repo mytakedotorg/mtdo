@@ -1,0 +1,13 @@
+.chooser {
+  @include content-column;
+}
+.chooser__inner {
+  margin-left: 2rem;
+  margin-right: 2rem;
+}
+.chooser__heading {
+  @include heading1;
+}
+.chooser__instructions {
+  @include body--lead;
+}

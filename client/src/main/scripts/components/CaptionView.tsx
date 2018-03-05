@@ -221,7 +221,7 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
     );
 
     return (
-      <div className="captions">
+      <div className="video__captions">
         <ClipEditor
           eventHandlers={clipEditorEventHandlers}
           captionIsHighlighted={this.props.captionIsHighlighted}

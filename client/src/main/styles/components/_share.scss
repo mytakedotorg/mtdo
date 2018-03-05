@@ -5,33 +5,31 @@
 .share__inner-container {
   position: relative;
 }
+.share__action {
+  line-height: 35px;
+  text-align: left;
+  margin-left: $page-margin-mobile;
+  margin-right: $page-margin-mobile;
+  background-color: transparent;
+}
 .share__action--toggle {
   @include button--borderless;
   @include body("sans");
-  margin-right: $content-margin;
+  margin: 0;
+  line-height: 35px;
 }
-.share__action--email {
+.share__action--clickable {
   @include button--borderless;
   @include heading6;
-  line-height: 35px;
-  background-color: transparent;
   width: 100%;
-  text-align: left;
-  margin-left: $page-margin-mobile;
-  margin-right: $page-margin-mobile;
 }
-.share__action--sent {
+.share__action--success {
+  @include heading6;
   color: palette(share, text--green);
-  @include body("sans");
-  text-align: left;
-  margin-left: $page-margin-mobile;
-  margin-right: $page-margin-mobile;
 }
-.share__modal {
+.share__dropDown {
   position: absolute;
-  top: -35px * 2 - 2;
   width: 195px;
-  right: 0;
   max-height: 300px;
   overflow: hidden;
   border: 1px solid palette(share, border);
@@ -40,10 +38,26 @@
   float: none;
   text-align: left;
 }
-.share__modal--hidden {
+.share__dropDown--hidden {
   max-height: 0;
   border: none;
   padding: 0;
+}
+.share__dropDown--tr {
+  top: -35px * 2 - 2;
+  left: 0;
+}
+.share__dropDown--tl {
+  top: -35px * 2 - 2;
+  right: 0;
+}
+.share__dropDown--br {
+  top: 35px;
+  left: 0;
+}
+.share__dropDown--bl {
+  top: 35px;
+  right: 0;
 }
 .share__html {
   max-height: 300px - 35px;

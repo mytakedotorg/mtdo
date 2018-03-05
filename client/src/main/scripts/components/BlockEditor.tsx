@@ -49,7 +49,7 @@ export function isWriteOnly(
   }
 }
 
-class Paragraph extends React.Component<
+export class Paragraph extends React.Component<
   ParagraphBlockProps,
   ParagraphBlockState
 > {

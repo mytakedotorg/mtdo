@@ -2,7 +2,7 @@
 
 exports[`CaptionTextNodeList 1`] = `
 <div
-  className="captions"
+  className="video__captions"
 >
   <ClipEditor
     captionIsHighlighted={false}
@@ -121,7 +121,7 @@ exports[`CaptionTextNodeList 1`] = `
 
 exports[`CaptionTextNodeList with highlights from props 1`] = `
 <div
-  className="captions"
+  className="video__captions"
 >
   <ClipEditor
     captionIsHighlighted={true}

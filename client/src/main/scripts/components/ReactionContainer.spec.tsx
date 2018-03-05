@@ -28,8 +28,12 @@ const eventListeners = {
   onStarPress: jest.fn()
 };
 
-jest.mock("./ShareContainer", () => ({
-  default: "ShareContainer"
+jest.mock("./DropDown", () => ({
+  default: "DropDown"
+}));
+
+jest.mock("./EmailTake", () => ({
+  default: "EmailTake"
 }));
 
 test("Reaction - loading", () => {

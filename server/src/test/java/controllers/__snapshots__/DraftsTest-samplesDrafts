@@ -10,6 +10,10 @@
 <meta name="description" content="Your drafts | MyTake.org">
 <meta name="author" content="MyTake.org">
 
+<meta property="og:title" content="MyTake.org" />
+<meta property="og:description" content="Your drafts" />
+<meta property="fb:app_id" content="1014270045380974" />
+
 <link rel="stylesheet" href="/assets-dev/styles/main.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Merriweather:400,400i,700|Source+Sans+Pro:300,400,700" crossorigin="anonymous">
 <script src="https://use.fontawesome.com/be03d6dcba.js"></script>
@@ -19,6 +23,24 @@
 </head>
 
 <body>
+<script>
+	window.fbAsyncInit = function() {
+		FB.init({
+			appId            : '1014270045380974',
+			autoLogAppEvents : true,
+			xfbml            : true,
+			version          : 'v2.11'
+		});
+	};
+
+	(function(d, s, id){
+			var js, fjs = d.getElementsByTagName(s)[0];
+			if (d.getElementById(id)) {return;}
+			js = d.createElement(s); js.id = id;
+			js.src = "https://connect.facebook.net/en_US/sdk.js";
+			fjs.parentNode.insertBefore(js, fjs);
+		}(document, 'script', 'facebook-jssdk'));
+</script>
 <header class="header" role="banner">
 	<a class="header__skip-link" href="#app" tabindex="1">Skip to main content</a>
 	<div class="header__top">

@@ -8,7 +8,9 @@ import BlockEditor, {
 } from "./BlockEditor";
 import TimelineView from "./TimelineView";
 import EditorButtons from "./EditorButtons";
-import ShareContainer from "./ShareContainer";
+import DropDown from "./DropDown";
+import EmailTake from "./EmailTake";
+import PreviewChooser from "./PreviewChooser";
 import { postRequest } from "../utils/databaseAPI";
 import { DraftRev } from "../java2ts/DraftRev";
 import { DraftPost } from "../java2ts/DraftPost";
@@ -38,6 +40,7 @@ interface BlockWriterHashValues {
 export interface Status {
   saved: boolean;
   saving: boolean;
+  publishing: boolean;
   error: boolean;
   message: string;
 }
@@ -82,6 +85,7 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
       saved: true,
       saving: false,
       error: false,
+      publishing: false,
       message: ""
     };
 
@@ -310,6 +314,16 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
       }
     }
   };
+  handlePublishCancelClick = () => {
+    this.setState({
+      status: {
+        ...this.state.status,
+        publishing: false,
+        error: false,
+        message: ""
+      }
+    });
+  };
   handleDeleteClick = () => {
     if (
       confirm(
@@ -330,43 +344,18 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
     }
   };
   handlePublishClick = () => {
-    if (
-      confirm(
-        "This action cannot be undone. Are you sure you want to publish this draft?"
-      )
-    ) {
-      const { title } = this.state.takeDocument;
-      if (title.length <= 255) {
-        if (title.length > 0) {
-          this.setState({
-            status: {
-              ...this.state.status,
-              saving: true,
-              error: false,
-              message: "Publishing Take."
-            }
-          });
-          const bodyJson: DraftPost = {
-            parentRev: this.state.parentRev,
-            title: title,
-            blocks: this.state.takeDocument.blocks
-          };
-          postRequest(Routes.DRAFTS_PUBLISH, bodyJson, function(
-            json: PublishResult
-          ) {
-            if (!json.conflict) {
-              window.location.href = json.publishedUrl;
-            } else {
-              alertErr("BlockWriter: error publishing Take.");
-              throw "There was an error publishing your Take.";
-            }
-          });
+    const { title } = this.state.takeDocument;
+    if (title.length <= 255) {
+      if (title.length > 0) {
+        if (this.state.takeDocument.blocks.length < 2) {
+          this.publishTake();
         } else {
           this.setState({
             status: {
               ...this.state.status,
-              error: true,
-              message: "Take must have a title."
+              publishing: true,
+              error: false,
+              message: "Publishing Take."
             }
           });
         }
@@ -375,10 +364,18 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
           status: {
             ...this.state.status,
             error: true,
-            message: "Title cannot be longer than 255 characters."
+            message: "Take must have a title."
           }
         });
       }
+    } else {
+      this.setState({
+        status: {
+          ...this.state.status,
+          error: true,
+          message: "Title cannot be longer than 255 characters."
+        }
+      });
     }
   };
   handleSaveClick = () => {
@@ -484,6 +481,21 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
       viewRange
     };
   };
+  publishTake = () => {
+    const bodyJson: DraftPost = {
+      parentRev: this.state.parentRev,
+      title: this.state.takeDocument.title,
+      blocks: this.state.takeDocument.blocks
+    };
+    postRequest(Routes.DRAFTS_PUBLISH, bodyJson, function(json: PublishResult) {
+      if (!json.conflict) {
+        window.location.href = json.publishedUrl;
+      } else {
+        alertErr("BlockWriter: error publishing Take.");
+        throw "There was an error publishing your Take.";
+      }
+    });
+  };
   handleTakeBlockChange = (stateIndex: number, value: string): void => {
     if (stateIndex === -1) {
       // Change the title
@@ -576,58 +588,74 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
     }
   }
   render() {
-    const eventHandlers = {
-      handleChange: this.handleTakeBlockChange,
-      handleDelete: this.removeBlock,
-      handleEnterPress: this.addParagraph,
-      handleFocus: this.handleTakeBlockFocus
-    };
+    if (!this.state.status.publishing) {
+      const editorEventHandlers = {
+        handleChange: this.handleTakeBlockChange,
+        handleDelete: this.removeBlock,
+        handleEnterPress: this.addParagraph,
+        handleFocus: this.handleTakeBlockFocus
+      };
 
-    const setFactHandlers = {
-      handleDocumentSetClick: this.addDocument,
-      handleVideoSetClick: this.addVideo,
-      handleRangeSet: () => {},
-      handleRangeCleared: () => {}
-    };
+      const setFactHandlers = {
+        handleDocumentSetClick: this.addDocument,
+        handleVideoSetClick: this.addVideo,
+        handleRangeSet: () => {},
+        handleRangeCleared: () => {}
+      };
 
-    const buttonEventHandlers: ButtonEventHandlers = {
-      handleDeleteClick: this.handleDeleteClick,
-      handlePublishClick: this.handlePublishClick,
-      handleSaveClick: this.handleSaveClick
-    };
-
-    return (
-      <div>
-        <BlockEditor
-          eventHandlers={eventHandlers}
-          takeDocument={(Object as any).assign({}, this.state.takeDocument)}
-          active={this.state.activeBlockIndex}
-        />
-        <div className="editor__wrapper">
-          <div className="editor__row">
-            <EditorButtons
-              eventHandlers={buttonEventHandlers}
-              status={this.state.status}
-            />
-            <div className="editor__share">
-              <ShareContainer
-                takeDocument={(Object as any).assign(
-                  {},
-                  this.state.takeDocument
-                )}
+      const buttonEventHandlers: ButtonEventHandlers = {
+        handleDeleteClick: this.handleDeleteClick,
+        handlePublishClick: this.handlePublishClick,
+        handleSaveClick: this.handleSaveClick
+      };
+      return (
+        <div>
+          <BlockEditor
+            eventHandlers={editorEventHandlers}
+            takeDocument={(Object as any).assign({}, this.state.takeDocument)}
+            active={this.state.activeBlockIndex}
+          />
+          <div className="editor__wrapper">
+            <div className="editor__row">
+              <EditorButtons
+                eventHandlers={buttonEventHandlers}
+                status={this.state.status}
               />
+              <div className="editor__share">
+                <DropDown text="Email" position="TL">
+                  <EmailTake
+                    takeDocument={(Object as any).assign(
+                      {},
+                      this.state.takeDocument
+                    )}
+                  />
+                </DropDown>
+              </div>
             </div>
+            <p className="timeline__instructions">
+              Add Facts to your Take from the timeline below.
+            </p>
           </div>
-          <p className="timeline__instructions">
-            Add Facts to your Take from the timeline below.
-          </p>
+          <TimelineView
+            path={window.location.pathname}
+            setFactHandlers={setFactHandlers}
+          />
         </div>
-        <TimelineView
-          path={window.location.pathname}
-          setFactHandlers={setFactHandlers}
-        />
-      </div>
-    );
+      );
+    } else {
+      const publishEventHandlers = {
+        handleCancelClick: this.handlePublishCancelClick,
+        handlePublishClick: this.publishTake
+      };
+      return (
+        <div>
+          <PreviewChooser
+            takeDocument={this.state.takeDocument}
+            eventHandlers={publishEventHandlers}
+          />
+        </div>
+      );
+    }
   }
 }
 
