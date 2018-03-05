@@ -18,7 +18,7 @@ export interface EditorVideoContainerProps {
 
 export interface EditorVideoContainerState {
   loading: boolean;
-  videoFact?: Foundation.VideoFactContent;
+  videoFact?: Foundation.VideoFactContentFast;
 }
 
 class EditorVideoContainer extends React.Component<
@@ -36,7 +36,7 @@ class EditorVideoContainer extends React.Component<
       factHash,
       (
         error: string | Error | null,
-        factContent: Foundation.VideoFactContent
+        factContent: Foundation.VideoFactContentFast
       ) => {
         if (error) {
           if (typeof error != "string") {
@@ -105,7 +105,7 @@ const VideoLoadingView: React.StatelessComponent<{}> = props => (
 interface EditorVideoBlockProps {
   idx: number;
   active: boolean;
-  videoFact: Foundation.VideoFactContent;
+  videoFact: Foundation.VideoFactContentFast;
   factHash: string;
   range?: [number, number];
   eventHandlers?: WritingEventHandlers;

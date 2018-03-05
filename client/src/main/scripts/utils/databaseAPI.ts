@@ -7,11 +7,13 @@ import { TakeReactionJson } from "../java2ts/TakeReactionJson";
 import { EmailSelf } from "../java2ts/EmailSelf";
 import {
   alertErr,
+  decodeVideoFact,
+  CaptionNode,
   FoundationNode,
   getHighlightedNodes,
   getCaptionNodeArray,
   getCharRangeFromVideoRange,
-  highlightText,
+  highlightCaption,
   ImageProps,
   drawDocument,
   drawCaption,
@@ -23,7 +25,6 @@ import {
   DocumentBlock,
   VideoBlock
 } from "../components/BlockEditor";
-import { ReactElement } from "react";
 
 function getAllFacts(
   callback: (
@@ -68,7 +69,7 @@ function fetchFact(
     error: string | Error | null,
     documentFact:
       | Foundation.DocumentFactContent
-      | Foundation.VideoFactContent
+      | Foundation.VideoFactContentFast
       | null,
     index?: number | null,
     block?: DocumentBlock | VideoBlock | null
@@ -86,6 +87,17 @@ function fetchFact(
     cache: "default"
   };
 
+  let isEncoded: boolean;
+  if (
+    factHash === "U8MV5KDDaxumxZOCJOzExAUAAkSoYNhycVXq7jZ59_0=" ||
+    factHash === "qQjcS7ARkHHdKnDXfS3OkX5f78l81M1OWu5y_IziPA0="
+  ) {
+    factHash += "-encoded";
+    isEncoded = true;
+  } else {
+    isEncoded = false;
+  }
+
   fetch(Routes.FOUNDATION_DATA + "/" + factHash + ".json", request)
     .then(function(response: Response) {
       const contentType = response.headers.get("content-type");
@@ -100,7 +112,9 @@ function fetchFact(
       }
     })
     .then(function(json: any) {
-      if (index !== undefined) {
+      if (isEncoded) {
+        callback(null, decodeVideoFact(json), index, block);
+      } else if (index !== undefined) {
         if (block !== undefined) {
           callback(null, json, index, block);
         } else {
@@ -116,7 +130,7 @@ function fetchFact(
 }
 
 function isDocument(
-  fact: Foundation.DocumentFactContent | Foundation.VideoFactContent | null
+  fact: Foundation.DocumentFactContent | Foundation.VideoFactContentFast | null
 ): fact is Foundation.DocumentFactContent {
   if (fact) {
     return (fact as Foundation.DocumentFactContent).fact.kind === "document";
@@ -126,10 +140,10 @@ function isDocument(
 }
 
 function isVideo(
-  fact: Foundation.DocumentFactContent | Foundation.VideoFactContent | null
-): fact is Foundation.VideoFactContent {
+  fact: Foundation.DocumentFactContent | Foundation.VideoFactContentFast | null
+): fact is Foundation.VideoFactContentFast {
   if (fact) {
-    return (fact as Foundation.VideoFactContent).fact.kind === "video";
+    return (fact as Foundation.VideoFactContentFast).fact.kind === "video";
   } else {
     return false;
   }
@@ -329,7 +343,7 @@ function drawFacts(
             block.videoId,
             (
               error: string | Error | null,
-              factContent: Foundation.VideoFactContent,
+              factContent: Foundation.VideoFactContentFast,
               index: number,
               blockInScope: VideoBlock
             ) => {
@@ -345,39 +359,35 @@ function drawFacts(
 
                 const title = factContent.fact.title;
                 const titleSlug = slugify(title);
-                if (
-                  factContent.transcript &&
-                  factContent.speakerMap &&
-                  blockInScope.range
-                ) {
-                  const captionNodes = getCaptionNodeArray(
-                    factContent.transcript,
-                    factContent.speakerMap
-                  );
+
+                if (factContent && blockInScope.range) {
+                  const captionNodes = getCaptionNodeArray(factContent);
 
                   const characterRange = getCharRangeFromVideoRange(
-                    factContent.transcript,
-                    factContent.speakerMap,
+                    factContent.charOffsets,
+                    factContent.timestamps,
                     blockInScope.range
                   );
 
-                  const highlightedCaptionNodes = highlightText(
+                  const highlightedCaptionNodes = highlightCaption(
                     captionNodes,
-                    characterRange,
-                    () => {}
+                    characterRange
                   );
 
                   let highlightedText = '"';
                   for (const node of highlightedCaptionNodes) {
-                    for (const text of node.innerHTML) {
-                      if (text) {
-                        let textStr = text.toString();
-                        if (textStr === "[object Object]") {
-                          // Can't find a better conditional test
-                          // Found a React Element, which is highlighted text
-                          highlightedText += (text as ReactElement<
-                            HTMLSpanElement
-                          >).props.children;
+                    if (typeof node === "object") {
+                      for (const subnode of node as Array<CaptionNode>) {
+                        if (typeof subnode === "object") {
+                          const { children } = subnode.props;
+                          if (typeof children === "string") {
+                            highlightedText += children;
+                          } else {
+                            const msg =
+                              "databaseApi: unrecognized structure of highlightedCaptionNodes";
+                            alertErr(msg);
+                            throw msg;
+                          }
                         }
                       }
                     }

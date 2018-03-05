@@ -5,7 +5,8 @@ import { TakeReactionJson } from "../java2ts/TakeReactionJson";
 import { postRequest } from "../utils/databaseAPI";
 import { alertErr } from "../utils/functions";
 import { TakeDocument } from "./BlockEditor";
-import ShareContainer from "./ShareContainer";
+import DropDown from "./DropDown";
+import EmailTake from "./EmailTake";
 
 interface ReactionContainerProps {
   takeId: number;
@@ -223,24 +224,30 @@ export class Reaction extends React.Component<ReactionProps, ReactionState> {
         </div>
 
         <div className="reaction__actions">
-          <button
-            className="reaction__action reaction__action--star"
-            onClick={props.eventListeners.onStarPress}
-            disabled={typeof props.containerState.takeState == "undefined"}
-          >
-            {props.containerState.userState &&
-            props.containerState.userState.like ? (
-              <i className="fa fa-star" aria-hidden="true" />
-            ) : (
-              <i className="fa fa-star-o" aria-hidden="true" />
-            )}
-          </button>
-          <ShareContainer
-            takeDocument={(Object as any).assign(
-              {},
-              props.containerProps.takeDocument
-            )}
-          />
+          <div className="reaction__action-container">
+            <button
+              className="reaction__action reaction__action--star"
+              onClick={props.eventListeners.onStarPress}
+              disabled={typeof props.containerState.takeState == "undefined"}
+            >
+              {props.containerState.userState &&
+              props.containerState.userState.like ? (
+                <i className="fa fa-star" aria-hidden="true" />
+              ) : (
+                <i className="fa fa-star-o" aria-hidden="true" />
+              )}
+            </button>
+          </div>
+          <div className="reaction__action-container">
+            <DropDown text="Email" position="TL">
+              <EmailTake
+                takeDocument={(Object as any).assign(
+                  {},
+                  props.containerProps.takeDocument
+                )}
+              />
+            </DropDown>
+          </div>
           <div className="reaction__action-container">
             <button
               className="reaction__action reaction__action--report"
