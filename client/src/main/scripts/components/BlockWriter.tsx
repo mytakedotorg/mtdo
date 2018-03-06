@@ -10,7 +10,6 @@ import TimelineView from "./TimelineView";
 import EditorButtons from "./EditorButtons";
 import DropDown from "./DropDown";
 import EmailTake from "./EmailTake";
-import PreviewChooser from "./PreviewChooser";
 import { postRequest } from "../utils/databaseAPI";
 import { DraftRev } from "../java2ts/DraftRev";
 import { DraftPost } from "../java2ts/DraftPost";
@@ -40,7 +39,6 @@ interface BlockWriterHashValues {
 export interface Status {
   saved: boolean;
   saving: boolean;
-  publishing: boolean;
   error: boolean;
   message: string;
 }
@@ -85,7 +83,6 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
       saved: true,
       saving: false,
       error: false,
-      publishing: false,
       message: ""
     };
 
@@ -314,16 +311,6 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
       }
     }
   };
-  handlePublishCancelClick = () => {
-    this.setState({
-      status: {
-        ...this.state.status,
-        publishing: false,
-        error: false,
-        message: ""
-      }
-    });
-  };
   handleDeleteClick = () => {
     if (
       confirm(
@@ -344,18 +331,21 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
     }
   };
   handlePublishClick = () => {
-    const { title } = this.state.takeDocument;
-    if (title.length <= 255) {
-      if (title.length > 0) {
-        if (this.state.takeDocument.blocks.length < 2) {
+    if (
+      confirm(
+        "This action cannot be undone. Are you sure you want to publish this draft?"
+      )
+    ) {
+      const { title } = this.state.takeDocument;
+      if (title.length <= 255) {
+        if (title.length > 0) {
           this.publishTake();
         } else {
           this.setState({
             status: {
               ...this.state.status,
-              publishing: true,
-              error: false,
-              message: "Publishing Take."
+              error: true,
+              message: "Take must have a title."
             }
           });
         }
@@ -364,18 +354,10 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
           status: {
             ...this.state.status,
             error: true,
-            message: "Take must have a title."
+            message: "Title cannot be longer than 255 characters."
           }
         });
       }
-    } else {
-      this.setState({
-        status: {
-          ...this.state.status,
-          error: true,
-          message: "Title cannot be longer than 255 characters."
-        }
-      });
     }
   };
   handleSaveClick = () => {
@@ -482,6 +464,14 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
     };
   };
   publishTake = () => {
+    this.setState({
+      status: {
+        ...this.state.status,
+        saving: true,
+        error: false,
+        message: "Publishing Take."
+      }
+    });
     const bodyJson: DraftPost = {
       parentRev: this.state.parentRev,
       title: this.state.takeDocument.title,
@@ -588,74 +578,59 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
     }
   }
   render() {
-    if (!this.state.status.publishing) {
-      const editorEventHandlers = {
-        handleChange: this.handleTakeBlockChange,
-        handleDelete: this.removeBlock,
-        handleEnterPress: this.addParagraph,
-        handleFocus: this.handleTakeBlockFocus
-      };
+    const editorEventHandlers = {
+      handleChange: this.handleTakeBlockChange,
+      handleDelete: this.removeBlock,
+      handleEnterPress: this.addParagraph,
+      handleFocus: this.handleTakeBlockFocus
+    };
 
-      const setFactHandlers = {
-        handleDocumentSetClick: this.addDocument,
-        handleVideoSetClick: this.addVideo,
-        handleRangeSet: () => {},
-        handleRangeCleared: () => {}
-      };
+    const setFactHandlers = {
+      handleDocumentSetClick: this.addDocument,
+      handleVideoSetClick: this.addVideo,
+      handleRangeSet: () => {},
+      handleRangeCleared: () => {}
+    };
 
-      const buttonEventHandlers: ButtonEventHandlers = {
-        handleDeleteClick: this.handleDeleteClick,
-        handlePublishClick: this.handlePublishClick,
-        handleSaveClick: this.handleSaveClick
-      };
-      return (
-        <div>
-          <BlockEditor
-            eventHandlers={editorEventHandlers}
-            takeDocument={(Object as any).assign({}, this.state.takeDocument)}
-            active={this.state.activeBlockIndex}
-          />
-          <div className="editor__wrapper">
-            <div className="editor__row">
-              <EditorButtons
-                eventHandlers={buttonEventHandlers}
-                status={this.state.status}
-              />
-              <div className="editor__share">
-                <DropDown text="Email" position="TL">
-                  <EmailTake
-                    takeDocument={(Object as any).assign(
-                      {},
-                      this.state.takeDocument
-                    )}
-                  />
-                </DropDown>
-              </div>
+    const buttonEventHandlers: ButtonEventHandlers = {
+      handleDeleteClick: this.handleDeleteClick,
+      handlePublishClick: this.handlePublishClick,
+      handleSaveClick: this.handleSaveClick
+    };
+    return (
+      <div>
+        <BlockEditor
+          eventHandlers={editorEventHandlers}
+          takeDocument={(Object as any).assign({}, this.state.takeDocument)}
+          active={this.state.activeBlockIndex}
+        />
+        <div className="editor__wrapper">
+          <div className="editor__row">
+            <EditorButtons
+              eventHandlers={buttonEventHandlers}
+              status={this.state.status}
+            />
+            <div className="editor__share">
+              <DropDown text="Email" position="TL">
+                <EmailTake
+                  takeDocument={(Object as any).assign(
+                    {},
+                    this.state.takeDocument
+                  )}
+                />
+              </DropDown>
             </div>
-            <p className="timeline__instructions">
-              Add Facts to your Take from the timeline below.
-            </p>
           </div>
-          <TimelineView
-            path={window.location.pathname}
-            setFactHandlers={setFactHandlers}
-          />
+          <p className="timeline__instructions">
+            Add Facts to your Take from the timeline below.
+          </p>
         </div>
-      );
-    } else {
-      const publishEventHandlers = {
-        handleCancelClick: this.handlePublishCancelClick,
-        handlePublishClick: this.publishTake
-      };
-      return (
-        <div>
-          <PreviewChooser
-            takeDocument={this.state.takeDocument}
-            eventHandlers={publishEventHandlers}
-          />
-        </div>
-      );
-    }
+        <TimelineView
+          path={window.location.pathname}
+          setFactHandlers={setFactHandlers}
+        />
+      </div>
+    );
   }
 }
 

@@ -58,7 +58,6 @@ exports[`Bigger block writer model 1`] = `
           Object {
             "error": false,
             "message": "",
-            "publishing": false,
             "saved": true,
             "saving": false,
           }
@@ -165,7 +164,6 @@ exports[`Simple block writer model 1`] = `
           Object {
             "error": false,
             "message": "",
-            "publishing": false,
             "saved": true,
             "saving": false,
           }
