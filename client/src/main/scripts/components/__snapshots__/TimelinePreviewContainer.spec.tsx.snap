@@ -136,6 +136,7 @@ exports[`Successfully loaded Video Preview 1`] = `
   }
   videoFact={
     Object {
+      "durationSeconds": 5624,
       "fact": Object {
         "kind": "video",
         "primaryDate": "2016-10-09",

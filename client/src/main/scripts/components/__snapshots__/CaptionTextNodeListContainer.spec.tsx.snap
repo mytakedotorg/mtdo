@@ -118,6 +118,7 @@ exports[`CaptionTextNodeListContainer 1`] = `
           "90": 549,
           "length": 91,
         },
+        "durationSeconds": 5624,
         "fact": Object {
           "kind": "video",
           "primaryDate": "2016-10-09",

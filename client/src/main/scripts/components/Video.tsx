@@ -121,7 +121,7 @@ class Video extends React.Component<VideoProps, VideoState> {
       isCopiedToClipBoard: false,
       isPaused: true,
       isZoomedToClip: props.clipRange ? true : false,
-      duration: 5224,
+      duration: props.videoFact.durationSeconds,
       captionIsHighlighted: props.clipRange ? true : false,
       highlightedCharRange: charRange,
       rangeSliders: this.initializeRangeSliders(props.clipRange),

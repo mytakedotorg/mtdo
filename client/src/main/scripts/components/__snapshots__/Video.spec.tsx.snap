@@ -114,7 +114,7 @@ exports[`Video 1`] = `
       }
       stateAuthority={null}
       timer={0}
-      videoDuration={5224}
+      videoDuration={5624}
       videoFact={
         Object {
           "charOffsets": Object {
@@ -211,6 +211,7 @@ exports[`Video 1`] = `
             "90": 549,
             "length": 91,
           },
+          "durationSeconds": 5624,
           "fact": Object {
             "kind": "video",
             "primaryDate": "2016-10-09",
@@ -494,7 +495,7 @@ exports[`Video with highlights 1`] = `
       }
       stateAuthority={null}
       timer={0}
-      videoDuration={5224}
+      videoDuration={5624}
       videoFact={
         Object {
           "charOffsets": Object {
@@ -591,6 +592,7 @@ exports[`Video with highlights 1`] = `
             "90": 549,
             "length": 91,
           },
+          "durationSeconds": 5624,
           "fact": Object {
             "kind": "video",
             "primaryDate": "2016-10-09",
