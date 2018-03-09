@@ -23,7 +23,7 @@ export interface FeedCardContainerState {
     fact: Foundation.Fact;
     nodes: FoundationNode[];
   };
-  videoFact?: Foundation.VideoFactContentFast;
+  videoFact?: Foundation.VideoFactContent;
 }
 
 class FeedCardContainer extends React.Component<
@@ -80,7 +80,7 @@ class FeedCardContainer extends React.Component<
       factHash,
       (
         error: string | Error | null,
-        factContent: Foundation.VideoFactContentFast
+        factContent: Foundation.VideoFactContent
       ) => {
         if (error) {
           if (typeof error != "string") {
@@ -153,7 +153,7 @@ interface FeedCardProps {
     fact: Foundation.Fact;
     nodes: FoundationNode[];
   };
-  videoFact?: Foundation.VideoFactContentFast;
+  videoFact?: Foundation.VideoFactContent;
 }
 
 class FeedCard extends React.Component<FeedCardProps, {}> {

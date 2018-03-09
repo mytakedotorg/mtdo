@@ -5,8 +5,9 @@ import { Card } from "../components/FeedList";
 import { TakeDocument } from "../components/BlockEditor";
 import { StylesObject, TimeRange } from "../components/Video";
 
-const videoFact: Foundation.VideoFactContent = {
+const videoFact: Foundation.VideoFactContentLegacy = {
   youtubeId: "ApTLB76Nmdg",
+  durationSeconds: 5624,
   speakers: [
     {
       firstname: "Martha",
@@ -487,7 +488,7 @@ const videoFact: Foundation.VideoFactContent = {
   }
 };
 
-const videoFactFast: Foundation.VideoFactContentFast = {
+const videoFactFast: Foundation.VideoFactContent = {
   fact: {
     title: "Donald Trump - Hillary Clinton (2/3)",
     primaryDate: "2016-10-09",
@@ -495,6 +496,7 @@ const videoFactFast: Foundation.VideoFactContentFast = {
     kind: "video"
   },
   youtubeId: "ApTLB76Nmdg",
+  durationSeconds: 5624,
   speakers: [
     {
       firstname: "Martha",

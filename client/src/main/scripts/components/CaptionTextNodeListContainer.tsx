@@ -20,7 +20,7 @@ interface CaptionTextNodeListContainerProps {
   documentNodes: CaptionNodeArr;
   eventHandlers: CaptionTextNodeListContainerEventHandlers;
   stateAuthority: StateAuthority;
-  videoFact: Foundation.VideoFactContentFast;
+  videoFact: Foundation.VideoFactContent;
   view: TimeRange;
 }
 

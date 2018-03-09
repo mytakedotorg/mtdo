@@ -6,13 +6,10 @@
  */
 package org.mytake.foundation;
 
-import com.diffplug.common.base.Errors;
 import com.jsoniter.JsonIterator;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.security.NoSuchAlgorithmException;
 import java.time.format.DateTimeFormatter;
@@ -28,17 +25,17 @@ import java2ts.Foundation.Fact;
 import java2ts.Foundation.FactContent;
 import java2ts.Foundation.Person;
 import java2ts.Foundation.SpeakerMap;
-import java2ts.Foundation.VideoFactContent;
 import java2ts.Foundation.VideoFactContentEncoded;
+import java2ts.Foundation.VideoFactContentLegacy;
 import org.mytake.foundation.parsers.VttParser;
 
-public class Videos extends FactWriter<VideoFactContent> {
+public class Videos extends FactWriter<VideoFactContentEncoded> {
 	public static Videos national() throws NoSuchAlgorithmException, IOException {
 		Videos videos = new Videos(Folders.SRC_VIDEO, Folders.DST_FOUNDATION);
-		videos.addNoTranscript("Txkwp5AUfCg", "John F. Kennedy - Nixon (1/4)", "1960-09-26", "57:55");
-		videos.addNoTranscript("z-4VeDta7Mo", "John F. Kennedy - Nixon (2/4)", "1960-10-07", "58:48");
-		videos.addNoTranscript("8SdDhojNT2o", "John F. Kennedy - Nixon (3/4)", "1960-10-13", "58:36");
-		videos.addNoTranscript("LN8F1FGZfzA", "John F. Kennedy - Nixon (4/4)", "1960-10-21", "58:51");
+		videos.addNoTranscript("Txkwp5AUfCg", "John F. Kennedy - Nixon (1/4)", "1960-09-26", "0:57:55");
+		videos.addNoTranscript("z-4VeDta7Mo", "John F. Kennedy - Nixon (2/4)", "1960-10-07", "0:58:48");
+		videos.addNoTranscript("8SdDhojNT2o", "John F. Kennedy - Nixon (3/4)", "1960-10-13", "0:58:36");
+		videos.addNoTranscript("LN8F1FGZfzA", "John F. Kennedy - Nixon (4/4)", "1960-10-21", "0:58:51");
 		videos.addNoTranscript("GlPjW_2_LXI", "Jimmy Carter - Gerald Ford (1/3)", "1976-09-23", "1:55:22");
 
 		//id: "TjHjU0Eu26Y",  // Original video
@@ -81,28 +78,31 @@ public class Videos extends FactWriter<VideoFactContent> {
 		super(srcDir, dstDir);
 	}
 
-	Map<String, VideoFactContent> byTitle = new HashMap<>();
+	Map<String, VideoFactContentEncoded> byTitle = new HashMap<>();
 
 	private void add(String youtubeId, String title, String date, String duration, boolean withTranscript) throws NoSuchAlgorithmException, IOException {
-		VideoFactContent content = new VideoFactContent();
-		content.youtubeId = youtubeId;
-		content.durationSeconds = parseDuration(duration);
+		VideoFactContentLegacy legacy = new VideoFactContentLegacy();
+		legacy.youtubeId = youtubeId;
+		legacy.durationSeconds = parseDuration(duration);
 
 		if (withTranscript) {
-			content.transcript = VttParser.parse(read(slugify(title) + ".vtt"));
+			legacy.transcript = VttParser.parse(read(slugify(title) + ".vtt"));
 			Speakers speakers = JsonIterator.deserialize(read(slugify(title) + ".speakermap.json"), Speakers.class);
-			content.speakers = speakers.speakers;
-			content.speakerMap = speakers.speakerMap;
+			legacy.speakers = speakers.speakers;
+			legacy.speakerMap = speakers.speakerMap;
 		} else {
-			content.transcript = Collections.emptyList();
-			content.speakers = Collections.emptyList();
-			content.speakerMap = Collections.emptyList();
+			legacy.transcript = Collections.emptyList();
+			legacy.speakers = Collections.emptyList();
+			legacy.speakerMap = Collections.emptyList();
 		}
-		byTitle.put(title, content);
+
+		VideoFactContentJava fast = createFast(legacy);
+		VideoFactContentEncoded encoded = createEncoded(fast);
+		byTitle.put(title, encoded);
 		add(title, date, "recorded", "video");
 	}
 
-	private static final DateTimeFormatter hhmmss = DateTimeFormatter.ofPattern("HH:mm:ss");
+	private static final DateTimeFormatter hhmmss = DateTimeFormatter.ofPattern("H:mm:ss");
 
 	private static double parseDuration(String input) {
 		TemporalAccessor accessor = hhmmss.parse(input);
@@ -112,28 +112,8 @@ public class Videos extends FactWriter<VideoFactContent> {
 		return sec + (60 * min) + (60 * 60 * hr);
 	}
 
-	@Override
-	protected void postProcess(VideoFactContent slow, String hashStr) {
-		if (slow.speakers == null) {
-			return;
-		}
-		VideoFactContentJava fast = createFast(slow);
-		write(hashStr + "-fast", fast);
-		VideoFactContentEncoded encoded = createEncoded(fast);
-		write(hashStr + "-encoded", encoded);
-	}
-
-	private void write(String name, Object value) {
-		ByteArrayOutputStream output = new ByteArrayOutputStream();
-		JsonMisc.toJson(value, output);
-		byte[] contentBytes = output.toByteArray();
-		Errors.rethrow().run(() -> {
-			Files.write(dstDir.resolve(name + ".json"), contentBytes);
-		});
-	}
-
 	/** Convert to the arrays. */
-	private VideoFactContentJava createFast(VideoFactContent slow) {
+	private VideoFactContentJava createFast(VideoFactContentLegacy slow) {
 		VideoFactContentJava fast = new VideoFactContentJava();
 		fast.fact = slow.fact;
 		fast.youtubeId = slow.youtubeId;
@@ -233,7 +213,7 @@ public class Videos extends FactWriter<VideoFactContent> {
 	}
 
 	@Override
-	protected VideoFactContent factToContent(Fact fact) {
+	protected VideoFactContentEncoded factToContent(Fact fact) {
 		return byTitle.get(fact.title);
 	}
 }

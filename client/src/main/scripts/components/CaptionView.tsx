@@ -38,7 +38,7 @@ export interface CaptionViewEventHandlers {
 }
 
 interface CaptionViewProps {
-  videoFact: Foundation.VideoFactContentFast;
+  videoFact: Foundation.VideoFactContent;
   timer: number;
   captionIsHighlighted: boolean;
   isPaused: boolean;
@@ -66,7 +66,7 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
   getCaptionData = (nextProps?: CaptionViewProps): string[] => {
     let captionIsHighlighted: boolean;
     let highlightedCharRange: [number, number] | undefined;
-    let videoFact: Foundation.VideoFactContentFast | undefined;
+    let videoFact: Foundation.VideoFactContent | undefined;
 
     if (nextProps) {
       captionIsHighlighted = nextProps.captionIsHighlighted;

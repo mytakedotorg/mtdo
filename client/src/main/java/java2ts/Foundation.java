@@ -36,7 +36,7 @@ public interface Foundation {
 	}
 
 	@jsweet.lang.Interface
-	public class VideoFactContent extends FactContent {
+	public class VideoFactContentLegacy extends FactContent {
 		public String youtubeId;
 		public Number durationSeconds;
 		public List<Person> speakers;
@@ -45,7 +45,7 @@ public interface Foundation {
 	}
 
 	@jsweet.lang.Interface
-	public class VideoFactContentFast extends FactContent {
+	public class VideoFactContent extends FactContent {
 		public String youtubeId;
 		public Number durationSeconds;
 		public List<Person> speakers;

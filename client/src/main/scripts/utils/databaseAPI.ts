@@ -69,7 +69,7 @@ function fetchFact(
     error: string | Error | null,
     documentFact:
       | Foundation.DocumentFactContent
-      | Foundation.VideoFactContentFast
+      | Foundation.VideoFactContent
       | null,
     index?: number | null,
     block?: DocumentBlock | VideoBlock | null
@@ -130,7 +130,7 @@ function fetchFact(
 }
 
 function isDocument(
-  fact: Foundation.DocumentFactContent | Foundation.VideoFactContentFast | null
+  fact: Foundation.DocumentFactContent | Foundation.VideoFactContent | null
 ): fact is Foundation.DocumentFactContent {
   if (fact) {
     return (fact as Foundation.DocumentFactContent).fact.kind === "document";
@@ -140,10 +140,10 @@ function isDocument(
 }
 
 function isVideo(
-  fact: Foundation.DocumentFactContent | Foundation.VideoFactContentFast | null
-): fact is Foundation.VideoFactContentFast {
+  fact: Foundation.DocumentFactContent | Foundation.VideoFactContent | null
+): fact is Foundation.VideoFactContent {
   if (fact) {
-    return (fact as Foundation.VideoFactContentFast).fact.kind === "video";
+    return (fact as Foundation.VideoFactContent).fact.kind === "video";
   } else {
     return false;
   }
@@ -343,7 +343,7 @@ function drawFacts(
             block.videoId,
             (
               error: string | Error | null,
-              factContent: Foundation.VideoFactContentFast,
+              factContent: Foundation.VideoFactContent,
               index: number,
               blockInScope: VideoBlock
             ) => {

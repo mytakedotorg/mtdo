@@ -13,7 +13,7 @@ export interface CaptionTextNodeListEventHandlers {
 interface CaptionTextNodeListProps {
   documentNodes: CaptionNodeArr;
   eventHandlers: CaptionTextNodeListEventHandlers;
-  videoFact: Foundation.VideoFactContentFast;
+  videoFact: Foundation.VideoFactContent;
 }
 
 interface CaptionTextNodeListState {}

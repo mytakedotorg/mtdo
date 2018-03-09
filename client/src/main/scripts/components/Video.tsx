@@ -63,7 +63,7 @@ interface VideoProps {
   onSetClick: (range: [number, number]) => void;
   onRangeSet?: (videoRange: [number, number]) => void;
   onClearClick?: () => void;
-  videoFact: Foundation.VideoFactContentFast;
+  videoFact: Foundation.VideoFactContent;
   className?: string;
   clipRange?: [number, number] | null;
 }
@@ -197,7 +197,7 @@ class Video extends React.Component<VideoProps, VideoState> {
     }
   };
   getCharRange = (
-    videoFact: Foundation.VideoFactContentFast,
+    videoFact: Foundation.VideoFactContent,
     timeRange?: [number, number] | null
   ): [number, number] => {
     if (timeRange) {

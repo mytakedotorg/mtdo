@@ -16,7 +16,7 @@ export interface TimelinePreviewContainerProps {
 
 export interface TimelinePreviewContainerState {
   loading: boolean;
-  videoFact?: Foundation.VideoFactContentFast;
+  videoFact?: Foundation.VideoFactContent;
   nodes?: FoundationNode[];
 }
 
@@ -38,7 +38,7 @@ export default class TimelinePreviewContainer extends React.Component<
         error: string | Error | null,
         factContent:
           | Foundation.DocumentFactContent
-          | Foundation.VideoFactContentFast
+          | Foundation.VideoFactContent
       ) => {
         if (error) {
           if (typeof error != "string") {

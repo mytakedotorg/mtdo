@@ -6,7 +6,7 @@ var bs = require("binary-search");
 
 function decodeVideoFact(
   encoded: Foundation.VideoFactContentEncoded
-): Foundation.VideoFactContentFast {
+): Foundation.VideoFactContent {
   const data: ArrayBuffer = base64toArrayBuffer.decode(encoded.data);
   // TODO: data is little-endian.  If the user's browser is big-endian,
   // the decoding will be invalid.  Someday we should detect if the
@@ -33,6 +33,7 @@ function decodeVideoFact(
   }
   return {
     fact: encoded.fact,
+    durationSeconds: encoded.durationSeconds,
     youtubeId: encoded.youtubeId,
     speakers: encoded.speakers,
     plainText: encoded.plainText,
@@ -342,7 +343,7 @@ function convertSecondsToTimestamp(totalSeconds: number): string {
 }
 
 function getCaptionNodeArray(
-  videoFact: Foundation.VideoFactContentFast
+  videoFact: Foundation.VideoFactContent
 ): Array<string> {
   let output: Array<string> = [];
   let prevOffset = 0;
