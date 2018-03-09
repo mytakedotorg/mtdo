@@ -19,6 +19,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoField;
 import java.time.temporal.TemporalAccessor;
 import java.util.Base64;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -92,6 +93,10 @@ public class Videos extends FactWriter<VideoFactContent> {
 			Speakers speakers = JsonIterator.deserialize(read(slugify(title) + ".speakermap.json"), Speakers.class);
 			content.speakers = speakers.speakers;
 			content.speakerMap = speakers.speakerMap;
+		} else {
+			content.transcript = Collections.emptyList();
+			content.speakers = Collections.emptyList();
+			content.speakerMap = Collections.emptyList();
 		}
 		byTitle.put(title, content);
 		add(title, date, "recorded", "video");
