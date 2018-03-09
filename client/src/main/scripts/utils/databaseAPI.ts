@@ -87,17 +87,6 @@ function fetchFact(
     cache: "default"
   };
 
-  let isEncoded: boolean;
-  if (
-    factHash === "U8MV5KDDaxumxZOCJOzExAUAAkSoYNhycVXq7jZ59_0=" ||
-    factHash === "qQjcS7ARkHHdKnDXfS3OkX5f78l81M1OWu5y_IziPA0="
-  ) {
-    factHash += "-encoded";
-    isEncoded = true;
-  } else {
-    isEncoded = false;
-  }
-
   fetch(Routes.FOUNDATION_DATA + "/" + factHash + ".json", request)
     .then(function(response: Response) {
       const contentType = response.headers.get("content-type");
@@ -112,7 +101,7 @@ function fetchFact(
       }
     })
     .then(function(json: any) {
-      if (isEncoded) {
+      if (json.fact.kind === "video") {
         callback(null, decodeVideoFact(json), index, block);
       } else if (index !== undefined) {
         if (block !== undefined) {
