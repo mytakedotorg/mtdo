@@ -28,20 +28,15 @@ $fa-size: 16px;
   }
 }
 .header__logo {
-  @include display2;
-  font-style: normal;
   margin-left: $page-margin-mobile;
   @media #{$mq-medium} {
     margin-left: 2rem;
   }
   line-height: 8rem; // cd src && grep -Rn "headerHeight =" *
 }
-.header__logo-link {
-  text-decoration: none;
-  color: palette(header, text);
-  &:hover {
-    color: palette(header, text--hover);
-  }
+.header__logo-image {
+  line-height: 8rem; // cd src && grep -Rn "headerHeight =" *
+  vertical-align: middle;
 }
 .header__icon-list--top {
   float: right;
