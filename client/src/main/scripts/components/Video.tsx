@@ -200,17 +200,13 @@ class Video extends React.Component<VideoProps, VideoState> {
     videoFact: Foundation.VideoFactContent,
     timeRange?: [number, number] | null
   ): [number, number] => {
-    if (timeRange) {
-      if (videoFact.charOffsets && videoFact.timestamps) {
-        const charRange = getCharRangeFromVideoRange(
-          videoFact.charOffsets,
-          videoFact.timestamps,
-          timeRange
-        );
-        return charRange;
-      } else {
-        console.warn("Captions not yet done for this video");
-      }
+    if (timeRange && videoFact.plainText.length > 0) {
+      const charRange = getCharRangeFromVideoRange(
+        videoFact.charOffsets,
+        videoFact.timestamps,
+        timeRange
+      );
+      return charRange;
     }
     return [-1, -1];
   };

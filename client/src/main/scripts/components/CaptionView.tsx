@@ -232,7 +232,8 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
           rangeSliders={this.props.rangeSliders}
           stateAuthority={this.props.stateAuthority}
         />
-        {this.props.videoFact && this.state.highlightedNodes ? (
+        {this.props.videoFact.plainText.length > 0 &&
+        this.state.highlightedNodes ? (
           <div
             className="document document--static"
             ref={(div: HTMLDivElement) => (this.captionNodesDiv = div)}
