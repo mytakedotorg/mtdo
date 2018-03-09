@@ -38,6 +38,23 @@ $fa-size: 16px;
   line-height: 8rem; // cd src && grep -Rn "headerHeight =" *
   vertical-align: middle;
 }
+.header__logo-container {
+  float: left;
+}
+.header__logo-container--tagline {
+  height: 8rem;
+  display: table;
+  margin-left: $page-margin-mobile;
+  @media #{$mq-medium} {
+    margin-left: 2rem;
+  }
+}
+.header__tagline {
+  display: table-cell;
+  vertical-align: middle;
+  @include body--lead;
+  color: palette(header, text);
+}
 .header__icon-list--top {
   float: right;
 }
@@ -47,7 +64,6 @@ $fa-size: 16px;
 .header__icon {
   @include body--lead;
   color: palette(header, text);
-  margin-left: 3rem;
   &:hover {
     color: palette(header, text--hover);
   }
@@ -128,7 +144,9 @@ $fa-size: 16px;
 }
 #login {
   float: right;
-  width: 150px + $page-margin-mobile;
+  @media #{$mq-large} {
+    width: 150px + $page-margin-mobile;
+  }
 }
 .header__dropdown-container {
   position: relative;
