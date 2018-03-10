@@ -32,28 +32,38 @@ $fa-size: 16px;
   @media #{$mq-medium} {
     margin-left: 2rem;
   }
-  line-height: 8rem; // cd src && grep -Rn "headerHeight =" *
 }
 .header__logo-image {
-  line-height: 8rem; // cd src && grep -Rn "headerHeight =" *
-  vertical-align: middle;
+  margin-top: 7px;
 }
 .header__logo-container {
+  position: relative;
   float: left;
+  @include clearfix;
+  height: 80px;
+  width: 340px;
 }
-.header__logo-container--tagline {
-  height: 8rem;
-  display: table;
-  margin-left: $page-margin-mobile;
+.header__logo-title {
+  @include typography($sans, 400, 36px);
+  font-style: normal;
+  position: absolute;
+  left: 81px;
+  top: 0;
   @media #{$mq-medium} {
-    margin-left: 2rem;
+    left: 95px;
   }
 }
-.header__tagline {
-  display: table-cell;
-  vertical-align: middle;
-  @include body--lead;
-  color: palette(header, text);
+.header__logo-tagline {
+  @include typography($sans, 300, 22px, 1.5em);
+  font-style: normal;
+  text-decoration: none;
+  position: absolute;
+  bottom: 0;
+  left: 81px;
+  white-space: nowrap;
+  @media #{$mq-medium} {
+    left: 95px;
+  }
 }
 .header__icon-list--top {
   float: right;
@@ -79,10 +89,8 @@ $fa-size: 16px;
   }
 }
 .header__icon--login {
-  line-height: 8rem;
   text-decoration: none;
   margin-right: $page-margin-mobile;
-  float: right;
   @media #{$mq-medium} {
     margin-right: 2rem;
   }
@@ -90,8 +98,7 @@ $fa-size: 16px;
 .header__nav {
   @include clearfix;
   position: relative;
-  border-top: 1px solid palette(header, border);
-  border-bottom: 2px solid palette(header, border);
+  border-bottom: 1px solid palette(header, border);
 }
 .header__nav-inner {
   @include content-column;
@@ -136,16 +143,18 @@ $fa-size: 16px;
     color: palette(header, text--hover);
   }
   .fa {
-    position: absolute;
+    float: right;
     font-size: $fa-size;
     margin-top: ($nav-height - $fa-size)/2;
-    margin-left: $page-margin-mobile;
+    margin-right: $page-margin-mobile;
   }
 }
 #login {
-  float: right;
+  position: absolute;
+  top: 0;
+  right: 0;
   @media #{$mq-large} {
-    width: 150px + $page-margin-mobile;
+    right: 150px;
   }
 }
 .header__dropdown-container {
@@ -155,9 +164,8 @@ $fa-size: 16px;
 .header__dropdown {
   position: absolute;
   width: 150px;
-  top: 5.5rem;
-  left: 0;
-  right: 0;
+  top: 0;
+  right: $page-margin-mobile;
   border: 1px solid palette(header, border);
   border-radius: 3px;
   max-height: $nav-height * $user-nav-items + $user-nav-items;
@@ -200,4 +208,10 @@ $fa-size: 16px;
     border: 0;
     z-index: 1;
   }
+}
+.header__color--blue {
+  color: palette(header, text--blue);
+}
+.header__color--red {
+  color: palette(header, text--red);
 }
