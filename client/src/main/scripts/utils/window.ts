@@ -125,7 +125,30 @@ function loadUser() {
 
   const loginCookieStr = getCookieValue("loginui");
   if (loginCookieStr) {
+    // User is logged in
     const loginUi: LoginCookie = JSON.parse(JSON.parse(loginCookieStr));
+    const navList = document.getElementById("logout-container");
+    const loginLink = document.getElementById("login-link");
+    if (navList && loginLink) {
+      (loginLink as HTMLAnchorElement).href =
+        "/" +
+        loginUi.username +
+        "?" +
+        Routes.PROFILE_TAB +
+        "=" +
+        Routes.PROFILE_TAB_EDIT;
+      navList.innerHTML +=
+        '<li class="nav__list-item nav__list-item--bottom3">' +
+        '<a class="nav__link nav__link--bottom" href="' +
+        Routes.LOGOUT +
+        '" tabindex="10">' +
+        '<span class="nav__link-text nav__link-text--bottom">Logout</span>' +
+        "</a>" +
+        "</li>";
+    } else {
+      const msg = "window: navigation list and login link not found";
+      throw msg;
+    }
     if (loginDiv) {
       loginDiv.innerHTML =
         '<a class="header__icon header__icon--login" href="#">' +
