@@ -3,6 +3,7 @@ import YouTube from "react-youtube";
 import isEqual = require("lodash/isEqual");
 import {
   alertErr,
+  copyToClipboard,
   getCharRangeFromVideoRange,
   slugify
 } from "../utils/functions";
@@ -130,18 +131,6 @@ class Video extends React.Component<VideoProps, VideoState> {
     };
   }
   copyURL = () => {
-    const textArea = document.createElement("textarea");
-    textArea.style.position = "fixed";
-    textArea.style.top = "0";
-    textArea.style.left = "0";
-    textArea.style.width = "2em";
-    textArea.style.height = "2em";
-    textArea.style.padding = "0";
-    textArea.style.border = "none";
-    textArea.style.outline = "none";
-    textArea.style.boxShadow = "none";
-    textArea.style.background = "transparent";
-
     let text =
       window.location.protocol +
       "//" +
@@ -161,20 +150,9 @@ class Video extends React.Component<VideoProps, VideoState> {
         throw msg;
       }
     }
-    textArea.value = text;
-    document.body.appendChild(textArea);
-    textArea.select();
-    try {
-      const success = document.execCommand("copy");
-    } catch (err) {
-      const msg = "Video: Unable to copy text";
-      alertErr(msg);
-      throw msg;
-    }
-    document.body.removeChild(textArea);
 
     this.setState({
-      isCopiedToClipBoard: true
+      isCopiedToClipBoard: copyToClipboard(text)
     });
   };
   cueVideo = () => {
