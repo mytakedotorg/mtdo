@@ -5,7 +5,7 @@ import { LoginCookie } from "../java2ts/LoginCookie";
 import { Routes } from "../java2ts/Routes";
 
 const body = document.body;
-const loginDiv = document.getElementById("login");
+const navList = document.getElementById("nav-list");
 loadUser();
 addNavEvents();
 
@@ -53,8 +53,26 @@ function addNavEvents() {
     }
   }
 
+  function focusInEvent(e: FocusEvent) {
+    if (navMenu.classList.contains("collapse")) {
+      navMenu.classList.remove("collapse");
+      body.classList.add("fade");
+    }
+  }
+  function focusOutEvent(e: FocusEvent) {
+    if (!navMenu.classList.contains("collapse")) {
+      navMenu.classList.add("collapse");
+      body.classList.remove("fade");
+    }
+  }
+
   if (navToggle) {
     navToggle.addEventListener("click", mainNavEvent);
+  }
+
+  if (navList) {
+    navList.addEventListener("focusin", focusInEvent);
+    navList.addEventListener("focusout", focusOutEvent);
   }
 
   body.addEventListener("click", bodyEvent);
@@ -77,7 +95,6 @@ function loadUser() {
   }
 
   const loginCookieStr = getCookieValue("loginui");
-  const navList = document.getElementById("nav-list");
   const loginLink = document.getElementById("login-link");
   if (loginCookieStr) {
     // User is logged in
@@ -91,7 +108,7 @@ function loadUser() {
         "=" +
         Routes.PROFILE_TAB_EDIT;
       loginLink.children[0].innerHTML = "Account/Profile";
-      const tabIndex = navList.children.length + 2;
+      const tabIndex = navList.children.length + 3;
       navList.innerHTML +=
         '<li class="nav__list-item nav__list-item--top">' +
         '<a class="nav__link nav__link--top" href="' +
