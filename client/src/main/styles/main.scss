@@ -23,7 +23,7 @@ body {
   &.noscroll {
     overflow: hidden;
   }
-  &.fade > .fade-overlay {
+  &.fade--mt > .fade-overlay {
     opacity: 0.4;
     position: fixed;
     top: 0;

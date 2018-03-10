@@ -6,6 +6,7 @@ $fa-size: 24px;
   position: relative;
   z-index: 10;
   background-color: white;
+  margin-bottom: 0; // This is necessary for meta.mytake.org
 }
 .header__top {
   height: 8rem;

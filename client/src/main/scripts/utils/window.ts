@@ -21,7 +21,7 @@ function addNavEvents() {
   }
 
   function bodyEvent(e: Event) {
-    if (body.classList.contains("fade") && !e.defaultPrevented) {
+    if (body.classList.contains("fade--mt") && !e.defaultPrevented) {
       if (
         e.srcElement &&
         !e.srcElement.classList.contains("header__nav--icon")
@@ -46,10 +46,10 @@ function addNavEvents() {
       }
     }
 
-    if (body.classList.contains("fade")) {
-      body.classList.remove("fade");
+    if (body.classList.contains("fade--mt")) {
+      body.classList.remove("fade--mt");
     } else {
-      body.classList.add("fade");
+      body.classList.add("fade--mt");
     }
   }
 
