@@ -21,7 +21,7 @@ const videoProps: FeedCardContainerProps = {
     {
       kind: "video",
       range: [304, 321],
-      videoId: "U8MV5KDDaxumxZOCJOzExAUAAkSoYNhycVXq7jZ59_0="
+      videoId: "0ucGOukmHdaStpYZRigN-tLV8Vn2wAwjlobyMGzSpL4="
     }
   ]
 };
