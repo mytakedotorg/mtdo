@@ -14,6 +14,9 @@ import java2ts.Routes;
 /** Usernames that we reserve for ourselves, for routing or other reasons. */
 class ReservedUsernames {
 	static boolean isReserved(String username) {
+		if (username.startsWith("foundation")) {
+			return true;
+		}
 		return RESERVED_USERNAMES.contains(username);
 	}
 
