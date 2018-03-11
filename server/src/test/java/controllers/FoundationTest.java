@@ -9,6 +9,7 @@ package controllers;
 import common.JoobyDevRule;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
+import java2ts.Routes;
 import org.jooby.Jooby;
 import org.jooby.Status;
 import org.junit.ClassRule;
@@ -26,7 +27,7 @@ public class FoundationTest {
 
 	@Test
 	public void contentTypeJson() {
-		RestAssured.get("/foundation-data/index.json").then()
+		RestAssured.get(Routes.FOUNDATION_INDEX_HASH).then()
 				.statusCode(Status.OK.value())
 				.contentType(ContentType.JSON);
 	}

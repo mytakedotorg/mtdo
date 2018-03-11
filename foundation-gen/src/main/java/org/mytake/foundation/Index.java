@@ -33,7 +33,7 @@ public class Index {
 		IndexPointer pointer = new IndexPointer();
 		pointer.hash = hashed.hash;
 		// substring(1) to remove '/'
-		Files.write(Folders.DST_FOUNDATION.resolve(Routes.FOUNDATION_INDEX_HASH.substring(1)), Hashed.asJson(pointer).content);
+		Files.write(Folders.DST_FOUNDATION.getParent().resolve(Routes.FOUNDATION_INDEX_HASH.substring(1)), Hashed.asJson(pointer).content);
 	}
 
 	private static void deleteDir(Path folder) throws IOException {
