@@ -84,14 +84,16 @@ npm update <packagename>   - updates packagename to "Wanted", but won't pass sem
 
 # Data Model
 
-## VideoFactContentFast
+See [`foundation-gen/FOUNDATION_DESIGN.md`](foundation-gen/FOUNDATION_DESIGN.md) for info on how the foundation.
+
+## VideoFactContent
 To help understand the data model, let's build it using a 14 word sample:
 
 **Raddatz:**  Good evening I'm Martha Raddatz from ABC News.
 **Cooper:**  And I'm Anderson Cooper from CNN.
 
 ```
-VideoFactContentFast = {
+VideoFactContent = {
   speakers: [
     {
       firstname: Martha, 
