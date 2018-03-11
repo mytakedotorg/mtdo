@@ -1,17 +1,20 @@
 $nav-height: 35px;
-$nav-items: 3;
-$user-nav-items: 8;
-$fa-size: 16px;
+$fa-size: 24px;
 .header {
   width: 100%;
   @include clearfix;
   position: relative;
   z-index: 10;
   background-color: white;
+  margin-bottom: 0; // This is necessary for meta.mytake.org
 }
 .header__top {
   height: 8rem;
+  display: flex;
   @include content-column;
+  @media #{$mq-medium} {
+    height: 10rem;
+  }
 }
 .header__skip-link {
   position: absolute;
@@ -27,32 +30,73 @@ $fa-size: 16px;
     transition: top 0.1s ease-in, background 0.5s linear;
   }
 }
-.header__logo {
-  @include display2;
-  font-style: normal;
-  margin-left: $page-margin-mobile;
+.header__logo-container {
+  position: relative;
+  z-index: 1;
+  float: left;
+  @include clearfix;
+  height: 8rem;
+  width: 310px;
   @media #{$mq-medium} {
-    margin-left: 2rem;
+    height: 10rem;
+    width: 380px;
   }
-  line-height: 8rem; // cd src && grep -Rn "headerHeight =" *
 }
 .header__logo-link {
+  position: absolute;
+  z-index: 10;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+.header__logo-image-container {
+  height: 61px;
+  margin-left: $page-margin-mobile;
+  padding-top: 11px;
+  @media #{$mq-medium} {
+    height: 80px;
+    margin-left: 2rem;
+    padding-top: 14px;
+  }
+}
+.header__logo-image {
+  max-height: 100%;
+  width: auto;
+}
+.header__logo-title {
+  @include display2;
+  font-style: normal;
+  position: absolute;
+  left: 81px;
+  top: 0;
+  @media #{$mq-medium} {
+    left: 110px;
+  }
+}
+.header__logo-tagline {
+  @include typography($sans, 300, 22px, 3.5rem);
+  font-style: normal;
   text-decoration: none;
+  position: absolute;
+  bottom: 0;
+  left: 81px;
+  white-space: nowrap;
   color: palette(header, text);
-  &:hover {
-    color: palette(header, text--hover);
+  @media #{$mq-medium} {
+    left: 110px;
+    @include typography($sans, 300, 26px, 3.5rem);
   }
 }
 .header__icon-list--top {
-  float: right;
+  flex: 1;
 }
 .header__icon-list--bottom {
   float: left;
 }
 .header__icon {
-  @include body--lead;
+  @include typography($sans, 300, 16px, 3.5rem);
   color: palette(header, text);
-  margin-left: 3rem;
   &:hover {
     color: palette(header, text--hover);
   }
@@ -63,30 +107,21 @@ $fa-size: 16px;
   margin-right: 1rem;
   margin-left: $page-margin-mobile;
   @media #{$mq-medium} {
-    margin-right: 3rem;
     margin-left: 2rem;
   }
 }
-.header__icon--login {
-  line-height: 8rem;
-  text-decoration: none;
-  margin-right: $page-margin-mobile;
-  float: right;
-  @media #{$mq-medium} {
-    margin-right: 2rem;
-  }
-}
 .header__nav {
+  width: 100%;
   @include clearfix;
   position: relative;
-  border-top: 1px solid palette(header, border);
-  border-bottom: 2px solid palette(header, border);
+  border-bottom: 1px solid palette(header, border);
+  float: left;
 }
 .header__nav-inner {
   @include content-column;
   position: relative;
-  height: $nav-height;
   line-height: 1rem;
+  height: 0;
 }
 .header__banner {
   height: $nav-height;
@@ -98,24 +133,35 @@ $fa-size: 16px;
   @include content-column;
 }
 .header__text {
-  @include body--lead;
-  line-height: 3.5rem;
+  @include typography($sans, 300, 16px, 3.5rem);
   margin: 0;
   margin-right: 1rem;
-  @media #{$mq-medium} {
-    margin-right: 3rem;
-  }
   float: left;
 }
 .header__link {
   color: palette(header, text--link);
 }
 .header__nav-toggle {
-  display: inline;
   position: relative;
-  @media #{$mq-small} {
-    display: none;
+  width: 8rem;
+  height: 8rem;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 100%;
+  max-height: 100%;
+  @media #{$mq-medium} {
+    width: 10rem;
+    height: 10rem;
   }
+}
+.header__nav-toggle-link {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  cursor: pointer;
 }
 .header__nav-icon {
   @include heading6;
@@ -125,56 +171,11 @@ $fa-size: 16px;
     color: palette(header, text--hover);
   }
   .fa {
-    position: absolute;
     font-size: $fa-size;
-    margin-top: ($nav-height - $fa-size)/2;
-    margin-left: $page-margin-mobile;
-  }
-}
-#login {
-  float: right;
-  width: 150px + $page-margin-mobile;
-}
-.header__dropdown-container {
-  position: relative;
-  z-index: 1;
-}
-.header__dropdown {
-  position: absolute;
-  width: 150px;
-  top: 5.5rem;
-  left: 0;
-  right: 0;
-  border: 1px solid palette(header, border);
-  border-radius: 3px;
-  max-height: $nav-height * $user-nav-items + $user-nav-items;
-  overflow: hidden;
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-.header__dropdown--collapse {
-  max-height: 0;
-  border: none;
-}
-.header__dropdown-list-item {
-  height: $nav-height;
-  background-color: palette(header, background);
-  &:not(:first-of-type) {
-    border-top: 1px solid palette(header, border);
-  }
-}
-.header__dropdown-link {
-  @include heading6;
-  margin-left: 1rem;
-  text-decoration: none;
-  line-height: $nav-height;
-  display: block;
-  width: 100%;
-  height: 100%;
-  color: palette(nav, text);
-  &:hover {
-    color: palette(nav, text--hover);
+    margin-top: (80px - $fa-size)/2;
+    @media #{$mq-medium} {
+      margin-top: (100px - $fa-size)/2;
+    }
   }
 }
 .header__fork-img {
@@ -187,4 +188,10 @@ $fa-size: 16px;
     border: 0;
     z-index: 1;
   }
+}
+.header__color--blue {
+  color: palette(header, text--blue);
+}
+.header__color--red {
+  color: palette(header, text--red);
 }
