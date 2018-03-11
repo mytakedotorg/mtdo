@@ -56,7 +56,7 @@ function getAllFacts(
       }
     })
     .then((json: Foundation.IndexPointer) => {
-      return fetch(Routes.FOUNDATION_DATA + json.hash + ".json", request);
+      return fetch(Routes.FOUNDATION_DATA + "/" + json.hash + ".json", request);
     })
     .then((response: Response) => {
       return response.json();
