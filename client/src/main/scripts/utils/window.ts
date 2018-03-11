@@ -107,7 +107,7 @@ function loadUser() {
         Routes.PROFILE_TAB +
         "=" +
         Routes.PROFILE_TAB_EDIT;
-      loginLink.children[0].innerHTML = "Account/Profile";
+      loginLink.childNodes[0].childNodes[1].nodeValue = "Account/Profile";
       const tabIndex = navList.children.length + 3;
       navList.innerHTML +=
         '<li class="nav__list-item nav__list-item--top">' +
