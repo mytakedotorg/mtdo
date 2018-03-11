@@ -69,9 +69,9 @@
 		<div class="header__nav-inner">
 			<nav class="nav collapse" role="navigation">
 				<ul id="nav-list" class="nav__list nav__list--top">
-					<li class="nav__list-item nav__list-item--top"><a class="nav__link nav__link--top" href="/foundation" tabindex="3"><span class="nav__link-text nav__link-text--top">Foundation</span></a></li>
-					<li class="nav__list-item nav__list-item--top"><a id="login-link" class="nav__link nav__link--top" href="/login" tabindex="4"><span class="nav__link-text nav__link-text--top">Login</span></a></li>
-					<li class="nav__list-item nav__list-item--top"><a class="nav__link nav__link--top" href="/about" tabindex="5"><span class="nav__link-text nav__link-text--top">About us</span></a></li>
+					<li class="nav__list-item nav__list-item--top"><a class="nav__link nav__link--top" href="/foundation" tabindex="3"><span class="nav__link-text nav__link-text--top"><span class="nav__icon-spacer"><i class="fa fa-book" aria-hidden="true"></i></span>Foundation</span></a></li>
+					<li class="nav__list-item nav__list-item--top"><a id="login-link" class="nav__link nav__link--top" href="/login" tabindex="4"><span class="nav__link-text nav__link-text--top"><span class="nav__icon-spacer"><i class="fa fa-user" aria-hidden="true"></i></span>Login</span></a></li>
+					<li class="nav__list-item nav__list-item--top"><a class="nav__link nav__link--top" href="/about" tabindex="5"><span class="nav__link-text nav__link-text--top"><span class="nav__icon-spacer"><img class="nav__link-icon nav__link-icon--wheat" src="/assets/permanent/mytake-icon-1e0067f99a.png" width="16" height="16" /></span>About us</span></a></li>
 				</ul>
 			</nav>
 		</div>
