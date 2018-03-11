@@ -14,7 +14,6 @@ exports[`CaptionTextNode 1`] = `
   >
     <p
       className="document__node-text document__node-text--p"
-      data-char-offset={0}
     >
       Good evening I'm Martha Raddatz from ABC News.
     </p>

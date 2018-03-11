@@ -20,10 +20,23 @@ $video-header-height: 60px;
   @include button--red;
   margin-top: ($video-header-height - 35px)/2;
 }
+.video__button--reset {
+  @include button--borderless;
+  @include body("sans");
+  margin-right: $content-margin;
+  line-height: 35px;
+  text-align: left;
+  background-color: transparent;
+}
 .video__container {
   width: $video-container-width;
   max-width: 100%;
   margin: auto;
+  position: relative;
+  z-index: 50;
+}
+.video__float--right {
+  float: right;
 }
 .video__title {
   @include heading3;

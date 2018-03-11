@@ -81,3 +81,89 @@ Update npm dependencies in client folder with
 npm outdated               - shows which packages are out of date
 npm update <packagename>   - updates packagename to "Wanted", but won't pass semver
 ```
+
+# Data Model
+
+## VideoFactContentFast
+To help understand the data model, let's build it using a 14 word sample:
+
+**Raddatz:**  Good evening I'm Martha Raddatz from ABC News.
+**Cooper:**  And I'm Anderson Cooper from CNN.
+
+```
+VideoFactContentFast = {
+  speakers: [
+    {
+      firstname: Martha, 
+      lastname: Raddatz
+    }, 
+    {
+      firstname: Anderson, 
+      lastname: Cooper
+    }
+  ],
+  charOffsets: [0, 5, 13, 17, 24, 32, 37, 41, 47, 51, 55, 64, 71, 76], // Length 14, 1 entry for each word
+  timeStamps: [/* Length 14, omitting data for brevity */],
+  speakerPerson: [0, 1], // 2 people have spoken, first Raddatz, then Cooper. 
+  speakerWord: [0, 8], // 2 people have spoken, Raddatz at word 0, Cooper at word 8
+  ... // Other fields are self explanatory, like youtubeId
+}
+```
+
+Now, let's say "Martha Raddatz" has been highlighted:
+
+**Raddatz:**  Good evening I'm **Martha Raddatz** from ABC News.
+**Cooper:**  And I'm Anderson Cooper from CNN.
+
+We represent this in the client code as:
+```
+charRange = [17, 32]
+timeRange = [1.92, 2.129]
+```
+
+# meta.MyTake.org
+
+## Header syncing
+When the MyTake.org header is updated, the meta.mytake.org header needs to be updated too. Login to meta.mytake.org as an admin and navigate to **Admin -> Customize -> MyTake.org Header -> Edit CSS/HTML**
+
+In the **CSS** tab paste the compiled SASS for only the `.header` and `.nav` components. These styles are grouped together inside `client/src/main/resources/assets-dev/styles/main.css`. Also do the following:
+
+* Increase the `.header` z-index to 10000.
+* Replace `width: 768px;` to `width: 1110px;` everywhere it is present. (Do not change media queries).
+* Copy `body.fade--mt` styles from `main.css` and increase the `body.fade--mt > .fade-overlay` z-index to 1000.
+* Adjust any other styles as necessary and document them.
+
+In the **Header** tab paste the html for the `<header>` tag. Copy this from the mytake.org homepage from the Chrome Developer tools by right clicking on the `<header>` tag and then **Copy -> Copy outerHTML**. Also do the following:
+
+* Replace all relative href attributes with absolute URLs to http://mytake.org.
+* Remove the `.header__banner` construction banner from the header.
+
+If any code in window.ts has changed, paste the compiled JS into the **</body>** tab. Also do the following:
+
+* Wrap the JavaScript in `<script>` tags. 
+* Make sure `<div class="fade-overlay"></div>` is present.
+* Add the following JS, making sure to update the scrollY conditional check to match the height of the header.
+
+```
+setTimeout(function () { addScrollEvent(); }, 500);
+function addScrollEvent() {
+    var dHeader = document.getElementsByClassName("d-header")[0];
+		var headerHeight;
+    if (window.innerWidth > 768) {
+        headerHeight = 100;
+    } else {
+        headerHeight = 80;
+    }
+    function handleScroll(e) {
+        if (dHeader) {
+            if (window.scrollY >= headerHeight) {
+                body.classList.add("docked");
+            }
+            else {
+                body.classList.remove("docked");
+            }
+        }
+    }
+    window.addEventListener("scroll", handleScroll);
+}
+```

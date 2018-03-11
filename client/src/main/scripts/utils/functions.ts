@@ -2,10 +2,11 @@ import * as React from "react";
 import { ReactElement } from "react";
 import { Foundation } from "../java2ts/Foundation";
 var base64toArrayBuffer = require("base64-arraybuffer");
+var bs = require("binary-search");
 
 function decodeVideoFact(
   encoded: Foundation.VideoFactContentEncoded
-): Foundation.VideoFactContentFast {
+): Foundation.VideoFactContent {
   const data: ArrayBuffer = base64toArrayBuffer.decode(encoded.data);
   // TODO: data is little-endian.  If the user's browser is big-endian,
   // the decoding will be invalid.  Someday we should detect if the
@@ -14,32 +15,25 @@ function decodeVideoFact(
   // with.
 
   var offset = 0;
-  const charOffsets = new Int32Array(
-    data,
-    offset,
-    (offset += encoded.numWords * Int32Array.BYTES_PER_ELEMENT)
-  );
-  const timestamps = new Float32Array(
-    data,
-    offset,
-    (offset += encoded.numWords * Float32Array.BYTES_PER_ELEMENT)
-  );
+  const charOffsets = new Int32Array(data, offset, encoded.numWords);
+  offset += encoded.numWords * Int32Array.BYTES_PER_ELEMENT;
+  const timestamps = new Float32Array(data, offset, encoded.numWords);
+  offset += encoded.numWords * Float32Array.BYTES_PER_ELEMENT;
   const speakerPerson = new Int32Array(
     data,
     offset,
-    (offset += encoded.numSpeakerSections * Int32Array.BYTES_PER_ELEMENT)
+    encoded.numSpeakerSections
   );
-  const speakerWord = new Int32Array(
-    data,
-    offset,
-    (offset += encoded.numSpeakerSections * Int32Array.BYTES_PER_ELEMENT)
-  );
+  offset += encoded.numSpeakerSections * Int32Array.BYTES_PER_ELEMENT;
+  const speakerWord = new Int32Array(data, offset, encoded.numSpeakerSections);
+  offset += encoded.numSpeakerSections * Int32Array.BYTES_PER_ELEMENT;
   if (offset != data.byteLength) {
     alertErr("functions: sizes don't match");
     throw Error("Sizes don't match");
   }
   return {
     fact: encoded.fact,
+    durationSeconds: encoded.durationSeconds,
     youtubeId: encoded.youtubeId,
     speakers: encoded.speakers,
     plainText: encoded.plainText,
@@ -55,6 +49,18 @@ export interface FoundationNode {
   offset: number;
   innerHTML: Array<string | React.ReactNode>;
 }
+
+export type CaptionNodeArr = Array<CaptionNode | Array<CaptionNode>>;
+
+export type CaptionNode =
+  | string
+  | React.DetailedReactHTMLElement<
+      {
+        className: string;
+        children?: React.ReactNode;
+      },
+      HTMLElement
+    >;
 
 function getNodesInRange(
   nodes: FoundationNode[],
@@ -337,40 +343,19 @@ function convertSecondsToTimestamp(totalSeconds: number): string {
 }
 
 function getCaptionNodeArray(
-  transcript: Foundation.CaptionWord[],
-  speakerMap: Foundation.SpeakerMap[]
-): Array<FoundationNode> {
-  // Fetch the excerpt from the DB by its ID
-  let output: Array<FoundationNode> = [];
-  let offset = 0;
-  for (const speaker of speakerMap) {
-    let innerHTML = "";
-    for (let i = speaker.range[0]; i <= speaker.range[1]; i++) {
-      if (transcript[i]) {
-        innerHTML += transcript[i].word;
-      }
-    }
+  videoFact: Foundation.VideoFactContent
+): Array<string> {
+  let output: Array<string> = [];
+  let prevOffset = 0;
 
-    innerHTML = innerHTML.trim(); //Replace extra whitespace with a single space
-
-    if (innerHTML.length > 0) {
-      output.push({
-        component: "p",
-        offset: offset,
-        innerHTML: [innerHTML]
-      });
-
-      // Character count offset
-      offset += innerHTML.length;
-    } else {
-      alertErr(
-        "functions: A speaker's start range can't be greater than the end range, offending range: " +
-          speaker.range
-      );
-      throw "A speaker's start range can't be greater than the end range, offending range: " +
-        speaker.range;
-    }
+  for (let n = 1; n < videoFact.speakerWord.length; n++) {
+    let wordIdx = videoFact.speakerWord[n];
+    let charOffset = videoFact.charOffsets[wordIdx];
+    let innerHTML = videoFact.plainText.substring(prevOffset, charOffset);
+    output.push(innerHTML);
+    prevOffset = charOffset;
   }
+
   return output;
 }
 
@@ -426,73 +411,41 @@ function getWordCount(selection: Selection): number {
 }
 
 function getCharRangeFromVideoRange(
-  transcript: Foundation.CaptionWord[],
-  speakerMap: Foundation.SpeakerMap[],
+  charOffsets: ArrayLike<number>,
+  timeStamps: ArrayLike<number>,
   timeRange: [number, number]
 ): [number, number] {
   const startTime = timeRange[0];
   const endTime = timeRange[1];
 
-  let charCount = 0;
-  let startCharIndex: number = -1;
-  let isStartSet = false;
-  let endCharIndex: number = -1;
+  const comparator = (element: number, needle: number) => {
+    return element - needle;
+  };
 
-  for (const captionWord of transcript) {
-    if (captionWord.timestamp < startTime) {
-      charCount += captionWord.word.length;
-      continue;
+  let firstWordIdx = bs(timeStamps, startTime, comparator);
+
+  if (firstWordIdx < 0) {
+    firstWordIdx = -firstWordIdx - 2;
+    if (firstWordIdx < 0) {
+      // If still negative, it means we're at the first word
+      firstWordIdx = 0;
     }
-    if (!isStartSet) {
-      // This block only executes once
-      startCharIndex = charCount;
-
-      // Subtract 1 for every paragraph break. HTML removes extra whitespace, but our data model still contains a space.
-      for (const speakerIdx in speakerMap) {
-        if (speakerMap[speakerIdx].range[1] < captionWord.idx) {
-          continue;
-        }
-        const paragraphCount = parseInt(speakerIdx);
-        startCharIndex -= paragraphCount;
-
-        // Don't let index go negative here
-        if (startCharIndex < 0) {
-          startCharIndex = 0;
-        }
-        break;
-      }
-
-      isStartSet = true;
-    }
-    if (captionWord.timestamp <= endTime) {
-      charCount += captionWord.word.length;
-      continue;
-    }
-
-    endCharIndex = charCount;
-    // Subtract 1 for every paragraph break. HTML removes extra whitespace, but our data model still contains a space.
-    for (const speakerIdx in speakerMap) {
-      if (speakerMap[speakerIdx].range[1] < captionWord.idx) {
-        continue;
-      }
-      const paragraphCount = parseInt(speakerIdx);
-      endCharIndex -= paragraphCount;
-
-      // Don't let index go negative here
-      if (endCharIndex < 0) {
-        endCharIndex = 0;
-      }
-      break;
-    }
-    break;
   }
 
-  if (startCharIndex >= 0 && endCharIndex >= 0) {
-    return [startCharIndex, endCharIndex];
-  } else {
-    alertErr("functions: Index not found");
-    throw "Index not found";
+  let lastWordIdx = bs(timeStamps, endTime, comparator);
+
+  if (lastWordIdx < 0) {
+    lastWordIdx = -lastWordIdx - 2;
+    if (lastWordIdx < 0) {
+      // If still negative, it means we're at the first word
+      lastWordIdx = 0;
+    }
   }
+
+  const startCharIndex = charOffsets[firstWordIdx];
+  const endCharIndex = charOffsets[lastWordIdx + 1];
+
+  return [startCharIndex, endCharIndex];
 }
 
 function isCaptionNode(htmlRange: Range): boolean {
@@ -625,7 +578,7 @@ function getSimpleRangesFromHTMLRange(
         const prevSibChild = prevSib.childNodes[1].childNodes[0];
         if (prevSibChild && prevSibChild.textContent) {
           const text = prevSibChild.textContent;
-          wordCountBeforeSelection += text.split(" ").length;
+          wordCountBeforeSelection += text.split(" ").length - 1; //There is an extra space at the end we don't count
           charCountBeforeSelection += text.length;
         } else {
           alertErr("functions: Unexpcected HTML structure");
@@ -686,7 +639,7 @@ function getSimpleRangesFromHTMLRange(
   } else {
     // Count words/chars where selection begins
     const textOfStartContainer = startContainer.textContent;
-    wordCountBeforeSelection += textOfStartContainer.split(" ").length;
+    wordCountBeforeSelection += textOfStartContainer.split(" ").length - 1;
     charCountBeforeSelection += textOfStartContainer.length;
 
     if (isCaption) {
@@ -863,6 +816,91 @@ function highlightText(
       const newNode = node;
       newNode.innerHTML = [newSpan, textAfter];
       newNodes.push(node);
+      isFinished = true;
+    } else {
+      newNodes.push(node);
+    }
+  }
+  return newNodes;
+}
+
+function highlightCaption(
+  nodes: string[],
+  range: [number, number]
+): CaptionNodeArr {
+  const foundationClassName = "document__text--selected";
+  let charCount = 0;
+  const newNodes: CaptionNodeArr = [];
+  let isFirstNodeWithHighlights = true;
+  let isFinished = false;
+  for (const node of nodes) {
+    const nodeLength = node.length;
+    if (charCount + nodeLength <= range[0]) {
+      // Before the range start, output is same as input
+      charCount += nodeLength;
+      newNodes.push(node);
+      continue;
+    }
+    if (isFirstNodeWithHighlights) {
+      isFirstNodeWithHighlights = false;
+      const startOffset = range[0] - charCount;
+      const textBefore = node.substring(0, startOffset);
+      if (charCount + nodeLength <= range[1]) {
+        charCount += nodeLength;
+        const textContent = node.substring(startOffset);
+        // First span
+        const newSpan = React.createElement(
+          "span",
+          { className: foundationClassName, key: "someKey" },
+          textContent
+        );
+
+        const newNode = [textBefore, newSpan];
+        newNodes.push(newNode);
+        continue;
+      } else {
+        // A single node contains the full range
+        const endOffset = range[1] - charCount;
+        charCount += nodeLength;
+        const textContent = node.substring(startOffset, endOffset);
+        const textAfter = node.substring(endOffset);
+
+        const newSpan = React.createElement(
+          "span",
+          { className: foundationClassName, key: "someKey" },
+          textContent
+        );
+
+        const newNode = [textBefore, newSpan, textAfter];
+        newNodes.push(newNode);
+        isFinished = true;
+        continue;
+      }
+    }
+    if (charCount + nodeLength <= range[1] && !isFinished) {
+      charCount += nodeLength;
+
+      const newSpan = React.createElement(
+        "span",
+        { className: foundationClassName, key: "someKey" },
+        node
+      );
+
+      newNodes.push([newSpan]);
+      continue;
+    } else if (!isFinished) {
+      const endOffset = range[1] - charCount;
+      const textContent = node.substring(0, endOffset);
+      const textAfter = node.substring(endOffset);
+
+      const newSpan = React.createElement(
+        "span",
+        { className: foundationClassName, key: "someKey" },
+        textContent
+      );
+
+      const newNode = [newSpan, textAfter];
+      newNodes.push(newNode);
       isFinished = true;
     } else {
       newNodes.push(node);
@@ -1147,9 +1185,36 @@ function getUserCookieString(): string {
 
   return getCookieValue("loginui");
 }
+function copyToClipboard(text: string): boolean {
+  const textArea = document.createElement("textarea");
+  textArea.style.position = "fixed";
+  textArea.style.top = "0";
+  textArea.style.left = "0";
+  textArea.style.width = "2em";
+  textArea.style.height = "2em";
+  textArea.style.padding = "0";
+  textArea.style.border = "none";
+  textArea.style.outline = "none";
+  textArea.style.boxShadow = "none";
+  textArea.style.background = "transparent";
+  textArea.value = text;
+  document.body.appendChild(textArea);
+  textArea.select();
+  try {
+    const success = document.execCommand("copy");
+  } catch (err) {
+    const msg = "Video: Unable to copy text";
+    alertErr(msg);
+    throw msg;
+  }
+  document.body.removeChild(textArea);
+  return true;
+}
 export {
   alertErr,
   convertSecondsToTimestamp,
+  copyToClipboard,
+  decodeVideoFact,
   drawCaption,
   drawDocument,
   drawDocumentText,
@@ -1163,6 +1228,7 @@ export {
   getNodesInRange,
   getUserCookieString,
   getWordCount,
+  highlightCaption,
   highlightText,
   slugify
 };

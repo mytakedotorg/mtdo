@@ -27,15 +27,9 @@ $serif: "Merriweather", serif;
 }
 
 @mixin display2 {
-  @include typography($sans, 300, 29px);
-  @media #{$mq-small} {
-    @include typography($sans, 300, 29px);
-  }
+  @include typography($sans, 400, 36px);
   @media #{$mq-medium} {
-    @include typography($sans, 300, 36px);
-  }
-  @media #{$mq-large} {
-    @include typography($sans, 300, 44px);
+    @include typography($sans, 400, 44px);
   }
 }
 

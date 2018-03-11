@@ -20,8 +20,12 @@ jest.mock("./EditorButtons", () => ({
   default: "EditorButtons"
 }));
 
-jest.mock("./ShareContainer", () => ({
-  default: "ShareContainer"
+jest.mock("./DropDown", () => ({
+  default: "DropDown"
+}));
+
+jest.mock("./EmailTake", () => ({
+  default: "EmailTake"
 }));
 
 // Object.defineProperty(window.location, "pathname", {

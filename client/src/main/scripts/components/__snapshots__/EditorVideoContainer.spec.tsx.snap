@@ -18,6 +18,7 @@ exports[`Successfully loaded Video 1`] = `
     onSetClick={[Function]}
     videoFact={
       Object {
+        "durationSeconds": 5624,
         "fact": Object {
           "kind": "video",
           "primaryDate": "2016-10-09",

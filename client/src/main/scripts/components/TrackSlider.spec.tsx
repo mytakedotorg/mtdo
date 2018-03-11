@@ -13,6 +13,10 @@ const eventHandlers: TrackSliderEventHandlers = {
   onRangeChange: jest.fn()
 };
 
+jest.mock("./RangeContainer", () => ({
+  default: "RangeContainer"
+}));
+
 test("Initial render", () => {
   const tree = renderer
     .create(
@@ -21,6 +25,7 @@ test("Initial render", () => {
         end={5224}
         eventHandlers={eventHandlers}
         rangeSliders={initialRangeSliders}
+        stateAuthority={"SCROLL"}
         step={1}
       />
     )
@@ -36,6 +41,7 @@ test("Zoomed render", () => {
         end={82}
         eventHandlers={eventHandlers}
         rangeSliders={zoomedRangeSliders}
+        stateAuthority={"SCROLL"}
         step={0.1}
       />
     )
@@ -51,6 +57,7 @@ test("Unzoomed render", () => {
         end={82}
         eventHandlers={eventHandlers}
         rangeSliders={unzoomedRangeSliders}
+        stateAuthority={"SCROLL"}
         step={0.1}
       />
     )
