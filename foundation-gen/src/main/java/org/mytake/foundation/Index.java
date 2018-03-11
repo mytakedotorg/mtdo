@@ -6,10 +6,7 @@
  */
 package org.mytake.foundation;
 
-import com.jsoniter.output.JsonStream;
-import java.io.BufferedOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -19,6 +16,8 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 import java2ts.Foundation.FactLink;
+import java2ts.Foundation.IndexPointer;
+import java2ts.Routes;
 
 public class Index {
 	public static void main(String[] args) throws IOException, NoSuchAlgorithmException {
@@ -28,10 +27,13 @@ public class Index {
 		facts.addAll(Documents.national().factLinks);
 		facts.addAll(Videos.national().factLinks);
 
-		try (OutputStream output = new BufferedOutputStream(
-				Files.newOutputStream(Folders.DST_FOUNDATION.resolve("index.json")))) {
-			JsonStream.serialize(facts, output);
-		}
+		Hashed hashed = Hashed.asJson(facts);
+		Files.write(Folders.DST_FOUNDATION.resolve(hashed.hash + ".json"), hashed.content);
+
+		IndexPointer pointer = new IndexPointer();
+		pointer.hash = hashed.hash;
+		// substring(1) to remove '/'
+		Files.write(Folders.DST_FOUNDATION.resolve(Routes.FOUNDATION_INDEX_HASH.substring(1)), Hashed.asJson(pointer).content);
 	}
 
 	private static void deleteDir(Path folder) throws IOException {

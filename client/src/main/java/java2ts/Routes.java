@@ -33,7 +33,7 @@ public class Routes {
 	public static final String FOUNDATION = "/foundation";
 	public static final String FOUNDATION_V1 = "/foundation-v1";
 	public static final String FOUNDATION_DATA = "/foundation-data";
-	public static final String FOUNDATION_DATA_INDEX = "/foundation-data/index.json";
+	public static final String FOUNDATION_INDEX_HASH = "/foundation-index-hash.json";
 
 	public static final String ABOUT = "/about";
 	public static final String ABOUTUS = "/aboutus";

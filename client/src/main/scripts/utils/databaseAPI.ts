@@ -42,8 +42,8 @@ function getAllFacts(
     cache: "default"
   };
 
-  fetch(Routes.FOUNDATION_DATA_INDEX, request)
-    .then(function(response: Response) {
+  fetch(Routes.FOUNDATION_INDEX_HASH, request)
+    .then((response: Response) => {
       const contentType = response.headers.get("content-type");
       if (
         contentType &&
@@ -55,10 +55,16 @@ function getAllFacts(
         callback("Error retrieving Facts", []);
       }
     })
-    .then(function(json: any) {
+    .then((json: Foundation.IndexPointer) => {
+      return fetch(Routes.FOUNDATION_DATA + json.hash + ".json", request);
+    })
+    .then((response: Response) => {
+      return response.json();
+    })
+    .then((json: Foundation.FactLink[]) => {
       callback(null, json);
     })
-    .catch(function(error: TypeError) {
+    .catch((error: TypeError) => {
       callback(error, []);
     });
 }

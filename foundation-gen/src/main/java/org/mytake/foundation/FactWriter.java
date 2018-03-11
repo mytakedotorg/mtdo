@@ -7,15 +7,12 @@
 package org.mytake.foundation;
 
 import com.diffplug.common.base.Errors;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.List;
 import java.util.Locale;
 import java2ts.Foundation;
@@ -62,21 +59,12 @@ public abstract class FactWriter<T extends Foundation.FactContent> {
 		T content = factToContent(fact);
 		content.fact = fact;
 
-		ByteArrayOutputStream output = new ByteArrayOutputStream();
-		JsonMisc.toJson(content, output);
-		byte[] contentBytes = output.toByteArray();
-		MessageDigest digest = MessageDigest.getInstance("SHA-256");
-		byte[] hash = digest.digest(contentBytes);
-
-		String hashStr = Base64.getUrlEncoder().encodeToString(hash);
-		Files.write(dstDir.resolve(hashStr + ".json"), contentBytes);
-		postProcess(content, hashStr);
+		Hashed hashed = Hashed.asJson(content);
+		Files.write(dstDir.resolve(hashed.hash + ".json"), hashed.content);
 
 		FactLink link = new FactLink();
 		link.fact = fact;
-		link.hash = hashStr;
+		link.hash = hashed.hash;
 		factLinks.add(link);
 	}
-
-	protected void postProcess(T value, String hashStr) {}
 }

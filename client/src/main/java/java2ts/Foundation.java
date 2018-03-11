@@ -25,6 +25,11 @@ public interface Foundation {
 	}
 
 	@jsweet.lang.Interface
+	public class IndexPointer {
+		public String hash;
+	}
+
+	@jsweet.lang.Interface
 	public class FactLink {
 		public Fact fact;
 		public String hash;
