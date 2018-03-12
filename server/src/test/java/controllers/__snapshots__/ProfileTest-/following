@@ -1,0 +1,148 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>MyTake.org</title>
+<meta name="description" content="samples | MyTake.org">
+<meta name="author" content="MyTake.org">
+
+<meta property="og:title" content="MyTake.org" />
+<meta property="og:description" content="samples" />
+<meta property="fb:app_id" content="1014270045380974" />
+
+<link rel="stylesheet" href="/assets-dev/styles/main.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Merriweather:400,400i,700|Source+Sans+Pro:300,400,700" crossorigin="anonymous">
+<script src="https://use.fontawesome.com/be03d6dcba.js"></script>
+<!--[if lt IE 9]>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
+<![endif]-->
+</head>
+
+<body>
+<script>
+	window.fbAsyncInit = function() {
+		FB.init({
+			appId            : '1014270045380974',
+			autoLogAppEvents : true,
+			xfbml            : true,
+			version          : 'v2.11'
+		});
+	};
+
+	(function(d, s, id){
+			var js, fjs = d.getElementsByTagName(s)[0];
+			if (d.getElementById(id)) {return;}
+			js = d.createElement(s); js.id = id;
+			js.src = "https://connect.facebook.net/en_US/sdk.js";
+			fjs.parentNode.insertBefore(js, fjs);
+		}(document, 'script', 'facebook-jssdk'));
+</script>
+<header class="header" role="banner">
+	<a class="header__skip-link" href="#app" tabindex="1">Skip to main content</a>
+	<div class="header__top">
+		<div class="header__logo-container">
+				<a class="header__logo-link" href="/"><span /></a>
+				<div class="header__logo-image-container">
+					<img class="header__logo-image" src="/assets/permanent/mytakedotorg-9c5e6c8a85.png" width="114" height="100" alt="MyTake.org | Fundamentals, in context." />
+				</div>
+				<em class="header__logo-title"><span class="header__color--blue">MyTake</span><span class="header__color--red">.org</span></em>
+				<span class="header__logo-tagline">Fundamentals, in context.</span>
+		</div>
+		<div class="header__icon-list header__icon-list--top">
+			<a class="header__fork-link" href="https://github.com/mytakedotorg/mytakedotorg" target="_blank"><img class="header__fork-img" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
+			<div class="header__nav-toggle">
+				<a href="javascript:void(0)" class="header__nav-toggle-link">
+					<span class="header__nav-icon">
+					<i class="fa fa-bars" aria-hidden="true"></i>
+					</span>
+				</a>
+			</div>
+		</div>
+	</div>
+	<div class="header__nav">
+		<div class="header__nav-inner">
+			<nav class="nav collapse" role="navigation">
+				<ul id="nav-list" class="nav__list nav__list--top">
+					<li class="nav__list-item nav__list-item--top"><a class="nav__link nav__link--top" href="/foundation" tabindex="3"><span class="nav__link-text nav__link-text--top"><span class="nav__icon-spacer"><i class="fa fa-book" aria-hidden="true"></i></span>Foundation</span></a></li>
+					<li class="nav__list-item nav__list-item--top"><a id="login-link" class="nav__link nav__link--top" href="/login" tabindex="4"><span class="nav__link-text nav__link-text--top"><span class="nav__icon-spacer"><i class="fa fa-user" aria-hidden="true"></i></span>Login</span></a></li>
+					<li class="nav__list-item nav__list-item--top"><a class="nav__link nav__link--top" href="/about" tabindex="5"><span class="nav__link-text nav__link-text--top"><span class="nav__icon-spacer"><img class="nav__link-icon nav__link-icon--wheat" src="/assets/permanent/mytake-icon-1e0067f99a.png" width="16" height="16" /></span>About us</span></a></li>
+				</ul>
+			</nav>
+		</div>
+	</div>
+	<div class="header__banner">
+		<div class="header__banner-inner">
+			<div class="header__icon-list header__icon-list--bottom">
+				<span class="header__icon header__icon--triangle"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i></span>
+			</div>
+			<div class="header__banner-links">
+				<p class="header__text">Under construction</p>
+				<p class="header__text"><a class="header__link" href="https://meta.mytake.org/t/how-to-use-mytake-org/28">How to use</a></p>
+				<p class="header__text"><a class="header__link" href="https://meta.mytake.org/t/how-to-contribute-to-mytake-org/29">Contribute</a></p>
+			</div>
+		</div>
+	</div>
+</header>
+
+<div class="profile">
+	<div class="profile__usercard">
+		<div class="profile__image-container">
+			<img class="profile__image" src="/assets/permanent/blankuser-4ea73504e4.png">
+		</div>
+		<div class="profile__info">
+			<h2 class="profile__text profile__text--username">samples</h2>
+			<p class="profile__text profile__text--bio">I have a little bio that I can put here.</p>
+			<hr />
+			<p class="profile__text profile__text--small">Some city, ST</p>
+			<p class="profile__text profile__text--small">email@domain</p>
+			<p class="profile__text profile__text--small">myhomepage.com</p>
+		</div>
+	</div>
+	<div class="profile__tabs">
+		<div class="profile__nav">
+			<div class="tab-nav">
+				<ul class="tab-nav__list">
+			<li class="tab-nav__list-item"><a href="/samples" class="tab-nav__link tab-nav__link--inactive">published</a></li><li class="tab-nav__list-item"><a href="/samples?tab=stars" class="tab-nav__link tab-nav__link--inactive">stars</a></li><li class="tab-nav__list-item"><a href="/samples?tab=followers" class="tab-nav__link tab-nav__link--inactive">followers</a></li><li class="tab-nav__list-item"><a href="/samples?tab=following" class="tab-nav__link tab-nav__link--active">following</a></li><li class="tab-nav__list-item"><a href="/samples?tab=edit" class="tab-nav__link tab-nav__link--inactive">edit</a></li><li class="tab-nav__list-item"><a href="/samples?tab=drafts" class="tab-nav__link tab-nav__link--inactive">drafts</a></li>
+				</ul>
+			</div>
+		</div>
+		<div class="profile__tab-content">
+				<div class="tab">
+	<div class="takelist">
+		<div class="takelist__take">
+			<h2 class="takelist__title"><a class="takelist__link" href="/other">other</a></h2>
+			<span class="takelist__aside">Followed on Jan 01 1970</span>
+		</div>
+	</div>
+</div>
+
+
+		</div>
+	</div>
+</div>
+
+
+<footer class="footer">
+<hr class="footer__hr" />
+	<div class="footer__nav">
+		<ul class="nav__list nav__list--bottom1">
+			<li class="nav__list-item nav__list-item--bottom1"><a class="nav__link nav__link--bottom" href="/foundation"><span class="nav__link-text nav__link-text--bottom">Foundation</span></a></li>
+			<li class="nav__list-item nav__list-item--bottom2"><a class="nav__link nav__link--bottom" href="/about"><span class="nav__link-text nav__link-text--bottom">About us</span></a></li>
+		</ul>
+		<ul class="nav__list nav__list--bottom2">
+			<li class="nav__list-item nav__list-item--bottom3"><a class="nav__link nav__link--bottom" href="/tos"><span class="nav__link-text nav__link-text--bottom">Terms of Service</span></a></li>
+			<li class="nav__list-item nav__list-item--bottom3"><a class="nav__link nav__link--bottom" href="/privacy"><span class="nav__link-text nav__link-text--bottom">Privacy Policy</span></a></li>
+		</ul>
+		<ul class="nav__list nav__list--bottom3">
+			<li class="nav__list-item nav__list-item--bottom2"><a class="nav__link nav__link--bottom" href="/faq"><span class="nav__link-text nav__link-text--bottom">Frequently Asked Questions</span></a></li>
+		</ul>
+	</div>
+</footer>
+<div class="fade-overlay"></div>
+<script type="text/javascript" src="/assets-dev/scripts/window.bundle.js"></script>
+</body>
+</html>

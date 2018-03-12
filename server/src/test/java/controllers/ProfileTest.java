@@ -55,5 +55,6 @@ public class ProfileTest {
 			follow.insert();
 		}
 		Snapshot.match("/followers", dev.givenUser("other").get("other?tab=followers"));
+		Snapshot.match("/following", dev.givenUser("samples").get("samples?tab=following"));
 	}
 }

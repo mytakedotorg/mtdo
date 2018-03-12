@@ -120,6 +120,15 @@ public class Profile implements Jooby.Module {
 								.fetch();
 						return views.Profile.profileFollowers.template(account, isLoggedIn, followers);
 					case following:
+						Result<?> following = dsl
+								.select(FOLLOW.AUTHOR, FOLLOW.FOLLOWER, FOLLOW.FOLLOWED_AT, ACCOUNT.USERNAME)
+								.from(ACCOUNT)
+								.innerJoin(FOLLOW)
+								.on(ACCOUNT.ID.eq(FOLLOW.AUTHOR))
+								.where(FOLLOW.FOLLOWER.eq(userId))
+								.orderBy(FOLLOW.FOLLOWED_AT.desc())
+								.fetch();
+						return views.Profile.profileFollowing.template(account, isLoggedIn, following);
 					case edit:
 						return views.Profile.profileTodo.template(account, isLoggedIn, mode);
 					case drafts:
