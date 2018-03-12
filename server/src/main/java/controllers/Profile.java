@@ -7,6 +7,7 @@
 package controllers;
 
 import static db.Tables.ACCOUNT;
+import static db.Tables.FOLLOW;
 import static db.Tables.TAKEPUBLISHED;
 import static db.Tables.TAKEREACTION;
 
@@ -109,6 +110,15 @@ public class Profile implements Jooby.Module {
 								.fetch();
 						return views.Profile.profileStars.template(account, isLoggedIn, likes);
 					case followers:
+						Result<?> followers = dsl
+								.select(FOLLOW.AUTHOR, FOLLOW.FOLLOWER, FOLLOW.FOLLOWED_AT, ACCOUNT.USERNAME)
+								.from(ACCOUNT)
+								.innerJoin(FOLLOW)
+								.on(ACCOUNT.ID.eq(FOLLOW.FOLLOWER))
+								.where(FOLLOW.AUTHOR.eq(userId))
+								.orderBy(FOLLOW.FOLLOWED_AT.desc())
+								.fetch();
+						return views.Profile.profileFollowers.template(account, isLoggedIn, followers);
 					case following:
 					case edit:
 						return views.Profile.profileTodo.template(account, isLoggedIn, mode);
