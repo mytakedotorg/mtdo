@@ -50,6 +50,7 @@ public class Prod extends Jooby {
 			});
 		});
 		use(new InitialData.Module());
+		use(new FoundationMigrationModule());
 		controllers(this);
 	}
 
@@ -61,7 +62,6 @@ public class Prod extends Jooby {
 		jooby.use(new Jdbc());
 		jooby.use(new jOOQ());
 		jooby.use(new JsoniterModule());
-		jooby.use(new FoundationMigrationModule());
 	}
 
 	static void controllers(Jooby jooby) {
