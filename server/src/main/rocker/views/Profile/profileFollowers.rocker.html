@@ -1,0 +1,33 @@
+@import controllers.Profile.Mode
+@import db.tables.records.AccountRecord
+@import java.sql.Timestamp
+@import org.jooq.Result
+@import static db.Tables.FOLLOW
+@import static db.Tables.ACCOUNT
+
+@args(AccountRecord account, boolean isLoggedIn, Result<?> profiles)
+
+@views.Profile.profileBase.template(account, isLoggedIn, Mode.followers) -> {
+
+	<div class="tab">
+@if (profiles.isEmpty()) {
+	<h2 class="tab-title">No followers.</h2>
+} else {
+	<div class="takelist">
+	@for (profile : profiles) {
+		@with(	Integer authorId = profile.get(FOLLOW.AUTHOR),
+			Integer followerId = profile.get(FOLLOW.FOLLOWER),
+			Timestamp followedAt = profile.get(FOLLOW.FOLLOWED_AT),
+			String username = profile.get(ACCOUNT.USERNAME)
+			) {
+		<div class="takelist__take">
+			<h2 class="takelist__title"><a class="takelist__link" href="/@username">@username</a></h2>
+			<span class="takelist__aside">Followed on @common.Time.formatCompact().format(followedAt)</span>
+		</div>
+		}
+	}
+	</div>
+}
+</div>
+
+}
