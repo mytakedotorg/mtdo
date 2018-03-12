@@ -8,7 +8,8 @@ import BlockEditor, {
 } from "./BlockEditor";
 import TimelineView from "./TimelineView";
 import EditorButtons from "./EditorButtons";
-import ShareContainer from "./ShareContainer";
+import DropDown from "./DropDown";
+import EmailTake from "./EmailTake";
 import { postRequest } from "../utils/databaseAPI";
 import { DraftRev } from "../java2ts/DraftRev";
 import { DraftPost } from "../java2ts/DraftPost";
@@ -338,29 +339,7 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
       const { title } = this.state.takeDocument;
       if (title.length <= 255) {
         if (title.length > 0) {
-          this.setState({
-            status: {
-              ...this.state.status,
-              saving: true,
-              error: false,
-              message: "Publishing Take."
-            }
-          });
-          const bodyJson: DraftPost = {
-            parentRev: this.state.parentRev,
-            title: title,
-            blocks: this.state.takeDocument.blocks
-          };
-          postRequest(Routes.DRAFTS_PUBLISH, bodyJson, function(
-            json: PublishResult
-          ) {
-            if (!json.conflict) {
-              window.location.href = json.publishedUrl;
-            } else {
-              alertErr("BlockWriter: error publishing Take.");
-              throw "There was an error publishing your Take.";
-            }
-          });
+          this.publishTake();
         } else {
           this.setState({
             status: {
@@ -484,6 +463,29 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
       viewRange
     };
   };
+  publishTake = () => {
+    this.setState({
+      status: {
+        ...this.state.status,
+        saving: true,
+        error: false,
+        message: "Publishing Take."
+      }
+    });
+    const bodyJson: DraftPost = {
+      parentRev: this.state.parentRev,
+      title: this.state.takeDocument.title,
+      blocks: this.state.takeDocument.blocks
+    };
+    postRequest(Routes.DRAFTS_PUBLISH, bodyJson, function(json: PublishResult) {
+      if (!json.conflict) {
+        window.location.href = json.publishedUrl;
+      } else {
+        alertErr("BlockWriter: error publishing Take.");
+        throw "There was an error publishing your Take.";
+      }
+    });
+  };
   handleTakeBlockChange = (stateIndex: number, value: string): void => {
     if (stateIndex === -1) {
       // Change the title
@@ -576,7 +578,7 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
     }
   }
   render() {
-    const eventHandlers = {
+    const editorEventHandlers = {
       handleChange: this.handleTakeBlockChange,
       handleDelete: this.removeBlock,
       handleEnterPress: this.addParagraph,
@@ -595,11 +597,10 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
       handlePublishClick: this.handlePublishClick,
       handleSaveClick: this.handleSaveClick
     };
-
     return (
       <div>
         <BlockEditor
-          eventHandlers={eventHandlers}
+          eventHandlers={editorEventHandlers}
           takeDocument={(Object as any).assign({}, this.state.takeDocument)}
           active={this.state.activeBlockIndex}
         />
@@ -610,12 +611,14 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
               status={this.state.status}
             />
             <div className="editor__share">
-              <ShareContainer
-                takeDocument={(Object as any).assign(
-                  {},
-                  this.state.takeDocument
-                )}
-              />
+              <DropDown text="Email" position="TL">
+                <EmailTake
+                  takeDocument={(Object as any).assign(
+                    {},
+                    this.state.takeDocument
+                  )}
+                />
+              </DropDown>
             </div>
           </div>
           <p className="timeline__instructions">

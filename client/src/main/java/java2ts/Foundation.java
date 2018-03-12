@@ -25,6 +25,11 @@ public interface Foundation {
 	}
 
 	@jsweet.lang.Interface
+	public class IndexPointer {
+		public String hash;
+	}
+
+	@jsweet.lang.Interface
 	public class FactLink {
 		public Fact fact;
 		public String hash;
@@ -36,19 +41,18 @@ public interface Foundation {
 	}
 
 	@jsweet.lang.Interface
-	public class VideoFactContent extends FactContent {
+	public class VideoFactContentLegacy extends FactContent {
 		public String youtubeId;
-		@jsweet.lang.Optional
+		public Number durationSeconds;
 		public List<Person> speakers;
-		@jsweet.lang.Optional
 		public List<CaptionWord> transcript;
-		@jsweet.lang.Optional
 		public List<SpeakerMap> speakerMap;
 	}
 
 	@jsweet.lang.Interface
-	public class VideoFactContentFast extends FactContent {
+	public class VideoFactContent extends FactContent {
 		public String youtubeId;
+		public Number durationSeconds;
 		public List<Person> speakers;
 		public String plainText;
 		/** Word n starts at charOffsets[n]. */
@@ -70,6 +74,7 @@ public interface Foundation {
 	@jsweet.lang.Interface
 	public class VideoFactContentEncoded extends FactContent {
 		public String youtubeId;
+		public Number durationSeconds;
 		public List<Person> speakers;
 		public String plainText;
 		/** Count of the words. */

@@ -100,10 +100,10 @@ exports[`Successfully loaded Document Preview with highlights 1`] = `
   }
   setFactHandlers={
     Object {
-      "handleDocumentSetClick": [MockFunction],
-      "handleRangeCleared": [MockFunction],
-      "handleRangeSet": [MockFunction],
-      "handleVideoSetClick": [MockFunction],
+      "handleDocumentSetClick": [Function],
+      "handleRangeCleared": [Function],
+      "handleRangeSet": [Function],
+      "handleVideoSetClick": [Function],
     }
   }
   videoFact={undefined}
@@ -120,7 +120,7 @@ exports[`Successfully loaded Video Preview 1`] = `
         "primaryDateKind": "recorded",
         "title": "Donald Trump - Hillary Clinton (2/3)",
       },
-      "hash": "U8MV5KDDaxumxZOCJOzExAUAAkSoYNhycVXq7jZ59_0=",
+      "hash": "0ucGOukmHdaStpYZRigN-tLV8Vn2wAwjlobyMGzSpL4=",
     }
   }
   nodes={undefined}
@@ -128,14 +128,15 @@ exports[`Successfully loaded Video Preview 1`] = `
   ranges={undefined}
   setFactHandlers={
     Object {
-      "handleDocumentSetClick": [MockFunction],
-      "handleRangeCleared": [MockFunction],
-      "handleRangeSet": [MockFunction],
-      "handleVideoSetClick": [MockFunction],
+      "handleDocumentSetClick": [Function],
+      "handleRangeCleared": [Function],
+      "handleRangeSet": [Function],
+      "handleVideoSetClick": [Function],
     }
   }
   videoFact={
     Object {
+      "durationSeconds": 5624,
       "fact": Object {
         "kind": "video",
         "primaryDate": "2016-10-09",

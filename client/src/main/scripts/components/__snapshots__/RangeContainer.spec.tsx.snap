@@ -1,0 +1,142 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Render a range 1`] = `
+<div
+  className="trackSlider__range"
+>
+  <div
+    className="rc-slider"
+    onBlur={[Function]}
+    onFocus={[Function]}
+    onKeyDown={[Function]}
+    onMouseDown={[Function]}
+    onMouseUp={[Function]}
+    onTouchStart={[Function]}
+    style={undefined}
+  >
+    <div
+      className="rc-slider-rail"
+      style={
+        Object {
+          "backgroundColor": "#758aa8",
+        }
+      }
+    />
+    <div
+      className="rc-slider-track rc-slider-track-1"
+      style={
+        Object {
+          "backgroundColor": "#758aa8",
+          "left": "35.815467075038285%",
+          "visibility": "visible",
+          "width": "0.3828483920367489%",
+        }
+      }
+    />
+    <div
+      className="rc-slider-step"
+    />
+    <div
+      aria-disabled={false}
+      aria-valuemax={5224}
+      aria-valuemin={0}
+      aria-valuenow={1871}
+      className="rc-slider-handle rc-slider-handle-1"
+      role="slider"
+      style={
+        Object {
+          "backgroundColor": "#758aa8",
+          "left": "35.815467075038285%",
+        }
+      }
+      tabIndex={0}
+    />
+    <div
+      aria-disabled={false}
+      aria-valuemax={5224}
+      aria-valuemin={0}
+      aria-valuenow={1891}
+      className="rc-slider-handle rc-slider-handle-2"
+      role="slider"
+      style={
+        Object {
+          "backgroundColor": "#758aa8",
+          "left": "36.198315467075034%",
+        }
+      }
+      tabIndex={0}
+    />
+    <div
+      className="rc-slider-mark"
+    />
+  </div>
+  <span
+    className="trackSlider__label"
+  >
+    Zoom
+  </span>
+</div>
+`;
+
+exports[`Render a slider 1`] = `
+<div
+  className="trackSlider__range"
+>
+  <div
+    className="rc-slider"
+    onBlur={[Function]}
+    onFocus={[Function]}
+    onKeyDown={[Function]}
+    onMouseDown={[Function]}
+    onMouseUp={[Function]}
+    onTouchStart={[Function]}
+    style={undefined}
+  >
+    <div
+      className="rc-slider-rail"
+      style={
+        Object {
+          "backgroundColor": "#758aa8",
+        }
+      }
+    />
+    <div
+      className="rc-slider-track"
+      style={
+        Object {
+          "backgroundColor": "#758aa8",
+          "left": "0%",
+          "visibility": "visible",
+          "width": "36.160030627871365%",
+        }
+      }
+    />
+    <div
+      className="rc-slider-step"
+    />
+    <div
+      aria-disabled={false}
+      aria-valuemax={5224}
+      aria-valuemin={0}
+      aria-valuenow={1889}
+      className="rc-slider-handle"
+      role="slider"
+      style={
+        Object {
+          "backgroundColor": "#758aa8",
+          "left": "36.160030627871365%",
+        }
+      }
+      tabIndex={0}
+    />
+    <div
+      className="rc-slider-mark"
+    />
+  </div>
+  <span
+    className="trackSlider__label"
+  >
+    Now Playing
+  </span>
+</div>
+`;

@@ -7,11 +7,13 @@ import { TakeReactionJson } from "../java2ts/TakeReactionJson";
 import { EmailSelf } from "../java2ts/EmailSelf";
 import {
   alertErr,
+  decodeVideoFact,
+  CaptionNode,
   FoundationNode,
   getHighlightedNodes,
   getCaptionNodeArray,
   getCharRangeFromVideoRange,
-  highlightText,
+  highlightCaption,
   ImageProps,
   drawDocument,
   drawCaption,
@@ -23,7 +25,6 @@ import {
   DocumentBlock,
   VideoBlock
 } from "../components/BlockEditor";
-import { ReactElement } from "react";
 
 function getAllFacts(
   callback: (
@@ -41,8 +42,8 @@ function getAllFacts(
     cache: "default"
   };
 
-  fetch(Routes.FOUNDATION_DATA_INDEX, request)
-    .then(function(response: Response) {
+  fetch(Routes.FOUNDATION_INDEX_HASH, request)
+    .then((response: Response) => {
       const contentType = response.headers.get("content-type");
       if (
         contentType &&
@@ -54,10 +55,16 @@ function getAllFacts(
         callback("Error retrieving Facts", []);
       }
     })
-    .then(function(json: any) {
+    .then((json: Foundation.IndexPointer) => {
+      return fetch(Routes.FOUNDATION_DATA + "/" + json.hash + ".json", request);
+    })
+    .then((response: Response) => {
+      return response.json();
+    })
+    .then((json: Foundation.FactLink[]) => {
       callback(null, json);
     })
-    .catch(function(error: TypeError) {
+    .catch((error: TypeError) => {
       callback(error, []);
     });
 }
@@ -100,7 +107,9 @@ function fetchFact(
       }
     })
     .then(function(json: any) {
-      if (index !== undefined) {
+      if (json.fact.kind === "video") {
+        callback(null, decodeVideoFact(json), index, block);
+      } else if (index !== undefined) {
         if (block !== undefined) {
           callback(null, json, index, block);
         } else {
@@ -345,39 +354,35 @@ function drawFacts(
 
                 const title = factContent.fact.title;
                 const titleSlug = slugify(title);
-                if (
-                  factContent.transcript &&
-                  factContent.speakerMap &&
-                  blockInScope.range
-                ) {
-                  const captionNodes = getCaptionNodeArray(
-                    factContent.transcript,
-                    factContent.speakerMap
-                  );
+
+                if (factContent && blockInScope.range) {
+                  const captionNodes = getCaptionNodeArray(factContent);
 
                   const characterRange = getCharRangeFromVideoRange(
-                    factContent.transcript,
-                    factContent.speakerMap,
+                    factContent.charOffsets,
+                    factContent.timestamps,
                     blockInScope.range
                   );
 
-                  const highlightedCaptionNodes = highlightText(
+                  const highlightedCaptionNodes = highlightCaption(
                     captionNodes,
-                    characterRange,
-                    () => {}
+                    characterRange
                   );
 
                   let highlightedText = '"';
                   for (const node of highlightedCaptionNodes) {
-                    for (const text of node.innerHTML) {
-                      if (text) {
-                        let textStr = text.toString();
-                        if (textStr === "[object Object]") {
-                          // Can't find a better conditional test
-                          // Found a React Element, which is highlighted text
-                          highlightedText += (text as ReactElement<
-                            HTMLSpanElement
-                          >).props.children;
+                    if (typeof node === "object") {
+                      for (const subnode of node as Array<CaptionNode>) {
+                        if (typeof subnode === "object") {
+                          const { children } = subnode.props;
+                          if (typeof children === "string") {
+                            highlightedText += children;
+                          } else {
+                            const msg =
+                              "databaseApi: unrecognized structure of highlightedCaptionNodes";
+                            alertErr(msg);
+                            throw msg;
+                          }
                         }
                       }
                     }

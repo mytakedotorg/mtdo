@@ -2,1107 +2,238 @@
 
 exports[`CaptionTextNodeList 1`] = `
 <div
-  className="captions"
+  className="video__captions"
 >
   <ClipEditor
     captionIsHighlighted={false}
     currentTime={0}
     eventHandlers={
       Object {
-        "onAfterRangeChange": [MockFunction],
-        "onClearPress": [MockFunction],
-        "onPlayPausePress": [MockFunction],
-        "onRangeChange": [MockFunction],
-        "onRestartPress": [MockFunction],
-        "onSkipBackPress": [MockFunction],
-        "onSkipForwardPress": [MockFunction],
-        "onZoomToClipPress": undefined,
+        "onAfterRangeChange": [Function],
+        "onClearPress": [Function],
+        "onPlayPausePress": [Function],
+        "onRangeChange": [Function],
+        "onRestartPress": [Function],
+        "onSkipBackPress": [Function],
+        "onSkipForwardPress": [Function],
+        "onZoomToClipPress": [Function],
       }
     }
     isPaused={true}
-    isZoomedToClip={undefined}
+    isZoomedToClip={false}
     rangeSliders={
       Array [
         Object {
           "end": 25,
+          "label": "Zoom",
           "start": 0,
-          "styles": undefined,
+          "styles": Object {
+            "handle": Object {
+              "backgroundColor": "#758aa8",
+              "border": "1px solid #2c4770",
+            },
+            "rail": Object {
+              "backgroundColor": "#d3dae3",
+            },
+            "track": Object {
+              "backgroundColor": "#758aa8",
+            },
+          },
           "type": "VIEW",
         },
         Object {
           "end": 0,
+          "label": "Clip",
           "start": 0,
-          "styles": undefined,
+          "styles": Object {
+            "handle": Object {
+              "backgroundColor": "#758aa8",
+              "border": "1px solid #2c4770",
+            },
+            "rail": Object {
+              "backgroundColor": "#d3dae3",
+            },
+            "track": Object {
+              "backgroundColor": "#758aa8",
+            },
+          },
           "type": "SELECTION",
         },
       ]
     }
+    stateAuthority="SCROLL"
     videoDuration={5224}
   />
-  <Document
-    captionData={
-      Object {
-        "captionTimer": 0,
-        "speakerMap": Array [
-          Object {
-            "range": Array [
-              0,
-              7,
-            ],
-            "speaker": "Raddatz",
-          },
-          Object {
-            "range": Array [
-              8,
-              89,
-            ],
-            "speaker": "Cooper",
-          },
-        ],
-        "transcript": Array [
-          Object {
-            "idx": 0,
-            "timestamp": 0.75,
-            "word": "Good ",
-          },
-          Object {
-            "idx": 1,
-            "timestamp": 0.96,
-            "word": "evening ",
-          },
-          Object {
-            "idx": 2,
-            "timestamp": 1.56,
-            "word": "I'm ",
-          },
-          Object {
-            "idx": 3,
-            "timestamp": 1.92,
-            "word": "Martha ",
-          },
-          Object {
-            "idx": 4,
-            "timestamp": 2.129,
-            "word": "Raddatz ",
-          },
-          Object {
-            "idx": 5,
-            "timestamp": 2.52,
-            "word": "from ",
-          },
-          Object {
-            "idx": 6,
-            "timestamp": 3.06,
-            "word": "ABC ",
-          },
-          Object {
-            "idx": 7,
-            "timestamp": 3.09,
-            "word": "News. ",
-          },
-          Object {
-            "idx": 8,
-            "timestamp": 3.659,
-            "word": "And ",
-          },
-          Object {
-            "idx": 9,
-            "timestamp": 3.87,
-            "word": "I'm ",
-          },
-          Object {
-            "idx": 10,
-            "timestamp": 4.259,
-            "word": "Anderson ",
-          },
-          Object {
-            "idx": 11,
-            "timestamp": 4.529,
-            "word": "Cooper ",
-          },
-          Object {
-            "idx": 12,
-            "timestamp": 4.68,
-            "word": "from ",
-          },
-          Object {
-            "idx": 13,
-            "timestamp": 5.1,
-            "word": "CNN. ",
-          },
-          Object {
-            "idx": 14,
-            "timestamp": 5.31,
-            "word": "We ",
-          },
-          Object {
-            "idx": 15,
-            "timestamp": 5.49,
-            "word": "want ",
-          },
-          Object {
-            "idx": 16,
-            "timestamp": 5.549,
-            "word": "to ",
-          },
-          Object {
-            "idx": 17,
-            "timestamp": 5.7,
-            "word": "welcome ",
-          },
-          Object {
-            "idx": 18,
-            "timestamp": 5.879,
-            "word": "you ",
-          },
-          Object {
-            "idx": 19,
-            "timestamp": 6.089,
-            "word": "to ",
-          },
-          Object {
-            "idx": 20,
-            "timestamp": 6.24,
-            "word": "Washington ",
-          },
-          Object {
-            "idx": 21,
-            "timestamp": 7.2,
-            "word": "University ",
-          },
-          Object {
-            "idx": 22,
-            "timestamp": 7.29,
-            "word": "in ",
-          },
-          Object {
-            "idx": 23,
-            "timestamp": 7.529,
-            "word": "St. ",
-          },
-          Object {
-            "idx": 24,
-            "timestamp": 7.799,
-            "word": "Louis ",
-          },
-          Object {
-            "idx": 25,
-            "timestamp": 8.01,
-            "word": "for ",
-          },
-          Object {
-            "idx": 26,
-            "timestamp": 8.429,
-            "word": "the ",
-          },
-          Object {
-            "idx": 27,
-            "timestamp": 8.88,
-            "word": "second ",
-          },
-          Object {
-            "idx": 28,
-            "timestamp": 9.24,
-            "word": "presidential ",
-          },
-          Object {
-            "idx": 29,
-            "timestamp": 9.69,
-            "word": "debate ",
-          },
-          Object {
-            "idx": 30,
-            "timestamp": 9.719,
-            "word": "between ",
-          },
-          Object {
-            "idx": 31,
-            "timestamp": 10.29,
-            "word": "Hillary ",
-          },
-          Object {
-            "idx": 32,
-            "timestamp": 10.32,
-            "word": "Clinton ",
-          },
-          Object {
-            "idx": 33,
-            "timestamp": 10.679,
-            "word": "and ",
-          },
-          Object {
-            "idx": 34,
-            "timestamp": 10.889,
-            "word": "Donald ",
-          },
-          Object {
-            "idx": 35,
-            "timestamp": 11.389,
-            "word": "Trump ",
-          },
-          Object {
-            "idx": 36,
-            "timestamp": 12.389,
-            "word": "sponsored ",
-          },
-          Object {
-            "idx": 37,
-            "timestamp": 12.48,
-            "word": "by ",
-          },
-          Object {
-            "idx": 38,
-            "timestamp": 12.54,
-            "word": "the ",
-          },
-          Object {
-            "idx": 39,
-            "timestamp": 12.99,
-            "word": "Commission ",
-          },
-          Object {
-            "idx": 40,
-            "timestamp": 13.08,
-            "word": "on ",
-          },
-          Object {
-            "idx": 41,
-            "timestamp": 13.65,
-            "word": "Presidential ",
-          },
-          Object {
-            "idx": 42,
-            "timestamp": 13.88,
-            "word": "Debates. ",
-          },
-          Object {
-            "idx": 43,
-            "timestamp": 14.88,
-            "word": "tonight's ",
-          },
-          Object {
-            "idx": 44,
-            "timestamp": 15.15,
-            "word": "debate ",
-          },
-          Object {
-            "idx": 45,
-            "timestamp": 15.389,
-            "word": "is ",
-          },
-          Object {
-            "idx": 46,
-            "timestamp": 15.45,
-            "word": "a ",
-          },
-          Object {
-            "idx": 47,
-            "timestamp": 15.87,
-            "word": "Town ",
-          },
-          Object {
-            "idx": 48,
-            "timestamp": 16.109,
-            "word": "Hall ",
-          },
-          Object {
-            "idx": 49,
-            "timestamp": 16.139,
-            "word": "format, ",
-          },
-          Object {
-            "idx": 50,
-            "timestamp": 16.8,
-            "word": "which ",
-          },
-          Object {
-            "idx": 51,
-            "timestamp": 17.01,
-            "word": "gives ",
-          },
-          Object {
-            "idx": 52,
-            "timestamp": 17.43,
-            "word": "voters ",
-          },
-          Object {
-            "idx": 53,
-            "timestamp": 17.46,
-            "word": "a ",
-          },
-          Object {
-            "idx": 54,
-            "timestamp": 17.609,
-            "word": "chance ",
-          },
-          Object {
-            "idx": 55,
-            "timestamp": 18.119,
-            "word": "to ",
-          },
-          Object {
-            "idx": 56,
-            "timestamp": 18.63,
-            "word": "directly ",
-          },
-          Object {
-            "idx": 57,
-            "timestamp": 18.81,
-            "word": "ask ",
-          },
-          Object {
-            "idx": 58,
-            "timestamp": 18.99,
-            "word": "the ",
-          },
-          Object {
-            "idx": 59,
-            "timestamp": 19.41,
-            "word": "candidates ",
-          },
-          Object {
-            "idx": 60,
-            "timestamp": 19.789,
-            "word": "questions. ",
-          },
-          Object {
-            "idx": 61,
-            "timestamp": 20.789,
-            "word": "Martha ",
-          },
-          Object {
-            "idx": 62,
-            "timestamp": 20.88,
-            "word": "and ",
-          },
-          Object {
-            "idx": 63,
-            "timestamp": 20.939,
-            "word": "I ",
-          },
-          Object {
-            "idx": 64,
-            "timestamp": 21.15,
-            "word": "will ",
-          },
-          Object {
-            "idx": 65,
-            "timestamp": 21.3,
-            "word": "ask ",
-          },
-          Object {
-            "idx": 66,
-            "timestamp": 21.689,
-            "word": "follow-up ",
-          },
-          Object {
-            "idx": 67,
-            "timestamp": 21.81,
-            "word": "questions ",
-          },
-          Object {
-            "idx": 68,
-            "timestamp": 22.47,
-            "word": "but ",
-          },
-          Object {
-            "idx": 69,
-            "timestamp": 22.59,
-            "word": "the ",
-          },
-          Object {
-            "idx": 70,
-            "timestamp": 22.769,
-            "word": "night ",
-          },
-          Object {
-            "idx": 71,
-            "timestamp": 23.039,
-            "word": "really ",
-          },
-          Object {
-            "idx": 72,
-            "timestamp": 23.46,
-            "word": "belongs ",
-          },
-          Object {
-            "idx": 73,
-            "timestamp": 23.76,
-            "word": "to ",
-          },
-          Object {
-            "idx": 74,
-            "timestamp": 23.85,
-            "word": "the ",
-          },
-          Object {
-            "idx": 75,
-            "timestamp": 24.15,
-            "word": "people ",
-          },
-          Object {
-            "idx": 76,
-            "timestamp": 24.24,
-            "word": "in ",
-          },
-          Object {
-            "idx": 77,
-            "timestamp": 24.39,
-            "word": "this ",
-          },
-          Object {
-            "idx": 78,
-            "timestamp": 24.689,
-            "word": "room ",
-          },
-          Object {
-            "idx": 79,
-            "timestamp": 24.99,
-            "word": "and ",
-          },
-          Object {
-            "idx": 80,
-            "timestamp": 25.019,
-            "word": "to ",
-          },
-          Object {
-            "idx": 81,
-            "timestamp": 25.71,
-            "word": "people ",
-          },
-          Object {
-            "idx": 82,
-            "timestamp": 25.8,
-            "word": "across ",
-          },
-          Object {
-            "idx": 83,
-            "timestamp": 26.13,
-            "word": "the ",
-          },
-          Object {
-            "idx": 84,
-            "timestamp": 26.31,
-            "word": "country ",
-          },
-          Object {
-            "idx": 85,
-            "timestamp": 26.64,
-            "word": "who ",
-          },
-          Object {
-            "idx": 86,
-            "timestamp": 26.67,
-            "word": "have ",
-          },
-          Object {
-            "idx": 87,
-            "timestamp": 26.939,
-            "word": "submitted ",
-          },
-          Object {
-            "idx": 88,
-            "timestamp": 27.51,
-            "word": "questions ",
-          },
-          Object {
-            "idx": 89,
-            "timestamp": 28.17,
-            "word": "online. ",
-          },
-        ],
-      }
-    }
-    className="document__row"
-    eventHandlers={
-      Object {
-        "onMouseUp": [Function],
-        "onScroll": [MockFunction],
-      }
-    }
-    nodes={
-      Array [
-        Object {
-          "component": "p",
-          "innerHTML": Array [
-            "Good evening I'm Martha Raddatz from ABC News.",
-          ],
-          "offset": 0,
-        },
-        Object {
-          "component": "p",
-          "innerHTML": Array [
-            "And I'm Anderson Cooper from CNN. We want to welcome you to Washington University in St. Louis for the second presidential debate between Hillary Clinton and Donald Trump sponsored by the Commission on Presidential Debates. tonight's debate is a Town Hall format, which gives voters a chance to directly ask the candidates questions. Martha and I will ask follow-up questions but the night really belongs to the people in this room and to people across the country who have submitted questions online.",
-          ],
-          "offset": 46,
-        },
-      ]
-    }
-    view={
-      Object {
-        "end": 25,
-        "start": 0,
-        "styles": undefined,
-        "type": "VIEW",
-      }
-    }
-  />
+  <div
+    className="document document--static"
+  >
+    <div
+      className="document__row"
+    >
+      <div
+        className="document__row-inner"
+      >
+        <div
+          className="document__text"
+        >
+          <h3
+            className="document__node-text document__node-text--speaker-top"
+          >
+            -
+          </h3>
+          <div
+            className="document__text document__text--caption"
+            onMouseUp={[Function]}
+            onScroll={[Function]}
+          >
+            <div
+              className="document__node"
+            >
+              <h3
+                className="document__node-text document__node-text--speaker"
+              >
+                Raddatz
+              </h3>
+              <div
+                className="document__node-text-container"
+              >
+                <p
+                  className="document__node-text document__node-text--p"
+                >
+                  Good evening I'm Martha Raddatz from ABC News. 
+                </p>
+                <div
+                  className="document__node-height-div"
+                >
+                  <p
+                    className="document__node-text document__node-text--hidden-p"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 `;
 
 exports[`CaptionTextNodeList with highlights from props 1`] = `
 <div
-  className="captions"
+  className="video__captions"
 >
   <ClipEditor
     captionIsHighlighted={true}
     currentTime={5.31}
     eventHandlers={
       Object {
-        "onAfterRangeChange": [MockFunction],
-        "onClearPress": [MockFunction],
-        "onPlayPausePress": [MockFunction],
-        "onRangeChange": [MockFunction],
-        "onRestartPress": [MockFunction],
-        "onSkipBackPress": [MockFunction],
-        "onSkipForwardPress": [MockFunction],
-        "onZoomToClipPress": undefined,
+        "onAfterRangeChange": [Function],
+        "onClearPress": [Function],
+        "onPlayPausePress": [Function],
+        "onRangeChange": [Function],
+        "onRestartPress": [Function],
+        "onSkipBackPress": [Function],
+        "onSkipForwardPress": [Function],
+        "onZoomToClipPress": [Function],
       }
     }
     isPaused={true}
-    isZoomedToClip={undefined}
+    isZoomedToClip={true}
     rangeSliders={
       Array [
         Object {
           "end": 8.7,
+          "label": "Zoom",
           "start": 3.6,
-          "styles": undefined,
+          "styles": Object {
+            "handle": Object {
+              "backgroundColor": "#758aa8",
+              "border": "1px solid #2c4770",
+            },
+            "rail": Object {
+              "backgroundColor": "#d3dae3",
+            },
+            "track": Object {
+              "backgroundColor": "#758aa8",
+            },
+          },
           "type": "VIEW",
         },
         Object {
           "end": 7.2,
+          "label": "Zoom",
           "start": 5.3,
-          "styles": undefined,
+          "styles": Object {
+            "handle": Object {
+              "backgroundColor": "#758aa8",
+              "border": "1px solid #2c4770",
+            },
+            "rail": Object {
+              "backgroundColor": "#d3dae3",
+            },
+            "track": Object {
+              "backgroundColor": "#758aa8",
+            },
+          },
           "type": "SELECTION",
         },
       ]
     }
+    stateAuthority="SCROLL"
     videoDuration={5224}
   />
-  <Document
-    captionData={
-      Object {
-        "captionTimer": 5.31,
-        "speakerMap": Array [
-          Object {
-            "range": Array [
-              0,
-              7,
-            ],
-            "speaker": "Raddatz",
-          },
-          Object {
-            "range": Array [
-              8,
-              89,
-            ],
-            "speaker": "Cooper",
-          },
-        ],
-        "transcript": Array [
-          Object {
-            "idx": 0,
-            "timestamp": 0.75,
-            "word": "Good ",
-          },
-          Object {
-            "idx": 1,
-            "timestamp": 0.96,
-            "word": "evening ",
-          },
-          Object {
-            "idx": 2,
-            "timestamp": 1.56,
-            "word": "I'm ",
-          },
-          Object {
-            "idx": 3,
-            "timestamp": 1.92,
-            "word": "Martha ",
-          },
-          Object {
-            "idx": 4,
-            "timestamp": 2.129,
-            "word": "Raddatz ",
-          },
-          Object {
-            "idx": 5,
-            "timestamp": 2.52,
-            "word": "from ",
-          },
-          Object {
-            "idx": 6,
-            "timestamp": 3.06,
-            "word": "ABC ",
-          },
-          Object {
-            "idx": 7,
-            "timestamp": 3.09,
-            "word": "News. ",
-          },
-          Object {
-            "idx": 8,
-            "timestamp": 3.659,
-            "word": "And ",
-          },
-          Object {
-            "idx": 9,
-            "timestamp": 3.87,
-            "word": "I'm ",
-          },
-          Object {
-            "idx": 10,
-            "timestamp": 4.259,
-            "word": "Anderson ",
-          },
-          Object {
-            "idx": 11,
-            "timestamp": 4.529,
-            "word": "Cooper ",
-          },
-          Object {
-            "idx": 12,
-            "timestamp": 4.68,
-            "word": "from ",
-          },
-          Object {
-            "idx": 13,
-            "timestamp": 5.1,
-            "word": "CNN. ",
-          },
-          Object {
-            "idx": 14,
-            "timestamp": 5.31,
-            "word": "We ",
-          },
-          Object {
-            "idx": 15,
-            "timestamp": 5.49,
-            "word": "want ",
-          },
-          Object {
-            "idx": 16,
-            "timestamp": 5.549,
-            "word": "to ",
-          },
-          Object {
-            "idx": 17,
-            "timestamp": 5.7,
-            "word": "welcome ",
-          },
-          Object {
-            "idx": 18,
-            "timestamp": 5.879,
-            "word": "you ",
-          },
-          Object {
-            "idx": 19,
-            "timestamp": 6.089,
-            "word": "to ",
-          },
-          Object {
-            "idx": 20,
-            "timestamp": 6.24,
-            "word": "Washington ",
-          },
-          Object {
-            "idx": 21,
-            "timestamp": 7.2,
-            "word": "University ",
-          },
-          Object {
-            "idx": 22,
-            "timestamp": 7.29,
-            "word": "in ",
-          },
-          Object {
-            "idx": 23,
-            "timestamp": 7.529,
-            "word": "St. ",
-          },
-          Object {
-            "idx": 24,
-            "timestamp": 7.799,
-            "word": "Louis ",
-          },
-          Object {
-            "idx": 25,
-            "timestamp": 8.01,
-            "word": "for ",
-          },
-          Object {
-            "idx": 26,
-            "timestamp": 8.429,
-            "word": "the ",
-          },
-          Object {
-            "idx": 27,
-            "timestamp": 8.88,
-            "word": "second ",
-          },
-          Object {
-            "idx": 28,
-            "timestamp": 9.24,
-            "word": "presidential ",
-          },
-          Object {
-            "idx": 29,
-            "timestamp": 9.69,
-            "word": "debate ",
-          },
-          Object {
-            "idx": 30,
-            "timestamp": 9.719,
-            "word": "between ",
-          },
-          Object {
-            "idx": 31,
-            "timestamp": 10.29,
-            "word": "Hillary ",
-          },
-          Object {
-            "idx": 32,
-            "timestamp": 10.32,
-            "word": "Clinton ",
-          },
-          Object {
-            "idx": 33,
-            "timestamp": 10.679,
-            "word": "and ",
-          },
-          Object {
-            "idx": 34,
-            "timestamp": 10.889,
-            "word": "Donald ",
-          },
-          Object {
-            "idx": 35,
-            "timestamp": 11.389,
-            "word": "Trump ",
-          },
-          Object {
-            "idx": 36,
-            "timestamp": 12.389,
-            "word": "sponsored ",
-          },
-          Object {
-            "idx": 37,
-            "timestamp": 12.48,
-            "word": "by ",
-          },
-          Object {
-            "idx": 38,
-            "timestamp": 12.54,
-            "word": "the ",
-          },
-          Object {
-            "idx": 39,
-            "timestamp": 12.99,
-            "word": "Commission ",
-          },
-          Object {
-            "idx": 40,
-            "timestamp": 13.08,
-            "word": "on ",
-          },
-          Object {
-            "idx": 41,
-            "timestamp": 13.65,
-            "word": "Presidential ",
-          },
-          Object {
-            "idx": 42,
-            "timestamp": 13.88,
-            "word": "Debates. ",
-          },
-          Object {
-            "idx": 43,
-            "timestamp": 14.88,
-            "word": "tonight's ",
-          },
-          Object {
-            "idx": 44,
-            "timestamp": 15.15,
-            "word": "debate ",
-          },
-          Object {
-            "idx": 45,
-            "timestamp": 15.389,
-            "word": "is ",
-          },
-          Object {
-            "idx": 46,
-            "timestamp": 15.45,
-            "word": "a ",
-          },
-          Object {
-            "idx": 47,
-            "timestamp": 15.87,
-            "word": "Town ",
-          },
-          Object {
-            "idx": 48,
-            "timestamp": 16.109,
-            "word": "Hall ",
-          },
-          Object {
-            "idx": 49,
-            "timestamp": 16.139,
-            "word": "format, ",
-          },
-          Object {
-            "idx": 50,
-            "timestamp": 16.8,
-            "word": "which ",
-          },
-          Object {
-            "idx": 51,
-            "timestamp": 17.01,
-            "word": "gives ",
-          },
-          Object {
-            "idx": 52,
-            "timestamp": 17.43,
-            "word": "voters ",
-          },
-          Object {
-            "idx": 53,
-            "timestamp": 17.46,
-            "word": "a ",
-          },
-          Object {
-            "idx": 54,
-            "timestamp": 17.609,
-            "word": "chance ",
-          },
-          Object {
-            "idx": 55,
-            "timestamp": 18.119,
-            "word": "to ",
-          },
-          Object {
-            "idx": 56,
-            "timestamp": 18.63,
-            "word": "directly ",
-          },
-          Object {
-            "idx": 57,
-            "timestamp": 18.81,
-            "word": "ask ",
-          },
-          Object {
-            "idx": 58,
-            "timestamp": 18.99,
-            "word": "the ",
-          },
-          Object {
-            "idx": 59,
-            "timestamp": 19.41,
-            "word": "candidates ",
-          },
-          Object {
-            "idx": 60,
-            "timestamp": 19.789,
-            "word": "questions. ",
-          },
-          Object {
-            "idx": 61,
-            "timestamp": 20.789,
-            "word": "Martha ",
-          },
-          Object {
-            "idx": 62,
-            "timestamp": 20.88,
-            "word": "and ",
-          },
-          Object {
-            "idx": 63,
-            "timestamp": 20.939,
-            "word": "I ",
-          },
-          Object {
-            "idx": 64,
-            "timestamp": 21.15,
-            "word": "will ",
-          },
-          Object {
-            "idx": 65,
-            "timestamp": 21.3,
-            "word": "ask ",
-          },
-          Object {
-            "idx": 66,
-            "timestamp": 21.689,
-            "word": "follow-up ",
-          },
-          Object {
-            "idx": 67,
-            "timestamp": 21.81,
-            "word": "questions ",
-          },
-          Object {
-            "idx": 68,
-            "timestamp": 22.47,
-            "word": "but ",
-          },
-          Object {
-            "idx": 69,
-            "timestamp": 22.59,
-            "word": "the ",
-          },
-          Object {
-            "idx": 70,
-            "timestamp": 22.769,
-            "word": "night ",
-          },
-          Object {
-            "idx": 71,
-            "timestamp": 23.039,
-            "word": "really ",
-          },
-          Object {
-            "idx": 72,
-            "timestamp": 23.46,
-            "word": "belongs ",
-          },
-          Object {
-            "idx": 73,
-            "timestamp": 23.76,
-            "word": "to ",
-          },
-          Object {
-            "idx": 74,
-            "timestamp": 23.85,
-            "word": "the ",
-          },
-          Object {
-            "idx": 75,
-            "timestamp": 24.15,
-            "word": "people ",
-          },
-          Object {
-            "idx": 76,
-            "timestamp": 24.24,
-            "word": "in ",
-          },
-          Object {
-            "idx": 77,
-            "timestamp": 24.39,
-            "word": "this ",
-          },
-          Object {
-            "idx": 78,
-            "timestamp": 24.689,
-            "word": "room ",
-          },
-          Object {
-            "idx": 79,
-            "timestamp": 24.99,
-            "word": "and ",
-          },
-          Object {
-            "idx": 80,
-            "timestamp": 25.019,
-            "word": "to ",
-          },
-          Object {
-            "idx": 81,
-            "timestamp": 25.71,
-            "word": "people ",
-          },
-          Object {
-            "idx": 82,
-            "timestamp": 25.8,
-            "word": "across ",
-          },
-          Object {
-            "idx": 83,
-            "timestamp": 26.13,
-            "word": "the ",
-          },
-          Object {
-            "idx": 84,
-            "timestamp": 26.31,
-            "word": "country ",
-          },
-          Object {
-            "idx": 85,
-            "timestamp": 26.64,
-            "word": "who ",
-          },
-          Object {
-            "idx": 86,
-            "timestamp": 26.67,
-            "word": "have ",
-          },
-          Object {
-            "idx": 87,
-            "timestamp": 26.939,
-            "word": "submitted ",
-          },
-          Object {
-            "idx": 88,
-            "timestamp": 27.51,
-            "word": "questions ",
-          },
-          Object {
-            "idx": 89,
-            "timestamp": 28.17,
-            "word": "online. ",
-          },
-        ],
-      }
-    }
-    className="document__row"
-    eventHandlers={
-      Object {
-        "onMouseUp": [Function],
-        "onScroll": [MockFunction],
-      }
-    }
-    nodes={
-      Array [
-        Object {
-          "component": "p",
-          "innerHTML": Array [
-            "Good evening I'm Martha Raddatz from ABC News.",
-          ],
-          "offset": 0,
-        },
-        Object {
-          "component": "p",
-          "innerHTML": Array [
-            "And I'm Anderson Cooper from CNN. ",
-            <span
-              className="document__text--selected"
-              onClick={[Function]}
+  <div
+    className="document document--static"
+  >
+    <div
+      className="document__row"
+    >
+      <div
+        className="document__row-inner"
+      >
+        <div
+          className="document__text"
+        >
+          <h3
+            className="document__node-text document__node-text--speaker-top"
+          >
+            -
+          </h3>
+          <div
+            className="document__text document__text--caption"
+            onMouseUp={[Function]}
+            onScroll={[Function]}
+          >
+            <div
+              className="document__node"
             >
-              We want to welcome you to Washington University 
-            </span>,
-            "in St. Louis for the second presidential debate between Hillary Clinton and Donald Trump sponsored by the Commission on Presidential Debates. tonight's debate is a Town Hall format, which gives voters a chance to directly ask the candidates questions. Martha and I will ask follow-up questions but the night really belongs to the people in this room and to people across the country who have submitted questions online.",
-          ],
-          "offset": 46,
-        },
-      ]
-    }
-    view={
-      Object {
-        "end": 8.7,
-        "start": 3.6,
-        "styles": undefined,
-        "type": "VIEW",
-      }
-    }
-  />
+              <h3
+                className="document__node-text document__node-text--speaker"
+              >
+                Raddatz
+              </h3>
+              <div
+                className="document__node-text-container"
+              >
+                <p
+                  className="document__node-text document__node-text--p"
+                >
+                  Good evening I'm Martha Raddatz from ABC News. 
+                </p>
+                <div
+                  className="document__node-height-div"
+                >
+                  <p
+                    className="document__node-text document__node-text--hidden-p"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 `;

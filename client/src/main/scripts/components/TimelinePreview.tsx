@@ -140,6 +140,9 @@ export default class TimelinePreview extends React.Component<
     if (this.props.setFactHandlers) {
       this.props.setFactHandlers.handleRangeSet(videoRange);
     }
+    this.setState({
+      textIsHighlighted: true
+    });
   };
   handleSetClick = (videoRange?: [number, number]) => {
     let factHash = this.props.factLink.hash;
@@ -307,12 +310,7 @@ export default class TimelinePreview extends React.Component<
     } else {
       return (
         <div className={"timeline__preview"}>
-          <FactHeader
-            heading={this.props.factLink.fact.title}
-            onClearClick={this.handleClearClick}
-            onSetClick={this.handleSetClick}
-            textIsHighlighted={this.state.textIsHighlighted}
-          />
+          <FactHeader heading={this.props.factLink.fact.title} />
           {this.props.videoFact ? (
             <Video
               onSetClick={this.handleSetClick}

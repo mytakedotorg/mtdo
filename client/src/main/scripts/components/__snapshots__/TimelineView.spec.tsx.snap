@@ -6,11 +6,11 @@ exports[`Successfully loaded a Document in view 1`] = `
 >
   <div>
     <TimelineRadioButtons
-      onChange={[MockFunction]}
+      onChange={[Function]}
       selectedOption="Documents"
     />
     <Timeline
-      onItemClick={[MockFunction]}
+      onItemClick={[Function]}
       selectedOption="Documents"
       timelineItems={
         Array [
@@ -61,10 +61,10 @@ exports[`Successfully loaded a Document in view 1`] = `
     ranges={undefined}
     setFactHandlers={
       Object {
-        "handleDocumentSetClick": [MockFunction],
-        "handleRangeCleared": [MockFunction],
-        "handleRangeSet": [MockFunction],
-        "handleVideoSetClick": [MockFunction],
+        "handleDocumentSetClick": [Function],
+        "handleRangeCleared": [Function],
+        "handleRangeSet": [Function],
+        "handleVideoSetClick": [Function],
       }
     }
   />
@@ -77,11 +77,11 @@ exports[`Successfully loaded a Video in view 1`] = `
 >
   <div>
     <TimelineRadioButtons
-      onChange={[MockFunction]}
+      onChange={[Function]}
       selectedOption="Debates"
     />
     <Timeline
-      onItemClick={[MockFunction]}
+      onItemClick={[Function]}
       selectedOption="Debates"
       timelineItems={
         Array [
@@ -126,16 +126,16 @@ exports[`Successfully loaded a Video in view 1`] = `
           "primaryDateKind": "recorded",
           "title": "Donald Trump - Hillary Clinton (2/3)",
         },
-        "hash": "U8MV5KDDaxumxZOCJOzExAUAAkSoYNhycVXq7jZ59_0=",
+        "hash": "0ucGOukmHdaStpYZRigN-tLV8Vn2wAwjlobyMGzSpL4=",
       }
     }
     ranges={undefined}
     setFactHandlers={
       Object {
-        "handleDocumentSetClick": [MockFunction],
-        "handleRangeCleared": [MockFunction],
-        "handleRangeSet": [MockFunction],
-        "handleVideoSetClick": [MockFunction],
+        "handleDocumentSetClick": [Function],
+        "handleRangeCleared": [Function],
+        "handleRangeSet": [Function],
+        "handleVideoSetClick": [Function],
       }
     }
   />
@@ -148,11 +148,11 @@ exports[`Successfully loaded view 1`] = `
 >
   <div>
     <TimelineRadioButtons
-      onChange={[MockFunction]}
+      onChange={[Function]}
       selectedOption="Debates"
     />
     <Timeline
-      onItemClick={[MockFunction]}
+      onItemClick={[Function]}
       selectedOption="Debates"
       timelineItems={Array []}
     />

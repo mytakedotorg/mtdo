@@ -25,7 +25,7 @@ task generateFoundation(type: JavaExec) {
 	main = 'org.mytake.foundation.Index'
 }
 generateFoundation.dependsOn(classes)
-generateFoundation.outputs.file('../foundation/src/main/resources/foundation/index.js')
+generateFoundation.outputs.file('../foundation/src/main/resources/foundation-index-hash.json')
 
 apply plugin: 'com.diffplug.gradle.spotless'
 spotless {

@@ -65,18 +65,24 @@ public class InitialData {
 				.execute();
 	}
 
-	static void draft(DSLContext dsl, Time time, int user, String title, Consumer<TakeBuilder> builder) {
+	static TakerevisionRecord draft(DSLContext dsl, Time time, int user, String title, TakeBuilder builder) {
 		TakerevisionRecord rev = dsl.newRecord(TAKEREVISION);
 		rev.setCreatedAt(time.nowTimestamp());
 		rev.setCreatedIp(IP);
 		rev.setTitle(title);
-		rev.setBlocks(TakeBuilder.builder(builder).buildString());
+		rev.setBlocks(builder.buildString());
 		rev.insert();
 
 		TakedraftRecord draft = dsl.newRecord(TAKEDRAFT);
 		draft.setUserId(user);
 		draft.setLastRevision(rev.getId());
 		draft.insert();
+
+		return rev;
+	}
+
+	static TakerevisionRecord draft(DSLContext dsl, Time time, int user, String title, Consumer<TakeBuilder> builder) {
+		return draft(dsl, time, user, title, TakeBuilder.builder(builder));
 	}
 
 	static int usernameEmail(DSLContext dsl, Time time, String username, String email) {
@@ -94,19 +100,23 @@ public class InitialData {
 		return record.getId();
 	}
 
-	static int take(DSLContext dsl, Time time, int user, String title) throws IOException {
+	static TakepublishedRecord take(DSLContext dsl, Time time, int user, String title) throws IOException {
 		TakepublishedRecord record = takeInternal(dsl, time, user, title);
 		String jsonData = Resources.toString(Resources.getResource("initialdata/" + record.getTitleSlug() + ".json"), StandardCharsets.UTF_8);
 		record.setBlocks(jsonData);
 		record.insert();
-		return record.getId();
+		return record;
 	}
 
-	static int take(DSLContext dsl, Time time, int user, String title, Consumer<TakeBuilder> b) throws IOException {
+	static TakepublishedRecord take(DSLContext dsl, Time time, int user, String title, Consumer<TakeBuilder> b) throws IOException {
+		return take(dsl, time, user, title, TakeBuilder.builder(b));
+	}
+
+	static TakepublishedRecord take(DSLContext dsl, Time time, int user, String title, TakeBuilder b) throws IOException {
 		TakepublishedRecord record = takeInternal(dsl, time, user, title);
-		record.setBlocks(TakeBuilder.builder(b).buildString());
+		record.setBlocks(b.buildString());
 		record.insert();
-		return record.getId();
+		return record;
 	}
 
 	private static TakepublishedRecord takeInternal(DSLContext dsl, Time time, int user, String title) {

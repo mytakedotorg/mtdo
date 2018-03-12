@@ -10,6 +10,7 @@
 }
 .reaction__count {
   @include body("sans");
+  line-height: 35px;
   float: left;
   margin-top: 0;
   margin-right: $content-margin;
@@ -23,13 +24,13 @@
   @include button--borderless;
 }
 .reaction__action--star {
-  margin-right: $content-margin;
   font-size: 20px;
-  margin-top: 2px;
   float: left;
+  line-height: 35px;
 }
 .reaction__action--report {
   @include body("sans");
+  line-height: 35px;
 }
 .reaction__action--spam,
 .reaction__action--harassment,

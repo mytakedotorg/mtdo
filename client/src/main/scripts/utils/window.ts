@@ -5,42 +5,23 @@ import { LoginCookie } from "../java2ts/LoginCookie";
 import { Routes } from "../java2ts/Routes";
 
 const body = document.body;
-const loginDiv = document.getElementById("login");
-addNavEvents(loadUser());
-let userDropdown: Element | null;
-if (loginDiv && loginDiv.children[1]) {
-  userDropdown = loginDiv.children[1].children[0];
-} else {
-  userDropdown = null;
-}
+const navList = document.getElementById("nav-list");
+loadUser();
+addNavEvents();
 
-function addNavEvents(userNav?: boolean) {
+function addNavEvents() {
   const navToggle = document.getElementsByClassName("header__nav-toggle")[0];
   const navMenu = document.getElementsByClassName("nav")[0];
 
   function mainNavEvent(e: Event) {
-    if (
-      userDropdown &&
-      !userDropdown.classList.contains("header__dropdown--collapse")
-    ) {
-      toggleUserNav();
-    } else if (!e.defaultPrevented) {
+    if (!e.defaultPrevented) {
       toggleMainNav();
-    }
-    e.preventDefault();
-  }
-
-  function userNavEvent(e: Event) {
-    if (navMenu && !navMenu.classList.contains("collapse")) {
-      toggleMainNav();
-    } else if (!e.defaultPrevented) {
-      toggleUserNav();
     }
     e.preventDefault();
   }
 
   function bodyEvent(e: Event) {
-    if (body.classList.contains("fade") && !e.defaultPrevented) {
+    if (body.classList.contains("fade--mt") && !e.defaultPrevented) {
       if (
         e.srcElement &&
         !e.srcElement.classList.contains("header__nav--icon")
@@ -50,20 +31,6 @@ function addNavEvents(userNav?: boolean) {
           !e.srcElement.classList.contains("nav__link-text")
         ) {
           toggleMainNav();
-          e.preventDefault();
-        }
-      }
-    } else if (
-      userDropdown &&
-      !userDropdown.classList.contains("header__dropdown--collapse") &&
-      !e.defaultPrevented
-    ) {
-      if (
-        e.srcElement &&
-        !e.srcElement.classList.contains("header__icon--login")
-      ) {
-        if (!e.srcElement.classList.contains("header__dropdown-link")) {
-          toggleUserNav();
           e.preventDefault();
         }
       }
@@ -79,20 +46,23 @@ function addNavEvents(userNav?: boolean) {
       }
     }
 
-    if (body.classList.contains("fade")) {
-      body.classList.remove("fade");
+    if (body.classList.contains("fade--mt")) {
+      body.classList.remove("fade--mt");
     } else {
-      body.classList.add("fade");
+      body.classList.add("fade--mt");
     }
   }
 
-  function toggleUserNav() {
-    if (userDropdown) {
-      if (userDropdown.classList.contains("header__dropdown--collapse")) {
-        userDropdown.classList.remove("header__dropdown--collapse");
-      } else {
-        userDropdown.classList.add("header__dropdown--collapse");
-      }
+  function focusInEvent(e: FocusEvent) {
+    if (navMenu.classList.contains("collapse")) {
+      navMenu.classList.remove("collapse");
+      body.classList.add("fade");
+    }
+  }
+  function focusOutEvent(e: FocusEvent) {
+    if (!navMenu.classList.contains("collapse")) {
+      navMenu.classList.add("collapse");
+      body.classList.remove("fade");
     }
   }
 
@@ -100,8 +70,9 @@ function addNavEvents(userNav?: boolean) {
     navToggle.addEventListener("click", mainNavEvent);
   }
 
-  if (userNav && loginDiv) {
-    loginDiv.children[0].addEventListener("click", userNavEvent);
+  if (navList) {
+    navList.addEventListener("focusin", focusInEvent);
+    navList.addEventListener("focusout", focusOutEvent);
   }
 
   body.addEventListener("click", bodyEvent);
@@ -124,61 +95,35 @@ function loadUser() {
   }
 
   const loginCookieStr = getCookieValue("loginui");
+  const loginLink = document.getElementById("login-link");
   if (loginCookieStr) {
+    // User is logged in
     const loginUi: LoginCookie = JSON.parse(JSON.parse(loginCookieStr));
-    if (loginDiv) {
-      loginDiv.innerHTML =
-        '<a class="header__icon header__icon--login" href="#">' +
+    if (navList && loginLink) {
+      (loginLink as HTMLAnchorElement).href =
+        "/" +
         loginUi.username +
+        "?" +
+        Routes.PROFILE_TAB +
+        "=" +
+        Routes.PROFILE_TAB_EDIT;
+      loginLink.childNodes[0].childNodes[1].nodeValue = "Account/Profile";
+      const tabIndex = navList.children.length + 3;
+      navList.innerHTML +=
+        '<li class="nav__list-item nav__list-item--top">' +
+        '<a class="nav__link nav__link--top" href="' +
+        Routes.LOGOUT +
+        '" tabindex="' +
+        tabIndex +
+        '">' +
+        '<span class="nav__link-text nav__link-text--top">Logout</span>' +
         "</a>" +
-        '<div class="header__dropdown-container">' +
-        '<ul class="header__dropdown header__dropdown--collapse">' +
-        // Be sure to change SASS variable if you add or remove nav links (cd /client/src/main/styles && grep -Rn user-nav-items: *)
-        dropdown("New Draft", Routes.DRAFTS_NEW) +
-        dropdown("Drafts", Routes.DRAFTS) +
-        dropdown("Published", "/" + loginUi.username) +
-        dropdown(
-          "Stars",
-          "/" +
-            loginUi.username +
-            "?" +
-            Routes.PROFILE_TAB +
-            "=" +
-            Routes.PROFILE_TAB_STARS
-        ) +
-        dropdown(
-          "Profile",
-          "/" +
-            loginUi.username +
-            "?" +
-            Routes.PROFILE_TAB +
-            "=" +
-            Routes.PROFILE_TAB_EDIT
-        ) +
-        dropdown("Logout", Routes.LOGOUT) +
-        "</ul>" +
-        "</div>";
-      return true;
-    }
-  } else {
-    if (loginDiv) {
-      loginDiv.innerHTML =
-        '<a class="header__icon header__icon--login" href="' +
-        Routes.LOGIN +
-        '">Login</a>';
+        "</li>";
+    } else {
+      const msg = "window: navigation list and login link not found";
+      throw msg;
     }
   }
-  return false;
-}
-
-function dropdown(text: string, link: string): string {
-  return (
-    '<li class="header__dropdown-list-item"><a class="header__dropdown-link" href="' +
-    link +
-    '">' +
-    text +
-    "</a></li>"
-  );
 }
 
 window.onerror = function(

@@ -11,7 +11,7 @@ exports[`ClipEditor with zoomed selection 1`] = `
       end={5224}
       eventHandlers={
         Object {
-          "onAfterRangeChange": [MockFunction],
+          "onAfterRangeChange": [Function],
           "onRangeChange": [Function],
         }
       }
@@ -73,6 +73,7 @@ exports[`ClipEditor with zoomed selection 1`] = `
         ]
       }
       start={0}
+      stateAuthority="SCROLL"
       step={1}
     />
   </div>
@@ -106,7 +107,7 @@ exports[`ClipEditor with zoomed selection 1`] = `
       end={5.223}
       eventHandlers={
         Object {
-          "onAfterRangeChange": [MockFunction],
+          "onAfterRangeChange": [Function],
           "onRangeChange": [Function],
         }
       }
@@ -168,6 +169,7 @@ exports[`ClipEditor with zoomed selection 1`] = `
         ]
       }
       start={3.7470000000000003}
+      stateAuthority="SCROLL"
       step={0.1}
     />
   </div>
@@ -228,7 +230,7 @@ exports[`ClipEditor with zoomed selection 2`] = `
       end={5224}
       eventHandlers={
         Object {
-          "onAfterRangeChange": [MockFunction],
+          "onAfterRangeChange": [Function],
           "onRangeChange": [Function],
         }
       }
@@ -290,6 +292,7 @@ exports[`ClipEditor with zoomed selection 2`] = `
         ]
       }
       start={0}
+      stateAuthority="SCROLL"
       step={1}
     />
   </div>
@@ -323,7 +326,7 @@ exports[`ClipEditor with zoomed selection 2`] = `
       end={82}
       eventHandlers={
         Object {
-          "onAfterRangeChange": [MockFunction],
+          "onAfterRangeChange": [Function],
           "onRangeChange": [Function],
         }
       }
@@ -385,6 +388,7 @@ exports[`ClipEditor with zoomed selection 2`] = `
         ]
       }
       start={4}
+      stateAuthority="SCROLL"
       step={0.1}
     />
   </div>
@@ -396,7 +400,7 @@ exports[`ClipEditor with zoomed selection 2`] = `
     >
       <button
         className="clipEditor__button clipEditor__button--zoom"
-        onClick={[MockFunction]}
+        onClick={[Function]}
       >
         Zoom to Clip
       </button>
@@ -445,7 +449,7 @@ exports[`Initial ClipEditor 1`] = `
       end={5224}
       eventHandlers={
         Object {
-          "onAfterRangeChange": [MockFunction],
+          "onAfterRangeChange": [Function],
           "onRangeChange": [Function],
         }
       }
@@ -507,6 +511,7 @@ exports[`Initial ClipEditor 1`] = `
         ]
       }
       start={0}
+      stateAuthority="SCROLL"
       step={1}
     />
   </div>
