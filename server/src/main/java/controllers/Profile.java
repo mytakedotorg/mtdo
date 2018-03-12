@@ -98,10 +98,12 @@ public class Profile implements Jooby.Module {
 								.fetch();
 						return views.Profile.profilePublished.template(account, isLoggedIn, published);
 					case stars:
-						Result<?> likes = dsl.select(TAKEPUBLISHED.TITLE, TAKEPUBLISHED.TITLE_SLUG, TAKEREACTION.REACTED_AT)
+						Result<?> likes = dsl.select(TAKEPUBLISHED.TITLE, TAKEPUBLISHED.TITLE_SLUG, TAKEREACTION.REACTED_AT, ACCOUNT.USERNAME)
 								.from(TAKEPUBLISHED)
 								.innerJoin(TAKEREACTION)
 								.on(TAKEPUBLISHED.ID.eq(TAKEREACTION.TAKE_ID))
+								.innerJoin(ACCOUNT)
+								.on(TAKEPUBLISHED.USER_ID.eq(ACCOUNT.ID))
 								.where(TAKEREACTION.USER_ID.eq(userId).and(TAKEREACTION.KIND.eq(Reaction.like)))
 								.orderBy(TAKEREACTION.REACTED_AT.desc(), TAKEPUBLISHED.TITLE_SLUG.asc())
 								.fetch();
