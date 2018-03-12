@@ -61,6 +61,7 @@ public class Prod extends Jooby {
 		jooby.use(new Jdbc());
 		jooby.use(new jOOQ());
 		jooby.use(new JsoniterModule());
+		jooby.use(new FoundationMigrationModule());
 	}
 
 	static void controllers(Jooby jooby) {
