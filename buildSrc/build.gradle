@@ -15,9 +15,9 @@ dependencies {
 	// jooq codegen
 	compile 'org.jooq:jooq-codegen:3.10.2'
 	// db migration
-	compile 'org.flywaydb:flyway-core:4.2.0'
+	compile 'org.flywaydb:flyway-core:5.0.7'
 	// jsweet ts2java
-	compile 'com.jsoniter:jsoniter:0.9.19'
+	compile 'com.jsoniter:jsoniter:0.9.22'
 	compile 'org.jsweet:jsweet-transpiler:2.0.1'
 	compile files("${System.properties['java.home']}/../lib/tools.jar")
 	// java8 utilities
