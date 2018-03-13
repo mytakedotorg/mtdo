@@ -1210,6 +1210,9 @@ function copyToClipboard(text: string): boolean {
   document.body.removeChild(textArea);
   return true;
 }
+function getUsernameFromURL(): string {
+  return window.location.pathname.split("/")[1];
+}
 export {
   alertErr,
   convertSecondsToTimestamp,
@@ -1227,6 +1230,7 @@ export {
   getHighlightedNodes,
   getNodesInRange,
   getUserCookieString,
+  getUsernameFromURL,
   getWordCount,
   highlightCaption,
   highlightText,

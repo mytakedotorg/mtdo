@@ -25,6 +25,7 @@ import {
   DocumentBlock,
   VideoBlock
 } from "../components/BlockEditor";
+import { FollowJson } from "../java2ts/FollowJson";
 
 function getAllFacts(
   callback: (
@@ -151,13 +152,16 @@ function postRequest(
     | DraftRev
     | TakeReactionJson.ReactReq
     | TakeReactionJson.ViewReq
-    | EmailSelf,
+    | EmailSelf
+    | FollowJson.FollowAskReq
+    | FollowJson.FollowTellReq,
   successCb: (
     json?:
       | DraftRev
       | PublishResult
       | TakeReactionJson.ReactRes
       | TakeReactionJson.ViewRes
+      | FollowJson.FollowRes
   ) => void
 ) {
   const headers = new Headers();
@@ -191,9 +195,18 @@ function postRequest(
         throw "Unexpected response from server.";
       }
     })
-    .then((json: DraftRev) => {
-      successCb(json);
-    })
+    .then(
+      (
+        json:
+          | DraftRev
+          | PublishResult
+          | TakeReactionJson.ReactRes
+          | TakeReactionJson.ViewRes
+          | FollowJson.FollowRes
+      ) => {
+        successCb(json);
+      }
+    )
     .catch(function(error: Error) {
       alertErr("databaseAPI + " + route + ": " + error.message);
       throw error;

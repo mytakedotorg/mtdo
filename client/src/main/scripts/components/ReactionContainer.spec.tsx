@@ -5,6 +5,7 @@ import { Reaction } from "./ReactionContainer";
 import { takeDocument } from "../utils/testUtils";
 
 const initialState = {
+  isFollowing: false,
   takeState: {
     viewCount: 1,
     likeCount: 0
@@ -25,7 +26,8 @@ const containerProps = {
 
 const eventListeners = {
   onReportPress: jest.fn(),
-  onStarPress: jest.fn()
+  onStarPress: jest.fn(),
+  onFollowPress: jest.fn()
 };
 
 jest.mock("./DropDown", () => ({
@@ -40,7 +42,7 @@ test("Reaction - loading", () => {
   const tree = renderer
     .create(
       <Reaction
-        containerState={{}}
+        containerState={{ isFollowing: false }}
         eventListeners={eventListeners}
         containerProps={containerProps}
       />
@@ -142,6 +144,23 @@ test("Reaction - rules violated reported", () => {
       ...initialState.userState,
       rulesviolation: true
     }
+  };
+  const tree = renderer
+    .create(
+      <Reaction
+        containerState={containerState}
+        eventListeners={eventListeners}
+        containerProps={containerProps}
+      />
+    )
+    .toJSON();
+  expect(tree).toMatchSnapshot();
+});
+
+test("Reaction - user followed", () => {
+  const containerState = {
+    ...initialState,
+    isFollowing: true
   };
   const tree = renderer
     .create(
