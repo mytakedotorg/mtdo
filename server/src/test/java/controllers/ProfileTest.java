@@ -61,28 +61,65 @@ public class ProfileTest {
 		}
 		Snapshot.match("/followers", dev.givenUser("other").get("other?tab=followers"));
 		Snapshot.match("/following", dev.givenUser("samples").get("samples?tab=following"));
-	}
 
-	@Test
-	public void followAsk() {
-		FollowJson.FollowAskReq req = new FollowJson.FollowAskReq();
-		req.username = "samples";
-		FollowJson.FollowRes res = JsonPost.post(
-				dev.givenUser("other"),
-				req,
-				Routes.API_FOLLOW_ASK,
-				FollowJson.FollowRes.class);
-		// Does "other" follow "samples"?
-		Assertions.assertThat(res.isFollowing).isEqualTo(false);
-
-		req.username = "other";
-		res = JsonPost.post(
+		// Ask if "samples" follows "other"
+		FollowJson.FollowAskReq otherReq = new FollowJson.FollowAskReq();
+		otherReq.username = "other";
+		FollowJson.FollowRes otherRes = JsonPost.post(
 				dev.givenUser("samples"),
-				req,
+				otherReq,
 				Routes.API_FOLLOW_ASK,
 				FollowJson.FollowRes.class);
+		Assertions.assertThat(otherRes.isFollowing).isEqualTo(true);
 
-		// Does "samples" follow "other"?
-		Assertions.assertThat(res.isFollowing).isEqualTo(true);
+		// Ask if "other" follow "samples"
+		FollowJson.FollowAskReq samplesReq = new FollowJson.FollowAskReq();
+		samplesReq.username = "samples";
+		FollowJson.FollowRes samplesRes = JsonPost.post(
+				dev.givenUser("other"),
+				samplesReq,
+				Routes.API_FOLLOW_ASK,
+				FollowJson.FollowRes.class);
+		Assertions.assertThat(samplesRes.isFollowing).isEqualTo(false);
+
+		// Tell "other" to follow "samples"
+		FollowJson.FollowTellReq tellReq = new FollowJson.FollowTellReq();
+		tellReq.username = "samples";
+		tellReq.isFollowing = true;
+		FollowJson.FollowRes nextSamplesRes = JsonPost.post(
+				dev.givenUser("other"),
+				tellReq,
+				Routes.API_FOLLOW_TELL,
+				FollowJson.FollowRes.class);
+		Assertions.assertThat(nextSamplesRes.isFollowing).isEqualTo(true);
+
+		// Ask if "other" follow "samples" again
+		FollowJson.FollowAskReq samplesSecondReq = new FollowJson.FollowAskReq();
+		samplesSecondReq.username = "samples";
+		FollowJson.FollowRes samplesSecondRes = JsonPost.post(
+				dev.givenUser("other"),
+				samplesSecondReq,
+				Routes.API_FOLLOW_ASK,
+				FollowJson.FollowRes.class);
+		Assertions.assertThat(samplesSecondRes.isFollowing).isEqualTo(true);
+
+		// Tell "other" to unfollow "samples"
+		FollowJson.FollowTellReq nextTellReq = new FollowJson.FollowTellReq();
+		nextTellReq.username = "samples";
+		nextTellReq.isFollowing = false;
+		FollowJson.FollowRes anotherSamplesRes = JsonPost.post(
+				dev.givenUser("other"),
+				nextTellReq,
+				Routes.API_FOLLOW_TELL,
+				FollowJson.FollowRes.class);
+		Assertions.assertThat(anotherSamplesRes.isFollowing).isEqualTo(false);
+
+		// Ask if "other" follow "samples" again
+		FollowJson.FollowRes lastSamplesRes = JsonPost.post(
+				dev.givenUser("other"),
+				samplesSecondReq,
+				Routes.API_FOLLOW_ASK,
+				FollowJson.FollowRes.class);
+		Assertions.assertThat(lastSamplesRes.isFollowing).isEqualTo(false);
 	}
 }

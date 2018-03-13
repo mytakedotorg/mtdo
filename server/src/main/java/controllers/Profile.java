@@ -178,7 +178,7 @@ public class Profile implements Jooby.Module {
 						.fetchOne(ACCOUNT.ID);
 				if (followReq.isFollowing) {
 					// User wants to follow author
-					FollowRecord followRecord = new FollowRecord();
+					FollowRecord followRecord = dsl.newRecord(FOLLOW);
 					followRecord.setAuthor(authorId);
 					followRecord.setFollower(user.id());
 					followRecord.setFollowedAt(req.require(Time.class).nowTimestamp());
@@ -188,7 +188,8 @@ public class Profile implements Jooby.Module {
 					// Delete the record
 					dsl.deleteFrom(FOLLOW)
 							.where(FOLLOW.AUTHOR.eq(authorId))
-							.and(FOLLOW.FOLLOWER.eq(user.id()));
+							.and(FOLLOW.FOLLOWER.eq(user.id()))
+							.execute();
 					followRes.isFollowing = false;
 				}
 				return followRes;
