@@ -143,13 +143,8 @@ public class Profile implements Jooby.Module {
 			}
 		});
 		env.router().post(Routes.API_FOLLOW_ASK, req -> {
-			AuthUser user = AuthUser.authOpt(req).orElse(null);
+			AuthUser user = AuthUser.auth(req);
 			FollowJson.FollowRes followRes = new FollowJson.FollowRes();
-			if (user == null) {
-				// User is not logged in, return false
-				followRes.isFollowing = false;
-				return followRes;
-			}
 			FollowJson.FollowAskReq followReq = req.body(FollowJson.FollowAskReq.class);
 			try (DSLContext dsl = req.require(DSLContext.class)) {
 				// Return true if the record exists, false otherwise
@@ -164,13 +159,8 @@ public class Profile implements Jooby.Module {
 			}
 		});
 		env.router().post(Routes.API_FOLLOW_TELL, req -> {
-			AuthUser user = AuthUser.authOpt(req).orElse(null);
+			AuthUser user = AuthUser.auth(req);
 			FollowJson.FollowRes followRes = new FollowJson.FollowRes();
-			if (user == null) {
-				// User is not logged in, return false
-				followRes.isFollowing = false;
-				return followRes;
-			}
 			FollowJson.FollowTellReq followReq = req.body(FollowJson.FollowTellReq.class);
 			try (DSLContext dsl = req.require(DSLContext.class)) {
 				int authorId = dsl.selectFrom(ACCOUNT)
