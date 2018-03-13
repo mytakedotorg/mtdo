@@ -2,8 +2,9 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { Routes } from "../java2ts/Routes";
 import { TakeReactionJson } from "../java2ts/TakeReactionJson";
+import { FollowJson } from "../java2ts/FollowJson";
 import { postRequest } from "../utils/databaseAPI";
-import { alertErr } from "../utils/functions";
+import { alertErr, getUsernameFromURL, isLoggedIn } from "../utils/functions";
 import { TakeDocument } from "./BlockEditor";
 import DropDown from "./DropDown";
 import EmailTake from "./EmailTake";
@@ -14,6 +15,7 @@ interface ReactionContainerProps {
 }
 
 interface ReactionContainerState {
+  isFollowing?: boolean;
   takeState?: TakeReactionJson.TakeState;
   userState?: TakeReactionJson.UserState;
 }
@@ -24,19 +26,18 @@ class ReactionContainer extends React.Component<
   ReactionContainerProps,
   ReactionContainerState
 > {
+  private username: string;
   constructor(props: ReactionContainerProps) {
     super(props);
-
-    this.state = {};
   }
   fetchReactions = () => {
     setTimeout(() => {
-      const bodyJson: TakeReactionJson.ViewReq = {
+      const takeViewBodyJson: TakeReactionJson.ViewReq = {
         take_id: this.props.takeId
       };
       postRequest(
         Routes.API_TAKE_VIEW,
-        bodyJson,
+        takeViewBodyJson,
         (json: TakeReactionJson.ViewRes) => {
           this.setState({
             takeState: json.takeState,
@@ -44,7 +45,52 @@ class ReactionContainer extends React.Component<
           });
         }
       );
+      if (isLoggedIn()) {
+        this.username = getUsernameFromURL();
+        const followAskBodyJson: FollowJson.FollowAskReq = {
+          username: this.username
+        };
+        postRequest(
+          Routes.API_FOLLOW_ASK,
+          followAskBodyJson,
+          (json: FollowJson.FollowRes) => {
+            this.setState({
+              isFollowing: json.isFollowing
+            });
+          }
+        );
+      }
     }, 2000);
+  };
+  followButtonPress = () => {
+    if (isLoggedIn()) {
+      if (!this.username) {
+        this.username = getUsernameFromURL();
+      }
+      const followTellBodyJson: FollowJson.FollowTellReq = {
+        isFollowing:
+          typeof this.state.isFollowing == "boolean"
+            ? !this.state.isFollowing
+            : true,
+        username: this.username
+      };
+      postRequest(
+        Routes.API_FOLLOW_TELL,
+        followTellBodyJson,
+        (json: FollowJson.FollowRes) => {
+          this.setState({
+            isFollowing: json.isFollowing
+          });
+        }
+      );
+    } else {
+      //User not logged in, redirect to /login
+      window.location.href =
+        Routes.LOGIN +
+        "?redirect=" +
+        window.location.pathname +
+        "&loginreason=Login+or+create+an+account+to+follow+another+user.";
+    }
   };
   starButtonPress = () => {
     if (this.state.userState) {
@@ -132,7 +178,8 @@ class ReactionContainer extends React.Component<
   render() {
     const eventListeners = {
       onStarPress: this.starButtonPress,
-      onReportPress: this.reportButtonPress
+      onReportPress: this.reportButtonPress,
+      onFollowPress: this.followButtonPress
     };
     return (
       <Reaction
@@ -150,6 +197,7 @@ interface ReactionProps {
   eventListeners: {
     onStarPress: () => any;
     onReportPress: (type: abuseType) => any;
+    onFollowPress: () => any;
   };
 }
 
@@ -236,6 +284,14 @@ export class Reaction extends React.Component<ReactionProps, ReactionState> {
               ) : (
                 <i className="fa fa-star-o" aria-hidden="true" />
               )}
+            </button>
+          </div>
+          <div className="reaction__action-container">
+            <button
+              className="reaction__action reaction__action--follow"
+              onClick={props.eventListeners.onFollowPress}
+            >
+              {props.containerState.isFollowing ? "Following" : "Follow"}
             </button>
           </div>
           <div className="reaction__action-container">

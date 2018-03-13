@@ -25,7 +25,8 @@ const containerProps = {
 
 const eventListeners = {
   onReportPress: jest.fn(),
-  onStarPress: jest.fn()
+  onStarPress: jest.fn(),
+  onFollowPress: jest.fn()
 };
 
 jest.mock("./DropDown", () => ({
@@ -142,6 +143,40 @@ test("Reaction - rules violated reported", () => {
       ...initialState.userState,
       rulesviolation: true
     }
+  };
+  const tree = renderer
+    .create(
+      <Reaction
+        containerState={containerState}
+        eventListeners={eventListeners}
+        containerProps={containerProps}
+      />
+    )
+    .toJSON();
+  expect(tree).toMatchSnapshot();
+});
+
+test("Reaction - user followed", () => {
+  const containerState = {
+    ...initialState,
+    isFollowing: true
+  };
+  const tree = renderer
+    .create(
+      <Reaction
+        containerState={containerState}
+        eventListeners={eventListeners}
+        containerProps={containerProps}
+      />
+    )
+    .toJSON();
+  expect(tree).toMatchSnapshot();
+});
+
+test("Reaction - user unfollowed", () => {
+  const containerState = {
+    ...initialState,
+    isFollowing: false
   };
   const tree = renderer
     .create(

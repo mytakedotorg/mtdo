@@ -79,3 +79,9 @@ $report-link-count: 3;
   float: left;
   margin-right: $content-margin;
 }
+.reaction__action--follow {
+  @include button--borderless;
+  @include body("sans");
+  margin: 0;
+  line-height: 35px;
+}

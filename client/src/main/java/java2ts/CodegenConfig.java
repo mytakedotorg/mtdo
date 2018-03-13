@@ -35,7 +35,10 @@ public class CodegenConfig implements StaticCodegenConfig {
 				TypeLiteral.create(TakeReactionJson.ReactReq.class),
 				TypeLiteral.create(TakeReactionJson.ReactRes.class),
 				TypeLiteral.create(TakeReactionJson.ViewReq.class),
-				TypeLiteral.create(TakeReactionJson.ViewRes.class)
+				TypeLiteral.create(TakeReactionJson.ViewRes.class),
+				TypeLiteral.create(FollowJson.FollowAskReq.class),
+				TypeLiteral.create(FollowJson.FollowTellReq.class),
+				TypeLiteral.create(FollowJson.FollowRes.class)
 		};
 	}
 

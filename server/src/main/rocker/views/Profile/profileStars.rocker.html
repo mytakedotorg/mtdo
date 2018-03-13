@@ -2,6 +2,7 @@
 @import db.tables.records.AccountRecord
 @import java.sql.Timestamp
 @import org.jooq.Result
+@import static db.Tables.ACCOUNT
 @import static db.Tables.TAKEPUBLISHED
 @import static db.Tables.TAKEREACTION
 
@@ -11,16 +12,17 @@
 
 	<div class="tab">
 @if (takes.isEmpty()) {
-	<h2 class="tab-title">No liked Takes.</h2>
+	<h2 class="tab-title">No starred takes.</h2>
 } else {
 	<div class="takelist">
 	@for (take : takes) {
 		@with(	String title = take.get(TAKEPUBLISHED.TITLE),
 				String titleSlug = take.get(TAKEPUBLISHED.TITLE_SLUG),
-				Timestamp reactedAt = take.get(TAKEREACTION.REACTED_AT)
+				Timestamp reactedAt = take.get(TAKEREACTION.REACTED_AT),
+				String author = take.get(ACCOUNT.USERNAME)
 				) {
 		<div class="takelist__take">
-			<h2 class="takelist__title"><a class="takelist__link" href="@controllers.Takes.userTitleSlug(account.getUsername(), titleSlug)">@title</a></h2>
+			<h2 class="takelist__title"><a class="takelist__link" href="@controllers.Takes.userTitleSlug(author, titleSlug)">@title</a></h2>
 			<span class="takelist__aside">Starred on @common.Time.formatCompact().format(reactedAt)</span>
 		</div>
 		}
