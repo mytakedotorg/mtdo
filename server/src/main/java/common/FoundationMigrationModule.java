@@ -44,7 +44,9 @@ public class FoundationMigrationModule implements Jooby.Module {
 	static Set<Integer> migrate(DSLContext dsl, Time time) {
 		int latestRev = dsl.selectFrom(FOUNDATION_REV)
 				.orderBy(FOUNDATION_REV.VERSION.desc())
-				.fetchOne(FOUNDATION_REV.VERSION);
+				.limit(1)
+				.fetch(FOUNDATION_REV.VERSION)
+				.get(0);
 		Set<Integer> publishedTakesToRefresh = new HashSet<>();
 		ImmutableSortedMap<Integer, FoundationMigration> toMigrate = MIGRATIONS.tailMap(latestRev + 1);
 		toMigrate.forEach((version, migration) -> {
