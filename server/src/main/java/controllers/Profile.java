@@ -16,9 +16,12 @@ import com.google.inject.Binder;
 import com.typesafe.config.Config;
 import common.NotFound;
 import common.Text;
+import common.Time;
 import db.enums.Reaction;
 import db.tables.records.AccountRecord;
+import db.tables.records.FollowRecord;
 import java.util.Optional;
+import java2ts.FollowJson;
 import java2ts.Routes;
 import org.jooby.Env;
 import org.jooby.Jooby;
@@ -137,6 +140,58 @@ public class Profile implements Jooby.Module {
 						throw new IllegalArgumentException("Unhandled tab mode");
 					}
 				}
+			}
+		});
+		env.router().post(Routes.API_FOLLOW_ASK, req -> {
+			AuthUser user = AuthUser.authOpt(req).orElse(null);
+			FollowJson.FollowRes followRes = new FollowJson.FollowRes();
+			if (user == null) {
+				// User is not logged in, return false
+				followRes.isFollowing = false;
+				return followRes;
+			}
+			FollowJson.FollowAskReq followReq = req.body(FollowJson.FollowAskReq.class);
+			try (DSLContext dsl = req.require(DSLContext.class)) {
+				// Return true if the record exists, false otherwise
+				followRes.isFollowing = dsl.fetchExists(
+						dsl.select(FOLLOW.AUTHOR, FOLLOW.FOLLOWER)
+								.from(FOLLOW)
+								.innerJoin(ACCOUNT)
+								.on(ACCOUNT.USERNAME.eq(followReq.username))
+								.where(FOLLOW.AUTHOR.eq(ACCOUNT.ID))
+								.and(FOLLOW.FOLLOWER.eq(user.id())));
+				return followRes;
+			}
+		});
+		env.router().post(Routes.API_FOLLOW_TELL, req -> {
+			AuthUser user = AuthUser.authOpt(req).orElse(null);
+			FollowJson.FollowRes followRes = new FollowJson.FollowRes();
+			if (user == null) {
+				// User is not logged in, return false
+				followRes.isFollowing = false;
+				return followRes;
+			}
+			FollowJson.FollowTellReq followReq = req.body(FollowJson.FollowTellReq.class);
+			try (DSLContext dsl = req.require(DSLContext.class)) {
+				int authorId = dsl.selectFrom(ACCOUNT)
+						.where(ACCOUNT.USERNAME.eq(followReq.username))
+						.fetchOne(ACCOUNT.ID);
+				if (followReq.isFollowing) {
+					// User wants to follow author
+					FollowRecord followRecord = new FollowRecord();
+					followRecord.setAuthor(authorId);
+					followRecord.setFollower(user.id());
+					followRecord.setFollowedAt(req.require(Time.class).nowTimestamp());
+					followRecord.insert();
+					followRes.isFollowing = true;
+				} else {
+					// Delete the record
+					dsl.deleteFrom(FOLLOW)
+							.where(FOLLOW.AUTHOR.eq(authorId))
+							.and(FOLLOW.FOLLOWER.eq(user.id()));
+					followRes.isFollowing = false;
+				}
+				return followRes;
 			}
 		});
 	}

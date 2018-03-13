@@ -12,12 +12,16 @@ import static db.Tables.TAKEPUBLISHED;
 import static db.Tables.TAKEREACTION;
 
 import common.JoobyDevRule;
+import common.JsonPost;
 import common.Snapshot;
 import db.enums.Reaction;
 import db.tables.pojos.Account;
 import db.tables.pojos.Takepublished;
 import db.tables.records.FollowRecord;
 import db.tables.records.TakereactionRecord;
+import java2ts.FollowJson;
+import java2ts.Routes;
+import org.assertj.core.api.Assertions;
 import org.jooq.DSLContext;
 import org.junit.ClassRule;
 import org.junit.Test;
@@ -48,6 +52,7 @@ public class ProfileTest {
 	public void followers() {
 		Account samples = dev.fetchRecord(ACCOUNT, ACCOUNT.USERNAME, "samples").into(Account.class);
 		try (DSLContext dsl = dev.dsl()) {
+			// make "samples" follow "other"
 			FollowRecord follow = dsl.newRecord(FOLLOW);
 			follow.setAuthor(other.getId());
 			follow.setFollower(samples.getId());
@@ -56,5 +61,28 @@ public class ProfileTest {
 		}
 		Snapshot.match("/followers", dev.givenUser("other").get("other?tab=followers"));
 		Snapshot.match("/following", dev.givenUser("samples").get("samples?tab=following"));
+	}
+
+	@Test
+	public void followAsk() {
+		FollowJson.FollowAskReq req = new FollowJson.FollowAskReq();
+		req.username = "samples";
+		FollowJson.FollowRes res = JsonPost.post(
+				dev.givenUser("other"),
+				req,
+				Routes.API_FOLLOW_ASK,
+				FollowJson.FollowRes.class);
+		// Does "other" follow "samples"?
+		Assertions.assertThat(res.isFollowing).isEqualTo(false);
+
+		req.username = "other";
+		res = JsonPost.post(
+				dev.givenUser("samples"),
+				req,
+				Routes.API_FOLLOW_ASK,
+				FollowJson.FollowRes.class);
+
+		// Does "samples" follow "other"?
+		Assertions.assertThat(res.isFollowing).isEqualTo(true);
 	}
 }
