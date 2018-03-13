@@ -4,7 +4,7 @@ import { Routes } from "../java2ts/Routes";
 import { TakeReactionJson } from "../java2ts/TakeReactionJson";
 import { FollowJson } from "../java2ts/FollowJson";
 import { postRequest } from "../utils/databaseAPI";
-import { alertErr, getUsernameFromURL } from "../utils/functions";
+import { alertErr, getUsernameFromURL, isLoggedIn } from "../utils/functions";
 import { TakeDocument } from "./BlockEditor";
 import DropDown from "./DropDown";
 import EmailTake from "./EmailTake";
@@ -15,7 +15,7 @@ interface ReactionContainerProps {
 }
 
 interface ReactionContainerState {
-  isFollowing: boolean;
+  isFollowing?: boolean;
   takeState?: TakeReactionJson.TakeState;
   userState?: TakeReactionJson.UserState;
 }
@@ -29,10 +29,6 @@ class ReactionContainer extends React.Component<
   private username: string;
   constructor(props: ReactionContainerProps) {
     super(props);
-
-    this.state = {
-      isFollowing: false
-    };
   }
   fetchReactions = () => {
     setTimeout(() => {
@@ -49,35 +45,52 @@ class ReactionContainer extends React.Component<
           });
         }
       );
-      this.username = getUsernameFromURL();
-      const followAskBodyJson: FollowJson.FollowAskReq = {
+      if (isLoggedIn()) {
+        this.username = getUsernameFromURL();
+        const followAskBodyJson: FollowJson.FollowAskReq = {
+          username: this.username
+        };
+        postRequest(
+          Routes.API_FOLLOW_ASK,
+          followAskBodyJson,
+          (json: FollowJson.FollowRes) => {
+            this.setState({
+              isFollowing: json.isFollowing
+            });
+          }
+        );
+      }
+    }, 2000);
+  };
+  followButtonPress = () => {
+    if (isLoggedIn()) {
+      if (!this.username) {
+        this.username = getUsernameFromURL();
+      }
+      const followTellBodyJson: FollowJson.FollowTellReq = {
+        isFollowing:
+          typeof this.state.isFollowing == "boolean"
+            ? !this.state.isFollowing
+            : true,
         username: this.username
       };
       postRequest(
-        Routes.API_FOLLOW_ASK,
-        followAskBodyJson,
+        Routes.API_FOLLOW_TELL,
+        followTellBodyJson,
         (json: FollowJson.FollowRes) => {
           this.setState({
             isFollowing: json.isFollowing
           });
         }
       );
-    }, 2000);
-  };
-  followButtonPress = () => {
-    const followTellBodyJson: FollowJson.FollowTellReq = {
-      isFollowing: this.state.isFollowing,
-      username: this.username
-    };
-    postRequest(
-      Routes.API_FOLLOW_TELL,
-      followTellBodyJson,
-      (json: FollowJson.FollowRes) => {
-        this.setState({
-          isFollowing: json.isFollowing
-        });
-      }
-    );
+    } else {
+      //User not logged in, redirect to /login
+      window.location.href =
+        Routes.LOGIN +
+        "?redirect=" +
+        window.location.pathname +
+        "&loginreason=Login+or+create+an+account+to+follow+another+user.";
+    }
   };
   starButtonPress = () => {
     if (this.state.userState) {

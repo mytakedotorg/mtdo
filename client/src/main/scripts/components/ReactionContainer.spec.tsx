@@ -5,7 +5,6 @@ import { Reaction } from "./ReactionContainer";
 import { takeDocument } from "../utils/testUtils";
 
 const initialState = {
-  isFollowing: false,
   takeState: {
     viewCount: 1,
     likeCount: 0
@@ -42,7 +41,7 @@ test("Reaction - loading", () => {
   const tree = renderer
     .create(
       <Reaction
-        containerState={{ isFollowing: false }}
+        containerState={{}}
         eventListeners={eventListeners}
         containerProps={containerProps}
       />
@@ -161,6 +160,23 @@ test("Reaction - user followed", () => {
   const containerState = {
     ...initialState,
     isFollowing: true
+  };
+  const tree = renderer
+    .create(
+      <Reaction
+        containerState={containerState}
+        eventListeners={eventListeners}
+        containerProps={containerProps}
+      />
+    )
+    .toJSON();
+  expect(tree).toMatchSnapshot();
+});
+
+test("Reaction - user unfollowed", () => {
+  const containerState = {
+    ...initialState,
+    isFollowing: false
   };
   const tree = renderer
     .create(
