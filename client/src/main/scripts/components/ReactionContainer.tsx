@@ -29,6 +29,8 @@ class ReactionContainer extends React.Component<
   private username: string;
   constructor(props: ReactionContainerProps) {
     super(props);
+
+    this.state = {};
   }
   fetchReactions = () => {
     setTimeout(() => {
