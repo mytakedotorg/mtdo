@@ -150,5 +150,6 @@ $palettes: (
       background: $white,
       border: $base-darkest
     ),
-  trackSlider: (color--handle: $base-dark, border: $base-darkest)
+  trackSlider: (color--handle: $base-dark, border: $base-darkest),
+  searchbar: (background: $action, border: $white)
 );

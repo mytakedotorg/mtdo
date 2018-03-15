@@ -1,0 +1,83 @@
+$button-height: 2.5rem;
+.searchbar {
+  height: 3.5rem;
+  line-height: 3.5rem;
+  background-color: palette(searchbar, background);
+}
+.searchbar-inner {
+  @include content-column;
+  display: flex;
+  justify-content: space-between;
+}
+.searchbar__input-container {
+  @include text-margin-lr;
+}
+.searchbar__input {
+  @include body--small("sans");
+  border-radius: 5px;
+  border: 1px solid palette(searchbar, border);
+  height: $button-height;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: $content-margin/2;
+  padding-right: $content-margin/2;
+}
+.searchbar__filter-button-list {
+  display: none;
+  @media #{$mq-small} {
+    flex: 1;
+    display: flex;
+    align-items: center;
+  }
+}
+.searchbar__button {
+  @include button--red;
+  @include body--small("sans");
+  height: $button-height;
+  line-height: 3.5rem;
+  display: flex;
+  align-items: center;
+  border-radius: 5px;
+  padding-left: $content-margin/2;
+  padding-right: $content-margin/2;
+}
+.searchbar__button--filter {
+  float: left;
+  margin: 0;
+  margin-right: $content-margin/2;
+  border: 1px solid palette(searchbar, border);
+}
+.searchbar__button--filter-toggle {
+  @include text-margin-lr;
+  border: 1px solid palette(searchbar, border);
+  @media #{$mq-small} {
+    border: none;
+  }
+  .fa-filter {
+    // Font awesome filer icon
+    line-height: $button-height;
+    font-size: 24px;
+    @media #{$mq-small} {
+      display: none;
+    }
+  }
+  .fa-caret-down {
+    display: none;
+    @media #{$mq-small} {
+      display: inline;
+      font-size: 14px;
+      margin-right: 4px;
+    }
+  }
+}
+.searchbar__filter-text {
+  @include body--small("sans");
+  display: none;
+  @media #{$mq-small} {
+    display: inline;
+  }
+}
+.searchbar__toggle-container {
+  display: flex;
+  align-items: center;
+}

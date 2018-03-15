@@ -5,7 +5,7 @@
 
 @args(Result<?> drafts)
 
-@views.naked.template("MyTake.org", "Your drafts", "base") -> {
+@views.naked.template("MyTake.org", "Your drafts", "react") -> {
 <div class="takelist">
 	<div class="takelist__header">
 		<p class="takelist__text takelist__text--top">You have @drafts.size() @(singlePlural("draft", "drafts", drafts)).</p>
