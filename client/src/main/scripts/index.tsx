@@ -8,6 +8,7 @@ import BlockReader from "./components/BlockReader";
 import FeedList from "./components/FeedList";
 import FoundationView from "./components/FoundationView";
 import SearchBar from "./components/SearchBar";
+import UserNav from "./components/UserNav";
 import { TakeDocument } from "./components/BlockEditor";
 import { Card } from "./components/FeedList";
 import { alertErr } from "./utils/functions";
@@ -90,4 +91,12 @@ if (searchBarContainer) {
 } else {
   alertErr("index: couldn't find div#searchbar");
   throw "Couldn't find div#searchbar";
+}
+
+const userNavContainer: HTMLElement | null = document.getElementById("usernav");
+if (userNavContainer) {
+  ReactDOM.render(<UserNav />, userNavContainer);
+} else {
+  alertErr("index: couldn't find div#usernav");
+  throw "Couldn't find div#usernav";
 }

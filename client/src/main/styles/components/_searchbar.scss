@@ -1,10 +1,5 @@
 $button-height: 2.5rem;
 .searchbar {
-  height: 3.5rem;
-  line-height: 3.5rem;
-  background-color: palette(searchbar, background);
-}
-.searchbar-inner {
   @include content-column;
   display: flex;
   justify-content: space-between;
@@ -31,23 +26,25 @@ $button-height: 2.5rem;
   }
 }
 .searchbar__button {
-  @include button--red;
   @include body--small("sans");
   height: $button-height;
   line-height: 3.5rem;
   display: flex;
   align-items: center;
   border-radius: 5px;
-  padding-left: $content-margin/2;
-  padding-right: $content-margin/2;
 }
 .searchbar__button--filter {
+  @include button--red;
   float: left;
   margin: 0;
   margin-right: $content-margin/2;
   border: 1px solid palette(searchbar, border);
+  padding-left: $content-margin/2;
+  padding-right: $content-margin/2;
 }
 .searchbar__button--filter-toggle {
+  color: palette(button, color--action);
+  background: palette(button, background--action);
   @include text-margin-lr;
   border: 1px solid palette(searchbar, border);
   @media #{$mq-small} {

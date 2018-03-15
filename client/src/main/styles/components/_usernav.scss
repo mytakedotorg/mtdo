@@ -1,0 +1,36 @@
+.usernav {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 8rem;
+  height: 8rem;
+  @media #{$mq-medium} {
+    width: 10rem;
+    height: 10rem;
+  }
+}
+.usernav__toggle-link {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+.usernav__icon {
+  position: absolute;
+  top: 11px;
+  right: $page-margin-mobile;
+  @include heading6;
+  color: palette(header, text);
+  @media #{$mq-medium} {
+    top: 14px;
+    right: $content-margin;
+  }
+  &:hover {
+    color: palette(header, text--hover);
+  }
+  .fa {
+    font-size: $fa-size;
+  }
+}

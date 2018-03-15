@@ -22,7 +22,7 @@ class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
   };
   render() {
     return (
-      <div className="searchbar-inner">
+      <div className="searchbar">
         <div className="searchbar__input-container">
           <form className="searchbox__form" onSubmit={this.handleSubmit}>
             <input
