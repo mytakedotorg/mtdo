@@ -9,9 +9,11 @@ $button-height: 2.5rem;
 }
 .searchbar__input {
   @include body--small("sans");
+  line-height: 25px;
+  vertical-align: middle;
   border-radius: 5px;
   border: 1px solid palette(searchbar, border);
-  height: $button-height;
+  margin-bottom: 2px;
   padding-top: 0;
   padding-bottom: 0;
   padding-left: $content-margin/2;
