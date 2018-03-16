@@ -393,21 +393,26 @@ exports[`Video with highlights 1`] = `
         className="video__float--right"
       >
         <DropDown
-          position="BL"
-          text="Share"
+          classModifier="video"
+          dropdownPosition="BL"
+          toggleText="Share"
         >
-          <button
-            className="share__action share__action--clickable"
-            onClick={[Function]}
+          <div
+            className="video__share-dropdown"
           >
-            Copy URL
-          </button>
-          <button
-            className="share__action share__action--clickable"
-            onClick={[Function]}
-          >
-            Give your Take on this
-          </button>
+            <button
+              className="share__action share__action--clickable"
+              onClick={[Function]}
+            >
+              Copy URL
+            </button>
+            <button
+              className="share__action share__action--clickable"
+              onClick={[Function]}
+            >
+              Give your Take on this
+            </button>
+          </div>
         </DropDown>
       </div>
     </div>
