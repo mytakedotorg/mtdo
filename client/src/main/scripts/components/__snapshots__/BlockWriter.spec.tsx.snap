@@ -67,8 +67,9 @@ exports[`Bigger block writer model 1`] = `
         className="editor__share"
       >
         <DropDown
-          position="TL"
-          text="Email"
+          classModifier="editor"
+          dropdownPosition="TL"
+          toggleText="Email"
         >
           <EmailTake
             takeDocument={
@@ -173,8 +174,9 @@ exports[`Simple block writer model 1`] = `
         className="editor__share"
       >
         <DropDown
-          position="TL"
-          text="Email"
+          classModifier="editor"
+          dropdownPosition="TL"
+          toggleText="Email"
         >
           <EmailTake
             takeDocument={

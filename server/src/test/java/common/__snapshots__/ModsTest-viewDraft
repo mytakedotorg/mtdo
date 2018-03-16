@@ -46,48 +46,20 @@
 <header class="header" role="banner">
 	<a class="header__skip-link" href="#app" tabindex="1">Skip to main content</a>
 	<div class="header__top">
-		<div class="header__logo-container">
-				<a class="header__logo-link" href="/"><span /></a>
-				<div class="header__logo-image-container">
-					<img class="header__logo-image" src="/assets/permanent/mytakedotorg-9c5e6c8a85.png" width="114" height="100" alt="MyTake.org | Fundamentals, in context." />
-				</div>
-				<em class="header__logo-title"><span class="header__color--blue">MyTake</span><span class="header__color--red">.org</span></em>
-				<span class="header__logo-tagline">Fundamentals, in context.</span>
-		</div>
-		<div class="header__icon-list header__icon-list--top">
+		<div class="header__inner-container">
+			<div class="header__logo-container">
+					<a class="header__logo-link" href="/"><span /></a>
+					<div class="header__logo-image-container">
+						<img class="header__logo-image" src="/assets/permanent/mytakedotorg-9c5e6c8a85.png" width="114" height="100" alt="MyTake.org | Fundamentals, in context." />
+					</div>
+					<em class="header__logo-title"><span class="header__color--blue">MyTake</span><span class="header__color--red">.org</span></em>
+					<span class="header__logo-tagline">Fundamentals, in context.</span>
+			</div>
+			<div id="usernav" class="header__usernav"></div>
 			<a class="header__fork-link" href="https://github.com/mytakedotorg/mytakedotorg" target="_blank"><img class="header__fork-img" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
-			<div class="header__nav-toggle">
-				<a href="javascript:void(0)" class="header__nav-toggle-link">
-					<span class="header__nav-icon">
-					<i class="fa fa-bars" aria-hidden="true"></i>
-					</span>
-				</a>
-			</div>
 		</div>
 	</div>
-	<div class="header__nav">
-		<div class="header__nav-inner">
-			<nav class="nav collapse" role="navigation">
-				<ul id="nav-list" class="nav__list nav__list--top">
-					<li class="nav__list-item nav__list-item--top"><a class="nav__link nav__link--top" href="/foundation" tabindex="3"><span class="nav__link-text nav__link-text--top"><span class="nav__icon-spacer"><i class="fa fa-book" aria-hidden="true"></i></span>Foundation</span></a></li>
-					<li class="nav__list-item nav__list-item--top"><a id="login-link" class="nav__link nav__link--top" href="/login" tabindex="4"><span class="nav__link-text nav__link-text--top"><span class="nav__icon-spacer"><i class="fa fa-user" aria-hidden="true"></i></span>Login</span></a></li>
-					<li class="nav__list-item nav__list-item--top"><a class="nav__link nav__link--top" href="/about" tabindex="5"><span class="nav__link-text nav__link-text--top"><span class="nav__icon-spacer"><img class="nav__link-icon nav__link-icon--wheat" src="/assets/permanent/mytake-icon-1e0067f99a.png" width="16" height="16" /></span>About us</span></a></li>
-				</ul>
-			</nav>
-		</div>
-	</div>
-	<div class="header__banner">
-		<div class="header__banner-inner">
-			<div class="header__icon-list header__icon-list--bottom">
-				<span class="header__icon header__icon--triangle"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i></span>
-			</div>
-			<div class="header__banner-links">
-				<p class="header__text">Under construction</p>
-				<p class="header__text"><a class="header__link" href="https://meta.mytake.org/t/how-to-use-mytake-org/28">How to use</a></p>
-				<p class="header__text"><a class="header__link" href="https://meta.mytake.org/t/how-to-contribute-to-mytake-org/29">Contribute</a></p>
-			</div>
-		</div>
-	</div>
+	<div id="searchbar" class="header__searchbar"></div>
 </header>
 
 <div id="app"></div>
@@ -118,16 +90,22 @@ window.mytake = {
 <footer class="footer">
 <hr class="footer__hr" />
 	<div class="footer__nav">
-		<ul class="nav__list nav__list--bottom1">
-			<li class="nav__list-item nav__list-item--bottom1"><a class="nav__link nav__link--bottom" href="/foundation"><span class="nav__link-text nav__link-text--bottom">Foundation</span></a></li>
-			<li class="nav__list-item nav__list-item--bottom2"><a class="nav__link nav__link--bottom" href="/about"><span class="nav__link-text nav__link-text--bottom">About us</span></a></li>
+		<ul class="nav__list nav__list--buttons">
+			<li class="nav__list-item nav__list-item--button">
+				<span class="nav__button">
+					<a class="nav__link nav__link--bottom" href="/foundation"><span class="nav__link-text nav__link-text--bottom">FOUNDATION</span></a>
+				</span>
+			</li>
+			<li class="nav__list-item nav__list-item--button">
+				<span class="nav__button">
+					<a class="nav__link nav__link--bottom" href="/about"><span class="nav__link-text nav__link-text--bottom">ABOUT US</span></a>
+				</span>
+			</li>
 		</ul>
-		<ul class="nav__list nav__list--bottom2">
-			<li class="nav__list-item nav__list-item--bottom3"><a class="nav__link nav__link--bottom" href="/tos"><span class="nav__link-text nav__link-text--bottom">Terms of Service</span></a></li>
-			<li class="nav__list-item nav__list-item--bottom3"><a class="nav__link nav__link--bottom" href="/privacy"><span class="nav__link-text nav__link-text--bottom">Privacy Policy</span></a></li>
-		</ul>
-		<ul class="nav__list nav__list--bottom3">
-			<li class="nav__list-item nav__list-item--bottom2"><a class="nav__link nav__link--bottom" href="/faq"><span class="nav__link-text nav__link-text--bottom">Frequently Asked Questions</span></a></li>
+		<ul class="nav__list nav__list--links">
+			<li class="nav__list-item nav__list-item--link"><a class="nav__link nav__link--bottom" href="/tos"><span class="nav__link-text nav__link-text--bottom">TERMS OF SERVICES</span></a></li>
+			<li class="nav__list-item nav__list-item--link"><a class="nav__link nav__link--bottom" href="/privacy"><span class="nav__link-text nav__link-text--bottom">PRIVACY POLICY</span></a></li>
+			<li class="nav__list-item nav__list-item--link"><a class="nav__link nav__link--bottom" href="/faq"><span class="nav__link-text nav__link-text--bottom">FAQs/GUIDELINES</span></a></li>
 		</ul>
 	</div>
 </footer>

@@ -67,7 +67,8 @@ $palettes: (
       border: $base-lightest,
       shadow: $base-darkest,
       text: $base-darkest,
-      text--highlight: $base-darkest
+      text--highlight: $base-darkest,
+      text--red: $action
     ),
   video: (text: $base-darkest),
   editor:
@@ -150,5 +151,12 @@ $palettes: (
       background: $white,
       border: $base-darkest
     ),
-  trackSlider: (color--handle: $base-dark, border: $base-darkest)
+  trackSlider: (color--handle: $base-dark, border: $base-darkest),
+  searchbar:
+    (
+      background: $action,
+      border: $white,
+      text--dark: $base-darkest,
+      icon: $tertiary
+    )
 );

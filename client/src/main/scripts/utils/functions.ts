@@ -1172,17 +1172,16 @@ function drawCaption(text: string): ImageProps {
     throw errStr;
   }
 }
-function getUserCookieString(): string {
-  function getCookieValue(a: string): string {
-    // https://stackoverflow.com/questions/5639346/what-is-the-shortest-function-for-reading-a-cookie-by-name-in-javascript?noredirect=1&lq=1
-    const b = document.cookie.match("(^|;)\\s*" + a + "\\s*=\\s*([^;]+)");
-    if (b) {
-      const c = b.pop();
-      return c ? c : "";
-    }
-    return "";
+function getCookieValue(a: string): string {
+  // https://stackoverflow.com/questions/5639346/what-is-the-shortest-function-for-reading-a-cookie-by-name-in-javascript?noredirect=1&lq=1
+  const b = document.cookie.match("(^|;)\\s*" + a + "\\s*=\\s*([^;]+)");
+  if (b) {
+    const c = b.pop();
+    return c ? c : "";
   }
-
+  return "";
+}
+function getUserCookieString(): string {
   return getCookieValue("loginui");
 }
 function copyToClipboard(text: string): boolean {
@@ -1214,21 +1213,24 @@ function getUsernameFromURL(): string {
   return window.location.pathname.split("/")[1];
 }
 function isLoggedIn(): boolean {
-  function getCookieValue(a: string): string {
-    // https://stackoverflow.com/questions/5639346/what-is-the-shortest-function-for-reading-a-cookie-by-name-in-javascript?noredirect=1&lq=1
-    const b = document.cookie.match("(^|;)\\s*" + a + "\\s*=\\s*([^;]+)");
-    if (b) {
-      const c = b.pop();
-      return c ? c : "";
+  return getUserCookieString() ? true : false;
+}
+function ancestorHasClass(
+  element: HTMLElement | null,
+  classname: string
+): boolean {
+  if (element) {
+    if (element.classList.contains(classname)) {
+      return true;
     }
-    return "";
+    return ancestorHasClass(element.parentElement, classname);
+  } else {
+    return false;
   }
-
-  const loginCookieStr = getCookieValue("loginui");
-  return loginCookieStr ? true : false;
 }
 export {
   alertErr,
+  ancestorHasClass,
   convertSecondsToTimestamp,
   copyToClipboard,
   decodeVideoFact,

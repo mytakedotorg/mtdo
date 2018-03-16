@@ -53,8 +53,9 @@ exports[`Reaction - harassment reported 1`] = `
       className="reaction__action-container"
     >
       <DropDown
-        position="TL"
-        text="Email"
+        classModifier="reaction"
+        dropdownPosition="TL"
+        toggleText="Email"
       >
         <EmailTake
           takeDocument={
@@ -235,8 +236,9 @@ exports[`Reaction - initial 1`] = `
       className="reaction__action-container"
     >
       <DropDown
-        position="TL"
-        text="Email"
+        classModifier="reaction"
+        dropdownPosition="TL"
+        toggleText="Email"
       >
         <EmailTake
           takeDocument={
@@ -417,8 +419,9 @@ exports[`Reaction - initial 2`] = `
       className="reaction__action-container"
     >
       <DropDown
-        position="TL"
-        text="Email"
+        classModifier="reaction"
+        dropdownPosition="TL"
+        toggleText="Email"
       >
         <EmailTake
           takeDocument={
@@ -599,8 +602,9 @@ exports[`Reaction - liked 1`] = `
       className="reaction__action-container"
     >
       <DropDown
-        position="TL"
-        text="Email"
+        classModifier="reaction"
+        dropdownPosition="TL"
+        toggleText="Email"
       >
         <EmailTake
           takeDocument={
@@ -781,8 +785,9 @@ exports[`Reaction - loading 1`] = `
       className="reaction__action-container"
     >
       <DropDown
-        position="TL"
-        text="Email"
+        classModifier="reaction"
+        dropdownPosition="TL"
+        toggleText="Email"
       >
         <EmailTake
           takeDocument={
@@ -963,8 +968,9 @@ exports[`Reaction - rules violated reported 1`] = `
       className="reaction__action-container"
     >
       <DropDown
-        position="TL"
-        text="Email"
+        classModifier="reaction"
+        dropdownPosition="TL"
+        toggleText="Email"
       >
         <EmailTake
           takeDocument={
@@ -1145,8 +1151,9 @@ exports[`Reaction - spam reported 1`] = `
       className="reaction__action-container"
     >
       <DropDown
-        position="TL"
-        text="Email"
+        classModifier="reaction"
+        dropdownPosition="TL"
+        toggleText="Email"
       >
         <EmailTake
           takeDocument={
@@ -1327,8 +1334,9 @@ exports[`Reaction - user followed 1`] = `
       className="reaction__action-container"
     >
       <DropDown
-        position="TL"
-        text="Email"
+        classModifier="reaction"
+        dropdownPosition="TL"
+        toggleText="Email"
       >
         <EmailTake
           takeDocument={
@@ -1509,8 +1517,9 @@ exports[`Reaction - user unfollowed 1`] = `
       className="reaction__action-container"
     >
       <DropDown
-        position="TL"
-        text="Email"
+        classModifier="reaction"
+        dropdownPosition="TL"
+        toggleText="Email"
       >
         <EmailTake
           takeDocument={

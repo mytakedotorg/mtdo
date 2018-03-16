@@ -1,0 +1,141 @@
+$button-height: 2.5rem;
+.searchbar {
+  @include content-column;
+  display: flex;
+  justify-content: space-between;
+}
+.searchbar__input-container {
+  @include text-margin-lr;
+}
+.searchbar__input {
+  @include body--small("sans");
+  line-height: 25px;
+  vertical-align: middle;
+  border-radius: 5px;
+  border: 1px solid palette(searchbar, border);
+  margin-bottom: 2px;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: $content-margin/2;
+  padding-right: $content-margin/2;
+  width: 150px;
+}
+.searchbar__filter-button-list {
+  display: none;
+  @media #{$mq-small} {
+    flex: 1;
+    display: flex;
+    align-items: center;
+  }
+}
+.searchbar__button {
+  @include body--small("sans");
+  height: $button-height;
+  line-height: 3.5rem;
+  display: flex;
+  align-items: center;
+  border-radius: 5px;
+}
+.searchbar__button--filter {
+  float: left;
+  margin: 0;
+  margin-right: $content-margin/2;
+  border: 1px solid palette(searchbar, border);
+  overflow: hidden;
+}
+.searchbar__button--filter-toggle {
+  color: palette(button, color--action);
+  background: palette(button, background--action);
+  @include text-margin-lr;
+  border: 1px solid palette(searchbar, border);
+  width: 27px;
+  @media #{$mq-small} {
+    border: none;
+    width: initial;
+  }
+  .fa-filter {
+    // Font awesome filer icon
+    line-height: 3.5rem;
+    font-size: 24px;
+    @media #{$mq-small} {
+      display: none;
+    }
+  }
+  .fa-caret-down {
+    display: none;
+    @media #{$mq-small} {
+      display: inline;
+      font-size: 14px;
+      margin-right: 4px;
+    }
+  }
+}
+.searchbar__filter-text {
+  @include body--small("sans");
+  display: none;
+  @media #{$mq-small} {
+    display: inline;
+  }
+}
+.searchbar__toggle-container {
+  display: flex;
+  align-items: center;
+}
+.searchbar__toggle-element {
+  cursor: pointer;
+}
+.searchbar__dropdown {
+  width: 173px;
+}
+.searchbar__dropdown-text {
+  @include body("sans");
+  color: palette(searchbar, text--dark);
+  margin: 0 $page-margin-mobile;
+  line-height: 35px;
+  .fa-exclamation-triangle {
+    color: palette(searchbar, icon);
+    margin-right: $page-margin-mobile;
+  }
+}
+.searchbar__dropdown-link {
+  @include body("sans");
+  @include button--borderless;
+  margin: 0 $page-margin-mobile;
+  line-height: 35px;
+  position: relative;
+  height: 35px;
+}
+.searchbar__link {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  color: palette(button, color--borderless);
+  &:hover {
+    color: palette(button, color--borderless-hover);
+  }
+}
+.searchbar__button-link {
+  @include button--red;
+  color: palette(button, color--action);
+  text-decoration: none;
+}
+.searchbar__button-text {
+  margin-left: 3px;
+  margin-right: 3px;
+}
+.searchbar__button-close {
+  @include button--red;
+  color: palette(button, color--action);
+  height: 100%;
+  width: $button-height;
+  border-left: 1px solid palette(searchbar, border);
+  cursor: pointer;
+  position: relative;
+  .fa-times {
+    position: absolute;
+    top: 6px;
+    left: 7px;
+  }
+}

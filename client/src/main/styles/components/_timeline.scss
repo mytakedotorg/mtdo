@@ -18,6 +18,9 @@
   @include body--lead;
   @include text-margin;
 }
+.timeline__instructions--red {
+  color: palette(document, text--red);
+}
 
 .timeline__actions {
   @include text-margin;
