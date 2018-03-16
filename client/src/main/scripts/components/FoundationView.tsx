@@ -26,7 +26,7 @@ class FoundationView extends React.Component<FoundationViewProps, {}> {
                   We haven't implemented this yet! Help us finish it on{" "}
                   <a href="https://github.com/mytakedotorg/mytakedotorg/projects/3">
                     GitHub
-                  </a>
+                  </a>.
                 </p>
               ) : null}
               <p className="timeline__instructions">
