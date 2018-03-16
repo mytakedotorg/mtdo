@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { alertErr } from "../utils/functions";
+import { alertErr, ancestorHasClass } from "../utils/functions";
 
 interface DropDownProps {
   children?: React.ReactNode;
@@ -31,47 +31,44 @@ class DropDown extends React.Component<DropDownProps, DropDownState> {
       e.currentTarget &&
       (typeof disabled != "boolean" || disabled === false)
     ) {
-      if (e.currentTarget === window && !e.defaultPrevented) {
+      if (
+        e.currentTarget === window &&
+        !e.defaultPrevented &&
+        !ancestorHasClass(e.target as HTMLElement, "dropdown")
+      ) {
         // This is the default handler, window was clicked, close dropDown
         this.setState({
           dropDownIsOpen: false
         });
         this.div.removeEventListener("mousedown", this.onMouseDown);
         window.removeEventListener("mousedown", this.onMouseDown);
-        window.removeEventListener("touchstart", this.onMouseDown);
-        e.preventDefault();
+        window.removeEventListener("touchend", this.onMouseDown);
       } else if (
         (e.currentTarget as HTMLElement).classList &&
         !(e.currentTarget as HTMLElement).classList.contains("dropdown")
       ) {
-        // Something else was clicked, close dropDown
+        // Something outside of the dropdown was clicked, close dropDown
         this.setState({
           dropDownIsOpen: false
         });
         this.div.removeEventListener("mousedown", this.onMouseDown);
         window.removeEventListener("mousedown", this.onMouseDown);
-        window.removeEventListener("touchstart", this.onMouseDown);
-      } else {
-        // Something inside the share container was clicked, prevent default
-        e.preventDefault();
+        window.removeEventListener("touchend", this.onMouseDown);
       }
     }
   };
   toggleMenu = (e: React.MouseEvent<HTMLSpanElement>) => {
     const { disabled } = this.props;
-    if (
-      typeof disabled != "boolean" ||
-      (disabled === false && !e.defaultPrevented)
-    ) {
+    if (typeof disabled != "boolean" || disabled === false) {
       const dropDownIsOpen = this.state.dropDownIsOpen;
       if (!dropDownIsOpen) {
         this.div.addEventListener("mousedown", this.onMouseDown);
         window.addEventListener("mousedown", this.onMouseDown);
-        window.addEventListener("touchstart", this.onMouseDown);
+        window.addEventListener("touchend", this.onMouseDown);
       } else {
         this.div.removeEventListener("mousedown", this.onMouseDown);
         window.removeEventListener("mousedown", this.onMouseDown);
-        window.removeEventListener("touchstart", this.onMouseDown);
+        window.removeEventListener("touchend", this.onMouseDown);
       }
       this.setState({
         dropDownIsOpen: !dropDownIsOpen
@@ -81,7 +78,7 @@ class DropDown extends React.Component<DropDownProps, DropDownState> {
   componentWillUnmount() {
     this.div.removeEventListener("mousedown", this.onMouseDown);
     window.removeEventListener("mousedown", this.onMouseDown);
-    window.removeEventListener("touchstart", this.onMouseDown);
+    window.removeEventListener("touchend", this.onMouseDown);
   }
   render() {
     let dropDownClassModifier;
