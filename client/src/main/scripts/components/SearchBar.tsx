@@ -16,6 +16,10 @@ class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
       value: ""
     };
   }
+  handleRemoveTagClick = (event: React.MouseEvent<HTMLDivElement>) => {
+    window.location.href =
+      Routes.FOUNDATION + "?q=" + slugify(this.state.value);
+  };
   handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({ value: event.target.value });
   };
@@ -67,7 +71,10 @@ class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
                 in debates said by Donald Trump
               </span>
             </a>
-            <div className="searchbar__button-close">
+            <div
+              className="searchbar__button-close"
+              onClick={this.handleRemoveTagClick}
+            >
               <i className="fa fa-times" aria-hidden="true" />
             </div>
           </div>
@@ -86,7 +93,10 @@ class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
                 in the Constitution
               </span>
             </a>
-            <div className="searchbar__button-close">
+            <div
+              className="searchbar__button-close"
+              onClick={this.handleRemoveTagClick}
+            >
               <i className="fa fa-times" aria-hidden="true" />
             </div>
           </div>
