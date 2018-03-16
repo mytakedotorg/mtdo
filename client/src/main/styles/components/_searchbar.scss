@@ -49,6 +49,7 @@ $button-height: 2.5rem;
   width: $button-height;
   @media #{$mq-small} {
     border: none;
+    width: initial;
   }
   .fa-filter {
     // Font awesome filer icon
