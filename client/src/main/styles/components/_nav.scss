@@ -11,45 +11,57 @@ $nav-items: 4;
   list-style: none;
   padding: 0;
   margin: 0;
-}
-.nav__list--top {
-  border-top: 1px solid palette(header, border);
-  border-bottom: 1px solid palette(header, border);
+  width: 100%;
+  @include clearfix;
   @media #{$mq-medium} {
-    border-left: 1px solid palette(header, border);
-    border-right: 1px solid palette(header, border);
+    @include text-margin-lr;
+    width: initial;
   }
 }
-.nav__list--bottom1,
-.nav__list--bottom2 {
-  max-width: 100%;
-  @include text-margin-lr;
-  text-align: center;
-  @media only screen and (min-width: 481px) {
-    text-align: left;
-  }
-}
-.nav__list--bottom3 {
-  max-width: 100%;
-  @include text-margin-lr;
-  text-align: center;
-  @media only screen and (min-width: 481px) {
-    text-align: right;
+.nav__list--buttons {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 5px;
+  @media #{$mq-medium} {
+    display: initial;
   }
 }
 .nav__list-item {
-  height: $nav-height;
-  line-height: $nav-height;
+  float: left;
   background-color: palette(header, background);
+}
+.nav__list-item--button {
+  width: 50%;
+  @media #{$mq-medium} {
+    width: initial;
+    margin-right: 2rem;
+  }
+}
+.nav__button {
+  display: block;
+  border: 1px solid palette(nav, text);
+  border-radius: 5px;
+  width: 95px;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  height: 20px;
+  line-height: 22px;
+}
+.nav__list-item--link {
+  width: 100%;
+  margin-bottom: 5px;
+  text-align: center;
+  @media #{$mq-medium} {
+    width: initial;
+    margin-left: 2rem;
+  }
 }
 .nav__list-item--top {
   border-bottom: 1px solid palette(header, border);
 }
 .nav__link {
   text-decoration: none;
-  display: block;
-  width: 100%;
-  height: 100%;
 }
 .nav__link--top {
   padding-left: $page-margin-mobile;
@@ -59,7 +71,7 @@ $nav-items: 4;
   }
 }
 .nav__link-text {
-  @include heading6;
+  @include typography($sans, 400, 13px, 1.3em);
   color: palette(nav, text);
   display: inline;
   &:hover {
