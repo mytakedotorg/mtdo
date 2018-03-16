@@ -20,7 +20,7 @@ class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
   };
   handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    throw "TODO";
+    window.location.href = Routes.FOUNDATION;
   };
   render() {
     const Toggle = (
@@ -51,10 +51,24 @@ class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
         </div>
         <div className="searchbar__filter-button-list">
           <div className="searchbar__button searchbar__button--filter">
-            <span>Button 1</span>
+            <a className="searchbar__button-link" href={Routes.FOUNDATION}>
+              <span className="searchbar__button-text">
+                in debates said by Donald Trump
+              </span>
+            </a>
+            <div className="searchbar__button-close">
+              <i className="fa fa-times" aria-hidden="true" />
+            </div>
           </div>
           <div className="searchbar__button searchbar__button--filter">
-            <span>Button 2</span>
+            <a className="searchbar__button-link" href={Routes.FOUNDATION}>
+              <span className="searchbar__button-text">
+                in the Constitution
+              </span>
+            </a>
+            <div className="searchbar__button-close">
+              <i className="fa fa-times" aria-hidden="true" />
+            </div>
           </div>
         </div>
         <div className="searchbar__toggle-container">

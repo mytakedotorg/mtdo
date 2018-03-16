@@ -16,6 +16,7 @@ $button-height: 2.5rem;
   padding-bottom: 0;
   padding-left: $content-margin/2;
   padding-right: $content-margin/2;
+  width: 150px;
 }
 .searchbar__filter-button-list {
   display: none;
@@ -34,25 +35,24 @@ $button-height: 2.5rem;
   border-radius: 5px;
 }
 .searchbar__button--filter {
-  @include button--red;
   float: left;
   margin: 0;
   margin-right: $content-margin/2;
   border: 1px solid palette(searchbar, border);
-  padding-left: $content-margin/2;
-  padding-right: $content-margin/2;
+  overflow: hidden;
 }
 .searchbar__button--filter-toggle {
   color: palette(button, color--action);
   background: palette(button, background--action);
   @include text-margin-lr;
   border: 1px solid palette(searchbar, border);
+  width: $button-height;
   @media #{$mq-small} {
     border: none;
   }
   .fa-filter {
     // Font awesome filer icon
-    line-height: $button-height;
+    line-height: 3.5rem;
     font-size: 24px;
     @media #{$mq-small} {
       display: none;
@@ -101,5 +101,32 @@ $button-height: 2.5rem;
   line-height: 35px;
   a {
     width: 100%;
+    color: palette(button, color--borderless);
+    &:hover {
+      color: palette(button, color--borderless-hover);
+    }
+  }
+}
+.searchbar__button-link {
+  @include button--red;
+  color: palette(button, color--action);
+  text-decoration: none;
+}
+.searchbar__button-text {
+  margin-left: 3px;
+  margin-right: 3px;
+}
+.searchbar__button-close {
+  @include button--red;
+  color: palette(button, color--action);
+  height: 100%;
+  width: $button-height;
+  border-left: 1px solid palette(searchbar, border);
+  cursor: pointer;
+  position: relative;
+  .fa-times {
+    position: absolute;
+    top: 6px;
+    left: 7px;
   }
 }
