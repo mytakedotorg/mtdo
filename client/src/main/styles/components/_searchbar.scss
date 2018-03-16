@@ -46,7 +46,7 @@ $button-height: 2.5rem;
   background: palette(button, background--action);
   @include text-margin-lr;
   border: 1px solid palette(searchbar, border);
-  width: $button-height;
+  width: 27px;
   @media #{$mq-small} {
     border: none;
     width: initial;
