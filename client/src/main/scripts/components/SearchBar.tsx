@@ -1,5 +1,7 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
+import DropDown from "./DropDown";
+import { Routes } from "../java2ts/Routes";
 
 interface SearchBarProps {}
 interface SearchBarState {
@@ -21,6 +23,19 @@ class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
     throw "TODO";
   };
   render() {
+    const Toggle = (
+      <span className="searchbar__toggle-element">
+        <span className="searchbar__toggle-text searchbar__toggle-text--filter-icon">
+          <i className="fa fa-filter" aria-hidden="true" />
+        </span>
+        <span className="searchbar__toggle-text searchbar__toggle-text--caret-icon">
+          <i className="fa fa-caret-down" aria-hidden="true" />
+        </span>
+        <span className="searchbar__toggle-text searchbar__toggle-text--user">
+          <span className="searchbar__filter-text">search in...</span>
+        </span>
+      </span>
+    );
     return (
       <div className="searchbar">
         <div className="searchbar__input-container">
@@ -44,9 +59,28 @@ class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
         </div>
         <div className="searchbar__toggle-container">
           <div className="searchbar__button searchbar__button--filter-toggle">
-            <i className="fa fa-filter" aria-hidden="true" />
-            <i className="fa fa-caret-down" aria-hidden="true" />
-            <span className="searchbar__filter-text">search in...</span>
+            <DropDown
+              classModifier="searchbar"
+              dropdownPosition="BL"
+              toggleText={Toggle}
+            >
+              <div className="searchbar__dropdown">
+                <p className="searchbar__dropdown-text">
+                  <i
+                    className="fa fa-exclamation-triangle"
+                    aria-hidden="true"
+                  />Under construction
+                </p>
+                <p className="searchbar__dropdown-link">
+                  <a href="https://meta.mytake.org/t/how-to-contribute-to-mytake-org/29">
+                    How to help
+                  </a>
+                </p>
+                <p className="searchbar__dropdown-link">
+                  <a href={Routes.FOUNDATION}>Browse the Foundation</a>
+                </p>
+              </div>
+            </DropDown>
           </div>
         </div>
       </div>

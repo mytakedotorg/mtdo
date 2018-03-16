@@ -78,3 +78,28 @@ $button-height: 2.5rem;
   display: flex;
   align-items: center;
 }
+.searchbar__toggle-element {
+  cursor: pointer;
+}
+.searchbar__dropdown {
+  width: 173px;
+}
+.searchbar__dropdown-text {
+  @include body("sans");
+  color: palette(searchbar, text--dark);
+  margin: 0 $page-margin-mobile;
+  line-height: 35px;
+  .fa-exclamation-triangle {
+    color: palette(searchbar, icon);
+    margin-right: $page-margin-mobile;
+  }
+}
+.searchbar__dropdown-link {
+  @include body("sans");
+  @include button--borderless;
+  margin: 0 $page-margin-mobile;
+  line-height: 35px;
+  a {
+    width: 100%;
+  }
+}
