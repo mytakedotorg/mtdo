@@ -1215,8 +1215,22 @@ function getUsernameFromURL(): string {
 function isLoggedIn(): boolean {
   return getUserCookieString() ? true : false;
 }
+function ancestorHasClass(
+  element: HTMLElement | null,
+  classname: string
+): boolean {
+  if (element) {
+    if (element.classList.contains(classname)) {
+      return true;
+    }
+    return ancestorHasClass(element.parentElement, classname);
+  } else {
+    return false;
+  }
+}
 export {
   alertErr,
+  ancestorHasClass,
   convertSecondsToTimestamp,
   copyToClipboard,
   decodeVideoFact,
