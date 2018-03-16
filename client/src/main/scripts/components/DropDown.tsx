@@ -38,6 +38,8 @@ class DropDown extends React.Component<DropDownProps, DropDownState> {
         });
         this.div.removeEventListener("mousedown", this.onMouseDown);
         window.removeEventListener("mousedown", this.onMouseDown);
+        window.removeEventListener("touchstart", this.onMouseDown);
+        e.preventDefault();
       } else if (
         (e.currentTarget as HTMLElement).classList &&
         !(e.currentTarget as HTMLElement).classList.contains("dropdown")
@@ -48,22 +50,28 @@ class DropDown extends React.Component<DropDownProps, DropDownState> {
         });
         this.div.removeEventListener("mousedown", this.onMouseDown);
         window.removeEventListener("mousedown", this.onMouseDown);
+        window.removeEventListener("touchstart", this.onMouseDown);
       } else {
         // Something inside the share container was clicked, prevent default
         e.preventDefault();
       }
     }
   };
-  toggleMenu = () => {
+  toggleMenu = (e: React.MouseEvent<HTMLSpanElement>) => {
     const { disabled } = this.props;
-    if (typeof disabled != "boolean" || disabled === false) {
+    if (
+      typeof disabled != "boolean" ||
+      (disabled === false && !e.defaultPrevented)
+    ) {
       const dropDownIsOpen = this.state.dropDownIsOpen;
       if (!dropDownIsOpen) {
         this.div.addEventListener("mousedown", this.onMouseDown);
         window.addEventListener("mousedown", this.onMouseDown);
+        window.addEventListener("touchstart", this.onMouseDown);
       } else {
         this.div.removeEventListener("mousedown", this.onMouseDown);
         window.removeEventListener("mousedown", this.onMouseDown);
+        window.removeEventListener("touchstart", this.onMouseDown);
       }
       this.setState({
         dropDownIsOpen: !dropDownIsOpen
@@ -73,6 +81,7 @@ class DropDown extends React.Component<DropDownProps, DropDownState> {
   componentWillUnmount() {
     this.div.removeEventListener("mousedown", this.onMouseDown);
     window.removeEventListener("mousedown", this.onMouseDown);
+    window.removeEventListener("touchstart", this.onMouseDown);
   }
   render() {
     let dropDownClassModifier;
