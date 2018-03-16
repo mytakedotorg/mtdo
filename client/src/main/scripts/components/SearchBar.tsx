@@ -86,12 +86,17 @@ class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
                   />Under construction
                 </p>
                 <p className="searchbar__dropdown-link">
-                  <a href="https://meta.mytake.org/t/how-to-contribute-to-mytake-org/29">
+                  <a
+                    className="searchbar__link"
+                    href="https://meta.mytake.org/t/how-to-contribute-to-mytake-org/29"
+                  >
                     How to help
                   </a>
                 </p>
                 <p className="searchbar__dropdown-link">
-                  <a href={Routes.FOUNDATION}>Browse the Foundation</a>
+                  <a className="searchbar__link" href={Routes.FOUNDATION}>
+                    Browse the Foundation
+                  </a>
                 </p>
               </div>
             </DropDown>
