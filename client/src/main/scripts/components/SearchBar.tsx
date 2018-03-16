@@ -1,6 +1,7 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import DropDown from "./DropDown";
+import { slugify } from "../utils/functions";
 import { Routes } from "../java2ts/Routes";
 
 interface SearchBarProps {}
@@ -20,7 +21,8 @@ class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
   };
   handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    window.location.href = Routes.FOUNDATION;
+    window.location.href =
+      Routes.FOUNDATION + "?q=" + slugify(this.state.value);
   };
   render() {
     const Toggle = (
@@ -51,7 +53,16 @@ class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
         </div>
         <div className="searchbar__filter-button-list">
           <div className="searchbar__button searchbar__button--filter">
-            <a className="searchbar__button-link" href={Routes.FOUNDATION}>
+            <a
+              className="searchbar__button-link"
+              href={
+                Routes.FOUNDATION +
+                "?q=" +
+                slugify(this.state.value) +
+                "&" +
+                "f=in+debates+said+by+donald+trump"
+              }
+            >
               <span className="searchbar__button-text">
                 in debates said by Donald Trump
               </span>
@@ -61,7 +72,16 @@ class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
             </div>
           </div>
           <div className="searchbar__button searchbar__button--filter">
-            <a className="searchbar__button-link" href={Routes.FOUNDATION}>
+            <a
+              className="searchbar__button-link"
+              href={
+                Routes.FOUNDATION +
+                "?q=" +
+                slugify(this.state.value) +
+                "&" +
+                "f=in+the+constitution"
+              }
+            >
               <span className="searchbar__button-text">
                 in the Constitution
               </span>

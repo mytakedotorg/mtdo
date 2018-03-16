@@ -67,7 +67,8 @@ $palettes: (
       border: $base-lightest,
       shadow: $base-darkest,
       text: $base-darkest,
-      text--highlight: $base-darkest
+      text--highlight: $base-darkest,
+      text--red: $action
     ),
   video: (text: $base-darkest),
   editor:
