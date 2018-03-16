@@ -297,7 +297,11 @@ export class Reaction extends React.Component<ReactionProps, ReactionState> {
             </button>
           </div>
           <div className="reaction__action-container">
-            <DropDown text="Email" position="TL">
+            <DropDown
+              classModifier="reaction"
+              dropdownPosition="TL"
+              toggleText="Email"
+            >
               <EmailTake
                 takeDocument={(Object as any).assign(
                   {},

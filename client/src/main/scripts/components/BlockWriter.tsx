@@ -611,7 +611,11 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
               status={this.state.status}
             />
             <div className="editor__share">
-              <DropDown text="Email" position="TL">
+              <DropDown
+                classModifier="editor"
+                dropdownPosition="TL"
+                toggleText="Email"
+              >
                 <EmailTake
                   takeDocument={(Object as any).assign(
                     {},

@@ -94,7 +94,7 @@ class EmailTake extends React.Component<EmailTakeProps, EmailTakeState> {
       );
     }
     return (
-      <div>
+      <div className="emailtake">
         <p className="share__text">Email this Take to yourself.</p>
         {innerContent}
       </div>

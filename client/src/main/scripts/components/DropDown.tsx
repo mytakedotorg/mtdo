@@ -4,8 +4,10 @@ import { alertErr } from "../utils/functions";
 
 interface DropDownProps {
   children?: React.ReactNode;
-  text: string;
-  position: Position;
+  classModifier: string;
+  disabled?: boolean;
+  dropdownPosition: Position;
+  toggleText: string | React.ReactNode;
 }
 
 type Position = "TL" | "TR" | "BL" | "BR";
@@ -24,7 +26,11 @@ class DropDown extends React.Component<DropDownProps, DropDownState> {
     };
   }
   onMouseDown = (e: MouseEvent) => {
-    if (e.currentTarget) {
+    const { disabled } = this.props;
+    if (
+      e.currentTarget &&
+      (typeof disabled != "boolean" || disabled === false)
+    ) {
       if (e.currentTarget === window && !e.defaultPrevented) {
         // This is the default handler, window was clicked, close dropDown
         this.setState({
@@ -34,7 +40,7 @@ class DropDown extends React.Component<DropDownProps, DropDownState> {
         window.removeEventListener("mousedown", this.onMouseDown);
       } else if (
         (e.currentTarget as HTMLElement).classList &&
-        !(e.currentTarget as HTMLElement).classList.contains("share")
+        !(e.currentTarget as HTMLElement).classList.contains("dropdown")
       ) {
         // Something else was clicked, close dropDown
         this.setState({
@@ -49,17 +55,20 @@ class DropDown extends React.Component<DropDownProps, DropDownState> {
     }
   };
   toggleMenu = () => {
-    const dropDownIsOpen = this.state.dropDownIsOpen;
-    if (!dropDownIsOpen) {
-      this.div.addEventListener("mousedown", this.onMouseDown);
-      window.addEventListener("mousedown", this.onMouseDown);
-    } else {
-      this.div.removeEventListener("mousedown", this.onMouseDown);
-      window.removeEventListener("mousedown", this.onMouseDown);
+    const { disabled } = this.props;
+    if (typeof disabled != "boolean" || disabled === false) {
+      const dropDownIsOpen = this.state.dropDownIsOpen;
+      if (!dropDownIsOpen) {
+        this.div.addEventListener("mousedown", this.onMouseDown);
+        window.addEventListener("mousedown", this.onMouseDown);
+      } else {
+        this.div.removeEventListener("mousedown", this.onMouseDown);
+        window.removeEventListener("mousedown", this.onMouseDown);
+      }
+      this.setState({
+        dropDownIsOpen: !dropDownIsOpen
+      });
     }
-    this.setState({
-      dropDownIsOpen: !dropDownIsOpen
-    });
   };
   componentWillUnmount() {
     this.div.removeEventListener("mousedown", this.onMouseDown);
@@ -67,21 +76,21 @@ class DropDown extends React.Component<DropDownProps, DropDownState> {
   }
   render() {
     let dropDownClassModifier;
-    if (!this.state.dropDownIsOpen) {
-      dropDownClassModifier = "share__dropDown--hidden";
+    if (!this.state.dropDownIsOpen || this.props.disabled === true) {
+      dropDownClassModifier = "hidden";
     } else {
-      switch (this.props.position) {
+      switch (this.props.dropdownPosition) {
         case "TL":
-          dropDownClassModifier = "share__dropDown--tl";
+          dropDownClassModifier = "tl";
           break;
         case "TR":
-          dropDownClassModifier = "share__dropDown--tr";
+          dropDownClassModifier = "tr";
           break;
         case "BL":
-          dropDownClassModifier = "share__dropDown--bl";
+          dropDownClassModifier = "bl";
           break;
         case "BR":
-          dropDownClassModifier = "share__dropDown--br";
+          dropDownClassModifier = "br";
           break;
         default:
           const msg = "DropDown: Unknown position.";
@@ -91,17 +100,24 @@ class DropDown extends React.Component<DropDownProps, DropDownState> {
     }
 
     return (
-      <div className="share" ref={(div: HTMLDivElement) => (this.div = div)}>
-        <div className="share__inner-container">
-          <button
-            className="share__action share__action--toggle"
-            onClick={this.toggleMenu}
-          >
-            {this.props.text}
-          </button>
-          <div className={"share__dropDown " + dropDownClassModifier}>
-            {this.props.children}
-          </div>
+      <div
+        className={"dropdown dropdown--" + this.props.classModifier}
+        ref={(div: HTMLDivElement) => (this.div = div)}
+      >
+        <span
+          className={
+            "dropdown__toggle dropdown__toggle--" + this.props.classModifier
+          }
+          onClick={this.toggleMenu}
+        >
+          {this.props.toggleText}
+        </span>
+        <div
+          className={
+            "dropdown__dropdown dropdown__dropdown--" + dropDownClassModifier
+          }
+        >
+          {this.props.children}
         </div>
       </div>
     );

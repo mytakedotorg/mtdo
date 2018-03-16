@@ -897,25 +897,31 @@ class Video extends React.Component<VideoProps, VideoState> {
           <div className="video__container video__container--actions">
             {selection && selection.end && selection.end > selection.start ? (
               <div className="video__float--right">
-                <DropDown text="Share" position="BL">
-                  {this.state.isCopiedToClipBoard ? (
-                    <span className="share__action share__action--success">
-                      Copied to clipboard
-                    </span>
-                  ) : (
+                <DropDown
+                  classModifier="video"
+                  dropdownPosition="BL"
+                  toggleText="Share"
+                >
+                  <div className="video__share-dropdown">
+                    {this.state.isCopiedToClipBoard ? (
+                      <span className="share__action share__action--success">
+                        Copied to clipboard
+                      </span>
+                    ) : (
+                      <button
+                        className="share__action share__action--clickable"
+                        onClick={this.copyURL}
+                      >
+                        Copy URL
+                      </button>
+                    )}
                     <button
                       className="share__action share__action--clickable"
-                      onClick={this.copyURL}
+                      onClick={this.handleSetClick}
                     >
-                      Copy URL
+                      Give your Take on this
                     </button>
-                  )}
-                  <button
-                    className="share__action share__action--clickable"
-                    onClick={this.handleSetClick}
-                  >
-                    Give your Take on this
-                  </button>
+                  </div>
                 </DropDown>
               </div>
             ) : null}

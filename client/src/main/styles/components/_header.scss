@@ -23,6 +23,7 @@ $fa-size: 24px;
 .header__usernav {
   flex: 1;
   position: relative;
+  z-index: 1;
 }
 .header__skip-link {
   position: absolute;
