@@ -48,6 +48,8 @@ public class CustomAssets implements Jooby.Module {
 
 	@Override
 	public void configure(Env env, Config conf, Binder binder) throws Throwable {
+		env.router().assets("/favicon.ico", "/assets/permanent/favicon-6022c3e42d.ico");
+
 		Config config = ConfigFactory.parseResources("assets.conf");
 		AssetCompiler compiler = new AssetCompiler(config);
 		BiFunction<String, String, String> url;
