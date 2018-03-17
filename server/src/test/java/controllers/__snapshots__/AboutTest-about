@@ -6,6 +6,20 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
+<link rel="apple-touch-icon-precomposed" sizes="57x57" href="/assets/permanent/apple-touch-icon-57x57-52a4d6c3cf.png" />
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="/assets/permanent/apple-touch-icon-114x114-930959478a.png" />
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="/assets/permanent/apple-touch-icon-72x72-1696be69d2.png" />
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/assets/permanent/apple-touch-icon-144x144-171a583232.png" />
+<link rel="apple-touch-icon-precomposed" sizes="120x120" href="/assets/permanent/apple-touch-icon-120x120-a35a2e0938.png" />
+<link rel="apple-touch-icon-precomposed" sizes="152x152" href="/assets/permanent/apple-touch-icon-152x152-61007a3637.png" />
+<link rel="icon" type="image/png" href="/assets/permanent/favicon-196x196-cddcf3ec80.png" sizes="196x196" />
+<link rel="icon" type="image/png" href="/assets/permanent/favicon-32x32-9dd6ce9560.png" sizes="32x32" />
+<link rel="icon" type="image/png" href="/assets/permanent/favicon-16x16-f499376446.png" sizes="16x16" />
+
+<meta name="application-name" content="MyTake.org"/>
+<meta name="msapplication-TileColor" content="#FFFFFF" />
+<meta name="msapplication-TileImage" content="/assets/permanent/mstile-144x144-171a583232.png" />
+
 <title>About MyTake.org</title>
 <meta name="description" content="Your bicycle for politics | MyTake.org">
 <meta name="author" content="MyTake.org">
