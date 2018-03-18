@@ -43,6 +43,9 @@ class UserNav extends React.Component<UserNavProps, UserNavState> {
             <i className="fa fa-bars" aria-hidden="true" />
           </span>
           <span className="usernav__toggle-text usernav__toggle-text--user">
+            <span className="usernav__caret">
+              <i className="fa fa-caret-down" aria-hidden="true" />
+            </span>
             {this.state.cookie.username}
           </span>
         </span>

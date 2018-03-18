@@ -2,10 +2,9 @@
   position: absolute;
   top: 0;
   right: 0;
-  width: 8rem;
+  width: 10rem;
   height: 8rem;
   @media #{$mq-medium} {
-    width: 10rem;
     height: 10rem;
   }
 }
@@ -31,15 +30,15 @@
 .usernav__toggle-text {
   position: absolute;
   color: palette(nav, text);
-  border: 1px solid palette(nav, text);
-  border-radius: 5px;
-  padding-left: 4px;
-  padding-right: 4px;
   &:hover {
     color: palette(nav, text--hover);
   }
 }
 .usernav__toggle-text--icon {
+  border: 1px solid palette(nav, text);
+  border-radius: 5px;
+  padding-left: 4px;
+  padding-right: 4px;
   top: 11px;
   right: 0;
   height: 25px;
@@ -51,19 +50,26 @@
 .usernav__toggle-text--user {
   display: none;
   @media #{$mq-small} {
-    top: 13px;
+    cursor: pointer;
+    top: 3px;
     right: 0;
     display: inline;
+  }
+  @media #{$mq-medium} {
+    top: 6px;
   }
 }
 .usernav__toggle-text--login {
   text-decoration: none;
-  top: 11px;
+  top: 3px;
   right: 0;
   @media #{$mq-medium} {
-    top: 13px;
+    top: 6px;
     right: 0;
   }
+}
+.usernav__caret {
+  margin-right: 3px;
 }
 .usernav__dropdown {
   margin: 0;
