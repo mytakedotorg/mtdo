@@ -11,6 +11,7 @@ import com.diffplug.common.base.StringPrinter;
 import com.google.auto.value.AutoValue;
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,30 +53,45 @@ public abstract class VttTranscript {
 		}
 	}
 
+	public static VttTranscript parse(String toRead) throws IOException {
+		try (BufferedReader reader = new BufferedReader(new StringReader(toRead))) {
+			return parse(reader);
+		}
+	}
+
 	public static VttTranscript parse(BufferedReader reader) throws IOException {
+		int lineCount = 1;
+
 		StringBuilder headerStr = new StringBuilder();
 		String line;
 		while (!(line = reader.readLine()).isEmpty()) {
 			headerStr.append(line);
 			headerStr.append("\n");
+			++lineCount;
 		}
 
-		List<Line> lines = new ArrayList<>();
-		while (true) {
-			String headerLine = reader.readLine();
-			String tokenLine = reader.readLine();
-			String emptyLine = reader.readLine();
-			if (emptyLine == null) {
-				break;
+		try {
+			List<Line> lines = new ArrayList<>();
+			while (true) {
+				String headerLine = reader.readLine();
+				String tokenLine = reader.readLine();
+				String emptyLine = reader.readLine();
+				if (emptyLine == null) {
+					break;
+				}
+
+				++lineCount;
+				LineHeader header = LineHeader.parse(headerLine);
+				++lineCount;
+				List<VttToken> tokens = VttToken.parseLine(tokenLine);
+				++lineCount;
+				Preconditions.checkArgument(emptyLine.isEmpty());
+				lines.add(new AutoValue_VttTranscript_Line(header, tokens));
 			}
-
-			LineHeader header = LineHeader.parse(headerLine);
-			List<VttToken> tokens = VttToken.parseLine(tokenLine);
-			Preconditions.checkArgument(emptyLine.isEmpty());
-			lines.add(new AutoValue_VttTranscript_Line(header, tokens));
+			return new AutoValue_VttTranscript(headerStr.toString(), lines);
+		} catch (Exception e) {
+			throw new RuntimeException("On line " + lineCount, e);
 		}
-
-		return new AutoValue_VttTranscript(headerStr.toString(), lines);
 	}
 
 	public String asString() {
