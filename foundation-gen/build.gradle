@@ -1,3 +1,5 @@
+plugins { id 'org.inferred.processors' version '1.2.15' }
+
 apply plugin: 'java'
 
 repositories {
@@ -5,12 +7,15 @@ repositories {
 	maven { url 'http://repository.jsweet.org/artifactory/libs-release-local' }
 }
 dependencies {
+	processor 'com.google.auto.value:auto-value:1.5.4'
+
 	compile project(':client')
 	compile "com.jsoniter:jsoniter:$JSONITER_VER"
 	compile "org.jsweet:jsweet-core:$JSWEET_CORE_VER"
 	compile 'org.jsoup:jsoup:1.11.2'
 	compile 'com.diffplug.durian:durian-core:1.2.0'
 	compile 'com.diffplug.durian:durian-collect:1.2.0'
+	compile 'com.diffplug.durian:durian-io:1.2.0'
 	testCompile "junit:junit:$JUNIT_VER"
 	testCompile "org.assertj:assertj-core:$ASSERTJ_VER"
 }
