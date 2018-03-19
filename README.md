@@ -128,29 +128,31 @@ timeRange = [1.92, 2.129]
 ## Header syncing
 When the MyTake.org header is updated, the meta.mytake.org header needs to be updated too. Login to meta.mytake.org as an admin and navigate to **Admin -> Customize -> MyTake.org Header -> Edit CSS/HTML**
 
-In the **CSS** tab paste the compiled SASS for only the `.header` and `.nav` components. These styles are grouped together inside `client/src/main/resources/assets-dev/styles/main.css`. Also do the following:
+In the **CSS** tab paste the compiled SASS for only the `.header` component. These styles are grouped together inside `client/src/main/resources/assets-dev/styles/main.css`. Also do the following:
 
 * Increase the `.header` z-index to 10000.
 * Replace `width: 768px;` to `width: 1110px;` everywhere it is present. (Do not change media queries).
-* Copy `body.fade--mt` styles from `main.css` and increase the `body.fade--mt > .fade-overlay` z-index to 1000.
+* Convert and replace all rem units with px. In MyTake.org 1rem = 10px;
 * Adjust any other styles as necessary and document them.
 
 In the **Header** tab paste the html for the `<header>` tag. Copy this from the mytake.org homepage from the Chrome Developer tools by right clicking on the `<header>` tag and then **Copy -> Copy outerHTML**. Also do the following:
 
 * Replace all relative href attributes with absolute URLs to http://mytake.org.
-* Remove the `.header__banner` construction banner from the header.
+* Remove the `.header__searchbar` div from the header.
+* Remove the `.header__usernav` div from the header.
 
-If any code in window.ts has changed, paste the compiled JS into the **</body>** tab. Also do the following:
+In the **</body>** tab do the following:
 
-* Wrap the JavaScript in `<script>` tags. 
-* Make sure `<div class="fade-overlay"></div>` is present.
 * Add the following JS, making sure to update the scrollY conditional check to match the height of the header.
 
 ```
+<script type="text/javascript">
+"use strict"
 setTimeout(function () { addScrollEvent(); }, 500);
 function addScrollEvent() {
-    var dHeader = document.getElementsByClassName("d-header")[0];
-		var headerHeight;
+	var body = document.body;
+	var dHeader = document.getElementsByClassName("d-header")[0];
+	var headerHeight;
     if (window.innerWidth > 768) {
         headerHeight = 100;
     } else {
@@ -168,4 +170,5 @@ function addScrollEvent() {
     }
     window.addEventListener("scroll", handleScroll);
 }
+</script>
 ```
