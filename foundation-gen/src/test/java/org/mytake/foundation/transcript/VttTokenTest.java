@@ -13,7 +13,7 @@ import org.junit.Test;
 
 public class VttTokenTest {
 	@Test
-	public void tokenParse() {
+	public void regularLine() {
 		String line = "good<00:00:01.890><c> evening</c><00:00:02.070><c> I'm</c><00:00:02.520><c> Pauline</c><c.colorCCCCCC><00:00:02.939><c> frederick</c><00:00:03.419><c> of</c></c>";
 		List<VttToken> tokens = new TokensBuilder()
 				.word("good")
@@ -35,13 +35,23 @@ public class VttTokenTest {
 	}
 
 	@Test
-	public void tokenParseFirstIsMod() {
+	public void firstIsModNoClose() {
 		String line = "<c.colorCCCCCC>and<00:00:06.109><c> Republican</c>";
 		List<VttToken> tokens = new TokensBuilder()
 				.modifier("colorCCCCCC")
 				.word("and")
 				.time("00:00:06.109")
 				.word(" Republican")
+				.build();
+		Assertions.assertThat(VttToken.parseLine(line)).containsExactlyElementsOf(tokens);
+		Assertions.assertThat(VttToken.lineAsString(tokens)).isEqualTo(line);
+	}
+
+	@Test
+	public void oneWord() {
+		String line = "country";
+		List<VttToken> tokens = new TokensBuilder()
+				.word("country")
 				.build();
 		Assertions.assertThat(VttToken.parseLine(line)).containsExactlyElementsOf(tokens);
 		Assertions.assertThat(VttToken.lineAsString(tokens)).isEqualTo(line);

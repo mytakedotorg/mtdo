@@ -180,6 +180,9 @@ public abstract class VttToken {
 			type = Type.WORD;
 			this.contentStart = contentStart;
 			tokenEnd = contentEnd = line.indexOf('<', contentStart + 1);
+			if (tokenEnd == -1) {
+				tokenEnd = contentEnd = line.length();
+			}
 		}
 
 		private void initMod(int tokenStart) {

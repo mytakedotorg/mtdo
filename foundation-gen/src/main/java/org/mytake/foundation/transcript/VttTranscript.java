@@ -75,8 +75,7 @@ public abstract class VttTranscript {
 			while (true) {
 				String headerLine = reader.readLine();
 				String tokenLine = reader.readLine();
-				String emptyLine = reader.readLine();
-				if (emptyLine == null) {
+				if (tokenLine == null) {
 					break;
 				}
 
@@ -85,8 +84,14 @@ public abstract class VttTranscript {
 				++lineCount;
 				List<VttToken> tokens = VttToken.parseLine(tokenLine);
 				++lineCount;
-				Preconditions.checkArgument(emptyLine.isEmpty());
 				lines.add(new AutoValue_VttTranscript_Line(header, tokens));
+
+				String emptyLine = reader.readLine();
+				if (emptyLine == null) {
+					break;
+				} else {
+					Preconditions.checkArgument(emptyLine.isEmpty());
+				}
 			}
 			return new AutoValue_VttTranscript(headerStr.toString(), lines);
 		} catch (Exception e) {
