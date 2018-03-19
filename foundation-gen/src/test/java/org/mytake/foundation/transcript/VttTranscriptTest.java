@@ -48,13 +48,13 @@ public class VttTranscriptTest {
 	@Test
 	public void transcriptRoundtrip() {
 		Consumer<String> roundtrip = Errors.rethrow().wrap(name -> {
-			String content = Resources.toString(VttTranscriptTest.class.getResource("/transcript/vtt/" + name), StandardCharsets.UTF_8);
+			String content = Resources.toString(VttTranscriptTest.class.getResource("/transcript/vtt/" + name + ".vtt"), StandardCharsets.UTF_8);
 			VttTranscript transcript = VttTranscript.parse(content);
 			String rountripped = transcript.asString();
 			Assertions.assertThat(rountripped).isEqualTo(content);
 		});
-		roundtrip.accept("1960-09-26 - Presidential Debate - John F Kennedy vs Richad M Nixon (1 of 4).vtt");
-		roundtrip.accept("1976-10-06 - Presidential Debate - Jimmy E Carter vs Gerald R Ford (2 of 3).vtt");
-		roundtrip.accept("2016-10-09 - Presidential Debate - Hillary R Clinton vs Donald J Trump (2 of 3).vtt");
+		roundtrip.accept("1960-09-26");
+		roundtrip.accept("1976-10-06 - Presidential Debate - Jimmy E Carter vs Gerald R Ford (2 of 3)");
+		roundtrip.accept("2016-10-09 - Presidential Debate - Hillary R Clinton vs Donald J Trump (2 of 3)");
 	}
 }
