@@ -18,7 +18,9 @@ To make sure that titles don't depend on the outcome, we will list the candidate
 - Sander Vanocur (moderator of 1960-09-26) was born Alexander Vinocur. [(wikipedia)](https://en.wikipedia.org/wiki/Sander_Vanocur)
 - Bob Fleming's full name is [Robert H Fleming](https://www.nytimes.com/1984/12/06/obituaries/robert-h-fleming-72-a-johnson-press-aide.html), but he is referred to as "Bob" in the debate, so we will call him "Bob H Fleming" to avoid confusion.
 
+### 1976
 
+- James Earl Carter is much better known as Jimmy Carter.  All his books are under the name Jimmy Carter, so we'll say "Jimmy E Carter".
 
 
 

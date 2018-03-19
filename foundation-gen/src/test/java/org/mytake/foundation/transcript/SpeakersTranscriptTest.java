@@ -9,7 +9,6 @@ package org.mytake.foundation.transcript;
 import com.diffplug.common.io.Resources;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.security.NoSuchAlgorithmException;
 import org.junit.Test;
 
 public class SpeakersTranscriptTest {
@@ -20,7 +19,7 @@ public class SpeakersTranscriptTest {
 
 	/** Loads every transcript, to make sure that all of its speakers are known. */
 	@Test
-	public void transcriptRead() throws IOException, NoSuchAlgorithmException {
+	public void transcriptRead() throws IOException {
 		for (Recording recording : Recording.national()) {
 			transcript(recording.yyyyMMdd());
 		}

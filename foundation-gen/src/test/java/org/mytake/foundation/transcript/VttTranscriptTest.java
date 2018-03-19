@@ -53,8 +53,8 @@ public class VttTranscriptTest {
 			String rountripped = transcript.asString();
 			Assertions.assertThat(rountripped).isEqualTo(content);
 		});
-		roundtrip.accept("1960-09-26");
-		roundtrip.accept("1976-10-06 - Presidential Debate - Jimmy E Carter vs Gerald R Ford (2 of 3)");
-		roundtrip.accept("2016-10-09 - Presidential Debate - Hillary R Clinton vs Donald J Trump (2 of 3)");
+		for (Recording recording : Recording.national()) {
+			roundtrip.accept(recording.yyyyMMdd());
+		}
 	}
 }
