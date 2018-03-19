@@ -114,6 +114,13 @@ public abstract class VttToken {
 		}
 	}
 
+	public static class UnexpectedClose extends VttToken {
+		@Override
+		public String asString() {
+			return "</c>";
+		}
+	}
+
 	/////////////
 	// Parsing //
 	/////////////
@@ -148,7 +155,6 @@ public abstract class VttToken {
 			builder.append(tokens.get(i).asString());
 			++i;
 		}
-		builder.append("</c>");
 		return builder.toString();
 	}
 
@@ -198,6 +204,13 @@ public abstract class VttToken {
 			this.tokenEnd = contentEnd + 1;
 		}
 
+		private void initUnexpectedUnclosed(int tokenStart) {
+			this.type = Type.UNEXPECTED_CLOSE;
+			this.contentStart = tokenStart;
+			this.contentEnd = tokenStart;
+			this.tokenEnd = tokenStart + "</c>".length();
+		}
+
 		private String content() {
 			return line.substring(contentStart, contentEnd);
 		}
@@ -210,18 +223,25 @@ public abstract class VttToken {
 		@Override
 		public VttToken next() {
 			// create this token
-			Function<String, VttToken> constructor = type.wordTimeMod(Word::new, Time::new, Mod::new);
-			VttToken token = constructor.apply(content());
+			VttToken token;
+			if (type == Type.UNEXPECTED_CLOSE) {
+				token = new UnexpectedClose();
+			} else {
+				Function<String, VttToken> constructor = type.wordTimeMod(Word::new, Time::new, Mod::new);
+				token = constructor.apply(content());
+			}
 			// find the next one
 			int tokenStart = tokenEnd;
 			String remainder = line.substring(tokenStart);
-			if (remainder.equals("</c>")) {
+			if (remainder.isEmpty()) {
 				// every line ends with </c> for some reason
 				type = null;
 			} else if (remainder.startsWith("<c>")) {
 				initWord(tokenStart);
 			} else if (remainder.startsWith("<c.")) {
 				initMod(tokenStart);
+			} else if (remainder.startsWith("</c>")) {
+				initUnexpectedUnclosed(tokenStart);
 			} else {
 				if (contentStart == 3) {
 					Preconditions.checkArgument(type == Type.MOD);
@@ -234,13 +254,14 @@ public abstract class VttToken {
 		}
 
 		private enum Type {
-			WORD, TIME, MOD;
+			WORD, TIME, MOD,
+			UNEXPECTED_CLOSE;
 
 			public <T> T wordTimeMod(T word, T time, T mod) {
 				switch (this) {
 				case WORD: return word;
 				case TIME: return time;
-				case MOD: return mod;
+				case MOD:  return mod;
 				default: throw Unhandled.enumException(this);
 				}
 			}

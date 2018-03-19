@@ -28,6 +28,7 @@ public class VttTokenTest {
 				.word(" frederick")
 				.time("00:00:03.419")
 				.word(" of")
+				.close()
 				.build();
 		Assertions.assertThat(VttToken.parseLine(line)).containsExactlyElementsOf(tokens);
 		Assertions.assertThat(VttToken.lineAsString(tokens)).isEqualTo(line);
@@ -35,7 +36,7 @@ public class VttTokenTest {
 
 	@Test
 	public void tokenParseFirstIsMod() {
-		String line = "<c.colorCCCCCC>and<00:00:06.109><c> Republican</c></c>";
+		String line = "<c.colorCCCCCC>and<00:00:06.109><c> Republican</c>";
 		List<VttToken> tokens = new TokensBuilder()
 				.modifier("colorCCCCCC")
 				.word("and")
@@ -64,6 +65,10 @@ public class VttTokenTest {
 
 		public TokensBuilder modifier(String modifier) {
 			return add(new VttToken.Mod(modifier));
+		}
+
+		public TokensBuilder close() {
+			return add(new VttToken.UnexpectedClose());
 		}
 
 		public List<VttToken> build() {
