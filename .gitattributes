@@ -1,3 +1,3 @@
 *.vtt text
-*.transcript text
+*.speakers text
 * text eol=lf
