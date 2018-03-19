@@ -33,6 +33,19 @@ public class VttTokenTest {
 		Assertions.assertThat(VttToken.lineAsString(tokens)).isEqualTo(line);
 	}
 
+	@Test
+	public void tokenParseFirstIsMod() {
+		String line = "<c.colorCCCCCC>and<00:00:06.109><c> Republican</c></c>";
+		List<VttToken> tokens = new TokensBuilder()
+				.modifier("colorCCCCCC")
+				.word("and")
+				.time("00:00:06.109")
+				.word(" Republican")
+				.build();
+		Assertions.assertThat(VttToken.parseLine(line)).containsExactlyElementsOf(tokens);
+		Assertions.assertThat(VttToken.lineAsString(tokens)).isEqualTo(line);
+	}
+
 	public static class TokensBuilder {
 		private final List<VttToken> tokens = new ArrayList<>();
 

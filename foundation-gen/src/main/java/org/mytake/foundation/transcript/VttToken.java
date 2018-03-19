@@ -27,19 +27,23 @@ import java.util.function.Function;
  */
 public abstract class VttToken {
 	boolean isWord() {
-		return this instanceof VttToken.Word;
+		return this instanceof Word;
 	}
 
 	boolean isTime() {
-		return this instanceof VttToken.Time;
+		return this instanceof Time;
 	}
 
-	public VttToken.Word assertWord() {
-		return (VttToken.Word) this;
+	boolean isMod() {
+		return this instanceof Mod;
 	}
 
-	public VttToken.Time assertTime() {
-		return (VttToken.Time) this;
+	public Word assertWord() {
+		return (Word) this;
+	}
+
+	public Time assertTime() {
+		return (Time) this;
 	}
 
 	public abstract String asString();
@@ -127,12 +131,22 @@ public abstract class VttToken {
 			return "";
 		}
 		StringBuilder builder = new StringBuilder();
+		int i;
 		VttToken firstToken = tokens.get(0);
 		if (firstToken.isWord()) {
 			builder.append(firstToken.assertWord().word);
+			i = 1;
+		} else if (firstToken.isMod()) {
+			builder.append(firstToken.asString());
+			VttToken secondToken = tokens.get(1);
+			builder.append(secondToken.assertWord().word);
+			i = 2;
+		} else {
+			i = 0;
 		}
-		for (int i = 1; i < tokens.size(); ++i) {
+		while (i < tokens.size()) {
 			builder.append(tokens.get(i).asString());
+			++i;
 		}
 		builder.append("</c>");
 		return builder.toString();
@@ -152,11 +166,14 @@ public abstract class VttToken {
 			} else if (line.charAt(0) == '<') {
 				initMod(0);
 			} else {
-				// special handling for the first word
-				type = Type.WORD;
-				contentStart = 0;
-				tokenEnd = contentEnd = line.indexOf('<');
+				initFirstWord(0);
 			}
+		}
+
+		private void initFirstWord(int contentStart) {
+			type = Type.WORD;
+			this.contentStart = contentStart;
+			tokenEnd = contentEnd = line.indexOf('<', contentStart + 1);
 		}
 
 		private void initMod(int tokenStart) {
@@ -193,7 +210,7 @@ public abstract class VttToken {
 		@Override
 		public VttToken next() {
 			// create this token
-			Function<String, VttToken> constructor = type.wordTimeMod(VttToken.Word::new, VttToken.Time::new, VttToken.Mod::new);
+			Function<String, VttToken> constructor = type.wordTimeMod(Word::new, Time::new, Mod::new);
 			VttToken token = constructor.apply(content());
 			// find the next one
 			int tokenStart = tokenEnd;
@@ -206,7 +223,12 @@ public abstract class VttToken {
 			} else if (remainder.startsWith("<c.")) {
 				initMod(tokenStart);
 			} else {
-				initTime(tokenStart);
+				if (contentStart == 3) {
+					Preconditions.checkArgument(type == Type.MOD);
+					initFirstWord(tokenStart);
+				} else {
+					initTime(tokenStart);
+				}
 			}
 			return token;
 		}
