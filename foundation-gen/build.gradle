@@ -45,7 +45,7 @@ spotless {
 	format 'foundation', {
 		target 'src/main/resources/**'
 		replace('Always use simple apostrophe', "’", "'")
-		//replace('Always use simple right quote', '”', '"')
-		//replace('Always use simple left quote', '“', '"')
+		replace('Always use simple right quote', '”', '"')
+		replace('Always use simple left quote', '“', '"')
 	}
 }
