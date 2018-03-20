@@ -30,13 +30,14 @@ public abstract class Recording {
 
 	public static ImmutableList<Recording> national() {
 		Builder builder = new Builder();
-		// Kennedy - Nixon
+		// Kennedy, Nixon
 		builder.add("1960-09-26", "hb1AvG18H30", "0:57:55"); // 1 of 4
 		//		// videos.addNoTranscript("z-4VeDta7Mo", "John F. Kennedy - Nixon (2/4)", "1960-10-07", "0:58:48");
 		//		videos.addNoTranscript("8SdDhojNT2o", "John F. Kennedy - Nixon (3/4)", "1960-10-13", "0:58:36");
 		//		videos.addNoTranscript("LN8F1FGZfzA", "John F. Kennedy - Nixon (4/4)", "1960-10-21", "0:58:51");
+		// Carter, Ford
 		//		videos.addNoTranscript("GlPjW_2_LXI", "Jimmy Carter - Gerald Ford (1/3)", "1976-09-23", "1:55:22");
-		builder.add("1976-10-06", "GX1kHw2tmtI", "1:27:04"); // 2 of 3
+		builder.add("1976-10-06", "SLy5fq1b4jA", "1:27:04"); // 2 of 3
 		//		videos.addNoTranscript("CipT04S0bVE", "Jimmy Carter - Gerald Ford (3/3)", "1976-10-22", "1:29:37");
 		//		videos.addNoTranscript("_8YxFc_1b_0", "Ronald Reagan - Jimmy Carter (1/1)", "1980-10-28", "1:34:51");
 		//		videos.addNoTranscript("OGvBFQQPRXs", "Ronald Reagan - Walter Mondale (1/2)", "1984-10-07", "1:40:27");
@@ -60,8 +61,9 @@ public abstract class Recording {
 		//		videos.addNoTranscript("dkrwUU_YApE", "Barack Obama - Mitt Romney (1/3)", "2012-10-03", "1:29:41");
 		//		videos.addNoTranscript("QEpCrcMF5Ps", "Barack Obama - Mitt Romney (2/3)", "2012-10-16", "1:37:40");
 		//		videos.addNoTranscript("tecohezcA78", "Barack Obama - Mitt Romney (3/3)", "2012-10-22", "1:36:16");
+		// Clinton, Trump
 		//		videos.addNoTranscript("NscjkqaJ8wI", "Donald Trump - Hillary Clinton (1/3)", "2016-09-26", "1:35:46");
-		builder.add("2016-10-09", "ApTLB76Nmdg", "1:33:44");
+		builder.add("2016-10-09", "OtlHBa7YMJ4", "1:33:44");
 		//		videos.addNoTranscript("fT0spjjJOK8", "Donald Trump - Hillary Clinton (3/3)", "2016-10-16", "1:33:47");
 		return builder.recordings.build();
 	}

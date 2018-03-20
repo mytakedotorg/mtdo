@@ -8,18 +8,40 @@ package org.mytake.foundation.transcript;
 
 import com.diffplug.common.base.Preconditions;
 import com.diffplug.common.base.StringPrinter;
+import com.diffplug.common.io.Resources;
 import com.google.auto.value.AutoValue;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.StringReader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ListIterator;
 
 @AutoValue
 public abstract class VttTranscript {
 	public abstract String header();
 
 	public abstract List<Line> lines();
+
+	public List<WordTime> words() {
+		List<WordTime> words = new ArrayList<>();
+		ListIterator<Line> lineIter = lines().listIterator();
+		while (lineIter.hasNext()) {
+			Line line = lineIter.next();
+			ListIterator<VttToken> tokenIter = line.tokens().listIterator();
+			double time = line.lineHeader().start();
+			while (tokenIter.hasNext()) {
+				VttToken token = tokenIter.next();
+				if (token.isTime()) {
+					time = token.assertTime().timestamp;
+				} else if (token.isWord()) {
+					words.add(new WordTime.Vtt(token.assertWord().word, time, lineIter.previousIndex(), tokenIter.previousIndex()));
+				}
+			}
+		}
+		return words;
+	}
 
 	@AutoValue
 	public static abstract class Line {
@@ -51,6 +73,11 @@ public abstract class VttTranscript {
 		public String asString() {
 			return ts2str(start()) + ARROW + ts2str(end()) + " " + formatting();
 		}
+	}
+
+	public static VttTranscript parseName(String name) throws IOException {
+		String content = Resources.toString(VttTranscriptTest.class.getResource("/transcript/vtt/" + name + ".vtt"), StandardCharsets.UTF_8);
+		return VttTranscript.parse(content);
 	}
 
 	public static VttTranscript parse(String toRead) throws IOException {

@@ -21,7 +21,3 @@ To make sure that titles don't depend on the outcome, we will list the candidate
 ### 1976
 
 - James Earl Carter is much better known as Jimmy Carter.  All his books are under the name Jimmy Carter, so we'll say "Jimmy E Carter".
-
-
-
-

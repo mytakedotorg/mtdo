@@ -7,12 +7,15 @@
 package org.mytake.foundation.transcript;
 
 import com.diffplug.common.base.Preconditions;
+import com.diffplug.common.io.Resources;
 import com.google.auto.value.AutoValue;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.StringReader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ListIterator;
 
 /**
  * Format is:
@@ -31,6 +34,28 @@ import java.util.List;
 public abstract class SpeakersTranscript {
 	public abstract List<Turn> turns();
 
+	public List<WordTime> words() {
+		List<WordTime> words = new ArrayList<>();
+		ListIterator<Turn> turnIter = turns().listIterator();
+		while (turnIter.hasNext()) {
+			Turn turn = turnIter.next();
+			int startIdx = 0;
+			while (true) {
+				int endIdx = turn.words().indexOf(' ', startIdx);
+				if (endIdx == -1) {
+					endIdx = turn.words().length();
+				}
+				String word = turn.words().substring(startIdx, endIdx);
+				words.add(new WordTime.Speakers(word, turnIter.previousIndex(), startIdx));
+				if (endIdx == turn.words().length()) {
+					break;
+				}
+				startIdx = endIdx + 1;
+			}
+		}
+		return words;
+	}
+
 	@AutoValue
 	public abstract static class Turn {
 		public abstract Speaker speaker();
@@ -40,6 +65,11 @@ public abstract class SpeakersTranscript {
 		public static Turn speakerWords(Speaker speaker, String words) {
 			return new AutoValue_SpeakersTranscript_Turn(speaker, words);
 		}
+	}
+
+	public static SpeakersTranscript parseName(String name) throws IOException {
+		String content = Resources.toString(SpeakersTranscriptTest.class.getResource("/transcript/speakers/" + name + ".speakers"), StandardCharsets.UTF_8);
+		return SpeakersTranscript.parse(content);
 	}
 
 	public static SpeakersTranscript parse(String toRead) throws IOException {
