@@ -12,7 +12,7 @@ import com.diffplug.common.swt.SwtMisc;
 import com.diffplug.common.swt.jface.ColumnViewerFormat;
 import java.io.File;
 import java.util.List;
-import org.eclipse.jface.viewers.ILazyContentProvider;
+import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
@@ -52,14 +52,9 @@ public class VttCtl extends ControlWrapper.AroundControl<Composite> {
 		time.setHeaderVisible(true);
 		time.setLinesVisible(true);
 		time.setUseHashLookup(true);
-		time.setStyle(SWT.MULTI | SWT.VIRTUAL);
+		time.setStyle(SWT.MULTI);
 		viewer = time.buildTable(tableCmp);
-		viewer.setContentProvider(new ILazyContentProvider() {
-			@Override
-			public void updateElement(int index) {
-				viewer.replace(match.vttWords().get(index), index);
-			}
-		});
+		viewer.setContentProvider(ArrayContentProvider.getInstance());
 	}
 
 	private WordMatch match;
@@ -67,7 +62,7 @@ public class VttCtl extends ControlWrapper.AroundControl<Composite> {
 	public void setFile(File file, WordMatch match) {
 		fileCtl.setFile(file);
 		this.match = match;
-		viewer.setItemCount(match.vttWords().size());
+		viewer.setInput(match.vttWords());
 	}
 
 	public void highlight(int middleIdx, List<Word.Vtt> list) {
@@ -77,5 +72,29 @@ public class VttCtl extends ControlWrapper.AroundControl<Composite> {
 
 		boolean reveal = true;
 		viewer.setSelection(new StructuredSelection(list), reveal);
+	}
+
+	public void delete(List<Word.Vtt> vttWords) {
+		fileCtl.hasChanged();
+		match.vttWords().removeAll(vttWords);
+		viewer.remove(vttWords.toArray());
+	}
+
+	public void replace(Word.Vtt vttOld, Word.Said said) {
+		fileCtl.hasChanged();
+		Word.Vtt vttNew = new Word.Vtt(said.lowercase(), vttOld.time());
+		int idx = match.vttWords().indexOf(vttOld);
+		match.vttWords().set(idx, vttNew);
+		viewer.replace(vttNew, idx);
+	}
+
+	public void insert(int insertionPoint, Word.Said said) {
+		fileCtl.hasChanged();
+		double before = insertionPoint == 0 ? 0 : match.vttWords().get(insertionPoint - 1).time();
+		double after = match.vttWords().get(insertionPoint).time();
+
+		Word.Vtt newWord = new Word.Vtt(said.lowercase(), (before + after) / 2);
+		match.vttWords().add(insertionPoint, newWord);
+		viewer.insert(newWord, insertionPoint);
 	}
 }

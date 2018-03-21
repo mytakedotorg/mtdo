@@ -51,6 +51,7 @@ public class YoutubeCtl extends ControlWrapper.AroundControl<Composite> {
 		Layouts.setRow(bottomCmp).margin(0);
 
 		checkBox = new Button(bottomCmp, SWT.CHECK);
+		checkBox.setSelection(true);
 		Labels.create(bottomCmp, "Play on click +/-");
 		secondsTxt = new Text(bottomCmp, SWT.SINGLE | SWT.BORDER);
 		secondsTxt.setText("0.0");

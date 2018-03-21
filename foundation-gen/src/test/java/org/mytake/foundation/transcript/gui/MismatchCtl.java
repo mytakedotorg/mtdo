@@ -10,11 +10,13 @@ import com.diffplug.common.base.Either;
 import com.diffplug.common.swt.ControlWrapper;
 import com.diffplug.common.swt.Layouts;
 import com.diffplug.common.swt.SwtMisc;
+import com.diffplug.common.util.concurrent.Runnables;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import org.eclipse.jgit.diff.Edit;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
@@ -23,19 +25,19 @@ import org.mytake.foundation.transcript.Word;
 import org.mytake.foundation.transcript.WordMatch;
 
 public class MismatchCtl extends ControlWrapper.AroundControl<Composite> {
-	private final SaidCtl said;
-	private final VttCtl vtt;
+	private final SaidCtl saidCtl;
+	private final VttCtl vttCtl;
 
 	private final Button leftBtn, rightBtn;
 	private final Text groupTxt;
 	private final Label ofGroupLbl;
 	private final Text saidTxt, vttTxt;
-	private final Button saidTakeBtn, vttTakeBtn;
+	private final Button takeSaidBtn, takeVttBtn;
 
-	public MismatchCtl(Composite parent, SaidCtl said, VttCtl vtt) {
+	public MismatchCtl(Composite parent, SaidCtl saidCtl, VttCtl vttCtl) {
 		super(new Composite(parent, SWT.NONE));
-		this.said = said;
-		this.vtt = vtt;
+		this.saidCtl = saidCtl;
+		this.vttCtl = vttCtl;
 		Layouts.setGrid(wrapped).margin(0).numColumns(3);
 
 		Composite leftCmp = new Composite(wrapped, SWT.NONE);
@@ -63,34 +65,38 @@ public class MismatchCtl extends ControlWrapper.AroundControl<Composite> {
 		Layouts.setGrid(rightCmp).numColumns(3).margin(0);
 
 		Labels.create(rightCmp, "Said");
-		saidTakeBtn = new Button(rightCmp, SWT.PUSH | SWT.FLAT);
-		saidTakeBtn.setText("\u2714");
+		takeSaidBtn = new Button(rightCmp, SWT.PUSH | SWT.FLAT);
+		takeSaidBtn.setText("\u2714");
 		saidTxt = new Text(rightCmp, SWT.BORDER | SWT.SINGLE | SWT.READ_ONLY);
 		Layouts.setGridData(saidTxt).grabHorizontal();
 
 		Labels.create(rightCmp, "VTT");
-		vttTakeBtn = new Button(rightCmp, SWT.PUSH | SWT.FLAT);
-		vttTakeBtn.setText("\u2714");
+		takeVttBtn = new Button(rightCmp, SWT.PUSH | SWT.FLAT);
+		takeVttBtn.setText("\u2714");
 		vttTxt = new Text(rightCmp, SWT.BORDER | SWT.SINGLE | SWT.READ_ONLY);
 		Layouts.setGridData(vttTxt).grabHorizontal();
 
-		saidTakeBtn.addListener(SWT.Selection, e -> {
-			SwtMisc.blockForError("TODO", "TODO");
+		takeSaidBtn.addListener(SWT.Selection, e -> {
+			takeSaid.run();
+			incrementGroupUp(false);
 		});
-		vttTakeBtn.addListener(SWT.Selection, e -> {
-			SwtMisc.blockForError("TODO", "TODO");
+		takeVttBtn.addListener(SWT.Selection, e -> {
+			takeVtt.run();
+			incrementGroupUp(false);
 		});
 	}
+
+	private Runnable takeSaid, takeVtt;
 
 	private void incrementGroupUp(boolean isUp) {
 		int idx = Integer.parseInt(groupTxt.getText());
 		setGroup(isUp ? ++idx : --idx);
 	}
 
-	private WordMatch wordMatch;
+	private WordMatch match;
 
 	public void setMatch(WordMatch wordMatch) {
-		this.wordMatch = wordMatch;
+		this.match = wordMatch;
 		groupTxt.setText(Integer.toString(wordMatch.edits().size()));
 		ofGroupLbl.setText("of " + wordMatch.edits().size());
 		setGroup(wordMatch.edits().size());
@@ -103,15 +109,53 @@ public class MismatchCtl extends ControlWrapper.AroundControl<Composite> {
 	private void setGroup(int idx) {
 		groupTxt.setText(Integer.toString(idx));
 		leftBtn.setEnabled(idx != 1);
-		rightBtn.setEnabled(idx != wordMatch.edits().size());
+		rightBtn.setEnabled(idx != match.edits().size());
 
-		Edit edit = wordMatch.edits().get(idx - 1);
-		Either<List<Word.Said>, Integer> said = wordMatch.saidFor(edit);
-		Either<List<Word.Vtt>, Integer> vtt = wordMatch.vttFor(edit);
+		Edit edit = match.edits().get(idx - 1);
+		Either<List<Word.Said>, Integer> said = match.saidFor(edit);
+		Either<List<Word.Vtt>, Integer> vtt = match.vttFor(edit);
 		saidTxt.setText(toString(said));
 		vttTxt.setText(toString(vtt));
-		setSaid(said);
+		Point saidSel = setSaid(said);
 		setVtt(vtt);
+
+		takeSaid = Runnables.doNothing();
+		takeVtt = Runnables.doNothing();
+
+		if (said.isLeft()) {
+			List<Word.Said> saidWords = said.getLeft();
+			if (vtt.isLeft()) {
+				// both modified
+				List<Word.Vtt> vttWords = vtt.getLeft();
+				if (saidWords.size() == 1 && vttWords.size() == 1) {
+					takeSaid = () -> vttCtl.replace(vttWords.get(0), saidWords.get(0));
+					takeVtt = () -> saidCtl.replace(saidSel, vttWords.get(0));
+				} else {
+					//takeSaid = replaceVttFromSaid
+					//takeVtt = replaceSaidFromVtt
+				}
+			} else {
+				// added to said
+				int vttInsertionPoint = vtt.getRight();
+				if (saidWords.size() == 1) {
+					takeSaid = () -> vttCtl.insert(vttInsertionPoint, saidWords.get(0));
+					// takeSaid = insertIntoVtt
+				}
+				takeVtt = () -> saidCtl.remove(saidSel); //deleteFromSaid
+			}
+		} else {
+			if (vtt.isLeft()) {
+				// added to vtt
+				List<Word.Vtt> vttWords = vtt.getLeft();
+				takeSaid = () -> vttCtl.delete(vttWords); //deleteFromVtt
+				takeVtt = () -> saidCtl.insert(saidSel.y, vttWords); //insertIntoSaid
+			} else {
+				throw new IllegalStateException();
+			}
+		}
+
+		takeSaidBtn.setEnabled(takeSaid != Runnables.doNothing());
+		takeVttBtn.setEnabled(takeVtt != Runnables.doNothing());
 	}
 
 	private static String toString(Either<?, Integer> either) {
@@ -124,26 +168,30 @@ public class MismatchCtl extends ControlWrapper.AroundControl<Composite> {
 		}
 	}
 
-	private void setSaid(Either<List<Word.Said>, Integer> either) {
+	private Point setSaid(Either<List<Word.Said>, Integer> either) {
+		Point point;
 		if (either.isLeft()) {
 			Word.Said firstWord = either.getLeft().get(0);
 			Word.Said lastWord = either.getLeft().get(either.getLeft().size() - 1);
-			said.select(firstWord.startIdx(), lastWord.endIdx());
+			point = new Point(firstWord.startIdx(), lastWord.endIdx());
 		} else {
-			Word.Said word = wordMatch.saidWords().get(either.getRight());
-			said.select(Math.max(0, word.startIdx() - 1), word.startIdx());
+			// select the whitespace where it would insert
+			Word.Said word = match.saidWords().get(either.getRight());
+			point = new Point(Math.max(0, word.startIdx() - 1), word.startIdx());
 		}
+		saidCtl.select(point);
+		return point;
 	}
 
 	private void setVtt(Either<List<Word.Vtt>, Integer> either) {
 		List<Word.Vtt> list = either.fold(Function.identity(), idx -> {
 			if (idx == 0) {
-				return wordMatch.vttWords().subList(0, 1);
+				return match.vttWords().subList(0, 1);
 			} else {
-				return wordMatch.vttWords().subList(idx - 1, idx + 1);
+				return match.vttWords().subList(idx - 1, idx + 1);
 			}
 		});
-		int firstIdx = wordMatch.vttWords().indexOf(list.get(0));
-		vtt.highlight(firstIdx + list.size() / 2, list);
+		int firstIdx = match.vttWords().indexOf(list.get(0));
+		vttCtl.highlight(firstIdx + list.size() / 2, list);
 	}
 }

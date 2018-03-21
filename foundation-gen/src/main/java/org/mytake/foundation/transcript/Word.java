@@ -35,7 +35,7 @@ public class Word {
 	public static class Vtt extends Word {
 		final double time;
 
-		Vtt(String word, double time) {
+		public Vtt(String word, double time) {
 			super(word.trim());
 			this.time = time;
 		}
