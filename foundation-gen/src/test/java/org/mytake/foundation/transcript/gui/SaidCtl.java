@@ -33,4 +33,8 @@ public class SaidCtl extends ControlWrapper.AroundControl<Composite> {
 		fileCtl.setFile(file);
 		styled.setText(fileCtl.read());
 	}
+
+	public void select(int start, int end) {
+		styled.setSelection(start, end);
+	}
 }

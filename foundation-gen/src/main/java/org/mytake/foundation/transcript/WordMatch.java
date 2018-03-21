@@ -6,8 +6,10 @@
  */
 package org.mytake.foundation.transcript;
 
+import com.diffplug.common.base.Either;
 import com.diffplug.common.base.Preconditions;
 import com.diffplug.common.collect.Lists;
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.eclipse.jgit.diff.Edit;
@@ -25,6 +27,11 @@ public class WordMatch {
 
 	private final List<Edit> editList;
 
+	public WordMatch(Recording recording) throws IOException {
+		this(SaidTranscript.parse(recording.getSaidFile()),
+				VttTranscript.parse(recording.getVttFile()));
+	}
+
 	public WordMatch(SaidTranscript said, VttTranscript vtt) {
 		this.said = said;
 		this.vtt = vtt;
@@ -32,6 +39,10 @@ public class WordMatch {
 		this.saidWords = said.attributedWords();
 		this.vttWords = vtt.words();
 		this.editList = MyersDiff.INSTANCE.diff(new WordTimeMatcher(), new ListSequence(saidWords), new ListSequence(vttWords));
+	}
+
+	public List<Word.Said> saidWords() {
+		return saidWords;
 	}
 
 	public List<Word.Vtt> vttWords() {
@@ -42,12 +53,20 @@ public class WordMatch {
 		return editList;
 	}
 
-	public List<Word.Said> saidFor(Edit edit) {
-		return saidWords.subList(edit.getBeginA(), edit.getEndA());
+	public Either<List<Word.Said>, Integer> saidFor(Edit edit) {
+		if (edit.getBeginA() == edit.getEndA()) {
+			return Either.createRight(edit.getBeginA());
+		} else {
+			return Either.createLeft(saidWords.subList(edit.getBeginA(), edit.getEndA()));
+		}
 	}
 
-	public List<Word.Vtt> vttFor(Edit edit) {
-		return vttWords.subList(edit.getBeginB(), edit.getEndB());
+	public Either<List<Word.Vtt>, Integer> vttFor(Edit edit) {
+		if (edit.getBeginB() == edit.getEndB()) {
+			return Either.createRight(edit.getBeginB());
+		} else {
+			return Either.createLeft(vttWords.subList(edit.getBeginB(), edit.getEndB()));
+		}
 	}
 
 	/**

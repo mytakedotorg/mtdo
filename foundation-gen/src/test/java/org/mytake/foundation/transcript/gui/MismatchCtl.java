@@ -6,10 +6,12 @@
  */
 package org.mytake.foundation.transcript.gui;
 
+import com.diffplug.common.base.Either;
 import com.diffplug.common.swt.ControlWrapper;
 import com.diffplug.common.swt.Layouts;
 import com.diffplug.common.swt.SwtMisc;
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import org.eclipse.jgit.diff.Edit;
 import org.eclipse.swt.SWT;
@@ -46,7 +48,7 @@ public class MismatchCtl extends ControlWrapper.AroundControl<Composite> {
 
 		leftBtn.addListener(SWT.Selection, e -> incrementGroupUp(false));
 		rightBtn.addListener(SWT.Selection, e -> incrementGroupUp(true));
-		groupTxt.addListener(SWT.DefaultSelection, e -> setGroup(Integer.parseInt(groupTxt.getText())));
+		groupTxt.addListener(SWT.DefaultSelection, e -> setGroup());
 
 		ofGroupLbl = new Label(leftCmp, SWT.CENTER);
 		Layouts.setGridData(ofGroupLbl).horizontalSpan(3).grabHorizontal();
@@ -54,6 +56,7 @@ public class MismatchCtl extends ControlWrapper.AroundControl<Composite> {
 		Button highlightBtn = new Button(wrapped, SWT.PUSH | SWT.FLAT);
 		highlightBtn.setText("Highlight");
 		Layouts.setGridData(highlightBtn).grabVertical();
+		highlightBtn.addListener(SWT.Selection, e -> setGroup());
 
 		Composite rightCmp = new Composite(wrapped, SWT.NONE);
 		Layouts.setGridData(rightCmp).grabAll();
@@ -93,20 +96,54 @@ public class MismatchCtl extends ControlWrapper.AroundControl<Composite> {
 		setGroup(wordMatch.edits().size());
 	}
 
+	private void setGroup() {
+		setGroup(Integer.parseInt(groupTxt.getText()));
+	}
+
 	private void setGroup(int idx) {
 		groupTxt.setText(Integer.toString(idx));
 		leftBtn.setEnabled(idx != 1);
 		rightBtn.setEnabled(idx != wordMatch.edits().size());
 
 		Edit edit = wordMatch.edits().get(idx - 1);
-		List<Word.Said> said = wordMatch.saidFor(edit);
-		List<Word.Vtt> vtt = wordMatch.vttFor(edit);
+		Either<List<Word.Said>, Integer> said = wordMatch.saidFor(edit);
+		Either<List<Word.Vtt>, Integer> vtt = wordMatch.vttFor(edit);
 		saidTxt.setText(toString(said));
 		vttTxt.setText(toString(vtt));
-
+		setSaid(said);
+		setVtt(vtt);
 	}
 
-	private static String toString(List<? extends Word> words) {
-		return words.stream().map(Word::lowercase).collect(Collectors.joining(" "));
+	private static String toString(Either<?, Integer> either) {
+		if (either.isLeft()) {
+			@SuppressWarnings("unchecked")
+			List<Word> words = (List<Word>) either.getLeft();
+			return words.stream().map(Word::lowercase).collect(Collectors.joining(" "));
+		} else {
+			return "";
+		}
+	}
+
+	private void setSaid(Either<List<Word.Said>, Integer> either) {
+		if (either.isLeft()) {
+			Word.Said firstWord = either.getLeft().get(0);
+			Word.Said lastWord = either.getLeft().get(either.getLeft().size() - 1);
+			said.select(firstWord.startIdx(), lastWord.endIdx());
+		} else {
+			Word.Said word = wordMatch.saidWords().get(either.getRight());
+			said.select(Math.max(0, word.startIdx() - 1), word.startIdx());
+		}
+	}
+
+	private void setVtt(Either<List<Word.Vtt>, Integer> either) {
+		List<Word.Vtt> list = either.fold(Function.identity(), idx -> {
+			if (idx == 0) {
+				return wordMatch.vttWords().subList(0, 1);
+			} else {
+				return wordMatch.vttWords().subList(idx - 1, idx + 1);
+			}
+		});
+		int firstIdx = wordMatch.vttWords().indexOf(list.get(0));
+		vtt.highlight(firstIdx + list.size() / 2, list);
 	}
 }

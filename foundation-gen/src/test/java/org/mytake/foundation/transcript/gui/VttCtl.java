@@ -11,7 +11,9 @@ import com.diffplug.common.swt.Layouts;
 import com.diffplug.common.swt.SwtMisc;
 import com.diffplug.common.swt.jface.ColumnViewerFormat;
 import java.io.File;
+import java.util.List;
 import org.eclipse.jface.viewers.ILazyContentProvider;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Button;
@@ -50,7 +52,7 @@ public class VttCtl extends ControlWrapper.AroundControl<Composite> {
 		time.setHeaderVisible(true);
 		time.setLinesVisible(true);
 		time.setUseHashLookup(true);
-		time.setStyle(SWT.SINGLE | SWT.VIRTUAL);
+		time.setStyle(SWT.MULTI | SWT.VIRTUAL);
 		viewer = time.buildTable(tableCmp);
 		viewer.setContentProvider(new ILazyContentProvider() {
 			@Override
@@ -66,5 +68,14 @@ public class VttCtl extends ControlWrapper.AroundControl<Composite> {
 		fileCtl.setFile(file);
 		this.match = match;
 		viewer.setItemCount(match.vttWords().size());
+	}
+
+	public void highlight(int middleIdx, List<Word.Vtt> list) {
+		int numRows = viewer.getTable().getSize().y / viewer.getTable().getItemHeight();
+		viewer.getTable().setTopIndex(Math.max(0, middleIdx - (numRows / 2) - 1));
+		viewer.getTable().setSelection(middleIdx);
+
+		boolean reveal = true;
+		viewer.setSelection(new StructuredSelection(list), reveal);
 	}
 }
