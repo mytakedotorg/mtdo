@@ -27,7 +27,8 @@ public class TranscriptCoat {
 		speakersCtl = new SpeakersCtl(horizontalForm, recording.getSpeakersFile());
 
 		SashForm verticalForm = new SashForm(horizontalForm, SWT.VERTICAL);
-		youtubeCtl = new YoutubeCtl(verticalForm, recording.youtubeId());
+		youtubeCtl = new YoutubeCtl(verticalForm);
+		youtubeCtl.setToYoutubeId(recording.youtubeId());
 		vttCtl = new VttCtl(verticalForm, recording.getVttFile());
 	}
 }
