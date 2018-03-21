@@ -59,7 +59,11 @@ public class YoutubeCtl extends ControlWrapper.AroundControl<Composite> {
 		Labels.create(bottomCmp, "seconds");
 	}
 
+	long setAt = Long.MIN_VALUE;
+	private static final long QUIET_MS = 3_000;
+
 	public void setToYoutubeId(String youtubeId) {
+		setAt = System.currentTimeMillis();
 		idTxt.setText(youtubeId);
 		idBtn.setEnabled(false);
 		browser.setText(StringPrinter.buildStringFromLines(
@@ -70,11 +74,13 @@ public class YoutubeCtl extends ControlWrapper.AroundControl<Composite> {
 				"}",
 				"</script>",
 				"</body></html>"));
-
 	}
 
 	/** Plays the given clip in the youtube player. */
 	public void play(double start, double end) {
+		if (System.currentTimeMillis() - setAt < QUIET_MS) {
+			return;
+		}
 		double seconds = Double.parseDouble(secondsTxt.getText());
 		boolean playIsEnabled = checkBox.getSelection();
 		if (playIsEnabled) {
