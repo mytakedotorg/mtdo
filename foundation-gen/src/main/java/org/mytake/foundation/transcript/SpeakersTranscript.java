@@ -34,8 +34,8 @@ import java.util.ListIterator;
 public abstract class SpeakersTranscript {
 	public abstract List<Turn> turns();
 
-	public List<WordTime> words() {
-		List<WordTime> words = new ArrayList<>();
+	public List<WordTime.Speakers> words() {
+		List<WordTime.Speakers> words = new ArrayList<>();
 		ListIterator<Turn> turnIter = turns().listIterator();
 		while (turnIter.hasNext()) {
 			Turn turn = turnIter.next();

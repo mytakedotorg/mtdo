@@ -17,12 +17,13 @@ public class TimingMap {
 		return new TimingMap(SpeakersTranscript.parseName(name), VttTranscript.parseName(name));
 	}
 
-	private final List<WordTime> speakersSeq, timingSeq;
+	private final List<WordTime> speakersSeq;
+	private final List<WordTime> timingSeq;
 	private final int numIdentical, numSpeakerOnly, numVttOnly;
 	private final int groups;
 
 	private TimingMap(SpeakersTranscript speakers, VttTranscript timing) {
-		this.speakersSeq = speakers.words();
+		this.speakersSeq = (List<WordTime>) (Object) speakers.words();
 		this.timingSeq = timing.words();
 
 		int numIdentical = 0;

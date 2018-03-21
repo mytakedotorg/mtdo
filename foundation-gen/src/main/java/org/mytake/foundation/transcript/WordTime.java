@@ -8,11 +8,11 @@ package org.mytake.foundation.transcript;
 
 import java.util.Locale;
 
-public abstract class WordTime {
+public class WordTime {
 	final String lowercase;
 	double time;
 
-	private WordTime(String word, double time) {
+	WordTime(String word, double time) {
 		this.lowercase = trimPunctuation(word.trim()).toLowerCase(Locale.ROOT);
 		this.time = time;
 	}
@@ -38,15 +38,22 @@ public abstract class WordTime {
 		return lowercase;
 	}
 
-	public static class Vtt extends WordTime {
-		Vtt(String word, double time, int lineIdx, int tokenIdx) {
-			super(word, time);
-		}
-	}
-
 	public static class Speakers extends WordTime {
+		final int turnIdx;
+		final int startIdx;
+
 		Speakers(String word, int turnIdx, int startIdx) {
 			super(word, Double.NaN);
+			this.turnIdx = turnIdx;
+			this.startIdx = startIdx;
+		}
+
+		public int turnIdx() {
+			return turnIdx;
+		}
+
+		public int startIdx() {
+			return startIdx;
 		}
 	}
 }

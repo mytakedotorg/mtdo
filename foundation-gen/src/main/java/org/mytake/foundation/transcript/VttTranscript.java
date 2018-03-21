@@ -16,7 +16,6 @@ import java.io.StringReader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ListIterator;
 
 @AutoValue
 public abstract class VttTranscript {
@@ -26,17 +25,13 @@ public abstract class VttTranscript {
 
 	public List<WordTime> words() {
 		List<WordTime> words = new ArrayList<>();
-		ListIterator<Line> lineIter = lines().listIterator();
-		while (lineIter.hasNext()) {
-			Line line = lineIter.next();
-			ListIterator<VttToken> tokenIter = line.tokens().listIterator();
+		for (Line line : lines()) {
 			double time = line.lineHeader().start();
-			while (tokenIter.hasNext()) {
-				VttToken token = tokenIter.next();
+			for (VttToken token : line.tokens()) {
 				if (token.isTime()) {
 					time = token.assertTime().timestamp;
 				} else if (token.isWord()) {
-					words.add(new WordTime.Vtt(token.assertWord().word, time, lineIter.previousIndex(), tokenIter.previousIndex()));
+					words.add(new WordTime(token.assertWord().word, time));
 				}
 			}
 		}
