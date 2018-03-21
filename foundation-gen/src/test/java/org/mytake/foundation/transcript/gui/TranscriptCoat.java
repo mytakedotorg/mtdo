@@ -13,7 +13,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.mytake.foundation.transcript.Recording;
 
 public class TranscriptCoat {
-	private final SpeakersCtl speakersCtl;
+	private final SaidCtl saidCtl;
 	private final VttCtl vttCtl;
 	private final YoutubeCtl youtubeCtl;
 	private final MismatchCtl mismatchCtl;
@@ -24,7 +24,7 @@ public class TranscriptCoat {
 		Layouts.setGridData(horizontalForm).grabAll();
 		mismatchCtl = new MismatchCtl(parent);
 		Layouts.setGridData(mismatchCtl).grabHorizontal();
-		speakersCtl = new SpeakersCtl(horizontalForm);
+		saidCtl = new SaidCtl(horizontalForm);
 
 		SashForm verticalForm = new SashForm(horizontalForm, SWT.VERTICAL);
 		youtubeCtl = new YoutubeCtl(verticalForm);
@@ -33,7 +33,7 @@ public class TranscriptCoat {
 
 	public void setTo(Recording recording) {
 		youtubeCtl.setToYoutubeId(recording.youtubeId());
-		speakersCtl.setFile(recording.getSpeakersFile());
+		saidCtl.setFile(recording.getSaidFile());
 		vttCtl.setFile(recording.getVttFile());
 	}
 }

@@ -38,11 +38,11 @@ public class WordTime {
 		return lowercase;
 	}
 
-	public static class Speakers extends WordTime {
+	public static class Said extends WordTime {
 		final int turnIdx;
 		final int startIdx;
 
-		Speakers(String word, int turnIdx, int startIdx) {
+		Said(String word, int turnIdx, int startIdx) {
 			super(word, Double.NaN);
 			this.turnIdx = turnIdx;
 			this.startIdx = startIdx;

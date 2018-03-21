@@ -9,12 +9,12 @@ package org.mytake.foundation.transcript;
 import java.io.IOException;
 import org.junit.Test;
 
-public class SpeakersTranscriptTest {
+public class SaidTranscriptTest {
 	/** Loads every transcript, to make sure that all of its speakers are known. */
 	@Test
 	public void transcriptRead() throws IOException {
 		for (Recording recording : Recording.national()) {
-			SpeakersTranscript.parseName(recording.yyyyMMdd());
+			SaidTranscript.parseName(recording.yyyyMMdd());
 		}
 	}
 }

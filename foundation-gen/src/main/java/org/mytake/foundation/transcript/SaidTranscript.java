@@ -31,11 +31,11 @@ import java.util.ListIterator;
  *
  */
 @AutoValue
-public abstract class SpeakersTranscript {
+public abstract class SaidTranscript {
 	public abstract List<Turn> turns();
 
-	public List<WordTime.Speakers> words() {
-		List<WordTime.Speakers> words = new ArrayList<>();
+	public List<WordTime.Said> words() {
+		List<WordTime.Said> words = new ArrayList<>();
 		ListIterator<Turn> turnIter = turns().listIterator();
 		while (turnIter.hasNext()) {
 			Turn turn = turnIter.next();
@@ -46,7 +46,7 @@ public abstract class SpeakersTranscript {
 					endIdx = turn.words().length();
 				}
 				String word = turn.words().substring(startIdx, endIdx);
-				words.add(new WordTime.Speakers(word, turnIter.previousIndex(), startIdx));
+				words.add(new WordTime.Said(word, turnIter.previousIndex(), startIdx));
 				if (endIdx == turn.words().length()) {
 					break;
 				}
@@ -63,22 +63,22 @@ public abstract class SpeakersTranscript {
 		public abstract String words();
 
 		public static Turn speakerWords(Speaker speaker, String words) {
-			return new AutoValue_SpeakersTranscript_Turn(speaker, words);
+			return new AutoValue_SaidTranscript_Turn(speaker, words);
 		}
 	}
 
-	public static SpeakersTranscript parseName(String name) throws IOException {
-		String content = Resources.toString(SpeakersTranscriptTest.class.getResource("/transcript/speakers/" + name + ".speakers"), StandardCharsets.UTF_8);
-		return SpeakersTranscript.parse(content);
+	public static SaidTranscript parseName(String name) throws IOException {
+		String content = Resources.toString(SaidTranscriptTest.class.getResource("/transcript/said/" + name + ".said"), StandardCharsets.UTF_8);
+		return SaidTranscript.parse(content);
 	}
 
-	public static SpeakersTranscript parse(String toRead) throws IOException {
+	public static SaidTranscript parse(String toRead) throws IOException {
 		try (BufferedReader reader = new BufferedReader(new StringReader(toRead))) {
 			return parse(reader);
 		}
 	}
 
-	public static SpeakersTranscript parse(BufferedReader reader) throws IOException {
+	public static SaidTranscript parse(BufferedReader reader) throws IOException {
 		int lineCount = 1;
 		try {
 			List<Turn> turns = new ArrayList<>();
@@ -99,7 +99,7 @@ public abstract class SpeakersTranscript {
 				}
 				++lineCount;
 			}
-			return new AutoValue_SpeakersTranscript(turns);
+			return new AutoValue_SaidTranscript(turns);
 		} catch (Exception e) {
 			throw new RuntimeException("On line " + lineCount, e);
 		}

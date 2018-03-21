@@ -45,7 +45,7 @@ public class MismatchCtl extends ControlWrapper.AroundControl<Composite> {
 		Layouts.setGridData(rightCmp).grabAll();
 		Layouts.setGrid(rightCmp).numColumns(2).margin(0);
 
-		Labels.create(rightCmp, "Speakers");
+		Labels.create(rightCmp, "Said");
 		speakersTxt = new Text(rightCmp, SWT.BORDER | SWT.SINGLE | SWT.READ_ONLY);
 		Layouts.setGridData(speakersTxt).grabHorizontal();
 

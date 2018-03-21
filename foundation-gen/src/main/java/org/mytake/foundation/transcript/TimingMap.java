@@ -14,7 +14,7 @@ import org.mytake.foundation.diff.Side;
 
 public class TimingMap {
 	public static TimingMap parseName(String name) throws IOException {
-		return new TimingMap(SpeakersTranscript.parseName(name), VttTranscript.parseName(name));
+		return new TimingMap(SaidTranscript.parseName(name), VttTranscript.parseName(name));
 	}
 
 	private final List<WordTime> speakersSeq;
@@ -22,7 +22,7 @@ public class TimingMap {
 	private final int numIdentical, numSpeakerOnly, numVttOnly;
 	private final int groups;
 
-	private TimingMap(SpeakersTranscript speakers, VttTranscript timing) {
+	private TimingMap(SaidTranscript speakers, VttTranscript timing) {
 		this.speakersSeq = (List<WordTime>) (Object) speakers.words();
 		this.timingSeq = timing.words();
 
