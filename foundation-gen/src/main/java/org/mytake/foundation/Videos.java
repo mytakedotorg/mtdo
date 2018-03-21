@@ -8,26 +8,23 @@ package org.mytake.foundation;
 
 import com.jsoniter.JsonIterator;
 import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
 import java.nio.file.Path;
 import java.security.NoSuchAlgorithmException;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoField;
 import java.time.temporal.TemporalAccessor;
-import java.util.Base64;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java2ts.Foundation.CaptionWord;
 import java2ts.Foundation.Fact;
-import java2ts.Foundation.FactContent;
 import java2ts.Foundation.Person;
 import java2ts.Foundation.SpeakerMap;
 import java2ts.Foundation.VideoFactContentEncoded;
 import java2ts.Foundation.VideoFactContentLegacy;
 import org.mytake.foundation.parsers.VttParser;
+import org.mytake.foundation.transcript.VideoFactContentJava;
 
 public class Videos extends FactWriter<VideoFactContentEncoded> {
 	public static Videos national() throws NoSuchAlgorithmException, IOException {
@@ -119,7 +116,7 @@ public class Videos extends FactWriter<VideoFactContentEncoded> {
 		fast.youtubeId = slow.youtubeId;
 		fast.durationSecs = slow.durationSeconds.doubleValue();
 		fast.charOffsets = new int[slow.transcript.size()];
-		fast.timestamps = new float[slow.transcript.size()];
+		fast.timestamps = new double[slow.transcript.size()];
 		fast.speakerPerson = new int[slow.speakerMap.size()];
 		fast.speakerWord = new int[slow.speakerMap.size()];
 
@@ -164,47 +161,6 @@ public class Videos extends FactWriter<VideoFactContentEncoded> {
 
 	private void addNoTranscript(String youtubeId, String title, String date, String duration) throws NoSuchAlgorithmException, IOException {
 		add(youtubeId, title, date, duration, false);
-	}
-
-	static class VideoFactContentJava extends FactContent {
-		public String youtubeId;
-		public double durationSecs;
-		public List<Person> speakers;
-		public String plainText;
-		public int[] charOffsets;
-		public float[] timestamps;
-		public int[] speakerPerson;
-		public int[] speakerWord;
-
-		public String arraysToBase64() {
-			int numWords = charOffsets.length;
-			int numSpeakerSections = speakerPerson.length;
-
-			int size = 8 * numWords + 8 * numSpeakerSections;
-			ByteBuffer buffer = ByteBuffer.allocate(size);
-			buffer.order(ByteOrder.LITTLE_ENDIAN);
-			putAll(buffer, charOffsets);
-			putAll(buffer, timestamps);
-			putAll(buffer, speakerPerson);
-			putAll(buffer, speakerWord);
-
-			byte[] bytes = new byte[buffer.capacity()];
-			buffer.flip();
-			buffer.get(bytes);
-			return Base64.getEncoder().encodeToString(bytes);
-		}
-
-		static void putAll(ByteBuffer buffer, int[] array) {
-			for (int value : array) {
-				buffer.putInt(value);
-			}
-		}
-
-		static void putAll(ByteBuffer buffer, float[] array) {
-			for (float value : array) {
-				buffer.putFloat(value);
-			}
-		}
 	}
 
 	static class Speakers {

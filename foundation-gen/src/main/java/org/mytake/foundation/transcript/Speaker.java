@@ -6,27 +6,56 @@
  */
 package org.mytake.foundation.transcript;
 
+import com.diffplug.common.base.Unhandled;
 import com.diffplug.common.collect.ImmutableMap;
+import com.diffplug.common.collect.Ordering;
 import com.google.auto.value.AutoValue;
+import java.util.Comparator;
 import java.util.Objects;
 import java.util.function.Consumer;
+import java2ts.Foundation.Person;
 
 @AutoValue
 public abstract class Speaker {
 	public abstract String name();
 
-	public abstract boolean isPolitician();
+	public abstract String role();
+
+	public Person toPerson() {
+		String[] pieces = name().split(" ");
+		Person person = new Person();
+		if (pieces.length == 2) {
+			person.firstname = pieces[0];
+			person.lastname = pieces[1];
+		} else if (pieces.length == 3) {
+			person.firstname = pieces[0];
+			person.middlename = pieces[1];
+			person.lastname = pieces[2];
+		} else {
+			throw Unhandled.integerException(pieces.length);
+		}
+		return person;
+	}
 
 	public static Speaker candidate(String name) {
-		return new AutoValue_Speaker(name, true);
+		return new AutoValue_Speaker(name, CANDIDATE);
 	}
 
 	public static Speaker moderator(String name, String position) {
-		return new AutoValue_Speaker(name, false);
+		return new AutoValue_Speaker(name, MODERATOR);
 	}
 
 	public static Speaker audience(String name) {
-		return new AutoValue_Speaker(name, false);
+		return new AutoValue_Speaker(name, AUDIENCE);
+	}
+
+	private static final String CANDIDATE = "candidate";
+	private static final String MODERATOR = "moderator";
+	private static final String AUDIENCE = "audience";
+
+	public static Comparator<Speaker> ordering() {
+		return Ordering.explicit(CANDIDATE, MODERATOR, AUDIENCE).onResultOf(Speaker::role)
+				.thenComparing(Speaker::name);
 	}
 
 	private static final ImmutableMap<String, Speaker> speakers;
