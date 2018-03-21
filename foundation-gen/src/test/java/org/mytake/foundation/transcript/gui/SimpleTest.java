@@ -6,16 +6,14 @@
  */
 package org.mytake.foundation.transcript.gui;
 
-import com.diffplug.common.swt.InteractiveTest;
 import org.junit.Test;
-import org.mytake.foundation.transcript.Recording;
 
 public class SimpleTest {
 	@Test
 	public void test() {
-		InteractiveTest.testCoat("Blah", cmp -> {
-			Recording recording = Recording.national().get(0);
-			new TranscriptCoat(cmp).setTo(recording);
-		});
+		//InteractiveTest.testCoat("Blah", cmp -> {
+		//	Recording recording = Recording.national().get(0);
+		//	new TranscriptCoat(cmp).setTo(recording);
+		//});
 	}
 }
