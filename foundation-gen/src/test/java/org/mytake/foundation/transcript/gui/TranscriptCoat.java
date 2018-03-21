@@ -30,7 +30,7 @@ public class TranscriptCoat {
 
 		SashForm verticalForm = new SashForm(horizontalForm, SWT.VERTICAL);
 		youtubeCtl = new YoutubeCtl(verticalForm);
-		vttCtl = new VttCtl(verticalForm);
+		vttCtl = new VttCtl(verticalForm, youtubeCtl);
 
 		mismatchCtl = new MismatchCtl(parent, saidCtl, vttCtl);
 		Layouts.setGridData(mismatchCtl).grabHorizontal();

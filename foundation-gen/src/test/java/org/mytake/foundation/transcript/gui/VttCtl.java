@@ -11,6 +11,7 @@ import com.diffplug.common.swt.Layouts;
 import com.diffplug.common.swt.SwtMisc;
 import com.diffplug.common.swt.jface.ColumnViewerFormat;
 import java.io.File;
+import java.util.Arrays;
 import java.util.List;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
@@ -28,7 +29,7 @@ public class VttCtl extends ControlWrapper.AroundControl<Composite> {
 	private final Text addTxt;
 	private final TableViewer viewer;
 
-	public VttCtl(Composite parent) {
+	public VttCtl(Composite parent, YoutubeCtl youtube) {
 		super(new Composite(parent, SWT.NONE));
 		Layouts.setGrid(wrapped).margin(0);
 
@@ -55,6 +56,14 @@ public class VttCtl extends ControlWrapper.AroundControl<Composite> {
 		time.setStyle(SWT.MULTI);
 		viewer = time.buildTable(tableCmp);
 		viewer.setContentProvider(ArrayContentProvider.getInstance());
+
+		viewer.addSelectionChangedListener(e -> {
+			int[] selection = viewer.getTable().getSelectionIndices();
+			Arrays.sort(selection);
+			int minIdx = selection[0];
+			int maxIdx = Math.min(selection[selection.length - 1] + 1, match.vttWords().size() - 1);
+			youtube.play(match.vttWords().get(minIdx).time(), match.vttWords().get(maxIdx).time());
+		});
 	}
 
 	private WordMatch match;
