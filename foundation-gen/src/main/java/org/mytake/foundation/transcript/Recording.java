@@ -8,6 +8,7 @@ package org.mytake.foundation.transcript;
 
 import com.diffplug.common.collect.ImmutableList;
 import com.google.auto.value.AutoValue;
+import java.io.File;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoField;
 import java.time.temporal.TemporalAccessor;
@@ -85,5 +86,13 @@ public abstract class Recording {
 			int sec = accessor.get(ChronoField.SECOND_OF_MINUTE);
 			return sec + (60 * min) + (60 * 60 * hr);
 		}
+	}
+
+	public File getSpeakersFile() {
+		return new File("src/main/resources/transcript/speakers/" + yyyyMMdd() + ".speakers");
+	}
+
+	public File getVttFile() {
+		return new File("src/main/resources/transcript/vtt/" + yyyyMMdd() + ".vtt");
 	}
 }

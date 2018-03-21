@@ -17,26 +17,41 @@ public class TimingMap {
 		return new TimingMap(SpeakersTranscript.parseName(name), VttTranscript.parseName(name));
 	}
 
-	private final SpeakersTranscript speakers;
-	private final VttTranscript timing;
 	private final List<WordTime> speakersSeq, timingSeq;
+	private final int numIdentical, numSpeakerOnly, numVttOnly;
+	private final int groups;
 
 	private TimingMap(SpeakersTranscript speakers, VttTranscript timing) {
-		this.speakers = speakers;
-		this.timing = timing;
 		this.speakersSeq = speakers.words();
 		this.timingSeq = timing.words();
 
+		int numIdentical = 0;
+		int numSpeakerOnly = 0;
+		int numVttOnly = 0;
+		int groups = 0;
 		List<ListChange> changes = JGitListDiffer.myersDiff().diffOn(speakersSeq, timingSeq, word -> word.lowercase);
 		for (ListChange change : changes) {
 			if (change.getType().isIdentical()) {
+				numIdentical += change.getAfterLength();
 				List<WordTime> words = change.subList(speakersSeq, Side.BEFORE);
 				System.out.println("EQUAL:" + toString(words));
 			} else {
+				numSpeakerOnly += change.getBeforeLength();
+				numVttOnly += change.getAfterLength();
+				++groups;
 				System.out.println("speak:" + toString(change.subList(speakersSeq, Side.BEFORE)));
 				System.out.println("timed:" + toString(change.subList(timingSeq, Side.AFTER)));
 			}
 		}
+		this.numIdentical = numIdentical;
+		this.numSpeakerOnly = numSpeakerOnly;
+		this.numVttOnly = numVttOnly;
+		this.groups = groups;
+
+		System.out.println("numIdentical=" + numIdentical);
+		System.out.println("numSpeakerOnly=" + numSpeakerOnly);
+		System.out.println("numVttOnly=" + numVttOnly);
+		System.out.println("groups=" + groups);
 	}
 
 	private static String toString(List<WordTime> words) {
