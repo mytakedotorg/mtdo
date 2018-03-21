@@ -6,6 +6,7 @@
  */
 package org.mytake.foundation.transcript;
 
+import com.diffplug.common.io.Resources;
 import java.io.IOException;
 import org.junit.Test;
 
@@ -14,7 +15,7 @@ public class SaidTranscriptTest {
 	@Test
 	public void transcriptRead() throws IOException {
 		for (Recording recording : Recording.national()) {
-			SaidTranscript.parseName(recording.yyyyMMdd());
+			SaidTranscript.parse(Resources.asByteSource(SaidTranscriptTest.class.getResource("/transcript/said/" + recording.yyyyMMdd() + ".said")));
 		}
 	}
 }

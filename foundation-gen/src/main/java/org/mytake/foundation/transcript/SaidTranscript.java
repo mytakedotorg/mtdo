@@ -7,13 +7,16 @@
 package org.mytake.foundation.transcript;
 
 import com.diffplug.common.base.Preconditions;
-import com.diffplug.common.io.Resources;
+import com.diffplug.common.collect.Immutables;
+import com.diffplug.common.io.ByteSource;
+import com.diffplug.common.io.Files;
 import com.google.auto.value.AutoValue;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
-import java.io.StringReader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -34,53 +37,43 @@ import java.util.ListIterator;
 public abstract class SaidTranscript {
 	public abstract List<Turn> turns();
 
-	public List<WordTime.Said> words() {
-		List<WordTime.Said> words = new ArrayList<>();
+	public List<Word.Said> attributedWords() {
+		List<Word.Said> attributed = new ArrayList<>();
 		ListIterator<Turn> turnIter = turns().listIterator();
 		while (turnIter.hasNext()) {
 			Turn turn = turnIter.next();
+			List<String> words = turn.words();
 			int startIdx = 0;
-			while (true) {
-				int endIdx = turn.words().indexOf(' ', startIdx);
-				if (endIdx == -1) {
-					endIdx = turn.words().length();
-				}
-				String word = turn.words().substring(startIdx, endIdx);
-				words.add(new WordTime.Said(word, turnIter.previousIndex(), startIdx));
-				if (endIdx == turn.words().length()) {
-					break;
-				}
-				startIdx = endIdx + 1;
+			for (String word : words) {
+				attributed.add(new Word.Said(word, turnIter.previousIndex(), startIdx));
+				startIdx += word.length() + 1;
 			}
 		}
-		return words;
+		return attributed;
 	}
 
 	@AutoValue
 	public abstract static class Turn {
 		public abstract Speaker speaker();
 
-		public abstract String words();
+		public abstract String said();
+
+		public List<String> words() {
+			return Arrays.asList(said().split(" "));
+		}
 
 		public static Turn speakerWords(Speaker speaker, String words) {
 			return new AutoValue_SaidTranscript_Turn(speaker, words);
 		}
 	}
 
-	public static SaidTranscript parseName(String name) throws IOException {
-		String content = Resources.toString(SaidTranscriptTest.class.getResource("/transcript/said/" + name + ".said"), StandardCharsets.UTF_8);
-		return SaidTranscript.parse(content);
+	public static SaidTranscript parse(File file) throws IOException {
+		return parse(Files.asByteSource(file));
 	}
 
-	public static SaidTranscript parse(String toRead) throws IOException {
-		try (BufferedReader reader = new BufferedReader(new StringReader(toRead))) {
-			return parse(reader);
-		}
-	}
-
-	public static SaidTranscript parse(BufferedReader reader) throws IOException {
+	public static SaidTranscript parse(ByteSource source) throws IOException {
 		int lineCount = 1;
-		try {
+		try (BufferedReader reader = source.asCharSource(StandardCharsets.UTF_8).openBufferedStream()) {
 			List<Turn> turns = new ArrayList<>();
 			String line;
 			while (!(line = reader.readLine()).isEmpty()) {
@@ -103,5 +96,9 @@ public abstract class SaidTranscript {
 		} catch (Exception e) {
 			throw new RuntimeException("On line " + lineCount, e);
 		}
+	}
+
+	public List<Speaker> toSpeakers() {
+		return turns().stream().map(Turn::speaker).collect(Immutables.toSortedSet(Speaker.ordering())).asList();
 	}
 }

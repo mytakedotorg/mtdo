@@ -8,11 +8,12 @@ package org.mytake.foundation.transcript;
 
 import com.diffplug.common.base.Preconditions;
 import com.diffplug.common.base.StringPrinter;
-import com.diffplug.common.io.Resources;
+import com.diffplug.common.io.ByteSource;
+import com.diffplug.common.io.Files;
 import com.google.auto.value.AutoValue;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
-import java.io.StringReader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,15 +24,15 @@ public abstract class VttTranscript {
 
 	public abstract List<Line> lines();
 
-	public List<WordTime> words() {
-		List<WordTime> words = new ArrayList<>();
+	public List<Word.Vtt> words() {
+		List<Word.Vtt> words = new ArrayList<>();
 		for (Line line : lines()) {
 			double time = line.lineHeader().start();
 			for (VttToken token : line.tokens()) {
 				if (token.isTime()) {
 					time = token.assertTime().timestamp;
 				} else if (token.isWord()) {
-					words.add(new WordTime(token.assertWord().word, time));
+					words.add(new Word.Vtt(token.assertWord().word, time));
 				}
 			}
 		}
@@ -70,29 +71,21 @@ public abstract class VttTranscript {
 		}
 	}
 
-	public static VttTranscript parseName(String name) throws IOException {
-		String content = Resources.toString(VttTranscriptTest.class.getResource("/transcript/vtt/" + name + ".vtt"), StandardCharsets.UTF_8);
-		return VttTranscript.parse(content);
+	public static VttTranscript parse(File file) throws IOException {
+		return parse(Files.asByteSource(file));
 	}
 
-	public static VttTranscript parse(String toRead) throws IOException {
-		try (BufferedReader reader = new BufferedReader(new StringReader(toRead))) {
-			return parse(reader);
-		}
-	}
-
-	public static VttTranscript parse(BufferedReader reader) throws IOException {
+	public static VttTranscript parse(ByteSource source) throws IOException {
 		int lineCount = 1;
+		try (BufferedReader reader = source.asCharSource(StandardCharsets.UTF_8).openBufferedStream()) {
+			StringBuilder headerStr = new StringBuilder();
+			String line;
+			while (!(line = reader.readLine()).isEmpty()) {
+				headerStr.append(line);
+				headerStr.append("\n");
+				++lineCount;
+			}
 
-		StringBuilder headerStr = new StringBuilder();
-		String line;
-		while (!(line = reader.readLine()).isEmpty()) {
-			headerStr.append(line);
-			headerStr.append("\n");
-			++lineCount;
-		}
-
-		try {
 			List<Line> lines = new ArrayList<>();
 			while (true) {
 				String headerLine = reader.readLine();

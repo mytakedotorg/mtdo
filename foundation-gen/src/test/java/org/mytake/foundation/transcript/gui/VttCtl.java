@@ -15,7 +15,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
-import org.mytake.foundation.transcript.WordTime;
+import org.mytake.foundation.transcript.Word;
 
 public class VttCtl extends ControlWrapper.AroundControl<Composite> {
 	private final FileCtl fileCtl;
@@ -40,7 +40,7 @@ public class VttCtl extends ControlWrapper.AroundControl<Composite> {
 		addTxt = new Text(bottomCmp, SWT.SINGLE | SWT.BORDER);
 		Layouts.setGridData(addTxt).grabHorizontal();
 
-		ColumnViewerFormat<WordTime> time = ColumnViewerFormat.builder();
+		ColumnViewerFormat<Word.Vtt> time = ColumnViewerFormat.builder();
 		time.addColumn().setText("Time").setLabelProviderText(word -> String.format("%.3f", word.time())).setLayoutPixel(6 * SwtMisc.systemFontWidth());
 		time.addColumn().setText("Word").setLabelProviderText(word -> word.lowercase()).setLayoutWeight(1);
 		time.setHeaderVisible(true);

@@ -6,44 +6,51 @@
  */
 package org.mytake.foundation.transcript;
 
+import com.diffplug.common.base.Preconditions;
 import java.util.Locale;
 
-public class WordTime {
+public class Word {
 	final String lowercase;
-	double time;
 
-	WordTime(String word, double time) {
-		this.lowercase = trimPunctuation(word.trim()).toLowerCase(Locale.ROOT);
-		this.time = time;
+	Word(String word) {
+		this.lowercase = trimPunctuation(word).toLowerCase(Locale.ROOT);
 	}
 
 	private static String trimPunctuation(String input) {
 		char lastChar = input.charAt(input.length() - 1);
+		Preconditions.checkArgument(!Character.isWhitespace(input.charAt(0)), "First char can't be whitespace!");
+		Preconditions.checkArgument(!Character.isWhitespace(lastChar), "Last char can't be whitespace!");
 		if (!(Character.isAlphabetic(lastChar) || Character.isDigit(lastChar))) {
+			// strip punctuation
 			return input.substring(0, input.length() - 1);
 		} else {
 			return input;
 		}
 	}
 
-	public double time() {
-		return time;
-	}
-
-	public boolean timeIsSet() {
-		return !Double.isNaN(time);
-	}
-
 	public String lowercase() {
 		return lowercase;
 	}
 
-	public static class Said extends WordTime {
+	public static class Vtt extends Word {
+		final double time;
+
+		Vtt(String word, double time) {
+			super(word);
+			this.time = time;
+		}
+
+		public double time() {
+			return time;
+		}
+	}
+
+	public static class Said extends Word {
 		final int turnIdx;
 		final int startIdx;
 
 		Said(String word, int turnIdx, int startIdx) {
-			super(word, Double.NaN);
+			super(word);
 			this.turnIdx = turnIdx;
 			this.startIdx = startIdx;
 		}
