@@ -22,11 +22,11 @@ public class VttCtl extends ControlWrapper.AroundControl<Composite> {
 	private final Button addBtn;
 	private final Text addTxt;
 
-	public VttCtl(Composite parent, File file) {
+	public VttCtl(Composite parent) {
 		super(new Composite(parent, SWT.NONE));
 		Layouts.setGrid(wrapped).margin(0);
 
-		fileCtl = new FileCtl(wrapped, file);
+		fileCtl = new FileCtl(wrapped, "VTT");
 		Layouts.setGridData(fileCtl).grabHorizontal();
 
 		Composite tableCmp = new Composite(wrapped, SWT.BORDER);
@@ -48,5 +48,10 @@ public class VttCtl extends ControlWrapper.AroundControl<Composite> {
 		time.setUseHashLookup(true);
 		time.setStyle(SWT.SINGLE | SWT.VIRTUAL);
 		time.buildTable(tableCmp);
+	}
+
+	public void setFile(File file) {
+		fileCtl.setFile(file);
+		// TODO: load file and setup viewer
 	}
 }

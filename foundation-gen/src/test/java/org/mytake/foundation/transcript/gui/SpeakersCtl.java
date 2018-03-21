@@ -17,16 +17,19 @@ public class SpeakersCtl extends ControlWrapper.AroundControl<Composite> {
 	private final FileCtl fileCtl;
 	private final Text styled;
 
-	public SpeakersCtl(Composite parent, File file) {
+	public SpeakersCtl(Composite parent) {
 		super(new Composite(parent, SWT.NONE));
 		Layouts.setGrid(wrapped).margin(0);
 
-		fileCtl = new FileCtl(wrapped, file);
+		fileCtl = new FileCtl(wrapped, "Speakers");
 		Layouts.setGridData(fileCtl).grabHorizontal();
 
 		styled = new Text(wrapped, SWT.MULTI | SWT.BORDER | SWT.V_SCROLL | SWT.WRAP);
-		//styled.setWordWrap(true);
 		Layouts.setGridData(styled).grabAll();
-		styled.setText(fileCtl.read());
+	}
+
+	public void setFile(File file) {
+		fileCtl.setFile(file);
+		// load file and set text
 	}
 }

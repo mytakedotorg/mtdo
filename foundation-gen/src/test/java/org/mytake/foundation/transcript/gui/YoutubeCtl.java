@@ -8,6 +8,7 @@ package org.mytake.foundation.transcript.gui;
 
 import com.diffplug.common.base.StringPrinter;
 import com.diffplug.common.swt.ControlWrapper;
+import com.diffplug.common.swt.Fonts;
 import com.diffplug.common.swt.Layouts;
 import com.diffplug.common.swt.SwtMisc;
 import org.eclipse.swt.SWT;
@@ -17,6 +18,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 
 public class YoutubeCtl extends ControlWrapper.AroundControl<Composite> {
+	private final Text idTxt;
+	private final Button idBtn;
 	private final Browser browser;
 	private final Button checkBox;
 	private final Text secondsTxt;
@@ -24,6 +27,21 @@ public class YoutubeCtl extends ControlWrapper.AroundControl<Composite> {
 	public YoutubeCtl(Composite parent) {
 		super(new Composite(parent, SWT.NONE));
 		Layouts.setGrid(wrapped).margin(0);
+
+		Composite header = new Composite(wrapped, SWT.NONE);
+		Layouts.setGridData(header).grabHorizontal();
+		Layouts.setGrid(header).margin(0).numColumns(3);
+		Labels.create(header, "YouTube ID").setFont(Fonts.systemBold());
+		idTxt = new Text(header, SWT.SINGLE | SWT.BORDER);
+		Layouts.setGridData(idTxt).grabHorizontal();
+		idBtn = new Button(header, SWT.PUSH | SWT.FLAT);
+		idBtn.setText("Set");
+		idBtn.addListener(SWT.Selection, e -> {
+			setToYoutubeId(idTxt.getText());
+		});
+		idTxt.addListener(SWT.Modify, e -> {
+			idBtn.setEnabled(true);
+		});
 
 		browser = new Browser(wrapped, SWT.BORDER);
 		Layouts.setGridData(browser).grabAll();
@@ -41,6 +59,8 @@ public class YoutubeCtl extends ControlWrapper.AroundControl<Composite> {
 	}
 
 	public void setToYoutubeId(String youtubeId) {
+		idTxt.setText(youtubeId);
+		idBtn.setEnabled(false);
 		browser.setText(StringPrinter.buildStringFromLines(
 				"<html><body>",
 				"<script>",
@@ -49,6 +69,7 @@ public class YoutubeCtl extends ControlWrapper.AroundControl<Composite> {
 				"}",
 				"</script>",
 				"</body></html>"));
+
 	}
 
 	/** Plays the given clip in the youtube player. */

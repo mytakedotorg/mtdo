@@ -15,7 +15,7 @@ public class SimpleTest {
 	public void test() {
 		InteractiveTest.testCoat("Blah", cmp -> {
 			Recording recording = Recording.national().get(0);
-			new TranscriptCoat(cmp, recording);
+			new TranscriptCoat(cmp).setTo(recording);
 		});
 	}
 }

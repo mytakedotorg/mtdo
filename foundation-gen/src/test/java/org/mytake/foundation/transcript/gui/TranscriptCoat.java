@@ -18,17 +18,22 @@ public class TranscriptCoat {
 	private final YoutubeCtl youtubeCtl;
 	private final MismatchCtl mismatchCtl;
 
-	public TranscriptCoat(Composite parent, Recording recording) {
+	public TranscriptCoat(Composite parent) {
 		Layouts.setGrid(parent);
 		SashForm horizontalForm = new SashForm(parent, SWT.HORIZONTAL);
 		Layouts.setGridData(horizontalForm).grabAll();
 		mismatchCtl = new MismatchCtl(parent);
 		Layouts.setGridData(mismatchCtl).grabHorizontal();
-		speakersCtl = new SpeakersCtl(horizontalForm, recording.getSpeakersFile());
+		speakersCtl = new SpeakersCtl(horizontalForm);
 
 		SashForm verticalForm = new SashForm(horizontalForm, SWT.VERTICAL);
 		youtubeCtl = new YoutubeCtl(verticalForm);
+		vttCtl = new VttCtl(verticalForm);
+	}
+
+	public void setTo(Recording recording) {
 		youtubeCtl.setToYoutubeId(recording.youtubeId());
-		vttCtl = new VttCtl(verticalForm, recording.getVttFile());
+		speakersCtl.setFile(recording.getSpeakersFile());
+		vttCtl.setFile(recording.getVttFile());
 	}
 }
