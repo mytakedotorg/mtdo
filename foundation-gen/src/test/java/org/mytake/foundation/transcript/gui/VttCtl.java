@@ -11,16 +11,20 @@ import com.diffplug.common.swt.Layouts;
 import com.diffplug.common.swt.SwtMisc;
 import com.diffplug.common.swt.jface.ColumnViewerFormat;
 import java.io.File;
+import org.eclipse.jface.viewers.ILazyContentProvider;
+import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 import org.mytake.foundation.transcript.Word;
+import org.mytake.foundation.transcript.WordMatch;
 
 public class VttCtl extends ControlWrapper.AroundControl<Composite> {
 	private final FileCtl fileCtl;
 	private final Button addBtn;
 	private final Text addTxt;
+	private final TableViewer viewer;
 
 	public VttCtl(Composite parent) {
 		super(new Composite(parent, SWT.NONE));
@@ -47,11 +51,20 @@ public class VttCtl extends ControlWrapper.AroundControl<Composite> {
 		time.setLinesVisible(true);
 		time.setUseHashLookup(true);
 		time.setStyle(SWT.SINGLE | SWT.VIRTUAL);
-		time.buildTable(tableCmp);
+		viewer = time.buildTable(tableCmp);
+		viewer.setContentProvider(new ILazyContentProvider() {
+			@Override
+			public void updateElement(int index) {
+				viewer.replace(match.vttWords().get(index), index);
+			}
+		});
 	}
 
-	public void setFile(File file) {
+	private WordMatch match;
+
+	public void setFile(File file, WordMatch match) {
 		fileCtl.setFile(file);
-		// TODO: load file and setup viewer
+		this.match = match;
+		viewer.setItemCount(match.vttWords().size());
 	}
 }

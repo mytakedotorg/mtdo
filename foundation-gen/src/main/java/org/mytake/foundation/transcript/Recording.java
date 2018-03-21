@@ -89,7 +89,7 @@ public abstract class Recording {
 	}
 
 	public File getSaidFile() {
-		return new File("src/main/resources/transcript/speakers/" + yyyyMMdd() + ".said");
+		return new File("src/main/resources/transcript/said/" + yyyyMMdd() + ".said");
 	}
 
 	public File getVttFile() {

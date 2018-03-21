@@ -34,17 +34,18 @@ public class WordMatch {
 		this.editList = MyersDiff.INSTANCE.diff(new WordTimeMatcher(), new ListSequence(saidWords), new ListSequence(vttWords));
 	}
 
-	/** Returns the edits for these two. */
+	public List<Word.Vtt> vttWords() {
+		return vttWords;
+	}
+
 	public List<Edit> edits() {
 		return editList;
 	}
 
-	/** Returns said words for this edit. */
 	public List<Word.Said> saidFor(Edit edit) {
 		return saidWords.subList(edit.getBeginA(), edit.getEndA());
 	}
 
-	/** Returns vtt words for this edit. */
 	public List<Word.Vtt> vttFor(Edit edit) {
 		return vttWords.subList(edit.getBeginB(), edit.getEndB());
 	}

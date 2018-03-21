@@ -6,11 +6,15 @@
  */
 package org.mytake.foundation.transcript.gui;
 
+import com.diffplug.common.base.Errors;
 import com.diffplug.common.swt.Layouts;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.widgets.Composite;
 import org.mytake.foundation.transcript.Recording;
+import org.mytake.foundation.transcript.SaidTranscript;
+import org.mytake.foundation.transcript.VttTranscript;
+import org.mytake.foundation.transcript.WordMatch;
 
 public class TranscriptCoat {
 	private final SaidCtl saidCtl;
@@ -22,18 +26,24 @@ public class TranscriptCoat {
 		Layouts.setGrid(parent);
 		SashForm horizontalForm = new SashForm(parent, SWT.HORIZONTAL);
 		Layouts.setGridData(horizontalForm).grabAll();
-		mismatchCtl = new MismatchCtl(parent);
-		Layouts.setGridData(mismatchCtl).grabHorizontal();
 		saidCtl = new SaidCtl(horizontalForm);
 
 		SashForm verticalForm = new SashForm(horizontalForm, SWT.VERTICAL);
 		youtubeCtl = new YoutubeCtl(verticalForm);
 		vttCtl = new VttCtl(verticalForm);
+
+		mismatchCtl = new MismatchCtl(parent, saidCtl, vttCtl);
+		Layouts.setGridData(mismatchCtl).grabHorizontal();
 	}
 
 	public void setTo(Recording recording) {
+		SaidTranscript said = Errors.rethrow().get(() -> SaidTranscript.parse(recording.getSaidFile()));
+		VttTranscript vtt = Errors.rethrow().get(() -> VttTranscript.parse(recording.getVttFile()));
+		WordMatch wordMatch = new WordMatch(said, vtt);
+
 		youtubeCtl.setToYoutubeId(recording.youtubeId());
-		saidCtl.setFile(recording.getSaidFile());
-		vttCtl.setFile(recording.getVttFile());
+		saidCtl.setFile(recording.getSaidFile(), said);
+		vttCtl.setFile(recording.getVttFile(), wordMatch);
+		mismatchCtl.setMatch(wordMatch);
 	}
 }

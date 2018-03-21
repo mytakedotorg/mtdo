@@ -12,6 +12,7 @@ import java.io.File;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
+import org.mytake.foundation.transcript.SaidTranscript;
 
 public class SaidCtl extends ControlWrapper.AroundControl<Composite> {
 	private final FileCtl fileCtl;
@@ -28,8 +29,8 @@ public class SaidCtl extends ControlWrapper.AroundControl<Composite> {
 		Layouts.setGridData(styled).grabAll();
 	}
 
-	public void setFile(File file) {
+	public void setFile(File file, SaidTranscript said) {
 		fileCtl.setFile(file);
-		// load file and set text
+		styled.setText(fileCtl.read());
 	}
 }

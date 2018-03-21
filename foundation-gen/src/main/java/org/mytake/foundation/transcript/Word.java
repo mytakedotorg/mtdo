@@ -36,7 +36,7 @@ public class Word {
 		final double time;
 
 		Vtt(String word, double time) {
-			super(word);
+			super(word.trim());
 			this.time = time;
 		}
 
