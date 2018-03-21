@@ -40,14 +40,20 @@ public abstract class SaidTranscript {
 	public List<Word.Said> attributedWords() {
 		List<Word.Said> attributed = new ArrayList<>();
 		ListIterator<Turn> turnIter = turns().listIterator();
+		int startIdx = 0;
 		while (turnIter.hasNext()) {
 			Turn turn = turnIter.next();
+			startIdx += turn.speaker().name().length() + ": ".length();
 			List<String> words = turn.words();
-			int startIdx = 0;
 			for (String word : words) {
-				attributed.add(new Word.Said(word, turnIter.previousIndex(), startIdx));
+				Word.Said saidWord = new Word.Said(word, startIdx);
+				if (!saidWord.lowercase.isEmpty()) {
+					// make sure it's not just a "-"
+					attributed.add(saidWord);
+				}
 				startIdx += word.length() + 1;
 			}
+			startIdx += 1; // for 2 newlines
 		}
 		return attributed;
 	}

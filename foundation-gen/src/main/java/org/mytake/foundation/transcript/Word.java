@@ -46,21 +46,19 @@ public class Word {
 	}
 
 	public static class Said extends Word {
-		final int turnIdx;
 		final int startIdx;
 
-		Said(String word, int turnIdx, int startIdx) {
+		Said(String word, int startIdx) {
 			super(word);
-			this.turnIdx = turnIdx;
 			this.startIdx = startIdx;
-		}
-
-		public int turnIdx() {
-			return turnIdx;
 		}
 
 		public int startIdx() {
 			return startIdx;
+		}
+
+		public int endIdx() {
+			return startIdx + lowercase.length();
 		}
 	}
 }
