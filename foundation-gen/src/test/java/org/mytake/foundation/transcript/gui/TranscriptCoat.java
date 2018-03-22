@@ -8,9 +8,12 @@ package org.mytake.foundation.transcript.gui;
 
 import com.diffplug.common.base.Errors;
 import com.diffplug.common.swt.Layouts;
+import com.diffplug.common.swt.Shells;
+import com.diffplug.common.swt.SwtMisc;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Shell;
 import org.mytake.foundation.transcript.Recording;
 import org.mytake.foundation.transcript.SaidTranscript;
 import org.mytake.foundation.transcript.VttTranscript;
@@ -45,5 +48,16 @@ public class TranscriptCoat {
 		saidCtl.setFile(recording.getSaidFile(), said);
 		vttCtl.setFile(recording.getVttFile(), wordMatch);
 		mismatchCtl.setMatch(wordMatch);
+	}
+
+	public static void main(String[] args) {
+		Recording recording = Recording.national().get(0);
+		Shell shell = Shells.builder(SWT.SHELL_TRIM, cmp -> {
+			TranscriptCoat coat = new TranscriptCoat(cmp);
+			coat.setTo(recording);
+		})
+				.setSize(SwtMisc.scaleByFontHeight(40, 30))
+				.openOnDisplay();
+		SwtMisc.loopUntilDisposed(shell);
 	}
 }
