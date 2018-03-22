@@ -67,76 +67,76 @@ public class YoutubeCtl extends ControlWrapper.AroundControl<Composite> {
 		idTxt.setText(youtubeId);
 		idBtn.setEnabled(false);
 		browser.setText(StringPrinter.buildStringFromLines(
-				"<div id=\"player\"></div>\n" + 
-				"<script>\n" + 
-				"	var tag = document.createElement('script');\n" + 
-				"\n" + 
-				"tag.src = \"https://www.youtube.com/iframe_api\";\n" + 
-				"var firstScriptTag = document.getElementsByTagName('script')[0];\n" + 
-				"firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);\n" + 
-				"\n" + 
-				"var player;\n" + 
-				"\n" + 
-				"function onYouTubeIframeAPIReady() {\n" + 
-				"	player = new YT.Player('player', {\n" + 
-				"		height: '390',\n" + 
-				"		width: '640',\n" + 
-				"		videoId: '" + youtubeId + "',\n" + 
-				"		events: {\n" + 
-				"			'onReady': onPlayerReady,\n" + 
-				"			'onStateChange': onPlayerStateChange\n" + 
-				"		}\n" + 
-				"	});\n" + 
-				"}\n" + 
-				"\n" + 
-				"var playerIsReady = false;\n" + 
-				"var secondsElapsed = 0;\n" + 
-				"function onPlayerReady(event) {\n" + 
-				"	playerIsReady = true;\n" + 
-				"}\n" + 
-				"\n" + 
-				"function onPlayerStateChange(event) { \n" + 
-				"	if (event.data === 0) {\n" + 
-				"		// Video ended\n" + 
-				"		stopTimer();\n" + 
-				"		secondsElapsed = 0;\n" + 
-				"	} else if (event.data === 1) {\n" + 
-				"		// Video playing\n" + 
-				"		startTimer();\n" + 
-				"	} else if (event.data === 2) {\n" + 
-				"		// Video paused\n" + 
-				"		stopTimer();\n" + 
-				"	} else if (event.data === 3) {\n" + 
-				"		// Video buffering\n" + 
-				"		stopTimer();\n" + 
-				"	}\n" + 
-				"}\n" + 
-				"\n" + 
-				"var endTime = 0;\n" + 
-				"var play = function(start, end) {\n" + 
-				"	if (playerIsReady) {\n" + 
-				"		endTime = end;\n" + 
-				"		player.playVideo();\n" + 
-				"	} else {\n" + 
-				"		alert(\"player not ready, try again\");\n" + 
-				"	}\n" + 
-				"}\n" + 
-				"\n" + 
-				"function startTimer() {\n" + 
-				"	secondsElapsed += 1;\n" + 
-				"	if (secondsElapsed >= endTime) {\n" + 
-				"		stopTimer();\n" + 
-				"		player.stopVideo();\n" + 
-				"	}\n" + 
-				"	timerId = window.setTimeout(startTimer, 1000);\n" + 
-				"};\n" + 
-				"stopTimer = () => {\n" + 
-				"	if (timerId) {\n" + 
-				"		window.clearTimeout(timerId);\n" + 
-				"		timerId = null;\n" + 
-				"	}\n" + 
-				"};\n" + 
-				"</script>"));
+				"<div id=\"player\"></div>\n" +
+						"<script>\n" +
+						"	var tag = document.createElement('script');\n" +
+						"\n" +
+						"tag.src = \"https://www.youtube.com/iframe_api\";\n" +
+						"var firstScriptTag = document.getElementsByTagName('script')[0];\n" +
+						"firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);\n" +
+						"\n" +
+						"var player;\n" +
+						"\n" +
+						"function onYouTubeIframeAPIReady() {\n" +
+						"	player = new YT.Player('player', {\n" +
+						"		height: '390',\n" +
+						"		width: '640',\n" +
+						"		videoId: '" + youtubeId + "',\n" +
+						"		events: {\n" +
+						"			'onReady': onPlayerReady,\n" +
+						"			'onStateChange': onPlayerStateChange\n" +
+						"		}\n" +
+						"	});\n" +
+						"}\n" +
+						"\n" +
+						"var playerIsReady = false;\n" +
+						"var secondsElapsed = 0;\n" +
+						"function onPlayerReady(event) {\n" +
+						"	playerIsReady = true;\n" +
+						"}\n" +
+						"\n" +
+						"function onPlayerStateChange(event) { \n" +
+						"	if (event.data === 0) {\n" +
+						"		// Video ended\n" +
+						"		stopTimer();\n" +
+						"		secondsElapsed = 0;\n" +
+						"	} else if (event.data === 1) {\n" +
+						"		// Video playing\n" +
+						"		startTimer();\n" +
+						"	} else if (event.data === 2) {\n" +
+						"		// Video paused\n" +
+						"		stopTimer();\n" +
+						"	} else if (event.data === 3) {\n" +
+						"		// Video buffering\n" +
+						"		stopTimer();\n" +
+						"	}\n" +
+						"}\n" +
+						"\n" +
+						"var endTime = 0;\n" +
+						"var play = function(start, end) {\n" +
+						"	if (playerIsReady) {\n" +
+						"		endTime = end;\n" +
+						"		player.playVideo();\n" +
+						"	} else {\n" +
+						"		alert(\"player not ready, try again\");\n" +
+						"	}\n" +
+						"}\n" +
+						"\n" +
+						"function startTimer() {\n" +
+						"	secondsElapsed += 1;\n" +
+						"	if (secondsElapsed >= endTime) {\n" +
+						"		stopTimer();\n" +
+						"		player.stopVideo();\n" +
+						"	}\n" +
+						"	timerId = window.setTimeout(startTimer, 1000);\n" +
+						"};\n" +
+						"stopTimer = () => {\n" +
+						"	if (timerId) {\n" +
+						"		window.clearTimeout(timerId);\n" +
+						"		timerId = null;\n" +
+						"	}\n" +
+						"};\n" +
+						"</script>"));
 	}
 
 	/** Plays the given clip in the youtube player. */

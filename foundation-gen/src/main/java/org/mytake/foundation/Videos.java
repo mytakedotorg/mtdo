@@ -7,6 +7,7 @@
 package org.mytake.foundation;
 
 import com.jsoniter.JsonIterator;
+import compat.java2ts.VideoFactContentJava;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.security.NoSuchAlgorithmException;
@@ -24,7 +25,6 @@ import java2ts.Foundation.SpeakerMap;
 import java2ts.Foundation.VideoFactContentEncoded;
 import java2ts.Foundation.VideoFactContentLegacy;
 import org.mytake.foundation.parsers.VttParser;
-import org.mytake.foundation.transcript.VideoFactContentJava;
 
 public class Videos extends FactWriter<VideoFactContentEncoded> {
 	public static Videos national() throws NoSuchAlgorithmException, IOException {
@@ -94,8 +94,7 @@ public class Videos extends FactWriter<VideoFactContentEncoded> {
 		}
 
 		VideoFactContentJava fast = createFast(legacy);
-		VideoFactContentEncoded encoded = createEncoded(fast);
-		byTitle.put(title, encoded);
+		byTitle.put(title, fast.toEncoded());
 		add(title, date, "recorded", "video");
 	}
 
@@ -139,20 +138,6 @@ public class Videos extends FactWriter<VideoFactContentEncoded> {
 			fast.speakerPerson[i] = lastnameToIdx.get(speakerMap.speaker);
 		}
 		return fast;
-	}
-
-	/** Encode the arrays into a byte array. */
-	private VideoFactContentEncoded createEncoded(VideoFactContentJava fast) {
-		VideoFactContentEncoded encoded = new VideoFactContentEncoded();
-		encoded.fact = fast.fact;
-		encoded.durationSeconds = fast.durationSecs;
-		encoded.youtubeId = fast.youtubeId;
-		encoded.speakers = fast.speakers;
-		encoded.plainText = fast.plainText;
-		encoded.numWords = fast.charOffsets.length;
-		encoded.numSpeakerSections = fast.speakerPerson.length;
-		encoded.data = fast.arraysToBase64();
-		return encoded;
 	}
 
 	private void addWithTranscript(String youtubeId, String title, String date, String duration) throws NoSuchAlgorithmException, IOException {

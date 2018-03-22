@@ -9,6 +9,7 @@ package org.mytake.foundation.transcript;
 import com.diffplug.common.base.Either;
 import com.diffplug.common.base.Preconditions;
 import com.diffplug.common.collect.Lists;
+import compat.java2ts.VideoFactContentJava;
 import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
