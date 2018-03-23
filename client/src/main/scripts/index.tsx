@@ -9,7 +9,7 @@ import FeedList from "./components/FeedList";
 import FoundationView from "./components/FoundationView";
 import SearchBar from "./components/SearchBar";
 import UserNav from "./components/UserNav";
-import VideoResults from "./components/VideoResults";
+import VideoResultsLoader from "./components/VideoResultsLoader";
 import { TakeDocument } from "./components/BlockEditor";
 import { Card } from "./components/FeedList";
 import { alertErr } from "./utils/functions";
@@ -37,8 +37,7 @@ interface NewTakeArgs {
 
 interface SearchArgs {
 	type: "search";
-	results?: Search.FactResultList;
-	searchTerm?: string;
+	searchTerm: string;
 }
 
 declare global {
@@ -83,7 +82,7 @@ if (app) {
 				Root = <BlockReader initState={window.mytake.takeDocument} takeId={window.mytake.takeId} />;
 				break;
 			case "search":
-				Root = <VideoResults results={{facts: []}}/>
+				Root = <VideoResultsLoader searchTerm={window.mytake.searchTerm} />
 				break;
 			default:
 				alertErr("index: unknown argument structure");
@@ -99,7 +98,7 @@ if (app) {
 const searchBarContainer: HTMLElement | null = document.getElementById("searchbar");
 if (searchBarContainer) {
 	let searchTerm = "";
-	if (typeof window.mytake != "undefined" && window.mytake.type === "search" && window.mytake.searchTerm) {
+	if (typeof window.mytake != "undefined" && window.mytake.type === "search") {
 		searchTerm = window.mytake.searchTerm;
 	}
   ReactDOM.render(<SearchBar searchTerm={searchTerm}/>, searchBarContainer);

@@ -2,7 +2,7 @@ import * as React from "react";
 import SearchRadioButtons from "./SearchRadioButtons";
 import VideoLite, { VideoLiteProps } from "./VideoLite";
 import VideoPlaceholder from "./VideoPlaceholder";
-import VideoResultsLoader from "./VideoResultsLoader";
+import { VideoFactsLoader } from "./VideoResultsLoader";
 import isEqual = require("lodash/isEqual");
 import { alertErr } from "../utils/functions";
 import { Search } from "../java2ts/Search";
@@ -101,7 +101,7 @@ class VideoResults extends React.Component<
           {this.state.sortedList
             // .slice(0, this.maxResults)
             .map((videoResult, idx) => {
-              return <VideoResultsLoader results={videoResult} />;
+              return <VideoFactsLoader results={videoResult} />;
             })}
         </div>
       </div>

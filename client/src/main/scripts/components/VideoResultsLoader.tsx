@@ -1,21 +1,90 @@
 import * as React from "react";
-import { SortedResults, VideoResultPreview } from "./VideoResults";
+import VideoResults, {
+  SortedResults,
+  VideoResultPreview
+} from "./VideoResults";
+import { Routes } from "../java2ts/Routes";
 import { Foundation } from "../java2ts/Foundation";
-import { fetchFact } from "../utils/databaseAPI";
+import { Search } from "../java2ts/Search";
+import { fetchFact, postRequest } from "../utils/databaseAPI";
 import { alertErr } from "../utils/functions";
 
 interface VideoResultsLoaderProps {
-  results: SortedResults;
+  searchTerm: string;
 }
+
 interface VideoResultsLoaderState {
   loading: boolean;
-  videoFact?: Foundation.VideoFactContent;
+  resultList?: Search.FactResultList;
 }
+
 class VideoResultsLoader extends React.Component<
   VideoResultsLoaderProps,
   VideoResultsLoaderState
 > {
   constructor(props: VideoResultsLoaderProps) {
+    super(props);
+
+    this.state = {
+      loading: true
+    };
+  }
+  getFactResults = () => {
+    const bodyJson: Search.Request = {
+      searchTerm: this.props.searchTerm
+    };
+    postRequest(
+      Routes.API_SEARCH,
+      bodyJson,
+      function(json: Search.FactResultList) {
+        const resultList: Search.FactResultList = json;
+        this.setState({
+          loading: false,
+          resultList: resultList
+        });
+      }.bind(this)
+    );
+  };
+  componentDidMount() {
+    this.getFactResults();
+  }
+  render() {
+    return (
+      <VideoResultsLoaderBranch
+        containerProps={this.props}
+        containerState={this.state}
+      />
+    );
+  }
+}
+
+interface VideoResultsLoaderBranchProps {
+  containerProps: VideoResultsLoaderProps;
+  containerState: VideoResultsLoaderState;
+}
+
+const VideoResultsLoaderBranch: React.StatelessComponent<
+  VideoResultsLoaderBranchProps
+> = props => {
+  if (props.containerState.loading || !props.containerState.resultList) {
+    return <VideoResultLoadingView />;
+  } else {
+    return <VideoResults results={props.containerState.resultList} />;
+  }
+};
+
+interface VideoFactsLoaderProps {
+  results: SortedResults;
+}
+interface VideoFactsLoaderState {
+  loading: boolean;
+  videoFact?: Foundation.VideoFactContent;
+}
+export class VideoFactsLoader extends React.Component<
+  VideoFactsLoaderProps,
+  VideoFactsLoaderState
+> {
+  constructor(props: VideoFactsLoaderProps) {
     super(props);
 
     this.state = {
@@ -49,17 +118,22 @@ class VideoResultsLoader extends React.Component<
     this.getFact(this.props.results.hash);
   }
   render() {
-    return <div className="result-preview" />;
+    return (
+      <VideoFactsLoaderBranch
+        containerProps={this.props}
+        containerState={this.state}
+      />
+    );
   }
 }
 
-interface VideoResultsLoaderBranchProps {
-  containerProps: VideoResultsLoaderProps;
-  containerState: VideoResultsLoaderState;
+interface VideoFactsLoaderBranchProps {
+  containerProps: VideoFactsLoaderProps;
+  containerState: VideoFactsLoaderState;
 }
 
-const VideoResultsLoaderBranch: React.StatelessComponent<
-  VideoResultsLoaderBranchProps
+const VideoFactsLoaderBranch: React.StatelessComponent<
+  VideoFactsLoaderBranchProps
 > = props => {
   if (props.containerState.loading || !props.containerState.videoFact) {
     return <VideoResultPreviewLoadingView />;
@@ -76,6 +150,14 @@ const VideoResultsLoaderBranch: React.StatelessComponent<
 const VideoResultPreviewLoadingView: React.StatelessComponent<{}> = props => (
   <div className="result-preview">
     <p className="result-preview__text">Loading search results...</p>
+  </div>
+);
+
+const VideoResultLoadingView: React.StatelessComponent<{}> = props => (
+  <div className="results">
+    <div className="results__inner-container">
+      <h1 className="results__heading">Searching...</h1>
+    </div>
   </div>
 );
 
