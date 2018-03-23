@@ -27,7 +27,8 @@ public class SearchModule implements Jooby.Module {
 		});
 		env.router().get(Routes.SEARCH, req -> {
 			// TODO: some template
-			return null;
+			Search.Request request = req.params(Search.Request.class);
+			return views.Search.searchResults.template(request.searchTerm);
 		});
 	}
 }

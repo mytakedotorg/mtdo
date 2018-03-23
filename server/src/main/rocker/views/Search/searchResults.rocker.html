@@ -1,0 +1,19 @@
+@*
+New draft -> Strings are null, ids are meaningless
+Existing draft -> Strings are not-null, all ids are meaningful
+*@
+
+@args(String searchTerm)
+
+@views.naked.template("MyTake.org", "Your bicycle for politics", "react") -> {
+<div id="app"></div>
+<script type="text/javascript">
+
+window.mytake = {
+	type: "search",
+	@*results: results,*@
+	searchTerm: "@searchTerm"
+};
+
+</script>
+}
