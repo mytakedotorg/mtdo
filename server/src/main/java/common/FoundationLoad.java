@@ -20,7 +20,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.TimeZone;
-import java.util.function.Consumer;
+import java.util.function.BiConsumer;
 import java2ts.Foundation;
 import java2ts.Foundation.FactLink;
 import java2ts.Routes;
@@ -44,14 +44,14 @@ public class FoundationLoad {
 		JsoniterSpi.setCurrentConfig(config);
 	}
 
-	public static void perVideo(Consumer<VideoFactContentJava> perVideo) throws IOException {
+	public static void perVideo(BiConsumer<String, VideoFactContentJava> perVideo) throws IOException {
 		Foundation.IndexPointer pointer = loadJson(Routes.FOUNDATION_INDEX_HASH, Foundation.IndexPointer.class);
 		List<Any> factLinks = loadJson(Routes.FOUNDATION_DATA + "/" + pointer.hash + ".json").asList();
 		for (Any factLinkAny : factLinks) {
 			FactLink factLink = factLinkAny.as(FactLink.class);
 			if (factLink.fact.kind.equals(Foundation.KIND_VIDEO)) {
 				Foundation.VideoFactContentEncoded encoded = loadJson(Routes.FOUNDATION_DATA + "/" + factLink.hash + ".json", Foundation.VideoFactContentEncoded.class);
-				perVideo.accept(VideoFactContentJava.decode(encoded));
+				perVideo.accept(factLink.hash, VideoFactContentJava.decode(encoded));
 			}
 		}
 	}

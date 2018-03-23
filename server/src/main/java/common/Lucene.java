@@ -128,15 +128,15 @@ public class Lucene implements AutoCloseable {
 	}
 
 	private static void forFactsInit(IndexWriter writer) throws IOException {
-		FoundationLoad.perVideo(video -> writeVideo(writer, video));
+		FoundationLoad.perVideo((hash, video) -> writeVideo(writer, hash, video));
 	}
 
-	static void writeVideo(IndexWriter writer, VideoFactContentJava videoFact) {
+	static void writeVideo(IndexWriter writer, String hash, VideoFactContentJava videoFact) {
 		int end = videoFact.plainText.length();
 		for (int i = videoFact.speakerWord.length - 1; i >= 0; --i) {
 			Document doc = new Document();
 			// stored but not indexed
-			doc.add(new StoredField(HASH, videoFact.youtubeId));
+			doc.add(new StoredField(HASH, hash));
 			doc.add(new StoredField(TURN, i));
 
 			// indexed but not stored
