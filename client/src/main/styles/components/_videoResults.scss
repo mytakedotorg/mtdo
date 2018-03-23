@@ -30,6 +30,12 @@
   @include heading1;
   text-align: center;
 }
+.results__subheading {
+  @include heading3;
+}
+.results__text {
+  @include body;
+}
 .searchradio__radio {
   margin-right: 1rem;
 }

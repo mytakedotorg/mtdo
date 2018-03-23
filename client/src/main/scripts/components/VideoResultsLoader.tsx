@@ -1,5 +1,6 @@
 import * as React from "react";
 import VideoResults, {
+  SelectionOptions,
   SortedResults,
   VideoResultPreview
 } from "./VideoResults";
@@ -69,12 +70,19 @@ const VideoResultsLoaderBranch: React.StatelessComponent<
   if (props.containerState.loading || !props.containerState.resultList) {
     return <VideoResultLoadingView />;
   } else {
-    return <VideoResults results={props.containerState.resultList} />;
+    return (
+      <VideoResults
+        results={props.containerState.resultList}
+        searchTerm={props.containerProps.searchTerm}
+      />
+    );
   }
 };
 
 interface VideoFactsLoaderProps {
   results: SortedResults;
+  searchTerm: string;
+  sortBy: SelectionOptions;
 }
 interface VideoFactsLoaderState {
   loading: boolean;
@@ -140,6 +148,8 @@ const VideoFactsLoaderBranch: React.StatelessComponent<
   } else {
     return (
       <VideoResultPreview
+        searchTerm={props.containerProps.searchTerm}
+        sortBy={props.containerProps.sortBy}
         turns={props.containerProps.results.turns}
         videoFact={props.containerState.videoFact}
       />

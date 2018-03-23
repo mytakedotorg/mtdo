@@ -17,6 +17,7 @@ export interface SortedResults {
 
 interface VideoResultsProps {
   results: Search.FactResultList;
+  searchTerm: string;
 }
 
 interface VideoResultsState {
@@ -106,7 +107,13 @@ class VideoResults extends React.Component<
           {this.state.sortedList
             // .slice(0, this.maxResults)
             .map((videoResult, idx) => {
-              return <VideoFactsLoader results={videoResult} />;
+              return (
+                <VideoFactsLoader
+                  results={videoResult}
+                  searchTerm={this.props.searchTerm}
+                  sortBy={this.state.selectedOption}
+                />
+              );
             })}
         </div>
       </div>
@@ -115,6 +122,8 @@ class VideoResults extends React.Component<
 }
 
 interface VideoResultPreviewProps {
+  searchTerm: string;
+  sortBy: SelectionOptions;
   turns: number[];
   videoFact: Foundation.VideoFactContent;
 }
@@ -128,31 +137,67 @@ export class VideoResultPreview extends React.Component<
     super(props);
   }
   render() {
-    const { turns, videoFact } = this.props;
+    const { searchTerm, turns, videoFact } = this.props;
     return (
       <div className="results__preview">
-        <h2>
+        <h2 className="results__subheading">
           Presidential debate | {videoFact.fact.title} -{" "}
           {videoFact.fact.primaryDate}
         </h2>
         {turns.map(turn => {
-          let snippet;
-          const firstChar = videoFact.charOffsets[turn];
+          // If this is slow, break this logic out into a new child component
+          let fullTurnText;
+          const firstWord = videoFact.speakerWord[turn];
+          const firstChar = videoFact.charOffsets[firstWord];
           if (videoFact.speakerWord[turn + 1]) {
-            const lastChar = videoFact.charOffsets[turn + 1] - 1;
-            snippet = videoFact.plainText.substring(firstChar, lastChar);
+            const lastWord = videoFact.speakerWord[turn + 1] - 1;
+            const lastChar = videoFact.charOffsets[lastWord];
+            fullTurnText = videoFact.plainText.substring(firstChar, lastChar);
           } else {
             // Result is in last turn
-            snippet = videoFact.plainText.substring(firstChar);
+            fullTurnText = videoFact.plainText.substring(firstChar);
           }
-          return <p>{snippet}</p>;
+          const intoSentences = fullTurnText.split(".");
+          const sentences: string[] = [];
+          switch (this.props.sortBy) {
+            case "Containing":
+              for (const sentence of intoSentences) {
+                if (sentence.toLowerCase().includes(searchTerm.toLowerCase())) {
+                  sentences.push(sentence + ".");
+                }
+              }
+              break;
+            case "BeforeAndAfter":
+              for (let i = 0; i < intoSentences.length; i++) {
+                const sentence = intoSentences[i];
+                if (sentence.toLowerCase().includes(searchTerm.toLowerCase())) {
+                  let allSentences = "";
+                  if (intoSentences[i - 1]) {
+                    allSentences = intoSentences[i - 1] + ". ";
+                  }
+                  allSentences += intoSentences[i] + ". ";
+                  if (intoSentences[i + 1]) {
+                    allSentences += intoSentences[i + 1] + ". ";
+                  }
+                  sentences.push(allSentences);
+                }
+              }
+              break;
+            default:
+              const msg = "VideoResultPreview: Unexpected radio button option";
+              alertErr(msg);
+              throw msg;
+          }
+          return <VideoResultTurn sentences={sentences} />;
         })}
       </div>
     );
   }
 }
 
-interface VideoResultTurnsProps {}
+interface VideoResultTurnsProps {
+  sentences: string[];
+}
 interface VideoResultTurnsState {}
 class VideoResultTurn extends React.Component<
   VideoResultTurnsProps,
@@ -162,7 +207,17 @@ class VideoResultTurn extends React.Component<
     super(props);
   }
   render() {
-    return <div className="results__turn" />;
+    return (
+      <div>
+        {this.props.sentences.map(sentence => {
+          return (
+            <div className="results__turn">
+              <p className="results__text">{sentence}</p>
+            </div>
+          );
+        })}
+      </div>
+    );
   }
 }
 export default VideoResults;
