@@ -15,23 +15,23 @@ export interface SortedResults {
   turns: number[];
 }
 
-interface VideoResultsProps {
+interface VideoResultsListProps {
   results: Search.FactResultList;
   searchTerm: string;
 }
 
-interface VideoResultsState {
+interface VideoResultsListState {
   selectedOption: SelectionOptions;
   sortedList: SortedResults[];
   videoProps?: VideoLiteProps;
 }
 
-class VideoResults extends React.Component<
-  VideoResultsProps,
-  VideoResultsState
+class VideoResultsList extends React.Component<
+  VideoResultsListProps,
+  VideoResultsListState
 > {
   maxResults: number;
-  constructor(props: VideoResultsProps) {
+  constructor(props: VideoResultsListProps) {
     super(props);
 
     this.maxResults = 50;
@@ -83,7 +83,7 @@ class VideoResults extends React.Component<
       return [];
     }
   };
-  componentWillReceiveProps(nextProps: VideoResultsProps) {
+  componentWillReceiveProps(nextProps: VideoResultsListProps) {
     if (!isEqual(this.props.results, nextProps.results)) {
       this.setState({
         sortedList: this.sortResults(nextProps.results)
@@ -220,4 +220,5 @@ class VideoResultTurn extends React.Component<
     );
   }
 }
-export default VideoResults;
+
+export default VideoResultsList;

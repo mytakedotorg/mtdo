@@ -1,5 +1,5 @@
 import * as React from "react";
-import VideoResults, {
+import VideoResultsList, {
   SelectionOptions,
   SortedResults,
   VideoResultPreview
@@ -71,7 +71,7 @@ const VideoResultsLoaderBranch: React.StatelessComponent<
     return <VideoResultLoadingView />;
   } else {
     return (
-      <VideoResults
+      <VideoResultsList
         results={props.containerState.resultList}
         searchTerm={props.containerProps.searchTerm}
       />
