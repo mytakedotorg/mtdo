@@ -44,7 +44,7 @@ public class LuceneTest {
 		fact.speakerWord = new int[]{0, 2};
 
 		try (Lucene lucene = new Lucene(writer -> {
-			Lucene.writeVideo(writer, fact);
+			Lucene.writeVideo(writer, "TODO", fact);
 		})) {
 
 			Lucene.NextRequest request = new Lucene.NextRequest();
