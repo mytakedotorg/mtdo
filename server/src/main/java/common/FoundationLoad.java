@@ -1,10 +1,10 @@
+/*
+ * MyTake.org
+ *
+ *  Copyright 2017 by its authors.
+ *  Some rights reserved. See LICENSE, https://github.com/mytakedotorg/mytakedotorg/graphs/contributors
+ */
 package common;
-
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.List;
-import java.util.TimeZone;
-import java.util.function.Consumer;
 
 import com.diffplug.common.base.Errors;
 import com.google.common.io.ByteSource;
@@ -16,8 +16,12 @@ import com.jsoniter.output.JsonStream;
 import com.jsoniter.spi.Config;
 import com.jsoniter.spi.DecodingMode;
 import com.jsoniter.spi.JsoniterSpi;
-
 import compat.java2ts.VideoFactContentJava;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.List;
+import java.util.TimeZone;
+import java.util.function.Consumer;
 import java2ts.Foundation;
 import java2ts.Foundation.FactLink;
 import java2ts.Routes;

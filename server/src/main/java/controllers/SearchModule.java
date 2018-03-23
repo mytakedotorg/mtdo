@@ -11,7 +11,6 @@ import com.typesafe.config.Config;
 import common.Lucene;
 import java2ts.Routes;
 import java2ts.Search;
-
 import org.jooby.Env;
 import org.jooby.Jooby;
 

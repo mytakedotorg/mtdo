@@ -18,7 +18,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import java2ts.Foundation;
 import java2ts.Foundation.CaptionWord;
 import java2ts.Foundation.Fact;

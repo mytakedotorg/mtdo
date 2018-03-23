@@ -6,11 +6,18 @@
  */
 package common;
 
+import com.diffplug.common.base.Errors;
+import com.diffplug.common.base.Throwing;
+import com.google.common.collect.ImmutableSet;
+import compat.java2ts.VideoFactContentJava;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
+import java2ts.Foundation.Person;
+import java2ts.Search;
+import java2ts.Search.FactResultList;
+import java2ts.Search.VideoResult;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
@@ -32,16 +39,6 @@ import org.apache.lucene.search.TermQuery;
 import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.RAMDirectory;
-
-import com.diffplug.common.base.Errors;
-import com.diffplug.common.base.Throwing;
-import com.google.common.collect.ImmutableSet;
-
-import compat.java2ts.VideoFactContentJava;
-import java2ts.Foundation.Person;
-import java2ts.Search;
-import java2ts.Search.FactResultList;
-import java2ts.Search.VideoResult;
 
 public class Lucene implements AutoCloseable {
 	private final Directory directory;
@@ -66,7 +63,7 @@ public class Lucene implements AutoCloseable {
 	}
 
 	@Override
-	public void close() throws Exception {
+	public void close() throws IOException {
 		reader.close();
 		directory.close();
 	}
@@ -83,15 +80,16 @@ public class Lucene implements AutoCloseable {
 		return searchDebate(next);
 	}
 
-	private FactResultList searchDebate(NextRequest request) throws IOException {
-		BooleanQuery.Builder speakerQuery = new BooleanQuery.Builder();
-		for (String person : request.people) {
-			speakerQuery.add(new TermQuery(new Term(SPEAKER, person)), Occur.SHOULD);
-		}
-
+	FactResultList searchDebate(NextRequest request) throws IOException {
 		BooleanQuery.Builder finalQuery = new BooleanQuery.Builder();
 		finalQuery.add(new TermQuery(new Term(CONTENT, request.request.searchTerm)), Occur.MUST);
-		finalQuery.add(speakerQuery.build(), Occur.MUST);
+		if (!request.people.isEmpty()) {
+			BooleanQuery.Builder speakerQuery = new BooleanQuery.Builder();
+			for (String person : request.people) {
+				speakerQuery.add(new TermQuery(new Term(SPEAKER, person)), Occur.SHOULD);
+			}
+			finalQuery.add(speakerQuery.build(), Occur.MUST);
+		}
 		List<Document> queryResults = runQuery(finalQuery.build());
 
 		FactResultList resultList = new FactResultList();
@@ -133,7 +131,7 @@ public class Lucene implements AutoCloseable {
 		FoundationLoad.perVideo(video -> writeVideo(writer, video));
 	}
 
-	private static void writeVideo(IndexWriter writer, VideoFactContentJava videoFact) {
+	static void writeVideo(IndexWriter writer, VideoFactContentJava videoFact) {
 		int end = videoFact.plainText.length();
 		for (int i = videoFact.speakerWord.length - 1; i >= 0; --i) {
 			Document doc = new Document();
