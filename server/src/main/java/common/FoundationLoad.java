@@ -12,7 +12,6 @@ import com.google.common.io.Resources;
 import com.jsoniter.JsonIterator;
 import com.jsoniter.any.Any;
 import com.jsoniter.output.EncodingMode;
-import com.jsoniter.output.JsonStream;
 import com.jsoniter.spi.Config;
 import com.jsoniter.spi.DecodingMode;
 import com.jsoniter.spi.JsoniterSpi;
@@ -39,11 +38,10 @@ public class FoundationLoad {
 		JsoniterSpi.registerTypeDecoder(Number.class, iter -> iter.readInt());
 		Config config = JsoniterSpi.getCurrentConfig().copyBuilder()
 				.escapeUnicode(false)
+				.decodingMode(DecodingMode.REFLECTION_MODE)
+				.encodingMode(EncodingMode.REFLECTION_MODE)
 				.build();
 		JsoniterSpi.setCurrentConfig(config);
-		JsoniterSpi.setDefaultConfig(config);
-		JsonIterator.setMode(DecodingMode.REFLECTION_MODE);
-		JsonStream.setMode(EncodingMode.REFLECTION_MODE);
 	}
 
 	public static void perVideo(Consumer<VideoFactContentJava> perVideo) throws IOException {
