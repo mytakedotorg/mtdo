@@ -1,9 +1,5 @@
 import { Foundation } from "../java2ts/Foundation";
 import { Routes } from "../java2ts/Routes";
-import { DraftRev } from "../java2ts/DraftRev";
-import { DraftPost } from "../java2ts/DraftPost";
-import { PublishResult } from "../java2ts/PublishResult";
-import { TakeReactionJson } from "../java2ts/TakeReactionJson";
 import { EmailSelf } from "../java2ts/EmailSelf";
 import {
   alertErr,
@@ -25,7 +21,6 @@ import {
   DocumentBlock,
   VideoBlock
 } from "../components/BlockEditor";
-import { FollowJson } from "../java2ts/FollowJson";
 
 function getAllFacts(
   callback: (
@@ -147,22 +142,8 @@ function isVideo(
 
 function postRequest(
   route: string,
-  bodyJson:
-    | DraftPost
-    | DraftRev
-    | TakeReactionJson.ReactReq
-    | TakeReactionJson.ViewReq
-    | EmailSelf
-    | FollowJson.FollowAskReq
-    | FollowJson.FollowTellReq,
-  successCb: (
-    json?:
-      | DraftRev
-      | PublishResult
-      | TakeReactionJson.ReactRes
-      | TakeReactionJson.ViewRes
-      | FollowJson.FollowRes
-  ) => void
+  bodyJson: any,
+  successCb: (json?: any) => void
 ) {
   const headers = new Headers();
 
@@ -195,18 +176,9 @@ function postRequest(
         throw "Unexpected response from server.";
       }
     })
-    .then(
-      (
-        json:
-          | DraftRev
-          | PublishResult
-          | TakeReactionJson.ReactRes
-          | TakeReactionJson.ViewRes
-          | FollowJson.FollowRes
-      ) => {
-        successCb(json);
-      }
-    )
+    .then((json: any) => {
+      successCb(json);
+    })
     .catch(function(error: Error) {
       alertErr("databaseAPI + " + route + ": " + error.message);
       throw error;
