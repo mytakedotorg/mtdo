@@ -20,15 +20,18 @@ public class SearchModule implements Jooby.Module {
 		Lucene module = Lucene.forFacts();
 		binder.bind(Lucene.class).toInstance(module);
 		env.onStop(module::close);
-		env.router().get(Routes.API_SEARCH, req -> {
+		env.router().post(Routes.API_SEARCH, req -> {
 			Search.Request request = req.body(Search.Request.class);
 			Lucene lucene = req.require(Lucene.class);
 			return lucene.searchDebate(request);
 		});
 		env.router().get(Routes.SEARCH, req -> {
-			// TODO: some template
-			Search.Request request = req.params(Search.Request.class);
-			return views.Search.searchResults.template(request.searchTerm);
+			try {
+				Search.Request request = req.params(Search.Request.class);
+				return views.Search.searchResults.template(request.searchTerm);
+			} catch (NullPointerException e) {
+				return "TODO";
+			}
 		});
 	}
 }
