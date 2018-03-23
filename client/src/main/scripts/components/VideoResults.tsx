@@ -55,7 +55,6 @@ class VideoResults extends React.Component<
     }
   };
   sortResults = (results: Search.FactResultList): SortedResults[] => {
-    // We'll need different compare functions depending on the filter
     const sortedByHash: Search.VideoResult[] = results.facts.concat().sort();
     if (sortedByHash.length > 0) {
       let sortedResults: SortedResults[] = [];
@@ -68,10 +67,16 @@ class VideoResults extends React.Component<
             turns: turns
           });
           prevHash = videoResult.hash;
-          turns = [];
+          turns = [videoResult.turn];
+        } else {
+          turns.push(videoResult.turn);
         }
-        turns.push(videoResult.turn);
       }
+      // Push last hash after loop is over
+      sortedResults.push({
+        hash: prevHash,
+        turns: turns
+      });
       return sortedResults;
     } else {
       return [];
