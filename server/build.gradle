@@ -120,6 +120,9 @@ dependencies {
 	// flyway
 	compile 'org.flywaydb:flyway-core:5.0.7'
 
+	// search
+	compile 'org.apache.lucene:lucene-core:7.2.1'
+
 	// common libs
 	compile 'commons-validator:commons-validator:1.6'
 	compile 'com.diffplug.durian:durian-core:1.2.0'

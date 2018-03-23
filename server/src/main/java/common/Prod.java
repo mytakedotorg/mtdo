@@ -14,6 +14,7 @@ import controllers.FoundationAssets;
 import controllers.HomeFeed;
 import controllers.Profile;
 import controllers.Redirects;
+import controllers.SearchModule;
 import controllers.TakeEmail;
 import controllers.TakeReaction;
 import controllers.Takes;
@@ -61,6 +62,11 @@ public class Prod extends Jooby {
 		Mods.init(jooby);
 		jooby.use(new Jdbc());
 		jooby.use(new jOOQ());
+		// The process of loading the foundation screws up JsoniterModule.
+		// Therefore, we have to load searchModule first, so that JsoniterModule
+		// is all setup afterwards.  TODO: compile the index so that we don't have
+		// to do this on every load
+		jooby.use(new SearchModule());
 		jooby.use(new JsoniterModule());
 	}
 
