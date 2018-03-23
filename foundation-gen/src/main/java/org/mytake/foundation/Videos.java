@@ -18,6 +18,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import java2ts.Foundation;
 import java2ts.Foundation.CaptionWord;
 import java2ts.Foundation.Fact;
 import java2ts.Foundation.Person;
@@ -95,7 +97,7 @@ public class Videos extends FactWriter<VideoFactContentEncoded> {
 
 		VideoFactContentJava fast = createFast(legacy);
 		byTitle.put(title, fast.toEncoded());
-		add(title, date, "recorded", "video");
+		add(title, date, "recorded", Foundation.KIND_VIDEO);
 	}
 
 	private static final DateTimeFormatter hhmmss = DateTimeFormatter.ofPattern("H:mm:ss");
