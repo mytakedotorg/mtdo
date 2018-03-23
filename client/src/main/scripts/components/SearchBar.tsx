@@ -1,10 +1,11 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import DropDown from "./DropDown";
-import { slugify } from "../utils/functions";
 import { Routes } from "../java2ts/Routes";
 
-interface SearchBarProps {}
+interface SearchBarProps {
+  searchTerm: string;
+}
 interface SearchBarState {
   value: string;
 }
@@ -13,12 +14,12 @@ class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
     super(props);
 
     this.state = {
-      value: ""
+      value: props.searchTerm
     };
   }
   handleRemoveTagClick = (event: React.MouseEvent<HTMLDivElement>) => {
     window.location.href =
-      Routes.FOUNDATION + "?q=" + slugify(this.state.value);
+      Routes.SEARCH + "?searchTerm=" + encodeURIComponent(this.state.value);
   };
   handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({ value: event.target.value });
@@ -26,7 +27,7 @@ class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
   handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     window.location.href =
-      Routes.FOUNDATION + "?q=" + slugify(this.state.value);
+      Routes.SEARCH + "?searchTerm=" + encodeURIComponent(this.state.value);
   };
   render() {
     const Toggle = (
@@ -60,9 +61,9 @@ class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
             <a
               className="searchbar__button-link"
               href={
-                Routes.FOUNDATION +
-                "?q=" +
-                slugify(this.state.value) +
+                Routes.SEARCH +
+                "?searchTerm=" +
+                encodeURIComponent(this.state.value) +
                 "&" +
                 "f=in+debates+said+by+donald+trump"
               }
@@ -82,9 +83,9 @@ class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
             <a
               className="searchbar__button-link"
               href={
-                Routes.FOUNDATION +
-                "?q=" +
-                slugify(this.state.value) +
+                Routes.SEARCH +
+                "?searchTerm=" +
+                encodeURIComponent(this.state.value) +
                 "&" +
                 "f=in+the+constitution"
               }
