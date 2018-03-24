@@ -7,7 +7,6 @@
 package org.mytake.foundation.transcript;
 
 import com.diffplug.common.base.Preconditions;
-import com.diffplug.common.collect.Immutables;
 import com.diffplug.common.io.ByteSource;
 import com.diffplug.common.io.Files;
 import com.google.auto.value.AutoValue;
@@ -19,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ListIterator;
+import java2ts.Foundation.VideoFactMeta;
 
 /**
  * Format is:
@@ -43,7 +43,7 @@ public abstract class SaidTranscript {
 		int startIdx = 0;
 		while (turnIter.hasNext()) {
 			Turn turn = turnIter.next();
-			startIdx += turn.speaker().name().length() + ": ".length();
+			startIdx += turn.speaker().length() + ": ".length();
 			List<String> words = turn.words();
 			for (String word : words) {
 				Word.Said saidWord = new Word.Said(word, startIdx);
@@ -60,7 +60,7 @@ public abstract class SaidTranscript {
 
 	@AutoValue
 	public abstract static class Turn {
-		public abstract Speaker speaker();
+		public abstract String speaker();
 
 		public abstract String said();
 
@@ -68,24 +68,23 @@ public abstract class SaidTranscript {
 			return Arrays.asList(said().split(" "));
 		}
 
-		public static Turn speakerWords(Speaker speaker, String words) {
+		public static Turn speakerWords(String speaker, String words) {
 			return new AutoValue_SaidTranscript_Turn(speaker, words);
 		}
 	}
 
-	public static SaidTranscript parse(File file) throws IOException {
-		return parse(Files.asByteSource(file));
+	public static SaidTranscript parse(VideoFactMeta meta, File file) throws IOException {
+		return parse(meta, Files.asByteSource(file));
 	}
 
-	public static SaidTranscript parse(ByteSource source) throws IOException {
+	public static SaidTranscript parse(VideoFactMeta meta, ByteSource source) throws IOException {
 		int lineCount = 1;
 		try (BufferedReader reader = source.asCharSource(StandardCharsets.UTF_8).openBufferedStream()) {
 			List<Turn> turns = new ArrayList<>();
 			String line;
 			while (!(line = reader.readLine()).isEmpty()) {
 				int firstColon = line.indexOf(':');
-				String speakerName = line.substring(0, firstColon);
-				Speaker speaker = Speaker.forName(speakerName);
+				String speaker = line.substring(0, firstColon);
 				String words = line.substring(firstColon + 1).trim();
 				turns.add(Turn.speakerWords(speaker, words));
 
@@ -102,9 +101,5 @@ public abstract class SaidTranscript {
 		} catch (Exception e) {
 			throw new RuntimeException("On line " + lineCount, e);
 		}
-	}
-
-	public List<Speaker> toSpeakers() {
-		return turns().stream().map(Turn::speaker).collect(Immutables.toSortedSet(Speaker.ordering())).asList();
 	}
 }

@@ -8,11 +8,10 @@ package org.mytake.foundation.transcript;
 
 import com.diffplug.common.base.Either;
 import com.diffplug.common.base.Preconditions;
-import com.diffplug.common.collect.Lists;
 import compat.java2ts.VideoFactContentJava;
-import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
+import java2ts.Foundation.VideoFactMeta;
 import org.eclipse.jgit.diff.Edit;
 import org.eclipse.jgit.diff.MyersDiff;
 import org.eclipse.jgit.diff.Sequence;
@@ -28,11 +27,6 @@ public class WordMatch {
 
 	private final List<Edit> editList;
 
-	public WordMatch(Recording recording) throws IOException {
-		this(SaidTranscript.parse(recording.getSaidFile()),
-				VttTranscript.parse(recording.getVttFile()));
-	}
-
 	public WordMatch(SaidTranscript said, VttTranscript vtt) {
 		this.said = said;
 		this.vtt = vtt;
@@ -40,6 +34,10 @@ public class WordMatch {
 		this.saidWords = said.attributedWords();
 		this.vttWords = vtt.words();
 		this.editList = MyersDiff.INSTANCE.diff(new WordTimeMatcher(), new ListSequence(saidWords), new ListSequence(vttWords));
+	}
+
+	public VttTranscript vtt() {
+		return vtt;
 	}
 
 	public List<Word.Said> saidWords() {
@@ -76,13 +74,13 @@ public class WordMatch {
 	 * But if it is empty, then this will create a VideoFactContentJava
 	 * with all the appropriate content.
 	 */
-	public VideoFactContentJava toVideoFact(Recording recording) {
+	public VideoFactContentJava toVideoFact(VideoFactMeta meta) {
 		Preconditions.checkState(editList.isEmpty(), "The transcripts must match perfectly.");
 		VideoFactContentJava java = new VideoFactContentJava();
-		java.youtubeId = recording.youtubeId();
-		java.durationSecs = recording.durationSec();
-		List<Speaker> speakers = said.toSpeakers();
-		java.speakers = Lists.transform(speakers, Speaker::toPerson);
+		java.fact = meta.fact;
+		java.youtubeId = meta.youtubeId;
+		java.durationSecs = meta.durationSeconds.doubleValue();
+		java.speakers = meta.speakers;
 		java.plainText = said.turns().stream().map(Turn::said).collect(Collectors.joining(" "));
 		java.timestamps = vttWords.stream().mapToDouble(Word.Vtt::time).toArray();
 		java.charOffsets = new int[java.timestamps.length];
@@ -97,6 +95,7 @@ public class WordMatch {
 				++i;
 			}
 		}
+		List<String> speakers = meta.speakers.stream().map(s -> s.name).collect(Collectors.toList());
 		java.speakerPerson = said.turns().stream().map(Turn::speaker).mapToInt(speakers::indexOf).toArray();
 		java.speakerWord = new int[said.turns().size()];
 		java.speakerWord[0] = 0;

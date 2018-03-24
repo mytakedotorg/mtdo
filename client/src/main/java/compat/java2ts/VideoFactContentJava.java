@@ -11,13 +11,13 @@ import java.nio.ByteOrder;
 import java.util.Base64;
 import java.util.List;
 import java2ts.Foundation.FactContent;
-import java2ts.Foundation.Person;
+import java2ts.Foundation.Speaker;
 import java2ts.Foundation.VideoFactContentEncoded;
 
 public class VideoFactContentJava extends FactContent {
 	public String youtubeId;
 	public double durationSecs;
-	public List<Person> speakers;
+	public List<Speaker> speakers;
 	public String plainText;
 	public int[] charOffsets;
 	public double[] timestamps;

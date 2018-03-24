@@ -6,10 +6,6 @@
  */
 package org.mytake.foundation.transcript;
 
-import com.diffplug.common.base.Errors;
-import com.diffplug.common.io.ByteSource;
-import com.diffplug.common.io.Resources;
-import java.nio.charset.StandardCharsets;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import org.assertj.core.api.Assertions;
@@ -44,18 +40,5 @@ public class VttTranscriptTest {
 		Assertions.assertThat(header.start()).isEqualTo(3 * 60 + 58.080);
 		Assertions.assertThat(header.end()).isEqualTo(4 * 60 + 03.030);
 		Assertions.assertThat(header.formatting()).isEqualTo("align:start position:19%");
-	}
-
-	@Test
-	public void transcriptRoundtrip() {
-		Consumer<String> roundtrip = Errors.rethrow().wrap(name -> {
-			String content = Resources.toString(VttTranscriptTest.class.getResource("/transcript/vtt/" + name + ".vtt"), StandardCharsets.UTF_8);
-			VttTranscript transcript = VttTranscript.parse(ByteSource.wrap(content.getBytes(StandardCharsets.UTF_8)));
-			String rountripped = transcript.asString();
-			Assertions.assertThat(rountripped).isEqualTo(content);
-		});
-		for (Recording recording : Recording.national()) {
-			roundtrip.accept(recording.yyyyMMdd());
-		}
 	}
 }

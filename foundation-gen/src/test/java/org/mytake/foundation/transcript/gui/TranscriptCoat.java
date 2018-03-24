@@ -6,7 +6,6 @@
  */
 package org.mytake.foundation.transcript.gui;
 
-import com.diffplug.common.base.Errors;
 import com.diffplug.common.swt.Layouts;
 import com.diffplug.common.swt.Shells;
 import com.diffplug.common.swt.SwtMisc;
@@ -14,10 +13,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
-import org.mytake.foundation.transcript.Recording;
-import org.mytake.foundation.transcript.SaidTranscript;
-import org.mytake.foundation.transcript.VttTranscript;
-import org.mytake.foundation.transcript.WordMatch;
 
 public class TranscriptCoat {
 	private final SaidCtl saidCtl;
@@ -39,22 +34,21 @@ public class TranscriptCoat {
 		Layouts.setGridData(mismatchCtl).grabHorizontal();
 	}
 
-	public void setTo(Recording recording) {
-		SaidTranscript said = Errors.rethrow().get(() -> SaidTranscript.parse(recording.getSaidFile()));
-		VttTranscript vtt = Errors.rethrow().get(() -> VttTranscript.parse(recording.getVttFile()));
-		WordMatch wordMatch = new WordMatch(said, vtt);
-
-		youtubeCtl.setToYoutubeId(recording.youtubeId());
-		saidCtl.setFile(recording.getSaidFile(), said);
-		vttCtl.setFile(recording.getVttFile(), wordMatch);
-		mismatchCtl.setMatch(wordMatch);
+	public void setTo(Object recording) {
+		//		SaidTranscript said = Errors.rethrow().get(() -> SaidTranscript.parse(null, recording.getSaidFile()));
+		//		VttTranscript vtt = Errors.rethrow().get(() -> VttTranscript.parse(recording.getVttFile()));
+		//		WordMatch wordMatch = new WordMatch(said, vtt);
+		//
+		//		youtubeCtl.setToYoutubeId(recording.youtubeId());
+		//		saidCtl.setFile(recording.getSaidFile(), said);
+		//		vttCtl.setFile(recording.getVttFile(), wordMatch);
+		//		mismatchCtl.setMatch(wordMatch);
 	}
 
 	public static void main(String[] args) {
-		Recording recording = Recording.national().get(0);
 		Shell shell = Shells.builder(SWT.SHELL_TRIM, cmp -> {
 			TranscriptCoat coat = new TranscriptCoat(cmp);
-			coat.setTo(recording);
+			coat.setTo(null);
 		})
 				.setSize(SwtMisc.scaleByFontHeight(40, 30))
 				.openOnDisplay();
