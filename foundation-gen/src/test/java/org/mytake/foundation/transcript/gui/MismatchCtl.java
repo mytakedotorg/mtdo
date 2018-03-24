@@ -21,8 +21,8 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
+import org.mytake.foundation.transcript.TranscriptMatch;
 import org.mytake.foundation.transcript.Word;
-import org.mytake.foundation.transcript.WordMatch;
 
 public class MismatchCtl extends ControlWrapper.AroundControl<Composite> {
 	private final SaidCtl saidCtl;
@@ -93,9 +93,9 @@ public class MismatchCtl extends ControlWrapper.AroundControl<Composite> {
 		setGroup(isUp ? ++idx : --idx);
 	}
 
-	private WordMatch match;
+	private TranscriptMatch match;
 
-	public void setMatch(WordMatch wordMatch) {
+	public void setMatch(TranscriptMatch wordMatch) {
 		this.match = wordMatch;
 		groupTxt.setText(Integer.toString(wordMatch.edits().size()));
 		ofGroupLbl.setText("of " + wordMatch.edits().size());

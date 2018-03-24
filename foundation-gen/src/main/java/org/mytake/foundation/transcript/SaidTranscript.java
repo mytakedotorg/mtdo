@@ -7,6 +7,7 @@
 package org.mytake.foundation.transcript;
 
 import com.diffplug.common.base.Preconditions;
+import com.diffplug.common.collect.Immutables;
 import com.diffplug.common.io.ByteSource;
 import com.diffplug.common.io.Files;
 import com.google.auto.value.AutoValue;
@@ -18,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Set;
 import java2ts.Foundation.VideoFactMeta;
 
 /**
@@ -78,6 +80,8 @@ public abstract class SaidTranscript {
 	}
 
 	public static SaidTranscript parse(VideoFactMeta meta, ByteSource source) throws IOException {
+		Set<String> people = meta.speakers.stream().map(s -> s.name).collect(Immutables.toSet());
+
 		int lineCount = 1;
 		try (BufferedReader reader = source.asCharSource(StandardCharsets.UTF_8).openBufferedStream()) {
 			List<Turn> turns = new ArrayList<>();
@@ -85,6 +89,7 @@ public abstract class SaidTranscript {
 			while (!(line = reader.readLine()).isEmpty()) {
 				int firstColon = line.indexOf(':');
 				String speaker = line.substring(0, firstColon);
+				Preconditions.checkArgument(people.contains(speaker), "No such person %s, available: %s", speaker, people);
 				String words = line.substring(firstColon + 1).trim();
 				turns.add(Turn.speakerWords(speaker, words));
 

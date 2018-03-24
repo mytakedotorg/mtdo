@@ -11,29 +11,35 @@ import com.diffplug.common.base.Preconditions;
 import compat.java2ts.VideoFactContentJava;
 import java.util.List;
 import java.util.stream.Collectors;
-import java2ts.Foundation.VideoFactMeta;
+import java2ts.Foundation;
 import org.eclipse.jgit.diff.Edit;
 import org.eclipse.jgit.diff.MyersDiff;
 import org.eclipse.jgit.diff.Sequence;
 import org.eclipse.jgit.diff.SequenceComparator;
 import org.mytake.foundation.transcript.SaidTranscript.Turn;
 
-public class WordMatch {
-	private SaidTranscript said;
-	private VttTranscript vtt;
+public class TranscriptMatch {
+	private final Foundation.VideoFactMeta meta;
+	private final SaidTranscript said;
+	private final VttTranscript vtt;
 
 	private final List<Word.Said> saidWords;
 	private final List<Word.Vtt> vttWords;
 
 	private final List<Edit> editList;
 
-	public WordMatch(SaidTranscript said, VttTranscript vtt) {
+	public TranscriptMatch(Foundation.VideoFactMeta meta, SaidTranscript said, VttTranscript vtt) {
+		this.meta = meta;
 		this.said = said;
 		this.vtt = vtt;
 
 		this.saidWords = said.attributedWords();
 		this.vttWords = vtt.words();
 		this.editList = MyersDiff.INSTANCE.diff(new WordTimeMatcher(), new ListSequence(saidWords), new ListSequence(vttWords));
+	}
+
+	public Foundation.VideoFactMeta meta() {
+		return meta;
 	}
 
 	public VttTranscript vtt() {
@@ -74,12 +80,12 @@ public class WordMatch {
 	 * But if it is empty, then this will create a VideoFactContentJava
 	 * with all the appropriate content.
 	 */
-	public VideoFactContentJava toVideoFact(VideoFactMeta meta) {
+	public VideoFactContentJava toVideoFact() {
 		Preconditions.checkState(editList.isEmpty(), "The transcripts must match perfectly.");
 		VideoFactContentJava java = new VideoFactContentJava();
 		java.fact = meta.fact;
 		java.youtubeId = meta.youtubeId;
-		java.durationSecs = meta.durationSeconds.doubleValue();
+		java.durationSeconds = meta.durationSeconds.doubleValue();
 		java.speakers = meta.speakers;
 		java.plainText = said.turns().stream().map(Turn::said).collect(Collectors.joining(" "));
 		java.timestamps = vttWords.stream().mapToDouble(Word.Vtt::time).toArray();
@@ -88,15 +94,15 @@ public class WordMatch {
 		int i = 1;
 		for (Turn turn : said.turns()) {
 			for (String word : turn.words()) {
+				java.charOffsets[i] = java.charOffsets[i - 1] + word.length() + 1;
+				++i;
 				if (i == java.charOffsets.length) {
 					break;
 				}
-				java.charOffsets[i] = java.charOffsets[i - 1] + word.length() + 1;
-				++i;
 			}
 		}
-		List<String> speakers = meta.speakers.stream().map(s -> s.name).collect(Collectors.toList());
-		java.speakerPerson = said.turns().stream().map(Turn::speaker).mapToInt(speakers::indexOf).toArray();
+		List<String> speakersByName = meta.speakers.stream().map(speaker -> speaker.name).collect(Collectors.toList());
+		java.speakerPerson = said.turns().stream().map(Turn::speaker).mapToInt(speakersByName::indexOf).toArray();
 		java.speakerWord = new int[said.turns().size()];
 		java.speakerWord[0] = 0;
 		for (i = 1; i < said.turns().size(); ++i) {

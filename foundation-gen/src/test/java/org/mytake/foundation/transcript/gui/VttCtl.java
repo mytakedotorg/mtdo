@@ -20,8 +20,8 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
+import org.mytake.foundation.transcript.TranscriptMatch;
 import org.mytake.foundation.transcript.Word;
-import org.mytake.foundation.transcript.WordMatch;
 
 public class VttCtl extends ControlWrapper.AroundControl<Composite> {
 	private final FileCtl fileCtl;
@@ -66,9 +66,9 @@ public class VttCtl extends ControlWrapper.AroundControl<Composite> {
 		});
 	}
 
-	private WordMatch match;
+	private TranscriptMatch match;
 
-	public void setFile(File file, WordMatch match) {
+	public void setFile(File file, TranscriptMatch match) {
 		fileCtl.setFile(file);
 		this.match = match;
 		viewer.setInput(match.vttWords());

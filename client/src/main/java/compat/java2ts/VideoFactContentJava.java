@@ -16,7 +16,7 @@ import java2ts.Foundation.VideoFactContentEncoded;
 
 public class VideoFactContentJava extends FactContent {
 	public String youtubeId;
-	public double durationSecs;
+	public double durationSeconds;
 	public List<Speaker> speakers;
 	public String plainText;
 	public int[] charOffsets;
@@ -28,7 +28,7 @@ public class VideoFactContentJava extends FactContent {
 	public VideoFactContentEncoded toEncoded() {
 		VideoFactContentEncoded encoded = new VideoFactContentEncoded();
 		encoded.fact = fact;
-		encoded.durationSeconds = durationSecs;
+		encoded.durationSeconds = durationSeconds;
 		encoded.youtubeId = youtubeId;
 		encoded.speakers = speakers;
 		encoded.plainText = plainText;
@@ -73,7 +73,7 @@ public class VideoFactContentJava extends FactContent {
 		VideoFactContentJava java = new VideoFactContentJava();
 		// do the direct transfers
 		java.youtubeId = encoded.youtubeId;
-		java.durationSecs = encoded.durationSeconds.intValue();
+		java.durationSeconds = encoded.durationSeconds.intValue();
 		java.speakers = encoded.speakers;
 		java.plainText = encoded.plainText;
 		// create the new arrays
