@@ -5,21 +5,21 @@ import java.util.Arrays;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 
-import java2ts.Foundation.Person;
+import java2ts.Foundation.Speaker;
 
 public class VideoFactContentJavaTest {
 	@Test
 	public void roundtrip() {
-		Person jack = new Person();
-		jack.firstname = "Jack";
-		jack.lastname = "Last";
-		Person jill = new Person();
-		jill.firstname = "Jill";
-		jill.lastname = "Last";
+		Speaker jack = new Speaker();
+		jack.fullName = "Jack Last";
+		jack.role = "Hill climber";
+		Speaker jill = new Speaker();
+		jill.fullName = "Jill Last";
+		jill.role = "Water fetcher";
 
 		VideoFactContentJava java = new VideoFactContentJava();
 		java.youtubeId = "youtube";
-		java.durationSecs = 123;
+		java.durationSeconds = 123;
 		java.speakers = Arrays.asList(jack, jill);
 		java.plainText = "Jack said Jill said";
 		java.charOffsets = new int[] {0, 5, 10, 15};
@@ -29,7 +29,7 @@ public class VideoFactContentJavaTest {
 
 		VideoFactContentJava roundtrip = VideoFactContentJava.decode(java.toEncoded());
 		Assertions.assertThat(roundtrip.youtubeId).isEqualTo(java.youtubeId);
-		Assertions.assertThat(roundtrip.durationSecs).isEqualTo(java.durationSecs);
+		Assertions.assertThat(roundtrip.durationSeconds).isEqualTo(java.durationSeconds);
 		Assertions.assertThat(roundtrip.speakers).isEqualTo(java.speakers);
 		Assertions.assertThat(roundtrip.plainText).isEqualTo(java.plainText);
 		Assertions.assertThat(roundtrip.charOffsets).isEqualTo(java.charOffsets);
