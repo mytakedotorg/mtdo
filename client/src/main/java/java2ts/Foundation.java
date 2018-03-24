@@ -13,9 +13,9 @@ import java2ts.StringTypes.recorded;
 import jsweet.util.tuple.Tuple2;
 
 public interface Foundation {
-	///////////////////////////////
-	// Unused, but what I'd like //
-	///////////////////////////////
+	public static final String KIND_VIDEO = "video";
+	public static final String KIND_DOCUMENT = "document";
+
 	@jsweet.lang.Interface
 	public class Fact {
 		public String title;

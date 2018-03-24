@@ -15,12 +15,12 @@ public interface Search {
 	}
 
 	@jsweet.lang.Interface
-	public class FactResult {
+	public class FactResult implements Json {
 		public String hash;
 	}
 
 	@jsweet.lang.Interface
-	public class VideoResult extends FactResult implements Json {
+	public class VideoResult extends FactResult {
 		public int turn;
 	}
 

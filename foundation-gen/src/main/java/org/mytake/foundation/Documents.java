@@ -9,6 +9,8 @@ package org.mytake.foundation;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.security.NoSuchAlgorithmException;
+
+import java2ts.Foundation;
 import java2ts.Foundation.DocumentFactContent;
 import java2ts.Foundation.Fact;
 import org.mytake.foundation.parsers.FoundationParser;
@@ -43,7 +45,7 @@ public class Documents extends FactWriter<DocumentFactContent> {
 	}
 
 	private void add(String title, String date) throws NoSuchAlgorithmException, IOException {
-		add(title, date, "ratified", "document");
+		add(title, date, "ratified", Foundation.KIND_DOCUMENT);
 	}
 
 	@Override
