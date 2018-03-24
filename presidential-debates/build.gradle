@@ -1,0 +1,12 @@
+
+apply plugin: 'com.diffplug.gradle.spotless'
+spotless {
+	format 'foundation', {
+		target '*'
+		replace('Acronyms confuse our tooling 1', "FBI", "FBI")
+		replace('Acronyms confuse our tooling 2', "FBI", "FBI")
+		replace('Always use simple apostrophe', "'", "'")
+		replace('Always use simple right quote', '"', '"')
+		replace('Always use simple left quote', '"', '"')
+	}
+}
