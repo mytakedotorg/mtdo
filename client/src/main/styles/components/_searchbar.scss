@@ -22,7 +22,7 @@ $button-height: 2.5rem;
 }
 .searchbar__filter-button-list {
   display: none;
-  @media #{$mq-small} {
+  @media #{$mq-medium} {
     flex: 1;
     display: flex;
     align-items: center;
@@ -124,6 +124,7 @@ $button-height: 2.5rem;
 .searchbar__button-text {
   margin-left: 3px;
   margin-right: 3px;
+  white-space: nowrap;
 }
 .searchbar__button-close {
   @include button--red;
