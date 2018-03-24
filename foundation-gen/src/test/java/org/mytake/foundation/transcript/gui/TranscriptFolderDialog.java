@@ -13,6 +13,7 @@ import com.diffplug.common.swt.Corner;
 import com.diffplug.common.swt.Fonts;
 import com.diffplug.common.swt.Layouts;
 import com.diffplug.common.swt.Shells;
+import com.diffplug.common.swt.os.OS;
 import io.reactivex.subjects.PublishSubject;
 import java.io.File;
 import java.util.List;
@@ -116,7 +117,11 @@ public class TranscriptFolderDialog {
 				Throwable root = Throwables.getRootCause(e);
 				String msg = root.getMessage();
 				msg = msg == null ? "Error" : msg.substring(0, Math.min(30, msg.length()));
-				Labels.create(transcriptCmp, msg);
+				Link link = new Link(transcriptCmp, SWT.NONE);
+				link.setText("<a>" + msg + "</a>");
+				link.addListener(SWT.Selection, event -> {
+					root.printStackTrace();
+				});
 			}
 		}
 		List<String> incomplete = folder.incompleteTranscripts();
@@ -132,7 +137,14 @@ public class TranscriptFolderDialog {
 		btn.addListener(SWT.Selection, e -> {
 			parent.getShell().dispose();
 		});
+		parent.getDisplay().addFilter(SWT.KeyDown, e -> {
+			if (e.keyCode == (CTRL | 's')) {
+				save();
+			}
+		});
 	}
+
+	private static final int CTRL = OS.getNative().isMac() ? SWT.COMMAND : SWT.CTRL;
 
 	private TranscriptFolder folder;
 	private String transcript;
@@ -151,6 +163,7 @@ public class TranscriptFolderDialog {
 			TranscriptMatch match = folder.loadTranscript(transcript);
 			transcriptCtl.setTo(match);
 			transcriptTxt.setText(transcript);
+			refreshBtn.setEnabled(true);
 		});
 	}
 
