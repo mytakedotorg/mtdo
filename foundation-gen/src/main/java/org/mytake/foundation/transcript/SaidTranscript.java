@@ -43,19 +43,23 @@ public abstract class SaidTranscript {
 		List<Word.Said> attributed = new ArrayList<>();
 		ListIterator<Turn> turnIter = turns().listIterator();
 		int startIdx = 0;
-		while (turnIter.hasNext()) {
-			Turn turn = turnIter.next();
-			startIdx += turn.speaker().length() + ": ".length();
-			List<String> words = turn.words();
-			for (String word : words) {
-				Word.Said saidWord = new Word.Said(word, startIdx);
-				if (!saidWord.lowercase.isEmpty()) {
-					// make sure it's not just a "-"
-					attributed.add(saidWord);
+		try {
+			while (turnIter.hasNext()) {
+				Turn turn = turnIter.next();
+				startIdx += turn.speaker().length() + ": ".length();
+				List<String> words = turn.words();
+				for (String word : words) {
+					Word.Said saidWord = new Word.Said(word, startIdx);
+					if (!saidWord.lowercase.isEmpty()) {
+						// make sure it's not just a "-"
+						attributed.add(saidWord);
+					}
+					startIdx += word.length() + 1;
 				}
-				startIdx += word.length() + 1;
+				startIdx += 1; // for 2 newlines
 			}
-			startIdx += 1; // for 2 newlines
+		} catch (Exception e) {
+			throw new RuntimeException("On line " + (turnIter.previousIndex() * 2 + 1) + " of said", e);
 		}
 		return attributed;
 	}
