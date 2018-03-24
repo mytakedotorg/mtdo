@@ -1,0 +1,19 @@
+{
+    "fact": {
+        "title": "Presidential Debate - Kennedy, Nixon (1 of 4)",
+        "primaryDate": "1960-09-26",
+        "primaryDateKind": "recorded",
+        "kind": "video"
+    },
+    "youtubeId": "CsurHThBBkk",
+    "durationSeconds": 3536,
+    "speakers": [
+        {"person": "John F Kennedy", "role": "Democratic nominee for President"},
+        {"person": "Richard M Nixon", "role": "Republican nominee for President"},
+        {"person": "Howard K Smith", "role": "Moderator"},
+        {"person": "Sander Vanocur", "role": "Panelist"},
+        {"person": "Charles Warren", "role": "Panelist"},
+        {"person": "Bob H Fleming", "role": "Panelist"},
+        {"person": "Stuart Novins", "role": "Panelist"}
+    ]
+}
