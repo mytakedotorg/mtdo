@@ -38,7 +38,7 @@ public class MismatchCtl extends ControlWrapper.AroundControl<Composite> {
 		super(new Composite(parent, SWT.NONE));
 		this.saidCtl = saidCtl;
 		this.vttCtl = vttCtl;
-		Layouts.setGrid(wrapped).margin(0).numColumns(3);
+		Layouts.setGrid(wrapped).margin(0).numColumns(4);
 
 		Composite leftCmp = new Composite(wrapped, SWT.NONE);
 		Layouts.setGrid(leftCmp).margin(0).numColumns(3);
@@ -84,9 +84,27 @@ public class MismatchCtl extends ControlWrapper.AroundControl<Composite> {
 			takeVtt.run();
 			incrementGroupUp(false);
 		});
+		Button deleteBtn = new Button(wrapped, SWT.PUSH);
+		deleteBtn.setText("X");
+		deleteBtn.addListener(SWT.Selection, e -> {
+			if (!deleteEnabled) {
+				if (!SwtMisc.blockForQuestion("Enable deleting",
+						"This will delete both sections of the transcript.  This is only useful " +
+								"for quick and dirty stuff. Are you sure you want to do this?")) {
+					return;
+				} else {
+					deleteEnabled = true;
+				}
+			}
+			delete.run();
+			incrementGroupUp(false);
+		});
 	}
 
 	private Runnable takeSaid, takeVtt;
+	private Runnable delete;
+
+	boolean deleteEnabled = false;
 
 	private void incrementGroupUp(boolean isUp) {
 		int idx = Integer.parseInt(groupTxt.getText());
@@ -99,7 +117,9 @@ public class MismatchCtl extends ControlWrapper.AroundControl<Composite> {
 		this.match = wordMatch;
 		groupTxt.setText(Integer.toString(wordMatch.edits().size()));
 		ofGroupLbl.setText("of " + wordMatch.edits().size());
-		setGroup(wordMatch.edits().size());
+		if (!wordMatch.edits().isEmpty()) {
+			setGroup(wordMatch.edits().size());
+		}
 	}
 
 	private void setGroup() {
@@ -156,6 +176,15 @@ public class MismatchCtl extends ControlWrapper.AroundControl<Composite> {
 
 		takeSaidBtn.setEnabled(takeSaid != Runnables.doNothing());
 		takeVttBtn.setEnabled(takeVtt != Runnables.doNothing());
+
+		delete = () -> {
+			if (said.isLeft()) {
+				saidCtl.remove(new Point(saidSel.x, saidSel.y + 1));
+			}
+			if (vtt.isLeft()) {
+				vttCtl.delete(vtt.getLeft());
+			}
+		};
 	}
 
 	private static String toString(Either<?, Integer> either) {
