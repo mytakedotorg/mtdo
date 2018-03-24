@@ -76,7 +76,7 @@ spotless {
 task transcriptGui(type: JavaExec, dependsOn: testClasses) {
 	description = 'Runs the transcript GUI'
 	classpath = sourceSets.test.runtimeClasspath
-	main = 'org.mytake.foundation.transcript.gui.TranscriptCoat'
+	main = 'org.mytake.foundation.transcript.gui.TranscriptFolderDialog'
 	if (com.diffplug.common.swt.os.OS.getNative().isMac()) {
 		jvmArgs = [
 			'-XstartOnFirstThread'
