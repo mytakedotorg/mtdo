@@ -33,6 +33,7 @@ public class VttCtl extends ControlWrapper.AroundControl<Composite> {
 	private final Text addTxt;
 	private final TableViewer viewer;
 
+	@SuppressWarnings("unchecked")
 	public VttCtl(Composite parent, YoutubeCtl youtube, PublishSubject<SaidVtt> changed) {
 		super(new Composite(parent, SWT.NONE));
 		this.changed = changed;
@@ -72,7 +73,7 @@ public class VttCtl extends ControlWrapper.AroundControl<Composite> {
 		// remove on delete key
 		viewer.getTable().addListener(SWT.KeyDown, e -> {
 			if (isDelete(e)) {
-				viewer.remove(((IStructuredSelection) viewer.getSelection()).toArray());
+				delete(((IStructuredSelection) viewer.getSelection()).toList());
 			}
 		});
 		// edit on double-click
