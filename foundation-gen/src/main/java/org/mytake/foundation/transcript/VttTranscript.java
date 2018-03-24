@@ -17,6 +17,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import org.eclipse.jgit.diff.Edit;
@@ -166,6 +167,7 @@ public abstract class VttTranscript {
 			List<Word.Vtt> newWords;
 			if (edits.isEmpty()) {
 				newWords = remainder;
+				remainder = Collections.emptyList();
 			} else {
 				// cut at the beginning of the last edit
 				int cutpoint = edits.get(edits.size() - 1).getBeginB();
@@ -185,7 +187,7 @@ public abstract class VttTranscript {
 				break;
 			}
 		}
-		if (remainder.isEmpty()) {
+		if (!remainder.isEmpty()) {
 			newLines.add(Line.create(lines().get(lines().size() - 1).lineHeader(), remainder, remainder.get(remainder.size() - 1).time + LAST_WORD_DURATION));
 		}
 		VttTranscript newTranscript = new AutoValue_VttTranscript(header(), newLines);

@@ -13,6 +13,7 @@ import com.diffplug.common.io.Files;
 import compat.java2ts.VideoFactContentJava;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java2ts.Foundation;
@@ -34,12 +35,16 @@ public class TranscriptMatch {
 	private final List<Edit> editList;
 
 	public TranscriptMatch(Foundation.VideoFactMeta meta, SaidTranscript said, VttTranscript vtt) {
+		this(meta, said, vtt, vtt.words());
+	}
+
+	private TranscriptMatch(Foundation.VideoFactMeta meta, SaidTranscript said, VttTranscript vtt, List<Word.Vtt> vttWords) {
 		this.meta = meta;
 		this.said = said;
 		this.vtt = vtt;
 
 		this.saidWords = said.attributedWords();
-		this.vttWords = vtt.words();
+		this.vttWords = vttWords;
 		this.editList = MyersDiff.INSTANCE.diff(new WordTimeMatcher(), new ListSequence(saidWords), new ListSequence(vttWords));
 	}
 
@@ -62,7 +67,10 @@ public class TranscriptMatch {
 		} else {
 			vtt = this.vtt;
 		}
-		return new TranscriptMatch(meta, said, vtt);
+		// because VttCtl uses `indexOf` on a vttWord, it needs vttWords to be the exact same
+		// words that it already has internally.  Thus we take this little shortcut to avoid
+		// creating new Word.Vtt instances - they'd have the same content anyway
+		return new TranscriptMatch(meta, said, vtt, new ArrayList<>(newVtt));
 	}
 
 	public Foundation.VideoFactMeta meta() {
