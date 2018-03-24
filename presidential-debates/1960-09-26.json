@@ -14,6 +14,7 @@
         {"fullName": "Sander Vanocur", "role": "Panelist"},
         {"fullName": "Charles Warren", "role": "Panelist"},
         {"fullName": "Bob H Fleming", "role": "Panelist"},
-        {"fullName": "Stuart Novins", "role": "Panelist"}
+        {"fullName": "Stuart Novins", "role": "Panelist"},
+        {"fullName": "Announcer offscreen", "role": "Announcer offscreen"}
     ]
 }
