@@ -39,6 +39,12 @@ public class YoutubeCtl extends ControlWrapper.AroundControl<Composite> {
 		secondsTxt.setText("0.0");
 		Layouts.setRowData(secondsTxt).width(4 * SwtMisc.systemFontWidth());
 		Labels.create(bottomCmp, "seconds");
+
+		Button playAgain = new Button(bottomCmp, SWT.PUSH);
+		playAgain.setText("Play again");
+		playAgain.addListener(SWT.Selection, e -> {
+			play(start, end);
+		});
 	}
 
 	long setAt = Long.MIN_VALUE;
@@ -120,8 +126,12 @@ public class YoutubeCtl extends ControlWrapper.AroundControl<Composite> {
 				"</html></body>"));
 	}
 
+	private double start, end;
+
 	/** Plays the given clip in the youtube player. */
 	public void play(double start, double end) {
+		this.start = start;
+		this.end = end;
 		if (System.currentTimeMillis() - setAt < QUIET_MS) {
 			return;
 		}
