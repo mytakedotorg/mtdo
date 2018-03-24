@@ -15,6 +15,7 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
+
 import java2ts.Foundation.FactLink;
 import java2ts.Foundation.IndexPointer;
 import java2ts.Routes;
@@ -24,9 +25,8 @@ public class Index {
 		deleteDir(Folders.DST_FOUNDATION);
 
 		List<FactLink> facts = new ArrayList<>();
-		facts.addAll(Documents.national().factLinks);
-		// TODO: put the videos back in
-		//facts.addAll(Videos.national().factLinks);
+		//facts.addAll(Documents.national().factLinks);
+		facts.addAll(Videos.presidentialDebates().factLinks);
 
 		Hashed hashed = Hashed.asJson(facts);
 		Files.write(Folders.DST_FOUNDATION.resolve(hashed.hash + ".json"), hashed.content);
