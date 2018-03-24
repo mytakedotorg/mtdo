@@ -105,7 +105,7 @@ public class VttCtl extends ControlWrapper.AroundControl<Composite> {
 				SwtMisc.blockForError("Cannot contain whitespace", "Cannot contain whitespace");
 				return;
 			}
-			insert(selection, Word.Said.dummy(word));
+			insert(selection + 1, Word.Said.dummy(word));
 			addTxt.setText("");
 		});
 	}
