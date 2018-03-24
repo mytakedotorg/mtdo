@@ -120,7 +120,7 @@ public class TranscriptFolderDialog {
 				Link link = new Link(transcriptCmp, SWT.NONE);
 				link.setText("<a>" + msg + "</a>");
 				link.addListener(SWT.Selection, event -> {
-					root.printStackTrace();
+					e.printStackTrace();
 				});
 			}
 		}
