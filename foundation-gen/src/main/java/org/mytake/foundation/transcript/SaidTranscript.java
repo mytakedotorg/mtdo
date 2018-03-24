@@ -86,7 +86,11 @@ public abstract class SaidTranscript {
 		try (BufferedReader reader = source.asCharSource(StandardCharsets.UTF_8).openBufferedStream()) {
 			List<Turn> turns = new ArrayList<>();
 			String line;
-			while (!(line = reader.readLine()).isEmpty()) {
+			while (true) {
+				line = reader.readLine();
+				if (line == null || line.isEmpty()) {
+					break;
+				}
 				int firstColon = line.indexOf(':');
 				String speaker = line.substring(0, firstColon);
 				Preconditions.checkArgument(people.contains(speaker), "No such person %s, available: %s", speaker, people);

@@ -176,7 +176,7 @@ public abstract class VttTranscript {
 				continue;
 			}
 			if (!remainder.isEmpty()) {
-				newLines.add(Line.create(line.lineHeader(), newWords, remainder.get(remainder.size()).time));
+				newLines.add(Line.create(line.lineHeader(), newWords, remainder.get(remainder.size() - 1).time));
 			} else {
 				newLines.add(Line.create(line.lineHeader(), newWords, newWords.get(newWords.size() - 1).time + LAST_WORD_DURATION));
 				break;
@@ -191,7 +191,7 @@ public abstract class VttTranscript {
 		return new AutoValue_VttTranscript(header(), newLines);
 	}
 
-	private static final double LAST_WORD_DURATION = 2.0;
+	public static final double LAST_WORD_DURATION = 2.0;
 
 	static String ts2str(double ts) {
 		int totalMinutes = (int) Math.floor(ts / 60.0);

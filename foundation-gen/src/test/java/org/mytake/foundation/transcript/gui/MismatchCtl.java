@@ -187,6 +187,8 @@ public class MismatchCtl extends ControlWrapper.AroundControl<Composite> {
 		List<Word.Vtt> list = either.fold(Function.identity(), idx -> {
 			if (idx == 0) {
 				return match.vttWords().subList(0, 1);
+			} else if (idx >= match.vttWords().size() - 1) {
+				return match.vttWords().subList(match.vttWords().size() - 1, match.vttWords().size());
 			} else {
 				return match.vttWords().subList(idx - 1, idx + 1);
 			}

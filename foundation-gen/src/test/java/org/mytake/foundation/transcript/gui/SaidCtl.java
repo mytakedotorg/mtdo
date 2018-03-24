@@ -45,6 +45,10 @@ public class SaidCtl extends ControlWrapper.AroundControl<Composite> {
 		styled.setText(builder.toString());
 	}
 
+	public String getText() {
+		return styled.getText();
+	}
+
 	public void select(Point selection) {
 		styled.setSelection(selection);
 	}

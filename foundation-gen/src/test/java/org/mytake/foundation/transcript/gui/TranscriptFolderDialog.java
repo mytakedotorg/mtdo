@@ -148,11 +148,13 @@ public class TranscriptFolderDialog {
 		Errors.dialog().run(() -> {
 			TranscriptMatch match = folder.loadTranscript(transcript);
 			transcriptCtl.setTo(match);
+			transcriptTxt.setText(transcript);
 		});
 	}
 
 	private void save() {
-		transcriptCtl.save();
+		Errors.dialog().run(() -> transcriptCtl.save(folder, transcript));
+		saveBtn.setEnabled(false);
 	}
 
 	public static void main(String[] args) {
