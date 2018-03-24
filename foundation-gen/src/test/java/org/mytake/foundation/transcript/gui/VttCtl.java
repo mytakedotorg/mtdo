@@ -6,8 +6,11 @@
  */
 package org.mytake.foundation.transcript.gui;
 
+import com.diffplug.common.base.Errors;
+import com.diffplug.common.base.Preconditions;
 import com.diffplug.common.swt.ControlWrapper;
 import com.diffplug.common.swt.Layouts;
+import com.diffplug.common.swt.Shells;
 import com.diffplug.common.swt.SwtMisc;
 import com.diffplug.common.swt.jface.ColumnViewerFormat;
 import io.reactivex.subjects.PublishSubject;
@@ -33,6 +36,10 @@ public class VttCtl extends ControlWrapper.AroundControl<Composite> {
 	private final Text addTxt;
 	private final TableViewer viewer;
 
+	private static String formatTime(double time) {
+		return String.format("%.3f", time);
+	}
+
 	@SuppressWarnings("unchecked")
 	public VttCtl(Composite parent, YoutubeCtl youtube, PublishSubject<SaidVtt> changed) {
 		super(new Composite(parent, SWT.NONE));
@@ -51,7 +58,7 @@ public class VttCtl extends ControlWrapper.AroundControl<Composite> {
 		Layouts.setGridData(addTxt).grabHorizontal();
 
 		ColumnViewerFormat<Word.Vtt> time = ColumnViewerFormat.builder();
-		time.addColumn().setText("Time").setLabelProviderText(word -> String.format("%.3f", word.time())).setLayoutPixel(6 * SwtMisc.systemFontWidth());
+		time.addColumn().setText("Time").setLabelProviderText(word -> formatTime(word.time())).setLayoutPixel(6 * SwtMisc.systemFontWidth());
 		time.addColumn().setText("Word").setLabelProviderText(word -> word.lowercase()).setLayoutWeight(1);
 		time.setHeaderVisible(true);
 		time.setLinesVisible(true);
@@ -80,7 +87,10 @@ public class VttCtl extends ControlWrapper.AroundControl<Composite> {
 		viewer.getTable().addListener(SWT.MouseDoubleClick, e -> {
 			Word.Vtt word = (Word.Vtt) ((IStructuredSelection) viewer.getSelection()).getFirstElement();
 			if (word != null) {
-				SwtMisc.blockForError("TODO", "TODO");
+				Shells.builder(SWT.APPLICATION_MODAL | SWT.DIALOG_TRIM, cmp -> {
+					editWord(cmp, word);
+				}).setTitle("Edit word")
+						.openOnActive();
 			}
 		});
 		// add on button
@@ -95,8 +105,43 @@ public class VttCtl extends ControlWrapper.AroundControl<Composite> {
 				SwtMisc.blockForError("Cannot contain whitespace", "Cannot contain whitespace");
 				return;
 			}
-			insert(selection, new Word.Said(word, -1));
+			insert(selection, Word.Said.dummy(word));
 			addTxt.setText("");
+		});
+	}
+
+	private void editWord(Composite cmp, Word.Vtt word) {
+		Layouts.setGrid(cmp).numColumns(2);
+		Labels.create(cmp, "Word");
+		Text wordTxt = new Text(cmp, SWT.SINGLE | SWT.BORDER);
+		Layouts.setGridData(wordTxt).grabHorizontal();
+		wordTxt.setText(word.lowercase());
+
+		Labels.create(cmp, "Time");
+		Text timeTxt = new Text(cmp, SWT.SINGLE | SWT.BORDER);
+		Layouts.setGridData(timeTxt).grabHorizontal();
+		timeTxt.setText(formatTime(word.time()));
+
+		Composite btnCmp = new Composite(cmp, SWT.NONE);
+		Layouts.setGrid(btnCmp).margin(0).numColumns(3);
+		Layouts.newGridPlaceholder(btnCmp).grabHorizontal();
+		Button okBtn = new Button(btnCmp, SWT.PUSH);
+		okBtn.setText("OK");
+		Layouts.setGridData(okBtn).widthHint(SwtMisc.defaultButtonWidth());
+		okBtn.addListener(SWT.Selection, e -> {
+			Errors.dialog().run(() -> {
+				String txt = wordTxt.getText();
+				Preconditions.checkArgument(!txt.contains(" "), "Cannot contain space");
+				double time = Double.parseDouble(timeTxt.getText());
+				replace(word, new Word.Vtt(txt, time));
+				cmp.getShell().dispose();
+			});
+		});
+		Button cancelBtn = new Button(btnCmp, SWT.PUSH);
+		cancelBtn.setText("Cancel");
+		Layouts.setGridData(cancelBtn).widthHint(SwtMisc.defaultButtonWidth());
+		cancelBtn.addListener(SWT.Selection, e -> {
+			cmp.getShell().dispose();
 		});
 	}
 
@@ -127,8 +172,11 @@ public class VttCtl extends ControlWrapper.AroundControl<Composite> {
 	}
 
 	public void replace(Word.Vtt vttOld, Word.Said said) {
+		replace(vttOld, new Word.Vtt(said.lowercase(), vttOld.time()));
+	}
+
+	public void replace(Word.Vtt vttOld, Word.Vtt vttNew) {
 		changed.onNext(SaidVtt.VTT);
-		Word.Vtt vttNew = new Word.Vtt(said.lowercase(), vttOld.time());
 		int idx = words.indexOf(vttOld);
 		words.set(idx, vttNew);
 		viewer.replace(vttNew, idx);
