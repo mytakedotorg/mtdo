@@ -131,12 +131,12 @@ public class TranscriptMatch {
 		java.charOffsets = new int[java.timestamps.length];
 		java.charOffsets[0] = 0;
 		int i = 1;
-		for (Turn turn : said.turns()) {
+		outer: for (Turn turn : said.turns()) {
 			for (String word : turn.words()) {
 				java.charOffsets[i] = java.charOffsets[i - 1] + word.length() + 1;
 				++i;
 				if (i == java.charOffsets.length) {
-					break;
+					break outer;
 				}
 			}
 		}
