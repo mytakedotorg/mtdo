@@ -49,7 +49,11 @@ public class Word {
 	public static class Said extends Word {
 		final int startIdx;
 
-		public Said(String word, int startIdx) {
+		public static Said dummy(String word) {
+			return new Said(word, -1);
+		}
+
+		Said(String word, int startIdx) {
 			super(word);
 			this.startIdx = startIdx;
 		}

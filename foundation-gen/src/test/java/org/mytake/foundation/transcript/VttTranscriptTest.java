@@ -6,6 +6,14 @@
  */
 package org.mytake.foundation.transcript;
 
+import com.diffplug.common.io.CharSink;
+import com.diffplug.common.io.CharStreams;
+import com.diffplug.common.io.Files;
+import java.io.File;
+import java.io.IOException;
+import java.io.Writer;
+import java.nio.charset.StandardCharsets;
+import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import org.assertj.core.api.Assertions;
@@ -40,5 +48,34 @@ public class VttTranscriptTest {
 		Assertions.assertThat(header.start()).isEqualTo(3 * 60 + 58.080);
 		Assertions.assertThat(header.end()).isEqualTo(4 * 60 + 03.030);
 		Assertions.assertThat(header.formatting()).isEqualTo("align:start position:19%");
+	}
+
+	@Test
+	public void testSaveWithRemove() throws IOException {
+		File folder = new File("src/test/resources/org/mytake/foundation/transcript");
+		File after = new File(folder, "afterRemove.vtt");
+		File before = new File(folder, "beforeRemove.vtt");
+
+		// parse the transcript
+		VttTranscript vtt = VttTranscript.parse(before);
+		// find the trouble word
+		List<Word.Vtt> words = vtt.words();
+		Word.Vtt and = words.stream().filter(w -> w.time == 3305.010).findFirst().get();
+		// remove it
+		words.remove(and);
+		// save it
+		InMemoryCharSink sink = new InMemoryCharSink();
+		vtt.save(words, sink);
+		// make sure it equals what we want it to equal
+		Assertions.assertThat(sink.sb.toString()).isEqualTo(Files.asCharSource(after, StandardCharsets.UTF_8).read());
+	}
+
+	static class InMemoryCharSink extends CharSink {
+		private final StringBuilder sb = new StringBuilder();
+
+		@Override
+		public Writer openStream() throws IOException {
+			return CharStreams.asWriter(sb);
+		}
 	}
 }
