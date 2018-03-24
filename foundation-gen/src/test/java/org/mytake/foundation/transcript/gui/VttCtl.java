@@ -11,14 +11,17 @@ import com.diffplug.common.swt.Layouts;
 import com.diffplug.common.swt.SwtMisc;
 import com.diffplug.common.swt.jface.ColumnViewerFormat;
 import io.reactivex.subjects.PublishSubject;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Text;
 import org.mytake.foundation.transcript.TranscriptMatch;
 import org.mytake.foundation.transcript.Word;
@@ -55,21 +58,56 @@ public class VttCtl extends ControlWrapper.AroundControl<Composite> {
 		time.setStyle(SWT.MULTI);
 		viewer = time.buildTable(tableCmp);
 		viewer.setContentProvider(ArrayContentProvider.getInstance());
-
+		// play on select
 		viewer.addSelectionChangedListener(e -> {
 			int[] selection = viewer.getTable().getSelectionIndices();
+			if (selection == null || selection.length == 0) {
+				return;
+			}
 			Arrays.sort(selection);
 			int minIdx = selection[0];
-			int maxIdx = Math.min(selection[selection.length - 1] + 1, match.vttWords().size() - 1);
-			youtube.play(match.vttWords().get(minIdx).time(), match.vttWords().get(maxIdx).time());
+			int maxIdx = Math.min(selection[selection.length - 1] + 1, words.size() - 1);
+			youtube.play(words.get(minIdx).time(), words.get(maxIdx).time());
+		});
+		// remove on delete key
+		viewer.getTable().addListener(SWT.KeyDown, e -> {
+			if (isDelete(e)) {
+				viewer.remove(((IStructuredSelection) viewer.getSelection()).toArray());
+			}
+		});
+		// edit on double-click
+		viewer.getTable().addListener(SWT.MouseDoubleClick, e -> {
+			Word.Vtt word = (Word.Vtt) ((IStructuredSelection) viewer.getSelection()).getFirstElement();
+			if (word != null) {
+				SwtMisc.blockForError("TODO", "TODO");
+			}
+		});
+		// add on button
+		addBtn.addListener(SWT.Selection, e -> {
+			int selection = viewer.getTable().getSelectionIndex();
+			if (selection == -1) {
+				SwtMisc.blockForError("Must select something", "Must select something");
+				return;
+			}
+			String word = addTxt.getText().trim();
+			if (word.indexOf(' ') != -1) {
+				SwtMisc.blockForError("Cannot contain whitespace", "Cannot contain whitespace");
+				return;
+			}
+			insert(selection, new Word.Said(word, -1));
+			addTxt.setText("");
 		});
 	}
 
-	private TranscriptMatch match;
+	private static boolean isDelete(Event e) {
+		return e.keyCode == SWT.DEL || e.keyCode == SWT.BS;
+	}
+
+	private List<Word.Vtt> words;
 
 	public void setFile(TranscriptMatch match) {
-		this.match = match;
-		viewer.setInput(match.vttWords());
+		this.words = new ArrayList<>(match.vttWords());
+		viewer.setInput(words);
 	}
 
 	public void highlight(int middleIdx, List<Word.Vtt> list) {
@@ -83,25 +121,29 @@ public class VttCtl extends ControlWrapper.AroundControl<Composite> {
 
 	public void delete(List<Word.Vtt> vttWords) {
 		changed.onNext(SaidVtt.VTT);
-		match.vttWords().removeAll(vttWords);
+		words.removeAll(vttWords);
 		viewer.remove(vttWords.toArray());
 	}
 
 	public void replace(Word.Vtt vttOld, Word.Said said) {
 		changed.onNext(SaidVtt.VTT);
 		Word.Vtt vttNew = new Word.Vtt(said.lowercase(), vttOld.time());
-		int idx = match.vttWords().indexOf(vttOld);
-		match.vttWords().set(idx, vttNew);
+		int idx = words.indexOf(vttOld);
+		words.set(idx, vttNew);
 		viewer.replace(vttNew, idx);
 	}
 
 	public void insert(int insertionPoint, Word.Said said) {
 		changed.onNext(SaidVtt.VTT);
-		double before = insertionPoint == 0 ? 0 : match.vttWords().get(insertionPoint - 1).time();
-		double after = match.vttWords().get(insertionPoint).time();
+		double before = insertionPoint == 0 ? 0 : words.get(insertionPoint - 1).time();
+		double after = words.get(insertionPoint).time();
 
 		Word.Vtt newWord = new Word.Vtt(said.lowercase(), (before + after) / 2);
-		match.vttWords().add(insertionPoint, newWord);
+		words.add(insertionPoint, newWord);
 		viewer.insert(newWord, insertionPoint);
+	}
+
+	public List<Word.Vtt> getWords() {
+		return words;
 	}
 }
