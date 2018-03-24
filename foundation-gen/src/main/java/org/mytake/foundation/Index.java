@@ -15,7 +15,6 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
-
 import java2ts.Foundation.FactLink;
 import java2ts.Foundation.IndexPointer;
 import java2ts.Routes;

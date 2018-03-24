@@ -83,10 +83,22 @@ public class TranscriptFolder {
 		return result;
 	}
 
+	/** Returns every transcript that has a meta file. */
+	public List<String> transcriptsWithMeta() {
+		SetMultimap<String, String> map = possibleTitles();
+		List<String> result = new ArrayList<>(map.size());
+		for (Map.Entry<String, Collection<String>> entry : map.asMap().entrySet()) {
+			if (entry.getValue().contains("json")) {
+				result.add(entry.getKey());
+			}
+		}
+		return result;
+	}
+
 	/** Loads the given transcript. */
 	public TranscriptMatch loadTranscript(String name) throws IOException {
 		// load and validate the json speakers
-		Foundation.VideoFactMeta meta = JsonMisc.fromJson(fileMeta(name), Foundation.VideoFactMeta.class);
+		Foundation.VideoFactMeta meta = loadMetaNoValidation(name);
 		for (Foundation.Speaker speaker : meta.speakers) {
 			Preconditions.checkArgument(people.contains(speaker.fullName), "Unknown person: %s", speaker.fullName);
 			Preconditions.checkArgument(roles.contains(speaker.role), "Unknown role: %s", speaker.role);
@@ -95,6 +107,11 @@ public class TranscriptFolder {
 		SaidTranscript said = SaidTranscript.parse(meta, fileSaid(name));
 		VttTranscript vtt = VttTranscript.parse(fileVtt(name));
 		return new TranscriptMatch(meta, said, vtt);
+	}
+
+	/** Loads transcript metadata without any validation. */
+	public Foundation.VideoFactMeta loadMetaNoValidation(String name) throws IOException {
+		return JsonMisc.fromJson(fileMeta(name), Foundation.VideoFactMeta.class);
 	}
 
 	File fileMeta(String name) {
