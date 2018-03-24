@@ -141,7 +141,7 @@ public class MismatchCtl extends ControlWrapper.AroundControl<Composite> {
 					takeSaid = () -> vttCtl.insert(vttInsertionPoint, saidWords.get(0));
 					// takeSaid = insertIntoVtt
 				}
-				takeVtt = () -> saidCtl.remove(saidSel); //deleteFromSaid
+				takeVtt = () -> saidCtl.remove(new Point(saidSel.x, saidSel.y + 1)); //deleteFromSaid (+1 for space)
 			}
 		} else {
 			if (vtt.isLeft()) {
