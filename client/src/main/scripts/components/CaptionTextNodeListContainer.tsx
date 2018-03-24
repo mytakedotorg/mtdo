@@ -91,10 +91,12 @@ class CaptionTextNodeListContainer extends React.Component<
             this.preventScroll = false;
           }
 
+          const fullName = this.props.videoFact.speakers[
+            this.props.videoFact.speakerPerson[speakerIdx]
+          ].fullName;
+
           this.setState({
-            currentSpeaker: this.props.videoFact.speakers[
-              this.props.videoFact.speakerPerson[speakerIdx]
-            ].lastname
+            currentSpeaker: fullName.substring(fullName.lastIndexOf(" "))
           });
         }
       }
