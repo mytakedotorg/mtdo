@@ -149,10 +149,14 @@ public abstract class VttTranscript {
 	public String asString() {
 		return StringPrinter.buildString(printer -> {
 			printer.println(header());
-			for (Line line : lines()) {
+			Iterator<Line> lineIter = lines().iterator();
+			while (lineIter.hasNext()) {
+				Line line = lineIter.next();
 				printer.println(line.lineHeader().asString());
 				printer.println(VttToken.lineAsString(line.tokens()));
-				printer.println("");
+				if (lineIter.hasNext()) {
+					printer.println("");
+				}
 			}
 		});
 	}
