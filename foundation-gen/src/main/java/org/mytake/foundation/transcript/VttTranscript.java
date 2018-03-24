@@ -176,7 +176,7 @@ public abstract class VttTranscript {
 				continue;
 			}
 			if (!remainder.isEmpty()) {
-				newLines.add(Line.create(line.lineHeader(), newWords, remainder.get(remainder.size() - 1).time));
+				newLines.add(Line.create(line.lineHeader(), newWords, remainder.get(0).time));
 			} else {
 				newLines.add(Line.create(line.lineHeader(), newWords, newWords.get(newWords.size() - 1).time + LAST_WORD_DURATION));
 				break;
@@ -188,7 +188,9 @@ public abstract class VttTranscript {
 		if (remainder.isEmpty()) {
 			newLines.add(Line.create(lines().get(lines().size() - 1).lineHeader(), remainder, remainder.get(remainder.size() - 1).time + LAST_WORD_DURATION));
 		}
-		return new AutoValue_VttTranscript(header(), newLines);
+		VttTranscript newTranscript = new AutoValue_VttTranscript(header(), newLines);
+		charSink.write(newTranscript.asString());
+		return newTranscript;
 	}
 
 	public static final double LAST_WORD_DURATION = 2.0;

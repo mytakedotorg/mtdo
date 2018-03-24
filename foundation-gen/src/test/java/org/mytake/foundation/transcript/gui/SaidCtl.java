@@ -46,7 +46,12 @@ public class SaidCtl extends ControlWrapper.AroundControl<Composite> {
 	}
 
 	public String getText() {
-		return styled.getText();
+		String txt = styled.getText();
+		if (txt.endsWith("\n\n")) {
+			return txt.substring(0, txt.length() - 1);
+		} else {
+			return txt;
+		}
 	}
 
 	public void select(Point selection) {
