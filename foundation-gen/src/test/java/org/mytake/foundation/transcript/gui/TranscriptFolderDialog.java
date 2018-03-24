@@ -47,7 +47,9 @@ public class TranscriptFolderDialog {
 
 		Composite folderCmp = new Composite(top, SWT.NONE);
 		Layouts.setGrid(folderCmp).margin(0).numColumns(3);
-		Labels.create(folderCmp, "Folder").setFont(Fonts.systemBold());
+		Label folderLbl = Labels.create(folderCmp, "Folder");
+		Layouts.setGridData(folderLbl).horizontalIndent(Layouts.defaultMargin());
+		folderLbl.setFont(Fonts.systemBold());
 		folderTxt = new Text(folderCmp, SWT.SINGLE | SWT.READ_ONLY | SWT.BORDER);
 		Layouts.setGridData(folderTxt).grabHorizontal();
 		Button folderBtn = new Button(folderCmp, SWT.PUSH);
