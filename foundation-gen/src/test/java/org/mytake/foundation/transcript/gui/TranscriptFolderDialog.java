@@ -7,25 +7,31 @@
 package org.mytake.foundation.transcript.gui;
 
 import com.diffplug.common.base.Errors;
+import com.diffplug.common.rx.Rx;
 import com.diffplug.common.swt.Corner;
 import com.diffplug.common.swt.Fonts;
 import com.diffplug.common.swt.Layouts;
 import com.diffplug.common.swt.Shells;
+import io.reactivex.subjects.PublishSubject;
 import java.io.File;
+import java.util.List;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Link;
 import org.eclipse.swt.widgets.Text;
 import org.mytake.foundation.transcript.TranscriptFolder;
+import org.mytake.foundation.transcript.TranscriptMatch;
 
 public class TranscriptFolderDialog {
 	private final Text transcriptTxt;
 	private final Text folderTxt;
 	private final Button saveBtn, refreshBtn;
 	private final TranscriptCtl transcriptCtl;
+	private final PublishSubject<SaidVtt> changed = PublishSubject.create();
 
 	private TranscriptFolderDialog(Composite parent) {
 		Layouts.setGrid(parent).margin(0).spacing(0);
@@ -35,7 +41,7 @@ public class TranscriptFolderDialog {
 		Label sep = new Label(parent, SWT.SEPARATOR | SWT.HORIZONTAL);
 		Layouts.setGridData(sep).grabHorizontal();
 
-		transcriptCtl = new TranscriptCtl(parent);
+		transcriptCtl = new TranscriptCtl(parent, changed);
 		Layouts.setGridData(transcriptCtl).grabAll();
 
 		Composite folderCmp = new Composite(top, SWT.NONE);
@@ -73,18 +79,40 @@ public class TranscriptFolderDialog {
 		saveBtn = new Button(transcriptCmp, SWT.PUSH);
 		saveBtn.setText("Save");
 		saveBtn.setEnabled(false);
+		saveBtn.addListener(SWT.Selection, e -> save());
+		Rx.subscribe(changed, unused -> saveBtn.setEnabled(true));
 
 		refreshBtn = new Button(transcriptCmp, SWT.PUSH);
 		refreshBtn.setText("Refresh");
 		refreshBtn.setEnabled(false);
 		refreshBtn.addListener(SWT.Selection, e -> {
-
+			setTranscript(transcript);
 		});
 	}
 
 	private void openOptions(Composite parent) {
 		Layouts.setGrid(parent);
-
+		for (String transcript : folder.transcripts()) {
+			Link link = new Link(parent, SWT.NONE);
+			link.setText("<a>" + transcript + "</a>");
+			link.addListener(SWT.Selection, e -> {
+				setTranscript(transcript);
+				parent.getShell().dispose();
+			});
+		}
+		List<String> incomplete = folder.incompleteTranscripts();
+		if (incomplete.isEmpty()) {
+			Labels.create(parent, "Incomplete").setFont(Fonts.systemBold());
+			for (String s : incomplete) {
+				Labels.create(parent, s);
+			}
+		}
+		Button btn = new Button(parent, SWT.PUSH);
+		Layouts.setGridData(btn).horizontalAlignment(SWT.RIGHT);
+		btn.setText("Cancel");
+		btn.addListener(SWT.Selection, e -> {
+			parent.getShell().dispose();
+		});
 	}
 
 	private TranscriptFolder folder;
@@ -96,6 +124,18 @@ public class TranscriptFolderDialog {
 			this.folder = new TranscriptFolder(canoncial);
 			this.folderTxt.setText(canoncial.getAbsolutePath());
 		});
+	}
+
+	private void setTranscript(String transcript) {
+		this.transcript = transcript;
+		Errors.dialog().run(() -> {
+			TranscriptMatch match = folder.loadTranscript(transcript);
+			transcriptCtl.setTo(match);
+		});
+	}
+
+	private void save() {
+		transcriptCtl.save();
 	}
 
 	public static void main(String[] args) {

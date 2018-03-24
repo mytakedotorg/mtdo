@@ -10,10 +10,8 @@ import com.diffplug.common.base.Preconditions;
 import com.diffplug.common.collect.ImmutableSet;
 import com.diffplug.common.collect.SetMultimap;
 import com.diffplug.common.collect.TreeMultimap;
-import com.jsoniter.JsonIterator;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -21,6 +19,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java2ts.Foundation;
+import org.mytake.foundation.JsonMisc;
 
 /**
  * A folder of transcript data. `all_people.ini` is a list of every
@@ -86,16 +85,27 @@ public class TranscriptFolder {
 
 	/** Loads the given transcript. */
 	public TranscriptMatch loadTranscript(String name) throws IOException {
-		File json = new File(root, name + ".json");
 		// load and validate the json speakers
-		Foundation.VideoFactMeta meta = JsonIterator.deserialize(Files.readAllBytes(json.toPath()), Foundation.VideoFactMeta.class);
+		Foundation.VideoFactMeta meta = JsonMisc.fromJson(fileMeta(name), Foundation.VideoFactMeta.class);
 		for (Foundation.Speaker speaker : meta.speakers) {
-			Preconditions.checkArgument(people.contains(speaker.name), "Unknown person: %s", speaker.name);
+			Preconditions.checkArgument(people.contains(speaker.fullName), "Unknown person: %s", speaker.fullName);
 			Preconditions.checkArgument(roles.contains(speaker.role), "Unknown role: %s", speaker.role);
 		}
 		// load the transcripts
-		SaidTranscript said = SaidTranscript.parse(meta, new File(root, name + ".said"));
-		VttTranscript vtt = VttTranscript.parse(new File(root, name + ".vtt"));
+		SaidTranscript said = SaidTranscript.parse(meta, fileSaid(name));
+		VttTranscript vtt = VttTranscript.parse(fileVtt(name));
 		return new TranscriptMatch(meta, said, vtt);
+	}
+
+	File fileMeta(String name) {
+		return new File(root, name + ".json");
+	}
+
+	File fileSaid(String name) {
+		return new File(root, name + ".said");
+	}
+
+	File fileVtt(String name) {
+		return new File(root, name + ".vtt");
 	}
 }

@@ -8,9 +8,10 @@ package org.mytake.foundation.transcript.gui;
 
 import com.diffplug.common.swt.ControlWrapper;
 import com.diffplug.common.swt.Layouts;
-import java.io.File;
+import io.reactivex.subjects.PublishSubject;
 import java.util.List;
 import java.util.function.UnaryOperator;
+import java.util.stream.Collectors;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
@@ -20,26 +21,28 @@ import org.mytake.foundation.transcript.Word;
 import org.mytake.foundation.transcript.Word.Vtt;
 
 public class SaidCtl extends ControlWrapper.AroundControl<Composite> {
-	private final FileCtl fileCtl;
 	private final Text styled;
 
-	public SaidCtl(Composite parent) {
+	public SaidCtl(Composite parent, PublishSubject<SaidVtt> changed) {
 		super(new Composite(parent, SWT.NONE));
 		Layouts.setGrid(wrapped).margin(0);
-
-		fileCtl = new FileCtl(wrapped, "Said");
-		Layouts.setGridData(fileCtl).grabHorizontal();
 
 		styled = new Text(wrapped, SWT.MULTI | SWT.BORDER | SWT.V_SCROLL | SWT.WRAP);
 		Layouts.setGridData(styled).grabAll();
 		styled.addListener(SWT.Modify, e -> {
-			fileCtl.hasChanged();
+			changed.onNext(SaidVtt.SAID);
 		});
 	}
 
-	public void setFile(File file, SaidTranscript said) {
-		fileCtl.setFile(file);
-		styled.setText(fileCtl.read());
+	public void setFile(SaidTranscript said) {
+		StringBuilder builder = new StringBuilder();
+		for (SaidTranscript.Turn turn : said.turns()) {
+			builder.append(turn.speaker());
+			builder.append(": ");
+			builder.append(String.join(" ", turn.words()));
+			builder.append("\n\n");
+		}
+		styled.setText(builder.toString());
 	}
 
 	public void select(Point selection) {
@@ -54,7 +57,9 @@ public class SaidCtl extends ControlWrapper.AroundControl<Composite> {
 
 	public void insert(int insertAt, List<Vtt> vttWords) {
 		modify(txt -> {
-			return txt;
+			return txt.substring(0, insertAt)
+					+ vttWords.stream().map(Word::lowercase).collect(Collectors.joining(" "))
+					+ txt.substring(insertAt);
 		});
 	}
 

@@ -10,7 +10,7 @@ import com.diffplug.common.swt.ControlWrapper;
 import com.diffplug.common.swt.Layouts;
 import com.diffplug.common.swt.SwtMisc;
 import com.diffplug.common.swt.jface.ColumnViewerFormat;
-import java.io.File;
+import io.reactivex.subjects.PublishSubject;
 import java.util.Arrays;
 import java.util.List;
 import org.eclipse.jface.viewers.ArrayContentProvider;
@@ -24,17 +24,16 @@ import org.mytake.foundation.transcript.TranscriptMatch;
 import org.mytake.foundation.transcript.Word;
 
 public class VttCtl extends ControlWrapper.AroundControl<Composite> {
-	private final FileCtl fileCtl;
+	private PublishSubject<SaidVtt> changed;
+
 	private final Button addBtn;
 	private final Text addTxt;
 	private final TableViewer viewer;
 
-	public VttCtl(Composite parent, YoutubeCtl youtube) {
+	public VttCtl(Composite parent, YoutubeCtl youtube, PublishSubject<SaidVtt> changed) {
 		super(new Composite(parent, SWT.NONE));
+		this.changed = changed;
 		Layouts.setGrid(wrapped).margin(0);
-
-		fileCtl = new FileCtl(wrapped, "VTT");
-		Layouts.setGridData(fileCtl).grabHorizontal();
 
 		Composite tableCmp = new Composite(wrapped, SWT.BORDER);
 		Layouts.setGridData(tableCmp).grabAll();
@@ -68,8 +67,7 @@ public class VttCtl extends ControlWrapper.AroundControl<Composite> {
 
 	private TranscriptMatch match;
 
-	public void setFile(File file, TranscriptMatch match) {
-		fileCtl.setFile(file);
+	public void setFile(TranscriptMatch match) {
 		this.match = match;
 		viewer.setInput(match.vttWords());
 	}
@@ -84,13 +82,13 @@ public class VttCtl extends ControlWrapper.AroundControl<Composite> {
 	}
 
 	public void delete(List<Word.Vtt> vttWords) {
-		fileCtl.hasChanged();
+		changed.onNext(SaidVtt.VTT);
 		match.vttWords().removeAll(vttWords);
 		viewer.remove(vttWords.toArray());
 	}
 
 	public void replace(Word.Vtt vttOld, Word.Said said) {
-		fileCtl.hasChanged();
+		changed.onNext(SaidVtt.VTT);
 		Word.Vtt vttNew = new Word.Vtt(said.lowercase(), vttOld.time());
 		int idx = match.vttWords().indexOf(vttOld);
 		match.vttWords().set(idx, vttNew);
@@ -98,7 +96,7 @@ public class VttCtl extends ControlWrapper.AroundControl<Composite> {
 	}
 
 	public void insert(int insertionPoint, Word.Said said) {
-		fileCtl.hasChanged();
+		changed.onNext(SaidVtt.VTT);
 		double before = insertionPoint == 0 ? 0 : match.vttWords().get(insertionPoint - 1).time();
 		double after = match.vttWords().get(insertionPoint).time();
 

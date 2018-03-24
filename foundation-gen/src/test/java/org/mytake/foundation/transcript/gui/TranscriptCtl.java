@@ -8,12 +8,11 @@ package org.mytake.foundation.transcript.gui;
 
 import com.diffplug.common.swt.ControlWrapper;
 import com.diffplug.common.swt.Layouts;
-import com.diffplug.common.swt.Shells;
-import com.diffplug.common.swt.SwtMisc;
+import io.reactivex.subjects.PublishSubject;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Shell;
+import org.mytake.foundation.transcript.TranscriptMatch;
 
 public class TranscriptCtl extends ControlWrapper.AroundControl<Composite> {
 	private final SaidCtl saidCtl;
@@ -21,39 +20,30 @@ public class TranscriptCtl extends ControlWrapper.AroundControl<Composite> {
 	private final YoutubeCtl youtubeCtl;
 	private final MismatchCtl mismatchCtl;
 
-	public TranscriptCtl(Composite parent) {
+	public TranscriptCtl(Composite parent, PublishSubject<SaidVtt> changed) {
 		super(new Composite(parent, SWT.NONE));
 		Layouts.setGrid(wrapped);
 		SashForm horizontalForm = new SashForm(wrapped, SWT.HORIZONTAL);
 		Layouts.setGridData(horizontalForm).grabAll();
-		saidCtl = new SaidCtl(horizontalForm);
+		saidCtl = new SaidCtl(horizontalForm, changed);
 
 		SashForm verticalForm = new SashForm(horizontalForm, SWT.VERTICAL);
 		youtubeCtl = new YoutubeCtl(verticalForm);
-		vttCtl = new VttCtl(verticalForm, youtubeCtl);
+		vttCtl = new VttCtl(verticalForm, youtubeCtl, changed);
 
 		mismatchCtl = new MismatchCtl(wrapped, saidCtl, vttCtl);
 		Layouts.setGridData(mismatchCtl).grabHorizontal();
 	}
 
-	public void setTo(Object recording) {
-		//		SaidTranscript said = Errors.rethrow().get(() -> SaidTranscript.parse(null, recording.getSaidFile()));
-		//		VttTranscript vtt = Errors.rethrow().get(() -> VttTranscript.parse(recording.getVttFile()));
-		//		WordMatch wordMatch = new WordMatch(said, vtt);
-		//
-		//		youtubeCtl.setToYoutubeId(recording.youtubeId());
-		//		saidCtl.setFile(recording.getSaidFile(), said);
-		//		vttCtl.setFile(recording.getVttFile(), wordMatch);
-		//		mismatchCtl.setMatch(wordMatch);
+	public void setTo(TranscriptMatch match) {
+		youtubeCtl.setToYoutubeId(match.meta().youtubeId);
+		saidCtl.setFile(match.said());
+		vttCtl.setFile(match);
+		mismatchCtl.setMatch(match);
 	}
 
-	public static void main(String[] args) {
-		Shell shell = Shells.builder(SWT.SHELL_TRIM, cmp -> {
-			TranscriptCtl coat = new TranscriptCtl(cmp);
-			coat.setTo(null);
-		})
-				.setSize(SwtMisc.scaleByFontHeight(40, 30))
-				.openOnDisplay();
-		SwtMisc.loopUntilDisposed(shell);
+	public void save() {
+		saidCtl.hashCode();
+		vttCtl.hashCode();
 	}
 }
