@@ -18,9 +18,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java2ts.Foundation;
 import javax.annotation.Nullable;
-import org.eclipse.jgit.diff.DiffAlgorithm;
-import org.eclipse.jgit.diff.DiffAlgorithm.SupportedAlgorithm;
 import org.eclipse.jgit.diff.Edit;
+import org.eclipse.jgit.diff.MyersDiff;
 import org.eclipse.jgit.diff.Sequence;
 import org.eclipse.jgit.diff.SequenceComparator;
 import org.mytake.foundation.transcript.SaidTranscript.Turn;
@@ -50,7 +49,7 @@ public class TranscriptMatch {
 	}
 
 	static List<Edit> edits(List<? extends Word> a, List<? extends Word> b) {
-		return DiffAlgorithm.getAlgorithm(SupportedAlgorithm.HISTOGRAM).diff(new WordTimeMatcher(), new ListSequence(a), new ListSequence(b));
+		return MyersDiff.INSTANCE.diff(new WordTimeMatcher(), new ListSequence(a), new ListSequence(b));
 	}
 
 	public TranscriptMatch save(TranscriptFolder folder, String name, @Nullable List<Word.Vtt> newVtt, @Nullable String newSaid) throws IOException {

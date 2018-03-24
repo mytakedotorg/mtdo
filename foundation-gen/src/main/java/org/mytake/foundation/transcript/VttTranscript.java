@@ -17,7 +17,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import org.eclipse.jgit.diff.Edit;
@@ -166,12 +165,17 @@ public abstract class VttTranscript {
 		List<Line> newLines = new ArrayList<>();
 		for (VttTranscript.Line line : lines()) {
 			List<Word.Vtt> words = line.wordsNoTimestamp();
-			List<Edit> edits = TranscriptMatch.edits(words, remainder);
+
+			// allow 4 - 1 = 3 insertions per line at most.  otherwise, it might match the
+			// end of this line's words with the end of the entire remainder
+			int maxEligibleCutpoint = Math.min(words.size() + 4, remainder.size());
+			List<Word.Vtt> eligibleRemainder = remainder.subList(0, maxEligibleCutpoint);
+			List<Edit> edits = TranscriptMatch.edits(words, eligibleRemainder);
 
 			List<Word.Vtt> newWords;
 			if (edits.isEmpty()) {
-				newWords = remainder;
-				remainder = Collections.emptyList();
+				newWords = eligibleRemainder;
+				remainder = remainder.subList(maxEligibleCutpoint, remainder.size());
 			} else {
 				// cut at the beginning of the last edit
 				int cutpoint = edits.get(edits.size() - 1).getBeginB();
