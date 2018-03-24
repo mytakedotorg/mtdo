@@ -17,6 +17,7 @@ public class Word {
 	}
 
 	private static String trimPunctuation(String input) {
+		Preconditions.checkArgument(!input.isEmpty(), "Can't be empty!");
 		char lastChar = input.charAt(input.length() - 1);
 		Preconditions.checkArgument(!Character.isWhitespace(input.charAt(0)), "First char can't be whitespace!");
 		Preconditions.checkArgument(!Character.isWhitespace(lastChar), "Last char can't be whitespace!");
