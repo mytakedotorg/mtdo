@@ -80,7 +80,7 @@ public abstract class SaidTranscript {
 	}
 
 	public static SaidTranscript parse(VideoFactMeta meta, ByteSource source) throws IOException {
-		Set<String> people = meta.speakers.stream().map(s -> s.name).collect(Immutables.toSet());
+		Set<String> people = meta.speakers.stream().map(s -> s.fullName).collect(Immutables.toSet());
 
 		int lineCount = 1;
 		try (BufferedReader reader = source.asCharSource(StandardCharsets.UTF_8).openBufferedStream()) {

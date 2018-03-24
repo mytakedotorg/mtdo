@@ -8,12 +8,12 @@
     "youtubeId": "CsurHThBBkk",
     "durationSeconds": 3536,
     "speakers": [
-        {"person": "John F Kennedy", "role": "Democratic nominee for President"},
-        {"person": "Richard M Nixon", "role": "Republican nominee for President"},
-        {"person": "Howard K Smith", "role": "Moderator"},
-        {"person": "Sander Vanocur", "role": "Panelist"},
-        {"person": "Charles Warren", "role": "Panelist"},
-        {"person": "Bob H Fleming", "role": "Panelist"},
-        {"person": "Stuart Novins", "role": "Panelist"}
+        {"fullName": "John F Kennedy", "role": "Democratic nominee for President"},
+        {"fullName": "Richard M Nixon", "role": "Republican nominee for President"},
+        {"fullName": "Howard K Smith", "role": "Moderator"},
+        {"fullName": "Sander Vanocur", "role": "Panelist"},
+        {"fullName": "Charles Warren", "role": "Panelist"},
+        {"fullName": "Bob H Fleming", "role": "Panelist"},
+        {"fullName": "Stuart Novins", "role": "Panelist"}
     ]
 }

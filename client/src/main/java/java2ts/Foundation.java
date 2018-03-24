@@ -39,7 +39,7 @@ public interface Foundation {
 
 	@jsweet.lang.Interface
 	public class Speaker {
-		public String name;
+		public String fullName;
 		public String role;
 	}
 
