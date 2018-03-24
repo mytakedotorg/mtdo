@@ -8,10 +8,15 @@ package org.mytake.foundation.transcript;
 
 import com.diffplug.common.base.Either;
 import com.diffplug.common.base.Preconditions;
+import com.diffplug.common.io.ByteSource;
+import com.diffplug.common.io.Files;
 import compat.java2ts.VideoFactContentJava;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.stream.Collectors;
 import java2ts.Foundation;
+import javax.annotation.Nullable;
 import org.eclipse.jgit.diff.Edit;
 import org.eclipse.jgit.diff.MyersDiff;
 import org.eclipse.jgit.diff.Sequence;
@@ -38,8 +43,34 @@ public class TranscriptMatch {
 		this.editList = MyersDiff.INSTANCE.diff(new WordTimeMatcher(), new ListSequence(saidWords), new ListSequence(vttWords));
 	}
 
+	static List<Edit> edits(List<? extends Word> a, List<? extends Word> b) {
+		return MyersDiff.INSTANCE.diff(new WordTimeMatcher(), new ListSequence(a), new ListSequence(b));
+	}
+
+	public TranscriptMatch save(TranscriptFolder folder, String name, @Nullable List<Word.Vtt> newVtt, @Nullable String newSaid) throws IOException {
+		SaidTranscript said;
+		if (newSaid != null) {
+			byte[] newSaidBytes = newSaid.getBytes();
+			said = SaidTranscript.parse(meta, ByteSource.wrap(newSaidBytes));
+			Files.asByteSink(folder.fileSaid(name)).write(newSaidBytes);
+		} else {
+			said = this.said;
+		}
+		VttTranscript vtt;
+		if (newVtt != null) {
+			vtt = this.vtt.save(newVtt, Files.asCharSink(folder.fileVtt(name), StandardCharsets.UTF_8));
+		} else {
+			vtt = this.vtt;
+		}
+		return new TranscriptMatch(meta, said, vtt);
+	}
+
 	public Foundation.VideoFactMeta meta() {
 		return meta;
+	}
+
+	public SaidTranscript said() {
+		return said;
 	}
 
 	public VttTranscript vtt() {
@@ -101,7 +132,7 @@ public class TranscriptMatch {
 				}
 			}
 		}
-		List<String> speakersByName = meta.speakers.stream().map(speaker -> speaker.name).collect(Collectors.toList());
+		List<String> speakersByName = meta.speakers.stream().map(speaker -> speaker.fullName).collect(Collectors.toList());
 		java.speakerPerson = said.turns().stream().map(Turn::speaker).mapToInt(speakersByName::indexOf).toArray();
 		java.speakerWord = new int[said.turns().size()];
 		java.speakerWord[0] = 0;
