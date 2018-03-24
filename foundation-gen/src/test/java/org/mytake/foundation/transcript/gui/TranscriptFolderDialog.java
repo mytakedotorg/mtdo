@@ -7,6 +7,7 @@
 package org.mytake.foundation.transcript.gui;
 
 import com.diffplug.common.base.Errors;
+import com.diffplug.common.base.Throwables;
 import com.diffplug.common.rx.Rx;
 import com.diffplug.common.swt.Corner;
 import com.diffplug.common.swt.Fonts;
@@ -92,13 +93,29 @@ public class TranscriptFolderDialog {
 
 	private void openOptions(Composite parent) {
 		Layouts.setGrid(parent);
+		Composite transcriptCmp = new Composite(parent, SWT.NONE);
+		Layouts.setGridData(transcriptCmp).grabHorizontal();
+		Layouts.setGrid(transcriptCmp).margin(0).numColumns(2);
 		for (String transcript : folder.transcripts()) {
-			Link link = new Link(parent, SWT.NONE);
-			link.setText("<a>" + transcript + "</a>");
-			link.addListener(SWT.Selection, e -> {
-				setTranscript(transcript);
-				parent.getShell().dispose();
-			});
+			try {
+				TranscriptMatch match = folder.loadTranscript(transcript);
+
+				Link link = new Link(transcriptCmp, SWT.NONE);
+				link.setText("<a>" + transcript + "</a>");
+				link.addListener(SWT.Selection, e -> {
+					setTranscript(transcript);
+					parent.getShell().dispose();
+				});
+				String msg = match.edits().isEmpty() ? "Complete" : match.edits().size() + " unmatched";
+				Labels.create(transcriptCmp, msg);
+			} catch (Exception e) {
+				Labels.create(transcriptCmp, transcript);
+
+				Throwable root = Throwables.getRootCause(e);
+				String msg = root.getMessage();
+				msg = msg == null ? "Error" : msg.substring(0, Math.min(30, msg.length()));
+				Labels.create(transcriptCmp, msg);
+			}
 		}
 		List<String> incomplete = folder.incompleteTranscripts();
 		if (incomplete.isEmpty()) {
