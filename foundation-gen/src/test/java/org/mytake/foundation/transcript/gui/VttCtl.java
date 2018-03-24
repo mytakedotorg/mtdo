@@ -32,8 +32,6 @@ import org.mytake.foundation.transcript.Word;
 public class VttCtl extends ControlWrapper.AroundControl<Composite> {
 	private PublishSubject<SaidVtt> changed;
 
-	private final Button addBtn;
-	private final Text addTxt;
 	private final TableViewer viewer;
 
 	private static String formatTime(double time) {
@@ -51,11 +49,6 @@ public class VttCtl extends ControlWrapper.AroundControl<Composite> {
 
 		Composite bottomCmp = new Composite(wrapped, SWT.NONE);
 		Layouts.setGridData(bottomCmp).grabHorizontal();
-		Layouts.setGrid(bottomCmp).margin(0).numColumns(2);
-		addBtn = new Button(bottomCmp, SWT.PUSH | SWT.FLAT);
-		addBtn.setText("Add below selection");
-		addTxt = new Text(bottomCmp, SWT.SINGLE | SWT.BORDER);
-		Layouts.setGridData(addTxt).grabHorizontal();
 
 		ColumnViewerFormat<Word.Vtt> time = ColumnViewerFormat.builder();
 		time.addColumn().setText("Time").setLabelProviderText(word -> formatTime(word.time())).setLayoutPixel(6 * SwtMisc.systemFontWidth());
@@ -93,21 +86,26 @@ public class VttCtl extends ControlWrapper.AroundControl<Composite> {
 						.openOnActive();
 			}
 		});
+
 		// add on button
-		addBtn.addListener(SWT.Selection, e -> {
+		Layouts.setGrid(bottomCmp).margin(0).numColumns(2);
+		Button addBtn = new Button(bottomCmp, SWT.PUSH | SWT.FLAT);
+		addBtn.setText("Add below selection");
+		Text addTxt = new Text(bottomCmp, SWT.SINGLE | SWT.BORDER);
+		Layouts.setGridData(addTxt).grabHorizontal();
+
+		Runnable add = Errors.dialog().wrap(() -> {
 			int selection = viewer.getTable().getSelectionIndex();
-			if (selection == -1) {
-				SwtMisc.blockForError("Must select something", "Must select something");
-				return;
-			}
+			Preconditions.checkArgument(selection != -1, "Must select something");
 			String word = addTxt.getText().trim();
-			if (word.indexOf(' ') != -1) {
-				SwtMisc.blockForError("Cannot contain whitespace", "Cannot contain whitespace");
-				return;
-			}
-			insert(selection + 1, Word.Said.dummy(word));
+			Preconditions.checkArgument(!word.isEmpty(), "Cannot be empty");
+			Preconditions.checkArgument(!word.contains(" "), "Cannot contain whitespace");
+			Word.Vtt newWord = insert(selection + 1, Word.Said.dummy(word));
 			addTxt.setText("");
+			viewer.setSelection(new StructuredSelection(newWord));
 		});
+		addBtn.addListener(SWT.Selection, e -> add.run());
+		addTxt.addListener(SWT.DefaultSelection, e -> add.run());
 	}
 
 	private void editWord(Composite cmp, Word.Vtt word) {
@@ -122,21 +120,25 @@ public class VttCtl extends ControlWrapper.AroundControl<Composite> {
 		Layouts.setGridData(timeTxt).grabHorizontal();
 		timeTxt.setText(formatTime(word.time()));
 
+		Runnable ok = Errors.dialog().wrap(() -> {
+			String txt = wordTxt.getText();
+			Preconditions.checkArgument(!txt.contains(" "), "Cannot contain space");
+			double time = Double.parseDouble(timeTxt.getText());
+			replace(word, new Word.Vtt(txt, time));
+			cmp.getShell().dispose();
+		});
+		wordTxt.addListener(SWT.DefaultSelection, e -> ok.run());
+		timeTxt.addListener(SWT.DefaultSelection, e -> ok.run());
+
 		Composite btnCmp = new Composite(cmp, SWT.NONE);
+		Layouts.setGridData(btnCmp).horizontalSpan(2).grabHorizontal();
 		Layouts.setGrid(btnCmp).margin(0).numColumns(3);
 		Layouts.newGridPlaceholder(btnCmp).grabHorizontal();
 		Button okBtn = new Button(btnCmp, SWT.PUSH);
 		okBtn.setText("OK");
 		Layouts.setGridData(okBtn).widthHint(SwtMisc.defaultButtonWidth());
-		okBtn.addListener(SWT.Selection, e -> {
-			Errors.dialog().run(() -> {
-				String txt = wordTxt.getText();
-				Preconditions.checkArgument(!txt.contains(" "), "Cannot contain space");
-				double time = Double.parseDouble(timeTxt.getText());
-				replace(word, new Word.Vtt(txt, time));
-				cmp.getShell().dispose();
-			});
-		});
+		okBtn.addListener(SWT.Selection, e -> ok.run());
+
 		Button cancelBtn = new Button(btnCmp, SWT.PUSH);
 		cancelBtn.setText("Cancel");
 		Layouts.setGridData(cancelBtn).widthHint(SwtMisc.defaultButtonWidth());
@@ -182,7 +184,7 @@ public class VttCtl extends ControlWrapper.AroundControl<Composite> {
 		viewer.replace(vttNew, idx);
 	}
 
-	public void insert(int insertionPoint, Word.Said said) {
+	public Word.Vtt insert(int insertionPoint, Word.Said said) {
 		changed.onNext(SaidVtt.VTT);
 		double before = insertionPoint == 0 ? 0 : words.get(insertionPoint - 1).time();
 		double after = words.get(insertionPoint).time();
@@ -190,6 +192,7 @@ public class VttCtl extends ControlWrapper.AroundControl<Composite> {
 		Word.Vtt newWord = new Word.Vtt(said.lowercase(), (before + after) / 2);
 		words.add(insertionPoint, newWord);
 		viewer.insert(newWord, insertionPoint);
+		return newWord;
 	}
 
 	public List<Word.Vtt> getWords() {
