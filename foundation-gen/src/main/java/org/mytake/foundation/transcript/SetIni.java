@@ -25,7 +25,7 @@ class SetIni {
 	}
 
 	public static Set<String> parse(Path path) throws IOException {
-		if (Files.exists(path)) {
+		if (!Files.exists(path)) {
 			throw new IllegalArgumentException("Does not exist: " + path);
 		}
 		List<String> lines = Files.readAllLines(path);

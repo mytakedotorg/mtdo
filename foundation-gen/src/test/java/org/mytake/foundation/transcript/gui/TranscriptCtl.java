@@ -6,6 +6,7 @@
  */
 package org.mytake.foundation.transcript.gui;
 
+import com.diffplug.common.swt.ControlWrapper;
 import com.diffplug.common.swt.Layouts;
 import com.diffplug.common.swt.Shells;
 import com.diffplug.common.swt.SwtMisc;
@@ -14,15 +15,16 @@ import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 
-public class TranscriptCoat {
+public class TranscriptCtl extends ControlWrapper.AroundControl<Composite> {
 	private final SaidCtl saidCtl;
 	private final VttCtl vttCtl;
 	private final YoutubeCtl youtubeCtl;
 	private final MismatchCtl mismatchCtl;
 
-	public TranscriptCoat(Composite parent) {
-		Layouts.setGrid(parent);
-		SashForm horizontalForm = new SashForm(parent, SWT.HORIZONTAL);
+	public TranscriptCtl(Composite parent) {
+		super(new Composite(parent, SWT.NONE));
+		Layouts.setGrid(wrapped);
+		SashForm horizontalForm = new SashForm(wrapped, SWT.HORIZONTAL);
 		Layouts.setGridData(horizontalForm).grabAll();
 		saidCtl = new SaidCtl(horizontalForm);
 
@@ -30,7 +32,7 @@ public class TranscriptCoat {
 		youtubeCtl = new YoutubeCtl(verticalForm);
 		vttCtl = new VttCtl(verticalForm, youtubeCtl);
 
-		mismatchCtl = new MismatchCtl(parent, saidCtl, vttCtl);
+		mismatchCtl = new MismatchCtl(wrapped, saidCtl, vttCtl);
 		Layouts.setGridData(mismatchCtl).grabHorizontal();
 	}
 
@@ -47,7 +49,7 @@ public class TranscriptCoat {
 
 	public static void main(String[] args) {
 		Shell shell = Shells.builder(SWT.SHELL_TRIM, cmp -> {
-			TranscriptCoat coat = new TranscriptCoat(cmp);
+			TranscriptCtl coat = new TranscriptCtl(cmp);
 			coat.setTo(null);
 		})
 				.setSize(SwtMisc.scaleByFontHeight(40, 30))
