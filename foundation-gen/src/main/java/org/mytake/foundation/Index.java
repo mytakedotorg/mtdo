@@ -25,7 +25,8 @@ public class Index {
 
 		List<FactLink> facts = new ArrayList<>();
 		facts.addAll(Documents.national().factLinks);
-		facts.addAll(Videos.national().factLinks);
+		// TODO: put the videos back in
+		//facts.addAll(Videos.national().factLinks);
 
 		Hashed hashed = Hashed.asJson(facts);
 		Files.write(Folders.DST_FOUNDATION.resolve(hashed.hash + ".json"), hashed.content);

@@ -9,7 +9,6 @@ package org.mytake.foundation;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.security.NoSuchAlgorithmException;
-
 import java2ts.Foundation;
 import java2ts.Foundation.DocumentFactContent;
 import java2ts.Foundation.Fact;

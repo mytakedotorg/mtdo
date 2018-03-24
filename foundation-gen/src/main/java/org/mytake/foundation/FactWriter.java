@@ -20,10 +20,6 @@ import java2ts.Foundation.Fact;
 import java2ts.Foundation.FactLink;
 
 public abstract class FactWriter<T extends Foundation.FactContent> {
-	static {
-		JsonMisc.init();
-	}
-
 	final List<FactLink> factLinks = new ArrayList<>();
 	final Path dstDir;
 	final Path srcDir;
