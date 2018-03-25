@@ -39,7 +39,7 @@ public class SaidCtl extends ControlWrapper.AroundControl<Composite> {
 		for (SaidTranscript.Turn turn : said.turns()) {
 			builder.append(turn.speaker());
 			builder.append(": ");
-			builder.append(String.join(" ", turn.words()));
+			builder.append(turn.said());
 			builder.append("\n\n");
 		}
 		styled.setText(builder.toString());

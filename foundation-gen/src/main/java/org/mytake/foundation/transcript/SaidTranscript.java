@@ -16,7 +16,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Set;
@@ -39,7 +38,8 @@ import java2ts.Foundation.VideoFactMeta;
 public abstract class SaidTranscript {
 	public abstract List<Turn> turns();
 
-	public List<Word.Said> attributedWords() {
+	/** Returns words indexed against the raw format of the transcript. */
+	public List<Word.Said> indexedWords() {
 		List<Word.Said> attributed = new ArrayList<>();
 		ListIterator<Turn> turnIter = turns().listIterator();
 		int startIdx = 0;
@@ -47,16 +47,8 @@ public abstract class SaidTranscript {
 			while (turnIter.hasNext()) {
 				Turn turn = turnIter.next();
 				startIdx += turn.speaker().length() + ": ".length();
-				List<String> words = turn.words();
-				for (String word : words) {
-					Word.Said saidWord = new Word.Said(word, startIdx);
-					if (!saidWord.lowercase.isEmpty()) {
-						// make sure it's not just a "-"
-						attributed.add(saidWord);
-					}
-					startIdx += word.length() + 1;
-				}
-				startIdx += 1; // for 2 newlines
+				attributed.addAll(turn.indexedWords(startIdx));
+				startIdx += turn.said().length() + 1; // for 2 newlines
 			}
 		} catch (Exception e) {
 			throw new RuntimeException("On line " + (turnIter.previousIndex() * 2 + 1) + " of said", e);
@@ -70,8 +62,19 @@ public abstract class SaidTranscript {
 
 		public abstract String said();
 
-		public List<String> words() {
-			return Arrays.asList(said().split(" "));
+		/** Returns words indexed against the given start index. */
+		public List<Word.Said> indexedWords(int startIdx) {
+			String[] words = said().split(" ");
+			List<Word.Said> saidWords = new ArrayList<>();
+			for (String word : words) {
+				Word.Said saidWord = new Word.Said(word, startIdx);
+				if (!saidWord.lowercase.isEmpty()) {
+					// make sure it's not just a "-"
+					saidWords.add(saidWord);
+				}
+				startIdx += word.length() + 1;
+			}
+			return saidWords;
 		}
 
 		public static Turn speakerWords(String speaker, String words) {
