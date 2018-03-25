@@ -96,7 +96,7 @@ class CaptionTextNodeListContainer extends React.Component<
           ].fullName;
 
           this.setState({
-            currentSpeaker: fullName.substring(fullName.lastIndexOf(" "))
+            currentSpeaker: fullName.substring(fullName.lastIndexOf(" ") + 1)
           });
         }
       }
