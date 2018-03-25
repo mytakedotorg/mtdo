@@ -40,7 +40,7 @@ public class FoundationMigrationModuleTest {
 	public void testReplace() throws Exception {
 		try (DSLContext dsl = dev.dsl()) {
 			InitialData.init(dsl, dev.time());
-			TakeBuilder blocks = TakeBuilder.builder().video("-7DeOJAVJUsifUcIaZo7c41pol_guMxR6IEgYv28bHM=", 1, 2);
+			TakeBuilder blocks = TakeBuilder.builder().video("dcrl-fARztw49lA2wg5xsM8GUZdkmK0deLZ-EuRGW2M=", 1, 2);
 
 			Account account = dev.fetchRecord(ACCOUNT, ACCOUNT.EMAIL, "samples@email.com").into(Account.class);
 
@@ -49,12 +49,12 @@ public class FoundationMigrationModuleTest {
 
 			assertFoundationRev(dsl).containsExactly(1);
 			Set<Integer> changed = FoundationMigrationModule.migrate(dsl, dev.time());
-			assertFoundationRev(dsl).containsExactly(1, 2);
+			assertFoundationRev(dsl).containsExactly(1, 2, 3);
 			revision.refresh();
 			published.refresh();
 
 			Assertions.assertThat(changed).containsExactly(published.getId());
-			String expected = "[{'kind': 'video', 'range': [1, 2], 'videoId': 'mz0GDKCE-RL1swa5u7ZugyQScNJMfpo3_FwSju6JLlo='}]".replace('\'', '"');
+			String expected = "[{'kind': 'video', 'range': [1, 2], 'videoId': 'iqFs0S6PjvdMBxmS4HKEgbv9fukhg7dfjrVVHPx8mgE='}]".replace('\'', '"');
 			Assertions.assertThat(revision.getBlocks()).isEqualTo(expected);
 			Assertions.assertThat(published.getBlocks()).isEqualTo(expected);
 		}
