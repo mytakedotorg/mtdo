@@ -291,7 +291,7 @@ const videoFactLink: Foundation.FactLink = {
     primaryDateKind: "recorded",
     kind: "video"
   },
-  hash: "0ucGOukmHdaStpYZRigN-tLV8Vn2wAwjlobyMGzSpL4="
+  hash: "iEfwIxM7MmnOKb7zt4HqW8IxUWy6F7a236fSOQlUUWI="
 };
 
 const videoNodes: CaptionNodeArr = [
@@ -318,7 +318,7 @@ const cards: Card[] = [
       {
         kind: "video",
         range: [304, 321],
-        videoId: "0ucGOukmHdaStpYZRigN-tLV8Vn2wAwjlobyMGzSpL4="
+        videoId: "iEfwIxM7MmnOKb7zt4HqW8IxUWy6F7a236fSOQlUUWI="
       },
       {
         kind: "paragraph",
@@ -328,7 +328,7 @@ const cards: Card[] = [
       {
         kind: "video",
         range: [246, 261],
-        videoId: "H2XbgR2uDCPUKpJQMDsCSAud5FWKTPw8rQqWjiXZCG4="
+        videoId: "EuBv33KFOcVItXjivwaqki89kC6YT63StCHz5wZAa7M="
       },
       {
         kind: "paragraph",
@@ -337,7 +337,7 @@ const cards: Card[] = [
       {
         kind: "video",
         range: [190, 203],
-        videoId: "H2XbgR2uDCPUKpJQMDsCSAud5FWKTPw8rQqWjiXZCG4="
+        videoId: "EuBv33KFOcVItXjivwaqki89kC6YT63StCHz5wZAa7M="
       },
       {
         kind: "paragraph",
