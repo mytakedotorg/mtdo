@@ -7,5 +7,12 @@
     },
     "youtubeId": "SLy5fq1b4jA",
     "durationSeconds": 5224,
-    "speakers": []
+    "speakers": [
+        {"fullName": "Jimmy E Carter", "role": "Democratic nominee for President"},
+        {"fullName": "Gerald R Ford", "role": "Republican nominee for President"},
+        {"fullName": "Pauline Frederick", "role": "Moderator"},
+        {"fullName": "Max Frankel", "role": "Panelist"},
+        {"fullName": "Henry L Trewhitt", "role": "Panelist"},
+        {"fullName": "Richard Valeriani", "role": "Panelist"}
+    ]
 }
