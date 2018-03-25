@@ -24,7 +24,7 @@ public class Index {
 		deleteDir(Folders.DST_FOUNDATION);
 
 		List<FactLink> facts = new ArrayList<>();
-		//facts.addAll(Documents.national().factLinks);
+		facts.addAll(Documents.national().factLinks);
 		facts.addAll(Videos.presidentialDebates().factLinks);
 
 		Hashed hashed = Hashed.asJson(facts);
