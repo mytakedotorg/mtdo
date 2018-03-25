@@ -6,7 +6,11 @@ import {
   FeedCardContainerProps,
   FeedCardContainerState
 } from "./FeedCardContainer";
-import { documentFactLink, documentNodes, videoFactFast } from "../utils/testUtils";
+import {
+  documentFactLink,
+  documentNodes,
+  videoFactFast
+} from "../utils/testUtils";
 
 const videoProps: FeedCardContainerProps = {
   username: "samples",
