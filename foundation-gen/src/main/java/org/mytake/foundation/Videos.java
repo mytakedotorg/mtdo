@@ -25,7 +25,6 @@ public class Videos extends FactWriter<VideoFactContentEncoded> {
 				TranscriptMatch match = folder.loadTranscript(transcript);
 				factContent = match.toVideoFact();
 			} catch (Exception e) {
-				e.printStackTrace();
 				VideoFactMeta meta = folder.loadMetaNoValidation(transcript);
 				VideoFactContentJava empty = new VideoFactContentJava();
 				empty.fact = meta.fact;
