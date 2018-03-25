@@ -10,6 +10,7 @@ import {
   CaptionNodeArr,
   getCaptionNodeArray,
   getSimpleRangesFromHTMLRange,
+  getWordRangeFromCharRange,
   highlightCaption,
   FoundationNode,
   SimpleRanges
@@ -141,16 +142,26 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
           ReactDOM.findDOMNode(this.captionNodesDiv).childNodes
         );
 
+        const wordRange = getWordRangeFromCharRange(
+          simpleRanges.charRange,
+          this.props.videoFact
+        );
+
+        const newSimpleRanges = {
+          ...simpleRanges,
+          wordRange: wordRange
+        };
+
         if (this.props.captionIsHighlighted) {
           // Must clear existing highlights before adding new ones
           // Store the ranges for use in next componentDidUpdate
-          this.simpleRanges = (Object as any).assign({}, simpleRanges);
+          this.simpleRanges = (Object as any).assign({}, newSimpleRanges);
           // Clear all highlights
           this.setState({
             highlightedNodes: [...this.unhighlightedNodes]
           });
         } else {
-          this.highlightNodes(simpleRanges);
+          this.highlightNodes(newSimpleRanges);
         }
       }
     }
