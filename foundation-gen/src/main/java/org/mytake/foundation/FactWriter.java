@@ -16,14 +16,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java2ts.Foundation;
-import java2ts.Foundation.Fact;
 import java2ts.Foundation.FactLink;
 
 public abstract class FactWriter<T extends Foundation.FactContent> {
-	static {
-		JsonMisc.init();
-	}
-
 	final List<FactLink> factLinks = new ArrayList<>();
 	final Path dstDir;
 	final Path srcDir;
@@ -47,23 +42,12 @@ public abstract class FactWriter<T extends Foundation.FactContent> {
 				.replaceAll("[^\\w-]+", ""); // replace non-alphanumerics and non-hyphens
 	}
 
-	protected abstract T factToContent(Fact fact);
-
-	protected void add(String title, String date, String dateKind, String kind) throws NoSuchAlgorithmException, IOException {
-		Fact fact = new Fact();
-		fact.title = title;
-		fact.primaryDate = date;
-		fact.primaryDateKind = dateKind;
-		fact.kind = kind;
-
-		T content = factToContent(fact);
-		content.fact = fact;
-
+	protected void add(Foundation.FactContent content) throws IOException, NoSuchAlgorithmException {
 		Hashed hashed = Hashed.asJson(content);
 		Files.write(dstDir.resolve(hashed.hash + ".json"), hashed.content);
 
 		FactLink link = new FactLink();
-		link.fact = fact;
+		link.fact = content.fact;
 		link.hash = hashed.hash;
 		factLinks.add(link);
 	}

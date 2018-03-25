@@ -82,7 +82,7 @@ window.mytake = {
 	type: "showtake",
 	takeDocument: {
 	title: "Why it's so hard to have peace",
-	blocks: [{"kind": "paragraph", "text": "During the cold war, anybody who wanted to negotiate with the evil Communists was “weak”."}, {"kind": "paragraph", "text": "Today, anybody who wants to negotiate with a Muslim country is “weak”."}, {"kind": "video", "range": [304, 321], "videoId": "0ucGOukmHdaStpYZRigN-tLV8Vn2wAwjlobyMGzSpL4="}, {"kind": "paragraph", "text": "Thank goodness there's at least one party who is willing to give peace a chance!"}, {"kind": "video", "range": [246, 261], "videoId": "H2XbgR2uDCPUKpJQMDsCSAud5FWKTPw8rQqWjiXZCG4="}, {"kind": "paragraph", "text": "Err..  Surely that's an outlier?"}, {"kind": "video", "range": [190, 203], "videoId": "H2XbgR2uDCPUKpJQMDsCSAud5FWKTPw8rQqWjiXZCG4="}, {"kind": "paragraph", "text": "Huh.  Too bad Jimmy Carter didn't think of something as catchy as MAGA."}]
+	blocks: [{"kind": "paragraph", "text": "During the cold war, anybody who wanted to negotiate with the evil Communists was “weak”."}, {"kind": "paragraph", "text": "Today, anybody who wants to negotiate with a Muslim country is “weak”."}, {"kind": "video", "range": [304, 321], "videoId": "iEfwIxM7MmnOKb7zt4HqW8IxUWy6F7a236fSOQlUUWI="}, {"kind": "paragraph", "text": "Thank goodness there's at least one party who is willing to give peace a chance!"}, {"kind": "video", "range": [246, 261], "videoId": "EuBv33KFOcVItXjivwaqki89kC6YT63StCHz5wZAa7M="}, {"kind": "paragraph", "text": "Err..  Surely that's an outlier?"}, {"kind": "video", "range": [190, 203], "videoId": "EuBv33KFOcVItXjivwaqki89kC6YT63StCHz5wZAa7M="}, {"kind": "paragraph", "text": "Huh.  Too bad Jimmy Carter didn't think of something as catchy as MAGA."}]
 	},
 	takeId: 1
 };

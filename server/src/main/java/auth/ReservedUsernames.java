@@ -32,6 +32,7 @@ class ReservedUsernames {
 			url(Routes.LOGOUT),
 			url(AuthModule.URL_confirm),
 
+			url(Routes.SEARCH),
 			url(Routes.TIMELINE),
 			url(Routes.FOUNDATION),
 			url(Routes.FOUNDATION_DATA),

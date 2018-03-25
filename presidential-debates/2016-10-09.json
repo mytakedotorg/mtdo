@@ -1,0 +1,24 @@
+{
+    "fact": {
+        "title": "Presidential Debate - Clinton, Trump (2 of 3)",
+        "primaryDate": "2016-10-09",
+        "primaryDateKind": "recorded",
+        "kind": "video"
+    },
+    "youtubeId": "OtlHBa7YMJ4",
+    "durationSeconds": 5624,
+    "speakers": [
+        {"fullName": "Hillary R Clinton", "role": "Democratic nominee for President"},
+        {"fullName": "Donald J Trump", "role": "Republican nominee for President"},
+        {"fullName": "Anderson H Cooper", "role": "Moderator"},
+        {"fullName": "Martha Raddatz", "role": "Moderator"},
+        {"fullName": "Patrice Brock", "role": "Audience questioner"},
+        {"fullName": "Ken Karpowicz", "role": "Audience questioner"},
+        {"fullName": "Gorbah Hamed", "role": "Audience questioner"},
+        {"fullName": "James Carter", "role": "Audience questioner"},
+        {"fullName": "Karl Becker", "role": "Audience questioner"},
+        {"fullName": "Ken Bone", "role": "Audience questioner"},
+        {"fullName": "Spencer Moss", "role": "Audience questioner"},
+        {"fullName": "Beth Miller", "role": "Audience questioner"}
+    ]
+}

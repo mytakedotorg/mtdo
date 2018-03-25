@@ -2,7 +2,7 @@ apply plugin: 'com.diffplug.gradle.oomph.ide'
 oomphIde {
 	repoEclipseLatest()
 	jdt {}
-	splash rootProject.file('_imgs/bias_overlap.png')
+	splash rootProject.file('_imgs/logo_leaves.png')
 	style {
 		classicTheme()	// oldschool cool
 		niceText()		// nice fonts and visible whitespace

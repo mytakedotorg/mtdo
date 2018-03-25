@@ -9,6 +9,7 @@ package org.mytake.foundation;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.security.NoSuchAlgorithmException;
+import java2ts.Foundation;
 import java2ts.Foundation.DocumentFactContent;
 import java2ts.Foundation.Fact;
 import org.mytake.foundation.parsers.FoundationParser;
@@ -43,11 +44,23 @@ public class Documents extends FactWriter<DocumentFactContent> {
 	}
 
 	private void add(String title, String date) throws NoSuchAlgorithmException, IOException {
-		add(title, date, "ratified", "document");
+		add(title, date, "ratified", Foundation.KIND_DOCUMENT);
 	}
 
-	@Override
-	protected DocumentFactContent factToContent(Fact fact) {
+	protected void add(String title, String date, String dateKind, String kind) throws NoSuchAlgorithmException, IOException {
+		Fact fact = new Fact();
+		fact.title = title;
+		fact.primaryDate = date;
+		fact.primaryDateKind = dateKind;
+		fact.kind = kind;
+
+		DocumentFactContent content = factToContent(fact);
+		content.fact = fact;
+
+		add(content);
+	}
+
+	private DocumentFactContent factToContent(Fact fact) {
 		DocumentFactContent content = new DocumentFactContent();
 		String input = read(slugify(fact.title) + ".foundation.html");
 		content.components = FoundationParser.toComponents(input);

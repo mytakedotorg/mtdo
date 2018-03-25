@@ -9,7 +9,7 @@ import {
 import {
   documentFactLink,
   documentNodes,
-  videoFact,
+  videoFactFast,
   videoFactLink
 } from "../utils/testUtils";
 
@@ -94,7 +94,7 @@ test("Successfully loaded Video Preview", () => {
   };
   const containerState: TimelinePreviewContainerState = {
     loading: false,
-    videoFact: videoFact
+    videoFact: videoFactFast
   };
 
   const tree = renderer

@@ -29,7 +29,8 @@ import org.jooq.impl.DSL;
 
 public class FoundationMigrationModule implements Jooby.Module {
 	private static final ImmutableSortedMap<Integer, FoundationMigration> MIGRATIONS = ImmutableSortedMap.of(
-			2, FoundationMigration.createReplacing("V2__video_duration_and_encode"));
+			2, FoundationMigration.createReplacing("V2__video_duration_and_encode"),
+			3, FoundationMigration.createReplacing("V3__video_new_transcripts"));
 
 	@Override
 	public void configure(Env env, Config conf, Binder binder) throws Throwable {

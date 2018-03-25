@@ -7,15 +7,12 @@
 package java2ts;
 
 import def.js.ArrayLike;
-import java.util.Date;
 import java.util.List;
-import java2ts.StringTypes.recorded;
-import jsweet.util.tuple.Tuple2;
 
 public interface Foundation {
-	///////////////////////////////
-	// Unused, but what I'd like //
-	///////////////////////////////
+	public static final String KIND_VIDEO = "video";
+	public static final String KIND_DOCUMENT = "document";
+
 	@jsweet.lang.Interface
 	public class Fact {
 		public String title;
@@ -41,19 +38,22 @@ public interface Foundation {
 	}
 
 	@jsweet.lang.Interface
-	public class VideoFactContentLegacy extends FactContent {
-		public String youtubeId;
-		public Number durationSeconds;
-		public List<Person> speakers;
-		public List<CaptionWord> transcript;
-		public List<SpeakerMap> speakerMap;
+	public class Speaker {
+		public String fullName;
+		public String role;
 	}
 
+	/** Metadata about a video. */
 	@jsweet.lang.Interface
-	public class VideoFactContent extends FactContent {
+	public class VideoFactMeta extends FactContent {
 		public String youtubeId;
 		public Number durationSeconds;
-		public List<Person> speakers;
+		public List<Speaker> speakers;
+	}
+
+	/** Metadata and timed transcript info about a video. */
+	@jsweet.lang.Interface
+	public class VideoFactContent extends VideoFactMeta {
 		public String plainText;
 		/** Word n starts at charOffsets[n]. */
 		public ArrayLike<Number> charOffsets;
@@ -72,10 +72,7 @@ public interface Foundation {
 	}
 
 	@jsweet.lang.Interface
-	public class VideoFactContentEncoded extends FactContent {
-		public String youtubeId;
-		public Number durationSeconds;
-		public List<Person> speakers;
+	public class VideoFactContentEncoded extends VideoFactMeta {
 		public String plainText;
 		/** Count of the words. */
 		public int numWords;
@@ -96,52 +93,5 @@ public interface Foundation {
 		public String component;
 		public String innerHTML;
 		public int offset;
-	}
-
-	//////////////////
-	// What we have //
-	//////////////////
-	@jsweet.lang.Interface
-	public class DocumentFact {
-		public String title;
-		public String filename;
-		public Date primaryDate;
-		// TODO: https://github.com/cincheo/jsweet/issues/412
-		public String primaryDateKind;
-	}
-
-	@jsweet.lang.Interface
-	public class VideoFact {
-		public String id;
-		public String title;
-		public Date primaryDate;
-		public recorded primaryDateKind;
-	}
-
-	@jsweet.lang.Interface
-	public class Person {
-		public String firstname;
-		@jsweet.lang.Optional
-		public String middlename;
-		public String lastname;
-	}
-
-	@jsweet.lang.Interface
-	public class SpeakerMap {
-		public String speaker; // lastname of Person
-		public Tuple2<Integer, Integer> range;
-	}
-
-	@jsweet.lang.Interface
-	public class CaptionWord {
-		public int idx;
-		public String word;
-		public double timestamp;
-	}
-
-	@jsweet.lang.Interface
-	public class CaptionMeta {
-		public List<Person> speakers;
-		public List<SpeakerMap> speakerMap;
 	}
 }
