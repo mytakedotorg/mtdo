@@ -6,7 +6,7 @@ import {
   FeedCardContainerProps,
   FeedCardContainerState
 } from "./FeedCardContainer";
-import { documentFactLink, documentNodes, videoFact } from "../utils/testUtils";
+import { documentFactLink, documentNodes, videoFactFast } from "../utils/testUtils";
 
 const videoProps: FeedCardContainerProps = {
   username: "samples",
@@ -87,7 +87,7 @@ test("Card w/ Video Fact", () => {
   const containerProps = videoProps;
   const containerState: FeedCardContainerState = {
     loading: false,
-    videoFact: videoFact
+    videoFact: videoFactFast
   };
 
   const tree = renderer

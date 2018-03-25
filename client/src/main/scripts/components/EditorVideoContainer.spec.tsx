@@ -7,7 +7,7 @@ import {
   EditorVideoContainerState
 } from "./EditorVideoContainer";
 import { Foundation } from "../java2ts/Foundation";
-import { videoFact } from "../utils/testUtils";
+import { videoFactFast } from "../utils/testUtils";
 
 const mockFn = jest.fn();
 
@@ -42,7 +42,7 @@ test("Video loading", () => {
 test("Successfully loaded Video", () => {
   const containerState: EditorVideoContainerState = {
     loading: false,
-    videoFact: videoFact
+    videoFact: videoFactFast
   };
 
   const tree = renderer
