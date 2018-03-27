@@ -152,20 +152,22 @@ public class MismatchCtl extends ControlWrapper.AroundControl<Composite> {
 			if (vtt.isLeft()) {
 				// both modified
 				List<Word.Vtt> vttWords = vtt.getLeft();
-				if (saidWords.size() == 1 && vttWords.size() == 1) {
-					takeSaid = () -> vttCtl.replace(vttWords.get(0), saidWords.get(0));
-					takeVtt = () -> saidCtl.replace(saidSel, vttWords.get(0));
-				} else {
-					//takeSaid = replaceVttFromSaid
-					//takeVtt = replaceSaidFromVtt
+				boolean sameSpeaker = !saidCtl.getText().substring(saidSel.x, saidSel.y).contains("\n");
+				if (sameSpeaker) {
+					takeSaid = () -> {
+						int insertionPoint = vttCtl.getWords().indexOf(vttWords.get(0));
+						vttCtl.delete(vttWords);
+						vttCtl.insert(insertionPoint, saidWords);
+					};
+					takeVtt = () -> {
+						saidCtl.remove(saidSel);
+						saidCtl.insert(saidSel.x, vttWords);
+					};
 				}
 			} else {
 				// added to said
 				int vttInsertionPoint = vtt.getRight();
-				if (saidWords.size() == 1) {
-					takeSaid = () -> vttCtl.insert(vttInsertionPoint, saidWords.get(0));
-					// takeSaid = insertIntoVtt
-				}
+				takeSaid = () -> vttCtl.insert(vttInsertionPoint, saidWords);
 				takeVtt = () -> saidCtl.remove(new Point(saidSel.x, saidSel.y + 1)); //deleteFromSaid (+1 for space)
 			}
 		} else {
