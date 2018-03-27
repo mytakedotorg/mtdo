@@ -18,6 +18,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import javax.annotation.Nullable;
@@ -62,16 +63,6 @@ public abstract class VttTranscript {
 					}
 				}
 			}
-		}
-
-		List<Word.Vtt> wordsNoTimestamp() {
-			List<Word.Vtt> words = new ArrayList<>(tokens().size() / 2 + 2);
-			for (VttToken token : tokens()) {
-				if (token.isWord()) {
-					words.add(new Word.Vtt(token.assertWord().word, Double.NaN));
-				}
-			}
-			return words;
 		}
 
 		public static Line create(LineHeader template, List<Word.Vtt> words, double nextStart) {
@@ -208,44 +199,81 @@ public abstract class VttTranscript {
 		});
 	}
 
-	public VttTranscript save(List<Word.Vtt> newVtt, CharSink charSink) throws IOException {
-		List<Word.Vtt> remainder = newVtt;
-		List<Line> newLines = new ArrayList<>();
-		for (VttTranscript.Line line : lines()) {
-			List<Word.Vtt> words = line.wordsNoTimestamp();
+	/** Uses an EditList to map indices from one to the other. */
+	private static class IdxMap {
+		int[] beginA;
+		List<Edit> edits;
+		Edit firstEdit, lastEdit;
 
-			// allow 4 - 1 = 3 insertions per line at most.  otherwise, it might match the
-			// end of this line's words with the end of the entire remainder
-			int maxEligibleCutpoint = Math.min(words.size() + 4, remainder.size());
-			List<Word.Vtt> eligibleRemainder = remainder.subList(0, maxEligibleCutpoint);
-			List<Edit> edits = TranscriptMatch.edits(words, eligibleRemainder);
-
-			List<Word.Vtt> newWords;
+		IdxMap(List<Edit> edits) {
+			this.beginA = edits.stream().mapToInt(edit -> edit.getEndA()).toArray();
+			this.edits = edits;
 			if (edits.isEmpty()) {
-				newWords = eligibleRemainder;
-				remainder = remainder.subList(maxEligibleCutpoint, remainder.size());
+				firstEdit = lastEdit = null;
 			} else {
-				// cut at the beginning of the last edit
-				int cutpoint = edits.get(edits.size() - 1).getBeginB();
-				newWords = remainder.subList(0, cutpoint);
-				remainder = remainder.subList(cutpoint, remainder.size());
-			}
-			if (newWords.isEmpty()) {
-				continue;
-			}
-			if (!remainder.isEmpty()) {
-				newLines.add(Line.create(line.header(), newWords, remainder.get(0).time));
-			} else {
-				newLines.add(Line.create(line.header(), newWords, newWords.get(newWords.size() - 1).time + LAST_WORD_DURATION));
-				break;
-			}
-			if (remainder.isEmpty()) {
-				break;
+				firstEdit = edits.get(0);
+				lastEdit = edits.get(edits.size() - 1);
 			}
 		}
-		if (!remainder.isEmpty()) {
-			newLines.add(Line.create(lines().get(lines().size() - 1).header(), remainder, remainder.get(remainder.size() - 1).time + LAST_WORD_DURATION));
+
+		public int map(int beforeVal) {
+			if (firstEdit == null) {
+				return beforeVal;
+			} else {
+				if (beforeVal <= firstEdit.getBeginA()) {
+					return beforeVal;
+				} else if (beforeVal >= lastEdit.getEndA()) {
+					return beforeVal - lastEdit.getEndA() + lastEdit.getEndB();
+				} else {
+					int idx = Arrays.binarySearch(beginA, beforeVal);
+					if (idx >= 0) {
+						return edits.get(idx).getEndB();
+					} else {
+						int insertionPoint = (-idx) - 1;
+						Edit edit = edits.get(insertionPoint);
+						if (edit.getEndA() == edit.getBeginA()) {
+							// map insertions to their midpoint
+							return (edit.getBeginB() + edit.getEndB()) / 2;
+						} else {
+							// else linear interp
+							return edit.getBeginB() + ((edit.getEndB() - edit.getBeginB()) * (beforeVal - edit.getBeginA())) / (edit.getEndA() - edit.getBeginA());
+						}
+					}
+				}
+			}
 		}
+	}
+
+	public VttTranscript save(List<Word.Vtt> newVtt, CharSink charSink) throws IOException {
+		List<Line> newLines = new ArrayList<>();
+
+		List<Word.Vtt> oldVtt = words();
+		List<Edit> edits = TranscriptMatch.edits(oldVtt, newVtt);
+
+		IdxMap map = new IdxMap(edits);
+
+		int startOld = 0;
+		int startNew = 0;
+		List<Word.Vtt> buffer = new ArrayList<>();
+		VttTranscript.Line lastLine = lines().get(lines().size() - 1);
+		for (VttTranscript.Line line : lines()) {
+			buffer.clear();
+			line.addWords(buffer);
+
+			int endOld = startOld + buffer.size();
+			int endNew = map.map(endOld);
+
+			if (line != lastLine && endNew != newVtt.size()) {
+				newLines.add(Line.create(line.header(), newVtt.subList(startNew, endNew), newVtt.get(endNew).time()));
+			} else {
+				double endTime = newVtt.get(newVtt.size() - 1).time() + LAST_WORD_DURATION;
+				newLines.add(Line.create(line.header(), newVtt.subList(startNew, newVtt.size()), endTime));
+				break;
+			}
+			startOld = endOld;
+			startNew = endNew;
+		}
+
 		VttTranscript newTranscript = new AutoValue_VttTranscript(header(), newLines);
 		charSink.write(newTranscript.asString());
 		return newTranscript;
