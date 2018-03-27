@@ -28,6 +28,10 @@ import org.jooq.Result;
 import org.jooq.impl.DSL;
 
 public class FoundationMigrationModule implements Jooby.Module {
+	static int maxId() {
+		return MIGRATIONS.keySet().last();
+	}
+
 	private static final ImmutableSortedMap<Integer, FoundationMigration> MIGRATIONS = ImmutableSortedMap.of(
 			2, FoundationMigration.createReplacing("V2__video_duration_and_encode"),
 			3, FoundationMigration.createReplacing("V3__video_new_transcripts"),
