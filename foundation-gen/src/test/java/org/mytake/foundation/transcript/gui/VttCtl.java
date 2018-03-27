@@ -17,6 +17,7 @@ import io.reactivex.subjects.PublishSubject;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
@@ -99,10 +100,10 @@ public class VttCtl extends ControlWrapper.AroundControl<Composite> {
 			Preconditions.checkArgument(selection != -1, "Must select something");
 			String word = addTxt.getText().trim();
 			Preconditions.checkArgument(!word.isEmpty(), "Cannot be empty");
-			Preconditions.checkArgument(!word.contains(" "), "Cannot contain whitespace");
-			Word.Vtt newWord = insert(selection + 1, Word.Said.dummy(word));
+			List<Word.Said> saidWords = Arrays.stream(word.split(" ")).map(Word.Said::dummy).collect(Collectors.toList());
+			List<Word.Vtt> newWords = insert(selection + 1, saidWords);
 			addTxt.setText("");
-			viewer.setSelection(new StructuredSelection(newWord));
+			viewer.setSelection(new StructuredSelection(newWords));
 		});
 		addBtn.addListener(SWT.Selection, e -> add.run());
 		addTxt.addListener(SWT.DefaultSelection, e -> add.run());
@@ -173,10 +174,6 @@ public class VttCtl extends ControlWrapper.AroundControl<Composite> {
 		viewer.remove(vttWords.toArray());
 	}
 
-	public void replace(Word.Vtt vttOld, Word.Said said) {
-		replace(vttOld, new Word.Vtt(said.lowercase(), vttOld.time()));
-	}
-
 	public void replace(Word.Vtt vttOld, Word.Vtt vttNew) {
 		changed.onNext(SaidVtt.VTT);
 		int idx = words.indexOf(vttOld);
@@ -184,15 +181,21 @@ public class VttCtl extends ControlWrapper.AroundControl<Composite> {
 		viewer.replace(vttNew, idx);
 	}
 
-	public Word.Vtt insert(int insertionPoint, Word.Said said) {
+	public List<Word.Vtt> insert(int insertionPoint, List<Word.Said> said) {
 		changed.onNext(SaidVtt.VTT);
 		double before = insertionPoint == 0 ? 0 : words.get(insertionPoint - 1).time();
 		double after = words.get(insertionPoint).time();
 
-		Word.Vtt newWord = new Word.Vtt(said.lowercase(), (before + after) / 2);
-		words.add(insertionPoint, newWord);
-		viewer.insert(newWord, insertionPoint);
-		return newWord;
+		List<Word.Vtt> newWords = new ArrayList<>();
+		for (int i = 0; i < said.size(); ++i) {
+			double dt = (after - before) / (said.size() + 1);
+			Word.Vtt newWord = new Word.Vtt(said.get(i).lowercase(), before + dt * (i + 1));
+			newWords.add(newWord);
+			words.add(insertionPoint, newWord);
+			viewer.insert(newWord, insertionPoint);
+			++insertionPoint;
+		}
+		return newWords;
 	}
 
 	public List<Word.Vtt> getWords() {
