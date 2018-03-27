@@ -34,7 +34,7 @@ public class MismatchCtl extends ControlWrapper.AroundControl<Composite> {
 	private final Text saidTxt, vttTxt;
 	private final Button takeSaidBtn, takeVttBtn;
 
-	public MismatchCtl(Composite parent, SaidCtl saidCtl, VttCtl vttCtl) {
+	public MismatchCtl(Composite parent, SaidCtl saidCtl, VttCtl vttCtl, Runnable save) {
 		super(new Composite(parent, SWT.NONE));
 		this.saidCtl = saidCtl;
 		this.vttCtl = vttCtl;
@@ -78,11 +78,11 @@ public class MismatchCtl extends ControlWrapper.AroundControl<Composite> {
 
 		takeSaidBtn.addListener(SWT.Selection, e -> {
 			takeSaid.run();
-			incrementGroupUp(false);
+			save.run();
 		});
 		takeVttBtn.addListener(SWT.Selection, e -> {
 			takeVtt.run();
-			incrementGroupUp(false);
+			save.run();
 		});
 		Button deleteBtn = new Button(wrapped, SWT.PUSH);
 		deleteBtn.setText("X");
@@ -97,7 +97,7 @@ public class MismatchCtl extends ControlWrapper.AroundControl<Composite> {
 				}
 			}
 			delete.run();
-			incrementGroupUp(false);
+			save.run();
 		});
 	}
 
@@ -118,7 +118,7 @@ public class MismatchCtl extends ControlWrapper.AroundControl<Composite> {
 		groupTxt.setText(Integer.toString(wordMatch.edits().size()));
 		ofGroupLbl.setText("of " + wordMatch.edits().size());
 		if (!wordMatch.edits().isEmpty()) {
-			setGroup(wordMatch.edits().size());
+			setGroup(1);
 		}
 	}
 
@@ -126,12 +126,12 @@ public class MismatchCtl extends ControlWrapper.AroundControl<Composite> {
 		setGroup(Integer.parseInt(groupTxt.getText()));
 	}
 
-	private void setGroup(int idx) {
-		groupTxt.setText(Integer.toString(idx));
-		leftBtn.setEnabled(idx != 1);
-		rightBtn.setEnabled(idx != match.edits().size());
+	private void setGroup(int idxOneBased) {
+		groupTxt.setText(Integer.toString(idxOneBased));
+		leftBtn.setEnabled(idxOneBased != 1);
+		rightBtn.setEnabled(idxOneBased != match.edits().size());
 
-		Edit edit = match.edits().get(idx - 1);
+		Edit edit = match.edits().get(idxOneBased - 1);
 		Either<List<Word.Said>, Integer> said = match.saidFor(edit);
 		Either<List<Word.Vtt>, Integer> vtt = match.vttFor(edit);
 		saidTxt.setText(toString(said));

@@ -22,7 +22,7 @@ public class TranscriptCtl extends ControlWrapper.AroundControl<Composite> {
 	private final YoutubeCtl youtubeCtl;
 	private final MismatchCtl mismatchCtl;
 
-	public TranscriptCtl(Composite parent, PublishSubject<SaidVtt> changed) {
+	public TranscriptCtl(Composite parent, PublishSubject<SaidVtt> changed, Runnable save) {
 		super(new Composite(parent, SWT.NONE));
 		Layouts.setGrid(wrapped);
 		SashForm horizontalForm = new SashForm(wrapped, SWT.HORIZONTAL);
@@ -33,7 +33,7 @@ public class TranscriptCtl extends ControlWrapper.AroundControl<Composite> {
 		youtubeCtl = new YoutubeCtl(verticalForm);
 		vttCtl = new VttCtl(verticalForm, youtubeCtl, changed);
 
-		mismatchCtl = new MismatchCtl(wrapped, saidCtl, vttCtl);
+		mismatchCtl = new MismatchCtl(wrapped, saidCtl, vttCtl, save);
 		Layouts.setGridData(mismatchCtl).grabHorizontal();
 	}
 
