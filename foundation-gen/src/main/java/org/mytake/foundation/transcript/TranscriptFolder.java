@@ -20,6 +20,7 @@ import java.util.Objects;
 import java.util.Set;
 import java2ts.Foundation;
 import org.mytake.foundation.JsonMisc;
+import org.mytake.foundation.transcript.VttTranscript.Mode;
 
 /**
  * A folder of transcript data. `all_people.ini` is a list of every
@@ -105,7 +106,7 @@ public class TranscriptFolder {
 		}
 		// load the transcripts
 		SaidTranscript said = SaidTranscript.parse(meta, fileSaid(name));
-		VttTranscript vtt = VttTranscript.parse(fileVtt(name));
+		VttTranscript vtt = VttTranscript.parse(fileVtt(name), Mode.STRICT);
 		return new TranscriptMatch(meta, said, vtt);
 	}
 

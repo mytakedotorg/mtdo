@@ -127,6 +127,11 @@ public class MismatchCtl extends ControlWrapper.AroundControl<Composite> {
 	}
 
 	private void setGroup(int idxOneBased) {
+		if (idxOneBased < 1) {
+			idxOneBased = 1;
+		} else if (idxOneBased > match.edits().size()) {
+			idxOneBased = match.edits().size();
+		}
 		groupTxt.setText(Integer.toString(idxOneBased));
 		leftBtn.setEnabled(idxOneBased != 1);
 		rightBtn.setEnabled(idxOneBased != match.edits().size());

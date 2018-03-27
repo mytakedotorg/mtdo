@@ -8,6 +8,7 @@ package org.mytake.foundation.transcript;
 
 import com.diffplug.common.base.Preconditions;
 import com.diffplug.common.base.StringPrinter;
+import com.diffplug.common.base.Unhandled;
 import com.diffplug.common.io.CharSink;
 import com.diffplug.common.io.CharSource;
 import com.diffplug.common.io.Files;
@@ -19,10 +20,15 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import javax.annotation.Nullable;
 import org.eclipse.jgit.diff.Edit;
 
 @AutoValue
 public abstract class VttTranscript {
+	public enum Mode {
+		PERMISSIVE, STRICT;
+	}
+
 	public abstract String header();
 
 	public abstract List<Line> lines();
@@ -30,23 +36,33 @@ public abstract class VttTranscript {
 	public List<Word.Vtt> words() {
 		List<Word.Vtt> words = new ArrayList<>();
 		for (Line line : lines()) {
-			double time = line.lineHeader().start();
-			for (VttToken token : line.tokens()) {
-				if (token.isTime()) {
-					time = token.assertTime().timestamp;
-				} else if (token.isWord()) {
-					words.add(new Word.Vtt(token.assertWord().word, time));
-				}
-			}
+			line.addWords(words);
 		}
 		return words;
 	}
 
 	@AutoValue
 	public static abstract class Line {
-		public abstract LineHeader lineHeader();
+		public abstract LineHeader header();
 
 		public abstract List<VttToken> tokens();
+
+		void addWords(List<Word.Vtt> words) {
+			double time = header().start();
+			for (VttToken token : tokens()) {
+				if (token.isTime()) {
+					time = token.assertTime().timestamp;
+				} else if (token.isWord()) {
+					String rawWord = token.assertWord().word.trim();
+					if (!rawWord.isEmpty()) {
+						Word.Vtt word = new Word.Vtt(rawWord, time);
+						if (!word.lowercase.isEmpty()) {
+							words.add(word);
+						}
+					}
+				}
+			}
+		}
 
 		List<Word.Vtt> wordsNoTimestamp() {
 			List<Word.Vtt> words = new ArrayList<>(tokens().size() / 2 + 2);
@@ -102,11 +118,11 @@ public abstract class VttTranscript {
 		}
 	}
 
-	public static VttTranscript parse(File file) throws IOException {
-		return parse(Files.asByteSource(file).asCharSource(StandardCharsets.UTF_8));
+	public static VttTranscript parse(File file, Mode mode) throws IOException {
+		return parse(Files.asByteSource(file).asCharSource(StandardCharsets.UTF_8), mode);
 	}
 
-	public static VttTranscript parse(CharSource charSource) throws IOException {
+	public static VttTranscript parse(CharSource charSource, Mode mode) throws IOException {
 		int lineCount = 1;
 		try (BufferedReader reader = charSource.openBufferedStream()) {
 			StringBuilder headerStr = new StringBuilder();
@@ -128,10 +144,27 @@ public abstract class VttTranscript {
 				++lineCount;
 				LineHeader header = LineHeader.parse(headerLine);
 				++lineCount;
-				List<VttToken> tokens = VttToken.parseLine(tokenLine);
-				++lineCount;
-				lines.add(new AutoValue_VttTranscript_Line(header, tokens));
+				List<VttToken> tokens;
+				if (mode == Mode.STRICT) {
+					tokens = VttToken.parseLine(tokenLine);
+				} else if (mode == Mode.PERMISSIVE) {
+					tokens = parseLineWithTimestamp(tokenLine);
+					while (tokens == null) {
+						++lineCount;
+						line = reader.readLine();
+						if (line == null) {
+							break;
+						}
+						tokens = parseLineWithTimestamp(line);
+					}
+				} else {
+					throw Unhandled.enumException(mode);
+				}
+				if (tokens != null) {
+					lines.add(new AutoValue_VttTranscript_Line(header, tokens));
+				}
 
+				++lineCount;
 				String emptyLine = reader.readLine();
 				if (emptyLine == null) {
 					break;
@@ -145,13 +178,28 @@ public abstract class VttTranscript {
 		}
 	}
 
+	@Nullable
+	private static List<VttToken> parseLineWithTimestamp(String line) {
+		try {
+			List<VttToken> tokens = VttToken.parseLine(line);
+			for (VttToken token : tokens) {
+				if (token.isTime()) {
+					return tokens;
+				}
+			}
+			return null;
+		} catch (Exception e) {
+			return null;
+		}
+	}
+
 	public String asString() {
 		return StringPrinter.buildString(printer -> {
 			printer.println(header());
 			Iterator<Line> lineIter = lines().iterator();
 			while (lineIter.hasNext()) {
 				Line line = lineIter.next();
-				printer.println(line.lineHeader().asString());
+				printer.println(line.header().asString());
 				printer.println(VttToken.lineAsString(line.tokens()));
 				if (lineIter.hasNext()) {
 					printer.println("");
@@ -186,9 +234,9 @@ public abstract class VttTranscript {
 				continue;
 			}
 			if (!remainder.isEmpty()) {
-				newLines.add(Line.create(line.lineHeader(), newWords, remainder.get(0).time));
+				newLines.add(Line.create(line.header(), newWords, remainder.get(0).time));
 			} else {
-				newLines.add(Line.create(line.lineHeader(), newWords, newWords.get(newWords.size() - 1).time + LAST_WORD_DURATION));
+				newLines.add(Line.create(line.header(), newWords, newWords.get(newWords.size() - 1).time + LAST_WORD_DURATION));
 				break;
 			}
 			if (remainder.isEmpty()) {
@@ -196,7 +244,7 @@ public abstract class VttTranscript {
 			}
 		}
 		if (!remainder.isEmpty()) {
-			newLines.add(Line.create(lines().get(lines().size() - 1).lineHeader(), remainder, remainder.get(remainder.size() - 1).time + LAST_WORD_DURATION));
+			newLines.add(Line.create(lines().get(lines().size() - 1).header(), remainder, remainder.get(remainder.size() - 1).time + LAST_WORD_DURATION));
 		}
 		VttTranscript newTranscript = new AutoValue_VttTranscript(header(), newLines);
 		charSink.write(newTranscript.asString());

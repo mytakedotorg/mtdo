@@ -16,7 +16,7 @@ public class Word {
 		this.lowercase = trimPunctuation(word).toLowerCase(Locale.ROOT);
 	}
 
-	private static String trimPunctuation(String input) {
+	public static String trimPunctuation(String input) {
 		Preconditions.checkArgument(!input.isEmpty(), "Can't be empty!");
 		char lastChar = input.charAt(input.length() - 1);
 		Preconditions.checkArgument(!Character.isWhitespace(input.charAt(0)), "First char can't be whitespace!");

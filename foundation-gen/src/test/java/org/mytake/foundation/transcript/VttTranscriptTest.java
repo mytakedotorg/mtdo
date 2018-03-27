@@ -19,6 +19,7 @@ import java.util.function.Consumer;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.mytake.foundation.transcript.VttTranscript.LineHeader;
+import org.mytake.foundation.transcript.VttTranscript.Mode;
 
 public class VttTranscriptTest {
 	@Test
@@ -57,7 +58,7 @@ public class VttTranscriptTest {
 		File before = new File(folder, "beforeRemove.vtt");
 
 		// parse the transcript
-		VttTranscript vtt = VttTranscript.parse(before);
+		VttTranscript vtt = VttTranscript.parse(before, Mode.STRICT);
 		// find the trouble word
 		List<Word.Vtt> words = vtt.words();
 		Word.Vtt and = words.stream().filter(w -> w.time == 3305.010).findFirst().get();
