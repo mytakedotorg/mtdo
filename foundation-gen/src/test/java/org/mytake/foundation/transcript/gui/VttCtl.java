@@ -8,6 +8,7 @@ package org.mytake.foundation.transcript.gui;
 
 import com.diffplug.common.base.Errors;
 import com.diffplug.common.base.Preconditions;
+import com.diffplug.common.base.Unhandled;
 import com.diffplug.common.swt.ControlWrapper;
 import com.diffplug.common.swt.Layouts;
 import com.diffplug.common.swt.Shells;
@@ -23,9 +24,12 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import org.mytake.foundation.transcript.TranscriptMatch;
 import org.mytake.foundation.transcript.Word;
@@ -37,6 +41,20 @@ public class VttCtl extends ControlWrapper.AroundControl<Composite> {
 
 	private static String formatTime(double time) {
 		return String.format("%.3f", time);
+	}
+
+	private enum Col {
+		TIME, WORD;
+
+		// @formatter:off
+		<T> T timeWord(T time, T word) {
+			switch (this) {
+			case TIME: return time;
+			case WORD: return word;
+			default: throw Unhandled.enumException(this);
+			}
+		}
+		// @formatter:on
 	}
 
 	@SuppressWarnings("unchecked")
@@ -80,11 +98,21 @@ public class VttCtl extends ControlWrapper.AroundControl<Composite> {
 		// edit on double-click
 		viewer.getTable().addListener(SWT.MouseDoubleClick, e -> {
 			Word.Vtt word = (Word.Vtt) ((IStructuredSelection) viewer.getSelection()).getFirstElement();
-			if (word != null) {
-				Shells.builder(SWT.APPLICATION_MODAL | SWT.DIALOG_TRIM, cmp -> {
-					editWord(cmp, word);
-				}).setTitle("Edit word")
-						.openOnActive();
+			if (word == null) {
+				return;
+			}
+			Point pt = new Point(e.x, e.y);
+			TableItem item = viewer.getTable().getItem(pt);
+			for (int i = 0; i < Col.values().length; ++i) {
+				Rectangle rect = item.getBounds(i);
+				if (rect.contains(pt)) {
+					Col col = Col.values()[i];
+					Shells.builder(SWT.APPLICATION_MODAL | SWT.DIALOG_TRIM, cmp -> {
+						editWord(cmp, word, col);
+					}).setTitle("Edit word")
+							.openOnActive();
+					return;
+				}
 			}
 		});
 
@@ -109,7 +137,7 @@ public class VttCtl extends ControlWrapper.AroundControl<Composite> {
 		addTxt.addListener(SWT.DefaultSelection, e -> add.run());
 	}
 
-	private void editWord(Composite cmp, Word.Vtt word) {
+	private void editWord(Composite cmp, Word.Vtt word, Col activeCol) {
 		Layouts.setGrid(cmp).numColumns(2);
 		Labels.create(cmp, "Word");
 		Text wordTxt = new Text(cmp, SWT.SINGLE | SWT.BORDER);
@@ -146,6 +174,10 @@ public class VttCtl extends ControlWrapper.AroundControl<Composite> {
 		cancelBtn.addListener(SWT.Selection, e -> {
 			cmp.getShell().dispose();
 		});
+
+		Text active = activeCol.timeWord(timeTxt, wordTxt);
+		active.selectAll();
+		active.setFocus();
 	}
 
 	private static boolean isDelete(Event e) {
