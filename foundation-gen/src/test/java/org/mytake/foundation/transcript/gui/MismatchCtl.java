@@ -168,14 +168,14 @@ public class MismatchCtl extends ControlWrapper.AroundControl<Composite> {
 				// added to said
 				int vttInsertionPoint = vtt.getRight();
 				takeSaid = () -> vttCtl.insert(vttInsertionPoint, saidWords);
-				takeVtt = () -> saidCtl.remove(new Point(saidSel.x, saidSel.y + 1)); //deleteFromSaid (+1 for space)
+				takeVtt = () -> saidCtl.remove(saidSel);
 			}
 		} else {
 			if (vtt.isLeft()) {
 				// added to vtt
 				List<Word.Vtt> vttWords = vtt.getLeft();
 				takeSaid = () -> vttCtl.delete(vttWords); //deleteFromVtt
-				takeVtt = () -> saidCtl.insert(saidSel.y, vttWords); //insertIntoSaid
+				takeVtt = () -> saidCtl.insert(saidSel.x, vttWords); //insertIntoSaid
 			} else {
 				throw new IllegalStateException();
 			}

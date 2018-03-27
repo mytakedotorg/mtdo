@@ -123,7 +123,7 @@ public class TranscriptFolder {
 		return new File(root, name + ".said");
 	}
 
-	File fileVtt(String name) {
+	public File fileVtt(String name) {
 		return new File(root, name + ".vtt");
 	}
 }

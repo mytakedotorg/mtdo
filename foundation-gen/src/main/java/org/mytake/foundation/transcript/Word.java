@@ -33,6 +33,11 @@ public class Word {
 		return lowercase;
 	}
 
+	@Override
+	public String toString() {
+		return lowercase;
+	}
+
 	public static class Vtt extends Word {
 		final double time;
 
