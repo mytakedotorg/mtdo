@@ -13,6 +13,7 @@ import com.diffplug.common.swt.Corner;
 import com.diffplug.common.swt.Fonts;
 import com.diffplug.common.swt.Layouts;
 import com.diffplug.common.swt.Shells;
+import com.diffplug.common.swt.SwtMisc;
 import com.diffplug.common.swt.os.OS;
 import io.reactivex.subjects.PublishSubject;
 import java.io.File;
@@ -43,7 +44,7 @@ public class TranscriptFolderDialog {
 		Label sep = new Label(parent, SWT.SEPARATOR | SWT.HORIZONTAL);
 		Layouts.setGridData(sep).grabHorizontal();
 
-		transcriptCtl = new TranscriptCtl(parent, changed);
+		transcriptCtl = new TranscriptCtl(parent, changed, this::save);
 		Layouts.setGridData(transcriptCtl).grabAll();
 
 		Composite folderCmp = new Composite(top, SWT.NONE);
@@ -138,8 +139,9 @@ public class TranscriptFolderDialog {
 			parent.getShell().dispose();
 		});
 		parent.getDisplay().addFilter(SWT.KeyDown, e -> {
-			if (e.keyCode == (CTRL | 's')) {
+			if ((e.stateMask | e.keyCode) == (CTRL | 's')) {
 				save();
+				e.doit = false;
 			}
 		});
 	}
@@ -178,6 +180,7 @@ public class TranscriptFolderDialog {
 			dialog.setFolder(new File("../presidential-debates"));
 		})
 				.setTitle("MyTake.org Transcript Editor")
+				.setSize(SwtMisc.scaleByFontHeight(60, 40))
 				.openOnDisplayBlocking();
 	}
 }

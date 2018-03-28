@@ -48,7 +48,7 @@ public abstract class SaidTranscript {
 				Turn turn = turnIter.next();
 				startIdx += turn.speaker().length() + ": ".length();
 				attributed.addAll(turn.indexedWords(startIdx));
-				startIdx += turn.said().length() + 1; // for 2 newlines
+				startIdx += turn.said().length() + 2; // for 2 newlines
 			}
 		} catch (Exception e) {
 			throw new RuntimeException("On line " + (turnIter.previousIndex() * 2 + 1) + " of said", e);

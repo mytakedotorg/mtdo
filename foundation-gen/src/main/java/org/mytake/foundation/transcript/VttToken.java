@@ -38,6 +38,10 @@ public abstract class VttToken {
 		return this instanceof Mod;
 	}
 
+	boolean isUnexpectedClose() {
+		return this instanceof UnexpectedClose;
+	}
+
 	public Word assertWord() {
 		return (Word) this;
 	}
@@ -170,7 +174,11 @@ public abstract class VttToken {
 			if (line.isEmpty()) {
 				type = null;
 			} else if (line.charAt(0) == '<') {
-				initMod(0);
+				if (Character.isDigit(line.charAt(1))) {
+					initTime(0);
+				} else {
+					initMod(0);
+				}
 			} else {
 				initFirstWord(0);
 			}

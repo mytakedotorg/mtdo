@@ -60,15 +60,31 @@ public class SaidCtl extends ControlWrapper.AroundControl<Composite> {
 
 	public void remove(Point sel) {
 		modify(txt -> {
-			return txt.substring(0, sel.x) + txt.substring(sel.y);
+			String before = txt.substring(0, sel.x);
+			String after = txt.substring(sel.y);
+			if (after.startsWith(" ") && (before.endsWith(" ") || before.isEmpty())) {
+				return before + after.substring(1);
+			} else if (after.isEmpty() && before.endsWith(" ")) {
+				return before.substring(0, before.length() - 1);
+			} else {
+				return before + after;
+			}
 		});
 	}
 
 	public void insert(int insertAt, List<Vtt> vttWords) {
 		modify(txt -> {
-			return txt.substring(0, insertAt)
+			String before = txt.substring(0, insertAt);
+			String after = txt.substring(insertAt);
+			if (!before.isEmpty() && !before.endsWith(" ")) {
+				before = before + " ";
+			}
+			if (!after.isEmpty() && !after.startsWith(" ")) {
+				after = " " + after;
+			}
+			return before
 					+ vttWords.stream().map(Word::lowercase).collect(Collectors.joining(" "))
-					+ txt.substring(insertAt);
+					+ after;
 		});
 	}
 

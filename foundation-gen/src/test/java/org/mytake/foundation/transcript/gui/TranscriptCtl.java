@@ -6,10 +6,13 @@
  */
 package org.mytake.foundation.transcript.gui;
 
+import com.diffplug.common.io.Files;
 import com.diffplug.common.swt.ControlWrapper;
 import com.diffplug.common.swt.Layouts;
+import com.diffplug.common.swt.SwtMisc;
 import io.reactivex.subjects.PublishSubject;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.widgets.Composite;
@@ -22,7 +25,7 @@ public class TranscriptCtl extends ControlWrapper.AroundControl<Composite> {
 	private final YoutubeCtl youtubeCtl;
 	private final MismatchCtl mismatchCtl;
 
-	public TranscriptCtl(Composite parent, PublishSubject<SaidVtt> changed) {
+	public TranscriptCtl(Composite parent, PublishSubject<SaidVtt> changed, Runnable save) {
 		super(new Composite(parent, SWT.NONE));
 		Layouts.setGrid(wrapped);
 		SashForm horizontalForm = new SashForm(wrapped, SWT.HORIZONTAL);
@@ -33,7 +36,7 @@ public class TranscriptCtl extends ControlWrapper.AroundControl<Composite> {
 		youtubeCtl = new YoutubeCtl(verticalForm);
 		vttCtl = new VttCtl(verticalForm, youtubeCtl, changed);
 
-		mismatchCtl = new MismatchCtl(wrapped, saidCtl, vttCtl);
+		mismatchCtl = new MismatchCtl(wrapped, saidCtl, vttCtl, save);
 		Layouts.setGridData(mismatchCtl).grabHorizontal();
 	}
 
@@ -48,7 +51,16 @@ public class TranscriptCtl extends ControlWrapper.AroundControl<Composite> {
 	}
 
 	public void save(TranscriptFolder folder, String transcript) throws IOException {
+		int sizeBefore = match.vtt().lines().size();
+		String before = match.vtt().asString();
 		match = match.save(folder, transcript, vttCtl.getWords(), saidCtl.getText());
-		mismatchCtl.setMatch(match);
+		int sizeAfter = match.vtt().lines().size();
+		if (sizeBefore != sizeAfter) {
+			SwtMisc.blockForError("Save failed!", "Size before = " + sizeBefore + "\nSize after = " + sizeAfter + "\nReverting and quitting.");
+			Files.write(before.getBytes(StandardCharsets.UTF_8), folder.fileVtt(transcript));
+			mismatchCtl.getShell().dispose();
+		} else {
+			mismatchCtl.setMatch(match);
+		}
 	}
 }

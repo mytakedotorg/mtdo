@@ -9,11 +9,13 @@ package common;
 import static db.Tables.ACCOUNT;
 import static db.Tables.FOUNDATION_REV;
 
+import com.google.common.primitives.Ints;
 import db.tables.pojos.Account;
 import db.tables.records.TakepublishedRecord;
 import db.tables.records.TakerevisionRecord;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.IntStream;
 import org.assertj.core.api.Assertions;
 import org.assertj.core.api.ListAssert;
 import org.jooby.Jooby;
@@ -49,7 +51,8 @@ public class FoundationMigrationModuleTest {
 
 			assertFoundationRev(dsl).containsExactly(1);
 			Set<Integer> changed = FoundationMigrationModule.migrate(dsl, dev.time());
-			assertFoundationRev(dsl).containsExactly(1, 2, 3);
+			assertFoundationRev(dsl).containsExactlyElementsOf(
+					Ints.asList(IntStream.range(1, FoundationMigrationModule.maxId() + 1).toArray()));
 			revision.refresh();
 			published.refresh();
 
