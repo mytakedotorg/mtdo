@@ -65,7 +65,7 @@ class TurnWithResults {
             }
             // if we overlap with the previous highlight, expand it to include our stuff
             let lastHighlight = multiHighlights.length == 0 ? null : multiHighlights[multiHighlights.length - 1];
-            if (lastHighlight != null && lastHighlight.cut[1] > end) {
+            if (lastHighlight != null && lastHighlight.cut[1] >= start) {
                 lastHighlight.cut[1] = end;
                 lastHighlight.highlights.push(found);
             } else {
