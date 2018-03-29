@@ -12,6 +12,8 @@ import {
 } from "../utils/searchFunc";
 import { Search } from "../java2ts/Search";
 import { Foundation } from "../java2ts/Foundation";
+import { videoFact } from "../utils/testUtils";
+var bs = require("binary-search");
 
 export type SelectionOptions = "Containing" | "BeforeAndAfter";
 
@@ -59,6 +61,17 @@ class VideoResultsList extends React.Component<
       alertErr(msg);
       throw msg;
     }
+  };
+  handlePlayClick = (
+    videoFact: Foundation.VideoFactContent,
+    clipRange: [number, number]
+  ) => {
+    this.setState({
+      videoProps: {
+        videoFact: videoFact,
+        clipRange: clipRange
+      }
+    });
   };
   sortResults = (results: Search.FactResultList): SortedResults[] => {
     const sortedByHash: Search.VideoResult[] = results.facts.concat().sort();
@@ -115,6 +128,7 @@ class VideoResultsList extends React.Component<
               return (
                 <VideoFactsLoader
                   key={idx.toString()}
+                  onPlayClick={this.handlePlayClick}
                   results={videoResult}
                   searchTerm={this.props.searchTerm}
                   sortBy={this.state.selectedOption}
@@ -132,6 +146,7 @@ interface VideoResultPreviewProps {
   sortBy: SelectionOptions;
   turns: number[];
   videoFact: Foundation.VideoFactContent;
+  onPlayClick: PlayEvent;
 }
 interface VideoResultPreviewState {}
 
@@ -154,6 +169,7 @@ export class VideoResultPreview extends React.Component<
           return (
             <VideoResultTurn
               key={idx.toString()}
+              onPlayClick={this.props.onPlayClick}
               searchTerm={searchTerm}
               sortBy={sortBy}
               turn={turn}
@@ -171,6 +187,7 @@ interface VideoResultTurnsProps {
   sortBy: SelectionOptions;
   turn: number;
   videoFact: Foundation.VideoFactContent;
+  onPlayClick: PlayEvent;
 }
 interface VideoResultTurnsState {
   multiHighlights: MultiHighlight[];
@@ -240,6 +257,7 @@ class VideoResultTurn extends React.Component<
               <VideoResult
                 key={idx.toString()}
                 multiHighlight={multiHighlight}
+                onPlayClick={this.props.onPlayClick}
                 turn={this.props.turn}
                 turnContent={this.state.turnContent}
                 videoFact={this.props.videoFact}
@@ -252,16 +270,25 @@ class VideoResultTurn extends React.Component<
   }
 }
 
+export type PlayEvent = (
+  videoFact: Foundation.VideoFactContent,
+  clipRange: [number, number]
+) => any;
+
 interface VideoResultProps {
   multiHighlight: MultiHighlight;
   turn: number;
   turnContent: string;
   videoFact: Foundation.VideoFactContent;
+  onPlayClick: PlayEvent;
 }
 interface VideoResultState {}
 class VideoResult extends React.Component<VideoResultProps, VideoResultState> {
+  clipRange: [number, number];
   constructor(props: VideoResultProps) {
     super(props);
+
+    this.clipRange = this.getClipTimeRange(props.multiHighlight);
   }
   getCut = (): string => {
     const { turnContent, multiHighlight } = this.props;
@@ -281,6 +308,49 @@ class VideoResult extends React.Component<VideoResultProps, VideoResultState> {
       "/" +
       convertSecondsToTimestamp(props.videoFact.durationSeconds)
     );
+  };
+  getClipTimeRange = (multiHighlight: MultiHighlight): [number, number] => {
+    const { turn, videoFact } = this.props;
+    const veryFirstWord = videoFact.speakerWord[turn];
+    const firstChar = videoFact.charOffsets[veryFirstWord];
+    const charsBeforeTurn = this.props.videoFact.charOffsets[this.props.turn];
+    let firstWord = bs(
+      this.props.videoFact.charOffsets, // haystack
+      firstChar + multiHighlight.cut[0], // needle
+      (element: number, needle: number) => {
+        return element - needle;
+      }
+    );
+
+    // usually the timestamp is between two words, in which case it returns (-insertionPoint - 2)
+    if (firstWord < 0) {
+      firstWord = -firstWord - 2;
+    }
+
+    const clipStart = this.props.videoFact.timestamps[firstWord];
+
+    let lastWord = bs(
+      this.props.videoFact.charOffsets, // haystack
+      firstChar + multiHighlight.cut[1], // needle
+      (element: number, needle: number) => {
+        return element - needle;
+      }
+    );
+
+    // usually the timestamp is between two words, in which case it returns (-insertionPoint - 2)
+    if (lastWord < 0) {
+      lastWord = -lastWord - 2;
+    }
+
+    const clipEnd = this.props.videoFact.timestamps[lastWord];
+
+    return [clipStart, clipEnd];
+  };
+  handlePlayClick = () => {
+    this.props.onPlayClick(this.props.videoFact, this.clipRange);
+  };
+  handleOpenClick = () => {
+    throw "todo";
   };
   highlightCut = (multiHighlight: MultiHighlight): React.ReactNode => {
     const { turnContent } = this.props;
@@ -310,6 +380,7 @@ class VideoResult extends React.Component<VideoResultProps, VideoResultState> {
   render() {
     return (
       <div className="results__turn">
+        <button onClick={this.handlePlayClick}>Play</button>
         <p className="results__text">{this.getSpeaker(this.props)}</p>
         <p className="results__text">{this.getTime(this.props)}</p>
         <p className="results__text">

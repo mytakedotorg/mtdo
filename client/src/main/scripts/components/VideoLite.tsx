@@ -37,7 +37,7 @@ class VideoLite extends React.Component<VideoLiteProps, VideoLiteState> {
       rel: 0,
       cc_load_policy: 1,
       cc_lang_pref: "en",
-      controls: 0,
+      controls: 1,
       playsinline: 1,
       autoplay: 1,
       showinfo: 0,
@@ -117,11 +117,20 @@ class VideoLite extends React.Component<VideoLiteProps, VideoLiteState> {
       this.timerId = null;
     }
   };
+  componentDidMount() {
+    this.cueVideo(this.props);
+    if (this.player) {
+      this.player.seekTo(this.props.clipRange[0]);
+      this.player.playVideo();
+    }
+  }
   componentWillUnmount() {
     this.stopTimer();
   }
   componentWillReceiveProps(nextProps: VideoLiteProps) {
     this.cueVideo(nextProps);
+    this.player.seekTo(nextProps.clipRange[0]);
+    this.player.playVideo();
   }
   render() {
     const opts = {

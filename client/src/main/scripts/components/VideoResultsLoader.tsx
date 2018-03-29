@@ -1,5 +1,6 @@
 import * as React from "react";
 import VideoResultsList, {
+  PlayEvent,
   SelectionOptions,
   SortedResults,
   VideoResultPreview
@@ -80,6 +81,7 @@ const VideoResultsLoaderBranch: React.StatelessComponent<
 };
 
 interface VideoFactsLoaderProps {
+  onPlayClick: PlayEvent;
   results: SortedResults;
   searchTerm: string;
   sortBy: SelectionOptions;
@@ -152,6 +154,7 @@ const VideoFactsLoaderBranch: React.StatelessComponent<
         sortBy={props.containerProps.sortBy}
         turns={props.containerProps.results.turns}
         videoFact={props.containerState.videoFact}
+        onPlayClick={props.containerProps.onPlayClick}
       />
     );
   }
