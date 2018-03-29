@@ -5,6 +5,11 @@ import VideoPlaceholder from "./VideoPlaceholder";
 import { VideoFactsLoader } from "./VideoResultsLoader";
 import isEqual = require("lodash/isEqual");
 import { alertErr, convertSecondsToTimestamp } from "../utils/functions";
+import {
+  MultiHighlight,
+  TurnFinder,
+  TurnWithResults
+} from "../utils/searchFunc";
 import { Search } from "../java2ts/Search";
 import { Foundation } from "../java2ts/Foundation";
 
@@ -109,6 +114,7 @@ class VideoResultsList extends React.Component<
             .map((videoResult, idx) => {
               return (
                 <VideoFactsLoader
+                  key={idx.toString()}
                   results={videoResult}
                   searchTerm={this.props.searchTerm}
                   sortBy={this.state.selectedOption}
@@ -144,9 +150,10 @@ export class VideoResultPreview extends React.Component<
           Presidential debate | {videoFact.fact.title} -{" "}
           {videoFact.fact.primaryDate}
         </h2>
-        {turns.map(turn => {
+        {turns.map((turn, idx) => {
           return (
             <VideoResultTurn
+              key={idx.toString()}
               searchTerm={searchTerm}
               sortBy={sortBy}
               turn={turn}
@@ -166,10 +173,10 @@ interface VideoResultTurnsProps {
   videoFact: Foundation.VideoFactContent;
 }
 interface VideoResultTurnsState {
-  sentences: string[];
-  speaker: string;
-  time: number;
+  multiHighlights: MultiHighlight[];
+  turnContent: string;
 }
+
 class VideoResultTurn extends React.Component<
   VideoResultTurnsProps,
   VideoResultTurnsState
@@ -177,13 +184,30 @@ class VideoResultTurn extends React.Component<
   constructor(props: VideoResultTurnsProps) {
     super(props);
 
+    const turnContent: string = this.getTurnContent(props);
+
     this.state = {
-      sentences: this.getSentences(this.props),
-      speaker: this.getSpeaker(this.props),
-      time: this.getTime(this.props)
+      multiHighlights: this.getMultiHighlights(props, turnContent),
+      turnContent: turnContent
     };
   }
-  getSentences = (props: VideoResultTurnsProps): string[] => {
+  getMultiHighlights = (
+    props: VideoResultTurnsProps,
+    turnContent: string
+  ): MultiHighlight[] => {
+    const turnFinder = new TurnFinder(props.searchTerm);
+    const turnWithResults = turnFinder.findResults(turnContent);
+    if (props.sortBy === "Containing") {
+      return turnWithResults.expandBy(1);
+    } else if (props.sortBy === "BeforeAndAfter") {
+      return turnWithResults.expandBy(2);
+    } else {
+      const msg = "VideoResultTurn: Unknown radio selection";
+      alertErr(msg);
+      throw msg;
+    }
+  };
+  getTurnContent = (props: VideoResultTurnsProps): string => {
     const { searchTerm, turn, videoFact } = props;
     let fullTurnText;
     const firstWord = videoFact.speakerWord[turn];
@@ -196,95 +220,101 @@ class VideoResultTurn extends React.Component<
       // Result is in last turn
       fullTurnText = videoFact.plainText.substring(firstChar);
     }
-    const intoSentences = fullTurnText.split(".");
-    const sentences: string[] = [];
-    switch (props.sortBy) {
-      case "Containing":
-        for (const sentence of intoSentences) {
-          if (sentence.toLowerCase().includes(searchTerm.toLowerCase())) {
-            sentences.push(sentence + ".");
-          }
-        }
-        break;
-      case "BeforeAndAfter":
-        for (let i = 0; i < intoSentences.length; i++) {
-          const sentence = intoSentences[i];
-          if (sentence.toLowerCase().includes(searchTerm.toLowerCase())) {
-            let allSentences = "";
-            if (intoSentences[i - 1]) {
-              allSentences = intoSentences[i - 1] + ". ";
-            }
-            allSentences += intoSentences[i] + ". ";
-            if (intoSentences[i + 1]) {
-              allSentences += intoSentences[i + 1] + ". ";
-            }
-            sentences.push(allSentences);
-          }
-        }
-        break;
-      default:
-        const msg = "VideoResultPreview: Unexpected radio button option";
-        alertErr(msg);
-        throw msg;
-    }
-    return sentences;
-  };
-  getSpeaker = (props: VideoResultTurnsProps): string => {
-    const { turn, videoFact } = props;
-    return videoFact.speakers[videoFact.speakerPerson[turn]].lastname;
-  };
-  getTime = (props: VideoResultTurnsProps): number => {
-    const { turn, videoFact } = props;
-    return videoFact.timestamps[videoFact.speakerWord[turn]];
+    return fullTurnText;
   };
   componentWillReceiveProps(nextProps: VideoResultTurnsProps) {
     if (!isEqual(this.props, nextProps)) {
+      const turnContent: string = this.getTurnContent(nextProps);
       this.setState({
-        sentences: this.getSentences(nextProps),
-        speaker: this.getSpeaker(nextProps),
-        time: this.getTime(nextProps)
+        multiHighlights: this.getMultiHighlights(nextProps, turnContent),
+        turnContent: turnContent
       });
     }
   }
   render() {
     return (
-      <VideoResult
-        duration={this.props.videoFact.durationSeconds}
-        sentences={this.state.sentences}
-        speaker={this.state.speaker}
-        time={this.state.time}
-      />
+      <div>
+        {this.state.multiHighlights.map(
+          (multiHighlight: MultiHighlight, idx: number) => {
+            return (
+              <VideoResult
+                key={idx.toString()}
+                multiHighlight={multiHighlight}
+                turn={this.props.turn}
+                turnContent={this.state.turnContent}
+                videoFact={this.props.videoFact}
+              />
+            );
+          }
+        )}
+      </div>
     );
   }
 }
 
 interface VideoResultProps {
-  duration: number;
-  time: number;
-  speaker: string;
-  sentences: string[];
+  multiHighlight: MultiHighlight;
+  turn: number;
+  turnContent: string;
+  videoFact: Foundation.VideoFactContent;
 }
 interface VideoResultState {}
 class VideoResult extends React.Component<VideoResultProps, VideoResultState> {
   constructor(props: VideoResultProps) {
     super(props);
   }
+  getCut = (): string => {
+    const { turnContent, multiHighlight } = this.props;
+    const cutRange = multiHighlight.cut;
+    return turnContent.substring(cutRange[0], cutRange[1]);
+  };
+  getSpeaker = (props: VideoResultProps): string => {
+    const { turn, videoFact } = props;
+    return videoFact.speakers[videoFact.speakerPerson[turn]].lastname;
+  };
+  getTime = (props: VideoResultProps): string => {
+    const { turn, videoFact } = props;
+    const turnSeconds = videoFact.timestamps[videoFact.speakerWord[turn]];
+
+    return (
+      convertSecondsToTimestamp(turnSeconds) +
+      "/" +
+      convertSecondsToTimestamp(props.videoFact.durationSeconds)
+    );
+  };
+  highlightCut = (multiHighlight: MultiHighlight): React.ReactNode => {
+    const { turnContent } = this.props;
+    const highlightedCut: React.ReactNode[] = [];
+    let prevIndex = multiHighlight.cut[0];
+    for (const highlight of multiHighlight.highlights) {
+      const textBefore = turnContent.substring(prevIndex, highlight[0]);
+      const highlightedText = turnContent.substring(highlight[0], highlight[1]);
+      if (textBefore) {
+        highlightedCut.push(textBefore);
+      }
+      if (highlightedText) {
+        const newSpan: React.ReactNode = React.createElement(
+          "strong",
+          {},
+          highlightedText
+        );
+        highlightedCut.push(newSpan);
+      }
+      prevIndex = highlight[1];
+    }
+    const textAfter = turnContent.substring(prevIndex, multiHighlight.cut[1]);
+    highlightedCut.push(textAfter);
+
+    return highlightedCut;
+  };
   render() {
     return (
-      <div>
-        {this.props.sentences.map(sentence => {
-          return (
-            <div className="results__turn">
-              <p className="results__text">{this.props.speaker}</p>
-              <p className="results__text">
-                @{convertSecondsToTimestamp(this.props.time)}/{convertSecondsToTimestamp(
-                  this.props.duration
-                )}
-              </p>
-              <p className="results__text">{sentence}</p>
-            </div>
-          );
-        })}
+      <div className="results__turn">
+        <p className="results__text">{this.getSpeaker(this.props)}</p>
+        <p className="results__text">{this.getTime(this.props)}</p>
+        <p className="results__text">
+          {this.highlightCut(this.props.multiHighlight)}
+        </p>
       </div>
     );
   }
