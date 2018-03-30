@@ -122,10 +122,17 @@ class VideoResultsList extends React.Component<
           ) : (
             <VideoPlaceholder />
           )}
-          <SearchRadioButtons
-            onChange={this.handleChange}
-            selectedOption={this.state.selectedOption}
-          />
+          {this.state.sortedList.length === 0 ? (
+            <p className="turn__results">
+              Search returned no results for{" "}
+              <strong>{this.props.searchTerm}</strong>
+            </p>
+          ) : (
+            <SearchRadioButtons
+              onChange={this.handleChange}
+              selectedOption={this.state.selectedOption}
+            />
+          )}
           {this.state.sortedList
             // .slice(0, this.maxResults)
             .map((videoResult, idx) => {
