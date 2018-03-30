@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java2ts.Foundation.Person;
+import java2ts.Foundation.Speaker;
 import java2ts.Search;
 import java2ts.Search.FactResultList;
 import java2ts.Search.VideoResult;
@@ -155,7 +155,7 @@ public class Lucene implements AutoCloseable {
 		}
 	}
 
-	private static String personToString(Person person) {
-		return person.firstname + " " + person.middlename + " " + person.lastname;
+	private static String personToString(Speaker person) {
+		return person.fullName;
 	}
 }

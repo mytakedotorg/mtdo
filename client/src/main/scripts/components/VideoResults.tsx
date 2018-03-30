@@ -17,7 +17,6 @@ import {
 import { Search } from "../java2ts/Search";
 import { Routes } from "../java2ts/Routes";
 import { Foundation } from "../java2ts/Foundation";
-import { videoFact } from "../utils/testUtils";
 var bs = require("binary-search");
 
 export type SelectionOptions = "Containing" | "BeforeAndAfter";
@@ -302,7 +301,8 @@ class VideoResult extends React.Component<VideoResultProps, VideoResultState> {
   };
   getSpeaker = (props: VideoResultProps): string => {
     const { turn, videoFact } = props;
-    return videoFact.speakers[videoFact.speakerPerson[turn]].lastname;
+    const fullName = videoFact.speakers[videoFact.speakerPerson[turn]].fullName;
+    return fullName.substring(fullName.lastIndexOf(" "));
   };
   getTime = (props: VideoResultProps): string => {
     const { turn, videoFact } = props;

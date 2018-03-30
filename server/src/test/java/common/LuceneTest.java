@@ -13,7 +13,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Objects;
 import java2ts.Foundation;
-import java2ts.Foundation.Person;
+import java2ts.Foundation.Speaker;
 import java2ts.Search;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
@@ -21,12 +21,12 @@ import org.junit.Test;
 public class LuceneTest {
 	@Test
 	public void test() throws IOException {
-		Person luke = new Person();
-		luke.firstname = "Luke";
-		luke.lastname = "Skywalker";
-		Person darth = new Person();
-		darth.firstname = "Darth";
-		darth.lastname = "Vader";
+		Speaker luke = new Speaker();
+		luke.fullName = "Luke Skywalker";
+		luke.role = "candidate";
+		Speaker darth = new Speaker();
+		darth.fullName = "Darth Vader";
+		darth.role = "candidate";
 
 		VideoFactContentJava fact = new VideoFactContentJava();
 		fact.fact = new Foundation.Fact();
@@ -35,7 +35,7 @@ public class LuceneTest {
 		fact.fact.primaryDateKind = "recorded";
 		fact.fact.title = "Title";
 		fact.youtubeId = "youtube";
-		fact.durationSecs = 123;
+		fact.durationSeconds = 123;
 		fact.speakers = Arrays.asList(luke, darth);
 		fact.plainText = "Luke common Darth common";
 		fact.charOffsets = new int[]{0, 5, 12, 18};
