@@ -411,7 +411,6 @@ class VideoResult extends React.Component<VideoResultProps, VideoResultState> {
             </button>
           </div>
         </div>
-
         <p className="turn__results">
           {this.highlightCut(this.props.multiHighlight)}
         </p>

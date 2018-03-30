@@ -12,7 +12,7 @@ interface YTPlayerParameters {
   autoplay: number;
   showinfo: number;
   modestbranding: number;
-  playsinline: 1;
+  playsinline: number;
 }
 
 export interface VideoLiteProps {
@@ -38,7 +38,7 @@ class VideoLite extends React.Component<VideoLiteProps, VideoLiteState> {
       cc_load_policy: 1,
       cc_lang_pref: "en",
       controls: 1,
-      playsinline: 1,
+      playsinline: 0,
       autoplay: 1,
       showinfo: 0,
       modestbranding: 1,

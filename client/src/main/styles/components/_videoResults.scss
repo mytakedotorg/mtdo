@@ -22,13 +22,14 @@
   }
 }
 .results__heading {
+  @include heading1;
+  color: palette(foundation, text);
   margin-top: $page-margin-mobile * $vertical-margin-multiplier;
+  text-align: left;
   @media #{$mq-medium} {
     margin-top: $content-margin * $vertical-margin-multiplier;
+    text-align: center;
   }
-  color: palette(foundation, text);
-  @include heading1;
-  text-align: center;
 }
 .results__subheading {
   @include heading3;
@@ -39,37 +40,68 @@
 .searchradio__radio {
   margin-right: 1rem;
 }
+.searchradio__group {
+  width: 100%;
+  @media #{$mq-medium} {
+    display: inline-block;
+    width: auto;
+  }
+}
 .searchradio__radio-label {
-  margin-right: $page-margin-mobile;
   @media #{$mq-medium} {
     margin-right: $content-margin;
   }
   @include body("sans");
 }
 .turn {
-  display: flex;
-  justify-content: space-around;
-  align-items: flex-start;
   margin-bottom: $content-margin;
+  @media #{$mq-medium} {
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-start;
+  }
 }
 .turn__info {
-  width: 150px;
+  width: 100%;
+  @media #{$mq-medium} {
+    width: 150px;
+  }
 }
 .turn__speaker {
-  @include body--lead;
-  margin: 0;
+  @include typography($sans, 300, 22px, 1.5rem);
+  display: inline;
+  margin-right: $page-margin-mobile;
+  @media #{$mq-medium} {
+    margin: 0;
+    display: block;
+    @include typography($sans, 300, 26px, 1.5rem);
+  }
 }
 .turn__time {
   @include body("sans");
-  margin-top: 0;
-  margin-bottom: 7px;
+  display: inline;
+  margin-right: $page-margin-mobile;
+  @media #{$mq-medium} {
+    display: block;
+    margin-top: 0;
+    margin-bottom: 7px;
+  }
+}
+.turn__actions {
+  display: inline;
+  @media #{$mq-medium} {
+    display: block;
+  }
 }
 .turn__button--play {
   @include body("sans");
   @include button--blue;
   border-radius: 5px;
-  margin-right: $content-margin;
   cursor: pointer;
+  margin-right: $page-margin-mobile;
+  @media #{$mq-medium} {
+    margin-right: $content-margin;
+  }
 }
 .turn__button--open {
   @include body("sans");
