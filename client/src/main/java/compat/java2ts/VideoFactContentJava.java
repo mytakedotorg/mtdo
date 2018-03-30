@@ -11,13 +11,13 @@ import java.nio.ByteOrder;
 import java.util.Base64;
 import java.util.List;
 import java2ts.Foundation.FactContent;
-import java2ts.Foundation.Person;
+import java2ts.Foundation.Speaker;
 import java2ts.Foundation.VideoFactContentEncoded;
 
 public class VideoFactContentJava extends FactContent {
 	public String youtubeId;
-	public double durationSecs;
-	public List<Person> speakers;
+	public double durationSeconds;
+	public List<Speaker> speakers;
 	public String plainText;
 	public int[] charOffsets;
 	public double[] timestamps;
@@ -28,7 +28,7 @@ public class VideoFactContentJava extends FactContent {
 	public VideoFactContentEncoded toEncoded() {
 		VideoFactContentEncoded encoded = new VideoFactContentEncoded();
 		encoded.fact = fact;
-		encoded.durationSeconds = durationSecs;
+		encoded.durationSeconds = durationSeconds;
 		encoded.youtubeId = youtubeId;
 		encoded.speakers = speakers;
 		encoded.plainText = plainText;
@@ -74,7 +74,7 @@ public class VideoFactContentJava extends FactContent {
 		// do the direct transfers
 		java.fact = encoded.fact;
 		java.youtubeId = encoded.youtubeId;
-		java.durationSecs = encoded.durationSeconds.intValue();
+		java.durationSeconds = encoded.durationSeconds.intValue();
 		java.speakers = encoded.speakers;
 		java.plainText = encoded.plainText;
 		// create the new arrays

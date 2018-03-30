@@ -16,9 +16,10 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Set;
+import java2ts.Foundation.VideoFactMeta;
 
 /**
  * Format is:
@@ -37,55 +38,69 @@ import java.util.ListIterator;
 public abstract class SaidTranscript {
 	public abstract List<Turn> turns();
 
-	public List<Word.Said> attributedWords() {
+	/** Returns words indexed against the raw format of the transcript. */
+	public List<Word.Said> indexedWords() {
 		List<Word.Said> attributed = new ArrayList<>();
 		ListIterator<Turn> turnIter = turns().listIterator();
 		int startIdx = 0;
-		while (turnIter.hasNext()) {
-			Turn turn = turnIter.next();
-			startIdx += turn.speaker().name().length() + ": ".length();
-			List<String> words = turn.words();
-			for (String word : words) {
-				Word.Said saidWord = new Word.Said(word, startIdx);
-				if (!saidWord.lowercase.isEmpty()) {
-					// make sure it's not just a "-"
-					attributed.add(saidWord);
-				}
-				startIdx += word.length() + 1;
+		try {
+			while (turnIter.hasNext()) {
+				Turn turn = turnIter.next();
+				startIdx += turn.speaker().length() + ": ".length();
+				attributed.addAll(turn.indexedWords(startIdx));
+				startIdx += turn.said().length() + 2; // for 2 newlines
 			}
-			startIdx += 1; // for 2 newlines
+		} catch (Exception e) {
+			throw new RuntimeException("On line " + (turnIter.previousIndex() * 2 + 1) + " of said", e);
 		}
 		return attributed;
 	}
 
 	@AutoValue
 	public abstract static class Turn {
-		public abstract Speaker speaker();
+		public abstract String speaker();
 
 		public abstract String said();
 
-		public List<String> words() {
-			return Arrays.asList(said().split(" "));
+		/** Returns words indexed against the given start index. */
+		public List<Word.Said> indexedWords(int startIdx) {
+			String[] words = said().split(" ");
+			List<Word.Said> saidWords = new ArrayList<>();
+			for (String word : words) {
+				Word.Said saidWord = new Word.Said(word, startIdx);
+				if (!saidWord.lowercase.isEmpty()) {
+					// make sure it's not just a "-"
+					saidWords.add(saidWord);
+				}
+				startIdx += word.length() + 1;
+			}
+			return saidWords;
 		}
 
-		public static Turn speakerWords(Speaker speaker, String words) {
+		public static Turn speakerWords(String speaker, String words) {
 			return new AutoValue_SaidTranscript_Turn(speaker, words);
 		}
 	}
 
-	public static SaidTranscript parse(File file) throws IOException {
-		return parse(Files.asByteSource(file));
+	public static SaidTranscript parse(VideoFactMeta meta, File file) throws IOException {
+		return parse(meta, Files.asByteSource(file));
 	}
 
-	public static SaidTranscript parse(ByteSource source) throws IOException {
+	public static SaidTranscript parse(VideoFactMeta meta, ByteSource source) throws IOException {
+		Set<String> people = meta.speakers.stream().map(s -> s.fullName).collect(Immutables.toSet());
+
 		int lineCount = 1;
 		try (BufferedReader reader = source.asCharSource(StandardCharsets.UTF_8).openBufferedStream()) {
 			List<Turn> turns = new ArrayList<>();
 			String line;
-			while (!(line = reader.readLine()).isEmpty()) {
+			while (true) {
+				line = reader.readLine();
+				if (line == null || line.isEmpty()) {
+					break;
+				}
 				int firstColon = line.indexOf(':');
-				String speakerName = line.substring(0, firstColon);
-				Speaker speaker = Speaker.forName(speakerName);
+				String speaker = line.substring(0, firstColon);
+				Preconditions.checkArgument(people.contains(speaker), "No such person %s, available: %s", speaker, people);
 				String words = line.substring(firstColon + 1).trim();
 				turns.add(Turn.speakerWords(speaker, words));
 
@@ -102,9 +117,5 @@ public abstract class SaidTranscript {
 		} catch (Exception e) {
 			throw new RuntimeException("On line " + lineCount, e);
 		}
-	}
-
-	public List<Speaker> toSpeakers() {
-		return turns().stream().map(Turn::speaker).collect(Immutables.toSortedSet(Speaker.ordering())).asList();
 	}
 }

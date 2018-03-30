@@ -6,7 +6,11 @@ import {
   FeedCardContainerProps,
   FeedCardContainerState
 } from "./FeedCardContainer";
-import { documentFactLink, documentNodes, videoFact } from "../utils/testUtils";
+import {
+  documentFactLink,
+  documentNodes,
+  videoFactFast
+} from "../utils/testUtils";
 
 const videoProps: FeedCardContainerProps = {
   username: "samples",
@@ -21,7 +25,7 @@ const videoProps: FeedCardContainerProps = {
     {
       kind: "video",
       range: [304, 321],
-      videoId: "0ucGOukmHdaStpYZRigN-tLV8Vn2wAwjlobyMGzSpL4="
+      videoId: "iEfwIxM7MmnOKb7zt4HqW8IxUWy6F7a236fSOQlUUWI="
     }
   ]
 };
@@ -87,7 +91,7 @@ test("Card w/ Video Fact", () => {
   const containerProps = videoProps;
   const containerState: FeedCardContainerState = {
     loading: false,
-    videoFact: videoFact
+    videoFact: videoFactFast
   };
 
   const tree = renderer

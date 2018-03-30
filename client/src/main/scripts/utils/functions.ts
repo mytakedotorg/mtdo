@@ -710,6 +710,42 @@ function getSimpleRangesFromHTMLRange(
   }
 }
 
+function getWordRangeFromCharRange(
+  charRange: [number, number],
+  videoFact: Foundation.VideoFactContent
+): [number, number] {
+  const firstChar = charRange[0];
+  const lastChar = charRange[1];
+
+  const comparator = (element: number, needle: number) => {
+    return element - needle;
+  };
+
+  let firstWordIdx = bs(videoFact.charOffsets, firstChar, comparator);
+
+  if (firstWordIdx < 0) {
+    firstWordIdx = -firstWordIdx - 2;
+    if (firstWordIdx < 0) {
+      // If still negative, it means we're at the first word
+      firstWordIdx = 0;
+    }
+  }
+
+  let lastWordIdx = bs(videoFact.charOffsets, lastChar + 1, comparator);
+
+  if (lastWordIdx < 0) {
+    lastWordIdx = -lastWordIdx - 2;
+    if (lastWordIdx < 0) {
+      // If still negative, it means we're at the first word
+      lastWordIdx = 0;
+    }
+  }
+
+  lastWordIdx -= 1;
+
+  return [firstWordIdx, lastWordIdx];
+}
+
 function highlightText(
   nodes: FoundationNode[],
   range: [number, number],
@@ -1248,6 +1284,7 @@ export {
   getUserCookieString,
   getUsernameFromURL,
   getWordCount,
+  getWordRangeFromCharRange,
   highlightCaption,
   highlightText,
   isLoggedIn,

@@ -8,9 +8,10 @@ package org.mytake.foundation.transcript.gui;
 
 import com.diffplug.common.swt.ControlWrapper;
 import com.diffplug.common.swt.Layouts;
-import java.io.File;
+import io.reactivex.subjects.PublishSubject;
 import java.util.List;
 import java.util.function.UnaryOperator;
+import java.util.stream.Collectors;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
@@ -20,26 +21,37 @@ import org.mytake.foundation.transcript.Word;
 import org.mytake.foundation.transcript.Word.Vtt;
 
 public class SaidCtl extends ControlWrapper.AroundControl<Composite> {
-	private final FileCtl fileCtl;
 	private final Text styled;
 
-	public SaidCtl(Composite parent) {
+	public SaidCtl(Composite parent, PublishSubject<SaidVtt> changed) {
 		super(new Composite(parent, SWT.NONE));
 		Layouts.setGrid(wrapped).margin(0);
-
-		fileCtl = new FileCtl(wrapped, "Said");
-		Layouts.setGridData(fileCtl).grabHorizontal();
 
 		styled = new Text(wrapped, SWT.MULTI | SWT.BORDER | SWT.V_SCROLL | SWT.WRAP);
 		Layouts.setGridData(styled).grabAll();
 		styled.addListener(SWT.Modify, e -> {
-			fileCtl.hasChanged();
+			changed.onNext(SaidVtt.SAID);
 		});
 	}
 
-	public void setFile(File file, SaidTranscript said) {
-		fileCtl.setFile(file);
-		styled.setText(fileCtl.read());
+	public void setFile(SaidTranscript said) {
+		StringBuilder builder = new StringBuilder();
+		for (SaidTranscript.Turn turn : said.turns()) {
+			builder.append(turn.speaker());
+			builder.append(": ");
+			builder.append(turn.said());
+			builder.append("\n\n");
+		}
+		styled.setText(builder.toString());
+	}
+
+	public String getText() {
+		String txt = styled.getText();
+		if (txt.endsWith("\n\n")) {
+			return txt.substring(0, txt.length() - 1);
+		} else {
+			return txt;
+		}
 	}
 
 	public void select(Point selection) {
@@ -48,13 +60,31 @@ public class SaidCtl extends ControlWrapper.AroundControl<Composite> {
 
 	public void remove(Point sel) {
 		modify(txt -> {
-			return txt.substring(0, sel.x) + txt.substring(sel.y);
+			String before = txt.substring(0, sel.x);
+			String after = txt.substring(sel.y);
+			if (after.startsWith(" ") && (before.endsWith(" ") || before.isEmpty())) {
+				return before + after.substring(1);
+			} else if (after.isEmpty() && before.endsWith(" ")) {
+				return before.substring(0, before.length() - 1);
+			} else {
+				return before + after;
+			}
 		});
 	}
 
 	public void insert(int insertAt, List<Vtt> vttWords) {
 		modify(txt -> {
-			return txt;
+			String before = txt.substring(0, insertAt);
+			String after = txt.substring(insertAt);
+			if (!before.isEmpty() && !before.endsWith(" ")) {
+				before = before + " ";
+			}
+			if (!after.isEmpty() && !after.startsWith(" ")) {
+				after = " " + after;
+			}
+			return before
+					+ vttWords.stream().map(Word::lowercase).collect(Collectors.joining(" "))
+					+ after;
 		});
 	}
 

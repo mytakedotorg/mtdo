@@ -231,12 +231,12 @@ exports[`Video 1`] = `
           },
           "speakers": Array [
             Object {
-              "firstname": "Martha",
-              "lastname": "Raddatz",
+              "fullName": "Martha Raddatz",
+              "role": "moderator",
             },
             Object {
-              "firstname": "Anderson",
-              "lastname": "Cooper",
+              "fullName": "Anderson Cooper",
+              "role": "moderator",
             },
           ],
           "timestamps": Object {
@@ -617,12 +617,12 @@ exports[`Video with highlights 1`] = `
           },
           "speakers": Array [
             Object {
-              "firstname": "Martha",
-              "lastname": "Raddatz",
+              "fullName": "Martha Raddatz",
+              "role": "moderator",
             },
             Object {
-              "firstname": "Anderson",
-              "lastname": "Cooper",
+              "fullName": "Anderson Cooper",
+              "role": "moderator",
             },
           ],
           "timestamps": Object {

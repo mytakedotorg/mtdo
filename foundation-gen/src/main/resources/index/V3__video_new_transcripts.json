@@ -1,0 +1,461 @@
+[
+    {
+        "fact": {
+            "title": "United States Constitution",
+            "primaryDate": "1788-06-21",
+            "primaryDateKind": "ratified",
+            "kind": "document"
+        },
+        "hash": "c7qu-ZE5SuipqSrOO30R3mnAA7K7nJ4fQ4zVIX0A2yg="
+    },
+    {
+        "fact": {
+            "title": "Bill of Rights",
+            "primaryDate": "1791-12-15",
+            "primaryDateKind": "ratified",
+            "kind": "document"
+        },
+        "hash": "pMHhbW_I-wquOfoyPFAVQu8DMLMpYVxhGT8R1x71hYA="
+    },
+    {
+        "fact": {
+            "title": "Amendment 11",
+            "primaryDate": "1795-02-07",
+            "primaryDateKind": "ratified",
+            "kind": "document"
+        },
+        "hash": "x1qbi2SODzK03s-q7ElA_7l3BM5gZp3a3UbFdwZ_Rt0="
+    },
+    {
+        "fact": {
+            "title": "Amendment 12",
+            "primaryDate": "1804-06-15",
+            "primaryDateKind": "ratified",
+            "kind": "document"
+        },
+        "hash": "LWbZHJ0sfeTMwVNXfB44e7Vn7QRilZkbh7aEYjMFLEA="
+    },
+    {
+        "fact": {
+            "title": "Amendment 13",
+            "primaryDate": "1865-12-06",
+            "primaryDateKind": "ratified",
+            "kind": "document"
+        },
+        "hash": "o_dRqrNJ62wzlgLilTrLxkHqGmvAS9qTpa4z4pjyFqA="
+    },
+    {
+        "fact": {
+            "title": "Amendment 14",
+            "primaryDate": "1868-07-09",
+            "primaryDateKind": "ratified",
+            "kind": "document"
+        },
+        "hash": "LgxwapMvynxTQXAD-hRcqCZdKckjl_fVMWYYN2O1NAA="
+    },
+    {
+        "fact": {
+            "title": "Amendment 15",
+            "primaryDate": "1870-02-03",
+            "primaryDateKind": "ratified",
+            "kind": "document"
+        },
+        "hash": "MWcqvs7oNWyeZw9CCAuGczqT6AvHsvhEMabWYqr_df0="
+    },
+    {
+        "fact": {
+            "title": "Amendment 16",
+            "primaryDate": "1913-02-03",
+            "primaryDateKind": "ratified",
+            "kind": "document"
+        },
+        "hash": "vyD50O8fkY_MgIxTTwuiWCAiLQguHy6c57P1rFB5y38="
+    },
+    {
+        "fact": {
+            "title": "Amendment 17",
+            "primaryDate": "1913-04-08",
+            "primaryDateKind": "ratified",
+            "kind": "document"
+        },
+        "hash": "Y-iZqFAil5Nr3JVDjLGEVjc8FK2uIlhh6NnQ9OzsQAI="
+    },
+    {
+        "fact": {
+            "title": "Amendment 18",
+            "primaryDate": "1919-01-16",
+            "primaryDateKind": "ratified",
+            "kind": "document"
+        },
+        "hash": "UD8zZm3JgHBRH3v0d4vVW4jPLM5UQcj6Y41j0spN_kw="
+    },
+    {
+        "fact": {
+            "title": "Amendment 19",
+            "primaryDate": "1920-08-18",
+            "primaryDateKind": "ratified",
+            "kind": "document"
+        },
+        "hash": "UMbj74Cr48dRAr7mnM9K6AhPdKlM82wmLYsyQSE7Z5Q="
+    },
+    {
+        "fact": {
+            "title": "Amendment 20",
+            "primaryDate": "1933-01-23",
+            "primaryDateKind": "ratified",
+            "kind": "document"
+        },
+        "hash": "LqCknWYo929VmgHywwtGa9ixRgX5NtgnsW27MS_TH44="
+    },
+    {
+        "fact": {
+            "title": "Amendment 21",
+            "primaryDate": "1933-12-05",
+            "primaryDateKind": "ratified",
+            "kind": "document"
+        },
+        "hash": "0JjU1X8gbkMuey3Cmc96FioiLtU2PuQ4laU46QJDAKI="
+    },
+    {
+        "fact": {
+            "title": "Amendment 22",
+            "primaryDate": "1951-02-27",
+            "primaryDateKind": "ratified",
+            "kind": "document"
+        },
+        "hash": "yWJDo9fx2aDqg2aZ0CqaOHJGXsVcu9PwiG8_2UQP0GQ="
+    },
+    {
+        "fact": {
+            "title": "Amendment 23",
+            "primaryDate": "1961-03-29",
+            "primaryDateKind": "ratified",
+            "kind": "document"
+        },
+        "hash": "YIhoCGZf0oubOd3MfzMdfg7X6c08Y6vZ7JukRqumN18="
+    },
+    {
+        "fact": {
+            "title": "Amendment 24",
+            "primaryDate": "1964-01-23",
+            "primaryDateKind": "ratified",
+            "kind": "document"
+        },
+        "hash": "xP6P39kCyosAuwnKExXqnos2XLAcfR6dOsGQcrabKwM="
+    },
+    {
+        "fact": {
+            "title": "Amendment 25",
+            "primaryDate": "1967-02-10",
+            "primaryDateKind": "ratified",
+            "kind": "document"
+        },
+        "hash": "_-EmoY0hiBeu-z8G9FnNvrTbkAjs5CV87rNFJYW66LI="
+    },
+    {
+        "fact": {
+            "title": "Amendment 26",
+            "primaryDate": "1971-07-01",
+            "primaryDateKind": "ratified",
+            "kind": "document"
+        },
+        "hash": "UmOGYEw_QM6qdKxNkkIBdPcTmS81VYHTKtz6JgHhl8Q="
+    },
+    {
+        "fact": {
+            "title": "Amendment 27",
+            "primaryDate": "1992-05-05",
+            "primaryDateKind": "ratified",
+            "kind": "document"
+        },
+        "hash": "jWzZ5hnU9gWFIg5xjs2Pj0Ww9D_A44HEESYoiuLunLw="
+    },
+    {
+        "fact": {
+            "title": "Presidential Debate - Kennedy, Nixon (1 of 4)",
+            "primaryDate": "1960-09-26",
+            "primaryDateKind": "recorded",
+            "kind": "video"
+        },
+        "hash": "F3WfEfHLOVRGCaV_PaK_mXNJSA6FSJLGzQQ5T4HMR8M="
+    },
+    {
+        "fact": {
+            "title": "Presidential Debate - Kennedy, Nixon (2 of 4)",
+            "primaryDate": "1960-10-07",
+            "primaryDateKind": "recorded",
+            "kind": "video"
+        },
+        "hash": "Nv57bOopTzt_9Raz79PbPn_48K6vjHW8Qf2qNd3V3oc="
+    },
+    {
+        "fact": {
+            "title": "Presidential Debate - Kennedy, Nixon (3 of 4)",
+            "primaryDate": "1960-10-13",
+            "primaryDateKind": "recorded",
+            "kind": "video"
+        },
+        "hash": "H0fiOK08rswxT8XOk1ciBeF_VGZHn9Unca9w3QfqcbE="
+    },
+    {
+        "fact": {
+            "title": "Presidential Debate - Kennedy, Nixon (4 of 4)",
+            "primaryDate": "1960-10-21",
+            "primaryDateKind": "recorded",
+            "kind": "video"
+        },
+        "hash": "eSPq41bf5Ic2OLkrEJrFOzEU6rsifWDdjJQ3u-tqI0I="
+    },
+    {
+        "fact": {
+            "title": "Presidential Debate - Carter, Ford (1 of 3)",
+            "primaryDate": "1976-09-23",
+            "primaryDateKind": "recorded",
+            "kind": "video"
+        },
+        "hash": "q38xAZd-OvCuwbC__OICaxdDM1ZvIYz9az3aka8f6zc="
+    },
+    {
+        "fact": {
+            "title": "Presidential Debate - Carter, Ford (2 of 3)",
+            "primaryDate": "1976-10-06",
+            "primaryDateKind": "recorded",
+            "kind": "video"
+        },
+        "hash": "EuBv33KFOcVItXjivwaqki89kC6YT63StCHz5wZAa7M="
+    },
+    {
+        "fact": {
+            "title": "Presidential Debate - Carter, Ford (3 of 3)",
+            "primaryDate": "1976-10-22",
+            "primaryDateKind": "recorded",
+            "kind": "video"
+        },
+        "hash": "i7pxDjqBAuSOqZgil3aoDgBIH_tihmcxZjDm6S7d9t0="
+    },
+    {
+        "fact": {
+            "title": "Presidential Debate - Carter, Reagan (1 of 1)",
+            "primaryDate": "1980-10-28",
+            "primaryDateKind": "recorded",
+            "kind": "video"
+        },
+        "hash": "Gfmgax7RVRCGGESpY_tlelhe7UZMcEObi5wAxnlXmYQ="
+    },
+    {
+        "fact": {
+            "title": "Presidential Debate - Mondale, Reagan (1 of 2)",
+            "primaryDate": "1984-10-07",
+            "primaryDateKind": "recorded",
+            "kind": "video"
+        },
+        "hash": "_h_OVNBAJdGVXS6tbPsBWhP8bel7c8u3uQ7qm6JZfOc="
+    },
+    {
+        "fact": {
+            "title": "Presidential Debate - Mondale, Reagan (2 of 2)",
+            "primaryDate": "1984-10-21",
+            "primaryDateKind": "recorded",
+            "kind": "video"
+        },
+        "hash": "tkxID-8spplrdI-T85aWQTLB-GNgO5lL04r-k3yxbuw="
+    },
+    {
+        "fact": {
+            "title": "Presidential Debate - Bush, Dukakis (1 of 2)",
+            "primaryDate": "1988-09-25",
+            "primaryDateKind": "recorded",
+            "kind": "video"
+        },
+        "hash": "YUy86gn41H_DjywQXimr9yNGZzML8UnAJFHoQfg47Nk="
+    },
+    {
+        "fact": {
+            "title": "Presidential Debate - Bush, Dukakis (2 of 2)",
+            "primaryDate": "1988-10-13",
+            "primaryDateKind": "recorded",
+            "kind": "video"
+        },
+        "hash": "xovoZ0gB2ujZNmaow71rLeyDV0VY0r6hshIzNDrH3eQ="
+    },
+    {
+        "fact": {
+            "title": "Presidential Debate - Clinton, Bush, Perot (1 of 3)",
+            "primaryDate": "1992-10-11",
+            "primaryDateKind": "recorded",
+            "kind": "video"
+        },
+        "hash": "4Z6O_X9SSsq-yrLfJTElCDD0sLxfbi-W6XDBwD4eC80="
+    },
+    {
+        "fact": {
+            "title": "Presidential Debate - Clinton, Bush, Perot (2 of 3)",
+            "primaryDate": "1992-10-15",
+            "primaryDateKind": "recorded",
+            "kind": "video"
+        },
+        "hash": "u3UqFE1ah3C15TH__rIoGH8czfX9QsOZjCbolR448oE="
+    },
+    {
+        "fact": {
+            "title": "Presidential Debate - Clinton, Bush, Perot (3 of 3)",
+            "primaryDate": "1992-10-19",
+            "primaryDateKind": "recorded",
+            "kind": "video"
+        },
+        "hash": "vT3MYG-YhSdUUfLN7RIzFzznx2RBu3FCCNjpdp4tjUc="
+    },
+    {
+        "fact": {
+            "title": "Presidential Debate - Clinton, Dole (1 of 2)",
+            "primaryDate": "1996-10-06",
+            "primaryDateKind": "recorded",
+            "kind": "video"
+        },
+        "hash": "FpBJRA9UZRAjuh9kyGbspsYqj4rjfAXIp3Xv_wnH5Rc="
+    },
+    {
+        "fact": {
+            "title": "Presidential Debate - Clinton, Dole (2 of 2)",
+            "primaryDate": "1996-10-16",
+            "primaryDateKind": "recorded",
+            "kind": "video"
+        },
+        "hash": "4PNDBK596Ezil_KzTTYAJvqCf9PabAvXNODbElYynIQ="
+    },
+    {
+        "fact": {
+            "title": "Presidential Debate - Bush, Gore (1 of 3)",
+            "primaryDate": "2000-10-03",
+            "primaryDateKind": "recorded",
+            "kind": "video"
+        },
+        "hash": "eI19f_PiPfP16jPaBA2PhlHSJ_GRuUJYaNpf5V3NIuI="
+    },
+    {
+        "fact": {
+            "title": "Presidential Debate - Bush, Gore (2 of 3)",
+            "primaryDate": "2000-10-11",
+            "primaryDateKind": "recorded",
+            "kind": "video"
+        },
+        "hash": "zCdLaJiyt5MBQH0VZu9j4A4hkxSixECfKuv-jE3Qzso="
+    },
+    {
+        "fact": {
+            "title": "Presidential Debate - Bush, Gore (3 of 3)",
+            "primaryDate": "2000-10-17",
+            "primaryDateKind": "recorded",
+            "kind": "video"
+        },
+        "hash": "_X1BpnDXJk_pJctPh1DxZgvwdnVzus3FjDy7tkxmxMs="
+    },
+    {
+        "fact": {
+            "title": "Presidential Debate - Bush, Kerry (1 of 3)",
+            "primaryDate": "2004-09-30",
+            "primaryDateKind": "recorded",
+            "kind": "video"
+        },
+        "hash": "r9Ur3UlNvd0-GE57CaCOkIhHJtNnTvp_NjMWwb0a6Ic="
+    },
+    {
+        "fact": {
+            "title": "Presidential Debate - Bush, Kerry (2 of 3)",
+            "primaryDate": "2004-10-08",
+            "primaryDateKind": "recorded",
+            "kind": "video"
+        },
+        "hash": "HD9AtHjt-7BxTkdPPqo6tEfF5SPStSWxe_0btUOu1Ac="
+    },
+    {
+        "fact": {
+            "title": "Presidential Debate - Bush, Kerry (3 of 3)",
+            "primaryDate": "2004-10-13",
+            "primaryDateKind": "recorded",
+            "kind": "video"
+        },
+        "hash": "HgAJhY9jLxHKwKzXEcSO-L-KqsODq8m2YPb4aaH8xF4="
+    },
+    {
+        "fact": {
+            "title": "Presidential Debate - McCain, Obama (1 of 3)",
+            "primaryDate": "2008-09-26",
+            "primaryDateKind": "recorded",
+            "kind": "video"
+        },
+        "hash": "XIPhpFQAug9-DohyFY5eJQgv8qh8XsjU2qGGjzBAx1Y="
+    },
+    {
+        "fact": {
+            "title": "Presidential Debate - McCain, Obama (2 of 3)",
+            "primaryDate": "2008-10-07",
+            "primaryDateKind": "recorded",
+            "kind": "video"
+        },
+        "hash": "OayGhYD-VAtpUN291LvC3xEr8NfXTTjmfv051k33Na4="
+    },
+    {
+        "fact": {
+            "title": "Presidential Debate - McCain, Obama (3 of 3)",
+            "primaryDate": "2008-10-13",
+            "primaryDateKind": "recorded",
+            "kind": "video"
+        },
+        "hash": "bKSlqowBxJodhaxDhZCZZow5rB_IExdIPyiI8L3iDNs="
+    },
+    {
+        "fact": {
+            "title": "Presidential Debate - Obama, Romney (1 of 3)",
+            "primaryDate": "2012-10-03",
+            "primaryDateKind": "recorded",
+            "kind": "video"
+        },
+        "hash": "D0DMWXQHR7VgQOONxJ3brJvulf8AoseRuNtU2fNoDtQ="
+    },
+    {
+        "fact": {
+            "title": "Presidential Debate - Obama, Romney (2 of 3)",
+            "primaryDate": "2012-10-16",
+            "primaryDateKind": "recorded",
+            "kind": "video"
+        },
+        "hash": "h3aIjb84VABzP3W2WJtLkzvkOraUgA4gv-P2KbPz0yU="
+    },
+    {
+        "fact": {
+            "title": "Presidential Debate - Obama, Romney (3 of 3)",
+            "primaryDate": "2012-10-22",
+            "primaryDateKind": "recorded",
+            "kind": "video"
+        },
+        "hash": "3WXlhfIrcj_xy7AZGnYwCiNuiPmkkqM23MxPoJE-ziU="
+    },
+    {
+        "fact": {
+            "title": "Presidential Debate - Clinton, Trump (1 of 3)",
+            "primaryDate": "2016-09-26",
+            "primaryDateKind": "recorded",
+            "kind": "video"
+        },
+        "hash": "nivTFkju-NtvrHNZ-7qFyqn7G3Wm9dm0JLDcmO1jF20="
+    },
+    {
+        "fact": {
+            "title": "Presidential Debate - Clinton, Trump (2 of 3)",
+            "primaryDate": "2016-10-09",
+            "primaryDateKind": "recorded",
+            "kind": "video"
+        },
+        "hash": "iEfwIxM7MmnOKb7zt4HqW8IxUWy6F7a236fSOQlUUWI="
+    },
+    {
+        "fact": {
+            "title": "Presidential Debate - Clinton, Trump (3 of 3)",
+            "primaryDate": "2016-10-19",
+            "primaryDateKind": "recorded",
+            "kind": "video"
+        },
+        "hash": "iqFs0S6PjvdMBxmS4HKEgbv9fukhg7dfjrVVHPx8mgE="
+    }
+]

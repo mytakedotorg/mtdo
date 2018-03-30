@@ -6,15 +6,20 @@
  */
 package org.mytake.foundation.transcript;
 
-import com.diffplug.common.base.Errors;
-import com.diffplug.common.io.ByteSource;
-import com.diffplug.common.io.Resources;
+import com.diffplug.common.io.CharSink;
+import com.diffplug.common.io.CharStreams;
+import com.diffplug.common.io.Files;
+import java.io.File;
+import java.io.IOException;
+import java.io.Writer;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.mytake.foundation.transcript.VttTranscript.LineHeader;
+import org.mytake.foundation.transcript.VttTranscript.Mode;
 
 public class VttTranscriptTest {
 	@Test
@@ -47,15 +52,31 @@ public class VttTranscriptTest {
 	}
 
 	@Test
-	public void transcriptRoundtrip() {
-		Consumer<String> roundtrip = Errors.rethrow().wrap(name -> {
-			String content = Resources.toString(VttTranscriptTest.class.getResource("/transcript/vtt/" + name + ".vtt"), StandardCharsets.UTF_8);
-			VttTranscript transcript = VttTranscript.parse(ByteSource.wrap(content.getBytes(StandardCharsets.UTF_8)));
-			String rountripped = transcript.asString();
-			Assertions.assertThat(rountripped).isEqualTo(content);
-		});
-		for (Recording recording : Recording.national()) {
-			roundtrip.accept(recording.yyyyMMdd());
+	public void testSaveWithRemove() throws IOException {
+		File folder = new File("src/test/resources/org/mytake/foundation/transcript");
+		File after = new File(folder, "afterRemove.vtt");
+		File before = new File(folder, "beforeRemove.vtt");
+
+		// parse the transcript
+		VttTranscript vtt = VttTranscript.parse(before, Mode.STRICT);
+		// find the trouble word
+		List<Word.Vtt> words = vtt.words();
+		Word.Vtt and = words.stream().filter(w -> w.time == 3305.010).findFirst().get();
+		// remove it
+		words.remove(and);
+		// save it
+		InMemoryCharSink sink = new InMemoryCharSink();
+		vtt.save(words, sink);
+		// make sure it equals what we want it to equal
+		Assertions.assertThat(sink.sb.toString()).isEqualTo(Files.asCharSource(after, StandardCharsets.UTF_8).read());
+	}
+
+	static class InMemoryCharSink extends CharSink {
+		private final StringBuilder sb = new StringBuilder();
+
+		@Override
+		public Writer openStream() throws IOException {
+			return CharStreams.asWriter(sb);
 		}
 	}
 }

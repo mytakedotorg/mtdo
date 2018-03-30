@@ -21,8 +21,8 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
+import org.mytake.foundation.transcript.TranscriptMatch;
 import org.mytake.foundation.transcript.Word;
-import org.mytake.foundation.transcript.WordMatch;
 
 public class MismatchCtl extends ControlWrapper.AroundControl<Composite> {
 	private final SaidCtl saidCtl;
@@ -34,11 +34,11 @@ public class MismatchCtl extends ControlWrapper.AroundControl<Composite> {
 	private final Text saidTxt, vttTxt;
 	private final Button takeSaidBtn, takeVttBtn;
 
-	public MismatchCtl(Composite parent, SaidCtl saidCtl, VttCtl vttCtl) {
+	public MismatchCtl(Composite parent, SaidCtl saidCtl, VttCtl vttCtl, Runnable save) {
 		super(new Composite(parent, SWT.NONE));
 		this.saidCtl = saidCtl;
 		this.vttCtl = vttCtl;
-		Layouts.setGrid(wrapped).margin(0).numColumns(3);
+		Layouts.setGrid(wrapped).margin(0).numColumns(4);
 
 		Composite leftCmp = new Composite(wrapped, SWT.NONE);
 		Layouts.setGrid(leftCmp).margin(0).numColumns(3);
@@ -78,40 +78,65 @@ public class MismatchCtl extends ControlWrapper.AroundControl<Composite> {
 
 		takeSaidBtn.addListener(SWT.Selection, e -> {
 			takeSaid.run();
-			incrementGroupUp(false);
+			save.run();
 		});
 		takeVttBtn.addListener(SWT.Selection, e -> {
 			takeVtt.run();
-			incrementGroupUp(false);
+			save.run();
+		});
+		Button deleteBtn = new Button(wrapped, SWT.PUSH);
+		deleteBtn.setText("X");
+		deleteBtn.addListener(SWT.Selection, e -> {
+			if (!deleteEnabled) {
+				if (!SwtMisc.blockForQuestion("Enable deleting",
+						"This will delete both sections of the transcript.  This is only useful " +
+								"for quick and dirty stuff. Are you sure you want to do this?")) {
+					return;
+				} else {
+					deleteEnabled = true;
+				}
+			}
+			delete.run();
+			save.run();
 		});
 	}
 
 	private Runnable takeSaid, takeVtt;
+	private Runnable delete;
+
+	boolean deleteEnabled = false;
 
 	private void incrementGroupUp(boolean isUp) {
 		int idx = Integer.parseInt(groupTxt.getText());
 		setGroup(isUp ? ++idx : --idx);
 	}
 
-	private WordMatch match;
+	private TranscriptMatch match;
 
-	public void setMatch(WordMatch wordMatch) {
+	public void setMatch(TranscriptMatch wordMatch) {
 		this.match = wordMatch;
 		groupTxt.setText(Integer.toString(wordMatch.edits().size()));
 		ofGroupLbl.setText("of " + wordMatch.edits().size());
-		setGroup(wordMatch.edits().size());
+		if (!wordMatch.edits().isEmpty()) {
+			setGroup(1);
+		}
 	}
 
 	private void setGroup() {
 		setGroup(Integer.parseInt(groupTxt.getText()));
 	}
 
-	private void setGroup(int idx) {
-		groupTxt.setText(Integer.toString(idx));
-		leftBtn.setEnabled(idx != 1);
-		rightBtn.setEnabled(idx != match.edits().size());
+	private void setGroup(int idxOneBased) {
+		if (idxOneBased < 1) {
+			idxOneBased = 1;
+		} else if (idxOneBased > match.edits().size()) {
+			idxOneBased = match.edits().size();
+		}
+		groupTxt.setText(Integer.toString(idxOneBased));
+		leftBtn.setEnabled(idxOneBased != 1);
+		rightBtn.setEnabled(idxOneBased != match.edits().size());
 
-		Edit edit = match.edits().get(idx - 1);
+		Edit edit = match.edits().get(idxOneBased - 1);
 		Either<List<Word.Said>, Integer> said = match.saidFor(edit);
 		Either<List<Word.Vtt>, Integer> vtt = match.vttFor(edit);
 		saidTxt.setText(toString(said));
@@ -127,28 +152,30 @@ public class MismatchCtl extends ControlWrapper.AroundControl<Composite> {
 			if (vtt.isLeft()) {
 				// both modified
 				List<Word.Vtt> vttWords = vtt.getLeft();
-				if (saidWords.size() == 1 && vttWords.size() == 1) {
-					takeSaid = () -> vttCtl.replace(vttWords.get(0), saidWords.get(0));
-					takeVtt = () -> saidCtl.replace(saidSel, vttWords.get(0));
-				} else {
-					//takeSaid = replaceVttFromSaid
-					//takeVtt = replaceSaidFromVtt
+				boolean sameSpeaker = !saidCtl.getText().substring(saidSel.x, saidSel.y).contains("\n");
+				if (sameSpeaker) {
+					takeSaid = () -> {
+						int insertionPoint = vttCtl.getWords().indexOf(vttWords.get(0));
+						vttCtl.delete(vttWords);
+						vttCtl.insert(insertionPoint, saidWords);
+					};
+					takeVtt = () -> {
+						saidCtl.remove(saidSel);
+						saidCtl.insert(saidSel.x, vttWords);
+					};
 				}
 			} else {
 				// added to said
 				int vttInsertionPoint = vtt.getRight();
-				if (saidWords.size() == 1) {
-					takeSaid = () -> vttCtl.insert(vttInsertionPoint, saidWords.get(0));
-					// takeSaid = insertIntoVtt
-				}
-				takeVtt = () -> saidCtl.remove(saidSel); //deleteFromSaid
+				takeSaid = () -> vttCtl.insert(vttInsertionPoint, saidWords);
+				takeVtt = () -> saidCtl.remove(saidSel);
 			}
 		} else {
 			if (vtt.isLeft()) {
 				// added to vtt
 				List<Word.Vtt> vttWords = vtt.getLeft();
 				takeSaid = () -> vttCtl.delete(vttWords); //deleteFromVtt
-				takeVtt = () -> saidCtl.insert(saidSel.y, vttWords); //insertIntoSaid
+				takeVtt = () -> saidCtl.insert(saidSel.x, vttWords); //insertIntoSaid
 			} else {
 				throw new IllegalStateException();
 			}
@@ -156,6 +183,15 @@ public class MismatchCtl extends ControlWrapper.AroundControl<Composite> {
 
 		takeSaidBtn.setEnabled(takeSaid != Runnables.doNothing());
 		takeVttBtn.setEnabled(takeVtt != Runnables.doNothing());
+
+		delete = () -> {
+			if (said.isLeft()) {
+				saidCtl.remove(new Point(saidSel.x, saidSel.y + 1));
+			}
+			if (vtt.isLeft()) {
+				vttCtl.delete(vtt.getLeft());
+			}
+		};
 	}
 
 	private static String toString(Either<?, Integer> either) {
@@ -187,6 +223,8 @@ public class MismatchCtl extends ControlWrapper.AroundControl<Composite> {
 		List<Word.Vtt> list = either.fold(Function.identity(), idx -> {
 			if (idx == 0) {
 				return match.vttWords().subList(0, 1);
+			} else if (idx >= match.vttWords().size() - 1) {
+				return match.vttWords().subList(match.vttWords().size() - 1, match.vttWords().size());
 			} else {
 				return match.vttWords().subList(idx - 1, idx + 1);
 			}

@@ -55,15 +55,15 @@ class CaptionTextNodeList extends React.Component<
       >
         {this.props.documentNodes.map(
           function(element: CaptionNode, index: number) {
+            const fullName = this.props.videoFact.speakers[
+              this.props.videoFact.speakerPerson[index]
+            ].fullName;
+
             return (
               <CaptionTextNode
                 key={index}
                 documentNode={element}
-                speaker={
-                  this.props.videoFact.speakers[
-                    this.props.videoFact.speakerPerson[index]
-                  ].lastname
-                }
+                speaker={fullName.substring(fullName.lastIndexOf(" ") + 1)}
               />
             );
           }.bind(this)

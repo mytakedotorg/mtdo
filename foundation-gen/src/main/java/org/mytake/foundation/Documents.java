@@ -47,8 +47,20 @@ public class Documents extends FactWriter<DocumentFactContent> {
 		add(title, date, "ratified", Foundation.KIND_DOCUMENT);
 	}
 
-	@Override
-	protected DocumentFactContent factToContent(Fact fact) {
+	protected void add(String title, String date, String dateKind, String kind) throws NoSuchAlgorithmException, IOException {
+		Fact fact = new Fact();
+		fact.title = title;
+		fact.primaryDate = date;
+		fact.primaryDateKind = dateKind;
+		fact.kind = kind;
+
+		DocumentFactContent content = factToContent(fact);
+		content.fact = fact;
+
+		add(content);
+	}
+
+	private DocumentFactContent factToContent(Fact fact) {
 		DocumentFactContent content = new DocumentFactContent();
 		String input = read(slugify(fact.title) + ".foundation.html");
 		content.components = FoundationParser.toComponents(input);
