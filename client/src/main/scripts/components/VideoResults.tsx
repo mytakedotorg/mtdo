@@ -262,6 +262,7 @@ class VideoResultTurn extends React.Component<
                 key={idx.toString()}
                 multiHighlight={multiHighlight}
                 onPlayClick={this.props.onPlayClick}
+                sortBy={this.props.sortBy}
                 turn={this.props.turn}
                 turnContent={this.state.turnContent}
                 videoFact={this.props.videoFact}
@@ -283,6 +284,7 @@ interface VideoResultProps {
   multiHighlight: MultiHighlight;
   turn: number;
   turnContent: string;
+  sortBy: SelectionOptions;
   videoFact: Foundation.VideoFactContent;
   onPlayClick: PlayEvent;
 }
@@ -390,6 +392,11 @@ class VideoResult extends React.Component<VideoResultProps, VideoResultState> {
 
     return highlightedCut;
   };
+  componentWillReceiveProps(nextProps: VideoResultProps) {
+    if (nextProps.sortBy !== this.props.sortBy) {
+      this.clipRange = this.getClipTimeRange(nextProps.multiHighlight);
+    }
+  }
   render() {
     return (
       <div className="turn">
