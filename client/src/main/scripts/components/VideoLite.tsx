@@ -73,6 +73,8 @@ class VideoLite extends React.Component<VideoLiteProps, VideoLiteState> {
   handleReady = (event: any) => {
     this.player = event.target;
     this.cueVideo(this.props);
+    this.player.seekTo(this.props.clipRange[0]);
+    this.player.playVideo();
   };
   handleStateChange = (event: any) => {
     if (event.data === 0) {
@@ -117,20 +119,19 @@ class VideoLite extends React.Component<VideoLiteProps, VideoLiteState> {
       this.timerId = null;
     }
   };
-  componentDidMount() {
-    this.cueVideo(this.props);
-    if (this.player) {
-      this.player.seekTo(this.props.clipRange[0]);
-      this.player.playVideo();
-    }
-  }
   componentWillUnmount() {
     this.stopTimer();
   }
   componentWillReceiveProps(nextProps: VideoLiteProps) {
-    this.cueVideo(nextProps);
-    this.player.seekTo(nextProps.clipRange[0]);
-    this.player.playVideo();
+    if (
+      nextProps.videoFact.youtubeId !== this.props.videoFact.youtubeId ||
+      (nextProps.clipRange[0] !== this.props.clipRange[0] &&
+        nextProps.clipRange[1] !== this.props.clipRange[1])
+    ) {
+      this.cueVideo(nextProps);
+      this.player.seekTo(nextProps.clipRange[0]);
+      this.player.playVideo();
+    }
   }
   render() {
     const opts = {
