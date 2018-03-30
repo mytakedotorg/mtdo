@@ -46,3 +46,37 @@
   }
   @include body("sans");
 }
+.turn {
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-start;
+  margin-bottom: $content-margin;
+}
+.turn__info {
+  width: 150px;
+}
+.turn__speaker {
+  @include body--lead;
+  margin: 0;
+}
+.turn__time {
+  @include body("sans");
+  margin-top: 0;
+  margin-bottom: 7px;
+}
+.turn__button--play {
+  @include body("sans");
+  @include button--blue;
+  border-radius: 5px;
+  margin-right: $content-margin;
+  cursor: pointer;
+}
+.turn__button--open {
+  @include body("sans");
+  @include button--borderless;
+}
+.turn__results {
+  @include body;
+  flex: 1;
+  margin: 0;
+}

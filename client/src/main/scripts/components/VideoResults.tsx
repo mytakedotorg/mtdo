@@ -309,6 +309,7 @@ class VideoResult extends React.Component<VideoResultProps, VideoResultState> {
     const turnSeconds = videoFact.timestamps[videoFact.speakerWord[turn]];
 
     return (
+      "@ " +
       convertSecondsToTimestamp(turnSeconds) +
       "/" +
       convertSecondsToTimestamp(props.videoFact.durationSeconds)
@@ -391,12 +392,27 @@ class VideoResult extends React.Component<VideoResultProps, VideoResultState> {
   };
   render() {
     return (
-      <div className="results__turn">
-        <button onClick={this.handlePlayClick}>Play</button>
-        <button onClick={this.handleOpenClick}>Open</button>
-        <p className="results__text">{this.getSpeaker(this.props)}</p>
-        <p className="results__text">{this.getTime(this.props)}</p>
-        <p className="results__text">
+      <div className="turn">
+        <div className="turn__info">
+          <h3 className="turn__speaker">{this.getSpeaker(this.props)}</h3>
+          <p className="turn__time">{this.getTime(this.props)}</p>
+          <div className="turn__actions">
+            <button
+              className="turn__button turn__button--play"
+              onClick={this.handlePlayClick}
+            >
+              Play
+            </button>
+            <button
+              className="turn__button turn__button--open"
+              onClick={this.handleOpenClick}
+            >
+              Open
+            </button>
+          </div>
+        </div>
+
+        <p className="turn__results">
           {this.highlightCut(this.props.multiHighlight)}
         </p>
       </div>
