@@ -4,13 +4,18 @@ import VideoLite, { VideoLiteProps } from "./VideoLite";
 import VideoPlaceholder from "./VideoPlaceholder";
 import { VideoFactsLoader } from "./VideoResultsLoader";
 import isEqual = require("lodash/isEqual");
-import { alertErr, convertSecondsToTimestamp } from "../utils/functions";
+import {
+  alertErr,
+  convertSecondsToTimestamp,
+  slugify
+} from "../utils/functions";
 import {
   MultiHighlight,
   TurnFinder,
   TurnWithResults
 } from "../utils/searchFunc";
 import { Search } from "../java2ts/Search";
+import { Routes } from "../java2ts/Routes";
 import { Foundation } from "../java2ts/Foundation";
 import { videoFact } from "../utils/testUtils";
 var bs = require("binary-search");
@@ -350,7 +355,14 @@ class VideoResult extends React.Component<VideoResultProps, VideoResultState> {
     this.props.onPlayClick(this.props.videoFact, this.clipRange);
   };
   handleOpenClick = () => {
-    throw "todo";
+    window.location.href =
+      Routes.FOUNDATION_V1 +
+      "/" +
+      slugify(this.props.videoFact.fact.title) +
+      "/" +
+      this.clipRange[0].toFixed(3) +
+      "-" +
+      this.clipRange[1].toFixed(3);
   };
   highlightCut = (multiHighlight: MultiHighlight): React.ReactNode => {
     const { turnContent } = this.props;
@@ -381,6 +393,7 @@ class VideoResult extends React.Component<VideoResultProps, VideoResultState> {
     return (
       <div className="results__turn">
         <button onClick={this.handlePlayClick}>Play</button>
+        <button onClick={this.handleOpenClick}>Open</button>
         <p className="results__text">{this.getSpeaker(this.props)}</p>
         <p className="results__text">{this.getTime(this.props)}</p>
         <p className="results__text">
