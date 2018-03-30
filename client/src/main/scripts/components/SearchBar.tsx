@@ -46,10 +46,14 @@ class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
     return (
       <div className="searchbar">
         <div className="searchbar__input-container">
-          <form className="searchbox__form" onSubmit={this.handleSubmit}>
+          <form
+            className="searchbox__form"
+            onSubmit={this.handleSubmit}
+            action="javascript:void(0)" // Required for iOS search keyboard
+          >
             <input
               className="searchbar__input"
-              type="text"
+              type="search"
               value={this.state.value}
               placeholder="Search the Foundation"
               onChange={this.handleChange}
