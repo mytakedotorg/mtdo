@@ -4,6 +4,7 @@ $video-header-height: 60px;
   @include content-column;
 }
 .video__video-container {
+  max-width: 100%;
   width: 560px;
   height: 318px;
   margin-bottom: $page-margin-mobile * $vertical-margin-multiplier;
