@@ -7,10 +7,12 @@
 package org.mytake.foundation.transcript.gui;
 
 import com.diffplug.common.base.Either;
+import com.diffplug.common.rx.Rx;
 import com.diffplug.common.swt.ControlWrapper;
 import com.diffplug.common.swt.Layouts;
 import com.diffplug.common.swt.SwtMisc;
 import com.diffplug.common.util.concurrent.Runnables;
+import io.reactivex.subjects.PublishSubject;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -34,7 +36,7 @@ public class MismatchCtl extends ControlWrapper.AroundControl<Composite> {
 	private final Text saidTxt, vttTxt;
 	private final Button takeSaidBtn, takeVttBtn;
 
-	public MismatchCtl(Composite parent, SaidCtl saidCtl, VttCtl vttCtl, Runnable save) {
+	public MismatchCtl(Composite parent, SaidCtl saidCtl, VttCtl vttCtl, PublishSubject<Boolean> saveEnabled, Runnable save) {
 		super(new Composite(parent, SWT.NONE));
 		this.saidCtl = saidCtl;
 		this.vttCtl = vttCtl;
@@ -83,6 +85,10 @@ public class MismatchCtl extends ControlWrapper.AroundControl<Composite> {
 		takeVttBtn.addListener(SWT.Selection, e -> {
 			takeVtt.run();
 			save.run();
+		});
+		Rx.subscribe(saveEnabled, enabled -> {
+			takeSaidBtn.setEnabled(!enabled);
+			takeVttBtn.setEnabled(!enabled);
 		});
 		Button deleteBtn = new Button(wrapped, SWT.PUSH);
 		deleteBtn.setText("X");

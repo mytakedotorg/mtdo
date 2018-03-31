@@ -35,7 +35,7 @@ import org.mytake.foundation.transcript.TranscriptMatch;
 import org.mytake.foundation.transcript.Word;
 
 public class VttCtl extends ControlWrapper.AroundControl<Composite> {
-	private PublishSubject<SaidVtt> changed;
+	private PublishSubject<Boolean> changed;
 
 	private final TableViewer viewer;
 
@@ -58,7 +58,7 @@ public class VttCtl extends ControlWrapper.AroundControl<Composite> {
 	}
 
 	@SuppressWarnings("unchecked")
-	public VttCtl(Composite parent, YoutubeCtl youtube, PublishSubject<SaidVtt> changed) {
+	public VttCtl(Composite parent, YoutubeCtl youtube, PublishSubject<Boolean> changed) {
 		super(new Composite(parent, SWT.NONE));
 		this.changed = changed;
 		Layouts.setGrid(wrapped).margin(0);
@@ -201,20 +201,20 @@ public class VttCtl extends ControlWrapper.AroundControl<Composite> {
 	}
 
 	public void delete(List<Word.Vtt> vttWords) {
-		changed.onNext(SaidVtt.VTT);
+		changed.onNext(true);
 		words.removeAll(vttWords);
 		viewer.remove(vttWords.toArray());
 	}
 
 	public void replace(Word.Vtt vttOld, Word.Vtt vttNew) {
-		changed.onNext(SaidVtt.VTT);
+		changed.onNext(true);
 		int idx = words.indexOf(vttOld);
 		words.set(idx, vttNew);
 		viewer.replace(vttNew, idx);
 	}
 
 	public List<Word.Vtt> insert(int insertionPoint, List<Word.Said> said) {
-		changed.onNext(SaidVtt.VTT);
+		changed.onNext(true);
 		double before = insertionPoint == 0 ? 0 : words.get(insertionPoint - 1).time();
 		double after = words.get(insertionPoint).time();
 

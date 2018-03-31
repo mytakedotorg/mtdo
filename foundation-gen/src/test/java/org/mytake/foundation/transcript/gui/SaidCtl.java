@@ -23,14 +23,14 @@ import org.mytake.foundation.transcript.Word.Vtt;
 public class SaidCtl extends ControlWrapper.AroundControl<Composite> {
 	private final Text styled;
 
-	public SaidCtl(Composite parent, PublishSubject<SaidVtt> changed) {
+	public SaidCtl(Composite parent, PublishSubject<Boolean> changed) {
 		super(new Composite(parent, SWT.NONE));
 		Layouts.setGrid(wrapped).margin(0);
 
 		styled = new Text(wrapped, SWT.MULTI | SWT.BORDER | SWT.V_SCROLL | SWT.WRAP);
 		Layouts.setGridData(styled).grabAll();
 		styled.addListener(SWT.Modify, e -> {
-			changed.onNext(SaidVtt.SAID);
+			changed.onNext(true);
 		});
 	}
 
