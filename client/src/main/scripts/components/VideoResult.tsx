@@ -81,7 +81,12 @@ class VideoResult extends React.Component<VideoResultProps, VideoResultState> {
       lastWord = -lastWord - 2;
     }
 
-    const clipEnd = this.props.videoFact.timestamps[lastWord];
+    let clipEnd;
+    if (this.props.videoFact.timestamps[lastWord + 1]) {
+      clipEnd = this.props.videoFact.timestamps[lastWord + 1];
+    } else {
+      clipEnd = this.props.videoFact.timestamps[lastWord] + 2;
+    }
 
     return [clipStart, clipEnd];
   };
