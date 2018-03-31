@@ -27,7 +27,7 @@ class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
   handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     window.location.href =
-      Routes.SEARCH + "?searchTerm=" + encodeURIComponent(this.state.value);
+      Routes.SEARCH + "?q=" + encodeURIComponent(this.state.value);
   };
   render() {
     const Toggle = (

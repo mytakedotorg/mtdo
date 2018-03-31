@@ -11,7 +11,7 @@ import java.util.List;
 public interface Search {
 	@jsweet.lang.Interface
 	public class Request {
-		public String searchTerm;
+		public String q;
 	}
 
 	@jsweet.lang.Interface

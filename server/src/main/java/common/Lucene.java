@@ -82,7 +82,8 @@ public class Lucene implements AutoCloseable {
 
 	FactResultList searchDebate(NextRequest request) throws IOException {
 		BooleanQuery.Builder finalQuery = new BooleanQuery.Builder();
-		finalQuery.add(new TermQuery(new Term(CONTENT, request.request.searchTerm)), Occur.MUST);
+		String searchTerm = request.request.q;
+		finalQuery.add(new TermQuery(new Term(CONTENT, searchTerm)), Occur.MUST);
 		if (!request.people.isEmpty()) {
 			BooleanQuery.Builder speakerQuery = new BooleanQuery.Builder();
 			for (String person : request.people) {

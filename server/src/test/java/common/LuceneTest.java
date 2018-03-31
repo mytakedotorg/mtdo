@@ -49,7 +49,7 @@ public class LuceneTest {
 
 			Lucene.NextRequest request = new Lucene.NextRequest();
 			request.request = new Search.Request();
-			request.request.searchTerm = "common";
+			request.request.q = "common";
 			request.people = Collections.emptyList();
 
 			// both people say common
@@ -67,11 +67,11 @@ public class LuceneTest {
 
 			// no people, but search a word that only luke said
 			request.people = Collections.emptyList();
-			request.request.searchTerm = "luke";
+			request.request.q = "luke";
 			Assertions.assertThat(Lists.transform(lucene.searchDebate(request).facts, VidResult::new)).containsExactlyInAnyOrder(
 					new VidResult("youtube", 0));
 			// and a word that only darth said
-			request.request.searchTerm = "darth";
+			request.request.q = "darth";
 			Assertions.assertThat(Lists.transform(lucene.searchDebate(request).facts, VidResult::new)).containsExactlyInAnyOrder(
 					new VidResult("youtube", 1));
 		}

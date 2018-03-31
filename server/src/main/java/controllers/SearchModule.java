@@ -28,7 +28,8 @@ public class SearchModule implements Jooby.Module {
 		env.router().get(Routes.SEARCH, req -> {
 			try {
 				Search.Request request = req.params(Search.Request.class);
-				return views.Search.searchResults.template(request.searchTerm);
+				String searchTerm = request.q;
+				return views.Search.searchResults.template(searchTerm);
 			} catch (NullPointerException e) {
 				return "TODO";
 			}

@@ -33,7 +33,7 @@ class VideoResultsLoader extends React.Component<
   }
   getFactResults = () => {
     const bodyJson: Search.Request = {
-      searchTerm: this.props.searchTerm
+      q: this.props.searchTerm
     };
     postRequest(
       Routes.API_SEARCH,
