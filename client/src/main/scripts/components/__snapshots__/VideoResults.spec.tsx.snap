@@ -1,0 +1,78 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`List of video results 1`] = `
+<div
+  className="results"
+>
+  <div
+    className="results__inner-container"
+  >
+    <h1
+      className="results__heading"
+    >
+      Search Results
+    </h1>
+    <VideoPlaceholder />
+    <SearchRadioButtons
+      onChange={[Function]}
+      selectedOption="Containing"
+    />
+    <VideoFactsLoader
+      onPlayClick={[Function]}
+      results={
+        Object {
+          "hash": "11X2vfxeT_gkZDKP3jVEMWteTbEvb0rMhF9pnYteVJk=",
+          "turns": Array [
+            2,
+            0,
+          ],
+        }
+      }
+      searchTerm="richard"
+      sortBy="Containing"
+    />
+  </div>
+</div>
+`;
+
+exports[`Loading view while requesting all search results 1`] = `
+<div
+  className="results"
+>
+  <div
+    className="results__inner-container"
+  >
+    <h1
+      className="results__heading"
+    >
+      Searching...
+    </h1>
+  </div>
+</div>
+`;
+
+exports[`No results 1`] = `
+<div
+  className="results"
+>
+  <div
+    className="results__inner-container"
+  >
+    <h1
+      className="results__heading"
+    >
+      Search Results
+    </h1>
+    <VideoPlaceholder />
+    <p
+      className="turn__results"
+    >
+      Search returned no results for
+       
+      <strong>
+        richard
+      </strong>
+    </p>
+  </div>
+</div>
+`;

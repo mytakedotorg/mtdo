@@ -647,24 +647,24 @@ const rangeStyle: StylesObject = {
 const hash = "11X2vfxeT_gkZDKP3jVEMWteTbEvb0rMhF9pnYteVJk=";
 
 const factResultList: Search.FactResultList = {
-	facts: [
-		{
-			hash: hash,
-			turn: 2
-		},
-		{
-			hash: hash,
-			turn: 0
-		}
-	]
-}
+  facts: [
+    {
+      hash: hash,
+      turn: 2
+    },
+    {
+      hash: hash,
+      turn: 0
+    }
+  ]
+};
 
 export {
   cards,
   documentFactLink,
   documentNodes,
-	initialRangeSliders,
-	factResultList,
+  initialRangeSliders,
+  factResultList,
   logMeasurements,
   rangeStyle,
   takeDocument,
