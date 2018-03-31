@@ -12,6 +12,7 @@
 }
 .results {
   @include content-column;
+  overflow: hidden;
 }
 .results__inner-container {
   padding-left: $page-margin-mobile;
@@ -19,6 +20,12 @@
   @media #{$mq-medium} {
     padding-left: $content-margin;
     padding-right: $content-margin;
+  }
+}
+.results__push {
+  padding-top: 318px + $page-margin-mobile * $vertical-margin-multiplier;
+  @media #{$mq-medium} {
+    padding-top: 318px + $content-margin * $vertical-margin-multiplier;
   }
 }
 .results__heading {
@@ -69,9 +76,13 @@
     content: "";
     @include turnBackground();
     position: absolute;
+    left: -8px;
     height: 100%;
     width: 768px;
     z-index: -1;
+    @media #{$mq-medium} {
+      left: initial;
+    }
   }
 }
 .turn__info {
@@ -126,6 +137,7 @@
 .turn__button--open {
   @include body("sans");
   @include button--borderless;
+  background: transparent;
 }
 .turn__results {
   @include body;

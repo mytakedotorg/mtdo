@@ -14,10 +14,14 @@ exports[`List of video results 1`] = `
     </h1>
     <div>
       <VideoPlaceholder />
-      <SearchRadioButtons
-        onChange={[Function]}
-        selectedOption="Containing"
-      />
+      <div
+        className=""
+      >
+        <SearchRadioButtons
+          onChange={[Function]}
+          selectedOption="Containing"
+        />
+      </div>
     </div>
     <VideoFactsLoader
       eventHandlers={

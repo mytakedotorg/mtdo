@@ -22,24 +22,27 @@ interface VideoResultsListProps {
 }
 
 interface VideoResultsListState {
-  firstVideo: string;
+  fixVideo: boolean;
   selectedOption: SelectionOptions;
   sortedList: SortedResults[];
-  videoProps?: VideoLiteProps;
+  videoProps?: {
+    videoId: string;
+    clipRange?: [number, number];
+  };
 }
 
 class VideoResultsList extends React.Component<
   VideoResultsListProps,
   VideoResultsListState
 > {
-  maxResults: number;
+  private maxResults: number;
   constructor(props: VideoResultsListProps) {
     super(props);
 
     this.maxResults = 50;
 
     this.state = {
-      firstVideo: "",
+      fixVideo: false,
       selectedOption: "Containing",
       sortedList: this.sortResults(props.results)
     };
@@ -75,6 +78,13 @@ class VideoResultsList extends React.Component<
         videoId: youtubeId
       }
     });
+  };
+  handleScroll = (fixVideo: boolean) => {
+    if (this.state.fixVideo != fixVideo) {
+      this.setState({
+        fixVideo: fixVideo
+      });
+    }
   };
   sortResults = (results: Search.FactResultList): SortedResults[] => {
     const sortedByHash: Search.VideoResult[] = results.facts.concat().sort();
@@ -112,6 +122,7 @@ class VideoResultsList extends React.Component<
     }
   }
   render() {
+    const fixedClass = this.state.fixVideo ? "results__push" : "";
     return (
       <div className="results">
         <div className="results__inner-container">
@@ -124,14 +135,20 @@ class VideoResultsList extends React.Component<
           ) : (
             <div>
               {this.state.videoProps ? (
-                <VideoLite {...this.state.videoProps} />
+                <VideoLite
+                  {...this.state.videoProps}
+                  onScroll={this.handleScroll}
+                  isFixed={this.state.fixVideo}
+                />
               ) : (
                 <VideoPlaceholder />
               )}
-              <SearchRadioButtons
-                onChange={this.handleChange}
-                selectedOption={this.state.selectedOption}
-              />
+              <div className={fixedClass}>
+                <SearchRadioButtons
+                  onChange={this.handleChange}
+                  selectedOption={this.state.selectedOption}
+                />
+              </div>
             </div>
           )}
           {this.state.sortedList

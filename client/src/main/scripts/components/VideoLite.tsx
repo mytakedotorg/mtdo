@@ -16,6 +16,8 @@ interface YTPlayerParameters {
 }
 
 export interface VideoLiteProps {
+  isFixed: boolean;
+  onScroll: (fixVideo: boolean) => any;
   videoId: string;
   clipRange?: [number, number];
 }
@@ -29,6 +31,7 @@ class VideoLite extends React.Component<VideoLiteProps, VideoLiteState> {
   private timerId: number | null;
   private player: any;
   private playerVars: YTPlayerParameters;
+  private container: HTMLDivElement;
   constructor(props: VideoLiteProps) {
     super(props);
 
@@ -37,7 +40,7 @@ class VideoLite extends React.Component<VideoLiteProps, VideoLiteState> {
       cc_load_policy: 1,
       cc_lang_pref: "en",
       controls: 1,
-      playsinline: 0,
+      playsinline: 1,
       autoplay: 1,
       showinfo: 0,
       modestbranding: 1
@@ -82,6 +85,9 @@ class VideoLite extends React.Component<VideoLiteProps, VideoLiteState> {
     this.player = event.target;
     this.cueVideo(this.props);
   };
+  handleScroll = () => {
+    this.props.onScroll(this.container.getBoundingClientRect().top <= 0);
+  };
   handleStateChange = (event: any) => {
     if (event.data === 0) {
       // Video ended
@@ -125,8 +131,12 @@ class VideoLite extends React.Component<VideoLiteProps, VideoLiteState> {
       this.timerId = null;
     }
   };
+  componentDidMount() {
+    window.addEventListener("scroll", this.handleScroll);
+  }
   componentWillUnmount() {
     this.stopTimer();
+    window.removeEventListener("scroll", this.handleScroll);
   }
   componentWillReceiveProps(nextProps: VideoLiteProps) {
     if (nextProps.videoId && !this.props.videoId) {
@@ -153,18 +163,25 @@ class VideoLite extends React.Component<VideoLiteProps, VideoLiteState> {
       playerVars: this.playerVars
     };
 
+    const fixedClass = this.props.isFixed ? "video__fixed" : "";
+
     return (
-      <div className="video__outer-container">
+      <div
+        className="video__outer-container"
+        ref={(div: HTMLDivElement) => (this.container = div)}
+      >
         <div className="video__inner-container">
-          <div className="video__video-container">
-            <YouTube
-              videoId={this.props.videoId}
-              opts={opts}
-              onReady={this.handleReady}
-              onPause={this.handlePause}
-              onStateChange={this.handleStateChange}
-              className="video__video"
-            />
+          <div className={fixedClass}>
+            <div className="video__video-container">
+              <YouTube
+                videoId={this.props.videoId}
+                opts={opts}
+                onReady={this.handleReady}
+                onPause={this.handlePause}
+                onStateChange={this.handleStateChange}
+                className="video__video"
+              />
+            </div>
           </div>
         </div>
       </div>
