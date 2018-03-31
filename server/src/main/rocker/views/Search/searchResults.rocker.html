@@ -11,7 +11,7 @@ Existing draft -> Strings are not-null, all ids are meaningful
 
 window.mytake = {
 	type: "search",
-	searchTerm: "@searchTerm"
+	searchTerm: "@raw(searchTerm.replace("\"", "\\\""))"
 };
 
 </script>
