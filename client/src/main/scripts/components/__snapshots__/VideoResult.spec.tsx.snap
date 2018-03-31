@@ -1,0 +1,93 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`VideoResultPreview before and after 1`] = `
+<div
+  className="turn"
+>
+  <div
+    className="turn__info"
+  >
+    <h3
+      className="turn__speaker"
+    >
+       Smith
+    </h3>
+    <p
+      className="turn__time"
+    >
+      @ 1/58:56
+    </p>
+    <div
+      className="turn__actions"
+    >
+      <button
+        className="turn__button turn__button--play"
+        onClick={[Function]}
+      >
+        Play
+      </button>
+      <button
+        className="turn__button turn__button--open"
+        onClick={[Function]}
+      >
+        Open
+      </button>
+    </div>
+  </div>
+  <p
+    className="turn__results"
+  >
+    Good evening. The 
+    <strong>
+      television
+    </strong>
+     and radio stations of the United States and their affiliated stations are proud to provide facilities for a discussion of issues in the current political campaign by the two major candidates for the presidency. The candidates need no introduction.
+  </p>
+</div>
+`;
+
+exports[`VideoResultPreview containing 1`] = `
+<div
+  className="turn"
+>
+  <div
+    className="turn__info"
+  >
+    <h3
+      className="turn__speaker"
+    >
+       Smith
+    </h3>
+    <p
+      className="turn__time"
+    >
+      @ 1/58:56
+    </p>
+    <div
+      className="turn__actions"
+    >
+      <button
+        className="turn__button turn__button--play"
+        onClick={[Function]}
+      >
+        Play
+      </button>
+      <button
+        className="turn__button turn__button--open"
+        onClick={[Function]}
+      >
+        Open
+      </button>
+    </div>
+  </div>
+  <p
+    className="turn__results"
+  >
+    The 
+    <strong>
+      television
+    </strong>
+     and radio stations of the United States and their affiliated stations are proud to provide facilities for a discussion of issues in the current political campaign by the two major candidates for the presidency.
+  </p>
+</div>
+`;
