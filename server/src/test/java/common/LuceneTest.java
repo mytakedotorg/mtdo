@@ -19,6 +19,8 @@ import org.assertj.core.api.Assertions;
 import org.junit.Test;
 
 public class LuceneTest {
+	private static final String HASH = "HASH";
+
 	@Test
 	public void test() throws IOException {
 		Speaker luke = new Speaker();
@@ -44,7 +46,7 @@ public class LuceneTest {
 		fact.speakerWord = new int[]{0, 2};
 
 		try (Lucene lucene = new Lucene(writer -> {
-			Lucene.writeVideo(writer, "TODO", fact);
+			Lucene.writeVideo(writer, HASH, fact);
 		})) {
 
 			Lucene.NextRequest request = new Lucene.NextRequest();
@@ -54,26 +56,26 @@ public class LuceneTest {
 
 			// both people say common
 			Assertions.assertThat(Lists.transform(lucene.searchDebate(request).facts, VidResult::new)).containsExactlyInAnyOrder(
-					new VidResult("youtube", 0),
-					new VidResult("youtube", 1));
+					new VidResult(HASH, 0),
+					new VidResult(HASH, 1));
 			// this finds the one that only luke said
-			request.people = Arrays.asList("Luke null Skywalker");
+			request.people = Arrays.asList("Luke Skywalker");
 			Assertions.assertThat(Lists.transform(lucene.searchDebate(request).facts, VidResult::new)).containsExactlyInAnyOrder(
-					new VidResult("youtube", 0));
+					new VidResult(HASH, 0));
 			// and this one only darth said
-			request.people = Arrays.asList("Darth null Vader");
+			request.people = Arrays.asList("Darth Vader");
 			Assertions.assertThat(Lists.transform(lucene.searchDebate(request).facts, VidResult::new)).containsExactlyInAnyOrder(
-					new VidResult("youtube", 1));
+					new VidResult(HASH, 1));
 
 			// no people, but search a word that only luke said
 			request.people = Collections.emptyList();
 			request.request.q = "luke";
 			Assertions.assertThat(Lists.transform(lucene.searchDebate(request).facts, VidResult::new)).containsExactlyInAnyOrder(
-					new VidResult("youtube", 0));
+					new VidResult(HASH, 0));
 			// and a word that only darth said
 			request.request.q = "darth";
 			Assertions.assertThat(Lists.transform(lucene.searchDebate(request).facts, VidResult::new)).containsExactlyInAnyOrder(
-					new VidResult("youtube", 1));
+					new VidResult(HASH, 1));
 		}
 	}
 
