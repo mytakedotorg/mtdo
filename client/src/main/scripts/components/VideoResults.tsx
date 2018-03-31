@@ -2,7 +2,7 @@ import * as React from "react";
 import SearchRadioButtons from "./SearchRadioButtons";
 import VideoLite, { VideoLiteProps } from "./VideoLite";
 import VideoPlaceholder from "./VideoPlaceholder";
-import { VideoFactsLoader } from "./VideoResultsLoader";
+import VideoFactsLoader from "./VideoFactsLoader";
 import isEqual = require("lodash/isEqual");
 import {
   alertErr,
