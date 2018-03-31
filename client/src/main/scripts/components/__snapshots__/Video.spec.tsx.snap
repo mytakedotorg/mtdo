@@ -19,31 +19,35 @@ exports[`Video 1`] = `
           2016-10-09
         </p>
       </div>
-      <YouTube
-        className="video__video"
-        onPause={[Function]}
-        onReady={[Function]}
-        onStateChange={[Function]}
-        opts={
-          Object {
-            "height": "315",
-            "playerVars": Object {
-              "autoplay": 1,
-              "cc_lang_pref": "en",
-              "cc_load_policy": 1,
-              "controls": 0,
-              "end": null,
-              "modestbranding": 1,
-              "playsinline": 1,
-              "rel": 0,
-              "showinfo": 0,
-              "start": 0,
-            },
-            "width": "560",
+      <div
+        className="video__video-container"
+      >
+        <YouTube
+          className="video__video"
+          onPause={[Function]}
+          onReady={[Function]}
+          onStateChange={[Function]}
+          opts={
+            Object {
+              "height": "315",
+              "playerVars": Object {
+                "autoplay": 1,
+                "cc_lang_pref": "en",
+                "cc_load_policy": 1,
+                "controls": 0,
+                "end": null,
+                "modestbranding": 1,
+                "playsinline": 1,
+                "rel": 0,
+                "showinfo": 0,
+                "start": 0,
+              },
+              "width": "560",
+            }
           }
-        }
-        videoId="ApTLB76Nmdg"
-      />
+          videoId="ApTLB76Nmdg"
+        />
+      </div>
     </div>
     <div
       className="video__container video__container--actions"
@@ -360,31 +364,35 @@ exports[`Video with highlights 1`] = `
           2016-10-09
         </p>
       </div>
-      <YouTube
-        className="video__video"
-        onPause={[Function]}
-        onReady={[Function]}
-        onStateChange={[Function]}
-        opts={
-          Object {
-            "height": "315",
-            "playerVars": Object {
-              "autoplay": 1,
-              "cc_lang_pref": "en",
-              "cc_load_policy": 1,
-              "controls": 0,
-              "end": 3,
-              "modestbranding": 1,
-              "playsinline": 1,
-              "rel": 0,
-              "showinfo": 0,
-              "start": 0,
-            },
-            "width": "560",
+      <div
+        className="video__video-container"
+      >
+        <YouTube
+          className="video__video"
+          onPause={[Function]}
+          onReady={[Function]}
+          onStateChange={[Function]}
+          opts={
+            Object {
+              "height": "315",
+              "playerVars": Object {
+                "autoplay": 1,
+                "cc_lang_pref": "en",
+                "cc_load_policy": 1,
+                "controls": 0,
+                "end": 3,
+                "modestbranding": 1,
+                "playsinline": 1,
+                "rel": 0,
+                "showinfo": 0,
+                "start": 0,
+              },
+              "width": "560",
+            }
           }
-        }
-        videoId="ApTLB76Nmdg"
-      />
+          videoId="ApTLB76Nmdg"
+        />
+      </div>
     </div>
     <div
       className="video__container video__container--actions"

@@ -8,7 +8,7 @@ exports[`Video 1`] = `
     className="video__inner-container"
   >
     <div
-      className="video__container"
+      className="video__video-container"
     >
       <YouTube
         className="video__video"

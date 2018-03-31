@@ -143,7 +143,7 @@ class VideoLite extends React.Component<VideoLiteProps, VideoLiteState> {
     return (
       <div className="video__outer-container">
         <div className="video__inner-container">
-          <div className="video__container">
+          <div className="video__video-container">
             <YouTube
               videoId={this.props.videoFact.youtubeId}
               opts={opts}
