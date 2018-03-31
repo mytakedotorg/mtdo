@@ -106,21 +106,23 @@ class VideoResultsList extends React.Component<
       <div className="results">
         <div className="results__inner-container">
           <h1 className="results__heading">Search Results</h1>
-          {this.state.videoProps ? (
-            <VideoLite {...this.state.videoProps} />
-          ) : (
-            <VideoPlaceholder />
-          )}
           {this.state.sortedList.length === 0 ? (
             <p className="turn__results">
               Search returned no results for{" "}
               <strong>{this.props.searchTerm}</strong>
             </p>
           ) : (
-            <SearchRadioButtons
-              onChange={this.handleChange}
-              selectedOption={this.state.selectedOption}
-            />
+            <div>
+              {this.state.videoProps ? (
+                <VideoLite {...this.state.videoProps} />
+              ) : (
+                <VideoPlaceholder />
+              )}
+              <SearchRadioButtons
+                onChange={this.handleChange}
+                selectedOption={this.state.selectedOption}
+              />
+            </div>
           )}
           {this.state.sortedList
             // .slice(0, this.maxResults)

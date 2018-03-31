@@ -12,11 +12,13 @@ exports[`List of video results 1`] = `
     >
       Search Results
     </h1>
-    <VideoPlaceholder />
-    <SearchRadioButtons
-      onChange={[Function]}
-      selectedOption="Containing"
-    />
+    <div>
+      <VideoPlaceholder />
+      <SearchRadioButtons
+        onChange={[Function]}
+        selectedOption="Containing"
+      />
+    </div>
     <VideoFactsLoader
       onPlayClick={[Function]}
       results={
@@ -63,7 +65,6 @@ exports[`No results 1`] = `
     >
       Search Results
     </h1>
-    <VideoPlaceholder />
     <p
       className="turn__results"
     >
