@@ -34,7 +34,7 @@ public class TranscriptFolderDialog {
 	private final Text folderTxt;
 	private final Button saveBtn, refreshBtn;
 	private final TranscriptCtl transcriptCtl;
-	private final PublishSubject<SaidVtt> changed = PublishSubject.create();
+	private final PublishSubject<Boolean> saveEnabled = PublishSubject.create();
 
 	private TranscriptFolderDialog(Composite parent) {
 		Layouts.setGrid(parent).margin(0).spacing(0);
@@ -44,7 +44,7 @@ public class TranscriptFolderDialog {
 		Label sep = new Label(parent, SWT.SEPARATOR | SWT.HORIZONTAL);
 		Layouts.setGridData(sep).grabHorizontal();
 
-		transcriptCtl = new TranscriptCtl(parent, changed, this::save);
+		transcriptCtl = new TranscriptCtl(parent, saveEnabled, this::save);
 		Layouts.setGridData(transcriptCtl).grabAll();
 
 		Composite folderCmp = new Composite(top, SWT.NONE);
@@ -85,7 +85,7 @@ public class TranscriptFolderDialog {
 		saveBtn.setText("Save");
 		saveBtn.setEnabled(false);
 		saveBtn.addListener(SWT.Selection, e -> save());
-		Rx.subscribe(changed, unused -> saveBtn.setEnabled(true));
+		Rx.subscribe(saveEnabled, saveBtn::setEnabled);
 
 		refreshBtn = new Button(transcriptCmp, SWT.PUSH);
 		refreshBtn.setText("Refresh");
