@@ -122,6 +122,7 @@ dependencies {
 
 	// search
 	compile 'org.apache.lucene:lucene-core:7.2.1'
+	compile 'org.apache.lucene:lucene-queryparser:7.2.1'
 
 	// common libs
 	compile 'commons-validator:commons-validator:1.6'

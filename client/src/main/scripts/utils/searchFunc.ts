@@ -17,7 +17,7 @@ export class TurnFinder {
   constructor(searchTerm: string) {
     // i = ignore case
     // '\W+' means that all commas, dashes, quotes, etc. get smushed into one group
-    this.regex = new RegExp(searchTerm.replace(" ", "W+"), "ig");
+    this.regex = new RegExp(searchTerm.replace(" ", "\\W+"), "ig");
   }
 
   /** Finds all the results in the given turnContent. */

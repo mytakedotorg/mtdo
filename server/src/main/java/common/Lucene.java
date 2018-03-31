@@ -11,16 +11,21 @@ import com.diffplug.common.base.Throwing;
 import com.google.common.collect.ImmutableSet;
 import compat.java2ts.VideoFactContentJava;
 import java.io.IOException;
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Locale;
-import java2ts.Foundation.Speaker;
 import java2ts.Search;
 import java2ts.Search.FactResultList;
 import java2ts.Search.VideoResult;
 import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.analysis.CharArraySet;
+import org.apache.lucene.analysis.LowerCaseFilter;
+import org.apache.lucene.analysis.StopFilter;
+import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
+import org.apache.lucene.analysis.standard.StandardFilter;
+import org.apache.lucene.analysis.standard.StandardTokenizer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field.Store;
 import org.apache.lucene.document.LongPoint;
@@ -31,6 +36,7 @@ import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.index.Term;
+import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.BooleanClause.Occur;
 import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.IndexSearcher;
@@ -43,11 +49,12 @@ import org.apache.lucene.store.RAMDirectory;
 
 public class Lucene implements AutoCloseable {
 	private final Directory directory;
+	private final MyTakeDotOrgAnalyzer analyzer;
 	private final DirectoryReader reader;
 	private final IndexSearcher searcher;
 
 	public Lucene(Throwing.Specific.Consumer<IndexWriter, IOException> populate) throws IOException {
-		Analyzer analyzer = new StandardAnalyzer();
+		analyzer = new MyTakeDotOrgAnalyzer();
 
 		// Store the index in memory:
 		directory = new RAMDirectory();
@@ -67,6 +74,7 @@ public class Lucene implements AutoCloseable {
 	public void close() throws IOException {
 		reader.close();
 		directory.close();
+		analyzer.close();
 	}
 
 	static class NextRequest {
@@ -82,9 +90,11 @@ public class Lucene implements AutoCloseable {
 	}
 
 	FactResultList searchDebate(NextRequest request) throws IOException {
+		QueryParser parser = new QueryParser(CONTENT, analyzer);
+		Query phraseQuery = parser.createPhraseQuery(CONTENT, request.request.q);
+
 		BooleanQuery.Builder finalQuery = new BooleanQuery.Builder();
-		String searchTerm = request.request.q.toLowerCase(Locale.ROOT);
-		finalQuery.add(new TermQuery(new Term(CONTENT, searchTerm)), Occur.MUST);
+		finalQuery.add(phraseQuery, Occur.MUST);
 		if (!request.people.isEmpty()) {
 			BooleanQuery.Builder speakerQuery = new BooleanQuery.Builder();
 			for (String person : request.people) {
@@ -142,7 +152,7 @@ public class Lucene implements AutoCloseable {
 			doc.add(new StoredField(TURN, i));
 
 			// indexed but not stored
-			String speaker = personToString(videoFact.speakers.get(videoFact.speakerPerson[i]));
+			String speaker = videoFact.speakers.get(videoFact.speakerPerson[i]).fullName;
 			doc.add(new StringField(SPEAKER, speaker, Store.NO));
 			doc.add(new LongPoint(DATE, FoundationLoad.parseDate(videoFact.fact.primaryDate)));
 
@@ -157,7 +167,40 @@ public class Lucene implements AutoCloseable {
 		}
 	}
 
-	private static String personToString(Speaker person) {
-		return person.fullName;
+	private static class MyTakeDotOrgAnalyzer extends Analyzer {
+		private static final int MAX_TOKEN_LENGTH = 127;
+		private static final CharArraySet STOPWORDS;
+
+		static {
+			boolean ignoreCase = true;
+			STOPWORDS = new CharArraySet(StandardAnalyzer.ENGLISH_STOP_WORDS_SET, ignoreCase);
+			STOPWORDS.add("uh");
+			STOPWORDS.add("eh");
+		}
+
+		@Override
+		protected TokenStreamComponents createComponents(final String fieldName) {
+			final StandardTokenizer src = new StandardTokenizer();
+			src.setMaxTokenLength(MAX_TOKEN_LENGTH);
+			TokenStream tok = new StandardFilter(src);
+			tok = new LowerCaseFilter(tok);
+			tok = new StopFilter(tok, STOPWORDS);
+			return new TokenStreamComponents(src, tok) {
+				@Override
+				protected void setReader(final Reader reader) {
+					// So that if maxTokenLength was changed, the change takes
+					// effect next time tokenStream is called:
+					src.setMaxTokenLength(MAX_TOKEN_LENGTH);
+					super.setReader(reader);
+				}
+			};
+		}
+
+		@Override
+		protected TokenStream normalize(String fieldName, TokenStream in) {
+			TokenStream result = new StandardFilter(in);
+			result = new LowerCaseFilter(result);
+			return result;
+		}
 	}
 }

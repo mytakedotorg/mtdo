@@ -11,6 +11,7 @@ import compat.java2ts.VideoFactContentJava;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 import java2ts.Foundation;
 import java2ts.Foundation.Speaker;
@@ -39,43 +40,67 @@ public class LuceneTest {
 		fact.youtubeId = "youtube";
 		fact.durationSeconds = 123;
 		fact.speakers = Arrays.asList(luke, darth);
-		fact.plainText = "Luke common Darth common";
-		fact.charOffsets = new int[]{0, 5, 12, 18};
-		fact.timestamps = new double[]{0, 1, 2, 3};
+		fact.plainText = "Luke common Darth common several green beans";
+		fact.charOffsets = new int[]{0, 5, 12, 18, 25, 29, 34, 37};
+		fact.timestamps = new double[]{0, 1, 2, 3, 4, 5, 6, 7};
 		fact.speakerPerson = new int[]{0, 1};
 		fact.speakerWord = new int[]{0, 2};
 
 		try (Lucene lucene = new Lucene(writer -> {
 			Lucene.writeVideo(writer, HASH, fact);
 		})) {
-
 			Lucene.NextRequest request = new Lucene.NextRequest();
 			request.request = new Search.Request();
 			request.request.q = "common";
 			request.people = Collections.emptyList();
 
 			// both people say common
-			Assertions.assertThat(Lists.transform(lucene.searchDebate(request).facts, VidResult::new)).containsExactlyInAnyOrder(
-					new VidResult(HASH, 0),
-					new VidResult(HASH, 1));
+			newQuery("common").expect(lucene, new VidResult(HASH, 0), new VidResult(HASH, 1));
 			// this finds the one that only luke said
-			request.people = Arrays.asList("Luke Skywalker");
-			Assertions.assertThat(Lists.transform(lucene.searchDebate(request).facts, VidResult::new)).containsExactlyInAnyOrder(
-					new VidResult(HASH, 0));
-			// and this one only darth said
-			request.people = Arrays.asList("Darth Vader");
-			Assertions.assertThat(Lists.transform(lucene.searchDebate(request).facts, VidResult::new)).containsExactlyInAnyOrder(
-					new VidResult(HASH, 1));
+			newQuery("common").people("Luke Skywalker").expect(lucene, new VidResult(HASH, 0));
+			newQuery("common").people("Darth Vader").expect(lucene, new VidResult(HASH, 1));
 
-			// no people, but search a word that only luke said
-			request.people = Collections.emptyList();
-			request.request.q = "luke";
-			Assertions.assertThat(Lists.transform(lucene.searchDebate(request).facts, VidResult::new)).containsExactlyInAnyOrder(
-					new VidResult(HASH, 0));
-			// and a word that only darth said
-			request.request.q = "darth";
-			Assertions.assertThat(Lists.transform(lucene.searchDebate(request).facts, VidResult::new)).containsExactlyInAnyOrder(
-					new VidResult(HASH, 1));
+			// no people, but search a word that only they said
+			newQuery("luke").expect(lucene, new VidResult(HASH, 0));
+			newQuery("darth").expect(lucene, new VidResult(HASH, 1));
+
+			// phrase search
+			newQuery("luke common").expect(lucene, new VidResult(HASH, 0));
+			newQuery("darth common").expect(lucene, new VidResult(HASH, 1));
+			newQuery("Luke common").expect(lucene, new VidResult(HASH, 0));
+			newQuery("Darth COMMON").expect(lucene, new VidResult(HASH, 1));
+
+			newQuery("several beans").expect(lucene);
+			newQuery("several green beans").expect(lucene, new VidResult(HASH, 1));
+			newQuery("green beans").expect(lucene, new VidResult(HASH, 1));
+			newQuery("several green").expect(lucene, new VidResult(HASH, 1));
+		}
+	}
+
+	private QueryBuilder newQuery(String searchTerm) {
+		return new QueryBuilder().searchTerm(searchTerm);
+	}
+
+	static class QueryBuilder {
+		private String searchTerm;
+		private List<String> people = Collections.emptyList();
+
+		public QueryBuilder searchTerm(String searchTerm) {
+			this.searchTerm = searchTerm;
+			return this;
+		}
+
+		public QueryBuilder people(String... people) {
+			this.people = Arrays.asList(people);
+			return this;
+		}
+
+		public void expect(Lucene lucene, VidResult... results) throws IOException {
+			Lucene.NextRequest request = new Lucene.NextRequest();
+			request.request = new Search.Request();
+			request.request.q = searchTerm;
+			request.people = people;
+			Assertions.assertThat(Lists.transform(lucene.searchDebate(request).facts, VidResult::new)).containsExactlyInAnyOrder(results);
 		}
 	}
 
