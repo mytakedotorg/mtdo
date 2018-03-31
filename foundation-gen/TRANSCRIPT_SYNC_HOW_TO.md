@@ -16,7 +16,7 @@ In the transcriptGui, click "..." to open the details of every transcript in the
 - If the date is underlined, that means all of the speakers in the transcript are valid, and you can can start syncing.  The dialog will tell you how many sections remain to be synced.
 - If the date is not underlined, then there was an error loading the transcript - probably because a name doesn't match somewhere in `<DATE>.said`, `<DATE>.json`, `all_people.ini`, or `all_roles.ini`. If you click the underlined error, it will print the stack trace to console, which should have the line number of the error.
 
-![Details view](TRANSCRIPT_HOW_TO_details.png)
+![Details view](TRANSCRIPT_SYNC_HOW_TO_details.png)
 
 ## 4. Use `transcriptGui` to sync the `.said` file and the `.vtt` file.
 
@@ -27,4 +27,4 @@ When syncing the transcript, the normal loop is:
 
 Occasionally, neither side will be right.  In those situations, you can edit either the `.said` or the `.vtt` directly.  If you make any manual edits, you cannot use the checkmarks again until after you have saved.
 
-![Transcript sync interface](TRANSCRIPT_HOW_TO_gui.png)
+![Transcript sync interface](TRANSCRIPT_SYNC_HOW_TO_gui.png)
