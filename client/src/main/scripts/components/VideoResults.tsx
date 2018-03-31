@@ -178,7 +178,7 @@ export class VideoResultPreview extends React.Component<
         </h2>
         {turns.map((turn, idx) => {
           return (
-            <VideoResultTurn
+            <VideoResultTurnList
               key={idx.toString()}
               onPlayClick={this.props.onPlayClick}
               searchTerm={searchTerm}
@@ -193,23 +193,23 @@ export class VideoResultPreview extends React.Component<
   }
 }
 
-interface VideoResultTurnsProps {
+interface VideoResultTurnListProps {
   searchTerm: string;
   sortBy: SelectionOptions;
   turn: number;
   videoFact: Foundation.VideoFactContent;
   onPlayClick: PlayEvent;
 }
-interface VideoResultTurnsState {
+interface VideoResultTurnListState {
   multiHighlights: MultiHighlight[];
   turnContent: string;
 }
 
-class VideoResultTurn extends React.Component<
-  VideoResultTurnsProps,
-  VideoResultTurnsState
+class VideoResultTurnList extends React.Component<
+  VideoResultTurnListProps,
+  VideoResultTurnListState
 > {
-  constructor(props: VideoResultTurnsProps) {
+  constructor(props: VideoResultTurnListProps) {
     super(props);
 
     const turnContent: string = this.getTurnContent(props);
@@ -220,7 +220,7 @@ class VideoResultTurn extends React.Component<
     };
   }
   getMultiHighlights = (
-    props: VideoResultTurnsProps,
+    props: VideoResultTurnListProps,
     turnContent: string
   ): MultiHighlight[] => {
     const turnFinder = new TurnFinder(props.searchTerm);
@@ -235,7 +235,7 @@ class VideoResultTurn extends React.Component<
       throw msg;
     }
   };
-  getTurnContent = (props: VideoResultTurnsProps): string => {
+  getTurnContent = (props: VideoResultTurnListProps): string => {
     const { searchTerm, turn, videoFact } = props;
     let fullTurnText;
     const firstWord = videoFact.speakerWord[turn];
@@ -250,7 +250,7 @@ class VideoResultTurn extends React.Component<
     }
     return fullTurnText;
   };
-  componentWillReceiveProps(nextProps: VideoResultTurnsProps) {
+  componentWillReceiveProps(nextProps: VideoResultTurnListProps) {
     if (!isEqual(this.props, nextProps)) {
       const turnContent: string = this.getTurnContent(nextProps);
       this.setState({
