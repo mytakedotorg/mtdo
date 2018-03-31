@@ -19,10 +19,8 @@ exports[`VideoResultPreview containing 1`] = `
   <h2
     className="results__subheading"
   >
-    Presidential debate | 
     Presidential Debate - Kennedy, Nixon (1 of 4)
-     -
-     
+     - 
     1960-09-26
   </h2>
   <VideoResultTurnList

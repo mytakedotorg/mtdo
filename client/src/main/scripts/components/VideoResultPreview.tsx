@@ -25,8 +25,7 @@ class VideoResultPreview extends React.Component<
     return (
       <div className="results__preview">
         <h2 className="results__subheading">
-          Presidential debate | {videoFact.fact.title} -{" "}
-          {videoFact.fact.primaryDate}
+          {videoFact.fact.title} - {videoFact.fact.primaryDate}
         </h2>
         {turns.map((turn, idx) => {
           return (

@@ -53,38 +53,52 @@
   }
   @include body("sans");
 }
+@mixin turnBackground {
+  background: linear-gradient(lighten(#758aa8, 40%), white);
+}
 .turn {
+  @include turnBackground();
+  position: relative;
   margin-bottom: $content-margin;
   @media #{$mq-medium} {
     display: flex;
     justify-content: space-around;
     align-items: flex-start;
   }
+  &:before {
+    content: "";
+    @include turnBackground();
+    position: absolute;
+    height: 100%;
+    width: 768px;
+    z-index: -1;
+  }
 }
 .turn__info {
   width: 100%;
+  // background-color: grey;
   @media #{$mq-medium} {
     width: 150px;
   }
 }
 .turn__speaker {
-  @include typography($sans, 300, 22px, 1.5rem);
+  @include typography($sans, 400, 20px, 1.7em);
   display: inline;
   margin-right: $page-margin-mobile;
   @media #{$mq-medium} {
     margin: 0;
+    margin-top: -7px;
     display: block;
-    @include typography($sans, 300, 26px, 1.5rem);
   }
 }
 .turn__time {
-  @include body("sans");
+  @include typography($sans, 400, 16px, 1.7em);
   display: inline;
   margin-right: $page-margin-mobile;
   @media #{$mq-medium} {
     display: block;
-    margin-top: 7px;
-    margin-bottom: 7px;
+    margin-bottom: 0;
+    margin-top: -3px;
   }
 }
 .turn__actions {
@@ -93,9 +107,15 @@
     display: block;
   }
 }
+.turn__button {
+  margin-top: -3px;
+}
 .turn__button--play {
   @include body("sans");
   @include button--blue;
+  line-height: 21px;
+  padding-top: 0;
+  padding-bottom: 0;
   border-radius: 5px;
   cursor: pointer;
   margin-right: $page-margin-mobile;
