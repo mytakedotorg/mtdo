@@ -1,5 +1,5 @@
 import * as React from "react";
-import VideoResultsList from "./VideoResults";
+import VideoResultsList from "./VideoResultsList";
 import { Routes } from "../java2ts/Routes";
 import { Search } from "../java2ts/Search";
 import { postRequest } from "../utils/databaseAPI";
