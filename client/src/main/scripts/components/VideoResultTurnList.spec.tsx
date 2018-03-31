@@ -8,7 +8,6 @@ jest.mock("./VideoResult", () => ({
   default: "VideoResult"
 }));
 
-
 test("VideoResultTurnList containing", () => {
   const tree = renderer
     .create(
