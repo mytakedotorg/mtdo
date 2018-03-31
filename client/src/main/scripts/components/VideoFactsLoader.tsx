@@ -1,10 +1,7 @@
 import * as React from "react";
-import {
-  PlayEvent,
-  SelectionOptions,
-  SortedResults,
-  VideoResultPreview
-} from "./VideoResults";
+import { SelectionOptions, SortedResults } from "./VideoResultsList";
+import VideoResultPreview from "./VideoResultPreview";
+import { PlayEvent } from "./VideoResult";
 import { Foundation } from "../java2ts/Foundation";
 import { fetchFact } from "../utils/databaseAPI";
 import { alertErr } from "../utils/functions";
@@ -89,7 +86,7 @@ const VideoFactsLoaderBranch: React.StatelessComponent<
   }
 };
 
-const VideoResultPreviewLoadingView: React.StatelessComponent<{}> = props => (
+export const VideoResultPreviewLoadingView: React.StatelessComponent<{}> = props => (
   <div className="result-preview">
     <p className="result-preview__text">Loading search results...</p>
   </div>

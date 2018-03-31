@@ -1,5 +1,5 @@
 import * as React from "react";
-import { SelectionOptions } from "./VideoResults";
+import { SelectionOptions } from "./VideoResultsList";
 
 interface SearchRadioButtonsProps {
   onChange: (ev: React.ChangeEvent<HTMLInputElement>) => any;
