@@ -1,0 +1,152 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SearchBar 1`] = `
+<div
+  className="searchbar"
+>
+  <div
+    className="searchbar__input-container"
+  >
+    <form
+      action="javascript:void(0)"
+      className="searchbox__form"
+      onSubmit={[Function]}
+    >
+      <input
+        className="searchbar__input"
+        onChange={[Function]}
+        placeholder="Search the Foundation"
+        type="search"
+        value="search term"
+      />
+    </form>
+  </div>
+  <div
+    className="searchbar__filter-button-list"
+  >
+    <div
+      className="searchbar__button searchbar__button--filter"
+    >
+      <a
+        className="searchbar__button-link"
+        href="/search?searchTerm=search%20term&f=in+debates+said+by+donald+trump"
+      >
+        <span
+          className="searchbar__button-text"
+        >
+          in debates said by Donald Trump
+        </span>
+      </a>
+      <div
+        className="searchbar__button-close"
+        onClick={[Function]}
+      >
+        <i
+          aria-hidden="true"
+          className="fa fa-times"
+        />
+      </div>
+    </div>
+    <div
+      className="searchbar__button searchbar__button--filter"
+    >
+      <a
+        className="searchbar__button-link"
+        href="/search?searchTerm=search%20term&f=in+the+constitution"
+      >
+        <span
+          className="searchbar__button-text"
+        >
+          in the Constitution
+        </span>
+      </a>
+      <div
+        className="searchbar__button-close"
+        onClick={[Function]}
+      >
+        <i
+          aria-hidden="true"
+          className="fa fa-times"
+        />
+      </div>
+    </div>
+  </div>
+  <div
+    className="searchbar__toggle-container"
+  >
+    <div
+      className="searchbar__button searchbar__button--filter-toggle"
+    >
+      <DropDown
+        classModifier="searchbar"
+        dropdownPosition="BL"
+        toggleText={
+          <span
+            className="searchbar__toggle-element"
+          >
+            <span
+              className="searchbar__toggle-text searchbar__toggle-text--filter-icon"
+            >
+              <i
+                aria-hidden="true"
+                className="fa fa-filter"
+              />
+            </span>
+            <span
+              className="searchbar__toggle-text searchbar__toggle-text--caret-icon"
+            >
+              <i
+                aria-hidden="true"
+                className="fa fa-caret-down"
+              />
+            </span>
+            <span
+              className="searchbar__toggle-text searchbar__toggle-text--user"
+            >
+              <span
+                className="searchbar__filter-text"
+              >
+                search in...
+              </span>
+            </span>
+          </span>
+        }
+      >
+        <div
+          className="searchbar__dropdown"
+        >
+          <p
+            className="searchbar__dropdown-text"
+          >
+            <i
+              aria-hidden="true"
+              className="fa fa-exclamation-triangle"
+            />
+            Under construction
+          </p>
+          <p
+            className="searchbar__dropdown-link"
+          >
+            <a
+              className="searchbar__link"
+              href="https://meta.mytake.org/t/how-to-contribute-to-mytake-org/29"
+            >
+              How to help
+            </a>
+          </p>
+          <p
+            className="searchbar__dropdown-link"
+          >
+            <a
+              className="searchbar__link"
+              href="/foundation"
+            >
+              Browse the Foundation
+            </a>
+          </p>
+        </div>
+      </DropDown>
+    </div>
+  </div>
+</div>
+`;

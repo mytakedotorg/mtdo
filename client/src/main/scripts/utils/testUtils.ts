@@ -1,4 +1,5 @@
 import { Foundation } from "../java2ts/Foundation";
+import { Search } from "../java2ts/Search";
 import { TimelineItemData } from "../components/Timeline";
 import { CaptionNodeArr, FoundationNode } from "./functions";
 import { Card } from "../components/FeedList";
@@ -643,17 +644,32 @@ const rangeStyle: StylesObject = {
   backgroundColor: "#758aa8"
 };
 
+const hash = "11X2vfxeT_gkZDKP3jVEMWteTbEvb0rMhF9pnYteVJk=";
+
+const factResultList: Search.FactResultList = {
+	facts: [
+		{
+			hash: hash,
+			turn: 2
+		},
+		{
+			hash: hash,
+			turn: 0
+		}
+	]
+}
+
 export {
   cards,
   documentFactLink,
   documentNodes,
-  initialRangeSliders,
+	initialRangeSliders,
+	factResultList,
   logMeasurements,
   rangeStyle,
   takeDocument,
   timelineItems,
   unzoomedRangeSliders,
-  // videoFact,
   videoFactFast,
   videoFactLink,
   videoNodes,
