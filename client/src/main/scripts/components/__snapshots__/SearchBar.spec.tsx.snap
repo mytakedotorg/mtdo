@@ -16,6 +16,7 @@ exports[`SearchBar 1`] = `
         className="searchbar__input"
         onChange={[Function]}
         placeholder="Search the Foundation"
+        results={5}
         type="search"
         value="search term"
       />
