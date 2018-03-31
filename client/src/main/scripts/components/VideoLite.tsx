@@ -54,10 +54,8 @@ class VideoLite extends React.Component<VideoLiteProps, VideoLiteState> {
     };
   }
   cueVideo = (props: VideoLiteProps) => {
-    console.log("cueing");
     if (this.player) {
       if (props.clipRange) {
-        console.log("range");
         this.player.cueVideoById({
           videoId: props.videoId,
           startSeconds: props.clipRange[0],
@@ -67,7 +65,6 @@ class VideoLite extends React.Component<VideoLiteProps, VideoLiteState> {
         this.playerVars.start = props.clipRange[0];
         this.playerVars.end = props.clipRange[1];
       } else {
-        console.log("no-range");
         this.player.cueVideoById({
           videoId: props.videoId,
           suggestedQuality: "default"
