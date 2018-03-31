@@ -40,7 +40,7 @@ public class LuceneTest {
 		fact.youtubeId = "youtube";
 		fact.durationSeconds = 123;
 		fact.speakers = Arrays.asList(luke, darth);
-		fact.plainText = "Luke common Darth common several green beans";
+		fact.plainText = "Luke common Darth common several, green beans";
 		fact.charOffsets = new int[]{0, 5, 12, 18, 25, 29, 34, 37};
 		fact.timestamps = new double[]{0, 1, 2, 3, 4, 5, 6, 7};
 		fact.speakerPerson = new int[]{0, 1};
