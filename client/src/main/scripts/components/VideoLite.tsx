@@ -16,13 +16,12 @@ interface YTPlayerParameters {
 }
 
 export interface VideoLiteProps {
-  videoFact: Foundation.VideoFactContent;
-  clipRange: [number, number];
+  videoId: string;
+  clipRange?: [number, number];
 }
 
 interface VideoLiteState {
   currentTime: number;
-  duration: number;
   isPaused: boolean;
 }
 
@@ -41,27 +40,39 @@ class VideoLite extends React.Component<VideoLiteProps, VideoLiteState> {
       playsinline: 0,
       autoplay: 1,
       showinfo: 0,
-      modestbranding: 1,
-      start: props.clipRange[0],
-      end: props.clipRange[1]
+      modestbranding: 1
     };
+
+    if (props.clipRange) {
+      this.playerVars.start = props.clipRange[0];
+      this.playerVars.end = props.clipRange[1];
+    }
 
     this.state = {
       currentTime: props.clipRange ? props.clipRange[0] : 0,
-      isPaused: true,
-      duration: props.videoFact.durationSeconds
+      isPaused: true
     };
   }
   cueVideo = (props: VideoLiteProps) => {
+    console.log("cueing");
     if (this.player) {
-      this.player.cueVideoById({
-        videoId: props.videoFact.youtubeId,
-        startSeconds: props.clipRange[0],
-        endSeconds: props.clipRange[1],
-        suggestedQuality: "default"
-      });
-      this.playerVars.start = props.clipRange[0];
-      this.playerVars.end = props.clipRange[1];
+      if (props.clipRange) {
+        console.log("range");
+        this.player.cueVideoById({
+          videoId: props.videoId,
+          startSeconds: props.clipRange[0],
+          endSeconds: props.clipRange[1],
+          suggestedQuality: "default"
+        });
+        this.playerVars.start = props.clipRange[0];
+        this.playerVars.end = props.clipRange[1];
+      } else {
+        console.log("no-range");
+        this.player.cueVideoById({
+          videoId: props.videoId,
+          suggestedQuality: "default"
+        });
+      }
     }
   };
   handlePause = (event: any) => {
@@ -73,8 +84,6 @@ class VideoLite extends React.Component<VideoLiteProps, VideoLiteState> {
   handleReady = (event: any) => {
     this.player = event.target;
     this.cueVideo(this.props);
-    this.player.seekTo(this.props.clipRange[0]);
-    this.player.playVideo();
   };
   handleStateChange = (event: any) => {
     if (event.data === 0) {
@@ -123,14 +132,21 @@ class VideoLite extends React.Component<VideoLiteProps, VideoLiteState> {
     this.stopTimer();
   }
   componentWillReceiveProps(nextProps: VideoLiteProps) {
+    if (nextProps.videoId && !this.props.videoId) {
+      this.cueVideo(nextProps);
+    }
     if (
-      nextProps.videoFact.youtubeId !== this.props.videoFact.youtubeId ||
-      (nextProps.clipRange[0] !== this.props.clipRange[0] &&
+      (nextProps.clipRange && !this.props.clipRange) ||
+      (nextProps.clipRange &&
+        this.props.clipRange &&
+        nextProps.clipRange[0] !== this.props.clipRange[0] &&
         nextProps.clipRange[1] !== this.props.clipRange[1])
     ) {
       this.cueVideo(nextProps);
       this.player.seekTo(nextProps.clipRange[0]);
       this.player.playVideo();
+      this.playerVars.start = nextProps.clipRange[0];
+      this.playerVars.end = nextProps.clipRange[1];
     }
   }
   render() {
@@ -145,7 +161,7 @@ class VideoLite extends React.Component<VideoLiteProps, VideoLiteState> {
         <div className="video__inner-container">
           <div className="video__video-container">
             <YouTube
-              videoId={this.props.videoFact.youtubeId}
+              videoId={this.props.videoId}
               opts={opts}
               onReady={this.handleReady}
               onPause={this.handlePause}

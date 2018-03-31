@@ -20,7 +20,12 @@ exports[`List of video results 1`] = `
       />
     </div>
     <VideoFactsLoader
-      onPlayClick={[Function]}
+      eventHandlers={
+        Object {
+          "onPlayClick": [Function],
+          "onReady": [Function],
+        }
+      }
       results={
         Object {
           "hash": "11X2vfxeT_gkZDKP3jVEMWteTbEvb0rMhF9pnYteVJk=",

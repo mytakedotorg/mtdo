@@ -10,7 +10,9 @@ jest.mock("react-youtube", () => ({
 
 test("Video", () => {
   const tree = renderer
-    .create(<VideoLite videoFact={videoFactFast} clipRange={[10, 20]} />)
+    .create(
+      <VideoLite videoId={videoFactFast.youtubeId} clipRange={[10, 20]} />
+    )
     .toJSON();
   expect(tree).toMatchSnapshot();
 });

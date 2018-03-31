@@ -18,7 +18,7 @@ test("VideoResultPreview containing", () => {
   const tree = renderer
     .create(
       <VideoResultPreview
-        onPlayClick={jest.fn()}
+        eventHandlers={{ onPlayClick: jest.fn() }}
         searchTerm="richard"
         sortBy="Containing"
         turns={[2, 0]}

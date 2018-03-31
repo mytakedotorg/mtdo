@@ -3,6 +3,7 @@ import SearchRadioButtons from "./SearchRadioButtons";
 import VideoLite, { VideoLiteProps } from "./VideoLite";
 import VideoPlaceholder from "./VideoPlaceholder";
 import VideoFactsLoader from "./VideoFactsLoader";
+import { VideoResultPreviewEventHandlers } from "./VideoResultPreview";
 import isEqual = require("lodash/isEqual");
 import { alertErr } from "../utils/functions";
 import { Search } from "../java2ts/Search";
@@ -21,6 +22,7 @@ interface VideoResultsListProps {
 }
 
 interface VideoResultsListState {
+  firstVideo: string;
   selectedOption: SelectionOptions;
   sortedList: SortedResults[];
   videoProps?: VideoLiteProps;
@@ -37,6 +39,7 @@ class VideoResultsList extends React.Component<
     this.maxResults = 50;
 
     this.state = {
+      firstVideo: "",
       selectedOption: "Containing",
       sortedList: this.sortResults(props.results)
     };
@@ -61,8 +64,15 @@ class VideoResultsList extends React.Component<
   ) => {
     this.setState({
       videoProps: {
-        videoFact: videoFact,
+        videoId: videoFact.youtubeId,
         clipRange: clipRange
+      }
+    });
+  };
+  handleReady = (youtubeId: string) => {
+    this.setState({
+      videoProps: {
+        videoId: youtubeId
       }
     });
   };
@@ -127,10 +137,16 @@ class VideoResultsList extends React.Component<
           {this.state.sortedList
             // .slice(0, this.maxResults)
             .map((videoResult, idx) => {
+              const eventHandlers: VideoResultPreviewEventHandlers = {
+                onPlayClick: this.handlePlayClick
+              };
+              if (idx === 0) {
+                eventHandlers.onReady = this.handleReady;
+              }
               return (
                 <VideoFactsLoader
                   key={idx.toString()}
-                  onPlayClick={this.handlePlayClick}
+                  eventHandlers={eventHandlers}
                   results={videoResult}
                   searchTerm={this.props.searchTerm}
                   sortBy={this.state.selectedOption}

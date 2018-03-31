@@ -1,13 +1,15 @@
 import * as React from "react";
 import { SelectionOptions, SortedResults } from "./VideoResultsList";
-import VideoResultPreview from "./VideoResultPreview";
+import VideoResultPreview, {
+  VideoResultPreviewEventHandlers
+} from "./VideoResultPreview";
 import { PlayEvent } from "./VideoResult";
 import { Foundation } from "../java2ts/Foundation";
 import { fetchFact } from "../utils/databaseAPI";
 import { alertErr } from "../utils/functions";
 
 interface VideoFactsLoaderProps {
-  onPlayClick: PlayEvent;
+  eventHandlers: VideoResultPreviewEventHandlers;
   results: SortedResults;
   searchTerm: string;
   sortBy: SelectionOptions;
@@ -76,11 +78,14 @@ const VideoFactsLoaderBranch: React.StatelessComponent<
   } else {
     return (
       <VideoResultPreview
+        eventHandlers={{
+          onPlayClick: props.containerProps.eventHandlers.onPlayClick,
+          onReady: props.containerProps.eventHandlers.onReady
+        }}
         searchTerm={props.containerProps.searchTerm}
         sortBy={props.containerProps.sortBy}
         turns={props.containerProps.results.turns}
         videoFact={props.containerState.videoFact}
-        onPlayClick={props.containerProps.onPlayClick}
       />
     );
   }
