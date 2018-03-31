@@ -17,6 +17,11 @@ class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
       value: props.searchTerm
     };
   }
+  clearSearch = () => {
+    this.setState({
+      value: ""
+    });
+  };
   handleRemoveTagClick = (event: React.MouseEvent<HTMLDivElement>) => {
     window.location.href =
       Routes.SEARCH + "?searchTerm=" + encodeURIComponent(this.state.value);
@@ -43,6 +48,10 @@ class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
         </span>
       </span>
     );
+    let searchCancelClass = "searchbar__cancel";
+    if (!this.state.value) {
+      searchCancelClass += " searchbar__cancel--hidden";
+    }
     return (
       <div className="searchbar">
         <div className="searchbar__input-container">
@@ -58,6 +67,9 @@ class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
               placeholder="Search the Foundation"
               onChange={this.handleChange}
             />
+            <span className={searchCancelClass} onClick={this.clearSearch}>
+              <i className="fa fa-times-circle" aria-hidden="true" />
+            </span>
           </form>
         </div>
         <div className="searchbar__filter-button-list">

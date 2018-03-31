@@ -19,6 +19,15 @@ exports[`SearchBar 1`] = `
         type="search"
         value="search term"
       />
+      <span
+        className="searchbar__cancel"
+        onClick={[Function]}
+      >
+        <i
+          aria-hidden="true"
+          className="fa fa-times-circle"
+        />
+      </span>
     </form>
   </div>
   <div
