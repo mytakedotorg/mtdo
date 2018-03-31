@@ -152,16 +152,17 @@ public class TranscriptFolderDialog {
 	private String transcript;
 
 	private void setFolder(File folder) {
-		Errors.rethrow().run(() -> {
-			File canoncial = folder.getCanonicalFile();
-			this.folder = new TranscriptFolder(canoncial);
-			this.folderTxt.setText(canoncial.getAbsolutePath());
+		Errors.dialog().run(() -> {
+			File canonical = folder.getCanonicalFile();
+			this.folder = new TranscriptFolder(canonical);
+			this.folderTxt.setText(canonical.getAbsolutePath());
 		});
 	}
 
 	private void setTranscript(String transcript) {
 		this.transcript = transcript;
 		Errors.dialog().run(() -> {
+			folder = new TranscriptFolder(new File(folderTxt.getText()));
 			TranscriptMatch match = folder.loadTranscript(transcript);
 			transcriptCtl.setTo(match);
 			transcriptTxt.setText(transcript);
