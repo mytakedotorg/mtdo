@@ -13,6 +13,7 @@ import java2ts.Routes;
 import java2ts.Search;
 import org.jooby.Env;
 import org.jooby.Jooby;
+import org.jooby.Results;
 
 public class SearchModule implements Jooby.Module {
 	@Override
@@ -26,12 +27,11 @@ public class SearchModule implements Jooby.Module {
 			return lucene.searchDebate(request);
 		});
 		env.router().get(Routes.SEARCH, req -> {
-			try {
-				Search.Request request = req.params(Search.Request.class);
-				String searchTerm = request.q;
-				return views.Search.searchResults.template(searchTerm);
-			} catch (NullPointerException e) {
-				return "TODO";
+			Search.Request request = req.params(Search.Request.class);
+			if (request.q == null) {
+				return Results.redirect(Routes.FOUNDATION);
+			} else {
+				return views.Search.searchResults.template(request.q);
 			}
 		});
 	}
