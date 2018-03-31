@@ -65,6 +65,7 @@ class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
               type="search"
               value={this.state.value}
               placeholder="Search the Foundation"
+              results={5}
               onChange={this.handleChange}
             />
             <span className={searchCancelClass} onClick={this.clearSearch}>
