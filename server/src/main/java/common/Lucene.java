@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
-
 import java2ts.Foundation.Speaker;
 import java2ts.Search;
 import java2ts.Search.FactResultList;
