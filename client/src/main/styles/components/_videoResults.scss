@@ -17,8 +17,8 @@
   padding-left: $page-margin-mobile;
   padding-right: $page-margin-mobile;
   @media #{$mq-medium} {
-    padding-left: $page-margin;
-    padding-right: $page-margin;
+    padding-left: $content-margin;
+    padding-right: $content-margin;
   }
 }
 .results__heading {
@@ -59,7 +59,7 @@
 .turn {
   @include turnBackground();
   position: relative;
-  margin-bottom: $content-margin;
+  padding-bottom: $content-margin;
   @media #{$mq-medium} {
     display: flex;
     justify-content: space-around;
