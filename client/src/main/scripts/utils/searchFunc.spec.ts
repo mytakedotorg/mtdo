@@ -8,10 +8,10 @@ test("turnfinder-corner-case", () => {
   );
   expect(withResults.foundOffsets.length).toBe(1);
   let expanded = withResults.expandBy(1);
-  // expanded is 0 (!?)  dunno why
-  expect(expanded.entries.length).toBe(1);
-  expect(expanded.entries[0].cut[0]).toBe(0);
+
+  expect(expanded.length).toBe(1);
+  expect(expanded[0].cut[0]).toBe(0);
   // to find these, look at "col" value in bottom-right of VSCode.  Might be worth making a nice test harness
   // to make it easier to read than a number, dunno
-  expect(expanded.entries[0].cut[1]).toBe(84);
+  expect(expanded[0].cut[1]).toBe(94);
 });

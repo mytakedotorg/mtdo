@@ -54,8 +54,8 @@ class VideoResultTurnList extends React.Component<
     const firstWord = videoFact.speakerWord[turn];
     const firstChar = videoFact.charOffsets[firstWord];
     if (videoFact.speakerWord[turn + 1]) {
-      const lastWord = videoFact.speakerWord[turn + 1] - 1;
-      const lastChar = videoFact.charOffsets[lastWord];
+      const lastWord = videoFact.speakerWord[turn + 1];
+      const lastChar = videoFact.charOffsets[lastWord] - 1;
       fullTurnText = videoFact.plainText.substring(firstChar, lastChar);
     } else {
       // Result is in last turn
