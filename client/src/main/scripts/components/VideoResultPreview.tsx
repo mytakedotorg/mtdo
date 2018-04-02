@@ -23,6 +23,7 @@ class VideoResultPreview extends React.Component<
   VideoResultPreviewState
 > {
   constructor(props: VideoResultPreviewProps) {
+    console.log("constructing");
     super(props);
   }
   componentDidMount() {
@@ -32,6 +33,7 @@ class VideoResultPreview extends React.Component<
   }
   render() {
     const { searchTerm, sortBy, turns, videoFact } = this.props;
+    console.log("rendering deeper");
     return (
       <div className="results__preview">
         <h2 className="results__subheading">

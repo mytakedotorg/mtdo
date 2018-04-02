@@ -174,6 +174,8 @@ class VideoResultsList extends React.Component<
     }
   }
   render() {
+    console.log("rendering");
+    console.log(this.state.factTurns.length === 0);
     const fixedClass = this.state.fixVideo ? "results__push" : "";
     return (
       <div className="results">
@@ -204,6 +206,7 @@ class VideoResultsList extends React.Component<
             </div>
           )}
           {this.state.factTurns.map((videoResult, idx) => {
+            console.log(videoResult.videoFact.youtubeId);
             const eventHandlers: VideoResultPreviewEventHandlers = {
               onPlayClick: this.handlePlayClick
             };

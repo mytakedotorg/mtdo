@@ -24,6 +24,7 @@ class VideoResultTurnList extends React.Component<
 > {
   constructor(props: VideoResultTurnListProps) {
     super(props);
+    console.log("turnlist constructor");
 
     const turnContent: string = this.getTurnContent(props);
 
@@ -73,6 +74,7 @@ class VideoResultTurnList extends React.Component<
     }
   }
   render() {
+    console.log("turnlist render");
     return (
       <div>
         {this.state.multiHighlights.map(
