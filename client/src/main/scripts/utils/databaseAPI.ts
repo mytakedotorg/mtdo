@@ -120,6 +120,43 @@ function fetchFact(
     });
 }
 
+export interface VideoFactHashMap {
+  hash: string;
+  videoFact: Foundation.VideoFactContent;
+}
+
+export function fetchFactReturningPromise(
+  factHash: string
+): Promise<VideoFactHashMap> {
+  const headers = new Headers();
+
+  headers.append("Accept", "application/json"); // This one is enough for GET requests
+
+  const request: RequestInit = {
+    method: "GET",
+    headers: headers,
+    cache: "default"
+  };
+
+  return fetch(Routes.FOUNDATION_DATA + "/" + factHash + ".json", request)
+    .then(function(response: Response) {
+      const contentType = response.headers.get("content-type");
+      if (
+        contentType &&
+        contentType.indexOf("application/json") >= 0 &&
+        response.ok
+      ) {
+        return response.json();
+      }
+    })
+    .then(function(json: Foundation.VideoFactContent) {
+      return {
+        hash: factHash,
+        videoFact: json
+      };
+    });
+}
+
 function isDocument(
   fact: Foundation.DocumentFactContent | Foundation.VideoFactContent | null
 ): fact is Foundation.DocumentFactContent {

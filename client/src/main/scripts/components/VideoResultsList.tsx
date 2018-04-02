@@ -2,16 +2,26 @@ import * as React from "react";
 import SearchRadioButtons from "./SearchRadioButtons";
 import VideoLite, { VideoLiteProps } from "./VideoLite";
 import VideoPlaceholder from "./VideoPlaceholder";
-import VideoFactsLoader from "./VideoFactsLoader";
+import VideoResultPreview from "./VideoResultPreview";
 import { VideoResultPreviewEventHandlers } from "./VideoResultPreview";
 import isEqual = require("lodash/isEqual");
+import {
+  fetchFactReturningPromise,
+  VideoFactHashMap
+} from "../utils/databaseAPI";
 import { alertErr } from "../utils/functions";
 import { Search } from "../java2ts/Search";
 import { Foundation } from "../java2ts/Foundation";
+import { Promise } from "es6-promise";
 
 export type SelectionOptions = "Containing" | "BeforeAndAfter";
 
-export interface SortedResults {
+export interface FactTurns {
+  videoFact: Foundation.VideoFactContent;
+  turns: number[];
+}
+
+interface SortedResults {
   hash: string;
   turns: number[];
 }
@@ -24,7 +34,7 @@ interface VideoResultsListProps {
 interface VideoResultsListState {
   fixVideo: boolean;
   selectedOption: SelectionOptions;
-  sortedList: SortedResults[];
+  factTurns: FactTurns[];
   videoProps?: {
     videoId: string;
     clipRange?: [number, number];
@@ -36,15 +46,20 @@ class VideoResultsList extends React.Component<
   VideoResultsListState
 > {
   private maxResults: number;
+  private sortedResults: SortedResults[];
   constructor(props: VideoResultsListProps) {
     super(props);
 
     this.maxResults = 50;
 
+    this.sortedResults = this.sortResults(props.results);
+
+    this.fetchFacts();
+
     this.state = {
       fixVideo: false,
       selectedOption: "Containing",
-      sortedList: this.sortResults(props.results)
+      factTurns: []
     };
   }
   handleChange = (ev: React.ChangeEvent<HTMLInputElement>) => {
@@ -73,6 +88,7 @@ class VideoResultsList extends React.Component<
     });
   };
   handleReady = (youtubeId: string) => {
+    console.log("handle ready");
     this.setState({
       videoProps: {
         videoId: youtubeId
@@ -86,13 +102,50 @@ class VideoResultsList extends React.Component<
       });
     }
   };
+  fetchFacts = (): any => {
+    const promises = [];
+    for (const result of this.sortedResults) {
+      promises.push(fetchFactReturningPromise(result.hash));
+    }
+
+    Promise.all(promises).then(this.processFacts);
+  };
+  processFacts = (json: VideoFactHashMap[]) => {
+    let factTurns: FactTurns[] = [];
+    for (const videoFact of json) {
+      const currentHash = videoFact.hash;
+      const reducer = this.sortedResults.reduce(
+        (accumulator: SortedResults, currentValue: SortedResults) => {
+          if (accumulator.hash !== currentHash) {
+            // Skip accumulating until we match our hash
+            return currentValue;
+          }
+          if (currentValue.hash === currentHash) {
+            return {
+              hash: currentHash,
+              turns: accumulator.turns.concat(currentValue.turns)
+            };
+          } else {
+            return accumulator;
+          }
+        }
+      );
+      factTurns.push({
+        turns: reducer.turns,
+        videoFact: videoFact.videoFact
+      });
+    }
+    this.setState({
+      factTurns: factTurns
+    });
+  };
   sortResults = (results: Search.FactResultList): SortedResults[] => {
-    const sortedByHash: Search.VideoResult[] = results.facts.concat().sort();
-    if (sortedByHash.length > 0) {
+    const facts: Search.VideoResult[] = results.facts;
+    if (facts.length > 0) {
       let sortedResults: SortedResults[] = [];
-      let prevHash = sortedByHash[0].hash;
+      let prevHash = facts[0].hash;
       let turns: number[] = [];
-      for (const videoResult of sortedByHash) {
+      for (const videoResult of facts) {
         if (videoResult.hash !== prevHash) {
           sortedResults.push({
             hash: prevHash,
@@ -116,9 +169,8 @@ class VideoResultsList extends React.Component<
   };
   componentWillReceiveProps(nextProps: VideoResultsListProps) {
     if (!isEqual(this.props.results, nextProps.results)) {
-      this.setState({
-        sortedList: this.sortResults(nextProps.results)
-      });
+      this.sortedResults = this.sortResults(nextProps.results);
+      this.fetchFacts();
     }
   }
   render() {
@@ -127,7 +179,7 @@ class VideoResultsList extends React.Component<
       <div className="results">
         <div className="results__inner-container">
           <h1 className="results__heading">Search Results</h1>
-          {this.state.sortedList.length === 0 ? (
+          {this.state.factTurns.length === 0 ? (
             <p className="turn__results">
               Search returned no results for{" "}
               <strong>{this.props.searchTerm}</strong>
@@ -151,25 +203,24 @@ class VideoResultsList extends React.Component<
               </div>
             </div>
           )}
-          {this.state.sortedList
-            // .slice(0, this.maxResults)
-            .map((videoResult, idx) => {
-              const eventHandlers: VideoResultPreviewEventHandlers = {
-                onPlayClick: this.handlePlayClick
-              };
-              if (idx === 0) {
-                eventHandlers.onReady = this.handleReady;
-              }
-              return (
-                <VideoFactsLoader
-                  key={idx.toString()}
-                  eventHandlers={eventHandlers}
-                  results={videoResult}
-                  searchTerm={this.props.searchTerm}
-                  sortBy={this.state.selectedOption}
-                />
-              );
-            })}
+          {this.state.factTurns.map((videoResult, idx) => {
+            const eventHandlers: VideoResultPreviewEventHandlers = {
+              onPlayClick: this.handlePlayClick
+            };
+            if (idx === 0) {
+              eventHandlers.onReady = this.handleReady;
+            }
+            return (
+              <VideoResultPreview
+                key={idx.toString()}
+                eventHandlers={eventHandlers}
+                searchTerm={this.props.searchTerm}
+                sortBy={this.state.selectedOption}
+                turns={videoResult.turns}
+                videoFact={videoResult.videoFact}
+              />
+            );
+          })}
         </div>
       </div>
     );
