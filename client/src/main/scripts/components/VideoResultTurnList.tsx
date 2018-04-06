@@ -24,7 +24,6 @@ class VideoResultTurnList extends React.Component<
 > {
   constructor(props: VideoResultTurnListProps) {
     super(props);
-    console.log("turnlist constructor");
 
     const turnContent: string = this.getTurnContent(props);
 
@@ -54,6 +53,7 @@ class VideoResultTurnList extends React.Component<
     let fullTurnText;
     const firstWord = videoFact.speakerWord[turn];
     const firstChar = videoFact.charOffsets[firstWord];
+
     if (videoFact.speakerWord[turn + 1]) {
       const lastWord = videoFact.speakerWord[turn + 1];
       const lastChar = videoFact.charOffsets[lastWord] - 1;
@@ -74,7 +74,6 @@ class VideoResultTurnList extends React.Component<
     }
   }
   render() {
-    console.log("turnlist render");
     return (
       <div>
         {this.state.multiHighlights.map(

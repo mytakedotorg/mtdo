@@ -45,16 +45,11 @@ class VideoResultsList extends React.Component<
   VideoResultsListProps,
   VideoResultsListState
 > {
-  private maxResults: number;
   private sortedResults: SortedResults[];
   constructor(props: VideoResultsListProps) {
     super(props);
 
-    this.maxResults = 50;
-
     this.sortedResults = this.sortResults(props.results);
-
-    this.fetchFacts();
 
     this.state = {
       fixVideo: false,
@@ -88,7 +83,6 @@ class VideoResultsList extends React.Component<
     });
   };
   handleReady = (youtubeId: string) => {
-    console.log("handle ready");
     this.setState({
       videoProps: {
         videoId: youtubeId
@@ -108,10 +102,10 @@ class VideoResultsList extends React.Component<
       promises.push(fetchFactReturningPromise(result.hash));
     }
 
-    Promise.all(promises).then(this.processFacts);
+    Promise.all(promises).then(this.processFacts.bind(this));
   };
-  processFacts = (json: VideoFactHashMap[]) => {
-    let factTurns: FactTurns[] = [];
+  processFacts(json: VideoFactHashMap[]) {
+    let factTurnsArr: FactTurns[] = [];
     for (const videoFact of json) {
       const currentHash = videoFact.hash;
       const reducer = this.sortedResults.reduce(
@@ -130,15 +124,15 @@ class VideoResultsList extends React.Component<
           }
         }
       );
-      factTurns.push({
+      factTurnsArr.push({
         turns: reducer.turns,
         videoFact: videoFact.videoFact
       });
     }
     this.setState({
-      factTurns: factTurns
+      factTurns: factTurnsArr
     });
-  };
+  }
   sortResults = (results: Search.FactResultList): SortedResults[] => {
     const facts: Search.VideoResult[] = results.facts;
     if (facts.length > 0) {
@@ -167,6 +161,9 @@ class VideoResultsList extends React.Component<
       return [];
     }
   };
+  componentDidMount() {
+    this.fetchFacts();
+  }
   componentWillReceiveProps(nextProps: VideoResultsListProps) {
     if (!isEqual(this.props.results, nextProps.results)) {
       this.sortedResults = this.sortResults(nextProps.results);
@@ -174,8 +171,6 @@ class VideoResultsList extends React.Component<
     }
   }
   render() {
-    console.log("rendering");
-    console.log(this.state.factTurns.length === 0);
     const fixedClass = this.state.fixVideo ? "results__push" : "";
     return (
       <div className="results">
@@ -206,7 +201,6 @@ class VideoResultsList extends React.Component<
             </div>
           )}
           {this.state.factTurns.map((videoResult, idx) => {
-            console.log(videoResult.videoFact.youtubeId);
             const eventHandlers: VideoResultPreviewEventHandlers = {
               onPlayClick: this.handlePlayClick
             };

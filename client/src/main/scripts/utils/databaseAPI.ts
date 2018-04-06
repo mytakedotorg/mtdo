@@ -149,10 +149,10 @@ export function fetchFactReturningPromise(
         return response.json();
       }
     })
-    .then(function(json: Foundation.VideoFactContent) {
+    .then(function(json: Foundation.VideoFactContentEncoded) {
       return {
         hash: factHash,
-        videoFact: json
+        videoFact: decodeVideoFact(json)
       };
     });
 }
