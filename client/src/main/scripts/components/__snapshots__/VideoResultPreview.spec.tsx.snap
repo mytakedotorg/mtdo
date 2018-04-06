@@ -1,17 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Loading view while requesting invidual video facts 1`] = `
-<div
-  className="result-preview"
->
-  <p
-    className="result-preview__text"
-  >
-    Loading search results...
-  </p>
-</div>
-`;
-
 exports[`VideoResultPreview containing 1`] = `
 <div
   className="results__preview"
