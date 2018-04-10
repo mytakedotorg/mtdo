@@ -18,14 +18,20 @@ import java.util.List;
 import java2ts.Foundation.FactLink;
 import java2ts.Foundation.IndexPointer;
 import java2ts.Routes;
+import org.mytake.lucene.Lucene;
 
 public class Index {
 	public static void main(String[] args) throws IOException, NoSuchAlgorithmException {
 		deleteDir(Folders.DST_FOUNDATION);
+		deleteDir(Folders.DST_LUCENE_INDEX);
 
 		List<FactLink> facts = new ArrayList<>();
 		facts.addAll(Documents.national().factLinks);
-		facts.addAll(Videos.presidentialDebates().factLinks);
+		try (Lucene.Writer writer = new Lucene.Writer(Folders.DST_LUCENE_INDEX)) {
+			facts.addAll(Videos.presidentialDebates((hash, videoFact) -> {
+				writer.writeVideo(hash, videoFact);
+			}).factLinks);
+		}
 
 		Hashed hashed = Hashed.asJson(facts);
 		Files.write(Folders.DST_FOUNDATION.resolve(hashed.hash + ".json"), hashed.content);

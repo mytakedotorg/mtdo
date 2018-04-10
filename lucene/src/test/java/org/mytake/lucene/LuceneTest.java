@@ -4,9 +4,9 @@
  *  Copyright 2017 by its authors.
  *  Some rights reserved. See LICENSE, https://github.com/mytakedotorg/mytakedotorg/graphs/contributors
  */
-package common;
+package org.mytake.lucene;
 
-import com.google.common.collect.Lists;
+import com.diffplug.common.collect.Lists;
 import compat.java2ts.VideoFactContentJava;
 import java.io.IOException;
 import java.util.Arrays;
@@ -17,10 +17,15 @@ import java2ts.Foundation;
 import java2ts.Foundation.Speaker;
 import java2ts.Search;
 import org.assertj.core.api.Assertions;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 
 public class LuceneTest {
 	private static final String HASH = "HASH";
+
+	@Rule
+	public TemporaryFolder tempFolder = new TemporaryFolder();
 
 	@Test
 	public void test() throws IOException {
@@ -46,9 +51,11 @@ public class LuceneTest {
 		fact.speakerPerson = new int[]{0, 1};
 		fact.speakerWord = new int[]{0, 2};
 
-		try (Lucene lucene = new Lucene(writer -> {
-			Lucene.writeVideo(writer, HASH, fact);
-		})) {
+		try (Lucene.Writer writer = new Lucene.Writer(tempFolder.getRoot().toPath())) {
+			writer.writeVideo(HASH, fact);
+		}
+
+		try (Lucene lucene = new Lucene(tempFolder.getRoot().toPath())) {
 			Lucene.NextRequest request = new Lucene.NextRequest();
 			request.request = new Search.Request();
 			request.request.q = "common";

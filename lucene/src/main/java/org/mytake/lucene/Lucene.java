@@ -4,17 +4,19 @@
  *  Copyright 2017 by its authors.
  *  Some rights reserved. See LICENSE, https://github.com/mytakedotorg/mytakedotorg/graphs/contributors
  */
-package common;
+package org.mytake.lucene;
 
 import com.diffplug.common.base.Errors;
-import com.diffplug.common.base.Throwing;
-import com.google.common.collect.ImmutableSet;
+import com.diffplug.common.collect.ImmutableSet;
 import compat.java2ts.VideoFactContentJava;
 import java.io.IOException;
 import java.io.Reader;
+import java.nio.file.Path;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.TimeZone;
 import java2ts.Search;
 import java2ts.Search.FactResultList;
 import java2ts.Search.VideoResult;
@@ -45,27 +47,69 @@ import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TermQuery;
 import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.Directory;
-import org.apache.lucene.store.RAMDirectory;
+import org.apache.lucene.store.MMapDirectory;
 
 public class Lucene implements AutoCloseable {
-	private final Directory directory;
+	/** Turns yyyy-MM-dd into milliseconds since Jan 1 1970. */
+	public static long parseDate(String yyyyMMdd) {
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		format.setTimeZone(TimeZone.getTimeZone("UTC"));
+		return Errors.rethrow().get(() -> format.parse(yyyyMMdd).getTime());
+	}
+
+	public static class Writer implements AutoCloseable {
+		private final MyTakeDotOrgAnalyzer analyzer;
+		private final MMapDirectory directory;
+		private final IndexWriter iwriter;
+
+		public Writer(Path path) throws IOException {
+			analyzer = new MyTakeDotOrgAnalyzer();
+			directory = new MMapDirectory(path);
+			directory.setUseUnmap(true);
+			IndexWriterConfig config = new IndexWriterConfig(analyzer);
+			iwriter = new IndexWriter(directory, config);
+		}
+
+		public void writeVideo(String hash, VideoFactContentJava videoFact) throws IOException {
+			int end = videoFact.plainText.length();
+			for (int i = videoFact.speakerWord.length - 1; i >= 0; --i) {
+				Document doc = new Document();
+				// stored but not indexed
+				doc.add(new StoredField(Lucene.HASH, hash));
+				doc.add(new StoredField(Lucene.TURN, i));
+
+				// indexed but not stored
+				String speaker = videoFact.speakers.get(videoFact.speakerPerson[i]).fullName;
+				doc.add(new StringField(Lucene.SPEAKER, speaker, Store.NO));
+				doc.add(new LongPoint(Lucene.DATE, Lucene.parseDate(videoFact.fact.primaryDate)));
+
+				// the text that we're indexing (not stored)
+				int start = videoFact.charOffsets[videoFact.speakerWord[i]];
+				String sub = videoFact.plainText.substring(start, end);
+				doc.add(new TextField(Lucene.CONTENT, sub, Store.NO));
+
+				// write it and get ready for the next one
+				iwriter.addDocument(doc);
+				end = start - 1;
+			}
+		}
+
+		@Override
+		public void close() throws IOException {
+			iwriter.close();
+			directory.close();
+			analyzer.close();
+		}
+	}
+
 	private final MyTakeDotOrgAnalyzer analyzer;
+	private final Directory directory;
 	private final DirectoryReader reader;
 	private final IndexSearcher searcher;
 
-	public Lucene(Throwing.Specific.Consumer<IndexWriter, IOException> populate) throws IOException {
+	public Lucene(Path path) throws IOException {
 		analyzer = new MyTakeDotOrgAnalyzer();
-
-		// Store the index in memory:
-		directory = new RAMDirectory();
-		// To store an index on disk, use this instead:
-		//Directory directory = FSDirectory.open("/tmp/testindex");
-		IndexWriterConfig config = new IndexWriterConfig(analyzer);
-		try (IndexWriter iwriter = new IndexWriter(directory, config)) {
-			populate.accept(iwriter);
-		}
-
-		// Now search the index:
+		directory = new MMapDirectory(path);
 		reader = DirectoryReader.open(directory);
 		searcher = new IndexSearcher(reader);
 	}
@@ -127,47 +171,15 @@ public class Lucene implements AutoCloseable {
 		return docs;
 	}
 
-	private static final String HASH = "hash";
-	private static final String TURN = "turn";
-	private static final String DATE = "date";
-	private static final String SPEAKER = "speaker";
-	private static final String CONTENT = "content";
+	static final String HASH = "hash";
+	static final String TURN = "turn";
+	static final String DATE = "date";
+	static final String SPEAKER = "speaker";
+	static final String CONTENT = "content";
 
 	private static final ImmutableSet<String> TO_FETCH = ImmutableSet.of(HASH, TURN);
 
-	public static Lucene forFacts() throws IOException {
-		return new Lucene(Lucene::forFactsInit);
-	}
-
-	private static void forFactsInit(IndexWriter writer) throws IOException {
-		FoundationLoad.perVideo((hash, video) -> writeVideo(writer, hash, video));
-	}
-
-	static void writeVideo(IndexWriter writer, String hash, VideoFactContentJava videoFact) {
-		int end = videoFact.plainText.length();
-		for (int i = videoFact.speakerWord.length - 1; i >= 0; --i) {
-			Document doc = new Document();
-			// stored but not indexed
-			doc.add(new StoredField(HASH, hash));
-			doc.add(new StoredField(TURN, i));
-
-			// indexed but not stored
-			String speaker = videoFact.speakers.get(videoFact.speakerPerson[i]).fullName;
-			doc.add(new StringField(SPEAKER, speaker, Store.NO));
-			doc.add(new LongPoint(DATE, FoundationLoad.parseDate(videoFact.fact.primaryDate)));
-
-			// the text that we're indexing (not stored)
-			int start = videoFact.charOffsets[videoFact.speakerWord[i]];
-			String sub = videoFact.plainText.substring(start, end);
-			doc.add(new TextField(CONTENT, sub, Store.NO));
-
-			// write it and get ready for the next one
-			Errors.rethrow().run(() -> writer.addDocument(doc));
-			end = start - 1;
-		}
-	}
-
-	private static class MyTakeDotOrgAnalyzer extends Analyzer {
+	static class MyTakeDotOrgAnalyzer extends Analyzer {
 		private static final int MAX_TOKEN_LENGTH = 127;
 		private static final CharArraySet STOPWORDS;
 

@@ -109,6 +109,7 @@ dependencies {
 	compile "org.jsweet:jsweet-core:$JSWEET_CORE_VER"
 	compile project(':client')
 	compile project(':foundation')
+	compile project(':lucene')
 
 	// jooq (version is set by jooq DSL)
 	compile 'org.jooq:jooq'
@@ -119,10 +120,6 @@ dependencies {
 
 	// flyway
 	compile 'org.flywaydb:flyway-core:5.0.7'
-
-	// search
-	compile 'org.apache.lucene:lucene-core:7.2.1'
-	compile 'org.apache.lucene:lucene-queryparser:7.2.1'
 
 	// common libs
 	compile 'commons-validator:commons-validator:1.6'

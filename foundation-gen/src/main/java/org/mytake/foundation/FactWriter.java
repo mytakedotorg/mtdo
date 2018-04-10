@@ -42,7 +42,7 @@ public abstract class FactWriter<T extends Foundation.FactContent> {
 				.replaceAll("[^\\w-]+", ""); // replace non-alphanumerics and non-hyphens
 	}
 
-	protected void add(Foundation.FactContent content) throws IOException, NoSuchAlgorithmException {
+	protected String add(Foundation.FactContent content) throws IOException, NoSuchAlgorithmException {
 		Hashed hashed = Hashed.asJson(content);
 		Files.write(dstDir.resolve(hashed.hash + ".json"), hashed.content);
 
@@ -50,5 +50,6 @@ public abstract class FactWriter<T extends Foundation.FactContent> {
 		link.fact = content.fact;
 		link.hash = hashed.hash;
 		factLinks.add(link);
+		return link.hash;
 	}
 }
