@@ -6,9 +6,7 @@
  */
 package org.mytake.foundation;
 
-import com.diffplug.common.base.Errors;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.security.NoSuchAlgorithmException;
@@ -18,21 +16,13 @@ import java.util.Locale;
 import java2ts.Foundation;
 import java2ts.Foundation.FactLink;
 
-public abstract class FactWriter<T extends Foundation.FactContent> {
+public class FactWriter {
 	final List<FactLink> factLinks = new ArrayList<>();
 	final Path dstDir;
-	final Path srcDir;
 
-	public FactWriter(Path srcDir, Path dstDir) {
-		this.srcDir = srcDir;
+	public FactWriter(Path dstDir) throws IOException {
 		this.dstDir = dstDir;
-		Errors.rethrow().run(() -> Files.createDirectories(dstDir));
-	}
-
-	public String read(String filename) {
-		return Errors.rethrow().get(() -> {
-			return new String(Files.readAllBytes(srcDir.resolve(filename)), StandardCharsets.UTF_8);
-		});
+		Files.createDirectories(dstDir);
 	}
 
 	protected static String slugify(String input) {
@@ -42,7 +32,7 @@ public abstract class FactWriter<T extends Foundation.FactContent> {
 				.replaceAll("[^\\w-]+", ""); // replace non-alphanumerics and non-hyphens
 	}
 
-	protected String add(Foundation.FactContent content) throws IOException, NoSuchAlgorithmException {
+	public String writeAndReturnHash(Foundation.FactContent content) throws IOException, NoSuchAlgorithmException {
 		Hashed hashed = Hashed.asJson(content);
 		Files.write(dstDir.resolve(hashed.hash + ".json"), hashed.content);
 
@@ -51,5 +41,9 @@ public abstract class FactWriter<T extends Foundation.FactContent> {
 		link.hash = hashed.hash;
 		factLinks.add(link);
 		return link.hash;
+	}
+
+	public Hashed hashedFactLinks() throws NoSuchAlgorithmException {
+		return Hashed.asJson(factLinks);
 	}
 }
