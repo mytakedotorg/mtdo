@@ -263,9 +263,13 @@ public abstract class VttTranscript {
 			int endOld = startOld + buffer.size();
 			int endNew = map.map(endOld);
 
-			if (line != lastLine && endNew != newVtt.size()) {
+			if (startNew == endNew) {
+				// we're removing a whole line - no action required, but still need to set startOld/startNew
+			} else if (line != lastLine && endNew != newVtt.size()) {
+				// the normal line
 				newLines.add(Line.create(line.header(), newVtt.subList(startNew, endNew), newVtt.get(endNew).time()));
 			} else {
+				// the last line
 				double endTime = newVtt.get(newVtt.size() - 1).time() + LAST_WORD_DURATION;
 				newLines.add(Line.create(line.header(), newVtt.subList(startNew, newVtt.size()), endTime));
 				break;
