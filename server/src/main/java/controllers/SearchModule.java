@@ -8,7 +8,6 @@ package controllers;
 
 import com.google.inject.Binder;
 import com.typesafe.config.Config;
-import java.nio.file.Paths;
 import java2ts.Routes;
 import java2ts.Search;
 import org.jooby.Env;
@@ -19,7 +18,7 @@ import org.mytake.lucene.Lucene;
 public class SearchModule implements Jooby.Module {
 	@Override
 	public void configure(Env env, Config conf, Binder binder) throws Throwable {
-		Lucene lucene = new Lucene(Paths.get("../foundation/src/main/resources/foundation-index"));
+		Lucene lucene = Lucene.openFromArchive();
 		env.onStop(() -> {
 			lucene.close();
 		});

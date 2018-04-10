@@ -8,6 +8,7 @@ dependencies {
 	compile project(':client')
 	compile 'com.diffplug.durian:durian-core:1.2.0'
 	compile 'com.diffplug.durian:durian-collect:1.2.0'
+	compile 'com.diffplug.durian:durian-io:1.2.0'
 	compile 'org.apache.lucene:lucene-core:7.3.0'
 	compile 'org.apache.lucene:lucene-queryparser:7.3.0'
 	testCompile "junit:junit:$JUNIT_VER"

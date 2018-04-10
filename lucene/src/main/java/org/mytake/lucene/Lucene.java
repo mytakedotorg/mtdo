@@ -8,9 +8,12 @@ package org.mytake.lucene;
 
 import com.diffplug.common.base.Errors;
 import com.diffplug.common.collect.ImmutableSet;
+import com.diffplug.common.io.Resources;
 import compat.java2ts.VideoFactContentJava;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.Reader;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -50,11 +53,21 @@ import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.MMapDirectory;
 
 public class Lucene implements AutoCloseable {
-	/** Turns yyyy-MM-dd into milliseconds since Jan 1 1970. */
-	public static long parseDate(String yyyyMMdd) {
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-		format.setTimeZone(TimeZone.getTimeZone("UTC"));
-		return Errors.rethrow().get(() -> format.parse(yyyyMMdd).getTime());
+	public static final String INDEX_ARCHIVE = "foundation-index.zip";
+
+	/** Extracts the index from an archive, then instantiates Lucene on top of that. */
+	public static Lucene openFromArchive() throws IOException {
+		Path luceneIndexDir = Files.createTempDirectory("lucene-index");
+		try (InputStream input = Resources.asByteSource(Lucene.class.getResource("/" + INDEX_ARCHIVE)).openBufferedStream()) {
+			ZipMisc.unzip(input, luceneIndexDir);
+		}
+		return new Lucene(luceneIndexDir) {
+			@Override
+			public void close() throws IOException {
+				super.close();
+				ZipMisc.deleteDir(luceneIndexDir);
+			}
+		};
 	}
 
 	public static class Writer implements AutoCloseable {
@@ -81,7 +94,7 @@ public class Lucene implements AutoCloseable {
 				// indexed but not stored
 				String speaker = videoFact.speakers.get(videoFact.speakerPerson[i]).fullName;
 				doc.add(new StringField(Lucene.SPEAKER, speaker, Store.NO));
-				doc.add(new LongPoint(Lucene.DATE, Lucene.parseDate(videoFact.fact.primaryDate)));
+				doc.add(new LongPoint(Lucene.DATE, parseDate(videoFact.fact.primaryDate)));
 
 				// the text that we're indexing (not stored)
 				int start = videoFact.charOffsets[videoFact.speakerWord[i]];
@@ -99,6 +112,13 @@ public class Lucene implements AutoCloseable {
 			iwriter.close();
 			directory.close();
 			analyzer.close();
+		}
+
+		/** Turns yyyy-MM-dd into milliseconds since Jan 1 1970. */
+		private static long parseDate(String yyyyMMdd) {
+			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+			format.setTimeZone(TimeZone.getTimeZone("UTC"));
+			return Errors.rethrow().get(() -> format.parse(yyyyMMdd).getTime());
 		}
 	}
 
