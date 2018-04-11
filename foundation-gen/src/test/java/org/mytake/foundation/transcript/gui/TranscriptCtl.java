@@ -11,8 +11,10 @@ import com.diffplug.common.swt.ControlWrapper;
 import com.diffplug.common.swt.Layouts;
 import com.diffplug.common.swt.SwtMisc;
 import io.reactivex.subjects.PublishSubject;
+import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.text.SimpleDateFormat;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.widgets.Composite;
@@ -55,12 +57,21 @@ public class TranscriptCtl extends ControlWrapper.AroundControl<Composite> {
 		String before = match.vtt().asString();
 		match = match.save(folder, transcript, vttCtl.getWords(), saidCtl.getText());
 		int sizeAfter = match.vtt().lines().size();
+
 		if (sizeBefore != sizeAfter) {
-			SwtMisc.blockForError("Save failed!", "Size before = " + sizeBefore + "\nSize after = " + sizeAfter + "\nReverting and quitting.");
-			Files.write(before.getBytes(StandardCharsets.UTF_8), folder.fileVtt(transcript));
+			// if the size changed, ask the user to take a peek
+			File vtt = folder.fileVtt(transcript);
+			File backup = new File(vtt.getAbsolutePath() + ".backup-" + new SimpleDateFormat("HH_mm_ss").format(System.currentTimeMillis()));
+			SwtMisc.blockForError("Save might have failed!",
+					"It's possible that this save just corrupted the .vtt file.\n" +
+							"The content right before the save is in '" + backup.getAbsolutePath() + "'.\n" +
+							"Compare the current vtt against this backup to make sure it wasn't corrupted.\n" +
+							"If it wasn't corrupted, just delete the backup.\n\n" +
+							"Exiting, just start again after you have checked.");
+			Files.write(before.getBytes(StandardCharsets.UTF_8), backup);
 			mismatchCtl.getShell().dispose();
-		} else {
-			mismatchCtl.setMatch(match);
+			System.exit(1);
 		}
+		mismatchCtl.setMatch(match);
 	}
 }
