@@ -43,6 +43,7 @@ eclipseResourceFilters {
 	exclude().folders().name('ide')
 	exclude().folders().name('client')
 	exclude().folders().name('server')
+	exclude().folders().name('lucene')
 	exclude().folders().name('foundation')
 	exclude().folders().name('foundation-gen')
 }

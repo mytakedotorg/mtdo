@@ -14,6 +14,7 @@ import controllers.FoundationAssets;
 import controllers.HomeFeed;
 import controllers.Profile;
 import controllers.Redirects;
+import controllers.SearchModule;
 import controllers.TakeEmail;
 import controllers.TakeReaction;
 import controllers.Takes;
@@ -70,6 +71,7 @@ public class Prod extends Jooby {
 		jooby.use(new DiscourseAuth());
 		jooby.use(new HomeFeed());
 		jooby.use(new FoundationAssets());
+		jooby.use(new SearchModule());
 		jooby.use(new About());
 		jooby.use(new Drafts());
 		jooby.use(new AuthModule());

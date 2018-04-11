@@ -7,16 +7,17 @@
 package org.mytake.foundation;
 
 import java.io.IOException;
-import java.nio.file.Path;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.security.NoSuchAlgorithmException;
 import java2ts.Foundation;
 import java2ts.Foundation.DocumentFactContent;
 import java2ts.Foundation.Fact;
 import org.mytake.foundation.parsers.FoundationParser;
 
-public class Documents extends FactWriter<DocumentFactContent> {
-	public static Documents national() throws NoSuchAlgorithmException, IOException {
-		Documents documents = new Documents(Folders.SRC_DOCUMENT, Folders.DST_FOUNDATION);
+public class Documents {
+	public static void national(FactWriter writer) throws NoSuchAlgorithmException, IOException {
+		Documents documents = new Documents(writer);
 		documents.add("United States Constitution", "1788-06-21");
 		documents.add("Bill of Rights", "1791-12-15");
 		documents.add("Amendment 11", "1795-02-07");
@@ -36,34 +37,34 @@ public class Documents extends FactWriter<DocumentFactContent> {
 		documents.add("Amendment 25", "1967-02-10");
 		documents.add("Amendment 26", "1971-07-01");
 		documents.add("Amendment 27", "1992-05-05");
-		return documents;
 	}
 
-	private Documents(Path srcDir, Path dstDir) {
-		super(srcDir, dstDir);
+	private final FactWriter writer;
+
+	private Documents(FactWriter writer) {
+		this.writer = writer;
 	}
 
 	private void add(String title, String date) throws NoSuchAlgorithmException, IOException {
 		add(title, date, "ratified", Foundation.KIND_DOCUMENT);
 	}
 
-	protected void add(String title, String date, String dateKind, String kind) throws NoSuchAlgorithmException, IOException {
-		Fact fact = new Fact();
-		fact.title = title;
-		fact.primaryDate = date;
-		fact.primaryDateKind = dateKind;
-		fact.kind = kind;
+	private void add(String title, String date, String dateKind, String kind) throws NoSuchAlgorithmException, IOException {
+		DocumentFactContent content = new DocumentFactContent();
+		content.fact = new Fact();
+		content.fact.title = title;
+		content.fact.primaryDate = date;
+		content.fact.primaryDateKind = dateKind;
+		content.fact.kind = kind;
 
-		DocumentFactContent content = factToContent(fact);
-		content.fact = fact;
+		// load the components
+		String input = read(FactWriter.slugify(content.fact.title) + ".foundation.html");
+		content.components = FoundationParser.toComponents(input);
 
-		add(content);
+		writer.writeAndReturnHash(content);
 	}
 
-	private DocumentFactContent factToContent(Fact fact) {
-		DocumentFactContent content = new DocumentFactContent();
-		String input = read(slugify(fact.title) + ".foundation.html");
-		content.components = FoundationParser.toComponents(input);
-		return content;
+	private String read(String name) throws IOException {
+		return new String(Files.readAllBytes(Folders.SRC_DOCUMENT.resolve(name)), StandardCharsets.UTF_8);
 	}
 }

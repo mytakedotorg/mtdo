@@ -72,6 +72,7 @@ public class VideoFactContentJava extends FactContent {
 	public static VideoFactContentJava decode(VideoFactContentEncoded encoded) {
 		VideoFactContentJava java = new VideoFactContentJava();
 		// do the direct transfers
+		java.fact = encoded.fact;
 		java.youtubeId = encoded.youtubeId;
 		java.durationSeconds = encoded.durationSeconds.intValue();
 		java.speakers = encoded.speakers;

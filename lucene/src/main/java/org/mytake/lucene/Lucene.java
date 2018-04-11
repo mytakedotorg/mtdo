@@ -1,0 +1,238 @@
+/*
+ * MyTake.org
+ *
+ *  Copyright 2017 by its authors.
+ *  Some rights reserved. See LICENSE, https://github.com/mytakedotorg/mytakedotorg/graphs/contributors
+ */
+package org.mytake.lucene;
+
+import com.diffplug.common.base.Errors;
+import com.diffplug.common.collect.ImmutableSet;
+import com.diffplug.common.io.Resources;
+import compat.java2ts.VideoFactContentJava;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.Reader;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.TimeZone;
+import java2ts.Search;
+import java2ts.Search.FactResultList;
+import java2ts.Search.VideoResult;
+import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.analysis.CharArraySet;
+import org.apache.lucene.analysis.LowerCaseFilter;
+import org.apache.lucene.analysis.StopFilter;
+import org.apache.lucene.analysis.TokenStream;
+import org.apache.lucene.analysis.standard.StandardAnalyzer;
+import org.apache.lucene.analysis.standard.StandardFilter;
+import org.apache.lucene.analysis.standard.StandardTokenizer;
+import org.apache.lucene.document.Document;
+import org.apache.lucene.document.Field.Store;
+import org.apache.lucene.document.LongPoint;
+import org.apache.lucene.document.StoredField;
+import org.apache.lucene.document.StringField;
+import org.apache.lucene.document.TextField;
+import org.apache.lucene.index.DirectoryReader;
+import org.apache.lucene.index.IndexWriter;
+import org.apache.lucene.index.IndexWriterConfig;
+import org.apache.lucene.index.Term;
+import org.apache.lucene.queryparser.classic.QueryParser;
+import org.apache.lucene.search.BooleanClause.Occur;
+import org.apache.lucene.search.BooleanQuery;
+import org.apache.lucene.search.IndexSearcher;
+import org.apache.lucene.search.Query;
+import org.apache.lucene.search.ScoreDoc;
+import org.apache.lucene.search.TermQuery;
+import org.apache.lucene.search.TopDocs;
+import org.apache.lucene.store.Directory;
+import org.apache.lucene.store.MMapDirectory;
+
+public class Lucene implements AutoCloseable {
+	public static final String INDEX_ARCHIVE = "foundation-index.zip";
+
+	/** Extracts the index from an archive, then instantiates Lucene on top of that. */
+	public static Lucene openFromArchive() throws IOException {
+		Path luceneIndexDir = Files.createTempDirectory("lucene-index");
+		try (InputStream input = Resources.asByteSource(Lucene.class.getResource("/" + INDEX_ARCHIVE)).openBufferedStream()) {
+			ZipMisc.unzip(input, luceneIndexDir);
+		}
+		return new Lucene(luceneIndexDir) {
+			@Override
+			public void close() throws IOException {
+				super.close();
+				ZipMisc.deleteDir(luceneIndexDir);
+			}
+		};
+	}
+
+	public static class Writer implements AutoCloseable {
+		private final MyTakeDotOrgAnalyzer analyzer;
+		private final MMapDirectory directory;
+		private final IndexWriter iwriter;
+
+		public Writer(Path path) throws IOException {
+			analyzer = new MyTakeDotOrgAnalyzer();
+			directory = new MMapDirectory(path);
+			directory.setUseUnmap(true);
+			IndexWriterConfig config = new IndexWriterConfig(analyzer);
+			iwriter = new IndexWriter(directory, config);
+		}
+
+		public void writeVideo(String hash, VideoFactContentJava videoFact) throws IOException {
+			int end = videoFact.plainText.length();
+			for (int i = videoFact.speakerWord.length - 1; i >= 0; --i) {
+				Document doc = new Document();
+				// stored but not indexed
+				doc.add(new StoredField(Lucene.HASH, hash));
+				doc.add(new StoredField(Lucene.TURN, i));
+
+				// indexed but not stored
+				String speaker = videoFact.speakers.get(videoFact.speakerPerson[i]).fullName;
+				doc.add(new StringField(Lucene.SPEAKER, speaker, Store.NO));
+				doc.add(new LongPoint(Lucene.DATE, parseDate(videoFact.fact.primaryDate)));
+
+				// the text that we're indexing (not stored)
+				int start = videoFact.charOffsets[videoFact.speakerWord[i]];
+				String sub = videoFact.plainText.substring(start, end);
+				doc.add(new TextField(Lucene.CONTENT, sub, Store.NO));
+
+				// write it and get ready for the next one
+				iwriter.addDocument(doc);
+				end = start - 1;
+			}
+		}
+
+		@Override
+		public void close() throws IOException {
+			iwriter.close();
+			directory.close();
+			analyzer.close();
+		}
+
+		/** Turns yyyy-MM-dd into milliseconds since Jan 1 1970. */
+		private static long parseDate(String yyyyMMdd) {
+			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+			format.setTimeZone(TimeZone.getTimeZone("UTC"));
+			return Errors.rethrow().get(() -> format.parse(yyyyMMdd).getTime());
+		}
+	}
+
+	private final MyTakeDotOrgAnalyzer analyzer;
+	private final Directory directory;
+	private final DirectoryReader reader;
+	private final IndexSearcher searcher;
+
+	public Lucene(Path path) throws IOException {
+		analyzer = new MyTakeDotOrgAnalyzer();
+		directory = new MMapDirectory(path);
+		reader = DirectoryReader.open(directory);
+		searcher = new IndexSearcher(reader);
+	}
+
+	@Override
+	public void close() throws IOException {
+		reader.close();
+		directory.close();
+		analyzer.close();
+	}
+
+	static class NextRequest {
+		Search.Request request;
+		List<String> people;
+	}
+
+	public FactResultList searchDebate(Search.Request request) throws IOException {
+		NextRequest next = new NextRequest();
+		next.request = request;
+		next.people = Collections.emptyList();
+		return searchDebate(next);
+	}
+
+	FactResultList searchDebate(NextRequest request) throws IOException {
+		QueryParser parser = new QueryParser(CONTENT, analyzer);
+		Query phraseQuery = parser.createPhraseQuery(CONTENT, request.request.q);
+
+		BooleanQuery.Builder finalQuery = new BooleanQuery.Builder();
+		finalQuery.add(phraseQuery, Occur.MUST);
+		if (!request.people.isEmpty()) {
+			BooleanQuery.Builder speakerQuery = new BooleanQuery.Builder();
+			for (String person : request.people) {
+				speakerQuery.add(new TermQuery(new Term(SPEAKER, person)), Occur.SHOULD);
+			}
+			finalQuery.add(speakerQuery.build(), Occur.MUST);
+		}
+		List<Document> queryResults = runQuery(finalQuery.build());
+
+		FactResultList resultList = new FactResultList();
+		resultList.facts = new ArrayList<>(queryResults.size());
+		for (int i = 0; i < queryResults.size(); ++i) {
+			Document document = queryResults.get(i);
+			VideoResult result = new VideoResult();
+			result.hash = document.get(HASH);
+			result.turn = Integer.parseInt(document.get(TURN));
+			resultList.facts.add(result);
+		}
+		return resultList;
+	}
+
+	private static final int MAX_RESULTS = 100;
+
+	private List<Document> runQuery(Query query) throws IOException {
+		TopDocs topDocs = searcher.search(query, MAX_RESULTS);
+		List<Document> docs = new ArrayList<>();
+		for (ScoreDoc scoreDoc : topDocs.scoreDocs) {
+			docs.add(searcher.doc(scoreDoc.doc, TO_FETCH));
+		}
+		return docs;
+	}
+
+	static final String HASH = "hash";
+	static final String TURN = "turn";
+	static final String DATE = "date";
+	static final String SPEAKER = "speaker";
+	static final String CONTENT = "content";
+
+	private static final ImmutableSet<String> TO_FETCH = ImmutableSet.of(HASH, TURN);
+
+	static class MyTakeDotOrgAnalyzer extends Analyzer {
+		private static final int MAX_TOKEN_LENGTH = 127;
+		private static final CharArraySet STOPWORDS;
+
+		static {
+			boolean ignoreCase = true;
+			STOPWORDS = new CharArraySet(StandardAnalyzer.ENGLISH_STOP_WORDS_SET, ignoreCase);
+			STOPWORDS.add("uh");
+			STOPWORDS.add("eh");
+		}
+
+		@Override
+		protected TokenStreamComponents createComponents(final String fieldName) {
+			final StandardTokenizer src = new StandardTokenizer();
+			src.setMaxTokenLength(MAX_TOKEN_LENGTH);
+			TokenStream tok = new StandardFilter(src);
+			tok = new LowerCaseFilter(tok);
+			tok = new StopFilter(tok, STOPWORDS);
+			return new TokenStreamComponents(src, tok) {
+				@Override
+				protected void setReader(final Reader reader) {
+					// So that if maxTokenLength was changed, the change takes
+					// effect next time tokenStream is called:
+					src.setMaxTokenLength(MAX_TOKEN_LENGTH);
+					super.setReader(reader);
+				}
+			};
+		}
+
+		@Override
+		protected TokenStream normalize(String fieldName, TokenStream in) {
+			TokenStream result = new StandardFilter(in);
+			result = new LowerCaseFilter(result);
+			return result;
+		}
+	}
+}

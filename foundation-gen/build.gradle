@@ -13,6 +13,7 @@ dependencies {
 
 	compileOnly 'com.google.code.findbugs:jsr305:3.0.0'
 	compile project(':client')
+	compile project(':lucene')
 	compile "com.jsoniter:jsoniter:$JSONITER_VER"
 	compile "org.jsweet:jsweet-core:$JSWEET_CORE_VER"
 	compile 'org.jsoup:jsoup:1.11.2'

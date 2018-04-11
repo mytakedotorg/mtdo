@@ -1,0 +1,146 @@
+.videoPlaceholder {
+  background-color: white;
+  width: 560px;
+  height: 318px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: $page-margin-mobile * $vertical-margin-multiplier;
+  @media #{$mq-medium} {
+    margin-bottom: $content-margin * $vertical-margin-multiplier;
+  }
+  max-width: 100%;
+}
+.results {
+  @include content-column;
+  overflow: hidden;
+}
+.results__inner-container {
+  padding-left: $page-margin-mobile;
+  padding-right: $page-margin-mobile;
+  @media #{$mq-medium} {
+    padding-left: $content-margin;
+    padding-right: $content-margin;
+  }
+}
+.results__push {
+  padding-top: 318px + $page-margin-mobile * $vertical-margin-multiplier;
+  @media #{$mq-medium} {
+    padding-top: 318px + $content-margin * $vertical-margin-multiplier;
+  }
+}
+.results__heading {
+  @include heading1;
+  color: palette(foundation, text);
+  margin-top: $page-margin-mobile * $vertical-margin-multiplier;
+  text-align: left;
+  @media #{$mq-medium} {
+    margin-top: $content-margin * $vertical-margin-multiplier;
+    text-align: center;
+  }
+}
+.results__subheading {
+  @include heading3;
+}
+.results__text {
+  @include body;
+}
+.searchradio__radio {
+  margin-right: 1rem;
+}
+.searchradio__group {
+  width: 100%;
+  @media #{$mq-medium} {
+    display: inline-block;
+    width: auto;
+  }
+}
+.searchradio__radio-label {
+  @media #{$mq-medium} {
+    margin-right: $content-margin;
+  }
+  @include body("sans");
+}
+@mixin turnBackground {
+  background: linear-gradient(lighten(#758aa8, 40%), white);
+}
+.turn {
+  @include turnBackground();
+  position: relative;
+  padding-bottom: $content-margin;
+  @media #{$mq-medium} {
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-start;
+  }
+  &:before {
+    content: "";
+    @include turnBackground();
+    position: absolute;
+    left: -8px;
+    height: 100%;
+    width: 768px;
+    z-index: -1;
+    @media #{$mq-medium} {
+      left: initial;
+    }
+  }
+}
+.turn__info {
+  width: 100%;
+  // background-color: grey;
+  @media #{$mq-medium} {
+    width: 150px;
+  }
+}
+.turn__speaker {
+  @include typography($sans, 400, 20px, 1.7em);
+  display: inline;
+  margin-right: $page-margin-mobile;
+  @media #{$mq-medium} {
+    margin: 0;
+    margin-top: -7px;
+    display: block;
+  }
+}
+.turn__time {
+  @include typography($sans, 400, 16px, 1.7em);
+  display: inline;
+  margin-right: $page-margin-mobile;
+  @media #{$mq-medium} {
+    display: block;
+    margin-bottom: 0;
+    margin-top: -3px;
+  }
+}
+.turn__actions {
+  display: inline;
+  @media #{$mq-medium} {
+    display: block;
+  }
+}
+.turn__button {
+  margin-top: -3px;
+}
+.turn__button--play {
+  @include body("sans");
+  @include button--blue;
+  line-height: 21px;
+  padding-top: 0;
+  padding-bottom: 0;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-right: $page-margin-mobile;
+  @media #{$mq-medium} {
+    margin-right: $content-margin;
+  }
+}
+.turn__button--open {
+  @include body("sans");
+  @include button--borderless;
+  background: transparent;
+}
+.turn__results {
+  @include body;
+  flex: 1;
+  margin: 0;
+}

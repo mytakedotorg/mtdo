@@ -1,0 +1,45 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Video 1`] = `
+<div
+  className="video__outer-container"
+>
+  <div
+    className="video__inner-container"
+  >
+    <div
+      className=""
+    >
+      <div
+        className="video__video-container"
+      >
+        <YouTube
+          className="video__video"
+          onPause={[Function]}
+          onReady={[Function]}
+          onStateChange={[Function]}
+          opts={
+            Object {
+              "height": "315",
+              "playerVars": Object {
+                "autoplay": 1,
+                "cc_lang_pref": "en",
+                "cc_load_policy": 1,
+                "controls": 1,
+                "end": 20,
+                "modestbranding": 1,
+                "playsinline": 1,
+                "rel": 0,
+                "showinfo": 0,
+                "start": 10,
+              },
+              "width": "560",
+            }
+          }
+          videoId="ApTLB76Nmdg"
+        />
+      </div>
+    </div>
+  </div>
+</div>
+`;

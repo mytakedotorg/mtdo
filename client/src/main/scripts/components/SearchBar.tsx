@@ -1,10 +1,11 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import DropDown from "./DropDown";
-import { slugify } from "../utils/functions";
 import { Routes } from "../java2ts/Routes";
 
-interface SearchBarProps {}
+interface SearchBarProps {
+  searchTerm: string;
+}
 interface SearchBarState {
   value: string;
 }
@@ -13,12 +14,17 @@ class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
     super(props);
 
     this.state = {
-      value: ""
+      value: props.searchTerm
     };
   }
+  clearSearch = () => {
+    this.setState({
+      value: ""
+    });
+  };
   handleRemoveTagClick = (event: React.MouseEvent<HTMLDivElement>) => {
     window.location.href =
-      Routes.FOUNDATION + "?q=" + slugify(this.state.value);
+      Routes.SEARCH + "?searchTerm=" + encodeURIComponent(this.state.value);
   };
   handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({ value: event.target.value });
@@ -26,7 +32,7 @@ class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
   handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     window.location.href =
-      Routes.FOUNDATION + "?q=" + slugify(this.state.value);
+      Routes.SEARCH + "?q=" + encodeURIComponent(this.state.value);
   };
   render() {
     const Toggle = (
@@ -42,17 +48,29 @@ class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
         </span>
       </span>
     );
+    let searchCancelClass = "searchbar__cancel";
+    if (!this.state.value) {
+      searchCancelClass += " searchbar__cancel--hidden";
+    }
     return (
       <div className="searchbar">
         <div className="searchbar__input-container">
-          <form className="searchbox__form" onSubmit={this.handleSubmit}>
+          <form
+            className="searchbox__form"
+            onSubmit={this.handleSubmit}
+            action="javascript:void(0)" // Required for iOS search keyboard
+          >
             <input
               className="searchbar__input"
-              type="text"
+              type="search"
               value={this.state.value}
               placeholder="Search the Foundation"
+              results={5}
               onChange={this.handleChange}
             />
+            <span className={searchCancelClass} onClick={this.clearSearch}>
+              <i className="fa fa-times-circle" aria-hidden="true" />
+            </span>
           </form>
         </div>
         <div className="searchbar__filter-button-list">
@@ -60,9 +78,9 @@ class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
             <a
               className="searchbar__button-link"
               href={
-                Routes.FOUNDATION +
-                "?q=" +
-                slugify(this.state.value) +
+                Routes.SEARCH +
+                "?searchTerm=" +
+                encodeURIComponent(this.state.value) +
                 "&" +
                 "f=in+debates+said+by+donald+trump"
               }
@@ -82,9 +100,9 @@ class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
             <a
               className="searchbar__button-link"
               href={
-                Routes.FOUNDATION +
-                "?q=" +
-                slugify(this.state.value) +
+                Routes.SEARCH +
+                "?searchTerm=" +
+                encodeURIComponent(this.state.value) +
                 "&" +
                 "f=in+the+constitution"
               }

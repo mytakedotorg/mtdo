@@ -6,18 +6,14 @@
  */
 package org.mytake.foundation;
 
+import com.diffplug.common.base.Throwing;
 import compat.java2ts.VideoFactContentJava;
-import java.io.IOException;
-import java.nio.file.Path;
-import java.security.NoSuchAlgorithmException;
-import java2ts.Foundation.VideoFactContentEncoded;
 import java2ts.Foundation.VideoFactMeta;
 import org.mytake.foundation.transcript.TranscriptFolder;
 import org.mytake.foundation.transcript.TranscriptMatch;
 
-public class Videos extends FactWriter<VideoFactContentEncoded> {
-	public static Videos presidentialDebates() throws NoSuchAlgorithmException, IOException {
-		Videos videos = new Videos(Folders.SRC_PRESIDENTIAL_DEBATES, Folders.DST_FOUNDATION);
+public class Videos {
+	public static void presidentialDebates(Throwing.Consumer<VideoFactContentJava> consumer) throws Throwable {
 		TranscriptFolder folder = new TranscriptFolder(Folders.SRC_PRESIDENTIAL_DEBATES.toFile());
 		for (String transcript : folder.transcriptsWithMeta()) {
 			VideoFactContentJava factContent;
@@ -39,12 +35,7 @@ public class Videos extends FactWriter<VideoFactContentEncoded> {
 				empty.speakerWord = empty.charOffsets;
 				factContent = empty;
 			}
-			videos.add(factContent.toEncoded());
+			consumer.accept(factContent);
 		}
-		return videos;
-	}
-
-	private Videos(Path srcDir, Path dstDir) {
-		super(srcDir, dstDir);
 	}
 }

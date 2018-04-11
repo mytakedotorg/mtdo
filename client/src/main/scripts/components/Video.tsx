@@ -885,14 +885,16 @@ class Video extends React.Component<VideoProps, VideoState> {
                 {this.props.videoFact.fact.primaryDate}
               </p>
             </div>
-            <YouTube
-              videoId={this.props.videoFact.youtubeId}
-              opts={opts}
-              onReady={this.handleReady}
-              onPause={this.handlePause}
-              onStateChange={this.handleStateChange}
-              className="video__video"
-            />
+            <div className="video__video-container">
+              <YouTube
+                videoId={this.props.videoFact.youtubeId}
+                opts={opts}
+                onReady={this.handleReady}
+                onPause={this.handlePause}
+                onStateChange={this.handleStateChange}
+                className="video__video"
+              />
+            </div>
           </div>
           <div className="video__container video__container--actions">
             {selection && selection.end && selection.end > selection.start ? (

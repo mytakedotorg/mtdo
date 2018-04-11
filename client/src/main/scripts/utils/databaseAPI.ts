@@ -1,9 +1,5 @@
 import { Foundation } from "../java2ts/Foundation";
 import { Routes } from "../java2ts/Routes";
-import { DraftRev } from "../java2ts/DraftRev";
-import { DraftPost } from "../java2ts/DraftPost";
-import { PublishResult } from "../java2ts/PublishResult";
-import { TakeReactionJson } from "../java2ts/TakeReactionJson";
 import { EmailSelf } from "../java2ts/EmailSelf";
 import {
   alertErr,
@@ -25,7 +21,6 @@ import {
   DocumentBlock,
   VideoBlock
 } from "../components/BlockEditor";
-import { FollowJson } from "../java2ts/FollowJson";
 
 function getAllFacts(
   callback: (
@@ -125,6 +120,43 @@ function fetchFact(
     });
 }
 
+export interface VideoFactHashMap {
+  hash: string;
+  videoFact: Foundation.VideoFactContent;
+}
+
+export function fetchFactReturningPromise(
+  factHash: string
+): Promise<VideoFactHashMap> {
+  const headers = new Headers();
+
+  headers.append("Accept", "application/json"); // This one is enough for GET requests
+
+  const request: RequestInit = {
+    method: "GET",
+    headers: headers,
+    cache: "default"
+  };
+
+  return fetch(Routes.FOUNDATION_DATA + "/" + factHash + ".json", request)
+    .then(function(response: Response) {
+      const contentType = response.headers.get("content-type");
+      if (
+        contentType &&
+        contentType.indexOf("application/json") >= 0 &&
+        response.ok
+      ) {
+        return response.json();
+      }
+    })
+    .then(function(json: Foundation.VideoFactContentEncoded) {
+      return {
+        hash: factHash,
+        videoFact: decodeVideoFact(json)
+      };
+    });
+}
+
 function isDocument(
   fact: Foundation.DocumentFactContent | Foundation.VideoFactContent | null
 ): fact is Foundation.DocumentFactContent {
@@ -147,22 +179,8 @@ function isVideo(
 
 function postRequest(
   route: string,
-  bodyJson:
-    | DraftPost
-    | DraftRev
-    | TakeReactionJson.ReactReq
-    | TakeReactionJson.ViewReq
-    | EmailSelf
-    | FollowJson.FollowAskReq
-    | FollowJson.FollowTellReq,
-  successCb: (
-    json?:
-      | DraftRev
-      | PublishResult
-      | TakeReactionJson.ReactRes
-      | TakeReactionJson.ViewRes
-      | FollowJson.FollowRes
-  ) => void
+  bodyJson: any,
+  successCb: (json?: any) => void
 ) {
   const headers = new Headers();
 
@@ -195,18 +213,9 @@ function postRequest(
         throw "Unexpected response from server.";
       }
     })
-    .then(
-      (
-        json:
-          | DraftRev
-          | PublishResult
-          | TakeReactionJson.ReactRes
-          | TakeReactionJson.ViewRes
-          | FollowJson.FollowRes
-      ) => {
-        successCb(json);
-      }
-    )
+    .then((json: any) => {
+      successCb(json);
+    })
     .catch(function(error: Error) {
       alertErr("databaseAPI + " + route + ": " + error.message);
       throw error;

@@ -9,9 +9,11 @@ import FeedList from "./components/FeedList";
 import FoundationView from "./components/FoundationView";
 import SearchBar from "./components/SearchBar";
 import UserNav from "./components/UserNav";
+import VideoResultsLoader from "./components/VideoResultsLoader";
 import { TakeDocument } from "./components/BlockEditor";
 import { Card } from "./components/FeedList";
 import { alertErr } from "./utils/functions";
+import { Search } from "./java2ts/Search";
 
 interface HomeArgs {
   type: "home";
@@ -33,9 +35,14 @@ interface NewTakeArgs {
   blockWriterState?: InitialBlockWriterState;
 }
 
+interface SearchArgs {
+	type: "search";
+	searchTerm: string;
+}
+
 declare global {
   interface Window {
-    mytake?: HomeArgs | ShowTakeArgs | FoundationArgs | NewTakeArgs;
+    mytake?: HomeArgs | ShowTakeArgs | FoundationArgs | NewTakeArgs | SearchArgs;
   } 
 }
 
@@ -74,6 +81,9 @@ if (app) {
 			case "showtake":
 				Root = <BlockReader initState={window.mytake.takeDocument} takeId={window.mytake.takeId} />;
 				break;
+			case "search":
+				Root = <VideoResultsLoader searchTerm={window.mytake.searchTerm} />
+				break;
 			default:
 				alertErr("index: unknown argument structure");
 				throw "Unknown argument structure";
@@ -87,7 +97,11 @@ if (app) {
 
 const searchBarContainer: HTMLElement | null = document.getElementById("searchbar");
 if (searchBarContainer) {
-  ReactDOM.render(<SearchBar />, searchBarContainer);
+	let searchTerm = "";
+	if (typeof window.mytake != "undefined" && window.mytake.type === "search") {
+		searchTerm = window.mytake.searchTerm;
+	}
+  ReactDOM.render(<SearchBar searchTerm={searchTerm}/>, searchBarContainer);
 } else {
   alertErr("index: couldn't find div#searchbar");
   throw "Couldn't find div#searchbar";

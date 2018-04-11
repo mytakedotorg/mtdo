@@ -6,19 +6,39 @@ $button-height: 2.5rem;
 }
 .searchbar__input-container {
   @include text-margin-lr;
+  position: relative;
 }
 .searchbar__input {
-  @include body--small("sans");
+  @include typography($sans, 400, 16px, 1.7em);
   line-height: 25px;
   vertical-align: middle;
   border-radius: 5px;
   border: 1px solid palette(searchbar, border);
-  margin-bottom: 2px;
+  margin-top: 2px;
+  margin-bottom: 4px;
   padding-top: 0;
   padding-bottom: 0;
   padding-left: $content-margin/2;
-  padding-right: $content-margin/2;
-  width: 150px;
+  padding-right: 25px;
+  width: 260px;
+  &::-ms-clear {
+    display: none;
+  }
+}
+input[type="search"]::-webkit-search-decoration,
+input[type="search"]::-webkit-search-cancel-button {
+  display: none;
+}
+.searchbar__cancel {
+  color: palette(searchbar, cancel-icon);
+  font-size: 15px;
+  position: absolute;
+  top: 1px;
+  right: 9px;
+  cursor: pointer;
+}
+.searchbar__cancel--hidden {
+  display: none;
 }
 .searchbar__filter-button-list {
   display: none;
