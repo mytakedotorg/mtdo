@@ -1,6 +1,6 @@
 plugins {
 	id 'nu.studer.rocker' version '0.3.1'					// https://github.com/etiennestuder/gradle-rocker-plugin
-	id 'com.github.johnrengelman.shadow' version '2.0.2'	// http://imperceptiblethoughts.com/shadow/#
+	id 'com.github.johnrengelman.shadow' version '2.0.3'	// http://imperceptiblethoughts.com/shadow/#
 }
 
 apply plugin: 'java'
@@ -115,8 +115,8 @@ dependencies {
 	compile 'org.jooq:jooq'
 
 	// db connector for postgres
-	compile 'org.postgresql:postgresql:42.2.1'
-	jooqRuntime 'org.postgresql:postgresql:42.2.1'
+	compile 'org.postgresql:postgresql:42.2.2'
+	jooqRuntime 'org.postgresql:postgresql:42.2.2'
 
 	// flyway
 	compile 'org.flywaydb:flyway-core:5.0.7'
