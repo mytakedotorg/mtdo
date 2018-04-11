@@ -6,9 +6,9 @@ spotless {
 		replace('Acronyms confuse our tooling 1', "F.B.I.", "FBI")
 		replace('Acronyms confuse our tooling 2', "G.N.P.", "GNP")
 		replace('Percent is a word', " per cent", " percent")
-		replace('Adivser is a word', "advisor", "adviser")    // http://grammarist.com/spelling/adviser-advisor/
-		replace('Always use simple apostrophe', "'", "'")
-		replace('Always use simple right quote', '"', '"')
-		replace('Always use simple left quote', '"', '"')
+		replace('Adviser is canonical', "advisor", "adviser")    // http://grammarist.com/spelling/adviser-advisor/
+		replace('Always use simple apostrophe', "’", "'")
+		replace('Always use simple right quote', '”', '"')
+		replace('Always use simple left quote', '“', '"')
 	}
 }
