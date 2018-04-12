@@ -5,7 +5,7 @@
 /foundation/src/main/resources/
 /server/src/main/jooq-generated/
 /server/src/main/rocker-generated/
-/server/src/test/resources/rocker-compiler.conf
+/server/src/test/rocker-hotreload/
 /foundation-gen/generated/
 /foundation-gen/.apt_generated/
 

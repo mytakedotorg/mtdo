@@ -26,7 +26,7 @@ spotless {
 ////////////////
 apply plugin: 'org.mytake.gradle.flywayjooq.embeddedpg'
 flywayJooqEmbeddedPg {
-	templateDb = file('build/pgTemplate')
+	dockerComposeFile = file('src/test/resources/docker-compose.yml')
 	migrations = file('src/main/resources/db/migration')
 	generator {
 		database.inputSchema = 'public'
@@ -48,6 +48,8 @@ flywayJooqEmbeddedPg {
 		expression = '.*'
 		types = 'inet'
 	}
+	connectionParams = file('build/pgConnection.properties')
+	schemaDump = file('build/schema.sql')
 }
 sourceSets.main.java {
 	srcDir 'src/main/jooq-generated'
@@ -64,11 +66,20 @@ rocker {
 		optimize = Env.isHerokuOrCI()
 		templateDir = file('src/main/rocker')
 		outputDir = file('src/main/rocker-generated')
-		classDir = file('src/test/resources')
+		classDir = file('src/test/rocker-hotreload')
 		extendsModelClass = 'common.CustomRockerModel'
 		extendsClass = 'common.CustomRockerTemplate'
 	}
 }
+sourceSets {
+	test {
+		resources {
+			srcDirs = [
+				'src/test/resources',
+				'src/test/rocker-hotreload'
+			]
+		}}}
+
 // enforce tab indentation on rocker files
 spotless {
 	format 'rocker', {
@@ -136,7 +147,6 @@ dependencies {
 	testCompile 'com.icegreen:greenmail:1.5.7'									// http://www.icegreen.com/greenmail/
 	testCompile 'com.palantir.docker.compose:docker-compose-rule-core:0.33.0'	// https://github.com/palantir/docker-compose-rule
 	testCompile 'com.palantir.docker.compose:docker-compose-rule-junit4:0.33.0'	// https://github.com/palantir/docker-compose-rule
-	testCompile 'com.opentable.components:otj-pg-embedded:0.11.0'	// https://github.com/opentable/otj-pg-embedded
 
 	testCompile "com.fizzed:rocker-compiler:${rockerVersion}"					// required for hotreload
 

@@ -3,7 +3,7 @@ version: "2.1"
 services:
   postgres:
     image: postgres:10.3
-    tmpfs: /pgtmpfs:size=65536k
+    tmpfs: /pgtmpfs:size=524288k
     environment:
       - "PGDATA=/pgtmpfs"
     ports:
