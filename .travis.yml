@@ -1,3 +1,8 @@
+sudo: required
+
+services:
+  - docker
+
 dist: precise
 jdk: oraclejdk8
 language: java
