@@ -90,6 +90,7 @@ tasks.eclipse.dependsOn([
 
 repositories {
 	mavenCentral()
+	maven { url 'https://dl.bintray.com/palantir/releases' }
 	maven { url 'http://repository.jsweet.org/artifactory/libs-release-local' }
 }
 
@@ -132,9 +133,12 @@ dependencies {
 	testCompile "junit:junit:$JUNIT_VER"
 	testCompile "org.assertj:assertj-core:$ASSERTJ_VER"
 	testCompile 'io.rest-assured:rest-assured:3.0.7'
-	testCompile 'com.icegreen:greenmail:1.5.7'					// http://www.icegreen.com/greenmail/
+	testCompile 'com.icegreen:greenmail:1.5.7'									// http://www.icegreen.com/greenmail/
+	testCompile 'com.palantir.docker.compose:docker-compose-rule-core:0.33.0'	// https://github.com/palantir/docker-compose-rule
+	testCompile 'com.palantir.docker.compose:docker-compose-rule-junit4:0.33.0'	// https://github.com/palantir/docker-compose-rule
 	testCompile 'com.opentable.components:otj-pg-embedded:0.11.0'	// https://github.com/opentable/otj-pg-embedded
-	testCompile "com.fizzed:rocker-compiler:${rockerVersion}"		// required for hotreload
+
+	testCompile "com.fizzed:rocker-compiler:${rockerVersion}"					// required for hotreload
 
 	// dep for auth
 	compile 'com.auth0:java-jwt:3.3.0'

@@ -11,10 +11,9 @@ import com.google.inject.Binder;
 import com.google.inject.multibindings.Multibinder;
 import com.icegreen.greenmail.util.GreenMail;
 import com.icegreen.greenmail.util.ServerSetup;
-import com.opentable.db.postgres.embedded.DatabasePreparer;
-import com.opentable.db.postgres.embedded.EmbeddedPostgres;
-import com.opentable.db.postgres.embedded.FlywayPreparer;
-import com.opentable.db.postgres.embedded.PreparedDbProvider;
+import com.palantir.docker.compose.DockerComposeRule;
+import com.palantir.docker.compose.connection.DockerPort;
+import com.palantir.docker.compose.connection.waiting.HealthChecks;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 import java.util.HashMap;
@@ -24,6 +23,7 @@ import javax.mail.Address;
 import javax.mail.Message.RecipientType;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
+import org.flywaydb.core.Flyway;
 import org.jooby.Env;
 import org.jooby.Jooby;
 import org.jooby.MediaType;
@@ -73,23 +73,34 @@ public class Dev extends Jooby {
 	}
 
 	static class EmbeddedPostgresModule implements Jooby.Module {
-		EmbeddedPostgres postgres;
+		DockerComposeRule dockerRule;
 
 		@Override
 		public Config config() {
 			try {
-				postgres = EmbeddedPostgres.builder()
-						.setCleanDataDirectory(true)
-						.start();
+				dockerRule = DockerComposeRule.builder()
+						.file("src/test/resources/docker-compose.yml")
+						.waitingForService("postgres", HealthChecks.toHaveAllPortsOpen())
+						.pullOnStartup(true)
+						.removeConflictingContainersOnStartup(true)
+						.saveLogsTo("build/tmp/docker")
+						.build();
+				dockerRule.before();
 
-				DatabasePreparer prep = FlywayPreparer.forClasspathLocation("db/migration");
-				PreparedDbProvider provider = PreparedDbProvider.forPreparer(prep);
-				String jdbcUrl = provider.createDatabase();
+				DockerPort port = dockerRule.containers()
+						.container("postgres")
+						.port(5432);
+				String jdbcUrl = String.format("jdbc:postgresql://%s:%d/%s", port.getIp(), port.getExternalPort(), "postgres");
+
+				Flyway flyway = new Flyway();
+				flyway.setDataSource(jdbcUrl, "postgres", "");
+				flyway.setLocations("db/migration");
+				flyway.migrate();
 
 				Map<String, String> map = new HashMap<>();
 				map.put("db.url", jdbcUrl);
 				map.put("db.user", "postgres");
-				map.put("db.password", "postgres");
+				map.put("db.password", "");
 				return ConfigFactory.parseMap(map);
 			} catch (Exception e) {
 				throw Errors.asRuntime(e);
@@ -98,7 +109,7 @@ public class Dev extends Jooby {
 
 		@Override
 		public void configure(Env env, Config conf, Binder binder) throws Throwable {
-			env.onStop(postgres::close);
+			env.onStop(dockerRule::after);
 		}
 	}
 
