@@ -3,7 +3,7 @@ sudo: required
 services:
   - docker
 
-dist: precise
+dist: trusty
 jdk: oraclejdk8
 language: java
 
