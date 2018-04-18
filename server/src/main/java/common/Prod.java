@@ -77,7 +77,7 @@ public class Prod extends Jooby {
 		jooby.use(new TakeReaction());
 		jooby.use(new TakeEmail());
 		// These controllers need to be last, because otherwise
-		// they will swallow every `/user` and `/user/take` URL.
+		// they will swallow every `/user/take` and `/user` URL.
 		jooby.use(new Takes());
 		jooby.use(new Profile());
 	}

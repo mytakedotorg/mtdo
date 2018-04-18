@@ -29,7 +29,7 @@ public class FoundationMigrationModuleTest {
 	static class App extends Jooby {
 		{
 			use(new DevTime.Module());
-			use(new Dev.EmbeddedPostgresModule());
+			use(new CleanPostgresModule());
 			use(new Jdbc());
 			use(new jOOQ());
 		}
