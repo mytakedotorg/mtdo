@@ -63,22 +63,14 @@ sourceSets.main.java {
 rockerVersion = '0.22.0'
 rocker {
 	main {
+		// if these change, also change DevHotReload
 		optimize = Env.isHerokuOrCI()
 		templateDir = file('src/main/rocker')
 		outputDir = file('src/main/rocker-generated')
-		classDir = file('src/test/rocker-hotreload')
 		extendsModelClass = 'common.CustomRockerModel'
 		extendsClass = 'common.CustomRockerTemplate'
 	}
 }
-sourceSets {
-	test {
-		resources {
-			srcDirs = [
-				'src/test/resources',
-				'src/test/rocker-hotreload'
-			]
-		}}}
 
 // enforce tab indentation on rocker files
 spotless {
