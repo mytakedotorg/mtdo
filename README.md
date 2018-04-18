@@ -36,6 +36,15 @@ If you're a programmer or designer and you'd like to improve the site, it's real
 - For server development, run `./gradlew ide`, and it will launch an Eclipse IDE preconfigured for the MyTake.org project.
 - You can see the full task dependencies in [gradleTaskGraph.pdf](gradleTaskGraph.pdf).
 
+## Mac and Docker
+
+The build needs docker-compose to run.  Here are the instructions for mac:
+
+- Download and install [from the Docker site](https://store.docker.com/editions/community/docker-ce-desktop-mac).
+    + Normally I prefer `brew`, but I couldn't get it to work.
+- If the build fails with `Couldn't connect to Docker daemon. You might need to start Docker for Mac.`, but it's already started, try: `docker-machine start default`.
+- To kill all docker containers: `docker kill $(docker ps -q)`
+
 ### Code sharing between java and typescript (jsweet)
 
 The `:client:jsweet` task transpiles the java in [`/client/src/main/java/java2ts`](client/src/main/java/java2ts) into TypeScript that lives in `/client/src/main/typescript/java2ts`, using [jsweet](http://www.jsweet.org/).  This ensures that the structured data sent back and forth between the server and browser is typed correctly.
