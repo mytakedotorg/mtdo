@@ -1,11 +1,23 @@
 {
     "fact": {
-        "title": "Presidential Debate - McCain, Obama (2 of 3)",
-        "primaryDate": "2008-10-07",
-        "primaryDateKind": "recorded",
-        "kind": "video"
+      "title": "Presidential Debate - McCain, Obama (2 of 3)",
+      "primaryDate": "2008-10-07",
+      "primaryDateKind": "recorded",
+      "kind": "video"
     },
     "youtubeId": "PZFvyNnJmeI",
     "durationSeconds": 5967,
-    "speakers": []
+    "speakers": [
+      {"fullName": "Barack Obama", "role": "Democratic nominee for President"},
+      {"fullName": "John McCain", "role": "Republican nominee for President"},
+      {"fullName": "Tom Brokaw", "role": "Moderator"},
+      {"fullName": "Alan Schaefer", "role": "Audience questioner"},
+      {"fullName": "Oliver Clark", "role": "Audience questioner"},
+      {"fullName": "Theresa Finch", "role": "Audience questioner"},
+      {"fullName": "Ingrid Jackson", "role": "Audience questioner"},
+      {"fullName": "Lindsey Trellow", "role": "Audience questioner"},
+      {"fullName": "Phil Elliott", "role": "Audience questioner"},
+      {"fullName": "Katie Hamm", "role": "Audience questioner"},
+      {"fullName": "Terry Chary", "role": "Audience questioner"}
+		]
 }
