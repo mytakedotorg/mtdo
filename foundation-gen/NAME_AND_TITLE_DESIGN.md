@@ -21,3 +21,16 @@ To make sure that titles don't depend on the outcome, we will list the candidate
 ### 1976
 
 - James Earl Carter is much better known as Jimmy Carter.  All his books are under the name Jimmy Carter, so we'll say "Jimmy E Carter".
+
+### 1992
+
+- William J Clinton is better known as Bill Clinton. We'll use Bill J Clinton.
+- Henry Ross Perot is better known as Ross Perot. We'll use Ross Perot.
+
+### 1996
+
+- Robert J Dole is better known as Bob Dole. We'll use Bob J Dole.
+
+### 2012
+
+- Willard Mitt Romney is better known as Mitt Romney. We'll use Mitt Romney.

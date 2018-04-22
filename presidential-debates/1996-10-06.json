@@ -8,8 +8,8 @@
     "youtubeId": "JcyqYFlh_x4",
     "durationSeconds": 5849,
     "speakers": [
-      {"fullName": "Bill Clinton", "role": "Democratic nominee for President"},
-      {"fullName": "Bob Dole", "role": "Republican nominee for President"},
+      {"fullName": "Bill J Clinton", "role": "Democratic nominee for President"},
+      {"fullName": "Bob J Dole", "role": "Republican nominee for President"},
       {"fullName": "Jim Lehrer", "role": "Moderator"}
     ]
 }
