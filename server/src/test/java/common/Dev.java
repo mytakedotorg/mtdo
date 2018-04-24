@@ -47,10 +47,10 @@ public class Dev extends Jooby {
 		get("/exit", (req, rsp) -> {
 			stop();
 		});
-		use(new JooqDebugRenderer());
-		use(new Whoops());
 		Prod.common(this);
 		Prod.controllers(this);
+		use(new JooqDebugRenderer());
+		use(new Whoops());
 	}
 
 	static class JooqDebugRenderer implements Jooby.Module {
