@@ -1,6 +1,6 @@
 plugins {
 	id 'nu.studer.rocker' version '0.3.1'					// https://github.com/etiennestuder/gradle-rocker-plugin
-	id 'com.github.johnrengelman.shadow' version '2.0.2'	// http://imperceptiblethoughts.com/shadow/#
+	id 'com.github.johnrengelman.shadow' version '2.0.3'	// http://imperceptiblethoughts.com/shadow/#
 }
 
 apply plugin: 'java'
@@ -26,7 +26,7 @@ spotless {
 ////////////////
 apply plugin: 'org.mytake.gradle.flywayjooq.embeddedpg'
 flywayJooqEmbeddedPg {
-	templateDb = file('build/pgTemplate')
+	dockerComposeFile = file('src/test/resources/docker-compose.yml')
 	migrations = file('src/main/resources/db/migration')
 	generator {
 		database.inputSchema = 'public'
@@ -48,7 +48,14 @@ flywayJooqEmbeddedPg {
 		expression = '.*'
 		types = 'inet'
 	}
+	connectionParams = file('build/pgConnection.properties')
+	schemaDump = file('build/schema.sql')
 }
+// because docker-compose can't start postgres on Heroku
+if (Env.isHeroku()) {
+	tasks.jooq.enabled = false
+}
+
 sourceSets.main.java {
 	srcDir 'src/main/jooq-generated'
 	srcDir 'src/main/rocker'
@@ -61,14 +68,15 @@ sourceSets.main.java {
 rockerVersion = '0.22.0'
 rocker {
 	main {
+		// if these change, also change DevHotReload
 		optimize = Env.isHerokuOrCI()
 		templateDir = file('src/main/rocker')
 		outputDir = file('src/main/rocker-generated')
-		classDir = file('src/test/resources')
 		extendsModelClass = 'common.CustomRockerModel'
 		extendsClass = 'common.CustomRockerTemplate'
 	}
 }
+
 // enforce tab indentation on rocker files
 spotless {
 	format 'rocker', {
@@ -90,6 +98,7 @@ tasks.eclipse.dependsOn([
 
 repositories {
 	mavenCentral()
+	maven { url 'https://dl.bintray.com/palantir/releases' }
 	maven { url 'http://repository.jsweet.org/artifactory/libs-release-local' }
 }
 
@@ -115,8 +124,8 @@ dependencies {
 	compile 'org.jooq:jooq'
 
 	// db connector for postgres
-	compile 'org.postgresql:postgresql:42.2.1'
-	jooqRuntime 'org.postgresql:postgresql:42.2.1'
+	compile 'org.postgresql:postgresql:42.2.2'
+	jooqRuntime 'org.postgresql:postgresql:42.2.2'
 
 	// flyway
 	compile 'org.flywaydb:flyway-core:5.0.7'
@@ -132,9 +141,11 @@ dependencies {
 	testCompile "junit:junit:$JUNIT_VER"
 	testCompile "org.assertj:assertj-core:$ASSERTJ_VER"
 	testCompile 'io.rest-assured:rest-assured:3.0.7'
-	testCompile 'com.icegreen:greenmail:1.5.7'					// http://www.icegreen.com/greenmail/
-	testCompile 'com.opentable.components:otj-pg-embedded:0.11.0'	// https://github.com/opentable/otj-pg-embedded
-	testCompile "com.fizzed:rocker-compiler:${rockerVersion}"		// required for hotreload
+	testCompile 'com.icegreen:greenmail:1.5.7'									// http://www.icegreen.com/greenmail/
+	testCompile 'com.palantir.docker.compose:docker-compose-rule-core:0.33.0'	// https://github.com/palantir/docker-compose-rule
+	testCompile 'com.palantir.docker.compose:docker-compose-rule-junit4:0.33.0'	// https://github.com/palantir/docker-compose-rule
+
+	testCompile "com.fizzed:rocker-compiler:${rockerVersion}"					// required for hotreload
 
 	// dep for auth
 	compile 'com.auth0:java-jwt:3.3.0'
@@ -143,16 +154,6 @@ sourceSets {
 	test.compileClasspath += configurations.compileOnly
 	test.runtimeClasspath += configurations.compileOnly
 }
-
-//////////////
-// joobyRun //
-//////////////
-// we're not using any jooby-specific reloading
-// because as of 1.2.2 it's crazy slow, and also
-// appears to be broken
-
-// our in-house plugin works pretty good
-apply plugin: 'org.mytake.gradle.live'
 
 task runProd(type: JavaExec, dependsOn: classes) {
 	description = 'Run app in prod mode'
@@ -169,6 +170,7 @@ task runProd(type: JavaExec, dependsOn: classes) {
 	]
 }
 
+// see common.DevHotReload in an IDE for faster dev
 task runDev(type: JavaExec, dependsOn: testClasses) {
 	description = 'Run app in dev mode'
 	classpath = sourceSets.test.runtimeClasspath

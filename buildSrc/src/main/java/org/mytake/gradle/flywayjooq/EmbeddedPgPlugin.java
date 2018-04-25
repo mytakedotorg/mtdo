@@ -38,8 +38,10 @@ public class EmbeddedPgPlugin implements Plugin<Project> {
 	private static final String EXTENSION_NAME = "flywayJooqEmbeddedPg";
 
 	public static class Extension {
-		public File templateDb;
+		public File dockerComposeFile;
 		public File migrations;
+		public File connectionParams;
+		public File schemaDump;
 
 		private Generator generator;
 		private List<ForcedType> forcedTypes;
@@ -101,12 +103,18 @@ public class EmbeddedPgPlugin implements Plugin<Project> {
 		// create a jooq task, which will be needed by all compilation tasks
 		EmbeddedPgTask jooqTask = project.getTasks().create("jooq", EmbeddedPgTask.class);
 		project.getTasks().withType(JavaCompile.class).all(task -> task.dependsOn(jooqTask));
+		// create a task for stopping the docker-compose which was started by jooq
+		DockerPg.DownTask downTask = project.getTasks().create("dockerDown", DockerPg.DownTask.class);
 
 		project.afterEvaluate(unused -> {
 			jooqTask.flywayMigrations = extension.migrations;
 			jooqTask.generatorConfig = extension.generator;
 			jooqTask.jooqClasspath = jooqRuntime;
-			jooqTask.templateDb = extension.templateDb;
+			jooqTask.dockerComposeFile = extension.dockerComposeFile;
+			downTask.dockerComposeFile = extension.dockerComposeFile;
+			jooqTask.connectionParams = extension.connectionParams;
+			downTask.connectionParams = extension.connectionParams;
+			jooqTask.schemaDump = extension.schemaDump;
 		});
 	}
 

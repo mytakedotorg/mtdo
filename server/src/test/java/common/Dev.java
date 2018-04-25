@@ -6,19 +6,11 @@
  */
 package common;
 
-import com.diffplug.common.base.Errors;
 import com.google.inject.Binder;
 import com.google.inject.multibindings.Multibinder;
 import com.icegreen.greenmail.util.GreenMail;
 import com.icegreen.greenmail.util.ServerSetup;
-import com.opentable.db.postgres.embedded.DatabasePreparer;
-import com.opentable.db.postgres.embedded.EmbeddedPostgres;
-import com.opentable.db.postgres.embedded.FlywayPreparer;
-import com.opentable.db.postgres.embedded.PreparedDbProvider;
 import com.typesafe.config.Config;
-import com.typesafe.config.ConfigFactory;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Random;
 import javax.mail.Address;
 import javax.mail.Message.RecipientType;
@@ -35,14 +27,22 @@ import org.jooby.whoops.Whoops;
  * directory for the app that we run in production.
  */
 public class Dev extends Jooby {
-	{
+	public Dev() {
+		this(new CleanPostgresModule());
+	}
+
+	/**
+	 * If there's already a running postgres from a previous run,
+	 * we can reuse it by passing it in here.
+	 */
+	public Dev(CleanPostgresModule postgresModule) {
 		// random and time-dependent results in tests will be repeatable
 		use((env, conf, binder) -> {
 			binder.bind(Random.class).toInstance(new Random(0));
 		});
 		use(new DevTime.Module());
 		use(new GreenMailModule());
-		use(new EmbeddedPostgresModule());
+		use(postgresModule);
 		// exit has to come before the "/user" route
 		get("/exit", (req, rsp) -> {
 			stop();
@@ -69,36 +69,6 @@ public class Dev extends Jooby {
 							}
 						}
 					});
-		}
-	}
-
-	static class EmbeddedPostgresModule implements Jooby.Module {
-		EmbeddedPostgres postgres;
-
-		@Override
-		public Config config() {
-			try {
-				postgres = EmbeddedPostgres.builder()
-						.setCleanDataDirectory(true)
-						.start();
-
-				DatabasePreparer prep = FlywayPreparer.forClasspathLocation("db/migration");
-				PreparedDbProvider provider = PreparedDbProvider.forPreparer(prep);
-				String jdbcUrl = provider.createDatabase();
-
-				Map<String, String> map = new HashMap<>();
-				map.put("db.url", jdbcUrl);
-				map.put("db.user", "postgres");
-				map.put("db.password", "postgres");
-				return ConfigFactory.parseMap(map);
-			} catch (Exception e) {
-				throw Errors.asRuntime(e);
-			}
-		}
-
-		@Override
-		public void configure(Env env, Config conf, Binder binder) throws Throwable {
-			env.onStop(postgres::close);
 		}
 	}
 

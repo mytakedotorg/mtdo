@@ -24,7 +24,6 @@ import javax.sql.DataSource;
 import json.JsoniterModule;
 import org.flywaydb.core.Flyway;
 import org.jooby.Jooby;
-import org.jooby.Results;
 import org.jooby.jdbc.Jdbc;
 import org.jooby.jooq.jOOQ;
 
@@ -66,7 +65,6 @@ public class Prod extends Jooby {
 	}
 
 	static void controllers(Jooby jooby) {
-		jooby.get("favicon.ico", () -> Results.noContent());
 		jooby.use(new Redirects());
 		jooby.use(new DiscourseAuth());
 		jooby.use(new HomeFeed());
@@ -79,7 +77,7 @@ public class Prod extends Jooby {
 		jooby.use(new TakeReaction());
 		jooby.use(new TakeEmail());
 		// These controllers need to be last, because otherwise
-		// they will swallow every `/user` and `/user/take` URL.
+		// they will swallow every `/user/take` and `/user` URL.
 		jooby.use(new Takes());
 		jooby.use(new Profile());
 	}

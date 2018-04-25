@@ -4,14 +4,17 @@ apply plugin: 'java-gradle-plugin'
 
 repositories {
 	maven { url 'https://plugins.gradle.org/m2/' }
+	maven { url 'https://dl.bintray.com/palantir/releases' }
 	maven { url 'http://repository.jsweet.org/artifactory/libs-release-local' }
 }
 
 dependencies {
 	// https://github.com/srs/gradle-node-plugin
 	compile 'com.moowork.gradle:gradle-node-plugin:1.2.0'
-	// https://github.com/opentable/otj-pg-embedded
-	compile 'com.opentable.components:otj-pg-embedded:0.11.0'
+	// https://github.com/palantir/docker-compose-rule
+	compile 'com.palantir.docker.compose:docker-compose-rule-core:0.33.0'
+	compile 'com.palantir.docker.compose:docker-compose-rule-junit4:0.33.0'
+	compile 'org.postgresql:postgresql:42.2.2'
 	// jooq codegen
 	compile 'org.jooq:jooq-codegen:3.10.2'
 	// db migration
@@ -32,7 +35,7 @@ def keys = System.getenv().keySet()
 if (!keys.contains(HEROKU_ENV_VAR) && !keys.contains(CI_ENV_VAR)) {
 	// uncomment to generate eclipse project
 	// (adds tons of noise to continuous build)
-	build.dependsOn(tasks.getByName('eclipse'))
+	compileJava.dependsOn(tasks.getByName('eclipse'))
 }
 
 eclipse { project { name = 'mytake-buildSrc' } }
@@ -42,10 +45,6 @@ gradlePlugin {
 		flywayJooqEmbeddedPg {
 			id = 'org.mytake.gradle.flywayjooq.embeddedpg'
 			implementationClass = 'org.mytake.gradle.flywayjooq.EmbeddedPgPlugin'
-		}
-		live {
-			id = 'org.mytake.gradle.live'
-			implementationClass = 'org.mytake.gradle.live.LivePlugin'
 		}
 		jsoniterCodegen {
 			id = 'org.mytake.gradle.jsonitercodegen'
