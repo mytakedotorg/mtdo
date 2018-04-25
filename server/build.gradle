@@ -150,16 +150,6 @@ sourceSets {
 	test.runtimeClasspath += configurations.compileOnly
 }
 
-//////////////
-// joobyRun //
-//////////////
-// we're not using any jooby-specific reloading
-// because as of 1.2.2 it's crazy slow, and also
-// appears to be broken
-
-// our in-house plugin works pretty good
-apply plugin: 'org.mytake.gradle.live'
-
 task runProd(type: JavaExec, dependsOn: classes) {
 	description = 'Run app in prod mode'
 	classpath = sourceSets.main.runtimeClasspath
@@ -175,6 +165,7 @@ task runProd(type: JavaExec, dependsOn: classes) {
 	]
 }
 
+// see common.DevHotReload in an IDE for faster dev
 task runDev(type: JavaExec, dependsOn: testClasses) {
 	description = 'Run app in dev mode'
 	classpath = sourceSets.test.runtimeClasspath
