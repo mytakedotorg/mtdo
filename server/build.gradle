@@ -51,6 +51,11 @@ flywayJooqEmbeddedPg {
 	connectionParams = file('build/pgConnection.properties')
 	schemaDump = file('build/schema.sql')
 }
+// because docker-compose can't start postgres on Heroku
+if (Env.isHeroku()) {
+	tasks.jooq.enabled = false
+}
+
 sourceSets.main.java {
 	srcDir 'src/main/jooq-generated'
 	srcDir 'src/main/rocker'
