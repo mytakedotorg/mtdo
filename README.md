@@ -34,6 +34,7 @@ If you're a programmer or designer and you'd like to improve the site, it's real
     + Changes to typescript files in [`/client/src/main/scripts`](client/src/main/scripts) will be compiled by webpack hot reload, but require a browser refresh to see their effects.
 - We use [VSCode](https://code.visualstudio.com/) for client-side development.
 - For server development, run `./gradlew ide`, and it will launch an Eclipse IDE preconfigured for the MyTake.org project.
+    + Run the main in `DevHotReload` for fast server development.
 - You can see the full task dependencies in [gradleTaskGraph.pdf](gradleTaskGraph.pdf).
 
 ## Mac and Docker
@@ -62,15 +63,6 @@ The `:server:jooq` task:
 ### Typesafe server templates (rocker)
 
 The `:server:compileRocker` task transpiles the [rocker templates](https://github.com/fizzed/rocker) in [`/server/src/main/rocker`](server/src/main/rocker) into java code in `/server/src/main/rocker-generated`.
-
-### Live (broken)
-
-If you run `./gradlew live`, you'll get:
-
-- a server at `localhost:8080` with hot reload on its rocker templates
-- a browsersync proxying it with hot reload for sass and typescript
-
-But it's unreliable.  1 in 2 starts works, and it crashes itself quickly.  Not recommended for use, but it would be great to have help getting it to work.  The code [lives here](buildSrc/src/main/java/org/mytake/gradle/live/LivePlugin.java), and uses [spring-loaded](https://github.com/spring-projects/spring-loaded) for hot reloading.
 
 ## Travis CI
 
