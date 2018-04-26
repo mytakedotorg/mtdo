@@ -15,6 +15,16 @@ spotless {
 		replace('Always use simple apostrophe', "’", "'")
 		replace('Always use simple right quote', '”', '"')
 		replace('Always use simple left quote', '“', '"')
+		replace('No need for sound effects 1', '[Applause]', '')
+		replace('No need for sound effects 2', '(Applause)', '')
+		replace('No need for sound effects 3', '[applause]', '')
+		replace('No need for sound effects 4', '(applause)', '')
+		replace('No need for sound effects 5', '[Laughter]', '')
+		replace('No need for sound effects 6', '(Laughter)', '')
+		replace('No need for sound effects 7', '[laughter]', '')
+		replace('No need for sound effects 8', '(laughter)', '')
+		replace('No need for sound effects 9', '(ph)', '')
+		replace('No need for sound effects 10', '(phonetic)', '')
 	}
 	format 'foundation-saidOnly', {
 		target '**/*.said'
