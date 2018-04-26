@@ -10,7 +10,7 @@
     "speakers": [
       {"fullName": "Bill J Clinton", "role": "Democratic nominee for President"},
       {"fullName": "George HW Bush", "role": "Republican nominee for President"},
-      {"fullName": "Ross Perot", "role": "Independent candidate for President"},
+      {"fullName": "H Ross Perot", "role": "Independent candidate for President"},
       {"fullName": "Carole Simpson", "role": "Moderator"},
       {"fullName": "Audience Member", "role": "Audience questioner"}
     ]
