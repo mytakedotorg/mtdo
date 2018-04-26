@@ -5,6 +5,7 @@ spotless {
 		target '**/*.said', '**/*.vtt'
 		replace('Acronyms confuse our tooling 1', "F.B.I.", "FBI")
 		replace('Acronyms confuse our tooling 2', "G.N.P.", "GNP")
+		replace('Acronyms confuse our tooling 3', "D.C.", "DC")
 		replace('Ellipsis worse than dash', "...", "-")
 		replace('Unicode ellipsis worse than dash', "…", "-")
 		replace('No need for em-dash', "—", "-")
