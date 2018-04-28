@@ -1,11 +1,20 @@
 {
     "fact": {
-        "title": "Presidential Debate - Carter, Reagan (1 of 1)",
-        "primaryDate": "1980-10-28",
-        "primaryDateKind": "recorded",
-        "kind": "video"
+      "title": "Presidential Debate - Carter, Reagan (1 of 1)",
+      "primaryDate": "1980-10-28",
+      "primaryDateKind": "recorded",
+      "kind": "video"
     },
     "youtubeId": "a1J1TkWCLhs",
     "durationSeconds": 5691,
-    "speakers": []
+    "speakers": [
+      {"fullName": "Jimmy E Carter", "role": "Democratic nominee for President"},
+      {"fullName": "Ronald W Reagan", "role": "Republican nominee for President"},
+      {"fullName": "Ruth Hinerfeld", "role": "Announcer"},
+      {"fullName": "Howard K Smith", "role": "Moderator"},
+      {"fullName": "Marvin Stone", "role": "Panelist"},
+      {"fullName": "Harry Ellis", "role": "Panelist"},
+      {"fullName": "William Hilliard", "role": "Panelist"},
+      {"fullName": "Barbara Walters", "role": "Panelist"}
+    ]
 }
