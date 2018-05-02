@@ -10,7 +10,7 @@
     "speakers": [
       {"fullName": "Bill J Clinton", "role": "Democratic nominee for President"},
       {"fullName": "George HW Bush", "role": "Republican nominee for President"},
-      {"fullName": "Ross Perot", "role": "Independent candidate for President"},
+      {"fullName": "H Ross Perot", "role": "Independent candidate for President"},
       {"fullName": "Jim Lehrer", "role": "Moderator"},
       {"fullName": "Helen Thomas", "role": "Panelist"},
       {"fullName": "Gene Gibbons", "role": "Panelist"},

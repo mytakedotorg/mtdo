@@ -2,3 +2,5 @@
 *.speakers text
 * text eol=lf
 *.png binary
+*.jar binary
+*.pdf binary
