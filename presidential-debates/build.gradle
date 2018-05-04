@@ -25,6 +25,7 @@ spotless {
 		replace('No need for sound effects 8', '(laughter)', '')
 		replace('No need for sound effects 9', '(ph)', '')
 		replace('No need for sound effects 10', '(phonetic)', '')
+		replace('Use the number 1 instead of the letter l', 'l9', '19')
 	}
 	format 'foundation-saidOnly', {
 		target '**/*.said'
