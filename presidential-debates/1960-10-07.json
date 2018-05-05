@@ -1,11 +1,20 @@
 {
-    "fact": {
-        "title": "Presidential Debate - Kennedy, Nixon (2 of 4)",
-        "primaryDate": "1960-10-07",
-        "primaryDateKind": "recorded",
-        "kind": "video"
-    },
-    "youtubeId": "uBmuBXuD8NY",
-    "durationSeconds": 3528,
-    "speakers": []
+  "fact": {
+    "title": "Presidential Debate - Kennedy, Nixon (2 of 4)",
+    "primaryDate": "1960-10-07",
+    "primaryDateKind": "recorded",
+    "kind": "video"
+  },
+  "youtubeId": "uBmuBXuD8NY",
+  "durationSeconds": 3528,
+  "speakers": [
+    {"fullName": "John F Kennedy", "role": "Democratic nominee for President"},
+    {"fullName": "Richard M Nixon", "role": "Republican nominee for President"},
+    {"fullName": "Frank McGee", "role": "Moderator"},
+    {"fullName": "Paul Niven", "role": "Panelist"},
+    {"fullName": "Edward P Morgan", "role": "Panelist"},
+    {"fullName": "Alvin Spivak", "role": "Panelist"},
+    {"fullName": "Harold R Levy", "role": "Panelist"},
+    {"fullName": "Announcer offscreen", "role": "Announcer offscreen"}
+  ]
 }
