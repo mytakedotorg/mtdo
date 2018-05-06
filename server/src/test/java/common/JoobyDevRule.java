@@ -9,15 +9,18 @@ package common;
 import static db.Tables.ACCOUNT;
 
 import auth.AuthModuleHarness;
+import com.diffplug.common.base.Errors;
 import com.diffplug.common.base.Throwing;
 import com.icegreen.greenmail.util.GreenMail;
 import db.tables.pojos.Account;
 import io.restassured.specification.RequestSpecification;
 import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.HashMap;
+import java.util.Map;
+import javax.mail.Message.RecipientType;
+import javax.mail.MessagingException;
+import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-import org.assertj.core.api.Assertions;
 import org.jooby.Jooby;
 import org.jooq.DSLContext;
 import org.jooq.Table;
@@ -91,16 +94,52 @@ public class JoobyDevRule extends ExternalResource {
 		}
 	}
 
-	public List<EmailAssert> waitForEmails(int count) {
+	private int emailsReceived = 0;
+
+	public Map<String, EmailAssert> waitForEmails(int count) {
 		GreenMail greenmail = app.require(GreenMail.class);
-		Assertions.assertThat(greenmail.waitForIncomingEmail(1)).isTrue();
-		MimeMessage[] messages = greenmail.getReceivedMessages();
-		Assertions.assertThat(messages).hasSize(count);
-		return Arrays.stream(messages).map(EmailAssert::new).collect(Collectors.toList());
+		MimeMessage[] messages;
+		int numTries = 0;
+		do {
+			greenmail.waitForIncomingEmail(1);
+			messages = greenmail.getReceivedMessages();
+		} while (messages.length < emailsReceived + count && ++numTries < count);
+		if (messages.length != emailsReceived + count) {
+			String errorMsg = "Expected " + count + " new messages, but had " + (messages.length - emailsReceived);
+			for (MimeMessage message : Arrays.asList(messages).subList(emailsReceived, messages.length)) {
+				errorMsg += "\n    " + emailFor(message) + ": " + Errors.rethrow().get(() -> message.getSubject());
+			}
+			throw new AssertionError(errorMsg);
+		}
+
+		Map<String, EmailAssert> map = new HashMap<>();
+		for (MimeMessage message : Arrays.asList(messages).subList(emailsReceived, emailsReceived + count)) {
+			map.put(emailFor(message), new EmailAssert(message));
+		}
+		emailsReceived += count;
+		return map;
+	}
+
+	public Map<String, EmailAssert> getOldEmails() {
+		GreenMail greenmail = app.require(GreenMail.class);
+		Map<String, EmailAssert> map = new HashMap<>();
+		for (MimeMessage message : greenmail.getReceivedMessages()) {
+			map.put(emailFor(message), new EmailAssert(message));
+		}
+		return map;
+	}
+
+	private static String emailFor(MimeMessage message) {
+		try {
+			InternetAddress addr = (InternetAddress) message.getRecipients(RecipientType.TO)[0];
+			return addr.getAddress();
+		} catch (MessagingException e) {
+			throw Errors.asRuntime(e);
+		}
 	}
 
 	public EmailAssert waitForEmail() {
-		return waitForEmails(1).get(0);
+		return waitForEmails(1).values().iterator().next();
 	}
 
 	public Jooby app() {

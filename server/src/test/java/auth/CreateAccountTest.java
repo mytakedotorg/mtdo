@@ -12,6 +12,7 @@ import static auth.AuthModule.CREATE_USERNAME;
 import static auth.AuthModule.REDIRECT;
 import static db.Tables.ACCOUNT;
 
+import com.google.common.collect.Iterables;
 import common.EmailAssert;
 import common.JoobyDevRule;
 import common.PageAssert;
@@ -66,7 +67,7 @@ public class CreateAccountTest {
 
 	@Test
 	public void _02_doubleConfirmLoggedInSameUser() throws MessagingException {
-		EmailAssert confirmationEmail = dev.waitForEmail();
+		EmailAssert confirmationEmail = Iterables.getOnlyElement(dev.getOldEmails().values());
 		String link = confirmationEmail.extractLink("Visit the ");
 
 		PageAssert.assertThat(dev.givenUser("alexander").get(link), Status.OK)
@@ -82,7 +83,7 @@ public class CreateAccountTest {
 
 	@Test
 	public void _03_doubleConfirmNotLoggedIn() throws MessagingException {
-		EmailAssert confirmationEmail = dev.waitForEmail();
+		EmailAssert confirmationEmail = Iterables.getOnlyElement(dev.getOldEmails().values());
 		String link = confirmationEmail.extractLink("Visit the ");
 
 		PageAssert.assertThat(RestAssured.given()
