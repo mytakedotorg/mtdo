@@ -7,7 +7,6 @@
 package common;
 
 import db.enums.Reaction;
-import java.util.List;
 import org.jooby.Status;
 import org.junit.ClassRule;
 import org.junit.FixMethodOrder;
@@ -26,8 +25,7 @@ public class ModsTest {
 			htmlEmail.setSubject("The site is down!!!");
 			htmlEmail.setHtmlMsg("OH NOES!");
 		});
-		List<EmailAssert> emails = dev.waitForEmails(2);
-		for (EmailAssert email : emails) {
+		for (EmailAssert email : dev.waitForEmails(2).values()) {
 			email.subject().isEqualTo("[MyTake.org mod] The site is down!!!");
 			email.body().contains("OH NOES!");
 			email.allRecipients().isEqualTo("mod1@email.com,mod2@email.com");
