@@ -144,15 +144,6 @@ public class JoobyDevRule extends ExternalResource {
 		return waitForEmails(1).values().iterator().next();
 	}
 
-	public Map<String, EmailAssert> getOldEmails() {
-		GreenMail greenmail = app.require(GreenMail.class);
-		Map<String, EmailAssert> map = new HashMap<>();
-		for (MimeMessage message : greenmail.getReceivedMessages()) {
-			map.put(emailFor(message), new EmailAssert(message));
-		}
-		return map;
-	}
-
 	public Jooby app() {
 		return app;
 	}
