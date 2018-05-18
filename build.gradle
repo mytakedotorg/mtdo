@@ -1,5 +1,5 @@
 plugins {
-	id 'com.diffplug.gradle.eclipse.resourcefilters' version '3.13.0'
+	id 'com.diffplug.gradle.eclipse.resourcefilters' version '3.14.0'
 	id 'com.diffplug.gradle.spotless' version '3.10.0'	// https://github.com/diffplug/spotless/blob/master/plugin-gradle/README.md
 	id 'com.github.ben-manes.versions' version '0.17.0'	// https://github.com/ben-manes/gradle-versions-plugin './gradlew dependencyUpdates'
 	id 'cz.malohlava' version '1.0.3' // https://github.com/mmalohlava/gradle-visteg
