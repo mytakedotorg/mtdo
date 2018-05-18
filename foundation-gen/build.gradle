@@ -32,17 +32,7 @@ eclipseMavenCentral {
 	release '4.7.2', {
 		testCompile 'org.eclipse.swt'
 		testCompile 'org.eclipse.jface'
-	}
-}
-
-configurations.all {
-	resolutionStrategy.eachDependency { DependencyResolveDetails details ->
-		def requested = details.requested
-		if (requested.name.contains('${osgi.platform}')) {
-			def running = SwtPlatform.getRunning().toString()
-			details.useTarget("${requested.group}:${requested.name.replace('${osgi.platform}', running)}:${requested.version}")
-			details.because 'API breakage in higher versions'
-		}
+		useNativesForRunningPlatform()
 	}
 }
 

@@ -12,7 +12,6 @@ import static auth.AuthModule.CREATE_USERNAME;
 import static auth.AuthModule.REDIRECT;
 import static db.Tables.ACCOUNT;
 
-import com.google.common.collect.Iterables;
 import common.EmailAssert;
 import common.JoobyDevRule;
 import common.PageAssert;
@@ -33,6 +32,8 @@ public class CreateAccountTest {
 	@ClassRule
 	public static JoobyDevRule dev = JoobyDevRule.initialDataNoMods();
 
+	private static String link;
+
 	@Test
 	public void _01_createAccount() throws MessagingException {
 		// post the account form
@@ -50,7 +51,7 @@ public class CreateAccountTest {
 		EmailAssert confirmationEmail = dev.waitForEmail();
 		confirmationEmail.subject().isEqualTo("MyTake.org account confirmation");
 		confirmationEmail.body().contains("Welcome to MyTake.org, alexander!");
-		String link = confirmationEmail.extractLink("Visit the ");
+		link = confirmationEmail.extractLink("Visit the ");
 
 		// click the link
 		PageAssert.assertThatGet(link, Status.OK)
@@ -67,9 +68,6 @@ public class CreateAccountTest {
 
 	@Test
 	public void _02_doubleConfirmLoggedInSameUser() throws MessagingException {
-		EmailAssert confirmationEmail = Iterables.getOnlyElement(dev.getOldEmails().values());
-		String link = confirmationEmail.extractLink("Visit the ");
-
 		PageAssert.assertThat(dev.givenUser("alexander").get(link), Status.OK)
 				// no change to cookies
 				.responseAssert(response -> {
@@ -83,9 +81,6 @@ public class CreateAccountTest {
 
 	@Test
 	public void _03_doubleConfirmNotLoggedIn() throws MessagingException {
-		EmailAssert confirmationEmail = Iterables.getOnlyElement(dev.getOldEmails().values());
-		String link = confirmationEmail.extractLink("Visit the ");
-
 		PageAssert.assertThat(RestAssured.given()
 				.redirects().follow(false)
 				.get(link), Status.FOUND)
