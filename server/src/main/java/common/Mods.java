@@ -57,6 +57,9 @@ public class Mods {
 							.on(ACCOUNT.ID.eq(MODERATOR.ID)))
 					.fetch(ACCOUNT.EMAIL);
 		}
+		if (moderatorEmails.isEmpty()) {
+			return;
+		}
 		registry.require(EmailSender.class).send(htmlEmail -> {
 			for (String moderatorEmail : moderatorEmails) {
 				htmlEmail.addTo(moderatorEmail);
