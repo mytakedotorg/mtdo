@@ -14,7 +14,6 @@ import com.diffplug.common.base.Throwing;
 import com.icegreen.greenmail.util.GreenMail;
 import db.tables.pojos.Account;
 import io.restassured.specification.RequestSpecification;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import javax.mail.Message.RecipientType;
@@ -94,39 +93,42 @@ public class JoobyDevRule extends ExternalResource {
 		}
 	}
 
-	private int emailsReceived = 0;
-
-	public Map<String, EmailAssert> waitForEmails(int count) {
+	/** The count is the number of *sent* emails - one email sent to two people is still just one email. */
+	public Map<String, EmailAssert> waitForEmails(int numberSent) {
 		GreenMail greenmail = app.require(GreenMail.class);
-		MimeMessage[] messages;
-		int numTries = 0;
-		do {
-			greenmail.waitForIncomingEmail(1);
-			messages = greenmail.getReceivedMessages();
-		} while (messages.length < emailsReceived + count && ++numTries < count);
-		if (messages.length != emailsReceived + count) {
-			String errorMsg = "Expected " + count + " new messages, but had " + (messages.length - emailsReceived);
-			for (MimeMessage message : Arrays.asList(messages).subList(emailsReceived, messages.length)) {
-				errorMsg += "\n    " + emailFor(message) + ": " + Errors.rethrow().get(() -> message.getSubject());
+		try {
+			boolean allArrived = greenmail.waitForIncomingEmail(numberSent);
+			MimeMessage[] messages = greenmail.getReceivedMessages();
+			if (!allArrived && messages.length != numberSent) {
+				String errorMsg = "Expected " + numberSent + " new messages, but had " + messages.length;
+				for (MimeMessage message : messages) {
+					errorMsg += "\n    " + emailFor(message) + ": " + Errors.rethrow().get(() -> message.getSubject());
+				}
+				throw new AssertionError(errorMsg);
+			} else {
+				Map<String, EmailAssert> map = new AssertGetsMap<>();
+				for (MimeMessage message : messages) {
+					map.put(emailFor(message), new EmailAssert(message));
+				}
+				return map;
 			}
-			throw new AssertionError(errorMsg);
+		} finally {
+			Errors.rethrow().run(greenmail::purgeEmailFromAllMailboxes);
 		}
-
-		Map<String, EmailAssert> map = new HashMap<>();
-		for (MimeMessage message : Arrays.asList(messages).subList(emailsReceived, emailsReceived + count)) {
-			map.put(emailFor(message), new EmailAssert(message));
-		}
-		emailsReceived += count;
-		return map;
 	}
 
-	public Map<String, EmailAssert> getOldEmails() {
-		GreenMail greenmail = app.require(GreenMail.class);
-		Map<String, EmailAssert> map = new HashMap<>();
-		for (MimeMessage message : greenmail.getReceivedMessages()) {
-			map.put(emailFor(message), new EmailAssert(message));
+	static class AssertGetsMap<K, V> extends HashMap<K, V> {
+		private static final long serialVersionUID = -5150352310651793881L;
+
+		@Override
+		public V get(Object key) {
+			V result = super.get(key);
+			if (result == null) {
+				throw new AssertionError("Looking for '" + key + "' but only had " + super.keySet());
+			} else {
+				return result;
+			}
 		}
-		return map;
 	}
 
 	private static String emailFor(MimeMessage message) {
@@ -140,6 +142,15 @@ public class JoobyDevRule extends ExternalResource {
 
 	public EmailAssert waitForEmail() {
 		return waitForEmails(1).values().iterator().next();
+	}
+
+	public Map<String, EmailAssert> getOldEmails() {
+		GreenMail greenmail = app.require(GreenMail.class);
+		Map<String, EmailAssert> map = new HashMap<>();
+		for (MimeMessage message : greenmail.getReceivedMessages()) {
+			map.put(emailFor(message), new EmailAssert(message));
+		}
+		return map;
 	}
 
 	public Jooby app() {
