@@ -52,8 +52,8 @@ public class HerokuDatabase {
 	public static HerokuDatabase parseFrom(String value) {
 		URI dbUri = Errors.rethrow().get(() -> new URI(value));
 
-		String username = dbUri.getUserInfo().split(":")[0];
-		String password = dbUri.getUserInfo().split(":")[1];
+		String username = dbUri.getUserInfo().split(":", -1)[0];
+		String password = dbUri.getUserInfo().split(":", -1)[1];
 		String url = dbUri.getHost() + ':' + dbUri.getPort() + dbUri.getPath();
 		if (dbUri.getQuery() != null) {
 			url += "?" + dbUri.getQuery();

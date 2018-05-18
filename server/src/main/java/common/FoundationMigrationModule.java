@@ -73,7 +73,7 @@ public class FoundationMigrationModule implements Jooby.Module {
 		for (TakerevisionRecord rev : revs) {
 			String original = rev.getBlocks();
 			String migrated = migration.migrate(original);
-			if (original != migrated) {
+			if (!original.equals(migrated)) {
 				rev.setBlocks(migrated);
 				rev.store();
 			}

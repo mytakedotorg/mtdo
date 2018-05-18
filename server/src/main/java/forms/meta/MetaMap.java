@@ -146,7 +146,7 @@ public class MetaMap {
 	/** Creates an instance of class, then calls {@link #setSettersOf(Object)}. */
 	public <T> T into(Class<T> clazz) {
 		try {
-			T value = clazz.newInstance();
+			T value = clazz.getDeclaredConstructor().newInstance();
 			setFields(clazz, value);
 			return value;
 		} catch (Exception e) {

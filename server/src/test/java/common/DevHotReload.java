@@ -59,7 +59,7 @@ public class DevHotReload {
 			app.use(dev);
 			if (firstRun) {
 				// on the first run, setup the initial data
-				app.use((Jooby.Module) loader.loadClass("common.InitialData$Module").newInstance());
+				app.use((Jooby.Module) loader.loadClass("common.InitialData$Module").getDeclaredConstructor().newInstance());
 				firstRun = false;
 			}
 			app.start();
@@ -130,7 +130,7 @@ public class DevHotReload {
 				new File("bin/main"),
 				new File("bin/test")
 		};
-		Map<File, Long> fileToLastModified = new HashMap<>();
+		final Map<File, Long> fileToLastModified = new HashMap<>();
 
 		@Override
 		protected byte[] loadNewClass(String name) throws IOException {
