@@ -11,6 +11,8 @@ import db.tables.Follow;
 import db.tables.FoundationRev;
 import db.tables.Loginlink;
 import db.tables.Moderator;
+import db.tables.SharedFacts;
+import db.tables.SharedUrlRev;
 import db.tables.Takedraft;
 import db.tables.Takepublished;
 import db.tables.Takereaction;
@@ -66,6 +68,16 @@ public class Tables {
      * The table <code>public.moderator</code>.
      */
     public static final Moderator MODERATOR = db.tables.Moderator.MODERATOR;
+
+    /**
+     * The table <code>public.shared_facts</code>.
+     */
+    public static final SharedFacts SHARED_FACTS = db.tables.SharedFacts.SHARED_FACTS;
+
+    /**
+     * The table <code>public.shared_url_rev</code>.
+     */
+    public static final SharedUrlRev SHARED_URL_REV = db.tables.SharedUrlRev.SHARED_URL_REV;
 
     /**
      * The table <code>public.takedraft</code>.
