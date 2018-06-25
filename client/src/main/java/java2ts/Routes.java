@@ -15,6 +15,8 @@ public class Routes {
 	public static final String API_FOLLOW_ASK = "/api/followAsk";
 	public static final String API_FOLLOW_TELL = "/api/followTell";
 	public static final String API_SEARCH = "/api/search";
+	public static final String API_SHARE = "/api/share";
+	public static final String API_SHARE_VIEW = "/api/share-view";
 
 	public static final String MODS = "/mods";
 	public static final String MODS_DRAFTS = "/mods/drafts/";
