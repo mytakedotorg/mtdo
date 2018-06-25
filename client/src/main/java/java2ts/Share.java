@@ -7,7 +7,7 @@
 package java2ts;
 
 public interface Share {
-	public static final String METHOD_EMAIL = "email";
+	public static final String METHOD_URL = "url";
 	public static final String METHOD_FACEBOOK = "facebook";
 	public static final String METHOD_TWITTER = "twitter";
 

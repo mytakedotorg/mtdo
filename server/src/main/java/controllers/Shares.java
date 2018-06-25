@@ -11,6 +11,8 @@ import static db.Tables.SHARED_FACTS;
 import auth.AuthUser;
 import com.google.inject.Binder;
 import com.typesafe.config.Config;
+import common.IpGetter;
+import common.Time;
 import db.enums.ShareMethod;
 import db.tables.records.SharedFactsRecord;
 import java.math.BigDecimal;
@@ -18,6 +20,7 @@ import java2ts.Routes;
 import java2ts.Share;
 import org.jooby.Env;
 import org.jooby.Jooby;
+import org.jooby.Request;
 import org.jooq.DSLContext;
 
 /**
@@ -35,17 +38,19 @@ public class Shares implements Jooby.Module {
 			AuthUser user = AuthUser.authOpt(req).orElse(null);
 			Share.ShareReq shareReq = req.body(Share.ShareReq.class);
 			try (DSLContext dsl = req.require(DSLContext.class)) {
-				logShare(dsl, shareReq, user);
+				logShare(dsl, req, shareReq, user);
 				return "todo";
 			}
 		});
 	}
 
-	private static void logShare(DSLContext dsl, Share.ShareReq shareReq, AuthUser user) {
+	private static void logShare(DSLContext dsl, Request req, Share.ShareReq shareReq, AuthUser user) {
 		SharedFactsRecord record = dsl.newRecord(SHARED_FACTS);
 		if (user != null) {
 			record.setSharedBy(user.id());
 		}
+		record.setSharedOn(req.require(Time.class).nowTimestamp());
+		record.setSharedIp(req.require(IpGetter.class).ip(req));
 		record.setTitle(shareReq.title);
 		record.setFoundationVersion(FOUNDATION_VERSION);
 		record.setUrlVersion(URL_VERSION);
@@ -63,8 +68,8 @@ public class Shares implements Jooby.Module {
 	private static ShareMethod parseMethod(String methodStr) {
 		ShareMethod method;
 		switch (methodStr) {
-		case Share.METHOD_EMAIL:
-			method = ShareMethod.email;
+		case Share.METHOD_URL:
+			method = ShareMethod.url;
 			break;
 		case Share.METHOD_FACEBOOK:
 			method = ShareMethod.facebook;
