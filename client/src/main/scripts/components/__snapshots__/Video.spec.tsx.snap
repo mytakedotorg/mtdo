@@ -396,34 +396,7 @@ exports[`Video with highlights 1`] = `
     </div>
     <div
       className="video__container video__container--actions"
-    >
-      <div
-        className="video__float--right"
-      >
-        <DropDown
-          classModifier="video"
-          dropdownPosition="BL"
-          toggleText="Share"
-        >
-          <div
-            className="video__share-dropdown"
-          >
-            <button
-              className="share__action share__action--clickable"
-              onClick={[Function]}
-            >
-              Copy URL
-            </button>
-            <button
-              className="share__action share__action--clickable"
-              onClick={[Function]}
-            >
-              Give your Take on this
-            </button>
-          </div>
-        </DropDown>
-      </div>
-    </div>
+    />
     <CaptionView
       captionIsHighlighted={true}
       eventHandlers={
