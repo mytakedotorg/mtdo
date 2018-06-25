@@ -6,10 +6,12 @@ package db.tables;
 
 import db.Keys;
 import db.Public;
+import db.bindings.PostgresInetBinding;
 import db.enums.ShareMethod;
 import db.tables.records.SharedFactsRecord;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.List;
 
@@ -38,7 +40,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class SharedFacts extends TableImpl<SharedFactsRecord> {
 
-    private static final long serialVersionUID = 1752082607;
+    private static final long serialVersionUID = -454304170;
 
     /**
      * The reference instance of <code>public.shared_facts</code>
@@ -57,6 +59,21 @@ public class SharedFacts extends TableImpl<SharedFactsRecord> {
      * The column <code>public.shared_facts.shared_by</code>.
      */
     public final TableField<SharedFactsRecord, Integer> SHARED_BY = createField("shared_by", org.jooq.impl.SQLDataType.INTEGER, this, "");
+
+    /**
+     * The column <code>public.shared_facts.shared_on</code>.
+     */
+    public final TableField<SharedFactsRecord, Timestamp> SHARED_ON = createField("shared_on", org.jooq.impl.SQLDataType.TIMESTAMP.nullable(false), this, "");
+
+    /**
+     * The column <code>public.shared_facts.shared_ip</code>.
+     */
+    public final TableField<SharedFactsRecord, String> SHARED_IP = createField("shared_ip", org.jooq.impl.DefaultDataType.getDefaultDataType("inet"), this, "", new PostgresInetBinding());
+
+    /**
+     * The column <code>public.shared_facts.view_count</code>.
+     */
+    public final TableField<SharedFactsRecord, Integer> VIEW_COUNT = createField("view_count", org.jooq.impl.SQLDataType.INTEGER.nullable(false).defaultValue(org.jooq.impl.DSL.field("0", org.jooq.impl.SQLDataType.INTEGER)), this, "");
 
     /**
      * The column <code>public.shared_facts.title</code>.

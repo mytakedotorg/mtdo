@@ -26,7 +26,7 @@ import org.jooq.Schema;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public enum ShareMethod implements EnumType {
 
-    email("email"),
+    url("url"),
 
     facebook("facebook"),
 

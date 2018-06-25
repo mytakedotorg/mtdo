@@ -8,6 +8,7 @@ import db.enums.ShareMethod;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 
 import javax.annotation.Generated;
 
@@ -25,9 +26,12 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class SharedFacts implements Serializable {
 
-    private static final long serialVersionUID = 1818712794;
+    private static final long serialVersionUID = -1090367071;
 
     private Integer     sharedBy;
+    private Timestamp   sharedOn;
+    private String      sharedIp;
+    private Integer     viewCount;
     private String      title;
     private Integer     foundationVersion;
     private Integer     urlVersion;
@@ -42,6 +46,9 @@ public class SharedFacts implements Serializable {
 
     public SharedFacts(SharedFacts value) {
         this.sharedBy = value.sharedBy;
+        this.sharedOn = value.sharedOn;
+        this.sharedIp = value.sharedIp;
+        this.viewCount = value.viewCount;
         this.title = value.title;
         this.foundationVersion = value.foundationVersion;
         this.urlVersion = value.urlVersion;
@@ -55,6 +62,9 @@ public class SharedFacts implements Serializable {
 
     public SharedFacts(
         Integer     sharedBy,
+        Timestamp   sharedOn,
+        String      sharedIp,
+        Integer     viewCount,
         String      title,
         Integer     foundationVersion,
         Integer     urlVersion,
@@ -66,6 +76,9 @@ public class SharedFacts implements Serializable {
         BigDecimal  viewEnd
     ) {
         this.sharedBy = sharedBy;
+        this.sharedOn = sharedOn;
+        this.sharedIp = sharedIp;
+        this.viewCount = viewCount;
         this.title = title;
         this.foundationVersion = foundationVersion;
         this.urlVersion = urlVersion;
@@ -83,6 +96,33 @@ public class SharedFacts implements Serializable {
 
     public SharedFacts setSharedBy(Integer sharedBy) {
         this.sharedBy = sharedBy;
+        return this;
+    }
+
+    public Timestamp getSharedOn() {
+        return this.sharedOn;
+    }
+
+    public SharedFacts setSharedOn(Timestamp sharedOn) {
+        this.sharedOn = sharedOn;
+        return this;
+    }
+
+    public String getSharedIp() {
+        return this.sharedIp;
+    }
+
+    public SharedFacts setSharedIp(String sharedIp) {
+        this.sharedIp = sharedIp;
+        return this;
+    }
+
+    public Integer getViewCount() {
+        return this.viewCount;
+    }
+
+    public SharedFacts setViewCount(Integer viewCount) {
+        this.viewCount = viewCount;
         return this;
     }
 
@@ -172,6 +212,9 @@ public class SharedFacts implements Serializable {
         StringBuilder sb = new StringBuilder("SharedFacts (");
 
         sb.append(sharedBy);
+        sb.append(", ").append(sharedOn);
+        sb.append(", ").append(sharedIp);
+        sb.append(", ").append(viewCount);
         sb.append(", ").append(title);
         sb.append(", ").append(foundationVersion);
         sb.append(", ").append(urlVersion);
