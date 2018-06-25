@@ -144,12 +144,13 @@ $palettes: (
       tab-border--active: $action-highlight
     ),
   reaction: (text: $base-darkest, background: $white, border: $base-darkest),
+  dropdown: (background: $white, border: $base-darkest),
   share:
     (
       text: $base-darkest,
       text--green: $secondary,
       background: $white,
-      border: $base-darkest
+      border: $base-lightest
     ),
   trackSlider: (color--handle: $base-dark, border: $base-darkest),
   searchbar:

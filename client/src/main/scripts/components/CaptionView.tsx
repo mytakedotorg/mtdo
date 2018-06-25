@@ -12,6 +12,7 @@ import {
   getSimpleRangesFromHTMLRange,
   getWordRangeFromCharRange,
   highlightCaption,
+  slugify,
   FoundationNode,
   SimpleRanges
 } from "../utils/functions";
@@ -242,6 +243,7 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
           videoDuration={this.props.videoDuration}
           rangeSliders={this.props.rangeSliders}
           stateAuthority={this.props.stateAuthority}
+          titleSlug={slugify(this.props.videoFact.fact.title)}
         />
         {this.props.videoFact.plainText.length > 0 &&
         this.state.highlightedNodes ? (

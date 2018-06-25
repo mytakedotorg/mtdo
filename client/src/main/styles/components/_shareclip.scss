@@ -1,0 +1,28 @@
+.shareclip__title {
+  @include heading3;
+  @include text-margin-lr;
+  color: palette(share, text);
+  margin-top: $page-margin-mobile;
+  margin-bottom: $page-margin-mobile;
+}
+.shareclip__label {
+  @include body("sans");
+  @include text-margin-lr;
+  color: palette(share, text);
+  display: block;
+}
+.shareclip__input {
+  @include text-margin;
+  border: 1px solid palette(share, border);
+  display: block;
+  @include input;
+}
+.shareclip__button {
+  @include button;
+  @include button--blue;
+  margin-left: $page-margin-mobile;
+  margin-bottom: $page-margin-mobile * $vertical-margin-multiplier;
+  @media #{$mq-medium} {
+    margin-left: $content-margin;
+  }
+}

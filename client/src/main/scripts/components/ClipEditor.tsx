@@ -1,6 +1,8 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { Range } from "rc-slider";
+import DropDown from "./DropDown";
+import ShareClip from "./ShareClip";
 import {
   RangeType,
   StateAuthority,
@@ -51,6 +53,7 @@ interface ClipEditorProps {
   eventHandlers: ClipEditorEventHandlers;
   rangeSliders: TimeRange[];
   stateAuthority: StateAuthority;
+  titleSlug: string;
 }
 
 interface ClipEditorState {}
@@ -223,6 +226,23 @@ class ClipEditor extends React.Component<ClipEditorProps, ClipEditorState> {
             >
               <i className="fa fa-repeat" aria-hidden="true" /> 15s
             </button>
+            {props.captionIsHighlighted && selectionRange.end ? (
+              <DropDown
+                classModifier="clipShare"
+                dropdownPosition="CUSTOM"
+                toggleText="Share"
+              >
+                <ShareClip
+                  factSlug={this.props.titleSlug}
+                  highlightedRange={[selectionRange.start, selectionRange.end]}
+                  viewRange={
+                    zoomRange && zoomRange.end
+                      ? [zoomRange.start, zoomRange.end]
+                      : undefined
+                  }
+                />
+              </DropDown>
+            ) : null}
           </div>
         </div>
       </div>

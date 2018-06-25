@@ -24,6 +24,7 @@ $trackHeight: 20px;
 }
 .trackSlider__range-container {
   position: relative;
+  z-index: 1;
   width: $video-container-width;
   overflow: hidden;
   height: 3 * $trackHeight + 2;
