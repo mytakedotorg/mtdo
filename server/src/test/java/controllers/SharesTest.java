@@ -6,19 +6,18 @@
  */
 package controllers;
 
-import org.assertj.core.api.Assertions;
-import org.junit.ClassRule;
-import org.junit.Test;
-
 import common.JoobyDevRule;
 import common.JsonPost;
 import java2ts.Routes;
 import java2ts.Share;
+import org.assertj.core.api.Assertions;
+import org.junit.ClassRule;
+import org.junit.Test;
 
 public class SharesTest {
 	@ClassRule
 	public static JoobyDevRule dev = JoobyDevRule.initialData();
-	
+
 	@Test
 	public void shareableURL() {
 		Share.ShareReq req = new Share.ShareReq();
