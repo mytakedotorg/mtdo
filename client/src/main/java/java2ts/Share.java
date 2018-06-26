@@ -27,6 +27,6 @@ public interface Share {
 
 	@jsweet.lang.Interface
 	public class ShareRes implements Json {
-		
+
 	}
 }
