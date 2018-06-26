@@ -8,7 +8,6 @@ declare global {
     fbAsyncInit: any;
   }
 }
-
 interface ShareDialogProps {
   factSlug: string;
   highlightedRange: [number, number];
@@ -30,20 +29,20 @@ class ShareClip extends React.Component<ShareDialogProps, ShareDialogState> {
     this.setState({ title: event.target.value });
   };
   handleFacebookClick = () => {
-    FB.ui(
-      {
-        method: "share",
-        href: window.location.href
-      },
-      function(resonse) {}
-    );
+    this.logToServer(Share.METHOD_FACEBOOK);
+    this.showFacebookDialog();
   };
-  handleTwitterClick = () => {};
+  handleTwitterClick = () => {
+    this.logToServer(Share.METHOD_TWITTER);
+  };
   handleUrlClick = () => {
+    this.logToServer(Share.METHOD_URL);
+  };
+  logToServer = (method: string) => {
     const { highlightedRange, viewRange } = this.props;
     let request: Share.ShareReq = {
       title: this.state.title,
-      method: Share.METHOD_URL,
+      method: method,
       factSlug: this.props.factSlug,
       highlightedRangeStart: highlightedRange[0].toString(),
       highlightedRangeEnd: highlightedRange[1].toString()
@@ -53,6 +52,15 @@ class ShareClip extends React.Component<ShareDialogProps, ShareDialogState> {
       request.viewRangeEnd = viewRange[1].toString();
     }
     postRequest(Routes.API_SHARE, request, () => {});
+  };
+  showFacebookDialog = () => {
+    FB.ui(
+      {
+        method: "share",
+        href: window.location.href
+      },
+      function(response) {}
+    );
   };
   componentDidMount() {
     window.fbAsyncInit = function() {
