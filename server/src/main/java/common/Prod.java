@@ -37,9 +37,7 @@ public class Prod extends Jooby {
 		use((env, conf, binder) -> {
 			binder.bind(Random.class).toInstance(SecureRandom.getInstanceStrong());
 		});
-		use((env, conf, binder) -> {
-			binder.bind(Time.class).toInstance(() -> System.currentTimeMillis());
-		});
+		realtime(this);
 		use(new HerokuDatabase.Module());
 		common(this);
 		use((env, conf, binder) -> {
@@ -53,6 +51,12 @@ public class Prod extends Jooby {
 		use(new InitialData.Module());
 		use(new FoundationMigrationModule());
 		controllers(this);
+	}
+
+	static void realtime(Jooby jooby) {
+		jooby.use((env, conf, binder) -> {
+			binder.bind(Time.class).toInstance(() -> System.currentTimeMillis());
+		});
 	}
 
 	static void common(Jooby jooby) {
