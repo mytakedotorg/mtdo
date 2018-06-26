@@ -39,26 +39,20 @@ class ShareClip extends React.Component<ShareDialogProps, ShareDialogState> {
     );
   };
   handleTwitterClick = () => {};
-  handleServerResponse = (json: any) => {
-    console.log("Server responded");
-    if (json) {
-      console.log(json);
-    }
-  };
   handleUrlClick = () => {
     const { highlightedRange, viewRange } = this.props;
     let request: Share.ShareReq = {
       title: this.state.title,
       method: Share.METHOD_URL,
       factSlug: this.props.factSlug,
-			highlightedRangeStart: highlightedRange[0].toString(),
-			highlightedRangeEnd: highlightedRange[1].toString(),
+      highlightedRangeStart: highlightedRange[0].toString(),
+      highlightedRangeEnd: highlightedRange[1].toString()
     };
     if (viewRange) {
-			request.viewRangeStart = viewRange[0].toString();
-			request.viewRangeEnd = viewRange[1].toString();
+      request.viewRangeStart = viewRange[0].toString();
+      request.viewRangeEnd = viewRange[1].toString();
     }
-    postRequest(Routes.API_SHARE, request, this.handleServerResponse);
+    postRequest(Routes.API_SHARE, request, () => {});
   };
   componentDidMount() {
     window.fbAsyncInit = function() {
