@@ -17,8 +17,16 @@ public interface Share {
 		public String title;
 		public String method;
 		public String factSlug;
-		public jsweet.util.tuple.Tuple2<String, String> highlightedRange;
+		public String highlightedRangeStart;
+		public String highlightedRangeEnd;
 		@jsweet.lang.Optional
-		public jsweet.util.tuple.Tuple2<String, String> viewRange;
+		public String viewRangeStart;
+		@jsweet.lang.Optional
+		public String viewRangeEnd;
+	}
+
+	@jsweet.lang.Interface
+	public class ShareRes implements Json {
+		
 	}
 }

@@ -47,21 +47,16 @@ class ShareClip extends React.Component<ShareDialogProps, ShareDialogState> {
   };
   handleUrlClick = () => {
     const { highlightedRange, viewRange } = this.props;
-    const hr: [string, string] = [
-      highlightedRange[0].toString(),
-      highlightedRange[1].toString()
-    ];
-    const vr: [string, string] | null = viewRange
-      ? [viewRange[0].toString(), viewRange[1].toString()]
-      : null;
     let request: Share.ShareReq = {
       title: this.state.title,
       method: Share.METHOD_URL,
       factSlug: this.props.factSlug,
-      highlightedRange: hr
+			highlightedRangeStart: highlightedRange[0].toString(),
+			highlightedRangeEnd: highlightedRange[1].toString(),
     };
-    if (vr) {
-      request.viewRange = vr;
+    if (viewRange) {
+			request.viewRangeStart = viewRange[0].toString();
+			request.viewRangeEnd = viewRange[1].toString();
     }
     postRequest(Routes.API_SHARE, request, this.handleServerResponse);
   };

@@ -39,7 +39,7 @@ public class Shares implements Jooby.Module {
 			Share.ShareReq shareReq = req.body(Share.ShareReq.class);
 			try (DSLContext dsl = req.require(DSLContext.class)) {
 				logShare(dsl, req, shareReq, user);
-				return "todo";
+				return new Share.ShareRes();
 			}
 		});
 	}
@@ -56,11 +56,11 @@ public class Shares implements Jooby.Module {
 		record.setUrlVersion(URL_VERSION);
 		record.setMethod(parseMethod(shareReq.method));
 		record.setFactSlug(shareReq.factSlug);
-		record.setHighlightStart(new BigDecimal(shareReq.highlightedRange.$0));
-		record.setHighlightEnd(new BigDecimal(shareReq.highlightedRange.$1));
-		if (shareReq.viewRange != null) {
-			record.setViewStart(new BigDecimal(shareReq.viewRange.$0));
-			record.setViewEnd(new BigDecimal(shareReq.viewRange.$1));
+		record.setHighlightStart(new BigDecimal(shareReq.highlightedRangeStart));
+		record.setHighlightEnd(new BigDecimal(shareReq.highlightedRangeEnd));
+		if (shareReq.viewRangeStart != null && shareReq.viewRangeEnd != null) {
+			record.setViewStart(new BigDecimal(shareReq.viewRangeStart));
+			record.setViewEnd(new BigDecimal(shareReq.viewRangeEnd));
 		}
 		record.insert();
 	}
