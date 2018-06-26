@@ -120,28 +120,6 @@ class ShareClip extends React.Component<ShareDialogProps, ShareDialogState> {
       function(response) {}
     );
   };
-  componentDidMount() {
-    window.fbAsyncInit = function() {
-      FB.init({
-        appId: "1014270045380974",
-        autoLogAppEvents: true,
-        xfbml: true,
-        version: "v3.0"
-      });
-    };
-
-    (function(d, s, id) {
-      var js,
-        fjs = d.getElementsByTagName(s)[0];
-      if (d.getElementById(id)) {
-        return;
-      }
-      js = d.createElement(s);
-      js.id = id;
-      (js as any).src = "https://connect.facebook.net/en_US/sdk.js";
-      (fjs as any).parentNode.insertBefore(js, fjs);
-    })(document, "script", "facebook-jssdk");
-  }
   render() {
     return (
       <div className="shareclip">
