@@ -19,6 +19,7 @@
   "author": "",
   "license": "GPL-2.0",
   "dependencies": {
+    "@types/facebook-js-sdk": "^2.8.4",
     "@types/jest": "^21.1.10",
     "@types/react": "^15.6.14",
     "@types/react-dom": "^15.5.7",
