@@ -5,6 +5,17 @@
   margin-top: $page-margin-mobile;
   margin-bottom: $page-margin-mobile;
 }
+.shareclip__subtitle {
+  @include heading4;
+  @include text-margin-lr;
+  color: palette(share, text);
+}
+.shareclip__url {
+  @include body("sans");
+  @include text-margin-lr;
+  color: palette(share, text);
+  overflow: scroll;
+}
 .shareclip__label {
   @include body("sans");
   @include text-margin-lr;
@@ -25,4 +36,9 @@
   @media #{$mq-medium} {
     margin-left: $content-margin;
   }
+}
+.shareclip__success {
+  @include body("sans");
+  @include text-margin-lr;
+  color: palette(share, text--green);
 }
