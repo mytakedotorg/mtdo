@@ -54,19 +54,19 @@ class ShareClip extends React.Component<ShareDialogProps, ShareDialogState> {
   };
   handleFacebookClick = () => {
     const request: Share.ShareReq = this.createRequestObject(
-      Share.METHOD_FACEBOOK
+      Share.Constants.METHOD_FACEBOOK
     );
     this.logToServer(request);
     this.showFacebookDialog();
   };
   handleTwitterClick = () => {
     const request: Share.ShareReq = this.createRequestObject(
-      Share.METHOD_TWITTER
+      Share.Constants.METHOD_TWITTER
     );
     this.logToServer(request);
   };
   handleUrlClick = () => {
-    const request: Share.ShareReq = this.createRequestObject(Share.METHOD_URL);
+    const request: Share.ShareReq = this.createRequestObject(Share.Constants.METHOD_URL);
     this.logToServer(request);
     this.createShareableURL(request);
   };
