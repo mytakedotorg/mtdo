@@ -66,7 +66,9 @@ class ShareClip extends React.Component<ShareDialogProps, ShareDialogState> {
     this.logToServer(request);
   };
   handleUrlClick = () => {
-    const request: Share.ShareReq = this.createRequestObject(Share.Constants.METHOD_URL);
+    const request: Share.ShareReq = this.createRequestObject(
+      Share.Constants.METHOD_URL
+    );
     this.logToServer(request);
     this.createShareableURL(request);
   };
@@ -130,7 +132,9 @@ class ShareClip extends React.Component<ShareDialogProps, ShareDialogState> {
               <code>{this.state.url}</code>
             </pre>
             {this.state.isCopiedToClipboard ? (
-              <p className="shareclip__success">Copied to clipboard</p>
+              <p className="shareclip__success" onClick={this.copyToClipboard}>
+                Copied to clipboard
+              </p>
             ) : (
               <button
                 className="shareclip__button"
