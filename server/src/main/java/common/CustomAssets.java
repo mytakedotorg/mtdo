@@ -35,23 +35,27 @@ public class CustomAssets implements Jooby.Module {
 
 	static final String _STYLES = "_styles";
 	static final String _SCRIPTS = "_scripts";
+	static final String FB_APP_ID = "fbappid";
 
 	@Override
 	public void configure(Env env, Config conf, Binder binder) throws Throwable {
 		env.router().assets("/favicon.ico", "/assets/permanent/favicon-6022c3e42d.ico");
 
 		Config config = ConfigFactory.parseResources("assets.conf");
+		Config appConfig;
 		AssetCompiler compiler = new AssetCompiler(config);
 		BiFunction<String, String, String> url;
 		if (env.name().equals("dev")) {
 			url = (type, raw) -> "/assets-dev/" + type + raw;
 			env.router().assets("/assets-dev/**");
 			env.router().assets("/assets/**");
+			appConfig = ConfigFactory.parseResources("application.dev.conf");
 		} else {
 			byte[] manifest = Resources.toByteArray(CustomAssets.class.getResource("/assets/manifest.json"));
 			Map<String, Any> map = JsonIterator.deserialize(manifest).asMap();
 			url = (type, raw) -> "/assets/" + type + "/" + Objects.requireNonNull(map.get(raw.substring(1)), "No fingerprinted version of " + raw + ", only has: " + map.keySet());
 			env.router().assets("/assets/**");
+			appConfig = ConfigFactory.parseResources("application.prod.conf");
 		}
 		// key, style, key, script
 		List<String> keyValue = new ArrayList<>(4 * compiler.fileset().size());
@@ -67,6 +71,7 @@ public class CustomAssets implements Jooby.Module {
 				String value = keyValue.get(2 * i + 1);
 				req.set(key, value);
 			}
+			req.set(FB_APP_ID, appConfig.getString("application.fbAppId"));
 		});
 	}
 

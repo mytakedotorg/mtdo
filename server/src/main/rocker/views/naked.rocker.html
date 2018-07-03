@@ -32,7 +32,7 @@
 <meta property="og:url" content="https://mytake.org@url" />
 <meta property="og:image" content="https://mytake/org@image" />
 *@
-<meta property="fb:app_id" content="203240867180202" />
+<meta property="fb:app_id" content="@fbAppId()" />
 
 @style(fileset)
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Merriweather:400,400i,700|Source+Sans+Pro:300,400,700" crossorigin="anonymous">
@@ -46,7 +46,7 @@
 <script>
 	window.fbAsyncInit = function() {
 		FB.init({
-			appId            : '203240867180202',
+			appId            : '@fbAppId()',
 			autoLogAppEvents : true,
 			xfbml            : true,
 			version          : 'v3.0'
