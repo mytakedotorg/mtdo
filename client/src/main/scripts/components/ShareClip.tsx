@@ -14,21 +14,21 @@ declare global {
     fbAsyncInit: any;
   }
 }
-interface ShareDialogProps {
+interface ShareClipProps {
   factSlug: string;
   highlightedRange: [number, number];
   viewRange?: [number, number];
 }
-interface ShareDialogState {
+interface ShareClipState {
   title: string;
   isCopiedToClipboard: boolean;
   url?: string;
 }
-class ShareClip extends React.Component<ShareDialogProps, ShareDialogState> {
+class ShareClip extends React.Component<ShareClipProps, ShareClipState> {
   private CLIP_TITLE = "cliptitle";
   private ANON = "anonymous";
   private UNTITLED = "untitled";
-  constructor(props: ShareDialogProps) {
+  constructor(props: ShareClipProps) {
     super(props);
 
     this.state = {
