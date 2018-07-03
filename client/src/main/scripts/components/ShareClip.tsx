@@ -122,6 +122,25 @@ class ShareClip extends React.Component<ShareClipProps, ShareClipState> {
       function(response) {}
     );
   };
+  urlDidUpdate = () => {
+    this.setState({ isCopiedToClipboard: false });
+  };
+  componentWillReceiveProps(nextProps: ShareClipProps) {
+    const { factSlug, highlightedRange, viewRange } = this.props;
+    if (
+      nextProps.factSlug !== factSlug ||
+      nextProps.highlightedRange[0] !== highlightedRange[0] ||
+      nextProps.highlightedRange[1] !== highlightedRange[1]
+    ) {
+      this.urlDidUpdate();
+    } else if (
+      nextProps.viewRange &&
+      (nextProps.viewRange[0] !== viewRange[0] ||
+        nextProps.viewRange[1] !== viewRange[1])
+    ) {
+      this.urlDidUpdate();
+    }
+  }
   render() {
     return (
       <div className="shareclip">
