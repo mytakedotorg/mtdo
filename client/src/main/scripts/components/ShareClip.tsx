@@ -140,6 +140,7 @@ class ShareClip extends React.Component<ShareClipProps, ShareClipState> {
       this.urlDidUpdate(false);
     } else if (
       nextProps.viewRange &&
+      viewRange &&
       (nextProps.viewRange[0] !== viewRange[0] ||
         nextProps.viewRange[1] !== viewRange[1])
     ) {
