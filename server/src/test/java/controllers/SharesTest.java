@@ -22,7 +22,7 @@ public class SharesTest {
 	public void shareableURL() {
 		Share.ShareReq req = new Share.ShareReq();
 		req.title = "User generated title";
-		req.method = Share.METHOD_URL;
+		req.method = Share.Constants.METHOD_URL;
 		req.factSlug = "presidential-debate-clinton-dole-1-of-2";
 		req.highlightedRangeStart = "12.44";
 		req.highlightedRangeEnd = "23.15";

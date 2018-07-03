@@ -68,13 +68,13 @@ public class Shares implements Jooby.Module {
 	private static ShareMethod parseMethod(String methodStr) {
 		ShareMethod method;
 		switch (methodStr) {
-		case Share.METHOD_URL:
+		case Share.Constants.METHOD_URL:
 			method = ShareMethod.url;
 			break;
-		case Share.METHOD_FACEBOOK:
+		case Share.Constants.METHOD_FACEBOOK:
 			method = ShareMethod.facebook;
 			break;
-		case Share.METHOD_TWITTER:
+		case Share.Constants.METHOD_TWITTER:
 			method = ShareMethod.twitter;
 			break;
 		default:
