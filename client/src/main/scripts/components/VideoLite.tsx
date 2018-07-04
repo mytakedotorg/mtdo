@@ -1,6 +1,5 @@
 import * as React from "react";
 import YouTube from "react-youtube";
-import { Foundation } from "../java2ts/Foundation";
 
 interface YTPlayerParameters {
   rel: number;

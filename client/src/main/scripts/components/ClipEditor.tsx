@@ -1,6 +1,4 @@
 import * as React from "react";
-import * as ReactDOM from "react-dom";
-import { Range } from "rc-slider";
 import DropDown from "./DropDown";
 import ShareClip from "./ShareClip";
 import {
@@ -12,8 +10,7 @@ import {
 } from "./Video";
 import ZoomViewer from "./ZoomViewer";
 import TrackSlider, { TrackSliderEventHandlers } from "./TrackSlider";
-import { alertErr, convertSecondsToTimestamp } from "../utils/functions";
-import isEqual = require("lodash/isEqual");
+import { alertErr } from "../utils/functions";
 
 export interface ClipEditorEventHandlers {
   onAfterRangeChange: (
@@ -41,8 +38,6 @@ const TRACKSTYLES__SLIDER: TrackStyles = {
     border: "1px solid #2c4770" // $base
   }
 };
-
-type IsChanging = "zoom" | "selection" | "view";
 
 interface ClipEditorProps {
   captionIsHighlighted: boolean;

@@ -5,7 +5,6 @@ import {
   EditorVideoContainerProps,
   EditorVideoContainerState
 } from "./EditorVideoContainer";
-import { Foundation } from "../java2ts/Foundation";
 import { videoFactFast } from "../utils/testUtils";
 
 jest.mock("./Video", () => ({

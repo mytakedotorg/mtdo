@@ -2,9 +2,6 @@ import * as React from "react";
 import * as renderer from "react-test-renderer";
 import BlockWriter, { InitialBlockWriterState } from "./BlockWriter";
 
-const onBackClick = jest.fn();
-const onSetClick = jest.fn();
-
 jest.mock("./BlockEditor", () => ({
   default: "BlockEditor"
 }));

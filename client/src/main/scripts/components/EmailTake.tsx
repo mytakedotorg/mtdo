@@ -1,5 +1,4 @@
 import * as React from "react";
-import * as ReactDOM from "react-dom";
 import { TakeDocument } from "./BlockEditor";
 import { sendEmail } from "../utils/databaseAPI";
 import { getUserCookieString } from "../utils/functions";

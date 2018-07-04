@@ -11,7 +11,6 @@ import {
   videoFactLink
 } from "../utils/testUtils";
 import { SetFactHandlers } from "./TimelinePreview";
-import { Foundation } from "../java2ts/Foundation";
 
 jest.mock("./TimelinePreviewContainer", () => ({
   default: "TimelinePreviewContainer"

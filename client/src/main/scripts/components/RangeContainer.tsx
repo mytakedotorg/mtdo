@@ -1,8 +1,7 @@
 import * as React from "react";
-import * as ReactDOM from "react-dom";
 import Slider, { Range } from "rc-slider";
 import { TrackSliderEventHandlers } from "./TrackSlider";
-import { RangeType, StateAuthority, StylesObject, TimeRange } from "./Video";
+import { RangeType, StateAuthority, StylesObject } from "./Video";
 import isEqual = require("lodash/isEqual");
 
 interface RangeContainerProps {

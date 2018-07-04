@@ -13,7 +13,6 @@ import {
   getWordRangeFromCharRange,
   highlightCaption,
   slugify,
-  FoundationNode,
   SimpleRanges
 } from "../utils/functions";
 import { RangeType, StateAuthority, TimeRange } from "./Video";

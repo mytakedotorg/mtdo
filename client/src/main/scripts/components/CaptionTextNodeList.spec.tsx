@@ -10,7 +10,6 @@ const eventHandlers = {
   onMouseUp: onMouseUp,
   onScroll: onScroll
 };
-const className = "document__text document__text--caption";
 
 jest.mock("./CaptionTextNode", () => ({
   default: "CaptionTextNode"

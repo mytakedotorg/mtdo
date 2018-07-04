@@ -1,5 +1,4 @@
 import * as React from "react";
-import * as ReactDOM from "react-dom";
 import RangeContainer from "./RangeContainer";
 import { RangeType, StateAuthority, TimeRange } from "./Video";
 import { convertSecondsToTimestamp } from "../utils/functions";
