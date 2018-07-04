@@ -24,7 +24,6 @@ class BlockReader extends React.Component<BlockReaderProps, BlockReaderState> {
   }
   handleClick = (
     factLink: Foundation.FactLink,
-    offset: number,
     highlightedRange: [number, number],
     viewRange: [number, number]
   ) => {

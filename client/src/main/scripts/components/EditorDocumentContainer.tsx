@@ -161,7 +161,6 @@ class Document extends React.Component<DocumentProps, DocumentState> {
       };
       this.props.eventHandlers.onDocumentClick(
         factlink,
-        this.div.getBoundingClientRect().top,
         this.props.block.highlightedRange,
         this.props.block.viewRange
       );
