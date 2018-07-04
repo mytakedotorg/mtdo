@@ -43,6 +43,7 @@ test("Initial ClipEditor", () => {
         rangeSliders={initialRangeSliders}
         stateAuthority={"SCROLL"}
         titleSlug={titleSlug}
+        videoIdHash={videoFactLink.hash}
       />
     )
     .toJSON();
@@ -62,6 +63,7 @@ test("ClipEditor with zoomed selection", () => {
         rangeSliders={zoomedRangeSliders}
         stateAuthority={"SCROLL"}
         titleSlug={titleSlug}
+        videoIdHash={videoFactLink.hash}
       />
     )
     .toJSON();
@@ -81,6 +83,7 @@ test("ClipEditor with zoomed selection", () => {
         rangeSliders={unzoomedRangeSliders}
         stateAuthority={"SCROLL"}
         titleSlug={titleSlug}
+        videoIdHash={videoFactLink.hash}
       />
     )
     .toJSON();

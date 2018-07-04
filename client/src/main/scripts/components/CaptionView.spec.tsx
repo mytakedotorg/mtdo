@@ -2,7 +2,7 @@ import * as React from "react";
 import * as renderer from "react-test-renderer";
 import CaptionView, { CaptionViewEventHandlers } from "./CaptionView";
 import { TimeRange, TRACKSTYLES__RANGE } from "./Video";
-import { videoFactFast } from "../utils/testUtils";
+import { videoFactLink, videoFactFast } from "../utils/testUtils";
 
 jest.mock("./Document", () => ({
   default: "Document"
@@ -46,6 +46,7 @@ test("CaptionTextNodeList", () => {
     .create(
       <CaptionView
         videoFact={videoFactFast}
+        videoFactHash={videoFactLink.hash}
         timer={0}
         captionIsHighlighted={false}
         highlightedCharRange={[-1, -1]}
@@ -82,6 +83,7 @@ test("CaptionTextNodeList with highlights from props", () => {
     .create(
       <CaptionView
         videoFact={videoFactFast}
+        videoFactHash={videoFactLink.hash}
         timer={5.31}
         captionIsHighlighted={true}
         highlightedCharRange={[80, 128]}
