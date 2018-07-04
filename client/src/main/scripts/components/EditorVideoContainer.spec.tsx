@@ -1,6 +1,5 @@
 import * as React from "react";
 import * as renderer from "react-test-renderer";
-import {} from "jest";
 import {
   EditorVideoBranch,
   EditorVideoContainerProps,
@@ -8,8 +7,6 @@ import {
 } from "./EditorVideoContainer";
 import { Foundation } from "../java2ts/Foundation";
 import { videoFactFast } from "../utils/testUtils";
-
-const mockFn = jest.fn();
 
 jest.mock("./Video", () => ({
   default: "Video"

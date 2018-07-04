@@ -1,6 +1,5 @@
 import * as React from "react";
 import * as renderer from "react-test-renderer";
-import {} from "jest";
 import CaptionView, { CaptionViewEventHandlers } from "./CaptionView";
 import { TimeRange, TRACKSTYLES__RANGE } from "./Video";
 import { videoFactFast } from "../utils/testUtils";

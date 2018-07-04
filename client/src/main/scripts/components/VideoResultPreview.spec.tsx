@@ -1,7 +1,6 @@
 import * as React from "react";
 import * as renderer from "react-test-renderer";
 import VideoResultPreview from "./VideoResultPreview";
-import {} from "jest";
 import { kennedyNixon } from "../utils/testUtils";
 
 jest.mock("./VideoResultTurnList", () => ({

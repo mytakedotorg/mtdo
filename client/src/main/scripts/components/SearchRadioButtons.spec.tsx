@@ -1,6 +1,5 @@
 import * as React from "react";
 import * as renderer from "react-test-renderer";
-import {} from "jest";
 import SearchRadioButtons from "./SearchRadioButtons";
 
 test("SearchRadioButtons Containing", () => {

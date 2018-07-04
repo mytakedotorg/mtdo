@@ -1,6 +1,5 @@
 import * as React from "react";
 import * as renderer from "react-test-renderer";
-import {} from "jest";
 import Timeline from "./Timeline";
 import { timelineItems } from "../utils/testUtils";
 
