@@ -2,6 +2,7 @@ import * as React from "react";
 import BlockEditor, { TakeBlock, TakeDocument } from "./BlockEditor";
 import { alertErr, slugify } from "../utils/functions";
 import { Share } from "../java2ts/Share";
+import { Routes } from "../java2ts/Routes";
 
 interface AnonymousTakeProps {}
 
@@ -69,10 +70,20 @@ class AnonymousTake extends React.Component<
     return (
       <div className="anonymoustake">
         {this.state.take ? (
-          <BlockEditor
-            takeDocument={this.buildTakeDocument(this.state.take)}
-            eventHandlers={eventHandlers}
-          />
+          <div>
+            <BlockEditor
+              takeDocument={this.buildTakeDocument(this.state.take)}
+              eventHandlers={eventHandlers}
+            />
+            <p className="anonymoustake__text">
+              This take was made by someone without a MyTake.org account.{" "}
+              <a className="anonymoustake__link" href={Routes.LOGIN}>
+                Create an account
+              </a>{" "}
+              to get access to powerful authoring tools as well as the ability
+              to track the number of likes and views for your own takes.
+            </p>
+          </div>
         ) : (
           <p>Parsing URL</p>
         )}
