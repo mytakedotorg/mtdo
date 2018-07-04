@@ -37,128 +37,135 @@ $white: #fff;
 $black: #000;
 
 $palettes: (
-  header:
-    (
-      background: $white,
-      border: $base-darkest,
-      text: $base,
-      text--blue: $base,
-      text--red: $action,
-      text--hover: $base-lightest,
-      text--link: $base-light,
-      skip-bg: $action,
-      skip-text: $white,
-      banner__background: $tertiary-lightest
-    ),
-  nav:
-    (
-      text: $base,
-      text--hover: $base-lightest,
-      active: $secondary,
-      active--hover: $secondary-light
-    ),
-  document:
-    (
-      background: lighten($base-lightest, 40%),
-      background--header: $white,
-      background--highlight: lighten($base-lightest, 10%),
-      background--scrollbar-track: $base-lightest,
-      background--scrollbar-thumb: $white,
-      border: $base-lightest,
-      shadow: $base-darkest,
-      text: $base-darkest,
-      text--highlight: $base-darkest,
-      text--red: $action
-    ),
-  video: (text: $base-darkest),
-  editor:
-    (
-      background: $white,
-      document__background: lighten($base-lightest, 40%),
-      document__background--hover: lighten($base-lightest, 36%),
-      border: $base-lightest,
-      shadow: $base-darkest,
-      text: $base-darkest,
-      text--highlight: $base-darkest
-    ),
-  feed:
-    (
-      background: $white,
-      background--highlight: lighten($base-lightest, 40%),
-      card__border: $base-lightest,
-      card__shadow: $base-darkest,
-      text: $base-darkest,
-      text--document: $base-darkest,
-      text--faded: $base-darkest
-    ),
-  foundation:
-    (
-      text: $base-darkest,
-      card-title--debates: $white,
-      card-border: $base-lightest,
-      shadow: $base-darkest
-    ),
-  hero:
-    (
-      background: $base,
-      title: $white,
-      text: $base-lightest,
-      text--special: $white
-    ),
-  button:
-    (
-      background--action: $action,
-      background--base: $base,
-      background--action-hover: $action-light,
-      background--base-hover: $base-light,
-      background--disabled: lighten($base-lightest, 20%),
-      color--action: $white,
-      color--base: $white,
-      color--action-shadow: $base,
-      color--base-shadow: $base-darkest,
-      color--disabled: $base-lightest,
-      color--borderless: $base-light,
-      color--borderless-hover: $base-lightest
-    ),
-  about:
-    (
-      background: $white,
-      text--special: $base,
-      text: $base-darkest,
-      text--link: $base-light
-    ),
-  banner: (text--red: $action, text--green: $secondary),
-  section:
-    (
-      background: $white,
-      border: $base,
-      text: $base-darkest,
-      text--alert: $action
-    ),
-  form: (text: $base-darkest, text--action: $action),
-  takelist: (text: $base-darkest),
-  profile:
-    (
-      tab-background: $white,
-      tab-text: $base-darkest,
-      tab-border--active: $action-highlight
-    ),
-  reaction: (text: $base-darkest, background: $white, border: $base-darkest),
-  dropdown: (background: $white, border: $base-darkest),
-  share:
-    (
-      text: $base-darkest,
-      text--green: $secondary,
-      background: $white,
-      border: $base-lightest
-    ),
-  trackSlider: (color--handle: $base-dark, border: $base-darkest),
-  searchbar:
-    (
-      background: $action,
-      border: $white,
-      cancel-icon: $base-lightest,
-      text--dark: $base-darkest,
-      icon: $tertiary
-    )
+  header: (
+    background: $white,
+    border: $base-darkest,
+    text: $base,
+    text--blue: $base,
+    text--red: $action,
+    text--hover: $base-lightest,
+    text--link: $base-light,
+    skip-bg: $action,
+    skip-text: $white,
+    banner__background: $tertiary-lightest
+  ),
+  nav: (
+    text: $base,
+    text--hover: $base-lightest,
+    active: $secondary,
+    active--hover: $secondary-light
+  ),
+  document: (
+    background: lighten($base-lightest, 40%),
+    background--header: $white,
+    background--highlight: lighten($base-lightest, 10%),
+    background--scrollbar-track: $base-lightest,
+    background--scrollbar-thumb: $white,
+    border: $base-lightest,
+    shadow: $base-darkest,
+    text: $base-darkest,
+    text--highlight: $base-darkest,
+    text--red: $action
+  ),
+  video: (
+    text: $base-darkest
+  ),
+  editor: (
+    background: $white,
+    document__background: lighten($base-lightest, 40%),
+    document__background--hover: lighten($base-lightest, 36%),
+    border: $base-lightest,
+    shadow: $base-darkest,
+    text: $base-darkest,
+    text--highlight: $base-darkest
+  ),
+  feed: (
+    background: $white,
+    background--highlight: lighten($base-lightest, 40%),
+    card__border: $base-lightest,
+    card__shadow: $base-darkest,
+    text: $base-darkest,
+    text--document: $base-darkest,
+    text--faded: $base-darkest
+  ),
+  foundation: (
+    text: $base-darkest,
+    card-title--debates: $white,
+    card-border: $base-lightest,
+    shadow: $base-darkest
+  ),
+  hero: (
+    background: $base,
+    title: $white,
+    text: $base-lightest,
+    text--special: $white
+  ),
+  button: (
+    background--action: $action,
+    background--base: $base,
+    background--action-hover: $action-light,
+    background--base-hover: $base-light,
+    background--disabled: lighten($base-lightest, 20%),
+    color--action: $white,
+    color--base: $white,
+    color--action-shadow: $base,
+    color--base-shadow: $base-darkest,
+    color--disabled: $base-lightest,
+    color--borderless: $base-light,
+    color--borderless-hover: $base-lightest
+  ),
+  about: (
+    background: $white,
+    text--special: $base,
+    text: $base-darkest,
+    text--link: $base-light
+  ),
+  banner: (
+    text--red: $action,
+    text--green: $secondary
+  ),
+  section: (
+    background: $white,
+    border: $base,
+    text: $base-darkest,
+    text--alert: $action
+  ),
+  form: (
+    text: $base-darkest,
+    text--action: $action
+  ),
+  takelist: (
+    text: $base-darkest
+  ),
+  profile: (
+    tab-background: $white,
+    tab-text: $base-darkest,
+    tab-border--active: $action-highlight
+  ),
+  reaction: (
+    text: $base-darkest,
+    background: $white,
+    border: $base-darkest
+  ),
+  dropdown: (
+    background: $white,
+    border: $base-darkest
+  ),
+  share: (
+    text: $base-darkest,
+    text--green: $secondary,
+    background: $white,
+    border: $base-lightest
+  ),
+  trackSlider: (
+    color--handle: $base-dark,
+    border: $base-darkest
+  ),
+  searchbar: (
+    background: $action,
+    border: $white,
+    cancel-icon: $base-lightest,
+    text--dark: $base-darkest,
+    icon: $tertiary
+  )
 );
