@@ -1,0 +1,46 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`It renders 1`] = `
+<div
+  className="anonymoustake"
+>
+  <div>
+    <BlockEditor
+      eventHandlers={
+        Object {
+          "onDocumentClick": [Function],
+        }
+      }
+      takeDocument={
+        Object {
+          "blocks": Array [
+            Object {
+              "kind": "video",
+              "range": Array [
+                0,
+                5,
+              ],
+              "videoId": "iEfwIxM7MmnOKb7zt4HqW8IxUWy6F7a236fSOQlUUWI=",
+            },
+          ],
+          "title": "Introduction",
+        }
+      }
+    />
+    <p
+      className="anonymoustake__text"
+    >
+      This take was made by someone without a MyTake.org account.
+       
+      <a
+        className="anonymoustake__link"
+        href="/login"
+      >
+        Create an account
+      </a>
+       
+      to get access to powerful authoring tools as well as the ability to track the number of likes and views for your own takes.
+    </p>
+  </div>
+</div>
+`;
