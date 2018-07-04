@@ -64,6 +64,7 @@ interface VideoProps {
   onRangeSet?: (videoRange: [number, number]) => void;
   onClearClick?: () => void;
   videoFact: Foundation.VideoFactContent;
+  videoFactHash: string;
   className?: string;
   clipRange?: [number, number] | null;
 }
@@ -918,6 +919,7 @@ class Video extends React.Component<VideoProps, VideoState> {
             highlightedCharRange={this.state.highlightedCharRange}
             rangeSliders={this.state.rangeSliders}
             stateAuthority={this.state.stateAuthority}
+            videoFactHash={this.props.videoFactHash}
           />
         </div>
       </div>

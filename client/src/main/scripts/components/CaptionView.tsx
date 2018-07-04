@@ -40,6 +40,7 @@ export interface CaptionViewEventHandlers {
 
 interface CaptionViewProps {
   videoFact: Foundation.VideoFactContent;
+  videoFactHash: string;
   timer: number;
   captionIsHighlighted: boolean;
   isPaused: boolean;
@@ -243,6 +244,7 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
           rangeSliders={this.props.rangeSliders}
           stateAuthority={this.props.stateAuthority}
           titleSlug={slugify(this.props.videoFact.fact.title)}
+          videoIdHash={this.props.videoFactHash}
         />
         {this.props.videoFact.plainText.length > 0 &&
         this.state.highlightedNodes ? (

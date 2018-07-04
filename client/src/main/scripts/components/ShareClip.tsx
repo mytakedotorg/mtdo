@@ -18,6 +18,7 @@ declare global {
 interface ShareClipProps {
   factSlug: string;
   highlightedRange: [number, number];
+  videoIdHash: string;
   viewRange?: [number, number];
 }
 interface ShareClipState {
@@ -83,7 +84,8 @@ class ShareClip extends React.Component<ShareClipProps, ShareClipState> {
       method: method,
       factSlug: this.props.factSlug,
       highlightedRangeStart: highlightedRange[0].toString(),
-      highlightedRangeEnd: highlightedRange[1].toString()
+      highlightedRangeEnd: highlightedRange[1].toString(),
+      videoId: this.props.videoIdHash
     };
     if (viewRange) {
       request.viewRangeStart = viewRange[0].toString();
@@ -93,7 +95,7 @@ class ShareClip extends React.Component<ShareClipProps, ShareClipState> {
   };
   encodeRequestObject = (req: Share.ShareReq): string => {
     const requestStr = JSON.stringify(req);
-    const encodedStr = Buffer.from(requestStr).toString("base64");
+    const encodedStr = btoa(requestStr);
     return encodedStr;
   };
   createShareableURL = (req: Share.ShareReq): void => {

@@ -49,6 +49,7 @@ interface ClipEditorProps {
   rangeSliders: TimeRange[];
   stateAuthority: StateAuthority;
   titleSlug: string;
+  videoIdHash: string;
 }
 
 interface ClipEditorState {}
@@ -230,6 +231,7 @@ class ClipEditor extends React.Component<ClipEditorProps, ClipEditorState> {
                 <ShareClip
                   factSlug={this.props.titleSlug}
                   highlightedRange={[selectionRange.start, selectionRange.end]}
+                  videoIdHash={this.props.videoIdHash}
                   viewRange={
                     zoomRange && zoomRange.end
                       ? [zoomRange.start, zoomRange.end]

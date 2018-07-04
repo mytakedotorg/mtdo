@@ -43,6 +43,9 @@ public class Shares implements Jooby.Module {
 				return new Share.ShareRes();
 			}
 		});
+		env.router().get(Routes.ANONYMOUS + "/**", req -> {
+			return views.Takes.anonymousTake.template();
+		});
 	}
 
 	private static void logShare(DSLContext dsl, Request req, Share.ShareReq shareReq, AuthUser user) {
