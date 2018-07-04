@@ -208,7 +208,7 @@ function getStartRangeOffsetTop(
   let rowIndex;
   const firstNodeList = childNodes;
   for (let i = 0; i < firstNodeList.length; i++) {
-    for (let j = 0; j < firstNodeList[i].attributes.length; j++) {
+    for (let j = 0; j < (firstNodeList[i] as HTMLElement).attributes.length; j++) {
       if (
         (firstNodeList[i] as HTMLElement).classList.contains(rowIndexClassName)
       ) {
@@ -226,7 +226,7 @@ function getStartRangeOffsetTop(
   if (rowIndex !== undefined) {
     secondNodeList = firstNodeList[rowIndex].childNodes;
     for (let i = 0; i < secondNodeList.length; i++) {
-      for (let j = 0; j < secondNodeList[i].attributes.length; j++) {
+      for (let j = 0; j < (secondNodeList[i] as HTMLElement).attributes.length; j++) {
         if (
           (secondNodeList[i] as HTMLElement).classList.contains(
             rowInnerIndexClassName
@@ -247,7 +247,7 @@ function getStartRangeOffsetTop(
   if (secondNodeList && rowInnerIndex !== undefined) {
     thirdNodeList = secondNodeList[rowInnerIndex].childNodes;
     for (let i = 0; i < thirdNodeList.length; i++) {
-      for (let j = 0; j < thirdNodeList[i].attributes.length; j++) {
+      for (let j = 0; j < (thirdNodeList[i] as HTMLElement).attributes.length; j++) {
         if (
           (thirdNodeList[i] as HTMLElement).classList.contains(
             textIndexClassName
