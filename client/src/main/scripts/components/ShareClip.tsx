@@ -8,6 +8,7 @@ import {
 } from "../utils/functions";
 import { Routes } from "../java2ts/Routes";
 import { Share } from "../java2ts/Share";
+import { ShareConstants } from "../java2ts/ShareConstants";
 
 declare global {
   interface Window {
@@ -54,20 +55,20 @@ class ShareClip extends React.Component<ShareClipProps, ShareClipState> {
   };
   handleFacebookClick = () => {
     const request: Share.ShareReq = this.createRequestObject(
-      Share.Constants.METHOD_FACEBOOK
+      ShareConstants.METHOD_FACEBOOK
     );
     this.logToServer(request);
     this.showFacebookDialog();
   };
   handleTwitterClick = () => {
     const request: Share.ShareReq = this.createRequestObject(
-      Share.Constants.METHOD_TWITTER
+      ShareConstants.METHOD_TWITTER
     );
     this.logToServer(request);
   };
   handleUrlClick = () => {
     const request: Share.ShareReq = this.createRequestObject(
-      Share.Constants.METHOD_URL
+      ShareConstants.METHOD_URL
     );
     this.logToServer(request);
     this.createShareableURL(request);

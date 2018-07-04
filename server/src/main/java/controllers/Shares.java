@@ -18,6 +18,7 @@ import db.tables.records.SharedFactsRecord;
 import java.math.BigDecimal;
 import java2ts.Routes;
 import java2ts.Share;
+import java2ts.ShareConstants;
 import org.jooby.Env;
 import org.jooby.Jooby;
 import org.jooby.Request;
@@ -68,13 +69,13 @@ public class Shares implements Jooby.Module {
 	private static ShareMethod parseMethod(String methodStr) {
 		ShareMethod method;
 		switch (methodStr) {
-		case Share.Constants.METHOD_URL:
+		case ShareConstants.METHOD_URL:
 			method = ShareMethod.url;
 			break;
-		case Share.Constants.METHOD_FACEBOOK:
+		case ShareConstants.METHOD_FACEBOOK:
 			method = ShareMethod.facebook;
 			break;
-		case Share.Constants.METHOD_TWITTER:
+		case ShareConstants.METHOD_TWITTER:
 			method = ShareMethod.twitter;
 			break;
 		default:

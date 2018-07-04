@@ -10,6 +10,7 @@ import common.JoobyDevRule;
 import common.JsonPost;
 import java2ts.Routes;
 import java2ts.Share;
+import java2ts.ShareConstants;
 import org.assertj.core.api.Assertions;
 import org.junit.ClassRule;
 import org.junit.Test;
@@ -22,7 +23,7 @@ public class SharesTest {
 	public void shareableURL() {
 		Share.ShareReq req = new Share.ShareReq();
 		req.title = "User generated title";
-		req.method = Share.Constants.METHOD_URL;
+		req.method = ShareConstants.METHOD_URL;
 		req.factSlug = "presidential-debate-clinton-dole-1-of-2";
 		req.highlightedRangeStart = "12.44";
 		req.highlightedRangeEnd = "23.15";
