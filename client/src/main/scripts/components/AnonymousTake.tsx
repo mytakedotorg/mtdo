@@ -4,7 +4,9 @@ import { alertErr, slugify } from "../utils/functions";
 import { Share } from "../java2ts/Share";
 import { Routes } from "../java2ts/Routes";
 
-interface AnonymousTakeProps {}
+interface AnonymousTakeProps {
+  path: string;
+}
 
 interface AnonymousTakeState {
   take?: Share.ShareReq;
@@ -43,7 +45,7 @@ class AnonymousTake extends React.Component<
     return takeDocument;
   };
   parseUrl = () => {
-    const pathArr = window.location.pathname.split("/");
+    const pathArr = this.props.path.split("/");
     if (pathArr.length !== 5) {
       const msg = "AnonymousTake: Invalid path length";
       alertErr(msg);

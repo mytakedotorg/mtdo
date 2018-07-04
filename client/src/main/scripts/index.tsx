@@ -89,7 +89,7 @@ if (app) {
 				Root = <VideoResultsLoader searchTerm={window.mytake.searchTerm} />
 				break;
 			case "anonymoustake":
-				Root = <AnonymousTake />
+				Root = <AnonymousTake path={window.location.pathname} />
 				break;
 			default:
 				alertErr("index: unknown argument structure");
