@@ -11,16 +11,16 @@ public interface Share {
 	@jsweet.lang.Interface
 	public class ShareReq implements Json {
 		public String title;
-		public String method;
-		public String factSlug;
-		public String highlightedRangeStart;
-		public String highlightedRangeEnd;
+		public String hStart;
+		public String hEnd;
 		@jsweet.lang.Optional
-		public String videoId;
+		public String docId;
 		@jsweet.lang.Optional
-		public String viewRangeStart;
+		public String vidId;
 		@jsweet.lang.Optional
-		public String viewRangeEnd;
+		public String vStart;
+		@jsweet.lang.Optional
+		public String vEnd;
 	}
 
 	@jsweet.lang.Interface
