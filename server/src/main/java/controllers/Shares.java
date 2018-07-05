@@ -13,12 +13,10 @@ import com.google.inject.Binder;
 import com.typesafe.config.Config;
 import common.IpGetter;
 import common.Time;
-import db.enums.ShareMethod;
 import db.tables.records.SharedFactsRecord;
 import java.math.BigDecimal;
 import java2ts.Routes;
 import java2ts.Share;
-import java2ts.ShareConstants;
 import org.jooby.Env;
 import org.jooby.Jooby;
 import org.jooby.Request;
@@ -30,7 +28,6 @@ import org.jooq.DSLContext;
  */
 public class Shares implements Jooby.Module {
 	private static final int URL_VERSION = 1;
-	private static final int FOUNDATION_VERSION = 1;
 
 	@Override
 	public void configure(Env env, Config conf, Binder binder) throws Throwable {
@@ -56,34 +53,25 @@ public class Shares implements Jooby.Module {
 		record.setSharedOn(req.require(Time.class).nowTimestamp());
 		record.setSharedIp(req.require(IpGetter.class).ip(req));
 		record.setTitle(shareReq.title);
-		record.setFoundationVersion(FOUNDATION_VERSION);
 		record.setUrlVersion(URL_VERSION);
-		record.setMethod(parseMethod(shareReq.method));
-		record.setFactSlug(shareReq.factSlug);
-		record.setHighlightStart(new BigDecimal(shareReq.highlightedRangeStart));
-		record.setHighlightEnd(new BigDecimal(shareReq.highlightedRangeEnd));
-		if (shareReq.viewRangeStart != null && shareReq.viewRangeEnd != null) {
-			record.setViewStart(new BigDecimal(shareReq.viewRangeStart));
-			record.setViewEnd(new BigDecimal(shareReq.viewRangeEnd));
+		if (shareReq.vidId != null && shareReq.docId != null) {
+			throw new IllegalArgumentException("Request cannot have both a video and a document Id.");
+		}
+		String factId;
+		if (shareReq.vidId != null) {
+			factId = shareReq.vidId;
+		} else if (shareReq.docId != null) {
+			factId = shareReq.docId;
+		} else {
+			throw new IllegalArgumentException("Request should have either a video Id or a document Id.");
+		}
+		record.setFactid(factId);
+		record.setHighlightStart(new BigDecimal(shareReq.hStart));
+		record.setHighlightEnd(new BigDecimal(shareReq.hEnd));
+		if (shareReq.vStart != null && shareReq.vEnd != null) {
+			record.setViewStart(new BigDecimal(shareReq.vStart));
+			record.setViewEnd(new BigDecimal(shareReq.vEnd));
 		}
 		record.insert();
-	}
-
-	private static ShareMethod parseMethod(String methodStr) {
-		ShareMethod method;
-		switch (methodStr) {
-		case ShareConstants.METHOD_URL:
-			method = ShareMethod.url;
-			break;
-		case ShareConstants.METHOD_FACEBOOK:
-			method = ShareMethod.facebook;
-			break;
-		case ShareConstants.METHOD_TWITTER:
-			method = ShareMethod.twitter;
-			break;
-		default:
-			throw new IllegalArgumentException("Could not determine share method");
-		}
-		return method;
 	}
 }
