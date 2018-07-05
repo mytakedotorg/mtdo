@@ -4,8 +4,6 @@
 package db.tables.pojos;
 
 
-import db.enums.ShareMethod;
-
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
@@ -26,21 +24,19 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class SharedFacts implements Serializable {
 
-    private static final long serialVersionUID = -1090367071;
+    private static final long serialVersionUID = 994862431;
 
-    private Integer     sharedBy;
-    private Timestamp   sharedOn;
-    private String      sharedIp;
-    private Integer     viewCount;
-    private String      title;
-    private Integer     foundationVersion;
-    private Integer     urlVersion;
-    private ShareMethod method;
-    private String      factSlug;
-    private BigDecimal  highlightStart;
-    private BigDecimal  highlightEnd;
-    private BigDecimal  viewStart;
-    private BigDecimal  viewEnd;
+    private Integer    sharedBy;
+    private Timestamp  sharedOn;
+    private String     sharedIp;
+    private Integer    viewCount;
+    private String     title;
+    private Integer    urlVersion;
+    private String     factid;
+    private BigDecimal highlightStart;
+    private BigDecimal highlightEnd;
+    private BigDecimal viewStart;
+    private BigDecimal viewEnd;
 
     public SharedFacts() {}
 
@@ -50,10 +46,8 @@ public class SharedFacts implements Serializable {
         this.sharedIp = value.sharedIp;
         this.viewCount = value.viewCount;
         this.title = value.title;
-        this.foundationVersion = value.foundationVersion;
         this.urlVersion = value.urlVersion;
-        this.method = value.method;
-        this.factSlug = value.factSlug;
+        this.factid = value.factid;
         this.highlightStart = value.highlightStart;
         this.highlightEnd = value.highlightEnd;
         this.viewStart = value.viewStart;
@@ -61,29 +55,25 @@ public class SharedFacts implements Serializable {
     }
 
     public SharedFacts(
-        Integer     sharedBy,
-        Timestamp   sharedOn,
-        String      sharedIp,
-        Integer     viewCount,
-        String      title,
-        Integer     foundationVersion,
-        Integer     urlVersion,
-        ShareMethod method,
-        String      factSlug,
-        BigDecimal  highlightStart,
-        BigDecimal  highlightEnd,
-        BigDecimal  viewStart,
-        BigDecimal  viewEnd
+        Integer    sharedBy,
+        Timestamp  sharedOn,
+        String     sharedIp,
+        Integer    viewCount,
+        String     title,
+        Integer    urlVersion,
+        String     factid,
+        BigDecimal highlightStart,
+        BigDecimal highlightEnd,
+        BigDecimal viewStart,
+        BigDecimal viewEnd
     ) {
         this.sharedBy = sharedBy;
         this.sharedOn = sharedOn;
         this.sharedIp = sharedIp;
         this.viewCount = viewCount;
         this.title = title;
-        this.foundationVersion = foundationVersion;
         this.urlVersion = urlVersion;
-        this.method = method;
-        this.factSlug = factSlug;
+        this.factid = factid;
         this.highlightStart = highlightStart;
         this.highlightEnd = highlightEnd;
         this.viewStart = viewStart;
@@ -135,15 +125,6 @@ public class SharedFacts implements Serializable {
         return this;
     }
 
-    public Integer getFoundationVersion() {
-        return this.foundationVersion;
-    }
-
-    public SharedFacts setFoundationVersion(Integer foundationVersion) {
-        this.foundationVersion = foundationVersion;
-        return this;
-    }
-
     public Integer getUrlVersion() {
         return this.urlVersion;
     }
@@ -153,21 +134,12 @@ public class SharedFacts implements Serializable {
         return this;
     }
 
-    public ShareMethod getMethod() {
-        return this.method;
+    public String getFactid() {
+        return this.factid;
     }
 
-    public SharedFacts setMethod(ShareMethod method) {
-        this.method = method;
-        return this;
-    }
-
-    public String getFactSlug() {
-        return this.factSlug;
-    }
-
-    public SharedFacts setFactSlug(String factSlug) {
-        this.factSlug = factSlug;
+    public SharedFacts setFactid(String factid) {
+        this.factid = factid;
         return this;
     }
 
@@ -216,10 +188,8 @@ public class SharedFacts implements Serializable {
         sb.append(", ").append(sharedIp);
         sb.append(", ").append(viewCount);
         sb.append(", ").append(title);
-        sb.append(", ").append(foundationVersion);
         sb.append(", ").append(urlVersion);
-        sb.append(", ").append(method);
-        sb.append(", ").append(factSlug);
+        sb.append(", ").append(factid);
         sb.append(", ").append(highlightStart);
         sb.append(", ").append(highlightEnd);
         sb.append(", ").append(viewStart);

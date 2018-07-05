@@ -7,7 +7,6 @@ package db.tables;
 import db.Keys;
 import db.Public;
 import db.bindings.PostgresInetBinding;
-import db.enums.ShareMethod;
 import db.tables.records.SharedFactsRecord;
 
 import java.math.BigDecimal;
@@ -40,7 +39,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class SharedFacts extends TableImpl<SharedFactsRecord> {
 
-    private static final long serialVersionUID = -454304170;
+    private static final long serialVersionUID = -231576228;
 
     /**
      * The reference instance of <code>public.shared_facts</code>
@@ -81,24 +80,14 @@ public class SharedFacts extends TableImpl<SharedFactsRecord> {
     public final TableField<SharedFactsRecord, String> TITLE = createField("title", org.jooq.impl.SQLDataType.VARCHAR(255), this, "");
 
     /**
-     * The column <code>public.shared_facts.foundation_version</code>.
-     */
-    public final TableField<SharedFactsRecord, Integer> FOUNDATION_VERSION = createField("foundation_version", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
-
-    /**
      * The column <code>public.shared_facts.url_version</code>.
      */
     public final TableField<SharedFactsRecord, Integer> URL_VERSION = createField("url_version", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
 
     /**
-     * The column <code>public.shared_facts.method</code>.
+     * The column <code>public.shared_facts.factid</code>.
      */
-    public final TableField<SharedFactsRecord, ShareMethod> METHOD = createField("method", org.jooq.util.postgres.PostgresDataType.VARCHAR.asEnumDataType(db.enums.ShareMethod.class), this, "");
-
-    /**
-     * The column <code>public.shared_facts.fact_slug</code>.
-     */
-    public final TableField<SharedFactsRecord, String> FACT_SLUG = createField("fact_slug", org.jooq.impl.SQLDataType.VARCHAR(255).nullable(false), this, "");
+    public final TableField<SharedFactsRecord, String> FACTID = createField("factid", org.jooq.impl.SQLDataType.CLOB, this, "");
 
     /**
      * The column <code>public.shared_facts.highlight_start</code>.
@@ -162,7 +151,7 @@ public class SharedFacts extends TableImpl<SharedFactsRecord> {
      */
     @Override
     public List<ForeignKey<SharedFactsRecord, ?>> getReferences() {
-        return Arrays.<ForeignKey<SharedFactsRecord, ?>>asList(Keys.SHARED_FACTS__SHARED_FACTS_SHARED_BY_FKEY, Keys.SHARED_FACTS__SHARED_FACTS_FOUNDATION_VERSION_FKEY, Keys.SHARED_FACTS__SHARED_FACTS_URL_VERSION_FKEY);
+        return Arrays.<ForeignKey<SharedFactsRecord, ?>>asList(Keys.SHARED_FACTS__SHARED_FACTS_SHARED_BY_FKEY, Keys.SHARED_FACTS__SHARED_FACTS_URL_VERSION_FKEY);
     }
 
     /**

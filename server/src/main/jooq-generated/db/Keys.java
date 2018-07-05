@@ -89,7 +89,6 @@ public class Keys {
     public static final ForeignKey<FollowRecord, AccountRecord> FOLLOW__FOLLOW_FOLLOWER_FKEY = ForeignKeys0.FOLLOW__FOLLOW_FOLLOWER_FKEY;
     public static final ForeignKey<LoginlinkRecord, AccountRecord> LOGINLINK__LOGINLINK_ACCOUNT_ID_FKEY = ForeignKeys0.LOGINLINK__LOGINLINK_ACCOUNT_ID_FKEY;
     public static final ForeignKey<SharedFactsRecord, AccountRecord> SHARED_FACTS__SHARED_FACTS_SHARED_BY_FKEY = ForeignKeys0.SHARED_FACTS__SHARED_FACTS_SHARED_BY_FKEY;
-    public static final ForeignKey<SharedFactsRecord, FoundationRevRecord> SHARED_FACTS__SHARED_FACTS_FOUNDATION_VERSION_FKEY = ForeignKeys0.SHARED_FACTS__SHARED_FACTS_FOUNDATION_VERSION_FKEY;
     public static final ForeignKey<SharedFactsRecord, SharedUrlRevRecord> SHARED_FACTS__SHARED_FACTS_URL_VERSION_FKEY = ForeignKeys0.SHARED_FACTS__SHARED_FACTS_URL_VERSION_FKEY;
     public static final ForeignKey<TakedraftRecord, AccountRecord> TAKEDRAFT__TAKEDRAFT_USER_ID_FKEY = ForeignKeys0.TAKEDRAFT__TAKEDRAFT_USER_ID_FKEY;
     public static final ForeignKey<TakedraftRecord, TakerevisionRecord> TAKEDRAFT__TAKEDRAFT_LAST_REVISION_FKEY = ForeignKeys0.TAKEDRAFT__TAKEDRAFT_LAST_REVISION_FKEY;
@@ -131,7 +130,6 @@ public class Keys {
         public static final ForeignKey<FollowRecord, AccountRecord> FOLLOW__FOLLOW_FOLLOWER_FKEY = createForeignKey(db.Keys.ACCOUNT_PKEY, Follow.FOLLOW, "follow__follow_follower_fkey", Follow.FOLLOW.FOLLOWER);
         public static final ForeignKey<LoginlinkRecord, AccountRecord> LOGINLINK__LOGINLINK_ACCOUNT_ID_FKEY = createForeignKey(db.Keys.ACCOUNT_PKEY, Loginlink.LOGINLINK, "loginlink__loginlink_account_id_fkey", Loginlink.LOGINLINK.ACCOUNT_ID);
         public static final ForeignKey<SharedFactsRecord, AccountRecord> SHARED_FACTS__SHARED_FACTS_SHARED_BY_FKEY = createForeignKey(db.Keys.ACCOUNT_PKEY, SharedFacts.SHARED_FACTS, "shared_facts__shared_facts_shared_by_fkey", SharedFacts.SHARED_FACTS.SHARED_BY);
-        public static final ForeignKey<SharedFactsRecord, FoundationRevRecord> SHARED_FACTS__SHARED_FACTS_FOUNDATION_VERSION_FKEY = createForeignKey(db.Keys.FOUNDATION_REV_PKEY, SharedFacts.SHARED_FACTS, "shared_facts__shared_facts_foundation_version_fkey", SharedFacts.SHARED_FACTS.FOUNDATION_VERSION);
         public static final ForeignKey<SharedFactsRecord, SharedUrlRevRecord> SHARED_FACTS__SHARED_FACTS_URL_VERSION_FKEY = createForeignKey(db.Keys.SHARED_URL_REV_PKEY, SharedFacts.SHARED_FACTS, "shared_facts__shared_facts_url_version_fkey", SharedFacts.SHARED_FACTS.URL_VERSION);
         public static final ForeignKey<TakedraftRecord, AccountRecord> TAKEDRAFT__TAKEDRAFT_USER_ID_FKEY = createForeignKey(db.Keys.ACCOUNT_PKEY, Takedraft.TAKEDRAFT, "takedraft__takedraft_user_id_fkey", Takedraft.TAKEDRAFT.USER_ID);
         public static final ForeignKey<TakedraftRecord, TakerevisionRecord> TAKEDRAFT__TAKEDRAFT_LAST_REVISION_FKEY = createForeignKey(db.Keys.TAKEREVISION_PKEY, Takedraft.TAKEDRAFT, "takedraft__takedraft_last_revision_fkey", Takedraft.TAKEDRAFT.LAST_REVISION);
