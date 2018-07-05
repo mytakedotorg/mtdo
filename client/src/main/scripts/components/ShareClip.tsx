@@ -8,7 +8,6 @@ import {
 } from "../utils/functions";
 import { Routes } from "../java2ts/Routes";
 import { Share } from "../java2ts/Share";
-import { ShareConstants } from "../java2ts/ShareConstants";
 
 declare global {
   interface Window {
@@ -16,7 +15,6 @@ declare global {
   }
 }
 interface ShareClipProps {
-  factSlug: string;
   highlightedRange: [number, number];
   videoIdHash: string;
   viewRange?: [number, number];
@@ -30,6 +28,7 @@ class ShareClip extends React.Component<ShareClipProps, ShareClipState> {
   private CLIP_TITLE = "cliptitle";
   private ANON = "anonymous";
   private UNTITLED = "untitled";
+  private URL_VERSION = "/v1";
   constructor(props: ShareClipProps) {
     super(props);
 
@@ -55,41 +54,33 @@ class ShareClip extends React.Component<ShareClipProps, ShareClipState> {
     this.setState({ title: event.target.value });
   };
   handleFacebookClick = () => {
-    const request: Share.ShareReq = this.createRequestObject(
-      ShareConstants.METHOD_FACEBOOK
-    );
+    const request: Share.ShareReq = this.createRequestObject();
     this.logToServer(request);
     this.showFacebookDialog();
   };
   handleTwitterClick = () => {
-    const request: Share.ShareReq = this.createRequestObject(
-      ShareConstants.METHOD_TWITTER
-    );
+    const request: Share.ShareReq = this.createRequestObject();
     this.logToServer(request);
   };
   handleUrlClick = () => {
-    const request: Share.ShareReq = this.createRequestObject(
-      ShareConstants.METHOD_URL
-    );
+    const request: Share.ShareReq = this.createRequestObject();
     this.logToServer(request);
     this.createShareableURL(request);
   };
   logToServer = (request: Share.ShareReq) => {
     postRequest(Routes.API_SHARE, request, () => {});
   };
-  createRequestObject = (method: string): Share.ShareReq => {
-    const { highlightedRange, viewRange } = this.props;
+  createRequestObject = (): Share.ShareReq => {
+    const { highlightedRange, videoIdHash, viewRange } = this.props;
     let request: Share.ShareReq = {
       title: this.state.title ? this.state.title : this.UNTITLED,
-      method: method,
-      factSlug: this.props.factSlug,
-      highlightedRangeStart: highlightedRange[0].toString(),
-      highlightedRangeEnd: highlightedRange[1].toString(),
-      videoId: this.props.videoIdHash
+      vidId: videoIdHash,
+      hStart: highlightedRange[0].toString(),
+      hEnd: highlightedRange[1].toString()
     };
     if (viewRange) {
-      request.viewRangeStart = viewRange[0].toString();
-      request.viewRangeEnd = viewRange[1].toString();
+      request.vStart = viewRange[0].toString();
+      request.vEnd = viewRange[1].toString();
     }
     return request;
   };
@@ -100,7 +91,7 @@ class ShareClip extends React.Component<ShareClipProps, ShareClipState> {
   };
   createShareableURL = (req: Share.ShareReq): void => {
     const encodedReq: string = this.encodeRequestObject(req);
-    ///anonymous/:title/foundation-v1/BASE64-ENCODED-JSON
+    ///anonymous/:title/v1/BASE64-ENCODED-JSON
     const cookieStr = getUserCookieString();
     const username = cookieStr ? cookieStr : this.ANON;
     const url =
@@ -111,7 +102,7 @@ class ShareClip extends React.Component<ShareClipProps, ShareClipState> {
       username +
       "/" +
       slugify(this.state.title ? this.state.title : this.UNTITLED) +
-      Routes.FOUNDATION_V1 +
+      this.URL_VERSION +
       "/" +
       encodedReq;
     this.setState({ url: url });
@@ -133,8 +124,8 @@ class ShareClip extends React.Component<ShareClipProps, ShareClipState> {
     }
   };
   componentWillReceiveProps(nextProps: ShareClipProps) {
-    const { factSlug, highlightedRange, viewRange } = this.props;
-    if (nextProps.factSlug !== factSlug) {
+    const { videoIdHash, highlightedRange, viewRange } = this.props;
+    if (nextProps.videoIdHash !== videoIdHash) {
       this.urlDidUpdate(true);
     } else if (
       nextProps.highlightedRange[0] !== highlightedRange[0] ||

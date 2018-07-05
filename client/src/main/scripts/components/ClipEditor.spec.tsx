@@ -1,7 +1,6 @@
 import * as React from "react";
 import * as renderer from "react-test-renderer";
 import ClipEditor, { ClipEditorEventHandlers } from "./ClipEditor";
-import { slugify } from "../utils/functions";
 import {
   initialRangeSliders,
   unzoomedRangeSliders,
@@ -16,8 +15,6 @@ jest.mock("./ZoomViewer", () => ({
 jest.mock("./TrackSlider", () => ({
   default: "TrackSlider"
 }));
-
-const titleSlug = slugify(videoFactLink.fact.title);
 
 const eventHandlers: ClipEditorEventHandlers = {
   onAfterRangeChange: jest.fn(),
@@ -42,7 +39,6 @@ test("Initial ClipEditor", () => {
         isZoomedToClip={false}
         rangeSliders={initialRangeSliders}
         stateAuthority={"SCROLL"}
-        titleSlug={titleSlug}
         videoIdHash={videoFactLink.hash}
       />
     )
@@ -62,7 +58,6 @@ test("ClipEditor with zoomed selection", () => {
         isZoomedToClip={true}
         rangeSliders={zoomedRangeSliders}
         stateAuthority={"SCROLL"}
-        titleSlug={titleSlug}
         videoIdHash={videoFactLink.hash}
       />
     )
@@ -82,7 +77,6 @@ test("ClipEditor with zoomed selection", () => {
         isZoomedToClip={false}
         rangeSliders={unzoomedRangeSliders}
         stateAuthority={"SCROLL"}
-        titleSlug={titleSlug}
         videoIdHash={videoFactLink.hash}
       />
     )

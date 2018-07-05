@@ -243,7 +243,6 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
           videoDuration={this.props.videoDuration}
           rangeSliders={this.props.rangeSliders}
           stateAuthority={this.props.stateAuthority}
-          titleSlug={slugify(this.props.videoFact.fact.title)}
           videoIdHash={this.props.videoFactHash}
         />
         {this.props.videoFact.plainText.length > 0 &&

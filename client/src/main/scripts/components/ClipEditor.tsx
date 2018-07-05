@@ -48,7 +48,6 @@ interface ClipEditorProps {
   eventHandlers: ClipEditorEventHandlers;
   rangeSliders: TimeRange[];
   stateAuthority: StateAuthority;
-  titleSlug: string;
   videoIdHash: string;
 }
 
@@ -229,7 +228,6 @@ class ClipEditor extends React.Component<ClipEditorProps, ClipEditorState> {
                 toggleText="Share"
               >
                 <ShareClip
-                  factSlug={this.props.titleSlug}
                   highlightedRange={[selectionRange.start, selectionRange.end]}
                   videoIdHash={this.props.videoIdHash}
                   viewRange={
