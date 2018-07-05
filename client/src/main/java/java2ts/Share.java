@@ -16,6 +16,8 @@ public interface Share {
 		public String highlightedRangeStart;
 		public String highlightedRangeEnd;
 		@jsweet.lang.Optional
+		public String videoId;
+		@jsweet.lang.Optional
 		public String viewRangeStart;
 		@jsweet.lang.Optional
 		public String viewRangeEnd;
