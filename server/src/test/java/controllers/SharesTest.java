@@ -22,6 +22,7 @@ public class SharesTest {
 	public void shareableURL() {
 		Share.ShareReq req = new Share.ShareReq();
 		req.title = "User generated title";
+		req.vidId = "EuBv33KFOcVItXjivwaqki89kC6YT63StCHz5wZAa7M=";
 		req.hStart = "12.44";
 		req.hEnd = "23.15";
 		req.vStart = "11.369";
