@@ -1,6 +1,7 @@
 import * as React from "react";
 import { ReactElement } from "react";
 import { Foundation } from "../java2ts/Foundation";
+import { ImageProps } from "../java2ts/ImageProps";
 var base64toArrayBuffer = require("base64-arraybuffer");
 var bs = require("binary-search");
 
@@ -1134,12 +1135,6 @@ function drawDocumentText(
     }
   }
   return y;
-}
-
-export interface ImageProps {
-  dataUri: string;
-  width: string;
-  height: string;
 }
 
 function drawDocument(nodes: FoundationNode[], title: string): ImageProps {

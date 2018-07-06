@@ -1,21 +1,17 @@
+import { ImageProps } from "../java2ts/ImageProps";
 import { Foundation } from "../java2ts/Foundation";
 import { Routes } from "../java2ts/Routes";
 import { EmailSelf } from "../java2ts/EmailSelf";
 import {
   alertErr,
   decodeVideoFact,
-  CaptionNode,
   FoundationNode,
   getHighlightedNodes,
-  getCaptionNodeArray,
-  getCharRangeFromVideoRange,
-  highlightCaption,
-  ImageProps,
   drawDocument,
-  drawCaption,
   drawSpecs,
   slugify
 } from "../utils/functions";
+import drawVideoFact from "./drawVideoFact";
 import {
   TakeDocument,
   DocumentBlock,
@@ -378,41 +374,10 @@ function drawFacts(
                 const titleSlug = slugify(title);
 
                 if (factContent && blockInScope.range) {
-                  const captionNodes = getCaptionNodeArray(factContent);
-
-                  const characterRange = getCharRangeFromVideoRange(
-                    factContent.charOffsets,
-                    factContent.timestamps,
+                  const imageProps = drawVideoFact(
+                    factContent,
                     blockInScope.range
                   );
-
-                  const highlightedCaptionNodes = highlightCaption(
-                    captionNodes,
-                    characterRange
-                  );
-
-                  let highlightedText = '"';
-                  for (const node of highlightedCaptionNodes) {
-                    if (typeof node === "object") {
-                      for (const subnode of node as Array<CaptionNode>) {
-                        if (typeof subnode === "object") {
-                          const { children } = subnode.props;
-                          if (typeof children === "string") {
-                            highlightedText += children;
-                          } else {
-                            const msg =
-                              "databaseApi: unrecognized structure of highlightedCaptionNodes";
-                            alertErr(msg);
-                            throw msg;
-                          }
-                        }
-                      }
-                    }
-                  }
-                  highlightedText = highlightedText.trimRight();
-                  highlightedText += '"';
-
-                  const imageProps = drawCaption(highlightedText);
 
                   const videoURL =
                     Routes.FOUNDATION_V1 +
