@@ -10,11 +10,13 @@ import static db.Tables.SHARED_FACTS;
 
 import auth.AuthUser;
 import com.google.inject.Binder;
+import com.jsoniter.JsonIterator;
 import com.typesafe.config.Config;
 import common.IpGetter;
 import common.Time;
 import db.tables.records.SharedFactsRecord;
 import java.math.BigDecimal;
+import java.util.Base64;
 import java2ts.Routes;
 import java2ts.Share;
 import org.jooby.Env;
@@ -40,8 +42,14 @@ public class Shares implements Jooby.Module {
 				return new Share.ShareRes();
 			}
 		});
-		env.router().get(Routes.ANONYMOUS + "/**", req -> {
-			return views.Takes.anonymousTake.template();
+		env.router().get(Routes.ANONYMOUS + "/:title/:urlversion/:base64", req -> {
+			String titleSlug = req.param("title").value();
+			String urlVersion = req.param("urlversion").value();
+			String base64Str = req.param("base64").value();
+			byte[] decodedBytes = Base64.getDecoder().decode(base64Str);
+			String decodedStr = new String(decodedBytes);
+			Share.ShareReq shareReq = JsonIterator.deserialize(decodedStr).as(Share.ShareReq.class);
+			return views.Takes.anonymousTake.template(shareReq.title);
 		});
 	}
 
