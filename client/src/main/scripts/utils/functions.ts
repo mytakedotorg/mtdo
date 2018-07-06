@@ -5,7 +5,7 @@ import { ImageProps } from "../java2ts/ImageProps";
 var base64toArrayBuffer = require("base64-arraybuffer");
 var bs = require("binary-search");
 
-function decodeVideoFact(
+export function decodeVideoFact(
   encoded: Foundation.VideoFactContentEncoded
 ): Foundation.VideoFactContent {
   const data: ArrayBuffer = base64toArrayBuffer.decode(encoded.data);
@@ -63,7 +63,7 @@ export type CaptionNode =
       HTMLElement
     >;
 
-function getNodesInRange(
+export function getNodesInRange(
   nodes: FoundationNode[],
   range: [number, number]
 ): FoundationNode[] {
@@ -85,7 +85,7 @@ function getNodesInRange(
   return documentNodes;
 }
 
-function getHighlightedNodes(
+export function getHighlightedNodes(
   nodes: FoundationNode[],
   range: [number, number],
   viewRange: [number, number]
@@ -195,7 +195,7 @@ function findAncestor(node: Node, className: string): Node | null {
 /**
  * Returns offsetTop of the HTML element at the specified range index.
  */
-function getStartRangeOffsetTop(
+export function getStartRangeOffsetTop(
   childNodes: NodeList,
   range: [number, number]
 ): number {
@@ -330,7 +330,7 @@ function zeroPad(someNumber: number): string {
   return twoDigitStr;
 }
 
-function convertSecondsToTimestamp(totalSeconds: number): string {
+export function convertSecondsToTimestamp(totalSeconds: number): string {
   let truncated = totalSeconds | 0;
 
   const hours = Math.floor(truncated / 3600);
@@ -355,7 +355,7 @@ function convertSecondsToTimestamp(totalSeconds: number): string {
   }
 }
 
-function getCaptionNodeArray(
+export function getCaptionNodeArray(
   videoFact: Foundation.VideoFactContent
 ): Array<string> {
   let output: Array<string> = [];
@@ -372,7 +372,7 @@ function getCaptionNodeArray(
   return output;
 }
 
-function slugify(text: string): string {
+export function slugify(text: string): string {
   return text
     .toLowerCase()
     .replace(/ /g, "-") //replace spaces with hyphens
@@ -380,7 +380,7 @@ function slugify(text: string): string {
     .replace(/[^\w-]+/g, ""); //remove non-alphanumics and non-hyphens
 }
 
-function getWordCount(selection: Selection): number {
+export function getWordCount(selection: Selection): number {
   // Cursor is in a block of caption text
 
   // Get the text Node
@@ -423,7 +423,7 @@ function getWordCount(selection: Selection): number {
   return wordCount;
 }
 
-function getCharRangeFromVideoRange(
+export function getCharRangeFromVideoRange(
   charOffsets: ArrayLike<number>,
   timeStamps: ArrayLike<number>,
   timeRange: [number, number]
@@ -514,7 +514,7 @@ export interface SimpleRanges {
   viewRange: [number, number];
 }
 
-function getSimpleRangesFromHTMLRange(
+export function getSimpleRangesFromHTMLRange(
   htmlRange: Range,
   childNodes: NodeList
 ): SimpleRanges {
@@ -723,7 +723,7 @@ function getSimpleRangesFromHTMLRange(
   }
 }
 
-function getWordRangeFromCharRange(
+export function getWordRangeFromCharRange(
   charRange: [number, number],
   videoFact: Foundation.VideoFactContent
 ): [number, number] {
@@ -759,7 +759,7 @@ function getWordRangeFromCharRange(
   return [firstWordIdx, lastWordIdx];
 }
 
-function highlightText(
+export function highlightText(
   nodes: FoundationNode[],
   range: [number, number],
   handleSetClick: () => void
@@ -873,7 +873,7 @@ function highlightText(
   return newNodes;
 }
 
-function highlightCaption(
+export function highlightCaption(
   nodes: string[],
   range: [number, number]
 ): CaptionNodeArr {
@@ -958,7 +958,7 @@ function highlightCaption(
   return newNodes;
 }
 
-function alertErr(errMsg: string) {
+export function alertErr(errMsg: string) {
   const msg =
     "Something went wrong. To help us figure it out, please copy and paste the information from below into an email to team@mytake.org. Thank you." +
     "\n\n" +
@@ -969,7 +969,7 @@ function alertErr(errMsg: string) {
   alert(msg);
 }
 
-const drawSpecs = Object.freeze({
+export const drawSpecs = Object.freeze({
   textMargin: 16,
   width: 500,
   linewidth: 468,
@@ -982,7 +982,7 @@ interface Dimensions {
   totalHeight: number;
 }
 
-function drawText(
+export function drawText(
   ctx: CanvasRenderingContext2D,
   words: string,
   fontsize: number,
@@ -1057,7 +1057,7 @@ function drawText(
   };
 }
 
-function drawDocumentText(
+export function drawDocumentText(
   ctx: CanvasRenderingContext2D,
   nodes: FoundationNode[],
   title: string
@@ -1137,7 +1137,10 @@ function drawDocumentText(
   return y;
 }
 
-function drawDocument(nodes: FoundationNode[], title: string): ImageProps {
+export function drawDocument(
+  nodes: FoundationNode[],
+  title: string
+): ImageProps {
   const canvas = document.createElement("canvas");
   const ctx = canvas.getContext("2d");
 
@@ -1175,7 +1178,7 @@ function drawDocument(nodes: FoundationNode[], title: string): ImageProps {
   }
 }
 
-function drawCaption(text: string): ImageProps {
+export function drawCaption(text: string): ImageProps {
   const canvas = document.createElement("canvas");
   const ctx = canvas.getContext("2d");
 
@@ -1224,10 +1227,10 @@ function getCookieValue(a: string): string {
   }
   return "";
 }
-function getUserCookieString(): string {
+export function getUserCookieString(): string {
   return getCookieValue("loginui");
 }
-function copyToClipboard(text: string): boolean {
+export function copyToClipboard(text: string): boolean {
   const textArea = document.createElement("textarea");
   textArea.style.position = "fixed";
   textArea.style.top = "0";
@@ -1252,13 +1255,13 @@ function copyToClipboard(text: string): boolean {
   document.body.removeChild(textArea);
   return true;
 }
-function getUsernameFromURL(): string {
+export function getUsernameFromURL(): string {
   return window.location.pathname.split("/")[1];
 }
-function isLoggedIn(): boolean {
+export function isLoggedIn(): boolean {
   return getUserCookieString() ? true : false;
 }
-function ancestorHasClass(
+export function ancestorHasClass(
   element: HTMLElement | null,
   classname: string
 ): boolean {
@@ -1271,29 +1274,3 @@ function ancestorHasClass(
     return false;
   }
 }
-export {
-  alertErr,
-  ancestorHasClass,
-  convertSecondsToTimestamp,
-  copyToClipboard,
-  decodeVideoFact,
-  drawCaption,
-  drawDocument,
-  drawDocumentText,
-  drawSpecs,
-  drawText,
-  getCaptionNodeArray,
-  getCharRangeFromVideoRange,
-  getSimpleRangesFromHTMLRange,
-  getStartRangeOffsetTop,
-  getHighlightedNodes,
-  getNodesInRange,
-  getUserCookieString,
-  getUsernameFromURL,
-  getWordCount,
-  getWordRangeFromCharRange,
-  highlightCaption,
-  highlightText,
-  isLoggedIn,
-  slugify
-};
