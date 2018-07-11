@@ -34,7 +34,13 @@ import org.jooby.jooq.jOOQ;
 public class Prod extends Jooby {
 	{
 		use((env, conf, binder) -> {
-			binder.bind(Random.class).toInstance(SecureRandom.getInstanceStrong());
+			// prevent SecureRandom starvation in a shared hosting environment
+			// https://tersesystems.com/blog/2015/12/17/the-right-way-to-use-securerandom/
+			SecureRandom nativeRandom = SecureRandom.getInstanceStrong();
+			byte[] seed = nativeRandom.generateSeed(55);
+			SecureRandom pureJava = SecureRandom.getInstance("SHA1PRNG");
+			pureJava.setSeed(seed);
+			binder.bind(Random.class).toInstance(pureJava);
 		});
 		use((env, conf, binder) -> {
 			binder.bind(Time.class).toInstance(() -> System.currentTimeMillis());
