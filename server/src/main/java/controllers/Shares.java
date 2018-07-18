@@ -13,12 +13,14 @@ import com.google.inject.Binder;
 import com.jsoniter.JsonIterator;
 import com.typesafe.config.Config;
 import common.IpGetter;
+import common.NotFound;
 import common.Time;
 import db.tables.records.SharedFactsRecord;
 import java.math.BigDecimal;
 import java.util.Base64;
 import java2ts.Routes;
 import java2ts.Share;
+import jsweet.util.tuple.Tuple2;
 import org.jooby.Env;
 import org.jooby.Jooby;
 import org.jooby.Request;
@@ -51,6 +53,50 @@ public class Shares implements Jooby.Module {
 			Share.ShareReq shareReq = JsonIterator.deserialize(decodedStr).as(Share.ShareReq.class);
 			return views.Takes.anonymousTake.template(shareReq.title);
 		});
+		env.router().get(Routes.API_IMAGES + "/:imgkey", req -> {
+			// Expect imgKey for videos to be like "/vidId_hStart-hEnd.jpg
+			// Expect imgKey for docs to be like "/docId_hStart-hEnd_vStart-vEnd.jpg
+			String imgKeyAndExtension = req.param("imgkey").value();
+			String imgKey = imgKeyAndExtension.substring(0, imgKeyAndExtension.lastIndexOf("."));
+			String imgArr[] = imgKey.split("_");
+			if (imgArr.length == 2) {
+				// Video fact
+				String vidId = imgArr[0];
+				String hRangeStr = imgArr[1];
+				Tuple2<Float, Float> hRange = rangeFromString(hRangeStr);
+				if (hRange == null) {
+					return NotFound.result();
+				}
+				return "TODO: generate base64 image string";
+			} else if (imgArr.length == 3) {
+				// Document fact
+				String docId = imgArr[0];
+				String hRangeStr = imgArr[1];
+				String vRangeStr = imgArr[2];
+				Tuple2<Float, Float> hRange = rangeFromString(hRangeStr);
+				Tuple2<Float, Float> vRange = rangeFromString(vRangeStr);
+				if (hRange == null || vRange == null) {
+					return NotFound.result();
+				}
+				return "TODO: generate base64 image string";
+			} else {
+				return NotFound.result();
+			}
+		});
+	}
+
+	private static Tuple2<Float, Float> rangeFromString(String rangeStr) {
+		String rangeArr[] = rangeStr.split("-");
+		if (rangeArr.length != 2) {
+			return null;
+		}
+		try {
+			float start = Float.parseFloat(rangeArr[0]);
+			float end = Float.parseFloat(rangeArr[1]);
+			return new Tuple2<Float, Float>(start, end);
+		} catch (NumberFormatException e) {
+			return null;
+		}
 	}
 
 	private static void logShare(DSLContext dsl, Request req, Share.ShareReq shareReq, AuthUser user) {

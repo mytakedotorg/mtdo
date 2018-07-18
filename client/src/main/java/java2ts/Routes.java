@@ -14,6 +14,7 @@ public class Routes {
 	public static final String API_EMAIL_SELF = "/api/emailSelf";
 	public static final String API_FOLLOW_ASK = "/api/followAsk";
 	public static final String API_FOLLOW_TELL = "/api/followTell";
+	public static final String API_IMAGES = "/api/images";
 	public static final String API_SEARCH = "/api/search";
 	public static final String API_SHARE = "/api/share";
 	public static final String API_SHARE_VIEW = "/api/share-view";
