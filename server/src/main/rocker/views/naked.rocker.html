@@ -1,4 +1,4 @@
-@args (String title, String description, String fileset, RockerBody content)
+@args (String title, String description, String fileset, String imgPath, RockerBody content)
 
 <!doctype html>
 
@@ -30,8 +30,8 @@
 <meta property="og:description" content="@description" />
 @*
 <meta property="og:url" content="https://mytake.org@url" />
-<meta property="og:image" content="https://mytake/org@image" />
 *@
+<meta property="og:image" content="https://mytake.org@imgPath" />
 <meta property="fb:app_id" content="@fbAppId()" />
 
 @style(fileset)

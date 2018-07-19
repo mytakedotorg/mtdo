@@ -49,9 +49,20 @@ public class Shares implements Jooby.Module {
 			String urlVersion = req.param("urlversion").value();
 			String base64Str = req.param("base64").value();
 			byte[] decodedBytes = Base64.getDecoder().decode(base64Str);
-			String decodedStr = new String(decodedBytes);
+			String decodedStr = new String(decodedBytes, "UTF-8");
 			Share.ShareReq shareReq = JsonIterator.deserialize(decodedStr).as(Share.ShareReq.class);
-			return views.Takes.anonymousTake.template(shareReq.title);
+			String imgPath = "/";
+			if (shareReq.vidId != null) {
+				imgPath += shareReq.vidId + "_" + shareReq.hStart + "-" + shareReq.hEnd + ".jpg";
+			} else if (shareReq.docId != null) {
+				if (shareReq.vStart == null || shareReq.vEnd == null) {
+					throw new IllegalArgumentException("Expected document to have a view range.");
+				}
+				imgPath += shareReq.docId + "_" + shareReq.hStart + "-" + shareReq.hEnd + "_" + shareReq.vStart + "-" + shareReq.vEnd + ".jpg";
+			} else {
+				throw new IllegalArgumentException("Expected shareReq to have either a docId or a vidId.");
+			}
+			return views.Takes.anonymousTake.template(shareReq.title, imgPath);
 		});
 		env.router().get(Routes.API_IMAGES + "/:imgkey", req -> {
 			// Expect imgKey for videos to be like "/vidId_hStart-hEnd.jpg
