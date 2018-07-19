@@ -12,13 +12,13 @@ dependencies {
 	annotationProcessor 'com.google.auto.value:auto-value:1.5.4'
 	compileOnly 'com.google.auto.value:auto-value:1.5.4'
 
-	compileOnly 'com.google.code.findbugs:jsr305:3.0.0'
+	compileOnly 'com.google.code.findbugs:jsr305:3.0.2'
 	compile project(':client')
 	compile project(':lucene')
 	compile "com.jsoniter:jsoniter:$JSONITER_VER"
 	compile "org.jsweet:jsweet-core:$JSWEET_CORE_VER"
-	compile 'org.jsoup:jsoup:1.11.2'
-	compile 'org.eclipse.jgit:org.eclipse.jgit:4.11.0.201803080745-r'
+	compile 'org.jsoup:jsoup:1.11.3'
+	compile 'org.eclipse.jgit:org.eclipse.jgit:5.0.1.201806211838-r'
 	compile 'com.diffplug.durian:durian-core:1.2.0'
 	compile 'com.diffplug.durian:durian-collect:1.2.0'
 	compile 'com.diffplug.durian:durian-io:1.2.0'
@@ -30,7 +30,7 @@ dependencies {
 
 apply plugin: 'com.diffplug.gradle.eclipse.mavencentral'
 eclipseMavenCentral {
-	release '4.7.2', {
+	release '4.8.0', {
 		testCompile 'org.eclipse.swt'
 		testCompile 'org.eclipse.jface'
 		useNativesForRunningPlatform()
