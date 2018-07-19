@@ -26,6 +26,15 @@
 <meta name="description" content="@description | MyTake.org">
 <meta name="author" content="MyTake.org">
 
+<!-- For 2:1 image aspect ratio -->
+<meta name="twitter:card" content="summary_large_image">
+@*
+<!-- For 1:1 image aspect ratio -->
+<meta name="twitter:card" content="summary">
+*@
+<meta name="twitter:site" content="@@mytakedotorg">
+<meta name="twitter:title" content="@title">
+<meta name="twitter:description" content="@description">
 <meta property="og:title" content="@title" />
 <meta property="og:description" content="@description" />
 @*
@@ -33,6 +42,7 @@
 *@
 @if (!imgPath.isEmpty()) {
 <meta property="og:image" content="https://mytake.org@imgPath" />
+<meta name="twitter:image" content="http://mytake.org@imgPath">
 }
 <meta property="fb:app_id" content="@fbAppId()" />
 
