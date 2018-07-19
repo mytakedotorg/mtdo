@@ -31,7 +31,9 @@
 @*
 <meta property="og:url" content="https://mytake.org@url" />
 *@
+@if (!imgPath.isEmpty()) {
 <meta property="og:image" content="https://mytake.org@imgPath" />
+}
 <meta property="fb:app_id" content="@fbAppId()" />
 
 @style(fileset)
