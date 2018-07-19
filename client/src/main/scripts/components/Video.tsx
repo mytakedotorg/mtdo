@@ -217,9 +217,11 @@ class Video extends React.Component<VideoProps, VideoState> {
 
     if (clipRange) {
       const tenPercent = (clipRange[1] - clipRange[0]) * 0.1;
+      const zoomStartLong = clipRange[0] - tenPercent;
+      const zoomEndLong = clipRange[1] + tenPercent;
       const zoomRange: TimeRange = {
-        start: clipRange[0] - tenPercent,
-        end: clipRange[1] + tenPercent,
+        start: parseFloat(zoomStartLong.toFixed(3)),
+        end: parseFloat(zoomEndLong.toFixed(3)),
         type: "ZOOM",
         styles: TRACKSTYLES__RANGE,
         label: "Zoom"

@@ -82,12 +82,12 @@ class ShareClip extends React.Component<ShareClipProps, ShareClipState> {
     let request: Share.ShareReq = {
       title: this.state.title ? this.state.title : this.UNTITLED,
       vidId: videoIdHash,
-      hStart: highlightedRange[0].toString(),
-      hEnd: highlightedRange[1].toString()
+      hStart: highlightedRange[0].toFixed(3),
+      hEnd: highlightedRange[1].toFixed(3)
     };
     if (viewRange) {
-      request.vStart = viewRange[0].toString();
-      request.vEnd = viewRange[1].toString();
+      request.vStart = viewRange[0].toFixed(3);
+      request.vEnd = viewRange[1].toFixed(3);
     }
     return request;
   };
