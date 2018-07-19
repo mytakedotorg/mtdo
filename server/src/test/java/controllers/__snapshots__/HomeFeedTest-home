@@ -24,6 +24,11 @@
 <meta name="description" content="Your bicycle for politics | MyTake.org">
 <meta name="author" content="MyTake.org">
 
+<!-- For 2:1 image aspect ratio -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@mytakedotorg">
+<meta name="twitter:title" content="MyTake.org">
+<meta name="twitter:description" content="Your bicycle for politics">
 <meta property="og:title" content="MyTake.org" />
 <meta property="og:description" content="Your bicycle for politics" />
 <meta property="fb:app_id" content="203240867180202" />
