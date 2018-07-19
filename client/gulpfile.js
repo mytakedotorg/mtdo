@@ -185,16 +185,16 @@ function webpackCfg(mode) {
   };
 }
 
-gulp.task("serverScripts", function serverScriptsTask(type) {
-	return gulp.src(src(type) + "**").pipe(
-		webpackStream(
-			{
-				config: webpackServerCfg()
-			},
-			webpack
-		)
-		.pipe(gulp.dest(dst(PROD, type)))
-	);
+gulp.task("serverScripts", function serverScriptsTask() {
+  var type = SCRIPTS;
+  return gulp.src(src(type) + "**").pipe(
+    webpackStream(
+      {
+        config: webpackServerCfg()
+      },
+      webpack
+    ).pipe(gulp.dest(dst(PROD, type)))
+  );
 });
 
 function webpackServerCfg() {
@@ -203,7 +203,8 @@ function webpackServerCfg() {
       drawVideoFact: __dirname + "/src/main/scripts/utils/drawVideoFact.ts"
     },
     output: {
-      filename: "[name].bundle.js"
+      filename: "[name].bundle.js",
+      library: "drawVideoFact"
     },
     resolve: {
       // Add '.ts' and '.tsx' as resolvable extensions.
