@@ -51,7 +51,7 @@ class ShareClip extends React.Component<ShareClipProps, ShareClipState> {
     }
   };
   createTwitterUrl = (url: string): string => {
-    return "https://twitter.com/intent/tweet?url=" + url + "&via=mytake.org";
+    return "https://twitter.com/intent/tweet?url=" + url + "&via=mytakedotorg";
   };
   handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({ title: event.target.value });
