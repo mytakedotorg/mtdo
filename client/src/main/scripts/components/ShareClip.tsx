@@ -56,7 +56,8 @@ class ShareClip extends React.Component<ShareClipProps, ShareClipState> {
   handleFacebookClick = () => {
     const request: Share.ShareReq = this.createRequestObject();
     this.logToServer(request);
-    this.showFacebookDialog();
+    const url = this.createShareableURL(request);
+    this.showFacebookDialog(url);
   };
   handleTwitterClick = () => {
     const request: Share.ShareReq = this.createRequestObject();
@@ -89,7 +90,7 @@ class ShareClip extends React.Component<ShareClipProps, ShareClipState> {
     const encodedStr = btoa(requestStr);
     return encodedStr;
   };
-  createShareableURL = (req: Share.ShareReq): void => {
+  createShareableURL = (req: Share.ShareReq): string => {
     const encodedReq: string = this.encodeRequestObject(req);
     ///anonymous/:title/v1/BASE64-ENCODED-JSON
     const cookieStr = getUserCookieString();
@@ -106,12 +107,13 @@ class ShareClip extends React.Component<ShareClipProps, ShareClipState> {
       "/" +
       encodedReq;
     this.setState({ url: url });
+    return url;
   };
-  showFacebookDialog = () => {
+  showFacebookDialog = (url: string) => {
     FB.ui(
       {
         method: "share",
-        href: window.location.href
+        href: url
       },
       function(response) {}
     );
