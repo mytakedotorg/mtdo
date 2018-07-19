@@ -23,8 +23,8 @@ class AnonymousTake extends React.Component<
   }
   buildTakeDocument = (takeObject: Share.ShareReq): TakeDocument => {
     const highlightedRange: [number, number] = [
-      parseInt(takeObject.hStart),
-      parseInt(takeObject.hEnd)
+      parseFloat(takeObject.hStart),
+      parseFloat(takeObject.hEnd)
     ];
     let block: TakeBlock;
     if (takeObject.vidId) {
