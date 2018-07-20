@@ -226,48 +226,21 @@ exports[`ClipEditor with zoomed selection 1`] = `
         <div
           className="dropdown__dropdown dropdown__dropdown--hidden"
         >
-          <div
-            className="shareclip"
-          >
-            <h3
-              className="shareclip__title"
-            >
-              Share your clip
-            </h3>
-            <div>
-              <label
-                className="shareclip__label"
-                htmlFor="cliptitle"
-              >
-                Title
-              </label>
-              <input
-                className="shareclip__input"
-                id="cliptitle"
-                onChange={[Function]}
-                type="text"
-                value=""
-              />
-              <button
-                className="shareclip__button"
-                onClick={[Function]}
-              >
-                Get a shareable URL
-              </button>
-              <button
-                className="shareclip__button"
-                onClick={[Function]}
-              >
-                Facebook
-              </button>
-              <button
-                className="shareclip__button"
-                onClick={[Function]}
-              >
-                Twitter
-              </button>
-            </div>
-          </div>
+          <ShareClip
+            highlightedRange={
+              Array [
+                3.87,
+                5.1,
+              ]
+            }
+            videoIdHash="iEfwIxM7MmnOKb7zt4HqW8IxUWy6F7a236fSOQlUUWI="
+            viewRange={
+              Array [
+                3.7470000000000003,
+                5.223,
+              ]
+            }
+          />
         </div>
       </div>
     </div>
@@ -501,48 +474,21 @@ exports[`ClipEditor with zoomed selection 2`] = `
         <div
           className="dropdown__dropdown dropdown__dropdown--hidden"
         >
-          <div
-            className="shareclip"
-          >
-            <h3
-              className="shareclip__title"
-            >
-              Share your clip
-            </h3>
-            <div>
-              <label
-                className="shareclip__label"
-                htmlFor="cliptitle"
-              >
-                Title
-              </label>
-              <input
-                className="shareclip__input"
-                id="cliptitle"
-                onChange={[Function]}
-                type="text"
-                value=""
-              />
-              <button
-                className="shareclip__button"
-                onClick={[Function]}
-              >
-                Get a shareable URL
-              </button>
-              <button
-                className="shareclip__button"
-                onClick={[Function]}
-              >
-                Facebook
-              </button>
-              <button
-                className="shareclip__button"
-                onClick={[Function]}
-              >
-                Twitter
-              </button>
-            </div>
-          </div>
+          <ShareClip
+            highlightedRange={
+              Array [
+                3.87,
+                5.1,
+              ]
+            }
+            videoIdHash="iEfwIxM7MmnOKb7zt4HqW8IxUWy6F7a236fSOQlUUWI="
+            viewRange={
+              Array [
+                4,
+                82,
+              ]
+            }
+          />
         </div>
       </div>
     </div>

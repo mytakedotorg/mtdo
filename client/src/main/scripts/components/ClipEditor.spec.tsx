@@ -16,6 +16,10 @@ jest.mock("./TrackSlider", () => ({
   default: "TrackSlider"
 }));
 
+jest.mock("./ShareClip", () => ({
+	default: "ShareClip"
+}));
+
 const eventHandlers: ClipEditorEventHandlers = {
   onAfterRangeChange: jest.fn(),
   onClearPress: jest.fn(),

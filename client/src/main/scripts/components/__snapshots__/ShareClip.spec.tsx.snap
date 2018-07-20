@@ -23,11 +23,18 @@ exports[`It renders 1`] = `
       type="text"
       value=""
     />
+    <pre
+      className="shareclip__url"
+    >
+      <code>
+        about:///anonymous/untitled/v1/eyJ0aXRsZSI6InVudGl0bGVkIiwidmlkSWQiOiJpRWZ3SXhNN01tbk9LYjd6dDRIcVc4SXhVV3k2RjdhMjM2ZlNPUWxVVVdJPSIsImhTdGFydCI6IjAuMTAwIiwiaEVuZCI6IjUuMDAwIn0=
+      </code>
+    </pre>
     <button
       className="shareclip__button"
       onClick={[Function]}
     >
-      Get a shareable URL
+      Copy link
     </button>
     <button
       className="shareclip__button"
@@ -41,6 +48,9 @@ exports[`It renders 1`] = `
     >
       Twitter
     </button>
+    <div
+      className="shareclip__info"
+    />
   </div>
 </div>
 `;
