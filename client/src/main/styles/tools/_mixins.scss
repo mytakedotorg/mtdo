@@ -95,6 +95,17 @@
   }
 }
 
+@mixin input {
+  @include typography($sans, 400, 16px, 1.7em);
+  line-height: 25px;
+  vertical-align: middle;
+  border-radius: 5px;
+  margin-top: 2px;
+  margin-bottom: 4px;
+  padding-top: 0;
+  padding-bottom: 0;
+  width: 260px;
+}
 @function palette($palette, $tone) {
   @if not map-has-key($palettes, $palette) {
     @warn "No palette found for `#{$palette}` in $palettes map. Property omitted.";

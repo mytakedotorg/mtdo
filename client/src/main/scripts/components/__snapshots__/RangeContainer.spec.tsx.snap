@@ -10,7 +10,6 @@ exports[`Render a range 1`] = `
     onFocus={[Function]}
     onKeyDown={[Function]}
     onMouseDown={[Function]}
-    onMouseUp={[Function]}
     onTouchStart={[Function]}
     style={undefined}
   >
@@ -28,7 +27,6 @@ exports[`Render a range 1`] = `
         Object {
           "backgroundColor": "#758aa8",
           "left": "35.815467075038285%",
-          "visibility": "visible",
           "width": "0.3828483920367489%",
         }
       }
@@ -88,7 +86,6 @@ exports[`Render a slider 1`] = `
     onFocus={[Function]}
     onKeyDown={[Function]}
     onMouseDown={[Function]}
-    onMouseUp={[Function]}
     onTouchStart={[Function]}
     style={undefined}
   >
@@ -106,7 +103,6 @@ exports[`Render a slider 1`] = `
         Object {
           "backgroundColor": "#758aa8",
           "left": "0%",
-          "visibility": "visible",
           "width": "36.160030627871365%",
         }
       }

@@ -1,4 +1,3 @@
-import {} from "jest";
 import { TurnFinder } from "./searchFunc";
 
 test("turnfinder-corner-case", () => {

@@ -83,6 +83,10 @@ gulp_permanent.dependsOn('npmInstall')
 gulp_stylesDev.inputs.dir('src/main/styles')
 gulp_scriptsDev.inputs.dir('src/main/scripts')
 
+gulp_serverScripts.inputs.dir('src/main/scripts')
+gulp_serverScripts.inputs.dir('gulpfile.js')
+gulp_serverScripts.outputs.dir('src/main/resources/serverScripts')
+
 // make the gulp_buildProd have accurate up-to-date checking
 def devProd(taskName) {
 	Task devTask = tasks.getByName("gulp_${taskName}Dev")
@@ -128,7 +132,8 @@ check.dependsOn(npm_run_test)
 processResources.dependsOn([
 	gulp_stylesDev,
 	gulp_scriptsDev,
-	gulp_revProd
+	gulp_revProd,
+	gulp_serverScripts
 ])
 // on Heroku, we can ignore the dev tasks
 if (Env.isHeroku()) {

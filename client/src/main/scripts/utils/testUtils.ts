@@ -987,7 +987,11 @@ const kennedyNixon: Foundation.VideoFactContent = {
   }
 };
 
+const anonymousPath =
+  "/anonymous/introduction/v1/eyJ0aXRsZSI6IkludHJvZHVjdGlvbiIsInZpZElkIjoiaUVmd0l4TTdNbW5PS2I3enQ0SHFXOEl4VVd5NkY3YTIzNmZTT1FsVVVXST0iLCJoU3RhcnQiOiIwLjEiLCJoRW5kIjoiNSIsInZTdGFydCI6Ii0wLjM5IiwidkVuZCI6IjUuNDkifQ==";
+
 export {
+  anonymousPath,
   cards,
   documentFactLink,
   documentNodes,

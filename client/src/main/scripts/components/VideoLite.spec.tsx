@@ -1,6 +1,5 @@
 import * as React from "react";
 import * as renderer from "react-test-renderer";
-import {} from "jest";
 import VideoLite from "./VideoLite";
 import { videoFactFast } from "../utils/testUtils";
 
@@ -11,7 +10,12 @@ jest.mock("react-youtube", () => ({
 test("Video", () => {
   const tree = renderer
     .create(
-      <VideoLite videoId={videoFactFast.youtubeId} clipRange={[10, 20]} />
+      <VideoLite
+        videoId={videoFactFast.youtubeId}
+        clipRange={[10, 20]}
+        isFixed={false}
+        onScroll={jest.fn()}
+      />
     )
     .toJSON();
   expect(tree).toMatchSnapshot();

@@ -9,7 +9,6 @@ import {
 } from "../utils/functions";
 import { Foundation } from "../java2ts/Foundation";
 import CaptionView, { CaptionViewEventHandlers } from "./CaptionView";
-import DropDown from "./DropDown";
 import { Routes } from "../java2ts/Routes";
 
 interface YTPlayerParameters {
@@ -65,6 +64,7 @@ interface VideoProps {
   onRangeSet?: (videoRange: [number, number]) => void;
   onClearClick?: () => void;
   videoFact: Foundation.VideoFactContent;
+  videoFactHash: string;
   className?: string;
   clipRange?: [number, number] | null;
 }
@@ -217,9 +217,11 @@ class Video extends React.Component<VideoProps, VideoState> {
 
     if (clipRange) {
       const tenPercent = (clipRange[1] - clipRange[0]) * 0.1;
+      const zoomStartLong = clipRange[0] - tenPercent;
+      const zoomEndLong = clipRange[1] + tenPercent;
       const zoomRange: TimeRange = {
-        start: clipRange[0] - tenPercent,
-        end: clipRange[1] + tenPercent,
+        start: parseFloat(zoomStartLong.toFixed(3)),
+        end: parseFloat(zoomEndLong.toFixed(3)),
         type: "ZOOM",
         styles: TRACKSTYLES__RANGE,
         label: "Zoom"
@@ -897,36 +899,6 @@ class Video extends React.Component<VideoProps, VideoState> {
             </div>
           </div>
           <div className="video__container video__container--actions">
-            {selection && selection.end && selection.end > selection.start ? (
-              <div className="video__float--right">
-                <DropDown
-                  classModifier="video"
-                  dropdownPosition="BL"
-                  toggleText="Share"
-                >
-                  <div className="video__share-dropdown">
-                    {this.state.isCopiedToClipBoard ? (
-                      <span className="share__action share__action--success">
-                        Copied to clipboard
-                      </span>
-                    ) : (
-                      <button
-                        className="share__action share__action--clickable"
-                        onClick={this.copyURL}
-                      >
-                        Copy URL
-                      </button>
-                    )}
-                    <button
-                      className="share__action share__action--clickable"
-                      onClick={this.handleSetClick}
-                    >
-                      Give your Take on this
-                    </button>
-                  </div>
-                </DropDown>
-              </div>
-            ) : null}
             {this.state.userHasModifiedRange ? (
               <div className="video__float--right">
                 <button
@@ -949,6 +921,7 @@ class Video extends React.Component<VideoProps, VideoState> {
             highlightedCharRange={this.state.highlightedCharRange}
             rangeSliders={this.state.rangeSliders}
             stateAuthority={this.state.stateAuthority}
+            videoFactHash={this.props.videoFactHash}
           />
         </div>
       </div>

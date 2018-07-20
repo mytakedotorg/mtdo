@@ -38,13 +38,13 @@ export default class NumberLineTransform {
 
   toAfter(x: number): number {
     const y =
-      this.y0 + (this.y1 - this.y0) * (x - this.x0) / (this.x1 - this.x0);
+      this.y0 + ((this.y1 - this.y0) * (x - this.x0)) / (this.x1 - this.x0);
     return Math.min(this.yMax, Math.max(this.yMin, y));
   }
 
   toBefore(y: number): number {
     const x =
-      this.x0 + (this.x1 - this.x0) * (y - this.y0) / (this.y1 - this.y0);
+      this.x0 + ((this.x1 - this.x0) * (y - this.y0)) / (this.y1 - this.y0);
     return Math.min(this.xMax, Math.max(this.xMin, x));
   }
 }

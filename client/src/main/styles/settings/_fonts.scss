@@ -6,7 +6,7 @@ $serif: "Merriweather", serif;
 * Source Sans Pro headings, Merriweather body
 */
 
-@mixin typography($fontFamily, $fontWeight, $fontSize, $lineHeight:"") {
+@mixin typography($fontFamily, $fontWeight, $fontSize, $lineHeight: "") {
   font-family: $fontFamily;
   font-weight: $fontWeight;
   font-size: $fontSize;
@@ -98,7 +98,7 @@ $serif: "Merriweather", serif;
   text-transform: uppercase;
 }
 
-@mixin body ($font: "serif") {
+@mixin body($font: "serif") {
   @if $font == "serif" {
     @include typography($serif, 400, 15px, 1.7em);
   } @else {
@@ -106,7 +106,7 @@ $serif: "Merriweather", serif;
   }
 }
 
-@mixin body--small ($font: "serif") {
+@mixin body--small($font: "serif") {
   @if $font == "serif" {
     @include typography($serif, 400, 13px, 1.7em);
   } @else {

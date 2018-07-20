@@ -1,5 +1,4 @@
 import * as React from "react";
-import * as ReactDOM from "react-dom";
 import Timeline, { TimelineItemData } from "./Timeline";
 import TimelineLoadingView from "./TimelineLoadingView";
 import TimelinePreviewContainer from "./TimelinePreviewContainer";

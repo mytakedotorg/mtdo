@@ -12,7 +12,7 @@ import {
   getSimpleRangesFromHTMLRange,
   getWordRangeFromCharRange,
   highlightCaption,
-  FoundationNode,
+  slugify,
   SimpleRanges
 } from "../utils/functions";
 import { RangeType, StateAuthority, TimeRange } from "./Video";
@@ -40,6 +40,7 @@ export interface CaptionViewEventHandlers {
 
 interface CaptionViewProps {
   videoFact: Foundation.VideoFactContent;
+  videoFactHash: string;
   timer: number;
   captionIsHighlighted: boolean;
   isPaused: boolean;
@@ -242,6 +243,7 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
           videoDuration={this.props.videoDuration}
           rangeSliders={this.props.rangeSliders}
           stateAuthority={this.props.stateAuthority}
+          videoIdHash={this.props.videoFactHash}
         />
         {this.props.videoFact.plainText.length > 0 &&
         this.state.highlightedNodes ? (

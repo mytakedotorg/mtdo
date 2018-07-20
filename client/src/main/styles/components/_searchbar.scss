@@ -9,18 +9,10 @@ $button-height: 2.5rem;
   position: relative;
 }
 .searchbar__input {
-  @include typography($sans, 400, 16px, 1.7em);
-  line-height: 25px;
-  vertical-align: middle;
-  border-radius: 5px;
-  border: 1px solid palette(searchbar, border);
-  margin-top: 2px;
-  margin-bottom: 4px;
-  padding-top: 0;
-  padding-bottom: 0;
+  @include input;
   padding-left: $content-margin/2;
   padding-right: 25px;
-  width: 260px;
+  border: 1px solid palette(searchbar, border);
   &::-ms-clear {
     display: none;
   }

@@ -15,6 +15,7 @@ import controllers.HomeFeed;
 import controllers.Profile;
 import controllers.Redirects;
 import controllers.SearchModule;
+import controllers.Shares;
 import controllers.TakeEmail;
 import controllers.TakeReaction;
 import controllers.Takes;
@@ -42,9 +43,7 @@ public class Prod extends Jooby {
 			pureJava.setSeed(seed);
 			binder.bind(Random.class).toInstance(pureJava);
 		});
-		use((env, conf, binder) -> {
-			binder.bind(Time.class).toInstance(() -> System.currentTimeMillis());
-		});
+		realtime(this);
 		use(new HerokuDatabase.Module());
 		common(this);
 		use((env, conf, binder) -> {
@@ -60,6 +59,12 @@ public class Prod extends Jooby {
 		controllers(this);
 	}
 
+	static void realtime(Jooby jooby) {
+		jooby.use((env, conf, binder) -> {
+			binder.bind(Time.class).toInstance(() -> System.currentTimeMillis());
+		});
+	}
+
 	static void common(Jooby jooby) {
 		jooby.use(new IpGetter.Module());
 		CustomAssets.initTemplates(jooby);
@@ -68,6 +73,7 @@ public class Prod extends Jooby {
 		jooby.use(new Jdbc());
 		jooby.use(new jOOQ());
 		jooby.use(new JsoniterModule());
+		jooby.use(new OurV8.Module());
 	}
 
 	static void controllers(Jooby jooby) {
@@ -82,6 +88,7 @@ public class Prod extends Jooby {
 		jooby.use(new NotFound());
 		jooby.use(new TakeReaction());
 		jooby.use(new TakeEmail());
+		jooby.use(new Shares());
 		// These controllers need to be last, because otherwise
 		// they will swallow every `/user/take` and `/user` URL.
 		jooby.use(new Takes());

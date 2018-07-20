@@ -24,9 +24,14 @@
 <meta name="description" content="other | MyTake.org">
 <meta name="author" content="MyTake.org">
 
+<!-- For 2:1 image aspect ratio -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@mytakedotorg">
+<meta name="twitter:title" content="MyTake.org">
+<meta name="twitter:description" content="other">
 <meta property="og:title" content="MyTake.org" />
 <meta property="og:description" content="other" />
-<meta property="fb:app_id" content="1014270045380974" />
+<meta property="fb:app_id" content="203240867180202" />
 
 <link rel="stylesheet" href="/assets-dev/styles/main.css">
 <link rel="stylesheet" href="/assets-dev/styles/vis.css">
@@ -42,10 +47,10 @@
 <script>
 	window.fbAsyncInit = function() {
 		FB.init({
-			appId            : '1014270045380974',
+			appId            : '203240867180202',
 			autoLogAppEvents : true,
 			xfbml            : true,
-			version          : 'v2.11'
+			version          : 'v3.0'
 		});
 	};
 

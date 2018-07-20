@@ -1,5 +1,4 @@
 import * as React from "react";
-import * as ReactDOM from "react-dom";
 import { CaptionNode, CaptionNodeArr } from "../utils/functions";
 import CaptionTextNode from "./CaptionTextNode";
 import isEqual = require("lodash/isEqual");

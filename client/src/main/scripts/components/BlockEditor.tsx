@@ -34,7 +34,6 @@ interface ParagraphBlockState {
 export interface ReadingEventHandlers {
   onDocumentClick: (
     fact: Foundation.FactLink,
-    offset: number,
     highlightedRange: [number, number],
     viewRange: [number, number]
   ) => void;

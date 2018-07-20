@@ -29,11 +29,11 @@ import org.junit.rules.ExternalResource;
 
 public class JoobyDevRule extends ExternalResource {
 	public static JoobyDevRule empty() {
-		return new JoobyDevRule(new Dev());
+		return new JoobyDevRule(Dev.unitTest());
 	}
 
 	public static JoobyDevRule initialData() {
-		return new JoobyDevRule(new Dev(), app -> {
+		return new JoobyDevRule(Dev.unitTest(), app -> {
 			try (DSLContext dsl = app.dsl()) {
 				InitialData.init(dsl, app.app().require(Time.class));
 			}
@@ -42,7 +42,7 @@ public class JoobyDevRule extends ExternalResource {
 
 	/** To prevent noise from moderator emails. */
 	public static JoobyDevRule initialDataNoMods() {
-		return new JoobyDevRule(new Dev(), app -> {
+		return new JoobyDevRule(Dev.unitTest(), app -> {
 			try (DSLContext dsl = app.dsl()) {
 				InitialData.init(dsl, app.app().require(Time.class));
 				dsl.deleteFrom(db.Tables.MODERATOR).execute();

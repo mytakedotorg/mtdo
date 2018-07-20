@@ -1,6 +1,5 @@
 import * as React from "react";
 import * as renderer from "react-test-renderer";
-import {} from "jest";
 import CaptionTextNodeListContainer from "./CaptionTextNodeListContainer";
 import { TimeRange, TRACKSTYLES__RANGE } from "./Video";
 import { videoFactFast, videoNodes } from "../utils/testUtils";

@@ -4,6 +4,7 @@ import BlockWriter, {
   InitialBlockWriterState,
   initialState
 } from "./components/BlockWriter";
+import AnonymousTake from "./components/AnonymousTake";
 import BlockReader from "./components/BlockReader";
 import FeedList from "./components/FeedList";
 import FoundationView from "./components/FoundationView";
@@ -13,7 +14,6 @@ import VideoResultsLoader from "./components/VideoResultsLoader";
 import { TakeDocument } from "./components/BlockEditor";
 import { Card } from "./components/FeedList";
 import { alertErr } from "./utils/functions";
-import { Search } from "./java2ts/Search";
 
 interface HomeArgs {
   type: "home";
@@ -40,9 +40,13 @@ interface SearchArgs {
 	searchTerm: string;
 }
 
+interface AnonymousTakeArgs {
+	type: "anonymoustake";
+}
+
 declare global {
   interface Window {
-    mytake?: HomeArgs | ShowTakeArgs | FoundationArgs | NewTakeArgs | SearchArgs;
+    mytake?: HomeArgs | ShowTakeArgs | FoundationArgs | NewTakeArgs | SearchArgs | AnonymousTakeArgs;
   } 
 }
 
@@ -83,6 +87,9 @@ if (app) {
 				break;
 			case "search":
 				Root = <VideoResultsLoader searchTerm={window.mytake.searchTerm} />
+				break;
+			case "anonymoustake":
+				Root = <AnonymousTake path={window.location.pathname} />
 				break;
 			default:
 				alertErr("index: unknown argument structure");

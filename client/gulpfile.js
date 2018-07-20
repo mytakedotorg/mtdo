@@ -11,6 +11,7 @@ serveStatic = require("serve-static");
 const { CheckerPlugin } = require("awesome-typescript-loader");
 webpackDevMiddleware = require("webpack-dev-middleware");
 webpackHotMiddleware = require("webpack-hot-middleware");
+nodeExternals = require("webpack-node-externals");
 // misc
 tasklisting = require("gulp-task-listing");
 gutil = require("gulp-util");
@@ -163,8 +164,11 @@ function webpackCfg(mode) {
       rules: [
         {
           test: /\.tsx?$/,
-          exclude: /node_modules/,
           include: __dirname + "/src/main/scripts",
+          exclude: [
+            /node_modules/,
+            __dirname + "/src/main/scripts/utils/drawVideoFact.ts"
+          ],
           loaders:
             mode === PROD
               ? ["awesome-typescript-loader"]
@@ -181,6 +185,47 @@ function webpackCfg(mode) {
       "react-dom": "ReactDOM",
       vis: "vis"
     }
+  };
+}
+
+gulp.task("serverScripts", () => {
+  var type = SCRIPTS;
+  return gulp.src(src(type) + "**").pipe(
+    webpackStream(
+      {
+        config: webpackServerCfg()
+      },
+      webpack
+    )).pipe(gulp.dest('./src/main/resources/serverScripts'));
+});
+function webpackServerCfg() {
+  return {
+    target: "node",
+    entry: {
+      drawVideoFact: __dirname + "/src/main/scripts/utils/drawVideoFact.ts"
+    },
+    output: {
+      filename: "[name].bundle.js",
+      library: "drawVideoFact"
+    },
+    resolve: {
+      // Add '.ts' and '.tsx' as resolvable extensions.
+      extensions: [".ts", ".tsx", ".js"]
+    },
+    module: {
+      rules: [
+        {
+          test: /\.tsx?$/,
+          exclude: /node_modules/,
+          include: __dirname + "/src/main/scripts",
+          loaders: ["awesome-typescript-loader"]
+        }
+      ]
+    },
+    node: {
+      fs: "empty"
+    },
+    externals: [nodeExternals()]
   };
 }
 
