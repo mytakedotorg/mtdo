@@ -185,6 +185,49 @@ function webpackCfg(mode) {
   };
 }
 
+gulp.task("serverScripts", function serverScriptsTask() {
+  var type = SCRIPTS;
+  return gulp.src(src(type) + "**").pipe(
+    webpackStream(
+      {
+        config: webpackServerCfg()
+      },
+      webpack
+    ).pipe(gulp.dest(dst(PROD, type)))
+  );
+});
+
+function webpackServerCfg() {
+  return {
+    entry: {
+      drawVideoFact: __dirname + "/src/main/scripts/utils/drawVideoFact.ts"
+    },
+    output: {
+      filename: "[name].bundle.js",
+      library: "drawVideoFact"
+    },
+    resolve: {
+      // Add '.ts' and '.tsx' as resolvable extensions.
+      extensions: [".ts", ".tsx", ".js"]
+    },
+    module: {
+      rules: [
+        {
+          test: /\.tsx?$/,
+          exclude: /node_modules/,
+          include: __dirname + "/src/main/scripts",
+          loaders: ["awesome-typescript-loader"]
+        }
+      ]
+    },
+    externals: {
+      react: "React",
+      "react-dom": "ReactDOM",
+      vis: "vis"
+    }
+  };
+}
+
 function scriptsTask(mode, type) {
   return () => {
     return fingerprint(

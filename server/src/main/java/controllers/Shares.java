@@ -14,6 +14,7 @@ import com.jsoniter.JsonIterator;
 import com.typesafe.config.Config;
 import common.IpGetter;
 import common.NotFound;
+import common.OurV8;
 import common.Time;
 import db.tables.records.SharedFactsRecord;
 import java.math.BigDecimal;
@@ -78,7 +79,8 @@ public class Shares implements Jooby.Module {
 				if (hRange == null) {
 					return NotFound.result();
 				}
-				return "TODO: generate base64 image string";
+				String dataUri = req.require(OurV8.class).drawVideoFact(vidId, hRange.$0, hRange.$1);
+				return dataUri;
 			} else if (imgArr.length == 3) {
 				// Document fact
 				String docId = imgArr[0];
