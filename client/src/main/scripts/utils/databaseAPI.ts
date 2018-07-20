@@ -374,7 +374,7 @@ function drawFacts(
                 const titleSlug = slugify(title);
 
                 if (factContent && blockInScope.range) {
-                  const imageProps = drawVideoFact(
+                  const imageProps = drawVideoFact.drawVideoFact(
                     factContent,
                     blockInScope.range
                   );

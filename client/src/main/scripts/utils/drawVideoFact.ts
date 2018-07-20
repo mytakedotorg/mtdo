@@ -1,5 +1,6 @@
 import {
   CaptionNode,
+  decodeVideoFact,
   drawCaption,
   getCaptionNodeArray,
   getCharRangeFromVideoRange,
@@ -7,13 +8,21 @@ import {
 } from "../utils/functions";
 import { Foundation } from "../java2ts/Foundation";
 import { ImageProps } from "../java2ts/ImageProps";
+
+export function decodeVideoFactFromStr(
+  str: string
+): Foundation.VideoFactContent {
+  const raw = JSON.parse(str);
+  return decodeVideoFact(raw);
+}
+
 /**
  * Client/Server function. Throws.
  *
  * @param factContent
  * @param videoBlock
  */
-export default function drawVideoFact(
+export function drawVideoFact(
   factContent: Foundation.VideoFactContent,
   highlightedRange: [number, number]
 ): ImageProps {
@@ -54,3 +63,5 @@ export default function drawVideoFact(
 
   return imageProps;
 }
+
+export default { decodeVideoFactFromStr, drawVideoFact };
