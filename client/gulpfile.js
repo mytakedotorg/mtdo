@@ -141,7 +141,6 @@ function webpackCfg(mode) {
   return {
     entry: {
       app: entryFor(mode, "/src/main/scripts/index.tsx"),
-      drawVideoFact: entryFor(mode, "/src/main/scripts/utils/drawVideoFact.ts"),
       window: entryFor(mode, "/src/main/scripts/utils/window.ts")
     },
     output: {
