@@ -111,6 +111,7 @@ public class DevHotReload {
 				"compat.",
 				"java2ts.",
 				"jsoniter_codegen.",
+				"org.mytake.lucene.",
 				"auth.",
 				"common.",
 				"controllers.",
@@ -139,7 +140,9 @@ public class DevHotReload {
 	static class DynamicClassLoader extends AggressiveClassLoader {
 		private static File[] DIRS = new File[]{
 				new File("bin/main"),
-				new File("bin/test")
+				new File("bin/test"),
+				new File("../lucene/bin/main"),
+				new File("../client/bin/main")
 		};
 		final Map<File, Long> fileToLastModified = new HashMap<>();
 
