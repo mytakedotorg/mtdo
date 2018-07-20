@@ -188,7 +188,7 @@ function webpackCfg(mode) {
   };
 }
 
-gulp.task("serverScripts", function serverScriptsTask() {
+gulp.task("serverScripts", () => {
   var type = SCRIPTS;
   return gulp.src(src(type) + "**").pipe(
     webpackStream(
@@ -196,10 +196,8 @@ gulp.task("serverScripts", function serverScriptsTask() {
         config: webpackServerCfg()
       },
       webpack
-    ).pipe(gulp.dest(dst(PROD, type)))
-  );
+    )).pipe(gulp.dest('./src/main/resources/serverScripts'));
 });
-
 function webpackServerCfg() {
   return {
     target: "node",
