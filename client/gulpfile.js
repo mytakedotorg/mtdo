@@ -11,6 +11,7 @@ serveStatic = require("serve-static");
 const { CheckerPlugin } = require("awesome-typescript-loader");
 webpackDevMiddleware = require("webpack-dev-middleware");
 webpackHotMiddleware = require("webpack-hot-middleware");
+nodeExternals = require("webpack-node-externals");
 // misc
 tasklisting = require("gulp-task-listing");
 gutil = require("gulp-util");
@@ -167,7 +168,7 @@ function webpackCfg(mode) {
           include: __dirname + "/src/main/scripts",
           exclude: [
             /node_modules/,
-            __dirname + "/src/main/scripts/utils/drawVideoFact.ts/"
+            __dirname + "/src/main/scripts/utils/drawVideoFact.ts"
           ],
           loaders:
             mode === PROD
@@ -202,6 +203,7 @@ gulp.task("serverScripts", function serverScriptsTask() {
 
 function webpackServerCfg() {
   return {
+    target: "node",
     entry: {
       drawVideoFact: __dirname + "/src/main/scripts/utils/drawVideoFact.ts"
     },
@@ -226,11 +228,7 @@ function webpackServerCfg() {
     node: {
       fs: "empty"
     },
-    externals: {
-      react: "React",
-      "react-dom": "ReactDOM",
-      vis: "vis"
-    }
+    externals: [nodeExternals()]
   };
 }
 

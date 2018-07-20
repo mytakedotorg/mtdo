@@ -1,15 +1,7 @@
-import {
-  CaptionNode,
-  decodeVideoFact,
-  drawCaption,
-  drawVideoFact,
-  getCaptionNodeArray,
-  getCharRangeFromVideoRange,
-  highlightCaption
-} from "../utils/functions";
+import { decodeVideoFact, drawVideoFact } from "../utils/functions";
 import { Foundation } from "../java2ts/Foundation";
 import { ImageProps } from "../java2ts/ImageProps";
-var Canvas = require("canvas");
+import Canvas = require("canvas");
 
 declare global {
   interface Process {
