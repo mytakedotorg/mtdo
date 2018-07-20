@@ -138,10 +138,6 @@ dependencies {
 	// flyway
 	compile 'org.flywaydb:flyway-core:5.1.4'
 
-	// server-side js
-	def os = com.diffplug.common.swt.os.OS.getRunning()
-	compile "com.eclipsesource.j2v8:j2v8_${os.winMacLinux('win32','macosx','linux')}_x86_64:4.6.0"
-
 	// common libs
 	compile 'commons-validator:commons-validator:1.6'
 	compile 'com.diffplug.durian:durian-core:1.2.0'
