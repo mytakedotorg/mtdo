@@ -76,6 +76,14 @@
 }
 .dropdown__dropdown--clipShare {
   top: -180px;
-  right: -50px;
-  width: 554px;
+  right: -15px;
+  width: 380px;
+  @media #{$mq-small} {
+    right: -20px;
+    width: 450px;
+  }
+  @media #{$mq-medium} {
+    right: -50px;
+    width: 554px;
+  }
 }

@@ -29,9 +29,15 @@ class ShareClip extends React.Component<ShareClipProps, ShareClipState> {
   private ANON = "anonymous";
   private UNTITLED = "untitled";
   private URL_VERSION = "/v1";
+  private INPUT_DELAY = 500;
+  private timerId: number | null;
   constructor(props: ShareClipProps) {
     super(props);
 
+    this.timerId = window.setTimeout(
+      this.handleChangeComplete,
+      this.INPUT_DELAY
+    );
     this.state = {
       title: "",
       isCopiedToClipboard: false,
@@ -39,6 +45,8 @@ class ShareClip extends React.Component<ShareClipProps, ShareClipState> {
     };
   }
   copyToClipboard = () => {
+    const request: Share.ShareReq = this.createRequestObject();
+    this.createShareableURL(request);
     if (this.state.url) {
       copyToClipboard(this.state.url);
       this.setState({
@@ -49,12 +57,26 @@ class ShareClip extends React.Component<ShareClipProps, ShareClipState> {
       alertErr(msg);
       throw msg;
     }
+    this.logToServer(request);
   };
   createTwitterUrl = (url: string): string => {
     return "https://twitter.com/intent/tweet?url=" + url + "&via=mytakedotorg";
   };
   handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (this.timerId) {
+      window.clearTimeout(this.timerId);
+    }
+    this.timerId = window.setTimeout(
+      this.handleChangeComplete,
+      this.INPUT_DELAY
+    );
     this.setState({ title: event.target.value });
+  };
+  handleChangeComplete = () => {
+    this.timerId = null;
+    const request: Share.ShareReq = this.createRequestObject();
+    this.createShareableURL(request);
+    this.setState({ isCopiedToClipboard: false });
   };
   handleFacebookClick = () => {
     const request: Share.ShareReq = this.createRequestObject();
@@ -68,11 +90,6 @@ class ShareClip extends React.Component<ShareClipProps, ShareClipState> {
     const url = this.createShareableURL(request);
     const twitterUrl = this.createTwitterUrl(url);
     window.open(twitterUrl, "_blank");
-  };
-  handleUrlClick = () => {
-    const request: Share.ShareReq = this.createRequestObject();
-    this.logToServer(request);
-    this.createShareableURL(request);
   };
   logToServer = (request: Share.ShareReq) => {
     postRequest(Routes.API_SHARE, request, () => {});
@@ -149,57 +166,49 @@ class ShareClip extends React.Component<ShareClipProps, ShareClipState> {
       this.urlDidUpdate(false);
     }
   }
+  componentDidMount() {
+    const request: Share.ShareReq = this.createRequestObject();
+    this.createShareableURL(request);
+  }
   render() {
     return (
       <div className="shareclip">
         <h3 className="shareclip__title">Share your clip</h3>
-        {this.state.url ? (
-          <div>
-            <pre className="shareclip__url">
-              <code>{this.state.url}</code>
-            </pre>
+        <div>
+          <label className="shareclip__label" htmlFor={this.CLIP_TITLE}>
+            Title
+          </label>
+          <input
+            className="shareclip__input"
+            id={this.CLIP_TITLE}
+            type="text"
+            value={this.state.title}
+            onChange={this.handleChange}
+          />
+          <pre className="shareclip__url">
+            {this.state.url ? <code>{this.state.url}</code> : null}
+          </pre>
+          <button className="shareclip__button" onClick={this.copyToClipboard}>
+            Copy link
+          </button>
+          <button
+            className="shareclip__button"
+            onClick={this.handleFacebookClick}
+          >
+            Facebook
+          </button>
+          <button
+            className="shareclip__button"
+            onClick={this.handleTwitterClick}
+          >
+            Twitter
+          </button>
+          <div className="shareclip__info">
             {this.state.isCopiedToClipboard ? (
-              <p className="shareclip__success" onClick={this.copyToClipboard}>
-                Copied to clipboard
-              </p>
-            ) : (
-              <button
-                className="shareclip__button"
-                onClick={this.copyToClipboard}
-              >
-                Copy to clipboard
-              </button>
-            )}
+              <span className="shareclip__success">Copied to clipboard</span>
+            ) : null}
           </div>
-        ) : (
-          <div>
-            <label className="shareclip__label" htmlFor={this.CLIP_TITLE}>
-              Title
-            </label>
-            <input
-              className="shareclip__input"
-              id={this.CLIP_TITLE}
-              type="text"
-              value={this.state.title}
-              onChange={this.handleChange}
-            />
-            <button className="shareclip__button" onClick={this.handleUrlClick}>
-              Get a shareable URL
-            </button>
-            <button
-              className="shareclip__button"
-              onClick={this.handleFacebookClick}
-            >
-              Facebook
-            </button>
-            <button
-              className="shareclip__button"
-              onClick={this.handleTwitterClick}
-            >
-              Twitter
-            </button>
-          </div>
-        )}
+        </div>
       </div>
     );
   }

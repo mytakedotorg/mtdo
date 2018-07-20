@@ -1,3 +1,6 @@
+.shareclip {
+  max-width: 100%;
+}
 .shareclip__title {
   @include heading3;
   @include text-margin-lr;
@@ -13,8 +16,13 @@
 .shareclip__url {
   @include body("sans");
   @include text-margin-lr;
+  margin-top: 0;
   color: palette(share, text);
   overflow: scroll;
+  margin-bottom: 10px;
+  @media #{$mq-medium} {
+    margin-bottom: 0;
+  }
 }
 .shareclip__label {
   @include body("sans");
@@ -27,6 +35,10 @@
   border: 1px solid palette(share, border);
   display: block;
   @include input;
+  margin-bottom: 10px;
+  @media #{$mq-medium} {
+    margin-bottom: 0;
+  }
 }
 .shareclip__button {
   @include button;
@@ -41,4 +53,9 @@
   @include body("sans");
   @include text-margin-lr;
   color: palette(share, text--green);
+}
+.shareclip__info {
+  position: absolute;
+  top: 8px;
+  right: 0;
 }
