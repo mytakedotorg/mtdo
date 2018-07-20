@@ -190,15 +190,17 @@ function webpackCfg(mode) {
 }
 
 gulp.task("serverScripts", function serverScriptsTask() {
-  var type = SCRIPTS;
-  return gulp.src(src(type) + "**").pipe(
-    webpackStream(
-      {
-        config: webpackServerCfg()
-      },
-      webpack
-    ).pipe(gulp.dest(dst(PROD, type)))
-  );
+	return () => {
+		var type = SCRIPTS;
+		return gulp.src(src(type) + "**").pipe(
+			webpackStream(
+				{
+					config: webpackServerCfg()
+				},
+				webpack
+			).pipe(gulp.dest(dst(PROD, type)))
+		);
+	}
 });
 
 function webpackServerCfg() {
