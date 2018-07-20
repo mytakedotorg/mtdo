@@ -164,8 +164,11 @@ function webpackCfg(mode) {
       rules: [
         {
           test: /\.tsx?$/,
-          exclude: /node_modules/,
           include: __dirname + "/src/main/scripts",
+          exclude: [
+            /node_modules/,
+            __dirname + "/src/main/scripts/utils/drawVideoFact.ts/"
+          ],
           loaders:
             mode === PROD
               ? ["awesome-typescript-loader"]
@@ -219,6 +222,9 @@ function webpackServerCfg() {
           loaders: ["awesome-typescript-loader"]
         }
       ]
+    },
+    node: {
+      fs: "empty"
     },
     externals: {
       react: "React",

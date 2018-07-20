@@ -2,12 +2,25 @@ import {
   CaptionNode,
   decodeVideoFact,
   drawCaption,
+  drawVideoFact,
   getCaptionNodeArray,
   getCharRangeFromVideoRange,
   highlightCaption
 } from "../utils/functions";
 import { Foundation } from "../java2ts/Foundation";
 import { ImageProps } from "../java2ts/ImageProps";
+var Canvas = require("canvas");
+
+declare global {
+  interface Process {
+    release: {
+      name: string;
+    };
+  }
+}
+declare var process: Process;
+
+// if ((typeof process !== 'undefined') && (process.release.name === 'node')) {
 
 export function decodeVideoFactFromStr(
   str: string
@@ -22,46 +35,10 @@ export function decodeVideoFactFromStr(
  * @param factContent
  * @param videoBlock
  */
-export function drawVideoFact(
+export function drawVideoFactNode(
   factContent: Foundation.VideoFactContent,
   highlightedRange: [number, number]
 ): ImageProps {
-  const captionNodes = getCaptionNodeArray(factContent);
-
-  const characterRange = getCharRangeFromVideoRange(
-    factContent.charOffsets,
-    factContent.timestamps,
-    highlightedRange
-  );
-
-  const highlightedCaptionNodes = highlightCaption(
-    captionNodes,
-    characterRange
-  );
-
-  let highlightedText = '"';
-  for (const node of highlightedCaptionNodes) {
-    if (typeof node === "object") {
-      for (const subnode of node as Array<CaptionNode>) {
-        if (typeof subnode === "object") {
-          const { children } = subnode.props;
-          if (typeof children === "string") {
-            highlightedText += children;
-          } else {
-            const msg =
-              "databaseApi: unrecognized structure of highlightedCaptionNodes";
-            throw msg;
-          }
-        }
-      }
-    }
-  }
-  highlightedText = highlightedText.trimRight();
-  highlightedText += '"';
-
-  const imageProps = drawCaption(highlightedText);
-
-  return imageProps;
+  const canvas = new Canvas();
+  return drawVideoFact(canvas, factContent, highlightedRange);
 }
-
-export default { decodeVideoFactFromStr, drawVideoFact };

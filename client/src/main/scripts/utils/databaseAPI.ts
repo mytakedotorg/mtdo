@@ -5,13 +5,13 @@ import { EmailSelf } from "../java2ts/EmailSelf";
 import {
   alertErr,
   decodeVideoFact,
+  drawVideoFact,
   FoundationNode,
   getHighlightedNodes,
   drawDocument,
   drawSpecs,
   slugify
 } from "../utils/functions";
-import drawVideoFact from "./drawVideoFact";
 import {
   TakeDocument,
   DocumentBlock,
@@ -314,7 +314,12 @@ function drawFacts(
                 const title = factContent.fact.title;
                 const titleSlug = slugify(title);
 
-                const imageProps = drawDocument([...highlightedNodes], title);
+                const canvas = document.createElement("canvas");
+                const imageProps = drawDocument(
+                  canvas,
+                  [...highlightedNodes],
+                  title
+                );
 
                 const documentURL =
                   Routes.FOUNDATION_V1 +
@@ -374,7 +379,9 @@ function drawFacts(
                 const titleSlug = slugify(title);
 
                 if (factContent && blockInScope.range) {
-                  const imageProps = drawVideoFact.drawVideoFact(
+                  const canvas = document.createElement("canvas");
+                  const imageProps = drawVideoFact(
+                    canvas,
                     factContent,
                     blockInScope.range
                   );

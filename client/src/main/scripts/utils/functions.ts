@@ -1138,10 +1138,10 @@ export function drawDocumentText(
 }
 
 export function drawDocument(
+  canvas: HTMLCanvasElement,
   nodes: FoundationNode[],
   title: string
 ): ImageProps {
-  const canvas = document.createElement("canvas");
   const ctx = canvas.getContext("2d");
 
   canvas.width = drawSpecs.width * window.devicePixelRatio;
@@ -1178,8 +1178,53 @@ export function drawDocument(
   }
 }
 
-export function drawCaption(text: string): ImageProps {
-  const canvas = document.createElement("canvas");
+export function drawVideoFact(
+  canvas: HTMLCanvasElement,
+  factContent: Foundation.VideoFactContent,
+  highlightedRange: [number, number]
+): ImageProps {
+  const captionNodes = getCaptionNodeArray(factContent);
+
+  const characterRange = getCharRangeFromVideoRange(
+    factContent.charOffsets,
+    factContent.timestamps,
+    highlightedRange
+  );
+
+  const highlightedCaptionNodes = highlightCaption(
+    captionNodes,
+    characterRange
+  );
+
+  let highlightedText = '"';
+  for (const node of highlightedCaptionNodes) {
+    if (typeof node === "object") {
+      for (const subnode of node as Array<CaptionNode>) {
+        if (typeof subnode === "object") {
+          const { children } = subnode.props;
+          if (typeof children === "string") {
+            highlightedText += children;
+          } else {
+            const msg =
+              "databaseApi: unrecognized structure of highlightedCaptionNodes";
+            throw msg;
+          }
+        }
+      }
+    }
+  }
+  highlightedText = highlightedText.trimRight();
+  highlightedText += '"';
+
+  const imageProps = drawCaption(canvas, highlightedText);
+
+  return imageProps;
+}
+
+export function drawCaption(
+  canvas: HTMLCanvasElement,
+  text: string
+): ImageProps {
   const ctx = canvas.getContext("2d");
 
   canvas.width = drawSpecs.width * window.devicePixelRatio;
