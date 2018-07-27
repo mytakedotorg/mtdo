@@ -53,12 +53,12 @@ public class Shares implements Jooby.Module {
 			Share.ShareReq shareReq = JsonIterator.deserialize(decodedStr).as(Share.ShareReq.class);
 			String imgPath = "/";
 			if (shareReq.vidId != null) {
-				imgPath += shareReq.vidId + "_" + shareReq.hStart + "-" + shareReq.hEnd + ".jpg";
+				imgPath += shareReq.vidId + "_" + shareReq.hStart + "-" + shareReq.hEnd + ".png";
 			} else if (shareReq.docId != null) {
 				if (shareReq.vStart == null || shareReq.vEnd == null) {
 					throw new IllegalArgumentException("Expected document to have a view range.");
 				}
-				imgPath += shareReq.docId + "_" + shareReq.hStart + "-" + shareReq.hEnd + "_" + shareReq.vStart + "-" + shareReq.vEnd + ".jpg";
+				imgPath += shareReq.docId + "_" + shareReq.hStart + "-" + shareReq.hEnd + "_" + shareReq.vStart + "-" + shareReq.vEnd + ".png";
 			} else {
 				throw new IllegalArgumentException("Expected shareReq to have either a docId or a vidId.");
 			}
