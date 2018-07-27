@@ -583,7 +583,7 @@ class Video extends React.Component<VideoProps, VideoState> {
           currentTime: clipStart
         });
         if (this.player) {
-          this.player.seekTo(clipStart);
+          this.player.playVideo();
         } else {
           console.warn("Player not ready");
         }
@@ -851,8 +851,6 @@ class Video extends React.Component<VideoProps, VideoState> {
     }
   }
   render() {
-    const selection = this.getRangeSlider("SELECTION");
-
     const opts = {
       height: "315",
       width: "560",
