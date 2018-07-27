@@ -93,7 +93,7 @@ public class Shares implements Jooby.Module {
 		});
 	}
 
-	private static Tuple2<Float, Float> rangeFromString(String rangeStr) {
+	public static Tuple2<Float, Float> rangeFromString(String rangeStr) {
 		String rangeArr[] = rangeStr.split("-");
 		if (rangeArr.length != 2) {
 			return null;
