@@ -20,6 +20,7 @@
   color: palette(share, text);
   overflow: scroll;
   margin-bottom: 10px;
+  min-height: 28px;
   @media #{$mq-medium} {
     margin-bottom: 0;
   }
