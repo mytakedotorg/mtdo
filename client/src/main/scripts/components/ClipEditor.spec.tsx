@@ -17,7 +17,7 @@ jest.mock("./TrackSlider", () => ({
 }));
 
 jest.mock("./ShareClip", () => ({
-	default: "ShareClip"
+  default: "ShareClip"
 }));
 
 const eventHandlers: ClipEditorEventHandlers = {
