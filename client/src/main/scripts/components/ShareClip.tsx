@@ -6,6 +6,7 @@ import {
   getUserCookieString,
   slugify
 } from "../utils/functions";
+import { LoginCookie } from "../java2ts/LoginCookie";
 import { Routes } from "../java2ts/Routes";
 import { Share } from "../java2ts/Share";
 
@@ -117,7 +118,13 @@ class ShareClip extends React.Component<ShareClipProps, ShareClipState> {
     const encodedReq: string = this.encodeRequestObject(req);
     ///anonymous/:title/v1/BASE64-ENCODED-JSON
     const cookieStr = getUserCookieString();
-    const username = cookieStr ? cookieStr : this.ANON;
+    let username;
+    if (cookieStr) {
+      const cookie: LoginCookie = JSON.parse(JSON.parse(cookieStr));
+      username = cookie.username;
+    } else {
+      username = this.ANON;
+    }
     const url =
       window.location.protocol +
       "//" +
