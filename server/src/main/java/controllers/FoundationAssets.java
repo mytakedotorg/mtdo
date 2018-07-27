@@ -22,7 +22,7 @@ public class FoundationAssets implements Jooby.Module {
 			// Foundation video
 			String title = req.param("title").value();
 			String rangeStr = req.param("videoRange").value();
-			Tuple2<Float, Float> range = Shares.rangeFromString(rangeStr);
+			Tuple2<Float, Float> range = rangeFromString(rangeStr);
 			if (range != null) {
 				// TODO: create image path and pass to template
 			}
@@ -33,8 +33,8 @@ public class FoundationAssets implements Jooby.Module {
 			String title = req.param("title").value();
 			String hRangeStr = req.param("hRange").value();
 			String vRangeStr = req.param("vRange").value();
-			Tuple2<Float, Float> hRange = Shares.rangeFromString(hRangeStr);
-			Tuple2<Float, Float> vRange = Shares.rangeFromString(vRangeStr);
+			Tuple2<Float, Float> hRange = rangeFromString(hRangeStr);
+			Tuple2<Float, Float> vRange = rangeFromString(vRangeStr);
 			if (hRange != null && vRange != null) {
 				// TODO: create image path and pass to template
 			}
@@ -44,5 +44,19 @@ public class FoundationAssets implements Jooby.Module {
 		env.router().get(Routes.FOUNDATION_V1 + "/**", () -> views.Placeholder.foundation.template());
 		env.router().assets(Routes.FOUNDATION_INDEX_HASH, new AssetHandler(Routes.FOUNDATION_INDEX_HASH).etag(false).maxAge(0));
 		env.router().assets(Routes.FOUNDATION_DATA + "/*");
+	}
+
+	private static Tuple2<Float, Float> rangeFromString(String rangeStr) {
+		String rangeArr[] = rangeStr.split("-");
+		if (rangeArr.length != 2) {
+			return null;
+		}
+		try {
+			float start = Float.parseFloat(rangeArr[0]);
+			float end = Float.parseFloat(rangeArr[1]);
+			return new Tuple2<Float, Float>(start, end);
+		} catch (NumberFormatException e) {
+			return null;
+		}
 	}
 }
