@@ -46,9 +46,8 @@ public class Takes implements Jooby.Module {
 				if (take == null) {
 					return NotFound.result();
 				} else {
-					String blocksStr = take.getBlocks();
-					// TODO: Get first Fact block to create image URL
-					return views.Takes.showTake.template(take);
+					String imageUrl = take.getImageUrl();
+					return views.Takes.showTake.template(take, imageUrl);
 				}
 			}
 		});

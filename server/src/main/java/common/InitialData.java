@@ -46,9 +46,9 @@ public class InitialData {
 
 	public static void init(DSLContext dsl, Time time) throws Exception {
 		int sampleUser = usernameEmail(dsl, time, "samples", "samples@email.com");
-		take(dsl, time, sampleUser, "Why it's so hard to have peace");
-		take(dsl, time, sampleUser, "Does a law mean what it says, or what it meant?");
-		take(dsl, time, sampleUser, "Don't worry, we'll protect the Constitution for you!");
+		take(dsl, time, sampleUser, "Why it's so hard to have peace", "/presidential-debate-clinton-trump-2-of-3_304.000-321.000.png");
+		take(dsl, time, sampleUser, "Does a law mean what it says, or what it meant?", "/bill-of-rights_283-439_283-439.png");
+		take(dsl, time, sampleUser, "Don't worry, we'll protect the Constitution for you!", "/united-states-constitution_17730-18357_17730-18357.png");
 
 		draft(dsl, time, sampleUser, "In my opinion", b -> {});
 		draft(dsl, time, sampleUser, "In other words", b -> b.p("What a world"));
@@ -100,10 +100,11 @@ public class InitialData {
 		return record.getId();
 	}
 
-	static TakepublishedRecord take(DSLContext dsl, Time time, int user, String title) throws IOException {
+	static TakepublishedRecord take(DSLContext dsl, Time time, int user, String title, String factTitleSlug) throws IOException {
 		TakepublishedRecord record = takeInternal(dsl, time, user, title);
 		String jsonData = Resources.toString(Resources.getResource("initialdata/" + record.getTitleSlug() + ".json"), StandardCharsets.UTF_8);
 		record.setBlocks(jsonData);
+		record.setImageUrl(factTitleSlug);
 		record.insert();
 		return record;
 	}

@@ -1,8 +1,8 @@
 @import db.tables.records.TakepublishedRecord
 
-@args (TakepublishedRecord take)
+@args (TakepublishedRecord take, String imgUrl)
 
-@views.naked.template(take.getTitle(), take.getTitle(), "react", "") -> {
+@views.naked.template(take.getTitle(), take.getTitle(), "react", imgUrl) -> {
 
 <div id="app"></div>
 <script type="text/javascript">

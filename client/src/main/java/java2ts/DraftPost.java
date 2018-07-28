@@ -13,5 +13,6 @@ public class DraftPost implements Json {
 	@jsweet.lang.Optional
 	public DraftRev parentRev;
 	public String title;
+	public String imageUrl;
 	public Any blocks;
 }
