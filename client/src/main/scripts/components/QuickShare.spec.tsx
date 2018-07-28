@@ -1,12 +1,12 @@
 import * as React from "react";
 import * as renderer from "react-test-renderer";
-import ShareClip from "./ShareClip";
+import QuickShare from "./QuickShare";
 import { videoFactLink } from "../utils/testUtils";
 
 test("It renders", () => {
   const tree = renderer
     .create(
-      <ShareClip
+      <QuickShare
         highlightedRange={[0.1, 5]}
         videoIdHash={videoFactLink.hash}
         onSendToTake={jest.fn()}

@@ -15,25 +15,25 @@ declare global {
     fbAsyncInit: any;
   }
 }
-interface ShareClipProps {
+interface QuickShareProps {
   highlightedRange: [number, number];
   onSendToTake: () => any;
   videoIdHash: string;
   viewRange?: [number, number];
 }
-interface ShareClipState {
+interface QuickShareState {
   title: string;
   isCopiedToClipboard: boolean;
   url?: string;
 }
-class ShareClip extends React.Component<ShareClipProps, ShareClipState> {
+class QuickShare extends React.Component<QuickShareProps, QuickShareState> {
   private CLIP_TITLE = "cliptitle";
   private ANON = "anonymous";
   private UNTITLED = "untitled";
   private URL_VERSION = "/v1";
   private INPUT_DELAY = 500;
   private timerId: number | null;
-  constructor(props: ShareClipProps) {
+  constructor(props: QuickShareProps) {
     super(props);
 
     this.timerId = window.setTimeout(
@@ -55,7 +55,7 @@ class ShareClip extends React.Component<ShareClipProps, ShareClipState> {
         isCopiedToClipboard: true
       });
     } else {
-      const msg = "ShareClip: Expected url to not be empty.";
+      const msg = "QuickShare: Expected url to not be empty.";
       alertErr(msg);
       throw msg;
     }
@@ -156,7 +156,7 @@ class ShareClip extends React.Component<ShareClipProps, ShareClipState> {
       this.setState({ isCopiedToClipboard: false, url: "" });
     }
   };
-  componentWillReceiveProps(nextProps: ShareClipProps) {
+  componentWillReceiveProps(nextProps: QuickShareProps) {
     const { videoIdHash, highlightedRange, viewRange } = this.props;
     if (nextProps.videoIdHash !== videoIdHash) {
       this.urlDidUpdate(true);
@@ -180,46 +180,46 @@ class ShareClip extends React.Component<ShareClipProps, ShareClipState> {
   }
   render() {
     return (
-      <div className="shareclip">
-        <h3 className="shareclip__title">Share your clip</h3>
+      <div className="quickshare">
+        <h3 className="quickshare__title">Share your clip</h3>
         <div>
-          <label className="shareclip__label" htmlFor={this.CLIP_TITLE}>
+          <label className="quickshare__label" htmlFor={this.CLIP_TITLE}>
             Title
           </label>
           <input
-            className="shareclip__input"
+            className="quickshare__input"
             id={this.CLIP_TITLE}
             type="text"
             value={this.state.title}
             onChange={this.handleChange}
           />
-          <pre className="shareclip__url">
+          <pre className="quickshare__url">
             {this.state.url ? <code>{this.state.url}</code> : null}
           </pre>
-          <button className="shareclip__button" onClick={this.copyToClipboard}>
+          <button className="quickshare__button" onClick={this.copyToClipboard}>
             Copy link
           </button>
           <button
-            className="shareclip__button"
+            className="quickshare__button"
             onClick={this.handleFacebookClick}
           >
             Facebook
           </button>
           <button
-            className="shareclip__button"
+            className="quickshare__button"
             onClick={this.handleTwitterClick}
           >
             Twitter
           </button>
           <button
-            className="shareclip__button"
+            className="quickshare__button"
             onClick={this.props.onSendToTake}
           >
             Give your Take
           </button>
-          <div className="shareclip__info">
+          <div className="quickshare__info">
             {this.state.isCopiedToClipboard ? (
-              <span className="shareclip__success">Copied to clipboard</span>
+              <span className="quickshare__success">Copied to clipboard</span>
             ) : null}
           </div>
         </div>
@@ -228,4 +228,4 @@ class ShareClip extends React.Component<ShareClipProps, ShareClipState> {
   }
 }
 
-export default ShareClip;
+export default QuickShare;

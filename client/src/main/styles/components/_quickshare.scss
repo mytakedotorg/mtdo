@@ -1,19 +1,19 @@
-.shareclip {
+.quickshare {
   max-width: 100%;
 }
-.shareclip__title {
+.quickshare__title {
   @include heading3;
   @include text-margin-lr;
   color: palette(share, text);
   margin-top: $page-margin-mobile;
   margin-bottom: $page-margin-mobile;
 }
-.shareclip__subtitle {
+.quickshare__subtitle {
   @include heading4;
   @include text-margin-lr;
   color: palette(share, text);
 }
-.shareclip__url {
+.quickshare__url {
   @include body("sans");
   @include text-margin-lr;
   margin-top: 0;
@@ -25,13 +25,13 @@
     margin-bottom: 0;
   }
 }
-.shareclip__label {
+.quickshare__label {
   @include body("sans");
   @include text-margin-lr;
   color: palette(share, text);
   display: block;
 }
-.shareclip__input {
+.quickshare__input {
   @include text-margin;
   border: 1px solid palette(share, border);
   display: block;
@@ -41,7 +41,7 @@
     margin-bottom: 0;
   }
 }
-.shareclip__button {
+.quickshare__button {
   @include button;
   @include button--blue;
   margin-left: $page-margin-mobile;
@@ -52,12 +52,12 @@
     margin-left: $content-margin;
   }
 }
-.shareclip__success {
+.quickshare__success {
   @include body("sans");
   @include text-margin-lr;
   color: palette(share, text--green);
 }
-.shareclip__info {
+.quickshare__info {
   position: absolute;
   top: 8px;
   right: 0;

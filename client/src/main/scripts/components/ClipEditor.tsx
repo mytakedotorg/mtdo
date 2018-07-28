@@ -1,6 +1,6 @@
 import * as React from "react";
 import DropDown from "./DropDown";
-import ShareClip from "./ShareClip";
+import QuickShare from "./QuickShare";
 import {
   RangeType,
   StateAuthority,
@@ -228,7 +228,7 @@ class ClipEditor extends React.Component<ClipEditorProps, ClipEditorState> {
                 dropdownPosition="CUSTOM"
                 toggleText="Share"
               >
-                <ShareClip
+                <QuickShare
                   highlightedRange={[selectionRange.start, selectionRange.end]}
                   onSendToTake={this.props.eventHandlers.onSendToTake}
                   videoIdHash={this.props.videoIdHash}
