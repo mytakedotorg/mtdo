@@ -62,14 +62,11 @@ public class Takes implements Jooby.Module {
 		byte[] decodedBytes = Base64.getDecoder().decode(base64Str);
 		String decodedStr = new String(decodedBytes, "UTF-8");
 		Share.ShareReq shareReq = JsonIterator.deserialize(decodedStr).as(Share.ShareReq.class);
-		String imgPath = "/";
+		String imgPath;
 		if (shareReq.vidId != null) {
-			imgPath += titleSlug + "_" + shareReq.hStart + "-" + shareReq.hEnd + ".png";
+			imgPath = vidImageUrl(titleSlug, shareReq.hStart, shareReq.hEnd);
 		} else if (shareReq.docId != null) {
-			if (shareReq.vStart == null || shareReq.vEnd == null) {
-				throw new IllegalArgumentException("Expected document to have a view range.");
-			}
-			imgPath += titleSlug + "_" + shareReq.hStart + "-" + shareReq.hEnd + "_" + shareReq.vStart + "-" + shareReq.vEnd + ".png";
+			imgPath = docImageUrl(titleSlug, shareReq.hStart, shareReq.hEnd, shareReq.vStart, shareReq.vEnd);
 		} else {
 			throw new IllegalArgumentException("Expected shareReq to have either a docId or a vidId.");
 		}
@@ -78,5 +75,16 @@ public class Takes implements Jooby.Module {
 
 	public static String userTitleSlug(String user, String titleSlug) {
 		return "/" + user + "/" + titleSlug;
+	}
+
+	public static String docImageUrl(String titleSlug, String hStart, String hEnd, String vStart, String vEnd) {
+		if (vStart == null || vEnd == null) {
+			throw new IllegalArgumentException("Expected document to have a view range.");
+		}
+		return "/" + titleSlug + "_" + hStart + "-" + hEnd + "_" + vStart + "-" + vEnd + ".png";
+	}
+
+	public static String vidImageUrl(String titleSlug, String hStart, String hEnd) {
+		return "/" + titleSlug + "_" + hStart + "-" + hEnd + ".png";
 	}
 }

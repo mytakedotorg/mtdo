@@ -8,8 +8,8 @@ package controllers;
 
 import com.google.inject.Binder;
 import com.typesafe.config.Config;
+import common.NotFound;
 import java2ts.Routes;
-import jsweet.util.tuple.Tuple2;
 import org.jooby.Env;
 import org.jooby.Jooby;
 import org.jooby.handlers.AssetHandler;
@@ -17,46 +17,34 @@ import org.jooby.handlers.AssetHandler;
 public class FoundationAssets implements Jooby.Module {
 	@Override
 	public void configure(Env env, Config conf, Binder binder) throws Throwable {
-		env.router().get(Routes.FOUNDATION, () -> views.Placeholder.foundation.template());
+		env.router().get(Routes.FOUNDATION, () -> views.Placeholder.foundation.template(""));
 		env.router().get(Routes.FOUNDATION_V1 + "/:title/:videoRange", (req) -> {
 			// Foundation video
-			String title = req.param("title").value();
+			String titleSlug = req.param("title").value();
 			String rangeStr = req.param("videoRange").value();
-			Tuple2<Float, Float> range = rangeFromString(rangeStr);
-			if (range != null) {
-				// TODO: create image path and pass to template
+			String rangeArr[] = rangeStr.split("-");
+			if (rangeArr.length != 2) {
+				return NotFound.result();
 			}
-			return views.Placeholder.foundation.template();
+			String imgPath = Takes.vidImageUrl(titleSlug, rangeArr[0], rangeArr[1]);
+			return views.Placeholder.foundation.template(imgPath);
 		});
 		env.router().get(Routes.FOUNDATION_V1 + "/:title/:hRange/:vRange", (req) -> {
 			// Foundation document
-			String title = req.param("title").value();
+			String titleSlug = req.param("title").value();
 			String hRangeStr = req.param("hRange").value();
 			String vRangeStr = req.param("vRange").value();
-			Tuple2<Float, Float> hRange = rangeFromString(hRangeStr);
-			Tuple2<Float, Float> vRange = rangeFromString(vRangeStr);
-			if (hRange != null && vRange != null) {
-				// TODO: create image path and pass to template
+			String hRangeArr[] = hRangeStr.split("-");
+			String vRangeArr[] = vRangeStr.split("-");
+			if (hRangeArr.length != 2 || vRangeArr.length != 2) {
+				return NotFound.result();
 			}
-			return views.Placeholder.foundation.template();
+			String imgPath = Takes.docImageUrl(titleSlug, hRangeArr[0], hRangeArr[1], vRangeArr[0], vRangeArr[1]);
+			return views.Placeholder.foundation.template(imgPath);
 		});
 		// Foundation catch-all (nothing is highlighted)
-		env.router().get(Routes.FOUNDATION_V1 + "/**", () -> views.Placeholder.foundation.template());
+		env.router().get(Routes.FOUNDATION_V1 + "/**", () -> views.Placeholder.foundation.template(""));
 		env.router().assets(Routes.FOUNDATION_INDEX_HASH, new AssetHandler(Routes.FOUNDATION_INDEX_HASH).etag(false).maxAge(0));
 		env.router().assets(Routes.FOUNDATION_DATA + "/*");
-	}
-
-	private static Tuple2<Float, Float> rangeFromString(String rangeStr) {
-		String rangeArr[] = rangeStr.split("-");
-		if (rangeArr.length != 2) {
-			return null;
-		}
-		try {
-			float start = Float.parseFloat(rangeArr[0]);
-			float end = Float.parseFloat(rangeArr[1]);
-			return new Tuple2<Float, Float>(start, end);
-		} catch (NumberFormatException e) {
-			return null;
-		}
 	}
 }
