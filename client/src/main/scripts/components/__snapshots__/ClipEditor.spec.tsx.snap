@@ -226,15 +226,16 @@ exports[`ClipEditor with zoomed selection 1`] = `
         <div
           className="dropdown__dropdown dropdown__dropdown--hidden"
         >
-          <ShareClip
+          <QuickShare
+            factHash="iEfwIxM7MmnOKb7zt4HqW8IxUWy6F7a236fSOQlUUWI="
             highlightedRange={
               Array [
                 3.87,
                 5.1,
               ]
             }
+            isDocument={false}
             onSendToTake={[Function]}
-            videoIdHash="iEfwIxM7MmnOKb7zt4HqW8IxUWy6F7a236fSOQlUUWI="
             viewRange={
               Array [
                 3.7470000000000003,
@@ -475,15 +476,16 @@ exports[`ClipEditor with zoomed selection 2`] = `
         <div
           className="dropdown__dropdown dropdown__dropdown--hidden"
         >
-          <ShareClip
+          <QuickShare
+            factHash="iEfwIxM7MmnOKb7zt4HqW8IxUWy6F7a236fSOQlUUWI="
             highlightedRange={
               Array [
                 3.87,
                 5.1,
               ]
             }
+            isDocument={false}
             onSendToTake={[Function]}
-            videoIdHash="iEfwIxM7MmnOKb7zt4HqW8IxUWy6F7a236fSOQlUUWI="
             viewRange={
               Array [
                 4,

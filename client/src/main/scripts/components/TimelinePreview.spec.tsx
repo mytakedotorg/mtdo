@@ -76,13 +76,7 @@ describe("Foundation Document", () => {
 
     // When some more text is highlighted, the "Clear Selection" button is shown again
     wrapper.setState({ textIsHighlighted: true });
-    expect(
-      wrapper
-        .find(".document__header")
-        .first()
-        .childAt(0)
-        .children().length
-    ).toBe(2);
+    expect(wrapper.find(".document__header-actions").children().length).toBe(2);
   });
 
   test("Set text click works for initial highlight", () => {
