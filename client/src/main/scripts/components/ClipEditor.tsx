@@ -21,6 +21,7 @@ export interface ClipEditorEventHandlers {
   onPlayPausePress: () => any;
   onRangeChange: (value: [number, number] | number, type: RangeType) => any;
   onRestartPress: () => any;
+  onSendToTake: () => any;
   onSkipBackPress: (seconds: number) => any;
   onSkipForwardPress: (seconds: number) => any;
   onZoomToClipPress: () => any;
@@ -229,6 +230,7 @@ class ClipEditor extends React.Component<ClipEditorProps, ClipEditorState> {
               >
                 <ShareClip
                   highlightedRange={[selectionRange.start, selectionRange.end]}
+                  onSendToTake={this.props.eventHandlers.onSendToTake}
                   videoIdHash={this.props.videoIdHash}
                   viewRange={
                     zoomRange && zoomRange.end

@@ -865,6 +865,7 @@ class Video extends React.Component<VideoProps, VideoState> {
       onRangeChange: this.handleRangeChange,
       onRestartPress: this.handleRestartPress,
       onScroll: this.handleCaptionScroll,
+      onSendToTake: this.handleSetClick,
       onSkipBackPress: this.handleSkipBackPress,
       onSkipForwardPress: this.handleSkipForwardPress,
       onZoomToClipPress: this.handleZoomToClipPress

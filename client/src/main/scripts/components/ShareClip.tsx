@@ -17,6 +17,7 @@ declare global {
 }
 interface ShareClipProps {
   highlightedRange: [number, number];
+  onSendToTake: () => any;
   videoIdHash: string;
   viewRange?: [number, number];
 }
@@ -209,6 +210,12 @@ class ShareClip extends React.Component<ShareClipProps, ShareClipState> {
             onClick={this.handleTwitterClick}
           >
             Twitter
+          </button>
+          <button
+            className="shareclip__button"
+            onClick={this.props.onSendToTake}
+          >
+            Give your Take
           </button>
           <div className="shareclip__info">
             {this.state.isCopiedToClipboard ? (

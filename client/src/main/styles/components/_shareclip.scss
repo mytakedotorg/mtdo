@@ -46,7 +46,9 @@
   @include button--blue;
   margin-left: $page-margin-mobile;
   margin-bottom: $page-margin-mobile * $vertical-margin-multiplier;
+  font-size: 13px;
   @media #{$mq-medium} {
+    font-size: 15px;
     margin-left: $content-margin;
   }
 }

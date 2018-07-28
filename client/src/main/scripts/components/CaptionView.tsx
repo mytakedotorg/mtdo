@@ -33,6 +33,7 @@ export interface CaptionViewEventHandlers {
   onRangeChange: (value: [number, number] | number, type: RangeType) => any;
   onRestartPress: () => any;
   onScroll: (viewRange: [number, number]) => any;
+  onSendToTake: () => any;
   onSkipBackPress: (seconds: number) => any;
   onSkipForwardPress: (seconds: number) => any;
   onZoomToClipPress: () => any;
@@ -217,6 +218,7 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
       onPlayPausePress: this.props.eventHandlers.onPlayPausePress,
       onRestartPress: this.props.eventHandlers.onRestartPress,
       onRangeChange: this.props.eventHandlers.onRangeChange,
+      onSendToTake: this.props.eventHandlers.onSendToTake,
       onSkipBackPress: this.props.eventHandlers.onSkipBackPress,
       onSkipForwardPress: this.props.eventHandlers.onSkipForwardPress,
       onZoomToClipPress: this.props.eventHandlers.onZoomToClipPress
