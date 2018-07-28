@@ -2,6 +2,11 @@ import * as React from "react";
 import { ReactElement } from "react";
 import { Foundation } from "../java2ts/Foundation";
 import { ImageProps } from "../java2ts/ImageProps";
+import {
+  DocumentBlock,
+  TakeBlock,
+  VideoBlock
+} from "../components/BlockEditor";
 var base64toArrayBuffer = require("base64-arraybuffer");
 var bs = require("binary-search");
 
@@ -1318,4 +1323,14 @@ export function ancestorHasClass(
   } else {
     return false;
   }
+}
+export function getFirstFactBlock(
+  blockList: TakeBlock[]
+): VideoBlock | DocumentBlock | null {
+  for (let block of blockList) {
+    if (block.kind === "document" || block.kind === "video") {
+      return block;
+    }
+  }
+  return null;
 }
