@@ -26,6 +26,7 @@ const eventHandlers: ClipEditorEventHandlers = {
   onPlayPausePress: jest.fn(),
   onRangeChange: jest.fn(),
   onRestartPress: jest.fn(),
+  onSendToTake: jest.fn(),
   onSkipBackPress: jest.fn(),
   onSkipForwardPress: jest.fn(),
   onZoomToClipPress: jest.fn()

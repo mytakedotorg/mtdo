@@ -233,6 +233,7 @@ exports[`ClipEditor with zoomed selection 1`] = `
                 5.1,
               ]
             }
+            onSendToTake={[Function]}
             videoIdHash="iEfwIxM7MmnOKb7zt4HqW8IxUWy6F7a236fSOQlUUWI="
             viewRange={
               Array [
@@ -481,6 +482,7 @@ exports[`ClipEditor with zoomed selection 2`] = `
                 5.1,
               ]
             }
+            onSendToTake={[Function]}
             videoIdHash="iEfwIxM7MmnOKb7zt4HqW8IxUWy6F7a236fSOQlUUWI="
             viewRange={
               Array [

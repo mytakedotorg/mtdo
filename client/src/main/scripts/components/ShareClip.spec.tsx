@@ -6,7 +6,11 @@ import { videoFactLink } from "../utils/testUtils";
 test("It renders", () => {
   const tree = renderer
     .create(
-      <ShareClip highlightedRange={[0.1, 5]} videoIdHash={videoFactLink.hash} />
+      <ShareClip
+        highlightedRange={[0.1, 5]}
+        videoIdHash={videoFactLink.hash}
+        onSendToTake={jest.fn()}
+      />
     )
     .toJSON();
   expect(tree).toMatchSnapshot();

@@ -48,6 +48,12 @@ exports[`It renders 1`] = `
     >
       Twitter
     </button>
+    <button
+      className="shareclip__button"
+      onClick={[Function]}
+    >
+      Give your Take
+    </button>
     <div
       className="shareclip__info"
     />

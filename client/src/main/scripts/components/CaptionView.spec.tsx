@@ -20,6 +20,7 @@ const eventHandlers: CaptionViewEventHandlers = {
   onRangeChange: jest.fn(),
   onRestartPress: jest.fn(),
   onScroll: jest.fn(),
+  onSendToTake: jest.fn(),
   onSkipBackPress: jest.fn(),
   onSkipForwardPress: jest.fn(),
   onZoomToClipPress: jest.fn()
