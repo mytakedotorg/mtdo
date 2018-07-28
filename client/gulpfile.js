@@ -11,7 +11,6 @@ serveStatic = require("serve-static");
 const { CheckerPlugin } = require("awesome-typescript-loader");
 webpackDevMiddleware = require("webpack-dev-middleware");
 webpackHotMiddleware = require("webpack-hot-middleware");
-nodeExternals = require("webpack-node-externals");
 // misc
 tasklisting = require("gulp-task-listing");
 gutil = require("gulp-util");
