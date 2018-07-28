@@ -269,13 +269,66 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
             <p className="video__instructions">
               For now, we only have captions for{" "}
               <a
-                href={Routes.FOUNDATION_V1 + "/donald-trump-hillary-clinton-23"}
+                href={
+                  Routes.FOUNDATION_V1 +
+                  "/presidential-debate-obama-romney-1-of-3"
+                }
               >
-                Trump/Hillary 2
-              </a>{" "}
-              and{" "}
-              <a href={Routes.FOUNDATION_V1 + "/jimmy-carter-gerald-ford-23"}>
-                Carter/Ford 2
+                Obama/Romney 1
+              </a>
+              {", "}
+              <a
+                href={
+                  Routes.FOUNDATION_V1 +
+                  "/presidential-debate-mccain-obama-2-of-3"
+                }
+              >
+                McCain/Obama 2
+              </a>
+              {", "}
+              <a
+                href={
+                  Routes.FOUNDATION_V1 +
+                  "/presidential-debate-bush-kerry-3-of-3"
+                }
+              >
+                Bush/Kerry 3
+              </a>
+              {", "}
+              <a
+                href={
+                  Routes.FOUNDATION_V1 +
+                  "/presidential-debate-clinton-dole-1-of-2"
+                }
+              >
+                Clinton/Dole 1
+              </a>
+              {", "}
+              <a
+                href={
+                  Routes.FOUNDATION_V1 +
+                  "/presidential-debate-mondale-reagan-1-of-2"
+                }
+              >
+                Mondale/Reagan 1
+              </a>
+              {", "}
+              <a
+                href={
+                  Routes.FOUNDATION_V1 +
+                  "/presidential-debate-carter-reagan-1-of-1"
+                }
+              >
+                Carter/Reagan 1
+              </a>
+              {", "}and{" "}
+              <a
+                href={
+                  Routes.FOUNDATION_V1 +
+                  "/presidential-debate-kennedy-nixon-1-of-4"
+                }
+              >
+                Kennedy/Nixon 1
               </a>.
             </p>
           </div>
