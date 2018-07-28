@@ -27,7 +27,7 @@ exports[`It renders 1`] = `
       className="quickshare__url"
     >
       <code>
-        about:///anonymous/untitled/v1/eyJ0aXRsZSI6InVudGl0bGVkIiwidmlkSWQiOiJpRWZ3SXhNN01tbk9LYjd6dDRIcVc4SXhVV3k2RjdhMjM2ZlNPUWxVVVdJPSIsImhTdGFydCI6IjAuMTAwIiwiaEVuZCI6IjUuMDAwIn0=
+        about:///anonymous/untitled/v1/eyJ0aXRsZSI6InVudGl0bGVkIiwiZG9jSWQiOiJpRWZ3SXhNN01tbk9LYjd6dDRIcVc4SXhVV3k2RjdhMjM2ZlNPUWxVVVdJPSIsImhTdGFydCI6IjAuMTAwIiwiaEVuZCI6IjUuMDAwIn0=
       </code>
     </pre>
     <button
