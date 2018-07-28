@@ -82,6 +82,7 @@ public class DraftsTest {
 		post.parentRev = new DraftRev();
 		post.parentRev.draftid = 5;
 		post.parentRev.lastrevid = 6;
+		post.imageUrl = "someImage.png";
 
 		byte[] body = dev.givenUser("samples")
 				.contentType(ContentType.JSON)
