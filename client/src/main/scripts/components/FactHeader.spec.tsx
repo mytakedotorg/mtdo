@@ -10,54 +10,54 @@ const documentProps = {
   onScroll: jest.fn()
 };
 
-test("Fixed with text highlighted", () => {
-  const tree = renderer
-    .create(
-      <StickyFactHeader
-        {...documentProps}
-        isFixed={true}
-        textIsHighlighted={true}
-      />
-    )
-    .toJSON();
-  expect(tree).toMatchSnapshot();
-});
+// test("Fixed with text highlighted", () => {
+//   const tree = renderer
+//     .create(
+//       <StickyFactHeader
+//         {...documentProps}
+//         isFixed={true}
+//         textIsHighlighted={true}
+//       />
+//     )
+//     .toJSON();
+//   expect(tree).toMatchSnapshot();
+// });
 
-test("Fixed without text highlighted", () => {
-  const tree = renderer
-    .create(
-      <StickyFactHeader
-        {...documentProps}
-        isFixed={true}
-        textIsHighlighted={false}
-      />
-    )
-    .toJSON();
-  expect(tree).toMatchSnapshot();
-});
+// test("Fixed without text highlighted", () => {
+//   const tree = renderer
+//     .create(
+//       <StickyFactHeader
+//         {...documentProps}
+//         isFixed={true}
+//         textIsHighlighted={false}
+//       />
+//     )
+//     .toJSON();
+//   expect(tree).toMatchSnapshot();
+// });
 
-test("Scrolling with text highlighted", () => {
-  const tree = renderer
-    .create(
-      <StickyFactHeader
-        {...documentProps}
-        isFixed={false}
-        textIsHighlighted={true}
-      />
-    )
-    .toJSON();
-  expect(tree).toMatchSnapshot();
-});
+// test("Scrolling with text highlighted", () => {
+//   const tree = renderer
+//     .create(
+//       <StickyFactHeader
+//         {...documentProps}
+//         isFixed={false}
+//         textIsHighlighted={true}
+//       />
+//     )
+//     .toJSON();
+//   expect(tree).toMatchSnapshot();
+// });
 
-test("Scrolling without text highlighted", () => {
-  const tree = renderer
-    .create(
-      <StickyFactHeader
-        {...documentProps}
-        isFixed={false}
-        textIsHighlighted={false}
-      />
-    )
-    .toJSON();
-  expect(tree).toMatchSnapshot();
-});
+// test("Scrolling without text highlighted", () => {
+//   const tree = renderer
+//     .create(
+//       <StickyFactHeader
+//         {...documentProps}
+//         isFixed={false}
+//         textIsHighlighted={false}
+//       />
+//     )
+//     .toJSON();
+//   expect(tree).toMatchSnapshot();
+// });

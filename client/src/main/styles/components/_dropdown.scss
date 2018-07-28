@@ -14,6 +14,9 @@
 .dropdown--clipShare {
   height: 35px;
 }
+.dropdown--docShare {
+  display: inline-block;
+}
 .dropdown__toggle {
   @include body("sans");
   text-align: left;
@@ -35,7 +38,8 @@
   width: 100%;
   height: 100%;
 }
-.dropdown__toggle--clipShare {
+.dropdown__toggle--clipShare,
+.dropdown__toggle--docShare {
   @include button;
   @include button--red;
 }
@@ -85,5 +89,16 @@
   @media #{$mq-medium} {
     right: -50px;
     width: 554px;
+  }
+}
+.dropdown__dropdown--docShare {
+  left: -135px;
+  width: 380px;
+  @media #{$mq-small} {
+    width: 450px;
+  }
+  @media #{$mq-medium} {
+    left: 0;
+    width: 515px;
   }
 }
