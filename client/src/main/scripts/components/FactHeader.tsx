@@ -128,8 +128,9 @@ export class StickyFactHeader extends React.Component<
             >
               <QuickShare
                 highlightedRange={this.props.highlightedRange}
+                isDocument={true}
                 onSendToTake={this.handleSetClick}
-                videoIdHash={this.props.factHash}
+                factHash={this.props.factHash}
                 viewRange={this.props.viewRange}
               />
             </DropDown>

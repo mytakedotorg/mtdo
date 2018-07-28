@@ -8,7 +8,8 @@ test("It renders", () => {
     .create(
       <QuickShare
         highlightedRange={[0.1, 5]}
-        videoIdHash={videoFactLink.hash}
+        isDocument={true}
+        factHash={videoFactLink.hash}
         onSendToTake={jest.fn()}
       />
     )

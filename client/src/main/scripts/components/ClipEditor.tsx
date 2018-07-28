@@ -230,8 +230,9 @@ class ClipEditor extends React.Component<ClipEditorProps, ClipEditorState> {
               >
                 <QuickShare
                   highlightedRange={[selectionRange.start, selectionRange.end]}
+                  isDocument={false}
                   onSendToTake={this.props.eventHandlers.onSendToTake}
-                  videoIdHash={this.props.videoIdHash}
+                  factHash={this.props.videoIdHash}
                   viewRange={
                     zoomRange && zoomRange.end
                       ? [zoomRange.start, zoomRange.end]

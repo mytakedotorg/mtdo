@@ -33,6 +33,21 @@ class AnonymousTake extends React.Component<
         videoId: takeObject.vidId,
         range: highlightedRange
       };
+    } else if (
+      takeObject.docId &&
+      takeObject.vStart != null &&
+      takeObject.vEnd != null
+    ) {
+      const viewRange: [number, number] = [
+        parseFloat(takeObject.vStart),
+        parseFloat(takeObject.vEnd)
+      ];
+      block = {
+        kind: "document",
+        excerptId: takeObject.docId,
+        highlightedRange: highlightedRange,
+        viewRange: viewRange
+      };
     } else {
       const msg = "AnonymousTake: Error decoding fact block";
       alertErr(msg);

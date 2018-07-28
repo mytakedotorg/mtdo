@@ -18,7 +18,8 @@ declare global {
 interface QuickShareProps {
   highlightedRange: [number, number];
   onSendToTake: () => any;
-  videoIdHash: string;
+  factHash: string;
+  isDocument: boolean;
   viewRange?: [number, number];
 }
 interface QuickShareState {
@@ -97,10 +98,11 @@ class QuickShare extends React.Component<QuickShareProps, QuickShareState> {
     postRequest(Routes.API_SHARE, request, () => {});
   };
   createRequestObject = (): Share.ShareReq => {
-    const { highlightedRange, videoIdHash, viewRange } = this.props;
+    const { highlightedRange, isDocument, factHash, viewRange } = this.props;
     let request: Share.ShareReq = {
       title: this.state.title ? this.state.title : this.UNTITLED,
-      vidId: videoIdHash,
+      vidId: isDocument ? undefined : factHash,
+      docId: isDocument ? factHash : undefined,
       hStart: highlightedRange[0].toFixed(3),
       hEnd: highlightedRange[1].toFixed(3)
     };
@@ -157,8 +159,8 @@ class QuickShare extends React.Component<QuickShareProps, QuickShareState> {
     }
   };
   componentWillReceiveProps(nextProps: QuickShareProps) {
-    const { videoIdHash, highlightedRange, viewRange } = this.props;
-    if (nextProps.videoIdHash !== videoIdHash) {
+    const { factHash, highlightedRange, viewRange } = this.props;
+    if (nextProps.factHash !== factHash) {
       this.urlDidUpdate(true);
     } else if (
       nextProps.highlightedRange[0] !== highlightedRange[0] ||
