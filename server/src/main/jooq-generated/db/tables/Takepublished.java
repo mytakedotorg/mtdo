@@ -43,7 +43,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Takepublished extends TableImpl<TakepublishedRecord> {
 
-    private static final long serialVersionUID = -551205915;
+    private static final long serialVersionUID = 1769452543;
 
     /**
      * The reference instance of <code>public.takepublished</code>
@@ -127,6 +127,11 @@ public class Takepublished extends TableImpl<TakepublishedRecord> {
      * The column <code>public.takepublished.count_illegal</code>.
      */
     public final TableField<TakepublishedRecord, Integer> COUNT_ILLEGAL = createField("count_illegal", org.jooq.impl.SQLDataType.INTEGER.nullable(false).defaultValue(org.jooq.impl.DSL.field("0", org.jooq.impl.SQLDataType.INTEGER)), this, "");
+
+    /**
+     * The column <code>public.takepublished.image_url</code>.
+     */
+    public final TableField<TakepublishedRecord, String> IMAGE_URL = createField("image_url", org.jooq.impl.SQLDataType.CLOB.nullable(false).defaultValue(org.jooq.impl.DSL.field("''::text", org.jooq.impl.SQLDataType.CLOB)), this, "");
 
     /**
      * Create a <code>public.takepublished</code> table reference

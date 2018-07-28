@@ -23,7 +23,7 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Takepublished implements Serializable {
 
-    private static final long serialVersionUID = -1528250895;
+    private static final long serialVersionUID = -1348893051;
 
     private Integer   id;
     private Integer   userId;
@@ -39,6 +39,7 @@ public class Takepublished implements Serializable {
     private Integer   countBookmark;
     private Integer   countSpam;
     private Integer   countIllegal;
+    private String    imageUrl;
 
     public Takepublished() {}
 
@@ -57,6 +58,7 @@ public class Takepublished implements Serializable {
         this.countBookmark = value.countBookmark;
         this.countSpam = value.countSpam;
         this.countIllegal = value.countIllegal;
+        this.imageUrl = value.imageUrl;
     }
 
     public Takepublished(
@@ -73,7 +75,8 @@ public class Takepublished implements Serializable {
         Integer   countLike,
         Integer   countBookmark,
         Integer   countSpam,
-        Integer   countIllegal
+        Integer   countIllegal,
+        String    imageUrl
     ) {
         this.id = id;
         this.userId = userId;
@@ -89,6 +92,7 @@ public class Takepublished implements Serializable {
         this.countBookmark = countBookmark;
         this.countSpam = countSpam;
         this.countIllegal = countIllegal;
+        this.imageUrl = imageUrl;
     }
 
     public Integer getId() {
@@ -217,6 +221,15 @@ public class Takepublished implements Serializable {
         return this;
     }
 
+    public String getImageUrl() {
+        return this.imageUrl;
+    }
+
+    public Takepublished setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+        return this;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("Takepublished (");
@@ -235,6 +248,7 @@ public class Takepublished implements Serializable {
         sb.append(", ").append(countBookmark);
         sb.append(", ").append(countSpam);
         sb.append(", ").append(countIllegal);
+        sb.append(", ").append(imageUrl);
 
         sb.append(")");
         return sb.toString();
