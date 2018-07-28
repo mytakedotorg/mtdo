@@ -10,13 +10,11 @@ import static db.Tables.SHARED_FACTS;
 
 import auth.AuthUser;
 import com.google.inject.Binder;
-import com.jsoniter.JsonIterator;
 import com.typesafe.config.Config;
 import common.IpGetter;
 import common.Time;
 import db.tables.records.SharedFactsRecord;
 import java.math.BigDecimal;
-import java.util.Base64;
 import java2ts.Routes;
 import java2ts.Share;
 import org.jooby.Env;
@@ -41,25 +39,6 @@ public class Shares implements Jooby.Module {
 				logShare(dsl, req, shareReq, user);
 				return new Share.ShareRes();
 			}
-		});
-		env.router().get(Routes.ANONYMOUS + "/:title/:urlversion/:base64", req -> {
-			String titleSlug = req.param("title").value();
-			String base64Str = req.param("base64").value();
-			byte[] decodedBytes = Base64.getDecoder().decode(base64Str);
-			String decodedStr = new String(decodedBytes, "UTF-8");
-			Share.ShareReq shareReq = JsonIterator.deserialize(decodedStr).as(Share.ShareReq.class);
-			String imgPath = "/";
-			if (shareReq.vidId != null) {
-				imgPath += titleSlug + "_" + shareReq.hStart + "-" + shareReq.hEnd + ".png";
-			} else if (shareReq.docId != null) {
-				if (shareReq.vStart == null || shareReq.vEnd == null) {
-					throw new IllegalArgumentException("Expected document to have a view range.");
-				}
-				imgPath += titleSlug + "_" + shareReq.hStart + "-" + shareReq.hEnd + "_" + shareReq.vStart + "-" + shareReq.vEnd + ".png";
-			} else {
-				throw new IllegalArgumentException("Expected shareReq to have either a docId or a vidId.");
-			}
-			return views.Takes.anonymousTake.template(shareReq.title, imgPath);
 		});
 	}
 
