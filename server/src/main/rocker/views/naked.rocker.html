@@ -1,4 +1,4 @@
-@args (String title, String description, String fileset, RockerBody content)
+@args (String title, String description, String fileset, String imgPath, RockerBody content)
 
 <!doctype html>
 
@@ -26,13 +26,25 @@
 <meta name="description" content="@description | MyTake.org">
 <meta name="author" content="MyTake.org">
 
+<!-- For 2:1 image aspect ratio -->
+<meta name="twitter:card" content="summary_large_image">
+@*
+<!-- For 1:1 image aspect ratio -->
+<meta name="twitter:card" content="summary">
+*@
+<meta name="twitter:site" content="@@mytakedotorg">
+<meta name="twitter:title" content="@title">
+<meta name="twitter:description" content="@description">
 <meta property="og:title" content="@title" />
 <meta property="og:description" content="@description" />
 @*
 <meta property="og:url" content="https://mytake.org@url" />
-<meta property="og:image" content="https://mytake/org@image" />
 *@
-<meta property="fb:app_id" content="1014270045380974" />
+@if (!imgPath.isEmpty()) {
+<meta property="og:image" content="https://node.mytake.org/api/images@imgPath" />
+<meta name="twitter:image" content="http://node.mytake.org/api/images@imgPath">
+}
+<meta property="fb:app_id" content="@fbAppId()" />
 
 @style(fileset)
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Merriweather:400,400i,700|Source+Sans+Pro:300,400,700" crossorigin="anonymous">
@@ -46,10 +58,10 @@
 <script>
 	window.fbAsyncInit = function() {
 		FB.init({
-			appId            : '1014270045380974',
+			appId            : '@fbAppId()',
 			autoLogAppEvents : true,
 			xfbml            : true,
-			version          : 'v2.11'
+			version          : 'v3.0'
 		});
 	};
 

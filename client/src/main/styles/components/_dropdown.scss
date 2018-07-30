@@ -1,6 +1,5 @@
 .dropdown {
   position: relative;
-  line-height: 35px;
 }
 .dropdown--usernav {
   position: absolute;
@@ -12,18 +11,25 @@
   width: 100%;
   height: 100%;
 }
+.dropdown--clipShare {
+  height: 35px;
+}
+.dropdown--docShare {
+  display: inline-block;
+}
 .dropdown__toggle {
   @include body("sans");
-  line-height: 35px;
   text-align: left;
   margin-left: $page-margin-mobile;
   margin-right: $page-margin-mobile;
   background-color: transparent;
   margin: 0;
+  cursor: pointer;
 }
 .dropdown__toggle--video,
 .dropdown__toggle--reaction {
   @include button--borderless;
+  line-height: 35px;
 }
 .dropdown__toggle--usernav {
   position: absolute;
@@ -31,6 +37,11 @@
   right: 0;
   width: 100%;
   height: 100%;
+}
+.dropdown__toggle--clipShare,
+.dropdown__toggle--docShare {
+  @include button;
+  @include button--red;
 }
 .dropdown--searchbar {
   margin-left: auto;
@@ -40,8 +51,8 @@
   position: absolute;
   max-height: 300px;
   overflow: hidden;
-  border: 1px solid palette(share, border);
-  background-color: palette(share, background);
+  border: 1px solid palette(dropdown, border);
+  background-color: palette(dropdown, background);
   border-radius: 3px;
   float: none;
   text-align: left;
@@ -66,4 +77,28 @@
 .dropdown__dropdown--bl {
   top: 35px;
   right: 0;
+}
+.dropdown__dropdown--clipShare {
+  top: -180px;
+  right: -15px;
+  width: 380px;
+  @media #{$mq-small} {
+    right: -20px;
+    width: 450px;
+  }
+  @media #{$mq-medium} {
+    right: -50px;
+    width: 554px;
+  }
+}
+.dropdown__dropdown--docShare {
+  left: -135px;
+  width: 380px;
+  @media #{$mq-small} {
+    width: 450px;
+  }
+  @media #{$mq-medium} {
+    left: 0;
+    width: 515px;
+  }
 }

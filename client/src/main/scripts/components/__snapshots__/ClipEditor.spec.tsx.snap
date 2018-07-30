@@ -214,6 +214,37 @@ exports[`ClipEditor with zoomed selection 1`] = `
         />
          15s
       </button>
+      <div
+        className="dropdown dropdown--clipShare"
+      >
+        <span
+          className="dropdown__toggle dropdown__toggle--clipShare"
+          onClick={[Function]}
+        >
+          Share
+        </span>
+        <div
+          className="dropdown__dropdown dropdown__dropdown--hidden"
+        >
+          <QuickShare
+            factHash="iEfwIxM7MmnOKb7zt4HqW8IxUWy6F7a236fSOQlUUWI="
+            highlightedRange={
+              Array [
+                3.87,
+                5.1,
+              ]
+            }
+            isDocument={false}
+            onSendToTake={[Function]}
+            viewRange={
+              Array [
+                3.7470000000000003,
+                5.223,
+              ]
+            }
+          />
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -433,6 +464,37 @@ exports[`ClipEditor with zoomed selection 2`] = `
         />
          15s
       </button>
+      <div
+        className="dropdown dropdown--clipShare"
+      >
+        <span
+          className="dropdown__toggle dropdown__toggle--clipShare"
+          onClick={[Function]}
+        >
+          Share
+        </span>
+        <div
+          className="dropdown__dropdown dropdown__dropdown--hidden"
+        >
+          <QuickShare
+            factHash="iEfwIxM7MmnOKb7zt4HqW8IxUWy6F7a236fSOQlUUWI="
+            highlightedRange={
+              Array [
+                3.87,
+                5.1,
+              ]
+            }
+            isDocument={false}
+            onSendToTake={[Function]}
+            viewRange={
+              Array [
+                4,
+                82,
+              ]
+            }
+          />
+        </div>
+      </div>
     </div>
   </div>
 </div>

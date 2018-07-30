@@ -50,7 +50,6 @@ interface TimelinePreviewState {
   textIsHighlighted: boolean;
   highlightedNodes: FoundationNode[];
   offsetTop: number;
-  headerHidden: boolean;
 }
 
 export default class TimelinePreview extends React.Component<
@@ -69,8 +68,7 @@ export default class TimelinePreview extends React.Component<
           : [0, 0],
       textIsHighlighted: props.ranges ? true : false,
       highlightedNodes: [],
-      offsetTop: 0,
-      headerHidden: false
+      offsetTop: 0
     };
   }
   getScrollTop = (range?: [number, number]) => {
@@ -185,13 +183,6 @@ export default class TimelinePreview extends React.Component<
       }
     }
   };
-  handleScroll = (headerHidden: boolean) => {
-    if (this.state.headerHidden != headerHidden) {
-      this.setState({
-        headerHidden: headerHidden
-      });
-    }
-  };
   componentDidMount() {
     this.setup();
   }
@@ -258,11 +249,6 @@ export default class TimelinePreview extends React.Component<
     }
   }
   render() {
-    let documentClass = "document__row";
-    if (this.state.headerHidden) {
-      documentClass += " document__row--push";
-    }
-
     const documentEventHandlers: DocumentEventHandlers = {
       onMouseUp: this.handleMouseUp
     };
@@ -271,11 +257,12 @@ export default class TimelinePreview extends React.Component<
         <div className={"timeline__preview"}>
           <StickyFactHeader
             heading={this.props.factLink.fact.title}
-            isFixed={this.state.headerHidden}
+            highlightedRange={this.state.highlightedRange}
+            factHash={this.props.factLink.hash}
             onClearClick={this.handleClearClick}
             onSetClick={this.handleSetClick}
-            onScroll={this.handleScroll}
             textIsHighlighted={this.state.textIsHighlighted}
+            viewRange={this.state.viewRange}
             isDocument={
               this.props.factLink.fact.kind === "document" ? true : false
             }
@@ -285,11 +272,7 @@ export default class TimelinePreview extends React.Component<
               nodes={this.props.nodes}
               eventHandlers={documentEventHandlers}
               ref={(document: Document) => (this.document = document)}
-              className={
-                this.state.headerHidden
-                  ? "document__row document__row--push"
-                  : "document__row"
-              }
+              className={"document__row"}
             >
               {this.state.textIsHighlighted ? (
                 <div
@@ -317,16 +300,13 @@ export default class TimelinePreview extends React.Component<
               onRangeSet={this.handleVideoRangeSet}
               onClearClick={this.handleClearClick}
               videoFact={this.props.videoFact}
+              videoFactHash={this.props.factLink.hash}
               clipRange={
                 this.props.ranges && !this.props.ranges.viewRange
                   ? this.props.ranges.highlightedRange
                   : null
               }
-              className={
-                this.state.headerHidden
-                  ? "video__inner-container video__inner-container--push"
-                  : "video__inner-container"
-              }
+              className={"video__inner-container"}
             />
           ) : null}
         </div>

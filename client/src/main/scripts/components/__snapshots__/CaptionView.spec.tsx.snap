@@ -14,6 +14,7 @@ exports[`CaptionTextNodeList 1`] = `
         "onPlayPausePress": [Function],
         "onRangeChange": [Function],
         "onRestartPress": [Function],
+        "onSendToTake": [Function],
         "onSkipBackPress": [Function],
         "onSkipForwardPress": [Function],
         "onZoomToClipPress": [Function],
@@ -63,6 +64,7 @@ exports[`CaptionTextNodeList 1`] = `
     }
     stateAuthority="SCROLL"
     videoDuration={5224}
+    videoIdHash="iEfwIxM7MmnOKb7zt4HqW8IxUWy6F7a236fSOQlUUWI="
   />
   <div
     className="document document--static"
@@ -133,6 +135,7 @@ exports[`CaptionTextNodeList with highlights from props 1`] = `
         "onPlayPausePress": [Function],
         "onRangeChange": [Function],
         "onRestartPress": [Function],
+        "onSendToTake": [Function],
         "onSkipBackPress": [Function],
         "onSkipForwardPress": [Function],
         "onZoomToClipPress": [Function],
@@ -182,6 +185,7 @@ exports[`CaptionTextNodeList with highlights from props 1`] = `
     }
     stateAuthority="SCROLL"
     videoDuration={5224}
+    videoIdHash="iEfwIxM7MmnOKb7zt4HqW8IxUWy6F7a236fSOQlUUWI="
   />
   <div
     className="document document--static"

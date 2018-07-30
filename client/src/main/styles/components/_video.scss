@@ -70,3 +70,7 @@ $video-header-height: 60px;
 .video__share-dropdown {
   width: 155px;
 }
+.video__captions {
+  position: relative;
+  z-index: 60;
+}

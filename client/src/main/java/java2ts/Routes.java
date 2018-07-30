@@ -14,7 +14,10 @@ public class Routes {
 	public static final String API_EMAIL_SELF = "/api/emailSelf";
 	public static final String API_FOLLOW_ASK = "/api/followAsk";
 	public static final String API_FOLLOW_TELL = "/api/followTell";
+	public static final String API_IMAGES = "/api/images";
 	public static final String API_SEARCH = "/api/search";
+	public static final String API_SHARE = "/api/share";
+	public static final String API_SHARE_VIEW = "/api/share-view";
 
 	public static final String MODS = "/mods";
 	public static final String MODS_DRAFTS = "/mods/drafts/";
@@ -32,6 +35,7 @@ public class Routes {
 	public static final String PROFILE_TAB_STARS = "stars";
 	public static final String PROFILE_TAB_EDIT = "edit";
 
+	public static final String ANONYMOUS = "/anonymous";
 	public static final String SEARCH = "/search";
 	public static final String TIMELINE = "/timeline";
 	public static final String FOUNDATION = "/foundation";

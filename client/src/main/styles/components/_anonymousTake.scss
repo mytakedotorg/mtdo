@@ -1,0 +1,11 @@
+.anonymoustake {
+  @include content-column;
+}
+.anonymoustake__text {
+  @include body("sans");
+  color: palette(anonymous, text);
+  @include text-margin-lr;
+}
+.anonymoustake__link {
+  color: palette(anonymous, text);
+}

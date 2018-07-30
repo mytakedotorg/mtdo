@@ -45,4 +45,11 @@ public abstract class CustomRockerTemplate extends RequestRockerTemplate {
 		Preconditions.checkNotNull(scriptTags, "No such scripts %s, available: %s", fileset, locals.keySet());
 		return new RockerRaw().appendRaw(scriptTags);
 	}
+
+	//Read fb app id here
+	public RockerRaw fbAppId() {
+		String fbAppId = (String) locals.get(CustomAssets.FB_APP_ID);
+		Preconditions.checkNotNull(fbAppId);
+		return new RockerRaw().appendRaw(fbAppId);
+	}
 }

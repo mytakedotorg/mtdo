@@ -1,0 +1,64 @@
+.quickshare {
+  max-width: 100%;
+}
+.quickshare__title {
+  @include heading3;
+  @include text-margin-lr;
+  color: palette(share, text);
+  margin-top: $page-margin-mobile;
+  margin-bottom: $page-margin-mobile;
+}
+.quickshare__subtitle {
+  @include heading4;
+  @include text-margin-lr;
+  color: palette(share, text);
+}
+.quickshare__url {
+  @include body("sans");
+  @include text-margin-lr;
+  margin-top: 0;
+  color: palette(share, text);
+  overflow: scroll;
+  margin-bottom: 10px;
+  min-height: 28px;
+  @media #{$mq-medium} {
+    margin-bottom: 0;
+  }
+}
+.quickshare__label {
+  @include body("sans");
+  @include text-margin-lr;
+  color: palette(share, text);
+  display: block;
+}
+.quickshare__input {
+  @include text-margin;
+  border: 1px solid palette(share, border);
+  display: block;
+  @include input;
+  margin-bottom: 10px;
+  @media #{$mq-medium} {
+    margin-bottom: 0;
+  }
+}
+.quickshare__button {
+  @include button;
+  @include button--blue;
+  margin-left: $page-margin-mobile;
+  margin-bottom: $page-margin-mobile * $vertical-margin-multiplier;
+  font-size: 13px;
+  @media #{$mq-medium} {
+    font-size: 15px;
+    margin-left: $content-margin;
+  }
+}
+.quickshare__success {
+  @include body("sans");
+  @include text-margin-lr;
+  color: palette(share, text--green);
+}
+.quickshare__info {
+  position: absolute;
+  top: 8px;
+  right: 0;
+}

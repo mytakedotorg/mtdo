@@ -1,5 +1,4 @@
 import * as React from "react";
-import * as ReactDOM from "react-dom";
 import DropDown from "./DropDown";
 import { getUserCookieString } from "../utils/functions";
 import { LoginCookie } from "../java2ts/LoginCookie";

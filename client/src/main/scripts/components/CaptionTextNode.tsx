@@ -1,5 +1,4 @@
 import * as React from "react";
-import * as ReactDOM from "react-dom";
 import { CaptionNode, CaptionNodeArr } from "../utils/functions";
 
 interface CaptionTextNodeProps {

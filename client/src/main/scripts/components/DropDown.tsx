@@ -1,16 +1,16 @@
 import * as React from "react";
-import * as ReactDOM from "react-dom";
 import { alertErr, ancestorHasClass } from "../utils/functions";
 
 interface DropDownProps {
   children?: React.ReactNode;
   classModifier: string;
+  customPosition?: string;
   disabled?: boolean;
   dropdownPosition: Position;
   toggleText: string | React.ReactNode;
 }
 
-type Position = "TL" | "TR" | "BL" | "BR";
+type Position = "TL" | "TR" | "BL" | "BR" | "CUSTOM";
 
 interface DropDownState {
   dropDownIsOpen: boolean;
@@ -97,6 +97,9 @@ class DropDown extends React.Component<DropDownProps, DropDownState> {
           break;
         case "BR":
           dropDownClassModifier = "br";
+          break;
+        case "CUSTOM":
+          dropDownClassModifier = this.props.classModifier;
           break;
         default:
           const msg = "DropDown: Unknown position.";

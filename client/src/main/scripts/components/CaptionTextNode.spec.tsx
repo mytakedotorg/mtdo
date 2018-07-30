@@ -1,6 +1,5 @@
 import * as React from "react";
 import * as renderer from "react-test-renderer";
-import {} from "jest";
 import CaptionTextNode from "./CaptionTextNode";
 
 const captionNode = "Good evening I'm Martha Raddatz from ABC News.";

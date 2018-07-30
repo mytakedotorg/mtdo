@@ -150,6 +150,7 @@ public class Drafts implements Jooby.Module {
 				published.setBlocks(post.blocks.toString());
 				published.setPublishedAt(req.require(Time.class).nowTimestamp());
 				published.setPublishedIp(req.require(IpGetter.class).ip(req));
+				published.setImageUrl(post.imageUrl);
 				published.insert();
 
 				req.require(Mods.class).send(email -> email
