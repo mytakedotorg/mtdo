@@ -27,6 +27,7 @@
     "typescript": "^3.0.1"
   },
   "dependencies": {
+    "canvas": "^1.6.11",
     "debug": "^3.1.0",
     "express": "^4.16.3",
     "http": "0.0.0",

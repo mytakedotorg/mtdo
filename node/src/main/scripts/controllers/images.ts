@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 const express = require("express");
+const Canvas = require("canvas");
 const router = express.Router();
 
 function rangeFromString(rangeStr: string): [number, number] | null {
@@ -13,6 +14,32 @@ function rangeFromString(rangeStr: string): [number, number] | null {
     return null;
   }
   return [start, end];
+}
+
+function videoFactImage(): Promise<string> {
+  const canvas: HTMLCanvasElement = new Canvas(200, 200);
+  const ctx = canvas.getContext("2d");
+  if (ctx) {
+    // Draw a square"
+    ctx.fillStyle = "#f2f4f7";
+    ctx.fillRect(0, 0, 200, 200);
+
+    /**
+     *  TODO: Call drawVideoFact from client code
+     * */
+
+    return new Promise(function(resolve, reject) {
+      canvas.toDataURL("image/jpeg", 0.5, (err: string, jpeg: string) => {
+        if (err) {
+          return reject(err);
+        } else {
+          return resolve(jpeg);
+        }
+      });
+    });
+  } else {
+    throw "Error getting canvas context";
+  }
 }
 
 const IMAGEKEY = "imgkey";
@@ -33,9 +60,18 @@ router.get("/:" + IMAGEKEY, (req: Request, res: Response) => {
     if (hRange == null) {
       return res.status(404).send("Not found");
     }
-    return res.send(
-      "TODO: generate base64 image string for " + vidId + " " + hRange
-    );
+    videoFactImage()
+      .then(function(jpeg: string) {
+        const img = new Buffer(jpeg.split(",")[1], "base64"); // Remove "data:image/jpeg;base64,"
+        res.writeHead(200, {
+          "Content-Type": "image/jpeg",
+          "Content-Length": img.length
+        });
+        return res.end(img);
+      })
+      .catch(function() {
+        throw "Error creating image buffer";
+      });
   } else if (imgArr.length == 3) {
     // Document fact
     const docId = imgArr[0];
