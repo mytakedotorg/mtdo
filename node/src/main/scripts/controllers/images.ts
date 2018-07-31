@@ -2,8 +2,61 @@ import { Request, Response } from "express";
 const express = require("express");
 const router = express.Router();
 
-router.get("/", (req: Request, res: Response) => {
-  res.send("TODO");
+function rangeFromString(rangeStr: string): [number, number] | null {
+  const rangeArr = rangeStr.split("-");
+  if (rangeArr.length != 2) {
+    return null;
+  }
+  const start = parseFloat(rangeArr[0]);
+  const end = parseFloat(rangeArr[1]);
+  if (isNaN(start) || isNaN(end)) {
+    return null;
+  }
+  return [start, end];
+}
+
+const IMAGEKEY = "imgkey";
+router.get("/:" + IMAGEKEY, (req: Request, res: Response) => {
+  // Expect imgKey for videos to be like "/vidId_hStart-hEnd.jpg
+  // Expect imgKey for docs to be like "/docId_hStart-hEnd_vStart-vEnd.jpg
+  const imgKeyAndExtension: string = req.params[IMAGEKEY];
+  const imgKey = imgKeyAndExtension.substring(
+    0,
+    imgKeyAndExtension.lastIndexOf(".")
+  );
+  const imgArr = imgKey.split("_");
+  if (imgArr.length == 2) {
+    // Video fact
+    const vidId = imgArr[0];
+    const hRangeStr = imgArr[1];
+    const hRange = rangeFromString(hRangeStr);
+    if (hRange == null) {
+      return res.status(404).send("Not found");
+    }
+    return res.send(
+      "TODO: generate base64 image string for " + vidId + " " + hRange
+    );
+  } else if (imgArr.length == 3) {
+    // Document fact
+    const docId = imgArr[0];
+    const hRangeStr = imgArr[1];
+    const vRangeStr = imgArr[2];
+    const hRange = rangeFromString(hRangeStr);
+    const vRange = rangeFromString(vRangeStr);
+    if (hRange == null || vRange == null) {
+      return res.status(404).send("Not found");
+    }
+    return res.send(
+      "TODO: generate base64 image string for " +
+        docId +
+        " " +
+        hRange +
+        " " +
+        vRange
+    );
+  } else {
+    return res.status(404).send("Not found");
+  }
 });
 
 module.exports = router;
