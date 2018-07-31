@@ -1,3 +1,4 @@
+require("source-map-support").install();
 const express = require("express");
 const logger = require("morgan");
 const app = express();
@@ -39,7 +40,7 @@ if (app.get("env") === "development") {
     next: NextFunction
   ) {
     res.status(err.status || 500);
-    res.render("error", {
+    res.json({
       message: err.message,
       error: err
     });
@@ -49,9 +50,9 @@ if (app.get("env") === "development") {
 // production error handler will not leak stacktrace
 app.use(function(err: Error, req: Request, res: Response, next: NextFunction) {
   res.status(err.status || 500);
-  res.render("error", {
+  res.json({
     message: err.message,
-    error: {}
+    error: err
   });
 });
 

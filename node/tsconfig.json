@@ -1,13 +1,12 @@
 {
   "compilerOptions": {
-    "sourceMap": false,
+    "sourceMap": true,
     "noImplicitAny": true,
-		"module": "commonjs",
-		"moduleResolution": "node",
-		"outDir": "src/main/dist",
+    "module": "commonjs",
+    "moduleResolution": "node",
     "target": "es6",
     "strictNullChecks": true
   },
-  "include": ["src/main/scripts/**/*"],
-  "exclude": ["node_modules/**"]
+  "include": ["./src/main/scripts/**/*.ts"],
+  "exclude": ["./node_modules/**"]
 }
