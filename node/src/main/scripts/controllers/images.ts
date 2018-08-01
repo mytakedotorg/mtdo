@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { Foundation } from "../../../../../client/src/main/scripts/java2ts/Foundation";
 const express = require("express");
 const Canvas = require("canvas");
 const router = express.Router();
@@ -16,7 +17,9 @@ function rangeFromString(rangeStr: string): [number, number] | null {
   return [start, end];
 }
 
-function videoFactImage(): Promise<string> {
+function videoFactImage(
+  videoFact: Foundation.VideoFactContent
+): Promise<string> {
   const canvas: HTMLCanvasElement = new Canvas(200, 200);
   const ctx = canvas.getContext("2d");
   if (ctx) {
@@ -27,6 +30,7 @@ function videoFactImage(): Promise<string> {
     /**
      *  TODO: Call drawVideoFact from client code
      * */
+    // drawVideoFact(canvas, videoFact, [15, 20]);
 
     return new Promise(function(resolve, reject) {
       canvas.toDataURL("image/jpeg", 0.5, (err: string, jpeg: string) => {
@@ -60,7 +64,12 @@ router.get("/:" + IMAGEKEY, (req: Request, res: Response) => {
     if (hRange == null) {
       return res.status(404).send("Not found");
     }
-    videoFactImage()
+
+    const videoFact: Foundation.VideoFactContent = req.app.locals.factHashMap.getMap()[
+      vidId
+    ];
+
+    videoFactImage(videoFact)
       .then(function(jpeg: string) {
         const img = new Buffer(jpeg.split(",")[1], "base64"); // Remove "data:image/jpeg;base64,"
         res.writeHead(200, {

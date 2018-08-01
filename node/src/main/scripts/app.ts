@@ -1,6 +1,7 @@
 require("source-map-support").install();
 const express = require("express");
 const logger = require("morgan");
+const FactHashMap = require("./common/FactHashMap");
 const app = express();
 import { Request, Response, NextFunction } from "express";
 
@@ -13,6 +14,7 @@ if (app.get("env") === "production") {
 
 const images = require("./controllers/images");
 app.use("/api/images", images);
+app.locals.factHashMap = new FactHashMap();
 
 app.get("/favicon.ico", (req: Request, res: Response) => {
   res.status(204);
