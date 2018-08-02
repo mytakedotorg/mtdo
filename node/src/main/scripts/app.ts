@@ -1,9 +1,11 @@
 require("source-map-support").install();
 const express = require("express");
 const logger = require("morgan");
-const FactHashMap = require("./common/FactHashMap");
+import FactHashMap from "./common/FactHashMap";
 const app = express();
 import { Request, Response, NextFunction } from "express";
+// Require routes
+const images = require("./controllers/images");
 
 if (app.get("env") === "production") {
   app.set("trust proxy", 1); // trust first proxy
@@ -12,10 +14,11 @@ if (app.get("env") === "production") {
   app.use(logger("dev"));
 }
 
-const images = require("./controllers/images");
-app.use("/api/images", images);
-app.locals.factHashMap = new FactHashMap();
+new FactHashMap().load().then(factHashMap => {
+  app.locals.factHashMap = factHashMap;
+});
 
+app.use("/api/images", images);
 app.get("/favicon.ico", (req: Request, res: Response) => {
   res.status(204);
 });

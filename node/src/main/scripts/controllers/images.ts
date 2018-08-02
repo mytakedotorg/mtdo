@@ -65,9 +65,8 @@ router.get("/:" + IMAGEKEY, (req: Request, res: Response) => {
       return res.status(404).send("Not found");
     }
 
-    const videoFact: Foundation.VideoFactContent = req.app.locals.factHashMap.getMap()[
-      vidId
-    ];
+    const videoFact: Foundation.VideoFactContent =
+      req.app.locals.factHashMap[vidId];
 
     videoFactImage(videoFact)
       .then(function(jpeg: string) {
