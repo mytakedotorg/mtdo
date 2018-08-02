@@ -5,7 +5,7 @@ import FactHashMap from "./common/FactHashMap";
 const app = express();
 import { Request, Response, NextFunction } from "express";
 // Require routes
-const images = require("./controllers/images");
+import images from "./controllers/images";
 
 if (app.get("env") === "production") {
   app.set("trust proxy", 1); // trust first proxy
