@@ -22,7 +22,7 @@
     "gulp": "^3.9.1",
     "gulp-nodemon": "^2.2.1",
     "gulp-sourcemaps": "^2.6.4",
-    "gulp-typescript": "^4.0.2",
+    "gulp-typescript": "^5.0.0-alpha.3",
     "prettier": "^1.14.0",
     "typescript": "^3.0.1"
   },
