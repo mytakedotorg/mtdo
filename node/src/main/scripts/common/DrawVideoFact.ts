@@ -2,7 +2,6 @@ import * as React from "react";
 var base64toArrayBuffer = require("base64-arraybuffer");
 var bs = require("binary-search");
 import { Foundation } from "../../../../../client/src/main/scripts/java2ts/Foundation";
-import { ImageProps } from "../../../../../client/src/main/scripts/java2ts/ImageProps";
 
 declare global {
   interface Process {
@@ -11,7 +10,6 @@ declare global {
     };
   }
 }
-declare var process: Process;
 
 export const drawSpecs = Object.freeze({
   textMargin: 16,
@@ -84,7 +82,7 @@ export function drawVideoFact(
   canvas: HTMLCanvasElement,
   factContent: Foundation.VideoFactContent,
   highlightedRange: [number, number]
-): ImageProps {
+): void {
   const captionNodes = getCaptionNodeArray(factContent);
 
   const characterRange = getCharRangeFromVideoRange(
@@ -118,15 +116,13 @@ export function drawVideoFact(
   highlightedText = highlightedText.trimRight();
   highlightedText += '"';
 
-  const imageProps = drawCaption(canvas, highlightedText);
-
-  return imageProps;
+  drawCaption(canvas, highlightedText);
 }
 
 export function drawCaption(
   canvas: HTMLCanvasElement,
   text: string
-): ImageProps {
+): void {
   const ctx = canvas.getContext("2d");
 
   canvas.width = drawSpecs.width * 2;
@@ -154,12 +150,6 @@ export function drawCaption(
     // Not sure why, but font has been reset at this point, so must set it again
     ctx.font = "Bold " + textSize.toString() + "px Merriweather";
     drawText(ctx, text, textSize);
-
-    return {
-      dataUri: canvas.toDataURL("image/png"),
-      width: drawSpecs.width.toString(),
-      height: height.toString()
-    };
   } else {
     const errStr = "Error getting canvas context";
     throw errStr;
