@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { Foundation } from "../../../../../client/src/main/scripts/java2ts/Foundation";
+import { decodeVideoFact, drawVideoFact } from "../common/drawVideoFact";
 const express = require("express");
 const Canvas = require("canvas");
 const router = express.Router();
@@ -18,7 +19,7 @@ function rangeFromString(rangeStr: string): [number, number] | null {
 }
 
 function videoFactImage(
-  videoFact: Foundation.VideoFactContent
+  videoFact: Foundation.VideoFactContentEncoded
 ): Promise<string> {
   const canvas: HTMLCanvasElement = new Canvas(200, 200);
   const ctx = canvas.getContext("2d");
@@ -27,13 +28,13 @@ function videoFactImage(
     ctx.fillStyle = "#f2f4f7";
     ctx.fillRect(0, 0, 200, 200);
 
-    /**
-     *  TODO: Call drawVideoFact from client code
-     * */
-    // drawVideoFact(canvas, videoFact, [15, 20]);
+    const imageProps = drawVideoFact(canvas, decodeVideoFact(videoFact), [
+      15,
+      20
+    ]);
 
     return new Promise(function(resolve, reject) {
-      canvas.toDataURL("image/jpeg", 0.5, (err: string, jpeg: string) => {
+      canvas.toDataURL("image/jpeg", 1, (err: string, jpeg: string) => {
         if (err) {
           return reject(err);
         } else {
@@ -65,21 +66,25 @@ router.get("/:" + IMAGEKEY, (req: Request, res: Response) => {
       return res.status(404).send("Not found");
     }
 
-    const videoFact: Foundation.VideoFactContent =
+    const videoFact: Foundation.VideoFactContentEncoded =
       req.app.locals.factHashMap[vidId];
 
-    videoFactImage(videoFact)
-      .then(function(jpeg: string) {
-        const img = new Buffer(jpeg.split(",")[1], "base64"); // Remove "data:image/jpeg;base64,"
-        res.writeHead(200, {
-          "Content-Type": "image/jpeg",
-          "Content-Length": img.length
+    if (videoFact) {
+      videoFactImage(videoFact)
+        .then(function(jpeg: string) {
+          const img = new Buffer(jpeg.split(",")[1], "base64"); // Remove "data:image/jpeg;base64,"
+          res.writeHead(200, {
+            "Content-Type": "image/jpeg",
+            "Content-Length": img.length
+          });
+          return res.end(img);
+        })
+        .catch(function() {
+          throw "Error creating image buffer";
         });
-        return res.end(img);
-      })
-      .catch(function() {
-        throw "Error creating image buffer";
-      });
+    } else {
+      return res.status(404).send("Not found");
+    }
   } else if (imgArr.length == 3) {
     // Document fact
     const docId = imgArr[0];

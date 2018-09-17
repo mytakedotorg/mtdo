@@ -41,20 +41,6 @@ export function decodeVideoFactFromStr(
   return decodeVideoFact(raw);
 }
 
-/**
- * Client/Server function. Throws.
- *
- * @param factContent
- * @param videoBlock
- */
-export function drawVideoFactNode(
-  canvas: HTMLCanvasElement,
-  factContent: Foundation.VideoFactContent,
-  highlightedRange: [number, number]
-): ImageProps {
-  return drawVideoFact(canvas, factContent, highlightedRange);
-}
-
 export function decodeVideoFact(
   encoded: Foundation.VideoFactContentEncoded
 ): Foundation.VideoFactContent {
@@ -143,7 +129,8 @@ export function drawCaption(
 ): ImageProps {
   const ctx = canvas.getContext("2d");
 
-  canvas.width = drawSpecs.width * window.devicePixelRatio;
+  canvas.width = drawSpecs.width * 2;
+  (canvas as any).style = {};
   canvas.style.width = drawSpecs.width + "px";
 
   if (ctx) {
@@ -154,10 +141,10 @@ export function drawCaption(
     // Draw text once to calculate height
     const height = drawText(ctx, text, textSize).totalHeight;
 
-    canvas.height = height * window.devicePixelRatio;
+    canvas.height = height * 2;
     canvas.style.height = height + "px";
 
-    ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+    ctx.scale(2, 2);
 
     // Draw grey background
     ctx.fillStyle = "#f2f4f7";
