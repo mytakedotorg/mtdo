@@ -119,10 +119,7 @@ export function drawVideoFact(
   drawCaption(canvas, highlightedText);
 }
 
-export function drawCaption(
-  canvas: HTMLCanvasElement,
-  text: string
-): void {
+export function drawCaption(canvas: HTMLCanvasElement, text: string): void {
   const ctx = canvas.getContext("2d");
 
   canvas.width = drawSpecs.width * 2;
