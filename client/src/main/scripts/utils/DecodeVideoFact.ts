@@ -1,5 +1,5 @@
 var base64toArrayBuffer = require("base64-arraybuffer");
-import { Foundation } from "../java2ts/Foundation";
+import { Foundation } from "../../client/src/main/scripts/java2ts/Foundation";
 
 export function decodeVideoFact(
   encoded: Foundation.VideoFactContentEncoded

@@ -5,11 +5,7 @@ import { EmailSelf } from "../java2ts/EmailSelf";
 import { decodeVideoFact } from "./DecodeVideoFact";
 import { drawVideoFact, drawDocument, drawSpecs } from "./DrawFacts";
 import { FoundationNode } from "../utils/CaptionNodes";
-import {
-  alertErr,
-  getHighlightedNodes,
-  slugify
-} from "../utils/functions";
+import { alertErr, getHighlightedNodes, slugify } from "../utils/functions";
 import {
   TakeDocument,
   DocumentBlock,

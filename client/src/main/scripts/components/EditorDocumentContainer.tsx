@@ -1,10 +1,7 @@
 import * as React from "react";
 import * as keycode from "keycode";
 import DocumentTextNodeList from "./DocumentTextNodeList";
-import {
-  alertErr,
-  getHighlightedNodes
-} from "../utils/functions";
+import { alertErr, getHighlightedNodes } from "../utils/functions";
 import { FoundationNode } from "../utils/CaptionNodes";
 import { fetchFact } from "../utils/databaseAPI";
 import { DocumentBlock } from "../java2ts/DocumentBlock";

@@ -3,10 +3,7 @@ import DocumentTextNodeList from "./DocumentTextNodeList";
 import { fetchFact } from "../utils/databaseAPI";
 import { Foundation } from "../java2ts/Foundation";
 import { FoundationNode } from "../utils/CaptionNodes";
-import {
-  alertErr,
-  getHighlightedNodes
-} from "../utils/functions";
+import { alertErr, getHighlightedNodes } from "../utils/functions";
 import { TakeBlock } from "./BlockEditor";
 
 export interface FeedCardContainerProps {

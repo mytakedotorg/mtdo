@@ -11,7 +11,11 @@ import {
   getWordRangeFromCharRange,
   SimpleRanges
 } from "../utils/functions";
-import { getCaptionNodeArray, highlightCaption, CaptionNodeArr } from "../utils/CaptionNodes";
+import {
+  getCaptionNodeArray,
+  highlightCaption,
+  CaptionNodeArr
+} from "../utils/CaptionNodes";
 import { RangeType, StateAuthority, TimeRange } from "./Video";
 import { Foundation } from "../java2ts/Foundation";
 import { Routes } from "../java2ts/Routes";

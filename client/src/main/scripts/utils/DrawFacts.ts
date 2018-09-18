@@ -1,12 +1,12 @@
 import { ReactElement } from "react";
-import { Foundation } from "../java2ts/Foundation";
-import { ImageProps } from "../java2ts/ImageProps";
+import { Foundation } from "../../client/src/main/scripts/java2ts/Foundation";
+import { ImageProps } from "../../client/src/main/scripts/java2ts/ImageProps";
 import {
   getCaptionNodeArray,
   getCharRangeFromVideoRange,
   highlightCaption,
   CaptionNode,
-	FoundationNode
+  FoundationNode
 } from "./CaptionNodes";
 
 export const drawSpecs = Object.freeze({
@@ -57,7 +57,10 @@ export function drawVideoFact(
   return drawCaption(canvas, highlightedText);
 }
 
-export function drawCaption(canvas: HTMLCanvasElement, text: string): ImageProps {
+export function drawCaption(
+  canvas: HTMLCanvasElement,
+  text: string
+): ImageProps {
   const ctx = canvas.getContext("2d");
 
   canvas.width = drawSpecs.width * 2;
@@ -84,9 +87,9 @@ export function drawCaption(canvas: HTMLCanvasElement, text: string): ImageProps
 
     // Not sure why, but font has been reset at this point, so must set it again
     ctx.font = "Bold " + textSize.toString() + "px Merriweather";
-		drawText(ctx, text, textSize);
-		
-		return {
+    drawText(ctx, text, textSize);
+
+    return {
       dataUri: canvas.toDataURL("image/png"),
       width: drawSpecs.width.toString(),
       height: height.toString()
