@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { Foundation } from "../../../../../client/src/main/scripts/java2ts/Foundation";
-import { decodeVideoFact, drawVideoFact } from "../common/drawVideoFact";
+import { decodeVideoFact } from "../common/DecodeVideoFact";
+import { drawVideoFact } from "../common/DrawFacts";
 const express = require("express");
 const Canvas = require("canvas");
 const router = express.Router();
