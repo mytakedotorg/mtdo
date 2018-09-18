@@ -20,7 +20,7 @@ public class DevRockerReload {
 	public static void initRockerReload() throws Exception {
 		ReloadingRockerBootstrap bootstrap = new ReloadingRockerBootstrap();
 		// specific to hotreload
-		bootstrap.getConfiguration().setClassDirectory(new File("bin/main"));
+		bootstrap.getConfiguration().setClassDirectory(new File("bin"));
 		// the rest shuold match server/build.gradle
 		bootstrap.getConfiguration().setTemplateDirectory(new File("src/main/rocker").getAbsoluteFile());
 		bootstrap.getConfiguration().setOutputDirectory(new File("src/main/rocker-generated").getAbsoluteFile());
