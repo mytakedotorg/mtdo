@@ -1,10 +1,10 @@
 import * as React from "react";
 import YouTube from "react-youtube";
 import isEqual = require("lodash/isEqual");
+import { getCharRangeFromVideoRange } from "../utils/CaptionNodes";
 import {
   alertErr,
   copyToClipboard,
-  getCharRangeFromVideoRange,
   slugify
 } from "../utils/functions";
 import { Foundation } from "../java2ts/Foundation";

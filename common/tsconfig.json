@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "noImplicitAny": true,
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "target": "es6",
+    "strictNullChecks": true
+  },
+  "include": ["./**/*.ts"],
+  "exclude": ["./node_modules/**"]
+}

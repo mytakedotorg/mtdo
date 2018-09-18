@@ -2,14 +2,12 @@ import { ImageProps } from "../java2ts/ImageProps";
 import { Foundation } from "../java2ts/Foundation";
 import { Routes } from "../java2ts/Routes";
 import { EmailSelf } from "../java2ts/EmailSelf";
+import { decodeVideoFact } from "./DecodeVideoFact";
+import { drawVideoFact, drawDocument, drawSpecs } from "./DrawFacts";
+import { FoundationNode } from "../utils/CaptionNodes";
 import {
   alertErr,
-  decodeVideoFact,
-  drawVideoFact,
-  FoundationNode,
   getHighlightedNodes,
-  drawDocument,
-  drawSpecs,
   slugify
 } from "../utils/functions";
 import {

@@ -1,0 +1,22 @@
+{
+  "name": "common",
+  "version": "1.0.0",
+  "description": "TypeScript code shared between the client and the node server",
+  "scripts": {
+    "formatlist": "prettier --list-different '*.js' './**/*.ts'",
+    "formatwrite": "prettier --write         '*.js' './**/*.ts'"
+  },
+  "author": "",
+  "license": "GPL-2.0",
+  "devDependencies": {
+    "@types/node": "^10.10.1",
+    "@types/react": "^15.6.19",
+    "prettier": "^1.14.2",
+    "typescript": "^3.0.3"
+  },
+  "dependencies": {
+    "base64-arraybuffer": "^0.1.5",
+    "binary-search": "^1.3.4",
+    "react": "^15.6.2"
+  }
+}

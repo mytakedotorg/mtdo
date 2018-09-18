@@ -1,7 +1,7 @@
 import { Foundation } from "../java2ts/Foundation";
 import { Search } from "../java2ts/Search";
 import { TimelineItemData } from "../components/Timeline";
-import { CaptionNodeArr, FoundationNode } from "./functions";
+import { CaptionNodeArr, FoundationNode } from "./CaptionNodes";
 import { Card } from "../components/FeedList";
 import { TakeDocument } from "../components/BlockEditor";
 import { StylesObject, TimeRange } from "../components/Video";

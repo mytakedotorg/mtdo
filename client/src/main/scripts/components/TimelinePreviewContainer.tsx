@@ -1,5 +1,6 @@
 import * as React from "react";
-import { alertErr, FoundationNode } from "../utils/functions";
+import { FoundationNode } from "../utils/CaptionNodes";
+import { alertErr } from "../utils/functions";
 import { isVideo, isDocument, fetchFact } from "../utils/databaseAPI";
 import TimelinePreview, { Ranges, SetFactHandlers } from "./TimelinePreview";
 import TimelinePreviewLoadingView from "./TimelinePreviewLoadingView";

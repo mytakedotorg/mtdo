@@ -1,5 +1,5 @@
 import * as React from "react";
-import { FoundationNode } from "../utils/functions";
+import { FoundationNode } from "../utils/CaptionNodes";
 import DocumentTextNodeList from "./DocumentTextNodeList";
 
 export interface DocumentEventHandlers {

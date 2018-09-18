@@ -1,5 +1,6 @@
 import * as React from "react";
-import { alertErr, CaptionNodeArr } from "../utils/functions";
+import { alertErr } from "../utils/functions";
+import { CaptionNodeArr } from "../utils/CaptionNodes";
 import NumberLineTransform from "../utils/numberLineTransform";
 import { Foundation } from "../java2ts/Foundation";
 import CaptionTextNodeList, {
