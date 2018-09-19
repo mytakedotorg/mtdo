@@ -1,6 +1,6 @@
 import * as React from "react";
 var bs = require("binary-search");
-import { Foundation } from "../../client/src/main/scripts/java2ts/Foundation";
+import { Foundation } from "../java2ts/Foundation";
 export type CaptionNodeArr = Array<CaptionNode | Array<CaptionNode>>;
 
 export type CaptionNode =

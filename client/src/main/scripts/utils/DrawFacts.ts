@@ -1,6 +1,6 @@
 import { ReactElement } from "react";
-import { Foundation } from "../../client/src/main/scripts/java2ts/Foundation";
-import { ImageProps } from "../../client/src/main/scripts/java2ts/ImageProps";
+import { Foundation } from "../java2ts/Foundation";
+import { ImageProps } from "../java2ts/ImageProps";
 import {
   getCaptionNodeArray,
   getCharRangeFromVideoRange,
