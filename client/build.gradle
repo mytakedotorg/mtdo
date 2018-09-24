@@ -25,6 +25,17 @@ spotless {
 		eclipse().configFile(rootProject.file('gradle/spotless.eclipseformat.xml'))
 		removeUnusedImports()
 	}
+	format 'scss', {
+		target 'src/main/styles/**/*.scss'
+		prettier().config(['parser': 'postcss'])
+	}
+	format 'typescript', {
+		target fileTree('src/main/scripts') {
+			include '**'
+			exclude 'java2ts/**'
+		}
+		prettier().config(['parser': 'typescript'])
+	}
 }
 
 repositories {
@@ -114,12 +125,6 @@ gulp_revProd.dependsOn([
 gulp_revProd.outputs.file('src/main/resources/assets/manifest.json')
 
 clean { delete 'src/main/resources' }
-
-// map prettier to spotless (to match server)
-afterEvaluate {
-	tasks.spotlessCheck.dependsOn(npm_run_formatlist)
-	tasks.spotlessApply.dependsOn(npm_run_formatwrite)
-}
 
 // check should run all tests
 npm_run_test.dependsOn(tasks.jsweet)
