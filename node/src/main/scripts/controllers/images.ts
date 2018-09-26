@@ -27,7 +27,7 @@ function videoFactImage(
   hStart: number,
   hEnd: number
 ): Promise<string> {
-  const canvas: HTMLCanvasElement = new Canvas(200, 200);
+  const canvas: HTMLCanvasElement = new Canvas(480, 360);
   const ctx = canvas.getContext("2d");
   if (ctx) {
     drawVideoFact(canvas, decodeVideoFact(videoFact), [hStart, hEnd]);
