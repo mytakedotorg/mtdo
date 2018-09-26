@@ -69,8 +69,8 @@ jsoniterCodegen { codegenClass = 'java2ts.CodegenConfig' }
 // node stuff - compiles sass and typescript into src/main/resources //
 ///////////////////////////////////////////////////////////////////////
 node {
-	version = '6.10.2'
-	npmVersion = '5.4.2'
+	version = '10.11.0'
+	npmVersion = '6.4.1'
 	// yarnVersion = '0.16.1'
 	download = true
 }
