@@ -10,8 +10,11 @@
   },
   "main": "src/main/dist/index.js",
   "scripts": {
+    "build": "gulp build",
     "formatlist": "prettier --list-different '*.js' 'src/main/scripts/**/*.ts'",
     "formatwrite": "prettier --write         '*.js' 'src/main/scripts/**/*.ts'",
+    "runDev": "gulp proxy",
+    "start": "node src/main/dist/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -36,6 +39,8 @@
     "http": "0.0.0",
     "morgan": "^1.9.0",
     "react": "^15.6.2",
+    "request": "^2.88.0",
+    "request-promise": "^4.2.2",
     "source-map-support": "^0.5.6"
   }
 }
