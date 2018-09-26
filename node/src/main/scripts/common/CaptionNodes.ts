@@ -13,11 +13,11 @@ export type CaptionNode =
       HTMLElement
     >;
 
-		export interface FoundationNode {
-			component: string;
-			offset: number;
-			innerHTML: Array<string | React.ReactNode>;
-		}
+export interface FoundationNode {
+  component: string;
+  offset: number;
+  innerHTML: Array<string | React.ReactNode>;
+}
 
 export function getCaptionNodeArray(
   videoFact: Foundation.VideoFactContent
