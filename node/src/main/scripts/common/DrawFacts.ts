@@ -1,3 +1,5 @@
+const https = require("https");
+const { Image } = require("canvas");
 import { ReactElement } from "react";
 import { Foundation } from "../../../../../client/src/main/scripts/java2ts/Foundation";
 import { ImageProps } from "../../../../../client/src/main/scripts/java2ts/ImageProps";
@@ -11,16 +13,17 @@ import {
 
 export const drawSpecs = Object.freeze({
   textMargin: 16,
-  width: 500,
+  width: 480,
   linewidth: 468,
-  lineheight: 1.5 //multiplier
+  lineheight: 1.5, //multiplier
+  thumbHeight: 360
 });
 
 export function drawVideoFact(
   canvas: HTMLCanvasElement,
   factContent: Foundation.VideoFactContent,
   highlightedRange: [number, number]
-): ImageProps {
+): Promise<void> {
   const captionNodes = getCaptionNodeArray(factContent);
 
   const characterRange = getCharRangeFromVideoRange(
@@ -54,13 +57,19 @@ export function drawVideoFact(
   highlightedText = highlightedText.trimRight();
   highlightedText += '"';
 
-  return drawCaption(canvas, highlightedText);
+  const src = "https://img.youtube.com/vi/" + factContent.youtubeId + "/0.jpg";
+  return new Promise(function(resolve, reject) {
+    loadImage(src).then((img: HTMLImageElement) => {
+      return resolve(drawCaption(canvas, img, highlightedText));
+    });
+  });
 }
 
 export function drawCaption(
   canvas: HTMLCanvasElement,
+  thumb: HTMLImageElement,
   text: string
-): ImageProps {
+): void {
   const ctx = canvas.getContext("2d");
 
   canvas.width = drawSpecs.width * 2;
@@ -73,7 +82,14 @@ export function drawCaption(
     ctx.font = "Bold " + textSize.toString() + "px Merriweather";
 
     // Draw text once to calculate height
-    const height = drawText(ctx, text, textSize).totalHeight;
+    const height =
+      drawText(
+        ctx,
+        text,
+        textSize,
+        0,
+        drawSpecs.thumbHeight + drawSpecs.textMargin
+      ).totalHeight + drawSpecs.thumbHeight;
 
     canvas.height = height * 2;
     canvas.style.height = height + "px";
@@ -85,15 +101,17 @@ export function drawCaption(
     ctx.fillRect(0, 0, drawSpecs.width, height);
     ctx.fillStyle = "#051a38";
 
+    ctx.drawImage(thumb, 0, 0);
+
     // Not sure why, but font has been reset at this point, so must set it again
     ctx.font = "Bold " + textSize.toString() + "px Merriweather";
-    drawText(ctx, text, textSize);
-
-    return {
-      dataUri: canvas.toDataURL("image/png"),
-      width: drawSpecs.width.toString(),
-      height: height.toString()
-    };
+    drawText(
+      ctx,
+      text,
+      textSize,
+      0,
+      drawSpecs.thumbHeight + drawSpecs.textMargin
+    );
   } else {
     const errStr = "Error getting canvas context";
     throw errStr;
@@ -298,4 +316,21 @@ export function drawDocument(
     const errStr = "Error getting canvas context";
     throw errStr;
   }
+}
+function loadImage(url: string) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => resolve(img);
+    img.onerror = () => reject(new Error("Failed to load image"));
+    https.get(url, (res: any) => {
+      let buf = "";
+      res.setEncoding("binary");
+      res.on("data", function(chunk: any) {
+        buf += chunk;
+      });
+      res.on("end", function() {
+        img.src = new Buffer(buf, "binary");
+      });
+    });
+  });
 }

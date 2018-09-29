@@ -30,15 +30,18 @@ function videoFactImage(
   const canvas: HTMLCanvasElement = new Canvas(480, 360);
   const ctx = canvas.getContext("2d");
   if (ctx) {
-    drawVideoFact(canvas, decodeVideoFact(videoFact), [hStart, hEnd]);
     return new Promise(function(resolve, reject) {
-      canvas.toDataURL("image/jpeg", 0.5, (err: string, jpeg: string) => {
-        if (err) {
-          return reject(err);
-        } else {
-          return resolve(jpeg);
+      drawVideoFact(canvas, decodeVideoFact(videoFact), [hStart, hEnd]).then(
+        () => {
+          canvas.toDataURL("image/jpeg", 0.5, (err: string, jpeg: string) => {
+            if (err) {
+              return reject(err);
+            } else {
+              return resolve(jpeg);
+            }
+          });
         }
-      });
+      );
     });
   } else {
     throw "Error getting canvas context";
