@@ -1,7 +1,7 @@
 require("source-map-support").install();
 const express = require("express");
 const logger = require("morgan");
-import FactHashMap from "./common/FactHashMap";
+import FactHashMap, { fetchYTThumbs } from "./common/FactHashMap";
 const app = express();
 import { Request, Response, NextFunction } from "express";
 // Require routes
@@ -16,6 +16,9 @@ if (app.get("env") === "production") {
 
 new FactHashMap().load().then(factHashMap => {
   app.locals.factHashMap = factHashMap;
+  fetchYTThumbs(factHashMap).then(vidHashMap => {
+    app.locals.vidHashMap = vidHashMap;
+  });
 });
 
 app.use("/api/images", images);
