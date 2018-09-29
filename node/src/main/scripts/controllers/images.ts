@@ -1,12 +1,28 @@
 import { Request, Response } from "express";
 import { Foundation } from "../../../../../client/src/main/scripts/java2ts/Foundation";
 import { decodeVideoFact } from "../common/DecodeVideoFact";
-import { drawVideoFact } from "../common/DrawFacts";
+import { drawDocumentFact, drawVideoFact } from "../common/DrawFacts";
 const express = require("express");
 const Canvas = require("canvas");
 const router = express.Router();
 
-function rangeFromString(rangeStr: string): [number, number] | null {
+function videoRangeFromString(rangeStr: string): [number, number] | null {
+  if (rangeStr.startsWith("_")) {
+    rangeStr = rangeStr.substring(1);
+  }
+  const rangeArr = rangeStr.split("-");
+  if (rangeArr.length != 2) {
+    return null;
+  }
+  const start = parseFloat(rangeArr[0]);
+  const end = parseFloat(rangeArr[1]);
+  if (isNaN(start) || isNaN(end)) {
+    return null;
+  }
+  return [start, end];
+}
+
+function documentRangeFromString(rangeStr: string): [number, number] | null {
   if (rangeStr.startsWith("_")) {
     rangeStr = rangeStr.substring(1);
   }
@@ -48,6 +64,31 @@ function videoFactImage(
   }
 }
 
+function documentFactImage(
+  documentFact: Foundation.DocumentFactContent,
+  hStart: number,
+  hEnd: number,
+  vStart: number,
+  vEnd: number
+): Promise<string> {
+  const canvas: HTMLCanvasElement = new Canvas(480, 360);
+  const ctx = canvas.getContext("2d");
+  if (ctx) {
+    return new Promise(function(resolve, reject) {
+      drawDocumentFact(canvas, documentFact, [hStart, hEnd], [vStart, vEnd]);
+      canvas.toDataURL("image/jpeg", 0.5, (err: string, jpeg: string) => {
+        if (err) {
+          return reject(err);
+        } else {
+          return resolve(jpeg);
+        }
+      });
+    });
+  } else {
+    throw "Error getting canvas context";
+  }
+}
+
 const IMAGEKEY = "imgkey";
 router.get("/:" + IMAGEKEY, (req: Request, res: Response) => {
   // Expect imgKey for videos to be like "/vidId_hStart-hEnd.jpg
@@ -58,30 +99,49 @@ router.get("/:" + IMAGEKEY, (req: Request, res: Response) => {
     imgKeyAndExtension.lastIndexOf(".")
   );
   // Must test for documents first. Documents will also pass the video regex.
-  const docRegex = /_[0-9]{4}.[0-9]{3}-[0-9]{4}.[0-9]{3}_[0-9]{4}.[0-9]{3}-[0-9]{4}.[0-9]{3}$/;
+  const docRegex = /_[0-9]{1,5}-[0-9]{1,5}_[0-9]{1,5}-[0-9]{1,5}$/;
   const vidRegex = /_[0-9]{4}.[0-9]{3}-[0-9]{4}.[0-9]{3}$/;
   if (docRegex.test(imgKey)) {
     // Document fact
     const docRanges = imgKey.match(docRegex);
     if (docRanges !== null) {
-      const docKeyArr = imgKey.split(docRanges[0])[0];
-      const docId = docKeyArr[0];
-      const docRangeArr = docKeyArr[1].split("_");
-      const hRangeStr = docRangeArr[0];
-      const vRangeStr = docRangeArr[1];
-      const hRange = rangeFromString(hRangeStr);
-      const vRange = rangeFromString(vRangeStr);
+      const docId = imgKey.split(docRanges[0])[0];
+      let rangeStr = docRanges[0];
+      if (rangeStr.startsWith("_")) {
+        rangeStr = rangeStr.substring(1);
+      }
+      const hRangeStr = rangeStr.split("_")[0];
+      const vRangeStr = rangeStr.split("_")[1];
+      const hRange = documentRangeFromString(hRangeStr);
+      const vRange = documentRangeFromString(vRangeStr);
       if (hRange == null || vRange == null) {
         return res.status(404).send("Not found");
       }
-      return res.send(
-        "TODO: generate base64 image string for " +
-          docId +
-          " " +
-          hRange +
-          " " +
-          vRange
-      );
+
+      const documentFact: Foundation.DocumentFactContent =
+        req.app.locals.factHashMap[docId];
+      if (documentFact) {
+        documentFactImage(
+          documentFact,
+          hRange[0],
+          hRange[1],
+          vRange[0],
+          vRange[1]
+        )
+          .then(function(jpeg: string) {
+            const img = new Buffer(jpeg.split(",")[1], "base64"); // Remove "data:image/jpeg;base64,"
+            res.writeHead(200, {
+              "Content-Type": "image/jpeg",
+              "Content-Length": img.length
+            });
+            return res.end(img);
+          })
+          .catch(function() {
+            throw "Error creating image buffer";
+          });
+      } else {
+        return res.status(404).send("Not found");
+      }
     } else {
       throw "Error in document fact regex";
     }
@@ -91,7 +151,7 @@ router.get("/:" + IMAGEKEY, (req: Request, res: Response) => {
     if (vidRange !== null) {
       const vidId = imgKey.split(vidRange[0])[0];
       const hRangeStr = vidRange[0];
-      const hRange = rangeFromString(hRangeStr);
+      const hRange = videoRangeFromString(hRangeStr);
       if (hRange == null) {
         return res.status(404).send("Not found");
       }

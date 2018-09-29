@@ -10,6 +10,7 @@ import {
   CaptionNode,
   FoundationNode
 } from "./CaptionNodes";
+import { getHighlightedNodes } from "./DocumentNodes";
 
 export const drawSpecs = Object.freeze({
   textMargin: 16,
@@ -18,6 +19,33 @@ export const drawSpecs = Object.freeze({
   lineheight: 1.5, //multiplier
   thumbHeight: 360
 });
+
+export function drawDocumentFact(
+  canvas: HTMLCanvasElement,
+  factContent: Foundation.DocumentFactContent,
+  highlightedRange: [number, number],
+  viewRange: [number, number]
+) {
+  let nodes: FoundationNode[] = [];
+
+  for (const documentComponent of factContent.components) {
+    nodes.push({
+      component: documentComponent.component,
+      innerHTML: [documentComponent.innerHTML],
+      offset: documentComponent.offset
+    });
+  }
+
+  let highlightedNodes = getHighlightedNodes(
+    [...nodes],
+    highlightedRange,
+    viewRange
+  );
+
+  const title = factContent.fact.title;
+
+  drawDocument(canvas, [...highlightedNodes], title);
+}
 
 export function drawVideoFact(
   canvas: HTMLCanvasElement,
@@ -207,7 +235,8 @@ export function drawDocumentText(
   // Draw fact title
   const titleSize = 20;
   let textSize = titleSize;
-  ctx.font = "Bold " + textSize.toString() + "px Source Sans Pro";
+  // ctx.font = "bold " + textSize.toString() + "px Source Sans Pro";
+  ctx.font = "bold " + textSize.toString() + "px sans";
   let x = drawSpecs.textMargin;
   let y = textSize;
   ctx.fillText(title, x, y);
@@ -216,7 +245,7 @@ export function drawDocumentText(
     if (node.component === "h2") {
       // Set the font style
       textSize = 22.5;
-      ctx.font = "Bold " + textSize.toString() + "px Merriweather";
+      ctx.font = "bold " + textSize.toString() + "px Merriweather";
 
       // Add a margin above the new line of text
       y += textSize * drawSpecs.lineheight;
@@ -257,13 +286,14 @@ export function drawDocumentText(
             // Found a React Element
             words += (text as ReactElement<HTMLSpanElement>).props.children;
             // This text is highlighted, so make it bold
-            ctx.font = "Bold " + textSize.toString() + "px Merriweather";
+            ctx.font = "bold " + textSize.toString() + "px Merriweather";
           } else {
             words += textStr.trim();
             ctx.font = textSize.toString() + "px Merriweather";
           }
 
           const dimensions = drawText(ctx, words, textSize, x, y);
+
           // Set the dimensions of the next line to be drawn where the previous line left off
           y = dimensions.y;
           x = drawSpecs.textMargin + dimensions.x;
@@ -282,20 +312,21 @@ export function drawDocument(
   canvas: HTMLCanvasElement,
   nodes: FoundationNode[],
   title: string
-): ImageProps {
+) {
   const ctx = canvas.getContext("2d");
 
-  canvas.width = drawSpecs.width * window.devicePixelRatio;
+  canvas.width = drawSpecs.width * 2;
+  (canvas as any).style = {};
   canvas.style.width = drawSpecs.width + "px";
 
   if (ctx) {
     // Draw the document once to calculate height
     const height = drawDocumentText(ctx, [...nodes], title);
 
-    canvas.height = height * window.devicePixelRatio;
+    canvas.height = height * 2;
     canvas.style.height = height + "px";
 
-    ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+    ctx.scale(2, 2);
 
     // Draw grey background
     ctx.fillStyle = "#f2f4f7";
@@ -306,12 +337,6 @@ export function drawDocument(
 
     // Draw document again to draw the text
     drawDocumentText(ctx, [...nodes], title);
-
-    return {
-      dataUri: canvas.toDataURL("image/png"),
-      width: drawSpecs.width.toString(),
-      height: height.toString()
-    };
   } else {
     const errStr = "Error getting canvas context";
     throw errStr;
