@@ -7,7 +7,7 @@ Managing the app on the node.mytake.org server requires ssh access. See [server 
 For now there is only one remote production server without a staging environment. When developing a new feature you may be using a new git branch such as `feature/node`. When the server is tested and stable, you will likely be on `master`. Be sure the remote server is on the correct branch. For example, to check out a `feature/node` branch:
 
 ```
-cd mytakedotorg
+cd ~/mytakedotorg
 git fetch
 git checkout feature/node
 ```
