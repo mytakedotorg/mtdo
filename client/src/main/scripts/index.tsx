@@ -36,79 +36,101 @@ interface NewTakeArgs {
 }
 
 interface SearchArgs {
-	type: "search";
-	searchTerm: string;
+  type: "search";
+  searchTerm: string;
 }
 
 interface AnonymousTakeArgs {
-	type: "anonymoustake";
+  type: "anonymoustake";
 }
 
 declare global {
   interface Window {
-    mytake?: HomeArgs | ShowTakeArgs | FoundationArgs | NewTakeArgs | SearchArgs | AnonymousTakeArgs;
-  } 
+    mytake?:
+      | HomeArgs
+      | ShowTakeArgs
+      | FoundationArgs
+      | NewTakeArgs
+      | SearchArgs
+      | AnonymousTakeArgs;
+  }
 }
-
 
 const app: HTMLElement | null = document.getElementById("app");
 if (app) {
-	let Root;
-	if (typeof window.mytake != "undefined") {
-		switch (window.mytake.type) {
-			case "foundation":
-				Root = <FoundationView path={window.location.pathname} search={window.location.search} />;
-				break;
-			case "new-take":
-				let initJson: InitialBlockWriterState;
-				let windowState = window.mytake.blockWriterState;
-				if (typeof windowState != "undefined") {
-					if (windowState.takeDocument.blocks === null || windowState.takeDocument.blocks.length === 0) {
-						windowState = {
-							...windowState,
-							takeDocument: {
-								...windowState.takeDocument,
-								blocks: [...initialState.takeDocument.blocks]
-							}
-						}
-					}
-					initJson = windowState;
-				} else {
-					initJson = (Object as any).assign({}, initialState);
-				}
+  let Root;
+  if (typeof window.mytake != "undefined") {
+    switch (window.mytake.type) {
+      case "foundation":
+        Root = (
+          <FoundationView
+            path={window.location.pathname}
+            search={window.location.search}
+          />
+        );
+        break;
+      case "new-take":
+        let initJson: InitialBlockWriterState;
+        let windowState = window.mytake.blockWriterState;
+        if (typeof windowState != "undefined") {
+          if (
+            windowState.takeDocument.blocks === null ||
+            windowState.takeDocument.blocks.length === 0
+          ) {
+            windowState = {
+              ...windowState,
+              takeDocument: {
+                ...windowState.takeDocument,
+                blocks: [...initialState.takeDocument.blocks]
+              }
+            };
+          }
+          initJson = windowState;
+        } else {
+          initJson = (Object as any).assign({}, initialState);
+        }
 
-				Root = <BlockWriter initState={initJson} hashUrl={window.location.hash} />;
-				break;
-			case "home":
-				Root = <FeedList cards={window.mytake.cards} />;
-				break;
-			case "showtake":
-				Root = <BlockReader initState={window.mytake.takeDocument} takeId={window.mytake.takeId} />;
-				break;
-			case "search":
-				Root = <VideoResultsLoader searchTerm={window.mytake.searchTerm} />
-				break;
-			case "anonymoustake":
-				Root = <AnonymousTake path={window.location.pathname} />
-				break;
-			default:
-				alertErr("index: unknown argument structure");
-				throw "Unknown argument structure";
-		}
-	} else {
-		alertErr("index: window.mytake is undefined");
-		throw "window.mytake is undefined";
-	}
+        Root = (
+          <BlockWriter initState={initJson} hashUrl={window.location.hash} />
+        );
+        break;
+      case "home":
+        Root = <FeedList cards={window.mytake.cards} />;
+        break;
+      case "showtake":
+        Root = (
+          <BlockReader
+            initState={window.mytake.takeDocument}
+            takeId={window.mytake.takeId}
+          />
+        );
+        break;
+      case "search":
+        Root = <VideoResultsLoader searchTerm={window.mytake.searchTerm} />;
+        break;
+      case "anonymoustake":
+        Root = <AnonymousTake path={window.location.pathname} />;
+        break;
+      default:
+        alertErr("index: unknown argument structure");
+        throw "Unknown argument structure";
+    }
+  } else {
+    alertErr("index: window.mytake is undefined");
+    throw "window.mytake is undefined";
+  }
   ReactDOM.render(Root, app);
 }
 
-const searchBarContainer: HTMLElement | null = document.getElementById("searchbar");
+const searchBarContainer: HTMLElement | null = document.getElementById(
+  "searchbar"
+);
 if (searchBarContainer) {
-	let searchTerm = "";
-	if (typeof window.mytake != "undefined" && window.mytake.type === "search") {
-		searchTerm = window.mytake.searchTerm;
-	}
-  ReactDOM.render(<SearchBar searchTerm={searchTerm}/>, searchBarContainer);
+  let searchTerm = "";
+  if (typeof window.mytake != "undefined" && window.mytake.type === "search") {
+    searchTerm = window.mytake.searchTerm;
+  }
+  ReactDOM.render(<SearchBar searchTerm={searchTerm} />, searchBarContainer);
 } else {
   alertErr("index: couldn't find div#searchbar");
   throw "Couldn't find div#searchbar";
