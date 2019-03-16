@@ -29,3 +29,13 @@ Let’s Encrypt was used to configure SSL based on [this guide](https://www.digi
 To install and run a node server, [this guide](https://www.digitalocean.com/community/tutorials/how-to-set-up-a-node-js-application-for-production-on-ubuntu-18-04). This one also has useful process manager tips to start the node server when the physical server starts, to restart on failure, and to monitor CPU and memory usage.
 
 Firewall rules allow OpenSSH and NGINX.
+
+### pull-and-restart.sh
+
+```
+cd mytakedotorg
+git pull
+cd node
+gulp build
+pm2 restart server
+```
