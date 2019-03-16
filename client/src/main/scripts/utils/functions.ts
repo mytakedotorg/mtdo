@@ -336,8 +336,8 @@ export function getWordCount(selection: Selection): number {
     throw "Unknown HTML Structure";
   }
 
-  if (paragraphNode) {
-    let captionBlock = paragraphNode.parentNode;
+  if (paragraphNode && paragraphNode.parentNode) {
+    let captionBlock: Node = paragraphNode.parentNode;
 
     while (captionBlock && captionBlock.previousSibling) {
       captionBlock = captionBlock.previousSibling;
