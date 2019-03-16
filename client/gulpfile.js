@@ -50,10 +50,10 @@ function setupPipeline(mode) {
     // depends on styles and scripts, inside of build.gradle
     gulp.task("rev" + PROD, () => {
       return gulp
-				.src([
-					config.distProd + "/" + SCRIPTS + "/manifest.json",
-					config.distProd + "/" + STYLES + "/manifest.json"
-				])
+        .src([
+          config.distProd + "/" + SCRIPTS + "/manifest.json",
+          config.distProd + "/" + STYLES + "/manifest.json"
+        ])
         .pipe(
           merge({
             fileName: "manifest.json"
@@ -140,10 +140,9 @@ function webpackCfg(mode) {
     }
   }
   return {
-		mode: mode === PROD ? 'production' : 'development',
+    mode: mode === PROD ? "production" : "development",
     entry: {
-      app: entryFor(mode, "/src/main/scripts/index.tsx"),
-      window: entryFor(mode, "/src/main/scripts/utils/window.ts")
+      app: entryFor(mode, "/src/main/scripts/index.tsx")
     },
     output: {
       filename: "[name].bundle.js"
@@ -153,7 +152,9 @@ function webpackCfg(mode) {
       extensions: [".ts", ".tsx", ".js"]
     },
     plugins:
-      mode === PROD ? [] : [
+      mode === PROD
+        ? []
+        : [
             new CheckerPlugin(), // needed for hotreload on typescript
             new webpack.HotModuleReplacementPlugin()
           ],
@@ -170,11 +171,11 @@ function webpackCfg(mode) {
           ],
           use:
             mode === PROD
-              ? [{loader: "awesome-typescript-loader"}]
+              ? [{ loader: "awesome-typescript-loader" }]
               : [
-								{loader: "react-hot-loader/webpack"},
-                  {loader: "awesome-typescript-loader"},
-                  {loader: "webpack-module-hot-accept"}
+                  { loader: "react-hot-loader/webpack" },
+                  { loader: "awesome-typescript-loader" },
+                  { loader: "webpack-module-hot-accept" }
                 ]
         }
       ]
@@ -262,10 +263,7 @@ function proxyTask(mode) {
         }),
         webpackHotMiddleware(bundler)
       ],
-      files: [
-        config.distDev + "/" + STYLES + "/**",
-        src(PERMANENT) + "**"
-      ],
+      files: [config.distDev + "/" + STYLES + "/**", src(PERMANENT) + "**"],
       serveStatic: [
         {
           route: "/assets-dev/" + STYLES,
