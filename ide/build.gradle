@@ -10,11 +10,6 @@ oomphIde {
 
 	addAllProjects()	// we want a project for *everything*
 
-	thirdParty {
-		tmTerminal {}
-		minimalistGradleEditor {}
-	}
-
 	// https://github.com/palantir/eclipse-typescript
 	repo 'http://eclipse-update.palantir.com/eclipse-typescript/'
 	feature 'com.palantir.typescript.feature'
