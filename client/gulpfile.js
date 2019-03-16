@@ -13,7 +13,6 @@ webpackDevMiddleware = require("webpack-dev-middleware");
 webpackHotMiddleware = require("webpack-hot-middleware");
 // misc
 tasklisting = require("gulp-task-listing");
-gutil = require("gulp-util");
 rev = require("gulp-rev");
 merge = require("gulp-merge-json");
 
@@ -51,7 +50,10 @@ function setupPipeline(mode) {
     // depends on styles and scripts, inside of build.gradle
     gulp.task("rev" + PROD, () => {
       return gulp
-        .src(config.distProd + "/*/manifest.json")
+				.src([
+					config.distProd + "/" + SCRIPTS + "/manifest.json",
+					config.distProd + "/" + STYLES + "/manifest.json"
+				])
         .pipe(
           merge({
             fileName: "manifest.json"
@@ -138,6 +140,7 @@ function webpackCfg(mode) {
     }
   }
   return {
+		mode: mode === PROD ? 'production' : 'development',
     entry: {
       app: entryFor(mode, "/src/main/scripts/index.tsx"),
       window: entryFor(mode, "/src/main/scripts/utils/window.ts")
@@ -150,9 +153,7 @@ function webpackCfg(mode) {
       extensions: [".ts", ".tsx", ".js"]
     },
     plugins:
-      mode === PROD
-        ? [new webpack.optimize.UglifyJsPlugin()]
-        : [
+      mode === PROD ? [] : [
             new CheckerPlugin(), // needed for hotreload on typescript
             new webpack.HotModuleReplacementPlugin()
           ],
@@ -163,18 +164,17 @@ function webpackCfg(mode) {
       rules: [
         {
           test: /\.tsx?$/,
-          include: __dirname + "/src/main/scripts",
           exclude: [
             /node_modules/,
             __dirname + "/src/main/scripts/utils/drawVideoFact.ts"
           ],
-          loaders:
+          use:
             mode === PROD
-              ? ["awesome-typescript-loader"]
+              ? [{loader: "awesome-typescript-loader"}]
               : [
-                  "react-hot-loader/webpack",
-                  "awesome-typescript-loader",
-                  "webpack-module-hot-accept"
+								{loader: "react-hot-loader/webpack"},
+                  {loader: "awesome-typescript-loader"},
+                  {loader: "webpack-module-hot-accept"}
                 ]
         }
       ]
@@ -262,7 +262,10 @@ function proxyTask(mode) {
         }),
         webpackHotMiddleware(bundler)
       ],
-      files: config.distDev + "/" + STYLES + "/**",
+      files: [
+        config.distDev + "/" + STYLES + "/**",
+        src(PERMANENT) + "**"
+      ],
       serveStatic: [
         {
           route: "/assets-dev/" + STYLES,
@@ -270,6 +273,6 @@ function proxyTask(mode) {
         }
       ]
     });
-    gulp.watch(src(STYLES) + "**", [STYLES + mode]);
+    gulp.watch(src(STYLES) + "**", gulp.series(STYLES + mode));
   };
 }
