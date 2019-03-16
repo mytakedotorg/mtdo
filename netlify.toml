@@ -1,5 +1,0 @@
-# Global settings applied to the whole site.
-[build]
-  base   = "client"
-  publish = "client/dist"
-  command = "npm run deploy"
