@@ -1,0 +1,19 @@
+////////////////////////////////////////////////////////////
+// terrible module system, we copy the common and java2ts //
+// directories from the client/src/main/scripts folders   //
+// here into the node project                             //
+////////////////////////////////////////////////////////////
+task syncClientUtils(type: Sync) {
+	from '../client/src/main/scripts/common'
+	into 'src/main/scripts/common'
+}
+
+task syncClientJava2Ts(type: Sync, dependsOn: ':client:jsoniterCodegen') {
+	from '../client/src/main/scripts/java2ts'
+	into 'src/main/scripts/java2ts'
+}
+
+task beforeCompile(dependsOn: [
+	syncClientUtils,
+	syncClientJava2Ts
+])
