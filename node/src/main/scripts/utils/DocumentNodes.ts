@@ -1,5 +1,5 @@
 import * as React from "react";
-import { FoundationNode } from "./CaptionNodes";
+import { FoundationNode } from "../common/CaptionNodes";
 
 export function getNodesInRange(
   nodes: FoundationNode[],

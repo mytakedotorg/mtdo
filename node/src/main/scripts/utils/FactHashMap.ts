@@ -1,6 +1,6 @@
 const fs = require("fs");
 const request = require("request-promise");
-import { Foundation } from "../../../../../client/src/main/scripts/java2ts/Foundation";
+import { Foundation } from "../java2ts/Foundation";
 
 interface HashToFact {
   [hash: string]: Foundation.DocumentFactContent | Foundation.VideoFactContent;
