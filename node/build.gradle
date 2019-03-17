@@ -1,3 +1,6 @@
+plugins { id 'com.moowork.node' // https://github.com/srs/gradle-node-plugin/blob/master/docs/node.md
+}
+
 ////////////////////////////////////////////////////////////
 // terrible module system, we copy the common and java2ts //
 // directories from the client/src/main/scripts folders   //
@@ -17,3 +20,14 @@ task beforeCompile(dependsOn: [
 	syncClientUtils,
 	syncClientJava2Ts
 ])
+
+/////////////////////////////////
+// smoke test the node project //
+/////////////////////////////////
+node {
+	// node 10.x is needed for node-canvas
+	version = '10.11.0'
+	npmVersion = '6.4.1'
+	download = true
+}
+

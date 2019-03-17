@@ -69,6 +69,7 @@ jsoniterCodegen { codegenClass = 'java2ts.CodegenConfig' }
 // node stuff - compiles sass and typescript into src/main/resources //
 ///////////////////////////////////////////////////////////////////////
 node {
+	// node 8.x is needed because of fsevents as of Mar 16 2019, node 10.x does not work
 	version = '8.15.1'
 	npmVersion = '6.4.1'
 	// yarnVersion = '0.16.1'
