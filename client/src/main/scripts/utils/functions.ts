@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Foundation } from "../java2ts/Foundation";
-import { FoundationNode } from "./CaptionNodes";
+import { FoundationNode } from "../common/CaptionNodes";
 import {
   DocumentBlock,
   TakeBlock,

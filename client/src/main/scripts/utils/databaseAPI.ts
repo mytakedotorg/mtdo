@@ -4,7 +4,7 @@ import { Routes } from "../java2ts/Routes";
 import { EmailSelf } from "../java2ts/EmailSelf";
 import { decodeVideoFact } from "../common/DecodeVideoFact";
 import { drawVideoFact, drawDocument, drawSpecs } from "./DrawFacts";
-import { FoundationNode } from "../utils/CaptionNodes";
+import { FoundationNode } from "../common/CaptionNodes";
 import { alertErr, getHighlightedNodes, slugify } from "../utils/functions";
 import {
   TakeDocument,

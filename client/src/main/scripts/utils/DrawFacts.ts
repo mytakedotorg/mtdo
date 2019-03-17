@@ -7,7 +7,7 @@ import {
   highlightCaption,
   CaptionNode,
   FoundationNode
-} from "./CaptionNodes";
+} from "../common/CaptionNodes";
 
 export const drawSpecs = Object.freeze({
   textMargin: 16,

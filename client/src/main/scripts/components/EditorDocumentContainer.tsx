@@ -2,7 +2,7 @@ import * as React from "react";
 import * as keycode from "keycode";
 import DocumentTextNodeList from "./DocumentTextNodeList";
 import { alertErr, getHighlightedNodes } from "../utils/functions";
-import { FoundationNode } from "../utils/CaptionNodes";
+import { FoundationNode } from "../common/CaptionNodes";
 import { fetchFact } from "../utils/databaseAPI";
 import { DocumentBlock } from "../java2ts/DocumentBlock";
 import { Foundation } from "../java2ts/Foundation";

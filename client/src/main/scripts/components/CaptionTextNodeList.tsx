@@ -1,5 +1,5 @@
 import * as React from "react";
-import { CaptionNode, CaptionNodeArr } from "../utils/CaptionNodes";
+import { CaptionNode, CaptionNodeArr } from "../common/CaptionNodes";
 import CaptionTextNode from "./CaptionTextNode";
 import isEqual = require("lodash/isEqual");
 import { Foundation } from "../java2ts/Foundation";

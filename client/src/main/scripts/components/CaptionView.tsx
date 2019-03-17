@@ -15,7 +15,7 @@ import {
   getCaptionNodeArray,
   highlightCaption,
   CaptionNodeArr
-} from "../utils/CaptionNodes";
+} from "../common/CaptionNodes";
 import { RangeType, StateAuthority, TimeRange } from "./Video";
 import { Foundation } from "../java2ts/Foundation";
 import { Routes } from "../java2ts/Routes";
