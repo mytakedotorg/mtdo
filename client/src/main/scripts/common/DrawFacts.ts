@@ -1,3 +1,5 @@
+const https = require("https");
+const { Image } = require("canvas");
 import { ReactElement } from "react";
 import { Foundation } from "../java2ts/Foundation";
 import { ImageProps } from "../java2ts/ImageProps";
@@ -8,19 +10,48 @@ import {
   CaptionNode,
   FoundationNode
 } from "./CaptionNodes";
+import { getHighlightedNodes } from "./DocumentNodes";
 
 export const drawSpecs = Object.freeze({
   textMargin: 16,
-  width: 500,
+  width: 480,
   linewidth: 468,
-  lineheight: 1.5 //multiplier
+  lineheight: 1.5, //multiplier
+  thumbHeight: 360
 });
+
+export function drawDocumentFact(
+  canvas: HTMLCanvasElement,
+  factContent: Foundation.DocumentFactContent,
+  highlightedRange: [number, number],
+  viewRange: [number, number]
+) {
+  let nodes: FoundationNode[] = [];
+
+  for (const documentComponent of factContent.components) {
+    nodes.push({
+      component: documentComponent.component,
+      innerHTML: [documentComponent.innerHTML],
+      offset: documentComponent.offset
+    });
+  }
+
+  let highlightedNodes = getHighlightedNodes(
+    [...nodes],
+    highlightedRange,
+    viewRange
+  );
+
+  const title = factContent.fact.title;
+
+  drawDocument(canvas, [...highlightedNodes], title);
+}
 
 export function drawVideoFact(
   canvas: HTMLCanvasElement,
   factContent: Foundation.VideoFactContent,
   highlightedRange: [number, number]
-): ImageProps {
+): Promise<void> {
   const captionNodes = getCaptionNodeArray(factContent);
 
   const characterRange = getCharRangeFromVideoRange(
@@ -54,13 +85,19 @@ export function drawVideoFact(
   highlightedText = highlightedText.trimRight();
   highlightedText += '"';
 
-  return drawCaption(canvas, highlightedText);
+  const src = "https://img.youtube.com/vi/" + factContent.youtubeId + "/0.jpg";
+  return new Promise(function(resolve, reject) {
+    loadImage(src).then((img: HTMLImageElement) => {
+      return resolve(drawCaption(canvas, img, highlightedText));
+    });
+  });
 }
 
 export function drawCaption(
   canvas: HTMLCanvasElement,
+  thumb: HTMLImageElement,
   text: string
-): ImageProps {
+): void {
   const ctx = canvas.getContext("2d");
 
   canvas.width = drawSpecs.width * 2;
@@ -73,7 +110,14 @@ export function drawCaption(
     ctx.font = "Bold " + textSize.toString() + "px Merriweather";
 
     // Draw text once to calculate height
-    const height = drawText(ctx, text, textSize).totalHeight;
+    const height =
+      drawText(
+        ctx,
+        text,
+        textSize,
+        0,
+        drawSpecs.thumbHeight + drawSpecs.textMargin
+      ).totalHeight + drawSpecs.thumbHeight;
 
     canvas.height = height * 2;
     canvas.style.height = height + "px";
@@ -85,15 +129,17 @@ export function drawCaption(
     ctx.fillRect(0, 0, drawSpecs.width, height);
     ctx.fillStyle = "#051a38";
 
+    ctx.drawImage(thumb, 0, 0);
+
     // Not sure why, but font has been reset at this point, so must set it again
     ctx.font = "Bold " + textSize.toString() + "px Merriweather";
-    drawText(ctx, text, textSize);
-
-    return {
-      dataUri: canvas.toDataURL("image/png"),
-      width: drawSpecs.width.toString(),
-      height: height.toString()
-    };
+    drawText(
+      ctx,
+      text,
+      textSize,
+      0,
+      drawSpecs.thumbHeight + drawSpecs.textMargin
+    );
   } else {
     const errStr = "Error getting canvas context";
     throw errStr;
@@ -189,7 +235,8 @@ export function drawDocumentText(
   // Draw fact title
   const titleSize = 20;
   let textSize = titleSize;
-  ctx.font = "Bold " + textSize.toString() + "px Source Sans Pro";
+  // ctx.font = "bold " + textSize.toString() + "px Source Sans Pro";
+  ctx.font = "bold " + textSize.toString() + "px sans";
   let x = drawSpecs.textMargin;
   let y = textSize;
   ctx.fillText(title, x, y);
@@ -198,7 +245,7 @@ export function drawDocumentText(
     if (node.component === "h2") {
       // Set the font style
       textSize = 22.5;
-      ctx.font = "Bold " + textSize.toString() + "px Merriweather";
+      ctx.font = "bold " + textSize.toString() + "px Merriweather";
 
       // Add a margin above the new line of text
       y += textSize * drawSpecs.lineheight;
@@ -239,13 +286,14 @@ export function drawDocumentText(
             // Found a React Element
             words += (text as ReactElement<HTMLSpanElement>).props.children;
             // This text is highlighted, so make it bold
-            ctx.font = "Bold " + textSize.toString() + "px Merriweather";
+            ctx.font = "bold " + textSize.toString() + "px Merriweather";
           } else {
             words += textStr.trim();
             ctx.font = textSize.toString() + "px Merriweather";
           }
 
           const dimensions = drawText(ctx, words, textSize, x, y);
+
           // Set the dimensions of the next line to be drawn where the previous line left off
           y = dimensions.y;
           x = drawSpecs.textMargin + dimensions.x;
@@ -264,20 +312,21 @@ export function drawDocument(
   canvas: HTMLCanvasElement,
   nodes: FoundationNode[],
   title: string
-): ImageProps {
+) {
   const ctx = canvas.getContext("2d");
 
-  canvas.width = drawSpecs.width * window.devicePixelRatio;
+  canvas.width = drawSpecs.width * 2;
+  (canvas as any).style = {};
   canvas.style.width = drawSpecs.width + "px";
 
   if (ctx) {
     // Draw the document once to calculate height
     const height = drawDocumentText(ctx, [...nodes], title);
 
-    canvas.height = height * window.devicePixelRatio;
+    canvas.height = height * 2;
     canvas.style.height = height + "px";
 
-    ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+    ctx.scale(2, 2);
 
     // Draw grey background
     ctx.fillStyle = "#f2f4f7";
@@ -288,14 +337,25 @@ export function drawDocument(
 
     // Draw document again to draw the text
     drawDocumentText(ctx, [...nodes], title);
-
-    return {
-      dataUri: canvas.toDataURL("image/png"),
-      width: drawSpecs.width.toString(),
-      height: height.toString()
-    };
   } else {
     const errStr = "Error getting canvas context";
     throw errStr;
   }
+}
+function loadImage(url: string) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => resolve(img);
+    img.onerror = () => reject(new Error("Failed to load image"));
+    https.get(url, (res: any) => {
+      let buf = "";
+      res.setEncoding("binary");
+      res.on("data", function(chunk: any) {
+        buf += chunk;
+      });
+      res.on("end", function() {
+        img.src = new Buffer(buf, "binary");
+      });
+    });
+  });
 }
