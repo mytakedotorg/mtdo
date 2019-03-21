@@ -3,7 +3,7 @@ import { Foundation } from "../../../../../client/src/main/scripts/java2ts/Found
 import { decodeVideoFact } from "../common/DecodeVideoFact";
 import { drawDocumentFact, drawVideoFact } from "../common/DrawFacts";
 const express = require("express");
-const Canvas = require("canvas");
+const { createCanvas } = require("canvas");
 const router = express.Router();
 
 function videoRangeFromString(rangeStr: string): [number, number] | null {
@@ -43,19 +43,13 @@ function videoFactImage(
   hStart: number,
   hEnd: number
 ): Promise<string> {
-  const canvas: HTMLCanvasElement = new Canvas(480, 360);
+  const canvas = createCanvas(480, 360);
   const ctx = canvas.getContext("2d");
   if (ctx) {
     return new Promise(function(resolve, reject) {
       drawVideoFact(canvas, decodeVideoFact(videoFact), [hStart, hEnd]).then(
         () => {
-          canvas.toDataURL("image/jpeg", 0.5, (err: string, jpeg: string) => {
-            if (err) {
-              return reject(err);
-            } else {
-              return resolve(jpeg);
-            }
-          });
+          resolve(canvas.toDataURL("image/jpeg", 0.5));
         }
       );
     });
@@ -70,20 +64,12 @@ function documentFactImage(
   hEnd: number,
   vStart: number,
   vEnd: number
-): Promise<string> {
-  const canvas: HTMLCanvasElement = new Canvas(480, 360);
+): string {
+  const canvas = createCanvas(480, 360);
   const ctx = canvas.getContext("2d");
   if (ctx) {
-    return new Promise(function(resolve, reject) {
-      drawDocumentFact(canvas, documentFact, [hStart, hEnd], [vStart, vEnd]);
-      canvas.toDataURL("image/jpeg", 0.5, (err: string, jpeg: string) => {
-        if (err) {
-          return reject(err);
-        } else {
-          return resolve(jpeg);
-        }
-      });
-    });
+    drawDocumentFact(canvas, documentFact, [hStart, hEnd], [vStart, vEnd]);
+    return canvas.toDataURL("image/jpeg", 0.5);
   } else {
     throw "Error getting canvas context";
   }
@@ -121,24 +107,19 @@ router.get("/:" + IMAGEKEY, (req: Request, res: Response) => {
       const documentFact: Foundation.DocumentFactContent =
         req.app.locals.factHashMap[docId];
       if (documentFact) {
-        documentFactImage(
+        const jpeg = documentFactImage(
           documentFact,
           hRange[0],
           hRange[1],
           vRange[0],
           vRange[1]
-        )
-          .then(function(jpeg: string) {
-            const img = new Buffer(jpeg.split(",")[1], "base64"); // Remove "data:image/jpeg;base64,"
-            res.writeHead(200, {
-              "Content-Type": "image/jpeg",
-              "Content-Length": img.length
-            });
-            return res.end(img);
-          })
-          .catch(function() {
-            throw "Error creating image buffer";
-          });
+        );
+        const img = new Buffer(jpeg.split(",")[1], "base64"); // Remove "data:image/jpeg;base64,"
+        res.writeHead(200, {
+          "Content-Type": "image/jpeg",
+          "Content-Length": img.length
+        });
+        return res.end(img);
       } else {
         return res.status(404).send("Not found");
       }
