@@ -7,7 +7,7 @@ export function loadImage(url: string) {
     img.onload = () => resolve(img);
     img.onerror = () => reject(new Error("Failed to load image"));
     axios.get(url, { responseType: "arraybuffer" }).then((res: any) => {
-      img.src = new Buffer(res.data, "binary").toString();
+      img.src = new Buffer(res.data, "binary");
     });
   });
 }
