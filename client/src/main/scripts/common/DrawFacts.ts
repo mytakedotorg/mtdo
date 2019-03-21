@@ -360,8 +360,6 @@ function loadImage(url: string) {
     img.onload = () => resolve(img);
     img.onerror = () => reject(new Error("Failed to load image"));
     axios.get(url, { responseType: "arraybuffer" }).then((res: any) => {
-      console.log("response received");
-      console.log(res);
       img.src = new Buffer(res.data, "binary");
     });
   });
