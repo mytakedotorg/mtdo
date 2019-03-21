@@ -1,4 +1,4 @@
-const https = require("https");
+const axios = require("axios");
 const { Image } = require("canvas");
 import { ReactElement } from "react";
 import { Foundation } from "../java2ts/Foundation";
@@ -51,7 +51,7 @@ export function drawVideoFact(
   canvas: HTMLCanvasElement,
   factContent: Foundation.VideoFactContent,
   highlightedRange: [number, number]
-): Promise<void> {
+): Promise<ImageProps> {
   const captionNodes = getCaptionNodeArray(factContent);
 
   const characterRange = getCharRangeFromVideoRange(
@@ -97,7 +97,7 @@ export function drawCaption(
   canvas: HTMLCanvasElement,
   thumb: HTMLImageElement,
   text: string
-): void {
+): ImageProps {
   const ctx = canvas.getContext("2d");
 
   canvas.width = drawSpecs.width * 2;
@@ -140,6 +140,12 @@ export function drawCaption(
       0,
       drawSpecs.thumbHeight + drawSpecs.textMargin
     );
+
+    return {
+      dataUri: canvas.toDataURL("image/png"),
+      width: drawSpecs.width.toString(),
+      height: height.toString()
+    };
   } else {
     const errStr = "Error getting canvas context";
     throw errStr;
@@ -312,7 +318,7 @@ export function drawDocument(
   canvas: HTMLCanvasElement,
   nodes: FoundationNode[],
   title: string
-) {
+): ImageProps {
   const ctx = canvas.getContext("2d");
 
   canvas.width = drawSpecs.width * 2;
@@ -337,6 +343,12 @@ export function drawDocument(
 
     // Draw document again to draw the text
     drawDocumentText(ctx, [...nodes], title);
+
+    return {
+      dataUri: canvas.toDataURL("image/png"),
+      width: drawSpecs.width.toString(),
+      height: height.toString()
+    };
   } else {
     const errStr = "Error getting canvas context";
     throw errStr;
@@ -347,7 +359,7 @@ function loadImage(url: string) {
     const img = new Image();
     img.onload = () => resolve(img);
     img.onerror = () => reject(new Error("Failed to load image"));
-    https.get(url, (res: any) => {
+    axios.get(url, (res: any) => {
       let buf = "";
       res.setEncoding("binary");
       res.on("data", function(chunk: any) {

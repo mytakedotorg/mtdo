@@ -353,7 +353,7 @@ function drawFacts(
         case "video":
           fetchFact(
             block.videoId,
-            (
+            async (
               error: string | Error | null,
               factContent: Foundation.VideoFactContent,
               index: number,
@@ -374,7 +374,7 @@ function drawFacts(
 
                 if (factContent && blockInScope.range) {
                   const canvas = document.createElement("canvas");
-                  const imageProps = drawVideoFact(
+                  const imageProps = await drawVideoFact(
                     canvas,
                     factContent,
                     blockInScope.range
