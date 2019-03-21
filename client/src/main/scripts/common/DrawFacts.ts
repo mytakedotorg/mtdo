@@ -359,15 +359,10 @@ function loadImage(url: string) {
     const img = new Image();
     img.onload = () => resolve(img);
     img.onerror = () => reject(new Error("Failed to load image"));
-    axios.get(url, (res: any) => {
-      let buf = "";
-      res.setEncoding("binary");
-      res.on("data", function(chunk: any) {
-        buf += chunk;
-      });
-      res.on("end", function() {
-        img.src = new Buffer(buf, "binary");
-      });
+    axios.get(url, { responseType: "arraybuffer" }).then((res: any) => {
+      console.log("response received");
+      console.log(res);
+      img.src = new Buffer(res.data, "binary");
     });
   });
 }

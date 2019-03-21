@@ -47,11 +47,13 @@ function videoFactImage(
   const ctx = canvas.getContext("2d");
   if (ctx) {
     return new Promise(function(resolve, reject) {
-      drawVideoFact(canvas, decodeVideoFact(videoFact), [hStart, hEnd]).then(
-        () => {
+      drawVideoFact(canvas, decodeVideoFact(videoFact), [hStart, hEnd])
+        .then(() => {
           resolve(canvas.toDataURL("image/jpeg", 0.5));
-        }
-      );
+        })
+        .catch(err => {
+          reject(err);
+        });
     });
   } else {
     throw "Error getting canvas context";
