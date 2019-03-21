@@ -1,5 +1,3 @@
-const axios = require("axios");
-const { Image } = require("canvas");
 import { ReactElement } from "react";
 import { Foundation } from "../java2ts/Foundation";
 import { ImageProps } from "../java2ts/ImageProps";
@@ -11,6 +9,7 @@ import {
   FoundationNode
 } from "./CaptionNodes";
 import { getHighlightedNodes } from "./DocumentNodes";
+import { loadImage } from "../utils/loadImage";
 
 export const drawSpecs = Object.freeze({
   textMargin: 16,
@@ -353,14 +352,4 @@ export function drawDocument(
     const errStr = "Error getting canvas context";
     throw errStr;
   }
-}
-function loadImage(url: string) {
-  return new Promise((resolve, reject) => {
-    const img = new Image();
-    img.onload = () => resolve(img);
-    img.onerror = () => reject(new Error("Failed to load image"));
-    axios.get(url, { responseType: "arraybuffer" }).then((res: any) => {
-      img.src = new Buffer(res.data, "binary");
-    });
-  });
 }

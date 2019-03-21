@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "lib": ["es2015"],
     "sourceMap": true,
     "noImplicitAny": true,
     "module": "commonjs",
