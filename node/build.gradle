@@ -31,3 +31,5 @@ node {
 	download = true
 }
 
+npm_run_test.dependsOn(beforeCompile)
+task check(dependsOn: npm_run_test)
