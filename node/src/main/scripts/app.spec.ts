@@ -1,3 +1,4 @@
+/// <reference path="../../../node_modules/@types/jest/index.d.ts" />
 const underTest = require("./app");
 const request = require("supertest");
 const { toMatchImageSnapshot } = require("jest-image-snapshot");

@@ -32,6 +32,8 @@ type HTMLElement = any;
 type HTMLImageElement = any;
 type HTMLSpanElement = any;
 type TextMetrics = any;
+type Blob = any;
+type XMLHttpRequest = any;
 
 declare namespace jest {
   interface Matchers<R> {
