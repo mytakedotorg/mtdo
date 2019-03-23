@@ -32,3 +32,9 @@ type HTMLElement = any;
 type HTMLImageElement = any;
 type HTMLSpanElement = any;
 type TextMetrics = any;
+
+declare namespace jest {
+  interface Matchers<R> {
+    toMatchImageSnapshot(): CustomMatcherResult;
+  }
+}
