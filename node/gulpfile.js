@@ -25,7 +25,7 @@ gulp.task(PROXY, function() {
   nodemon({
     script: config.dist + "/server.js",
     ext: "js",
-    env: { NODE_ENV: "development" }
+    env: { NODE_ENV: process.env.NODE_ENV }
   });
   gulp.watch(config.src, [BUILD]);
 });
