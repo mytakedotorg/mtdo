@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { Foundation } from "../../../../../client/src/main/scripts/java2ts/Foundation";
 import { decodeVideoFact } from "../common/DecodeVideoFact";
 import { drawDocumentFact, drawVideoFact } from "../common/DrawFacts";
-const express = require("express");
+import * as express from "express";
 const { createCanvas } = require("canvas");
 const router = express.Router();
 
