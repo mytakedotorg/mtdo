@@ -1,5 +1,5 @@
 require("source-map-support").install();
-const express = require("express");
+import * as express from "express";
 const logger = require("morgan");
 import FactHashMap, { fetchYTThumbs } from "./utils/FactHashMap";
 const app = express();
@@ -14,14 +14,27 @@ if (app.get("env") === "production") {
   app.use(logger("dev"));
 }
 
+let isReady: boolean = false;
 new FactHashMap().load().then(factHashMap => {
   app.locals.factHashMap = factHashMap;
   fetchYTThumbs(factHashMap).then(vidHashMap => {
     app.locals.vidHashMap = vidHashMap;
+    isReady = true;
   });
 });
 
+app.use("/api/images", (req: Request, res: Response, next: NextFunction) => {
+  if (isReady) return next();
+  const intervalId = setInterval(() => {
+    if (isReady) {
+      clearInterval(intervalId);
+      next();
+    }
+  }, 20);
+});
+
 app.use("/api/images", images);
+
 app.get("/favicon.ico", (req: Request, res: Response) => {
   res.status(204);
 });
