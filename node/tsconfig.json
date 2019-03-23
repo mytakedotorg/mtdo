@@ -5,6 +5,7 @@
     "noImplicitAny": true,
     "module": "commonjs",
     "moduleResolution": "node",
+    "noEmit": true,
     "target": "es6",
     "strictNullChecks": true
   },
