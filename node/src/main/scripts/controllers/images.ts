@@ -79,8 +79,8 @@ function documentFactImage(
 
 const IMAGEKEY = "imgkey";
 router.get("/:" + IMAGEKEY, (req: Request, res: Response) => {
-  // Expect imgKey for videos to be like "/vidId_hStart-hEnd.jpg
-  // Expect imgKey for docs to be like "/docId_hStart-hEnd_vStart-vEnd.jpg
+  // Expect imgKey for videos to be like "/vidId_hStart-hEnd.png
+  // Expect imgKey for docs to be like "/docId_hStart-hEnd_vStart-vEnd.png
   const imgKeyAndExtension: string = req.params[IMAGEKEY];
   const imgKey = imgKeyAndExtension.substring(
     0,
