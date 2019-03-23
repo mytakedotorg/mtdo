@@ -49,7 +49,7 @@ function videoFactImage(
     return new Promise(function(resolve, reject) {
       drawVideoFact(canvas, decodeVideoFact(videoFact), [hStart, hEnd])
         .then(() => {
-          resolve(canvas.toDataURL("image/jpeg", 0.5));
+          resolve(canvas.toDataURL());
         })
         .catch(err => {
           reject(err);
@@ -71,7 +71,7 @@ function documentFactImage(
   const ctx = canvas.getContext("2d");
   if (ctx) {
     drawDocumentFact(canvas, documentFact, [hStart, hEnd], [vStart, vEnd]);
-    return canvas.toDataURL("image/jpeg", 0.5);
+    return canvas.toDataURL();
   } else {
     throw "Error getting canvas context";
   }
@@ -109,16 +109,16 @@ router.get("/:" + IMAGEKEY, (req: Request, res: Response) => {
       const documentFact: Foundation.DocumentFactContent =
         req.app.locals.factHashMap[docId];
       if (documentFact) {
-        const jpeg = documentFactImage(
+        const png = documentFactImage(
           documentFact,
           hRange[0],
           hRange[1],
           vRange[0],
           vRange[1]
         );
-        const img = new Buffer(jpeg.split(",")[1], "base64"); // Remove "data:image/jpeg;base64,"
+        const img = new Buffer(png.split(",")[1], "base64"); // Remove "data:image/png;base64,"
         res.writeHead(200, {
-          "Content-Type": "image/jpeg",
+          "Content-Type": "image/png",
           "Content-Length": img.length
         });
         return res.end(img);
@@ -144,10 +144,10 @@ router.get("/:" + IMAGEKEY, (req: Request, res: Response) => {
 
       if (videoFact) {
         videoFactImage(videoFact, hRange[0], hRange[1])
-          .then(function(jpeg: string) {
-            const img = new Buffer(jpeg.split(",")[1], "base64"); // Remove "data:image/jpeg;base64,"
+          .then(function(png: string) {
+            const img = new Buffer(png.split(",")[1], "base64"); // Remove "data:image/png;base64,"
             res.writeHead(200, {
-              "Content-Type": "image/jpeg",
+              "Content-Type": "image/png",
               "Content-Length": img.length
             });
             return res.end(img);
