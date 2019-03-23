@@ -56,6 +56,7 @@
       "^.+\\.(ts|tsx)$": "ts-jest"
     },
     "testRegex": "/src/main/scripts/.*\\.(test|spec)\\.(ts|tsx|js)$",
+    "testEnvironment": "node",
     "moduleFileExtensions": [
       "ts",
       "tsx",
