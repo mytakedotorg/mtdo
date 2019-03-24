@@ -9,6 +9,8 @@ language: java
 
 env:
   - TERM=dumb
+before_install:
+  - sudo apt-get install build-essential libcairo2-dev libpango1.0-dev
 install:
   - "./gradlew :client:npmInstall"
 script:
