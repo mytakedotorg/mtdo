@@ -9,7 +9,11 @@ language: java
 
 env:
   - TERM=dumb
-
+before_install:
+  - sudo apt-get install -y font-manager
+  - wget https://github.com/EbenSorkin/Merriweather/releases/download/1.584/Merriweather-1.584.zip
+  - unzip Merriweather-1.584.zip
+  - font-manager install TTF
 install:
   - "./gradlew :client:npmInstall"
 script:
