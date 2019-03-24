@@ -2,9 +2,9 @@ plugins {
 	id 'com.diffplug.gradle.eclipse.resourcefilters' version '3.17.6'
 	id 'com.diffplug.gradle.spotless' version '3.15.0'	// https://github.com/diffplug/spotless/blob/master/plugin-gradle/README.md
 	id 'com.github.ben-manes.versions' version '0.20.0'	// https://github.com/ben-manes/gradle-versions-plugin './gradlew dependencyUpdates'
-	id 'cz.malohlava' version '1.0.3' // https://github.com/mmalohlava/gradle-visteg
 }
 
+/* Not compatible with Gradle 5: https://github.com/mmalohlava/gradle-visteg/issues/12
 // set enabled to true to get a report.  Only needed if the task graph
 // changes, see build_deps.pdf for an example
 // dot -Tpdf build/reports/visteg.dot > output.pdf
@@ -15,6 +15,7 @@ visteg {
 	endNodeShape = 'box'
 	colorscheme = 'pastel24' // http://www.graphviz.org/doc/info/colors.html
 }
+*/
 
 // format build files
 spotless {

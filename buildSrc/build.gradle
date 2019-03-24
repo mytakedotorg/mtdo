@@ -3,9 +3,15 @@ apply plugin: 'eclipse'
 apply plugin: 'java-gradle-plugin'
 
 repositories {
+	maven {
+		url 'https://dl.bintray.com/palantir/releases'
+		content { includeGroup 'com.palantir.docker.compose' }
+	}
+	maven {
+		url 'http://repository.jsweet.org/artifactory/libs-release-local'
+		content { includeGroup 'org.jsweet' }
+	}
 	maven { url 'https://plugins.gradle.org/m2/' }
-	maven { url 'https://dl.bintray.com/palantir/releases' }
-	maven { url 'http://repository.jsweet.org/artifactory/libs-release-local' }
 }
 
 dependencies {
