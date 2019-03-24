@@ -1,3 +1,4 @@
+buildscript { repositories { mavenCentral() }}
 plugins {
 	id 'com.diffplug.gradle.eclipse.resourcefilters' version '3.17.6'
 	id 'com.diffplug.gradle.spotless' version '3.15.0'	// https://github.com/diffplug/spotless/blob/master/plugin-gradle/README.md
