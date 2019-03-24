@@ -70,7 +70,7 @@ tasks.jsweet.doLast { com.diffplug.gradle.FileMisc.flatten(file(JAVA2TS + '/java
 tasks.jsweet.inputs.dir(file('build/classes'))
 tasks.jsweet.outputs.dir(file(JAVA2TS))
 clean { delete JAVA2TS }
-tasks.jsweet.dependsOn.remove('classes')
+tasks.jsweet.dependsOn.remove('classes') // deprecated in Gradle 6
 tasks.jsweet.dependsOn('compileJava')
 tasks.jsweet.dependsOn('nodeSetup')
 
