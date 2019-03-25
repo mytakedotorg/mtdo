@@ -38,5 +38,6 @@ type XMLHttpRequest = any;
 declare namespace jest {
   interface Matchers<R> {
     toMatchImageSnapshot(): CustomMatcherResult;
+    toMatchImageSnapshot(diffConfig: any): CustomMatcherResult;
   }
 }
