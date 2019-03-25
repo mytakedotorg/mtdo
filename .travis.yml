@@ -24,5 +24,7 @@ cache:
   directories:
     - client/.gradle/
     - client/node_modules/
+    - node/.gradle/
+    - node/node_modules/
     - $HOME/.gradle/caches/
     - $HOME/.gradle/wrapper/
