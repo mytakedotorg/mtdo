@@ -29,6 +29,7 @@ If you're a programmer or designer and you'd like to improve the site, it's real
 ## Quickstart
 
 - Run `./gradlew runDev`, and you'll get a server running at `localhost:8080`.
+- Run `cd node && gulp`, and you'll get a node server running at `localhost:4000` (`Ctrl-C` twice to stop).
 - If you then `cd` into the `client` directory and run `gulp proxyDev`, you'll get a [Browsersync](https://www.browsersync.io/) instance proxying `localhost:8080`.
     + Changes to sass files in [`/client/src/main/styles`](client/src/main/styles) will be pushed to the browser instantly. 
     + Changes to typescript files in [`/client/src/main/scripts`](client/src/main/scripts) will be compiled by webpack hot reload, but require a browser refresh to see their effects.

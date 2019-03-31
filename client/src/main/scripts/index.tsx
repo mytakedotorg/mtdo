@@ -14,6 +14,9 @@ import VideoResultsLoader from "./components/VideoResultsLoader";
 import { TakeDocument } from "./components/BlockEditor";
 import { Card } from "./components/FeedList";
 import { alertErr } from "./utils/functions";
+import { windowUtils } from "./utils/window";
+
+windowUtils.init();
 
 interface HomeArgs {
   type: "home";

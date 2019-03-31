@@ -5,8 +5,8 @@ import Document, { DocumentEventHandlers } from "./Document";
 import FactHeader, { StickyFactHeader } from "./FactHeader";
 import DocumentTextNodeList from "./DocumentTextNodeList";
 import Video from "./Video";
+import { FoundationNode } from "../common/CaptionNodes";
 import {
-  FoundationNode,
   getNodesInRange,
   getHighlightedNodes,
   getSimpleRangesFromHTMLRange,

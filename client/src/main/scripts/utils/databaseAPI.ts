@@ -2,16 +2,10 @@ import { ImageProps } from "../java2ts/ImageProps";
 import { Foundation } from "../java2ts/Foundation";
 import { Routes } from "../java2ts/Routes";
 import { EmailSelf } from "../java2ts/EmailSelf";
-import {
-  alertErr,
-  decodeVideoFact,
-  drawVideoFact,
-  FoundationNode,
-  getHighlightedNodes,
-  drawDocument,
-  drawSpecs,
-  slugify
-} from "../utils/functions";
+import { decodeVideoFact } from "../common/DecodeVideoFact";
+import { drawVideoFact, drawDocument, drawSpecs } from "../common/DrawFacts";
+import { FoundationNode } from "../common/CaptionNodes";
+import { alertErr, getHighlightedNodes, slugify } from "../utils/functions";
 import {
   TakeDocument,
   DocumentBlock,
@@ -359,7 +353,7 @@ function drawFacts(
         case "video":
           fetchFact(
             block.videoId,
-            (
+            async (
               error: string | Error | null,
               factContent: Foundation.VideoFactContent,
               index: number,
@@ -380,7 +374,7 @@ function drawFacts(
 
                 if (factContent && blockInScope.range) {
                   const canvas = document.createElement("canvas");
-                  const imageProps = drawVideoFact(
+                  const imageProps = await drawVideoFact(
                     canvas,
                     factContent,
                     blockInScope.range

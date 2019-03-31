@@ -1,5 +1,5 @@
 import * as React from "react";
-import { FoundationNode } from "../utils/functions";
+import { FoundationNode } from "../common/CaptionNodes";
 import { alertErr } from "../utils/functions";
 
 interface DataAttributes {

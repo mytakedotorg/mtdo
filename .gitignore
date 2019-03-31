@@ -8,6 +8,10 @@
 /server/src/main/rocker-generated/
 /foundation-gen/generated/
 /foundation-gen/.apt_generated/
+/node/src/main/dist/
+/node/src/main/scripts/java2ts/
+/node/src/main/scripts/common/
+notes.txt
 
 # OSX
 .DS_Store

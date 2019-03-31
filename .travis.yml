@@ -9,7 +9,8 @@ language: java
 
 env:
   - TERM=dumb
-
+before_install:
+  - sudo apt-get install build-essential libcairo2-dev libpango1.0-dev
 install:
   - "./gradlew :client:npmInstall"
 script:
@@ -23,5 +24,7 @@ cache:
   directories:
     - client/.gradle/
     - client/node_modules/
+    - node/.gradle/
+    - node/node_modules/
     - $HOME/.gradle/caches/
     - $HOME/.gradle/wrapper/

@@ -139,10 +139,9 @@ public class DevHotReload {
 	/** Loads from file. */
 	static class DynamicClassLoader extends AggressiveClassLoader {
 		private static File[] DIRS = new File[]{
-				new File("bin/main"),
-				new File("bin/test"),
-				new File("../lucene/bin/main"),
-				new File("../client/bin/main")
+				new File("bin"),
+				new File("../lucene/bin"),
+				new File("../client/bin")
 		};
 		final Map<File, Long> fileToLastModified = new HashMap<>();
 

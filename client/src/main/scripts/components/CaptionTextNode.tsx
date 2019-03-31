@@ -1,5 +1,5 @@
 import * as React from "react";
-import { CaptionNode, CaptionNodeArr } from "../utils/functions";
+import { CaptionNode, CaptionNodeArr } from "../common/CaptionNodes";
 
 interface CaptionTextNodeProps {
   documentNode: CaptionNode | CaptionNodeArr;
