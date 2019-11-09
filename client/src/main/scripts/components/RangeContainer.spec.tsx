@@ -1,6 +1,5 @@
 import * as React from "react";
 import * as renderer from "react-test-renderer";
-import {} from "jest";
 import { TrackSliderEventHandlers } from "./TrackSlider";
 import RangeContainer from "./RangeContainer";
 import { rangeStyle } from "../utils/testUtils";

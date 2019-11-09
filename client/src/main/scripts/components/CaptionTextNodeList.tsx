@@ -1,6 +1,5 @@
 import * as React from "react";
-import * as ReactDOM from "react-dom";
-import { CaptionNode, CaptionNodeArr } from "../utils/functions";
+import { CaptionNode, CaptionNodeArr } from "../common/CaptionNodes";
 import CaptionTextNode from "./CaptionTextNode";
 import isEqual = require("lodash/isEqual");
 import { Foundation } from "../java2ts/Foundation";

@@ -3,9 +3,15 @@ apply plugin: 'eclipse'
 apply plugin: 'java-gradle-plugin'
 
 repositories {
+	maven {
+		url 'https://dl.bintray.com/palantir/releases'
+		content { includeGroup 'com.palantir.docker.compose' }
+	}
+	maven {
+		url 'http://repository.jsweet.org/artifactory/libs-release-local'
+		content { includeGroup 'org.jsweet' }
+	}
 	maven { url 'https://plugins.gradle.org/m2/' }
-	maven { url 'https://dl.bintray.com/palantir/releases' }
-	maven { url 'http://repository.jsweet.org/artifactory/libs-release-local' }
 }
 
 dependencies {
@@ -20,7 +26,7 @@ dependencies {
 	// db migration
 	compile 'org.flywaydb:flyway-core:5.0.7'
 	// jsweet ts2java
-	compile 'com.jsoniter:jsoniter:0.9.22'
+	compile 'com.jsoniter:jsoniter:0.9.23'
 	compile 'org.jsweet:jsweet-transpiler:2.0.1'
 	compile files("${System.properties['java.home']}/../lib/tools.jar")
 	// java8 utilities

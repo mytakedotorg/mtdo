@@ -1,6 +1,6 @@
 import * as React from "react";
-import * as ReactDOM from "react-dom";
-import { FoundationNode } from "../utils/functions";
+import DropDown from "./DropDown";
+import QuickShare from "./QuickShare";
 
 interface FactHeaderProps {
   heading: string;
@@ -32,24 +32,31 @@ class FactHeader extends React.Component<FactHeaderProps, FactHeaderState> {
 
 interface StickyFactHeaderProps {
   heading: string;
-  isFixed: boolean;
+  highlightedRange: [number, number];
+  factHash: string;
   onClearClick: () => void;
   onSetClick: () => void;
-  onScroll: (headerHidden: boolean) => void;
   textIsHighlighted: boolean;
   isDocument: boolean;
+  viewRange: [number, number];
 }
 
-interface StickyFactHeaderState {}
+interface StickyFactHeaderState {
+  isFixed: boolean;
+}
 
 export class StickyFactHeader extends React.Component<
   StickyFactHeaderProps,
   StickyFactHeaderState
 > {
   private header: HTMLDivElement;
-  static headerHeight = 118;
+  private offsetTop: number;
+  private marginTop = 13;
   constructor(props: StickyFactHeaderProps) {
     super(props);
+    this.state = {
+      isFixed: false
+    };
   }
   handleClearClick = () => {
     this.props.onClearClick();
@@ -57,37 +64,55 @@ export class StickyFactHeader extends React.Component<
   handleSetClick = () => {
     this.props.onSetClick();
   };
+  handleResize = () => {
+    this.calculateOffset();
+  };
   handleScroll = () => {
-    this.props.onScroll(this.header.getBoundingClientRect().top <= 0);
+    if (window.pageYOffset > this.offsetTop) {
+      this.setState({
+        isFixed: true
+      });
+    } else {
+      this.setState({
+        isFixed: false
+      });
+    }
+  };
+  calculateOffset = () => {
+    const rect = this.header.getBoundingClientRect();
+    this.offsetTop = rect.top + window.pageYOffset - this.marginTop;
   };
   componentDidMount() {
+    this.calculateOffset();
     window.addEventListener("scroll", this.handleScroll);
+    window.addEventListener("resize", this.handleResize);
   }
   componentWillUnmount() {
     window.removeEventListener("scroll", this.handleScroll);
+    window.removeEventListener("resize", this.handleResize);
   }
   render() {
-    let scrollingHeaderClass = "document__header";
-    let fixedHeaderClass = "document__header";
-    if (this.props.isFixed) {
-      scrollingHeaderClass += " document__header--hidden";
-      fixedHeaderClass += " document__header--fixed";
+    let headerClass = "document__header";
+    if (this.state.isFixed) {
+      headerClass += " document__header--fixed";
     } else {
-      scrollingHeaderClass += " document__header--visible";
-      fixedHeaderClass += " document__header--hidden";
+      headerClass += " document__header--scroll";
     }
 
-    const headerContent = (
-      <div>
+    return (
+      <div
+        className={headerClass}
+        ref={(header: HTMLDivElement) => (this.header = header)}
+      >
         <h2 className={"document__heading"}>{this.props.heading}</h2>
         <div className="document__header-actions">
           {this.props.textIsHighlighted ? (
-            <button
+            <span
               className="document__button document__button--blue"
               onClick={this.handleClearClick}
             >
               Clear Selection
-            </button>
+            </span>
           ) : (
             <p className="document__instructions">
               {this.props.isDocument
@@ -96,21 +121,21 @@ export class StickyFactHeader extends React.Component<
             </p>
           )}
           {this.props.textIsHighlighted ? (
-            <button
-              className="document__button document__button--red"
-              onClick={this.handleSetClick}
+            <DropDown
+              classModifier="docShare"
+              dropdownPosition="CUSTOM"
+              toggleText="Share"
             >
-              Give your Take on this
-            </button>
+              <QuickShare
+                highlightedRange={this.props.highlightedRange}
+                isDocument={true}
+                onSendToTake={this.handleSetClick}
+                factHash={this.props.factHash}
+                viewRange={this.props.viewRange}
+              />
+            </DropDown>
           ) : null}
         </div>
-      </div>
-    );
-
-    return (
-      <div ref={(header: HTMLDivElement) => (this.header = header)}>
-        <div className={scrollingHeaderClass}>{headerContent}</div>
-        <div className={fixedHeaderClass}>{headerContent}</div>
       </div>
     );
   }

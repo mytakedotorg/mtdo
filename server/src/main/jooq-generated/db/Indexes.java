@@ -11,6 +11,7 @@ import db.tables.Follow;
 import db.tables.FoundationRev;
 import db.tables.Loginlink;
 import db.tables.Moderator;
+import db.tables.SharedUrlRev;
 import db.tables.Takedraft;
 import db.tables.Takepublished;
 import db.tables.Takereaction;
@@ -50,6 +51,7 @@ public class Indexes {
     public static final Index FOUNDATION_REV_PKEY = Indexes0.FOUNDATION_REV_PKEY;
     public static final Index LOGINLINK_PKEY = Indexes0.LOGINLINK_PKEY;
     public static final Index MODERATOR_PKEY = Indexes0.MODERATOR_PKEY;
+    public static final Index SHARED_URL_REV_PKEY = Indexes0.SHARED_URL_REV_PKEY;
     public static final Index TAKEDRAFT_PKEY = Indexes0.TAKEDRAFT_PKEY;
     public static final Index TAKEPUBLISHED_PKEY = Indexes0.TAKEPUBLISHED_PKEY;
     public static final Index TAKEPUBLISHED_TITLE_USER = Indexes0.TAKEPUBLISHED_TITLE_USER;
@@ -71,6 +73,7 @@ public class Indexes {
         public static Index FOUNDATION_REV_PKEY = createIndex("foundation_rev_pkey", FoundationRev.FOUNDATION_REV, new OrderField[] { FoundationRev.FOUNDATION_REV.VERSION }, true);
         public static Index LOGINLINK_PKEY = createIndex("loginlink_pkey", Loginlink.LOGINLINK, new OrderField[] { Loginlink.LOGINLINK.CODE }, true);
         public static Index MODERATOR_PKEY = createIndex("moderator_pkey", Moderator.MODERATOR, new OrderField[] { Moderator.MODERATOR.ID }, true);
+        public static Index SHARED_URL_REV_PKEY = createIndex("shared_url_rev_pkey", SharedUrlRev.SHARED_URL_REV, new OrderField[] { SharedUrlRev.SHARED_URL_REV.VERSION }, true);
         public static Index TAKEDRAFT_PKEY = createIndex("takedraft_pkey", Takedraft.TAKEDRAFT, new OrderField[] { Takedraft.TAKEDRAFT.ID }, true);
         public static Index TAKEPUBLISHED_PKEY = createIndex("takepublished_pkey", Takepublished.TAKEPUBLISHED, new OrderField[] { Takepublished.TAKEPUBLISHED.ID }, true);
         public static Index TAKEPUBLISHED_TITLE_USER = createIndex("takepublished_title_user", Takepublished.TAKEPUBLISHED, new OrderField[] { Takepublished.TAKEPUBLISHED.TITLE_SLUG, Takepublished.TAKEPUBLISHED.USER_ID }, true);

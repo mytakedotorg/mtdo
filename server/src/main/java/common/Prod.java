@@ -15,6 +15,7 @@ import controllers.HomeFeed;
 import controllers.Profile;
 import controllers.Redirects;
 import controllers.SearchModule;
+import controllers.Shares;
 import controllers.TakeEmail;
 import controllers.TakeReaction;
 import controllers.Takes;
@@ -34,11 +35,15 @@ import org.jooby.jooq.jOOQ;
 public class Prod extends Jooby {
 	{
 		use((env, conf, binder) -> {
-			binder.bind(Random.class).toInstance(SecureRandom.getInstanceStrong());
+			// prevent SecureRandom starvation in a shared hosting environment
+			// https://tersesystems.com/blog/2015/12/17/the-right-way-to-use-securerandom/
+			SecureRandom nativeRandom = SecureRandom.getInstanceStrong();
+			byte[] seed = nativeRandom.generateSeed(55);
+			SecureRandom pureJava = SecureRandom.getInstance("SHA1PRNG");
+			pureJava.setSeed(seed);
+			binder.bind(Random.class).toInstance(pureJava);
 		});
-		use((env, conf, binder) -> {
-			binder.bind(Time.class).toInstance(() -> System.currentTimeMillis());
-		});
+		realtime(this);
 		use(new HerokuDatabase.Module());
 		common(this);
 		use((env, conf, binder) -> {
@@ -52,6 +57,12 @@ public class Prod extends Jooby {
 		use(new InitialData.Module());
 		use(new FoundationMigrationModule());
 		controllers(this);
+	}
+
+	static void realtime(Jooby jooby) {
+		jooby.use((env, conf, binder) -> {
+			binder.bind(Time.class).toInstance(() -> System.currentTimeMillis());
+		});
 	}
 
 	static void common(Jooby jooby) {
@@ -76,6 +87,7 @@ public class Prod extends Jooby {
 		jooby.use(new NotFound());
 		jooby.use(new TakeReaction());
 		jooby.use(new TakeEmail());
+		jooby.use(new Shares());
 		// These controllers need to be last, because otherwise
 		// they will swallow every `/user/take` and `/user` URL.
 		jooby.use(new Takes());

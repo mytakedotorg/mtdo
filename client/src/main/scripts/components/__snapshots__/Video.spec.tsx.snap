@@ -63,6 +63,7 @@ exports[`Video 1`] = `
           "onRangeChange": [Function],
           "onRestartPress": [Function],
           "onScroll": [Function],
+          "onSendToTake": [Function],
           "onSkipBackPress": [Function],
           "onSkipForwardPress": [Function],
           "onZoomToClipPress": [Function],
@@ -340,6 +341,7 @@ exports[`Video 1`] = `
           "youtubeId": "ApTLB76Nmdg",
         }
       }
+      videoFactHash="iEfwIxM7MmnOKb7zt4HqW8IxUWy6F7a236fSOQlUUWI="
     />
   </div>
 </div>
@@ -396,34 +398,7 @@ exports[`Video with highlights 1`] = `
     </div>
     <div
       className="video__container video__container--actions"
-    >
-      <div
-        className="video__float--right"
-      >
-        <DropDown
-          classModifier="video"
-          dropdownPosition="BL"
-          toggleText="Share"
-        >
-          <div
-            className="video__share-dropdown"
-          >
-            <button
-              className="share__action share__action--clickable"
-              onClick={[Function]}
-            >
-              Copy URL
-            </button>
-            <button
-              className="share__action share__action--clickable"
-              onClick={[Function]}
-            >
-              Give your Take on this
-            </button>
-          </div>
-        </DropDown>
-      </div>
-    </div>
+    />
     <CaptionView
       captionIsHighlighted={true}
       eventHandlers={
@@ -435,6 +410,7 @@ exports[`Video with highlights 1`] = `
           "onRangeChange": [Function],
           "onRestartPress": [Function],
           "onScroll": [Function],
+          "onSendToTake": [Function],
           "onSkipBackPress": [Function],
           "onSkipForwardPress": [Function],
           "onZoomToClipPress": [Function],
@@ -489,7 +465,7 @@ exports[`Video with highlights 1`] = `
           Object {
             "end": 3.3,
             "label": "Zoom",
-            "start": -0.30000000000000004,
+            "start": -0.3,
             "styles": Object {
               "handle": Object {
                 "backgroundColor": "#758aa8",
@@ -730,6 +706,7 @@ exports[`Video with highlights 1`] = `
           "youtubeId": "ApTLB76Nmdg",
         }
       }
+      videoFactHash="iEfwIxM7MmnOKb7zt4HqW8IxUWy6F7a236fSOQlUUWI="
     />
   </div>
 </div>

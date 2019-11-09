@@ -1,8 +1,7 @@
 import * as React from "react";
 import * as renderer from "react-test-renderer";
-import {} from "jest";
 import Video from "./Video";
-import { videoFactFast } from "../utils/testUtils";
+import { videoFactLink, videoFactFast } from "../utils/testUtils";
 
 jest.mock("react-youtube", () => ({
   default: "YouTube"
@@ -27,6 +26,7 @@ test("Video", () => {
     .create(
       <Video
         videoFact={videoFactFast}
+        videoFactHash={videoFactLink.hash}
         onSetClick={mockFn}
         className={"video__inner-container"}
       />
@@ -40,6 +40,7 @@ test("Video with highlights", () => {
     .create(
       <Video
         videoFact={videoFactFast}
+        videoFactHash={videoFactLink.hash}
         onSetClick={mockFn}
         className={"video__inner-container"}
         clipRange={[0, 3]} // Test range can't go outside of videoFact.transcript range

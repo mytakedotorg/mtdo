@@ -1,6 +1,5 @@
 import * as React from "react";
 import * as renderer from "react-test-renderer";
-import {} from "jest";
 import {
   TimelineViewBranch,
   TimelineViewState,
@@ -12,7 +11,6 @@ import {
   videoFactLink
 } from "../utils/testUtils";
 import { SetFactHandlers } from "./TimelinePreview";
-import { Foundation } from "../java2ts/Foundation";
 
 jest.mock("./TimelinePreviewContainer", () => ({
   default: "TimelinePreviewContainer"

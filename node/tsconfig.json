@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "lib": ["es2015"],
+    "sourceMap": true,
+    "noImplicitAny": true,
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "target": "es6",
+    "strictNullChecks": true
+  },
+  "include": ["./src/main/scripts/**/*.ts"],
+  "exclude": ["./node_modules/**"]
+}

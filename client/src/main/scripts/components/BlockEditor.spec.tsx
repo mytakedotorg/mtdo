@@ -2,8 +2,6 @@
 
 import * as React from "react";
 import * as renderer from "react-test-renderer";
-import {} from "jest";
-import {} from "node";
 import BlockEditor from "./BlockEditor";
 import { TakeDocument } from "./BlockEditor";
 

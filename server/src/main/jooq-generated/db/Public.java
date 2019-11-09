@@ -11,6 +11,8 @@ import db.tables.Follow;
 import db.tables.FoundationRev;
 import db.tables.Loginlink;
 import db.tables.Moderator;
+import db.tables.SharedFacts;
+import db.tables.SharedUrlRev;
 import db.tables.Takedraft;
 import db.tables.Takepublished;
 import db.tables.Takereaction;
@@ -41,7 +43,7 @@ import org.jooq.impl.SchemaImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Public extends SchemaImpl {
 
-    private static final long serialVersionUID = -443913183;
+    private static final long serialVersionUID = 885972787;
 
     /**
      * The reference instance of <code>public</code>
@@ -82,6 +84,16 @@ public class Public extends SchemaImpl {
      * The table <code>public.moderator</code>.
      */
     public final Moderator MODERATOR = db.tables.Moderator.MODERATOR;
+
+    /**
+     * The table <code>public.shared_facts</code>.
+     */
+    public final SharedFacts SHARED_FACTS = db.tables.SharedFacts.SHARED_FACTS;
+
+    /**
+     * The table <code>public.shared_url_rev</code>.
+     */
+    public final SharedUrlRev SHARED_URL_REV = db.tables.SharedUrlRev.SHARED_URL_REV;
 
     /**
      * The table <code>public.takedraft</code>.
@@ -150,6 +162,8 @@ public class Public extends SchemaImpl {
             FoundationRev.FOUNDATION_REV,
             Loginlink.LOGINLINK,
             Moderator.MODERATOR,
+            SharedFacts.SHARED_FACTS,
+            SharedUrlRev.SHARED_URL_REV,
             Takedraft.TAKEDRAFT,
             Takepublished.TAKEPUBLISHED,
             Takereaction.TAKEREACTION,

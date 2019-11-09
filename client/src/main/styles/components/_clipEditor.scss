@@ -3,6 +3,7 @@
   max-width: 100%;
   margin: 15px auto;
   position: relative;
+  z-index: 10;
 }
 .clipEditor__actions {
   width: 100%;
@@ -12,6 +13,8 @@
   margin-bottom: 0;
 }
 .clipEditor__controls {
+  position: relative;
+  z-index: 1;
   margin-top: 15px;
   margin-left: auto;
   margin-right: auto;

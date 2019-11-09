@@ -1,7 +1,7 @@
 import { Foundation } from "../java2ts/Foundation";
 import { Search } from "../java2ts/Search";
 import { TimelineItemData } from "../components/Timeline";
-import { CaptionNodeArr, FoundationNode } from "./functions";
+import { CaptionNodeArr, FoundationNode } from "../common/CaptionNodes";
 import { Card } from "../components/FeedList";
 import { TakeDocument } from "../components/BlockEditor";
 import { StylesObject, TimeRange } from "../components/Video";
@@ -987,7 +987,11 @@ const kennedyNixon: Foundation.VideoFactContent = {
   }
 };
 
+const anonymousPath =
+  "/anonymous/introduction/v1/eyJ0aXRsZSI6IkludHJvZHVjdGlvbiIsInZpZElkIjoiaUVmd0l4TTdNbW5PS2I3enQ0SHFXOEl4VVd5NkY3YTIzNmZTT1FsVVVXST0iLCJoU3RhcnQiOiIwLjEiLCJoRW5kIjoiNSIsInZTdGFydCI6Ii0wLjM5IiwidkVuZCI6IjUuNDkifQ==";
+
 export {
+  anonymousPath,
   cards,
   documentFactLink,
   documentNodes,

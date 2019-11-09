@@ -1,5 +1,4 @@
 import * as React from "react";
-import * as ReactDOM from "react-dom";
 import TimelineView from "./TimelineView";
 import { Routes } from "../java2ts/Routes";
 

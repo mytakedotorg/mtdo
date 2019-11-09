@@ -1,6 +1,5 @@
 import * as React from "react";
-import * as ReactDOM from "react-dom";
-import { FoundationNode } from "../utils/functions";
+import { FoundationNode } from "../common/CaptionNodes";
 import DocumentTextNode from "./DocumentTextNode";
 
 interface DocumentTextNodeListProps {

@@ -13,7 +13,6 @@ webpackDevMiddleware = require("webpack-dev-middleware");
 webpackHotMiddleware = require("webpack-hot-middleware");
 // misc
 tasklisting = require("gulp-task-listing");
-gutil = require("gulp-util");
 rev = require("gulp-rev");
 merge = require("gulp-merge-json");
 
@@ -51,7 +50,10 @@ function setupPipeline(mode) {
     // depends on styles and scripts, inside of build.gradle
     gulp.task("rev" + PROD, () => {
       return gulp
-        .src(config.distProd + "/*/manifest.json")
+        .src([
+          config.distProd + "/" + SCRIPTS + "/manifest.json",
+          config.distProd + "/" + STYLES + "/manifest.json"
+        ])
         .pipe(
           merge({
             fileName: "manifest.json"
@@ -138,9 +140,9 @@ function webpackCfg(mode) {
     }
   }
   return {
+    mode: mode === PROD ? "production" : "development",
     entry: {
-      app: entryFor(mode, "/src/main/scripts/index.tsx"),
-      window: entryFor(mode, "/src/main/scripts/utils/window.ts")
+      app: entryFor(mode, "/src/main/scripts/index.tsx")
     },
     output: {
       filename: "[name].bundle.js"
@@ -151,7 +153,7 @@ function webpackCfg(mode) {
     },
     plugins:
       mode === PROD
-        ? [new webpack.optimize.UglifyJsPlugin()]
+        ? []
         : [
             new CheckerPlugin(), // needed for hotreload on typescript
             new webpack.HotModuleReplacementPlugin()
@@ -163,15 +165,17 @@ function webpackCfg(mode) {
       rules: [
         {
           test: /\.tsx?$/,
-          exclude: /node_modules/,
-          include: __dirname + "/src/main/scripts",
-          loaders:
+          exclude: [
+            /node_modules/,
+            __dirname + "/src/main/scripts/utils/drawVideoFact.ts"
+          ],
+          use:
             mode === PROD
-              ? ["awesome-typescript-loader"]
+              ? [{ loader: "awesome-typescript-loader" }]
               : [
-                  "react-hot-loader/webpack",
-                  "awesome-typescript-loader",
-                  "webpack-module-hot-accept"
+                  { loader: "react-hot-loader/webpack" },
+                  { loader: "awesome-typescript-loader" },
+                  { loader: "webpack-module-hot-accept" }
                 ]
         }
       ]
@@ -181,6 +185,51 @@ function webpackCfg(mode) {
       "react-dom": "ReactDOM",
       vis: "vis"
     }
+  };
+}
+
+gulp.task("serverScripts", () => {
+  var type = SCRIPTS;
+  return gulp
+    .src(src(type) + "**")
+    .pipe(
+      webpackStream(
+        {
+          config: webpackServerCfg()
+        },
+        webpack
+      )
+    )
+    .pipe(gulp.dest("./src/main/resources/serverScripts"));
+});
+function webpackServerCfg() {
+  return {
+    target: "node",
+    entry: {
+      drawVideoFact: __dirname + "/src/main/scripts/utils/drawVideoFact.ts"
+    },
+    output: {
+      filename: "[name].bundle.js",
+      library: "drawVideoFact"
+    },
+    resolve: {
+      // Add '.ts' and '.tsx' as resolvable extensions.
+      extensions: [".ts", ".tsx", ".js"]
+    },
+    module: {
+      rules: [
+        {
+          test: /\.tsx?$/,
+          exclude: /node_modules/,
+          include: __dirname + "/src/main/scripts",
+          loaders: ["awesome-typescript-loader"]
+        }
+      ]
+    },
+    node: {
+      fs: "empty"
+    },
+    externals: [nodeExternals()]
   };
 }
 
@@ -214,7 +263,7 @@ function proxyTask(mode) {
         }),
         webpackHotMiddleware(bundler)
       ],
-      files: config.distDev + "/" + STYLES + "/**",
+      files: [config.distDev + "/" + STYLES + "/**", src(PERMANENT) + "**"],
       serveStatic: [
         {
           route: "/assets-dev/" + STYLES,
@@ -222,6 +271,6 @@ function proxyTask(mode) {
         }
       ]
     });
-    gulp.watch(src(STYLES) + "**", [STYLES + mode]);
+    gulp.watch(src(STYLES) + "**", gulp.series(STYLES + mode));
   };
 }

@@ -1,9 +1,6 @@
 import * as React from "react";
-import * as ReactDOM from "react-dom";
-import { FoundationNode } from "../utils/functions";
-import { Foundation } from "../java2ts/Foundation";
+import { FoundationNode } from "../common/CaptionNodes";
 import DocumentTextNodeList from "./DocumentTextNodeList";
-import { TimeRange } from "./Video";
 
 export interface DocumentEventHandlers {
   onMouseUp: () => any;

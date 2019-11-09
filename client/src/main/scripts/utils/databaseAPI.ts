@@ -1,21 +1,11 @@
+import { ImageProps } from "../java2ts/ImageProps";
 import { Foundation } from "../java2ts/Foundation";
 import { Routes } from "../java2ts/Routes";
 import { EmailSelf } from "../java2ts/EmailSelf";
-import {
-  alertErr,
-  decodeVideoFact,
-  CaptionNode,
-  FoundationNode,
-  getHighlightedNodes,
-  getCaptionNodeArray,
-  getCharRangeFromVideoRange,
-  highlightCaption,
-  ImageProps,
-  drawDocument,
-  drawCaption,
-  drawSpecs,
-  slugify
-} from "../utils/functions";
+import { decodeVideoFact } from "../common/DecodeVideoFact";
+import { drawVideoFact, drawDocument, drawSpecs } from "../common/DrawFacts";
+import { FoundationNode } from "../common/CaptionNodes";
+import { alertErr, getHighlightedNodes, slugify } from "../utils/functions";
 import {
   TakeDocument,
   DocumentBlock,
@@ -318,7 +308,12 @@ function drawFacts(
                 const title = factContent.fact.title;
                 const titleSlug = slugify(title);
 
-                const imageProps = drawDocument([...highlightedNodes], title);
+                const canvas = document.createElement("canvas");
+                const imageProps = drawDocument(
+                  canvas,
+                  [...highlightedNodes],
+                  title
+                );
 
                 const documentURL =
                   Routes.FOUNDATION_V1 +
@@ -358,7 +353,7 @@ function drawFacts(
         case "video":
           fetchFact(
             block.videoId,
-            (
+            async (
               error: string | Error | null,
               factContent: Foundation.VideoFactContent,
               index: number,
@@ -378,41 +373,12 @@ function drawFacts(
                 const titleSlug = slugify(title);
 
                 if (factContent && blockInScope.range) {
-                  const captionNodes = getCaptionNodeArray(factContent);
-
-                  const characterRange = getCharRangeFromVideoRange(
-                    factContent.charOffsets,
-                    factContent.timestamps,
+                  const canvas = document.createElement("canvas");
+                  const imageProps = await drawVideoFact(
+                    canvas,
+                    factContent,
                     blockInScope.range
                   );
-
-                  const highlightedCaptionNodes = highlightCaption(
-                    captionNodes,
-                    characterRange
-                  );
-
-                  let highlightedText = '"';
-                  for (const node of highlightedCaptionNodes) {
-                    if (typeof node === "object") {
-                      for (const subnode of node as Array<CaptionNode>) {
-                        if (typeof subnode === "object") {
-                          const { children } = subnode.props;
-                          if (typeof children === "string") {
-                            highlightedText += children;
-                          } else {
-                            const msg =
-                              "databaseApi: unrecognized structure of highlightedCaptionNodes";
-                            alertErr(msg);
-                            throw msg;
-                          }
-                        }
-                      }
-                    }
-                  }
-                  highlightedText = highlightedText.trimRight();
-                  highlightedText += '"';
-
-                  const imageProps = drawCaption(highlightedText);
 
                   const videoURL =
                     Routes.FOUNDATION_V1 +

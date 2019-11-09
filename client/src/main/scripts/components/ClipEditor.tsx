@@ -1,6 +1,6 @@
 import * as React from "react";
-import * as ReactDOM from "react-dom";
-import { Range } from "rc-slider";
+import DropDown from "./DropDown";
+import QuickShare from "./QuickShare";
 import {
   RangeType,
   StateAuthority,
@@ -10,8 +10,7 @@ import {
 } from "./Video";
 import ZoomViewer from "./ZoomViewer";
 import TrackSlider, { TrackSliderEventHandlers } from "./TrackSlider";
-import { alertErr, convertSecondsToTimestamp } from "../utils/functions";
-import isEqual = require("lodash/isEqual");
+import { alertErr } from "../utils/functions";
 
 export interface ClipEditorEventHandlers {
   onAfterRangeChange: (
@@ -22,6 +21,7 @@ export interface ClipEditorEventHandlers {
   onPlayPausePress: () => any;
   onRangeChange: (value: [number, number] | number, type: RangeType) => any;
   onRestartPress: () => any;
+  onSendToTake: () => any;
   onSkipBackPress: (seconds: number) => any;
   onSkipForwardPress: (seconds: number) => any;
   onZoomToClipPress: () => any;
@@ -40,8 +40,6 @@ const TRACKSTYLES__SLIDER: TrackStyles = {
   }
 };
 
-type IsChanging = "zoom" | "selection" | "view";
-
 interface ClipEditorProps {
   captionIsHighlighted: boolean;
   currentTime: number;
@@ -51,6 +49,7 @@ interface ClipEditorProps {
   eventHandlers: ClipEditorEventHandlers;
   rangeSliders: TimeRange[];
   stateAuthority: StateAuthority;
+  videoIdHash: string;
 }
 
 interface ClipEditorState {}
@@ -223,6 +222,25 @@ class ClipEditor extends React.Component<ClipEditorProps, ClipEditorState> {
             >
               <i className="fa fa-repeat" aria-hidden="true" /> 15s
             </button>
+            {props.captionIsHighlighted && selectionRange.end ? (
+              <DropDown
+                classModifier="clipShare"
+                dropdownPosition="CUSTOM"
+                toggleText="Share"
+              >
+                <QuickShare
+                  highlightedRange={[selectionRange.start, selectionRange.end]}
+                  isDocument={false}
+                  onSendToTake={this.props.eventHandlers.onSendToTake}
+                  factHash={this.props.videoIdHash}
+                  viewRange={
+                    zoomRange && zoomRange.end
+                      ? [zoomRange.start, zoomRange.end]
+                      : undefined
+                  }
+                />
+              </DropDown>
+            ) : null}
           </div>
         </div>
       </div>

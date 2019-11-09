@@ -1,14 +1,10 @@
 import * as React from "react";
-import * as ReactDOM from "react-dom";
 import DocumentTextNodeList from "./DocumentTextNodeList";
 import { fetchFact } from "../utils/databaseAPI";
 import { Foundation } from "../java2ts/Foundation";
-import {
-  alertErr,
-  FoundationNode,
-  getHighlightedNodes
-} from "../utils/functions";
-import { TakeBlock, VideoBlock, DocumentBlock } from "./BlockEditor";
+import { FoundationNode } from "../common/CaptionNodes";
+import { alertErr, getHighlightedNodes } from "../utils/functions";
+import { TakeBlock } from "./BlockEditor";
 
 export interface FeedCardContainerProps {
   username: string;

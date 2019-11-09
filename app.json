@@ -20,11 +20,13 @@
     {
       "plan": "heroku-postgresql:hobby-dev",
       "options": {
-        "version": "10.3"
+        "version": "10"
       }
     }
   ],
+  "stack": "heroku-18",
   "buildpacks": [
+    { "url": "heroku/jvm" },
     { "url": "https://github.com/heroku/heroku-buildpack-nodejs.git" },
     { "url": "https://github.com/heroku/heroku-buildpack-gradle.git" }
   ]

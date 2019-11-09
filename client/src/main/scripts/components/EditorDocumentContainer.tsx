@@ -1,11 +1,8 @@
 import * as React from "react";
 import * as keycode from "keycode";
 import DocumentTextNodeList from "./DocumentTextNodeList";
-import {
-  alertErr,
-  getHighlightedNodes,
-  FoundationNode
-} from "../utils/functions";
+import { alertErr, getHighlightedNodes } from "../utils/functions";
+import { FoundationNode } from "../common/CaptionNodes";
 import { fetchFact } from "../utils/databaseAPI";
 import { DocumentBlock } from "../java2ts/DocumentBlock";
 import { Foundation } from "../java2ts/Foundation";
@@ -161,7 +158,6 @@ class Document extends React.Component<DocumentProps, DocumentState> {
       };
       this.props.eventHandlers.onDocumentClick(
         factlink,
-        this.div.getBoundingClientRect().top,
         this.props.block.highlightedRange,
         this.props.block.viewRange
       );

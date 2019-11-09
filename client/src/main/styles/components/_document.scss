@@ -1,4 +1,4 @@
-$document-header-height: 118px;
+$document-header-height: 110px;
 $document-margin-top: 0px;
 
 .document {
@@ -23,45 +23,25 @@ $document-margin-top: 0px;
   width: $column-width;
   max-width: 100%;
   margin: 0 auto;
+  z-index: 10;
   background-color: palette(document, background--header);
-  overflow: hidden;
-  height: $document-header-height - 1; //Subtract border bottom width
   border-bottom: 1px solid palette(header, border);
-  @media #{$mq-medium} {
-    border-bottom: none;
-    &:before {
-      content: "";
-      position: absolute;
-      bottom: 0;
-      height: 1px;
-      border-bottom: 1px solid palette(header, border);
-      left: $page-margin-mobile;
-      right: $page-margin-mobile;
-      @media #{$mq-medium} {
-        left: $content-margin;
-        right: $content-margin;
-      }
-    }
-  }
 }
-.document__header--visible {
+.document__header--scroll {
   position: relative;
-  z-index: 15;
 }
 .document__header--fixed {
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 10;
 
   @media #{$mq-medium} {
     left: 50%;
     margin-left: -$column-width/2; // 768px/2
   }
 }
-.document__header--hidden {
-  visibility: hidden;
-  height: 0;
+.document__header--fixed + div {
+  margin-top: $document-header-height + $document-margin-top;
 }
 .document__heading {
   margin-top: 13.5px;
@@ -85,9 +65,6 @@ $document-margin-top: 0px;
 .document__row {
   z-index: 5;
   position: relative;
-}
-.document__row--push {
-  margin-top: $document-header-height + $document-margin-top;
 }
 .document__row-inner {
   position: relative;
@@ -113,7 +90,6 @@ $document-margin-top: 0px;
 .document__button {
   @include button;
   margin-right: $page-margin-mobile;
-  margin-bottom: 10.5px;
   @media #{$mq-medium} {
     margin-right: $content-margin;
   }

@@ -24,9 +24,14 @@
 <meta name="description" content="empty | MyTake.org">
 <meta name="author" content="MyTake.org">
 
+<!-- For 2:1 image aspect ratio -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@mytakedotorg">
+<meta name="twitter:title" content="MyTake.org">
+<meta name="twitter:description" content="empty">
 <meta property="og:title" content="MyTake.org" />
 <meta property="og:description" content="empty" />
-<meta property="fb:app_id" content="1014270045380974" />
+<meta property="fb:app_id" content="203240867180202" />
 
 <link rel="stylesheet" href="/assets-dev/styles/main.css">
 <link rel="stylesheet" href="/assets-dev/styles/vis.css">
@@ -42,10 +47,10 @@
 <script>
 	window.fbAsyncInit = function() {
 		FB.init({
-			appId            : '1014270045380974',
+			appId            : '203240867180202',
 			autoLogAppEvents : true,
 			xfbml            : true,
-			version          : 'v2.11'
+			version          : 'v3.0'
 		});
 	};
 
@@ -132,7 +137,6 @@
 	</div>
 </footer>
 <div class="fade-overlay"></div>
-<script type="text/javascript" src="/assets-dev/scripts/window.bundle.js"></script>
 <script type="text/javascript" src="https://unpkg.com/react@15.6.2/dist/react.min.js" integrity="sha384-ddefOBuuNyTM/Cmow+OyNByTvyFn+WsOZoEeef8i9foAbxVX7H05qiV6kCQBLMaq" crossorigin="anonymous"></script>
 <script type="text/javascript" src="https://unpkg.com/react-dom@15.6.2/dist/react-dom.min.js" integrity="sha384-8azwCFabBTGjDNlgOl3wEErYldnYEYPf7WicitIXomz+TE7mfO+r9NC+uT7zZRs4" crossorigin="anonymous"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.js" integrity="sha384-2SbSbzJpoRtEf9BFT5KZAulTQs1JBK0XiQr38Mh0w8+wH0Ubuam+p5csoi5zCV7T" crossorigin="anonymous"></script>

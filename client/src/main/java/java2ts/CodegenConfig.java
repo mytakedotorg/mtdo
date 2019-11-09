@@ -42,6 +42,8 @@ public class CodegenConfig implements StaticCodegenConfig {
 				TypeLiteral.create(Search.Request.class),
 				TypeLiteral.create(Search.VideoResult.class),
 				TypeLiteral.create(Search.FactResultList.class),
+				TypeLiteral.create(Share.ShareReq.class),
+				TypeLiteral.create(Share.ShareRes.class)
 		};
 	}
 

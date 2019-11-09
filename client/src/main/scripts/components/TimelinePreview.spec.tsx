@@ -1,8 +1,5 @@
 import * as React from "react";
 import { mount, ReactWrapper } from "enzyme";
-import { Foundation } from "../java2ts/Foundation";
-import { FoundationNode } from "../utils/functions";
-import {} from "jest";
 import TimelinePreview from "./TimelinePreview";
 import { documentFactLink, documentNodes } from "../utils/testUtils";
 
@@ -55,22 +52,6 @@ describe("Foundation Document", () => {
     expect(wrapper.find(TimelinePreview).length).toBe(1);
   });
 
-  test("Scrolling header renders", () => {
-    wrapper.setState({ headerHidden: false });
-    expect(wrapper.find(".document__header--visible").length).toBe(1);
-
-    wrapper.setState({ headerHidden: true });
-    expect(wrapper.find(".document__header--visible").length).toBe(0);
-  });
-
-  test("Fixed header renders", () => {
-    wrapper.setState({ headerHidden: false });
-    expect(wrapper.find(".document__header--fixed").length).toBe(0);
-
-    wrapper.setState({ headerHidden: true });
-    expect(wrapper.find(".document__header--fixed").length).toBe(1);
-  });
-
   test("Heading text renders properly", () => {
     expect(
       wrapper
@@ -84,39 +65,18 @@ describe("Foundation Document", () => {
     // Header button is sibling along with h2.document__heading
 
     // On initial render, there is 1 button
-    expect(
-      wrapper
-        .find(".document__header")
-        .first()
-        .childAt(0)
-        .children().length
-    ).toBe(2);
+    expect(wrapper.find(".document__header-actions").children().length).toBe(2);
 
     // When the button, "Clear Selection" is clicked, it is hidden and a paragraph is shown instead
     wrapper
-      .find(".document__header")
-      .first()
-      .childAt(0)
-      .childAt(1)
+      .find(".document__header-actions")
       .childAt(0)
       .simulate("click");
-    expect(
-      wrapper
-        .find(".document__header")
-        .first()
-        .childAt(0)
-        .children().length
-    ).toBe(2);
+    expect(wrapper.find(".document__header-actions").children().length).toBe(1);
 
     // When some more text is highlighted, the "Clear Selection" button is shown again
     wrapper.setState({ textIsHighlighted: true });
-    expect(
-      wrapper
-        .find(".document__header")
-        .first()
-        .childAt(0)
-        .children().length
-    ).toBe(2);
+    expect(wrapper.find(".document__header-actions").children().length).toBe(2);
   });
 
   test("Set text click works for initial highlight", () => {
@@ -135,11 +95,7 @@ describe("Foundation Document", () => {
   test("Clear button works", () => {
     wrapper.setState({ textIsHighlighted: true });
     wrapper
-      .find(".document__header")
-      .children()
-      .at(0)
-      .children()
-      .at(1)
+      .find(".document__header-actions")
       .children()
       .at(0)
       .simulate("click");

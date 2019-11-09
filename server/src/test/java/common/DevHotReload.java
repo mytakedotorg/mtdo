@@ -55,7 +55,7 @@ public class DevHotReload {
 			loader.loadClass("common.DevRockerReload").getMethod("initRockerReload").invoke(null);
 			// use this classloader to load and start the app, using the persistent database
 			Class<?> devClass = loader.loadClass("common.Dev");
-			Jooby dev = (Jooby) devClass.getConstructor(CleanPostgresModule.class).newInstance(postgresModule);
+			Jooby dev = (Jooby) devClass.getMethod("realtime", CleanPostgresModule.class).invoke(null, postgresModule);
 			app.use(dev);
 			if (firstRun) {
 				// on the first run, setup the initial data
@@ -79,7 +79,15 @@ public class DevHotReload {
 		private static final String[] PKGS = new String[]{
 				"com.fizzed.rocker.",
 				"org.jooby.rocker.",
+				"org.jooby.quartz.",
+				"org.jooby.internal.quartz.",
+				"com.jsoniter."
 		};
+
+		IncludingClassLoader() {
+			// needed for Quartz - any classes that define an @Scheduled need their packages defined here
+			super.definePackage("controllers", null, null, null, null, null, null, null);
+		}
 
 		@Override
 		@Nullable
@@ -100,6 +108,10 @@ public class DevHotReload {
 	 */
 	static class ExceptingClassLoader extends DynamicClassLoader {
 		private static final String[] PKGS = new String[]{
+				"compat.",
+				"java2ts.",
+				"jsoniter_codegen.",
+				"org.mytake.lucene.",
 				"auth.",
 				"common.",
 				"controllers.",
@@ -127,8 +139,9 @@ public class DevHotReload {
 	/** Loads from file. */
 	static class DynamicClassLoader extends AggressiveClassLoader {
 		private static File[] DIRS = new File[]{
-				new File("bin/main"),
-				new File("bin/test")
+				new File("bin"),
+				new File("../lucene/bin"),
+				new File("../client/bin")
 		};
 		final Map<File, Long> fileToLastModified = new HashMap<>();
 

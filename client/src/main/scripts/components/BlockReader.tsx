@@ -1,5 +1,4 @@
 import * as React from "react";
-import * as ReactDOM from "react-dom";
 import BlockEditor, { TakeDocument } from "./BlockEditor";
 import ReactionContainer from "./ReactionContainer";
 import { slugify } from "../utils/functions";
@@ -25,7 +24,6 @@ class BlockReader extends React.Component<BlockReaderProps, BlockReaderState> {
   }
   handleClick = (
     factLink: Foundation.FactLink,
-    offset: number,
     highlightedRange: [number, number],
     viewRange: [number, number]
   ) => {

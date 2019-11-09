@@ -1,13 +1,12 @@
 import * as React from "react";
-import * as ReactDOM from "react-dom";
-import { alertErr, CaptionNode, CaptionNodeArr } from "../utils/functions";
+import { alertErr } from "../utils/functions";
+import { CaptionNodeArr } from "../common/CaptionNodes";
 import NumberLineTransform from "../utils/numberLineTransform";
 import { Foundation } from "../java2ts/Foundation";
 import CaptionTextNodeList, {
   CaptionTextNodeListEventHandlers
 } from "./CaptionTextNodeList";
 import { StateAuthority, TimeRange } from "./Video";
-import isEqual = require("lodash/isEqual");
 var bs = require("binary-search");
 
 export interface CaptionTextNodeListContainerEventHandlers {

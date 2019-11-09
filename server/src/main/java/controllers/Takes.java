@@ -10,17 +10,25 @@ import static db.Tables.ACCOUNT;
 import static db.Tables.TAKEPUBLISHED;
 
 import com.google.inject.Binder;
+import com.jsoniter.JsonIterator;
 import com.typesafe.config.Config;
 import common.NotFound;
 import common.Text;
 import db.tables.records.TakepublishedRecord;
+import java.io.UnsupportedEncodingException;
+import java.util.Base64;
+import java2ts.Routes;
+import java2ts.Share;
 import org.jooby.Env;
 import org.jooby.Jooby;
+import org.jooby.Request;
 import org.jooby.internal.RoutePattern;
 import org.jooq.DSLContext;
 
 public class Takes implements Jooby.Module {
 	private static final RoutePattern USER_TITLE = new RoutePattern("GET", "/:user/:title");
+	private static final RoutePattern USER_SHARE = new RoutePattern("GET", "/:user/:title/:urlversion/:base64");
+	private static final RoutePattern ANON_SHARE = new RoutePattern("GET", Routes.ANONYMOUS + "/:title/:urlversion/:base64");
 
 	@Override
 	public void configure(Env env, Config conf, Binder binder) throws Throwable {
@@ -38,13 +46,44 @@ public class Takes implements Jooby.Module {
 				if (take == null) {
 					return NotFound.result();
 				} else {
-					return views.Takes.showTake.template(take);
+					String imageUrl = take.getImageUrl();
+					return views.Takes.showTake.template(take, imageUrl);
 				}
 			}
 		});
+		env.router().get(ANON_SHARE.pattern(), Takes::renderShare);
+		env.router().get(USER_SHARE.pattern(), Takes::renderShare);
+	}
+
+	private static Object renderShare(Request req) throws UnsupportedEncodingException {
+		String titleSlug = req.param("title").value();
+		String base64Str = req.param("base64").value();
+		byte[] decodedBytes = Base64.getDecoder().decode(base64Str);
+		String decodedStr = new String(decodedBytes, "UTF-8");
+		Share.ShareReq shareReq = JsonIterator.deserialize(decodedStr).as(Share.ShareReq.class);
+		String imgPath;
+		if (shareReq.vidId != null) {
+			imgPath = vidImageUrl(titleSlug, shareReq.hStart, shareReq.hEnd);
+		} else if (shareReq.docId != null) {
+			imgPath = docImageUrl(titleSlug, shareReq.hStart, shareReq.hEnd, shareReq.vStart, shareReq.vEnd);
+		} else {
+			throw new IllegalArgumentException("Expected shareReq to have either a docId or a vidId.");
+		}
+		return views.Takes.anonymousTake.template(shareReq.title, imgPath);
 	}
 
 	public static String userTitleSlug(String user, String titleSlug) {
 		return "/" + user + "/" + titleSlug;
+	}
+
+	public static String docImageUrl(String titleSlug, String hStart, String hEnd, String vStart, String vEnd) {
+		if (vStart == null || vEnd == null) {
+			throw new IllegalArgumentException("Expected document to have a view range.");
+		}
+		return "/" + titleSlug + "_" + hStart + "-" + hEnd + "_" + vStart + "-" + vEnd + ".png";
+	}
+
+	public static String vidImageUrl(String titleSlug, String hStart, String hEnd) {
+		return "/" + titleSlug + "_" + hStart + "-" + hEnd + ".png";
 	}
 }

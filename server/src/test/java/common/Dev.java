@@ -27,20 +27,27 @@ import org.jooby.whoops.Whoops;
  * directory for the app that we run in production.
  */
 public class Dev extends Jooby {
-	public Dev() {
-		this(new CleanPostgresModule());
+	public static Dev unitTest() {
+		Dev dev = new Dev(new CleanPostgresModule());
+		dev.use(new DevTime.Module());
+		return dev;
 	}
 
-	/**
-	 * If there's already a running postgres from a previous run,
-	 * we can reuse it by passing it in here.
-	 */
-	public Dev(CleanPostgresModule postgresModule) {
+	public static Dev realtime(CleanPostgresModule postgres) {
+		Dev dev = new Dev(postgres);
+		Prod.realtime(dev);
+		return dev;
+	}
+
+	public static Dev realtime() {
+		return realtime(new CleanPostgresModule());
+	}
+
+	private Dev(CleanPostgresModule postgresModule) {
 		// random and time-dependent results in tests will be repeatable
 		use((env, conf, binder) -> {
 			binder.bind(Random.class).toInstance(new Random(0));
 		});
-		use(new DevTime.Module());
 		use(new GreenMailModule());
 		use(postgresModule);
 		// exit has to come before the "/user" route
@@ -118,12 +125,8 @@ public class Dev extends Jooby {
 	}
 
 	public static void main(String[] args) {
-		Jooby.run(DevWithInitialData.class, args);
-	}
-
-	public static class DevWithInitialData extends Dev {
-		{
-			use(new InitialData.Module());
-		}
+		Dev dev = Dev.realtime();
+		dev.use(new InitialData.Module());
+		Jooby.run(() -> dev, args);
 	}
 }
