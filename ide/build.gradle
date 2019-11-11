@@ -10,7 +10,6 @@ oomphIde {
 
 	addAllProjects()	// we want a project for *everything*
 
-	// https://github.com/palantir/eclipse-typescript
-	repo 'http://eclipse-update.palantir.com/eclipse-typescript/'
-	feature 'com.palantir.typescript.feature'
+	repo 'https://download.eclipse.org/wildwebdeveloper/releases/0.7.1/'
+	feature 'org.eclipse.wildwebdeveloper.feature'
 }

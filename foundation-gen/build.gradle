@@ -43,8 +43,12 @@ eclipseMavenCentral {
 }
 
 eclipse {
-	project { referencedProjects = [ 'mytake-client'
-		] } }
+	project {
+		referencedProjects = [
+			'mytake-client'
+		]
+	}
+}
 
 task generateFoundation(type: JavaExec) {
 	description = 'Generates the foundation'
