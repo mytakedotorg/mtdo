@@ -17,6 +17,8 @@ plugins {
 ////////////////////////////////////////
 apply plugin: 'java'
 apply plugin: 'com.diffplug.gradle.spotless'
+String VER_PRETTIER = '1.13.4'	// this version is old, but newer versions move periods after </a> tag, seems like a bug
+// the bug keeping us on this old version is still present as of 1.19.1: https://github.com/prettier/prettier/blob/master/CHANGELOG.md
 spotless {
 	java {
 		target 'src/main/java/java2ts/**'
@@ -27,18 +29,18 @@ spotless {
 	}
 	format 'scss', {
 		target 'src/main/styles/**/*.scss'
-		prettier().config(['parser': 'css'])
+		prettier(VER_PRETTIER).config(['parser': 'css'])
 	}
 	format 'typescript', {
 		target fileTree('src/main/scripts') {
 			include '**'
 			exclude 'java2ts/**'
 		}
-		prettier().config(['parser': 'typescript'])
+		prettier(VER_PRETTIER).config(['parser': 'typescript'])
 	}
 	format 'js', {
 		target 'gulpfile.js'
-		prettier().config(['parser': 'typescript'])
+		prettier(VER_PRETTIER).config(['parser': 'typescript'])
 	}
 }
 

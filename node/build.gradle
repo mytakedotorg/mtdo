@@ -1,4 +1,5 @@
-plugins { id 'com.moowork.node' // https://github.com/srs/gradle-node-plugin/blob/master/docs/node.md
+plugins {
+	id 'com.moowork.node' // https://github.com/srs/gradle-node-plugin/blob/master/docs/node.md
 }
 
 ////////////////////////////////////////////////////////////

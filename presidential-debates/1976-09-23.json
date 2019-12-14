@@ -1,11 +1,18 @@
 {
-    "fact": {
-        "title": "Presidential Debate - Carter, Ford (1 of 3)",
-        "primaryDate": "1976-09-23",
-        "primaryDateKind": "recorded",
-        "kind": "video"
-    },
-    "youtubeId": "l2SyQ-fptI0",
-    "durationSeconds": 6922,
-    "speakers": []
+  "fact": {
+    "title": "Presidential Debate - Carter, Ford (1 of 3)",
+    "primaryDate": "1976-09-23",
+    "primaryDateKind": "recorded",
+    "kind": "video"
+  },
+  "youtubeId": "l2SyQ-fptI0",
+	"durationSeconds": 6922,
+  "speakers": [
+    {"fullName": "Jimmy E Carter", "role": "Democratic nominee for President"},
+    {"fullName": "Gerald R Ford", "role": "Republican nominee for President"},
+    {"fullName": "Edwin Newman", "role": "Moderator"},
+    {"fullName": "Frank Reynolds", "role": "Panelist"},
+    {"fullName": "James Gannon", "role": "Panelist"},
+    {"fullName": "Elizabeth Drew", "role": "Panelist"}
+  ]
 }
