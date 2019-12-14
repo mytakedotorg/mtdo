@@ -14,7 +14,7 @@ interface MockWindow extends Window {
 
 function getMockWindow() {
   window.scrollTo = jest.fn();
-  return window as unknown as MockWindow;
+  return (window as unknown) as MockWindow;
 }
 
 let mockWindow = getMockWindow();
