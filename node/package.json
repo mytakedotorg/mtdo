@@ -38,7 +38,7 @@
     "http": "0.0.0",
     "jest": "^24.5.0",
     "jest-image-snapshot": "^2.8.1",
-    "morgan": "^1.9.0",
+    "morgan": "^1.9.1",
     "prettier": "^1.14.0",
     "react": "^15.6.2",
     "request": "^2.88.0",
