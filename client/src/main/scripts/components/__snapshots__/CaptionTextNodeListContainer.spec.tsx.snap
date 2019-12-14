@@ -18,7 +18,7 @@ exports[`CaptionTextNodeListContainer 1`] = `
     }
     eventHandlers={
       Object {
-        "onMouseUp": [Function],
+        "onMouseUp": [MockFunction],
         "onScroll": [Function],
       }
     }

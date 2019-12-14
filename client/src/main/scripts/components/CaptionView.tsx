@@ -135,14 +135,20 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
   handleMouseUp = () => {
     if (window.getSelection) {
       // Pre IE9 will always be false
-      const selection: Selection = window.getSelection();
-      if (selection.toString().length) {
+      const selection = window.getSelection();
+      if (selection && selection.toString().length) {
         // Some text is selected
         const range: Range = selection.getRangeAt(0);
 
+        const captionNodesDiv = ReactDOM.findDOMNode(this.captionNodesDiv);
+
+        if (!captionNodesDiv) {
+          throw "Expected captionNodesDiv to be rendered";
+        }
+
         const simpleRanges = getSimpleRangesFromHTMLRange(
           range,
-          ReactDOM.findDOMNode(this.captionNodesDiv).childNodes
+          captionNodesDiv.childNodes
         );
 
         const wordRange = getWordRangeFromCharRange(

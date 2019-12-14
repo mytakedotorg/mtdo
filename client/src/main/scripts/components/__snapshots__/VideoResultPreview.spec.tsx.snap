@@ -12,7 +12,7 @@ exports[`VideoResultPreview containing 1`] = `
     1960-09-26
   </h2>
   <VideoResultTurnList
-    onPlayClick={[Function]}
+    onPlayClick={[MockFunction]}
     searchTerm="richard"
     sortBy="Containing"
     turn={2}
@@ -349,7 +349,7 @@ exports[`VideoResultPreview containing 1`] = `
     }
   />
   <VideoResultTurnList
-    onPlayClick={[Function]}
+    onPlayClick={[MockFunction]}
     searchTerm="richard"
     sortBy="Containing"
     turn={0}

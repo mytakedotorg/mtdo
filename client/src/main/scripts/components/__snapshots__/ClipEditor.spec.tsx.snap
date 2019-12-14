@@ -11,7 +11,7 @@ exports[`ClipEditor with zoomed selection 1`] = `
       end={5224}
       eventHandlers={
         Object {
-          "onAfterRangeChange": [Function],
+          "onAfterRangeChange": [MockFunction],
           "onRangeChange": [Function],
         }
       }
@@ -107,7 +107,7 @@ exports[`ClipEditor with zoomed selection 1`] = `
       end={5.223}
       eventHandlers={
         Object {
-          "onAfterRangeChange": [Function],
+          "onAfterRangeChange": [MockFunction],
           "onRangeChange": [Function],
         }
       }
@@ -235,7 +235,7 @@ exports[`ClipEditor with zoomed selection 1`] = `
               ]
             }
             isDocument={false}
-            onSendToTake={[Function]}
+            onSendToTake={[MockFunction]}
             viewRange={
               Array [
                 3.7470000000000003,
@@ -261,7 +261,7 @@ exports[`ClipEditor with zoomed selection 2`] = `
       end={5224}
       eventHandlers={
         Object {
-          "onAfterRangeChange": [Function],
+          "onAfterRangeChange": [MockFunction],
           "onRangeChange": [Function],
         }
       }
@@ -357,7 +357,7 @@ exports[`ClipEditor with zoomed selection 2`] = `
       end={82}
       eventHandlers={
         Object {
-          "onAfterRangeChange": [Function],
+          "onAfterRangeChange": [MockFunction],
           "onRangeChange": [Function],
         }
       }
@@ -431,7 +431,7 @@ exports[`ClipEditor with zoomed selection 2`] = `
     >
       <button
         className="clipEditor__button clipEditor__button--zoom"
-        onClick={[Function]}
+        onClick={[MockFunction]}
       >
         Zoom to Clip
       </button>
@@ -485,7 +485,7 @@ exports[`ClipEditor with zoomed selection 2`] = `
               ]
             }
             isDocument={false}
-            onSendToTake={[Function]}
+            onSendToTake={[MockFunction]}
             viewRange={
               Array [
                 4,
@@ -511,7 +511,7 @@ exports[`Initial ClipEditor 1`] = `
       end={5224}
       eventHandlers={
         Object {
-          "onAfterRangeChange": [Function],
+          "onAfterRangeChange": [MockFunction],
           "onRangeChange": [Function],
         }
       }

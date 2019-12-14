@@ -9,15 +9,15 @@ exports[`CaptionTextNodeList 1`] = `
     currentTime={0}
     eventHandlers={
       Object {
-        "onAfterRangeChange": [Function],
-        "onClearPress": [Function],
-        "onPlayPausePress": [Function],
-        "onRangeChange": [Function],
-        "onRestartPress": [Function],
-        "onSendToTake": [Function],
-        "onSkipBackPress": [Function],
-        "onSkipForwardPress": [Function],
-        "onZoomToClipPress": [Function],
+        "onAfterRangeChange": [MockFunction],
+        "onClearPress": [MockFunction],
+        "onPlayPausePress": [MockFunction],
+        "onRangeChange": [MockFunction],
+        "onRestartPress": [MockFunction],
+        "onSendToTake": [MockFunction],
+        "onSkipBackPress": [MockFunction],
+        "onSkipForwardPress": [MockFunction],
+        "onZoomToClipPress": [MockFunction],
       }
     }
     isPaused={true}
@@ -130,15 +130,15 @@ exports[`CaptionTextNodeList with highlights from props 1`] = `
     currentTime={5.31}
     eventHandlers={
       Object {
-        "onAfterRangeChange": [Function],
-        "onClearPress": [Function],
-        "onPlayPausePress": [Function],
-        "onRangeChange": [Function],
-        "onRestartPress": [Function],
-        "onSendToTake": [Function],
-        "onSkipBackPress": [Function],
-        "onSkipForwardPress": [Function],
-        "onZoomToClipPress": [Function],
+        "onAfterRangeChange": [MockFunction],
+        "onClearPress": [MockFunction],
+        "onPlayPausePress": [MockFunction],
+        "onRangeChange": [MockFunction],
+        "onRestartPress": [MockFunction],
+        "onSendToTake": [MockFunction],
+        "onSkipBackPress": [MockFunction],
+        "onSkipForwardPress": [MockFunction],
+        "onZoomToClipPress": [MockFunction],
       }
     }
     isPaused={true}

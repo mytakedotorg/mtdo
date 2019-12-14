@@ -6,11 +6,11 @@ exports[`Successfully loaded a Document in view 1`] = `
 >
   <div>
     <TimelineRadioButtons
-      onChange={[Function]}
+      onChange={[MockFunction]}
       selectedOption="Documents"
     />
     <Timeline
-      onItemClick={[Function]}
+      onItemClick={[MockFunction]}
       selectedOption="Documents"
       timelineItems={
         Array [
@@ -58,13 +58,12 @@ exports[`Successfully loaded a Document in view 1`] = `
         "hash": "o_dRqrNJ62wzlgLilTrLxkHqGmvAS9qTpa4z4pjyFqA=",
       }
     }
-    ranges={undefined}
     setFactHandlers={
       Object {
-        "handleDocumentSetClick": [Function],
-        "handleRangeCleared": [Function],
-        "handleRangeSet": [Function],
-        "handleVideoSetClick": [Function],
+        "handleDocumentSetClick": [MockFunction],
+        "handleRangeCleared": [MockFunction],
+        "handleRangeSet": [MockFunction],
+        "handleVideoSetClick": [MockFunction],
       }
     }
   />
@@ -77,11 +76,11 @@ exports[`Successfully loaded a Video in view 1`] = `
 >
   <div>
     <TimelineRadioButtons
-      onChange={[Function]}
+      onChange={[MockFunction]}
       selectedOption="Debates"
     />
     <Timeline
-      onItemClick={[Function]}
+      onItemClick={[MockFunction]}
       selectedOption="Debates"
       timelineItems={
         Array [
@@ -129,13 +128,12 @@ exports[`Successfully loaded a Video in view 1`] = `
         "hash": "iEfwIxM7MmnOKb7zt4HqW8IxUWy6F7a236fSOQlUUWI=",
       }
     }
-    ranges={undefined}
     setFactHandlers={
       Object {
-        "handleDocumentSetClick": [Function],
-        "handleRangeCleared": [Function],
-        "handleRangeSet": [Function],
-        "handleVideoSetClick": [Function],
+        "handleDocumentSetClick": [MockFunction],
+        "handleRangeCleared": [MockFunction],
+        "handleRangeSet": [MockFunction],
+        "handleVideoSetClick": [MockFunction],
       }
     }
   />
@@ -148,11 +146,11 @@ exports[`Successfully loaded view 1`] = `
 >
   <div>
     <TimelineRadioButtons
-      onChange={[Function]}
+      onChange={[MockFunction]}
       selectedOption="Debates"
     />
     <Timeline
-      onItemClick={[Function]}
+      onItemClick={[MockFunction]}
       selectedOption="Debates"
       timelineItems={Array []}
     />

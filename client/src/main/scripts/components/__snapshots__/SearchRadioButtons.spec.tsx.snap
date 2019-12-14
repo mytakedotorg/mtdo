@@ -15,7 +15,7 @@ exports[`SearchRadioButtons BeforeAndAfter 1`] = `
         className="searchradio__radio"
         id="radio--containing"
         name="type"
-        onChange={[Function]}
+        onChange={[MockFunction]}
         type="radio"
         value="Containing"
       />
@@ -34,7 +34,7 @@ exports[`SearchRadioButtons BeforeAndAfter 1`] = `
         className="searchradio__radio"
         id="radio--beforeandafter"
         name="type"
-        onChange={[Function]}
+        onChange={[MockFunction]}
         type="radio"
         value="BeforeAndAfter"
       />
@@ -64,7 +64,7 @@ exports[`SearchRadioButtons Containing 1`] = `
         className="searchradio__radio"
         id="radio--containing"
         name="type"
-        onChange={[Function]}
+        onChange={[MockFunction]}
         type="radio"
         value="Containing"
       />
@@ -83,7 +83,7 @@ exports[`SearchRadioButtons Containing 1`] = `
         className="searchradio__radio"
         id="radio--beforeandafter"
         name="type"
-        onChange={[Function]}
+        onChange={[MockFunction]}
         type="radio"
         value="BeforeAndAfter"
       />
