@@ -9,7 +9,7 @@
 |**1968**|   |         | televised democratic primary between Robert F. Kennedy and Eugene McCarthy |
 |**1972**|   |         | televised democratic primary between George McGovern and Hubert Humphrey   |
 |**1976**| **Jimmy Carter** v Gerald Ford |         |  |
-|Sep 23 | https://www.youtube.com/watch?v=GlPjW_2_LXI | Phil Rodriguez | (one hour in, a capacitor blew and the signal cut out for 27 minutes before coming back) |
+|Sep 23 | [link](https://archive.org/details/CSPAN_20160925_054000_1976_Presidential_Candidates_First_Debate) | C-SPAN | (one hour in, a capacitor blew and the signal cut out for 27 minutes before coming back) |
 |Oct 6  | https://www.youtube.com/watch?v=TjHjU0Eu26Y | The Film Archives | Notes |
 |Oct 22 | https://www.youtube.com/watch?v=CipT04S0bVE | The Film Archives | Notes |
 |**1980**| **Ronald Reagan** v Jimmy Carter |         |  |
