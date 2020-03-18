@@ -3,8 +3,8 @@
 exports[`CaptionTextNodeList 1`] = `
 <div
   className="document__text document__text--caption"
-  onMouseUp={[MockFunction]}
-  onScroll={[MockFunction]}
+  onMouseUp={[Function]}
+  onScroll={[Function]}
 >
   <CaptionTextNode
     documentNode="Good evening I'm Martha Raddatz from ABC News."
