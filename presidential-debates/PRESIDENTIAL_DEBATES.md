@@ -1,15 +1,15 @@
-|Date    |URL|Publisher|Notes|
+|Date    | Sources |Publisher|Notes|
 |--------|---------------------------------------------|-----------------|-------|
 |**1960**| **John F. Kennedy** v Richard Nixon         |                 |       |
 |Sep 26  | https://www.youtube.com/watch?v=Txkwp5AUfCg | Phil Rodriqguez | Notes |
 |Oct 7   | https://www.youtube.com/watch?v=z-4VeDta7Mo | Phil Rodriqguez | Notes |
 |Oct 13  | https://www.youtube.com/watch?v=8SdDhojNT2o | Phil Rodriqguez | Notes |
-|Oct 21  | https://www.youtube.com/watch?v=LN8F1FGZfzA | Phil Rodriqguez | Notes |
+|Oct 21  | [archive.org](https://archive.org/details/CSPAN3_20161030_150000_1960_Presidential_Candidates_Fourth_Debate/), [YT Phil Rodriguez](https://www.youtube.com/watch?v=LN8F1FGZfzA) | C-SPAN | Notes |
 |        |   |         | No television debates again until...                                       |
 |**1968**|   |         | televised democratic primary between Robert F. Kennedy and Eugene McCarthy |
 |**1972**|   |         | televised democratic primary between George McGovern and Hubert Humphrey   |
 |**1976**| **Jimmy Carter** v Gerald Ford |         |  |
-|Sep 23 | [link](https://archive.org/details/CSPAN_20160925_054000_1976_Presidential_Candidates_First_Debate) | C-SPAN | (one hour in, a capacitor blew and the signal cut out for 27 minutes before coming back) |
+|Sep 23 | [archive.org](https://archive.org/details/CSPAN_20160925_054000_1976_Presidential_Candidates_First_Debate), [YT Phil Rodriguez](https://www.youtube.com/watch?v=GlPjW_2_LXI) | C-SPAN | (one hour in, a capacitor blew and the signal cut out for 27 minutes before coming back) |
 |Oct 6  | https://www.youtube.com/watch?v=TjHjU0Eu26Y | The Film Archives | Notes |
 |Oct 22 | https://www.youtube.com/watch?v=CipT04S0bVE | The Film Archives | Notes |
 |**1980**| **Ronald Reagan** v Jimmy Carter |         |  |
@@ -19,7 +19,7 @@
 |Oct 21 | https://www.youtube.com/watch?v=EF73k5-Hiqg | ReaganFoundation | Notes |
 |**1988**| **George H.W. Bush** v Michael Dukakis |         |  |
 |Sep 25 | https://www.youtube.com/watch?v=PbSzCpUyLPc | theSuperMetroid | Notes |
-|Oct 13 | https://www.youtube.com/watch?v=OGpROh7Ia10 | theSuperMetroid | Notes |
+|Oct 13 | [archive.org](https://archive.org/details/CSPAN3_20161009_140000_1988_Presidential_Candidates_Second_Debate), [YT theSuperMetroid](https://www.youtube.com/watch?v=OGpROh7Ia10) | C-SPAN | Behind a podium |
 |**1992**| **Bill Clinton** v George H.W. Bush and Ross Perot |         |  |
 |Oct 11 | https://www.youtube.com/watch?v=XD_cXN9O9ds | sept11vids      | Notes |
 |Oct 15 | https://www.youtube.com/watch?v=m6sUGKAm2YQ | sept11vids      | Notes |
