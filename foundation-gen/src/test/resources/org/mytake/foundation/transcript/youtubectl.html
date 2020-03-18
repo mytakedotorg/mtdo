@@ -1,0 +1,80 @@
+<html><body>
+  <div id="player">...loading</div>
+  <script type="text/javascript">
+    var tag = document.createElement('script');
+  tag.src = "https://www.youtube.com/iframe_api";
+  var firstScriptTag = document.getElementsByTagName('script')[0];
+  firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+  var player;
+  function onYouTubeIframeAPIReady() {
+    player = new YT.Player('player', {
+      height: '390',
+      width: '640',
+      videoId: 'HZ_r26R-cUo',
+      events: {
+        'onReady': onPlayerReady,
+        'onStateChange': onPlayerStateChange
+      }
+    });
+  }
+  var playerIsReady = false;
+  var expectedStartTime;
+  function onPlayerReady(event) {
+    playerIsReady = true;
+  }
+  function onPlayerStateChange(event) { 
+    if (event.data === 0) {
+      // Video ended
+      stopTimer();
+      secondsElapsed = 0;
+    } else if (event.data === 1) {
+      // Video playing
+      console.log("playing");
+      if (player.getCurrentTime() < expectedStartTime) {
+        // seek again
+        console.log("seeking again");
+        player.seekTo(expectedStartTime);
+      }
+      startTimer();
+    } else if (event.data === 2) {
+      // Video paused
+      stopTimer();
+    } else if (event.data === 3) {
+      // Video buffering
+      stopTimer();
+    }
+  }
+  var duration = 0;
+  var play = function(start, end) {
+    expectedStartTime = start;
+    if (playerIsReady) {
+      duration = end - start;
+      if (duration < 1) {
+        duration = 1;
+      }
+      player.seekTo(start);
+      startTimer();
+    } else {
+      alert("player not ready, try again");
+    }
+  }
+  var timerId;
+  var secondsElapsed = -1;
+  function startTimer() {
+    secondsElapsed += 1;
+    if (secondsElapsed >= duration) {
+      stopTimer();
+      player.stopVideo();
+    } else { 
+      timerId = window.setTimeout(startTimer, 1000);
+    }
+  };
+  function stopTimer() {
+    secondsElapsed = -1;
+    if (timerId) {
+      window.clearTimeout(timerId);
+      timerId = null;
+    }
+  };
+  </script>
+  </html></body>

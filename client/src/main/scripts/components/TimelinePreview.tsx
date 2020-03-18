@@ -71,16 +71,9 @@ export default class TimelinePreview extends React.Component<
       offsetTop: 0
     };
   }
-  getThisDocument = (): Element | Text => {
-    const thisDocument = ReactDOM.findDOMNode(this.document);
-    if (!thisDocument) {
-      throw "Expected captionNodesDiv to be rendered";
-    }
-    return thisDocument;
-  };
   getScrollTop = (range?: [number, number]) => {
     // Get the scrollTop value of the top most HTML element containing the same highlighted nodes
-    let theseDOMNodes = this.getThisDocument().childNodes;
+    let theseDOMNodes = ReactDOM.findDOMNode(this.document).childNodes;
 
     let offsetTop = getStartRangeOffsetTop(
       theseDOMNodes,
@@ -101,14 +94,14 @@ export default class TimelinePreview extends React.Component<
   handleMouseUp = () => {
     if (window.getSelection && !this.state.textIsHighlighted) {
       // Pre IE9 will always be false
-      const selection: Selection | null = window.getSelection();
-      if (selection && selection.toString().length) {
+      const selection: Selection = window.getSelection();
+      if (selection.toString().length) {
         //Some text is selected
         const range: Range = selection.getRangeAt(0);
 
         const simpleRanges = getSimpleRangesFromHTMLRange(
           range,
-          this.getThisDocument().childNodes
+          ReactDOM.findDOMNode(this.document).childNodes
         );
         const newNodes = highlightText(
           [...this.document.getDocumentNodes()],
@@ -210,6 +203,7 @@ export default class TimelinePreview extends React.Component<
       );
 
       // Get the scrollTop value of the top most HTML element containing the same highlighted nodes
+      let theseDOMNodes = ReactDOM.findDOMNode(this).childNodes;
       let offsetTop;
       if (nextProps && nextProps.ranges) {
         offsetTop = this.getScrollTop(nextProps.ranges.highlightedRange);

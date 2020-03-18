@@ -30,7 +30,7 @@ exports[`Document component 1`] = `
             },
           ]
         }
-        onMouseUp={[MockFunction]}
+        onMouseUp={[Function]}
       />
     </div>
   </div>
@@ -67,7 +67,7 @@ exports[`Document component with highlights 1`] = `
             },
           ]
         }
-        onMouseUp={[MockFunction]}
+        onMouseUp={[Function]}
       />
       <div
         className="editor__block editor__block--overlay"

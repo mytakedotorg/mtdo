@@ -97,6 +97,12 @@ class VideoLite extends React.Component<VideoLiteProps, VideoLiteState> {
       });
     } else if (event.data === 1) {
       // Video playing
+      if (this.props.clipRange) {
+        const expectedStartTime = this.props.clipRange[0];
+        if (this.player.getCurrentTime() < expectedStartTime) {
+          this.player.seekTo(expectedStartTime);
+        }
+      }
       this.startTimer();
       this.setState({
         currentTime: Math.round(event.target.getCurrentTime()),
