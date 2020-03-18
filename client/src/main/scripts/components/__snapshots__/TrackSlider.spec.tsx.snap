@@ -21,8 +21,8 @@ exports[`Initial render 1`] = `
       }
       eventHandlers={
         Object {
-          "onAfterRangeChange": [MockFunction],
-          "onRangeChange": [MockFunction],
+          "onAfterRangeChange": [Function],
+          "onRangeChange": [Function],
         }
       }
       handleStyle={
@@ -63,8 +63,8 @@ exports[`Initial render 1`] = `
       }
       eventHandlers={
         Object {
-          "onAfterRangeChange": [MockFunction],
-          "onRangeChange": [MockFunction],
+          "onAfterRangeChange": [Function],
+          "onRangeChange": [Function],
         }
       }
       handleStyle={
@@ -126,8 +126,8 @@ exports[`Unzoomed render 1`] = `
       }
       eventHandlers={
         Object {
-          "onAfterRangeChange": [MockFunction],
-          "onRangeChange": [MockFunction],
+          "onAfterRangeChange": [Function],
+          "onRangeChange": [Function],
         }
       }
       handleStyle={
@@ -168,8 +168,8 @@ exports[`Unzoomed render 1`] = `
       }
       eventHandlers={
         Object {
-          "onAfterRangeChange": [MockFunction],
-          "onRangeChange": [MockFunction],
+          "onAfterRangeChange": [Function],
+          "onRangeChange": [Function],
         }
       }
       handleStyle={
@@ -210,8 +210,8 @@ exports[`Unzoomed render 1`] = `
       }
       eventHandlers={
         Object {
-          "onAfterRangeChange": [MockFunction],
-          "onRangeChange": [MockFunction],
+          "onAfterRangeChange": [Function],
+          "onRangeChange": [Function],
         }
       }
       handleStyle={
@@ -273,8 +273,8 @@ exports[`Zoomed render 1`] = `
       }
       eventHandlers={
         Object {
-          "onAfterRangeChange": [MockFunction],
-          "onRangeChange": [MockFunction],
+          "onAfterRangeChange": [Function],
+          "onRangeChange": [Function],
         }
       }
       handleStyle={
@@ -315,8 +315,8 @@ exports[`Zoomed render 1`] = `
       }
       eventHandlers={
         Object {
-          "onAfterRangeChange": [MockFunction],
-          "onRangeChange": [MockFunction],
+          "onAfterRangeChange": [Function],
+          "onRangeChange": [Function],
         }
       }
       handleStyle={
@@ -357,8 +357,8 @@ exports[`Zoomed render 1`] = `
       }
       eventHandlers={
         Object {
-          "onAfterRangeChange": [MockFunction],
-          "onRangeChange": [MockFunction],
+          "onAfterRangeChange": [Function],
+          "onRangeChange": [Function],
         }
       }
       handleStyle={
