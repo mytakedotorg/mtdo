@@ -25,8 +25,9 @@ public class SaidCtl extends ControlWrapper.AroundControl<Composite> {
 
 	public SaidCtl(Composite parent, PublishSubject<Boolean> changed) {
 		super(new Composite(parent, SWT.NONE));
-		Layouts.setGrid(wrapped).margin(0);
+		Layouts.setGrid(wrapped).margin(0).spacing(0);
 
+		Labels.createBold(wrapped, "Said");
 		styled = new Text(wrapped, SWT.MULTI | SWT.BORDER | SWT.V_SCROLL | SWT.WRAP);
 		Layouts.setGridData(styled).grabAll();
 		styled.addListener(SWT.Modify, e -> {

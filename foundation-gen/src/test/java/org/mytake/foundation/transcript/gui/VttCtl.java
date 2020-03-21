@@ -61,7 +61,7 @@ public class VttCtl extends ControlWrapper.AroundControl<Composite> {
 	public VttCtl(Composite parent, YoutubeCtl youtube, PublishSubject<Boolean> changed) {
 		super(new Composite(parent, SWT.NONE));
 		this.changed = changed;
-		Layouts.setGrid(wrapped).margin(0);
+		Layouts.setGrid(wrapped).margin(0).spacing(0);
 
 		Composite tableCmp = new Composite(wrapped, SWT.BORDER);
 		Layouts.setGridData(tableCmp).grabAll();

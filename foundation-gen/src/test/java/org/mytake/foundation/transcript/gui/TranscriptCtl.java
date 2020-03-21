@@ -34,7 +34,12 @@ public class TranscriptCtl extends ControlWrapper.AroundControl<Composite> {
 		Layouts.setGridData(horizontalForm).grabAll();
 		saidCtl = new SaidCtl(horizontalForm, changed);
 
-		SashForm verticalForm = new SashForm(horizontalForm, SWT.VERTICAL);
+		Composite rightSide = new Composite(horizontalForm, SWT.NONE);
+		Layouts.setGrid(rightSide).margin(0).spacing(0);
+		Labels.createBold(rightSide, "Vtt");
+
+		SashForm verticalForm = new SashForm(rightSide, SWT.VERTICAL);
+		Layouts.setGridData(verticalForm).grabAll();
 		youtubeCtl = new YoutubeCtl(verticalForm);
 		vttCtl = new VttCtl(verticalForm, youtubeCtl, changed);
 
