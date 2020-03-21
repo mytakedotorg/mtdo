@@ -28,9 +28,6 @@ public class YoutubeCtl extends ControlWrapper.AroundControl<Composite> {
 		super(new Composite(parent, SWT.NONE));
 		Layouts.setGrid(wrapped).margin(0);
 
-		browser = new Browser(wrapped, SWT.BORDER);
-		Layouts.setGridData(browser).grabAll();
-
 		Composite bottomCmp = new Composite(wrapped, SWT.NONE);
 		Layouts.setGridData(bottomCmp).grabHorizontal();
 		Layouts.setRow(bottomCmp).margin(0);
@@ -48,6 +45,9 @@ public class YoutubeCtl extends ControlWrapper.AroundControl<Composite> {
 		playAgain.addListener(SWT.Selection, e -> {
 			play(start, end);
 		});
+
+		browser = new Browser(wrapped, SWT.BORDER);
+		Layouts.setGridData(browser).grabAll();
 	}
 
 	long setAt = Long.MIN_VALUE;
