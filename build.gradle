@@ -1,6 +1,6 @@
 buildscript { repositories { mavenCentral() }}
 plugins {
-	id 'com.diffplug.gradle.eclipse.resourcefilters' version '3.20.0'
+	id 'com.diffplug.eclipse.resourcefilters' version '3.22.0'
 	id 'com.diffplug.gradle.spotless' version '3.24.3'	// https://github.com/diffplug/spotless/blob/master/plugin-gradle/README.md
 }
 
@@ -34,7 +34,7 @@ allprojects { proj ->
 	buildscript { repositories { mavenCentral() } }
 	apply plugin: 'eclipse'
 	eclipse { project { name = "mytake-$proj.name" } }
-	apply plugin: 'com.diffplug.gradle.eclipse.excludebuildfolder'
+	apply plugin: 'com.diffplug.eclipse.excludebuildfolder'
 	tasks.eclipse.dependsOn(tasks.cleanEclipse)
 }
 
