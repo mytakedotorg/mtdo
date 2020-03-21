@@ -38,7 +38,7 @@ public class TranscriptCtl extends ControlWrapper.AroundControl<Composite> {
 		youtubeCtl = new YoutubeCtl(verticalForm);
 		vttCtl = new VttCtl(verticalForm, youtubeCtl, changed);
 
-		mismatchCtl = new MismatchCtl(wrapped, saidCtl, vttCtl, changed, save);
+		mismatchCtl = new MismatchCtl(wrapped, saidCtl, vttCtl, youtubeCtl, changed, save);
 		Layouts.setGridData(mismatchCtl).grabHorizontal();
 	}
 

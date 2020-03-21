@@ -29,17 +29,20 @@ import org.mytake.foundation.transcript.Word;
 public class MismatchCtl extends ControlWrapper.AroundControl<Composite> {
 	private final SaidCtl saidCtl;
 	private final VttCtl vttCtl;
+	private final YoutubeCtl youtubeCtl;
 
 	private final Button leftBtn, rightBtn;
 	private final Text groupTxt;
+	private final Text plusMinusTxt;
 	private final Label ofGroupLbl;
 	private final Text saidTxt, vttTxt;
 	private final Button takeSaidBtn, takeVttBtn;
 
-	public MismatchCtl(Composite parent, SaidCtl saidCtl, VttCtl vttCtl, PublishSubject<Boolean> saveEnabled, Runnable save) {
+	public MismatchCtl(Composite parent, SaidCtl saidCtl, VttCtl vttCtl, YoutubeCtl youtubeCtl, PublishSubject<Boolean> saveEnabled, Runnable save) {
 		super(new Composite(parent, SWT.NONE));
 		this.saidCtl = saidCtl;
 		this.vttCtl = vttCtl;
+		this.youtubeCtl = youtubeCtl;
 		Layouts.setGrid(wrapped).margin(0).numColumns(4);
 
 		Composite leftCmp = new Composite(wrapped, SWT.NONE);
@@ -57,10 +60,18 @@ public class MismatchCtl extends ControlWrapper.AroundControl<Composite> {
 		ofGroupLbl = new Label(leftCmp, SWT.CENTER);
 		Layouts.setGridData(ofGroupLbl).horizontalSpan(3).grabHorizontal();
 
-		Button highlightBtn = new Button(wrapped, SWT.PUSH | SWT.FLAT);
-		highlightBtn.setText("Highlight");
-		Layouts.setGridData(highlightBtn).grabVertical();
+		Composite playAgainCmp = new Composite(wrapped, SWT.NONE);
+		Layouts.setGrid(playAgainCmp).numColumns(3).margin(0);
+
+		Button highlightBtn = new Button(playAgainCmp, SWT.PUSH | SWT.FLAT);
+		Layouts.setGridData(highlightBtn).horizontalSpan(3).horizontalAlignment(SWT.FILL);
+		highlightBtn.setText("Play again");
 		highlightBtn.addListener(SWT.Selection, e -> setGroup());
+
+		Labels.create(playAgainCmp, "+/-");
+		plusMinusTxt = new Text(playAgainCmp, SWT.SINGLE | SWT.BORDER);
+		plusMinusTxt.setText("1.0");
+		Labels.create(playAgainCmp, "secs");
 
 		Composite rightCmp = new Composite(wrapped, SWT.NONE);
 		Layouts.setGridData(rightCmp).grabAll();
@@ -133,6 +144,7 @@ public class MismatchCtl extends ControlWrapper.AroundControl<Composite> {
 	}
 
 	private void setGroup(int idxOneBased) {
+		youtubeCtl.setPlayAllowed(false);
 		if (idxOneBased < 1) {
 			idxOneBased = 1;
 		} else if (idxOneBased > match.edits().size()) {
@@ -198,6 +210,12 @@ public class MismatchCtl extends ControlWrapper.AroundControl<Composite> {
 				vttCtl.delete(vtt.getLeft());
 			}
 		};
+
+		youtubeCtl.setPlayAllowed(true);
+		double plusMinus = Double.parseDouble(plusMinusTxt.getText());
+		double start = Math.max(0, youtubeCtl.lastStart() - plusMinus);
+		double end = youtubeCtl.lastEnd() + plusMinus;
+		youtubeCtl.play(start, end);
 	}
 
 	private static String toString(Either<?, Integer> either) {
