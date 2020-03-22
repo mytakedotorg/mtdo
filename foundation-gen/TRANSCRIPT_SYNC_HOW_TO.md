@@ -1,5 +1,15 @@
 # How to sync a transcript
 
+When you upload a video to YouTube, YouTube will automatically create a millisecond-accurate transcript of the content.  As of March 2020, you can see this at `studio.youtube.com`:
+
+![How to get transcripts from YouTube](TRANSCRIPT_HOW_TO_youtube.png)
+
+It takes a few hours for this transcript to become available.  So far as I know, there isn't any way to track when it will come.  You can download this transcript, but it comes as an `.sbv` file, not a `.vtt` file.  The `.sbv` file is bad, because it doesn't tell you when each word is said, just each "line".  But if you click the vertical ellipsis, and then `Edit on Classic Studio` then you can click `Actions -> Download -> .vtt`.  The `.vtt` is what you want, because it has timestamps for every single word.  You download it to the [`presidential-debates`](https://github.com/mytakedotorg/mytakedotorg/tree/master/presidential-debates) folder, and then run [`VttCleanup`](https://github.com/mytakedotorg/mytakedotorg/blob/master/foundation-gen/src/test/java/org/mytake/foundation/transcript/VttCleanup.java) to fix up the junk.
+
+The limitation is that this transcript doesn't say who said it, and the words are somewhat inaccurate.  Over at [debates.org](http://debates.org/index.php?page=debate-transcripts) they have good transcripts, but without the millisecond-accurate timestamps.  So we built our own little tool which mushes these together, with the help of a lot of manual labor.
+
+## Recipe
+
 Syncing a video to its transcript has these steps:
 
 1. Open the transcript gui with `gradlew transcriptGui`.

@@ -1,8 +1,7 @@
 buildscript { repositories { mavenCentral() }}
 plugins {
-	id 'com.diffplug.gradle.eclipse.resourcefilters' version '3.18.1'
+	id 'com.diffplug.gradle.eclipse.resourcefilters' version '3.20.0'
 	id 'com.diffplug.gradle.spotless' version '3.24.3'	// https://github.com/diffplug/spotless/blob/master/plugin-gradle/README.md
-	id 'com.github.ben-manes.versions' version '0.20.0'	// https://github.com/ben-manes/gradle-versions-plugin './gradlew dependencyUpdates'
 }
 
 /* Not compatible with Gradle 5: https://github.com/mmalohlava/gradle-visteg/issues/12

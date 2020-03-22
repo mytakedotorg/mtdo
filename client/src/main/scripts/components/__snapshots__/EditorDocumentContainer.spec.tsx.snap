@@ -23,7 +23,10 @@ exports[`Successfully loaded Document 1`] = `
     >
       Amendment 13
     </h2>
-    <div>
+    <div
+      className={undefined}
+      onMouseUp={undefined}
+    >
       <p
         data-char-offset={0}
       >
