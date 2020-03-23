@@ -26,6 +26,7 @@ export interface TimelineItemData {
   start: Date;
   content: string;
   kind: string;
+  element?: HTMLElement;
 }
 
 interface TimelineRange {
@@ -36,67 +37,6 @@ interface TimelineRange {
 export interface TimelineSelectEventHandlerProps {
   items: TimelineItemData["id"][];
   event: Event;
-}
-
-// More complete than vis.TimelineOptions
-interface TimelineOptions {
-  align?: string;
-  autoResize?: boolean;
-  clickToUse?: boolean;
-  configure?: vis.TimelineOptionsConfigureType;
-  dataAttributes?: vis.TimelineOptionsDataAttributesType;
-  editable?: vis.TimelineOptionsEditableType;
-  end?: vis.DateType;
-  format?: any; // TODO
-  groupEditable?: vis.TimelineOptionsGroupEditableType;
-  groupOrder?: vis.TimelineOptionsGroupOrderType;
-  groupOrderSwap?: vis.TimelineOptionsGroupOrderSwapFunction;
-  groupTemplate?(item?: any, element?: any, data?: any): any;
-  height?: vis.HeightWidthType;
-  hiddenDates?: any; // TODO
-  horizontalScroll?: boolean;
-  itemsAlwaysDraggable?: boolean;
-  locale?: string;
-  locales?: any; // TODO
-  moment?(): void; // TODO
-  margin?: vis.TimelineOptionsMarginType;
-  max?: vis.DateType;
-  maxHeight?: vis.HeightWidthType;
-  maxMinorChars?: number;
-  min?: vis.DateType;
-  minHeight?: vis.HeightWidthType;
-  moveable?: boolean;
-  multiselect?: boolean;
-  multiselectPerGroup?: boolean;
-  onAdd?(): void; // TODO
-  onAddGroup?(): void; // TODO
-  onUpdate?(): void; // TODO
-  onMove?(): void; // TODO
-  onMoveGroup?(): void; // TODO
-  onMoving?(): void; // TODO
-  onRemove?(): void; // TODO
-  onRemoveGroup?(): void; // TODO
-  order?(a: TimelineItemData, b: TimelineItemData): number;
-  orientation?: vis.TimelineOptionsOrientationType;
-  rollingMode?: any;
-  selectable?: boolean;
-  showCurrentTime?: boolean;
-  showMajorLabels?: boolean;
-  showMinorLabels?: boolean;
-  stack?: boolean;
-  snap?: vis.TimelineOptionsSnapFunction;
-  start?: vis.DateType;
-  template?(item?: any, element?: any, data?: any): any;
-  throttleRedraw?: number;
-  timeAxis?: vis.TimelineTimeAxisOption;
-  type?: string;
-  tooltipOnItemUpdateTime?: boolean | { template(item: any): any };
-  verticalScroll?: boolean;
-  width?: vis.HeightWidthType;
-  zoomable?: boolean;
-  zoomKey?: string;
-  zoomMax?: number;
-  zoomMin?: number;
 }
 
 interface TimelineProps {
@@ -118,18 +58,12 @@ export default class Timeline extends React.Component<
   initTimeline = () => {
     let container = document.getElementById("mytimeline");
     let range = this.getTimelineRange();
-    let options: TimelineOptions = {
+    let options: vis.TimelineOptions = {
       orientation: "top",
       start: range.start,
       end: range.end,
       order: this.orderBy,
-      template: (item: TimelineItemData, element: HTMLElement) => {
-        if (!item) {
-          return;
-        }
-        ReactDOM.unmountComponentAtNode(element);
-        return ReactDOM.render(<TimelineItem item={item} />, element);
-      },
+      template: this.itemTemplate,
       zoomable: false
     };
     if (container) {
@@ -202,6 +136,24 @@ export default class Timeline extends React.Component<
     (this.timeline.off as any)("select", this.handleClick); //Issue with vis tyings here.
     window.removeEventListener("orientationchange", this.updateRange);
   }
+
+  itemTemplate = (item: TimelineItemData, element: HTMLElement): string => {
+    // https://github.com/almende/vis/issues/3592#issuecomment-359105752
+    if (item != null && item.content != null && item.element != undefined) {
+      return "";
+    }
+    if (item.content == null) {
+      ReactDOM.unmountComponentAtNode(element);
+      const component = <TimelineItem item={item} />;
+
+      ReactDOM.render(component, element, () => {
+        this.timeline.redraw();
+      });
+      item.element = element;
+    }
+    return item.content;
+  };
+
   updateRange() {
     let range = this.getTimelineRange();
     this.timeline.setOptions({
