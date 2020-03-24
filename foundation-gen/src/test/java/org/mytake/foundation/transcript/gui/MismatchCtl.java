@@ -77,13 +77,13 @@ public class MismatchCtl extends ControlWrapper.AroundControl<Composite> {
 		Layouts.setGridData(rightCmp).grabAll();
 		Layouts.setGrid(rightCmp).numColumns(3).margin(0);
 
-		Labels.create(rightCmp, "Said");
+		Labels.create(rightCmp, "Newspaper");
 		takeSaidBtn = new Button(rightCmp, SWT.PUSH | SWT.FLAT);
 		takeSaidBtn.setText("\u2714");
 		saidTxt = new Text(rightCmp, SWT.BORDER | SWT.SINGLE | SWT.READ_ONLY);
 		Layouts.setGridData(saidTxt).grabHorizontal();
 
-		Labels.create(rightCmp, "VTT");
+		Labels.create(rightCmp, "YouTube");
 		takeVttBtn = new Button(rightCmp, SWT.PUSH | SWT.FLAT);
 		takeVttBtn.setText("\u2714");
 		vttTxt = new Text(rightCmp, SWT.BORDER | SWT.SINGLE | SWT.READ_ONLY);
