@@ -56,7 +56,9 @@ dependencies {
 }
 
 // don't setup any of the node stuff if we're just doing the transcriptGui
-if (gradle.startParameter.taskNames == ['transcriptGui']) {
+if (gradle.startParameter.taskNames == [
+	'transcriptGui'
+]) {
 	return
 }
 
