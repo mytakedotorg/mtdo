@@ -68,7 +68,7 @@ public class TranscriptFolderDialog {
 		Composite transcriptCmp = new Composite(top, SWT.NONE);
 		Layouts.setGrid(transcriptCmp).margin(0).numColumns(5);
 
-		Label label = Labels.create(transcriptCmp, "Transcript");
+		Label label = Labels.create(transcriptCmp, "Date");
 		label.setFont(Fonts.systemBold());
 		Layouts.setGridData(label).horizontalIndent(Layouts.defaultMargin());
 		transcriptTxt = new Text(transcriptCmp, SWT.SINGLE | SWT.READ_ONLY | SWT.BORDER);

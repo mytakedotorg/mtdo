@@ -9,7 +9,7 @@ buildscript {
 plugins {
 	id 'com.moowork.node' // https://github.com/srs/gradle-node-plugin/blob/master/docs/node.md
 	id 'com.moowork.gulp' // https://github.com/srs/gradle-node-plugin/blob/master/docs/gulp.md
-	id 'com.diffplug.gradle.eclipse.excludebuildfolder'
+	id 'com.diffplug.eclipse.excludebuildfolder'
 }
 
 ////////////////////////////////////////
@@ -53,6 +53,13 @@ dependencies {
 	compile "org.jsweet:jsweet-core:$JSWEET_CORE_VER"
 	testCompile "junit:junit:$JUNIT_VER"
 	testCompile "org.assertj:assertj-core:$ASSERTJ_VER"
+}
+
+// don't setup any of the node stuff if we're just doing the transcriptGui
+if (gradle.startParameter.taskNames == [
+	'transcriptGui'
+]) {
+	return
 }
 
 // generate typescript for the java in the java2ts folder

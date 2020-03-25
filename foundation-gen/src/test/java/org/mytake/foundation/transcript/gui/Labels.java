@@ -6,6 +6,7 @@
  */
 package org.mytake.foundation.transcript.gui;
 
+import com.diffplug.common.swt.Fonts;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
@@ -26,5 +27,11 @@ public class Labels {
 	/** Creates a label with the given text. */
 	public static Label createHSep(Composite parent) {
 		return new Label(parent, SWT.SEPARATOR | SWT.HORIZONTAL);
+	}
+
+	/** Creates a bold label with the given text. */
+	public static void createBold(Composite parent, String text) {
+		Label lbl = create(parent, text);
+		lbl.setFont(Fonts.systemBold());
 	}
 }
