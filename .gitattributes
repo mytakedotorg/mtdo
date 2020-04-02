@@ -1,5 +1,6 @@
 *.vtt text
 *.speakers text
+*.said text
 * text eol=lf
 *.png binary
 *.jpg binary
