@@ -75,7 +75,7 @@ public class VttCtl extends ControlWrapper.AroundControl<Composite> {
 		time.setHeaderVisible(true);
 		time.setLinesVisible(true);
 		time.setUseHashLookup(true);
-		time.setStyle(SWT.MULTI);
+		time.setStyle(SWT.MULTI | SWT.FULL_SELECTION);
 		viewer = time.buildTable(tableCmp);
 		viewer.setContentProvider(ArrayContentProvider.getInstance());
 		// play on select
