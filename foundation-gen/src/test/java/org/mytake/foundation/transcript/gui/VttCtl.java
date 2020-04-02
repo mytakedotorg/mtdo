@@ -70,7 +70,7 @@ public class VttCtl extends ControlWrapper.AroundControl<Composite> {
 		Layouts.setGridData(bottomCmp).grabHorizontal();
 
 		ColumnViewerFormat<Word.Vtt> time = ColumnViewerFormat.builder();
-		time.addColumn().setText("Time").setLabelProviderText(word -> formatTime(word.time())).setLayoutPixel(6 * SwtMisc.systemFontWidth());
+		time.addColumn().setText("Time").setLabelProviderText(word -> formatTime(word.time())).setLayoutPixel(9 * SwtMisc.systemFontWidth());
 		time.addColumn().setText("Word").setLabelProviderText(word -> word.lowercase()).setLayoutWeight(1);
 		time.setHeaderVisible(true);
 		time.setLinesVisible(true);
