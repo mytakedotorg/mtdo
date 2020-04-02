@@ -14,26 +14,26 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTException;
-import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.widgets.Composite;
 
 public class YoutubeCtl extends ControlWrapper.AroundControl<Composite> {
-	private final Browser browser;
+	private final BrowserShim browser;
 
 	public YoutubeCtl(Composite parent) {
 		super(new Composite(parent, SWT.BORDER));
 		Layouts.setFill(wrapped).margin(0);
-
-		browser = new Browser(wrapped, SWT.NONE);
+		browser = BrowserShim.create(wrapped, SWT.NONE);
 	}
 
 	long setAt = Long.MIN_VALUE;
 
 	public void setToYoutubeId(String youtubeId) {
+		loadBeganAt = System.currentTimeMillis();
 		try {
 			URL url = YoutubeCtl.class.getResource("/org/mytake/foundation/transcript/youtubectl.html");
-			String content = Resources.toString(url, StandardCharsets.UTF_8);
-			browser.setText(content.replace("HZ_r26R-cUo", youtubeId));
+			String tempate = Resources.toString(url, StandardCharsets.UTF_8);
+			String content = tempate.replace("HZ_r26R-cUo", youtubeId);
+			browser.setText(content);
 		} catch (Exception e) {
 			Errors.dialog().accept(e);
 		}
@@ -46,7 +46,7 @@ public class YoutubeCtl extends ControlWrapper.AroundControl<Composite> {
 	public void play(double start, double end) {
 		this.lastStart = start;
 		this.lastEnd = end;
-		if (allowed) {
+		if (allowed && (System.currentTimeMillis() - loadBeganAt > LOAD_MS)) {
 			try {
 				browser.evaluate("play(" + start + ", " + end + ");");
 			} catch (Exception e) {
@@ -58,6 +58,9 @@ public class YoutubeCtl extends ControlWrapper.AroundControl<Composite> {
 			}
 		}
 	}
+
+	private static final long LOAD_MS = 3_000;
+	private long loadBeganAt = Long.MIN_VALUE;
 
 	public void setPlayAllowed(boolean allowed) {
 		this.allowed = allowed;

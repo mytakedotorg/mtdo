@@ -1,6 +1,6 @@
 plugins { id 'net.ltgt.apt-eclipse' version '0.21' }
 
-import com.diffplug.common.swt.os.SwtPlatform
+import com.diffplug.common.swt.os.OS
 
 apply plugin: 'java'
 
@@ -10,6 +10,25 @@ repositories {
 		content { includeGroup 'org.jsweet' }
 	}
 	mavenCentral()
+}
+
+if (OS.getNative().isWindows()) {
+	apply plugin: 'com.diffplug.p2.asmaven'
+	String VER_CEF = '0.4.0.201908130254'
+	String VER_CHROMIUM = '0.10.2.201908130308'
+	p2AsMaven {
+		group 'chromium-swt', {
+			repo 'http://dl.maketechnology.io/chromium-swt/rls/repository'
+			repo 'http://dl.maketechnology.io/chromium-cef/rls/repository'
+			iu "com.make.chromium.cef.win32.win32.x86_64", VER_CEF
+			iu "org.eclipse.swt.chromium", VER_CHROMIUM
+			iu "org.eclipse.swt.chromium.win32.win32.x86_64", VER_CHROMIUM
+		}
+	}
+	sourceSets.test.java.srcDirs = [
+		'src/test/java',
+		'src/test/java-win-only'
+	]
 }
 
 String VER_AUTOVALUE = '1.7'
@@ -29,6 +48,13 @@ dependencies {
 	compile 'com.diffplug.durian:durian-core:1.2.0'
 	compile 'com.diffplug.durian:durian-collect:1.2.0'
 	compile 'com.diffplug.durian:durian-io:1.2.0'
+
+	if (OS.getNative().isWindows()) {
+		compile 'chromium-swt:org.eclipse.swt.chromium:+'
+		compile 'chromium-swt:org.eclipse.swt.chromium.win32.win32.x86_64:+'
+		compile 'chromium-swt:com.make.chromium.cef.win32.win32.x86_64:+'
+	}
+
 	testCompile "junit:junit:$JUNIT_VER"
 	testCompile "org.assertj:assertj-core:$ASSERTJ_VER"
 
@@ -39,9 +65,10 @@ dependencies {
 
 apply plugin: 'com.diffplug.eclipse.mavencentral'
 eclipseMavenCentral {
-	release '4.14.0', {
+	release '4.15.0', {
 		testCompile 'org.eclipse.swt'
 		testCompile 'org.eclipse.jface'
+		testCompile 'org.eclipse.jface.text'
 		useNativesForRunningPlatform()
 	}
 }
