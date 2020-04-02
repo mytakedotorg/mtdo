@@ -57,6 +57,7 @@ public class SaidCtl extends ControlWrapper.AroundControl<Composite> {
 
 	public void select(Point selection) {
 		styled.setSelectedRange(selection.x, selection.y - selection.x);
+		styled.revealRange(selection.x, selection.y - selection.x);
 	}
 
 	public void remove(Point sel) {
