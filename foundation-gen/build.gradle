@@ -68,6 +68,7 @@ eclipseMavenCentral {
 	release '4.15.0', {
 		testCompile 'org.eclipse.swt'
 		testCompile 'org.eclipse.jface'
+		testCompile 'org.eclipse.jface.text'
 		useNativesForRunningPlatform()
 	}
 }

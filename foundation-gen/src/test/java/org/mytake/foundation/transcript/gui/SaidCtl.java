@@ -12,27 +12,27 @@ import io.reactivex.subjects.PublishSubject;
 import java.util.List;
 import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
+import org.eclipse.jface.text.BadLocationException;
+import org.eclipse.jface.text.Document;
+import org.eclipse.jface.text.TextViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Text;
 import org.mytake.foundation.transcript.SaidTranscript;
 import org.mytake.foundation.transcript.Word;
 import org.mytake.foundation.transcript.Word.Vtt;
 
 public class SaidCtl extends ControlWrapper.AroundControl<Composite> {
-	private final Text styled;
+	private final TextViewer styled;
 
 	public SaidCtl(Composite parent, PublishSubject<Boolean> changed) {
 		super(new Composite(parent, SWT.NONE));
 		Layouts.setGrid(wrapped).margin(0).spacing(0);
 
 		Labels.createBold(wrapped, "Newspaper");
-		styled = new Text(wrapped, SWT.MULTI | SWT.BORDER | SWT.V_SCROLL | SWT.WRAP);
-		Layouts.setGridData(styled).grabAll();
-		styled.addListener(SWT.Modify, e -> {
-			changed.onNext(true);
-		});
+		styled = new TextViewer(wrapped, SWT.MULTI | SWT.BORDER | SWT.V_SCROLL | SWT.WRAP);
+		Layouts.setGridData(styled.getControl()).grabAll();
+		styled.setDocument(new SaidDocument());
 	}
 
 	public void setFile(SaidTranscript said) {
@@ -43,11 +43,11 @@ public class SaidCtl extends ControlWrapper.AroundControl<Composite> {
 			builder.append(turn.said());
 			builder.append("\n\n");
 		}
-		styled.setText(builder.toString());
+		styled.getDocument().set(builder.toString());
 	}
 
 	public String getText() {
-		String txt = styled.getText();
+		String txt = styled.getDocument().get();
 		if (txt.endsWith("\n\n")) {
 			return txt.substring(0, txt.length() - 1);
 		} else {
@@ -56,7 +56,7 @@ public class SaidCtl extends ControlWrapper.AroundControl<Composite> {
 	}
 
 	public void select(Point selection) {
-		styled.setSelection(selection);
+		styled.setSelectedRange(selection.x, selection.y - selection.x);
 	}
 
 	public void remove(Point sel) {
@@ -97,11 +97,32 @@ public class SaidCtl extends ControlWrapper.AroundControl<Composite> {
 
 	private void modify(UnaryOperator<String> edit) {
 		int topIndex = styled.getTopIndex();
-		String before = styled.getText();
+		String before = styled.getDocument().get();
 		String after = edit.apply(before);
-		styled.setVisible(false);
-		styled.setText(after);
+		styled.getControl().setVisible(false);
+		styled.getDocument().set(after);
 		styled.setTopIndex(topIndex);
-		styled.setVisible(true);
+		styled.getControl().setVisible(true);
+	}
+
+	/** A document which does not allow windows newlines. */
+	static class SaidDocument extends Document {
+		private static String purgeCR(String text) {
+			if (text.indexOf('\r') == -1) {
+				return text;
+			} else {
+				return text.replace("\r\n", "\n").replace("\r", "\n");
+			}
+		}
+
+		@Override
+		public void replace(int pos, int length, String text) throws BadLocationException {
+			super.replace(pos, length, purgeCR(text));
+		}
+
+		@Override
+		public void set(String text, long modificationStamp) {
+			super.set(purgeCR(text), modificationStamp);
+		}
 	}
 }
