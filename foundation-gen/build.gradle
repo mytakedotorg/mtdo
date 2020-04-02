@@ -14,13 +14,15 @@ repositories {
 
 if (OS.getNative().isWindows()) {
 	apply plugin: 'com.diffplug.p2.asmaven'
+	String VER_CEF = '0.4.0.201908130254'
+	String VER_CHROMIUM = '0.10.2.201908130308'
 	p2AsMaven {
 		group 'chromium-swt', {
 			repo 'http://dl.maketechnology.io/chromium-swt/rls/repository'
 			repo 'http://dl.maketechnology.io/chromium-cef/rls/repository'
-			iu "com.make.chromium.cef.win32.win32.x86_64"
-			iu "org.eclipse.swt.chromium"
-			iu "org.eclipse.swt.chromium.win32.win32.x86_64"
+			iu "com.make.chromium.cef.win32.win32.x86_64", VER_CEF
+			iu "org.eclipse.swt.chromium", VER_CHROMIUM
+			iu "org.eclipse.swt.chromium.win32.win32.x86_64", VER_CHROMIUM
 		}
 	}
 }
