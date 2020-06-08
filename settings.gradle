@@ -6,3 +6,5 @@ include 'ide'
 include 'lucene'
 include 'node'
 include 'presidential-debates'
+
+apply from: new File(settingsDir, 'gradle/buildCacheSettings.gradle')
