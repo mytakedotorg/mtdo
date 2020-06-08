@@ -1,7 +1,7 @@
 buildscript { repositories { mavenCentral() }}
 plugins {
 	id 'com.diffplug.eclipse.resourcefilters' version '3.22.0'
-	id 'com.diffplug.gradle.spotless' version '3.24.3'	// https://github.com/diffplug/spotless/blob/master/plugin-gradle/README.md
+	id 'com.diffplug.gradle.spotless' version '4.3.0'	// https://github.com/diffplug/spotless/blob/master/plugin-gradle/README.md
 }
 
 /* Not compatible with Gradle 5: https://github.com/mmalohlava/gradle-visteg/issues/12
@@ -25,7 +25,6 @@ spotless {
 				'gradle/spotless.eclipseformat.xml',
 				'gradle/spotless.greclipse.properties'
 				)
-		paddedCell()
 	}
 }
 
