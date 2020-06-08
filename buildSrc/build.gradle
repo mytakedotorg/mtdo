@@ -1,11 +1,14 @@
-apply plugin: 'java'
+apply plugin: 'java-library'
 apply plugin: 'eclipse'
 apply plugin: 'java-gradle-plugin'
 
 repositories {
 	maven {
 		url 'https://dl.bintray.com/palantir/releases'
-		content { includeGroup 'com.palantir.docker.compose' }
+		content {
+			includeGroup 'com.palantir.docker.compose'
+			includeGroup 'com.palantir.safe-logging'
+		}
 	}
 	maven {
 		url 'http://repository.jsweet.org/artifactory/libs-release-local'
@@ -18,13 +21,14 @@ dependencies {
 	// https://github.com/srs/gradle-node-plugin
 	compile 'com.moowork.gradle:gradle-node-plugin:1.2.0'
 	// https://github.com/palantir/docker-compose-rule
-	compile 'com.palantir.docker.compose:docker-compose-rule-core:0.33.0'
-	compile 'com.palantir.docker.compose:docker-compose-rule-junit4:0.33.0'
-	compile 'org.postgresql:postgresql:42.2.2'
+	api 'com.palantir.docker.compose:docker-compose-rule-core:1.5.0'
+	api 'com.palantir.docker.compose:docker-compose-rule-junit4:1.5.0'
+	// https://jdbc.postgresql.org/documentation/changelog.html
+	implementation 'org.postgresql:postgresql:42.2.12'
 	// jooq codegen
-	compile 'org.jooq:jooq-codegen:3.10.2'
+	api 'org.jooq:jooq-codegen:3.13.1'
 	// db migration
-	compile 'org.flywaydb:flyway-core:5.0.7'
+	api 'org.flywaydb:flyway-core:6.4.1'
 	// jsweet ts2java
 	compile 'com.jsoniter:jsoniter:0.9.23'
 	compile 'org.jsweet:jsweet-transpiler:2.0.1'
@@ -49,8 +53,8 @@ eclipse { project { name = 'mytake-buildSrc' } }
 gradlePlugin {
 	plugins {
 		flywayJooqEmbeddedPg {
-			id = 'org.mytake.gradle.flywayjooq.embeddedpg'
-			implementationClass = 'org.mytake.gradle.flywayjooq.EmbeddedPgPlugin'
+			id = 'org.mytake.gradle.flywayjooq'
+			implementationClass = 'org.mytake.gradle.flywayjooq.FlywayJooqPlugin'
 		}
 		jsoniterCodegen {
 			id = 'org.mytake.gradle.jsonitercodegen'

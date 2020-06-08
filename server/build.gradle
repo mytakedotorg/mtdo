@@ -32,35 +32,31 @@ spotless {
 ////////////////
 // flywayJooq //
 ////////////////
-apply plugin: 'org.mytake.gradle.flywayjooq.embeddedpg'
-flywayJooqEmbeddedPg {
-	dockerComposeFile = file('src/test/resources/docker-compose.yml')
-	migrations = file('src/main/resources/db/migration')
+apply plugin: 'org.mytake.gradle.flywayjooq'
+flywayJooq {
+	setup.dockerComposeFile = file('src/test/resources/docker-compose.yml')
+	setup.dockerConnectionParams = file('build/pgConnection.properties')
+	setup.flywayMigrations = file('src/main/resources/db/migration')
+	setup.flywaySchemaDump = file('build/schema.sql')
+
 	generator {
 		database.inputSchema = 'public'
 		generate.pojos = true
 		generate.fluentSetters = true
+		generate.javaTimeTypes = false
 		target.packageName = 'db'
-		target.directory = file('src/main/jooq-generated').absolutePath
+		target.directory = 'src/main/jooq-generated'
 	}
 	// https://www.jooq.org/doc/latest/manual/code-generation/custom-data-type-bindings/
-	forcedType {
-		userType = 'java.lang.String'
-		binding = 'db.bindings.PostgresJsonStringBinding'
-		expression = '.*'
-		types = 'jsonb'
-	}
 	forcedType {
 		userType = 'java.lang.String'
 		binding = 'db.bindings.PostgresInetBinding'
 		expression = '.*'
 		types = 'inet'
 	}
-	connectionParams = file('build/pgConnection.properties')
-	schemaDump = file('build/schema.sql')
 }
 // because docker-compose can't start postgres on Heroku
-if (Env.isHeroku()) {
+if (buildsrc.Env.isHeroku()) {
 	tasks.jooq.enabled = false
 }
 
@@ -77,7 +73,7 @@ rockerVersion = '0.22.0'
 rocker {
 	main {
 		// if these change, also change DevHotReload
-		optimize = Env.isHerokuOrCI()
+		optimize = buildsrc.Env.isHerokuOrCI()
 		templateDir = file('src/main/rocker')
 		outputDir = file('src/main/rocker-generated')
 		extendsModelClass = 'common.CustomRockerModel'
@@ -129,15 +125,11 @@ dependencies {
 	compile project(':lucene')
 
 	// jooq (version is set by jooq DSL)
-	compile 'org.jooq:jooq'
-
-	// db connector for postgres
-	compile 'org.postgresql:postgresql:42.2.4'
-	jooqRuntime 'org.postgresql:postgresql:42.2.4'
-
+	implementation 'org.jooq:jooq'
+	// db connector for postgres and h2
+	implementation 'org.postgresql:postgresql:42.2.12'
 	// flyway
-	compile 'org.flywaydb:flyway-core:5.1.4'
-
+	implementation 'org.flywaydb:flyway-core:6.4.1'
 	// common libs
 	compile 'commons-validator:commons-validator:1.6'
 	compile 'com.diffplug.durian:durian-core:1.2.0'
@@ -151,8 +143,8 @@ dependencies {
 	testCompile "org.assertj:assertj-core:$ASSERTJ_VER"
 	testCompile 'io.rest-assured:rest-assured:3.1.0'
 	testCompile 'com.icegreen:greenmail:1.5.7'									// http://www.icegreen.com/greenmail/
-	testCompile 'com.palantir.docker.compose:docker-compose-rule-core:0.34.0'	// https://github.com/palantir/docker-compose-rule
-	testCompile 'com.palantir.docker.compose:docker-compose-rule-junit4:0.34.0'	// https://github.com/palantir/docker-compose-rule
+	testImplementation 'com.palantir.docker.compose:docker-compose-rule-core:1.5.0'	// https://github.com/palantir/docker-compose-rule
+	testImplementation 'com.palantir.docker.compose:docker-compose-rule-junit4:1.5.0'	// https://github.com/palantir/docker-compose-rule
 
 	testCompile "com.fizzed:rocker-compiler:${rockerVersion}"					// required for hotreload
 

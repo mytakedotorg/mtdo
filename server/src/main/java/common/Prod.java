@@ -25,6 +25,7 @@ import javax.sql.DataSource;
 import json.JsoniterModule;
 import org.flywaydb.core.Flyway;
 import org.jooby.Jooby;
+import org.jooby.Registry;
 import org.jooby.jdbc.Jdbc;
 import org.jooby.jooq.jOOQ;
 
@@ -47,16 +48,21 @@ public class Prod extends Jooby {
 		use(new HerokuDatabase.Module());
 		common(this);
 		use((env, conf, binder) -> {
-			env.onStart(registry -> {
-				Flyway flyway = new Flyway();
-				flyway.setDataSource(registry.require(DataSource.class));
-				flyway.setLocations("db/migration");
-				flyway.migrate();
-			});
+			env.onStart(Prod::flywayMigrate);
 		});
 		use(new InitialData.Module());
 		use(new FoundationMigrationModule());
 		controllers(this);
+	}
+
+	static void flywayMigrate(Registry registry) {
+		Flyway.configure()
+				.dataSource(registry.require(DataSource.class))
+				.locations("db/migration")
+				.baselineVersion("1")
+				.baselineOnMigrate(true)
+				.load()
+				.migrate();
 	}
 
 	static void realtime(Jooby jooby) {

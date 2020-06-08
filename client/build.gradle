@@ -150,7 +150,7 @@ processResources.dependsOn([
 	gulp_revProd
 ])
 // on Heroku, we can ignore the dev tasks
-if (Env.isHeroku()) {
+if (buildsrc.Env.isHeroku()) {
 	gulp_stylesDev.enabled = false
 	gulp_scriptsDev.enabled = false
 }
