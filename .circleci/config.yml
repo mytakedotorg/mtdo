@@ -10,7 +10,7 @@ jobs:
       - image: circleci/postgres:10.3-alpine-ram
     working_directory: ~/mytakedotorg
     environment:
-      _JAVA_OPTIONS: "-XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap"
+      _JAVA_OPTIONS: "-Xmx1g"
       GRADLE_OPTS: "-Dorg.gradle.workers.max=2" # and we're only allowed to use 2 vCPUs
     steps:
       - checkout
