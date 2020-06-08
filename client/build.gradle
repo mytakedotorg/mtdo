@@ -4,11 +4,9 @@ buildscript {
 		maven { url "http://repository.jsweet.org/artifactory/plugins-release-local" }
 	}
 	// https://github.com/lgrignon/jsweet-gradle-plugin/blob/master/src/main/java/org/jsweet/gradle/JSweetPluginExtension.java
-	dependencies { classpath 'org.jsweet:jsweet-gradle-plugin:2.0.0-rc1' }
+	dependencies { classpath 'org.jsweet:jsweet-gradle-plugin:2.3.7' }
 }
 plugins {
-	id 'com.moowork.node' // https://github.com/srs/gradle-node-plugin/blob/master/docs/node.md
-	id 'com.moowork.gulp' // https://github.com/srs/gradle-node-plugin/blob/master/docs/gulp.md
 	id 'com.diffplug.eclipse.excludebuildfolder'
 }
 
@@ -79,9 +77,6 @@ tasks.jsweet.doLast { com.diffplug.gradle.FileMisc.flatten(file(JAVA2TS + '/java
 tasks.jsweet.inputs.dir(file('build/classes'))
 tasks.jsweet.outputs.dir(file(JAVA2TS))
 clean { delete JAVA2TS }
-tasks.jsweet.dependsOn.remove('classes') // deprecated in Gradle 6
-tasks.jsweet.dependsOn('compileJava')
-tasks.jsweet.dependsOn('nodeSetup')
 
 //////////////
 // jsoniter //
@@ -92,57 +87,85 @@ jsoniterCodegen { codegenClass = 'java2ts.CodegenConfig' }
 ///////////////////////////////////////////////////////////////////////
 // node stuff - compiles sass and typescript into src/main/resources //
 ///////////////////////////////////////////////////////////////////////
+apply plugin: 'com.diffplug.node'
 node {
-	// node 8.x is needed because of fsevents as of Mar 16 2019, node 10.x does not work
-	version = '8.15.1'
-	npmVersion = '6.4.1'
-	// yarnVersion = '0.16.1'
-	download = true
+	setup.nodeVersion = 'v8.15.1'
+	setup.npmVersion = 'provided'
+
+	check.dependsOn npmRun('test') {
+		dependsOn('jsweet')
+		inputs.dir('src/main/scripts')
+	}
+
+	// every gulp task automatically installs from package-lock.json using 'npm ci'
+	// and adds that and gulpfile.js as input files
+	gulp 'permanent', {
+		inputs.dir('src/main/permanent').withPathSensitivity(PathSensitivity.RELATIVE)
+		outputs.dir('src/main/resources/assets/permanent')
+	}
+	for (t in [
+		'styles',
+		'scripts'
+	]) {
+		final String taskName = t
+		gulp "${taskName}Dev", {
+			dependsOn 'gulp_permanent'
+			inputs.dir("src/main/${taskName}").withPathSensitivity(PathSensitivity.RELATIVE)
+			if (taskName == 'scripts') {
+				inputs.file('tsconfig.json').withPathSensitivity(PathSensitivity.RELATIVE)
+			}
+			outputs.dir("src/main/resources/assets-dev/${taskName}")
+		}
+		gulp "${taskName}Prod", {
+			dependsOn 'gulp_permanent'
+			inputs.dir("src/main/${taskName}").withPathSensitivity(PathSensitivity.RELATIVE)
+			if (taskName == 'scripts') {
+				inputs.file('tsconfig.json').withPathSensitivity(PathSensitivity.RELATIVE)
+			}
+			outputs.dir("src/main/resources/assets/${taskName}")
+
+		}
+	}
+	gulp 'revProd', {
+		dependsOn 'gulp_stylesProd', 'gulp_scriptsProd'
+		inputs.file('src/main/resources/assets/styles/manifest.json').withPathSensitivity(PathSensitivity.RELATIVE)
+		inputs.file('src/main/resources/assets/scripts/manifest.json').withPathSensitivity(PathSensitivity.RELATIVE)
+		outputs.file('src/main/resources/assets/manifest.json')
+	}
+}
+clean {
+	delete 'src/main/resources/assets'
+	delete 'src/main/resources/assets-dev'
 }
 
-gulp_permanent.inputs.dir('src/main/permanent')
-gulp_permanent.inputs.file('gulpfile.js')
-gulp_permanent.outputs.dir('src/main/resources/assets/permanent')
-gulp_permanent.dependsOn('npmInstall')
-
-gulp_stylesDev.inputs.dir('src/main/styles')
-gulp_scriptsDev.inputs.dir('src/main/scripts')
-
-// make the gulp_buildProd have accurate up-to-date checking
-def devProd(taskName) {
-	Task devTask = tasks.getByName("gulp_${taskName}Dev")
-	devTask.inputs.file('gulpfile.js')
-	devTask.inputs.dir("src/main/$taskName")
-	devTask.outputs.dir("src/main/resources/assets-dev/$taskName")
-	devTask.dependsOn(gulp_permanent)
-
-	Task prodTask = tasks.getByName("gulp_${taskName}Prod")
-	prodTask.inputs.file('gulpfile.js')
-	prodTask.inputs.dir("src/main/$taskName")
-	prodTask.outputs.dir("src/main/resources/assets/$taskName")
-	prodTask.dependsOn(gulp_permanent)
-
-	return [
-		devTask,
-		prodTask
-	]
+// make sure that all the gulp tasks are run
+processResources {
+	dependsOn 'gulp_stylesDev', 'gulp_scriptsDev', 'gulp_revProd'
 }
-devProd('styles')
-devProd('scripts').each {
-	it.dependsOn(tasks.jsweet)
-	it.inputs.file('tsconfig.json')
+
+// on Heroku, we can ignore the dev tasks
+if (buildsrc.Env.isHeroku()) {
+	gulp_stylesDev.enabled = false
+	gulp_scriptsDev.enabled = false
 }
-gulp_revProd.dependsOn([
-	gulp_stylesProd,
-	gulp_scriptsProd
-])
-gulp_revProd.outputs.file('src/main/resources/assets/manifest.json')
+gradle.taskGraph.whenReady { taskGraph ->
+	boolean disableProd = false
+	if (taskGraph.hasTask(':server:runDev')) {
+		disableProd = true
+	}
+	if (taskGraph.hasTask(':server:live')) {
+		disableProd = true
+		gulp_scriptsDev.enabled = false
+	}
+	if (disableProd) {
+		gulp_revProd.enabled = false
+		gulp_stylesProd.enabled = false
+		gulp_scriptsProd.enabled = false
+	}
+}
 
 clean { delete 'src/main/resources' }
 
-// check should run all tests
-npm_run_test.dependsOn(tasks.jsweet)
-check.dependsOn(npm_run_test)
 // make sure that all the gulp tasks are run
 processResources.dependsOn([
 	gulp_stylesDev,

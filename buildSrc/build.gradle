@@ -11,6 +11,12 @@ repositories {
 		}
 	}
 	maven {
+		url 'https://jitpack.io'
+		content {
+			includeGroup 'com.github.eirslett.frontend-maven-plugin'
+		}
+	}
+	maven {
 		url 'http://repository.jsweet.org/artifactory/libs-release-local'
 		content { includeGroup 'org.jsweet' }
 	}
@@ -18,8 +24,8 @@ repositories {
 }
 
 dependencies {
-	// https://github.com/srs/gradle-node-plugin
-	compile 'com.moowork.gradle:gradle-node-plugin:1.2.0'
+	// node.js
+	api 'com.github.eirslett.frontend-maven-plugin:frontend-plugin-core:ad1062d382' // JitPack HEAD as of 04/23/2020
 	// https://github.com/palantir/docker-compose-rule
 	api 'com.palantir.docker.compose:docker-compose-rule-core:1.5.0'
 	api 'com.palantir.docker.compose:docker-compose-rule-junit4:1.5.0'
@@ -52,9 +58,13 @@ eclipse { project { name = 'mytake-buildSrc' } }
 
 gradlePlugin {
 	plugins {
-		flywayJooqEmbeddedPg {
+		flywayJooq {
 			id = 'org.mytake.gradle.flywayjooq'
 			implementationClass = 'org.mytake.gradle.flywayjooq.FlywayJooqPlugin'
+		}
+		node {
+			id = 'com.diffplug.node'
+			implementationClass = 'org.mytake.gradle.node.NodePlugin'
 		}
 		jsoniterCodegen {
 			id = 'org.mytake.gradle.jsonitercodegen'
