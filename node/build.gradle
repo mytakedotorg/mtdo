@@ -1,5 +1,6 @@
 plugins {
 	id 'com.moowork.node' // https://github.com/srs/gradle-node-plugin/blob/master/docs/node.md
+	id 'com.diffplug.gradle.spotless'
 }
 
 ////////////////////////////////////////////////////////////
@@ -25,7 +26,7 @@ task beforeCompile(dependsOn: [
 spotless {
 	format 'typescript', {
 		target fileTree('src/main/scripts') {
-			include '**'
+			include '**/*.ts'
 			exclude 'java2ts/**'
 		}
 		prettier().config(['parser': 'typescript'])
@@ -47,4 +48,4 @@ node {
 }
 
 npm_run_test.dependsOn(beforeCompile)
-task check(dependsOn: npm_run_test)
+tasks.check.dependsOn(npm_run_test)
