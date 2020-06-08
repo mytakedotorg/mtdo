@@ -56,7 +56,7 @@ public class HomeFeedBuilder {
 					.fetchOne();
 			card.title = published.getTitle();
 			card.previewBlocks = new int[]{previewBlock1, previewBlock2};
-			card.blocks = JsonIterator.parse(published.getBlocks()).readAny();
+			card.blocks = JsonIterator.parse(published.getBlocks().data()).readAny();
 			cards.add(card);
 			return this;
 		}

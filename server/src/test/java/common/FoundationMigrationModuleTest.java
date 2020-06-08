@@ -58,8 +58,8 @@ public class FoundationMigrationModuleTest {
 
 			Assertions.assertThat(changed).containsExactly(published.getId());
 			String expected = "[{'kind': 'video', 'range': [1, 2], 'videoId': 'iqFs0S6PjvdMBxmS4HKEgbv9fukhg7dfjrVVHPx8mgE='}]".replace('\'', '"');
-			Assertions.assertThat(revision.getBlocks()).isEqualTo(expected);
-			Assertions.assertThat(published.getBlocks()).isEqualTo(expected);
+			Assertions.assertThat(revision.getBlocks().data()).isEqualTo(expected);
+			Assertions.assertThat(published.getBlocks().data()).isEqualTo(expected);
 		}
 	}
 

@@ -2,8 +2,9 @@
 New draft -> Strings are null, ids are meaningless
 Existing draft -> Strings are not-null, all ids are meaningful
 *@
+@import org.jooq.JSONB
 
-@args(String title, String blocksJson, int draftid, int lastrevid)
+@args(String title, JSONB blocksJson, int draftid, int lastrevid)
 
 @views.naked.template("MyTake.org", "Your bicycle for politics", "react", "") -> {
 <div id="app"></div>
@@ -17,7 +18,7 @@ window.mytake = {
 var blockWriterState = {
 	takeDocument: {
 	title: "@raw(title)",
-	blocks: @raw(blocksJson)
+	blocks: @raw(blocksJson.data())
 	},
 	activeBlockIndex: 1,
 	parentRev: {
