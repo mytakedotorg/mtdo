@@ -8,6 +8,7 @@ jobs:
     docker:
       - image: nedtwigg/testrunner:1.2.0
       - image: circleci/postgres:10.3-alpine-ram
+    working_directory: ~/mytakedotorg
     environment:
       _JAVA_OPTIONS: "-XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap"
       GRADLE_OPTS: "-Dorg.gradle.workers.max=2" # and we're only allowed to use 2 vCPUs
