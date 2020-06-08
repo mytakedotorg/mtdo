@@ -102,6 +102,8 @@ node {
 	gulp 'permanent', {
 		inputs.dir('src/main/permanent').withPathSensitivity(PathSensitivity.RELATIVE)
 		outputs.dir('src/main/resources/assets/permanent')
+		// technically it's that scriptsDev and scriptsProd depend on jsweet, but it's easier to put it here
+		dependsOn('jsweet')
 	}
 	for (t in [
 		'styles',
