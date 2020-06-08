@@ -137,6 +137,7 @@ public class SetupCleanupDockerFlyway implements Serializable {
 				ip = dockerPort.getIp();
 				port = dockerPort.getExternalPort();
 			}
+			Files.createParentDirs(key.dockerConnectionParams);
 			Files.asCharSink(key.dockerConnectionParams, StandardCharsets.UTF_8).write("host=" + ip + "\nport=" + port);
 
 			// run flyway
