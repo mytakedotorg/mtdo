@@ -20,8 +20,8 @@ jobs:
       - restore_cache:
           key: gradle-deps-{{ checksum "settings.gradle" }}-{{ checksum "buildSrc/build.gradle" }}-{{ checksum "gradle.properties" }}-{{ checksum "client/package-lock.json" }}-{{ checksum "server/build.gradle" }}-{{ checksum "foundation-gen/build.gradle" }}
       - run:
-          name: 'gradlew assemble'
-          command: './gradlew assemble --stacktrace --info'
+          name: 'gradlew check'
+          command: './gradlew check --stacktrace --info'
       - save_cache:
           key: gradle-deps-{{ checksum "settings.gradle" }}-{{ checksum "buildSrc/build.gradle" }}-{{ checksum "gradle.properties" }}-{{ checksum "client/package-lock.json" }}-{{ checksum "server/build.gradle" }}-{{ checksum "foundation-gen/build.gradle" }}
           paths:
