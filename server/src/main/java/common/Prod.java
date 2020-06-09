@@ -46,7 +46,9 @@ public class Prod extends Jooby {
 		});
 		realtime(this);
 		use(new HerokuDatabase.Module());
-		common(this);
+		EmailSender.init(this);
+		commonNoDb(this);
+		commonDb(this);
 		use((env, conf, binder) -> {
 			env.onStart(Prod::flywayMigrate);
 		});
@@ -71,14 +73,17 @@ public class Prod extends Jooby {
 		});
 	}
 
-	static void common(Jooby jooby) {
+	static void commonNoDb(Jooby jooby) {
 		jooby.use(new IpGetter.Module());
 		CustomAssets.initTemplates(jooby);
 		EmailSender.init(jooby);
 		Mods.init(jooby);
+		jooby.use(new JsoniterModule());
+	}
+
+	static void commonDb(Jooby jooby) {
 		jooby.use(new Jdbc());
 		jooby.use(new jOOQ());
-		jooby.use(new JsoniterModule());
 	}
 
 	static void controllers(Jooby jooby) {
