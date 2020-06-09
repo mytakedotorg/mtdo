@@ -12,7 +12,7 @@
   "scripts": {
     "clean": "gulp clean",
     "deploy": "gulp buildProd",
-    "test": "jest"
+    "test": "jest --maxWorkers=2"
   },
   "author": "",
   "license": "GPL-2.0",
