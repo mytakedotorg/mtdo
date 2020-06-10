@@ -112,7 +112,7 @@ dependencies {
 	testImplementation "org.jooby:jooby-whoops:$JOOBY_VER"
 
 	// json
-	implementation "com.jsoniter:jsoniter:$JSONITER_VER"
+	implementation "com.jsoniter:jsoniter:$VER_JSONITER"
 	implementation project(':client')
 	implementation project(':foundation')
 	implementation project(':lucene')
@@ -135,8 +135,8 @@ dependencies {
 	testImplementation "org.assertj:assertj-core:$ASSERTJ_VER"
 	testImplementation 'io.rest-assured:rest-assured:3.1.0'
 	testImplementation 'com.icegreen:greenmail:1.5.7'									// http://www.icegreen.com/greenmail/
-	testImplementation 'com.palantir.docker.compose:docker-compose-rule-core:1.5.0'		// https://github.com/palantir/docker-compose-rule
-	testImplementation 'com.palantir.docker.compose:docker-compose-rule-junit4:1.5.0'	// https://github.com/palantir/docker-compose-rule
+	testImplementation "com.palantir.docker.compose:docker-compose-rule-core:$VER_PALANTIR_DOCKER_COMPOSE"		// https://github.com/palantir/docker-compose-rule
+	testImplementation "com.palantir.docker.compose:docker-compose-rule-junit4:$VER_PALANTIR_DOCKER_COMPOSE"	// https://github.com/palantir/docker-compose-rule
 
 	testImplementation "com.fizzed:rocker-compiler:${rockerVersion}"					// required for hotreload
 

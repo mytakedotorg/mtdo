@@ -23,12 +23,17 @@ repositories {
 	maven { url 'https://plugins.gradle.org/m2/' }
 }
 
+Properties props = new Properties()
+new File('gradle.properties').withInputStream {
+	props.load(it)
+}
+
 dependencies {
 	// node.js
 	api 'com.github.eirslett.frontend-maven-plugin:frontend-plugin-core:ad1062d382' // JitPack HEAD as of 04/23/2020
 	// https://github.com/palantir/docker-compose-rule
-	api 'com.palantir.docker.compose:docker-compose-rule-core:1.5.0'
-	api 'com.palantir.docker.compose:docker-compose-rule-junit4:1.5.0'
+	api "com.palantir.docker.compose:docker-compose-rule-core:${props.VER_PALANTIR_DOCKER_COMPOSE}"
+	api "com.palantir.docker.compose:docker-compose-rule-junit4:${props.VER_PALANTIR_DOCKER_COMPOSE}"
 	// https://jdbc.postgresql.org/documentation/changelog.html
 	implementation 'org.postgresql:postgresql:42.2.12'
 	// jooq codegen
@@ -36,7 +41,7 @@ dependencies {
 	// db migration
 	api 'org.flywaydb:flyway-core:6.4.1'
 	// jsweet ts2java
-	implementation 'com.jsoniter:jsoniter:0.9.23'
+	implementation "com.jsoniter:jsoniter:${props.VER_JSONITER}"
 	implementation 'org.jsweet:jsweet-transpiler:2.0.1'
 	implementation files("${System.properties['java.home']}/../lib/tools.jar")
 	// java8 utilities

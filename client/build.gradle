@@ -54,7 +54,7 @@ spotless {
 }
 
 dependencies {
-	api "com.jsoniter:jsoniter:$JSONITER_VER"
+	api "com.jsoniter:jsoniter:$VER_JSONITER"
 	api "org.jsweet:jsweet-core:$JSWEET_CORE_VER"
 	testImplementation "junit:junit:$JUNIT_VER"
 	testImplementation "org.assertj:assertj-core:$ASSERTJ_VER"
