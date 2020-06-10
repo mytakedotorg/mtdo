@@ -35,7 +35,7 @@ dependencies {
 	api "com.palantir.docker.compose:docker-compose-rule-core:${props.VER_PALANTIR_DOCKER_COMPOSE}"
 	api "com.palantir.docker.compose:docker-compose-rule-junit4:${props.VER_PALANTIR_DOCKER_COMPOSE}"
 	// https://jdbc.postgresql.org/documentation/changelog.html
-	implementation 'org.postgresql:postgresql:42.2.12'
+	implementation "org.postgresql:postgresql:${props.VER_POSTGRESQL_DRIVER}"
 	// jooq codegen
 	api 'org.jooq:jooq-codegen:3.13.1'
 	// db migration

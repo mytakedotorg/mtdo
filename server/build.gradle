@@ -120,7 +120,7 @@ dependencies {
 	// jooq (version is set by jooq DSL)
 	implementation 'org.jooq:jooq'
 	// db connector for postgres and h2
-	implementation 'org.postgresql:postgresql:42.2.12'
+	implementation "org.postgresql:postgresql:${VER_POSTGRESQL_DRIVER}"
 	// flyway
 	implementation "org.flywaydb:flyway-core:${VER_FLYWAY}"
 	// common libs
