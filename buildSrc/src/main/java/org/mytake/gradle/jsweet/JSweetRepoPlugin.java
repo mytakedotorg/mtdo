@@ -5,7 +5,7 @@ import org.gradle.api.Project;
 import org.gradle.api.artifacts.dsl.RepositoryHandler;
 
 /** Customize the jsweet transpilation process. */
-public class JsweetRepoPlugin implements Plugin<Project> {
+public class JSweetRepoPlugin implements Plugin<Project> {
 	@Override
 	public void apply(Project project) {
 		RepositoryHandler handler = project.getRepositories();

@@ -77,7 +77,7 @@ gradlePlugin {
 		}
 		jsweetRepo {
 			id = 'org.mytake.gradle.jsweetrepo'
-			implementationClass = 'org.mytake.gradle.jsweet.JsweetRepoPlugin'
+			implementationClass = 'org.mytake.gradle.jsweet.JSweetRepoPlugin'
 		}
 	}
 }
