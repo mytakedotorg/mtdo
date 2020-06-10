@@ -109,20 +109,20 @@ repositories {
 dependencies {
 	String JOOBY_VER = '1.5.0'
 	// jooby
-	compile "org.jooby:jooby-netty:$JOOBY_VER"
-	compile "org.jooby:jooby-rocker:$JOOBY_VER"
-	compile "org.jooby:jooby-jooq:$JOOBY_VER"
-	compile "org.jooby:jooby-commons-email:$JOOBY_VER"
-	compile "org.jooby:jooby-assets:$JOOBY_VER"
-	compile "org.jooby:jooby-quartz:$JOOBY_VER"
-	testCompile "org.jooby:jooby-whoops:$JOOBY_VER"
+	implementation "org.jooby:jooby-netty:$JOOBY_VER"
+	implementation "org.jooby:jooby-rocker:$JOOBY_VER"
+	implementation "org.jooby:jooby-jooq:$JOOBY_VER"
+	implementation "org.jooby:jooby-commons-email:$JOOBY_VER"
+	implementation "org.jooby:jooby-assets:$JOOBY_VER"
+	implementation "org.jooby:jooby-quartz:$JOOBY_VER"
+	testImplementation "org.jooby:jooby-whoops:$JOOBY_VER"
 
 	// json
-	compile "com.jsoniter:jsoniter:$JSONITER_VER"
-	compile "org.jsweet:jsweet-core:$JSWEET_CORE_VER"
-	compile project(':client')
-	compile project(':foundation')
-	compile project(':lucene')
+	implementation "com.jsoniter:jsoniter:$JSONITER_VER"
+	implementation "org.jsweet:jsweet-core:$JSWEET_CORE_VER"
+	implementation project(':client')
+	implementation project(':foundation')
+	implementation project(':lucene')
 
 	// jooq (version is set by jooq DSL)
 	implementation 'org.jooq:jooq'
@@ -131,25 +131,25 @@ dependencies {
 	// flyway
 	implementation 'org.flywaydb:flyway-core:6.4.1'
 	// common libs
-	compile 'commons-validator:commons-validator:1.6'
-	compile 'com.diffplug.durian:durian-core:1.2.0'
+	implementation 'commons-validator:commons-validator:1.6'
+	implementation 'com.diffplug.durian:durian-core:1.2.0'
 
 	// code quality annotations, especially @Nullable
-	compileOnly 'com.google.code.findbugs:jsr305:3.0.2'
-	compileOnly 'com.google.errorprone:error_prone_annotations:2.3.1'
+	annotationProcessor 'com.google.code.findbugs:jsr305:3.0.2'
+	annotationProcessor 'com.google.errorprone:error_prone_annotations:2.3.1'
 	errorprone 'com.google.errorprone:error_prone_core:2.3.1'
 
-	testCompile "junit:junit:$JUNIT_VER"
-	testCompile "org.assertj:assertj-core:$ASSERTJ_VER"
-	testCompile 'io.rest-assured:rest-assured:3.1.0'
-	testCompile 'com.icegreen:greenmail:1.5.7'									// http://www.icegreen.com/greenmail/
-	testImplementation 'com.palantir.docker.compose:docker-compose-rule-core:1.5.0'	// https://github.com/palantir/docker-compose-rule
+	testImplementation "junit:junit:$JUNIT_VER"
+	testImplementation "org.assertj:assertj-core:$ASSERTJ_VER"
+	testImplementation 'io.rest-assured:rest-assured:3.1.0'
+	testImplementation 'com.icegreen:greenmail:1.5.7'									// http://www.icegreen.com/greenmail/
+	testImplementation 'com.palantir.docker.compose:docker-compose-rule-core:1.5.0'		// https://github.com/palantir/docker-compose-rule
 	testImplementation 'com.palantir.docker.compose:docker-compose-rule-junit4:1.5.0'	// https://github.com/palantir/docker-compose-rule
 
-	testCompile "com.fizzed:rocker-compiler:${rockerVersion}"					// required for hotreload
+	testImplementation "com.fizzed:rocker-compiler:${rockerVersion}"					// required for hotreload
 
 	// dep for auth
-	compile 'com.auth0:java-jwt:3.4.0'
+	implementation 'com.auth0:java-jwt:3.4.0'
 }
 sourceSets {
 	test.compileClasspath += configurations.compileOnly

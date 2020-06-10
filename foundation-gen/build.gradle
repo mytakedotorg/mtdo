@@ -31,7 +31,7 @@ if (OS.getNative().isWindows()) {
 	]
 }
 
-String VER_AUTOVALUE = '1.7'
+String VER_AUTOVALUE = '1.7.2'
 dependencies {
 	annotationProcessor     "com.google.auto.value:auto-value:${VER_AUTOVALUE}"
 	implementation          "com.google.auto.value:auto-value-annotations:${VER_AUTOVALUE}"
@@ -39,36 +39,35 @@ dependencies {
 	testImplementation      "com.google.auto.value:auto-value-annotations:${VER_AUTOVALUE}"
 
 	compileOnly 'com.google.code.findbugs:jsr305:3.0.2'
-	compile project(':client')
-	compile project(':lucene')
-	compile "com.jsoniter:jsoniter:$JSONITER_VER"
-	compile "org.jsweet:jsweet-core:$JSWEET_CORE_VER"
-	compile 'org.jsoup:jsoup:1.11.3'
-	compile 'org.eclipse.jgit:org.eclipse.jgit:5.0.1.201806211838-r'
-	compile 'com.diffplug.durian:durian-core:1.2.0'
-	compile 'com.diffplug.durian:durian-collect:1.2.0'
-	compile 'com.diffplug.durian:durian-io:1.2.0'
+	implementation project(':client')
+	implementation project(':lucene')
+	implementation "com.jsoniter:jsoniter:$JSONITER_VER"
+	implementation "org.jsweet:jsweet-core:$JSWEET_CORE_VER"
+	implementation 'org.jsoup:jsoup:1.11.3'
+	implementation 'org.eclipse.jgit:org.eclipse.jgit:5.0.1.201806211838-r'
+	implementation 'com.diffplug.durian:durian-core:1.2.0'
+	implementation 'com.diffplug.durian:durian-collect:1.2.0'
+	implementation 'com.diffplug.durian:durian-io:1.2.0'
 
 	if (OS.getNative().isWindows()) {
-		compile 'chromium-swt:org.eclipse.swt.chromium:+'
-		compile 'chromium-swt:org.eclipse.swt.chromium.win32.win32.x86_64:+'
-		compile 'chromium-swt:com.make.chromium.cef.win32.win32.x86_64:+'
+		implementation 'chromium-swt:org.eclipse.swt.chromium:+'
+		implementation 'chromium-swt:org.eclipse.swt.chromium.win32.win32.x86_64:+'
+		implementation 'chromium-swt:com.make.chromium.cef.win32.win32.x86_64:+'
 	}
 
-	testCompile "junit:junit:$JUNIT_VER"
-	testCompile "org.assertj:assertj-core:$ASSERTJ_VER"
-
-	testCompile 'com.diffplug.durian:durian-swt:3.1.0'
-	testCompile 'com.diffplug.durian:durian-rx:3.0.0'
-	testCompile 'io.reactivex.rxjava2:rxjava:2.2.7'
+	testImplementation "junit:junit:$JUNIT_VER"
+	testImplementation "org.assertj:assertj-core:$ASSERTJ_VER"
+	testImplementation 'com.diffplug.durian:durian-swt:3.1.0'
+	testImplementation 'com.diffplug.durian:durian-rx:3.0.0'
+	testImplementation 'io.reactivex.rxjava2:rxjava:2.2.7'
 }
 
 apply plugin: 'com.diffplug.eclipse.mavencentral'
 eclipseMavenCentral {
 	release '4.15.0', {
-		testCompile 'org.eclipse.swt'
-		testCompile 'org.eclipse.jface'
-		testCompile 'org.eclipse.jface.text'
+		testImplementation 'org.eclipse.swt'
+		testImplementation 'org.eclipse.jface'
+		testImplementation 'org.eclipse.jface.text'
 		useNativesForRunningPlatform()
 	}
 }
