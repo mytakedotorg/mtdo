@@ -93,18 +93,13 @@ tasks.eclipse.dependsOn([
 ])
 
 repositories {
-	mavenCentral()
-	maven { url 'https://dl.bintray.com/palantir/releases' }
 	maven {
-		url "http://repository.jsweet.org/artifactory/libs-release-local"
-		allowInsecureProtocol true
+		url 'https://dl.bintray.com/palantir/releases'
 		content {
-			includeGroup 'org.jsweet'
-			includeGroup 'org.jsweet.ext'
+			includeGroupByRegex 'com\\.palantir\\..*'
 		}
 	}
 }
-
 dependencies {
 	String JOOBY_VER = '1.5.0'
 	// jooby
@@ -118,7 +113,6 @@ dependencies {
 
 	// json
 	implementation "com.jsoniter:jsoniter:$JSONITER_VER"
-	implementation "org.jsweet:jsweet-core:$JSWEET_CORE_VER"
 	implementation project(':client')
 	implementation project(':foundation')
 	implementation project(':lucene')

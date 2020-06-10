@@ -24,7 +24,7 @@ plugins {
 ////////////////////////////////////////
 // java - gets compiled to typescript //
 ////////////////////////////////////////
-apply plugin: 'java'
+apply plugin: 'java-library'
 apply plugin: 'com.diffplug.gradle.spotless'
 String VER_PRETTIER = '1.13.4'	// this version is old, but newer versions move periods after </a> tag, seems like a bug
 // the bug keeping us on this old version is still present as of 1.19.1: https://github.com/prettier/prettier/blob/master/CHANGELOG.md
@@ -53,20 +53,9 @@ spotless {
 	}
 }
 
-repositories {
-	mavenCentral()
-	maven {
-		url "http://repository.jsweet.org/artifactory/libs-release-local"
-		allowInsecureProtocol true
-		content {
-			includeGroup 'org.jsweet'
-			includeGroup 'org.jsweet.ext'
-		}
-	}
-}
 dependencies {
-	implementation "com.jsoniter:jsoniter:$JSONITER_VER"
-	implementation "org.jsweet:jsweet-core:$JSWEET_CORE_VER"
+	api "com.jsoniter:jsoniter:$JSONITER_VER"
+	api "org.jsweet:jsweet-core:$JSWEET_CORE_VER"
 	testImplementation "junit:junit:$JUNIT_VER"
 	testImplementation "org.assertj:assertj-core:$ASSERTJ_VER"
 }

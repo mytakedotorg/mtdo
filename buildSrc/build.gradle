@@ -6,8 +6,7 @@ repositories {
 	maven {
 		url 'https://dl.bintray.com/palantir/releases'
 		content {
-			includeGroup 'com.palantir.docker.compose'
-			includeGroup 'com.palantir.safe-logging'
+			includeGroupByRegex 'com\\.palantir\\..*'
 		}
 	}
 	maven {
@@ -70,6 +69,10 @@ gradlePlugin {
 		jsoniterCodegen {
 			id = 'org.mytake.gradle.jsonitercodegen'
 			implementationClass = 'org.mytake.gradle.jsonitercodegen.JsoniterCodegenPlugin'
+		}
+		jsweetRepo {
+			id = 'org.mytake.gradle.jsweetrepo'
+			implementationClass = 'org.mytake.gradle.jsweet.JsweetRepoPlugin'
 		}
 	}
 }

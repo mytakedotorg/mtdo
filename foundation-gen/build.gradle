@@ -3,19 +3,6 @@ plugins { id 'com.diffplug.eclipse.apt' }
 import com.diffplug.common.swt.os.OS
 
 apply plugin: 'java'
-
-repositories {
-	maven {
-		url "http://repository.jsweet.org/artifactory/libs-release-local"
-		allowInsecureProtocol true
-		content {
-			includeGroup 'org.jsweet'
-			includeGroup 'org.jsweet.ext'
-		}
-	}
-	mavenCentral()
-}
-
 if (OS.getNative().isWindows()) {
 	apply plugin: 'com.diffplug.p2.asmaven'
 	String VER_CEF = '0.4.0.201908130254'
@@ -46,7 +33,6 @@ dependencies {
 	implementation project(':client')
 	implementation project(':lucene')
 	implementation "com.jsoniter:jsoniter:$JSONITER_VER"
-	implementation "org.jsweet:jsweet-core:$JSWEET_CORE_VER"
 	implementation 'org.jsoup:jsoup:1.11.3'
 	implementation 'org.eclipse.jgit:org.eclipse.jgit:5.0.1.201806211838-r'
 	implementation 'com.diffplug.durian:durian-core:1.2.0'

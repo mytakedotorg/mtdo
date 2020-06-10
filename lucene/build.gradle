@@ -1,16 +1,5 @@
 apply plugin: 'java'
 
-repositories {
-	mavenCentral()
-	maven {
-		url "http://repository.jsweet.org/artifactory/libs-release-local"
-		allowInsecureProtocol true
-		content {
-			includeGroup 'org.jsweet'
-			includeGroup 'org.jsweet.ext'
-		}
-	}
-}
 dependencies {
 	implementation project(':client')
 	implementation 'com.diffplug.durian:durian-core:1.2.0'
