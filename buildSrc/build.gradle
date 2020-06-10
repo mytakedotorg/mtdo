@@ -64,7 +64,7 @@ gradlePlugin {
 			implementationClass = 'org.mytake.gradle.flywayjooq.FlywayJooqPlugin'
 		}
 		node {
-			id = 'com.diffplug.node'
+			id = 'org.mytake.gradle.node'
 			implementationClass = 'org.mytake.gradle.node.NodePlugin'
 		}
 		jsoniterCodegen {

@@ -105,7 +105,7 @@ jsoniterCodegen { codegenClass = 'java2ts.CodegenConfig' }
 ///////////////////////////////////////////////////////////////////////
 // node stuff - compiles sass and typescript into src/main/resources //
 ///////////////////////////////////////////////////////////////////////
-apply plugin: 'com.diffplug.node'
+apply plugin: 'org.mytake.gradle.node'
 node {
 	setup.nodeVersion = 'v8.15.1'
 	setup.npmVersion = 'provided'

@@ -36,7 +36,7 @@ spotless {
 /////////////////////////////////
 // smoke test the node project //
 /////////////////////////////////
-apply plugin: 'com.diffplug.node'
+apply plugin: 'org.mytake.gradle.node'
 node {
 	// node 10.x is needed for node-canvas
 	setup.nodeVersion = 'v10.11.0'
