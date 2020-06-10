@@ -7,8 +7,8 @@ dependencies {
 	implementation 'com.diffplug.durian:durian-io:1.2.0'
 	implementation 'org.apache.lucene:lucene-core:7.4.0'
 	implementation 'org.apache.lucene:lucene-queryparser:7.4.0'
-	testImplementation "junit:junit:$JUNIT_VER"
-	testImplementation "org.assertj:assertj-core:$ASSERTJ_VER"
+	testImplementation "junit:junit:$VER_JUNIT"
+	testImplementation "org.assertj:assertj-core:$VER_ASSERTJ"
 }
 
 apply plugin: 'com.diffplug.gradle.spotless'

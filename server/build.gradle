@@ -128,11 +128,11 @@ dependencies {
 	implementation 'com.diffplug.durian:durian-core:1.2.0'
 
 	// code quality annotations, especially @Nullable
-	annotationProcessor 'com.google.code.findbugs:jsr305:3.0.2'
+	annotationProcessor "com.google.code.findbugs:jsr305:${VER_JSR_305}"
 	annotationProcessor 'com.google.errorprone:error_prone_annotations:2.3.1'
 
-	testImplementation "junit:junit:$JUNIT_VER"
-	testImplementation "org.assertj:assertj-core:$ASSERTJ_VER"
+	testImplementation "junit:junit:$VER_JUNIT"
+	testImplementation "org.assertj:assertj-core:$VER_ASSERTJ"
 	testImplementation 'io.rest-assured:rest-assured:3.1.0'
 	testImplementation 'com.icegreen:greenmail:1.5.7'									// http://www.icegreen.com/greenmail/
 	testImplementation "com.palantir.docker.compose:docker-compose-rule-core:$VER_PALANTIR_DOCKER_COMPOSE"		// https://github.com/palantir/docker-compose-rule
