@@ -7,12 +7,16 @@ import java.util.Arrays;
 import org.apache.commons.io.FileUtils;
 import org.gradle.api.DefaultTask;
 import org.gradle.api.file.FileCollection;
+import org.gradle.api.tasks.CacheableTask;
 import org.gradle.api.tasks.Classpath;
 import org.gradle.api.tasks.Input;
 import org.gradle.api.tasks.InputFiles;
 import org.gradle.api.tasks.OutputDirectory;
+import org.gradle.api.tasks.PathSensitive;
+import org.gradle.api.tasks.PathSensitivity;
 import org.gradle.api.tasks.TaskAction;
 
+@CacheableTask
 public class JsoniterCodegenTask extends DefaultTask {
 	static final String PKG_jsoniter_codegen = "jsoniter_codegen";
 
@@ -26,6 +30,7 @@ public class JsoniterCodegenTask extends DefaultTask {
 	}
 
 	@InputFiles
+	@PathSensitive(PathSensitivity.RELATIVE)
 	public FileCollection getSourceFiles() {
 		return getProject().fileTree(srcDir, spec -> {
 			spec.exclude(PKG_jsoniter_codegen + "/**");
