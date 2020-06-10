@@ -43,6 +43,9 @@ import org.jsweet.transpiler.util.ConsoleTranspilationHandler;
 import org.jsweet.transpiler.util.ErrorCountTranspilationHandler;
 
 /**
+ * LICENSED UNDER APACHE-2.0, FROM https://github.com/lgrignon/jsweet-gradle-plugin
+ * Modified for use by MyTake.org
+ * 
  * JSweet transpilation task
  * 
  * @author Louis Grignon

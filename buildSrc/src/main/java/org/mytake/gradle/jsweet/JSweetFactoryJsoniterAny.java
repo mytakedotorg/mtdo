@@ -5,7 +5,7 @@ import org.jsweet.transpiler.JSweetFactory;
 import org.jsweet.transpiler.extension.PrinterAdapter;
 
 /** Customize the jsweet transpilation process. */
-public class MytakeJSweetFactory extends JSweetFactory {
+public class JSweetFactoryJsoniterAny extends JSweetFactory {
 	@Override
 	public PrinterAdapter createAdapter(JSweetContext context) {
 		return new JsoniterAnyAdapter(super.createAdapter(context));

@@ -52,7 +52,7 @@ jsweet {
 	module = 'commonjs'
 	tsOut = file(JAVA2TS)
 	tsOnly = true
-	factoryClassName = 'org.mytake.gradle.jsweet.MytakeJSweetFactory'
+	factoryClassName = 'org.mytake.gradle.jsweet.JSweetFactoryJsoniterAny'
 	includes= [
 		'java2ts/**'
 	]
