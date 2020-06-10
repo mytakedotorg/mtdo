@@ -70,14 +70,16 @@ eclipse {
 	}
 }
 
-task generateFoundation(type: JavaExec) {
+tasks.register('generateFoundation', JavaExec) {
 	description = 'Generates the foundation'
 	classpath = sourceSets.main.runtimeClasspath
 	main = 'org.mytake.foundation.Index'
+
+	dependsOn(tasks.classes)
+	inputs.dir('../presidential-debates').withPathSensitivity(PathSensitivity.NAME_ONLY)
+	outputs.file('../foundation/src/main/resources/foundation-index-hash.json')
+	outputs.cacheIf { true }
 }
-generateFoundation.dependsOn(classes)
-generateFoundation.inputs.dir('../presidential-debates')
-generateFoundation.outputs.file('../foundation/src/main/resources/foundation-index-hash.json')
 
 apply plugin: 'com.diffplug.gradle.spotless'
 spotless {

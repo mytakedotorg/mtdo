@@ -18,6 +18,13 @@ plugins {
 
 subprojects {
 	apply plugin: 'org.mytake.gradle.jsweetrepo'
+	// reproducible builds (for better buildcache)
+	project.tasks.withType(AbstractArchiveTask) {
+		preserveFileTimestamps = false
+		reproducibleFileOrder = true
+		dirMode = 0775
+		fileMode = 0664
+	}
 }
 
 // format build files
