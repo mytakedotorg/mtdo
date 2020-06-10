@@ -18,6 +18,7 @@ repositories {
 	}
 	maven {
 		url 'http://repository.jsweet.org/artifactory/libs-release-local'
+		allowInsecureProtocol true
 		content { includeGroup 'org.jsweet' }
 	}
 	maven { url 'https://plugins.gradle.org/m2/' }
@@ -36,11 +37,11 @@ dependencies {
 	// db migration
 	api 'org.flywaydb:flyway-core:6.4.1'
 	// jsweet ts2java
-	compile 'com.jsoniter:jsoniter:0.9.23'
-	compile 'org.jsweet:jsweet-transpiler:2.0.1'
-	compile files("${System.properties['java.home']}/../lib/tools.jar")
+	implementation 'com.jsoniter:jsoniter:0.9.23'
+	implementation 'org.jsweet:jsweet-transpiler:2.0.1'
+	implementation files("${System.properties['java.home']}/../lib/tools.jar")
 	// java8 utilities
-	compile 'com.diffplug.durian:durian-core:1.2.0'
+	implementation 'com.diffplug.durian:durian-core:1.2.0'
 }
 
 // if we're not in CI, grab all source

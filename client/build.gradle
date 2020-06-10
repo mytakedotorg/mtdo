@@ -3,10 +3,15 @@ buildscript {
 		maven {
 			url "http://repository.jsweet.org/artifactory/libs-release-local"
 			allowInsecureProtocol true
+			content {
+				includeGroup 'org.jsweet'
+				includeGroup 'org.jsweet.ext'
+			}
 		}
 		maven {
 			url "http://repository.jsweet.org/artifactory/plugins-release-local"
 			allowInsecureProtocol true
+			content { includeGroup 'org.jsweet' }
 		}
 	}
 	// https://github.com/lgrignon/jsweet-gradle-plugin/blob/master/src/main/java/org/jsweet/gradle/JSweetPluginExtension.java
@@ -50,7 +55,14 @@ spotless {
 
 repositories {
 	mavenCentral()
-	maven { url 'http://repository.jsweet.org/artifactory/libs-release-local' }
+	maven {
+		url "http://repository.jsweet.org/artifactory/libs-release-local"
+		allowInsecureProtocol true
+		content {
+			includeGroup 'org.jsweet'
+			includeGroup 'org.jsweet.ext'
+		}
+	}
 }
 dependencies {
 	implementation "com.jsoniter:jsoniter:$JSONITER_VER"

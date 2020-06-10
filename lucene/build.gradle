@@ -2,17 +2,24 @@ apply plugin: 'java'
 
 repositories {
 	mavenCentral()
-	maven { url 'http://repository.jsweet.org/artifactory/libs-release-local' }
+	maven {
+		url "http://repository.jsweet.org/artifactory/libs-release-local"
+		allowInsecureProtocol true
+		content {
+			includeGroup 'org.jsweet'
+			includeGroup 'org.jsweet.ext'
+		}
+	}
 }
 dependencies {
-	compile project(':client')
-	compile 'com.diffplug.durian:durian-core:1.2.0'
-	compile 'com.diffplug.durian:durian-collect:1.2.0'
-	compile 'com.diffplug.durian:durian-io:1.2.0'
-	compile 'org.apache.lucene:lucene-core:7.4.0'
-	compile 'org.apache.lucene:lucene-queryparser:7.4.0'
-	testCompile "junit:junit:$JUNIT_VER"
-	testCompile "org.assertj:assertj-core:$ASSERTJ_VER"
+	implementation project(':client')
+	implementation 'com.diffplug.durian:durian-core:1.2.0'
+	implementation 'com.diffplug.durian:durian-collect:1.2.0'
+	implementation 'com.diffplug.durian:durian-io:1.2.0'
+	implementation 'org.apache.lucene:lucene-core:7.4.0'
+	implementation 'org.apache.lucene:lucene-queryparser:7.4.0'
+	testImplementation "junit:junit:$JUNIT_VER"
+	testImplementation "org.assertj:assertj-core:$ASSERTJ_VER"
 }
 
 apply plugin: 'com.diffplug.gradle.spotless'

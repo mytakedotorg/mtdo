@@ -1,4 +1,4 @@
-plugins { id 'net.ltgt.apt-eclipse' version '0.21' }
+plugins { id 'com.diffplug.eclipse.apt' }
 
 import com.diffplug.common.swt.os.OS
 
@@ -6,8 +6,12 @@ apply plugin: 'java'
 
 repositories {
 	maven {
-		url 'http://repository.jsweet.org/artifactory/libs-release-local'
-		content { includeGroup 'org.jsweet' }
+		url "http://repository.jsweet.org/artifactory/libs-release-local"
+		allowInsecureProtocol true
+		content {
+			includeGroup 'org.jsweet'
+			includeGroup 'org.jsweet.ext'
+		}
 	}
 	mavenCentral()
 }
