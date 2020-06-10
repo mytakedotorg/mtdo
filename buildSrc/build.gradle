@@ -49,6 +49,8 @@ dependencies {
 	implementation files("${System.properties['java.home']}/../lib/tools.jar")
 	// java8 utilities
 	implementation 'com.diffplug.durian:durian-core:1.2.0'
+	// gradle utilities
+	implementation 'com.diffplug.gradle:goomph:3.22.0'
 }
 
 // if we're not in CI, grab all source

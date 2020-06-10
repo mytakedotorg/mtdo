@@ -15,7 +15,10 @@
  */
 package org.mytake.gradle.jsweet;
 
+import com.diffplug.gradle.FileMisc;
+
 import java.io.File;
+import java.io.IOException;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
@@ -67,7 +70,8 @@ public class JSweetTranspileTask extends DefaultTask {
 	}
 
 	@TaskAction
-	protected void transpile() {
+	protected void transpile() throws IOException {
+		FileMisc.cleanDir(configuration.getTsOut());
 		JSweetConfig.initClassPath(System.getProperty("java.home"));
 
 		File tsOutputDir = configuration.getTsOut();
@@ -116,6 +120,8 @@ public class JSweetTranspileTask extends DefaultTask {
 				transpiler.setGenerateJsFiles(!configuration.isTsOnly());
 			}
 			transpiler.transpile(transpilationHandler, sourceFiles);
+
+			FileMisc.flatten(new File(configuration.getTsOut(), configuration.getTsOut().getName()));
 		} catch (NoClassDefFoundError e) {
 			transpilationHandler.report(JSweetProblem.JAVA_COMPILER_NOT_FOUND, null, JSweetProblem.JAVA_COMPILER_NOT_FOUND.getMessage());
 		} catch (Exception e) {

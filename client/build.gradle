@@ -1,7 +1,3 @@
-plugins {
-	id 'com.diffplug.eclipse.excludebuildfolder'
-}
-
 ////////////////////////////////////////
 // java - gets compiled to typescript //
 ////////////////////////////////////////
@@ -61,13 +57,6 @@ jsweet {
 		'java2ts/**'
 	]
 }
-/*
- tasks.jsweet.doFirst { delete JAVA2TS }
- tasks.jsweet.doLast { com.diffplug.gradle.FileMisc.flatten(file(JAVA2TS + '/java2ts')) }
- tasks.jsweet.inputs.dir(file('build/classes'))
- tasks.jsweet.outputs.dir(file(JAVA2TS))
- clean { delete JAVA2TS }
- */
 
 //////////////
 // jsoniter //
@@ -132,39 +121,10 @@ clean {
 }
 
 // make sure that all the gulp tasks are run
-processResources {
+tasks.named('processResources') {
 	dependsOn 'gulp_stylesDev', 'gulp_scriptsDev', 'gulp_revProd'
 }
 
-// on Heroku, we can ignore the dev tasks
-if (buildsrc.Env.isHeroku()) {
-	gulp_stylesDev.enabled = false
-	gulp_scriptsDev.enabled = false
-}
-gradle.taskGraph.whenReady { taskGraph ->
-	boolean disableProd = false
-	if (taskGraph.hasTask(':server:runDev')) {
-		disableProd = true
-	}
-	if (taskGraph.hasTask(':server:live')) {
-		disableProd = true
-		gulp_scriptsDev.enabled = false
-	}
-	if (disableProd) {
-		gulp_revProd.enabled = false
-		gulp_stylesProd.enabled = false
-		gulp_scriptsProd.enabled = false
-	}
-}
-
-clean { delete 'src/main/resources' }
-
-// make sure that all the gulp tasks are run
-processResources.dependsOn([
-	gulp_stylesDev,
-	gulp_scriptsDev,
-	gulp_revProd
-])
 // on Heroku, we can ignore the dev tasks
 if (buildsrc.Env.isHeroku()) {
 	gulp_stylesDev.enabled = false
