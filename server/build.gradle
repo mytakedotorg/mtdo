@@ -1,14 +1,6 @@
 plugins {
 	id 'nu.studer.rocker' version '1.0.1'					// https://github.com/etiennestuder/gradle-rocker-plugin
 	id 'com.github.johnrengelman.shadow' version '5.2.0'	// http://imperceptiblethoughts.com/shadow/#
-	id 'net.ltgt.errorprone' version '0.0.15'				// https://github.com/tbroyer/gradle-errorprone-plugin
-}
-
-// fixes spurious nitpicks in jooq generated code
-tasks.withType(JavaCompile) {
-	options.compilerArgs += [
-		'-Xep:InconsistentCapitalization:OFF'
-	]
 }
 
 apply plugin: 'java'
@@ -103,7 +95,14 @@ tasks.eclipse.dependsOn([
 repositories {
 	mavenCentral()
 	maven { url 'https://dl.bintray.com/palantir/releases' }
-	maven { url 'http://repository.jsweet.org/artifactory/libs-release-local' }
+	maven {
+		url "http://repository.jsweet.org/artifactory/libs-release-local"
+		allowInsecureProtocol true
+		content {
+			includeGroup 'org.jsweet'
+			includeGroup 'org.jsweet.ext'
+		}
+	}
 }
 
 dependencies {
@@ -137,7 +136,6 @@ dependencies {
 	// code quality annotations, especially @Nullable
 	annotationProcessor 'com.google.code.findbugs:jsr305:3.0.2'
 	annotationProcessor 'com.google.errorprone:error_prone_annotations:2.3.1'
-	errorprone 'com.google.errorprone:error_prone_core:2.3.1'
 
 	testImplementation "junit:junit:$JUNIT_VER"
 	testImplementation "org.assertj:assertj-core:$ASSERTJ_VER"
@@ -150,10 +148,6 @@ dependencies {
 
 	// dep for auth
 	implementation 'com.auth0:java-jwt:3.4.0'
-}
-sourceSets {
-	test.compileClasspath += configurations.compileOnly
-	test.runtimeClasspath += configurations.compileOnly
 }
 
 task runProd(type: JavaExec, dependsOn: classes) {
