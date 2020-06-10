@@ -122,7 +122,7 @@ dependencies {
 	// db connector for postgres and h2
 	implementation 'org.postgresql:postgresql:42.2.12'
 	// flyway
-	implementation 'org.flywaydb:flyway-core:6.4.1'
+	implementation "org.flywaydb:flyway-core:${VER_FLYWAY}"
 	// common libs
 	implementation 'commons-validator:commons-validator:1.6'
 	implementation 'com.diffplug.durian:durian-core:1.2.0'

@@ -39,7 +39,7 @@ dependencies {
 	// jooq codegen
 	api 'org.jooq:jooq-codegen:3.13.1'
 	// db migration
-	api 'org.flywaydb:flyway-core:6.4.1'
+	api "org.flywaydb:flyway-core:${props.VER_FLYWAY}"
 	// jsweet ts2java
 	implementation "com.jsoniter:jsoniter:${props.VER_JSONITER}"
 	implementation 'org.jsweet:jsweet-transpiler:2.0.1'
