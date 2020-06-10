@@ -1,5 +1,6 @@
 /* 
  * Copyright (C) 2015 Louis Grignon <louis.grignon@gmail.com>
+ * Modified 2020 for use by MyTake.org
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -43,9 +44,6 @@ import org.jsweet.transpiler.util.ConsoleTranspilationHandler;
 import org.jsweet.transpiler.util.ErrorCountTranspilationHandler;
 
 /**
- * LICENSED UNDER APACHE-2.0, FROM https://github.com/lgrignon/jsweet-gradle-plugin
- * Modified for use by MyTake.org
- * 
  * JSweet transpilation task
  * 
  * @author Louis Grignon

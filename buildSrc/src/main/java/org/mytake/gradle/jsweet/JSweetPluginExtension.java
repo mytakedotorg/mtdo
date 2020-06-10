@@ -1,5 +1,6 @@
 /* 
  * Copyright (C) 2015 Louis Grignon <louis.grignon@gmail.com>
+ * Modified 2020 for use by MyTake.org
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,10 +24,6 @@ import org.jsweet.transpiler.EcmaScriptComplianceLevel;
 import org.jsweet.transpiler.ModuleKind;
 
 /**
- * 
- * LICENSED UNDER APACHE-2.0, FROM https://github.com/lgrignon/jsweet-gradle-plugin
- * Modified for use by MyTake.org
- * 
  * Plugin's configuration
  * 
  * @author Louis Grignon

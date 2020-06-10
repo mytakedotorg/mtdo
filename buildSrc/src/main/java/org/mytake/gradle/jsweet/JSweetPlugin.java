@@ -1,5 +1,6 @@
 /* 
  * Copyright (C) 2015 Louis Grignon <louis.grignon@gmail.com>
+ * Modified 2020 for use by MyTake.org
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,7 +34,6 @@ import org.gradle.api.tasks.SourceSetContainer;
  *
  */
 public class JSweetPlugin implements Plugin<Project> {
-
 	@Override
 	public void apply(final Project project) {
 		Logger logger = project.getLogger();
