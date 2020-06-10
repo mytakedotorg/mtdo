@@ -1,22 +1,3 @@
-buildscript {
-	repositories {
-		maven {
-			url "http://repository.jsweet.org/artifactory/libs-release-local"
-			allowInsecureProtocol true
-			content {
-				includeGroup 'org.jsweet'
-				includeGroup 'org.jsweet.ext'
-			}
-		}
-		maven {
-			url "http://repository.jsweet.org/artifactory/plugins-release-local"
-			allowInsecureProtocol true
-			content { includeGroup 'org.jsweet' }
-		}
-	}
-	// https://github.com/lgrignon/jsweet-gradle-plugin/blob/master/src/main/java/org/jsweet/gradle/JSweetPluginExtension.java
-	dependencies { classpath 'org.jsweet:jsweet-gradle-plugin:2.3.7' }
-}
 plugins {
 	id 'com.diffplug.eclipse.excludebuildfolder'
 }
@@ -55,7 +36,7 @@ spotless {
 
 dependencies {
 	api "com.jsoniter:jsoniter:$VER_JSONITER"
-	api "org.jsweet:jsweet-core:$JSWEET_CORE_VER"
+	api "org.jsweet:jsweet-core:$VER_JSWEET_CORE"
 	testImplementation "junit:junit:$VER_JUNIT"
 	testImplementation "org.assertj:assertj-core:$VER_ASSERTJ"
 }
@@ -69,21 +50,24 @@ if (gradle.startParameter.taskNames == [
 
 // generate typescript for the java in the java2ts folder
 def JAVA2TS = 'src/main/scripts/java2ts'
-apply plugin: 'org.jsweet.jsweet-gradle-plugin'
+apply plugin: 'org.mytake.gradle.jsweetcodegen'
 jsweet {
+	targetVersion = 'ES6' // should match gradle.properties VER_JSWEET_CORE
 	module = 'commonjs'
 	tsOut = file(JAVA2TS)
 	tsOnly = true
-	factoryClassName = 'org.mytake.gradle.java2ts.MytakeJsweetFactory'
+	factoryClassName = 'org.mytake.gradle.jsweet.MytakeJSweetFactory'
 	includes= [
 		'java2ts/**'
 	]
 }
-tasks.jsweet.doFirst { delete JAVA2TS }
-tasks.jsweet.doLast { com.diffplug.gradle.FileMisc.flatten(file(JAVA2TS + '/java2ts')) }
-tasks.jsweet.inputs.dir(file('build/classes'))
-tasks.jsweet.outputs.dir(file(JAVA2TS))
-clean { delete JAVA2TS }
+/*
+ tasks.jsweet.doFirst { delete JAVA2TS }
+ tasks.jsweet.doLast { com.diffplug.gradle.FileMisc.flatten(file(JAVA2TS + '/java2ts')) }
+ tasks.jsweet.inputs.dir(file('build/classes'))
+ tasks.jsweet.outputs.dir(file(JAVA2TS))
+ clean { delete JAVA2TS }
+ */
 
 //////////////
 // jsoniter //

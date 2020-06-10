@@ -18,7 +18,10 @@ repositories {
 	maven {
 		url 'http://repository.jsweet.org/artifactory/libs-release-local'
 		allowInsecureProtocol true
-		content { includeGroup 'org.jsweet' }
+		content {
+			includeGroup 'org.jsweet'
+			includeGroup 'org.jsweet.ext'
+		}
 	}
 	maven { url 'https://plugins.gradle.org/m2/' }
 }
@@ -42,7 +45,7 @@ dependencies {
 	api "org.flywaydb:flyway-core:${props.VER_FLYWAY}"
 	// jsweet ts2java
 	implementation "com.jsoniter:jsoniter:${props.VER_JSONITER}"
-	implementation 'org.jsweet:jsweet-transpiler:2.0.1'
+	implementation 'org.jsweet:jsweet-transpiler:2.3.9'
 	implementation files("${System.properties['java.home']}/../lib/tools.jar")
 	// java8 utilities
 	implementation 'com.diffplug.durian:durian-core:1.2.0'
@@ -78,6 +81,10 @@ gradlePlugin {
 		jsweetRepo {
 			id = 'org.mytake.gradle.jsweetrepo'
 			implementationClass = 'org.mytake.gradle.jsweet.JSweetRepoPlugin'
+		}
+		jsweetCodegen {
+			id = 'org.mytake.gradle.jsweetcodegen'
+			implementationClass = 'org.mytake.gradle.jsweet.JSweetPlugin'
 		}
 	}
 }

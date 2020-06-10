@@ -49,7 +49,9 @@ flywayJooq {
 }
 // because docker-compose can't start postgres on Heroku
 if (buildsrc.Env.isHeroku()) {
-	tasks.jooq.enabled = false
+	tasks.named('jooq') {
+		enabled = false
+	}
 }
 
 sourceSets.main.java {
@@ -86,11 +88,9 @@ spotless {
 //////////////////
 // normal stuff //
 //////////////////
-tasks.eclipse.dependsOn([
-	tasks.cleanEclipse,
-	'jooq',
-	'compileRocker'
-])
+tasks.named('eclipse') {
+	dependsOn 'cleanEclipse', 'jooq', 'compileRocker'
+}
 
 repositories {
 	maven {
