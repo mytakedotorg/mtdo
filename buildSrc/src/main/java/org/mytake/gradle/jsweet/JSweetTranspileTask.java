@@ -16,8 +16,6 @@
  */
 package org.mytake.gradle.jsweet;
 
-import com.diffplug.gradle.FileMisc;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
@@ -29,6 +27,7 @@ import org.codehaus.plexus.util.DirectoryScanner;
 import org.gradle.api.DefaultTask;
 import org.gradle.api.file.FileCollection;
 import org.gradle.api.file.SourceDirectorySet;
+import org.gradle.api.tasks.CacheableTask;
 import org.gradle.api.tasks.Classpath;
 import org.gradle.api.tasks.InputFiles;
 import org.gradle.api.tasks.Nested;
@@ -43,12 +42,15 @@ import org.jsweet.transpiler.SourceFile;
 import org.jsweet.transpiler.util.ConsoleTranspilationHandler;
 import org.jsweet.transpiler.util.ErrorCountTranspilationHandler;
 
+import com.diffplug.gradle.FileMisc;
+
 /**
  * JSweet transpilation task
  * 
  * @author Louis Grignon
  *
  */
+@CacheableTask
 public class JSweetTranspileTask extends DefaultTask {
 	JSweetPluginExtension configuration;
 	SourceDirectorySet sources;
