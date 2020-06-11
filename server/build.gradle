@@ -101,7 +101,7 @@ repositories {
 	}
 }
 dependencies {
-	String JOOBY_VER = '1.5.0'
+	String JOOBY_VER = '1.6.7'
 	// jooby
 	implementation "org.jooby:jooby-netty:$JOOBY_VER"
 	implementation "org.jooby:jooby-rocker:$JOOBY_VER"
@@ -129,7 +129,7 @@ dependencies {
 
 	// code quality annotations, especially @Nullable
 	annotationProcessor "com.google.code.findbugs:jsr305:${VER_JSR_305}"
-	annotationProcessor 'com.google.errorprone:error_prone_annotations:2.3.1'
+	annotationProcessor 'com.google.errorprone:error_prone_annotations:2.4.0'
 
 	testImplementation "junit:junit:$VER_JUNIT"
 	testImplementation "org.assertj:assertj-core:$VER_ASSERTJ"
@@ -141,7 +141,7 @@ dependencies {
 	testImplementation "com.fizzed:rocker-compiler:${rockerVersion}"					// required for hotreload
 
 	// dep for auth
-	implementation 'com.auth0:java-jwt:3.4.0'
+	implementation 'com.auth0:java-jwt:3.10.3'
 }
 
 task runProd(type: JavaExec, dependsOn: classes) {

@@ -33,7 +33,7 @@ dependencies {
 	implementation project(':client')
 	implementation project(':lucene')
 	implementation "com.jsoniter:jsoniter:$VER_JSONITER"
-	implementation 'org.jsoup:jsoup:1.11.3'
+	implementation 'org.jsoup:jsoup:1.13.1'
 	implementation 'org.eclipse.jgit:org.eclipse.jgit:5.0.1.201806211838-r'
 	implementation 'com.diffplug.durian:durian-core:1.2.0'
 	implementation 'com.diffplug.durian:durian-collect:1.2.0'
