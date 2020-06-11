@@ -46,7 +46,6 @@ public class Prod extends Jooby {
 		});
 		realtime(this);
 		use(new HerokuDatabase.Module());
-		EmailSender.init(this);
 		commonNoDb(this);
 		commonDb(this);
 		use((env, conf, binder) -> {
