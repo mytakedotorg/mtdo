@@ -6,7 +6,8 @@
 @import org.jooq.Record
 @import org.jooq.Result
 
-@args(List<ViewsStars> viewsStars, Result<?> recentDrafts)
+@* Should be Result<?>, but need this to get merged first: https://github.com/fizzed/rocker/pull/140 *@
+@args(List<ViewsStars> viewsStars, Result recentDrafts)
 
 @views.email.template() -> {
 

@@ -24,6 +24,7 @@ import java.util.Set;
 import org.jooby.Env;
 import org.jooby.Jooby;
 import org.jooq.DSLContext;
+import org.jooq.JSONB;
 import org.jooq.Result;
 import org.jooq.impl.DSL;
 
@@ -71,8 +72,8 @@ public class FoundationMigrationModule implements Jooby.Module {
 		// update take drafts
 		Result<TakerevisionRecord> revs = dsl.fetch(TAKEREVISION);
 		for (TakerevisionRecord rev : revs) {
-			String original = rev.getBlocks();
-			String migrated = migration.migrate(original);
+			JSONB original = rev.getBlocks();
+			JSONB migrated = migration.migrate(original);
 			if (!original.equals(migrated)) {
 				rev.setBlocks(migrated);
 				rev.store();
@@ -83,8 +84,8 @@ public class FoundationMigrationModule implements Jooby.Module {
 		List<Integer> takeIdsToRefresh = new ArrayList<>();
 		Result<TakepublishedRecord> publisheds = dsl.fetch(TAKEPUBLISHED);
 		for (TakepublishedRecord published : publisheds) {
-			String original = published.getBlocks();
-			String migrated = migration.migrate(original);
+			JSONB original = published.getBlocks();
+			JSONB migrated = migration.migrate(original);
 			if (!original.equals(migrated)) {
 				published.setBlocks(migrated);
 				published.store();

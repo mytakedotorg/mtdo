@@ -11,7 +11,6 @@ import com.google.inject.multibindings.Multibinder;
 import com.icegreen.greenmail.util.GreenMail;
 import com.icegreen.greenmail.util.ServerSetup;
 import com.typesafe.config.Config;
-import java.util.Random;
 import javax.mail.Address;
 import javax.mail.Message.RecipientType;
 import javax.mail.internet.MimeMessage;
@@ -20,15 +19,18 @@ import org.jooby.Env;
 import org.jooby.Jooby;
 import org.jooby.MediaType;
 import org.jooby.Renderer;
-import org.jooby.whoops.Whoops;
 
 /**
  * The app that we run in unit tests.  See {@link Prod} in the main
  * directory for the app that we run in production.
  */
-public class Dev extends Jooby {
+public class Dev extends DevNoDB {
 	public static Dev unitTest() {
-		Dev dev = new Dev(new CleanPostgresModule());
+		return unitTest(CleanPostgresModule.prePopulatedSchema());
+	}
+
+	public static Dev unitTest(CleanPostgresModule db) {
+		Dev dev = new Dev(db);
 		dev.use(new DevTime.Module());
 		return dev;
 	}
@@ -39,25 +41,10 @@ public class Dev extends Jooby {
 		return dev;
 	}
 
-	public static Dev realtime() {
-		return realtime(new CleanPostgresModule());
-	}
-
 	private Dev(CleanPostgresModule postgresModule) {
-		// random and time-dependent results in tests will be repeatable
-		use((env, conf, binder) -> {
-			binder.bind(Random.class).toInstance(new Random(0));
-		});
-		use(new GreenMailModule());
 		use(postgresModule);
-		// exit has to come before the "/user" route
-		get("/exit", (req, rsp) -> {
-			stop();
-		});
-		Prod.common(this);
+		Prod.commonDb(this);
 		Prod.controllers(this);
-		use(new JooqDebugRenderer());
-		use(new Whoops());
 	}
 
 	static class JooqDebugRenderer implements Jooby.Module {
@@ -124,9 +111,16 @@ public class Dev extends Jooby {
 		}
 	}
 
+	static boolean LOAD_BACKUP = false;
+
 	public static void main(String[] args) {
-		Dev dev = Dev.realtime();
-		dev.use(new InitialData.Module());
+		Dev dev;
+		if (LOAD_BACKUP) {
+			dev = Dev.realtime(CleanPostgresModule.loadFromBackup(ProdData.backupFile()));
+		} else {
+			dev = Dev.realtime(CleanPostgresModule.prePopulatedSchema());
+			dev.use(new InitialData.Module());
+		}
 		Jooby.run(() -> dev, args);
 	}
 }

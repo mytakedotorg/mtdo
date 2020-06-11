@@ -2,9 +2,8 @@ version: "2.1"
 
 services:
   postgres:
-    image: postgres:10.3
-    tmpfs: /pgtmpfs:size=524288k
-    environment:
-      - "PGDATA=/pgtmpfs"
+    image: circleci/postgres:10.3-alpine-ram
+    shm_size: '524288k' # 500MB in-memory disk
     ports:
       - "5432"
+  

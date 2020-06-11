@@ -27,9 +27,18 @@ import org.jooby.Jooby;
  *   from the browser's point-of-view.
  */
 public class DevHotReload {
+	static boolean LOAD_BACKUP = true;
+	// if you reload emails, then you can't reload webpages.  And vice-versa.
+	static boolean RELOAD_EMAILS = false;
+
 	public static void main(String[] args) throws Exception {
 		// create a fresh database
-		CleanPostgresModule postgresModule = new CleanPostgresModule();
+		CleanPostgresModule postgresModule;
+		if (LOAD_BACKUP) {
+			postgresModule = CleanPostgresModule.loadFromBackup(ProdData.backupFile());
+		} else {
+			postgresModule = CleanPostgresModule.prePopulatedSchema();
+		}
 		boolean firstRun = true;
 		while (true) {
 			// create an app with an explicit "reload" route, which restarts everything except the DB
@@ -57,7 +66,7 @@ public class DevHotReload {
 			Class<?> devClass = loader.loadClass("common.Dev");
 			Jooby dev = (Jooby) devClass.getMethod("realtime", CleanPostgresModule.class).invoke(null, postgresModule);
 			app.use(dev);
-			if (firstRun) {
+			if (!LOAD_BACKUP && firstRun) {
 				// on the first run, setup the initial data
 				app.use((Jooby.Module) loader.loadClass("common.InitialData$Module").getDeclaredConstructor().newInstance());
 				firstRun = false;
@@ -81,7 +90,7 @@ public class DevHotReload {
 				"org.jooby.rocker.",
 				"org.jooby.quartz.",
 				"org.jooby.internal.quartz.",
-				"com.jsoniter."
+				"com.jsoniter.",
 		};
 
 		IncludingClassLoader() {
@@ -139,9 +148,10 @@ public class DevHotReload {
 	/** Loads from file. */
 	static class DynamicClassLoader extends AggressiveClassLoader {
 		private static File[] DIRS = new File[]{
-				new File("bin"),
-				new File("../lucene/bin"),
-				new File("../client/bin")
+				new File("bin/main"),
+				new File("bin/test"),
+				new File("../lucene/bin/main"),
+				new File("../client/bin/main")
 		};
 		final Map<File, Long> fileToLastModified = new HashMap<>();
 

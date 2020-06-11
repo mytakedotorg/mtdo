@@ -9,6 +9,7 @@ package common;
 import com.google.common.math.DoubleMath;
 import com.jsoniter.any.Any;
 import java.util.function.Consumer;
+import org.jooq.JSONB;
 
 public class TakeBuilder {
 	public static TakeBuilder builder() {
@@ -77,14 +78,18 @@ public class TakeBuilder {
 		return Any.wrap(buildString());
 	}
 
-	String result;
+	JSONB result;
 
-	public String buildString() {
+	public JSONB buildJson() {
 		if (result == null) {
-			result = buildStringInternal();
+			result = JSONB.valueOf(buildStringInternal());
 			builder = null;
 		}
 		return result;
+	}
+
+	public String buildString() {
+		return buildJson().data();
 	}
 
 	private String buildStringInternal() {

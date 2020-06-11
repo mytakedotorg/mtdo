@@ -1,14 +1,6 @@
 plugins {
-	id 'nu.studer.rocker' version '0.3.1'					// https://github.com/etiennestuder/gradle-rocker-plugin
-	id 'com.github.johnrengelman.shadow' version '5.0.0'	// http://imperceptiblethoughts.com/shadow/#
-	id 'net.ltgt.errorprone' version '0.0.15'				// https://github.com/tbroyer/gradle-errorprone-plugin
-}
-
-// fixes spurious nitpicks in jooq generated code
-tasks.withType(JavaCompile) {
-	options.compilerArgs += [
-		'-Xep:InconsistentCapitalization:OFF'
-	]
+	id 'nu.studer.rocker' version '1.0.1'					// https://github.com/etiennestuder/gradle-rocker-plugin
+	id 'com.github.johnrengelman.shadow' version '5.2.0'	// http://imperceptiblethoughts.com/shadow/#
 }
 
 apply plugin: 'java'
@@ -32,36 +24,34 @@ spotless {
 ////////////////
 // flywayJooq //
 ////////////////
-apply plugin: 'org.mytake.gradle.flywayjooq.embeddedpg'
-flywayJooqEmbeddedPg {
-	dockerComposeFile = file('src/test/resources/docker-compose.yml')
-	migrations = file('src/main/resources/db/migration')
+apply plugin: 'org.mytake.gradle.flywayjooq'
+flywayJooq {
+	setup.dockerComposeFile = file('src/test/resources/docker-compose.yml')
+	setup.dockerConnectionParams = file('build/pgConnection.properties')
+	setup.flywayMigrations = file('src/main/resources/db/migration')
+	setup.flywaySchemaDump = file('build/schema.sql')
+
 	generator {
 		database.inputSchema = 'public'
 		generate.pojos = true
 		generate.fluentSetters = true
+		generate.javaTimeTypes = false
 		target.packageName = 'db'
-		target.directory = file('src/main/jooq-generated').absolutePath
+		target.directory = 'src/main/jooq-generated'
 	}
 	// https://www.jooq.org/doc/latest/manual/code-generation/custom-data-type-bindings/
-	forcedType {
-		userType = 'java.lang.String'
-		binding = 'db.bindings.PostgresJsonStringBinding'
-		expression = '.*'
-		types = 'jsonb'
-	}
 	forcedType {
 		userType = 'java.lang.String'
 		binding = 'db.bindings.PostgresInetBinding'
 		expression = '.*'
 		types = 'inet'
 	}
-	connectionParams = file('build/pgConnection.properties')
-	schemaDump = file('build/schema.sql')
 }
 // because docker-compose can't start postgres on Heroku
-if (Env.isHeroku()) {
-	tasks.jooq.enabled = false
+if (buildsrc.Env.isHeroku()) {
+	tasks.named('jooq') {
+		enabled = false
+	}
 }
 
 sourceSets.main.java {
@@ -73,11 +63,11 @@ sourceSets.main.java {
 ////////////
 // rocker //
 ////////////
-rockerVersion = '0.22.0'
+rockerVersion = '1.3.0'
 rocker {
 	main {
 		// if these change, also change DevHotReload
-		optimize = Env.isHerokuOrCI()
+		optimize = buildsrc.Env.isHerokuOrCI()
 		templateDir = file('src/main/rocker')
 		outputDir = file('src/main/rocker-generated')
 		extendsModelClass = 'common.CustomRockerModel'
@@ -98,70 +88,61 @@ spotless {
 //////////////////
 // normal stuff //
 //////////////////
-tasks.eclipse.dependsOn([
-	tasks.cleanEclipse,
-	'jooq',
-	'compileRocker'
-])
+tasks.named('eclipse') {
+	dependsOn 'cleanEclipse', 'jooq', 'compileRocker'
+}
 
 repositories {
-	mavenCentral()
-	maven { url 'https://dl.bintray.com/palantir/releases' }
-	maven { url 'http://repository.jsweet.org/artifactory/libs-release-local' }
+	maven {
+		url 'https://dl.bintray.com/palantir/releases'
+		content {
+			includeGroupByRegex 'com\\.palantir\\..*'
+		}
+	}
 }
-
 dependencies {
-	String JOOBY_VER = '1.5.0'
+	String JOOBY_VER = '1.6.7'
 	// jooby
-	compile "org.jooby:jooby-netty:$JOOBY_VER"
-	compile "org.jooby:jooby-rocker:$JOOBY_VER"
-	compile "org.jooby:jooby-jooq:$JOOBY_VER"
-	compile "org.jooby:jooby-commons-email:$JOOBY_VER"
-	compile "org.jooby:jooby-assets:$JOOBY_VER"
-	compile "org.jooby:jooby-quartz:$JOOBY_VER"
-	testCompile "org.jooby:jooby-whoops:$JOOBY_VER"
+	implementation "org.jooby:jooby-netty:$JOOBY_VER"
+	implementation "org.jooby:jooby-rocker:$JOOBY_VER"
+	implementation "org.jooby:jooby-jooq:$JOOBY_VER"
+	implementation "org.jooby:jooby-commons-email:$JOOBY_VER"
+	implementation "org.jooby:jooby-assets:$JOOBY_VER"
+	implementation "org.jooby:jooby-quartz:$JOOBY_VER"
+	testImplementation "org.jooby:jooby-whoops:$JOOBY_VER"
 
 	// json
-	compile "com.jsoniter:jsoniter:$JSONITER_VER"
-	compile "org.jsweet:jsweet-core:$JSWEET_CORE_VER"
-	compile project(':client')
-	compile project(':foundation')
-	compile project(':lucene')
+	implementation "com.jsoniter:jsoniter:$VER_JSONITER"
+	implementation project(':client')
+	implementation project(':foundation')
+	implementation project(':lucene')
 
 	// jooq (version is set by jooq DSL)
-	compile 'org.jooq:jooq'
-
-	// db connector for postgres
-	compile 'org.postgresql:postgresql:42.2.4'
-	jooqRuntime 'org.postgresql:postgresql:42.2.4'
-
+	implementation 'org.jooq:jooq'
+	// db connector for postgres and h2
+	implementation "org.postgresql:postgresql:${VER_POSTGRESQL_DRIVER}"
 	// flyway
-	compile 'org.flywaydb:flyway-core:5.1.4'
-
+	implementation "org.flywaydb:flyway-core:${VER_FLYWAY}"
 	// common libs
-	compile 'commons-validator:commons-validator:1.6'
-	compile 'com.diffplug.durian:durian-core:1.2.0'
+	implementation 'commons-validator:commons-validator:1.6'
+	implementation 'com.diffplug.durian:durian-core:1.2.0'
+	implementation 'commons-codec:commons-codec:1.14'
 
 	// code quality annotations, especially @Nullable
-	compileOnly 'com.google.code.findbugs:jsr305:3.0.2'
-	compileOnly 'com.google.errorprone:error_prone_annotations:2.3.1'
-	errorprone 'com.google.errorprone:error_prone_core:2.3.1'
+	annotationProcessor "com.google.code.findbugs:jsr305:${VER_JSR_305}"
+	annotationProcessor 'com.google.errorprone:error_prone_annotations:2.4.0'
 
-	testCompile "junit:junit:$JUNIT_VER"
-	testCompile "org.assertj:assertj-core:$ASSERTJ_VER"
-	testCompile 'io.rest-assured:rest-assured:3.1.0'
-	testCompile 'com.icegreen:greenmail:1.5.7'									// http://www.icegreen.com/greenmail/
-	testCompile 'com.palantir.docker.compose:docker-compose-rule-core:0.34.0'	// https://github.com/palantir/docker-compose-rule
-	testCompile 'com.palantir.docker.compose:docker-compose-rule-junit4:0.34.0'	// https://github.com/palantir/docker-compose-rule
+	testImplementation "junit:junit:$VER_JUNIT"
+	testImplementation "org.assertj:assertj-core:$VER_ASSERTJ"
+	testImplementation 'io.rest-assured:rest-assured:3.1.0'
+	testImplementation 'com.icegreen:greenmail:1.5.7'									// http://www.icegreen.com/greenmail/
+	testImplementation "com.palantir.docker.compose:docker-compose-rule-core:$VER_PALANTIR_DOCKER_COMPOSE"		// https://github.com/palantir/docker-compose-rule
+	testImplementation "com.palantir.docker.compose:docker-compose-rule-junit4:$VER_PALANTIR_DOCKER_COMPOSE"	// https://github.com/palantir/docker-compose-rule
 
-	testCompile "com.fizzed:rocker-compiler:${rockerVersion}"					// required for hotreload
+	testImplementation "com.fizzed:rocker-compiler:${rockerVersion}"					// required for hotreload
 
 	// dep for auth
-	compile 'com.auth0:java-jwt:3.4.0'
-}
-sourceSets {
-	test.compileClasspath += configurations.compileOnly
-	test.runtimeClasspath += configurations.compileOnly
+	implementation 'com.auth0:java-jwt:3.10.3'
 }
 
 task runProd(type: JavaExec, dependsOn: classes) {

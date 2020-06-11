@@ -1,7 +1,6 @@
-buildscript { repositories { mavenCentral() }}
 plugins {
-	id 'com.diffplug.eclipse.resourcefilters' version '3.22.0'
-	id 'com.diffplug.gradle.spotless' version '3.24.3'	// https://github.com/diffplug/spotless/blob/master/plugin-gradle/README.md
+	id 'com.diffplug.eclipse.resourcefilters'
+	id 'com.diffplug.gradle.spotless'
 }
 
 /* Not compatible with Gradle 5: https://github.com/mmalohlava/gradle-visteg/issues/12
@@ -17,6 +16,17 @@ plugins {
  }
  */
 
+subprojects {
+	apply plugin: 'org.mytake.gradle.jsweetrepo'
+	// reproducible builds (for better buildcache)
+	project.tasks.withType(AbstractArchiveTask) {
+		preserveFileTimestamps = false
+		reproducibleFileOrder = true
+		dirMode = 0775
+		fileMode = 0664
+	}
+}
+
 // format build files
 spotless {
 	groovyGradle {
@@ -25,13 +35,11 @@ spotless {
 				'gradle/spotless.eclipseformat.xml',
 				'gradle/spotless.greclipse.properties'
 				)
-		paddedCell()
 	}
 }
 
 // create eclipse project for all projects
 allprojects { proj ->
-	buildscript { repositories { mavenCentral() } }
 	apply plugin: 'eclipse'
 	eclipse { project { name = "mytake-$proj.name" } }
 	apply plugin: 'com.diffplug.eclipse.excludebuildfolder'

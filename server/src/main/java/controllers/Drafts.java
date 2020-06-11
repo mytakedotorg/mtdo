@@ -30,6 +30,7 @@ import org.jooby.Env;
 import org.jooby.Jooby;
 import org.jooby.Status;
 import org.jooq.DSLContext;
+import org.jooq.JSONB;
 import org.jooq.Result;
 
 public class Drafts implements Jooby.Module {
@@ -92,7 +93,7 @@ public class Drafts implements Jooby.Module {
 
 				TakerevisionRecord rev = dsl.newRecord(TAKEREVISION);
 				rev.setTitle(post.title);
-				rev.setBlocks(post.blocks.toString());
+				rev.setBlocks(JSONB.valueOf(post.blocks.toString()));
 				rev.setCreatedAt(req.require(Time.class).nowTimestamp());
 				rev.setCreatedIp(req.require(IpGetter.class).ip(req));
 
@@ -147,7 +148,7 @@ public class Drafts implements Jooby.Module {
 				published.setUserId(user.id());
 				published.setTitle(post.title);
 				published.setTitleSlug(titleSlug);
-				published.setBlocks(post.blocks.toString());
+				published.setBlocks(JSONB.valueOf(post.blocks.toString()));
 				published.setPublishedAt(req.require(Time.class).nowTimestamp());
 				published.setPublishedIp(req.require(IpGetter.class).ip(req));
 				published.setImageUrl(post.imageUrl);

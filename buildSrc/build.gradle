@@ -1,36 +1,56 @@
-apply plugin: 'java'
+apply plugin: 'java-library'
 apply plugin: 'eclipse'
 apply plugin: 'java-gradle-plugin'
 
 repositories {
 	maven {
 		url 'https://dl.bintray.com/palantir/releases'
-		content { includeGroup 'com.palantir.docker.compose' }
+		content {
+			includeGroupByRegex 'com\\.palantir\\..*'
+		}
+	}
+	maven {
+		url 'https://jitpack.io'
+		content {
+			includeGroup 'com.github.eirslett.frontend-maven-plugin'
+		}
 	}
 	maven {
 		url 'http://repository.jsweet.org/artifactory/libs-release-local'
-		content { includeGroup 'org.jsweet' }
+		allowInsecureProtocol true
+		content {
+			includeGroup 'org.jsweet'
+			includeGroup 'org.jsweet.ext'
+		}
 	}
 	maven { url 'https://plugins.gradle.org/m2/' }
 }
 
+Properties props = new Properties()
+new File('gradle.properties').withInputStream {
+	props.load(it)
+}
+
 dependencies {
-	// https://github.com/srs/gradle-node-plugin
-	compile 'com.moowork.gradle:gradle-node-plugin:1.2.0'
+	// node.js
+	api 'com.github.eirslett.frontend-maven-plugin:frontend-plugin-core:ad1062d382' // JitPack HEAD as of 04/23/2020
 	// https://github.com/palantir/docker-compose-rule
-	compile 'com.palantir.docker.compose:docker-compose-rule-core:0.33.0'
-	compile 'com.palantir.docker.compose:docker-compose-rule-junit4:0.33.0'
-	compile 'org.postgresql:postgresql:42.2.2'
+	api "com.palantir.docker.compose:docker-compose-rule-core:${props.VER_PALANTIR_DOCKER_COMPOSE}"
+	api "com.palantir.docker.compose:docker-compose-rule-junit4:${props.VER_PALANTIR_DOCKER_COMPOSE}"
+	// https://jdbc.postgresql.org/documentation/changelog.html
+	implementation "org.postgresql:postgresql:${props.VER_POSTGRESQL_DRIVER}"
 	// jooq codegen
-	compile 'org.jooq:jooq-codegen:3.10.2'
+	api 'org.jooq:jooq-codegen:3.13.1'
 	// db migration
-	compile 'org.flywaydb:flyway-core:5.0.7'
+	api "org.flywaydb:flyway-core:${props.VER_FLYWAY}"
 	// jsweet ts2java
-	compile 'com.jsoniter:jsoniter:0.9.23'
-	compile 'org.jsweet:jsweet-transpiler:2.0.1'
-	compile files("${System.properties['java.home']}/../lib/tools.jar")
+	implementation "com.jsoniter:jsoniter:${props.VER_JSONITER}"
+	implementation 'org.jsweet:jsweet-transpiler:2.3.9'
+	implementation files("${System.properties['java.home']}/../lib/tools.jar")
 	// java8 utilities
-	compile 'com.diffplug.durian:durian-core:1.2.0'
+	implementation 'com.diffplug.durian:durian-core:1.2.0'
+	// gradle utilities
+	implementation 'com.diffplug.gradle:goomph:3.22.0'
 }
 
 // if we're not in CI, grab all source
@@ -48,13 +68,25 @@ eclipse { project { name = 'mytake-buildSrc' } }
 
 gradlePlugin {
 	plugins {
-		flywayJooqEmbeddedPg {
-			id = 'org.mytake.gradle.flywayjooq.embeddedpg'
-			implementationClass = 'org.mytake.gradle.flywayjooq.EmbeddedPgPlugin'
+		flywayJooq {
+			id = 'org.mytake.gradle.flywayjooq'
+			implementationClass = 'org.mytake.gradle.flywayjooq.FlywayJooqPlugin'
+		}
+		node {
+			id = 'org.mytake.gradle.node'
+			implementationClass = 'org.mytake.gradle.node.NodePlugin'
 		}
 		jsoniterCodegen {
 			id = 'org.mytake.gradle.jsonitercodegen'
 			implementationClass = 'org.mytake.gradle.jsonitercodegen.JsoniterCodegenPlugin'
+		}
+		jsweetRepo {
+			id = 'org.mytake.gradle.jsweetrepo'
+			implementationClass = 'org.mytake.gradle.jsweet.JSweetRepoPlugin'
+		}
+		jsweetCodegen {
+			id = 'org.mytake.gradle.jsweetcodegen'
+			implementationClass = 'org.mytake.gradle.jsweet.JSweetPlugin'
 		}
 	}
 }

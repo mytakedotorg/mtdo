@@ -5,8 +5,14 @@ import { drawDocumentFact, drawVideoFact } from "../common/DrawFacts";
 import * as express from "express";
 const { registerFont, createCanvas } = require("canvas");
 const router = express.Router();
-registerFont('Merriweather-Regular.ttf', {family: 'Merriweather', weight: 'normal'})
-registerFont('Merriweather-Bold.ttf', {family: 'Merriweather', weight: 'bold'})
+registerFont("Merriweather-Regular.ttf", {
+  family: "Merriweather",
+  weight: "normal"
+});
+registerFont("Merriweather-Bold.ttf", {
+  family: "Merriweather",
+  weight: "bold"
+});
 
 function videoRangeFromString(rangeStr: string): [number, number] | null {
   if (rangeStr.startsWith("_")) {

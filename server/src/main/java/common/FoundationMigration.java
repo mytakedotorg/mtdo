@@ -10,9 +10,16 @@ import com.diffplug.common.base.Errors;
 import com.google.common.base.Preconditions;
 import com.google.common.io.Resources;
 import java.nio.charset.StandardCharsets;
+import org.jooq.JSONB;
 
 public abstract class FoundationMigration {
 	public abstract String description();
+
+	public JSONB migrate(JSONB input) {
+		String data = input.data();
+		String result = migrate(data);
+		return result == data ? input : JSONB.valueOf(result);
+	}
 
 	/**
 	 * Given the json content of a `blocks` array, returns the migrated blocks array.

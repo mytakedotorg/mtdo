@@ -26,6 +26,7 @@ import java.util.function.Consumer;
 import org.jooby.Env;
 import org.jooby.Jooby;
 import org.jooq.DSLContext;
+import org.jooq.JSONB;
 
 /** This is for setting the initial data for the case that the database is empty. */
 public class InitialData {
@@ -70,7 +71,7 @@ public class InitialData {
 		rev.setCreatedAt(time.nowTimestamp());
 		rev.setCreatedIp(IP);
 		rev.setTitle(title);
-		rev.setBlocks(builder.buildString());
+		rev.setBlocks(builder.buildJson());
 		rev.insert();
 
 		TakedraftRecord draft = dsl.newRecord(TAKEDRAFT);
@@ -102,7 +103,7 @@ public class InitialData {
 
 	static TakepublishedRecord take(DSLContext dsl, Time time, int user, String title, String factTitleSlug) throws IOException {
 		TakepublishedRecord record = takeInternal(dsl, time, user, title);
-		String jsonData = Resources.toString(Resources.getResource("initialdata/" + record.getTitleSlug() + ".json"), StandardCharsets.UTF_8);
+		JSONB jsonData = JSONB.valueOf(Resources.toString(Resources.getResource("initialdata/" + record.getTitleSlug() + ".json"), StandardCharsets.UTF_8));
 		record.setBlocks(jsonData);
 		record.setImageUrl(factTitleSlug);
 		record.insert();
@@ -115,7 +116,7 @@ public class InitialData {
 
 	static TakepublishedRecord take(DSLContext dsl, Time time, int user, String title, TakeBuilder b) throws IOException {
 		TakepublishedRecord record = takeInternal(dsl, time, user, title);
-		record.setBlocks(b.buildString());
+		record.setBlocks(b.buildJson());
 		record.insert();
 		return record;
 	}
