@@ -6,4 +6,6 @@ services:
     shm_size: '524288k' # 500MB in-memory disk
     ports:
       - "5432"
-  
+    volumes:
+      # make ~/Downloads available for initializing database in Dev LOAD_BACKUP=true
+      - ~/Downloads/:/Downloads
