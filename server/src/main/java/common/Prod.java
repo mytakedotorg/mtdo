@@ -60,10 +60,9 @@ public class Prod extends Jooby {
 		Flyway.configure()
 				.dataSource(registry.require(DataSource.class))
 				.locations("db/migration")
-				.baselineVersion("1")
-				.baselineOnMigrate(true)
+				.baselineVersion("7")
 				.load()
-				.migrate();
+				.baseline();
 	}
 
 	static void realtime(Jooby jooby) {

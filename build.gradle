@@ -3,6 +3,8 @@ plugins {
 	id 'com.diffplug.gradle.spotless'
 }
 
+gradle.startParameter.showStacktrace = ShowStacktrace.ALWAYS
+
 /* Not compatible with Gradle 5: https://github.com/mmalohlava/gradle-visteg/issues/12
  // set enabled to true to get a report.  Only needed if the task graph
  // changes, see build_deps.pdf for an example
