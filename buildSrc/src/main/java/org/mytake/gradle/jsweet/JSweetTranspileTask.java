@@ -18,6 +18,7 @@ package org.mytake.gradle.jsweet;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
@@ -41,8 +42,12 @@ import org.jsweet.transpiler.JSweetTranspiler;
 import org.jsweet.transpiler.SourceFile;
 import org.jsweet.transpiler.util.ConsoleTranspilationHandler;
 import org.jsweet.transpiler.util.ErrorCountTranspilationHandler;
+import org.jsweet.transpiler.util.ProcessUtil;
+import org.mytake.gradle.node.NodePlugin;
 
 import com.diffplug.gradle.FileMisc;
+import com.github.eirslett.maven.plugins.frontend.lib.FrontendPluginFactory;
+import com.github.eirslett.maven.plugins.frontend.lib.InstallConfig;
 
 /**
  * JSweet transpilation task
@@ -122,6 +127,11 @@ public class JSweetTranspileTask extends DefaultTask {
 			if (configuration.isTsOnly() != null) {
 				transpiler.setGenerateJsFiles(!configuration.isTsOnly());
 			}
+
+			// make sure we use the npm that we intend
+			NodePlugin.Extension node = getProject().getExtensions().getByType(NodePlugin.Extension.class);
+			node.setup.start(getProject());
+			ProcessUtil.addExtraPath(new File(getProject().getBuildDir(), "node-install/node").getAbsolutePath());
 			transpiler.transpile(transpilationHandler, sourceFiles);
 
 			FileMisc.flatten(new File(configuration.getTsOut(), configuration.getTsOut().getName()));
