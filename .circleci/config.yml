@@ -21,7 +21,7 @@ jobs:
           key: gradle-deps-{{ checksum "settings.gradle" }}-{{ checksum "buildSrc/build.gradle" }}-{{ checksum "gradle.properties" }}-{{ checksum "client/package-lock.json" }}-{{ checksum "server/build.gradle" }}-{{ checksum "foundation-gen/build.gradle" }}
       - run:
           name: 'gradlew check'
-          command: './gradlew check --stacktrace --info'
+          command: './gradlew check --stacktrace'
       - save_cache:
           key: gradle-deps-{{ checksum "settings.gradle" }}-{{ checksum "buildSrc/build.gradle" }}-{{ checksum "gradle.properties" }}-{{ checksum "client/package-lock.json" }}-{{ checksum "server/build.gradle" }}-{{ checksum "foundation-gen/build.gradle" }}
           paths:
