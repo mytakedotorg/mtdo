@@ -77,7 +77,7 @@ tasks.register('generateFoundation', JavaExec) {
 
 	dependsOn(tasks.classes)
 	inputs.dir('../presidential-debates').withPathSensitivity(PathSensitivity.NAME_ONLY)
-	outputs.file('../foundation/src/main/resources/foundation-index-hash.json')
+	outputs.dir('../foundation/src/main/resources')
 	outputs.cacheIf { true }
 }
 
