@@ -12,7 +12,7 @@
   "scripts": {
     "clean": "gulp clean",
     "deploy": "gulp buildProd",
-    "test": "jest --maxWorkers=2"
+    "test": "jest --maxWorkers=2 --ci --reporters=jest-junit"
   },
   "author": "",
   "license": "GPL-2.0",
@@ -55,6 +55,7 @@
     "gulp-rev": "^9.0.0",
     "gulp-sass": "^4.0.2",
     "gulp-task-listing": "^1.1.0",
+    "jest-junit": "^10.0.0",
     "node-sass": "^4.11.0",
     "prettier": "^1.13.7",
     "react-hot-loader": "^4.8.0",
@@ -81,5 +82,8 @@
       "./test/setup.js"
     ],
     "verbose": true
+  },
+  "jest-junit": {
+    "outputDirectory": "build/test-results/jest"
   }
 }
