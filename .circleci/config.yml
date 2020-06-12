@@ -34,9 +34,12 @@ jobs:
       - store_test_results:
           path: client/build/test-results/test
       - store_test_results:
+          path: client/build/test-results/jest
+      - store_test_results:
           path: foundation-gen/build/test-results/test
       - store_test_results:
           path: lucene/build/test-results/test
       - store_test_results:
           path: server/build/test-results/test
-      ## TODO: make client and node jest tests output junit, and slurp here
+      - store_test_results:
+          path: node/build/test-results/jest

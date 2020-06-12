@@ -72,9 +72,10 @@ node {
 	setup.nodeVersion = 'v8.15.1'
 	setup.npmVersion = 'provided'
 
-	check.dependsOn npmRun('test') {
+	npmRun('test') {
 		dependsOn('jsweet')
 		inputs.dir('src/main/scripts')
+		outputs.dir('build/test-results/jest')
 	}
 
 	// every gulp task automatically installs from package-lock.json using 'npm ci'
@@ -118,6 +119,10 @@ node {
 clean {
 	delete 'src/main/resources/assets'
 	delete 'src/main/resources/assets-dev'
+}
+
+tasks.named('check') {
+	dependsOn 'npm_run_test'
 }
 
 // make sure that all the gulp tasks are run

@@ -9,13 +9,13 @@ tasks.register('syncClientUtils', Sync) {
 }
 
 tasks.register('syncClientJava2Ts', Sync) {
-	dependsOn ':client:jsoniterCodegen'
+	dependsOn ':client:jsweet'
 	from '../client/src/main/scripts/java2ts'
 	into 'src/main/scripts/java2ts'
 }
 
 tasks.register('beforeCompile') {
-	dependsOn syncClientUtils, syncClientJava2Ts
+	dependsOn 'syncClientUtils', 'syncClientJava2Ts'
 }
 
 apply plugin: 'com.diffplug.gradle.spotless'
@@ -42,8 +42,12 @@ node {
 	setup.nodeVersion = 'v10.11.0'
 	setup.npmVersion = 'provided'
 
-	tasks.check.dependsOn npmRun('test') {
+	npmRun('test') {
 		dependsOn 'beforeCompile'
 		inputs.dir('src/main/scripts')
+		outputs.dir('build/test-results/jest')
 	}
+}
+tasks.named('check') {
+	dependsOn 'npm_run_test'
 }
