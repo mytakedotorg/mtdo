@@ -15,7 +15,7 @@
     "formatwrite": "prettier --write         '*.js' 'src/main/scripts/**/*.ts'",
     "runDev": "gulp proxy",
     "start": "node src/main/dist/server.js",
-    "test": "jest --maxWorkers=2"
+    "test": "jest --maxWorkers=2 --ci --reporters=jest-junit"
   },
   "author": "",
   "license": "GPL-2.0",
@@ -61,5 +61,11 @@
     ],
     "setupFiles": [],
     "verbose": true
+  },
+  "devDependencies": {
+    "jest-junit": "^10.0.0"
+  },
+  "jest-junit": {
+    "outputDirectory": "build/test-results/jest"
   }
 }
