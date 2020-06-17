@@ -41,8 +41,7 @@ import org.apache.lucene.analysis.CharArraySet;
 import org.apache.lucene.analysis.LowerCaseFilter;
 import org.apache.lucene.analysis.StopFilter;
 import org.apache.lucene.analysis.TokenStream;
-import org.apache.lucene.analysis.standard.StandardAnalyzer;
-import org.apache.lucene.analysis.standard.StandardFilter;
+import org.apache.lucene.analysis.en.EnglishAnalyzer;
 import org.apache.lucene.analysis.standard.StandardTokenizer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field.Store;
@@ -218,16 +217,16 @@ public class Lucene implements AutoCloseable {
 
 		static {
 			boolean ignoreCase = true;
-			STOPWORDS = new CharArraySet(StandardAnalyzer.ENGLISH_STOP_WORDS_SET, ignoreCase);
+			STOPWORDS = new CharArraySet(EnglishAnalyzer.ENGLISH_STOP_WORDS_SET, ignoreCase);
 			STOPWORDS.add("uh");
 			STOPWORDS.add("eh");
 		}
 
 		@Override
 		protected TokenStreamComponents createComponents(final String fieldName) {
-			final StandardTokenizer src = new StandardTokenizer();
+			StandardTokenizer src = new StandardTokenizer();
 			src.setMaxTokenLength(MAX_TOKEN_LENGTH);
-			TokenStream tok = new StandardFilter(src);
+			TokenStream tok = src;
 			tok = new LowerCaseFilter(tok);
 			tok = new StopFilter(tok, STOPWORDS);
 			return new TokenStreamComponents(src, tok) {
@@ -243,9 +242,7 @@ public class Lucene implements AutoCloseable {
 
 		@Override
 		protected TokenStream normalize(String fieldName, TokenStream in) {
-			TokenStream result = new StandardFilter(in);
-			result = new LowerCaseFilter(result);
-			return result;
+			return new LowerCaseFilter(in);
 		}
 	}
 }

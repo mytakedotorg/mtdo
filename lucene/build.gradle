@@ -1,14 +1,16 @@
 apply plugin: 'java'
 
+String VER_LUCENE = '7.5.0'
 dependencies {
 	implementation project(':client')
 	implementation 'com.diffplug.durian:durian-core:1.2.0'
 	implementation 'com.diffplug.durian:durian-collect:1.2.0'
 	implementation 'com.diffplug.durian:durian-io:1.2.0'
-	implementation 'org.apache.lucene:lucene-core:7.4.0'
-	implementation 'org.apache.lucene:lucene-queryparser:7.4.0'
-	testImplementation "junit:junit:$VER_JUNIT"
-	testImplementation "org.assertj:assertj-core:$VER_ASSERTJ"
+	implementation "org.apache.lucene:lucene-core:${VER_LUCENE}"
+	implementation "org.apache.lucene:lucene-queryparser:${VER_LUCENE}"
+	implementation "org.apache.lucene:lucene-analyzers-common:${VER_LUCENE}"
+	testImplementation "junit:junit:${VER_JUNIT}"
+	testImplementation "org.assertj:assertj-core:${VER_ASSERTJ}"
 }
 
 apply plugin: 'com.diffplug.gradle.spotless'
