@@ -25,7 +25,6 @@ import com.diffplug.common.io.Resources;
 import compat.java2ts.VideoFactContentJava;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.text.SimpleDateFormat;
@@ -229,15 +228,12 @@ public class Lucene implements AutoCloseable {
 			TokenStream tok = src;
 			tok = new LowerCaseFilter(tok);
 			tok = new StopFilter(tok, STOPWORDS);
-			return new TokenStreamComponents(src, tok) {
-				@Override
-				protected void setReader(final Reader reader) {
-					// So that if maxTokenLength was changed, the change takes
-					// effect next time tokenStream is called:
-					src.setMaxTokenLength(MAX_TOKEN_LENGTH);
-					super.setReader(reader);
-				}
-			};
+			return new TokenStreamComponents(reader -> {
+				// So that if maxTokenLength was changed, the change takes
+				// effect next time tokenStream is called:
+				src.setMaxTokenLength(MAX_TOKEN_LENGTH);
+				src.setReader(reader);
+			}, tok);
 		}
 
 		@Override
