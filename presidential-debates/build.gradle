@@ -33,6 +33,8 @@ spotless {
 		replace('trickle-down canonical', 'trickle down', 'trickle-down') // https://en.wikipedia.org/wiki/Trickle-down_economics
 		replace('AP stylebook says health care 1', 'healthcare', 'health care') // https://www.esolutionsinc.com/resources/healthcare-technology/how-in-the-health-care-do-you-spell-healthcare/#:~:text=In%20the%20health%20care%20versus,AP%20deems%20it%20two%20words.&text=Therefore%2C%20news%20organizations%20across%20the,two%2Dword%20form%20without%20question.
 		replace('AP stylebook says health care 2', 'health-care', 'health care') // https://www.esolutionsinc.com/resources/healthcare-technology/how-in-the-health-care-do-you-spell-healthcare/#:~:text=In%20the%20health%20care%20versus,AP%20deems%20it%20two%20words.&text=Therefore%2C%20news%20organizations%20across%20the,two%2Dword%20form%20without%20question.
+		replace('AP stylebook says health care 3', 'Healthcare', 'Health care') // https://www.esolutionsinc.com/resources/healthcare-technology/how-in-the-health-care-do-you-spell-healthcare/#:~:text=In%20the%20health%20care%20versus,AP%20deems%20it%20two%20words.&text=Therefore%2C%20news%20organizations%20across%20the,two%2Dword%20form%20without%20question.
+		replace('AP stylebook says health care 4', 'Health-care', 'Health care') // https://www.esolutionsinc.com/resources/healthcare-technology/how-in-the-health-care-do-you-spell-healthcare/#:~:text=In%20the%20health%20care%20versus,AP%20deems%20it%20two%20words.&text=Therefore%2C%20news%20organizations%20across%20the,two%2Dword%20form%20without%20question.
 	}
 	format 'foundation-saidOnly', {
 		target '**/*.said'
