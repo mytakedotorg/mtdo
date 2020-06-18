@@ -30,6 +30,7 @@ spotless {
 		replace('No need for sound effects 9', '(ph)', '')
 		replace('No need for sound effects 10', '(phonetic)', '')
 		replace('Use the number 1 instead of the letter l', 'l9', '19')
+		replace('trickle-down canonical', 'trickle down', 'trickle-down') // https://en.wikipedia.org/wiki/Trickle-down_economics
 	}
 	format 'foundation-saidOnly', {
 		target '**/*.said'
