@@ -69,10 +69,10 @@ jsoniterCodegen { codegenClass = 'java2ts.CodegenConfig' }
 ///////////////////////////////////////////////////////////////////////
 apply plugin: 'org.mytake.gradle.node'
 node {
-	setup.nodeVersion = 'v8.15.1'
+	setup.nodeVersion = 'v12.18.0'
 	setup.npmVersion = 'provided'
 
-	npmRun('test') {
+	npmRun('test_ci') {
 		dependsOn('jsweet')
 		inputs.dir('src/main/scripts')
 		outputs.dir('build/test-results/jest')
@@ -122,7 +122,7 @@ clean {
 }
 
 tasks.named('check') {
-	dependsOn 'npm_run_test'
+	dependsOn 'npm_run_test_ci'
 }
 
 // make sure that all the gulp tasks are run

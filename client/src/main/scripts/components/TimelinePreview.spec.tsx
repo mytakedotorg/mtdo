@@ -8,17 +8,6 @@ const onVideoSetClick = jest.fn();
 const onRangeSet = jest.fn();
 const onRangeCleared = jest.fn();
 
-interface MockWindow extends Window {
-  scrollTo: jest.Mock<{}> & typeof window.scrollTo;
-}
-
-function getMockWindow() {
-  window.scrollTo = jest.fn();
-  return window as MockWindow;
-}
-
-let mockWindow = getMockWindow();
-
 describe("Foundation Document", () => {
   let wrapper: ReactWrapper;
   const offset = 399;
@@ -29,11 +18,11 @@ describe("Foundation Document", () => {
     handleDocumentSetClick: onDocumentSetClick,
     handleVideoSetClick: onVideoSetClick,
     handleRangeSet: onRangeSet,
-    handleRangeCleared: onRangeCleared
+    handleRangeCleared: onRangeCleared,
   };
   const ranges = {
     highlightedRange: highlightedRange,
-    viewRange: viewRange
+    viewRange: viewRange,
   };
 
   beforeAll(() => {
