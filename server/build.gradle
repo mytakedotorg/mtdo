@@ -8,7 +8,7 @@ apply plugin: 'com.diffplug.gradle.spotless'
 spotless {
 	java {
 		target 'src/main/java/**/*.java', 'src/test/java/**/*.java'
-		licenseHeaderFile(rootProject.file('gradle/spotless.license.java'))
+		licenseHeaderFile rootProject.file('gradle/spotless-license-agpl.java')
 		importOrder()
 		eclipse().configFile(rootProject.file('gradle/spotless.eclipseformat.xml'))
 		removeUnusedImports()

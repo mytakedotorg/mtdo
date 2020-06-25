@@ -3,12 +3,10 @@
 ////////////////////////////////////////
 apply plugin: 'java-library'
 apply plugin: 'com.diffplug.gradle.spotless'
-String VER_PRETTIER = '1.13.4'	// this version is old, but newer versions move periods after </a> tag, seems like a bug
-// the bug keeping us on this old version is still present as of 1.19.1: https://github.com/prettier/prettier/blob/master/CHANGELOG.md
 spotless {
 	java {
 		target 'src/main/java/java2ts/**'
-		licenseHeaderFile(rootProject.file('gradle/spotless.license.java'))
+		licenseHeaderFile(rootProject.file('gradle/spotless-license-agpl.java'))
 		importOrder()
 		eclipse().configFile(rootProject.file('gradle/spotless.eclipseformat.xml'))
 		removeUnusedImports()
@@ -17,14 +15,12 @@ spotless {
 		target 'src/main/styles/**/*.scss'
 		prettier(VER_PRETTIER).config(['parser': 'css'])
 	}
-	/* TODO: Upgrade to latest prettier and bring this back
-	 format 'typescript', {
-	 target fileTree('src/main/scripts') {
-	 include '**'
-	 exclude 'java2ts/**'
-	 }
-	 prettier(VER_PRETTIER).config(['parser': 'typescript'])
-	 }	*/
+	format 'typescript', {
+		licenseHeaderFile rootProject.file('gradle/spotless-license-agpl.java'), '(import|const|declare|export|var) '
+		target 'src/main/scripts/**'
+		targetExclude '**/java2ts/**', '**/__snapshots__/**'
+		//prettier(VER_PRETTIER).config(['parser': 'typescript'])
+	}
 	format 'js', {
 		target 'gulpfile.js'
 		prettier(VER_PRETTIER).config(['parser': 'typescript'])
