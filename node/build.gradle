@@ -39,7 +39,7 @@ spotless {
 apply plugin: 'org.mytake.gradle.node'
 node {
 	// node 10.x is needed for node-canvas
-	setup.nodeVersion = 'v12.18.0'
+	setup.nodeVersion = buildsrc.NvmRc.read(file('../.nvmrc'))
 	setup.npmVersion = 'provided'
 
 	npmRun('test_ci') {
