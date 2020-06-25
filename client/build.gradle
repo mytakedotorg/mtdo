@@ -67,7 +67,7 @@ jsoniterCodegen { codegenClass = 'java2ts.CodegenConfig' }
 ///////////////////////////////////////////////////////////////////////
 apply plugin: 'org.mytake.gradle.node'
 node {
-	setup.nodeVersion = 'v12.18.0'
+	setup.nodeVersion = buildsrc.NvmRc.read(file('../.nvmrc'))
 	setup.npmVersion = 'provided'
 
 	npmRun('test_ci') {
@@ -119,8 +119,11 @@ clean {
 	delete 'src/main/resources/assets-dev'
 }
 
-tasks.named('check') {
+tasks.named('test') {
 	dependsOn 'npm_run_test_ci'
+}
+tasks.named('check') {
+	dependsOn 'test'
 }
 
 // make sure that all the gulp tasks are run

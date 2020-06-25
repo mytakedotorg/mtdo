@@ -51,6 +51,9 @@ dependencies {
 	implementation 'com.diffplug.durian:durian-core:1.2.0'
 	// gradle utilities
 	implementation 'com.diffplug.gradle:goomph:3.22.0'
+
+	testImplementation "junit:junit:${props.VER_JUNIT}"
+	testImplementation "org.assertj:assertj-core:${props.VER_ASSERTJ}"
 }
 
 // if we're not in CI, grab all source
