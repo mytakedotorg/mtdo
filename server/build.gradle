@@ -82,6 +82,7 @@ spotless {
 		indentWithTabs(2)
 		trimTrailingWhitespace()
 		endWithNewline()
+		licenseHeaderFile rootProject.file('gradle/spotless-license-agpl.rocker'), '@args|@import'
 	}
 }
 

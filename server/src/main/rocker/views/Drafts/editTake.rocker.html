@@ -1,8 +1,9 @@
+@import org.jooq.JSONB
+
 @*
 New draft -> Strings are null, ids are meaningless
 Existing draft -> Strings are not-null, all ids are meaningful
 *@
-@import org.jooq.JSONB
 
 @args(String title, JSONB blocksJson, int draftid, int lastrevid)
 
