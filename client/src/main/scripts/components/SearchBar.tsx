@@ -33,12 +33,12 @@ class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
     super(props);
 
     this.state = {
-      value: props.searchTerm
+      value: props.searchTerm,
     };
   }
   clearSearch = () => {
     this.setState({
-      value: ""
+      value: "",
     });
   };
   handleRemoveTagClick = (event: React.MouseEvent<HTMLDivElement>) => {
@@ -150,7 +150,8 @@ class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
                   <i
                     className="fa fa-exclamation-triangle"
                     aria-hidden="true"
-                  />Under construction
+                  />
+                  Under construction
                 </p>
                 <p className="searchbar__dropdown-link">
                   <a

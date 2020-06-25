@@ -28,7 +28,7 @@ import { alertErr, getHighlightedNodes, slugify } from "../utils/functions";
 import {
   TakeDocument,
   DocumentBlock,
-  VideoBlock
+  VideoBlock,
 } from "../components/BlockEditor";
 
 function getAllFacts(
@@ -44,7 +44,7 @@ function getAllFacts(
   const request: RequestInit = {
     method: "GET",
     headers: headers,
-    cache: "default"
+    cache: "default",
   };
 
   fetch(Routes.FOUNDATION_INDEX_HASH, request)
@@ -95,11 +95,11 @@ function fetchFact(
   const request: RequestInit = {
     method: "GET",
     headers: headers,
-    cache: "default"
+    cache: "default",
   };
 
   fetch(Routes.FOUNDATION_DATA + "/" + factHash + ".json", request)
-    .then(function(response: Response) {
+    .then(function (response: Response) {
       const contentType = response.headers.get("content-type");
       if (
         contentType &&
@@ -111,7 +111,7 @@ function fetchFact(
         callback("Error retrieving Fact", null);
       }
     })
-    .then(function(json: any) {
+    .then(function (json: any) {
       if (json.fact.kind === "video") {
         callback(null, decodeVideoFact(json), index, block);
       } else if (index !== undefined) {
@@ -124,7 +124,7 @@ function fetchFact(
         callback(null, json);
       }
     })
-    .catch(function(error: TypeError) {
+    .catch(function (error: TypeError) {
       callback(error, null);
     });
 }
@@ -144,11 +144,11 @@ export function fetchFactReturningPromise(
   const request: RequestInit = {
     method: "GET",
     headers: headers,
-    cache: "default"
+    cache: "default",
   };
 
   return fetch(Routes.FOUNDATION_DATA + "/" + factHash + ".json", request)
-    .then(function(response: Response) {
+    .then(function (response: Response) {
       const contentType = response.headers.get("content-type");
       if (
         contentType &&
@@ -158,10 +158,10 @@ export function fetchFactReturningPromise(
         return response.json();
       }
     })
-    .then(function(json: Foundation.VideoFactContentEncoded) {
+    .then(function (json: Foundation.VideoFactContentEncoded) {
       return {
         hash: factHash,
-        videoFact: decodeVideoFact(json)
+        videoFact: decodeVideoFact(json),
       };
     });
 }
@@ -200,10 +200,10 @@ function postRequest(
     method: "POST",
     credentials: "include",
     headers: headers,
-    body: JSON.stringify(bodyJson)
+    body: JSON.stringify(bodyJson),
   };
   fetch(route, request)
-    .then(function(response: Response) {
+    .then(function (response: Response) {
       const contentType = response.headers.get("content-type");
       if (
         contentType &&
@@ -225,7 +225,7 @@ function postRequest(
     .then((json: any) => {
       successCb(json);
     })
-    .catch(function(error: Error) {
+    .catch(function (error: Error) {
       alertErr("databaseAPI + " + route + ": " + error.message);
       throw error;
     });
@@ -314,7 +314,7 @@ function drawFacts(
                   nodes.push({
                     component: documentComponent.component,
                     innerHTML: [documentComponent.innerHTML],
-                    offset: documentComponent.offset
+                    offset: documentComponent.offset,
                   });
                 }
 
@@ -353,7 +353,7 @@ function drawFacts(
                   url: documentURL,
                   title: title,
                   alt: title,
-                  cid: "doc" + documentFactCount.toString()
+                  cid: "doc" + documentFactCount.toString(),
                 };
                 documentFactCount++;
 
@@ -414,7 +414,7 @@ function drawFacts(
                     url: videoURL,
                     title: title,
                     alt: title,
-                    cid: "vid" + videoFactCount.toString()
+                    cid: "vid" + videoFactCount.toString(),
                   };
                   videoFactCount++;
                 } else {
@@ -429,7 +429,7 @@ function drawFacts(
                     url: videoURL,
                     title: title,
                     alt: title,
-                    cid: "vid" + videoFactCount.toString()
+                    cid: "vid" + videoFactCount.toString(),
                   };
                   videoFactCount++;
                 }
@@ -653,10 +653,10 @@ function sendEmail(
         const body: EmailSelf = {
           subject: takeDocument.title,
           body: htmlStr,
-          cidMap: cidUriMap
+          cidMap: cidUriMap,
         };
 
-        postRequest(Routes.API_EMAIL_SELF, body, function() {
+        postRequest(Routes.API_EMAIL_SELF, body, function () {
           done();
         });
       }

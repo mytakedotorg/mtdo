@@ -40,21 +40,21 @@ class VideoResultsLoader extends React.Component<
     super(props);
 
     this.state = {
-      loading: true
+      loading: true,
     };
   }
   getFactResults = () => {
     const bodyJson: Search.Request = {
-      q: this.props.searchTerm
+      q: this.props.searchTerm,
     };
     postRequest(
       Routes.API_SEARCH,
       bodyJson,
-      function(json: Search.FactResultList) {
+      function (json: Search.FactResultList) {
         const resultList: Search.FactResultList = json;
         this.setState({
           loading: false,
-          resultList: resultList
+          resultList: resultList,
         });
       }.bind(this)
     );
@@ -77,9 +77,9 @@ interface VideoResultsLoaderBranchProps {
   containerState: VideoResultsLoaderState;
 }
 
-const VideoResultsLoaderBranch: React.StatelessComponent<
-  VideoResultsLoaderBranchProps
-> = props => {
+const VideoResultsLoaderBranch: React.StatelessComponent<VideoResultsLoaderBranchProps> = (
+  props
+) => {
   if (props.containerState.loading || !props.containerState.resultList) {
     return <VideoResultLoadingView />;
   } else {
@@ -92,7 +92,7 @@ const VideoResultsLoaderBranch: React.StatelessComponent<
   }
 };
 
-export const VideoResultLoadingView: React.StatelessComponent<{}> = props => (
+export const VideoResultLoadingView: React.StatelessComponent<{}> = (props) => (
   <div className="results">
     <div className="results__inner-container">
       <h1 className="results__heading">Searching...</h1>

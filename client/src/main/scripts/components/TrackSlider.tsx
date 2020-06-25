@@ -50,7 +50,7 @@ class TrackSlider extends React.Component<TrackSliderProps, TrackSliderState> {
 
     this.state = {
       prettyStart: convertSecondsToTimestamp(props.start),
-      prettyEnd: convertSecondsToTimestamp(props.end)
+      prettyEnd: convertSecondsToTimestamp(props.end),
     };
   }
   componentWillReceiveProps(nextProps: TrackSliderProps) {
@@ -60,7 +60,7 @@ class TrackSlider extends React.Component<TrackSliderProps, TrackSliderState> {
     ) {
       this.setState({
         prettyStart: convertSecondsToTimestamp(nextProps.start),
-        prettyEnd: convertSecondsToTimestamp(nextProps.end)
+        prettyEnd: convertSecondsToTimestamp(nextProps.end),
       });
     }
   }
@@ -73,7 +73,7 @@ class TrackSlider extends React.Component<TrackSliderProps, TrackSliderState> {
           {this.state.prettyStart}
         </p>
         <div className="trackSlider__range-container">
-          {props.rangeSliders.map(rangeSlider => {
+          {props.rangeSliders.map((rangeSlider) => {
             const start =
               rangeSlider.start < props.start ? props.start : rangeSlider.start;
             let defaultValue: number | [number, number];

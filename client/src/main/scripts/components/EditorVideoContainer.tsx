@@ -46,7 +46,7 @@ class EditorVideoContainer extends React.Component<
   constructor(props: EditorVideoContainerProps) {
     super(props);
     this.state = {
-      loading: true
+      loading: true,
     };
   }
   getFact = (factHash: string) => {
@@ -66,7 +66,7 @@ class EditorVideoContainer extends React.Component<
         } else {
           this.setState({
             loading: false,
-            videoFact: factContent
+            videoFact: factContent,
           });
         }
       }
@@ -95,9 +95,9 @@ interface EditorVideoBranchProps {
   containerState: EditorVideoContainerState;
 }
 
-export const EditorVideoBranch: React.StatelessComponent<
-  EditorVideoBranchProps
-> = props => {
+export const EditorVideoBranch: React.StatelessComponent<EditorVideoBranchProps> = (
+  props
+) => {
   if (props.containerState.loading || !props.containerState.videoFact) {
     return <VideoLoadingView />;
   } else {
@@ -114,7 +114,7 @@ export const EditorVideoBranch: React.StatelessComponent<
   }
 };
 
-const VideoLoadingView: React.StatelessComponent<{}> = props => (
+const VideoLoadingView: React.StatelessComponent<{}> = (props) => (
   <div className="editor__document editor__document--base editor__document--hover">
     <h2 className="editor__document-title">Loading</h2>
   </div>

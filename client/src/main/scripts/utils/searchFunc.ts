@@ -94,7 +94,7 @@ export class TurnWithResults {
         // else create a new highlight
         multiHighlights.push({
           cut: [start, end],
-          highlights: [found]
+          highlights: [found],
         });
       }
     }

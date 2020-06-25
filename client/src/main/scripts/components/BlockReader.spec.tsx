@@ -27,13 +27,13 @@ const doc: TakeDocument = {
   blocks: [
     {
       kind: "paragraph",
-      text: ""
-    }
-  ]
+      text: "",
+    },
+  ],
 };
 
 jest.mock("./ReactionContainer", () => ({
-  default: "ReactionContainer"
+  default: "ReactionContainer",
 }));
 
 function createNodeMock(element: React.ReactElement<HTMLElement>) {
@@ -42,28 +42,28 @@ function createNodeMock(element: React.ReactElement<HTMLElement>) {
       return {
         resetHeight() {
           // Do nothing
-        }
+        },
       };
     }
     case "textarea": {
       return {
         focus() {
           // Do nothing
-        }
+        },
       };
     }
     case "p": {
       return {
         resetHeight() {
           // Do nothing
-        }
+        },
       };
     }
     case "h1": {
       return {
         focus() {
           // Do nothing
-        }
+        },
       };
     }
   }

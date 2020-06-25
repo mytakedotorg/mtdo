@@ -73,7 +73,7 @@ function videoFactImage(
   const canvas = createCanvas(480, 360);
   const ctx = canvas.getContext("2d");
   if (ctx) {
-    return new Promise(function(resolve, reject) {
+    return new Promise(function (resolve, reject) {
       drawVideoFact(canvas, decodeVideoFact(videoFact), [hStart, hEnd])
         .then(() => {
           resolve(canvas.toDataURL());
@@ -171,7 +171,7 @@ router.get("/:" + IMAGEKEY, (req: Request, res: Response) => {
 
       if (videoFact) {
         videoFactImage(videoFact, hRange[0], hRange[1])
-          .then(function(png: string) {
+          .then(function (png: string) {
             const img = new Buffer(png.split(",")[1], "base64"); // Remove "data:image/png;base64,"
             res.writeHead(200, {
               "Content-Type": "image/png",
@@ -179,7 +179,7 @@ router.get("/:" + IMAGEKEY, (req: Request, res: Response) => {
             });
             return res.end(img);
           })
-          .catch(function() {
+          .catch(function () {
             throw "Error creating image buffer";
           });
       } else {

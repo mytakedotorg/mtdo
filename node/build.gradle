@@ -24,11 +24,11 @@ spotless {
 		licenseHeaderFile rootProject.file('gradle/spotless-license-agpl.java'), '(import|const|declare|export|var) '
 		target 'src/main/scripts/**/*.ts'
 		targetExclude 'src/main/scripts/java2ts/**', 'src/main/scripts/common/**', 'src/main/scripts/server.ts', '**/__snapshots__/**'
-		//prettier(VER_PRETTIER).config(['parser': 'typescript'])
+		prettier(VER_PRETTIER).config(['parser': 'typescript'])
 	}
 	format 'js', {
 		target 'gulpfile.js'
-		//prettier(VER_PRETTIER).config(['parser': 'typescript'])
+		prettier(VER_PRETTIER).config(['parser': 'typescript'])
 	}
 }
 

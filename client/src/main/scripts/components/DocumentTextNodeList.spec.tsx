@@ -26,7 +26,7 @@ const onMouseUp = jest.fn();
 const className = "document__text";
 
 jest.mock("./DocumentTextNode", () => ({
-  default: "DocumentTextNode"
+  default: "DocumentTextNode",
 }));
 
 test("DocumentTextNodeList", () => {

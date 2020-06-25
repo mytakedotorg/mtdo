@@ -72,7 +72,7 @@ class CaptionTextNodeList extends React.Component<
         }}
       >
         {this.props.documentNodes.map(
-          function(element: CaptionNode, index: number) {
+          function (element: CaptionNode, index: number) {
             const fullName = this.props.videoFact.speakers[
               this.props.videoFact.speakerPerson[index]
             ].fullName;

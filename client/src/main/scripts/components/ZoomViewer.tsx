@@ -44,7 +44,7 @@ class ZoomViewer extends React.Component<ZoomViewerProps, ZoomViewerState> {
     numberLineTransform.setAfter(0, this.width);
 
     this.state = {
-      numberLineTransform: numberLineTransform
+      numberLineTransform: numberLineTransform,
     };
   }
   updateCanvas = () => {

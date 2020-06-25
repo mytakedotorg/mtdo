@@ -22,7 +22,7 @@ import * as renderer from "react-test-renderer";
 import FoundationView from "./FoundationView";
 
 jest.mock("./TimelineView", () => ({
-  default: "TimelineView"
+  default: "TimelineView",
 }));
 
 test("With fact in URL", () => {

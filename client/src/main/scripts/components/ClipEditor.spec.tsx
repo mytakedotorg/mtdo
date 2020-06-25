@@ -24,19 +24,19 @@ import {
   initialRangeSliders,
   unzoomedRangeSliders,
   zoomedRangeSliders,
-  videoFactLink
+  videoFactLink,
 } from "../utils/testUtils";
 
 jest.mock("./ZoomViewer", () => ({
-  default: "ZoomViewer"
+  default: "ZoomViewer",
 }));
 
 jest.mock("./TrackSlider", () => ({
-  default: "TrackSlider"
+  default: "TrackSlider",
 }));
 
 jest.mock("./QuickShare", () => ({
-  default: "QuickShare"
+  default: "QuickShare",
 }));
 
 const eventHandlers: ClipEditorEventHandlers = {
@@ -48,7 +48,7 @@ const eventHandlers: ClipEditorEventHandlers = {
   onSendToTake: jest.fn(),
   onSkipBackPress: jest.fn(),
   onSkipForwardPress: jest.fn(),
-  onZoomToClipPress: jest.fn()
+  onZoomToClipPress: jest.fn(),
 };
 
 test("Initial ClipEditor", () => {

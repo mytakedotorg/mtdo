@@ -22,7 +22,7 @@ import * as renderer from "react-test-renderer";
 import {
   EditorDocumentBranch,
   EditorDocumentContainerProps,
-  EditorDocumentContainerState
+  EditorDocumentContainerState,
 } from "./EditorDocumentContainer";
 import { documentFactLink, documentNodes } from "../utils/testUtils";
 
@@ -34,17 +34,17 @@ const containerProps: EditorDocumentContainerProps = {
     kind: "document",
     excerptId: "o_dRqrNJ62wzlgLilTrLxkHqGmvAS9qTpa4z4pjyFqA=",
     highlightedRange: [11, 53],
-    viewRange: [0, 218]
+    viewRange: [0, 218],
   },
   eventHandlers: {
-    onDocumentClick: mockFn
+    onDocumentClick: mockFn,
   },
-  idx: 1
+  idx: 1,
 };
 
 const document = {
   fact: documentFactLink.fact,
-  nodes: documentNodes
+  nodes: documentNodes,
 };
 
 test("Document loading", () => {
@@ -64,7 +64,7 @@ test("Document loading", () => {
 test("Successfully loaded Document", () => {
   const containerState: EditorDocumentContainerState = {
     loading: false,
-    document: document
+    document: document,
   };
 
   const tree = renderer

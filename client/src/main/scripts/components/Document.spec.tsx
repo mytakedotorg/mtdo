@@ -28,15 +28,15 @@ const onScroll = jest.fn();
 
 const eventHandlers = {
   onMouseUp: onMouseUp,
-  onScroll: onScroll
+  onScroll: onScroll,
 };
 
 jest.mock("./DocumentTextNodeList", () => ({
-  default: "DocumentTextNodeList"
+  default: "DocumentTextNodeList",
 }));
 
 jest.mock("./CaptionTextNodeList", () => ({
-  default: "CaptionTextNodeList"
+  default: "CaptionTextNodeList",
 }));
 
 test("Document component", () => {
@@ -59,8 +59,9 @@ const children = (
         Section 1.{" "}
         <span className="document__text--selected">
           Neither slavery nor involuntary servitude
-        </span>, except as a punishment for crime whereof the party shall have
-        been duly convicted, shall exist within the United States, or any place
+        </span>
+        , except as a punishment for crime whereof the party shall have been
+        duly convicted, shall exist within the United States, or any place
         subject to their jurisdiction.
       </p>
     </div>

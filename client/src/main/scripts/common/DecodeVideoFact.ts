@@ -55,6 +55,6 @@ export function decodeVideoFact(
     charOffsets: charOffsets,
     timestamps: timestamps,
     speakerPerson: speakerPerson,
-    speakerWord: speakerWord
+    speakerWord: speakerWord,
   };
 }

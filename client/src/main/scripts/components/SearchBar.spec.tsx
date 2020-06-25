@@ -22,7 +22,7 @@ import * as renderer from "react-test-renderer";
 import SearchBar from "./SearchBar";
 
 jest.mock("./DropDown", () => ({
-  default: "DropDown"
+  default: "DropDown",
 }));
 
 test("SearchBar", () => {

@@ -69,7 +69,7 @@ export default class TimelineView extends React.Component<
       selectedOption: "Debates",
       timelineItems: [],
       urlValues: urlValues,
-      URLIsValid: urlValues === null ? true : false
+      URLIsValid: urlValues === null ? true : false,
     };
   }
   initializeTimeline = (
@@ -106,8 +106,8 @@ export default class TimelineView extends React.Component<
             idx: idx,
             start: new Date(factlink.fact.primaryDate),
             content: factlink.fact.title,
-            kind: factlink.fact.kind
-          }
+            kind: factlink.fact.kind,
+          },
         ];
       }
       if (URLIsValid) {
@@ -116,11 +116,11 @@ export default class TimelineView extends React.Component<
           loading: false,
           factLink: currentFactLink ? currentFactLink : null,
           timelineItems: timelineItems,
-          URLIsValid: true
+          URLIsValid: true,
         };
 
         this.setState({
-          ...newStateObject
+          ...newStateObject,
         });
       } else {
         if (window.location.pathname.startsWith(Routes.FOUNDATION + "/")) {
@@ -137,7 +137,7 @@ export default class TimelineView extends React.Component<
     if (value === "Debates" || value === "Documents") {
       if (value !== this.state.selectedOption) {
         this.setState({
-          selectedOption: value
+          selectedOption: value,
         });
       }
     }
@@ -150,8 +150,8 @@ export default class TimelineView extends React.Component<
           ...this.state,
           factLink: factLink,
           urlValues: {
-            factTitleSlug: factTitleSlug
-          }
+            factTitleSlug: factTitleSlug,
+          },
         };
         if (this.props.path.startsWith(Routes.FOUNDATION)) {
           window.history.pushState(
@@ -163,8 +163,8 @@ export default class TimelineView extends React.Component<
         this.setState({
           factLink: factLink,
           urlValues: {
-            factTitleSlug: factTitleSlug
-          }
+            factTitleSlug: factTitleSlug,
+          },
         });
       }
     }
@@ -173,7 +173,7 @@ export default class TimelineView extends React.Component<
     if (event.state) {
       // Back button was pressed, set state to popped state
       this.setState({
-        ...event.state
+        ...event.state,
       });
     } else if (this.updatingURL) {
       // Application is updating URL, state is ok, do nothing
@@ -200,8 +200,8 @@ export default class TimelineView extends React.Component<
             ...oldURLValues,
             factTitleSlug: factTitleSlug,
             highlightedRange: highlightedRange,
-            viewRange: viewRange
-          }
+            viewRange: viewRange,
+          },
         };
 
         let newURL = Routes.FOUNDATION_V1 + "/" + factTitleSlug + "/";
@@ -229,8 +229,8 @@ export default class TimelineView extends React.Component<
             urlValues: {
               ...oldURLValues,
               highlightedRange: highlightedRange,
-              viewRange: viewRange
-            }
+              viewRange: viewRange,
+            },
           });
 
           window.history.pushState(stateObject, "UnusedTitle", newURL);
@@ -261,8 +261,8 @@ export default class TimelineView extends React.Component<
             ...oldURLValues,
             factTitleSlug: factTitleSlug,
             highlightedRange: undefined,
-            viewRange: undefined
-          }
+            viewRange: undefined,
+          },
         };
 
         let newURL = Routes.FOUNDATION_V1 + "/" + factTitleSlug;
@@ -272,8 +272,8 @@ export default class TimelineView extends React.Component<
             urlValues: {
               ...oldURLValues,
               highlightedRange: undefined,
-              viewRange: undefined
-            }
+              viewRange: undefined,
+            },
           });
 
           window.history.pushState(stateObject, "UnusedTitle", newURL);
@@ -325,19 +325,19 @@ export default class TimelineView extends React.Component<
         if (pathArr[2] && pathArr[2].indexOf("-") !== -1) {
           highlightedRange = [
             parseFloat(pathArr[2].split("-")[0]),
-            parseFloat(pathArr[2].split("-")[1])
+            parseFloat(pathArr[2].split("-")[1]),
           ];
           if (pathArr[3] && pathArr[3].indexOf("-") !== -1) {
             viewRange = [
               parseInt(pathArr[3].split("-")[0]),
-              parseInt(pathArr[3].split("-")[1])
+              parseInt(pathArr[3].split("-")[1]),
             ];
           }
         }
         return {
           factTitleSlug: factTitleSlug,
           highlightedRange: highlightedRange,
-          viewRange: viewRange
+          viewRange: viewRange,
         };
       } else {
         //route not /foundation-v1
@@ -357,17 +357,17 @@ export default class TimelineView extends React.Component<
   render() {
     const setFactHandlers: SetFactHandlers = this.props.setFactHandlers
       ? {
-          ...this.props.setFactHandlers
+          ...this.props.setFactHandlers,
         }
       : {
           handleDocumentSetClick: this.handleDocumentSetClick,
           handleVideoSetClick: this.handleVideoSetClick,
           handleRangeSet: this.handleRangeSet,
-          handleRangeCleared: this.handleRangeCleared
+          handleRangeCleared: this.handleRangeCleared,
         };
     const eventHandlers: EventHandlers = {
       handleChange: this.handleChange,
-      handleClick: this.handleClick
+      handleClick: this.handleClick,
     };
     return (
       <TimelineViewBranch
@@ -409,11 +409,11 @@ export class TimelineViewBranch extends React.Component<
       if (props.containerState.urlValues.viewRange) {
         ranges = {
           highlightedRange: props.containerState.urlValues.highlightedRange,
-          viewRange: props.containerState.urlValues.viewRange
+          viewRange: props.containerState.urlValues.viewRange,
         };
       } else {
         ranges = {
-          highlightedRange: props.containerState.urlValues.highlightedRange
+          highlightedRange: props.containerState.urlValues.highlightedRange,
         };
       }
     }

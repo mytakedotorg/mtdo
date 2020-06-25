@@ -43,14 +43,14 @@ class AnonymousTake extends React.Component<
   buildTakeDocument = (takeObject: Share.ShareReq): TakeDocument => {
     const highlightedRange: [number, number] = [
       parseFloat(takeObject.hStart),
-      parseFloat(takeObject.hEnd)
+      parseFloat(takeObject.hEnd),
     ];
     let block: TakeBlock;
     if (takeObject.vidId) {
       block = {
         kind: "video",
         videoId: takeObject.vidId,
-        range: highlightedRange
+        range: highlightedRange,
       };
     } else if (
       takeObject.docId &&
@@ -59,13 +59,13 @@ class AnonymousTake extends React.Component<
     ) {
       const viewRange: [number, number] = [
         parseFloat(takeObject.vStart),
-        parseFloat(takeObject.vEnd)
+        parseFloat(takeObject.vEnd),
       ];
       block = {
         kind: "document",
         excerptId: takeObject.docId,
         highlightedRange: highlightedRange,
-        viewRange: viewRange
+        viewRange: viewRange,
       };
     } else {
       const msg = "AnonymousTake: Error decoding fact block";
@@ -74,7 +74,7 @@ class AnonymousTake extends React.Component<
     }
     const takeDocument: TakeDocument = {
       title: takeObject.title,
-      blocks: [block]
+      blocks: [block],
     };
     return takeDocument;
   };
@@ -101,7 +101,7 @@ class AnonymousTake extends React.Component<
   }
   render() {
     const eventHandlers = {
-      onDocumentClick: () => {}
+      onDocumentClick: () => {},
     };
     return (
       <div className="anonymoustake">

@@ -46,7 +46,7 @@ class DocumentTextNodeList extends React.Component<
           (this.scrollWindow = scrollWindow)
         }
       >
-        {this.props.documentNodes.map(function(
+        {this.props.documentNodes.map(function (
           element: FoundationNode,
           index: number
         ) {

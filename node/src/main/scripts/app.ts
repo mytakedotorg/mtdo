@@ -69,7 +69,7 @@ declare global {
 }
 
 // catch 404 and forward to error handler
-app.use(function(req: Request, res: Response, next: NextFunction) {
+app.use(function (req: Request, res: Response, next: NextFunction) {
   var err = new Error("Not Found");
   err.status = 404;
   next(err);
@@ -77,7 +77,7 @@ app.use(function(req: Request, res: Response, next: NextFunction) {
 
 // development error handler will print stacktrace
 if (app.get("env") === "development") {
-  app.use(function(
+  app.use(function (
     err: Error,
     req: Request,
     res: Response,
@@ -92,7 +92,7 @@ if (app.get("env") === "development") {
 }
 
 // production error handler will not leak stacktrace
-app.use(function(err: Error, req: Request, res: Response, next: NextFunction) {
+app.use(function (err: Error, req: Request, res: Response, next: NextFunction) {
   res.status(err.status || 500);
   res.json({
     message: err.message,

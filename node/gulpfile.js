@@ -21,7 +21,7 @@ gulp.task(BUILD, () => {
     .pipe(gulp.dest(config.dist));
 });
 
-gulp.task(PROXY, function() {
+gulp.task(PROXY, function () {
   nodemon({
     script: config.dist + "/server.js",
     ext: "js",

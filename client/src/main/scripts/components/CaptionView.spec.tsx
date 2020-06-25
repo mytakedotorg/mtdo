@@ -24,11 +24,11 @@ import { TimeRange, TRACKSTYLES__RANGE } from "./Video";
 import { videoFactLink, videoFactFast } from "../utils/testUtils";
 
 jest.mock("./Document", () => ({
-  default: "Document"
+  default: "Document",
 }));
 
 jest.mock("./ClipEditor", () => ({
-  default: "ClipEditor"
+  default: "ClipEditor",
 }));
 
 const eventHandlers: CaptionViewEventHandlers = {
@@ -42,7 +42,7 @@ const eventHandlers: CaptionViewEventHandlers = {
   onSendToTake: jest.fn(),
   onSkipBackPress: jest.fn(),
   onSkipForwardPress: jest.fn(),
-  onZoomToClipPress: jest.fn()
+  onZoomToClipPress: jest.fn(),
 };
 
 test("CaptionTextNodeList", () => {
@@ -51,14 +51,14 @@ test("CaptionTextNodeList", () => {
     end: 25,
     type: "VIEW",
     styles: TRACKSTYLES__RANGE,
-    label: "Zoom"
+    label: "Zoom",
   };
   const selectionRange: TimeRange = {
     start: 0,
     end: 0,
     type: "SELECTION",
     styles: TRACKSTYLES__RANGE,
-    label: "Clip"
+    label: "Clip",
   };
   const rangeSliders = [viewRange, selectionRange];
 
@@ -88,14 +88,14 @@ test("CaptionTextNodeList with highlights from props", () => {
     end: 8.7,
     type: "VIEW",
     styles: TRACKSTYLES__RANGE,
-    label: "Zoom"
+    label: "Zoom",
   };
   const selectionRange: TimeRange = {
     start: 5.3,
     end: 7.2,
     type: "SELECTION",
     styles: TRACKSTYLES__RANGE,
-    label: "Zoom"
+    label: "Zoom",
   };
   const rangeSliders = [viewRange, selectionRange];
 

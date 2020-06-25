@@ -62,7 +62,7 @@ export function getHighlightedNodes(
       "span",
       {
         className: "editor__document-highlight",
-        key: "somekey"
+        key: "somekey",
       },
       documentNodes[0].innerHTML.toString().substring(startIndex, endIndex)
     );
@@ -71,7 +71,7 @@ export function getHighlightedNodes(
     newNode.innerHTML = [
       newNode.innerHTML.toString().substring(0, startIndex),
       newSpan,
-      newNode.innerHTML.toString().substring(endIndex, length)
+      newNode.innerHTML.toString().substring(endIndex, length),
     ];
     highlightedNodes = [newNode];
   } else if (documentNodes.length > 1) {
@@ -85,7 +85,7 @@ export function getHighlightedNodes(
       "span",
       {
         className: "editor__document-highlight",
-        key: "somekey"
+        key: "somekey",
       },
       documentNodes[0].innerHTML.toString().substring(startIndex, endIndex)
     );
@@ -93,7 +93,7 @@ export function getHighlightedNodes(
     let newNode: FoundationNode = (Object as any).assign({}, documentNodes[0]);
     newNode.innerHTML = [
       newNode.innerHTML.toString().substring(0, startIndex),
-      newSpan
+      newSpan,
     ];
 
     highlightedNodes = [newNode];
@@ -116,7 +116,7 @@ export function getHighlightedNodes(
         "span",
         {
           className: "editor__document-highlight",
-          key: "somekey"
+          key: "somekey",
         },
         documentNodes[index].innerHTML
           .toString()
@@ -129,7 +129,7 @@ export function getHighlightedNodes(
       );
       newNode.innerHTML = [
         newSpan,
-        newNode.innerHTML.toString().substring(endIndex, length)
+        newNode.innerHTML.toString().substring(endIndex, length),
       ];
 
       highlightedNodes = [...highlightedNodes, newNode];

@@ -25,7 +25,7 @@ import { rangeStyle } from "../utils/testUtils";
 
 const eventHandlers: TrackSliderEventHandlers = {
   onAfterRangeChange: jest.fn(),
-  onRangeChange: jest.fn()
+  onRangeChange: jest.fn(),
 };
 
 test("Render a slider", () => {

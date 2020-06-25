@@ -33,7 +33,7 @@ interface FeedListProps {
   cards: Card[];
 }
 
-const FeedList: React.StatelessComponent<FeedListProps> = props => {
+const FeedList: React.StatelessComponent<FeedListProps> = (props) => {
   return (
     <div className="feed">
       <div className="feed__inner-container">

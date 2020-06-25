@@ -20,10 +20,10 @@
 export const windowUtils = {
   init: () => {
     (window as any).YTConfig = {
-      host: "https://www.youtube.com"
+      host: "https://www.youtube.com",
     };
 
-    window.onerror = function(
+    window.onerror = function (
       message: string,
       source?: string,
       lineno?: number,
@@ -50,14 +50,14 @@ export const windowUtils = {
       alert(msg);
     };
     if (!String.prototype.startsWith) {
-      String.prototype.startsWith = function(search: string, pos = 0) {
+      String.prototype.startsWith = function (search: string, pos = 0) {
         return (
           this.substr(!pos || pos < 0 ? 0 : +pos, search.length) === search
         );
       };
     }
     if (!String.prototype.includes) {
-      String.prototype.includes = function(search: string, start?: number) {
+      String.prototype.includes = function (search: string, start?: number) {
         "use strict";
         if (typeof start !== "number") {
           start = 0;
@@ -70,5 +70,5 @@ export const windowUtils = {
         }
       };
     }
-  }
+  },
 };

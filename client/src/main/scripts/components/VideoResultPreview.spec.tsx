@@ -23,7 +23,7 @@ import VideoResultPreview from "./VideoResultPreview";
 import { kennedyNixon } from "../utils/testUtils";
 
 jest.mock("./VideoResultTurnList", () => ({
-  default: "VideoResultTurnList"
+  default: "VideoResultTurnList",
 }));
 
 test("VideoResultPreview containing", () => {

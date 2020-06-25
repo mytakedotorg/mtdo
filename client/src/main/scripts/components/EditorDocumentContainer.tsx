@@ -28,7 +28,7 @@ import { Foundation } from "../java2ts/Foundation";
 import {
   isWriteOnly,
   ReadingEventHandlers,
-  WritingEventHandlers
+  WritingEventHandlers,
 } from "./BlockEditor";
 
 export interface EditorDocumentContainerProps {
@@ -54,7 +54,7 @@ class EditorDocumentContainer extends React.Component<
     super(props);
 
     this.state = {
-      loading: true
+      loading: true,
     };
   }
   getFact = (factHash: string) => {
@@ -78,7 +78,7 @@ class EditorDocumentContainer extends React.Component<
             nodes.push({
               component: documentComponent.component,
               innerHTML: [documentComponent.innerHTML],
-              offset: documentComponent.offset
+              offset: documentComponent.offset,
             });
           }
 
@@ -86,8 +86,8 @@ class EditorDocumentContainer extends React.Component<
             loading: false,
             document: {
               fact: factContent.fact,
-              nodes: nodes
-            }
+              nodes: nodes,
+            },
           });
         }
       }
@@ -116,9 +116,9 @@ interface EditorDocumentBranchProps {
   containerState: EditorDocumentContainerState;
 }
 
-export const EditorDocumentBranch: React.StatelessComponent<
-  EditorDocumentBranchProps
-> = props => {
+export const EditorDocumentBranch: React.StatelessComponent<EditorDocumentBranchProps> = (
+  props
+) => {
   if (props.containerState.loading || !props.containerState.document) {
     return <DocumentLoadingView />;
   } else {
@@ -131,7 +131,7 @@ export const EditorDocumentBranch: React.StatelessComponent<
   }
 };
 
-const DocumentLoadingView: React.StatelessComponent<{}> = props => (
+const DocumentLoadingView: React.StatelessComponent<{}> = (props) => (
   <div className="editor__document editor__document--base editor__document--hover">
     <h2 className="editor__document-title">Loading</h2>
   </div>
@@ -173,7 +173,7 @@ class Document extends React.Component<DocumentProps, DocumentState> {
     } else {
       const factlink: Foundation.FactLink = {
         fact: this.props.document.fact,
-        hash: this.props.block.excerptId
+        hash: this.props.block.excerptId,
       };
       this.props.eventHandlers.onDocumentClick(
         factlink,

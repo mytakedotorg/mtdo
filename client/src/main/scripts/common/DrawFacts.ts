@@ -25,7 +25,7 @@ import {
   getCharRangeFromVideoRange,
   highlightCaption,
   CaptionNode,
-  FoundationNode
+  FoundationNode,
 } from "./CaptionNodes";
 import { getHighlightedNodes } from "./DocumentNodes";
 import { loadImage } from "../utils/loadImage";
@@ -35,7 +35,7 @@ export const drawSpecs = Object.freeze({
   width: 480,
   linewidth: 468,
   lineheight: 1.5, //multiplier
-  thumbHeight: 360
+  thumbHeight: 360,
 });
 
 export function drawDocumentFact(
@@ -50,7 +50,7 @@ export function drawDocumentFact(
     nodes.push({
       component: documentComponent.component,
       innerHTML: [documentComponent.innerHTML],
-      offset: documentComponent.offset
+      offset: documentComponent.offset,
     });
   }
 
@@ -104,7 +104,7 @@ export function drawVideoFact(
   highlightedText += '"';
 
   const src = "https://img.youtube.com/vi/" + factContent.youtubeId + "/0.jpg";
-  return new Promise(function(resolve, reject) {
+  return new Promise(function (resolve, reject) {
     loadImage(src).then((img: HTMLImageElement) => {
       return resolve(drawCaption(canvas, img, highlightedText));
     });
@@ -162,7 +162,7 @@ export function drawCaption(
     return {
       dataUri: canvas.toDataURL("image/png"),
       width: drawSpecs.width.toString(),
-      height: height.toString()
+      height: height.toString(),
     };
   } else {
     const errStr = "Error getting canvas context";
@@ -247,7 +247,7 @@ export function drawText(
   return {
     x: finalLineWidth,
     y: y,
-    totalHeight: totalHeight
+    totalHeight: totalHeight,
   };
 }
 
@@ -365,7 +365,7 @@ export function drawDocument(
     return {
       dataUri: canvas.toDataURL("image/png"),
       width: drawSpecs.width.toString(),
-      height: height.toString()
+      height: height.toString(),
     };
   } else {
     const errStr = "Error getting canvas context";

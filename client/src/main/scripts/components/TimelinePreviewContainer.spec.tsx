@@ -22,33 +22,33 @@ import * as renderer from "react-test-renderer";
 import {
   TimelinePreviewContainerBranch,
   TimelinePreviewContainerProps,
-  TimelinePreviewContainerState
+  TimelinePreviewContainerState,
 } from "./TimelinePreviewContainer";
 import {
   documentFactLink,
   documentNodes,
   videoFactFast,
-  videoFactLink
+  videoFactLink,
 } from "../utils/testUtils";
 
 jest.mock("./TimelinePreview", () => ({
-  default: "TimelinePreview"
+  default: "TimelinePreview",
 }));
 
 const setFactHandlers = {
   handleDocumentSetClick: jest.fn(),
   handleVideoSetClick: jest.fn(),
   handleRangeSet: jest.fn(),
-  handleRangeCleared: jest.fn()
+  handleRangeCleared: jest.fn(),
 };
 
 const containerProps = {
-  factLink: documentFactLink
+  factLink: documentFactLink,
 };
 
 test("Preview loading", () => {
   const containerState: TimelinePreviewContainerState = {
-    loading: true
+    loading: true,
   };
 
   const tree = renderer
@@ -65,7 +65,7 @@ test("Preview loading", () => {
 test("Successfully loaded Document Preview", () => {
   const containerState: TimelinePreviewContainerState = {
     loading: false,
-    nodes: documentNodes
+    nodes: documentNodes,
   };
 
   const tree = renderer
@@ -85,13 +85,13 @@ test("Successfully loaded Document Preview with highlights", () => {
     offset: 248,
     ranges: {
       highlightedRange: [11, 53],
-      viewRange: [0, 218]
+      viewRange: [0, 218],
     },
-    setFactHandlers: setFactHandlers
+    setFactHandlers: setFactHandlers,
   };
   const containerState: TimelinePreviewContainerState = {
     loading: false,
-    nodes: documentNodes
+    nodes: documentNodes,
   };
 
   const tree = renderer
@@ -108,11 +108,11 @@ test("Successfully loaded Document Preview with highlights", () => {
 test("Successfully loaded Video Preview", () => {
   const videoProps: TimelinePreviewContainerProps = {
     factLink: videoFactLink,
-    setFactHandlers: setFactHandlers
+    setFactHandlers: setFactHandlers,
   };
   const containerState: TimelinePreviewContainerState = {
     loading: false,
-    videoFact: videoFactFast
+    videoFact: videoFactFast,
   };
 
   const tree = renderer

@@ -27,11 +27,11 @@ const onScroll = jest.fn();
 
 const eventHandlers = {
   onMouseUp: onMouseUp,
-  onScroll: onScroll
+  onScroll: onScroll,
 };
 
 jest.mock("./CaptionTextNode", () => ({
-  default: "CaptionTextNode"
+  default: "CaptionTextNode",
 }));
 
 test("CaptionTextNodeList", () => {

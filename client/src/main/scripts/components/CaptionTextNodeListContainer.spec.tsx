@@ -28,7 +28,7 @@ const onScroll = jest.fn();
 
 const eventHandlers = {
   onMouseUp: onMouseUp,
-  onScroll: onScroll
+  onScroll: onScroll,
 };
 
 const view: TimeRange = {
@@ -36,11 +36,11 @@ const view: TimeRange = {
   end: 25,
   type: "VIEW",
   styles: TRACKSTYLES__RANGE,
-  label: "Zoom"
+  label: "Zoom",
 };
 
 jest.mock("./CaptionTextNodeList", () => ({
-  default: "CaptionTextNode"
+  default: "CaptionTextNode",
 }));
 
 test("CaptionTextNodeListContainer", () => {

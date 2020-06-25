@@ -23,7 +23,7 @@ import {
   alertErr,
   copyToClipboard,
   getUserCookieString,
-  slugify
+  slugify,
 } from "../utils/functions";
 import { LoginCookie } from "../java2ts/LoginCookie";
 import { Routes } from "../java2ts/Routes";
@@ -63,7 +63,7 @@ class QuickShare extends React.Component<QuickShareProps, QuickShareState> {
     this.state = {
       title: "",
       isCopiedToClipboard: false,
-      url: ""
+      url: "",
     };
   }
   copyToClipboard = () => {
@@ -72,7 +72,7 @@ class QuickShare extends React.Component<QuickShareProps, QuickShareState> {
     if (this.state.url) {
       copyToClipboard(this.state.url);
       this.setState({
-        isCopiedToClipboard: true
+        isCopiedToClipboard: true,
       });
     } else {
       const msg = "QuickShare: Expected url to not be empty.";
@@ -123,7 +123,7 @@ class QuickShare extends React.Component<QuickShareProps, QuickShareState> {
       vidId: isDocument ? undefined : factHash,
       docId: isDocument ? factHash : undefined,
       hStart: highlightedRange[0].toFixed(3),
-      hEnd: highlightedRange[1].toFixed(3)
+      hEnd: highlightedRange[1].toFixed(3),
     };
     if (viewRange) {
       request.vStart = viewRange[0].toFixed(3);
@@ -165,9 +165,9 @@ class QuickShare extends React.Component<QuickShareProps, QuickShareState> {
     FB.ui(
       {
         method: "share",
-        href: url
+        href: url,
       },
-      function(response) {}
+      function (response) {}
     );
   };
   urlDidUpdate = (factSlugChanged: boolean) => {

@@ -22,23 +22,23 @@ import * as renderer from "react-test-renderer";
 import BlockWriter, { InitialBlockWriterState } from "./BlockWriter";
 
 jest.mock("./BlockEditor", () => ({
-  default: "BlockEditor"
+  default: "BlockEditor",
 }));
 
 jest.mock("./TimelineView", () => ({
-  default: "TimelineView"
+  default: "TimelineView",
 }));
 
 jest.mock("./EditorButtons", () => ({
-  default: "EditorButtons"
+  default: "EditorButtons",
 }));
 
 jest.mock("./DropDown", () => ({
-  default: "DropDown"
+  default: "DropDown",
 }));
 
 jest.mock("./EmailTake", () => ({
-  default: "EmailTake"
+  default: "EmailTake",
 }));
 
 // Object.defineProperty(window.location, "pathname", {
@@ -49,9 +49,9 @@ jest.mock("./EmailTake", () => ({
 const initState: InitialBlockWriterState = {
   takeDocument: {
     title: "",
-    blocks: [{ kind: "paragraph", text: "" }]
+    blocks: [{ kind: "paragraph", text: "" }],
   },
-  activeBlockIndex: -1
+  activeBlockIndex: -1,
 };
 
 test("Simple block writer model", () => {
@@ -65,25 +65,25 @@ const biggerInitState: InitialBlockWriterState = {
     blocks: [
       {
         kind: "paragraph",
-        text: "Some text."
+        text: "Some text.",
       },
       {
         kind: "document",
         excerptId: "o_dRqrNJ62wzlgLilTrLxkHqGmvAS9qTpa4z4pjyFqA=",
         viewRange: [0, 218],
-        highlightedRange: [31, 42]
+        highlightedRange: [31, 42],
       },
       {
         kind: "paragraph",
-        text: ""
-      }
-    ]
+        text: "",
+      },
+    ],
   },
   activeBlockIndex: 1,
   parentRev: {
     draftid: 11,
-    lastrevid: 11
-  }
+    lastrevid: 11,
+  },
 };
 
 test("Bigger block writer model", () => {

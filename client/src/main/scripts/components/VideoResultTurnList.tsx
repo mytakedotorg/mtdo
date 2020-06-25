@@ -48,7 +48,7 @@ class VideoResultTurnList extends React.Component<
 
     this.state = {
       multiHighlights: this.getMultiHighlights(props, turnContent),
-      turnContent: turnContent
+      turnContent: turnContent,
     };
   }
   getMultiHighlights = (
@@ -88,7 +88,7 @@ class VideoResultTurnList extends React.Component<
       const turnContent: string = this.getTurnContent(nextProps);
       this.setState({
         multiHighlights: this.getMultiHighlights(nextProps, turnContent),
-        turnContent: turnContent
+        turnContent: turnContent,
       });
     }
   }

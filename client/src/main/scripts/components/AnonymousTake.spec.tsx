@@ -23,7 +23,7 @@ import AnonymousTake from "./AnonymousTake";
 import { anonymousPath } from "../utils/testUtils";
 
 jest.mock("./BlockEditor", () => ({
-  default: "BlockEditor"
+  default: "BlockEditor",
 }));
 
 test("It renders", () => {

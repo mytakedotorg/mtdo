@@ -22,12 +22,12 @@ import * as renderer from "react-test-renderer";
 import {
   EditorVideoBranch,
   EditorVideoContainerProps,
-  EditorVideoContainerState
+  EditorVideoContainerState,
 } from "./EditorVideoContainer";
 import { videoFactFast } from "../utils/testUtils";
 
 jest.mock("./Video", () => ({
-  default: "Video"
+  default: "Video",
 }));
 
 const containerProps: EditorVideoContainerProps = {
@@ -36,8 +36,8 @@ const containerProps: EditorVideoContainerProps = {
   block: {
     kind: "video",
     range: [2, 4],
-    videoId: "iEfwIxM7MmnOKb7zt4HqW8IxUWy6F7a236fSOQlUUWI="
-  }
+    videoId: "iEfwIxM7MmnOKb7zt4HqW8IxUWy6F7a236fSOQlUUWI=",
+  },
 };
 
 test("Video loading", () => {
@@ -57,7 +57,7 @@ test("Video loading", () => {
 test("Successfully loaded Video", () => {
   const containerState: EditorVideoContainerState = {
     loading: false,
-    videoFact: videoFactFast
+    videoFact: videoFactFast,
   };
 
   const tree = renderer

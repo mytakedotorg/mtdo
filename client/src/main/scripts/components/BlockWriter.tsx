@@ -23,7 +23,7 @@ import BlockEditor, {
   ParagraphBlock,
   TakeBlock,
   TakeDocument,
-  VideoBlock
+  VideoBlock,
 } from "./BlockEditor";
 import TimelineView from "./TimelineView";
 import EditorButtons from "./EditorButtons";
@@ -79,9 +79,9 @@ export interface ButtonEventHandlers {
 export const initialState: InitialBlockWriterState = {
   takeDocument: {
     title: "",
-    blocks: [{ kind: "paragraph", text: "" }]
+    blocks: [{ kind: "paragraph", text: "" }],
   },
-  activeBlockIndex: -1
+  activeBlockIndex: -1,
 };
 
 class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
@@ -96,14 +96,14 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
 
     const takeDocument = {
       title: props.initState.takeDocument.title,
-      blocks: blocks
+      blocks: blocks,
     };
 
     const initialStatus = {
       saved: true,
       saving: false,
       error: false,
-      message: ""
+      message: "",
     };
 
     if (props.initState.parentRev) {
@@ -111,15 +111,15 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
         takeDocument: takeDocument,
         activeBlockIndex: props.initState.activeBlockIndex,
         parentRev: {
-          ...props.initState.parentRev
+          ...props.initState.parentRev,
         },
-        status: initialStatus
+        status: initialStatus,
       };
     } else {
       this.state = {
         takeDocument: takeDocument,
         activeBlockIndex: props.initState.activeBlockIndex,
-        status: initialStatus
+        status: initialStatus,
       };
     }
   }
@@ -156,7 +156,7 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
 
     const emptyParagraphBlock: ParagraphBlock = {
       kind: "paragraph",
-      text: ""
+      text: "",
     };
 
     let newBlocks: TakeBlock[];
@@ -169,43 +169,43 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
         emptyParagraphBlock,
         newBlock,
         emptyParagraphBlock,
-        ...blocks.slice(activeBlockIndex + 1)
+        ...blocks.slice(activeBlockIndex + 1),
       ];
     } else if (this.shouldAppendParagraph()) {
       newBlocks = [
         ...blocks.slice(0, activeBlockIndex + 1),
         newBlock,
         emptyParagraphBlock,
-        ...blocks.slice(activeBlockIndex + 1)
+        ...blocks.slice(activeBlockIndex + 1),
       ];
     } else if (this.shouldPrependParagraph()) {
       newBlocks = [
         ...blocks.slice(0, activeBlockIndex + 1),
         emptyParagraphBlock,
         newBlock,
-        ...blocks.slice(activeBlockIndex + 1)
+        ...blocks.slice(activeBlockIndex + 1),
       ];
     } else {
       indexAddition = 1;
       newBlocks = [
         ...blocks.slice(0, activeBlockIndex + 1),
         newBlock,
-        ...blocks.slice(activeBlockIndex + 1)
+        ...blocks.slice(activeBlockIndex + 1),
       ];
     }
 
     this.setState({
       takeDocument: {
         ...this.state.takeDocument,
-        blocks: newBlocks
+        blocks: newBlocks,
       },
       activeBlockIndex: activeBlockIndex + indexAddition,
       status: {
         ...this.state.status,
         saved: false,
         error: false,
-        message: ""
-      }
+        message: "",
+      },
     });
   };
   addDocument = (
@@ -217,7 +217,7 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
       kind: "document",
       excerptId: excerptId,
       highlightedRange: highlightedRange,
-      viewRange: viewRange
+      viewRange: viewRange,
     };
 
     this.addEvidenceBlock(newBlock);
@@ -230,7 +230,7 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
 
     const newBlock: ParagraphBlock = {
       kind: "paragraph",
-      text: ""
+      text: "",
     };
 
     let newBlocks: TakeBlock[];
@@ -241,7 +241,7 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
       newBlocks = [
         ...blocks.slice(0, activeBlockIndex + 1),
         newBlock,
-        ...blocks.slice(activeBlockIndex + 1)
+        ...blocks.slice(activeBlockIndex + 1),
       ];
       newIndex = ++activeBlockIndex;
     }
@@ -249,22 +249,22 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
     this.setState({
       takeDocument: {
         ...this.state.takeDocument,
-        blocks: newBlocks
+        blocks: newBlocks,
       },
       activeBlockIndex: newIndex,
       status: {
         ...this.state.status,
         saved: false,
         error: false,
-        message: ""
-      }
+        message: "",
+      },
     });
   };
   addVideo = (id: string, range: [number, number]): void => {
     const newBlock: VideoBlock = {
       kind: "video",
       range: range,
-      videoId: id
+      videoId: id,
     };
 
     this.addEvidenceBlock(newBlock);
@@ -304,14 +304,14 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
       this.setState({
         takeDocument: {
           ...this.state.takeDocument,
-          blocks: [...blocks.slice(0, idx), ...blocks.slice(idx + 1)]
+          blocks: [...blocks.slice(0, idx), ...blocks.slice(idx + 1)],
         },
         status: {
           ...this.state.status,
           saved: false,
           error: false,
-          message: ""
-        }
+          message: "",
+        },
       });
     } else {
       if (blocks.length === 1 && blocks[0].kind === "document") {
@@ -319,14 +319,14 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
         this.setState({
           takeDocument: {
             ...this.state.takeDocument,
-            blocks: [{ kind: "paragraph", text: "" }]
+            blocks: [{ kind: "paragraph", text: "" }],
           },
           status: {
             ...this.state.status,
             saved: false,
             error: false,
-            message: ""
-          }
+            message: "",
+          },
         });
       }
     }
@@ -341,7 +341,7 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
         // Draft has been saved
         const bodyJson: DraftRev = {
           draftid: this.state.parentRev.draftid,
-          lastrevid: this.state.parentRev.lastrevid
+          lastrevid: this.state.parentRev.lastrevid,
         };
         postRequest(Routes.DRAFTS_DELETE, bodyJson, () => {});
       } else {
@@ -364,14 +364,14 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
               ...this.state.status,
               saving: true,
               error: false,
-              message: "Publishing Take."
-            }
+              message: "Publishing Take.",
+            },
           });
           const bodyJson: DraftPost = {
             parentRev: this.state.parentRev,
             title: this.state.takeDocument.title,
             blocks: this.state.takeDocument.blocks,
-            imageUrl: ""
+            imageUrl: "",
           };
           const firstFact = getFirstFactBlock(this.state.takeDocument.blocks);
           let imageUrl: string;
@@ -442,8 +442,8 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
             status: {
               ...this.state.status,
               error: true,
-              message: "Take must have a title."
-            }
+              message: "Take must have a title.",
+            },
           });
         }
       } else {
@@ -451,8 +451,8 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
           status: {
             ...this.state.status,
             error: true,
-            message: "Title cannot be longer than 255 characters."
-          }
+            message: "Title cannot be longer than 255 characters.",
+          },
         });
       }
     }
@@ -467,19 +467,19 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
             ...this.state.status,
             saving: true,
             error: false,
-            message: "Saving Take."
-          }
+            message: "Saving Take.",
+          },
         });
         const bodyJson: DraftPost = {
           parentRev: this.state.parentRev,
           title: title,
           blocks: this.state.takeDocument.blocks,
-          imageUrl: ""
+          imageUrl: "",
         };
         postRequest(
           Routes.DRAFTS_SAVE,
           bodyJson,
-          function(json: DraftRev) {
+          function (json: DraftRev) {
             const parentRev: DraftRev = json;
             this.setState({
               parentRev: parentRev,
@@ -487,8 +487,8 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
                 saved: true,
                 saving: false,
                 error: false,
-                message: "Save successful!"
-              }
+                message: "Save successful!",
+              },
             });
           }.bind(this)
         );
@@ -497,8 +497,8 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
           status: {
             ...this.state.status,
             error: true,
-            message: "Take must have a title."
-          }
+            message: "Take must have a title.",
+          },
         });
       }
     } else {
@@ -506,8 +506,8 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
         status: {
           ...this.state.status,
           error: true,
-          message: "Title cannot be longer than 255 characters."
-        }
+          message: "Title cannot be longer than 255 characters.",
+        },
       });
     }
   };
@@ -527,7 +527,7 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
 
     const highlightedRange: [number, number] = [
       parseFloat(hashArr[1]),
-      parseFloat(hashArr[2])
+      parseFloat(hashArr[2]),
     ];
 
     let articleUser;
@@ -559,11 +559,13 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
       articleUser,
       articleTitle,
       highlightedRange,
-      viewRange
+      viewRange,
     };
   };
   publishTake = (bodyJson: DraftPost) => {
-    postRequest(Routes.DRAFTS_PUBLISH, bodyJson, function(json: PublishResult) {
+    postRequest(Routes.DRAFTS_PUBLISH, bodyJson, function (
+      json: PublishResult
+    ) {
       if (!json.conflict) {
         window.location.href = json.publishedUrl;
       } else {
@@ -578,15 +580,15 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
       this.setState({
         takeDocument: {
           ...this.state.takeDocument,
-          title: value
+          title: value,
         },
         activeBlockIndex: -1,
         status: {
           ...this.state.status,
           saved: false,
           error: false,
-          message: ""
-        }
+          message: "",
+        },
       });
     } else {
       const blocks = [...this.state.takeDocument.blocks];
@@ -606,7 +608,7 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
         } else {
           newBlock = {
             kind: "paragraph",
-            text: element
+            text: element,
           };
           newIndex++;
         }
@@ -616,21 +618,21 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
       newBlocks = [
         ...blocks.slice(0, stateIndex),
         ...newBlocks,
-        ...blocks.slice(stateIndex + 1)
+        ...blocks.slice(stateIndex + 1),
       ];
 
       this.setState({
         takeDocument: {
           ...this.state.takeDocument,
-          blocks: newBlocks
+          blocks: newBlocks,
         },
         activeBlockIndex: newIndex,
         status: {
           ...this.state.status,
           saved: false,
           error: false,
-          message: ""
-        }
+          message: "",
+        },
       });
     }
   };
@@ -639,7 +641,7 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
   };
   setActive = (idx: number): void => {
     this.setState({
-      activeBlockIndex: idx
+      activeBlockIndex: idx,
     });
   };
   componentDidMount() {
@@ -668,20 +670,20 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
       handleChange: this.handleTakeBlockChange,
       handleDelete: this.removeBlock,
       handleEnterPress: this.addParagraph,
-      handleFocus: this.handleTakeBlockFocus
+      handleFocus: this.handleTakeBlockFocus,
     };
 
     const setFactHandlers = {
       handleDocumentSetClick: this.addDocument,
       handleVideoSetClick: this.addVideo,
       handleRangeSet: () => {},
-      handleRangeCleared: () => {}
+      handleRangeCleared: () => {},
     };
 
     const buttonEventHandlers: ButtonEventHandlers = {
       handleDeleteClick: this.handleDeleteClick,
       handlePublishClick: this.handlePublishClick,
-      handleSaveClick: this.handleSaveClick
+      handleSaveClick: this.handleSaveClick,
     };
     return (
       <div>

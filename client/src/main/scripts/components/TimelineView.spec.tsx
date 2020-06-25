@@ -22,39 +22,39 @@ import * as renderer from "react-test-renderer";
 import {
   TimelineViewBranch,
   TimelineViewState,
-  EventHandlers
+  EventHandlers,
 } from "./TimelineView";
 import {
   documentFactLink,
   timelineItems,
-  videoFactLink
+  videoFactLink,
 } from "../utils/testUtils";
 import { SetFactHandlers } from "./TimelinePreview";
 
 jest.mock("./TimelinePreviewContainer", () => ({
-  default: "TimelinePreviewContainer"
+  default: "TimelinePreviewContainer",
 }));
 
 jest.mock("./Timeline", () => ({
-  default: "Timeline"
+  default: "Timeline",
 }));
 
 jest.mock("./TimelineRadioButtons", () => ({
-  default: "TimelineRadioButtons"
+  default: "TimelineRadioButtons",
 }));
 
 const mockFn = jest.fn();
 
 const eventHandlers: EventHandlers = {
   handleChange: mockFn,
-  handleClick: mockFn
+  handleClick: mockFn,
 };
 
 const setFactHandlers: SetFactHandlers = {
   handleDocumentSetClick: mockFn,
   handleVideoSetClick: mockFn,
   handleRangeCleared: mockFn,
-  handleRangeSet: mockFn
+  handleRangeSet: mockFn,
 };
 
 const initialState: TimelineViewState = {
@@ -63,12 +63,12 @@ const initialState: TimelineViewState = {
   selectedOption: "Debates",
   timelineItems: [],
   urlValues: null,
-  URLIsValid: false
+  URLIsValid: false,
 };
 
 test("View loading", () => {
   const containerState: TimelineViewState = {
-    ...initialState
+    ...initialState,
   };
 
   const tree = renderer
@@ -86,7 +86,7 @@ test("View loading", () => {
 test("Successfully loaded view", () => {
   const containerState: TimelineViewState = {
     ...initialState,
-    loading: false
+    loading: false,
   };
 
   const tree = renderer
@@ -108,7 +108,7 @@ test("Successfully loaded a Document in view", () => {
     selectedOption: "Documents",
     timelineItems: timelineItems,
     urlValues: null,
-    URLIsValid: true
+    URLIsValid: true,
   };
 
   const tree = renderer
@@ -130,7 +130,7 @@ test("Successfully loaded a Video in view", () => {
     selectedOption: "Debates",
     timelineItems: timelineItems,
     urlValues: null,
-    URLIsValid: true
+    URLIsValid: true,
   };
 
   const tree = renderer

@@ -38,7 +38,7 @@ class BlockReader extends React.Component<BlockReaderProps, BlockReaderState> {
     super(props);
 
     this.state = {
-      takeDocument: props.initState
+      takeDocument: props.initState,
     };
   }
   handleClick = (
@@ -62,7 +62,7 @@ class BlockReader extends React.Component<BlockReaderProps, BlockReaderState> {
   };
   render() {
     const eventHandlers = {
-      onDocumentClick: this.handleClick
+      onDocumentClick: this.handleClick,
     };
     return (
       <div>

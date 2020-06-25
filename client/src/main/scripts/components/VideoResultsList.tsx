@@ -26,7 +26,7 @@ import { VideoResultPreviewEventHandlers } from "./VideoResultPreview";
 import isEqual = require("lodash/isEqual");
 import {
   fetchFactReturningPromise,
-  VideoFactHashMap
+  VideoFactHashMap,
 } from "../utils/databaseAPI";
 import { alertErr } from "../utils/functions";
 import { Search } from "../java2ts/Search";
@@ -73,7 +73,7 @@ class VideoResultsList extends React.Component<
     this.state = {
       fixVideo: false,
       selectedOption: "Containing",
-      factTurns: []
+      factTurns: [],
     };
   }
   handleChange = (ev: React.ChangeEvent<HTMLInputElement>) => {
@@ -81,7 +81,7 @@ class VideoResultsList extends React.Component<
     if (value === "Containing" || value === "BeforeAndAfter") {
       if (value !== this.state.selectedOption) {
         this.setState({
-          selectedOption: value
+          selectedOption: value,
         });
       }
     } else {
@@ -97,21 +97,21 @@ class VideoResultsList extends React.Component<
     this.setState({
       videoProps: {
         videoId: videoFact.youtubeId,
-        clipRange: clipRange
-      }
+        clipRange: clipRange,
+      },
     });
   };
   handleReady = (youtubeId: string) => {
     this.setState({
       videoProps: {
-        videoId: youtubeId
-      }
+        videoId: youtubeId,
+      },
     });
   };
   handleScroll = (fixVideo: boolean) => {
     if (this.state.fixVideo != fixVideo) {
       this.setState({
-        fixVideo: fixVideo
+        fixVideo: fixVideo,
       });
     }
   };
@@ -136,7 +136,7 @@ class VideoResultsList extends React.Component<
           if (currentValue.hash === currentHash) {
             return {
               hash: currentHash,
-              turns: accumulator.turns.concat(currentValue.turns)
+              turns: accumulator.turns.concat(currentValue.turns),
             };
           } else {
             return accumulator;
@@ -145,11 +145,11 @@ class VideoResultsList extends React.Component<
       );
       factTurnsArr.push({
         turns: reducer.turns,
-        videoFact: videoFact.videoFact
+        videoFact: videoFact.videoFact,
       });
     }
     this.setState({
-      factTurns: factTurnsArr
+      factTurns: factTurnsArr,
     });
   }
   sortResults = (results: Search.FactResultList): SortedResults[] => {
@@ -162,7 +162,7 @@ class VideoResultsList extends React.Component<
         if (videoResult.hash !== prevHash) {
           sortedResults.push({
             hash: prevHash,
-            turns: turns
+            turns: turns,
           });
           prevHash = videoResult.hash;
           turns = [videoResult.turn];
@@ -173,7 +173,7 @@ class VideoResultsList extends React.Component<
       // Push last hash after loop is over
       sortedResults.push({
         hash: prevHash,
-        turns: turns
+        turns: turns,
       });
       return sortedResults;
     } else {
@@ -221,7 +221,7 @@ class VideoResultsList extends React.Component<
           )}
           {this.state.factTurns.map((videoResult, idx) => {
             const eventHandlers: VideoResultPreviewEventHandlers = {
-              onPlayClick: this.handlePlayClick
+              onPlayClick: this.handlePlayClick,
             };
             if (idx === 0) {
               eventHandlers.onReady = this.handleReady;

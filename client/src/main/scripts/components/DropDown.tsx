@@ -41,7 +41,7 @@ class DropDown extends React.Component<DropDownProps, DropDownState> {
     super(props);
 
     this.state = {
-      dropDownIsOpen: false
+      dropDownIsOpen: false,
     };
   }
   onMouseDown = (e: MouseEvent) => {
@@ -57,7 +57,7 @@ class DropDown extends React.Component<DropDownProps, DropDownState> {
       ) {
         // This is the default handler, window was clicked, close dropDown
         this.setState({
-          dropDownIsOpen: false
+          dropDownIsOpen: false,
         });
         this.div.removeEventListener("mousedown", this.onMouseDown);
         window.removeEventListener("mousedown", this.onMouseDown);
@@ -68,7 +68,7 @@ class DropDown extends React.Component<DropDownProps, DropDownState> {
       ) {
         // Something outside of the dropdown was clicked, close dropDown
         this.setState({
-          dropDownIsOpen: false
+          dropDownIsOpen: false,
         });
         this.div.removeEventListener("mousedown", this.onMouseDown);
         window.removeEventListener("mousedown", this.onMouseDown);
@@ -90,7 +90,7 @@ class DropDown extends React.Component<DropDownProps, DropDownState> {
         window.removeEventListener("touchend", this.onMouseDown);
       }
       this.setState({
-        dropDownIsOpen: !dropDownIsOpen
+        dropDownIsOpen: !dropDownIsOpen,
       });
     }
   };

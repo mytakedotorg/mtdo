@@ -23,7 +23,7 @@ import VideoLite from "./VideoLite";
 import { videoFactFast } from "../utils/testUtils";
 
 jest.mock("react-youtube", () => ({
-  default: "YouTube"
+  default: "YouTube",
 }));
 
 test("Video", () => {

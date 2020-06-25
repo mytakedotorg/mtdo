@@ -27,15 +27,15 @@ const doc: TakeDocument = {
   blocks: [
     {
       kind: "paragraph",
-      text: "Some text"
+      text: "Some text",
     },
     {
       kind: "document",
       excerptId: "united-states-constitution",
       highlightedRange: [335, 438],
-      viewRange: [327, 500]
-    }
-  ]
+      viewRange: [327, 500],
+    },
+  ],
 };
 
 const handleChange = jest.fn();
@@ -47,18 +47,18 @@ const WritingEventHandlers = {
   handleChange,
   handleDelete,
   handleEnterPress,
-  handleFocus
+  handleFocus,
 };
 const ReadingEventHandler = {
-  onDocumentClick
+  onDocumentClick,
 };
 
 jest.mock("./EditorDocumentContainer", () => ({
-  default: "EditorDocumentContainer"
+  default: "EditorDocumentContainer",
 }));
 
 jest.mock("./EditorVideoContainer", () => ({
-  default: "EditorVideoContainer"
+  default: "EditorVideoContainer",
 }));
 
 function createNodeMock(element: React.ReactElement<HTMLElement>) {
@@ -67,28 +67,28 @@ function createNodeMock(element: React.ReactElement<HTMLElement>) {
       return {
         resetHeight() {
           // Do nothing
-        }
+        },
       };
     }
     case "textarea": {
       return {
         focus() {
           // Do nothing
-        }
+        },
       };
     }
     case "p": {
       return {
         resetHeight() {
           // Do nothing
-        }
+        },
       };
     }
     case "h1": {
       return {
         focus() {
           // Do nothing
-        }
+        },
       };
     }
   }

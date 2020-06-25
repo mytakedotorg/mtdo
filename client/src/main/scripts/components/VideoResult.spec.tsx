@@ -23,7 +23,7 @@ import VideoResult from "./VideoResult";
 import { kennedyNixon } from "../utils/testUtils";
 
 jest.mock("./VideoResultTurnList", () => ({
-  default: "VideoResultTurnList"
+  default: "VideoResultTurnList",
 }));
 
 test("VideoResultPreview containing", () => {
@@ -32,7 +32,7 @@ test("VideoResultPreview containing", () => {
       <VideoResult
         multiHighlight={{
           cut: [14, 239],
-          highlights: [[18, 28]]
+          highlights: [[18, 28]],
         }}
         onPlayClick={jest.fn()}
         sortBy="Containing"
@@ -51,7 +51,7 @@ test("VideoResultPreview before and after", () => {
       <VideoResult
         multiHighlight={{
           cut: [0, 276],
-          highlights: [[18, 28]]
+          highlights: [[18, 28]],
         }}
         onPlayClick={jest.fn()}
         sortBy="BeforeAndAfter"

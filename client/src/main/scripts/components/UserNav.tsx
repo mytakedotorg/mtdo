@@ -40,7 +40,7 @@ class UserNav extends React.Component<UserNavProps, UserNavState> {
     }
 
     this.state = {
-      cookie: cookie
+      cookie: cookie,
     };
   }
   renderNavLink = (text: string, href: string) => {

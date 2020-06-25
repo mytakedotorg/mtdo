@@ -23,7 +23,7 @@ import { CaptionNodeArr } from "../common/CaptionNodes";
 import NumberLineTransform from "../utils/numberLineTransform";
 import { Foundation } from "../java2ts/Foundation";
 import CaptionTextNodeList, {
-  CaptionTextNodeListEventHandlers
+  CaptionTextNodeListEventHandlers,
 } from "./CaptionTextNodeList";
 import { StateAuthority, TimeRange } from "./Video";
 var bs = require("binary-search");
@@ -63,7 +63,7 @@ class CaptionTextNodeListContainer extends React.Component<
 
     this.state = {
       currentSpeaker: "-",
-      wordTimestampAtViewStart: 0
+      wordTimestampAtViewStart: 0,
     };
   }
   clearTimer = () => {
@@ -81,7 +81,7 @@ class CaptionTextNodeListContainer extends React.Component<
         if (parentTop === 0) {
           this.getViewRange(0);
           this.setState({
-            currentSpeaker: "-"
+            currentSpeaker: "-",
           });
         } else {
           let speakerIdx = bs(
@@ -114,7 +114,7 @@ class CaptionTextNodeListContainer extends React.Component<
           ].fullName;
 
           this.setState({
-            currentSpeaker: fullName.substring(fullName.lastIndexOf(" ") + 1)
+            currentSpeaker: fullName.substring(fullName.lastIndexOf(" ") + 1),
           });
         }
       }
@@ -191,7 +191,7 @@ class CaptionTextNodeListContainer extends React.Component<
           const timeOfFirstWord = timestamps[timestamps.length - 2];
           const timeOfLastWord = timestamps[timestamps.length - 1];
           this.setState({
-            wordTimestampAtViewStart: timeOfFirstWord
+            wordTimestampAtViewStart: timeOfFirstWord,
           });
           this.props.eventHandlers.onScroll([timeOfFirstWord, timeOfLastWord]);
           return;
@@ -239,11 +239,11 @@ class CaptionTextNodeListContainer extends React.Component<
               const timeOfFirstWord = timestamps[timestamps.length - 2];
               const timeOfLastWord = timestamps[timestamps.length - 1];
               this.setState({
-                wordTimestampAtViewStart: timeOfFirstWord
+                wordTimestampAtViewStart: timeOfFirstWord,
               });
               this.props.eventHandlers.onScroll([
                 timeOfFirstWord,
-                timeOfLastWord
+                timeOfLastWord,
               ]);
               return;
             } else {
@@ -307,7 +307,7 @@ class CaptionTextNodeListContainer extends React.Component<
           typeof timeOfLastWord !== "undefined"
         ) {
           this.setState({
-            wordTimestampAtViewStart: timeOfFirstWord
+            wordTimestampAtViewStart: timeOfFirstWord,
           });
           this.props.eventHandlers.onScroll([timeOfFirstWord, timeOfLastWord]);
         } else {
@@ -467,7 +467,7 @@ class CaptionTextNodeListContainer extends React.Component<
     let nextWordCount: number;
     const eventHandlers: CaptionTextNodeListEventHandlers = {
       onMouseUp: this.props.eventHandlers.onMouseUp,
-      onScroll: this.handleScroll
+      onScroll: this.handleScroll,
     };
     return (
       <div className="document__text">

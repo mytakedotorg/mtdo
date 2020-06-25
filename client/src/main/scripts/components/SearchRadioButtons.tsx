@@ -25,9 +25,9 @@ interface SearchRadioButtonsProps {
   selectedOption: SelectionOptions;
 }
 
-const SearchRadioButtons: React.StatelessComponent<
-  SearchRadioButtonsProps
-> = props => {
+const SearchRadioButtons: React.StatelessComponent<SearchRadioButtonsProps> = (
+  props
+) => {
   return (
     <div className="searchradio">
       <div className="searchradio__actions">

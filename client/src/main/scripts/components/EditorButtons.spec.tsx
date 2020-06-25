@@ -22,13 +22,13 @@ import * as renderer from "react-test-renderer";
 import EditorButtons from "./EditorButtons";
 
 jest.mock("./Banner", () => ({
-  default: "Banner"
+  default: "Banner",
 }));
 
 const eventHandlers = {
   handleDeleteClick: jest.fn(),
   handlePublishClick: jest.fn(),
-  handleSaveClick: jest.fn()
+  handleSaveClick: jest.fn(),
 };
 
 test("Initial status", () => {
@@ -36,7 +36,7 @@ test("Initial status", () => {
     saved: true,
     saving: false,
     error: false,
-    message: ""
+    message: "",
   };
   const tree = renderer
     .create(<EditorButtons status={status} eventHandlers={eventHandlers} />)
@@ -49,7 +49,7 @@ test("Unsaved", () => {
     saved: false,
     saving: false,
     error: false,
-    message: ""
+    message: "",
   };
   const tree = renderer
     .create(<EditorButtons status={status} eventHandlers={eventHandlers} />)
@@ -62,7 +62,7 @@ test("Saving", () => {
     saved: false,
     saving: true,
     error: false,
-    message: ""
+    message: "",
   };
   const tree = renderer
     .create(<EditorButtons status={status} eventHandlers={eventHandlers} />)
@@ -75,7 +75,7 @@ test("Publishing", () => {
     saved: false,
     saving: true,
     error: false,
-    message: "Publishing Take."
+    message: "Publishing Take.",
   };
   const tree = renderer
     .create(<EditorButtons status={status} eventHandlers={eventHandlers} />)
@@ -88,7 +88,7 @@ test("Publishing error", () => {
     saved: false,
     saving: false,
     error: true,
-    message: "There was an error publishing your Take."
+    message: "There was an error publishing your Take.",
   };
   const tree = renderer
     .create(<EditorButtons status={status} eventHandlers={eventHandlers} />)
@@ -101,7 +101,7 @@ test("Title too long", () => {
     saved: false,
     saving: false,
     error: true,
-    message: "Title cannot be longer than 255 characters."
+    message: "Title cannot be longer than 255 characters.",
   };
   const tree = renderer
     .create(<EditorButtons status={status} eventHandlers={eventHandlers} />)
@@ -114,7 +114,7 @@ test("Saving", () => {
     saved: false,
     saving: true,
     error: false,
-    message: "Saving Take."
+    message: "Saving Take.",
   };
   const tree = renderer
     .create(<EditorButtons status={status} eventHandlers={eventHandlers} />)
@@ -127,7 +127,7 @@ test("Save successful", () => {
     saved: true,
     saving: false,
     error: false,
-    message: "Save successful!"
+    message: "Save successful!",
   };
   const tree = renderer
     .create(<EditorButtons status={status} eventHandlers={eventHandlers} />)
@@ -140,7 +140,7 @@ test("Unknown error", () => {
     saved: false,
     saving: true,
     error: true,
-    message: "There was an error modifying your Take."
+    message: "There was an error modifying your Take.",
   };
   const tree = renderer
     .create(<EditorButtons status={status} eventHandlers={eventHandlers} />)

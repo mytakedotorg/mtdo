@@ -74,7 +74,7 @@ export class StickyFactHeader extends React.Component<
   constructor(props: StickyFactHeaderProps) {
     super(props);
     this.state = {
-      isFixed: false
+      isFixed: false,
     };
   }
   handleClearClick = () => {
@@ -89,11 +89,11 @@ export class StickyFactHeader extends React.Component<
   handleScroll = () => {
     if (window.pageYOffset > this.offsetTop) {
       this.setState({
-        isFixed: true
+        isFixed: true,
       });
     } else {
       this.setState({
-        isFixed: false
+        isFixed: false,
       });
     }
   };

@@ -25,7 +25,7 @@ import {
   StateAuthority,
   TimeRange,
   TrackStyles,
-  TRACKSTYLES__RANGE
+  TRACKSTYLES__RANGE,
 } from "./Video";
 import ZoomViewer from "./ZoomViewer";
 import TrackSlider, { TrackSliderEventHandlers } from "./TrackSlider";
@@ -48,15 +48,15 @@ export interface ClipEditorEventHandlers {
 
 const TRACKSTYLES__SLIDER: TrackStyles = {
   rail: {
-    backgroundColor: "#d3dae3" // lighten($base-lightest, 30%)
+    backgroundColor: "#d3dae3", // lighten($base-lightest, 30%)
   },
   track: {
-    backgroundColor: "#d3dae3" // lighten($base-lightest, 30%)
+    backgroundColor: "#d3dae3", // lighten($base-lightest, 30%)
   },
   handle: {
     backgroundColor: "#758aa8", // $base--lightest
-    border: "1px solid #2c4770" // $base
-  }
+    border: "1px solid #2c4770", // $base
+  },
 };
 
 interface ClipEditorProps {
@@ -125,7 +125,7 @@ class ClipEditor extends React.Component<ClipEditorProps, ClipEditorState> {
       start: props.currentTime,
       type: "CURRENT_TIME",
       styles: TRACKSTYLES__SLIDER,
-      label: "Now playing"
+      label: "Now playing",
     };
 
     let isZoomed: boolean;
@@ -137,7 +137,7 @@ class ClipEditor extends React.Component<ClipEditorProps, ClipEditorState> {
         end: props.videoDuration,
         type: "ZOOM",
         styles: TRACKSTYLES__RANGE,
-        label: "Zoom"
+        label: "Zoom",
       };
     } else {
       isZoomed = true;
@@ -151,7 +151,7 @@ class ClipEditor extends React.Component<ClipEditorProps, ClipEditorState> {
 
     const eventHandlers: TrackSliderEventHandlers = {
       onAfterRangeChange: this.props.eventHandlers.onAfterRangeChange,
-      onRangeChange: this.handleRangeChange
+      onRangeChange: this.handleRangeChange,
     };
 
     const topTrack: TimeRange[] = [currentTime, viewRange, zoomRange];

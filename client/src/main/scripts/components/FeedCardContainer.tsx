@@ -49,7 +49,7 @@ class FeedCardContainer extends React.Component<
     super(props);
 
     this.state = {
-      loading: true
+      loading: true,
     };
   }
   getDocumentFact = (factHash: string) => {
@@ -75,7 +75,7 @@ class FeedCardContainer extends React.Component<
             nodes.push({
               component: documentComponent.component,
               innerHTML: [documentComponent.innerHTML],
-              offset: documentComponent.offset
+              offset: documentComponent.offset,
             });
           }
 
@@ -83,8 +83,8 @@ class FeedCardContainer extends React.Component<
             loading: false,
             document: {
               fact: factContent.fact,
-              nodes: nodes
-            }
+              nodes: nodes,
+            },
           });
         }
       }
@@ -110,7 +110,7 @@ class FeedCardContainer extends React.Component<
         } else {
           this.setState({
             loading: false,
-            videoFact: factContent
+            videoFact: factContent,
           });
         }
       }
@@ -137,9 +137,9 @@ interface FeedCardBranchProps {
   containerState: FeedCardContainerState;
 }
 
-export const FeedCardBranch: React.StatelessComponent<
-  FeedCardBranchProps
-> = props => {
+export const FeedCardBranch: React.StatelessComponent<FeedCardBranchProps> = (
+  props
+) => {
   if (props.containerState.loading) {
     return <FeedCardLoadingView />;
   } else {
@@ -153,7 +153,7 @@ export const FeedCardBranch: React.StatelessComponent<
   }
 };
 
-const FeedCardLoadingView: React.StatelessComponent<{}> = props => (
+const FeedCardLoadingView: React.StatelessComponent<{}> = (props) => (
   <div className="feed__card">
     <h2 className="feed__card-title">Loading Take Preview</h2>
   </div>

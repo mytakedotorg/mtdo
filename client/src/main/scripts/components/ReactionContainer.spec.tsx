@@ -25,34 +25,34 @@ import { takeDocument } from "../utils/testUtils";
 const initialState = {
   takeState: {
     viewCount: 1,
-    likeCount: 0
+    likeCount: 0,
   },
   userState: {
     like: false,
     bookmark: false,
     spam: false,
     harassment: false,
-    rulesviolation: false
-  }
+    rulesviolation: false,
+  },
 };
 
 const containerProps = {
   takeId: 1,
-  takeDocument: takeDocument
+  takeDocument: takeDocument,
 };
 
 const eventListeners = {
   onReportPress: jest.fn(),
   onStarPress: jest.fn(),
-  onFollowPress: jest.fn()
+  onFollowPress: jest.fn(),
 };
 
 jest.mock("./DropDown", () => ({
-  default: "DropDown"
+  default: "DropDown",
 }));
 
 jest.mock("./EmailTake", () => ({
-  default: "EmailTake"
+  default: "EmailTake",
 }));
 
 test("Reaction - loading", () => {
@@ -86,8 +86,8 @@ test("Reaction - liked", () => {
     ...initialState,
     userState: {
       ...initialState.userState,
-      like: true
-    }
+      like: true,
+    },
   };
   const tree = renderer
     .create(
@@ -119,8 +119,8 @@ test("Reaction - spam reported", () => {
     ...initialState,
     userState: {
       ...initialState.userState,
-      spam: true
-    }
+      spam: true,
+    },
   };
   const tree = renderer
     .create(
@@ -139,8 +139,8 @@ test("Reaction - harassment reported", () => {
     ...initialState,
     userState: {
       ...initialState.userState,
-      harassment: true
-    }
+      harassment: true,
+    },
   };
   const tree = renderer
     .create(
@@ -159,8 +159,8 @@ test("Reaction - rules violated reported", () => {
     ...initialState,
     userState: {
       ...initialState.userState,
-      rulesviolation: true
-    }
+      rulesviolation: true,
+    },
   };
   const tree = renderer
     .create(
@@ -177,7 +177,7 @@ test("Reaction - rules violated reported", () => {
 test("Reaction - user followed", () => {
   const containerState = {
     ...initialState,
-    isFollowing: true
+    isFollowing: true,
   };
   const tree = renderer
     .create(
@@ -194,7 +194,7 @@ test("Reaction - user followed", () => {
 test("Reaction - user unfollowed", () => {
   const containerState = {
     ...initialState,
-    isFollowing: false
+    isFollowing: false,
   };
   const tree = renderer
     .create(

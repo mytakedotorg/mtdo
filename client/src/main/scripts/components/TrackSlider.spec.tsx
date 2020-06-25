@@ -23,16 +23,16 @@ import TrackSlider, { TrackSliderEventHandlers } from "./TrackSlider";
 import {
   initialRangeSliders,
   unzoomedRangeSliders,
-  zoomedRangeSliders
+  zoomedRangeSliders,
 } from "../utils/testUtils";
 
 const eventHandlers: TrackSliderEventHandlers = {
   onAfterRangeChange: jest.fn(),
-  onRangeChange: jest.fn()
+  onRangeChange: jest.fn(),
 };
 
 jest.mock("./RangeContainer", () => ({
-  default: "RangeContainer"
+  default: "RangeContainer",
 }));
 
 test("Initial render", () => {

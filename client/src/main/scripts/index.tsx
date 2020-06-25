@@ -21,7 +21,7 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import BlockWriter, {
   InitialBlockWriterState,
-  initialState
+  initialState,
 } from "./components/BlockWriter";
 import AnonymousTake from "./components/AnonymousTake";
 import BlockReader from "./components/BlockReader";
@@ -103,8 +103,8 @@ if (app) {
               ...windowState,
               takeDocument: {
                 ...windowState.takeDocument,
-                blocks: [...initialState.takeDocument.blocks]
-              }
+                blocks: [...initialState.takeDocument.blocks],
+              },
             };
           }
           initJson = windowState;

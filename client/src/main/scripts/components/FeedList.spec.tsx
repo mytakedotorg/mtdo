@@ -23,7 +23,7 @@ import FeedList from "./FeedList";
 import { cards } from "../utils/testUtils";
 
 jest.mock("./FeedCardContainer", () => ({
-  default: "FeedCardContainer"
+  default: "FeedCardContainer",
 }));
 
 test("FeedList", () => {

@@ -46,7 +46,7 @@ export default class TimelinePreviewContainer extends React.Component<
     super(props);
 
     this.state = {
-      loading: true
+      loading: true,
     };
   }
   getFact = (factHash: string) => {
@@ -73,18 +73,18 @@ export default class TimelinePreviewContainer extends React.Component<
               nodes.push({
                 component: documentComponent.component,
                 innerHTML: [documentComponent.innerHTML],
-                offset: documentComponent.offset
+                offset: documentComponent.offset,
               });
             }
 
             this.setState({
               loading: false,
-              nodes: nodes
+              nodes: nodes,
             });
           } else if (isVideo(factContent)) {
             this.setState({
               loading: false,
-              videoFact: factContent
+              videoFact: factContent,
             });
           } else {
             alertErr("TimelinePreviewContainer: Unknown kind of Fact");
@@ -100,7 +100,7 @@ export default class TimelinePreviewContainer extends React.Component<
   componentWillReceiveProps(nextProps: TimelinePreviewContainerProps) {
     if (this.props.factLink.hash !== nextProps.factLink.hash) {
       this.setState({
-        loading: true
+        loading: true,
       });
       this.getFact(nextProps.factLink.hash);
     }
@@ -120,9 +120,9 @@ interface TimelinePreviewContainerBranchProps {
   containerState: TimelinePreviewContainerState;
 }
 
-export const TimelinePreviewContainerBranch: React.StatelessComponent<
-  TimelinePreviewContainerBranchProps
-> = props => {
+export const TimelinePreviewContainerBranch: React.StatelessComponent<TimelinePreviewContainerBranchProps> = (
+  props
+) => {
   if (props.containerState.loading) {
     return <TimelinePreviewLoadingView />;
   } else {

@@ -83,7 +83,7 @@ export default class Timeline extends React.Component<
       end: range.end,
       order: this.orderBy,
       template: this.itemTemplate,
-      zoomable: false
+      zoomable: false,
     };
     if (container) {
       this.timeline = new vis.Timeline(
@@ -134,7 +134,7 @@ export default class Timeline extends React.Component<
 
     return {
       start: start,
-      end: end
+      end: end,
     };
   };
   handleClick = (properties: TimelineSelectEventHandlerProps) => {
@@ -177,7 +177,7 @@ export default class Timeline extends React.Component<
     let range = this.getTimelineRange();
     this.timeline.setOptions({
       start: range.start,
-      end: range.end
+      end: range.end,
     });
   }
   updateTimeline() {

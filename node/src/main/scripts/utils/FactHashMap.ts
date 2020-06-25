@@ -102,11 +102,11 @@ export const fetchYTThumbs = (
           new Promise((resolveThumb, rejectThumb) => {
             axios
               .get(imageURI)
-              .then(function(htmlString: string) {
+              .then(function (htmlString: string) {
                 vidHashesToThumbs[hash] = htmlString;
                 resolveThumb(htmlString);
               })
-              .catch(function(err: Error) {
+              .catch(function (err: Error) {
                 console.error("Failed to load ", imageURI);
                 rejectThumb(err);
               });

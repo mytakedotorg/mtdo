@@ -61,12 +61,9 @@ describe("Foundation Document", () => {
   });
 
   test("Heading text renders properly", () => {
-    expect(
-      wrapper
-        .find(".document__heading")
-        .first()
-        .text()
-    ).toBe("Amendment 13");
+    expect(wrapper.find(".document__heading").first().text()).toBe(
+      "Amendment 13"
+    );
   });
 
   test("Header buttons render", () => {
@@ -76,10 +73,7 @@ describe("Foundation Document", () => {
     expect(wrapper.find(".document__header-actions").children().length).toBe(2);
 
     // When the button, "Clear Selection" is clicked, it is hidden and a paragraph is shown instead
-    wrapper
-      .find(".document__header-actions")
-      .childAt(0)
-      .simulate("click");
+    wrapper.find(".document__header-actions").childAt(0).simulate("click");
     expect(wrapper.find(".document__header-actions").children().length).toBe(1);
 
     // When some more text is highlighted, the "Clear Selection" button is shown again

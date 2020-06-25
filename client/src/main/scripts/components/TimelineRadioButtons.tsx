@@ -25,9 +25,9 @@ interface TimelineRadioButtonsProps {
   selectedOption: SelectionOptions;
 }
 
-const TimelineRadioButtons: React.StatelessComponent<
-  TimelineRadioButtonsProps
-> = props => {
+const TimelineRadioButtons: React.StatelessComponent<TimelineRadioButtonsProps> = (
+  props
+) => {
   return (
     <div className="timeline__inner-container">
       <div className="timeline__actions">

@@ -28,7 +28,7 @@ interface ButtonProps {
   isDisabled?: boolean;
 }
 
-const Button: React.StatelessComponent<ButtonProps> = props => {
+const Button: React.StatelessComponent<ButtonProps> = (props) => {
   const classModifier = props.isDisabled
     ? "editor__button--disabled"
     : props.classModifier;
@@ -49,7 +49,7 @@ interface EditorButtonsProps {
   eventHandlers: ButtonEventHandlers;
 }
 
-const EditorButtons: React.StatelessComponent<EditorButtonsProps> = props => {
+const EditorButtons: React.StatelessComponent<EditorButtonsProps> = (props) => {
   return (
     <div className="editor__meta">
       <Banner isSuccess={!props.status.error}>{props.status.message}</Banner>

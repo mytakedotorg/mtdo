@@ -43,14 +43,14 @@ class EmailTake extends React.Component<EmailTakeProps, EmailTakeState> {
     this.state = {
       isLoggedIn: isLoggedIn,
       emailSent: false,
-      emailSending: false
+      emailSending: false,
     };
   }
   handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     if (this.state.isLoggedIn) {
       if (!this.state.emailSending) {
         this.setState({
-          emailSending: true
+          emailSending: true,
         });
 
         let url;
@@ -65,7 +65,7 @@ class EmailTake extends React.Component<EmailTakeProps, EmailTakeState> {
           () => {
             this.setState({
               emailSent: true,
-              emailSending: false
+              emailSending: false,
             });
           }
         );
@@ -83,7 +83,7 @@ class EmailTake extends React.Component<EmailTakeProps, EmailTakeState> {
     if (this.state.emailSent) {
       if (!isEqual(nextProps.takeDocument, this.props.takeDocument)) {
         this.setState({
-          emailSent: false
+          emailSent: false,
         });
       }
     }

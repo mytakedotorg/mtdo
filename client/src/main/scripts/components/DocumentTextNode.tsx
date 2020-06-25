@@ -42,7 +42,7 @@ class DocumentTextNode extends React.Component<
     const { documentNode } = this.props;
 
     let attributes: DataAttributes = {
-      "data-char-offset": documentNode.offset
+      "data-char-offset": documentNode.offset,
     };
 
     switch (documentNode.component) {

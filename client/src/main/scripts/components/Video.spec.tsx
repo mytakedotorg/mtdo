@@ -23,19 +23,19 @@ import Video from "./Video";
 import { videoFactLink, videoFactFast } from "../utils/testUtils";
 
 jest.mock("react-youtube", () => ({
-  default: "YouTube"
+  default: "YouTube",
 }));
 
 jest.mock("./CaptionView", () => ({
-  default: "CaptionView"
+  default: "CaptionView",
 }));
 
 jest.mock("./DropDown", () => ({
-  default: "DropDown"
+  default: "DropDown",
 }));
 
 jest.mock("./EmailTake", () => ({
-  default: "EmailTake"
+  default: "EmailTake",
 }));
 
 const mockFn = jest.fn();

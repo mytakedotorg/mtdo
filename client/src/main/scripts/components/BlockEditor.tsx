@@ -77,7 +77,7 @@ class Paragraph extends React.Component<
     super(props);
 
     this.state = {
-      style: {}
+      style: {},
     };
   }
   handleBlur = () => {
@@ -130,7 +130,7 @@ class Paragraph extends React.Component<
     this.paragraph.innerHTML = content + "<br />";
     let height = this.paragraph.clientHeight;
     this.setState({
-      style: { height: height }
+      style: { height: height },
     });
   };
   componentDidMount() {
@@ -278,7 +278,7 @@ class BlockEditor extends React.Component<BlockEditorProps, BlockEditorState> {
     super(props);
 
     this.state = {
-      style: {}
+      style: {},
     };
   }
   handleChange = (ev: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -306,7 +306,7 @@ class BlockEditor extends React.Component<BlockEditorProps, BlockEditorState> {
     this.div.innerHTML = content + "<br />";
     let height = this.div.clientHeight;
     this.setState({
-      style: { height: height }
+      style: { height: height },
     });
   };
   componentDidMount() {
@@ -357,7 +357,7 @@ class BlockEditor extends React.Component<BlockEditorProps, BlockEditorState> {
               {props.takeDocument.blocks.map((block, idx) => {
                 if (!isWriteOnly(props.eventHandlers)) {
                   const readingEventHandlers: ReadingEventHandlers = {
-                    onDocumentClick: props.eventHandlers.onDocumentClick
+                    onDocumentClick: props.eventHandlers.onDocumentClick,
                   };
                   return (
                     <BlockContainer
@@ -373,7 +373,7 @@ class BlockEditor extends React.Component<BlockEditorProps, BlockEditorState> {
                     handleChange: props.eventHandlers.handleChange,
                     handleDelete: props.eventHandlers.handleDelete,
                     handleEnterPress: props.eventHandlers.handleEnterPress,
-                    handleFocus: props.eventHandlers.handleFocus
+                    handleFocus: props.eventHandlers.handleFocus,
                   };
                   return (
                     <BlockContainer
