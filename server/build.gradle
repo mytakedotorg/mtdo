@@ -1,5 +1,5 @@
 plugins {
-	id 'nu.studer.rocker' version '1.0.1'					// https://github.com/etiennestuder/gradle-rocker-plugin
+	id 'nu.studer.rocker' version '2.0'						// https://github.com/etiennestuder/gradle-rocker-plugin
 	id 'com.github.johnrengelman.shadow' version '5.2.0'	// http://imperceptiblethoughts.com/shadow/#
 }
 

@@ -27,7 +27,7 @@ repositories {
 }
 
 Properties props = new Properties()
-new File('gradle.properties').withInputStream {
+new File(projectDir.parentFile, 'gradle.properties').withInputStream {
 	props.load(it)
 }
 
