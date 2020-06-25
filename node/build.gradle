@@ -9,28 +9,29 @@ tasks.register('syncClientUtils', Sync) {
 }
 
 tasks.register('syncClientJava2Ts', Sync) {
-	dependsOn ':client:jsoniterCodegen'
+	dependsOn ':client:jsweet'
 	from '../client/src/main/scripts/java2ts'
 	into 'src/main/scripts/java2ts'
 }
 
 tasks.register('beforeCompile') {
-	dependsOn syncClientUtils, syncClientJava2Ts
+	dependsOn 'syncClientUtils', 'syncClientJava2Ts'
 }
 
 apply plugin: 'com.diffplug.gradle.spotless'
 spotless {
-	format 'typescript', {
-		target fileTree('src/main/scripts') {
-			include '**/*.ts'
-			exclude 'java2ts/**'
-		}
-		prettier().config(['parser': 'typescript'])
-	}
-	format 'js', {
-		target 'gulpfile.js'
-		prettier().config(['parser': 'typescript'])
-	}
+	// TODO: bring this back with modern prettier
+	// format 'typescript', {
+	// 	target fileTree('src/main/scripts') {
+	// 		include '**/*.ts'
+	// 		exclude 'java2ts/**'
+	// 	}
+	// 	prettier().config(['parser': 'typescript'])
+	// }
+	// format 'js', {
+	// 	target 'gulpfile.js'
+	// 	prettier().config(['parser': 'typescript'])
+	// }
 }
 
 /////////////////////////////////
@@ -39,11 +40,15 @@ spotless {
 apply plugin: 'org.mytake.gradle.node'
 node {
 	// node 10.x is needed for node-canvas
-	setup.nodeVersion = 'v10.11.0'
+	setup.nodeVersion = 'v12.18.0'
 	setup.npmVersion = 'provided'
 
-	tasks.check.dependsOn npmRun('test') {
+	npmRun('test_ci') {
 		dependsOn 'beforeCompile'
 		inputs.dir('src/main/scripts')
+		outputs.dir('build/test-results/jest')
 	}
+}
+tasks.named('check') {
+	dependsOn 'npm_run_test_ci'
 }

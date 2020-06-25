@@ -1,13 +1,17 @@
 {
   "compilerOptions": {
-		"lib": ["es2015", "dom"],
+    "lib": ["es2015", "dom"],
     "sourceMap": false,
     "noImplicitAny": true,
     "module": "commonjs",
     "target": "es5",
     "jsx": "react",
     "strictNullChecks": true,
-    "noEmit": true
+    "noEmit": true,
+    "baseUrl": "src/main",
+    "paths": {
+      "*": ["scripts/types/*"]
+    }
   },
   "include": ["./src/main/scripts/**/*"],
   "exclude": ["./node_modules/**"],

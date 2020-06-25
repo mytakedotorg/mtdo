@@ -27,13 +27,6 @@ interface HTMLCanvasElement {
   readonly style: CSSStyleDeclaration;
   toDataURL(type?: string, quality?: any): string;
 }
-type CSSStyleDeclaration = any;
-type HTMLElement = any;
-type HTMLImageElement = any;
-type HTMLSpanElement = any;
-type TextMetrics = any;
-type Blob = any;
-type XMLHttpRequest = any;
 
 declare namespace jest {
   interface Matchers<R> {

@@ -1,5 +1,5 @@
 const fs = require("fs");
-const request = require("request-promise");
+const axios = require("axios").default;
 import { Foundation } from "../java2ts/Foundation";
 
 interface HashToFact {
@@ -56,7 +56,7 @@ const FactHashMap = class FactHashMap {
               );
             }
           }
-          Promise.all(promises).then(factList => {
+          Promise.all(promises).then((factList) => {
             // All facts have been loaded
             resolveLoad(hashesToFacts);
           });
@@ -81,22 +81,28 @@ export const fetchYTThumbs = (
           "/0.jpg";
         promises.push(
           new Promise((resolveThumb, rejectThumb) => {
-            request(imageURI)
+            axios
+              .get(imageURI)
               .then(function(htmlString: string) {
                 vidHashesToThumbs[hash] = htmlString;
                 resolveThumb(htmlString);
               })
               .catch(function(err: Error) {
+                console.error("Failed to load ", imageURI);
                 rejectThumb(err);
               });
           })
         );
       }
     }
-    Promise.all(promises).then(factList => {
-      // All facts have been loaded
-      resolveLoad(vidHashesToThumbs);
-    });
+    Promise.all(promises)
+      .then((factList) => {
+        // All facts have been loaded
+        resolveLoad(vidHashesToThumbs);
+      })
+      .catch((err) => {
+        rejectLoad(err);
+      });
   });
 };
 

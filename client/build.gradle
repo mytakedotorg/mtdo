@@ -17,13 +17,14 @@ spotless {
 		target 'src/main/styles/**/*.scss'
 		prettier(VER_PRETTIER).config(['parser': 'css'])
 	}
-	format 'typescript', {
-		target fileTree('src/main/scripts') {
-			include '**'
-			exclude 'java2ts/**'
-		}
-		prettier(VER_PRETTIER).config(['parser': 'typescript'])
-	}
+	/* TODO: Upgrade to latest prettier and bring this back
+	 format 'typescript', {
+	 target fileTree('src/main/scripts') {
+	 include '**'
+	 exclude 'java2ts/**'
+	 }
+	 prettier(VER_PRETTIER).config(['parser': 'typescript'])
+	 }	*/
 	format 'js', {
 		target 'gulpfile.js'
 		prettier(VER_PRETTIER).config(['parser': 'typescript'])
@@ -69,12 +70,13 @@ jsoniterCodegen { codegenClass = 'java2ts.CodegenConfig' }
 ///////////////////////////////////////////////////////////////////////
 apply plugin: 'org.mytake.gradle.node'
 node {
-	setup.nodeVersion = 'v8.15.1'
+	setup.nodeVersion = 'v12.18.0'
 	setup.npmVersion = 'provided'
 
-	check.dependsOn npmRun('test') {
+	npmRun('test_ci') {
 		dependsOn('jsweet')
 		inputs.dir('src/main/scripts')
+		outputs.dir('build/test-results/jest')
 	}
 
 	// every gulp task automatically installs from package-lock.json using 'npm ci'
@@ -118,6 +120,10 @@ node {
 clean {
 	delete 'src/main/resources/assets'
 	delete 'src/main/resources/assets-dev'
+}
+
+tasks.named('check') {
+	dependsOn 'npm_run_test_ci'
 }
 
 // make sure that all the gulp tasks are run

@@ -90,8 +90,8 @@ public class SetupCleanupDockerFlyway implements Serializable {
 			port = Integer.parseInt(connectionProps.getProperty("port"));
 		}
 		PGSimpleDataSource dataSource = new PGSimpleDataSource();
-		dataSource.setServerNames(new String[] {ip});
-		dataSource.setPortNumbers(new int[] {port});
+		dataSource.setServerName(ip);
+		dataSource.setPortNumber(port);
 		dataSource.setUser("root");
 		dataSource.setDatabaseName("template1");
 		dataSource.setConnectTimeout(20);

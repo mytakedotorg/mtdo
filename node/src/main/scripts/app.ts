@@ -15,12 +15,16 @@ if (app.get("env") === "production") {
 }
 
 let isReady: boolean = false;
-new FactHashMap().load().then(factHashMap => {
+new FactHashMap().load().then((factHashMap) => {
   app.locals.factHashMap = factHashMap;
-  fetchYTThumbs(factHashMap).then(vidHashMap => {
-    app.locals.vidHashMap = vidHashMap;
-    isReady = true;
-  });
+  fetchYTThumbs(factHashMap)
+    .then((vidHashMap) => {
+      app.locals.vidHashMap = vidHashMap;
+      isReady = true;
+    })
+    .catch((err) => {
+      console.error("Failed to load hashmap and youtube thumbnails");
+    });
 });
 
 app.use("/api/images", (req: Request, res: Response, next: NextFunction) => {
@@ -63,7 +67,7 @@ if (app.get("env") === "development") {
     res.status(err.status || 500);
     res.json({
       message: err.message,
-      error: err
+      error: err,
     });
   });
 }
@@ -73,7 +77,7 @@ app.use(function(err: Error, req: Request, res: Response, next: NextFunction) {
   res.status(err.status || 500);
   res.json({
     message: err.message,
-    error: err
+    error: err,
   });
 });
 
