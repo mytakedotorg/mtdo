@@ -44,8 +44,8 @@ flywayJooq {
 	forcedType {
 		userType = 'java.lang.String'
 		binding = 'db.bindings.PostgresInetBinding'
-		expression = '.*'
-		types = 'inet'
+		includeExpression = '.*'
+		includeTypes = 'inet'
 	}
 }
 // because docker-compose can't start postgres on Heroku
