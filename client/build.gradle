@@ -17,13 +17,14 @@ spotless {
 		target 'src/main/styles/**/*.scss'
 		prettier(VER_PRETTIER).config(['parser': 'css'])
 	}
+	/* TODO: Upgrade to latest prettier and bring this back
 	format 'typescript', {
 		target fileTree('src/main/scripts') {
 			include '**'
 			exclude 'java2ts/**'
 		}
 		prettier(VER_PRETTIER).config(['parser': 'typescript'])
-	}
+	}	*/
 	format 'js', {
 		target 'gulpfile.js'
 		prettier(VER_PRETTIER).config(['parser': 'typescript'])
