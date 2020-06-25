@@ -1,5 +1,5 @@
-require("source-map-support").install();
 import * as express from "express";
+require("source-map-support").install();
 const logger = require("morgan");
 import FactHashMap, { fetchYTThumbs } from "./utils/FactHashMap";
 const app = express();

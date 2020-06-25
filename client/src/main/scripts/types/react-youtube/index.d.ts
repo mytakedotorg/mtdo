@@ -1,3 +1,5 @@
+import * as React from "react";
+
 // **********************************************************
 // REQUIRED UNTIL PR IS MERGED:
 // https://github.com/tjallingt/react-youtube/pull/241
@@ -12,8 +14,6 @@
 //                 Will Olson <https://github.com/frankolson>
 //                 goooseman <https://github.com/goooseman>
 // TypeScript Version: 3.7
-
-import * as React from "react";
 
 export interface PlayerVars {
   autoplay?: 0 | 1;
