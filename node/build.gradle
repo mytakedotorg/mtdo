@@ -20,17 +20,18 @@ tasks.register('beforeCompile') {
 
 apply plugin: 'com.diffplug.gradle.spotless'
 spotless {
-	format 'typescript', {
-		target fileTree('src/main/scripts') {
-			include '**/*.ts'
-			exclude 'java2ts/**'
-		}
-		prettier().config(['parser': 'typescript'])
-	}
-	format 'js', {
-		target 'gulpfile.js'
-		prettier().config(['parser': 'typescript'])
-	}
+	// TODO: bring this back with modern prettier
+	// format 'typescript', {
+	// 	target fileTree('src/main/scripts') {
+	// 		include '**/*.ts'
+	// 		exclude 'java2ts/**'
+	// 	}
+	// 	prettier().config(['parser': 'typescript'])
+	// }
+	// format 'js', {
+	// 	target 'gulpfile.js'
+	// 	prettier().config(['parser': 'typescript'])
+	// }
 }
 
 /////////////////////////////////
