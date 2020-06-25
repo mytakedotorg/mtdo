@@ -48,6 +48,9 @@ node {
 		outputs.dir('build/test-results/jest')
 	}
 }
-tasks.named('check') {
+tasks.register('test') {
 	dependsOn 'npm_run_test_ci'
+}
+tasks.named('check') {
+	dependsOn 'test'
 }
