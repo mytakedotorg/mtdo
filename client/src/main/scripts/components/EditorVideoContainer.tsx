@@ -1,3 +1,22 @@
+/*
+ * MyTake.org website and tooling.
+ * Copyright (C) 2017-2018 MyTake.org, Inc.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * You can contact us at team@mytake.org
+ */
 import * as React from "react";
 import * as keycode from "keycode";
 import Video from "./Video";
@@ -27,7 +46,7 @@ class EditorVideoContainer extends React.Component<
   constructor(props: EditorVideoContainerProps) {
     super(props);
     this.state = {
-      loading: true
+      loading: true,
     };
   }
   getFact = (factHash: string) => {
@@ -47,7 +66,7 @@ class EditorVideoContainer extends React.Component<
         } else {
           this.setState({
             loading: false,
-            videoFact: factContent
+            videoFact: factContent,
           });
         }
       }
@@ -76,9 +95,9 @@ interface EditorVideoBranchProps {
   containerState: EditorVideoContainerState;
 }
 
-export const EditorVideoBranch: React.StatelessComponent<
-  EditorVideoBranchProps
-> = props => {
+export const EditorVideoBranch: React.StatelessComponent<EditorVideoBranchProps> = (
+  props
+) => {
   if (props.containerState.loading || !props.containerState.videoFact) {
     return <VideoLoadingView />;
   } else {
@@ -95,7 +114,7 @@ export const EditorVideoBranch: React.StatelessComponent<
   }
 };
 
-const VideoLoadingView: React.StatelessComponent<{}> = props => (
+const VideoLoadingView: React.StatelessComponent<{}> = (props) => (
   <div className="editor__document editor__document--base editor__document--hover">
     <h2 className="editor__document-title">Loading</h2>
   </div>

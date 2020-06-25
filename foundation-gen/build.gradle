@@ -84,7 +84,7 @@ tasks.register('generateFoundation', JavaExec) {
 apply plugin: 'com.diffplug.gradle.spotless'
 spotless {
 	java {
-		licenseHeaderFile(rootProject.file('gradle/spotless.license.java'))
+		licenseHeaderFile rootProject.file('gradle/spotless-license-epl.java')
 		importOrder()
 		eclipse().configFile(rootProject.file('gradle/spotless.eclipseformat.xml'))
 		removeUnusedImports()

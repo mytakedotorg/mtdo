@@ -79,6 +79,10 @@
       "tsx",
       "js"
     ],
+    "modulePathIgnorePatterns": [
+      "<rootDir>/bin/",
+      "<rootDir>/build/"
+    ],
     "setupFiles": [
       "./test/shim.js",
       "./test/setup.js"

@@ -1,3 +1,22 @@
+/*
+ * MyTake.org website and tooling.
+ * Copyright (C) 2017-2018 MyTake.org, Inc.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * You can contact us at team@mytake.org
+ */
 import * as React from "react";
 import { Routes } from "../java2ts/Routes";
 import { TakeReactionJson } from "../java2ts/TakeReactionJson";
@@ -34,7 +53,7 @@ class ReactionContainer extends React.Component<
   fetchReactions = () => {
     setTimeout(() => {
       const takeViewBodyJson: TakeReactionJson.ViewReq = {
-        take_id: this.props.takeId
+        take_id: this.props.takeId,
       };
       postRequest(
         Routes.API_TAKE_VIEW,
@@ -42,21 +61,21 @@ class ReactionContainer extends React.Component<
         (json: TakeReactionJson.ViewRes) => {
           this.setState({
             takeState: json.takeState,
-            userState: json.userState
+            userState: json.userState,
           });
         }
       );
       if (isLoggedIn()) {
         this.username = getUsernameFromURL();
         const followAskBodyJson: FollowJson.FollowAskReq = {
-          username: this.username
+          username: this.username,
         };
         postRequest(
           Routes.API_FOLLOW_ASK,
           followAskBodyJson,
           (json: FollowJson.FollowRes) => {
             this.setState({
-              isFollowing: json.isFollowing
+              isFollowing: json.isFollowing,
             });
           }
         );
@@ -73,14 +92,14 @@ class ReactionContainer extends React.Component<
           typeof this.state.isFollowing == "boolean"
             ? !this.state.isFollowing
             : true,
-        username: this.username
+        username: this.username,
       };
       postRequest(
         Routes.API_FOLLOW_TELL,
         followTellBodyJson,
         (json: FollowJson.FollowRes) => {
           this.setState({
-            isFollowing: json.isFollowing
+            isFollowing: json.isFollowing,
           });
         }
       );
@@ -97,12 +116,12 @@ class ReactionContainer extends React.Component<
     if (this.state.userState) {
       const userState = {
         ...this.state.userState,
-        like: !this.state.userState.like
+        like: !this.state.userState.like,
       };
 
       const bodyJson: TakeReactionJson.ReactReq = {
         take_id: this.props.takeId,
-        userState: userState
+        userState: userState,
       };
 
       postRequest(
@@ -111,7 +130,7 @@ class ReactionContainer extends React.Component<
         (json: TakeReactionJson.ReactRes) => {
           this.setState({
             takeState: json.takeState,
-            userState: json.userState
+            userState: json.userState,
           });
         }
       );
@@ -130,19 +149,19 @@ class ReactionContainer extends React.Component<
         case "spam":
           userState = {
             ...this.state.userState,
-            spam: !this.state.userState.spam
+            spam: !this.state.userState.spam,
           };
           break;
         case "harassment":
           userState = {
             ...this.state.userState,
-            harassment: !this.state.userState.harassment
+            harassment: !this.state.userState.harassment,
           };
           break;
         case "rulesviolation":
           userState = {
             ...this.state.userState,
-            rulesviolation: !this.state.userState.rulesviolation
+            rulesviolation: !this.state.userState.rulesviolation,
           };
           break;
         default:
@@ -152,7 +171,7 @@ class ReactionContainer extends React.Component<
 
       const bodyJson: TakeReactionJson.ReactReq = {
         take_id: this.props.takeId,
-        userState: userState
+        userState: userState,
       };
 
       postRequest(
@@ -161,7 +180,7 @@ class ReactionContainer extends React.Component<
         (json: TakeReactionJson.ReactRes) => {
           this.setState({
             takeState: json.takeState,
-            userState: json.userState
+            userState: json.userState,
           });
         }
       );
@@ -180,7 +199,7 @@ class ReactionContainer extends React.Component<
     const eventListeners = {
       onStarPress: this.starButtonPress,
       onReportPress: this.reportButtonPress,
-      onFollowPress: this.followButtonPress
+      onFollowPress: this.followButtonPress,
     };
     return (
       <Reaction
@@ -211,7 +230,7 @@ export class Reaction extends React.Component<ReactionProps, ReactionState> {
     super(props);
 
     this.state = {
-      subMenuIsOpen: false
+      subMenuIsOpen: false,
     };
   }
   toggleMenu = () => {
@@ -222,14 +241,14 @@ export class Reaction extends React.Component<ReactionProps, ReactionState> {
       window.removeEventListener("mousedown", this.onMouseDown);
     }
     this.setState({
-      subMenuIsOpen: !menuIsOpen
+      subMenuIsOpen: !menuIsOpen,
     });
   };
   onMouseDown = (e: MouseEvent) => {
     if (e.target) {
       if (!(e.target as HTMLElement).classList.contains("reaction__action")) {
         this.setState({
-          subMenuIsOpen: false
+          subMenuIsOpen: false,
         });
         window.removeEventListener("mousedown", this.onMouseDown);
       }

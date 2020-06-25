@@ -20,18 +20,16 @@ tasks.register('beforeCompile') {
 
 apply plugin: 'com.diffplug.gradle.spotless'
 spotless {
-	// TODO: bring this back with modern prettier
-	// format 'typescript', {
-	// 	target fileTree('src/main/scripts') {
-	// 		include '**/*.ts'
-	// 		exclude 'java2ts/**'
-	// 	}
-	// 	prettier().config(['parser': 'typescript'])
-	// }
-	// format 'js', {
-	// 	target 'gulpfile.js'
-	// 	prettier().config(['parser': 'typescript'])
-	// }
+	format 'typescript', {
+		licenseHeaderFile rootProject.file('gradle/spotless-license-agpl.java'), '(import|const|declare|export|var) '
+		target 'src/main/scripts/**/*.ts'
+		targetExclude 'src/main/scripts/java2ts/**', 'src/main/scripts/common/**', 'src/main/scripts/server.ts', '**/__snapshots__/**'
+		prettier(VER_PRETTIER).config(['parser': 'typescript'])
+	}
+	format 'js', {
+		target 'gulpfile.js'
+		prettier(VER_PRETTIER).config(['parser': 'typescript'])
+	}
 }
 
 /////////////////////////////////

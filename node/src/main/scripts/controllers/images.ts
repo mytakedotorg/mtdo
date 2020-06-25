@@ -1,3 +1,22 @@
+/*
+ * MyTake.org website and tooling.
+ * Copyright (C) 2018-2020 MyTake.org, Inc.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * You can contact us at team@mytake.org
+ */
 import { Request, Response } from "express";
 import { Foundation } from "../java2ts/Foundation";
 import { decodeVideoFact } from "../common/DecodeVideoFact";
@@ -54,7 +73,7 @@ function videoFactImage(
   const canvas = createCanvas(480, 360);
   const ctx = canvas.getContext("2d");
   if (ctx) {
-    return new Promise(function(resolve, reject) {
+    return new Promise(function (resolve, reject) {
       drawVideoFact(canvas, decodeVideoFact(videoFact), [hStart, hEnd])
         .then(() => {
           resolve(canvas.toDataURL());
@@ -152,7 +171,7 @@ router.get("/:" + IMAGEKEY, (req: Request, res: Response) => {
 
       if (videoFact) {
         videoFactImage(videoFact, hRange[0], hRange[1])
-          .then(function(png: string) {
+          .then(function (png: string) {
             const img = new Buffer(png.split(",")[1], "base64"); // Remove "data:image/png;base64,"
             res.writeHead(200, {
               "Content-Type": "image/png",
@@ -160,7 +179,7 @@ router.get("/:" + IMAGEKEY, (req: Request, res: Response) => {
             });
             return res.end(img);
           })
-          .catch(function() {
+          .catch(function () {
             throw "Error creating image buffer";
           });
       } else {

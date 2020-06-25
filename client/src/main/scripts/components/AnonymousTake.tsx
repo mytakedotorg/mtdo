@@ -1,3 +1,22 @@
+/*
+ * MyTake.org website and tooling.
+ * Copyright (C) 2018 MyTake.org, Inc.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * You can contact us at team@mytake.org
+ */
 import * as React from "react";
 import BlockEditor, { TakeBlock, TakeDocument } from "./BlockEditor";
 import { alertErr, slugify } from "../utils/functions";
@@ -24,14 +43,14 @@ class AnonymousTake extends React.Component<
   buildTakeDocument = (takeObject: Share.ShareReq): TakeDocument => {
     const highlightedRange: [number, number] = [
       parseFloat(takeObject.hStart),
-      parseFloat(takeObject.hEnd)
+      parseFloat(takeObject.hEnd),
     ];
     let block: TakeBlock;
     if (takeObject.vidId) {
       block = {
         kind: "video",
         videoId: takeObject.vidId,
-        range: highlightedRange
+        range: highlightedRange,
       };
     } else if (
       takeObject.docId &&
@@ -40,13 +59,13 @@ class AnonymousTake extends React.Component<
     ) {
       const viewRange: [number, number] = [
         parseFloat(takeObject.vStart),
-        parseFloat(takeObject.vEnd)
+        parseFloat(takeObject.vEnd),
       ];
       block = {
         kind: "document",
         excerptId: takeObject.docId,
         highlightedRange: highlightedRange,
-        viewRange: viewRange
+        viewRange: viewRange,
       };
     } else {
       const msg = "AnonymousTake: Error decoding fact block";
@@ -55,7 +74,7 @@ class AnonymousTake extends React.Component<
     }
     const takeDocument: TakeDocument = {
       title: takeObject.title,
-      blocks: [block]
+      blocks: [block],
     };
     return takeDocument;
   };
@@ -82,7 +101,7 @@ class AnonymousTake extends React.Component<
   }
   render() {
     const eventHandlers = {
-      onDocumentClick: () => {}
+      onDocumentClick: () => {},
     };
     return (
       <div className="anonymoustake">

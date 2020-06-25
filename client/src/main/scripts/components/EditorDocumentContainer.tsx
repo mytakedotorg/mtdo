@@ -1,3 +1,22 @@
+/*
+ * MyTake.org website and tooling.
+ * Copyright (C) 2017-2019 MyTake.org, Inc.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * You can contact us at team@mytake.org
+ */
 import * as React from "react";
 import * as keycode from "keycode";
 import DocumentTextNodeList from "./DocumentTextNodeList";
@@ -9,7 +28,7 @@ import { Foundation } from "../java2ts/Foundation";
 import {
   isWriteOnly,
   ReadingEventHandlers,
-  WritingEventHandlers
+  WritingEventHandlers,
 } from "./BlockEditor";
 
 export interface EditorDocumentContainerProps {
@@ -35,7 +54,7 @@ class EditorDocumentContainer extends React.Component<
     super(props);
 
     this.state = {
-      loading: true
+      loading: true,
     };
   }
   getFact = (factHash: string) => {
@@ -59,7 +78,7 @@ class EditorDocumentContainer extends React.Component<
             nodes.push({
               component: documentComponent.component,
               innerHTML: [documentComponent.innerHTML],
-              offset: documentComponent.offset
+              offset: documentComponent.offset,
             });
           }
 
@@ -67,8 +86,8 @@ class EditorDocumentContainer extends React.Component<
             loading: false,
             document: {
               fact: factContent.fact,
-              nodes: nodes
-            }
+              nodes: nodes,
+            },
           });
         }
       }
@@ -97,9 +116,9 @@ interface EditorDocumentBranchProps {
   containerState: EditorDocumentContainerState;
 }
 
-export const EditorDocumentBranch: React.StatelessComponent<
-  EditorDocumentBranchProps
-> = props => {
+export const EditorDocumentBranch: React.StatelessComponent<EditorDocumentBranchProps> = (
+  props
+) => {
   if (props.containerState.loading || !props.containerState.document) {
     return <DocumentLoadingView />;
   } else {
@@ -112,7 +131,7 @@ export const EditorDocumentBranch: React.StatelessComponent<
   }
 };
 
-const DocumentLoadingView: React.StatelessComponent<{}> = props => (
+const DocumentLoadingView: React.StatelessComponent<{}> = (props) => (
   <div className="editor__document editor__document--base editor__document--hover">
     <h2 className="editor__document-title">Loading</h2>
   </div>
@@ -154,7 +173,7 @@ class Document extends React.Component<DocumentProps, DocumentState> {
     } else {
       const factlink: Foundation.FactLink = {
         fact: this.props.document.fact,
-        hash: this.props.block.excerptId
+        hash: this.props.block.excerptId,
       };
       this.props.eventHandlers.onDocumentClick(
         factlink,

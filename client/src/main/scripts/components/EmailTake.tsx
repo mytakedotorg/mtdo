@@ -1,3 +1,22 @@
+/*
+ * MyTake.org website and tooling.
+ * Copyright (C) 2018 MyTake.org, Inc.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * You can contact us at team@mytake.org
+ */
 import * as React from "react";
 import { TakeDocument } from "./BlockEditor";
 import { sendEmail } from "../utils/databaseAPI";
@@ -24,14 +43,14 @@ class EmailTake extends React.Component<EmailTakeProps, EmailTakeState> {
     this.state = {
       isLoggedIn: isLoggedIn,
       emailSent: false,
-      emailSending: false
+      emailSending: false,
     };
   }
   handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     if (this.state.isLoggedIn) {
       if (!this.state.emailSending) {
         this.setState({
-          emailSending: true
+          emailSending: true,
         });
 
         let url;
@@ -46,7 +65,7 @@ class EmailTake extends React.Component<EmailTakeProps, EmailTakeState> {
           () => {
             this.setState({
               emailSent: true,
-              emailSending: false
+              emailSending: false,
             });
           }
         );
@@ -64,7 +83,7 @@ class EmailTake extends React.Component<EmailTakeProps, EmailTakeState> {
     if (this.state.emailSent) {
       if (!isEqual(nextProps.takeDocument, this.props.takeDocument)) {
         this.setState({
-          emailSent: false
+          emailSent: false,
         });
       }
     }

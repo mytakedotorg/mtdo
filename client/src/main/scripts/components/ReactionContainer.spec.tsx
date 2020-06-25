@@ -1,3 +1,22 @@
+/*
+ * MyTake.org website and tooling.
+ * Copyright (C) 2017-2018 MyTake.org, Inc.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * You can contact us at team@mytake.org
+ */
 import * as React from "react";
 import * as renderer from "react-test-renderer";
 import { Reaction } from "./ReactionContainer";
@@ -6,34 +25,34 @@ import { takeDocument } from "../utils/testUtils";
 const initialState = {
   takeState: {
     viewCount: 1,
-    likeCount: 0
+    likeCount: 0,
   },
   userState: {
     like: false,
     bookmark: false,
     spam: false,
     harassment: false,
-    rulesviolation: false
-  }
+    rulesviolation: false,
+  },
 };
 
 const containerProps = {
   takeId: 1,
-  takeDocument: takeDocument
+  takeDocument: takeDocument,
 };
 
 const eventListeners = {
   onReportPress: jest.fn(),
   onStarPress: jest.fn(),
-  onFollowPress: jest.fn()
+  onFollowPress: jest.fn(),
 };
 
 jest.mock("./DropDown", () => ({
-  default: "DropDown"
+  default: "DropDown",
 }));
 
 jest.mock("./EmailTake", () => ({
-  default: "EmailTake"
+  default: "EmailTake",
 }));
 
 test("Reaction - loading", () => {
@@ -67,8 +86,8 @@ test("Reaction - liked", () => {
     ...initialState,
     userState: {
       ...initialState.userState,
-      like: true
-    }
+      like: true,
+    },
   };
   const tree = renderer
     .create(
@@ -100,8 +119,8 @@ test("Reaction - spam reported", () => {
     ...initialState,
     userState: {
       ...initialState.userState,
-      spam: true
-    }
+      spam: true,
+    },
   };
   const tree = renderer
     .create(
@@ -120,8 +139,8 @@ test("Reaction - harassment reported", () => {
     ...initialState,
     userState: {
       ...initialState.userState,
-      harassment: true
-    }
+      harassment: true,
+    },
   };
   const tree = renderer
     .create(
@@ -140,8 +159,8 @@ test("Reaction - rules violated reported", () => {
     ...initialState,
     userState: {
       ...initialState.userState,
-      rulesviolation: true
-    }
+      rulesviolation: true,
+    },
   };
   const tree = renderer
     .create(
@@ -158,7 +177,7 @@ test("Reaction - rules violated reported", () => {
 test("Reaction - user followed", () => {
   const containerState = {
     ...initialState,
-    isFollowing: true
+    isFollowing: true,
   };
   const tree = renderer
     .create(
@@ -175,7 +194,7 @@ test("Reaction - user followed", () => {
 test("Reaction - user unfollowed", () => {
   const containerState = {
     ...initialState,
-    isFollowing: false
+    isFollowing: false,
   };
   const tree = renderer
     .create(

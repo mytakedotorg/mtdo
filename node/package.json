@@ -60,6 +60,10 @@
       "tsx",
       "js"
     ],
+    "modulePathIgnorePatterns": [
+      "<rootDir>/bin/",
+      "<rootDir>/build/"
+    ],
     "setupFiles": [],
     "verbose": true
   },

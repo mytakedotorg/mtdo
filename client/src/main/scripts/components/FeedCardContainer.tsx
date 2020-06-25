@@ -1,3 +1,22 @@
+/*
+ * MyTake.org website and tooling.
+ * Copyright (C) 2017-2019 MyTake.org, Inc.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * You can contact us at team@mytake.org
+ */
 import * as React from "react";
 import DocumentTextNodeList from "./DocumentTextNodeList";
 import { fetchFact } from "../utils/databaseAPI";
@@ -30,7 +49,7 @@ class FeedCardContainer extends React.Component<
     super(props);
 
     this.state = {
-      loading: true
+      loading: true,
     };
   }
   getDocumentFact = (factHash: string) => {
@@ -56,7 +75,7 @@ class FeedCardContainer extends React.Component<
             nodes.push({
               component: documentComponent.component,
               innerHTML: [documentComponent.innerHTML],
-              offset: documentComponent.offset
+              offset: documentComponent.offset,
             });
           }
 
@@ -64,8 +83,8 @@ class FeedCardContainer extends React.Component<
             loading: false,
             document: {
               fact: factContent.fact,
-              nodes: nodes
-            }
+              nodes: nodes,
+            },
           });
         }
       }
@@ -91,7 +110,7 @@ class FeedCardContainer extends React.Component<
         } else {
           this.setState({
             loading: false,
-            videoFact: factContent
+            videoFact: factContent,
           });
         }
       }
@@ -118,9 +137,9 @@ interface FeedCardBranchProps {
   containerState: FeedCardContainerState;
 }
 
-export const FeedCardBranch: React.StatelessComponent<
-  FeedCardBranchProps
-> = props => {
+export const FeedCardBranch: React.StatelessComponent<FeedCardBranchProps> = (
+  props
+) => {
   if (props.containerState.loading) {
     return <FeedCardLoadingView />;
   } else {
@@ -134,7 +153,7 @@ export const FeedCardBranch: React.StatelessComponent<
   }
 };
 
-const FeedCardLoadingView: React.StatelessComponent<{}> = props => (
+const FeedCardLoadingView: React.StatelessComponent<{}> = (props) => (
   <div className="feed__card">
     <h2 className="feed__card-title">Loading Take Preview</h2>
   </div>

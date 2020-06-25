@@ -1,41 +1,60 @@
+/*
+ * MyTake.org website and tooling.
+ * Copyright (C) 2017-2018 MyTake.org, Inc.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * You can contact us at team@mytake.org
+ */
 import * as React from "react";
 import * as renderer from "react-test-renderer";
 import {
   TimelineViewBranch,
   TimelineViewState,
-  EventHandlers
+  EventHandlers,
 } from "./TimelineView";
 import {
   documentFactLink,
   timelineItems,
-  videoFactLink
+  videoFactLink,
 } from "../utils/testUtils";
 import { SetFactHandlers } from "./TimelinePreview";
 
 jest.mock("./TimelinePreviewContainer", () => ({
-  default: "TimelinePreviewContainer"
+  default: "TimelinePreviewContainer",
 }));
 
 jest.mock("./Timeline", () => ({
-  default: "Timeline"
+  default: "Timeline",
 }));
 
 jest.mock("./TimelineRadioButtons", () => ({
-  default: "TimelineRadioButtons"
+  default: "TimelineRadioButtons",
 }));
 
 const mockFn = jest.fn();
 
 const eventHandlers: EventHandlers = {
   handleChange: mockFn,
-  handleClick: mockFn
+  handleClick: mockFn,
 };
 
 const setFactHandlers: SetFactHandlers = {
   handleDocumentSetClick: mockFn,
   handleVideoSetClick: mockFn,
   handleRangeCleared: mockFn,
-  handleRangeSet: mockFn
+  handleRangeSet: mockFn,
 };
 
 const initialState: TimelineViewState = {
@@ -44,12 +63,12 @@ const initialState: TimelineViewState = {
   selectedOption: "Debates",
   timelineItems: [],
   urlValues: null,
-  URLIsValid: false
+  URLIsValid: false,
 };
 
 test("View loading", () => {
   const containerState: TimelineViewState = {
-    ...initialState
+    ...initialState,
   };
 
   const tree = renderer
@@ -67,7 +86,7 @@ test("View loading", () => {
 test("Successfully loaded view", () => {
   const containerState: TimelineViewState = {
     ...initialState,
-    loading: false
+    loading: false,
   };
 
   const tree = renderer
@@ -89,7 +108,7 @@ test("Successfully loaded a Document in view", () => {
     selectedOption: "Documents",
     timelineItems: timelineItems,
     urlValues: null,
-    URLIsValid: true
+    URLIsValid: true,
   };
 
   const tree = renderer
@@ -111,7 +130,7 @@ test("Successfully loaded a Video in view", () => {
     selectedOption: "Debates",
     timelineItems: timelineItems,
     urlValues: null,
-    URLIsValid: true
+    URLIsValid: true,
   };
 
   const tree = renderer

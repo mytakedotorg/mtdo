@@ -1,35 +1,54 @@
+/*
+ * MyTake.org website and tooling.
+ * Copyright (C) 2017-2018 MyTake.org, Inc.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * You can contact us at team@mytake.org
+ */
 import * as React from "react";
 import * as renderer from "react-test-renderer";
 import {
   TimelinePreviewContainerBranch,
   TimelinePreviewContainerProps,
-  TimelinePreviewContainerState
+  TimelinePreviewContainerState,
 } from "./TimelinePreviewContainer";
 import {
   documentFactLink,
   documentNodes,
   videoFactFast,
-  videoFactLink
+  videoFactLink,
 } from "../utils/testUtils";
 
 jest.mock("./TimelinePreview", () => ({
-  default: "TimelinePreview"
+  default: "TimelinePreview",
 }));
 
 const setFactHandlers = {
   handleDocumentSetClick: jest.fn(),
   handleVideoSetClick: jest.fn(),
   handleRangeSet: jest.fn(),
-  handleRangeCleared: jest.fn()
+  handleRangeCleared: jest.fn(),
 };
 
 const containerProps = {
-  factLink: documentFactLink
+  factLink: documentFactLink,
 };
 
 test("Preview loading", () => {
   const containerState: TimelinePreviewContainerState = {
-    loading: true
+    loading: true,
   };
 
   const tree = renderer
@@ -46,7 +65,7 @@ test("Preview loading", () => {
 test("Successfully loaded Document Preview", () => {
   const containerState: TimelinePreviewContainerState = {
     loading: false,
-    nodes: documentNodes
+    nodes: documentNodes,
   };
 
   const tree = renderer
@@ -66,13 +85,13 @@ test("Successfully loaded Document Preview with highlights", () => {
     offset: 248,
     ranges: {
       highlightedRange: [11, 53],
-      viewRange: [0, 218]
+      viewRange: [0, 218],
     },
-    setFactHandlers: setFactHandlers
+    setFactHandlers: setFactHandlers,
   };
   const containerState: TimelinePreviewContainerState = {
     loading: false,
-    nodes: documentNodes
+    nodes: documentNodes,
   };
 
   const tree = renderer
@@ -89,11 +108,11 @@ test("Successfully loaded Document Preview with highlights", () => {
 test("Successfully loaded Video Preview", () => {
   const videoProps: TimelinePreviewContainerProps = {
     factLink: videoFactLink,
-    setFactHandlers: setFactHandlers
+    setFactHandlers: setFactHandlers,
   };
   const containerState: TimelinePreviewContainerState = {
     loading: false,
-    videoFact: videoFactFast
+    videoFact: videoFactFast,
   };
 
   const tree = renderer

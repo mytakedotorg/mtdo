@@ -8,7 +8,7 @@ apply plugin: 'com.diffplug.gradle.spotless'
 spotless {
 	java {
 		target 'src/main/java/**/*.java', 'src/test/java/**/*.java'
-		licenseHeaderFile(rootProject.file('gradle/spotless.license.java'))
+		licenseHeaderFile rootProject.file('gradle/spotless-license-agpl.java')
 		importOrder()
 		eclipse().configFile(rootProject.file('gradle/spotless.eclipseformat.xml'))
 		removeUnusedImports()
@@ -79,9 +79,14 @@ rocker {
 spotless {
 	format 'rocker', {
 		target 'src/main/rocker/**/*.rocker.html'
-		indentWithTabs(2)
 		trimTrailingWhitespace()
 		endWithNewline()
+		licenseHeaderFile rootProject.file('gradle/spotless-license-agpl.rocker'), '@args|@import'
+		indentWithTabs(2)
+		// indentWithTabs screws up the license header, so we have to fix it with these regexes
+		replaceRegex 'fix license-header dots 1', '^\\* ', ' * '
+		replaceRegex 'fix license-header dots 2', '^\\*\n', ' *\n'
+		replace      'fix license-header dots 3', 'team@mytake.org\n*@', 'team@mytake.org\n *@'
 	}
 }
 

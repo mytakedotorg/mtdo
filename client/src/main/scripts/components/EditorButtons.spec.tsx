@@ -1,15 +1,34 @@
+/*
+ * MyTake.org website and tooling.
+ * Copyright (C) 2017-2018 MyTake.org, Inc.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * You can contact us at team@mytake.org
+ */
 import * as React from "react";
 import * as renderer from "react-test-renderer";
 import EditorButtons from "./EditorButtons";
 
 jest.mock("./Banner", () => ({
-  default: "Banner"
+  default: "Banner",
 }));
 
 const eventHandlers = {
   handleDeleteClick: jest.fn(),
   handlePublishClick: jest.fn(),
-  handleSaveClick: jest.fn()
+  handleSaveClick: jest.fn(),
 };
 
 test("Initial status", () => {
@@ -17,7 +36,7 @@ test("Initial status", () => {
     saved: true,
     saving: false,
     error: false,
-    message: ""
+    message: "",
   };
   const tree = renderer
     .create(<EditorButtons status={status} eventHandlers={eventHandlers} />)
@@ -30,7 +49,7 @@ test("Unsaved", () => {
     saved: false,
     saving: false,
     error: false,
-    message: ""
+    message: "",
   };
   const tree = renderer
     .create(<EditorButtons status={status} eventHandlers={eventHandlers} />)
@@ -43,7 +62,7 @@ test("Saving", () => {
     saved: false,
     saving: true,
     error: false,
-    message: ""
+    message: "",
   };
   const tree = renderer
     .create(<EditorButtons status={status} eventHandlers={eventHandlers} />)
@@ -56,7 +75,7 @@ test("Publishing", () => {
     saved: false,
     saving: true,
     error: false,
-    message: "Publishing Take."
+    message: "Publishing Take.",
   };
   const tree = renderer
     .create(<EditorButtons status={status} eventHandlers={eventHandlers} />)
@@ -69,7 +88,7 @@ test("Publishing error", () => {
     saved: false,
     saving: false,
     error: true,
-    message: "There was an error publishing your Take."
+    message: "There was an error publishing your Take.",
   };
   const tree = renderer
     .create(<EditorButtons status={status} eventHandlers={eventHandlers} />)
@@ -82,7 +101,7 @@ test("Title too long", () => {
     saved: false,
     saving: false,
     error: true,
-    message: "Title cannot be longer than 255 characters."
+    message: "Title cannot be longer than 255 characters.",
   };
   const tree = renderer
     .create(<EditorButtons status={status} eventHandlers={eventHandlers} />)
@@ -95,7 +114,7 @@ test("Saving", () => {
     saved: false,
     saving: true,
     error: false,
-    message: "Saving Take."
+    message: "Saving Take.",
   };
   const tree = renderer
     .create(<EditorButtons status={status} eventHandlers={eventHandlers} />)
@@ -108,7 +127,7 @@ test("Save successful", () => {
     saved: true,
     saving: false,
     error: false,
-    message: "Save successful!"
+    message: "Save successful!",
   };
   const tree = renderer
     .create(<EditorButtons status={status} eventHandlers={eventHandlers} />)
@@ -121,7 +140,7 @@ test("Unknown error", () => {
     saved: false,
     saving: true,
     error: true,
-    message: "There was an error modifying your Take."
+    message: "There was an error modifying your Take.",
   };
   const tree = renderer
     .create(<EditorButtons status={status} eventHandlers={eventHandlers} />)
