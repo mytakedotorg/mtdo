@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`VideoResultsList social security 1`] = `
+<div
+  className="results"
+>
+  <div
+    className="results__inner-container"
+  >
+    <h1
+      className="results__heading"
+    >
+      Search Results
+    </h1>
+    <p
+      className="turn__results"
+    >
+      Search returned no results for
+       
+      <strong>
+        social security
+      </strong>
+    </p>
+  </div>
+</div>
+`;
