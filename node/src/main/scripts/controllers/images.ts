@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { Foundation } from "../../../../../client/src/main/scripts/java2ts/Foundation";
+import { Foundation } from "../java2ts/Foundation";
 import { decodeVideoFact } from "../common/DecodeVideoFact";
 import { drawDocumentFact, drawVideoFact } from "../common/DrawFacts";
 import * as express from "express";
@@ -7,11 +7,11 @@ const { registerFont, createCanvas } = require("canvas");
 const router = express.Router();
 registerFont("Merriweather-Regular.ttf", {
   family: "Merriweather",
-  weight: "normal"
+  weight: "normal",
 });
 registerFont("Merriweather-Bold.ttf", {
   family: "Merriweather",
-  weight: "bold"
+  weight: "bold",
 });
 
 function videoRangeFromString(rangeStr: string): [number, number] | null {
@@ -59,7 +59,7 @@ function videoFactImage(
         .then(() => {
           resolve(canvas.toDataURL());
         })
-        .catch(err => {
+        .catch((err) => {
           reject(err);
         });
     });
@@ -127,7 +127,7 @@ router.get("/:" + IMAGEKEY, (req: Request, res: Response) => {
         const img = new Buffer(png.split(",")[1], "base64"); // Remove "data:image/png;base64,"
         res.writeHead(200, {
           "Content-Type": "image/png",
-          "Content-Length": img.length
+          "Content-Length": img.length,
         });
         return res.end(img);
       } else {
@@ -156,7 +156,7 @@ router.get("/:" + IMAGEKEY, (req: Request, res: Response) => {
             const img = new Buffer(png.split(",")[1], "base64"); // Remove "data:image/png;base64,"
             res.writeHead(200, {
               "Content-Type": "image/png",
-              "Content-Length": img.length
+              "Content-Length": img.length,
             });
             return res.end(img);
           })

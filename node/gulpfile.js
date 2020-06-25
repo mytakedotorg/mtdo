@@ -6,7 +6,7 @@ const sourcemaps = require("gulp-sourcemaps");
 
 const config = {
   src: "./src/main/scripts/**/*.ts",
-  dist: "./src/main/dist"
+  dist: "./src/main/dist",
 };
 
 const BUILD = "build";
@@ -25,9 +25,9 @@ gulp.task(PROXY, function() {
   nodemon({
     script: config.dist + "/server.js",
     ext: "js",
-    env: { NODE_ENV: process.env.NODE_ENV }
+    env: { NODE_ENV: process.env.NODE_ENV },
   });
-  gulp.watch(config.src, [BUILD]);
+  gulp.watch(config.src, gulp.series([BUILD]));
 });
 
-gulp.task("default", [BUILD, PROXY]);
+gulp.task("default", gulp.series([BUILD, PROXY]));
