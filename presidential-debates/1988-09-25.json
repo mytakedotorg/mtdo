@@ -7,5 +7,12 @@
     },
     "youtubeId": "HXuffF9Sib0",
     "durationSeconds": 5508,
-    "speakers": []
-}
+    "speakers": [
+        {"fullName": "Michael S Dukakis", "role": "Democratic nominee for President"},
+        {"fullName": "George HW Bush", "role": "Republican nominee for President"},
+        {"fullName": "Jim Lehrer", "role": "Moderator"},
+        {"fullName": "John Mashek", "role": "Panelist"},
+        {"fullName": "Ann Groer", "role": "Panelist"},
+        {"fullName": "Peter Jennings", "role": "Panelist"}
+      ]
+  }
