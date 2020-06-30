@@ -122,12 +122,20 @@ class QuickShare extends React.Component<QuickShareProps, QuickShareState> {
       title: this.state.title ? this.state.title : this.UNTITLED,
       vidId: isDocument ? undefined : factHash,
       docId: isDocument ? factHash : undefined,
-      hStart: highlightedRange[0].toFixed(3),
-      hEnd: highlightedRange[1].toFixed(3),
+      hStart: isDocument
+        ? highlightedRange[0].toFixed()
+        : highlightedRange[0].toFixed(3),
+      hEnd: isDocument
+        ? highlightedRange[1].toFixed()
+        : highlightedRange[1].toFixed(3),
     };
     if (viewRange) {
-      request.vStart = viewRange[0].toFixed(3);
-      request.vEnd = viewRange[1].toFixed(3);
+      request.vStart = isDocument
+        ? viewRange[0].toFixed()
+        : viewRange[0].toFixed(3);
+      request.vEnd = isDocument
+        ? viewRange[1].toFixed()
+        : viewRange[1].toFixed(3);
     }
     return request;
   };
