@@ -1,15 +1,17 @@
-apply plugin: 'com.diffplug.oomph.ide'
-oomphIde {
-	repoEclipseLatest()
-	jdt {}
-	splash rootProject.file('_imgs/logo_leaves.png')
-	style {
-		classicTheme()	// oldschool cool
-		niceText()		// nice fonts and visible whitespace
+if (!buildsrc.Env.isHeroku()) {
+	apply plugin: 'com.diffplug.oomph.ide'
+	oomphIde {
+		repoEclipseLatest()
+		jdt {}
+		splash rootProject.file('_imgs/logo_leaves.png')
+		style {
+			classicTheme()	// oldschool cool
+			niceText()		// nice fonts and visible whitespace
+		}
+
+		addAllProjects()	// we want a project for *everything*
+
+		repo 'https://download.eclipse.org/wildwebdeveloper/releases/0.7.1/'
+		feature 'org.eclipse.wildwebdeveloper.feature'
 	}
-
-	addAllProjects()	// we want a project for *everything*
-
-	repo 'https://download.eclipse.org/wildwebdeveloper/releases/0.7.1/'
-	feature 'org.eclipse.wildwebdeveloper.feature'
 }
