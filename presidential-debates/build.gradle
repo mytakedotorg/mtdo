@@ -16,7 +16,8 @@ spotless {
 		replace('No need for double-space', "  ", " ")
 		replace('Percent is a word', " per cent", " percent")
 		replace('Adviser is canonical', "advisor", "adviser")    // http://grammarist.com/spelling/adviser-advisor/
-		replace('Always use simple apostrophe', "’", "'")
+		replace('Always use simple left apostrophe', "‘", "'")
+		replace('Always use simple right apostrophe', "’", "'")
 		replace('Always use simple right quote', '”', '"')
 		replace('Always use simple left quote', '“', '"')
 		replace('No need for sound effects 1', '[Applause]', '')

@@ -10,6 +10,10 @@
     "speakers": [
         {"fullName": "Barack H Obama", "role": "Democratic nominee for President"},
         {"fullName": "W Mitt Romney", "role": "Republican nominee for President"},
-        {"fullName": "Candy Crowley", "role": "Moderator"}
+        {"fullName": "Candy Crowley", "role": "Moderator"},
+        {"fullName": "Jeremy Epstein", "role": "Audience questioner"},
+        {"fullName": "Phillip Tricolla", "role": "Audience questioner"},
+        {"fullName": "Mary Follano ", "role": "Audience questioner"},
+        {"fullName": "Katherine Fenton", "role": "Audience questioner"},
     ]
 }
