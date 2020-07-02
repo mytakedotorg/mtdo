@@ -14,17 +14,17 @@ spotless {
 	}
 	format 'scss', {
 		target 'src/main/styles/**/*.scss'
-		prettier(VER_PRETTIER).config(['parser': 'css'])
+		prettier(VER_PRETTIER)
 	}
 	format 'typescript', {
 		licenseHeaderFile rootProject.file('gradle/spotless-license-agpl.java'), '(import|const|declare|export|var) '
 		target 'src/main/scripts/**'
 		targetExclude '**/java2ts/**', '**/__snapshots__/**'
-		prettier(VER_PRETTIER).config(['parser': 'typescript'])
+		prettier(VER_PRETTIER)
 	}
 	format 'js', {
 		target 'gulpfile.js'
-		prettier(VER_PRETTIER).config(['parser': 'typescript'])
+		prettier(VER_PRETTIER)
 	}
 }
 
