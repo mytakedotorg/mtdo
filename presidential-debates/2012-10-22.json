@@ -5,7 +5,10 @@
         "primaryDateKind": "recorded",
         "kind": "video"
     },
-    "youtubeId": "7vSdo3j-BC4",
-    "durationSeconds": 5777,
-    "speakers": []
+    "youtubeId": "xNMCHcKwf7Y",
+    "durationSeconds": 5549,
+    "speakers": [
+        {"fullName": "Barack H Obama", "role": "Democratic nominee for President"},
+        {"fullName": "W Mitt Romney", "role": "Republican nominee for President"}  
+    ]
 }

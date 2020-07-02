@@ -5,7 +5,11 @@
         "primaryDateKind": "recorded",
         "kind": "video"
     },
-    "youtubeId": "TRmGTUNKu94",
-    "durationSeconds": 5861,
-    "speakers": []
+    "youtubeId": "nchGzjFHB-g",
+    "durationSeconds": 5876,
+    "speakers": [
+        {"fullName": "Barack H Obama", "role": "Democratic nominee for President"},
+        {"fullName": "W Mitt Romney", "role": "Republican nominee for President"},
+        {"fullName": "Candy Crowley", "role": "Moderator"}
+    ]
 }
