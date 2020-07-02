@@ -13,7 +13,7 @@ dependencies {
 
 apply plugin: 'com.diffplug.gradle.spotless'
 spotless {
-	ratchetFrom 'origin/master'
+	//ratchetFrom 'origin/master'
 	java {
 		licenseHeaderFile rootProject.file('gradle/spotless-license-agpl.java')
 		importOrder()

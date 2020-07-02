@@ -47,13 +47,13 @@ $palettes: (
     text--link: $base-light,
     skip-bg: $action,
     skip-text: $white,
-    banner__background: $tertiary-lightest
+    banner__background: $tertiary-lightest,
   ),
   nav: (
     text: $base,
     text--hover: $base-lightest,
     active: $secondary,
-    active--hover: $secondary-light
+    active--hover: $secondary-light,
   ),
   document: (
     background: lighten($base-lightest, 40%),
@@ -65,10 +65,10 @@ $palettes: (
     shadow: $base-darkest,
     text: $base-darkest,
     text--highlight: $base-darkest,
-    text--red: $action
+    text--red: $action,
   ),
   video: (
-    text: $base-darkest
+    text: $base-darkest,
   ),
   editor: (
     background: $white,
@@ -77,7 +77,7 @@ $palettes: (
     border: $base-lightest,
     shadow: $base-darkest,
     text: $base-darkest,
-    text--highlight: $base-darkest
+    text--highlight: $base-darkest,
   ),
   feed: (
     background: $white,
@@ -86,19 +86,19 @@ $palettes: (
     card__shadow: $base-darkest,
     text: $base-darkest,
     text--document: $base-darkest,
-    text--faded: $base-darkest
+    text--faded: $base-darkest,
   ),
   foundation: (
     text: $base-darkest,
     card-title--debates: $white,
     card-border: $base-lightest,
-    shadow: $base-darkest
+    shadow: $base-darkest,
   ),
   hero: (
     background: $base,
     title: $white,
     text: $base-lightest,
-    text--special: $white
+    text--special: $white,
   ),
   button: (
     background--action: $action,
@@ -112,63 +112,63 @@ $palettes: (
     color--base-shadow: $base-darkest,
     color--disabled: $base-lightest,
     color--borderless: $base-light,
-    color--borderless-hover: $base-lightest
+    color--borderless-hover: $base-lightest,
   ),
   about: (
     background: $white,
     text--special: $base,
     text: $base-darkest,
-    text--link: $base-light
+    text--link: $base-light,
   ),
   banner: (
     text--red: $action,
-    text--green: $secondary
+    text--green: $secondary,
   ),
   section: (
     background: $white,
     border: $base,
     text: $base-darkest,
-    text--alert: $action
+    text--alert: $action,
   ),
   form: (
     text: $base-darkest,
-    text--action: $action
+    text--action: $action,
   ),
   takelist: (
-    text: $base-darkest
+    text: $base-darkest,
   ),
   profile: (
     tab-background: $white,
     tab-text: $base-darkest,
-    tab-border--active: $action-highlight
+    tab-border--active: $action-highlight,
   ),
   reaction: (
     text: $base-darkest,
     background: $white,
-    border: $base-darkest
+    border: $base-darkest,
   ),
   dropdown: (
     background: $white,
-    border: $base-darkest
+    border: $base-darkest,
   ),
   share: (
     text: $base-darkest,
     text--green: $secondary,
     background: $white,
-    border: $base-lightest
+    border: $base-lightest,
   ),
   trackSlider: (
     color--handle: $base-dark,
-    border: $base-darkest
+    border: $base-darkest,
   ),
   searchbar: (
     background: $action,
     border: $white,
     cancel-icon: $base-lightest,
     text--dark: $base-darkest,
-    icon: $tertiary
+    icon: $tertiary,
   ),
   anonymous: (
-    text: $base-lightest
-  )
+    text: $base-lightest,
+  ),
 );
