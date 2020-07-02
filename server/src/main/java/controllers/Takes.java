@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2017-2018 MyTake.org, Inc.
+ * Copyright (C) 2017-2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -76,9 +76,9 @@ public class Takes implements Jooby.Module {
 		Share.ShareReq shareReq = JsonIterator.deserialize(decodedStr).as(Share.ShareReq.class);
 		String imgPath;
 		if (shareReq.vidId != null) {
-			imgPath = vidImageUrl(titleSlug, shareReq.hStart, shareReq.hEnd);
+			imgPath = vidImageUrl(shareReq.vidId, shareReq.hStart, shareReq.hEnd);
 		} else if (shareReq.docId != null) {
-			imgPath = docImageUrl(titleSlug, shareReq.hStart, shareReq.hEnd, shareReq.vStart, shareReq.vEnd);
+			imgPath = docImageUrl(shareReq.docId, shareReq.hStart, shareReq.hEnd, shareReq.vStart, shareReq.vEnd);
 		} else {
 			throw new IllegalArgumentException("Expected shareReq to have either a docId or a vidId.");
 		}
