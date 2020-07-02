@@ -20,7 +20,7 @@ tasks.register('beforeCompile') {
 
 apply plugin: 'com.diffplug.gradle.spotless'
 spotless {
-	//ratchetFrom 'origin/master'
+	ratchetFrom 'origin/master'
 	format 'typescript', {
 		licenseHeaderFile rootProject.file('gradle/spotless-license-agpl.java'), '(import|const|declare|export|var) '
 		target 'src/main/scripts/**/*.ts'
