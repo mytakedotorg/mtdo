@@ -39,9 +39,9 @@ Note: We have not included any vice-presidential debates.  We intend to add them
 |Oct 8  | [YT: Josh Burdick](https://www.youtube.com/watch?v=21fXfTmv-aQ) | Town hall |
 |Oct 13 | [YT: Josh Burdick](https://www.youtube.com/watch?v=QcNLfajsA_M) | Behind a podium |
 |**2008**| **Barack Obama** v John McCain |         |  |
-|Sep 26 | [YT: C-SPAN](https://www.youtube.com/watch?v=F-nNIEduEOw) | Behind a podium |
-|Oct 7  | [YT: C-SPAN](https://www.youtube.com/watch?v=VkBqLBsu-o4) | Town hall       |
-|Oct 13 | [YT: C-SPAN](https://www.youtube.com/watch?v=DvdfO0lq4rQ) | Behind a desk   |
+|Sep 26 | [YT: C-SPAN](https://www.youtube.com/watch?v=F-nNIEduEOw) [C-SPAN](https://www.c-span.org/video/?281312-2/presidential-candidates-debate) | Behind a podium |
+|Oct 7  | [YT: C-SPAN](https://www.youtube.com/watch?v=VkBqLBsu-o4) [C-SPAN](https://www.c-span.org/video/?281621-2/2008-presidential-candidates-debate) | Town hall       |
+|Oct 13 | [YT: C-SPAN](https://www.youtube.com/watch?v=DvdfO0lq4rQ) [C-SPAN](https://www.c-span.org/video/?281744-2/2008-presidential-candidates-debate) | Behind a desk   |
 |**2012**| **Barack Obama** v Mitt Romney |         |  |
 |Oct 3  | [YT: New York Times](https://www.youtube.com/watch?v=dkrwUU_YApE) | Behind a podium |
 |Oct 16 | [YT: New York Times](https://www.youtube.com/watch?v=QEpCrcMF5Ps) | Town hall       |
