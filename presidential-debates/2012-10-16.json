@@ -13,7 +13,14 @@
         {"fullName": "Candy Crowley", "role": "Moderator"},
         {"fullName": "Jeremy Epstein", "role": "Audience questioner"},
         {"fullName": "Phillip Tricolla", "role": "Audience questioner"},
-        {"fullName": "Mary Follano ", "role": "Audience questioner"},
+        {"fullName": "Mary Follano", "role": "Audience questioner"},
         {"fullName": "Katherine Fenton", "role": "Audience questioner"},
+        {"fullName": "Susan Katz", "role": "Audience questioner"},
+        {"fullName": "Michael Jones", "role": "Audience questioner"},
+        {"fullName": "Lorraine Osorio", "role": "Audience questioner"},
+        {"fullName": "Kerry Ladka", "role": "Audience questioner"},
+        {"fullName": "Nina Gonzalez", "role": "Audience questioner"},
+        {"fullName": "Carol Goldberg", "role": "Audience questioner"},
+        {"fullName": "Barry Green", "role": "Audience questioner"}
     ]
 }
