@@ -1,6 +1,6 @@
 /*
  * MyTake.org transcript GUI. 
- * Copyright (C) 2018 MyTake.org, Inc.
+ * Copyright (C) 2018-2020 MyTake.org, Inc.
  * 
  * The MyTake.org transcript GUI is licensed under EPLv2
  * because SWT is incompatible with AGPLv3, the rest of
@@ -43,6 +43,10 @@ class SetIni {
 				continue;
 			}
 			if (line.trim().equals(line)) {
+				// handle "" for names like O'Brien
+				if (line.startsWith("\"") && line.endsWith("\"")) {
+					line = line.substring(1, line.length() - 1);
+				}
 				boolean wasAdded = result.add(line);
 				Preconditions.checkArgument(wasAdded, "On line " + (i + 1) + " of " + path + ": duplicate");
 			} else {
