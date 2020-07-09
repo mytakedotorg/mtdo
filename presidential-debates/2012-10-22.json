@@ -9,6 +9,7 @@
     "durationSeconds": 5549,
     "speakers": [
         {"fullName": "Barack H Obama", "role": "Democratic nominee for President"},
-        {"fullName": "W Mitt Romney", "role": "Republican nominee for President"}  
+        {"fullName": "W Mitt Romney", "role": "Republican nominee for President"},
+        {"fullName": "Bob Schieffer", "role": "Moderator"}
     ]
 }
