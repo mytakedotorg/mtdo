@@ -7,5 +7,9 @@
     },
     "youtubeId": "2K6ao-fqA00",
     "durationSeconds": 5727,
-    "speakers": []
+    "speakers": [
+        {"fullName": "Hillary R Clinton", "role": "Democratic nominee for President"},
+        {"fullName": "Donald J Trump", "role": "Republican nominee for President"},
+        {"fullName": "Lester Holt", "role": "Moderator"}
+    ]
 }
