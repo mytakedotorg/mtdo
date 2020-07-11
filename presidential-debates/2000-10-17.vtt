@@ -3,7 +3,7 @@ Kind: captions
 Language: en
 
 00:00:03.120 --> 00:00:05.910 align:start position:0%
-good<00:00:04.120><c> evening</c><00:00:04.509><c> from</c><00:00:04.779><c> the</c><00:00:04.839><c> fieldhouse</c><00:00:05.500><c> at</c></c>
+good<00:00:04.120><c> evening</c><00:00:04.509><c> from</c><00:00:04.779><c> the</c><00:00:05.019><c> field</c><00:00:05.260><c> house</c><00:00:05.500><c> at</c></c>
 
 00:00:05.910 --> 00:00:08.190 align:start position:0%
 washington<00:00:06.400><c> university</c><00:00:06.970><c> in</c><00:00:07.089><c> st</c><00:00:07.420><c> louis</c><00:00:07.480><c> i'm</c></c>
@@ -54,7 +54,7 @@ a<00:01:42.110><c> reminder</c><00:01:43.110><c> as</c><00:01:43.260><c> we</c><
 debates<00:01:46.230><c> are</c><00:01:46.710><c> sponsored</c><00:01:47.190><c> by</c><00:01:47.400><c> the</c><00:01:47.460><c> commission</c></c>
 
 00:01:47.840 --> 00:01:50.780 align:start position:0%
-on<00:01:48.150><c> presidential</c><00:01:48.900><c> debates</c><00:01:48.930><c> the</c><00:01:49.860><c> format's</c><00:01:50.400><c> and</c></c>
+on<00:01:48.150><c> presidential</c><00:01:48.900><c> debates</c><00:01:48.930><c> the</c><00:01:49.665><c> formats</c><00:01:50.400><c> and</c></c>
 
 00:01:50.780 --> 00:01:52.580 align:start position:0%
 the<00:01:51.120><c> rules</c><00:01:51.390><c> were</c><00:01:51.660><c> worked</c><00:01:52.050><c> out</c><00:01:52.260><c> by</c><00:01:52.530><c> the</c></c>
@@ -116,11 +116,11 @@ rule<00:02:36.780><c> they</c><00:02:37.620><c> shall</c><00:02:37.980><c> not</
 00:02:39.050 --> 00:02:41.479 align:start position:0%
 questions<00:02:39.209><c> or</c><00:02:39.900><c> otherwise</c><00:02:40.290><c> participate</c><00:02:41.220><c> in</c></c>
 
-00:02:41.479 --> 00:02:43.610 align:start position:0%
+00:02:41.479 --> 00:02:43.635 align:start position:0%
 the<00:02:41.640><c> extended</c><00:02:42.239><c> discussion</c><00:02:42.810><c> and</c><00:02:43.050><c> the</c></c>
 
-00:02:43.610 --> 00:02:45.860 align:start position:0%
-questioners<00:02:44.220><c> microphone</c><00:02:44.970><c> will</c><00:02:45.300><c> be</c><00:02:45.510><c> turned</c></c>
+00:02:43.635 --> 00:02:45.860 align:start position:0%
+questioner's<00:02:44.220><c> microphone</c><00:02:44.970><c> will</c><00:02:45.300><c> be</c><00:02:45.510><c> turned</c></c>
 
 00:02:45.860 --> 00:02:49.699 align:start position:0%
 off<00:02:46.080><c> after</c><00:02:46.920><c> he</c><00:02:47.220><c> or</c><00:02:47.519><c> she</c><00:02:47.820><c> completes</c><00:02:48.540><c> asking</c><00:02:49.410><c> the</c></c>
@@ -153,19 +153,19 @@ danville<00:03:07.650><c> and</c><00:03:07.860><c> winston-salem</c><00:03:08.93
 begin<00:03:10.470><c> a</c><00:03:10.769><c> correction</c><00:03:11.610><c> from</c><00:03:11.820><c> last</c><00:03:12.090><c> week's</c></c>
 
 00:03:12.380 --> 00:03:15.229 align:start position:0%
-debate<00:03:12.660><c> i</c><00:03:13.049><c> was</c><00:03:13.410><c> wrong</c><00:03:13.709><c> and</c><00:03:14.130><c> i</c><00:03:14.640><c> said</c><00:03:14.700><c> vice</c></c>
+debate<00:03:12.660><c> i</c><00:03:13.049><c> was</c><00:03:13.410><c> wrong</c><00:03:13.770><c> when</c><00:03:14.130><c> i</c><00:03:14.640><c> said</c><00:03:14.700><c> vice</c></c>
 
-00:03:15.229 --> 00:03:17.090 align:start position:0%
-president<00:03:15.750><c> gore's</c><00:03:15.930><c> campaign</c><00:03:16.200><c> commercial</c></c>
+00:03:15.229 --> 00:03:16.870 align:start position:0%
+president<00:03:15.750><c> gore's</c><00:03:15.930><c> campaign</c><00:03:16.400><c> commercials</c></c>
 
-00:03:17.090 --> 00:03:19.819 align:start position:0%
-said<00:03:17.340><c> called</c><00:03:18.030><c> governor</c><00:03:18.390><c> bush</c><00:03:18.690><c> a</c><00:03:18.930><c> bumbler</c><00:03:19.440><c> that</c></c>
+00:03:16.870 --> 00:03:19.819 align:start position:0%
+had<00:03:17.340><c> called</c><00:03:18.030><c> governor</c><00:03:18.390><c> bush</c><00:03:18.690><c> a</c><00:03:18.930><c> bumbler</c><00:03:19.440><c> that</c></c>
 
 00:03:19.819 --> 00:03:22.520 align:start position:0%
 specific<00:03:20.519><c> charge</c><00:03:20.820><c> was</c><00:03:21.780><c> made</c><00:03:21.810><c> in</c><00:03:22.170><c> a</c><00:03:22.260><c> press</c></c>
 
 00:03:22.520 --> 00:03:24.890 align:start position:0%
-statement<00:03:22.769><c> by</c><00:03:23.220><c> gorky</c><00:03:23.730><c> spokesman</c><00:03:24.630><c> mark</c></c>
+statement<00:03:22.769><c> by</c><00:03:23.089><c> gore</c><00:03:23.410><c> campaign</c><00:03:23.730><c> spokesman</c><00:03:24.630><c> mark</c></c>
 
 00:03:24.890 --> 00:03:33.050 align:start position:0%
 fabiani<00:03:25.590><c> not</c><00:03:26.250><c> in</c><00:03:26.489><c> a</c><00:03:26.880><c> tv</c><00:03:27.299><c> guide</c><00:03:30.860><c> tv</c><00:03:31.860><c> ad</c><00:03:32.060><c> now</c></c>
