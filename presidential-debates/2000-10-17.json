@@ -5,7 +5,7 @@
         "primaryDateKind": "recorded",
         "kind": "video"
     },
-    "youtubeId": "v-cb0SG8zq4",
+    "youtubeId": "_71vCt7cnOc",
     "durationSeconds": 5512,
     "speakers": [
         {"fullName": "Al Gore", "role": "Democratic nominee for President"},
@@ -25,6 +25,6 @@
         {"fullName": "Norma Curby", "role": "Audience questioner"},
         {"fullName": "Lisa Kee", "role": "Audience questioner"},
         {"fullName": "Leo Anderson", "role": "Audience questioner"},
-        {"fullName": "Thomas Fischer", "role": "Audience questioner"},
+        {"fullName": "Thomas Fischer", "role": "Audience questioner"}
     ]
 }
