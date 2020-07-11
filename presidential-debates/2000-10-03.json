@@ -5,7 +5,11 @@
         "primaryDateKind": "recorded",
         "kind": "video"
     },
-    "youtubeId": "jq1xDWtDwyw",
-    "durationSeconds": 7272,
-    "speakers": []
+    "youtubeId": "NQFabXU_52Q",
+    "durationSeconds": 5409,
+    "speakers": [
+        {"fullName": "Al Gore", "role": "Democratic nominee for President"},
+        {"fullName": "George W Bush", "role": "Republican nominee for President"},
+        {"fullName": "Jim Lehrer", "role": "Moderator"}
+    ]
 }
