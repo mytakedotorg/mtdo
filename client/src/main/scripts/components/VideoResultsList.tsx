@@ -19,41 +19,25 @@
  */
 import * as React from "react";
 import SearchRadioButtons from "./SearchRadioButtons";
-import VideoLite, { VideoLiteProps } from "./VideoLite";
+import VideoLite from "./VideoLite";
 import VideoPlaceholder from "./VideoPlaceholder";
 import VideoResultPreview from "./VideoResultPreview";
 import { VideoResultPreviewEventHandlers } from "./VideoResultPreview";
-import isEqual = require("lodash/isEqual");
-import {
-  fetchFactReturningPromise,
-  VideoFactHashMap,
-} from "../utils/databaseAPI";
 import { alertErr } from "../utils/functions";
-import { Search } from "../java2ts/Search";
 import { Foundation } from "../java2ts/Foundation";
-import { Promise } from "es6-promise";
+
+import { FactTurns } from "../utils/factResults";
 
 export type SelectionOptions = "Containing" | "BeforeAndAfter";
 
-export interface FactTurns {
-  videoFact: Foundation.VideoFactContent;
-  turns: number[];
-}
-
-interface SortedResults {
-  hash: string;
-  turns: number[];
-}
-
 export interface VideoResultsListProps {
-  results: Search.FactResultList;
   searchTerm: string;
+  factTurns: FactTurns[];
 }
 
 interface VideoResultsListState {
   fixVideo: boolean;
   selectedOption: SelectionOptions;
-  factTurns: FactTurns[];
   videoProps?: {
     videoId: string;
     clipRange?: [number, number];
@@ -64,16 +48,12 @@ export class VideoResultsList extends React.Component<
   VideoResultsListProps,
   VideoResultsListState
 > {
-  private sortedResults: SortedResults[];
   constructor(props: VideoResultsListProps) {
     super(props);
-
-    this.sortedResults = this.sortResults(props.results);
 
     this.state = {
       fixVideo: false,
       selectedOption: "Containing",
-      factTurns: [],
     };
   }
   handleChange = (ev: React.ChangeEvent<HTMLInputElement>) => {
@@ -115,87 +95,13 @@ export class VideoResultsList extends React.Component<
       });
     }
   };
-  fetchFacts = (): any => {
-    const promises = [];
-    for (const result of this.sortedResults) {
-      promises.push(fetchFactReturningPromise(result.hash));
-    }
-
-    Promise.all(promises).then(this.processFacts.bind(this));
-  };
-  processFacts(json: VideoFactHashMap[]) {
-    let factTurnsArr: FactTurns[] = [];
-    for (const videoFact of json) {
-      const currentHash = videoFact.hash;
-      const reducer = this.sortedResults.reduce(
-        (accumulator: SortedResults, currentValue: SortedResults) => {
-          if (accumulator.hash !== currentHash) {
-            // Skip accumulating until we match our hash
-            return currentValue;
-          }
-          if (currentValue.hash === currentHash) {
-            return {
-              hash: currentHash,
-              turns: accumulator.turns.concat(currentValue.turns),
-            };
-          } else {
-            return accumulator;
-          }
-        }
-      );
-      factTurnsArr.push({
-        turns: reducer.turns,
-        videoFact: videoFact.videoFact,
-      });
-    }
-    this.setState({
-      factTurns: factTurnsArr,
-    });
-  }
-  sortResults = (results: Search.FactResultList): SortedResults[] => {
-    const facts: Search.VideoResult[] = results.facts;
-    if (facts.length > 0) {
-      let sortedResults: SortedResults[] = [];
-      let prevHash = facts[0].hash;
-      let turns: number[] = [];
-      for (const videoResult of facts) {
-        if (videoResult.hash !== prevHash) {
-          sortedResults.push({
-            hash: prevHash,
-            turns: turns,
-          });
-          prevHash = videoResult.hash;
-          turns = [videoResult.turn];
-        } else {
-          turns.push(videoResult.turn);
-        }
-      }
-      // Push last hash after loop is over
-      sortedResults.push({
-        hash: prevHash,
-        turns: turns,
-      });
-      return sortedResults;
-    } else {
-      return [];
-    }
-  };
-  componentDidMount() {
-    this.fetchFacts();
-  }
-  componentWillReceiveProps(nextProps: VideoResultsListProps) {
-    if (!isEqual(this.props.results, nextProps.results)) {
-      this.sortedResults = this.sortResults(nextProps.results);
-      this.fetchFacts();
-    }
-  }
   render() {
     const fixedClass = this.state.fixVideo ? "results__push" : "";
     return (
       <div className="results">
         <div className="results__inner-container">
           <h1 className="results__heading">Search Results</h1>
-          {this.state.factTurns.length === 0 ? (
+          {this.props.factTurns.length === 0 ? (
             <p className="turn__results">
               Search returned no results for{" "}
               <strong>{this.props.searchTerm}</strong>
@@ -219,7 +125,7 @@ export class VideoResultsList extends React.Component<
               </div>
             </div>
           )}
-          {this.state.factTurns.map((videoResult, idx) => {
+          {this.props.factTurns.map((videoResult, idx) => {
             const eventHandlers: VideoResultPreviewEventHandlers = {
               onPlayClick: this.handlePlayClick,
             };
