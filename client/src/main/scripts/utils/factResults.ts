@@ -1,11 +1,9 @@
 import { Foundation } from "../java2ts/Foundation";
 import { Search } from "../java2ts/Search";
 import { VideoFactHashMap, fetchFactReturningPromise } from "./databaseAPI";
+import { reject } from "lodash";
 
-interface SortedResults {
-  hash: string;
-  turns: number[];
-}
+export type HashesToTurns = Map<string, number[]>;
 
 export interface FactTurns {
   videoFact: Foundation.VideoFactContent;
@@ -15,74 +13,60 @@ export interface FactTurns {
 export const getSortedFactTurns = (
   searchResults: Search.FactResultList
 ): Promise<FactTurns[]> => {
-  const sortedResults = sortResults(searchResults);
   return new Promise((resolve) => {
-    const innerPromises = [];
-    for (const result of sortedResults) {
-      innerPromises.push(fetchFactReturningPromise(result.hash));
+    const hashesToTurns = createHashMap(searchResults);
+    if (!hashesToTurns) {
+      return resolve([]);
     }
+    const innerPromises: Promise<VideoFactHashMap>[] = [];
+    // for (const result of hashesToTurns.keys()) {
+    hashesToTurns.forEach((turns, hash) => {
+      try {
+        innerPromises.push(fetchFactReturningPromise(hash));
+      } catch (err) {
+        reject(err);
+      }
+    });
 
     Promise.all(innerPromises).then((videoFacts: VideoFactHashMap[]) => {
-      resolve(processFacts(sortedResults, videoFacts));
+      resolve(processFacts(hashesToTurns, videoFacts));
     });
   });
 };
 
-export const sortResults = (
+export const createHashMap = (
   results: Search.FactResultList
-): SortedResults[] => {
+): HashesToTurns | undefined => {
   const facts: Search.VideoResult[] = results.facts;
   if (facts.length <= 0) {
-    return [];
+    return undefined;
   }
-  let sortedResults: SortedResults[] = [];
-  let prevHash = facts[0].hash;
-  let turns: number[] = [];
-  for (const videoResult of facts) {
-    if (videoResult.hash !== prevHash) {
-      sortedResults.push({
-        hash: prevHash,
-        turns: turns,
-      });
-      prevHash = videoResult.hash;
-      turns = [videoResult.turn];
+
+  const hashesToTurns: HashesToTurns = new Map();
+  facts.forEach((f) => {
+    const existingTurns = hashesToTurns.get(f.hash);
+    if (!existingTurns) {
+      hashesToTurns.set(f.hash, [f.turn]);
     } else {
-      turns.push(videoResult.turn);
+      existingTurns.push(f.turn);
     }
-  }
-  // Push last hash after loop is over
-  sortedResults.push({
-    hash: prevHash,
-    turns: turns,
   });
-  return sortedResults;
+
+  return hashesToTurns;
 };
 
-const processFacts = (
-  searchResults: SortedResults[],
+export const processFacts = (
+  hashesToTurns: HashesToTurns,
   videoFacts: VideoFactHashMap[]
 ): FactTurns[] => {
   let factTurnsArr: FactTurns[] = [];
   for (const videoFact of videoFacts) {
-    const currentHash = videoFact.hash;
-    const reducer = searchResults.reduce(
-      (accumulator: SortedResults, currentValue: SortedResults) => {
-        if (accumulator.hash !== currentHash) {
-          // Skip accumulating until we match our hash
-          return currentValue;
-        }
-        if (currentValue.hash === currentHash) {
-          return {
-            hash: currentHash,
-            turns: accumulator.turns.concat(currentValue.turns),
-          };
-        } else {
-          return accumulator;
-        }
-      }
-    );
+    const turns = hashesToTurns.get(videoFact.hash);
+    if (!turns) {
+      throw "Expect hashesToTurns map to have a valid value for each key";
+    }
     factTurnsArr.push({
-      turns: reducer.turns,
+      turns,
       videoFact: videoFact.videoFact,
     });
   }
