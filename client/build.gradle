@@ -2,7 +2,7 @@
 // java - gets compiled to typescript //
 ////////////////////////////////////////
 apply plugin: 'java-library'
-apply plugin: 'com.diffplug.gradle.spotless'
+apply plugin: 'com.diffplug.spotless'
 spotless {
 	ratchetFrom 'origin/master'
 	java {

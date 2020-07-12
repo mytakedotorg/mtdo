@@ -81,7 +81,7 @@ tasks.register('generateFoundation', JavaExec) {
 	outputs.cacheIf { true }
 }
 
-apply plugin: 'com.diffplug.gradle.spotless'
+apply plugin: 'com.diffplug.spotless'
 spotless {
 	ratchetFrom 'origin/master'
 	java {

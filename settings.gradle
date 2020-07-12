@@ -1,12 +1,12 @@
 pluginManagement {
 	plugins {
-		id 'com.diffplug.gradle.spotless' version '4.5.0'
+		id 'com.diffplug.spotless'                version '5.0.0'
 		id 'com.diffplug.eclipse.apt'             version '3.23.0'
 		id 'com.diffplug.eclipse.resourcefilters' version '3.23.0'
 	}
 }
 plugins {
-	id 'com.diffplug.gradle.spotless' apply false
+	id 'com.diffplug.spotless' apply false
 	id 'com.diffplug.eclipse.apt' apply false
 	id 'com.diffplug.eclipse.resourcefilters' apply false
 }
