@@ -112,6 +112,313 @@ exports[`VideoResultsList social security 1`] = `
             <h3
               className="turn__speaker"
             >
+               Hilliard
+            </h3>
+            <p
+              className="turn__time"
+            >
+              @ 1:08:15/1:34:51
+            </p>
+            <div
+              className="turn__actions"
+            >
+              <button
+                className="turn__button turn__button--play"
+                onClick={[Function]}
+              >
+                Play
+              </button>
+              <button
+                className="turn__button turn__button--open"
+                onClick={[Function]}
+              >
+                Open
+              </button>
+            </div>
+          </div>
+          <p
+            className="turn__results"
+          >
+            Governor Reagan, wage earners in this country - especially the young - are supporting a 
+            <strong>
+              Social Security
+            </strong>
+             system that continues to affect their income drastically.
+          </p>
+        </div>
+        <div
+          className="turn"
+        >
+          <div
+            className="turn__info"
+          >
+            <h3
+              className="turn__speaker"
+            >
+               Hilliard
+            </h3>
+            <p
+              className="turn__time"
+            >
+              @ 1:08:15/1:34:51
+            </p>
+            <div
+              className="turn__actions"
+            >
+              <button
+                className="turn__button turn__button--play"
+                onClick={[Function]}
+              >
+                Play
+              </button>
+              <button
+                className="turn__button turn__button--open"
+                onClick={[Function]}
+              >
+                Open
+              </button>
+            </div>
+          </div>
+          <p
+            className="turn__results"
+          >
+            How much longer can the young wage earner expect to bear the ever-increasing burden of the 
+            <strong>
+              Social Security
+            </strong>
+             system?
+          </p>
+        </div>
+      </div>
+      <div>
+        <div
+          className="turn"
+        >
+          <div
+            className="turn__info"
+          >
+            <h3
+              className="turn__speaker"
+            >
+               Reagan
+            </h3>
+            <p
+              className="turn__time"
+            >
+              @ 1:08:40/1:34:51
+            </p>
+            <div
+              className="turn__actions"
+            >
+              <button
+                className="turn__button turn__button--play"
+                onClick={[Function]}
+              >
+                Play
+              </button>
+              <button
+                className="turn__button turn__button--open"
+                onClick={[Function]}
+              >
+                Open
+              </button>
+            </div>
+          </div>
+          <p
+            className="turn__results"
+          >
+            The 
+            <strong>
+              Social Security
+            </strong>
+             system was based on a false premise, with regard to how fast the number of workers would increase and how fast the number of retirees would increase.
+          </p>
+        </div>
+        <div
+          className="turn"
+        >
+          <div
+            className="turn__info"
+          >
+            <h3
+              className="turn__speaker"
+            >
+               Reagan
+            </h3>
+            <p
+              className="turn__time"
+            >
+              @ 1:08:40/1:34:51
+            </p>
+            <div
+              className="turn__actions"
+            >
+              <button
+                className="turn__button turn__button--play"
+                onClick={[Function]}
+              >
+                Play
+              </button>
+              <button
+                className="turn__button turn__button--open"
+                onClick={[Function]}
+              >
+                Open
+              </button>
+            </div>
+          </div>
+          <p
+            className="turn__results"
+          >
+            Now, it is trillions of dollars out of balance, and the only answer that has come so far is the biggest single tax increase in our nation's history - the payroll tax increase for 
+            <strong>
+              Social Security
+            </strong>
+             - which will only put a band-aid on this and postpone the day of reckoning by a few years at most.
+          </p>
+        </div>
+        <div
+          className="turn"
+        >
+          <div
+            className="turn__info"
+          >
+            <h3
+              className="turn__speaker"
+            >
+               Reagan
+            </h3>
+            <p
+              className="turn__time"
+            >
+              @ 1:08:40/1:34:51
+            </p>
+            <div
+              className="turn__actions"
+            >
+              <button
+                className="turn__button turn__button--play"
+                onClick={[Function]}
+              >
+                Play
+              </button>
+              <button
+                className="turn__button turn__button--open"
+                onClick={[Function]}
+              >
+                Open
+              </button>
+            </div>
+          </div>
+          <p
+            className="turn__results"
+          >
+            What is needed is a study that I have proposed by a task force to look - of experts to look into this entire problem as to how it can be reformed and made actuarially sound, but with the premise that no one presently dependent on 
+            <strong>
+              Social Security
+            </strong>
+             is going to have the rug pulled out from under them and not get their check.
+          </p>
+        </div>
+      </div>
+      <div>
+        <div
+          className="turn"
+        >
+          <div
+            className="turn__info"
+          >
+            <h3
+              className="turn__speaker"
+            >
+               Hilliard
+            </h3>
+            <p
+              className="turn__time"
+            >
+              @ 1:10:11/1:34:51
+            </p>
+            <div
+              className="turn__actions"
+            >
+              <button
+                className="turn__button turn__button--play"
+                onClick={[Function]}
+              >
+                Play
+              </button>
+              <button
+                className="turn__button turn__button--open"
+                onClick={[Function]}
+              >
+                Open
+              </button>
+            </div>
+          </div>
+          <p
+            className="turn__results"
+          >
+            President Carter, wage earners in this country, especially the young, are supporting a 
+            <strong>
+              Social Security
+            </strong>
+             System that continues to affect their income drastically.
+          </p>
+        </div>
+        <div
+          className="turn"
+        >
+          <div
+            className="turn__info"
+          >
+            <h3
+              className="turn__speaker"
+            >
+               Hilliard
+            </h3>
+            <p
+              className="turn__time"
+            >
+              @ 1:10:11/1:34:51
+            </p>
+            <div
+              className="turn__actions"
+            >
+              <button
+                className="turn__button turn__button--play"
+                onClick={[Function]}
+              >
+                Play
+              </button>
+              <button
+                className="turn__button turn__button--open"
+                onClick={[Function]}
+              >
+                Open
+              </button>
+            </div>
+          </div>
+          <p
+            className="turn__results"
+          >
+            How much longer can the young wage earner expect to bear the ever-increasing burden of the 
+            <strong>
+              Social Security
+            </strong>
+             System?
+          </p>
+        </div>
+      </div>
+      <div>
+        <div
+          className="turn"
+        >
+          <div
+            className="turn__info"
+          >
+            <h3
+              className="turn__speaker"
+            >
                Carter
             </h3>
             <p
@@ -337,6 +644,180 @@ exports[`VideoResultsList social security 1`] = `
             <h3
               className="turn__speaker"
             >
+               Reagan
+            </h3>
+            <p
+              className="turn__time"
+            >
+              @ 1:11:48/1:34:51
+            </p>
+            <div
+              className="turn__actions"
+            >
+              <button
+                className="turn__button turn__button--play"
+                onClick={[Function]}
+              >
+                Play
+              </button>
+              <button
+                className="turn__button turn__button--open"
+                onClick={[Function]}
+              >
+                Open
+              </button>
+            </div>
+          </div>
+          <p
+            className="turn__results"
+          >
+            Now, again this statement that somehow, I wanted to destroy it and I just changed my tune, that I am - was for voluntary 
+            <strong>
+              Social Security
+            </strong>
+            , which would mean the ruin of it.
+          </p>
+        </div>
+        <div
+          className="turn"
+        >
+          <div
+            className="turn__info"
+          >
+            <h3
+              className="turn__speaker"
+            >
+               Reagan
+            </h3>
+            <p
+              className="turn__time"
+            >
+              @ 1:11:48/1:34:51
+            </p>
+            <div
+              className="turn__actions"
+            >
+              <button
+                className="turn__button turn__button--play"
+                onClick={[Function]}
+              >
+                Play
+              </button>
+              <button
+                className="turn__button turn__button--open"
+                onClick={[Function]}
+              >
+                Open
+              </button>
+            </div>
+          </div>
+          <p
+            className="turn__results"
+          >
+            President, the voluntary thing that I suggested many years ago was that a young man orphaned and raised by an aunt who died, his aunt was ineligible for 
+            <strong>
+              Social Security
+            </strong>
+             insurance because she was not his mother.
+          </p>
+        </div>
+        <div
+          className="turn"
+        >
+          <div
+            className="turn__info"
+          >
+            <h3
+              className="turn__speaker"
+            >
+               Reagan
+            </h3>
+            <p
+              className="turn__time"
+            >
+              @ 1:11:48/1:34:51
+            </p>
+            <div
+              className="turn__actions"
+            >
+              <button
+                className="turn__button turn__button--play"
+                onClick={[Function]}
+              >
+                Play
+              </button>
+              <button
+                className="turn__button turn__button--open"
+                onClick={[Function]}
+              >
+                Open
+              </button>
+            </div>
+          </div>
+          <p
+            className="turn__results"
+          >
+            And I suggested that if this is an insurance program, certainly the person who's paying in should be able to name his own beneficiaries and that's the closest I have ever come to anything voluntary with 
+            <strong>
+              Social Security
+            </strong>
+            .
+          </p>
+        </div>
+        <div
+          className="turn"
+        >
+          <div
+            className="turn__info"
+          >
+            <h3
+              className="turn__speaker"
+            >
+               Reagan
+            </h3>
+            <p
+              className="turn__time"
+            >
+              @ 1:11:48/1:34:51
+            </p>
+            <div
+              className="turn__actions"
+            >
+              <button
+                className="turn__button turn__button--play"
+                onClick={[Function]}
+              >
+                Play
+              </button>
+              <button
+                className="turn__button turn__button--open"
+                onClick={[Function]}
+              >
+                Open
+              </button>
+            </div>
+          </div>
+          <p
+            className="turn__results"
+          >
+            I, too, am pledged to a 
+            <strong>
+              Social Security
+            </strong>
+             program that will reassure these senior citizens of ours they're going to continue to get their money.
+          </p>
+        </div>
+      </div>
+      <div>
+        <div
+          className="turn"
+        >
+          <div
+            className="turn__info"
+          >
+            <h3
+              className="turn__speaker"
+            >
                Carter
             </h3>
             <p
@@ -523,182 +1004,6 @@ exports[`VideoResultsList social security 1`] = `
             <h3
               className="turn__speaker"
             >
-               Hilliard
-            </h3>
-            <p
-              className="turn__time"
-            >
-              @ 1:10:11/1:34:51
-            </p>
-            <div
-              className="turn__actions"
-            >
-              <button
-                className="turn__button turn__button--play"
-                onClick={[Function]}
-              >
-                Play
-              </button>
-              <button
-                className="turn__button turn__button--open"
-                onClick={[Function]}
-              >
-                Open
-              </button>
-            </div>
-          </div>
-          <p
-            className="turn__results"
-          >
-            President Carter, wage earners in this country, especially the young, are supporting a 
-            <strong>
-              Social Security
-            </strong>
-             System that continues to affect their income drastically.
-          </p>
-        </div>
-        <div
-          className="turn"
-        >
-          <div
-            className="turn__info"
-          >
-            <h3
-              className="turn__speaker"
-            >
-               Hilliard
-            </h3>
-            <p
-              className="turn__time"
-            >
-              @ 1:10:11/1:34:51
-            </p>
-            <div
-              className="turn__actions"
-            >
-              <button
-                className="turn__button turn__button--play"
-                onClick={[Function]}
-              >
-                Play
-              </button>
-              <button
-                className="turn__button turn__button--open"
-                onClick={[Function]}
-              >
-                Open
-              </button>
-            </div>
-          </div>
-          <p
-            className="turn__results"
-          >
-            How much longer can the young wage earner expect to bear the ever-increasing burden of the 
-            <strong>
-              Social Security
-            </strong>
-             System?
-          </p>
-        </div>
-      </div>
-      <div>
-        <div
-          className="turn"
-        >
-          <div
-            className="turn__info"
-          >
-            <h3
-              className="turn__speaker"
-            >
-               Hilliard
-            </h3>
-            <p
-              className="turn__time"
-            >
-              @ 1:08:15/1:34:51
-            </p>
-            <div
-              className="turn__actions"
-            >
-              <button
-                className="turn__button turn__button--play"
-                onClick={[Function]}
-              >
-                Play
-              </button>
-              <button
-                className="turn__button turn__button--open"
-                onClick={[Function]}
-              >
-                Open
-              </button>
-            </div>
-          </div>
-          <p
-            className="turn__results"
-          >
-            Governor Reagan, wage earners in this country - especially the young - are supporting a 
-            <strong>
-              Social Security
-            </strong>
-             system that continues to affect their income drastically.
-          </p>
-        </div>
-        <div
-          className="turn"
-        >
-          <div
-            className="turn__info"
-          >
-            <h3
-              className="turn__speaker"
-            >
-               Hilliard
-            </h3>
-            <p
-              className="turn__time"
-            >
-              @ 1:08:15/1:34:51
-            </p>
-            <div
-              className="turn__actions"
-            >
-              <button
-                className="turn__button turn__button--play"
-                onClick={[Function]}
-              >
-                Play
-              </button>
-              <button
-                className="turn__button turn__button--open"
-                onClick={[Function]}
-              >
-                Open
-              </button>
-            </div>
-          </div>
-          <p
-            className="turn__results"
-          >
-            How much longer can the young wage earner expect to bear the ever-increasing burden of the 
-            <strong>
-              Social Security
-            </strong>
-             system?
-          </p>
-        </div>
-      </div>
-      <div>
-        <div
-          className="turn"
-        >
-          <div
-            className="turn__info"
-          >
-            <h3
-              className="turn__speaker"
-            >
                Reagan
             </h3>
             <p
@@ -791,311 +1096,6 @@ exports[`VideoResultsList social security 1`] = `
             <h3
               className="turn__speaker"
             >
-               Reagan
-            </h3>
-            <p
-              className="turn__time"
-            >
-              @ 1:11:48/1:34:51
-            </p>
-            <div
-              className="turn__actions"
-            >
-              <button
-                className="turn__button turn__button--play"
-                onClick={[Function]}
-              >
-                Play
-              </button>
-              <button
-                className="turn__button turn__button--open"
-                onClick={[Function]}
-              >
-                Open
-              </button>
-            </div>
-          </div>
-          <p
-            className="turn__results"
-          >
-            Now, again this statement that somehow, I wanted to destroy it and I just changed my tune, that I am - was for voluntary 
-            <strong>
-              Social Security
-            </strong>
-            , which would mean the ruin of it.
-          </p>
-        </div>
-        <div
-          className="turn"
-        >
-          <div
-            className="turn__info"
-          >
-            <h3
-              className="turn__speaker"
-            >
-               Reagan
-            </h3>
-            <p
-              className="turn__time"
-            >
-              @ 1:11:48/1:34:51
-            </p>
-            <div
-              className="turn__actions"
-            >
-              <button
-                className="turn__button turn__button--play"
-                onClick={[Function]}
-              >
-                Play
-              </button>
-              <button
-                className="turn__button turn__button--open"
-                onClick={[Function]}
-              >
-                Open
-              </button>
-            </div>
-          </div>
-          <p
-            className="turn__results"
-          >
-            President, the voluntary thing that I suggested many years ago was that a young man orphaned and raised by an aunt who died, his aunt was ineligible for 
-            <strong>
-              Social Security
-            </strong>
-             insurance because she was not his mother.
-          </p>
-        </div>
-        <div
-          className="turn"
-        >
-          <div
-            className="turn__info"
-          >
-            <h3
-              className="turn__speaker"
-            >
-               Reagan
-            </h3>
-            <p
-              className="turn__time"
-            >
-              @ 1:11:48/1:34:51
-            </p>
-            <div
-              className="turn__actions"
-            >
-              <button
-                className="turn__button turn__button--play"
-                onClick={[Function]}
-              >
-                Play
-              </button>
-              <button
-                className="turn__button turn__button--open"
-                onClick={[Function]}
-              >
-                Open
-              </button>
-            </div>
-          </div>
-          <p
-            className="turn__results"
-          >
-            And I suggested that if this is an insurance program, certainly the person who's paying in should be able to name his own beneficiaries and that's the closest I have ever come to anything voluntary with 
-            <strong>
-              Social Security
-            </strong>
-            .
-          </p>
-        </div>
-        <div
-          className="turn"
-        >
-          <div
-            className="turn__info"
-          >
-            <h3
-              className="turn__speaker"
-            >
-               Reagan
-            </h3>
-            <p
-              className="turn__time"
-            >
-              @ 1:11:48/1:34:51
-            </p>
-            <div
-              className="turn__actions"
-            >
-              <button
-                className="turn__button turn__button--play"
-                onClick={[Function]}
-              >
-                Play
-              </button>
-              <button
-                className="turn__button turn__button--open"
-                onClick={[Function]}
-              >
-                Open
-              </button>
-            </div>
-          </div>
-          <p
-            className="turn__results"
-          >
-            I, too, am pledged to a 
-            <strong>
-              Social Security
-            </strong>
-             program that will reassure these senior citizens of ours they're going to continue to get their money.
-          </p>
-        </div>
-      </div>
-      <div>
-        <div
-          className="turn"
-        >
-          <div
-            className="turn__info"
-          >
-            <h3
-              className="turn__speaker"
-            >
-               Reagan
-            </h3>
-            <p
-              className="turn__time"
-            >
-              @ 1:08:40/1:34:51
-            </p>
-            <div
-              className="turn__actions"
-            >
-              <button
-                className="turn__button turn__button--play"
-                onClick={[Function]}
-              >
-                Play
-              </button>
-              <button
-                className="turn__button turn__button--open"
-                onClick={[Function]}
-              >
-                Open
-              </button>
-            </div>
-          </div>
-          <p
-            className="turn__results"
-          >
-            The 
-            <strong>
-              Social Security
-            </strong>
-             system was based on a false premise, with regard to how fast the number of workers would increase and how fast the number of retirees would increase.
-          </p>
-        </div>
-        <div
-          className="turn"
-        >
-          <div
-            className="turn__info"
-          >
-            <h3
-              className="turn__speaker"
-            >
-               Reagan
-            </h3>
-            <p
-              className="turn__time"
-            >
-              @ 1:08:40/1:34:51
-            </p>
-            <div
-              className="turn__actions"
-            >
-              <button
-                className="turn__button turn__button--play"
-                onClick={[Function]}
-              >
-                Play
-              </button>
-              <button
-                className="turn__button turn__button--open"
-                onClick={[Function]}
-              >
-                Open
-              </button>
-            </div>
-          </div>
-          <p
-            className="turn__results"
-          >
-            Now, it is trillions of dollars out of balance, and the only answer that has come so far is the biggest single tax increase in our nation's history - the payroll tax increase for 
-            <strong>
-              Social Security
-            </strong>
-             - which will only put a band-aid on this and postpone the day of reckoning by a few years at most.
-          </p>
-        </div>
-        <div
-          className="turn"
-        >
-          <div
-            className="turn__info"
-          >
-            <h3
-              className="turn__speaker"
-            >
-               Reagan
-            </h3>
-            <p
-              className="turn__time"
-            >
-              @ 1:08:40/1:34:51
-            </p>
-            <div
-              className="turn__actions"
-            >
-              <button
-                className="turn__button turn__button--play"
-                onClick={[Function]}
-              >
-                Play
-              </button>
-              <button
-                className="turn__button turn__button--open"
-                onClick={[Function]}
-              >
-                Open
-              </button>
-            </div>
-          </div>
-          <p
-            className="turn__results"
-          >
-            What is needed is a study that I have proposed by a task force to look - of experts to look into this entire problem as to how it can be reformed and made actuarially sound, but with the premise that no one presently dependent on 
-            <strong>
-              Social Security
-            </strong>
-             is going to have the rug pulled out from under them and not get their check.
-          </p>
-        </div>
-      </div>
-      <div>
-        <div
-          className="turn"
-        >
-          <div
-            className="turn__info"
-          >
-            <h3
-              className="turn__speaker"
-            >
                Carter
             </h3>
             <p
@@ -1142,6 +1142,891 @@ exports[`VideoResultsList social security 1`] = `
          - 
         1984-10-07
       </h2>
+      <div>
+        <div
+          className="turn"
+        >
+          <div
+            className="turn__info"
+          >
+            <h3
+              className="turn__speaker"
+            >
+               Mondale
+            </h3>
+            <p
+              className="turn__time"
+            >
+              @ 11:44/1:40:27
+            </p>
+            <div
+              className="turn__actions"
+            >
+              <button
+                className="turn__button turn__button--play"
+                onClick={[Function]}
+              >
+                Play
+              </button>
+              <button
+                className="turn__button turn__button--open"
+                onClick={[Function]}
+              >
+                Open
+              </button>
+            </div>
+          </div>
+          <p
+            className="turn__results"
+          >
+            Absolutely, and I have proposed over a hundred billion dollars in cuts in Federal spending over four years, but I am not going to cut it out of 
+            <strong>
+              Social Security
+            </strong>
+             and Medicare and student assistance and things - that people need.
+          </p>
+        </div>
+      </div>
+      <div>
+        <div
+          className="turn"
+        >
+          <div
+            className="turn__info"
+          >
+            <h3
+              className="turn__speaker"
+            >
+               Reagan
+            </h3>
+            <p
+              className="turn__time"
+            >
+              @ 12:44/1:40:27
+            </p>
+            <div
+              className="turn__actions"
+            >
+              <button
+                className="turn__button turn__button--play"
+                onClick={[Function]}
+              >
+                Play
+              </button>
+              <button
+                className="turn__button turn__button--open"
+                onClick={[Function]}
+              >
+                Open
+              </button>
+            </div>
+          </div>
+          <p
+            className="turn__results"
+          >
+            With regard to 
+            <strong>
+              Social Security
+            </strong>
+            , I hope there'll be more time than just this minute to mention that, but I will say this: A President should never say "never."
+          </p>
+        </div>
+        <div
+          className="turn"
+        >
+          <div
+            className="turn__info"
+          >
+            <h3
+              className="turn__speaker"
+            >
+               Reagan
+            </h3>
+            <p
+              className="turn__time"
+            >
+              @ 12:44/1:40:27
+            </p>
+            <div
+              className="turn__actions"
+            >
+              <button
+                className="turn__button turn__button--play"
+                onClick={[Function]}
+              >
+                Play
+              </button>
+              <button
+                className="turn__button turn__button--open"
+                onClick={[Function]}
+              >
+                Open
+              </button>
+            </div>
+          </div>
+          <p
+            className="turn__results"
+          >
+            I will never stand for a reduction of the 
+            <strong>
+              Social Security
+            </strong>
+             benefits to the people that are now getting them.
+          </p>
+        </div>
+      </div>
+      <div>
+        <div
+          className="turn"
+        >
+          <div
+            className="turn__info"
+          >
+            <h3
+              className="turn__speaker"
+            >
+               Mondale
+            </h3>
+            <p
+              className="turn__time"
+            >
+              @ 13:50/1:40:27
+            </p>
+            <div
+              className="turn__actions"
+            >
+              <button
+                className="turn__button turn__button--play"
+                onClick={[Function]}
+              >
+                Play
+              </button>
+              <button
+                className="turn__button turn__button--open"
+                onClick={[Function]}
+              >
+                Open
+              </button>
+            </div>
+          </div>
+          <p
+            className="turn__results"
+          >
+            And of course, what happened right after the election is they proposed to cut 
+            <strong>
+              Social Security
+            </strong>
+             benefits by 25 percent - reducing the adjustment for inflation, cutting out minimum benefits for the poorest on 
+            <strong>
+              Social Security
+            </strong>
+            , removing educational benefits for dependents whose widows were trying - with widows trying to get them through college.
+          </p>
+        </div>
+        <div
+          className="turn"
+        >
+          <div
+            className="turn__info"
+          >
+            <h3
+              className="turn__speaker"
+            >
+               Mondale
+            </h3>
+            <p
+              className="turn__time"
+            >
+              @ 13:50/1:40:27
+            </p>
+            <div
+              className="turn__actions"
+            >
+              <button
+                className="turn__button turn__button--play"
+                onClick={[Function]}
+              >
+                Play
+              </button>
+              <button
+                className="turn__button turn__button--open"
+                onClick={[Function]}
+              >
+                Open
+              </button>
+            </div>
+          </div>
+          <p
+            className="turn__results"
+          >
+            I have fought for 
+            <strong>
+              Social Security
+            </strong>
+             and Medicare and for things to help people who are vulnerable all my life, and I will do it as President of the United States.
+          </p>
+        </div>
+      </div>
+      <div>
+        <div
+          className="turn"
+        >
+          <div
+            className="turn__info"
+          >
+            <h3
+              className="turn__speaker"
+            >
+               Reagan
+            </h3>
+            <p
+              className="turn__time"
+            >
+              @ 19:21/1:40:27
+            </p>
+            <div
+              className="turn__actions"
+            >
+              <button
+                className="turn__button turn__button--play"
+                onClick={[Function]}
+              >
+                Play
+              </button>
+              <button
+                className="turn__button turn__button--open"
+                onClick={[Function]}
+              >
+                Open
+              </button>
+            </div>
+          </div>
+          <p
+            className="turn__results"
+          >
+            And, incidentally, I might say that with regard to the 25-percent cut to 
+            <strong>
+              Social Security
+            </strong>
+             - before I get to the answer to your question - the only 25-percent cut that I know of was accompanying that huge 1977 tax increase, was a cut of 25 percent in the benefits for every American who was born after 1916.
+          </p>
+        </div>
+      </div>
+      <div>
+        <div
+          className="turn"
+        >
+          <div
+            className="turn__info"
+          >
+            <h3
+              className="turn__speaker"
+            >
+               Mondale
+            </h3>
+            <p
+              className="turn__time"
+            >
+              @ 23:30/1:40:27
+            </p>
+            <div
+              className="turn__actions"
+            >
+              <button
+                className="turn__button turn__button--play"
+                onClick={[Function]}
+              >
+                Play
+              </button>
+              <button
+                className="turn__button turn__button--open"
+                onClick={[Function]}
+              >
+                Open
+              </button>
+            </div>
+          </div>
+          <p
+            className="turn__results"
+          >
+            The fact of it is - that fact of it is - the fact of it is the President's budget sought to cut 
+            <strong>
+              Social Security
+            </strong>
+             by 25 percent.
+          </p>
+        </div>
+        <div
+          className="turn"
+        >
+          <div
+            className="turn__info"
+          >
+            <h3
+              className="turn__speaker"
+            >
+               Mondale
+            </h3>
+            <p
+              className="turn__time"
+            >
+              @ 23:30/1:40:27
+            </p>
+            <div
+              className="turn__actions"
+            >
+              <button
+                className="turn__button turn__button--play"
+                onClick={[Function]}
+              >
+                Play
+              </button>
+              <button
+                className="turn__button turn__button--open"
+                onClick={[Function]}
+              >
+                Open
+              </button>
+            </div>
+          </div>
+          <p
+            className="turn__results"
+          >
+            That's 
+            <strong>
+              Social Security
+            </strong>
+             and Medicare.
+          </p>
+        </div>
+      </div>
+      <div>
+        <div
+          className="turn"
+        >
+          <div
+            className="turn__info"
+          >
+            <h3
+              className="turn__speaker"
+            >
+               Reagan
+            </h3>
+            <p
+              className="turn__time"
+            >
+              @ 24:44/1:40:27
+            </p>
+            <div
+              className="turn__actions"
+            >
+              <button
+                className="turn__button turn__button--play"
+                onClick={[Function]}
+              >
+                Play
+              </button>
+              <button
+                className="turn__button turn__button--open"
+                onClick={[Function]}
+              >
+                Open
+              </button>
+            </div>
+          </div>
+          <p
+            className="turn__results"
+          >
+            Well, let me just respond with regard to 
+            <strong>
+              Social Security
+            </strong>
+            .
+          </p>
+        </div>
+        <div
+          className="turn"
+        >
+          <div
+            className="turn__info"
+          >
+            <h3
+              className="turn__speaker"
+            >
+               Reagan
+            </h3>
+            <p
+              className="turn__time"
+            >
+              @ 24:44/1:40:27
+            </p>
+            <div
+              className="turn__actions"
+            >
+              <button
+                className="turn__button turn__button--play"
+                onClick={[Function]}
+              >
+                Play
+              </button>
+              <button
+                className="turn__button turn__button--open"
+                onClick={[Function]}
+              >
+                Open
+              </button>
+            </div>
+          </div>
+          <p
+            className="turn__results"
+          >
+            When we took office, we discovered that the program that the Carter-Mondale administration had said would solve the fiscal problems of 
+            <strong>
+              Social Security
+            </strong>
+             for the next 50 years wouldn't solve them for five .
+          </p>
+        </div>
+        <div
+          className="turn"
+        >
+          <div
+            className="turn__info"
+          >
+            <h3
+              className="turn__speaker"
+            >
+               Reagan
+            </h3>
+            <p
+              className="turn__time"
+            >
+              @ 24:44/1:40:27
+            </p>
+            <div
+              className="turn__actions"
+            >
+              <button
+                className="turn__button turn__button--play"
+                onClick={[Function]}
+              >
+                Play
+              </button>
+              <button
+                className="turn__button turn__button--open"
+                onClick={[Function]}
+              >
+                Open
+              </button>
+            </div>
+          </div>
+          <p
+            className="turn__results"
+          >
+            <strong>
+              Social Security
+            </strong>
+             was due to go bankrupt before 1983.
+          </p>
+        </div>
+        <div
+          className="turn"
+        >
+          <div
+            className="turn__info"
+          >
+            <h3
+              className="turn__speaker"
+            >
+               Reagan
+            </h3>
+            <p
+              className="turn__time"
+            >
+              @ 24:44/1:40:27
+            </p>
+            <div
+              className="turn__actions"
+            >
+              <button
+                className="turn__button turn__button--play"
+                onClick={[Function]}
+              >
+                Play
+              </button>
+              <button
+                className="turn__button turn__button--open"
+                onClick={[Function]}
+              >
+                Open
+              </button>
+            </div>
+          </div>
+          <p
+            className="turn__results"
+          >
+            And three days after the election in 1982, they came to us and said, 
+            <strong>
+              Social Security
+            </strong>
+            , we know, is broke.
+          </p>
+        </div>
+        <div
+          className="turn"
+        >
+          <div
+            className="turn__info"
+          >
+            <h3
+              className="turn__speaker"
+            >
+               Reagan
+            </h3>
+            <p
+              className="turn__time"
+            >
+              @ 24:44/1:40:27
+            </p>
+            <div
+              className="turn__actions"
+            >
+              <button
+                className="turn__button turn__button--play"
+                onClick={[Function]}
+              >
+                Play
+              </button>
+              <button
+                className="turn__button turn__button--open"
+                onClick={[Function]}
+              >
+                Open
+              </button>
+            </div>
+          </div>
+          <p
+            className="turn__results"
+          >
+            And so, the whole matter of what to do with 
+            <strong>
+              Social Security
+            </strong>
+             has been resolved by bipartisan legislation, and it is on a sound basis now for as far as you can see into the next century.
+          </p>
+        </div>
+      </div>
+      <div>
+        <div
+          className="turn"
+        >
+          <div
+            className="turn__info"
+          >
+            <h3
+              className="turn__speaker"
+            >
+               Mondale
+            </h3>
+            <p
+              className="turn__time"
+            >
+              @ 39:26/1:40:27
+            </p>
+            <div
+              className="turn__actions"
+            >
+              <button
+                className="turn__button turn__button--play"
+                onClick={[Function]}
+              >
+                Play
+              </button>
+              <button
+                className="turn__button turn__button--open"
+                onClick={[Function]}
+              >
+                Open
+              </button>
+            </div>
+          </div>
+          <p
+            className="turn__results"
+          >
+            Secondly, I've said that I will not support the cuts in 
+            <strong>
+              Social Security
+            </strong>
+             and Medicare and the rest that the President has proposed.
+          </p>
+        </div>
+      </div>
+      <div>
+        <div
+          className="turn"
+        >
+          <div
+            className="turn__info"
+          >
+            <h3
+              className="turn__speaker"
+            >
+               Reagan
+            </h3>
+            <p
+              className="turn__time"
+            >
+              @ 1:03:44/1:40:27
+            </p>
+            <div
+              className="turn__actions"
+            >
+              <button
+                className="turn__button turn__button--play"
+                onClick={[Function]}
+              >
+                Play
+              </button>
+              <button
+                className="turn__button turn__button--open"
+                onClick={[Function]}
+              >
+                Open
+              </button>
+            </div>
+          </div>
+          <p
+            className="turn__results"
+          >
+            Now, the 
+            <strong>
+              Social Security
+            </strong>
+             tax of '77 - this indeed was a tax that hit people in the lower brackets the hardest.
+          </p>
+        </div>
+        <div
+          className="turn"
+        >
+          <div
+            className="turn__info"
+          >
+            <h3
+              className="turn__speaker"
+            >
+               Reagan
+            </h3>
+            <p
+              className="turn__time"
+            >
+              @ 1:03:44/1:40:27
+            </p>
+            <div
+              className="turn__actions"
+            >
+              <button
+                className="turn__button turn__button--play"
+                onClick={[Function]}
+              >
+                Play
+              </button>
+              <button
+                className="turn__button turn__button--open"
+                onClick={[Function]}
+              >
+                Open
+              </button>
+            </div>
+          </div>
+          <p
+            className="turn__results"
+          >
+            Today it is up to about 38,000 dollars of earnings that is subject to the payroll tax for 
+            <strong>
+              Social Security
+            </strong>
+            .
+          </p>
+        </div>
+      </div>
+      <div>
+        <div
+          className="turn"
+        >
+          <div
+            className="turn__info"
+          >
+            <h3
+              className="turn__speaker"
+            >
+               Reagan
+            </h3>
+            <p
+              className="turn__time"
+            >
+              @ 1:09:09/1:40:27
+            </p>
+            <div
+              className="turn__actions"
+            >
+              <button
+                className="turn__button turn__button--play"
+                onClick={[Function]}
+              >
+                Play
+              </button>
+              <button
+                className="turn__button turn__button--open"
+                onClick={[Function]}
+              >
+                Open
+              </button>
+            </div>
+          </div>
+          <p
+            className="turn__results"
+          >
+            With regard to Medicare, no, but it's time for us to say that Medicare is in pretty much the same condition that 
+            <strong>
+              Social Security
+            </strong>
+             was, and something is going to have to be done in the next several years to make it fiscally sound.
+          </p>
+        </div>
+      </div>
+      <div>
+        <div
+          className="turn"
+        >
+          <div
+            className="turn__info"
+          >
+            <h3
+              className="turn__speaker"
+            >
+               Mondale
+            </h3>
+            <p
+              className="turn__time"
+            >
+              @ 1:23:31/1:40:27
+            </p>
+            <div
+              className="turn__actions"
+            >
+              <button
+                className="turn__button turn__button--play"
+                onClick={[Function]}
+              >
+                Play
+              </button>
+              <button
+                className="turn__button turn__button--open"
+                onClick={[Function]}
+              >
+                Open
+              </button>
+            </div>
+          </div>
+          <p
+            className="turn__results"
+          >
+            Are you going to go after 
+            <strong>
+              Social Security
+            </strong>
+             and Medicare and student assistance and the handicapped again as you did last time?
+          </p>
+        </div>
+      </div>
+      <div>
+        <div
+          className="turn"
+        >
+          <div
+            className="turn__info"
+          >
+            <h3
+              className="turn__speaker"
+            >
+               Reagan
+            </h3>
+            <p
+              className="turn__time"
+            >
+              @ 1:24:49/1:40:27
+            </p>
+            <div
+              className="turn__actions"
+            >
+              <button
+                className="turn__button turn__button--play"
+                onClick={[Function]}
+              >
+                Play
+              </button>
+              <button
+                className="turn__button turn__button--open"
+                onClick={[Function]}
+              >
+                Open
+              </button>
+            </div>
+          </div>
+          <p
+            className="turn__results"
+          >
+            And that is the continued discussion and claim that somehow I am the villain who is going to pull the 
+            <strong>
+              Social Security
+            </strong>
+             checks out from those people who are dependent on them.
+          </p>
+        </div>
+        <div
+          className="turn"
+        >
+          <div
+            className="turn__info"
+          >
+            <h3
+              className="turn__speaker"
+            >
+               Reagan
+            </h3>
+            <p
+              className="turn__time"
+            >
+              @ 1:24:49/1:40:27
+            </p>
+            <div
+              className="turn__actions"
+            >
+              <button
+                className="turn__button turn__button--play"
+                onClick={[Function]}
+              >
+                Play
+              </button>
+              <button
+                className="turn__button turn__button--open"
+                onClick={[Function]}
+              >
+                Open
+              </button>
+            </div>
+          </div>
+          <p
+            className="turn__results"
+          >
+            But why it is outrageous is because, for political advantage, every time they do that, they scare millions of senior citizens who are totally dependent on 
+            <strong>
+              Social Security
+            </strong>
+            , have no place else to turn.
+          </p>
+        </div>
+      </div>
       <div>
         <div
           className="turn"
@@ -1411,891 +2296,6 @@ exports[`VideoResultsList social security 1`] = `
             <h3
               className="turn__speaker"
             >
-               Reagan
-            </h3>
-            <p
-              className="turn__time"
-            >
-              @ 24:44/1:40:27
-            </p>
-            <div
-              className="turn__actions"
-            >
-              <button
-                className="turn__button turn__button--play"
-                onClick={[Function]}
-              >
-                Play
-              </button>
-              <button
-                className="turn__button turn__button--open"
-                onClick={[Function]}
-              >
-                Open
-              </button>
-            </div>
-          </div>
-          <p
-            className="turn__results"
-          >
-            Well, let me just respond with regard to 
-            <strong>
-              Social Security
-            </strong>
-            .
-          </p>
-        </div>
-        <div
-          className="turn"
-        >
-          <div
-            className="turn__info"
-          >
-            <h3
-              className="turn__speaker"
-            >
-               Reagan
-            </h3>
-            <p
-              className="turn__time"
-            >
-              @ 24:44/1:40:27
-            </p>
-            <div
-              className="turn__actions"
-            >
-              <button
-                className="turn__button turn__button--play"
-                onClick={[Function]}
-              >
-                Play
-              </button>
-              <button
-                className="turn__button turn__button--open"
-                onClick={[Function]}
-              >
-                Open
-              </button>
-            </div>
-          </div>
-          <p
-            className="turn__results"
-          >
-            When we took office, we discovered that the program that the Carter-Mondale administration had said would solve the fiscal problems of 
-            <strong>
-              Social Security
-            </strong>
-             for the next 50 years wouldn't solve them for five .
-          </p>
-        </div>
-        <div
-          className="turn"
-        >
-          <div
-            className="turn__info"
-          >
-            <h3
-              className="turn__speaker"
-            >
-               Reagan
-            </h3>
-            <p
-              className="turn__time"
-            >
-              @ 24:44/1:40:27
-            </p>
-            <div
-              className="turn__actions"
-            >
-              <button
-                className="turn__button turn__button--play"
-                onClick={[Function]}
-              >
-                Play
-              </button>
-              <button
-                className="turn__button turn__button--open"
-                onClick={[Function]}
-              >
-                Open
-              </button>
-            </div>
-          </div>
-          <p
-            className="turn__results"
-          >
-            <strong>
-              Social Security
-            </strong>
-             was due to go bankrupt before 1983.
-          </p>
-        </div>
-        <div
-          className="turn"
-        >
-          <div
-            className="turn__info"
-          >
-            <h3
-              className="turn__speaker"
-            >
-               Reagan
-            </h3>
-            <p
-              className="turn__time"
-            >
-              @ 24:44/1:40:27
-            </p>
-            <div
-              className="turn__actions"
-            >
-              <button
-                className="turn__button turn__button--play"
-                onClick={[Function]}
-              >
-                Play
-              </button>
-              <button
-                className="turn__button turn__button--open"
-                onClick={[Function]}
-              >
-                Open
-              </button>
-            </div>
-          </div>
-          <p
-            className="turn__results"
-          >
-            And three days after the election in 1982, they came to us and said, 
-            <strong>
-              Social Security
-            </strong>
-            , we know, is broke.
-          </p>
-        </div>
-        <div
-          className="turn"
-        >
-          <div
-            className="turn__info"
-          >
-            <h3
-              className="turn__speaker"
-            >
-               Reagan
-            </h3>
-            <p
-              className="turn__time"
-            >
-              @ 24:44/1:40:27
-            </p>
-            <div
-              className="turn__actions"
-            >
-              <button
-                className="turn__button turn__button--play"
-                onClick={[Function]}
-              >
-                Play
-              </button>
-              <button
-                className="turn__button turn__button--open"
-                onClick={[Function]}
-              >
-                Open
-              </button>
-            </div>
-          </div>
-          <p
-            className="turn__results"
-          >
-            And so, the whole matter of what to do with 
-            <strong>
-              Social Security
-            </strong>
-             has been resolved by bipartisan legislation, and it is on a sound basis now for as far as you can see into the next century.
-          </p>
-        </div>
-      </div>
-      <div>
-        <div
-          className="turn"
-        >
-          <div
-            className="turn__info"
-          >
-            <h3
-              className="turn__speaker"
-            >
-               Mondale
-            </h3>
-            <p
-              className="turn__time"
-            >
-              @ 13:50/1:40:27
-            </p>
-            <div
-              className="turn__actions"
-            >
-              <button
-                className="turn__button turn__button--play"
-                onClick={[Function]}
-              >
-                Play
-              </button>
-              <button
-                className="turn__button turn__button--open"
-                onClick={[Function]}
-              >
-                Open
-              </button>
-            </div>
-          </div>
-          <p
-            className="turn__results"
-          >
-            And of course, what happened right after the election is they proposed to cut 
-            <strong>
-              Social Security
-            </strong>
-             benefits by 25 percent - reducing the adjustment for inflation, cutting out minimum benefits for the poorest on 
-            <strong>
-              Social Security
-            </strong>
-            , removing educational benefits for dependents whose widows were trying - with widows trying to get them through college.
-          </p>
-        </div>
-        <div
-          className="turn"
-        >
-          <div
-            className="turn__info"
-          >
-            <h3
-              className="turn__speaker"
-            >
-               Mondale
-            </h3>
-            <p
-              className="turn__time"
-            >
-              @ 13:50/1:40:27
-            </p>
-            <div
-              className="turn__actions"
-            >
-              <button
-                className="turn__button turn__button--play"
-                onClick={[Function]}
-              >
-                Play
-              </button>
-              <button
-                className="turn__button turn__button--open"
-                onClick={[Function]}
-              >
-                Open
-              </button>
-            </div>
-          </div>
-          <p
-            className="turn__results"
-          >
-            I have fought for 
-            <strong>
-              Social Security
-            </strong>
-             and Medicare and for things to help people who are vulnerable all my life, and I will do it as President of the United States.
-          </p>
-        </div>
-      </div>
-      <div>
-        <div
-          className="turn"
-        >
-          <div
-            className="turn__info"
-          >
-            <h3
-              className="turn__speaker"
-            >
-               Reagan
-            </h3>
-            <p
-              className="turn__time"
-            >
-              @ 1:24:49/1:40:27
-            </p>
-            <div
-              className="turn__actions"
-            >
-              <button
-                className="turn__button turn__button--play"
-                onClick={[Function]}
-              >
-                Play
-              </button>
-              <button
-                className="turn__button turn__button--open"
-                onClick={[Function]}
-              >
-                Open
-              </button>
-            </div>
-          </div>
-          <p
-            className="turn__results"
-          >
-            And that is the continued discussion and claim that somehow I am the villain who is going to pull the 
-            <strong>
-              Social Security
-            </strong>
-             checks out from those people who are dependent on them.
-          </p>
-        </div>
-        <div
-          className="turn"
-        >
-          <div
-            className="turn__info"
-          >
-            <h3
-              className="turn__speaker"
-            >
-               Reagan
-            </h3>
-            <p
-              className="turn__time"
-            >
-              @ 1:24:49/1:40:27
-            </p>
-            <div
-              className="turn__actions"
-            >
-              <button
-                className="turn__button turn__button--play"
-                onClick={[Function]}
-              >
-                Play
-              </button>
-              <button
-                className="turn__button turn__button--open"
-                onClick={[Function]}
-              >
-                Open
-              </button>
-            </div>
-          </div>
-          <p
-            className="turn__results"
-          >
-            But why it is outrageous is because, for political advantage, every time they do that, they scare millions of senior citizens who are totally dependent on 
-            <strong>
-              Social Security
-            </strong>
-            , have no place else to turn.
-          </p>
-        </div>
-      </div>
-      <div>
-        <div
-          className="turn"
-        >
-          <div
-            className="turn__info"
-          >
-            <h3
-              className="turn__speaker"
-            >
-               Reagan
-            </h3>
-            <p
-              className="turn__time"
-            >
-              @ 12:44/1:40:27
-            </p>
-            <div
-              className="turn__actions"
-            >
-              <button
-                className="turn__button turn__button--play"
-                onClick={[Function]}
-              >
-                Play
-              </button>
-              <button
-                className="turn__button turn__button--open"
-                onClick={[Function]}
-              >
-                Open
-              </button>
-            </div>
-          </div>
-          <p
-            className="turn__results"
-          >
-            With regard to 
-            <strong>
-              Social Security
-            </strong>
-            , I hope there'll be more time than just this minute to mention that, but I will say this: A President should never say "never."
-          </p>
-        </div>
-        <div
-          className="turn"
-        >
-          <div
-            className="turn__info"
-          >
-            <h3
-              className="turn__speaker"
-            >
-               Reagan
-            </h3>
-            <p
-              className="turn__time"
-            >
-              @ 12:44/1:40:27
-            </p>
-            <div
-              className="turn__actions"
-            >
-              <button
-                className="turn__button turn__button--play"
-                onClick={[Function]}
-              >
-                Play
-              </button>
-              <button
-                className="turn__button turn__button--open"
-                onClick={[Function]}
-              >
-                Open
-              </button>
-            </div>
-          </div>
-          <p
-            className="turn__results"
-          >
-            I will never stand for a reduction of the 
-            <strong>
-              Social Security
-            </strong>
-             benefits to the people that are now getting them.
-          </p>
-        </div>
-      </div>
-      <div>
-        <div
-          className="turn"
-        >
-          <div
-            className="turn__info"
-          >
-            <h3
-              className="turn__speaker"
-            >
-               Mondale
-            </h3>
-            <p
-              className="turn__time"
-            >
-              @ 23:30/1:40:27
-            </p>
-            <div
-              className="turn__actions"
-            >
-              <button
-                className="turn__button turn__button--play"
-                onClick={[Function]}
-              >
-                Play
-              </button>
-              <button
-                className="turn__button turn__button--open"
-                onClick={[Function]}
-              >
-                Open
-              </button>
-            </div>
-          </div>
-          <p
-            className="turn__results"
-          >
-            The fact of it is - that fact of it is - the fact of it is the President's budget sought to cut 
-            <strong>
-              Social Security
-            </strong>
-             by 25 percent.
-          </p>
-        </div>
-        <div
-          className="turn"
-        >
-          <div
-            className="turn__info"
-          >
-            <h3
-              className="turn__speaker"
-            >
-               Mondale
-            </h3>
-            <p
-              className="turn__time"
-            >
-              @ 23:30/1:40:27
-            </p>
-            <div
-              className="turn__actions"
-            >
-              <button
-                className="turn__button turn__button--play"
-                onClick={[Function]}
-              >
-                Play
-              </button>
-              <button
-                className="turn__button turn__button--open"
-                onClick={[Function]}
-              >
-                Open
-              </button>
-            </div>
-          </div>
-          <p
-            className="turn__results"
-          >
-            That's 
-            <strong>
-              Social Security
-            </strong>
-             and Medicare.
-          </p>
-        </div>
-      </div>
-      <div>
-        <div
-          className="turn"
-        >
-          <div
-            className="turn__info"
-          >
-            <h3
-              className="turn__speaker"
-            >
-               Reagan
-            </h3>
-            <p
-              className="turn__time"
-            >
-              @ 1:09:09/1:40:27
-            </p>
-            <div
-              className="turn__actions"
-            >
-              <button
-                className="turn__button turn__button--play"
-                onClick={[Function]}
-              >
-                Play
-              </button>
-              <button
-                className="turn__button turn__button--open"
-                onClick={[Function]}
-              >
-                Open
-              </button>
-            </div>
-          </div>
-          <p
-            className="turn__results"
-          >
-            With regard to Medicare, no, but it's time for us to say that Medicare is in pretty much the same condition that 
-            <strong>
-              Social Security
-            </strong>
-             was, and something is going to have to be done in the next several years to make it fiscally sound.
-          </p>
-        </div>
-      </div>
-      <div>
-        <div
-          className="turn"
-        >
-          <div
-            className="turn__info"
-          >
-            <h3
-              className="turn__speaker"
-            >
-               Mondale
-            </h3>
-            <p
-              className="turn__time"
-            >
-              @ 39:26/1:40:27
-            </p>
-            <div
-              className="turn__actions"
-            >
-              <button
-                className="turn__button turn__button--play"
-                onClick={[Function]}
-              >
-                Play
-              </button>
-              <button
-                className="turn__button turn__button--open"
-                onClick={[Function]}
-              >
-                Open
-              </button>
-            </div>
-          </div>
-          <p
-            className="turn__results"
-          >
-            Secondly, I've said that I will not support the cuts in 
-            <strong>
-              Social Security
-            </strong>
-             and Medicare and the rest that the President has proposed.
-          </p>
-        </div>
-      </div>
-      <div>
-        <div
-          className="turn"
-        >
-          <div
-            className="turn__info"
-          >
-            <h3
-              className="turn__speaker"
-            >
-               Mondale
-            </h3>
-            <p
-              className="turn__time"
-            >
-              @ 11:44/1:40:27
-            </p>
-            <div
-              className="turn__actions"
-            >
-              <button
-                className="turn__button turn__button--play"
-                onClick={[Function]}
-              >
-                Play
-              </button>
-              <button
-                className="turn__button turn__button--open"
-                onClick={[Function]}
-              >
-                Open
-              </button>
-            </div>
-          </div>
-          <p
-            className="turn__results"
-          >
-            Absolutely, and I have proposed over a hundred billion dollars in cuts in Federal spending over four years, but I am not going to cut it out of 
-            <strong>
-              Social Security
-            </strong>
-             and Medicare and student assistance and things - that people need.
-          </p>
-        </div>
-      </div>
-      <div>
-        <div
-          className="turn"
-        >
-          <div
-            className="turn__info"
-          >
-            <h3
-              className="turn__speaker"
-            >
-               Reagan
-            </h3>
-            <p
-              className="turn__time"
-            >
-              @ 1:03:44/1:40:27
-            </p>
-            <div
-              className="turn__actions"
-            >
-              <button
-                className="turn__button turn__button--play"
-                onClick={[Function]}
-              >
-                Play
-              </button>
-              <button
-                className="turn__button turn__button--open"
-                onClick={[Function]}
-              >
-                Open
-              </button>
-            </div>
-          </div>
-          <p
-            className="turn__results"
-          >
-            Now, the 
-            <strong>
-              Social Security
-            </strong>
-             tax of '77 - this indeed was a tax that hit people in the lower brackets the hardest.
-          </p>
-        </div>
-        <div
-          className="turn"
-        >
-          <div
-            className="turn__info"
-          >
-            <h3
-              className="turn__speaker"
-            >
-               Reagan
-            </h3>
-            <p
-              className="turn__time"
-            >
-              @ 1:03:44/1:40:27
-            </p>
-            <div
-              className="turn__actions"
-            >
-              <button
-                className="turn__button turn__button--play"
-                onClick={[Function]}
-              >
-                Play
-              </button>
-              <button
-                className="turn__button turn__button--open"
-                onClick={[Function]}
-              >
-                Open
-              </button>
-            </div>
-          </div>
-          <p
-            className="turn__results"
-          >
-            Today it is up to about 38,000 dollars of earnings that is subject to the payroll tax for 
-            <strong>
-              Social Security
-            </strong>
-            .
-          </p>
-        </div>
-      </div>
-      <div>
-        <div
-          className="turn"
-        >
-          <div
-            className="turn__info"
-          >
-            <h3
-              className="turn__speaker"
-            >
-               Mondale
-            </h3>
-            <p
-              className="turn__time"
-            >
-              @ 1:23:31/1:40:27
-            </p>
-            <div
-              className="turn__actions"
-            >
-              <button
-                className="turn__button turn__button--play"
-                onClick={[Function]}
-              >
-                Play
-              </button>
-              <button
-                className="turn__button turn__button--open"
-                onClick={[Function]}
-              >
-                Open
-              </button>
-            </div>
-          </div>
-          <p
-            className="turn__results"
-          >
-            Are you going to go after 
-            <strong>
-              Social Security
-            </strong>
-             and Medicare and student assistance and the handicapped again as you did last time?
-          </p>
-        </div>
-      </div>
-      <div>
-        <div
-          className="turn"
-        >
-          <div
-            className="turn__info"
-          >
-            <h3
-              className="turn__speaker"
-            >
-               Reagan
-            </h3>
-            <p
-              className="turn__time"
-            >
-              @ 19:21/1:40:27
-            </p>
-            <div
-              className="turn__actions"
-            >
-              <button
-                className="turn__button turn__button--play"
-                onClick={[Function]}
-              >
-                Play
-              </button>
-              <button
-                className="turn__button turn__button--open"
-                onClick={[Function]}
-              >
-                Open
-              </button>
-            </div>
-          </div>
-          <p
-            className="turn__results"
-          >
-            And, incidentally, I might say that with regard to the 25-percent cut to 
-            <strong>
-              Social Security
-            </strong>
-             - before I get to the answer to your question - the only 25-percent cut that I know of was accompanying that huge 1977 tax increase, was a cut of 25 percent in the benefits for every American who was born after 1916.
-          </p>
-        </div>
-      </div>
-      <div>
-        <div
-          className="turn"
-        >
-          <div
-            className="turn__info"
-          >
-            <h3
-              className="turn__speaker"
-            >
                Mondale
             </h3>
             <p
@@ -2357,7 +2357,7 @@ exports[`VideoResultsList social security 1`] = `
             <p
               className="turn__time"
             >
-              @ 38:59/1:29:42
+              @ 36:25/1:29:42
             </p>
             <div
               className="turn__actions"
@@ -2379,11 +2379,11 @@ exports[`VideoResultsList social security 1`] = `
           <p
             className="turn__results"
           >
-            First, Governor Romney, you have two minutes on 
+            Do you see a major difference between the two of you on 
             <strong>
               Social Security
             </strong>
-             and entitlements.
+            ?
           </p>
         </div>
       </div>
@@ -2570,51 +2570,6 @@ exports[`VideoResultsList social security 1`] = `
             <h3
               className="turn__speaker"
             >
-               Lehrer
-            </h3>
-            <p
-              className="turn__time"
-            >
-              @ 36:25/1:29:42
-            </p>
-            <div
-              className="turn__actions"
-            >
-              <button
-                className="turn__button turn__button--play"
-                onClick={[Function]}
-              >
-                Play
-              </button>
-              <button
-                className="turn__button turn__button--open"
-                onClick={[Function]}
-              >
-                Open
-              </button>
-            </div>
-          </div>
-          <p
-            className="turn__results"
-          >
-            Do you see a major difference between the two of you on 
-            <strong>
-              Social Security
-            </strong>
-            ?
-          </p>
-        </div>
-      </div>
-      <div>
-        <div
-          className="turn"
-        >
-          <div
-            className="turn__info"
-          >
-            <h3
-              className="turn__speaker"
-            >
                Obama
             </h3>
             <p
@@ -2651,6 +2606,51 @@ exports[`VideoResultsList social security 1`] = `
               Social Security
             </strong>
              is there for the future.
+          </p>
+        </div>
+      </div>
+      <div>
+        <div
+          className="turn"
+        >
+          <div
+            className="turn__info"
+          >
+            <h3
+              className="turn__speaker"
+            >
+               Lehrer
+            </h3>
+            <p
+              className="turn__time"
+            >
+              @ 38:59/1:29:42
+            </p>
+            <div
+              className="turn__actions"
+            >
+              <button
+                className="turn__button turn__button--play"
+                onClick={[Function]}
+              >
+                Play
+              </button>
+              <button
+                className="turn__button turn__button--open"
+                onClick={[Function]}
+              >
+                Open
+              </button>
+            </div>
+          </div>
+          <p
+            className="turn__results"
+          >
+            First, Governor Romney, you have two minutes on 
+            <strong>
+              Social Security
+            </strong>
+             and entitlements.
           </p>
         </div>
       </div>
@@ -2796,100 +2796,6 @@ exports[`VideoResultsList social security 1`] = `
          - 
         2008-10-07
       </h2>
-      <div>
-        <div
-          className="turn"
-        >
-          <div
-            className="turn__info"
-          >
-            <h3
-              className="turn__speaker"
-            >
-               McCain
-            </h3>
-            <p
-              className="turn__time"
-            >
-              @ 39:25/1:39:27
-            </p>
-            <div
-              className="turn__actions"
-            >
-              <button
-                className="turn__button turn__button--play"
-                onClick={[Function]}
-              >
-                Play
-              </button>
-              <button
-                className="turn__button turn__button--open"
-                onClick={[Function]}
-              >
-                Open
-              </button>
-            </div>
-          </div>
-          <p
-            className="turn__results"
-          >
-            Look - look, it's not that hard to fix 
-            <strong>
-              Social Security
-            </strong>
-            , Tom.
-          </p>
-        </div>
-      </div>
-      <div>
-        <div
-          className="turn"
-        >
-          <div
-            className="turn__info"
-          >
-            <h3
-              className="turn__speaker"
-            >
-               Obama
-            </h3>
-            <p
-              className="turn__time"
-            >
-              @ 38:51/1:39:27
-            </p>
-            <div
-              className="turn__actions"
-            >
-              <button
-                className="turn__button turn__button--play"
-                onClick={[Function]}
-              >
-                Play
-              </button>
-              <button
-                className="turn__button turn__button--open"
-                onClick={[Function]}
-              >
-                Open
-              </button>
-            </div>
-          </div>
-          <p
-            className="turn__results"
-          >
-            Now, if we get our tax policies right so that they're good for the middle class, if we reverse the policies of the last eight years that got us into this fix in the first place and that Senator McCain supported, then we are going to be in a position to deal with 
-            <strong>
-              Social Security
-            </strong>
-             and deal with Medicare, because we will have a health care plan that actually works for you, reduces spending and costs over the long term, and 
-            <strong>
-              Social Security
-            </strong>
-             that is stable and solvent for all Americans and not just some.
-          </p>
-        </div>
-      </div>
       <div>
         <div
           className="turn"
@@ -3078,6 +2984,100 @@ exports[`VideoResultsList social security 1`] = `
             <h3
               className="turn__speaker"
             >
+               Obama
+            </h3>
+            <p
+              className="turn__time"
+            >
+              @ 38:51/1:39:27
+            </p>
+            <div
+              className="turn__actions"
+            >
+              <button
+                className="turn__button turn__button--play"
+                onClick={[Function]}
+              >
+                Play
+              </button>
+              <button
+                className="turn__button turn__button--open"
+                onClick={[Function]}
+              >
+                Open
+              </button>
+            </div>
+          </div>
+          <p
+            className="turn__results"
+          >
+            Now, if we get our tax policies right so that they're good for the middle class, if we reverse the policies of the last eight years that got us into this fix in the first place and that Senator McCain supported, then we are going to be in a position to deal with 
+            <strong>
+              Social Security
+            </strong>
+             and deal with Medicare, because we will have a health care plan that actually works for you, reduces spending and costs over the long term, and 
+            <strong>
+              Social Security
+            </strong>
+             that is stable and solvent for all Americans and not just some.
+          </p>
+        </div>
+      </div>
+      <div>
+        <div
+          className="turn"
+        >
+          <div
+            className="turn__info"
+          >
+            <h3
+              className="turn__speaker"
+            >
+               McCain
+            </h3>
+            <p
+              className="turn__time"
+            >
+              @ 39:25/1:39:27
+            </p>
+            <div
+              className="turn__actions"
+            >
+              <button
+                className="turn__button turn__button--play"
+                onClick={[Function]}
+              >
+                Play
+              </button>
+              <button
+                className="turn__button turn__button--open"
+                onClick={[Function]}
+              >
+                Open
+              </button>
+            </div>
+          </div>
+          <p
+            className="turn__results"
+          >
+            Look - look, it's not that hard to fix 
+            <strong>
+              Social Security
+            </strong>
+            , Tom.
+          </p>
+        </div>
+      </div>
+      <div>
+        <div
+          className="turn"
+        >
+          <div
+            className="turn__info"
+          >
+            <h3
+              className="turn__speaker"
+            >
                McCain
             </h3>
             <p
@@ -3123,6 +3123,182 @@ exports[`VideoResultsList social security 1`] = `
          - 
         2004-10-13
       </h2>
+      <div>
+        <div
+          className="turn"
+        >
+          <div
+            className="turn__info"
+          >
+            <h3
+              className="turn__speaker"
+            >
+               Schieffer
+            </h3>
+            <p
+              className="turn__time"
+            >
+              @ 43:27/1:32:42
+            </p>
+            <div
+              className="turn__actions"
+            >
+              <button
+                className="turn__button turn__button--play"
+                onClick={[Function]}
+              >
+                Play
+              </button>
+              <button
+                className="turn__button turn__button--open"
+                onClick={[Function]}
+              >
+                Open
+              </button>
+            </div>
+          </div>
+          <p
+            className="turn__results"
+          >
+            We all know that 
+            <strong>
+              Social Security
+            </strong>
+             is running out of money, and it has to be fixed.
+          </p>
+        </div>
+      </div>
+      <div>
+        <div
+          className="turn"
+        >
+          <div
+            className="turn__info"
+          >
+            <h3
+              className="turn__speaker"
+            >
+               Bush
+            </h3>
+            <p
+              className="turn__time"
+            >
+              @ 43:57/1:32:42
+            </p>
+            <div
+              className="turn__actions"
+            >
+              <button
+                className="turn__button turn__button--play"
+                onClick={[Function]}
+              >
+                Play
+              </button>
+              <button
+                className="turn__button turn__button--open"
+                onClick={[Function]}
+              >
+                Open
+              </button>
+            </div>
+          </div>
+          <p
+            className="turn__results"
+          >
+            Well first, let me make sure that every senior listening today understands that when we're talking about reforming 
+            <strong>
+              Social Security
+            </strong>
+            , that they'll still get their checks.
+          </p>
+        </div>
+        <div
+          className="turn"
+        >
+          <div
+            className="turn__info"
+          >
+            <h3
+              className="turn__speaker"
+            >
+               Bush
+            </h3>
+            <p
+              className="turn__time"
+            >
+              @ 43:57/1:32:42
+            </p>
+            <div
+              className="turn__actions"
+            >
+              <button
+                className="turn__button turn__button--play"
+                onClick={[Function]}
+              >
+                Play
+              </button>
+              <button
+                className="turn__button turn__button--open"
+                onClick={[Function]}
+              >
+                Open
+              </button>
+            </div>
+          </div>
+          <p
+            className="turn__results"
+          >
+            I believe that younger workers ought to be allowed to take some of their own money and put it in a personal savings account, because I understand that they need to get better rates of return than the rates of return being given in the current 
+            <strong>
+              Social Security
+            </strong>
+             trust.
+          </p>
+        </div>
+        <div
+          className="turn"
+        >
+          <div
+            className="turn__info"
+          >
+            <h3
+              className="turn__speaker"
+            >
+               Bush
+            </h3>
+            <p
+              className="turn__time"
+            >
+              @ 43:57/1:32:42
+            </p>
+            <div
+              className="turn__actions"
+            >
+              <button
+                className="turn__button turn__button--play"
+                onClick={[Function]}
+              >
+                Play
+              </button>
+              <button
+                className="turn__button turn__button--open"
+                onClick={[Function]}
+              >
+                Open
+              </button>
+            </div>
+          </div>
+          <p
+            className="turn__results"
+          >
+            And the compounding rate of interest effect will make it more likely that the 
+            <strong>
+              Social Security
+            </strong>
+             system is solvent for our children and our grandchildren.
+          </p>
+        </div>
+      </div>
       <div>
         <div
           className="turn"
@@ -3574,182 +3750,6 @@ exports[`VideoResultsList social security 1`] = `
             <p
               className="turn__time"
             >
-              @ 43:57/1:32:42
-            </p>
-            <div
-              className="turn__actions"
-            >
-              <button
-                className="turn__button turn__button--play"
-                onClick={[Function]}
-              >
-                Play
-              </button>
-              <button
-                className="turn__button turn__button--open"
-                onClick={[Function]}
-              >
-                Open
-              </button>
-            </div>
-          </div>
-          <p
-            className="turn__results"
-          >
-            Well first, let me make sure that every senior listening today understands that when we're talking about reforming 
-            <strong>
-              Social Security
-            </strong>
-            , that they'll still get their checks.
-          </p>
-        </div>
-        <div
-          className="turn"
-        >
-          <div
-            className="turn__info"
-          >
-            <h3
-              className="turn__speaker"
-            >
-               Bush
-            </h3>
-            <p
-              className="turn__time"
-            >
-              @ 43:57/1:32:42
-            </p>
-            <div
-              className="turn__actions"
-            >
-              <button
-                className="turn__button turn__button--play"
-                onClick={[Function]}
-              >
-                Play
-              </button>
-              <button
-                className="turn__button turn__button--open"
-                onClick={[Function]}
-              >
-                Open
-              </button>
-            </div>
-          </div>
-          <p
-            className="turn__results"
-          >
-            I believe that younger workers ought to be allowed to take some of their own money and put it in a personal savings account, because I understand that they need to get better rates of return than the rates of return being given in the current 
-            <strong>
-              Social Security
-            </strong>
-             trust.
-          </p>
-        </div>
-        <div
-          className="turn"
-        >
-          <div
-            className="turn__info"
-          >
-            <h3
-              className="turn__speaker"
-            >
-               Bush
-            </h3>
-            <p
-              className="turn__time"
-            >
-              @ 43:57/1:32:42
-            </p>
-            <div
-              className="turn__actions"
-            >
-              <button
-                className="turn__button turn__button--play"
-                onClick={[Function]}
-              >
-                Play
-              </button>
-              <button
-                className="turn__button turn__button--open"
-                onClick={[Function]}
-              >
-                Open
-              </button>
-            </div>
-          </div>
-          <p
-            className="turn__results"
-          >
-            And the compounding rate of interest effect will make it more likely that the 
-            <strong>
-              Social Security
-            </strong>
-             system is solvent for our children and our grandchildren.
-          </p>
-        </div>
-      </div>
-      <div>
-        <div
-          className="turn"
-        >
-          <div
-            className="turn__info"
-          >
-            <h3
-              className="turn__speaker"
-            >
-               Schieffer
-            </h3>
-            <p
-              className="turn__time"
-            >
-              @ 43:27/1:32:42
-            </p>
-            <div
-              className="turn__actions"
-            >
-              <button
-                className="turn__button turn__button--play"
-                onClick={[Function]}
-              >
-                Play
-              </button>
-              <button
-                className="turn__button turn__button--open"
-                onClick={[Function]}
-              >
-                Open
-              </button>
-            </div>
-          </div>
-          <p
-            className="turn__results"
-          >
-            We all know that 
-            <strong>
-              Social Security
-            </strong>
-             is running out of money, and it has to be fixed.
-          </p>
-        </div>
-      </div>
-      <div>
-        <div
-          className="turn"
-        >
-          <div
-            className="turn__info"
-          >
-            <h3
-              className="turn__speaker"
-            >
-               Bush
-            </h3>
-            <p
-              className="turn__time"
-            >
               @ 49:48/1:32:42
             </p>
             <div
@@ -3834,6 +3834,96 @@ exports[`VideoResultsList social security 1`] = `
          - 
         1996-10-06
       </h2>
+      <div>
+        <div
+          className="turn"
+        >
+          <div
+            className="turn__info"
+          >
+            <h3
+              className="turn__speaker"
+            >
+               Dole
+            </h3>
+            <p
+              className="turn__time"
+            >
+              @ 6:56/1:37:29
+            </p>
+            <div
+              className="turn__actions"
+            >
+              <button
+                className="turn__button turn__button--play"
+                onClick={[Function]}
+              >
+                Play
+              </button>
+              <button
+                className="turn__button turn__button--open"
+                onClick={[Function]}
+              >
+                Open
+              </button>
+            </div>
+          </div>
+          <p
+            className="turn__results"
+          >
+            If you made 25,000 as the original proposal, you got your 
+            <strong>
+              Social Security
+            </strong>
+             taxes increased.
+          </p>
+        </div>
+      </div>
+      <div>
+        <div
+          className="turn"
+        >
+          <div
+            className="turn__info"
+          >
+            <h3
+              className="turn__speaker"
+            >
+               Clinton
+            </h3>
+            <p
+              className="turn__time"
+            >
+              @ 12:19/1:37:29
+            </p>
+            <div
+              className="turn__actions"
+            >
+              <button
+                className="turn__button turn__button--play"
+                onClick={[Function]}
+              >
+                Play
+              </button>
+              <button
+                className="turn__button turn__button--open"
+                onClick={[Function]}
+              >
+                Open
+              </button>
+            </div>
+          </div>
+          <p
+            className="turn__results"
+          >
+            And now with this risky $550 billion tax scheme of Senator Dole's, even his own friends, his campaign co-chair, Senator D'Amato, says that they can't possibly pay for it without cutting Medicare more and cutting 
+            <strong>
+              Social Security
+            </strong>
+             as well, according to him.
+          </p>
+        </div>
+      </div>
       <div>
         <div
           className="turn"
@@ -3986,96 +4076,6 @@ exports[`VideoResultsList social security 1`] = `
             <p
               className="turn__time"
             >
-              @ 6:56/1:37:29
-            </p>
-            <div
-              className="turn__actions"
-            >
-              <button
-                className="turn__button turn__button--play"
-                onClick={[Function]}
-              >
-                Play
-              </button>
-              <button
-                className="turn__button turn__button--open"
-                onClick={[Function]}
-              >
-                Open
-              </button>
-            </div>
-          </div>
-          <p
-            className="turn__results"
-          >
-            If you made 25,000 as the original proposal, you got your 
-            <strong>
-              Social Security
-            </strong>
-             taxes increased.
-          </p>
-        </div>
-      </div>
-      <div>
-        <div
-          className="turn"
-        >
-          <div
-            className="turn__info"
-          >
-            <h3
-              className="turn__speaker"
-            >
-               Clinton
-            </h3>
-            <p
-              className="turn__time"
-            >
-              @ 12:19/1:37:29
-            </p>
-            <div
-              className="turn__actions"
-            >
-              <button
-                className="turn__button turn__button--play"
-                onClick={[Function]}
-              >
-                Play
-              </button>
-              <button
-                className="turn__button turn__button--open"
-                onClick={[Function]}
-              >
-                Open
-              </button>
-            </div>
-          </div>
-          <p
-            className="turn__results"
-          >
-            And now with this risky $550 billion tax scheme of Senator Dole's, even his own friends, his campaign co-chair, Senator D'Amato, says that they can't possibly pay for it without cutting Medicare more and cutting 
-            <strong>
-              Social Security
-            </strong>
-             as well, according to him.
-          </p>
-        </div>
-      </div>
-      <div>
-        <div
-          className="turn"
-        >
-          <div
-            className="turn__info"
-          >
-            <h3
-              className="turn__speaker"
-            >
-               Dole
-            </h3>
-            <p
-              className="turn__time"
-            >
               @ 1:18:39/1:37:29
             </p>
             <div
@@ -4117,6 +4117,55 @@ exports[`VideoResultsList social security 1`] = `
          - 
         1960-09-26
       </h2>
+      <div>
+        <div
+          className="turn"
+        >
+          <div
+            className="turn__info"
+          >
+            <h3
+              className="turn__speaker"
+            >
+               Kennedy
+            </h3>
+            <p
+              className="turn__time"
+            >
+              @ 1:00/58:56
+            </p>
+            <div
+              className="turn__actions"
+            >
+              <button
+                className="turn__button turn__button--play"
+                onClick={[Function]}
+              >
+                Play
+              </button>
+              <button
+                className="turn__button turn__button--open"
+                onClick={[Function]}
+              >
+                Open
+              </button>
+            </div>
+          </div>
+          <p
+            className="turn__results"
+          >
+            Seventeen million Americans, who live over sixty-five on an average 
+            <strong>
+              Social Security
+            </strong>
+             check of about seventy-eight dollars a month, they're not able to sustain themselves individually, but they can sustain themselves through the 
+            <strong>
+              social security
+            </strong>
+             system.
+          </p>
+        </div>
+      </div>
       <div>
         <div
           className="turn"
@@ -4210,98 +4259,6 @@ exports[`VideoResultsList social security 1`] = `
               Social Security
             </strong>
              tax.
-          </p>
-        </div>
-      </div>
-      <div>
-        <div
-          className="turn"
-        >
-          <div
-            className="turn__info"
-          >
-            <h3
-              className="turn__speaker"
-            >
-               Kennedy
-            </h3>
-            <p
-              className="turn__time"
-            >
-              @ 44:40/58:56
-            </p>
-            <div
-              className="turn__actions"
-            >
-              <button
-                className="turn__button turn__button--play"
-                onClick={[Function]}
-              >
-                Play
-              </button>
-              <button
-                className="turn__button turn__button--open"
-                onClick={[Function]}
-              >
-                Open
-              </button>
-            </div>
-          </div>
-          <p
-            className="turn__results"
-          >
-            The third is medical care for the aged which is tied to 
-            <strong>
-              Social Security
-            </strong>
-            , which is financed out of 
-            <strong>
-              Social Security
-            </strong>
-             funds.
-          </p>
-        </div>
-        <div
-          className="turn"
-        >
-          <div
-            className="turn__info"
-          >
-            <h3
-              className="turn__speaker"
-            >
-               Kennedy
-            </h3>
-            <p
-              className="turn__time"
-            >
-              @ 44:40/58:56
-            </p>
-            <div
-              className="turn__actions"
-            >
-              <button
-                className="turn__button turn__button--play"
-                onClick={[Function]}
-              >
-                Play
-              </button>
-              <button
-                className="turn__button turn__button--open"
-                onClick={[Function]}
-              >
-                Open
-              </button>
-            </div>
-          </div>
-          <p
-            className="turn__results"
-          >
-            Rockefeller rejected it in New York, said he didn't agree with the financing at all, said it ought to be on 
-            <strong>
-              Social Security
-            </strong>
-            .
           </p>
         </div>
       </div>
@@ -4491,6 +4448,98 @@ exports[`VideoResultsList social security 1`] = `
             <h3
               className="turn__speaker"
             >
+               Kennedy
+            </h3>
+            <p
+              className="turn__time"
+            >
+              @ 44:40/58:56
+            </p>
+            <div
+              className="turn__actions"
+            >
+              <button
+                className="turn__button turn__button--play"
+                onClick={[Function]}
+              >
+                Play
+              </button>
+              <button
+                className="turn__button turn__button--open"
+                onClick={[Function]}
+              >
+                Open
+              </button>
+            </div>
+          </div>
+          <p
+            className="turn__results"
+          >
+            The third is medical care for the aged which is tied to 
+            <strong>
+              Social Security
+            </strong>
+            , which is financed out of 
+            <strong>
+              Social Security
+            </strong>
+             funds.
+          </p>
+        </div>
+        <div
+          className="turn"
+        >
+          <div
+            className="turn__info"
+          >
+            <h3
+              className="turn__speaker"
+            >
+               Kennedy
+            </h3>
+            <p
+              className="turn__time"
+            >
+              @ 44:40/58:56
+            </p>
+            <div
+              className="turn__actions"
+            >
+              <button
+                className="turn__button turn__button--play"
+                onClick={[Function]}
+              >
+                Play
+              </button>
+              <button
+                className="turn__button turn__button--open"
+                onClick={[Function]}
+              >
+                Open
+              </button>
+            </div>
+          </div>
+          <p
+            className="turn__results"
+          >
+            Rockefeller rejected it in New York, said he didn't agree with the financing at all, said it ought to be on 
+            <strong>
+              Social Security
+            </strong>
+            .
+          </p>
+        </div>
+      </div>
+      <div>
+        <div
+          className="turn"
+        >
+          <div
+            className="turn__info"
+          >
+            <h3
+              className="turn__speaker"
+            >
                Nixon
             </h3>
             <p
@@ -4658,55 +4707,6 @@ exports[`VideoResultsList social security 1`] = `
               Social Security
             </strong>
              Act was written, ninety-four out of ninety-five Republicans voted against it.
-          </p>
-        </div>
-      </div>
-      <div>
-        <div
-          className="turn"
-        >
-          <div
-            className="turn__info"
-          >
-            <h3
-              className="turn__speaker"
-            >
-               Kennedy
-            </h3>
-            <p
-              className="turn__time"
-            >
-              @ 1:00/58:56
-            </p>
-            <div
-              className="turn__actions"
-            >
-              <button
-                className="turn__button turn__button--play"
-                onClick={[Function]}
-              >
-                Play
-              </button>
-              <button
-                className="turn__button turn__button--open"
-                onClick={[Function]}
-              >
-                Open
-              </button>
-            </div>
-          </div>
-          <p
-            className="turn__results"
-          >
-            Seventeen million Americans, who live over sixty-five on an average 
-            <strong>
-              Social Security
-            </strong>
-             check of about seventy-eight dollars a month, they're not able to sustain themselves individually, but they can sustain themselves through the 
-            <strong>
-              social security
-            </strong>
-             system.
           </p>
         </div>
       </div>

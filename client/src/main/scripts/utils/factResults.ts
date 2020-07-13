@@ -71,6 +71,9 @@ export const createHashMap = (
     }
   });
 
+  for (const turnList of hashesToTurns.values()) {
+    turnList.sort((a, b) => a - b);
+  }
   return hashesToTurns;
 };
 

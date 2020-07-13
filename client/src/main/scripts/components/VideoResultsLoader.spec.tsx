@@ -26,6 +26,12 @@ test("VideoResultsLoader sorts results", () => {
   expect(isEqual(searchResultsMap, expectedSortedResults)).toBeTruthy();
 });
 
+// test("VideoResultsLoader sorts turns", () => {
+//   for (const turns of searchResultsMap!.values()) {
+//     expect(searchResultsMap).toBesorted() // this doesn't exist, but add it
+//   }
+// });
+
 const searchResults: Search.FactResultList = {
   facts: [
     { turn: 102, hash: "1fPLAadIV8L4-PjT6yF63KyEjfieDpZbGfGNiQN3Q7c=" },
