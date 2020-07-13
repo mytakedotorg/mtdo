@@ -1,20 +1,39 @@
+/*
+ * MyTake.org website and tooling.
+ * Copyright (C) 2017-2020 MyTake.org, Inc.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * You can contact us at team@mytake.org
+ */
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import isEqual = require("lodash/isEqual");
 import CaptionTextNodeListContainer, {
-  CaptionTextNodeListContainerEventHandlers
+  CaptionTextNodeListContainerEventHandlers,
 } from "./CaptionTextNodeListContainer";
 import ClipEditor, { ClipEditorEventHandlers } from "./ClipEditor";
 import {
   alertErr,
   getSimpleRangesFromHTMLRange,
   getWordRangeFromCharRange,
-  SimpleRanges
+  SimpleRanges,
 } from "../utils/functions";
 import {
   getCaptionNodeArray,
   highlightCaption,
-  CaptionNodeArr
+  CaptionNodeArr,
 } from "../common/CaptionNodes";
 import { RangeType, StateAuthority, TimeRange } from "./Video";
 import { Foundation } from "../java2ts/Foundation";
@@ -93,17 +112,17 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
         );
 
         this.setState({
-          highlightedNodes: captionNodes
+          highlightedNodes: captionNodes,
         });
       } else {
         this.setState({
-          highlightedNodes: rawCaptionNodes
+          highlightedNodes: rawCaptionNodes,
         });
       }
       return unhighlightedNodes;
     } else {
       this.setState({
-        highlightedNodes: undefined
+        highlightedNodes: undefined,
       });
       console.warn("Captions not yet done for this video");
       return [];
@@ -123,11 +142,11 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
     const { videoFact } = this.props;
     if (videoFact) {
       this.setState({
-        highlightedNodes: getCaptionNodeArray(videoFact)
+        highlightedNodes: getCaptionNodeArray(videoFact),
       });
     } else {
       this.setState({
-        highlightedNodes: undefined
+        highlightedNodes: undefined,
       });
     }
     this.props.eventHandlers.onClearPress();
@@ -135,8 +154,8 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
   handleMouseUp = () => {
     if (window.getSelection) {
       // Pre IE9 will always be false
-      const selection: Selection = window.getSelection();
-      if (selection.toString().length) {
+      const selection = window.getSelection();
+      if (selection?.toString().length) {
         // Some text is selected
         const range: Range = selection.getRangeAt(0);
 
@@ -152,7 +171,7 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
 
         const newSimpleRanges = {
           ...simpleRanges,
-          wordRange: wordRange
+          wordRange: wordRange,
         };
 
         if (this.props.captionIsHighlighted) {
@@ -161,7 +180,7 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
           this.simpleRanges = (Object as any).assign({}, newSimpleRanges);
           // Clear all highlights
           this.setState({
-            highlightedNodes: [...this.unhighlightedNodes]
+            highlightedNodes: [...this.unhighlightedNodes],
           });
         } else {
           this.highlightNodes(newSimpleRanges);
@@ -178,7 +197,7 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
       );
 
       this.setState({
-        highlightedNodes: newNodes
+        highlightedNodes: newNodes,
       });
 
       const startTime = videoFact.timestamps[simpleRanges.wordRange[0]];
@@ -222,12 +241,12 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
       onSendToTake: this.props.eventHandlers.onSendToTake,
       onSkipBackPress: this.props.eventHandlers.onSkipBackPress,
       onSkipForwardPress: this.props.eventHandlers.onSkipForwardPress,
-      onZoomToClipPress: this.props.eventHandlers.onZoomToClipPress
+      onZoomToClipPress: this.props.eventHandlers.onZoomToClipPress,
     };
 
     const captionTextNodeListContainerEventHandlers: CaptionTextNodeListContainerEventHandlers = {
       onMouseUp: this.handleMouseUp,
-      onScroll: this.props.eventHandlers.onScroll
+      onScroll: this.props.eventHandlers.onScroll,
     };
 
     const transcriptViewRange = this.getRangeSlider(
@@ -332,7 +351,8 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
                 }
               >
                 Kennedy/Nixon 1
-              </a>.
+              </a>
+              .
             </p>
           </div>
         )}

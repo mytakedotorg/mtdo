@@ -1,3 +1,22 @@
+/*
+ * MyTake.org website and tooling.
+ * Copyright (C) 2017-2020 MyTake.org, Inc.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * You can contact us at team@mytake.org
+ */
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import isEqual = require("lodash/isEqual");
@@ -11,7 +30,7 @@ import {
   getHighlightedNodes,
   getSimpleRangesFromHTMLRange,
   getStartRangeOffsetTop,
-  highlightText
+  highlightText,
 } from "../utils/functions";
 import { Foundation } from "../java2ts/Foundation";
 import { Routes } from "../java2ts/Routes";
@@ -68,7 +87,7 @@ export default class TimelinePreview extends React.Component<
           : [0, 0],
       textIsHighlighted: props.ranges ? true : false,
       highlightedNodes: [],
-      offsetTop: 0
+      offsetTop: 0,
     };
   }
   getScrollTop = (range?: [number, number]) => {
@@ -85,7 +104,7 @@ export default class TimelinePreview extends React.Component<
   handleClearClick = () => {
     this.setState({
       textIsHighlighted: false,
-      highlightedNodes: []
+      highlightedNodes: [],
     });
     if (this.props.setFactHandlers) {
       this.props.setFactHandlers.handleRangeCleared();
@@ -94,8 +113,8 @@ export default class TimelinePreview extends React.Component<
   handleMouseUp = () => {
     if (window.getSelection && !this.state.textIsHighlighted) {
       // Pre IE9 will always be false
-      const selection: Selection = window.getSelection();
-      if (selection.toString().length) {
+      const selection = window.getSelection();
+      if (selection?.toString().length) {
         //Some text is selected
         const range: Range = selection.getRangeAt(0);
 
@@ -122,7 +141,7 @@ export default class TimelinePreview extends React.Component<
           highlightedRange: highlightedRange,
           viewRange: viewRange,
           textIsHighlighted: true,
-          offsetTop: this.getScrollTop(simpleRanges.charRange)
+          offsetTop: this.getScrollTop(simpleRanges.charRange),
         });
 
         if (this.props.setFactHandlers) {
@@ -139,7 +158,7 @@ export default class TimelinePreview extends React.Component<
       this.props.setFactHandlers.handleRangeSet(videoRange);
     }
     this.setState({
-      textIsHighlighted: true
+      textIsHighlighted: true,
     });
   };
   handleSetClick = (videoRange?: [number, number]) => {
@@ -227,7 +246,7 @@ export default class TimelinePreview extends React.Component<
         viewRange:
           props.ranges && props.ranges.viewRange
             ? props.ranges.viewRange
-            : [0, 0]
+            : [0, 0],
       });
     }
   };
@@ -235,14 +254,14 @@ export default class TimelinePreview extends React.Component<
     if (this.props.factLink.fact.title !== nextProps.factLink.fact.title) {
       this.setState({
         textIsHighlighted: false,
-        highlightedNodes: []
+        highlightedNodes: [],
       });
     } else if (!nextProps.ranges) {
       this.setState({
         textIsHighlighted: false,
         highlightedNodes: [],
         highlightedRange: [0, 0],
-        viewRange: [0, 0]
+        viewRange: [0, 0],
       });
     } else if (!isEqual(this.props.ranges, nextProps.ranges)) {
       this.setup(nextProps);
@@ -250,7 +269,7 @@ export default class TimelinePreview extends React.Component<
   }
   render() {
     const documentEventHandlers: DocumentEventHandlers = {
-      onMouseUp: this.handleMouseUp
+      onMouseUp: this.handleMouseUp,
     };
     if (this.props.factLink.fact.kind === "document") {
       return (

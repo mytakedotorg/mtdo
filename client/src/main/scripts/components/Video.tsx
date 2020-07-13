@@ -1,3 +1,22 @@
+/*
+ * MyTake.org website and tooling.
+ * Copyright (C) 2017-2020 MyTake.org, Inc.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * You can contact us at team@mytake.org
+ */
 import * as React from "react";
 import YouTube from "react-youtube";
 import isEqual = require("lodash/isEqual");
@@ -40,15 +59,15 @@ export interface StylesObject {
 
 export const TRACKSTYLES__RANGE: TrackStyles = {
   rail: {
-    backgroundColor: "#d3dae3" // lighten($base-lightest, 30%)
+    backgroundColor: "#d3dae3", // lighten($base-lightest, 30%)
   },
   track: {
-    backgroundColor: "#758aa8" // $base--lightest
+    backgroundColor: "#758aa8", // $base--lightest
   },
   handle: {
     backgroundColor: "#758aa8", // $base--lightest
-    border: "1px solid #2c4770" // $base
-  }
+    border: "1px solid #2c4770", // $base
+  },
 };
 
 export type RangeType = "SELECTION" | "VIEW" | "ZOOM" | "CURRENT_TIME";
@@ -108,7 +127,7 @@ class Video extends React.Component<VideoProps, VideoState> {
       showinfo: 0,
       modestbranding: 1,
       start: props.clipRange ? props.clipRange[0] : 0,
-      end: props.clipRange ? props.clipRange[1] : null
+      end: props.clipRange ? props.clipRange[1] : null,
     };
 
     this.viewRangeDuration = 5;
@@ -123,7 +142,7 @@ class Video extends React.Component<VideoProps, VideoState> {
       highlightedCharRange: charRange,
       rangeSliders: this.initializeRangeSliders(props.clipRange),
       stateAuthority: null,
-      userHasModifiedRange: false
+      userHasModifiedRange: false,
     };
   }
   copyURL = () => {
@@ -148,7 +167,7 @@ class Video extends React.Component<VideoProps, VideoState> {
     }
 
     this.setState({
-      isCopiedToClipBoard: copyToClipboard(text)
+      isCopiedToClipBoard: copyToClipboard(text),
     });
   };
   cueVideo = () => {
@@ -159,7 +178,7 @@ class Video extends React.Component<VideoProps, VideoState> {
           videoId: this.props.videoFact.youtubeId,
           startSeconds: selectionRange.start,
           endSeconds: selectionRange.end,
-          suggestedQuality: "default"
+          suggestedQuality: "default",
         });
         this.playerVars.start = selectionRange.start;
         this.playerVars.end = selectionRange.end;
@@ -200,7 +219,7 @@ class Video extends React.Component<VideoProps, VideoState> {
       end: this.viewRangeDuration,
       type: "VIEW",
       styles: TRACKSTYLES__RANGE,
-      label: "Transcript"
+      label: "Transcript",
     };
 
     const selectionRange: TimeRange = {
@@ -208,7 +227,7 @@ class Video extends React.Component<VideoProps, VideoState> {
       end: clipRange ? clipRange[1] : 0,
       type: "SELECTION",
       styles: TRACKSTYLES__RANGE,
-      label: "Clip"
+      label: "Clip",
     };
 
     if (clipRange) {
@@ -220,7 +239,7 @@ class Video extends React.Component<VideoProps, VideoState> {
         end: parseFloat(zoomEndLong.toFixed(3)),
         type: "ZOOM",
         styles: TRACKSTYLES__RANGE,
-        label: "Zoom"
+        label: "Zoom",
       };
       return [transcriptViewRange, selectionRange, zoomRange];
     }
@@ -237,14 +256,14 @@ class Video extends React.Component<VideoProps, VideoState> {
       end: videoRange[1],
       type: "SELECTION",
       styles: TRACKSTYLES__RANGE,
-      label: "Clip"
+      label: "Clip",
     };
     this.setState({
       captionIsHighlighted: true,
       highlightedCharRange: charRange,
       isCopiedToClipBoard: false,
       rangeSliders: this.updateRangeSlider(newSelection),
-      userHasModifiedRange: true
+      userHasModifiedRange: true,
     });
     if (this.props.onRangeSet) {
       this.props.onRangeSet([videoRange[0], videoRange[1]]);
@@ -258,7 +277,7 @@ class Video extends React.Component<VideoProps, VideoState> {
         end: viewRange[1],
         type: "VIEW",
         styles: TRACKSTYLES__RANGE,
-        label: "Transcript"
+        label: "Transcript",
       };
 
       if (this.scrollTimer) {
@@ -268,20 +287,20 @@ class Video extends React.Component<VideoProps, VideoState> {
 
       this.setState({
         rangeSliders: this.updateRangeSlider(newView),
-        stateAuthority: "SCROLL"
+        stateAuthority: "SCROLL",
       });
     }
   };
   handleCaptionScrollEnd = () => {
     this.scrollTimer = null;
     this.setState({
-      stateAuthority: null
+      stateAuthority: null,
     });
   };
   handleClearClick = (): void => {
     this.setState({
       captionIsHighlighted: false,
-      isCopiedToClipBoard: false
+      isCopiedToClipBoard: false,
     });
     if (this.props.onClearClick) {
       this.props.onClearClick();
@@ -300,13 +319,13 @@ class Video extends React.Component<VideoProps, VideoState> {
       }
     }
     this.setState({
-      isPaused: !isPaused
+      isPaused: !isPaused,
     });
   };
   handlePause = (event: any) => {
     // Player was paused with player controls
     this.setState({
-      currentTime: Math.round(event.target.getCurrentTime())
+      currentTime: Math.round(event.target.getCurrentTime()),
     });
   };
   handleAfterRangeChange = (
@@ -319,11 +338,11 @@ class Video extends React.Component<VideoProps, VideoState> {
       }
       this.setState({
         stateAuthority: null,
-        userHasModifiedRange: true
+        userHasModifiedRange: true,
       });
     } else {
       this.setState({
-        stateAuthority: null
+        stateAuthority: null,
       });
     }
   };
@@ -396,7 +415,7 @@ class Video extends React.Component<VideoProps, VideoState> {
               end: nextSelectionEnd,
               type: "SELECTION",
               styles: TRACKSTYLES__RANGE,
-              label: "Clip"
+              label: "Clip",
             };
             const charRange: [number, number] = this.getCharRange(
               this.props.videoFact,
@@ -413,7 +432,7 @@ class Video extends React.Component<VideoProps, VideoState> {
                   )
                 : false,
               stateAuthority: "SELECTION",
-              rangeSliders: this.updateRangeSlider(nextSelection)
+              rangeSliders: this.updateRangeSlider(nextSelection),
             });
           } else {
             const msg = "Video: Can't find selection or zoom range.";
@@ -478,11 +497,11 @@ class Video extends React.Component<VideoProps, VideoState> {
               end: nextViewEnd,
               type: "VIEW",
               styles: TRACKSTYLES__RANGE,
-              label: "Transcript"
+              label: "Transcript",
             };
             this.setState({
               stateAuthority: "VIEW",
-              rangeSliders: this.updateRangeSlider(nextView)
+              rangeSliders: this.updateRangeSlider(nextView),
             });
           } else {
             const msg = "Video: Can't find view range.";
@@ -501,7 +520,7 @@ class Video extends React.Component<VideoProps, VideoState> {
             end: value[1],
             type: "ZOOM",
             styles: TRACKSTYLES__RANGE,
-            label: "Zoom"
+            label: "Zoom",
           };
           this.setState({
             isZoomedToClip:
@@ -512,7 +531,7 @@ class Video extends React.Component<VideoProps, VideoState> {
                   )
                 : false,
             stateAuthority: "ZOOM",
-            rangeSliders: this.updateRangeSlider(nextZoom)
+            rangeSliders: this.updateRangeSlider(nextZoom),
           });
           break;
         case "CURRENT_TIME":
@@ -536,13 +555,13 @@ class Video extends React.Component<VideoProps, VideoState> {
                   videoId: this.props.videoFact.youtubeId,
                   startSeconds: value,
                   endSeconds: selectionRange.end,
-                  suggestedQuality: "default"
+                  suggestedQuality: "default",
                 });
                 this.playerVars.end = selectionRange.end;
               }
             }
             this.setState({
-              currentTime: value
+              currentTime: value,
             });
             if (this.player) {
               this.player.seekTo(value);
@@ -576,7 +595,7 @@ class Video extends React.Component<VideoProps, VideoState> {
       if (selectionRange) {
         const clipStart = selectionRange.start;
         this.setState({
-          currentTime: clipStart
+          currentTime: clipStart,
         });
         if (this.player) {
           this.player.playVideo();
@@ -590,7 +609,7 @@ class Video extends React.Component<VideoProps, VideoState> {
       }
     } else {
       this.setState({
-        currentTime: 0
+        currentTime: 0,
       });
       if (this.player) {
         this.player.seekTo(0);
@@ -605,7 +624,7 @@ class Video extends React.Component<VideoProps, VideoState> {
       end: this.initialClipRange ? this.initialClipRange[1] : 0,
       type: "SELECTION",
       styles: TRACKSTYLES__RANGE,
-      label: "Clip"
+      label: "Clip",
     };
 
     let charRange: [number, number] = this.getCharRange(
@@ -619,7 +638,7 @@ class Video extends React.Component<VideoProps, VideoState> {
       highlightedCharRange: charRange,
       isCopiedToClipBoard: false,
       isZoomedToClip: this.initialClipRange ? true : false,
-      rangeSliders: this.initializeRangeSliders(this.initialClipRange)
+      rangeSliders: this.initializeRangeSliders(this.initialClipRange),
     });
     this.handleRestartPress();
   };
@@ -653,12 +672,12 @@ class Video extends React.Component<VideoProps, VideoState> {
           end: selection.end + tenPercent,
           type: "ZOOM",
           styles: TRACKSTYLES__RANGE,
-          label: "Zoom"
+          label: "Zoom",
         };
         this.setState({
           isZoomedToClip: true,
           rangeSliders: this.updateRangeSlider(zoomRange),
-          stateAuthority: "BUTTON"
+          stateAuthority: "BUTTON",
         });
 
         if (this.buttonTimer) {
@@ -679,7 +698,7 @@ class Video extends React.Component<VideoProps, VideoState> {
   handleAfterButtonPress = () => {
     this.buttonTimer = null;
     this.setState({
-      stateAuthority: null
+      stateAuthority: null,
     });
   };
   isZoomedToClip = (
@@ -696,7 +715,7 @@ class Video extends React.Component<VideoProps, VideoState> {
   skipSeconds = (seconds: number) => {
     const newTime = this.state.currentTime + seconds;
     this.setState({
-      currentTime: newTime
+      currentTime: newTime,
     });
     if (this.player) {
       this.player.seekTo(newTime);
@@ -709,10 +728,10 @@ class Video extends React.Component<VideoProps, VideoState> {
       this.player.cueVideoById({
         videoId: this.props.videoFact.youtubeId,
         startSeconds: this.state.currentTime,
-        suggestedQuality: "default"
+        suggestedQuality: "default",
       });
       this.setState({
-        isPaused: true
+        isPaused: true,
       });
     } else if (event.data === 1) {
       // Video playing
@@ -725,27 +744,27 @@ class Video extends React.Component<VideoProps, VideoState> {
       this.startTimer();
       this.setState({
         currentTime: Math.round(event.target.getCurrentTime()),
-        isPaused: false
+        isPaused: false,
       });
     } else if (event.data === 2) {
       // Video paused
       this.stopTimer();
       this.setState({
         currentTime: Math.round(event.target.getCurrentTime()),
-        isPaused: true
+        isPaused: true,
       });
     } else if (event.data === 3) {
       // Video buffering
       this.stopTimer();
       this.setState({
         currentTime: Math.round(event.target.getCurrentTime()),
-        isPaused: false
+        isPaused: false,
       });
     }
   };
   startTimer = () => {
     this.setState({
-      currentTime: this.state.currentTime + 1
+      currentTime: this.state.currentTime + 1,
     });
     this.timerId = window.setTimeout(this.startTimer, 1000);
   };
@@ -788,7 +807,7 @@ class Video extends React.Component<VideoProps, VideoState> {
         highlightedCharRange: charRange,
         isCopiedToClipBoard: false,
         captionIsHighlighted: true,
-        isPaused: true
+        isPaused: true,
       });
     } else if (
       !nextProps.clipRange &&
@@ -800,7 +819,7 @@ class Video extends React.Component<VideoProps, VideoState> {
         highlightedCharRange: [-1, -1],
         isCopiedToClipBoard: false,
         isPaused: true,
-        rangeSliders: this.initializeRangeSliders(nextProps.clipRange)
+        rangeSliders: this.initializeRangeSliders(nextProps.clipRange),
       });
       if (this.player) {
         this.player.pauseVideo();
@@ -815,7 +834,7 @@ class Video extends React.Component<VideoProps, VideoState> {
         end: nextProps.clipRange[1],
         type: "SELECTION",
         styles: TRACKSTYLES__RANGE,
-        label: "Clip"
+        label: "Clip",
       };
 
       let charRange: [number, number] = this.getCharRange(
@@ -833,7 +852,7 @@ class Video extends React.Component<VideoProps, VideoState> {
           end: nextProps.clipRange[1] + tenPercent,
           type: "ZOOM",
           styles: TRACKSTYLES__RANGE,
-          label: "Zoom"
+          label: "Zoom",
         };
         newRangeSliders = this.updateRangeSlider(selection).concat([zoomRange]);
         isZoomedToClip = true;
@@ -848,7 +867,7 @@ class Video extends React.Component<VideoProps, VideoState> {
         highlightedCharRange: charRange,
         isCopiedToClipBoard: false,
         isZoomedToClip: isZoomedToClip,
-        rangeSliders: newRangeSliders
+        rangeSliders: newRangeSliders,
       });
     }
   }
@@ -856,7 +875,7 @@ class Video extends React.Component<VideoProps, VideoState> {
     const opts = {
       height: "315",
       width: "560",
-      playerVars: this.playerVars
+      playerVars: this.playerVars,
     };
 
     const captionEventHandlers: CaptionViewEventHandlers = {
@@ -870,7 +889,7 @@ class Video extends React.Component<VideoProps, VideoState> {
       onSendToTake: this.handleSetClick,
       onSkipBackPress: this.handleSkipBackPress,
       onSkipForwardPress: this.handleSkipForwardPress,
-      onZoomToClipPress: this.handleZoomToClipPress
+      onZoomToClipPress: this.handleZoomToClipPress,
     };
 
     return (

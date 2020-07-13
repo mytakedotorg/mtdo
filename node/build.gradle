@@ -1,50 +1,56 @@
-plugins {
-	id 'com.moowork.node' // https://github.com/srs/gradle-node-plugin/blob/master/docs/node.md
-}
-
 ////////////////////////////////////////////////////////////
 // terrible module system, we copy the common and java2ts //
 // directories from the client/src/main/scripts folders   //
 // here into the node project                             //
 ////////////////////////////////////////////////////////////
-task syncClientUtils(type: Sync) {
+tasks.register('syncClientUtils', Sync) {
 	from '../client/src/main/scripts/common'
 	into 'src/main/scripts/common'
 }
 
-task syncClientJava2Ts(type: Sync, dependsOn: ':client:jsoniterCodegen') {
+tasks.register('syncClientJava2Ts', Sync) {
+	dependsOn ':client:jsweet'
 	from '../client/src/main/scripts/java2ts'
 	into 'src/main/scripts/java2ts'
 }
 
-task beforeCompile(dependsOn: [
-	syncClientUtils,
-	syncClientJava2Ts
-])
+tasks.register('beforeCompile') {
+	dependsOn 'syncClientUtils', 'syncClientJava2Ts'
+}
 
+apply plugin: 'com.diffplug.gradle.spotless'
 spotless {
+	ratchetFrom 'origin/master'
 	format 'typescript', {
-		target fileTree('src/main/scripts') {
-			include '**'
-			exclude 'java2ts/**'
-		}
-		prettier().config(['parser': 'typescript'])
+		licenseHeaderFile rootProject.file('gradle/spotless-license-agpl.java'), '(import|const|declare|export|var) '
+		target 'src/main/scripts/**/*.ts'
+		targetExclude 'src/main/scripts/java2ts/**', 'src/main/scripts/common/**', 'src/main/scripts/server.ts', '**/__snapshots__/**'
+		prettier(VER_PRETTIER)
 	}
 	format 'js', {
 		target 'gulpfile.js'
-		prettier().config(['parser': 'typescript'])
+		prettier(VER_PRETTIER)
 	}
 }
 
 /////////////////////////////////
 // smoke test the node project //
 /////////////////////////////////
+apply plugin: 'org.mytake.gradle.node'
 node {
 	// node 10.x is needed for node-canvas
-	version = '10.11.0'
-	npmVersion = '6.4.1'
-	download = true
-}
+	setup.nodeVersion = buildsrc.NvmRc.read(file('../.nvmrc'))
+	setup.npmVersion = 'provided'
 
-npm_run_test.dependsOn(beforeCompile)
-task check(dependsOn: npm_run_test)
+	npmRun('test_ci') {
+		dependsOn 'beforeCompile'
+		inputs.dir('src/main/scripts')
+		outputs.dir('build/test-results/jest')
+	}
+}
+tasks.register('test') {
+	dependsOn 'npm_run_test_ci'
+}
+tasks.named('check') {
+	dependsOn 'test'
+}

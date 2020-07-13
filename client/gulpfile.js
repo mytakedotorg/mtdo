@@ -18,7 +18,7 @@ merge = require("gulp-merge-json");
 
 const config = {
   distDev: "./src/main/resources/assets-dev",
-  distProd: "./src/main/resources/assets"
+  distProd: "./src/main/resources/assets",
 };
 
 function src(type) {
@@ -52,11 +52,11 @@ function setupPipeline(mode) {
       return gulp
         .src([
           config.distProd + "/" + SCRIPTS + "/manifest.json",
-          config.distProd + "/" + STYLES + "/manifest.json"
+          config.distProd + "/" + STYLES + "/manifest.json",
         ])
         .pipe(
           merge({
-            fileName: "manifest.json"
+            fileName: "manifest.json",
           })
         )
         .pipe(gulp.dest(config.distProd));
@@ -82,7 +82,7 @@ function fingerprint(mode, type, stream) {
       .pipe(gulp.dest(dst(mode, type)))
       .pipe(
         rev.manifest(type + "/manifest.json", {
-          merge: false
+          merge: false,
         })
       )
       .pipe(gulp.dest(config.distProd));
@@ -111,10 +111,10 @@ function stylesTask(mode, type) {
         .src(src(type) + "*")
         .pipe(
           sass({
-            style: "compressed"
+            style: "compressed",
           }).on(
             "error",
-            notify.onError(function(error) {
+            notify.onError(function (error) {
               return "Error: " + error.message;
             })
           )
@@ -133,7 +133,7 @@ function webpackCfg(mode) {
       return [
         "webpack/hot/dev-server",
         "webpack-hot-middleware/client",
-        __dirname + filename
+        __dirname + filename,
       ];
     } else {
       return [__dirname + filename];
@@ -142,24 +142,24 @@ function webpackCfg(mode) {
   return {
     mode: mode === PROD ? "production" : "development",
     entry: {
-      app: entryFor(mode, "/src/main/scripts/index.tsx")
+      app: entryFor(mode, "/src/main/scripts/index.tsx"),
     },
     output: {
-      filename: "[name].bundle.js"
+      filename: "[name].bundle.js",
     },
     resolve: {
       // Add '.ts' and '.tsx' as resolvable extensions.
-      extensions: [".ts", ".tsx", ".js"]
+      extensions: [".ts", ".tsx", ".js"],
     },
     plugins:
       mode === PROD
         ? []
         : [
             new CheckerPlugin(), // needed for hotreload on typescript
-            new webpack.HotModuleReplacementPlugin()
+            new webpack.HotModuleReplacementPlugin(),
           ],
     resolve: {
-      extensions: [".ts", ".tsx", ".js"]
+      extensions: [".ts", ".tsx", ".js"],
     },
     module: {
       rules: [
@@ -167,7 +167,7 @@ function webpackCfg(mode) {
           test: /\.tsx?$/,
           exclude: [
             /node_modules/,
-            __dirname + "/src/main/scripts/utils/drawVideoFact.ts"
+            __dirname + "/src/main/scripts/utils/drawVideoFact.ts",
           ],
           use:
             mode === PROD
@@ -175,16 +175,16 @@ function webpackCfg(mode) {
               : [
                   { loader: "react-hot-loader/webpack" },
                   { loader: "awesome-typescript-loader" },
-                  { loader: "webpack-module-hot-accept" }
-                ]
-        }
-      ]
+                  { loader: "webpack-module-hot-accept" },
+                ],
+        },
+      ],
     },
     externals: {
       react: "React",
       "react-dom": "ReactDOM",
-      vis: "vis"
-    }
+      vis: "vis",
+    },
   };
 }
 
@@ -195,7 +195,7 @@ gulp.task("serverScripts", () => {
     .pipe(
       webpackStream(
         {
-          config: webpackServerCfg()
+          config: webpackServerCfg(),
         },
         webpack
       )
@@ -206,15 +206,15 @@ function webpackServerCfg() {
   return {
     target: "node",
     entry: {
-      drawVideoFact: __dirname + "/src/main/scripts/utils/drawVideoFact.ts"
+      drawVideoFact: __dirname + "/src/main/scripts/utils/drawVideoFact.ts",
     },
     output: {
       filename: "[name].bundle.js",
-      library: "drawVideoFact"
+      library: "drawVideoFact",
     },
     resolve: {
       // Add '.ts' and '.tsx' as resolvable extensions.
-      extensions: [".ts", ".tsx", ".js"]
+      extensions: [".ts", ".tsx", ".js"],
     },
     module: {
       rules: [
@@ -222,14 +222,14 @@ function webpackServerCfg() {
           test: /\.tsx?$/,
           exclude: /node_modules/,
           include: __dirname + "/src/main/scripts",
-          loaders: ["awesome-typescript-loader"]
-        }
-      ]
+          loaders: ["awesome-typescript-loader"],
+        },
+      ],
     },
     node: {
-      fs: "empty"
+      fs: "empty",
     },
-    externals: [nodeExternals()]
+    externals: [nodeExternals()],
   };
 }
 
@@ -241,7 +241,7 @@ function scriptsTask(mode, type) {
       gulp.src(src(type) + "**").pipe(
         webpackStream(
           {
-            config: webpackCfg(mode)
+            config: webpackCfg(mode),
           },
           webpack
         )
@@ -259,17 +259,17 @@ function proxyTask(mode) {
       middleware: [
         webpackDevMiddleware(bundler, {
           publicPath: "/assets-dev/" + SCRIPTS,
-          stats: { colors: true }
+          stats: { colors: true },
         }),
-        webpackHotMiddleware(bundler)
+        webpackHotMiddleware(bundler),
       ],
       files: [config.distDev + "/" + STYLES + "/**", src(PERMANENT) + "**"],
       serveStatic: [
         {
           route: "/assets-dev/" + STYLES,
-          dir: config.distDev + "/" + STYLES
-        }
-      ]
+          dir: config.distDev + "/" + STYLES,
+        },
+      ],
     });
     gulp.watch(src(STYLES) + "**", gulp.series(STYLES + mode));
   };

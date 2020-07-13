@@ -5,6 +5,7 @@ import java.io.File;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
 import org.gradle.api.plugins.JavaPlugin;
+import org.gradle.api.tasks.TaskProvider;
 import org.gradle.api.tasks.compile.JavaCompile;
 
 public class JsoniterCodegenPlugin implements Plugin<Project> {
@@ -19,23 +20,24 @@ public class JsoniterCodegenPlugin implements Plugin<Project> {
 	public void apply(Project p) {
 		Extension extension = p.getExtensions().create(JSONITER_CODEGEN, Extension.class);
 
-		JavaCompile compileJava = (JavaCompile) p.getTasks().getByName(JavaPlugin.COMPILE_JAVA_TASK_NAME);
-		JsoniterCodegenTask codegen = p.getTasks().create(JSONITER_CODEGEN, JsoniterCodegenTask.class);
-		JavaCompile precompile = p.getTasks().create(JSONITER_PRECOMPILE, JavaCompile.class);
+		@SuppressWarnings("unchecked")
+		TaskProvider<JavaCompile> compileJavaProvider = (TaskProvider<JavaCompile>) (Object) p.getTasks().named(JavaPlugin.COMPILE_JAVA_TASK_NAME);
+		TaskProvider<JavaCompile> precompileProvider = p.getTasks().register(JSONITER_PRECOMPILE, JavaCompile.class);
+		TaskProvider<JsoniterCodegenTask> codegenProvider = p.getTasks().register(JSONITER_CODEGEN, JsoniterCodegenTask.class, codegen -> {
+			JavaCompile compileJava = compileJavaProvider.get();
+			JavaCompile precompile = precompileProvider.get();
+			codegen.dependsOn(precompile);
 
-		compileJava.dependsOn(codegen);
-		codegen.dependsOn(precompile);
+			File precompileDir = new File(p.getBuildDir(), "tmp/" + JSONITER_PRECOMPILE);
 
-		File precompileDir = new File(p.getBuildDir(), "tmp/" + JSONITER_PRECOMPILE);
-
-		p.afterEvaluate(project -> {
-			codegen.classpath = compileJava.getClasspath().plus(project.files(precompileDir));
+			codegen.classpath = compileJava.getClasspath().plus(codegen.getProject().files(precompileDir));
 			codegen.codegenConfigClass = extension.codegenClass;
-			codegen.srcDir = project.file("src/main/java");
+			codegen.srcDir = codegen.getProject().file("src/main/java");
 
 			precompile.setSource(codegen.getSourceFiles());
 			precompile.setClasspath(compileJava.getClasspath());
 			precompile.setDestinationDir(precompileDir);
 		});
+		compileJavaProvider.configure(task -> task.dependsOn(codegenProvider));
 	}
 }

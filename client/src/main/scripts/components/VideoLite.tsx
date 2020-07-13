@@ -1,3 +1,22 @@
+/*
+ * MyTake.org website and tooling.
+ * Copyright (C) 2018-2020 MyTake.org, Inc.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * You can contact us at team@mytake.org
+ */
 import * as React from "react";
 import YouTube from "react-youtube";
 
@@ -42,7 +61,7 @@ class VideoLite extends React.Component<VideoLiteProps, VideoLiteState> {
       playsinline: 1,
       autoplay: 1,
       showinfo: 0,
-      modestbranding: 1
+      modestbranding: 1,
     };
 
     if (props.clipRange) {
@@ -52,7 +71,7 @@ class VideoLite extends React.Component<VideoLiteProps, VideoLiteState> {
 
     this.state = {
       currentTime: props.clipRange ? props.clipRange[0] : 0,
-      isPaused: true
+      isPaused: true,
     };
   }
   cueVideo = (props: VideoLiteProps) => {
@@ -62,14 +81,14 @@ class VideoLite extends React.Component<VideoLiteProps, VideoLiteState> {
           videoId: props.videoId,
           startSeconds: props.clipRange[0],
           endSeconds: props.clipRange[1],
-          suggestedQuality: "default"
+          suggestedQuality: "default",
         });
         this.playerVars.start = props.clipRange[0];
         this.playerVars.end = props.clipRange[1];
       } else {
         this.player.cueVideoById({
           videoId: props.videoId,
-          suggestedQuality: "default"
+          suggestedQuality: "default",
         });
       }
     }
@@ -77,7 +96,7 @@ class VideoLite extends React.Component<VideoLiteProps, VideoLiteState> {
   handlePause = (event: any) => {
     // Player was paused with player controls
     this.setState({
-      currentTime: Math.round(event.target.getCurrentTime())
+      currentTime: Math.round(event.target.getCurrentTime()),
     });
   };
   handleReady = (event: any) => {
@@ -93,7 +112,7 @@ class VideoLite extends React.Component<VideoLiteProps, VideoLiteState> {
       this.stopTimer();
       this.cueVideo(this.props);
       this.setState({
-        isPaused: true
+        isPaused: true,
       });
     } else if (event.data === 1) {
       // Video playing
@@ -106,27 +125,27 @@ class VideoLite extends React.Component<VideoLiteProps, VideoLiteState> {
       this.startTimer();
       this.setState({
         currentTime: Math.round(event.target.getCurrentTime()),
-        isPaused: false
+        isPaused: false,
       });
     } else if (event.data === 2) {
       // Video paused
       this.stopTimer();
       this.setState({
         currentTime: Math.round(event.target.getCurrentTime()),
-        isPaused: true
+        isPaused: true,
       });
     } else if (event.data === 3) {
       // Video buffering
       this.stopTimer();
       this.setState({
         currentTime: Math.round(event.target.getCurrentTime()),
-        isPaused: false
+        isPaused: false,
       });
     }
   };
   startTimer = () => {
     this.setState({
-      currentTime: this.state.currentTime + 1
+      currentTime: this.state.currentTime + 1,
     });
     this.timerId = window.setTimeout(this.startTimer, 1000);
   };
@@ -165,7 +184,7 @@ class VideoLite extends React.Component<VideoLiteProps, VideoLiteState> {
     const opts = {
       height: "315",
       width: "560",
-      playerVars: this.playerVars
+      playerVars: this.playerVars,
     };
 
     const fixedClass = this.props.isFixed ? "video__fixed" : "";

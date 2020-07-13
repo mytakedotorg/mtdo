@@ -1,25 +1,44 @@
+/*
+ * MyTake.org website and tooling.
+ * Copyright (C) 2017-2018 MyTake.org, Inc.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * You can contact us at team@mytake.org
+ */
 import * as React from "react";
 import * as renderer from "react-test-renderer";
 import BlockWriter, { InitialBlockWriterState } from "./BlockWriter";
 
 jest.mock("./BlockEditor", () => ({
-  default: "BlockEditor"
+  default: "BlockEditor",
 }));
 
 jest.mock("./TimelineView", () => ({
-  default: "TimelineView"
+  default: "TimelineView",
 }));
 
 jest.mock("./EditorButtons", () => ({
-  default: "EditorButtons"
+  default: "EditorButtons",
 }));
 
 jest.mock("./DropDown", () => ({
-  default: "DropDown"
+  default: "DropDown",
 }));
 
 jest.mock("./EmailTake", () => ({
-  default: "EmailTake"
+  default: "EmailTake",
 }));
 
 // Object.defineProperty(window.location, "pathname", {
@@ -30,9 +49,9 @@ jest.mock("./EmailTake", () => ({
 const initState: InitialBlockWriterState = {
   takeDocument: {
     title: "",
-    blocks: [{ kind: "paragraph", text: "" }]
+    blocks: [{ kind: "paragraph", text: "" }],
   },
-  activeBlockIndex: -1
+  activeBlockIndex: -1,
 };
 
 test("Simple block writer model", () => {
@@ -46,25 +65,25 @@ const biggerInitState: InitialBlockWriterState = {
     blocks: [
       {
         kind: "paragraph",
-        text: "Some text."
+        text: "Some text.",
       },
       {
         kind: "document",
         excerptId: "o_dRqrNJ62wzlgLilTrLxkHqGmvAS9qTpa4z4pjyFqA=",
         viewRange: [0, 218],
-        highlightedRange: [31, 42]
+        highlightedRange: [31, 42],
       },
       {
         kind: "paragraph",
-        text: ""
-      }
-    ]
+        text: "",
+      },
+    ],
   },
   activeBlockIndex: 1,
   parentRev: {
     draftid: 11,
-    lastrevid: 11
-  }
+    lastrevid: 11,
+  },
 };
 
 test("Bigger block writer model", () => {

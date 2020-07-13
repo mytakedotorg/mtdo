@@ -1,8 +1,21 @@
 /*
- * MyTake.org
+ * MyTake.org website and tooling.
+ * Copyright (C) 2017-2020 MyTake.org, Inc.
  *
- *  Copyright 2017 by its authors.
- *  Some rights reserved. See LICENSE, https://github.com/mytakedotorg/mytakedotorg/graphs/contributors
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * You can contact us at team@mytake.org
  */
 package common;
 
@@ -25,6 +38,7 @@ import javax.sql.DataSource;
 import json.JsoniterModule;
 import org.flywaydb.core.Flyway;
 import org.jooby.Jooby;
+import org.jooby.Registry;
 import org.jooby.jdbc.Jdbc;
 import org.jooby.jooq.jOOQ;
 
@@ -45,18 +59,22 @@ public class Prod extends Jooby {
 		});
 		realtime(this);
 		use(new HerokuDatabase.Module());
-		common(this);
+		commonNoDb(this);
+		commonDb(this);
 		use((env, conf, binder) -> {
-			env.onStart(registry -> {
-				Flyway flyway = new Flyway();
-				flyway.setDataSource(registry.require(DataSource.class));
-				flyway.setLocations("db/migration");
-				flyway.migrate();
-			});
+			env.onStart(Prod::flywayMigrate);
 		});
 		use(new InitialData.Module());
 		use(new FoundationMigrationModule());
 		controllers(this);
+	}
+
+	static void flywayMigrate(Registry registry) {
+		Flyway.configure()
+				.dataSource(registry.require(DataSource.class))
+				.locations("db/migration")
+				.load()
+				.migrate();
 	}
 
 	static void realtime(Jooby jooby) {
@@ -65,14 +83,17 @@ public class Prod extends Jooby {
 		});
 	}
 
-	static void common(Jooby jooby) {
+	static void commonNoDb(Jooby jooby) {
 		jooby.use(new IpGetter.Module());
 		CustomAssets.initTemplates(jooby);
 		EmailSender.init(jooby);
 		Mods.init(jooby);
+		jooby.use(new JsoniterModule());
+	}
+
+	static void commonDb(Jooby jooby) {
 		jooby.use(new Jdbc());
 		jooby.use(new jOOQ());
-		jooby.use(new JsoniterModule());
 	}
 
 	static void controllers(Jooby jooby) {

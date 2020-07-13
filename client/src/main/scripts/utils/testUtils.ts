@@ -1,3 +1,22 @@
+/*
+ * MyTake.org website and tooling.
+ * Copyright (C) 2017-2019 MyTake.org, Inc.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * You can contact us at team@mytake.org
+ */
 import { Foundation } from "../java2ts/Foundation";
 import { Search } from "../java2ts/Search";
 import { TimelineItemData } from "../components/Timeline";
@@ -11,19 +30,19 @@ const videoFactFast: Foundation.VideoFactContent = {
     title: "Donald Trump - Hillary Clinton (2/3)",
     primaryDate: "2016-10-09",
     primaryDateKind: "recorded",
-    kind: "video"
+    kind: "video",
   },
   youtubeId: "ApTLB76Nmdg",
   durationSeconds: 5624,
   speakers: [
     {
       fullName: "Martha Raddatz",
-      role: "moderator"
+      role: "moderator",
     },
     {
       fullName: "Anderson Cooper",
-      role: "moderator"
-    }
+      role: "moderator",
+    },
   ],
   plainText:
     "Good evening I'm Martha Raddatz from ABC News. And I'm Anderson Cooper from CNN. We want to welcome you to Washington University in St. Louis for the second presidential debate between Hillary Clinton and Donald Trump sponsored by the Commission on Presidential Debates. tonight's debate is a Town Hall format, which gives voters a chance to directly ask the candidates questions. Martha and I will ask follow-up questions but the night really belongs to the people in this room and to people across the country who have submitted questions online.",
@@ -119,7 +138,7 @@ const videoFactFast: Foundation.VideoFactContent = {
     "88": 531,
     "89": 541,
     "90": 549,
-    length: 91
+    length: 91,
   },
   timestamps: {
     "0": 0.75,
@@ -213,18 +232,18 @@ const videoFactFast: Foundation.VideoFactContent = {
     "88": 27.510000228881836,
     "89": 28.170000076293945,
     "90": 28.829999923706055,
-    length: 91
+    length: 91,
   },
   speakerPerson: {
     "0": 0,
     "1": 1,
-    length: 2
+    length: 2,
   },
   speakerWord: {
     "0": 0,
     "1": 8,
-    length: 2
-  }
+    length: 2,
+  },
 };
 
 const timelineItems: TimelineItemData[] = [
@@ -233,29 +252,29 @@ const timelineItems: TimelineItemData[] = [
     idx: "c7qu-ZE5SuipqSrOO30R3mnAA7K7nJ4fQ4zVIX0A2yg=",
     start: new Date("1788-06-21T00:00:00.000Z"),
     content: "United States Constitution",
-    kind: "document"
+    kind: "document",
   },
   {
     id: "pMHhbW_I-wquOfoyPFAVQu8DMLMpYVxhGT8R1x71hYA=",
     idx: "pMHhbW_I-wquOfoyPFAVQu8DMLMpYVxhGT8R1x71hYA=",
     start: new Date("1791-12-15T00:00:00.000Z"),
     content: "Bill of Rights",
-    kind: "document"
+    kind: "document",
   },
   {
     id: "-7DeOJAVJUsifUcIaZo7c41pol_guMxR6IEgYv28bHM=",
     idx: "-7DeOJAVJUsifUcIaZo7c41pol_guMxR6IEgYv28bHM=",
     start: new Date("1960-09-26T00:00:00.000Z"),
     content: "John F. Kennedy - Nixon (1/4)",
-    kind: "video"
+    kind: "video",
   },
   {
     id: "bl03RovlxbTZK0yu25_VikP0Y2xSj-J9oFyGUTWIOZQ=",
     idx: "bl03RovlxbTZK0yu25_VikP0Y2xSj-J9oFyGUTWIOZQ=",
     start: new Date("1960-10-07T00:00:00.000Z"),
     content: "John F. Kennedy - Nixon (2/4)",
-    kind: "video"
-  }
+    kind: "video",
+  },
 ];
 
 const documentFactLink: Foundation.FactLink = {
@@ -263,26 +282,26 @@ const documentFactLink: Foundation.FactLink = {
     title: "Amendment 13",
     primaryDate: "1865-12-06",
     primaryDateKind: "ratified",
-    kind: "document"
+    kind: "document",
   },
-  hash: "o_dRqrNJ62wzlgLilTrLxkHqGmvAS9qTpa4z4pjyFqA="
+  hash: "o_dRqrNJ62wzlgLilTrLxkHqGmvAS9qTpa4z4pjyFqA=",
 };
 
 const documentNodes: FoundationNode[] = [
   {
     component: "p",
     innerHTML: [
-      "Section 1. Neither slavery nor involuntary servitude, except as a punishment for crime whereof the party shall have been duly convicted, shall exist within the United States, or any place subject to their jurisdiction."
+      "Section 1. Neither slavery nor involuntary servitude, except as a punishment for crime whereof the party shall have been duly convicted, shall exist within the United States, or any place subject to their jurisdiction.",
     ],
-    offset: 0
+    offset: 0,
   },
   {
     component: "p",
     innerHTML: [
-      "Section 2. Congress shall have power to enforce this article by appropriate legislation."
+      "Section 2. Congress shall have power to enforce this article by appropriate legislation.",
     ],
-    offset: 218
-  }
+    offset: 218,
+  },
 ];
 
 const videoFactLink: Foundation.FactLink = {
@@ -290,14 +309,14 @@ const videoFactLink: Foundation.FactLink = {
     title: "Donald Trump - Hillary Clinton (2/3)",
     primaryDate: "2016-10-09",
     primaryDateKind: "recorded",
-    kind: "video"
+    kind: "video",
   },
-  hash: "iEfwIxM7MmnOKb7zt4HqW8IxUWy6F7a236fSOQlUUWI="
+  hash: "iEfwIxM7MmnOKb7zt4HqW8IxUWy6F7a236fSOQlUUWI=",
 };
 
 const videoNodes: CaptionNodeArr = [
   "Good evening I'm Martha Raddatz from ABC News.",
-  "And I'm Anderson Cooper from CNN. We want to welcome you to Washington University in St. Louis for the second presidential debate between Hillary Clinton and Donald Trump sponsored by the Commission on Presidential Debates. tonight's debate is a Town Hall format, which gives voters a chance to directly ask the candidates questions. Martha and I will ask follow-up questions but the night really belongs to the people in this room and to people across the country who have submitted questions online."
+  "And I'm Anderson Cooper from CNN. We want to welcome you to Washington University in St. Louis for the second presidential debate between Hillary Clinton and Donald Trump sponsored by the Commission on Presidential Debates. tonight's debate is a Town Hall format, which gives voters a chance to directly ask the candidates questions. Martha and I will ask follow-up questions but the night really belongs to the people in this room and to people across the country who have submitted questions online.",
 ];
 
 const cards: Card[] = [
@@ -309,44 +328,44 @@ const cards: Card[] = [
       {
         kind: "paragraph",
         text:
-          "During the cold war, anybody who wanted to negotiate with the evil Communists was “weak”."
+          "During the cold war, anybody who wanted to negotiate with the evil Communists was “weak”.",
       },
       {
         kind: "paragraph",
         text:
-          "Today, anybody who wants to negotiate with a Muslim country is “weak”."
+          "Today, anybody who wants to negotiate with a Muslim country is “weak”.",
       },
       {
         kind: "video",
         range: [304, 321],
-        videoId: "iEfwIxM7MmnOKb7zt4HqW8IxUWy6F7a236fSOQlUUWI="
+        videoId: "iEfwIxM7MmnOKb7zt4HqW8IxUWy6F7a236fSOQlUUWI=",
       },
       {
         kind: "paragraph",
         text:
-          "Thank goodness there's at least one party who is willing to give peace a chance!"
+          "Thank goodness there's at least one party who is willing to give peace a chance!",
       },
       {
         kind: "video",
         range: [246, 261],
-        videoId: "EuBv33KFOcVItXjivwaqki89kC6YT63StCHz5wZAa7M="
+        videoId: "EuBv33KFOcVItXjivwaqki89kC6YT63StCHz5wZAa7M=",
       },
       {
         kind: "paragraph",
-        text: "Err..  Surely that's an outlier?"
+        text: "Err..  Surely that's an outlier?",
       },
       {
         kind: "video",
         range: [190, 203],
-        videoId: "EuBv33KFOcVItXjivwaqki89kC6YT63StCHz5wZAa7M="
+        videoId: "EuBv33KFOcVItXjivwaqki89kC6YT63StCHz5wZAa7M=",
       },
       {
         kind: "paragraph",
         text:
-          "Huh.  Too bad Jimmy Carter didn't think of something as catchy as MAGA."
-      }
+          "Huh.  Too bad Jimmy Carter didn't think of something as catchy as MAGA.",
+      },
     ],
-    previewBlocks: [1, 2]
+    previewBlocks: [1, 2],
   },
   {
     username: "samples",
@@ -356,22 +375,22 @@ const cards: Card[] = [
       {
         kind: "paragraph",
         text:
-          "The system for appointing judges to the Supreme Court is quite complex. Only a lawyer with years of experience could understand it. But trust me – this President has no right to make an appointment! We’ll let the people decide in the next election, as demanded by our Constitution!!"
+          "The system for appointing judges to the Supreme Court is quite complex. Only a lawyer with years of experience could understand it. But trust me – this President has no right to make an appointment! We’ll let the people decide in the next election, as demanded by our Constitution!!",
       },
       {
         kind: "document",
         excerptId: "hAGBMHs7k2yx_cmgp8I7r9VFE_NCuQ-QXsfDxjt9LJA=",
         viewRange: [17730, 18357],
-        highlightedRange: [17730, 18357]
+        highlightedRange: [17730, 18357],
       },
       {
         kind: "paragraph",
         text:
-          "Don’t bother reading the Constitution, it’s only for smart people like me. Trust me – the President is way out of line to think the Senate has any obligation to give his candidate a hearing!"
-      }
+          "Don’t bother reading the Constitution, it’s only for smart people like me. Trust me – the President is way out of line to think the Senate has any obligation to give his candidate a hearing!",
+      },
     ],
-    previewBlocks: [1, 0]
-  }
+    previewBlocks: [1, 0],
+  },
 ];
 
 const takeDocument: TakeDocument = {
@@ -379,64 +398,64 @@ const takeDocument: TakeDocument = {
   blocks: [
     {
       kind: "paragraph",
-      text: "King: “I hereby declare that Seabiscuit shall be my royal horse!”"
+      text: "King: “I hereby declare that Seabiscuit shall be my royal horse!”",
     },
     {
       kind: "paragraph",
-      text: "Subject: “But that’s MY horse!!”"
-    },
-    {
-      kind: "paragraph",
-      text:
-        "King: “I said it – it’s the law of the land. Thief! Return my horse to me!”"
-    },
-    {
-      kind: "paragraph",
-      text: "..."
+      text: "Subject: “But that’s MY horse!!”",
     },
     {
       kind: "paragraph",
       text:
-        "That’s how people lived for a long time. The fix was to write laws down, so that the power of the government would no longer be subject to the arbitrary whims of any one person. Only trouble is, what does a law mean?"
+        "King: “I said it – it’s the law of the land. Thief! Return my horse to me!”",
+    },
+    {
+      kind: "paragraph",
+      text: "...",
     },
     {
       kind: "paragraph",
       text:
-        "Textualism says that a law means what it says in its text. Simple enough. On the other hand, Originalism says that a law means what was meant when it was originally written. Figuring this out is a little trickier – you’ve got to be not just a lawyer but also an historian to have any chance of understanding the law. The upside of Originalism is that it can help the law to be more stable against the whims of a changing culture – our Constitution is more than 220 years old, and a lot has changed since then! A great example is the 2nd amendment:"
+        "That’s how people lived for a long time. The fix was to write laws down, so that the power of the government would no longer be subject to the arbitrary whims of any one person. Only trouble is, what does a law mean?",
+    },
+    {
+      kind: "paragraph",
+      text:
+        "Textualism says that a law means what it says in its text. Simple enough. On the other hand, Originalism says that a law means what was meant when it was originally written. Figuring this out is a little trickier – you’ve got to be not just a lawyer but also an historian to have any chance of understanding the law. The upside of Originalism is that it can help the law to be more stable against the whims of a changing culture – our Constitution is more than 220 years old, and a lot has changed since then! A great example is the 2nd amendment:",
     },
     {
       kind: "document",
       excerptId: "pMHhbW_I-wquOfoyPFAVQu8DMLMpYVxhGT8R1x71hYA=",
       viewRange: [283, 439],
-      highlightedRange: [283, 439]
+      highlightedRange: [283, 439],
     },
     {
       kind: "paragraph",
       text:
-        "The Arms of the 21st century are a lot different than the Arms of 1789! A textualist has little choice in interpreting this law – clearly automatic rifles, grenades, rockets, and even nukes are protected. They are Arms, afterall!"
+        "The Arms of the 21st century are a lot different than the Arms of 1789! A textualist has little choice in interpreting this law – clearly automatic rifles, grenades, rockets, and even nukes are protected. They are Arms, afterall!",
     },
     {
       kind: "paragraph",
       text:
-        "An originalist has to go back to 1789 to understand the original meaning. Black powder muskets were the most powerful Arms of the time, so perhaps that is what the law should protect today? Although that captures the original technology, it doesn’t capture the original intent."
+        "An originalist has to go back to 1789 to understand the original meaning. Black powder muskets were the most powerful Arms of the time, so perhaps that is what the law should protect today? Although that captures the original technology, it doesn’t capture the original intent.",
     },
     {
       kind: "document",
       excerptId: "pMHhbW_I-wquOfoyPFAVQu8DMLMpYVxhGT8R1x71hYA=",
       viewRange: [283, 439],
-      highlightedRange: [294, 368]
+      highlightedRange: [294, 368],
     },
     {
       kind: "paragraph",
       text:
-        "In 1776, George Washington led an American militia to victory against a tyrannical royal crown. As the newly free colonies organized their national government, many were afraid that it might be just as oppressive as the royal crown had been. It sure seems like the original intent of the 2nd amendment was to enshrine the right of the citizenry to have the means for armed rebellion."
+        "In 1776, George Washington led an American militia to victory against a tyrannical royal crown. As the newly free colonies organized their national government, many were afraid that it might be just as oppressive as the royal crown had been. It sure seems like the original intent of the 2nd amendment was to enshrine the right of the citizenry to have the means for armed rebellion.",
     },
     {
       kind: "paragraph",
       text:
-        "If our judges get to decide that the law means whatever they want it to mean, then we still live under a King, we’ve just changed his name to Judge. That’s why it’s important to apply consistent methodology when interpreting the law. But in this case, whether you’re a Textualist or an Originalist, I don’t see how the 2nd amendment allows for any of the gun restrictions in place today."
-    }
-  ]
+        "If our judges get to decide that the law means whatever they want it to mean, then we still live under a King, we’ve just changed his name to Judge. That’s why it’s important to apply consistent methodology when interpreting the law. But in this case, whether you’re a Textualist or an Originalist, I don’t see how the 2nd amendment allows for any of the gun restrictions in place today.",
+    },
+  ],
 };
 
 function logMeasurements(measures: any) {
@@ -475,17 +494,17 @@ const initialRangeSliders: TimeRange[] = [
     type: "VIEW",
     styles: {
       rail: {
-        backgroundColor: "#d3dae3"
+        backgroundColor: "#d3dae3",
       },
       track: {
-        backgroundColor: "#758aa8"
+        backgroundColor: "#758aa8",
       },
       handle: {
         backgroundColor: "#758aa8",
-        border: "1px solid #2c4770"
-      }
+        border: "1px solid #2c4770",
+      },
     },
-    label: "Transcript"
+    label: "Transcript",
   },
   {
     start: 0,
@@ -493,18 +512,18 @@ const initialRangeSliders: TimeRange[] = [
     type: "SELECTION",
     styles: {
       rail: {
-        backgroundColor: "#d3dae3"
+        backgroundColor: "#d3dae3",
       },
       track: {
-        backgroundColor: "#758aa8"
+        backgroundColor: "#758aa8",
       },
       handle: {
         backgroundColor: "#758aa8",
-        border: "1px solid #2c4770"
-      }
+        border: "1px solid #2c4770",
+      },
     },
-    label: "Clip"
-  }
+    label: "Clip",
+  },
 ];
 
 const zoomedRangeSliders: TimeRange[] = [
@@ -514,17 +533,17 @@ const zoomedRangeSliders: TimeRange[] = [
     type: "VIEW",
     styles: {
       rail: {
-        backgroundColor: "#d3dae3"
+        backgroundColor: "#d3dae3",
       },
       track: {
-        backgroundColor: "#758aa8"
+        backgroundColor: "#758aa8",
       },
       handle: {
         backgroundColor: "#758aa8",
-        border: "1px solid #2c4770"
-      }
+        border: "1px solid #2c4770",
+      },
     },
-    label: "Transcript"
+    label: "Transcript",
   },
   {
     start: 3.87,
@@ -532,17 +551,17 @@ const zoomedRangeSliders: TimeRange[] = [
     type: "SELECTION",
     styles: {
       rail: {
-        backgroundColor: "#d3dae3"
+        backgroundColor: "#d3dae3",
       },
       track: {
-        backgroundColor: "#758aa8"
+        backgroundColor: "#758aa8",
       },
       handle: {
         backgroundColor: "#758aa8",
-        border: "1px solid #2c4770"
-      }
+        border: "1px solid #2c4770",
+      },
     },
-    label: "Clip"
+    label: "Clip",
   },
   {
     start: 3.7470000000000003,
@@ -550,18 +569,18 @@ const zoomedRangeSliders: TimeRange[] = [
     type: "ZOOM",
     styles: {
       rail: {
-        backgroundColor: "#d3dae3"
+        backgroundColor: "#d3dae3",
       },
       track: {
-        backgroundColor: "#758aa8"
+        backgroundColor: "#758aa8",
       },
       handle: {
         backgroundColor: "#758aa8",
-        border: "1px solid #2c4770"
-      }
+        border: "1px solid #2c4770",
+      },
     },
-    label: "Zoom"
-  }
+    label: "Zoom",
+  },
 ];
 
 const unzoomedRangeSliders: TimeRange[] = [
@@ -571,17 +590,17 @@ const unzoomedRangeSliders: TimeRange[] = [
     type: "VIEW",
     styles: {
       rail: {
-        backgroundColor: "#d3dae3"
+        backgroundColor: "#d3dae3",
       },
       track: {
-        backgroundColor: "#758aa8"
+        backgroundColor: "#758aa8",
       },
       handle: {
         backgroundColor: "#758aa8",
-        border: "1px solid #2c4770"
-      }
+        border: "1px solid #2c4770",
+      },
     },
-    label: "Transcript"
+    label: "Transcript",
   },
   {
     start: 3.87,
@@ -589,17 +608,17 @@ const unzoomedRangeSliders: TimeRange[] = [
     type: "SELECTION",
     styles: {
       rail: {
-        backgroundColor: "#d3dae3"
+        backgroundColor: "#d3dae3",
       },
       track: {
-        backgroundColor: "#758aa8"
+        backgroundColor: "#758aa8",
       },
       handle: {
         backgroundColor: "#758aa8",
-        border: "1px solid #2c4770"
-      }
+        border: "1px solid #2c4770",
+      },
     },
-    label: "Clip"
+    label: "Clip",
   },
   {
     start: 4,
@@ -607,18 +626,18 @@ const unzoomedRangeSliders: TimeRange[] = [
     type: "ZOOM",
     styles: {
       rail: {
-        backgroundColor: "#d3dae3"
+        backgroundColor: "#d3dae3",
       },
       track: {
-        backgroundColor: "#758aa8"
+        backgroundColor: "#758aa8",
       },
       handle: {
         backgroundColor: "#758aa8",
-        border: "1px solid #2c4770"
-      }
+        border: "1px solid #2c4770",
+      },
     },
-    label: "Zoom"
-  }
+    label: "Zoom",
+  },
 ];
 
 const zoomRange: TimeRange = {
@@ -627,21 +646,21 @@ const zoomRange: TimeRange = {
   type: "ZOOM",
   styles: {
     rail: {
-      backgroundColor: "#d3dae3"
+      backgroundColor: "#d3dae3",
     },
     track: {
-      backgroundColor: "#758aa8"
+      backgroundColor: "#758aa8",
     },
     handle: {
       backgroundColor: "#758aa8",
-      border: "1px solid #2c4770"
-    }
+      border: "1px solid #2c4770",
+    },
   },
-  label: "Zoom"
+  label: "Zoom",
 };
 
 const rangeStyle: StylesObject = {
-  backgroundColor: "#758aa8"
+  backgroundColor: "#758aa8",
 };
 
 const hash = "11X2vfxeT_gkZDKP3jVEMWteTbEvb0rMhF9pnYteVJk=";
@@ -650,13 +669,13 @@ const factResultList: Search.FactResultList = {
   facts: [
     {
       hash: hash,
-      turn: 2
+      turn: 2,
     },
     {
       hash: hash,
-      turn: 0
-    }
-  ]
+      turn: 0,
+    },
+  ],
 };
 
 const kennedyNixon: Foundation.VideoFactContent = {
@@ -664,15 +683,15 @@ const kennedyNixon: Foundation.VideoFactContent = {
     title: "Presidential Debate - Kennedy, Nixon (1 of 4)",
     primaryDate: "1960-09-26",
     primaryDateKind: "recorded",
-    kind: "video"
+    kind: "video",
   },
   youtubeId: "CsurHThBBkk",
   durationSeconds: 3536,
   speakers: [
     {
       fullName: "Howard K Smith",
-      role: "Moderator"
-    }
+      role: "Moderator",
+    },
   ],
   plainText:
     "Good evening. The television and radio stations of the United States and their affiliated stations are proud to provide facilities for a discussion of issues in the current political campaign by the two major candidates for the presidency. The candidates need no introduction. The Republican candidate, Vice President Richard M. Nixon, and the Democratic candidate, Senator John F. Kennedy. According to rules set by the candidates themselves, each man shall make an opening statement of approximately eight minutes' duration and a closing statement of approximately three minutes' duration. In between the candidates will answer, or comment upon answers to questions put by a panel of correspondents. In this, the first discussion in a series of four - joint appearances, the subject matter has been agreed, will be restricted to internal or domestic American matters. And now for the first opening statement by Senator John F. Kennedy.",
@@ -828,7 +847,7 @@ const kennedyNixon: Foundation.VideoFactContent = {
     "147": 949,
     "148": 953,
     "149": 960,
-    length: 150
+    length: 150,
   },
 
   speakerWord: [0],
@@ -983,8 +1002,8 @@ const kennedyNixon: Foundation.VideoFactContent = {
     "147": 60.900001525878906,
     "148": 61,
     "149": 62.61899948120117,
-    length: 150
-  }
+    length: 150,
+  },
 };
 
 const anonymousPath =
@@ -1007,5 +1026,5 @@ export {
   videoFactLink,
   videoNodes,
   zoomedRangeSliders,
-  zoomRange
+  zoomRange,
 };

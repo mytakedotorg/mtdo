@@ -1,3 +1,22 @@
+/*
+ * MyTake.org website and tooling.
+ * Copyright (C) 2018 MyTake.org, Inc.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * You can contact us at team@mytake.org
+ */
 import * as React from "react";
 import RangeContainer from "./RangeContainer";
 import { RangeType, StateAuthority, TimeRange } from "./Video";
@@ -31,7 +50,7 @@ class TrackSlider extends React.Component<TrackSliderProps, TrackSliderState> {
 
     this.state = {
       prettyStart: convertSecondsToTimestamp(props.start),
-      prettyEnd: convertSecondsToTimestamp(props.end)
+      prettyEnd: convertSecondsToTimestamp(props.end),
     };
   }
   componentWillReceiveProps(nextProps: TrackSliderProps) {
@@ -41,7 +60,7 @@ class TrackSlider extends React.Component<TrackSliderProps, TrackSliderState> {
     ) {
       this.setState({
         prettyStart: convertSecondsToTimestamp(nextProps.start),
-        prettyEnd: convertSecondsToTimestamp(nextProps.end)
+        prettyEnd: convertSecondsToTimestamp(nextProps.end),
       });
     }
   }
@@ -54,7 +73,7 @@ class TrackSlider extends React.Component<TrackSliderProps, TrackSliderState> {
           {this.state.prettyStart}
         </p>
         <div className="trackSlider__range-container">
-          {props.rangeSliders.map(rangeSlider => {
+          {props.rangeSliders.map((rangeSlider) => {
             const start =
               rangeSlider.start < props.start ? props.start : rangeSlider.start;
             let defaultValue: number | [number, number];

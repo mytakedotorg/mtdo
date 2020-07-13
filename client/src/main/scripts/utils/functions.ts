@@ -1,10 +1,29 @@
+/*
+ * MyTake.org website and tooling.
+ * Copyright (C) 2017-2020 MyTake.org, Inc.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * You can contact us at team@mytake.org
+ */
 import * as React from "react";
 import { Foundation } from "../java2ts/Foundation";
 import { FoundationNode } from "../common/CaptionNodes";
 import {
   DocumentBlock,
   TakeBlock,
-  VideoBlock
+  VideoBlock,
 } from "../components/BlockEditor";
 var bs = require("binary-search");
 
@@ -51,7 +70,7 @@ export function getHighlightedNodes(
       "span",
       {
         className: "editor__document-highlight",
-        key: "somekey"
+        key: "somekey",
       },
       documentNodes[0].innerHTML.toString().substring(startIndex, endIndex)
     );
@@ -60,7 +79,7 @@ export function getHighlightedNodes(
     newNode.innerHTML = [
       newNode.innerHTML.toString().substring(0, startIndex),
       newSpan,
-      newNode.innerHTML.toString().substring(endIndex, length)
+      newNode.innerHTML.toString().substring(endIndex, length),
     ];
     highlightedNodes = [newNode];
   } else if (documentNodes.length > 1) {
@@ -74,7 +93,7 @@ export function getHighlightedNodes(
       "span",
       {
         className: "editor__document-highlight",
-        key: "somekey"
+        key: "somekey",
       },
       documentNodes[0].innerHTML.toString().substring(startIndex, endIndex)
     );
@@ -82,7 +101,7 @@ export function getHighlightedNodes(
     let newNode: FoundationNode = (Object as any).assign({}, documentNodes[0]);
     newNode.innerHTML = [
       newNode.innerHTML.toString().substring(0, startIndex),
-      newSpan
+      newSpan,
     ];
 
     highlightedNodes = [newNode];
@@ -105,7 +124,7 @@ export function getHighlightedNodes(
         "span",
         {
           className: "editor__document-highlight",
-          key: "somekey"
+          key: "somekey",
         },
         documentNodes[index].innerHTML
           .toString()
@@ -118,7 +137,7 @@ export function getHighlightedNodes(
       );
       newNode.innerHTML = [
         newSpan,
-        newNode.innerHTML.toString().substring(endIndex, length)
+        newNode.innerHTML.toString().substring(endIndex, length),
       ];
 
       highlightedNodes = [...highlightedNodes, newNode];
@@ -319,7 +338,7 @@ export function getWordCount(selection: Selection): number {
 
   // Get the word offset of the cursor position in the Node
   let wordCount;
-  if (textNode.textContent) {
+  if (textNode?.textContent) {
     wordCount = textNode.textContent
       .toString()
       .substring(0, anchorOffset)
@@ -329,7 +348,7 @@ export function getWordCount(selection: Selection): number {
   }
 
   let paragraphNode;
-  if (textNode.parentNode) {
+  if (textNode?.parentNode) {
     paragraphNode = textNode.parentNode.parentNode;
   } else {
     alertErr("functions: Unknown HTML Structure");
@@ -420,7 +439,7 @@ export function getSimpleRangesFromHTMLRange(
       "document__row",
       "document__row-inner",
       "document__text",
-      "document__text--caption"
+      "document__text--caption",
     ];
   } else {
     startChildNode = htmlRange.startContainer.parentNode;
@@ -537,7 +556,7 @@ export function getSimpleRangesFromHTMLRange(
     return {
       charRange: [charStart, charEnd],
       wordRange: [wordStart, wordEnd],
-      viewRange: [viewStart, viewEnd]
+      viewRange: [viewStart, viewEnd],
     };
   } else {
     // Count words/chars where selection begins
@@ -604,7 +623,7 @@ export function getSimpleRangesFromHTMLRange(
       return {
         charRange: [charStart, charEnd],
         wordRange: [wordStart, wordEnd],
-        viewRange: [viewStart, viewEnd]
+        viewRange: [viewStart, viewEnd],
       };
     } else {
       alertErr("functions: Unexpcected HTML structure");
@@ -679,7 +698,7 @@ export function highlightText(
           {
             className: foundationClassName,
             key: "someKey",
-            onClick: () => handleSetClick()
+            onClick: () => handleSetClick(),
           },
           textContent
         );
@@ -705,7 +724,7 @@ export function highlightText(
           {
             className: foundationClassName,
             key: "someKey",
-            onClick: () => handleSetClick()
+            onClick: () => handleSetClick(),
           },
           textContent
         );
@@ -728,7 +747,7 @@ export function highlightText(
         {
           className: foundationClassName,
           key: "someKey",
-          onClick: () => handleSetClick()
+          onClick: () => handleSetClick(),
         },
         node.innerHTML
       );
@@ -747,7 +766,7 @@ export function highlightText(
         {
           className: foundationClassName,
           key: "someKey",
-          onClick: () => handleSetClick()
+          onClick: () => handleSetClick(),
         },
         textContent
       );

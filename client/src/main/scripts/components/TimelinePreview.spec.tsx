@@ -1,3 +1,22 @@
+/*
+ * MyTake.org website and tooling.
+ * Copyright (C) 2017-2020 MyTake.org, Inc.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * You can contact us at team@mytake.org
+ */
 import * as React from "react";
 import { mount, ReactWrapper } from "enzyme";
 import TimelinePreview from "./TimelinePreview";
@@ -7,17 +26,6 @@ const onDocumentSetClick = jest.fn();
 const onVideoSetClick = jest.fn();
 const onRangeSet = jest.fn();
 const onRangeCleared = jest.fn();
-
-interface MockWindow extends Window {
-  scrollTo: jest.Mock<{}> & typeof window.scrollTo;
-}
-
-function getMockWindow() {
-  window.scrollTo = jest.fn();
-  return window as MockWindow;
-}
-
-let mockWindow = getMockWindow();
 
 describe("Foundation Document", () => {
   let wrapper: ReactWrapper;
@@ -29,11 +37,11 @@ describe("Foundation Document", () => {
     handleDocumentSetClick: onDocumentSetClick,
     handleVideoSetClick: onVideoSetClick,
     handleRangeSet: onRangeSet,
-    handleRangeCleared: onRangeCleared
+    handleRangeCleared: onRangeCleared,
   };
   const ranges = {
     highlightedRange: highlightedRange,
-    viewRange: viewRange
+    viewRange: viewRange,
   };
 
   beforeAll(() => {
@@ -53,12 +61,9 @@ describe("Foundation Document", () => {
   });
 
   test("Heading text renders properly", () => {
-    expect(
-      wrapper
-        .find(".document__heading")
-        .first()
-        .text()
-    ).toBe("Amendment 13");
+    expect(wrapper.find(".document__heading").first().text()).toBe(
+      "Amendment 13"
+    );
   });
 
   test("Header buttons render", () => {
@@ -68,10 +73,7 @@ describe("Foundation Document", () => {
     expect(wrapper.find(".document__header-actions").children().length).toBe(2);
 
     // When the button, "Clear Selection" is clicked, it is hidden and a paragraph is shown instead
-    wrapper
-      .find(".document__header-actions")
-      .childAt(0)
-      .simulate("click");
+    wrapper.find(".document__header-actions").childAt(0).simulate("click");
     expect(wrapper.find(".document__header-actions").children().length).toBe(1);
 
     // When some more text is highlighted, the "Clear Selection" button is shown again

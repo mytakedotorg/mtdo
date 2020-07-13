@@ -1,3 +1,22 @@
+/*
+ * MyTake.org website and tooling.
+ * Copyright (C) 2018-2019 MyTake.org, Inc.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * You can contact us at team@mytake.org
+ */
 import { ReactElement } from "react";
 import { Foundation } from "../java2ts/Foundation";
 import { ImageProps } from "../java2ts/ImageProps";
@@ -6,7 +25,7 @@ import {
   getCharRangeFromVideoRange,
   highlightCaption,
   CaptionNode,
-  FoundationNode
+  FoundationNode,
 } from "./CaptionNodes";
 import { getHighlightedNodes } from "./DocumentNodes";
 import { loadImage } from "../utils/loadImage";
@@ -16,7 +35,7 @@ export const drawSpecs = Object.freeze({
   width: 480,
   linewidth: 468,
   lineheight: 1.5, //multiplier
-  thumbHeight: 360
+  thumbHeight: 360,
 });
 
 export function drawDocumentFact(
@@ -31,7 +50,7 @@ export function drawDocumentFact(
     nodes.push({
       component: documentComponent.component,
       innerHTML: [documentComponent.innerHTML],
-      offset: documentComponent.offset
+      offset: documentComponent.offset,
     });
   }
 
@@ -85,7 +104,7 @@ export function drawVideoFact(
   highlightedText += '"';
 
   const src = "https://img.youtube.com/vi/" + factContent.youtubeId + "/0.jpg";
-  return new Promise(function(resolve, reject) {
+  return new Promise(function (resolve, reject) {
     loadImage(src).then((img: HTMLImageElement) => {
       return resolve(drawCaption(canvas, img, highlightedText));
     });
@@ -143,7 +162,7 @@ export function drawCaption(
     return {
       dataUri: canvas.toDataURL("image/png"),
       width: drawSpecs.width.toString(),
-      height: height.toString()
+      height: height.toString(),
     };
   } else {
     const errStr = "Error getting canvas context";
@@ -228,7 +247,7 @@ export function drawText(
   return {
     x: finalLineWidth,
     y: y,
-    totalHeight: totalHeight
+    totalHeight: totalHeight,
   };
 }
 
@@ -346,7 +365,7 @@ export function drawDocument(
     return {
       dataUri: canvas.toDataURL("image/png"),
       width: drawSpecs.width.toString(),
-      height: height.toString()
+      height: height.toString(),
     };
   } else {
     const errStr = "Error getting canvas context";

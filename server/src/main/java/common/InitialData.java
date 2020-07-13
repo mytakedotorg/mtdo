@@ -1,8 +1,21 @@
 /*
- * MyTake.org
+ * MyTake.org website and tooling.
+ * Copyright (C) 2017-2020 MyTake.org, Inc.
  *
- *  Copyright 2017 by its authors.
- *  Some rights reserved. See LICENSE, https://github.com/mytakedotorg/mytakedotorg/graphs/contributors
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * You can contact us at team@mytake.org
  */
 package common;
 
@@ -26,6 +39,7 @@ import java.util.function.Consumer;
 import org.jooby.Env;
 import org.jooby.Jooby;
 import org.jooq.DSLContext;
+import org.jooq.JSONB;
 
 /** This is for setting the initial data for the case that the database is empty. */
 public class InitialData {
@@ -70,7 +84,7 @@ public class InitialData {
 		rev.setCreatedAt(time.nowTimestamp());
 		rev.setCreatedIp(IP);
 		rev.setTitle(title);
-		rev.setBlocks(builder.buildString());
+		rev.setBlocks(builder.buildJson());
 		rev.insert();
 
 		TakedraftRecord draft = dsl.newRecord(TAKEDRAFT);
@@ -102,7 +116,7 @@ public class InitialData {
 
 	static TakepublishedRecord take(DSLContext dsl, Time time, int user, String title, String factTitleSlug) throws IOException {
 		TakepublishedRecord record = takeInternal(dsl, time, user, title);
-		String jsonData = Resources.toString(Resources.getResource("initialdata/" + record.getTitleSlug() + ".json"), StandardCharsets.UTF_8);
+		JSONB jsonData = JSONB.valueOf(Resources.toString(Resources.getResource("initialdata/" + record.getTitleSlug() + ".json"), StandardCharsets.UTF_8));
 		record.setBlocks(jsonData);
 		record.setImageUrl(factTitleSlug);
 		record.insert();
@@ -115,7 +129,7 @@ public class InitialData {
 
 	static TakepublishedRecord take(DSLContext dsl, Time time, int user, String title, TakeBuilder b) throws IOException {
 		TakepublishedRecord record = takeInternal(dsl, time, user, title);
-		record.setBlocks(b.buildString());
+		record.setBlocks(b.buildJson());
 		record.insert();
 		return record;
 	}

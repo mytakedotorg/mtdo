@@ -1,24 +1,23 @@
 apply plugin: 'java'
 
-repositories {
-	mavenCentral()
-	maven { url 'http://repository.jsweet.org/artifactory/libs-release-local' }
-}
+String VER_LUCENE = '8.5.2'
 dependencies {
-	compile project(':client')
-	compile 'com.diffplug.durian:durian-core:1.2.0'
-	compile 'com.diffplug.durian:durian-collect:1.2.0'
-	compile 'com.diffplug.durian:durian-io:1.2.0'
-	compile 'org.apache.lucene:lucene-core:7.4.0'
-	compile 'org.apache.lucene:lucene-queryparser:7.4.0'
-	testCompile "junit:junit:$JUNIT_VER"
-	testCompile "org.assertj:assertj-core:$ASSERTJ_VER"
+	implementation project(':client')
+	implementation 'com.diffplug.durian:durian-core:1.2.0'
+	implementation 'com.diffplug.durian:durian-collect:1.2.0'
+	implementation 'com.diffplug.durian:durian-io:1.2.0'
+	implementation "org.apache.lucene:lucene-core:${VER_LUCENE}"
+	implementation "org.apache.lucene:lucene-queryparser:${VER_LUCENE}"
+	implementation "org.apache.lucene:lucene-analyzers-common:${VER_LUCENE}"
+	testImplementation "junit:junit:${VER_JUNIT}"
+	testImplementation "org.assertj:assertj-core:${VER_ASSERTJ}"
 }
 
 apply plugin: 'com.diffplug.gradle.spotless'
 spotless {
+	ratchetFrom 'origin/master'
 	java {
-		licenseHeaderFile(rootProject.file('gradle/spotless.license.java'))
+		licenseHeaderFile rootProject.file('gradle/spotless-license-agpl.java')
 		importOrder()
 		eclipse().configFile(rootProject.file('gradle/spotless.eclipseformat.xml'))
 		removeUnusedImports()

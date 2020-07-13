@@ -1,8 +1,21 @@
 /*
- * MyTake.org
+ * MyTake.org website and tooling.
+ * Copyright (C) 2018-2020 MyTake.org, Inc.
  *
- *  Copyright 2017 by its authors.
- *  Some rights reserved. See LICENSE, https://github.com/mytakedotorg/mytakedotorg/graphs/contributors
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * You can contact us at team@mytake.org
  */
 package common;
 
@@ -29,7 +42,7 @@ public class FoundationMigrationModuleTest {
 	static class App extends Jooby {
 		{
 			use(new DevTime.Module());
-			use(new CleanPostgresModule());
+			use(CleanPostgresModule.prePopulatedSchema());
 			use(new Jdbc());
 			use(new jOOQ());
 		}
@@ -58,8 +71,8 @@ public class FoundationMigrationModuleTest {
 
 			Assertions.assertThat(changed).containsExactly(published.getId());
 			String expected = "[{'kind': 'video', 'range': [1, 2], 'videoId': 'iqFs0S6PjvdMBxmS4HKEgbv9fukhg7dfjrVVHPx8mgE='}]".replace('\'', '"');
-			Assertions.assertThat(revision.getBlocks()).isEqualTo(expected);
-			Assertions.assertThat(published.getBlocks()).isEqualTo(expected);
+			Assertions.assertThat(revision.getBlocks().data()).isEqualTo(expected);
+			Assertions.assertThat(published.getBlocks().data()).isEqualTo(expected);
 		}
 	}
 

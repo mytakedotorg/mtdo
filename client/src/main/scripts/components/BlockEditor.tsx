@@ -1,3 +1,22 @@
+/*
+ * MyTake.org website and tooling.
+ * Copyright (C) 2017-2018 MyTake.org, Inc.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * You can contact us at team@mytake.org
+ */
 import * as React from "react";
 import * as keycode from "keycode";
 import EditorDocumentContainer from "./EditorDocumentContainer";
@@ -58,7 +77,7 @@ class Paragraph extends React.Component<
     super(props);
 
     this.state = {
-      style: {}
+      style: {},
     };
   }
   handleBlur = () => {
@@ -111,7 +130,7 @@ class Paragraph extends React.Component<
     this.paragraph.innerHTML = content + "<br />";
     let height = this.paragraph.clientHeight;
     this.setState({
-      style: { height: height }
+      style: { height: height },
     });
   };
   componentDidMount() {
@@ -259,7 +278,7 @@ class BlockEditor extends React.Component<BlockEditorProps, BlockEditorState> {
     super(props);
 
     this.state = {
-      style: {}
+      style: {},
     };
   }
   handleChange = (ev: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -287,7 +306,7 @@ class BlockEditor extends React.Component<BlockEditorProps, BlockEditorState> {
     this.div.innerHTML = content + "<br />";
     let height = this.div.clientHeight;
     this.setState({
-      style: { height: height }
+      style: { height: height },
     });
   };
   componentDidMount() {
@@ -338,7 +357,7 @@ class BlockEditor extends React.Component<BlockEditorProps, BlockEditorState> {
               {props.takeDocument.blocks.map((block, idx) => {
                 if (!isWriteOnly(props.eventHandlers)) {
                   const readingEventHandlers: ReadingEventHandlers = {
-                    onDocumentClick: props.eventHandlers.onDocumentClick
+                    onDocumentClick: props.eventHandlers.onDocumentClick,
                   };
                   return (
                     <BlockContainer
@@ -354,7 +373,7 @@ class BlockEditor extends React.Component<BlockEditorProps, BlockEditorState> {
                     handleChange: props.eventHandlers.handleChange,
                     handleDelete: props.eventHandlers.handleDelete,
                     handleEnterPress: props.eventHandlers.handleEnterPress,
-                    handleFocus: props.eventHandlers.handleFocus
+                    handleFocus: props.eventHandlers.handleFocus,
                   };
                   return (
                     <BlockContainer

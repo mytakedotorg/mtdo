@@ -1,3 +1,17 @@
+pluginManagement {
+	plugins {
+		id 'com.diffplug.gradle.spotless' version '4.5.0'
+		id 'com.diffplug.eclipse.apt'             version '3.23.0'
+		id 'com.diffplug.eclipse.resourcefilters' version '3.23.0'
+	}
+}
+plugins {
+	id 'com.diffplug.gradle.spotless' apply false
+	id 'com.diffplug.eclipse.apt' apply false
+	id 'com.diffplug.eclipse.resourcefilters' apply false
+}
+
+
 include 'client'
 include 'foundation'
 include 'foundation-gen'
@@ -6,3 +20,5 @@ include 'ide'
 include 'lucene'
 include 'node'
 include 'presidential-debates'
+
+apply from: new File(settingsDir, 'gradle/buildCacheSettings.gradle')

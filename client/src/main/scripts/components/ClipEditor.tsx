@@ -1,3 +1,22 @@
+/*
+ * MyTake.org website and tooling.
+ * Copyright (C) 2018 MyTake.org, Inc.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * You can contact us at team@mytake.org
+ */
 import * as React from "react";
 import DropDown from "./DropDown";
 import QuickShare from "./QuickShare";
@@ -6,7 +25,7 @@ import {
   StateAuthority,
   TimeRange,
   TrackStyles,
-  TRACKSTYLES__RANGE
+  TRACKSTYLES__RANGE,
 } from "./Video";
 import ZoomViewer from "./ZoomViewer";
 import TrackSlider, { TrackSliderEventHandlers } from "./TrackSlider";
@@ -29,15 +48,15 @@ export interface ClipEditorEventHandlers {
 
 const TRACKSTYLES__SLIDER: TrackStyles = {
   rail: {
-    backgroundColor: "#d3dae3" // lighten($base-lightest, 30%)
+    backgroundColor: "#d3dae3", // lighten($base-lightest, 30%)
   },
   track: {
-    backgroundColor: "#d3dae3" // lighten($base-lightest, 30%)
+    backgroundColor: "#d3dae3", // lighten($base-lightest, 30%)
   },
   handle: {
     backgroundColor: "#758aa8", // $base--lightest
-    border: "1px solid #2c4770" // $base
-  }
+    border: "1px solid #2c4770", // $base
+  },
 };
 
 interface ClipEditorProps {
@@ -106,7 +125,7 @@ class ClipEditor extends React.Component<ClipEditorProps, ClipEditorState> {
       start: props.currentTime,
       type: "CURRENT_TIME",
       styles: TRACKSTYLES__SLIDER,
-      label: "Now playing"
+      label: "Now playing",
     };
 
     let isZoomed: boolean;
@@ -118,7 +137,7 @@ class ClipEditor extends React.Component<ClipEditorProps, ClipEditorState> {
         end: props.videoDuration,
         type: "ZOOM",
         styles: TRACKSTYLES__RANGE,
-        label: "Zoom"
+        label: "Zoom",
       };
     } else {
       isZoomed = true;
@@ -132,7 +151,7 @@ class ClipEditor extends React.Component<ClipEditorProps, ClipEditorState> {
 
     const eventHandlers: TrackSliderEventHandlers = {
       onAfterRangeChange: this.props.eventHandlers.onAfterRangeChange,
-      onRangeChange: this.handleRangeChange
+      onRangeChange: this.handleRangeChange,
     };
 
     const topTrack: TimeRange[] = [currentTime, viewRange, zoomRange];

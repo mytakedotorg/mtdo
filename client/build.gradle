@@ -1,58 +1,38 @@
-buildscript {
-	repositories {
-		maven { url "http://repository.jsweet.org/artifactory/libs-release-local" }
-		maven { url "http://repository.jsweet.org/artifactory/plugins-release-local" }
-	}
-	// https://github.com/lgrignon/jsweet-gradle-plugin/blob/master/src/main/java/org/jsweet/gradle/JSweetPluginExtension.java
-	dependencies { classpath 'org.jsweet:jsweet-gradle-plugin:2.0.0-rc1' }
-}
-plugins {
-	id 'com.moowork.node' // https://github.com/srs/gradle-node-plugin/blob/master/docs/node.md
-	id 'com.moowork.gulp' // https://github.com/srs/gradle-node-plugin/blob/master/docs/gulp.md
-	id 'com.diffplug.eclipse.excludebuildfolder'
-}
-
 ////////////////////////////////////////
 // java - gets compiled to typescript //
 ////////////////////////////////////////
-apply plugin: 'java'
+apply plugin: 'java-library'
 apply plugin: 'com.diffplug.gradle.spotless'
-String VER_PRETTIER = '1.13.4'	// this version is old, but newer versions move periods after </a> tag, seems like a bug
-// the bug keeping us on this old version is still present as of 1.19.1: https://github.com/prettier/prettier/blob/master/CHANGELOG.md
 spotless {
+	ratchetFrom 'origin/master'
 	java {
 		target 'src/main/java/java2ts/**'
-		licenseHeaderFile(rootProject.file('gradle/spotless.license.java'))
+		licenseHeaderFile(rootProject.file('gradle/spotless-license-agpl.java'))
 		importOrder()
 		eclipse().configFile(rootProject.file('gradle/spotless.eclipseformat.xml'))
 		removeUnusedImports()
 	}
 	format 'scss', {
 		target 'src/main/styles/**/*.scss'
-		prettier(VER_PRETTIER).config(['parser': 'css'])
+		prettier(VER_PRETTIER)
 	}
 	format 'typescript', {
-		target fileTree('src/main/scripts') {
-			include '**'
-			exclude 'java2ts/**'
-		}
-		prettier(VER_PRETTIER).config(['parser': 'typescript'])
+		licenseHeaderFile rootProject.file('gradle/spotless-license-agpl.java'), '(import|const|declare|export|var) '
+		target 'src/main/scripts/**'
+		targetExclude '**/java2ts/**', '**/__snapshots__/**', '**/*.json'
+		prettier(VER_PRETTIER)
 	}
 	format 'js', {
 		target 'gulpfile.js'
-		prettier(VER_PRETTIER).config(['parser': 'typescript'])
+		prettier(VER_PRETTIER)
 	}
 }
 
-repositories {
-	mavenCentral()
-	maven { url 'http://repository.jsweet.org/artifactory/libs-release-local' }
-}
 dependencies {
-	compile "com.jsoniter:jsoniter:$JSONITER_VER"
-	compile "org.jsweet:jsweet-core:$JSWEET_CORE_VER"
-	testCompile "junit:junit:$JUNIT_VER"
-	testCompile "org.assertj:assertj-core:$ASSERTJ_VER"
+	api "com.jsoniter:jsoniter:$VER_JSONITER"
+	api "org.jsweet:jsweet-core:$VER_JSWEET_CORE"
+	testImplementation "junit:junit:$VER_JUNIT"
+	testImplementation "org.assertj:assertj-core:$VER_ASSERTJ"
 }
 
 // don't setup any of the node stuff if we're just doing the transcriptGui
@@ -64,24 +44,17 @@ if (gradle.startParameter.taskNames == [
 
 // generate typescript for the java in the java2ts folder
 def JAVA2TS = 'src/main/scripts/java2ts'
-apply plugin: 'org.jsweet.jsweet-gradle-plugin'
+apply plugin: 'org.mytake.gradle.jsweetcodegen'
 jsweet {
+	targetVersion = 'ES6' // should match gradle.properties VER_JSWEET_CORE
 	module = 'commonjs'
 	tsOut = file(JAVA2TS)
 	tsOnly = true
-	factoryClassName = 'org.mytake.gradle.java2ts.MytakeJsweetFactory'
+	factoryClassName = 'org.mytake.gradle.jsweet.JSweetFactoryJsoniterAny'
 	includes= [
 		'java2ts/**'
 	]
 }
-tasks.jsweet.doFirst { delete JAVA2TS }
-tasks.jsweet.doLast { com.diffplug.gradle.FileMisc.flatten(file(JAVA2TS + '/java2ts')) }
-tasks.jsweet.inputs.dir(file('build/classes'))
-tasks.jsweet.outputs.dir(file(JAVA2TS))
-clean { delete JAVA2TS }
-tasks.jsweet.dependsOn.remove('classes') // deprecated in Gradle 6
-tasks.jsweet.dependsOn('compileJava')
-tasks.jsweet.dependsOn('nodeSetup')
 
 //////////////
 // jsoniter //
@@ -92,65 +65,73 @@ jsoniterCodegen { codegenClass = 'java2ts.CodegenConfig' }
 ///////////////////////////////////////////////////////////////////////
 // node stuff - compiles sass and typescript into src/main/resources //
 ///////////////////////////////////////////////////////////////////////
+apply plugin: 'org.mytake.gradle.node'
 node {
-	// node 8.x is needed because of fsevents as of Mar 16 2019, node 10.x does not work
-	version = '8.15.1'
-	npmVersion = '6.4.1'
-	// yarnVersion = '0.16.1'
-	download = true
+	setup.nodeVersion = buildsrc.NvmRc.read(file('../.nvmrc'))
+	setup.npmVersion = 'provided'
+
+	npmRun('test_ci') {
+		dependsOn('jsweet')
+		inputs.dir('src/main/scripts')
+		outputs.dir('build/test-results/jest')
+	}
+
+	// every gulp task automatically installs from package-lock.json using 'npm ci'
+	// and adds that and gulpfile.js as input files
+	gulp 'permanent', {
+		inputs.dir('src/main/permanent').withPathSensitivity(PathSensitivity.RELATIVE)
+		outputs.dir('src/main/resources/assets/permanent')
+		// technically it's that scriptsDev and scriptsProd depend on jsweet, but it's easier to put it here
+		dependsOn('jsweet')
+	}
+	for (t in [
+		'styles',
+		'scripts'
+	]) {
+		final String taskName = t
+		gulp "${taskName}Dev", {
+			dependsOn 'gulp_permanent'
+			inputs.dir("src/main/${taskName}").withPathSensitivity(PathSensitivity.RELATIVE)
+			if (taskName == 'scripts') {
+				inputs.file('tsconfig.json').withPathSensitivity(PathSensitivity.RELATIVE)
+			}
+			outputs.dir("src/main/resources/assets-dev/${taskName}")
+		}
+		gulp "${taskName}Prod", {
+			dependsOn 'gulp_permanent'
+			inputs.dir("src/main/${taskName}").withPathSensitivity(PathSensitivity.RELATIVE)
+			if (taskName == 'scripts') {
+				inputs.file('tsconfig.json').withPathSensitivity(PathSensitivity.RELATIVE)
+			}
+			outputs.dir("src/main/resources/assets/${taskName}")
+
+		}
+	}
+	gulp 'revProd', {
+		dependsOn 'gulp_stylesProd', 'gulp_scriptsProd'
+		inputs.file('src/main/resources/assets/styles/manifest.json').withPathSensitivity(PathSensitivity.RELATIVE)
+		inputs.file('src/main/resources/assets/scripts/manifest.json').withPathSensitivity(PathSensitivity.RELATIVE)
+		outputs.file('src/main/resources/assets/manifest.json')
+	}
+}
+clean {
+	delete 'src/main/resources/assets'
+	delete 'src/main/resources/assets-dev'
 }
 
-gulp_permanent.inputs.dir('src/main/permanent')
-gulp_permanent.inputs.file('gulpfile.js')
-gulp_permanent.outputs.dir('src/main/resources/assets/permanent')
-gulp_permanent.dependsOn('npmInstall')
-
-gulp_stylesDev.inputs.dir('src/main/styles')
-gulp_scriptsDev.inputs.dir('src/main/scripts')
-
-// make the gulp_buildProd have accurate up-to-date checking
-def devProd(taskName) {
-	Task devTask = tasks.getByName("gulp_${taskName}Dev")
-	devTask.inputs.file('gulpfile.js')
-	devTask.inputs.dir("src/main/$taskName")
-	devTask.outputs.dir("src/main/resources/assets-dev/$taskName")
-	devTask.dependsOn(gulp_permanent)
-
-	Task prodTask = tasks.getByName("gulp_${taskName}Prod")
-	prodTask.inputs.file('gulpfile.js')
-	prodTask.inputs.dir("src/main/$taskName")
-	prodTask.outputs.dir("src/main/resources/assets/$taskName")
-	prodTask.dependsOn(gulp_permanent)
-
-	return [
-		devTask,
-		prodTask
-	]
+// hook the gradle defaults into our npm tasks
+tasks.named('test') {
+	dependsOn 'npm_run_test_ci'
 }
-devProd('styles')
-devProd('scripts').each {
-	it.dependsOn(tasks.jsweet)
-	it.inputs.file('tsconfig.json')
+tasks.named('check') {
+	dependsOn 'test'
 }
-gulp_revProd.dependsOn([
-	gulp_stylesProd,
-	gulp_scriptsProd
-])
-gulp_revProd.outputs.file('src/main/resources/assets/manifest.json')
+tasks.named('processResources') {
+	dependsOn 'gulp_stylesDev', 'gulp_scriptsDev', 'gulp_revProd'
+}
 
-clean { delete 'src/main/resources' }
-
-// check should run all tests
-npm_run_test.dependsOn(tasks.jsweet)
-check.dependsOn(npm_run_test)
-// make sure that all the gulp tasks are run
-processResources.dependsOn([
-	gulp_stylesDev,
-	gulp_scriptsDev,
-	gulp_revProd
-])
 // on Heroku, we can ignore the dev tasks
-if (Env.isHeroku()) {
+if (buildsrc.Env.isHeroku()) {
 	gulp_stylesDev.enabled = false
 	gulp_scriptsDev.enabled = false
 }

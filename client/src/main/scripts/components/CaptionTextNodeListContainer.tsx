@@ -1,10 +1,29 @@
+/*
+ * MyTake.org website and tooling.
+ * Copyright (C) 2018-2019 MyTake.org, Inc.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * You can contact us at team@mytake.org
+ */
 import * as React from "react";
 import { alertErr } from "../utils/functions";
 import { CaptionNodeArr } from "../common/CaptionNodes";
 import NumberLineTransform from "../utils/numberLineTransform";
 import { Foundation } from "../java2ts/Foundation";
 import CaptionTextNodeList, {
-  CaptionTextNodeListEventHandlers
+  CaptionTextNodeListEventHandlers,
 } from "./CaptionTextNodeList";
 import { StateAuthority, TimeRange } from "./Video";
 var bs = require("binary-search");
@@ -44,7 +63,7 @@ class CaptionTextNodeListContainer extends React.Component<
 
     this.state = {
       currentSpeaker: "-",
-      wordTimestampAtViewStart: 0
+      wordTimestampAtViewStart: 0,
     };
   }
   clearTimer = () => {
@@ -62,7 +81,7 @@ class CaptionTextNodeListContainer extends React.Component<
         if (parentTop === 0) {
           this.getViewRange(0);
           this.setState({
-            currentSpeaker: "-"
+            currentSpeaker: "-",
           });
         } else {
           let speakerIdx = bs(
@@ -95,7 +114,7 @@ class CaptionTextNodeListContainer extends React.Component<
           ].fullName;
 
           this.setState({
-            currentSpeaker: fullName.substring(fullName.lastIndexOf(" ") + 1)
+            currentSpeaker: fullName.substring(fullName.lastIndexOf(" ") + 1),
           });
         }
       }
@@ -172,7 +191,7 @@ class CaptionTextNodeListContainer extends React.Component<
           const timeOfFirstWord = timestamps[timestamps.length - 2];
           const timeOfLastWord = timestamps[timestamps.length - 1];
           this.setState({
-            wordTimestampAtViewStart: timeOfFirstWord
+            wordTimestampAtViewStart: timeOfFirstWord,
           });
           this.props.eventHandlers.onScroll([timeOfFirstWord, timeOfLastWord]);
           return;
@@ -220,11 +239,11 @@ class CaptionTextNodeListContainer extends React.Component<
               const timeOfFirstWord = timestamps[timestamps.length - 2];
               const timeOfLastWord = timestamps[timestamps.length - 1];
               this.setState({
-                wordTimestampAtViewStart: timeOfFirstWord
+                wordTimestampAtViewStart: timeOfFirstWord,
               });
               this.props.eventHandlers.onScroll([
                 timeOfFirstWord,
-                timeOfLastWord
+                timeOfLastWord,
               ]);
               return;
             } else {
@@ -288,7 +307,7 @@ class CaptionTextNodeListContainer extends React.Component<
           typeof timeOfLastWord !== "undefined"
         ) {
           this.setState({
-            wordTimestampAtViewStart: timeOfFirstWord
+            wordTimestampAtViewStart: timeOfFirstWord,
           });
           this.props.eventHandlers.onScroll([timeOfFirstWord, timeOfLastWord]);
         } else {
@@ -448,7 +467,7 @@ class CaptionTextNodeListContainer extends React.Component<
     let nextWordCount: number;
     const eventHandlers: CaptionTextNodeListEventHandlers = {
       onMouseUp: this.props.eventHandlers.onMouseUp,
-      onScroll: this.handleScroll
+      onScroll: this.handleScroll,
     };
     return (
       <div className="document__text">

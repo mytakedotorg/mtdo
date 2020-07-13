@@ -1,0 +1,45 @@
+# Java Gradle CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-java/ for more details
+#
+version: 2
+jobs:
+  build:
+    docker:
+      - image: nedtwigg/testrunner:1.2.0
+      - image: circleci/postgres:10.3-alpine-ram
+    working_directory: ~/mytakedotorg
+    environment:
+      _JAVA_OPTIONS: "-Xmx1g"
+      GRADLE_OPTS: "-Dorg.gradle.workers.max=2" # and we're only allowed to use 2 vCPUs
+    steps:
+      - checkout
+      # Download and cache dependencies
+      - restore_cache:
+          key: gradle-wrapper-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}  
+      - restore_cache:
+          key: gradle-deps-{{ checksum "settings.gradle" }}-{{ checksum "buildSrc/build.gradle" }}-{{ checksum "gradle.properties" }}-{{ checksum "client/package-lock.json" }}-{{ checksum "server/build.gradle" }}-{{ checksum "foundation-gen/build.gradle" }}
+      - run:
+          name: 'gradlew check'
+          command: './gradlew check --stacktrace'
+      - save_cache:
+          key: gradle-deps-{{ checksum "settings.gradle" }}-{{ checksum "buildSrc/build.gradle" }}-{{ checksum "gradle.properties" }}-{{ checksum "client/package-lock.json" }}-{{ checksum "server/build.gradle" }}-{{ checksum "foundation-gen/build.gradle" }}
+          paths:
+            - ~/.gradle/caches/
+            - ~/.npm/
+      - save_cache:
+          key: gradle-wrapper-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}
+          paths:
+            - ~/.gradle/wrapper
+      - store_test_results:
+          path: client/build/test-results/test
+      - store_test_results:
+          path: client/build/test-results/jest
+      - store_test_results:
+          path: foundation-gen/build/test-results/test
+      - store_test_results:
+          path: lucene/build/test-results/test
+      - store_test_results:
+          path: server/build/test-results/test
+      - store_test_results:
+          path: node/build/test-results/jest

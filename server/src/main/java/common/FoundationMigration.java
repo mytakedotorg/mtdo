@@ -1,8 +1,21 @@
 /*
- * MyTake.org
+ * MyTake.org website and tooling.
+ * Copyright (C) 2018-2020 MyTake.org, Inc.
  *
- *  Copyright 2017 by its authors.
- *  Some rights reserved. See LICENSE, https://github.com/mytakedotorg/mytakedotorg/graphs/contributors
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * You can contact us at team@mytake.org
  */
 package common;
 
@@ -10,9 +23,16 @@ import com.diffplug.common.base.Errors;
 import com.google.common.base.Preconditions;
 import com.google.common.io.Resources;
 import java.nio.charset.StandardCharsets;
+import org.jooq.JSONB;
 
 public abstract class FoundationMigration {
 	public abstract String description();
+
+	public JSONB migrate(JSONB input) {
+		String data = input.data();
+		String result = migrate(data);
+		return result == data ? input : JSONB.valueOf(result);
+	}
 
 	/**
 	 * Given the json content of a `blocks` array, returns the migrated blocks array.
