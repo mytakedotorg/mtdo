@@ -119,14 +119,13 @@ clean {
 	delete 'src/main/resources/assets-dev'
 }
 
+// hook the gradle defaults into our npm tasks
 tasks.named('test') {
 	dependsOn 'npm_run_test_ci'
 }
 tasks.named('check') {
 	dependsOn 'test'
 }
-
-// make sure that all the gulp tasks are run
 tasks.named('processResources') {
 	dependsOn 'gulp_stylesDev', 'gulp_scriptsDev', 'gulp_revProd'
 }
