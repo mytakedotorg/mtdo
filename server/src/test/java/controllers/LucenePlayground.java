@@ -28,6 +28,8 @@ import org.mytake.lucene.Lucene;
 public class LucenePlayground {
 	public static void main(String[] args) throws IOException {
 		try (Lucene lucene = Lucene.openFromArchive()) {
+			// this prints something to the console
+			// which is used by VideoResultsList.spec.tsx
 			Search.Request request = new Search.Request();
 			request.q = "social security";
 			FactResultList resultList = lucene.searchDebate(request);
