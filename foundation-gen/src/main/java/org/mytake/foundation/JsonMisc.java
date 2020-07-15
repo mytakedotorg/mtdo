@@ -1,6 +1,6 @@
 /*
  * MyTake.org transcript GUI. 
- * Copyright (C) 2017-2018 MyTake.org, Inc.
+ * Copyright (C) 2017-2020 MyTake.org, Inc.
  * 
  * The MyTake.org transcript GUI is licensed under EPLv2
  * because SWT is incompatible with AGPLv3, the rest of
@@ -45,6 +45,10 @@ public class JsonMisc {
 	}
 
 	public static <T> T fromJson(File file, Class<T> clazz) throws IOException {
-		return JsonIterator.deserialize(CONFIG, Files.readAllBytes(file.toPath()), clazz);
+		return fromJson(Files.readAllBytes(file.toPath()), clazz);
+	}
+
+	public static <T> T fromJson(byte[] content, Class<T> clazz) throws IOException {
+		return JsonIterator.deserialize(CONFIG, content, clazz);
 	}
 }
