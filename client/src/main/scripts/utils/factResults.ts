@@ -92,5 +92,11 @@ export const processFacts = (
       videoFact: videoFact.videoFact,
     });
   }
+  factTurnsArr.sort((aFactTurns, bFactTurns) => {
+    const a = aFactTurns.videoFact.fact.primaryDate;
+    const b = bFactTurns.videoFact.fact.primaryDate;
+    return a == b ? 0 : +(a > b) || -1;
+  });
+
   return factTurnsArr;
 };
