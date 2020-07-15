@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2018 MyTake.org, Inc.
+ * Copyright (C) 2018-2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -22,6 +22,7 @@ import VideoResultsList from "./VideoResultsList";
 import { Routes } from "../java2ts/Routes";
 import { Search } from "../java2ts/Search";
 import { postRequest } from "../utils/databaseAPI";
+import { getSortedFactTurns, FactTurns } from "../utils/factResults";
 
 interface VideoResultsLoaderProps {
   searchTerm: string;
@@ -29,7 +30,7 @@ interface VideoResultsLoaderProps {
 
 interface VideoResultsLoaderState {
   loading: boolean;
-  resultList?: Search.FactResultList;
+  factTurns: FactTurns[];
 }
 
 class VideoResultsLoader extends React.Component<
@@ -41,9 +42,10 @@ class VideoResultsLoader extends React.Component<
 
     this.state = {
       loading: true,
+      factTurns: [],
     };
   }
-  getFactResults = () => {
+  getFactResults = (): void => {
     const bodyJson: Search.Request = {
       q: this.props.searchTerm,
     };
@@ -51,13 +53,17 @@ class VideoResultsLoader extends React.Component<
       Routes.API_SEARCH,
       bodyJson,
       function (json: Search.FactResultList) {
-        const resultList: Search.FactResultList = json;
-        this.setState({
-          loading: false,
-          resultList: resultList,
-        });
+        this.getFacts(json);
       }.bind(this)
     );
+  };
+  getFacts = (searchResults: Search.FactResultList): void => {
+    getSortedFactTurns(searchResults).then((factTurns) => {
+      this.setState({
+        loading: false,
+        factTurns,
+      });
+    });
   };
   componentDidMount() {
     this.getFactResults();
@@ -80,12 +86,12 @@ interface VideoResultsLoaderBranchProps {
 const VideoResultsLoaderBranch: React.StatelessComponent<VideoResultsLoaderBranchProps> = (
   props
 ) => {
-  if (props.containerState.loading || !props.containerState.resultList) {
+  if (props.containerState.loading) {
     return <VideoResultLoadingView />;
   } else {
     return (
       <VideoResultsList
-        results={props.containerState.resultList}
+        factTurns={props.containerState.factTurns}
         searchTerm={props.containerProps.searchTerm}
       />
     );

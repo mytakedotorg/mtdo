@@ -1,6 +1,6 @@
 plugins {
 	id 'com.diffplug.eclipse.resourcefilters'
-	id 'com.diffplug.gradle.spotless'
+	id 'com.diffplug.spotless'
 }
 
 gradle.startParameter.showStacktrace = ShowStacktrace.ALWAYS

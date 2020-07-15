@@ -2,7 +2,7 @@
 // java - gets compiled to typescript //
 ////////////////////////////////////////
 apply plugin: 'java-library'
-apply plugin: 'com.diffplug.gradle.spotless'
+apply plugin: 'com.diffplug.spotless'
 spotless {
 	ratchetFrom 'origin/master'
 	java {
@@ -19,7 +19,7 @@ spotless {
 	format 'typescript', {
 		licenseHeaderFile rootProject.file('gradle/spotless-license-agpl.java'), '(import|const|declare|export|var) '
 		target 'src/main/scripts/**'
-		targetExclude '**/java2ts/**', '**/__snapshots__/**'
+		targetExclude '**/java2ts/**', '**/__snapshots__/**', '**/*.json'
 		prettier(VER_PRETTIER)
 	}
 	format 'js', {
@@ -119,14 +119,13 @@ clean {
 	delete 'src/main/resources/assets-dev'
 }
 
+// hook the gradle defaults into our npm tasks
 tasks.named('test') {
 	dependsOn 'npm_run_test_ci'
 }
 tasks.named('check') {
 	dependsOn 'test'
 }
-
-// make sure that all the gulp tasks are run
 tasks.named('processResources') {
 	dependsOn 'gulp_stylesDev', 'gulp_scriptsDev', 'gulp_revProd'
 }
