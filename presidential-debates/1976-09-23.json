@@ -13,6 +13,7 @@
     {"fullName": "Edwin Newman", "role": "Moderator"},
     {"fullName": "Frank Reynolds", "role": "Panelist"},
     {"fullName": "James Gannon", "role": "Panelist"},
-    {"fullName": "Elizabeth Drew", "role": "Panelist"}
+    {"fullName": "Elizabeth Drew", "role": "Panelist"},
+    {"fullName": "Announcer offscreen", "role": "Announcer offscreen"}
   ]
 }
