@@ -53,7 +53,7 @@ export class VideoResultsList extends React.Component<
 
     this.state = {
       fixVideo: false,
-      selectedOption: "Containing",
+      selectedOption: "BeforeAndAfter",
     };
   }
   handleChange = (ev: React.ChangeEvent<HTMLInputElement>) => {
