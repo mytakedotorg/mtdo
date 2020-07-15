@@ -7,5 +7,13 @@
     },
     "youtubeId": "PdjgZ5xx42o",
     "durationSeconds": 3516,
-    "speakers": []
+    "speakers": [
+        {"fullName": "John F Kennedy", "role": "Democratic nominee for President"},
+        {"fullName": "Richard M Nixon", "role": "Republican nominee for President"},
+        {"fullName": "Bill Shadel", "role": "Moderator"},
+        {"fullName": "Frank McGee", "role": "Panelist"},
+        {"fullName": "Charles Van Fremd", "role": "Panelist"},
+        {"fullName": "Roscoe Drummond", "role": "Panelist"},
+        {"fullName": "Douglass Cater", "role": "Panelist"}
+    ]
 }

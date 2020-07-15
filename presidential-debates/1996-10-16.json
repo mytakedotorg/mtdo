@@ -5,7 +5,31 @@
         "primaryDateKind": "recorded",
         "kind": "video"
     },
-    "youtubeId": "dmHCu0q1SqY",
-    "durationSeconds": 5985,
-    "speakers": []
+    "youtubeId": "T_ttLcdbAPE",
+    "durationSeconds": 5478,
+    "speakers": [
+        {"fullName": "Bill J Clinton", "role": "Democratic nominee for President"},
+        {"fullName": "Bob J Dole", "role": "Republican nominee for President"},
+        {"fullName": "Jim Lehrer", "role": "Moderator"},
+        {"fullName": "Shannon McAfee", "role": "Audience questioner"},
+        {"fullName": "Robert N Berkley", "role": "Audience questioner"},
+        {"fullName": "Jason Milligan", "role": "Audience questioner"},
+        {"fullName": "Cecily Kelly", "role": "Audience questioner"},
+        {"fullName": "Oscar Delgado", "role": "Audience questioner"},
+        {"fullName": "Jack Fleck", "role": "Audience questioner"},
+        {"fullName": "Susan Gonzalez", "role": "Audience questioner"},
+        {"fullName": "Pamela Johnson", "role": "Audience questioner"},
+        {"fullName": "Melissa Naudin", "role": "Audience questioner"},
+        {"fullName": "Tressia Sanders", "role": "Audience questioner"},
+        {"fullName": "Tim David", "role": "Audience questioner"},
+        {"fullName": "Duane Burns", "role": "Audience questioner"},
+        {"fullName": "Bridget Giannotti", "role": "Audience questioner"},
+        {"fullName": "Bob Goldfarb", "role": "Audience questioner"},
+        {"fullName": "Bertha Strategos", "role": "Audience questioner"},
+        {"fullName": "Colleen O'Connor", "role": "Audience questioner"},
+        {"fullName": "Iris Siefert", "role": "Audience questioner"},
+        {"fullName": "Michael Smith", "role": "Audience questioner"},
+        {"fullName": "Rod Kite", "role": "Audience questioner"},
+        {"fullName": "Yvette Dube", "role": "Audience questioner"}
+    ]
 }

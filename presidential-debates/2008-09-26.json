@@ -5,7 +5,11 @@
         "primaryDateKind": "recorded",
         "kind": "video"
     },
-    "youtubeId": "tDDRyv--NY8",
+    "youtubeId": "KxrDwwDEDFY",
     "durationSeconds": 5804,
-    "speakers": []
+    "speakers": [
+        {"fullName": "Jim Lehrer", "role": "Moderator"},
+        {"fullName": "Barack H Obama", "role": "Democratic nominee for President"},
+        {"fullName": "John S McCain", "role": "Republican nominee for President"}
+    ]
 }

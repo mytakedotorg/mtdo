@@ -7,5 +7,12 @@
     },
     "youtubeId": "2qnm04GJyPg",
     "durationSeconds": 5377,
-    "speakers": []
+    "speakers": [
+        {"fullName": "Jimmy E Carter", "role": "Democratic nominee for President"},
+        {"fullName": "Gerald R Ford", "role": "Republican nominee for President"},
+        {"fullName": "Barbara Walters", "role": "Moderator"},
+        {"fullName": "Joseph Kraft", "role": "Panelist"},
+        {"fullName": "Robert Maynard", "role": "Panelist"},
+        {"fullName": "Jack Nelson", "role": "Panelist"}
+    ]
 }

@@ -1,0 +1,22 @@
+{
+    "fact": {
+      "title": "Presidential Debate - Anderson, Carter (declined), Reagan (1 of 2)",
+      "primaryDate": "1980-09-21",
+      "primaryDateKind": "recorded",
+      "kind": "video"
+    },
+    "youtubeId": "pZqindVjd54",
+    "durationSeconds": 3664,
+    "speakers": [
+      {"fullName": "John B Anderson", "role": "Independent candidate for President"},
+      {"fullName": "Ronald W Reagan", "role": "Republican nominee for President"},
+      {"fullName": "Ruth Hinerfeld", "role": "Announcer"},
+      {"fullName": "Bill Moyers", "role": "Moderator"},
+      {"fullName": "Carol Loomis", "role": "Panelist"},
+      {"fullName": "Daniel Greenberg", "role": "Panelist"},
+      {"fullName": "Charles Corddry", "role": "Panelist"},
+      {"fullName": "Lee May", "role": "Panelist"},
+      {"fullName": "Jane Bryant Quinn", "role": "Panelist"},
+      {"fullName": "Soma Golden", "role": "Panelist"}
+    ]
+}

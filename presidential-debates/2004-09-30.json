@@ -5,7 +5,11 @@
         "primaryDateKind": "recorded",
         "kind": "video"
     },
-    "youtubeId": "ZGxKPUuW0VA",
-    "durationSeconds": 5350,
-    "speakers": []
+    "youtubeId": "zuLdMW-y7ug",
+    "durationSeconds": 5347,
+    "speakers": [
+        {"fullName": "Jim Lehrer", "role": "Moderator"},
+        {"fullName": "John F Kerry", "role": "Democratic nominee for President"},
+        {"fullName": "George W Bush", "role": "Republican nominee for President"}
+    ]
 }

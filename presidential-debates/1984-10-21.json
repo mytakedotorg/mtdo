@@ -7,5 +7,15 @@
     },
     "youtubeId": "v1SGZ6YM5lU",
     "durationSeconds": 5253,
-    "speakers": []
+    "speakers": [
+        {"fullName": "Walter F Mondale", "role": "Democratic nominee for President"},
+        {"fullName": "Ronald W Reagan", "role": "Republican nominee for President"},
+        {"fullName": "Dorothy Ridings", "role": "Announcer"},
+        {"fullName": "Georgie Anne Geyer", "role": "Panelist"},
+        {"fullName": "Marvin Kalb", "role": "Panelist"},
+        {"fullName": "Morton Kondracke", "role": "Panelist"},
+        {"fullName": "Henry Trewhitt", "role": "Panelist"},
+        {"fullName": "Edwin Newman", "role": "Panelist"},
+        {"fullName": "Audience offscreen", "role": "Audience offscreen"}
+    ]
 }
