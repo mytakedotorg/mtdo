@@ -15,8 +15,12 @@ To make sure that titles don't depend on the outcome, we will list the candidate
 
 ### 1960
 
-- Sander Vanocur (moderator of 1960-09-26) was born Alexander Vinocur. [(wikipedia)](https://en.wikipedia.org/wiki/Sander_Vanocur)
-- Bob Fleming's full name is [Robert H Fleming](https://www.nytimes.com/1984/12/06/obituaries/robert-h-fleming-72-a-johnson-press-aide.html), but he is referred to as "Bob" in the debate, so we will call him "Bob H Fleming" to avoid confusion.
+- [John F Kennedy](https://en.wikipedia.org/wiki/John_F._Kennedy)
+- [Richard M Nixon](https://en.wikipedia.org/wiki/Richard_Nixon)
+- 09-26
+    - [Howard K Smith](https://en.wikipedia.org/wiki/Howard_K._Smith)
+    - [Sander Vanocur](https://en.wikipedia.org/wiki/Sander_Vanocur) was born Alexander Vinocur.
+    - Bob Fleming's full name is [Robert H Fleming](https://www.nytimes.com/1984/12/06/obituaries/robert-h-fleming-72-a-johnson-press-aide.html), but he is referred to as "Bob" in the debate, so we will call him "Bob H Fleming" to avoid confusion.
 
 ### 1976
 
