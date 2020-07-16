@@ -1,18 +1,18 @@
 {
-    "fact": {
-        "title": "Presidential Debate - Carter, Ford (3 of 3)",
-        "primaryDate": "1976-10-22",
-        "primaryDateKind": "recorded",
-        "kind": "video"
-    },
-    "youtubeId": "2qnm04GJyPg",
-    "durationSeconds": 5377,
-    "speakers": [
-        {"fullName": "Jimmy E Carter", "role": "Democratic nominee for President"},
-        {"fullName": "Gerald R Ford", "role": "Republican nominee for President"},
-        {"fullName": "Barbara Walters", "role": "Moderator"},
-        {"fullName": "Joseph Kraft", "role": "Panelist"},
-        {"fullName": "Robert Maynard", "role": "Panelist"},
-        {"fullName": "Jack Nelson", "role": "Panelist"}
-    ]
+  "fact": {
+    "title": "Presidential Debate - Carter, Ford (3 of 3)",
+    "primaryDate": "1976-10-22",
+    "primaryDateKind": "recorded",
+    "kind": "video"
+  },
+  "youtubeId": "2qnm04GJyPg",
+  "durationSeconds": 5377,
+  "speakers": [
+    {"fullName": "Barbara Walters", "role": "Moderator"},
+    {"fullName": "Gerald R Ford", "role": "Republican nominee for President"},
+    {"fullName": "Jack Nelson", "role": "Panelist"},
+    {"fullName": "Jimmy E Carter", "role": "Democratic nominee for President"},
+    {"fullName": "Joseph Kraft", "role": "Panelist"},
+    {"fullName": "Robert Maynard", "role": "Panelist"}
+  ]
 }

@@ -1,17 +1,17 @@
 {
-    "fact": {
-      "title": "Presidential Debate - Bush, Clinton, Perot (2 of 3)",
-      "primaryDate": "1992-10-15",
-      "primaryDateKind": "recorded",
-      "kind": "video"
-    },
-    "youtubeId": "0Z9DZ715Ku4",
-    "durationSeconds": 5411,
-    "speakers": [
-      {"fullName": "Bill J Clinton", "role": "Democratic nominee for President"},
-      {"fullName": "George HW Bush", "role": "Republican nominee for President"},
-      {"fullName": "H Ross Perot", "role": "Independent candidate for President"},
-      {"fullName": "Carole Simpson", "role": "Moderator"},
-      {"fullName": "Audience Member", "role": "Audience questioner"}
-    ]
+  "fact": {
+    "title": "Presidential Debate - Bush, Clinton, Perot (2 of 3)",
+    "primaryDate": "1992-10-15",
+    "primaryDateKind": "recorded",
+    "kind": "video"
+  },
+  "youtubeId": "0Z9DZ715Ku4",
+  "durationSeconds": 5411,
+  "speakers": [
+    {"fullName": "Audience Member", "role": "Audience questioner"},
+    {"fullName": "Bill J Clinton", "role": "Democratic nominee for President"},
+    {"fullName": "Carole Simpson", "role": "Moderator"},
+    {"fullName": "George HW Bush", "role": "Republican nominee for President"},
+    {"fullName": "H Ross Perot", "role": "Independent candidate for President"}
+  ]
 }

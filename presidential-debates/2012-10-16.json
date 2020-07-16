@@ -1,26 +1,26 @@
 {
-    "fact": {
-        "title": "Presidential Debate - Obama, Romney (2 of 3)",
-        "primaryDate": "2012-10-16",
-        "primaryDateKind": "recorded",
-        "kind": "video"
-    },
-    "youtubeId": "nchGzjFHB-g",
-    "durationSeconds": 5876,
-    "speakers": [
-        {"fullName": "Barack H Obama", "role": "Democratic nominee for President"},
-        {"fullName": "W Mitt Romney", "role": "Republican nominee for President"},
-        {"fullName": "Candy Crowley", "role": "Moderator"},
-        {"fullName": "Jeremy Epstein", "role": "Audience questioner"},
-        {"fullName": "Phillip Tricolla", "role": "Audience questioner"},
-        {"fullName": "Mary Follano", "role": "Audience questioner"},
-        {"fullName": "Katherine Fenton", "role": "Audience questioner"},
-        {"fullName": "Susan Katz", "role": "Audience questioner"},
-        {"fullName": "Michael Jones", "role": "Audience questioner"},
-        {"fullName": "Lorraine Osorio", "role": "Audience questioner"},
-        {"fullName": "Kerry Ladka", "role": "Audience questioner"},
-        {"fullName": "Nina Gonzalez", "role": "Audience questioner"},
-        {"fullName": "Carol Goldberg", "role": "Audience questioner"},
-        {"fullName": "Barry Green", "role": "Audience questioner"}
-    ]
+  "fact": {
+    "title": "Presidential Debate - Obama, Romney (2 of 3)",
+    "primaryDate": "2012-10-16",
+    "primaryDateKind": "recorded",
+    "kind": "video"
+  },
+  "youtubeId": "nchGzjFHB-g",
+  "durationSeconds": 5876,
+  "speakers": [
+    {"fullName": "Barack H Obama", "role": "Democratic nominee for President"},
+    {"fullName": "Barry Green", "role": "Audience questioner"},
+    {"fullName": "Candy Crowley", "role": "Moderator"},
+    {"fullName": "Carol Goldberg", "role": "Audience questioner"},
+    {"fullName": "Jeremy Epstein", "role": "Audience questioner"},
+    {"fullName": "Katherine Fenton", "role": "Audience questioner"},
+    {"fullName": "Kerry Ladka", "role": "Audience questioner"},
+    {"fullName": "Lorraine Osorio", "role": "Audience questioner"},
+    {"fullName": "Mary Follano", "role": "Audience questioner"},
+    {"fullName": "Michael Jones", "role": "Audience questioner"},
+    {"fullName": "Nina Gonzalez", "role": "Audience questioner"},
+    {"fullName": "Phillip Tricolla", "role": "Audience questioner"},
+    {"fullName": "Susan Katz", "role": "Audience questioner"},
+    {"fullName": "W Mitt Romney", "role": "Republican nominee for President"}
+  ]
 }

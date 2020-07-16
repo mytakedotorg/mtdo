@@ -1,15 +1,15 @@
 {
-    "fact": {
-        "title": "Presidential Debate - Obama, Romney (3 of 3)",
-        "primaryDate": "2012-10-22",
-        "primaryDateKind": "recorded",
-        "kind": "video"
-    },
-    "youtubeId": "xNMCHcKwf7Y",
-    "durationSeconds": 5549,
-    "speakers": [
-        {"fullName": "Barack H Obama", "role": "Democratic nominee for President"},
-        {"fullName": "W Mitt Romney", "role": "Republican nominee for President"},
-        {"fullName": "Bob Schieffer", "role": "Moderator"}
-    ]
+  "fact": {
+    "title": "Presidential Debate - Obama, Romney (3 of 3)",
+    "primaryDate": "2012-10-22",
+    "primaryDateKind": "recorded",
+    "kind": "video"
+  },
+  "youtubeId": "xNMCHcKwf7Y",
+  "durationSeconds": 5549,
+  "speakers": [
+    {"fullName": "Barack H Obama", "role": "Democratic nominee for President"},
+    {"fullName": "Bob Schieffer", "role": "Moderator"},
+    {"fullName": "W Mitt Romney", "role": "Republican nominee for President"}
+  ]
 }

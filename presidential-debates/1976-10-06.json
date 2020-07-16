@@ -1,18 +1,18 @@
 {
-    "fact": {
-        "title": "Presidential Debate - Carter, Ford (2 of 3)",
-        "primaryDate": "1976-10-06",
-        "primaryDateKind": "recorded",
-        "kind": "video"
-    },
-    "youtubeId": "SLy5fq1b4jA",
-    "durationSeconds": 5224,
-    "speakers": [
-        {"fullName": "Jimmy E Carter", "role": "Democratic nominee for President"},
-        {"fullName": "Gerald R Ford", "role": "Republican nominee for President"},
-        {"fullName": "Pauline Frederick", "role": "Moderator"},
-        {"fullName": "Max Frankel", "role": "Panelist"},
-        {"fullName": "Henry L Trewhitt", "role": "Panelist"},
-        {"fullName": "Richard Valeriani", "role": "Panelist"}
-    ]
+  "fact": {
+    "title": "Presidential Debate - Carter, Ford (2 of 3)",
+    "primaryDate": "1976-10-06",
+    "primaryDateKind": "recorded",
+    "kind": "video"
+  },
+  "youtubeId": "SLy5fq1b4jA",
+  "durationSeconds": 5224,
+  "speakers": [
+    {"fullName": "Gerald R Ford", "role": "Republican nominee for President"},
+    {"fullName": "Henry L Trewhitt", "role": "Panelist"},
+    {"fullName": "Jimmy E Carter", "role": "Democratic nominee for President"},
+    {"fullName": "Max Frankel", "role": "Panelist"},
+    {"fullName": "Pauline Frederick", "role": "Moderator"},
+    {"fullName": "Richard Valeriani", "role": "Panelist"}
+  ]
 }

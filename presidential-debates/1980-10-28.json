@@ -1,20 +1,20 @@
 {
-    "fact": {
-      "title": "Presidential Debate - Anderson (not invited), Carter, Reagan (2 of 2)",
-      "primaryDate": "1980-10-28",
-      "primaryDateKind": "recorded",
-      "kind": "video"
-    },
-    "youtubeId": "a1J1TkWCLhs",
-    "durationSeconds": 5691,
-    "speakers": [
-      {"fullName": "Jimmy E Carter", "role": "Democratic nominee for President"},
-      {"fullName": "Ronald W Reagan", "role": "Republican nominee for President"},
-      {"fullName": "Ruth Hinerfeld", "role": "Announcer"},
-      {"fullName": "Howard K Smith", "role": "Moderator"},
-      {"fullName": "Marvin Stone", "role": "Panelist"},
-      {"fullName": "Harry Ellis", "role": "Panelist"},
-      {"fullName": "William Hilliard", "role": "Panelist"},
-      {"fullName": "Barbara Walters", "role": "Panelist"}
-    ]
+  "fact": {
+    "title": "Presidential Debate - Anderson (not invited), Carter, Reagan (2 of 2)",
+    "primaryDate": "1980-10-28",
+    "primaryDateKind": "recorded",
+    "kind": "video"
+  },
+  "youtubeId": "a1J1TkWCLhs",
+  "durationSeconds": 5691,
+  "speakers": [
+    {"fullName": "Barbara Walters", "role": "Panelist"},
+    {"fullName": "Harry Ellis", "role": "Panelist"},
+    {"fullName": "Howard K Smith", "role": "Moderator"},
+    {"fullName": "Jimmy E Carter", "role": "Democratic nominee for President"},
+    {"fullName": "Marvin Stone", "role": "Panelist"},
+    {"fullName": "Ronald W Reagan", "role": "Republican nominee for President"},
+    {"fullName": "Ruth Hinerfeld", "role": "Announcer"},
+    {"fullName": "William Hilliard", "role": "Panelist"}
+  ]
 }

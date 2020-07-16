@@ -1,15 +1,15 @@
 {
-    "fact": {
-        "title": "Presidential Debate - Clinton, Trump (3 of 3)",
-        "primaryDate": "2016-10-19",
-        "primaryDateKind": "recorded",
-        "kind": "video"
-    },
-    "youtubeId": "eXNnggT5fPM",
-    "durationSeconds": 5592,
-    "speakers": [
-        {"fullName": "Hillary R Clinton", "role": "Democratic nominee for President"},
-        {"fullName": "Donald J Trump", "role": "Republican nominee for President"},
-        {"fullName": "Chris Wallace", "role": "Moderator"}
-    ]
+  "fact": {
+    "title": "Presidential Debate - Clinton, Trump (3 of 3)",
+    "primaryDate": "2016-10-19",
+    "primaryDateKind": "recorded",
+    "kind": "video"
+  },
+  "youtubeId": "eXNnggT5fPM",
+  "durationSeconds": 5592,
+  "speakers": [
+    {"fullName": "Chris Wallace", "role": "Moderator"},
+    {"fullName": "Donald J Trump", "role": "Republican nominee for President"},
+    {"fullName": "Hillary R Clinton", "role": "Democratic nominee for President"}
+  ]
 }
