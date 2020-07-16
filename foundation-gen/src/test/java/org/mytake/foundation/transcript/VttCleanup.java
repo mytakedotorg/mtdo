@@ -1,6 +1,6 @@
 /*
  * MyTake.org transcript GUI. 
- * Copyright (C) 2018 MyTake.org, Inc.
+ * Copyright (C) 2018-2020 MyTake.org, Inc.
  * 
  * The MyTake.org transcript GUI is licensed under EPLv2
  * because SWT is incompatible with AGPLv3, the rest of
@@ -14,6 +14,7 @@
 package org.mytake.foundation.transcript;
 
 import com.diffplug.common.io.Files;
+import com.diffplug.common.math.DoubleMath;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -59,7 +60,11 @@ public class VttCleanup {
 				end = line.header().start();
 				for (VttToken token : line.tokens()) {
 					if (token.isTime()) {
-						end = token.assertTime().timestamp;
+						double newEnd = token.assertTime().timestamp;
+						if (DoubleMath.fuzzyEquals(newEnd, end, 0.01)) {
+							throw new IllegalArgumentException("Duplicate timestamps!" + token);
+						}
+						end = newEnd;
 					}
 				}
 				end += VttTranscript.LAST_WORD_DURATION;
