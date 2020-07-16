@@ -1,5 +1,5 @@
 /*
- * MyTake.org transcript GUI. 
+ * MyTake.org transcript GUI.
  * Copyright (C) 2020 MyTake.org, Inc.
  * 
  * The MyTake.org transcript GUI is licensed under EPLv2
