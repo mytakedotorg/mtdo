@@ -18,7 +18,11 @@ import com.diffplug.common.io.Files;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java2ts.Foundation.VideoFactMeta;
+import org.mytake.foundation.transcript.SaidTranscript.Turn;
 
 /**
  * Makes sure that:
@@ -32,8 +36,23 @@ public class SaidCleanup {
 			try {
 				VideoFactMeta meta = folder.loadMetaNoValidation(name);
 				SaidTranscript said = SaidTranscript.parse(meta, folder.fileSaid(name));
-				String clean = StringPrinter.buildString(said::write);
-				Files.write(clean.getBytes(StandardCharsets.UTF_8), folder.fileSaid(name));
+				Iterator<Turn> turns = said.turns().iterator();
+
+				Turn last = turns.next();
+				List<Turn> clean = new ArrayList<>(said.turns().size());
+				while (turns.hasNext()) {
+					Turn next = turns.next();
+					if (last.speaker().equals(next.speaker())) {
+						last = Turn.speakerWords(last.speaker(), last.said() + " " + next.said());
+					} else {
+						clean.add(last);
+						last = next;
+					}
+				}
+				clean.add(last);
+
+				String cleanString = StringPrinter.buildString(SaidTranscript.create(clean)::write);
+				Files.write(cleanString.getBytes(StandardCharsets.UTF_8), folder.fileSaid(name));
 			} catch (Exception e) {
 				System.out.println(name + " " + e.getMessage());
 				e.printStackTrace();

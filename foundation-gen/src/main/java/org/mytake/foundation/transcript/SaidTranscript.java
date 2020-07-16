@@ -128,6 +128,10 @@ public abstract class SaidTranscript {
 		}
 	}
 
+	public static SaidTranscript create(List<Turn> turns) {
+		return new AutoValue_SaidTranscript(turns);
+	}
+
 	public void write(StringPrinter printer) {
 		Iterator<Turn> turns = turns().iterator();
 		while (turns.hasNext()) {
