@@ -8,7 +8,7 @@
   "youtubeId": "0Z9DZ715Ku4",
   "durationSeconds": 5411,
   "speakers": [
-    {"fullName": "Audience Member", "role": "Audience questioner"},
+    {"fullName": "Audience questioner", "role": "Audience questioner"},
     {"fullName": "Bill J Clinton", "role": "Democratic nominee for President"},
     {"fullName": "Carole Simpson", "role": "Moderator"},
     {"fullName": "George HW Bush", "role": "Republican nominee for President"},
