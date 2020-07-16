@@ -53,7 +53,7 @@ dependencies {
 spotless {
 	format 'foundation-video', {
 		target '**/*.json'
-		bumpThisNumberIfACustomStepChanges(1)
+		bumpThisNumberIfACustomStepChanges(3)
 		custom 'VideoJsonFormat', { str ->
 			ByteArrayOutputStream result = new ByteArrayOutputStream()
 			javaexec {

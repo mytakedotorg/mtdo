@@ -13,6 +13,7 @@
  */
 package org.mytake.foundation;
 
+import com.diffplug.common.base.Preconditions;
 import com.diffplug.common.io.ByteStreams;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -21,7 +22,9 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Comparator;
 import java.util.List;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 import java2ts.Foundation.Fact;
 import java2ts.Foundation.Speaker;
 import java2ts.Foundation.VideoFactMeta;
@@ -41,6 +44,22 @@ public class VideoJsonFormat {
 
 	static String format(String input) throws IOException {
 		VideoJsonFormat meta = JsonMisc.fromJson(input.getBytes(StandardCharsets.UTF_8), VideoJsonFormat.class);
+
+		if (meta.fact.title.startsWith("Presidential Debate - ")) {
+			String lastNames = meta.speakers.stream()
+					.filter(speaker -> speaker.role.contains("for President"))
+					.map(speaker -> {
+						int lastSpace = speaker.fullName.lastIndexOf(' ');
+						return speaker.fullName.substring(lastSpace + 1);
+					})
+					.sorted().collect(Collectors.joining(", "));
+			Matcher matcher = Pattern.compile("\\((\\d) of (\\d)\\)").matcher(meta.fact.title);
+			Preconditions.checkArgument(matcher.find());
+			meta.fact.title = "Presidential Debate - " + lastNames + " (" + matcher.group(1) + " of " + matcher.group(2) + ")";
+		} else {
+			throw new Error("Unhandled title.");
+		}
+
 		meta.speakers.sort(Comparator.comparing(speaker -> speaker.fullName));
 		String result = JsonMisc.toJson(meta);
 
