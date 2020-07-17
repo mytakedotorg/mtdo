@@ -1,6 +1,6 @@
 /*
  * MyTake.org transcript GUI. 
- * Copyright (C) 2018 MyTake.org, Inc.
+ * Copyright (C) 2018-2020 MyTake.org, Inc.
  * 
  * The MyTake.org transcript GUI is licensed under EPLv2
  * because SWT is incompatible with AGPLv3, the rest of
@@ -14,6 +14,7 @@
 package org.mytake.foundation.transcript;
 
 import com.diffplug.common.base.Preconditions;
+import com.diffplug.common.base.StringPrinter;
 import com.diffplug.common.collect.Immutables;
 import com.diffplug.common.io.ByteSource;
 import com.diffplug.common.io.Files;
@@ -23,6 +24,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Set;
@@ -123,6 +125,22 @@ public abstract class SaidTranscript {
 			return new AutoValue_SaidTranscript(turns);
 		} catch (Exception e) {
 			throw new RuntimeException("On line " + lineCount, e);
+		}
+	}
+
+	public static SaidTranscript create(List<Turn> turns) {
+		return new AutoValue_SaidTranscript(turns);
+	}
+
+	public void write(StringPrinter printer) {
+		Iterator<Turn> turns = turns().iterator();
+		while (turns.hasNext()) {
+			Turn turn = turns.next();
+			printer.print(turn.speaker() + ": ");
+			printer.println(turn.said());
+			if (turns.hasNext()) {
+				printer.println("");
+			}
 		}
 	}
 }

@@ -1,18 +1,18 @@
 {
-    "fact": {
-      "title": "Presidential Debate - Bush, Dukakis (2 of 2)",
-      "primaryDate": "1988-10-13",
-      "primaryDateKind": "recorded",
-      "kind": "video"
-    },
-    "youtubeId": "KxvfacuEbnA",
-    "durationSeconds": 5266,
-    "speakers": [
-      {"fullName": "Michael S Dukakis", "role": "Democratic nominee for President"},
-      {"fullName": "George HW Bush", "role": "Republican nominee for President"},
-      {"fullName": "Bernard Shaw", "role": "Moderator"},
-      {"fullName": "Ann Compton", "role": "Panelist"},
-      {"fullName": "Andrea Mitchell", "role": "Panelist"},
-      {"fullName": "Margaret Warner", "role": "Panelist"}
-    ]
+  "fact": {
+    "title": "Presidential Debate - Bush, Dukakis (2 of 2)",
+    "primaryDate": "1988-10-13",
+    "primaryDateKind": "recorded",
+    "kind": "video"
+  },
+  "youtubeId": "KxvfacuEbnA",
+  "durationSeconds": 5266,
+  "speakers": [
+    {"fullName": "Andrea Mitchell", "role": "Panelist"},
+    {"fullName": "Ann Compton", "role": "Panelist"},
+    {"fullName": "Bernard Shaw", "role": "Moderator"},
+    {"fullName": "George HW Bush", "role": "Republican nominee for President"},
+    {"fullName": "Margaret Warner", "role": "Panelist"},
+    {"fullName": "Michael S Dukakis", "role": "Democratic nominee for President"}
+  ]
 }

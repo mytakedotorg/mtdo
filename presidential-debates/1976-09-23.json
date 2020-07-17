@@ -8,12 +8,12 @@
   "youtubeId": "Zbe9FnAmkSk",
   "durationSeconds": 5445,
   "speakers": [
-    {"fullName": "Jimmy E Carter", "role": "Democratic nominee for President"},
-    {"fullName": "Gerald R Ford", "role": "Republican nominee for President"},
+    {"fullName": "Announcer offscreen", "role": "Announcer offscreen"},
     {"fullName": "Edwin Newman", "role": "Moderator"},
-    {"fullName": "Frank Reynolds", "role": "Panelist"},
-    {"fullName": "James Gannon", "role": "Panelist"},
     {"fullName": "Elizabeth Drew", "role": "Panelist"},
-    {"fullName": "Announcer offscreen", "role": "Announcer offscreen"}
+    {"fullName": "Frank Reynolds", "role": "Panelist"},
+    {"fullName": "Gerald R Ford", "role": "Republican nominee for President"},
+    {"fullName": "James Gannon", "role": "Panelist"},
+    {"fullName": "Jimmy E Carter", "role": "Democratic nominee for President"}
   ]
 }

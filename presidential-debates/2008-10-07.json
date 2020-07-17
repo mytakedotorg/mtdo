@@ -1,23 +1,23 @@
 {
-    "fact": {
-      "title": "Presidential Debate - McCain, Obama (2 of 3)",
-      "primaryDate": "2008-10-07",
-      "primaryDateKind": "recorded",
-      "kind": "video"
-    },
-    "youtubeId": "57qocCPgp3U",
-    "durationSeconds": 5967,
-    "speakers": [
-      {"fullName": "Barack H Obama", "role": "Democratic nominee for President"},
-      {"fullName": "John S McCain", "role": "Republican nominee for President"},
-      {"fullName": "Tom Brokaw", "role": "Moderator"},
-      {"fullName": "Alan Schaefer", "role": "Audience questioner"},
-      {"fullName": "Oliver Clark", "role": "Audience questioner"},
-      {"fullName": "Theresa Finch", "role": "Audience questioner"},
-      {"fullName": "Ingrid Jackson", "role": "Audience questioner"},
-      {"fullName": "Lindsey Trellow", "role": "Audience questioner"},
-      {"fullName": "Phil Elliott", "role": "Audience questioner"},
-      {"fullName": "Katie Hamm", "role": "Audience questioner"},
-      {"fullName": "Terry Chary", "role": "Audience questioner"}
-		]
+  "fact": {
+    "title": "Presidential Debate - McCain, Obama (2 of 3)",
+    "primaryDate": "2008-10-07",
+    "primaryDateKind": "recorded",
+    "kind": "video"
+  },
+  "youtubeId": "57qocCPgp3U",
+  "durationSeconds": 5967,
+  "speakers": [
+    {"fullName": "Alan Schaefer", "role": "Audience questioner"},
+    {"fullName": "Barack H Obama", "role": "Democratic nominee for President"},
+    {"fullName": "Ingrid Jackson", "role": "Audience questioner"},
+    {"fullName": "John S McCain", "role": "Republican nominee for President"},
+    {"fullName": "Katie Hamm", "role": "Audience questioner"},
+    {"fullName": "Lindsey Trellow", "role": "Audience questioner"},
+    {"fullName": "Oliver Clark", "role": "Audience questioner"},
+    {"fullName": "Phil Elliott", "role": "Audience questioner"},
+    {"fullName": "Terry Chary", "role": "Audience questioner"},
+    {"fullName": "Theresa Finch", "role": "Audience questioner"},
+    {"fullName": "Tom Brokaw", "role": "Moderator"}
+  ]
 }

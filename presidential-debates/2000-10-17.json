@@ -1,30 +1,30 @@
 {
-    "fact": {
-        "title": "Presidential Debate - Bush, Gore (3 of 3)",
-        "primaryDate": "2000-10-17",
-        "primaryDateKind": "recorded",
-        "kind": "video"
-    },
-    "youtubeId": "ZFbyKIUp1E8",
-    "durationSeconds": 5507,
-    "speakers": [
-        {"fullName": "Al Gore", "role": "Democratic nominee for President"},
-        {"fullName": "George W Bush", "role": "Republican nominee for President"},
-        {"fullName": "Jim Lehrer", "role": "Moderator"},
-        {"fullName": "James Hankins", "role": "Audience questioner"},
-        {"fullName": "Marie Payne Kloepy", "role": "Audience questioner"},
-        {"fullName": "Vickie French", "role": "Audience questioner"},
-        {"fullName": "Angie Pettig", "role": "Audience questioner"},
-        {"fullName": "Andrew Kosberg", "role": "Audience questioner"},
-        {"fullName": "David Norwood", "role": "Audience questioner"},
-        {"fullName": "Kenneth Allen", "role": "Audience questioner"},
-        {"fullName": "Robert Lutz", "role": "Audience questioner"},
-        {"fullName": "Steve Luecker", "role": "Audience questioner"},
-        {"fullName": "Joyce Cleamer", "role": "Audience questioner"},
-        {"fullName": "Steven Koosmann", "role": "Audience questioner"},
-        {"fullName": "Norma Curby", "role": "Audience questioner"},
-        {"fullName": "Lisa Kee", "role": "Audience questioner"},
-        {"fullName": "Leo Anderson", "role": "Audience questioner"},
-        {"fullName": "Thomas Fischer", "role": "Audience questioner"}
-    ]
+  "fact": {
+    "title": "Presidential Debate - Bush, Gore (3 of 3)",
+    "primaryDate": "2000-10-17",
+    "primaryDateKind": "recorded",
+    "kind": "video"
+  },
+  "youtubeId": "ZFbyKIUp1E8",
+  "durationSeconds": 5507,
+  "speakers": [
+    {"fullName": "Al Gore", "role": "Democratic nominee for President"},
+    {"fullName": "Andrew Kosberg", "role": "Audience questioner"},
+    {"fullName": "Angie Pettig", "role": "Audience questioner"},
+    {"fullName": "David Norwood", "role": "Audience questioner"},
+    {"fullName": "George W Bush", "role": "Republican nominee for President"},
+    {"fullName": "James Hankins", "role": "Audience questioner"},
+    {"fullName": "Jim Lehrer", "role": "Moderator"},
+    {"fullName": "Joyce Cleamer", "role": "Audience questioner"},
+    {"fullName": "Kenneth Allen", "role": "Audience questioner"},
+    {"fullName": "Leo Anderson", "role": "Audience questioner"},
+    {"fullName": "Lisa Kee", "role": "Audience questioner"},
+    {"fullName": "Marie Payne Kloepy", "role": "Audience questioner"},
+    {"fullName": "Norma Curby", "role": "Audience questioner"},
+    {"fullName": "Robert Lutz", "role": "Audience questioner"},
+    {"fullName": "Steve Luecker", "role": "Audience questioner"},
+    {"fullName": "Steven Koosmann", "role": "Audience questioner"},
+    {"fullName": "Thomas Fischer", "role": "Audience questioner"},
+    {"fullName": "Vickie French", "role": "Audience questioner"}
+  ]
 }

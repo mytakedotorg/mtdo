@@ -8,13 +8,13 @@
   "youtubeId": "uBmuBXuD8NY",
   "durationSeconds": 3528,
   "speakers": [
-    {"fullName": "John F Kennedy", "role": "Democratic nominee for President"},
-    {"fullName": "Richard M Nixon", "role": "Republican nominee for President"},
-    {"fullName": "Frank McGee", "role": "Moderator"},
-    {"fullName": "Paul Niven", "role": "Panelist"},
-    {"fullName": "Edward P Morgan", "role": "Panelist"},
     {"fullName": "Alvin Spivak", "role": "Panelist"},
+    {"fullName": "Announcer offscreen", "role": "Announcer offscreen"},
+    {"fullName": "Edward P Morgan", "role": "Panelist"},
+    {"fullName": "Frank McGee", "role": "Moderator"},
     {"fullName": "Harold R Levy", "role": "Panelist"},
-    {"fullName": "Announcer offscreen", "role": "Announcer offscreen"}
+    {"fullName": "John F Kennedy", "role": "Democratic nominee for President"},
+    {"fullName": "Paul Niven", "role": "Panelist"},
+    {"fullName": "Richard M Nixon", "role": "Republican nominee for President"}
   ]
 }

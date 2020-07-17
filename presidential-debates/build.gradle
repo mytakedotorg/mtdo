@@ -42,3 +42,30 @@ spotless {
 		replace('No need for double dash', "--", "-")
 	}
 }
+
+// use foundation-gen to format the .json files
+configurations {
+	foundationGenClasspath
+}
+dependencies {
+	foundationGenClasspath project(':foundation-gen')
+}
+spotless {
+	format 'foundation-video', {
+		target '**/*.json'
+		bumpThisNumberIfACustomStepChanges(3)
+		custom 'VideoJsonFormat', { str ->
+			ByteArrayOutputStream result = new ByteArrayOutputStream()
+			javaexec {
+				classpath configurations.foundationGenClasspath
+				main = 'org.mytake.foundation.VideoJsonFormat'
+				standardInput = new ByteArrayInputStream(str.getBytes('UTF-8'))
+				standardOutput = result
+			}
+			return new String(result.toByteArray(), 'UTF-8')
+		}
+	}
+}
+tasks.named('spotlessFoundation-video') {
+	dependsOn ':foundation-gen:jar'
+}
