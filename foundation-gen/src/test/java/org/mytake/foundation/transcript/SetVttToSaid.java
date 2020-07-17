@@ -17,57 +17,68 @@ import com.diffplug.common.base.Either;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+
 import org.eclipse.jgit.diff.Edit;
 import org.mytake.foundation.transcript.Word.Vtt;
 
 public class SetVttToSaid {
 	public static void main(String[] args) throws IOException {
 		TranscriptFolder folder = new TranscriptFolder(new File("../presidential-debates"));
+		List<Vtt> newVtt = new ArrayList<>();
 		for (String name : folder.transcriptsWithMeta()) {
-			TranscriptMatch match = folder.loadTranscript(name);
-			if (match.edits().isEmpty()) {
+			if (Arrays.asList("1980-09-21", "1984-10-21", "1988-09-25", "1992-10-15", "2000-10-03", "2000-10-11", "2016-10-09").contains(name)) {
 				continue;
 			}
-			List<Vtt> fixedVtt = new ArrayList<>(match.vttWords());
-			int vttDelta = 0;
-			for (Edit edit : match.edits()) {
+			TranscriptMatch match = folder.loadTranscript(name);
+			while (!match.edits().isEmpty()) {
+				newVtt.clear();
+				newVtt.addAll(match.vttWords());
+				Edit edit = match.edits().get(0);
 				Either<List<Word.Said>, Integer> said = match.saidFor(edit);
 				Either<List<Word.Vtt>, Integer> vtt = match.vttFor(edit);
 				if (said.isRight()) {
 					List<Word.Vtt> toRemove = vtt.getLeft();
-					fixedVtt.removeAll(toRemove);
-					vttDelta -= toRemove.size();
+					newVtt.removeAll(toRemove);
 				} else {
 					List<Word.Said> toAdd = said.getLeft();
-					int insertionPoint;
-					if (vtt.isRight()) {
-						insertionPoint = vtt.getRight() + vttDelta;
-						vttDelta += toAdd.size();
-					} else {
+					if (vtt.isLeft() && vtt.getLeft().size() == toAdd.size()) {
 						List<Word.Vtt> toRemove = vtt.getLeft();
-						insertionPoint = fixedVtt.indexOf(toRemove.get(0));
-						fixedVtt.removeAll(toRemove);
-						vttDelta = vttDelta - toRemove.size() + toAdd.size();
-					}
-					Word.Vtt before = fixedVtt.get(insertionPoint - 1);
-					double dt;
-					if (insertionPoint == fixedVtt.size()) {
-						dt = 0.5;
+						for (int i = 0; i < toRemove.size(); ++i) {
+							newVtt.set(edit.getBeginB() + i, new Word.Vtt(toAdd.get(i).lowercase(), toRemove.get(i).time()));
+						}
 					} else {
-						Word.Vtt after = fixedVtt.get(insertionPoint);
-						double elapsed = after.time() - before.time();
-						dt = elapsed / (toAdd.size() + 1);
-					}
+						int insertionPoint;
+						if (vtt.isRight()) {
+							insertionPoint = vtt.getRight();
+						} else {
+							List<Word.Vtt> toRemove = vtt.getLeft();
+							insertionPoint = newVtt.indexOf(toRemove.get(0));
+							if (toRemove.size() == toAdd.size()) {
+								insertionPoint = -1;
+							}
+						}
+						System.out.println(name);
+						Word.Vtt before = newVtt.get(insertionPoint - 1);
+						double dt;
+						if (insertionPoint == newVtt.size()) {
+							dt = 0.5;
+						} else {
+							Word.Vtt after = newVtt.get(insertionPoint);
+							double elapsed = after.time() - before.time();
+							dt = elapsed / (toAdd.size() + 1);
+						}
 
-					for (int i = 0; i < toAdd.size(); ++i) {
-						Word.Said a = toAdd.get(i);
-						fixedVtt.add(insertionPoint + i, new Word.Vtt(a.lowercase(), before.time + (i + 1) * dt));
+						for (int i = 0; i < toAdd.size(); ++i) {
+							Word.Said a = toAdd.get(i);
+							newVtt.add(insertionPoint + i, new Word.Vtt(a.lowercase(), before.time + (i + 1) * dt));
+						}
 					}
 				}
+				System.out.println("saving " + name + " with edits " + match.edits().size());
+				match = match.save(folder, name, newVtt, null);
 			}
-			System.out.println("saving " + name);
-			match.save(folder, name, fixedVtt, null);
 		}
 	}
 }
