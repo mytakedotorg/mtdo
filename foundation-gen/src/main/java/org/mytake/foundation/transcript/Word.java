@@ -23,8 +23,8 @@ public class Word {
 		this.lowercase = trimPunctuation(word).toLowerCase(Locale.ROOT);
 	}
 
-	private static boolean isAlphaNumeric(char c) {
-		return Character.isAlphabetic(c) || Character.isDigit(c);
+	private static boolean isNonPunctuation(char c) {
+		return Character.isAlphabetic(c) || Character.isDigit(c) || c == '$' || c == '%';
 	}
 
 	public static String trimPunctuation(String input) {
@@ -33,12 +33,12 @@ public class Word {
 		char firstChar = input.charAt(0);
 		Preconditions.checkArgument(!Character.isWhitespace(firstChar), "First char can't be whitespace!");
 		Preconditions.checkArgument(!Character.isWhitespace(lastChar), "Last char can't be whitespace!");
-		boolean trimFirst = !isAlphaNumeric(firstChar);
-		boolean trimLast = !isAlphaNumeric(lastChar);
+		boolean trimFirst = !isNonPunctuation(firstChar);
+		boolean trimLast = !isNonPunctuation(lastChar);
 		if (trimFirst || trimLast) {
 			if (trimLast && input.length() > 2) {
 				char secondToLast = input.charAt(input.length() - 2); // e.g.: word."
-				if (!isAlphaNumeric(secondToLast)) {
+				if (!isNonPunctuation(secondToLast)) {
 					if (trimFirst) {
 						return input.substring(1, input.length() - 2);
 					} else {

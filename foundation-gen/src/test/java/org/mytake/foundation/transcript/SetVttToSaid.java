@@ -28,7 +28,7 @@ public class SetVttToSaid {
 		TranscriptFolder folder = new TranscriptFolder(new File("../presidential-debates"));
 		List<Vtt> newVtt = new ArrayList<>();
 		for (String name : folder.transcriptsWithMeta()) {
-			if (Arrays.asList("1980-09-21", "1984-10-21", "1988-09-25", "1992-10-15", "2000-10-03", "2000-10-11", "2016-10-09").contains(name)) {
+			if (Arrays.asList("1988-09-25", "1992-10-15", "2000-10-11", "2016-10-09").contains(name)) {
 				continue;
 			}
 			TranscriptMatch match = folder.loadTranscript(name);
