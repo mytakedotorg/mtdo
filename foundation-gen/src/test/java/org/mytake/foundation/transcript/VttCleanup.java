@@ -51,7 +51,7 @@ public class VttCleanup {
 		for (int i = 0; i < vtt.lines().size(); ++i) {
 			wordsBuffer.clear();
 			VttTranscript.Line line = vtt.lines().get(i);
-			line.addWords(wordsBuffer);
+			line.addWordsTo(wordsBuffer);
 			double end;
 			if (i != vtt.lines().size() - 1) {
 				VttTranscript.Line nextLine = vtt.lines().get(i + 1);
