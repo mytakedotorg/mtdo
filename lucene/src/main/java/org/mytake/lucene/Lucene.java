@@ -109,8 +109,14 @@ public class Lucene implements AutoCloseable {
 
 				// the text that we're indexing (not stored)
 				int start = videoFact.charOffsets[videoFact.speakerWord[i]];
-				String sub = videoFact.plainText.substring(start, end);
-				doc.add(new TextField(Lucene.CONTENT, sub, Store.NO));
+				try {
+					String sub = videoFact.plainText.substring(start, end);
+					doc.add(new TextField(Lucene.CONTENT, sub, Store.NO));
+				} catch (Exception e) {
+					System.out.println("ERROR in " + videoFact.fact.title + " at:");
+					System.out.println(videoFact.plainText.substring(start, Math.min(start + 200, videoFact.plainText.length())));
+					throw e;
+				}
 
 				// write it and get ready for the next one
 				iwriter.addDocument(doc);
