@@ -1,6 +1,6 @@
 /*
  * MyTake.org transcript GUI. 
- * Copyright (C) 2018 MyTake.org, Inc.
+ * Copyright (C) 2018-2020 MyTake.org, Inc.
  * 
  * The MyTake.org transcript GUI is licensed under EPLv2
  * because SWT is incompatible with AGPLv3, the rest of
@@ -44,7 +44,7 @@ public abstract class VttTranscript {
 	public List<Word.Vtt> words() {
 		List<Word.Vtt> words = new ArrayList<>();
 		for (Line line : lines()) {
-			line.addWords(words);
+			line.addWordsTo(words);
 		}
 		return words;
 	}
@@ -55,7 +55,7 @@ public abstract class VttTranscript {
 
 		public abstract List<VttToken> tokens();
 
-		void addWords(List<Word.Vtt> words) {
+		void addWordsTo(List<Word.Vtt> words) {
 			double time = header().start();
 			for (VttToken token : tokens()) {
 				if (token.isTime()) {
@@ -265,7 +265,7 @@ public abstract class VttTranscript {
 		VttTranscript.Line lastLine = lines().get(lines().size() - 1);
 		for (VttTranscript.Line line : lines()) {
 			buffer.clear();
-			line.addWords(buffer);
+			line.addWordsTo(buffer);
 
 			int endOld = startOld + buffer.size();
 			int endNew = map.map(endOld);

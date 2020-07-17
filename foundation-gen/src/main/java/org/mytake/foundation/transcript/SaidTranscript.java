@@ -122,7 +122,7 @@ public abstract class SaidTranscript {
 				}
 				++lineCount;
 			}
-			return new AutoValue_SaidTranscript(turns);
+			return create(turns);
 		} catch (Exception e) {
 			throw new RuntimeException("On line " + lineCount, e);
 		}
