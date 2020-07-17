@@ -27,6 +27,7 @@ public class SetVttToSaid {
 		TranscriptFolder folder = new TranscriptFolder(new File("../presidential-debates"));
 		List<Vtt> newVtt = new ArrayList<>();
 		for (String name : folder.transcriptsWithMeta()) {
+			// excludes go here
 			if (Arrays.asList().contains(name)) {
 				continue;
 			}
