@@ -10,7 +10,7 @@ npm start // start proxy server
 
 and you will have a browsersync proxy running at `localhost:3000` with hot reload for the react components and sass styles.
 
-If bump into any problems, we have listed [common errors and their solutions](#common-errors-and-their-solutions) below.
+If you bump into any problems, we have listed [common errors and their solutions](#common-errors-and-their-solutions) below.
 
 ## Entrypoints
 
