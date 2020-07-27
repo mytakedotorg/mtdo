@@ -10,6 +10,7 @@
     "jsx": "react",
     "strictNullChecks": true,
     "noEmit": true,
+    "esModuleInterop": true,
     "baseUrl": "src/main",
     "paths": {
       "*": ["scripts/types/*"]
