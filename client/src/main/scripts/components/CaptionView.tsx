@@ -161,7 +161,7 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
 
         const simpleRanges = getSimpleRangesFromHTMLRange(
           range,
-          ReactDOM.findDOMNode(this.captionNodesDiv).childNodes
+          this.captionNodesDiv.childNodes
         );
 
         const wordRange = getWordRangeFromCharRange(
