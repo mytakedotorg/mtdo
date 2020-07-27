@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2017-2019 MyTake.org, Inc.
+ * Copyright (C) 2017-2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -31,36 +31,27 @@ interface DocumentProps {
   className?: string;
 }
 
-interface DocumentState {}
+const Document = React.forwardRef<
+  HTMLDivElement,
+  React.PropsWithChildren<DocumentProps>
+>((props, ref) => {
+  let classes = "document document--static";
+  let documentClass = props.className ? props.className : "document__row";
 
-class Document extends React.Component<DocumentProps, DocumentState> {
-  constructor(props: DocumentProps) {
-    super(props);
-  }
-  getDocumentNodes = () => {
-    return [...this.props.nodes];
-  };
-  render() {
-    let classes = "document document--static";
-    let documentClass = this.props.className
-      ? this.props.className
-      : "document__row";
-
-    return (
-      <div className={classes}>
-        <div className={documentClass}>
-          <div className={"document__row-inner"}>
-            <DocumentTextNodeList
-              className="document__text"
-              onMouseUp={this.props.eventHandlers.onMouseUp}
-              documentNodes={this.props.nodes}
-            />
-            {this.props.children ? this.props.children : null}
-          </div>
+  return (
+    <div className={classes} ref={ref}>
+      <div className={documentClass}>
+        <div className={"document__row-inner"}>
+          <DocumentTextNodeList
+            className="document__text"
+            onMouseUp={props.eventHandlers.onMouseUp}
+            documentNodes={props.nodes}
+          />
+          {props.children ? props.children : null}
         </div>
       </div>
-    );
-  }
-}
+    </div>
+  );
+});
 
 export default Document;

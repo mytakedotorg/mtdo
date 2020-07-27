@@ -75,7 +75,7 @@ export default class TimelinePreview extends React.Component<
   TimelinePreviewProps,
   TimelinePreviewState
 > {
-  private document: Document;
+  private document: HTMLDivElement | null;
   constructor(props: TimelinePreviewProps) {
     super(props);
 
@@ -92,10 +92,14 @@ export default class TimelinePreview extends React.Component<
   }
   getScrollTop = (range?: [number, number]) => {
     // Get the scrollTop value of the top most HTML element containing the same highlighted nodes
-    let theseDOMNodes = ReactDOM.findDOMNode(this.document).childNodes;
+    const childNodes = this.document?.childNodes;
 
-    let offsetTop = getStartRangeOffsetTop(
-      theseDOMNodes,
+    if (!childNodes) {
+      throw "TimelinePreview: timeline preview ref is undefined";
+    }
+
+    const offsetTop = getStartRangeOffsetTop(
+      childNodes,
       range ? range : this.state.viewRange
     );
 
@@ -118,12 +122,15 @@ export default class TimelinePreview extends React.Component<
         //Some text is selected
         const range: Range = selection.getRangeAt(0);
 
-        const simpleRanges = getSimpleRangesFromHTMLRange(
-          range,
-          ReactDOM.findDOMNode(this.document).childNodes
-        );
+        const childNodes = this.document?.childNodes;
+
+        if (!childNodes) {
+          throw "TimelinePreview: timeline preview ref is undefined";
+        }
+
+        const simpleRanges = getSimpleRangesFromHTMLRange(range, childNodes);
         const newNodes = highlightText(
-          [...this.document.getDocumentNodes()],
+          [...this.props.nodes],
           simpleRanges.charRange,
           this.handleSetClick
         );
@@ -213,16 +220,15 @@ export default class TimelinePreview extends React.Component<
       props = this.props;
     }
 
-    if (props.ranges && props.ranges.viewRange) {
+    if (props.ranges && props.ranges.viewRange && this.props.nodes) {
       // Get the list of nodes highlighted by a previous author
       let initialHighlightedNodes = getHighlightedNodes(
-        this.document.getDocumentNodes(),
+        this.props.nodes,
         props.ranges.highlightedRange,
         props.ranges.viewRange
       );
 
       // Get the scrollTop value of the top most HTML element containing the same highlighted nodes
-      let theseDOMNodes = ReactDOM.findDOMNode(this).childNodes;
       let offsetTop;
       if (nextProps && nextProps.ranges) {
         offsetTop = this.getScrollTop(nextProps.ranges.highlightedRange);
@@ -290,7 +296,7 @@ export default class TimelinePreview extends React.Component<
             <Document
               nodes={this.props.nodes}
               eventHandlers={documentEventHandlers}
-              ref={(document: Document) => (this.document = document)}
+              ref={(document) => (this.document = document)}
               className={"document__row"}
             >
               {this.state.textIsHighlighted ? (
