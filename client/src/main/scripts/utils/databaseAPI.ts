@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2017-2019 MyTake.org, Inc.
+ * Copyright (C) 2017-2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -37,17 +37,18 @@ function getAllFacts(
     factLinks: Foundation.FactLink[]
   ) => any
 ): void {
-  const headers = new Headers();
+  const indexHeaders = new Headers();
 
-  headers.append("Accept", "application/json"); // This one is enough for GET requests
+  indexHeaders.append("Accept", "application/json");
+  indexHeaders.append("Cache-Control", "no-cache"); // https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control
 
-  const request: RequestInit = {
+  const indexRequestOptions: RequestInit = {
     method: "GET",
-    headers: headers,
-    cache: "default",
+    headers: indexHeaders,
+    cache: "no-cache", // https://developer.mozilla.org/en-US/docs/Web/API/Request/cache
   };
 
-  fetch(Routes.FOUNDATION_INDEX_HASH, request)
+  fetch(Routes.FOUNDATION_INDEX_HASH, indexRequestOptions)
     .then((response: Response) => {
       const contentType = response.headers.get("content-type");
       if (
@@ -61,7 +62,19 @@ function getAllFacts(
       }
     })
     .then((json: Foundation.IndexPointer) => {
-      return fetch(Routes.FOUNDATION_DATA + "/" + json.hash + ".json", request);
+      const headers = new Headers();
+
+      headers.append("Accept", "application/json");
+
+      const requestOptions: RequestInit = {
+        method: "GET",
+        headers: headers,
+        cache: "default",
+      };
+      return fetch(
+        Routes.FOUNDATION_DATA + "/" + json.hash + ".json",
+        requestOptions
+      );
     })
     .then((response: Response) => {
       return response.json();
