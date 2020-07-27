@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2018 MyTake.org, Inc.
+ * Copyright (C) 2018-2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -30,10 +30,10 @@ import java.lang.reflect.Field;
 import java.net.URL;
 
 public class DevRockerReload {
-	public static void initRockerReload() throws Exception {
+	public static void initRockerReload(File templateClassLocation) throws Exception {
 		ReloadingRockerBootstrap bootstrap = new ReloadingRockerBootstrap();
 		// specific to hotreload
-		bootstrap.getConfiguration().setClassDirectory(new File("bin"));
+		bootstrap.getConfiguration().setClassDirectory(templateClassLocation);
 		// the rest shuold match server/build.gradle
 		bootstrap.getConfiguration().setTemplateDirectory(new File("src/main/rocker").getAbsoluteFile());
 		bootstrap.getConfiguration().setOutputDirectory(new File("src/main/rocker-generated").getAbsoluteFile());
