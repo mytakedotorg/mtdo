@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2018 MyTake.org, Inc.
+ * Copyright (C) 2018-2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -56,15 +56,11 @@ class VideoResult extends React.Component<VideoResultProps, VideoResultState> {
     const fullName = videoFact.speakers[videoFact.speakerPerson[turn]].fullName;
     return fullName.substring(fullName.lastIndexOf(" "));
   };
-  getTime = (props: VideoResultProps): string => {
-    const { turn, videoFact } = props;
-    const turnSeconds = videoFact.timestamps[videoFact.speakerWord[turn]];
-
+  getTime = (): string => {
     return (
-      "@ " +
-      convertSecondsToTimestamp(turnSeconds) +
-      "/" +
-      convertSecondsToTimestamp(props.videoFact.durationSeconds)
+      convertSecondsToTimestamp(this.clipRange[0]) +
+      " - " +
+      convertSecondsToTimestamp(this.clipRange[1])
     );
   };
   getClipTimeRange = (multiHighlight: MultiHighlight): [number, number] => {
@@ -157,7 +153,7 @@ class VideoResult extends React.Component<VideoResultProps, VideoResultState> {
       <div className="turn">
         <div className="turn__info">
           <h3 className="turn__speaker">{this.getSpeaker(this.props)}</h3>
-          <p className="turn__time">{this.getTime(this.props)}</p>
+          <p className="turn__time">{this.getTime()}</p>
           <div className="turn__actions">
             <button
               className="turn__button turn__button--play"

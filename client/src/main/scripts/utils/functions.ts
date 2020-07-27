@@ -315,7 +315,7 @@ export function convertSecondsToTimestamp(totalSeconds: number): string {
     MM = minutes.toString();
     return MM + ":" + SS;
   } else {
-    return seconds.toString();
+    return "0:" + seconds.toString();
   }
 }
 
