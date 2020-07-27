@@ -58,9 +58,8 @@ class VideoResult extends React.Component<VideoResultProps, VideoResultState> {
   };
   getTime = (): string => {
     return (
-      "@ " +
       convertSecondsToTimestamp(this.clipRange[0]) +
-      "/" +
+      " - " +
       convertSecondsToTimestamp(this.clipRange[1])
     );
   };

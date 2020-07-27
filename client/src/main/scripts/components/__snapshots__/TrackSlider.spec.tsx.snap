@@ -7,7 +7,7 @@ exports[`Initial render 1`] = `
   <p
     className="trackSlider__text trackSlider__text--min"
   >
-    0
+    0:0
   </p>
   <div
     className="trackSlider__range-container"
@@ -112,7 +112,7 @@ exports[`Unzoomed render 1`] = `
   <p
     className="trackSlider__text trackSlider__text--min"
   >
-    4
+    0:4
   </p>
   <div
     className="trackSlider__range-container"
@@ -259,7 +259,7 @@ exports[`Zoomed render 1`] = `
   <p
     className="trackSlider__text trackSlider__text--min"
   >
-    4
+    0:4
   </p>
   <div
     className="trackSlider__range-container"
