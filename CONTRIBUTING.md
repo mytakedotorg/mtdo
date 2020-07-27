@@ -1,6 +1,6 @@
 # Contributing to mytake.org
 
-We welcome contributions of all kinds - design, code, strategy, anything you got!  If you're looking for a starting point, check out [the issues marked `good first issue`](https://github.com/mytakedotorg/mytakedotorg/labels/good%20first%20issue).
+We welcome contributions of all kinds - design, code, strategy, anything you got!  To stand up a dev environment quickly, peek at [`DEV_QUICKSTART.md`](DEV_QUICKSTART.md). If you're looking for a low-hanging fruit, check out [the issues marked `good first issue`](https://github.com/mytakedotorg/mytakedotorg/labels/good%20first%20issue).
 
 If you want to make a financial donation, please email Ned at [ned.twigg@mytake.org](mailto:ned.twigg@mytake.org).
 
@@ -9,10 +9,6 @@ We believe in permissionless innovation - if you have an idea, feel free to just
 We also believe in teamwork and consensus - if you want your idea to get merged and released, be ready to debate its merits in the PR.
 
 To minimize wasted effort, it might be a good idea to discuss your plan in an issue before you get started, but don't be afraid to just tinker and toss a prototype out there.
-
-## Build instructions
-
-See [README.md](README.md) for instructions on how to setup the project.
 
 ## Code of conduct
 
