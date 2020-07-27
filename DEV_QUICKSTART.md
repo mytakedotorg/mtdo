@@ -1,6 +1,6 @@
 # Dev quickstart
 
-When you run `./gradlew runDev`, you will get a server running at `localhost:8080`.  If you then `cd` into the `client` directory, you can run:
+When you run `./gradlew runDev`, you will get a server running at `localhost:8080` with hot reload for templates.  If you then `cd` into the `client` directory, you can run:
 
 ```
 nvm use   // get correct version of node & npm
@@ -8,11 +8,9 @@ npm ci    // get dependencies
 npm start // start proxy server
 ```
 
-and you will now have a browsersync proxy running at `localhost:3000` with hot reload for the react components and sass styles.
+and you will have a browsersync proxy running at `localhost:3000` with hot reload for the react components and sass styles.
 
-> Note: as of now, in order to get hot reload of templates, you must run `./gradlew ide` and run `DevHotReload.java`.  We are trying to add hot reload into the regular `./gradlew runDev`, but for now you have to start the java IDE to get that.
-
-If you have any problems, we have listed [common errors and their solutions](#common-errors-and-their-solutions) below.
+If bump into any problems, we have listed [common errors and their solutions](#common-errors-and-their-solutions) below.
 
 ## Entrypoints
 
