@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2017 MyTake.org, Inc.
+ * Copyright (C) 2017-2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -32,13 +32,13 @@ import javax.annotation.Nullable;
  * form and a success message for the entire form.
  */
 public class FormValidation<T> {
-	protected final FormDef def;
+	protected final LegacyFormDef def;
 
-	protected FormValidation(FormDef def) {
+	protected FormValidation(LegacyFormDef def) {
 		this.def = def;
 	}
 
-	public FormDef def() {
+	public LegacyFormDef def() {
 		return def;
 	}
 

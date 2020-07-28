@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2017 MyTake.org, Inc.
+ * Copyright (C) 2017-2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -29,10 +29,10 @@ import java.util.Set;
 /** Creates a form, with validation fields and CSRF protection, inside a Rocker template. */
 public class FormMarkup {
 	private final String postUrl;
-	private final FormDef def;
+	private final LegacyFormDef def;
 	private final FormValidation<?> validation;
 
-	public FormMarkup(String postUrl, FormDef def, FormValidation<?> validation) {
+	public FormMarkup(String postUrl, LegacyFormDef def, FormValidation<?> validation) {
 		this.postUrl = postUrl;
 		this.def = def;
 		this.validation = validation;

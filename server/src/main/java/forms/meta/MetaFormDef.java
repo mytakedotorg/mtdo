@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2017 MyTake.org, Inc.
+ * Copyright (C) 2017-2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -21,7 +21,7 @@ package forms.meta;
 
 import com.diffplug.common.base.Errors;
 import com.google.common.collect.Iterators;
-import forms.api.FormDef;
+import forms.api.LegacyFormDef;
 import java.util.AbstractSet;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -33,8 +33,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.jooby.Request;
 import org.jooby.Response;
 
-/** A {@link FormDef} based on {@link MetaField}. */
-public abstract class MetaFormDef implements FormDef {
+/** A {@link LegacyFormDef} based on {@link MetaField}. */
+public abstract class MetaFormDef implements LegacyFormDef {
 	@Override
 	public Set<String> fieldNames() {
 		return new AbstractSet<String>() {
