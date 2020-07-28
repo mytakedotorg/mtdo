@@ -88,51 +88,6 @@ public class LuceneTest {
 
 			// multiclause
 			newQuery("luke common, darth common").expect(lucene, new VidResult(HASH, 0), new VidResult(HASH, 1));
-
-			// excludes
-			newQuery("common, -darth common").expect(lucene, new VidResult(HASH, 0));
-			newQuery("common, -common several").expect(lucene, new VidResult(HASH, 0));
-		}
-	}
-
-	@Test
-	public void excludeComplexTest() throws IOException {
-		Speaker luke = new Speaker();
-		luke.fullName = "Luke Skywalker";
-		luke.role = "candidate";
-
-		VideoFactContentJava fact = new VideoFactContentJava();
-		fact.fact = new Foundation.Fact();
-		fact.fact.kind = Foundation.KIND_VIDEO;
-		fact.fact.primaryDate = "2010-11-12";
-		fact.fact.primaryDateKind = "recorded";
-		fact.fact.title = "Title";
-		fact.youtubeId = "youtube";
-		fact.durationSeconds = 123;
-		fact.speakers = Arrays.asList(luke);
-		fact.plainText = "Border wall good, and wall street bad";
-		fact.charOffsets = new int[]{0, 7, 12, 18, 22, 27, 34};
-		fact.timestamps = new double[]{0, 1, 2, 3, 4, 5, 6};
-		fact.speakerPerson = new int[]{0};
-		fact.speakerWord = new int[]{0};
-
-		try (Lucene.Writer writer = new Lucene.Writer(tempFolder.getRoot().toPath())) {
-			writer.writeVideo(HASH, fact);
-		}
-
-		try (Lucene lucene = new Lucene(tempFolder.getRoot().toPath())) {
-			// if you want "good", but not "wall good", then I got nothin for ya
-			newQuery("good, -wall good").expect(lucene);
-			// if you want "good", but not "good and", then I got nothin for ya
-			newQuery("good, -good and").expect(lucene);
-
-			// if you want "wall", then of course I have something
-			newQuery("wall").expect(lucene, new VidResult(HASH, 0));
-			// but if you don't want border wall or wall street, then I don't
-			newQuery("wall, -border wall, -wall street").expect(lucene);
-			// but if you want one, but not the other, then...
-			newQuery("wall, -wall street").expect(lucene, new VidResult(HASH, 0));
-			newQuery("wall, -border wall").expect(lucene, new VidResult(HASH, 0));
 		}
 	}
 

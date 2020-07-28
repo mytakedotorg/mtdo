@@ -159,7 +159,6 @@ public class Lucene implements AutoCloseable {
 
 	static class NextRequest {
 		TreeSet<String> clauses = new TreeSet<>();
-		TreeSet<String> exclude = new TreeSet<>();
 
 		NextRequest(String q) {
 			String[] clausesRaw = q.split(",", -1);
@@ -169,7 +168,7 @@ public class Lucene implements AutoCloseable {
 					continue;
 				}
 				if (trimmed.charAt(0) == '-') {
-					exclude.add(trimmed.substring(1));
+					// these are filtered out on the client
 				} else {
 					clauses.add(trimmed);
 				}
@@ -188,9 +187,6 @@ public class Lucene implements AutoCloseable {
 			QueryBuilder phraseParser = new QueryBuilder(analyzer);
 			for (String clause : request.clauses) {
 				finalQuery.add(phraseParser.createPhraseQuery(CONTENT, clause), Occur.SHOULD);
-			}
-			for (String clause : request.exclude) {
-				finalQuery.add(phraseParser.createPhraseQuery(CONTENT, clause), Occur.MUST_NOT);
 			}
 		}
 
