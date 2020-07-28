@@ -152,28 +152,15 @@ dependencies {
 	implementation 'com.auth0:java-jwt:3.10.3'
 }
 
-task runProd(type: JavaExec, dependsOn: classes) {
-	description = 'Run app in prod mode'
-	classpath = sourceSets.main.runtimeClasspath
-	main = 'common.Prod'
-	if (project.hasProperty('DATABASE_URL')) {
-		environment('DATABASE_URL', project.getProperty('DATABASE_URL'))
-	}
-	if (project.hasProperty('SPARKPOST_APIKEY')) {
-		environment('SPARKPOST_APIKEY', project.getProperty('SPARKPOST_APIKEY'))
-	}
-	args = [
-		'prod'
-	]
-}
-
 // see common.DevHotReload in an IDE for faster dev
-task runDev(type: JavaExec, dependsOn: testClasses) {
+tasks.register('runDev', JavaExec) {
+	dependsOn 'testClasses'
 	description = 'Run app in dev mode'
 	classpath = sourceSets.test.runtimeClasspath
-	main = 'common.Dev'
+	main = 'common.DevHotReload'
 	args = [
-		'dev'
+		'dev',
+		'gradle'
 	]
 }
 

@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import javax.annotation.Nullable;
@@ -40,11 +41,28 @@ import org.jooby.Jooby;
  *   from the browser's point-of-view.
  */
 public class DevHotReload {
-	static boolean LOAD_BACKUP = true;
-	// if you reload emails, then you can't reload webpages.  And vice-versa.
-	static boolean RELOAD_EMAILS = false;
+	static boolean LOAD_BACKUP = false;
 
 	public static void main(String[] args) throws Exception {
+		File templateClassLocation;
+		File[] codeLocations;
+		if (Arrays.asList(args).contains("gradle")) {
+			templateClassLocation = new File("build/classes/java/main");
+			codeLocations = new File[]{
+					templateClassLocation,
+					new File("build/classes/java/test"),
+					new File("../lucene/build/classes/java/main"),
+					new File("../client/build/classes/java/main"),
+			};
+		} else {
+			templateClassLocation = new File("bin/main");
+			codeLocations = new File[]{
+					templateClassLocation,
+					new File("bin/test"),
+					new File("../lucene/bin/main"),
+					new File("../client/bin/main")
+			};
+		}
 		// create a fresh database
 		CleanPostgresModule postgresModule;
 		if (LOAD_BACKUP) {
@@ -61,7 +79,7 @@ public class DevHotReload {
 				return "restarting";
 			});
 			// create a classloader for these directories
-			IncludingClassLoader loader = new IncludingClassLoader();
+			IncludingClassLoader loader = new IncludingClassLoader(codeLocations);
 			// Every second, check if any of the classes for this classloader have changed.
 			// If they have, stop the app and restart
 			new Thread() {
@@ -74,7 +92,7 @@ public class DevHotReload {
 				}
 			}.start();
 			// initialize rocker reloading
-			loader.loadClass("common.DevRockerReload").getMethod("initRockerReload").invoke(null);
+			loader.loadClass("common.DevRockerReload").getMethod("initRockerReload", File.class).invoke(null, templateClassLocation);
 			// use this classloader to load and start the app, using the persistent database
 			Class<?> devClass = loader.loadClass("common.Dev");
 			Jooby dev = (Jooby) devClass.getMethod("realtime", CleanPostgresModule.class).invoke(null, postgresModule);
@@ -106,7 +124,8 @@ public class DevHotReload {
 				"com.jsoniter.",
 		};
 
-		IncludingClassLoader() {
+		IncludingClassLoader(File[] codeLocations) {
+			super(codeLocations);
 			// needed for Quartz - any classes that define an @Scheduled need their packages defined here
 			super.definePackage("controllers", null, null, null, null, null, null, null);
 		}
@@ -129,6 +148,10 @@ public class DevHotReload {
 	 * else delegate up to the parent. 
 	 */
 	static class ExceptingClassLoader extends DynamicClassLoader {
+		ExceptingClassLoader(File[] findCode) {
+			super(findCode);
+		}
+
 		private static final String[] PKGS = new String[]{
 				"compat.",
 				"java2ts.",
@@ -160,17 +183,17 @@ public class DevHotReload {
 
 	/** Loads from file. */
 	static class DynamicClassLoader extends AggressiveClassLoader {
-		private static File[] DIRS = new File[]{
-				new File("bin/main"),
-				new File("bin/test"),
-				new File("../lucene/bin/main"),
-				new File("../client/bin/main")
-		};
+		private final File[] codeLocations;
+
+		DynamicClassLoader(File[] codeLocations) {
+			this.codeLocations = codeLocations;
+		}
+
 		final Map<File, Long> fileToLastModified = new HashMap<>();
 
 		@Override
 		protected byte[] loadNewClass(String name) throws IOException {
-			for (File dir : DIRS) {
+			for (File dir : codeLocations) {
 				File file = new File(dir, name.replace('.', '/') + ".class");
 				if (file.exists()) {
 					Path p = file.toPath();
