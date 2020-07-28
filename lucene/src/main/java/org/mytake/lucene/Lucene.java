@@ -189,6 +189,9 @@ public class Lucene implements AutoCloseable {
 			for (String clause : request.clauses) {
 				finalQuery.add(phraseParser.createPhraseQuery(CONTENT, clause), Occur.SHOULD);
 			}
+			for (String clause : request.exclude) {
+				finalQuery.add(phraseParser.createPhraseQuery(CONTENT, clause), Occur.MUST_NOT);
+			}
 		}
 
 		List<Document> queryResults = runQuery(finalQuery.build());
