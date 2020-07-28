@@ -80,10 +80,14 @@ public class LuceneTest {
 			newQuery("Luke common").expect(lucene, new VidResult(HASH, 0));
 			newQuery("Darth COMMON").expect(lucene, new VidResult(HASH, 1));
 
+			// phrase ignores punctuation in source
 			newQuery("several beans").expect(lucene);
 			newQuery("several green beans").expect(lucene, new VidResult(HASH, 1));
 			newQuery("green beans").expect(lucene, new VidResult(HASH, 1));
 			newQuery("several green").expect(lucene, new VidResult(HASH, 1));
+
+			// multiclause
+			newQuery("luke common, darth common").expect(lucene, new VidResult(HASH, 0), new VidResult(HASH, 1));
 		}
 	}
 
