@@ -22,9 +22,7 @@ import * as renderer from "react-test-renderer";
 import VideoResultPreview from "./VideoResultPreview";
 import { kennedyNixon } from "../utils/testUtils";
 
-jest.mock("./VideoResultTurnList", () => ({
-  default: "VideoResultTurnList",
-}));
+jest.mock("./VideoResult");
 
 test("VideoResultPreview containing", () => {
   const tree = renderer

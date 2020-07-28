@@ -20,7 +20,7 @@
 import * as React from "react";
 import * as renderer from "react-test-renderer";
 import { VideoResultsList, VideoResultsListProps } from "./VideoResultsList";
-import * as videoFactHashMap from "../utils/videoFactHashMap.json";
+import videoFactHashMap from "../utils/videoFactHashMap.json";
 import { processFacts } from "../utils/factResults";
 import { VideoFactHashMap } from "../utils/databaseAPI";
 import { Search } from "../java2ts/Search";
