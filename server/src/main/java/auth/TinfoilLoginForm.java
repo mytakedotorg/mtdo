@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2018 MyTake.org, Inc.
+ * Copyright (C) 2018-2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -22,58 +22,50 @@ package auth;
 import static db.Tables.ACCOUNT;
 
 import com.auth0.jwt.algorithms.Algorithm;
-import com.google.common.collect.ImmutableSet;
+import common.RedirectException;
 import controllers.HomeFeed;
 import db.tables.pojos.Account;
 import db.tables.records.AccountRecord;
+import forms.api.FormValidation.Sensitive;
 import forms.meta.MetaField;
-import forms.meta.MetaFormDef;
-import forms.meta.MetaFormValidation;
+import forms.meta.PostForm;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
-import java.util.Set;
 import java2ts.Routes;
 import org.jooby.Request;
-import org.jooby.Response;
-import org.jooby.Status;
 import org.jooq.DSLContext;
 
-public class TinfoilLoginForm extends MetaFormDef.HandleValid {
+public class TinfoilLoginForm extends PostForm<TinfoilLoginForm> {
 	static final String URL = Routes.API + "/tinfoilLogin";
 
 	public static final MetaField<String> USERNAME = MetaField.string("tinfoil-username");
 	public static final MetaField<String> PASSWORD = MetaField.string("tinfoil-password");
 
-	@Override
-	public Set<MetaField<?>> fields() {
-		return ImmutableSet.of(USERNAME, PASSWORD);
+	public TinfoilLoginForm() {
+		super(URL, USERNAME, PASSWORD);
 	}
 
 	@Override
-	protected void validate(MetaFormValidation validation) {}
-
-	@Override
-	public boolean handleSuccessful(MetaFormValidation validation, Request req, Response rsp) throws Throwable {
-		String username = validation.parsed(USERNAME);
+	protected ValidateResult<TinfoilLoginForm> validate(Request req, Sensitive<TinfoilLoginForm> fromUser) {
+		String username = fromUser.value(USERNAME);
 		try (DSLContext dsl = req.require(DSLContext.class)) {
 			AccountRecord accountRecord = dsl.selectFrom(ACCOUNT)
 					.where(ACCOUNT.USERNAME.eq(username))
 					.fetchOne();
 			if (accountRecord == null) {
-				rsp.send(Status.BAD_REQUEST);
+				throw RedirectException.notFoundError();
 			}
 			Account account = accountRecord.into(Account.class);
 			Algorithm algorithm = req.require(Algorithm.class);
 			byte[] content = (username + "|" + account.getEmail()).getBytes(StandardCharsets.UTF_8);
+			@SuppressWarnings("deprecation")
 			byte[] signature = algorithm.sign(content);
 			String password = Base64.getEncoder().encodeToString(signature);
-			if (validation.parsed(PASSWORD).equals(password)) {
-				AuthUser.login(account, req, rsp);
-				rsp.redirect(HomeFeed.URL);
+			if (fromUser.value(PASSWORD).equals(password)) {
+				return ValidateResult.redirect(HomeFeed.URL, AuthUser.login(account, req));
 			} else {
-				rsp.send(Status.BAD_REQUEST);
+				throw RedirectException.notFoundError();
 			}
 		}
-		return false;
 	}
 }

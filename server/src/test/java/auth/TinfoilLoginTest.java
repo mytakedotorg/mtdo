@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2018 MyTake.org, Inc.
+ * Copyright (C) 2018-2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -21,7 +21,7 @@ package auth;
 
 import com.auth0.jwt.algorithms.Algorithm;
 import common.JoobyDevRule;
-import forms.meta.MetaFormSubmit;
+import forms.meta.FormSubmit;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.Collections;
@@ -36,10 +36,10 @@ public class TinfoilLoginTest {
 	@Test
 	public void correctWorks() {
 		String loginCookie = AuthModuleHarness.authTokenValue(dev, "samples");
-		MetaFormSubmit.create(TinfoilLoginForm.class)
+		FormSubmit.create(TinfoilLoginForm.class)
 				.set(TinfoilLoginForm.USERNAME, "samples")
 				.set(TinfoilLoginForm.PASSWORD, "Ijk07hx8GrfgJV6b3q+FxXY8zUvBl88VzIG0PPQ32Jc=")
-				.post(TinfoilLoginForm.URL)
+				.post()
 				.then()
 				.statusCode(Status.FOUND.value())
 				.cookie(AuthUser.LOGIN_COOKIE, loginCookie);
@@ -47,10 +47,10 @@ public class TinfoilLoginTest {
 
 	@Test
 	public void incorrectBroken() {
-		MetaFormSubmit.create(TinfoilLoginForm.class)
+		FormSubmit.create(TinfoilLoginForm.class)
 				.set(TinfoilLoginForm.USERNAME, "samples")
 				.set(TinfoilLoginForm.PASSWORD, "Ijk07hx8GrfgJV6b3q+FxXY8zUvBl88VzIG0PPQ32Jc=E")
-				.post(TinfoilLoginForm.URL)
+				.post()
 				.then()
 				.cookies(Collections.emptyMap());
 	}
@@ -62,6 +62,7 @@ public class TinfoilLoginTest {
 		String email = "samples@email.com";
 		Algorithm algorithm = Algorithm.HMAC256(secret);
 		byte[] content = (username + "|" + email).getBytes(StandardCharsets.UTF_8);
+		@SuppressWarnings("deprecation")
 		byte[] signature = algorithm.sign(content);
 		String password = Base64.getEncoder().encodeToString(signature);
 		System.out.println(password);
