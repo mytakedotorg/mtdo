@@ -47,13 +47,9 @@ const eventListeners = {
   onFollowPress: jest.fn(),
 };
 
-jest.mock("./DropDown", () => ({
-  default: "DropDown",
-}));
+jest.mock("./DropDown");
 
-jest.mock("./EmailTake", () => ({
-  default: "EmailTake",
-}));
+jest.mock("./EmailTake");
 
 test("Reaction - loading", () => {
   const tree = renderer

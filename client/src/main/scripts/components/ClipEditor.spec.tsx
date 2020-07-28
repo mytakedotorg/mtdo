@@ -27,17 +27,11 @@ import {
   videoFactLink,
 } from "../utils/testUtils";
 
-jest.mock("./ZoomViewer", () => ({
-  default: "ZoomViewer",
-}));
+jest.mock("./ZoomViewer");
 
-jest.mock("./TrackSlider", () => ({
-  default: "TrackSlider",
-}));
+jest.mock("./TrackSlider");
 
-jest.mock("./QuickShare", () => ({
-  default: "QuickShare",
-}));
+jest.mock("./QuickShare");
 
 const eventHandlers: ClipEditorEventHandlers = {
   onAfterRangeChange: jest.fn(),

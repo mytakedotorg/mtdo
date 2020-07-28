@@ -39,9 +39,12 @@ const view: TimeRange = {
   label: "Zoom",
 };
 
-jest.mock("./CaptionTextNodeList", () => ({
-  default: "CaptionTextNode",
-}));
+jest.mock("./CaptionTextNodeList", () => {
+  return {
+    __esModule: true,
+    default: "CaptionTextNodeList",
+  };
+});
 
 test("CaptionTextNodeListContainer", () => {
   const tree = renderer

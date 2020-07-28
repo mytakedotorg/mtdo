@@ -25,9 +25,7 @@ import { documentNodes } from "../utils/testUtils";
 const onMouseUp = jest.fn();
 const className = "document__text";
 
-jest.mock("./DocumentTextNode", () => ({
-  default: "DocumentTextNode",
-}));
+jest.mock("./DocumentTextNode");
 
 test("DocumentTextNodeList", () => {
   const tree = renderer

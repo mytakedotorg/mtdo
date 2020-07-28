@@ -4,68 +4,6 @@ exports[`CaptionTextNodeList 1`] = `
 <div
   className="video__captions"
 >
-  <ClipEditor
-    captionIsHighlighted={false}
-    currentTime={0}
-    eventHandlers={
-      Object {
-        "onAfterRangeChange": [Function],
-        "onClearPress": [Function],
-        "onPlayPausePress": [Function],
-        "onRangeChange": [Function],
-        "onRestartPress": [Function],
-        "onSendToTake": [Function],
-        "onSkipBackPress": [Function],
-        "onSkipForwardPress": [Function],
-        "onZoomToClipPress": [Function],
-      }
-    }
-    isPaused={true}
-    isZoomedToClip={false}
-    rangeSliders={
-      Array [
-        Object {
-          "end": 25,
-          "label": "Zoom",
-          "start": 0,
-          "styles": Object {
-            "handle": Object {
-              "backgroundColor": "#758aa8",
-              "border": "1px solid #2c4770",
-            },
-            "rail": Object {
-              "backgroundColor": "#d3dae3",
-            },
-            "track": Object {
-              "backgroundColor": "#758aa8",
-            },
-          },
-          "type": "VIEW",
-        },
-        Object {
-          "end": 0,
-          "label": "Clip",
-          "start": 0,
-          "styles": Object {
-            "handle": Object {
-              "backgroundColor": "#758aa8",
-              "border": "1px solid #2c4770",
-            },
-            "rail": Object {
-              "backgroundColor": "#d3dae3",
-            },
-            "track": Object {
-              "backgroundColor": "#758aa8",
-            },
-          },
-          "type": "SELECTION",
-        },
-      ]
-    }
-    stateAuthority="SCROLL"
-    videoDuration={5224}
-    videoIdHash="iEfwIxM7MmnOKb7zt4HqW8IxUWy6F7a236fSOQlUUWI="
-  />
   <div
     className="document document--static"
   >
@@ -125,68 +63,6 @@ exports[`CaptionTextNodeList with highlights from props 1`] = `
 <div
   className="video__captions"
 >
-  <ClipEditor
-    captionIsHighlighted={true}
-    currentTime={5.31}
-    eventHandlers={
-      Object {
-        "onAfterRangeChange": [Function],
-        "onClearPress": [Function],
-        "onPlayPausePress": [Function],
-        "onRangeChange": [Function],
-        "onRestartPress": [Function],
-        "onSendToTake": [Function],
-        "onSkipBackPress": [Function],
-        "onSkipForwardPress": [Function],
-        "onZoomToClipPress": [Function],
-      }
-    }
-    isPaused={true}
-    isZoomedToClip={true}
-    rangeSliders={
-      Array [
-        Object {
-          "end": 8.7,
-          "label": "Zoom",
-          "start": 3.6,
-          "styles": Object {
-            "handle": Object {
-              "backgroundColor": "#758aa8",
-              "border": "1px solid #2c4770",
-            },
-            "rail": Object {
-              "backgroundColor": "#d3dae3",
-            },
-            "track": Object {
-              "backgroundColor": "#758aa8",
-            },
-          },
-          "type": "VIEW",
-        },
-        Object {
-          "end": 7.2,
-          "label": "Zoom",
-          "start": 5.3,
-          "styles": Object {
-            "handle": Object {
-              "backgroundColor": "#758aa8",
-              "border": "1px solid #2c4770",
-            },
-            "rail": Object {
-              "backgroundColor": "#d3dae3",
-            },
-            "track": Object {
-              "backgroundColor": "#758aa8",
-            },
-          },
-          "type": "SELECTION",
-        },
-      ]
-    }
-    stateAuthority="SCROLL"
-    videoDuration={5224}
-    videoIdHash="iEfwIxM7MmnOKb7zt4HqW8IxUWy6F7a236fSOQlUUWI="
-  />
   <div
     className="document document--static"
   >

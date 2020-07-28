@@ -22,9 +22,7 @@ import * as renderer from "react-test-renderer";
 import VideoLite from "./VideoLite";
 import { videoFactFast } from "../utils/testUtils";
 
-jest.mock("react-youtube", () => ({
-  default: "YouTube",
-}));
+jest.mock("react-youtube");
 
 test("Video", () => {
   const tree = renderer

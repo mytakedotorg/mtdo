@@ -31,17 +31,17 @@ import {
 } from "../utils/testUtils";
 import { SetFactHandlers } from "./TimelinePreview";
 
-jest.mock("./TimelinePreviewContainer", () => ({
-  default: "TimelinePreviewContainer",
-}));
+jest.mock("./TimelinePreviewContainer");
 
-jest.mock("./Timeline", () => ({
-  default: "Timeline",
-}));
+jest.mock("./Timeline");
 
-jest.mock("./TimelineRadioButtons", () => ({
-  default: "TimelineRadioButtons",
-}));
+// jest.mock("./TimelineRadioButtons"); // This doesn't work. Perhaps related to https://github.com/babel/babel/issues/11305
+jest.mock("./TimelineRadioButtons", () => {
+  return {
+    __esModule: true,
+    default: "TimelineRadioButtons",
+  };
+});
 
 const mockFn = jest.fn();
 

@@ -12,7 +12,6 @@ exports[`Render a range 1`] = `
     onMouseDown={[Function]}
     onMouseUp={[Function]}
     onTouchStart={[Function]}
-    style={undefined}
   >
     <div
       className="rc-slider-rail"
@@ -100,7 +99,6 @@ exports[`Render a slider 1`] = `
     onMouseDown={[Function]}
     onMouseUp={[Function]}
     onTouchStart={[Function]}
-    style={undefined}
   >
     <div
       className="rc-slider-rail"

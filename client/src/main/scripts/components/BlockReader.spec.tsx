@@ -32,9 +32,7 @@ const doc: TakeDocument = {
   ],
 };
 
-jest.mock("./ReactionContainer", () => ({
-  default: "ReactionContainer",
-}));
+jest.mock("./ReactionContainer");
 
 function createNodeMock(element: React.ReactElement<HTMLElement>) {
   switch (element.type) {

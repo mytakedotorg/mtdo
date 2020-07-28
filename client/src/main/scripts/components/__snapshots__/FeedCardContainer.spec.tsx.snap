@@ -35,7 +35,6 @@ exports[`Card w/ Document Fact 1`] = `
       </h2>
       <div
         className="feed__card-document-text"
-        onMouseUp={undefined}
       >
         <p
           data-char-offset={218}

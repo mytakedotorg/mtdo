@@ -53,13 +53,9 @@ const ReadingEventHandler = {
   onDocumentClick,
 };
 
-jest.mock("./EditorDocumentContainer", () => ({
-  default: "EditorDocumentContainer",
-}));
+jest.mock("./EditorDocumentContainer");
 
-jest.mock("./EditorVideoContainer", () => ({
-  default: "EditorVideoContainer",
-}));
+jest.mock("./EditorVideoContainer");
 
 function createNodeMock(element: React.ReactElement<HTMLElement>) {
   switch (element.type) {

@@ -18,7 +18,7 @@
  * You can contact us at team@mytake.org
  */
 import * as React from "react";
-import * as keycode from "keycode";
+import keycode from "keycode";
 import DocumentTextNodeList from "./DocumentTextNodeList";
 import { alertErr, getHighlightedNodes } from "../utils/functions";
 import { FoundationNode } from "../common/CaptionNodes";

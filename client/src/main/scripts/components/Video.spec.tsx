@@ -22,21 +22,13 @@ import * as renderer from "react-test-renderer";
 import Video from "./Video";
 import { videoFactLink, videoFactFast } from "../utils/testUtils";
 
-jest.mock("react-youtube", () => ({
-  default: "YouTube",
-}));
+jest.mock("react-youtube");
 
-jest.mock("./CaptionView", () => ({
-  default: "CaptionView",
-}));
+jest.mock("./CaptionView");
 
-jest.mock("./DropDown", () => ({
-  default: "DropDown",
-}));
+jest.mock("./DropDown");
 
-jest.mock("./EmailTake", () => ({
-  default: "EmailTake",
-}));
+jest.mock("./EmailTake");
 
 const mockFn = jest.fn();
 

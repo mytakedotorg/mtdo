@@ -60,8 +60,6 @@ class CaptionTextNodeList extends React.Component<
     return true;
   }
   render() {
-    let wordCount: number;
-    let nextWordCount: number;
     return (
       <div
         className="document__text document__text--caption"

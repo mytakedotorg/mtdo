@@ -31,7 +31,7 @@ exports[`Reaction - harassment reported 1`] = `
       <button
         className="reaction__action reaction__action--star"
         disabled={false}
-        onClick={[Function]}
+        onClick={[MockFunction]}
       >
         <i
           aria-hidden="true"
@@ -44,94 +44,14 @@ exports[`Reaction - harassment reported 1`] = `
     >
       <button
         className="reaction__action reaction__action--follow"
-        onClick={[Function]}
+        onClick={[MockFunction]}
       >
         Follow
       </button>
     </div>
     <div
       className="reaction__action-container"
-    >
-      <DropDown
-        classModifier="reaction"
-        dropdownPosition="TL"
-        toggleText="Email"
-      >
-        <EmailTake
-          takeDocument={
-            Object {
-              "blocks": Array [
-                Object {
-                  "kind": "paragraph",
-                  "text": "King: “I hereby declare that Seabiscuit shall be my royal horse!”",
-                },
-                Object {
-                  "kind": "paragraph",
-                  "text": "Subject: “But that’s MY horse!!”",
-                },
-                Object {
-                  "kind": "paragraph",
-                  "text": "King: “I said it – it’s the law of the land. Thief! Return my horse to me!”",
-                },
-                Object {
-                  "kind": "paragraph",
-                  "text": "...",
-                },
-                Object {
-                  "kind": "paragraph",
-                  "text": "That’s how people lived for a long time. The fix was to write laws down, so that the power of the government would no longer be subject to the arbitrary whims of any one person. Only trouble is, what does a law mean?",
-                },
-                Object {
-                  "kind": "paragraph",
-                  "text": "Textualism says that a law means what it says in its text. Simple enough. On the other hand, Originalism says that a law means what was meant when it was originally written. Figuring this out is a little trickier – you’ve got to be not just a lawyer but also an historian to have any chance of understanding the law. The upside of Originalism is that it can help the law to be more stable against the whims of a changing culture – our Constitution is more than 220 years old, and a lot has changed since then! A great example is the 2nd amendment:",
-                },
-                Object {
-                  "excerptId": "pMHhbW_I-wquOfoyPFAVQu8DMLMpYVxhGT8R1x71hYA=",
-                  "highlightedRange": Array [
-                    283,
-                    439,
-                  ],
-                  "kind": "document",
-                  "viewRange": Array [
-                    283,
-                    439,
-                  ],
-                },
-                Object {
-                  "kind": "paragraph",
-                  "text": "The Arms of the 21st century are a lot different than the Arms of 1789! A textualist has little choice in interpreting this law – clearly automatic rifles, grenades, rockets, and even nukes are protected. They are Arms, afterall!",
-                },
-                Object {
-                  "kind": "paragraph",
-                  "text": "An originalist has to go back to 1789 to understand the original meaning. Black powder muskets were the most powerful Arms of the time, so perhaps that is what the law should protect today? Although that captures the original technology, it doesn’t capture the original intent.",
-                },
-                Object {
-                  "excerptId": "pMHhbW_I-wquOfoyPFAVQu8DMLMpYVxhGT8R1x71hYA=",
-                  "highlightedRange": Array [
-                    294,
-                    368,
-                  ],
-                  "kind": "document",
-                  "viewRange": Array [
-                    283,
-                    439,
-                  ],
-                },
-                Object {
-                  "kind": "paragraph",
-                  "text": "In 1776, George Washington led an American militia to victory against a tyrannical royal crown. As the newly free colonies organized their national government, many were afraid that it might be just as oppressive as the royal crown had been. It sure seems like the original intent of the 2nd amendment was to enshrine the right of the citizenry to have the means for armed rebellion.",
-                },
-                Object {
-                  "kind": "paragraph",
-                  "text": "If our judges get to decide that the law means whatever they want it to mean, then we still live under a King, we’ve just changed his name to Judge. That’s why it’s important to apply consistent methodology when interpreting the law. But in this case, whether you’re a Textualist or an Originalist, I don’t see how the 2nd amendment allows for any of the gun restrictions in place today.",
-                },
-              ],
-              "title": "Does a law mean what it says, or what it meant?",
-            }
-          }
-        />
-      </DropDown>
-    </div>
+    />
     <div
       className="reaction__action-container"
     >
@@ -214,7 +134,7 @@ exports[`Reaction - initial 1`] = `
       <button
         className="reaction__action reaction__action--star"
         disabled={false}
-        onClick={[Function]}
+        onClick={[MockFunction]}
       >
         <i
           aria-hidden="true"
@@ -227,94 +147,14 @@ exports[`Reaction - initial 1`] = `
     >
       <button
         className="reaction__action reaction__action--follow"
-        onClick={[Function]}
+        onClick={[MockFunction]}
       >
         Follow
       </button>
     </div>
     <div
       className="reaction__action-container"
-    >
-      <DropDown
-        classModifier="reaction"
-        dropdownPosition="TL"
-        toggleText="Email"
-      >
-        <EmailTake
-          takeDocument={
-            Object {
-              "blocks": Array [
-                Object {
-                  "kind": "paragraph",
-                  "text": "King: “I hereby declare that Seabiscuit shall be my royal horse!”",
-                },
-                Object {
-                  "kind": "paragraph",
-                  "text": "Subject: “But that’s MY horse!!”",
-                },
-                Object {
-                  "kind": "paragraph",
-                  "text": "King: “I said it – it’s the law of the land. Thief! Return my horse to me!”",
-                },
-                Object {
-                  "kind": "paragraph",
-                  "text": "...",
-                },
-                Object {
-                  "kind": "paragraph",
-                  "text": "That’s how people lived for a long time. The fix was to write laws down, so that the power of the government would no longer be subject to the arbitrary whims of any one person. Only trouble is, what does a law mean?",
-                },
-                Object {
-                  "kind": "paragraph",
-                  "text": "Textualism says that a law means what it says in its text. Simple enough. On the other hand, Originalism says that a law means what was meant when it was originally written. Figuring this out is a little trickier – you’ve got to be not just a lawyer but also an historian to have any chance of understanding the law. The upside of Originalism is that it can help the law to be more stable against the whims of a changing culture – our Constitution is more than 220 years old, and a lot has changed since then! A great example is the 2nd amendment:",
-                },
-                Object {
-                  "excerptId": "pMHhbW_I-wquOfoyPFAVQu8DMLMpYVxhGT8R1x71hYA=",
-                  "highlightedRange": Array [
-                    283,
-                    439,
-                  ],
-                  "kind": "document",
-                  "viewRange": Array [
-                    283,
-                    439,
-                  ],
-                },
-                Object {
-                  "kind": "paragraph",
-                  "text": "The Arms of the 21st century are a lot different than the Arms of 1789! A textualist has little choice in interpreting this law – clearly automatic rifles, grenades, rockets, and even nukes are protected. They are Arms, afterall!",
-                },
-                Object {
-                  "kind": "paragraph",
-                  "text": "An originalist has to go back to 1789 to understand the original meaning. Black powder muskets were the most powerful Arms of the time, so perhaps that is what the law should protect today? Although that captures the original technology, it doesn’t capture the original intent.",
-                },
-                Object {
-                  "excerptId": "pMHhbW_I-wquOfoyPFAVQu8DMLMpYVxhGT8R1x71hYA=",
-                  "highlightedRange": Array [
-                    294,
-                    368,
-                  ],
-                  "kind": "document",
-                  "viewRange": Array [
-                    283,
-                    439,
-                  ],
-                },
-                Object {
-                  "kind": "paragraph",
-                  "text": "In 1776, George Washington led an American militia to victory against a tyrannical royal crown. As the newly free colonies organized their national government, many were afraid that it might be just as oppressive as the royal crown had been. It sure seems like the original intent of the 2nd amendment was to enshrine the right of the citizenry to have the means for armed rebellion.",
-                },
-                Object {
-                  "kind": "paragraph",
-                  "text": "If our judges get to decide that the law means whatever they want it to mean, then we still live under a King, we’ve just changed his name to Judge. That’s why it’s important to apply consistent methodology when interpreting the law. But in this case, whether you’re a Textualist or an Originalist, I don’t see how the 2nd amendment allows for any of the gun restrictions in place today.",
-                },
-              ],
-              "title": "Does a law mean what it says, or what it meant?",
-            }
-          }
-        />
-      </DropDown>
-    </div>
+    />
     <div
       className="reaction__action-container"
     >
@@ -397,7 +237,7 @@ exports[`Reaction - initial 2`] = `
       <button
         className="reaction__action reaction__action--star"
         disabled={false}
-        onClick={[Function]}
+        onClick={[MockFunction]}
       >
         <i
           aria-hidden="true"
@@ -410,94 +250,14 @@ exports[`Reaction - initial 2`] = `
     >
       <button
         className="reaction__action reaction__action--follow"
-        onClick={[Function]}
+        onClick={[MockFunction]}
       >
         Follow
       </button>
     </div>
     <div
       className="reaction__action-container"
-    >
-      <DropDown
-        classModifier="reaction"
-        dropdownPosition="TL"
-        toggleText="Email"
-      >
-        <EmailTake
-          takeDocument={
-            Object {
-              "blocks": Array [
-                Object {
-                  "kind": "paragraph",
-                  "text": "King: “I hereby declare that Seabiscuit shall be my royal horse!”",
-                },
-                Object {
-                  "kind": "paragraph",
-                  "text": "Subject: “But that’s MY horse!!”",
-                },
-                Object {
-                  "kind": "paragraph",
-                  "text": "King: “I said it – it’s the law of the land. Thief! Return my horse to me!”",
-                },
-                Object {
-                  "kind": "paragraph",
-                  "text": "...",
-                },
-                Object {
-                  "kind": "paragraph",
-                  "text": "That’s how people lived for a long time. The fix was to write laws down, so that the power of the government would no longer be subject to the arbitrary whims of any one person. Only trouble is, what does a law mean?",
-                },
-                Object {
-                  "kind": "paragraph",
-                  "text": "Textualism says that a law means what it says in its text. Simple enough. On the other hand, Originalism says that a law means what was meant when it was originally written. Figuring this out is a little trickier – you’ve got to be not just a lawyer but also an historian to have any chance of understanding the law. The upside of Originalism is that it can help the law to be more stable against the whims of a changing culture – our Constitution is more than 220 years old, and a lot has changed since then! A great example is the 2nd amendment:",
-                },
-                Object {
-                  "excerptId": "pMHhbW_I-wquOfoyPFAVQu8DMLMpYVxhGT8R1x71hYA=",
-                  "highlightedRange": Array [
-                    283,
-                    439,
-                  ],
-                  "kind": "document",
-                  "viewRange": Array [
-                    283,
-                    439,
-                  ],
-                },
-                Object {
-                  "kind": "paragraph",
-                  "text": "The Arms of the 21st century are a lot different than the Arms of 1789! A textualist has little choice in interpreting this law – clearly automatic rifles, grenades, rockets, and even nukes are protected. They are Arms, afterall!",
-                },
-                Object {
-                  "kind": "paragraph",
-                  "text": "An originalist has to go back to 1789 to understand the original meaning. Black powder muskets were the most powerful Arms of the time, so perhaps that is what the law should protect today? Although that captures the original technology, it doesn’t capture the original intent.",
-                },
-                Object {
-                  "excerptId": "pMHhbW_I-wquOfoyPFAVQu8DMLMpYVxhGT8R1x71hYA=",
-                  "highlightedRange": Array [
-                    294,
-                    368,
-                  ],
-                  "kind": "document",
-                  "viewRange": Array [
-                    283,
-                    439,
-                  ],
-                },
-                Object {
-                  "kind": "paragraph",
-                  "text": "In 1776, George Washington led an American militia to victory against a tyrannical royal crown. As the newly free colonies organized their national government, many were afraid that it might be just as oppressive as the royal crown had been. It sure seems like the original intent of the 2nd amendment was to enshrine the right of the citizenry to have the means for armed rebellion.",
-                },
-                Object {
-                  "kind": "paragraph",
-                  "text": "If our judges get to decide that the law means whatever they want it to mean, then we still live under a King, we’ve just changed his name to Judge. That’s why it’s important to apply consistent methodology when interpreting the law. But in this case, whether you’re a Textualist or an Originalist, I don’t see how the 2nd amendment allows for any of the gun restrictions in place today.",
-                },
-              ],
-              "title": "Does a law mean what it says, or what it meant?",
-            }
-          }
-        />
-      </DropDown>
-    </div>
+    />
     <div
       className="reaction__action-container"
     >
@@ -580,7 +340,7 @@ exports[`Reaction - liked 1`] = `
       <button
         className="reaction__action reaction__action--star"
         disabled={false}
-        onClick={[Function]}
+        onClick={[MockFunction]}
       >
         <i
           aria-hidden="true"
@@ -593,94 +353,14 @@ exports[`Reaction - liked 1`] = `
     >
       <button
         className="reaction__action reaction__action--follow"
-        onClick={[Function]}
+        onClick={[MockFunction]}
       >
         Follow
       </button>
     </div>
     <div
       className="reaction__action-container"
-    >
-      <DropDown
-        classModifier="reaction"
-        dropdownPosition="TL"
-        toggleText="Email"
-      >
-        <EmailTake
-          takeDocument={
-            Object {
-              "blocks": Array [
-                Object {
-                  "kind": "paragraph",
-                  "text": "King: “I hereby declare that Seabiscuit shall be my royal horse!”",
-                },
-                Object {
-                  "kind": "paragraph",
-                  "text": "Subject: “But that’s MY horse!!”",
-                },
-                Object {
-                  "kind": "paragraph",
-                  "text": "King: “I said it – it’s the law of the land. Thief! Return my horse to me!”",
-                },
-                Object {
-                  "kind": "paragraph",
-                  "text": "...",
-                },
-                Object {
-                  "kind": "paragraph",
-                  "text": "That’s how people lived for a long time. The fix was to write laws down, so that the power of the government would no longer be subject to the arbitrary whims of any one person. Only trouble is, what does a law mean?",
-                },
-                Object {
-                  "kind": "paragraph",
-                  "text": "Textualism says that a law means what it says in its text. Simple enough. On the other hand, Originalism says that a law means what was meant when it was originally written. Figuring this out is a little trickier – you’ve got to be not just a lawyer but also an historian to have any chance of understanding the law. The upside of Originalism is that it can help the law to be more stable against the whims of a changing culture – our Constitution is more than 220 years old, and a lot has changed since then! A great example is the 2nd amendment:",
-                },
-                Object {
-                  "excerptId": "pMHhbW_I-wquOfoyPFAVQu8DMLMpYVxhGT8R1x71hYA=",
-                  "highlightedRange": Array [
-                    283,
-                    439,
-                  ],
-                  "kind": "document",
-                  "viewRange": Array [
-                    283,
-                    439,
-                  ],
-                },
-                Object {
-                  "kind": "paragraph",
-                  "text": "The Arms of the 21st century are a lot different than the Arms of 1789! A textualist has little choice in interpreting this law – clearly automatic rifles, grenades, rockets, and even nukes are protected. They are Arms, afterall!",
-                },
-                Object {
-                  "kind": "paragraph",
-                  "text": "An originalist has to go back to 1789 to understand the original meaning. Black powder muskets were the most powerful Arms of the time, so perhaps that is what the law should protect today? Although that captures the original technology, it doesn’t capture the original intent.",
-                },
-                Object {
-                  "excerptId": "pMHhbW_I-wquOfoyPFAVQu8DMLMpYVxhGT8R1x71hYA=",
-                  "highlightedRange": Array [
-                    294,
-                    368,
-                  ],
-                  "kind": "document",
-                  "viewRange": Array [
-                    283,
-                    439,
-                  ],
-                },
-                Object {
-                  "kind": "paragraph",
-                  "text": "In 1776, George Washington led an American militia to victory against a tyrannical royal crown. As the newly free colonies organized their national government, many were afraid that it might be just as oppressive as the royal crown had been. It sure seems like the original intent of the 2nd amendment was to enshrine the right of the citizenry to have the means for armed rebellion.",
-                },
-                Object {
-                  "kind": "paragraph",
-                  "text": "If our judges get to decide that the law means whatever they want it to mean, then we still live under a King, we’ve just changed his name to Judge. That’s why it’s important to apply consistent methodology when interpreting the law. But in this case, whether you’re a Textualist or an Originalist, I don’t see how the 2nd amendment allows for any of the gun restrictions in place today.",
-                },
-              ],
-              "title": "Does a law mean what it says, or what it meant?",
-            }
-          }
-        />
-      </DropDown>
-    </div>
+    />
     <div
       className="reaction__action-container"
     >
@@ -763,7 +443,7 @@ exports[`Reaction - loading 1`] = `
       <button
         className="reaction__action reaction__action--star"
         disabled={true}
-        onClick={[Function]}
+        onClick={[MockFunction]}
       >
         <i
           aria-hidden="true"
@@ -776,94 +456,14 @@ exports[`Reaction - loading 1`] = `
     >
       <button
         className="reaction__action reaction__action--follow"
-        onClick={[Function]}
+        onClick={[MockFunction]}
       >
         Follow
       </button>
     </div>
     <div
       className="reaction__action-container"
-    >
-      <DropDown
-        classModifier="reaction"
-        dropdownPosition="TL"
-        toggleText="Email"
-      >
-        <EmailTake
-          takeDocument={
-            Object {
-              "blocks": Array [
-                Object {
-                  "kind": "paragraph",
-                  "text": "King: “I hereby declare that Seabiscuit shall be my royal horse!”",
-                },
-                Object {
-                  "kind": "paragraph",
-                  "text": "Subject: “But that’s MY horse!!”",
-                },
-                Object {
-                  "kind": "paragraph",
-                  "text": "King: “I said it – it’s the law of the land. Thief! Return my horse to me!”",
-                },
-                Object {
-                  "kind": "paragraph",
-                  "text": "...",
-                },
-                Object {
-                  "kind": "paragraph",
-                  "text": "That’s how people lived for a long time. The fix was to write laws down, so that the power of the government would no longer be subject to the arbitrary whims of any one person. Only trouble is, what does a law mean?",
-                },
-                Object {
-                  "kind": "paragraph",
-                  "text": "Textualism says that a law means what it says in its text. Simple enough. On the other hand, Originalism says that a law means what was meant when it was originally written. Figuring this out is a little trickier – you’ve got to be not just a lawyer but also an historian to have any chance of understanding the law. The upside of Originalism is that it can help the law to be more stable against the whims of a changing culture – our Constitution is more than 220 years old, and a lot has changed since then! A great example is the 2nd amendment:",
-                },
-                Object {
-                  "excerptId": "pMHhbW_I-wquOfoyPFAVQu8DMLMpYVxhGT8R1x71hYA=",
-                  "highlightedRange": Array [
-                    283,
-                    439,
-                  ],
-                  "kind": "document",
-                  "viewRange": Array [
-                    283,
-                    439,
-                  ],
-                },
-                Object {
-                  "kind": "paragraph",
-                  "text": "The Arms of the 21st century are a lot different than the Arms of 1789! A textualist has little choice in interpreting this law – clearly automatic rifles, grenades, rockets, and even nukes are protected. They are Arms, afterall!",
-                },
-                Object {
-                  "kind": "paragraph",
-                  "text": "An originalist has to go back to 1789 to understand the original meaning. Black powder muskets were the most powerful Arms of the time, so perhaps that is what the law should protect today? Although that captures the original technology, it doesn’t capture the original intent.",
-                },
-                Object {
-                  "excerptId": "pMHhbW_I-wquOfoyPFAVQu8DMLMpYVxhGT8R1x71hYA=",
-                  "highlightedRange": Array [
-                    294,
-                    368,
-                  ],
-                  "kind": "document",
-                  "viewRange": Array [
-                    283,
-                    439,
-                  ],
-                },
-                Object {
-                  "kind": "paragraph",
-                  "text": "In 1776, George Washington led an American militia to victory against a tyrannical royal crown. As the newly free colonies organized their national government, many were afraid that it might be just as oppressive as the royal crown had been. It sure seems like the original intent of the 2nd amendment was to enshrine the right of the citizenry to have the means for armed rebellion.",
-                },
-                Object {
-                  "kind": "paragraph",
-                  "text": "If our judges get to decide that the law means whatever they want it to mean, then we still live under a King, we’ve just changed his name to Judge. That’s why it’s important to apply consistent methodology when interpreting the law. But in this case, whether you’re a Textualist or an Originalist, I don’t see how the 2nd amendment allows for any of the gun restrictions in place today.",
-                },
-              ],
-              "title": "Does a law mean what it says, or what it meant?",
-            }
-          }
-        />
-      </DropDown>
-    </div>
+    />
     <div
       className="reaction__action-container"
     >
@@ -946,7 +546,7 @@ exports[`Reaction - rules violated reported 1`] = `
       <button
         className="reaction__action reaction__action--star"
         disabled={false}
-        onClick={[Function]}
+        onClick={[MockFunction]}
       >
         <i
           aria-hidden="true"
@@ -959,94 +559,14 @@ exports[`Reaction - rules violated reported 1`] = `
     >
       <button
         className="reaction__action reaction__action--follow"
-        onClick={[Function]}
+        onClick={[MockFunction]}
       >
         Follow
       </button>
     </div>
     <div
       className="reaction__action-container"
-    >
-      <DropDown
-        classModifier="reaction"
-        dropdownPosition="TL"
-        toggleText="Email"
-      >
-        <EmailTake
-          takeDocument={
-            Object {
-              "blocks": Array [
-                Object {
-                  "kind": "paragraph",
-                  "text": "King: “I hereby declare that Seabiscuit shall be my royal horse!”",
-                },
-                Object {
-                  "kind": "paragraph",
-                  "text": "Subject: “But that’s MY horse!!”",
-                },
-                Object {
-                  "kind": "paragraph",
-                  "text": "King: “I said it – it’s the law of the land. Thief! Return my horse to me!”",
-                },
-                Object {
-                  "kind": "paragraph",
-                  "text": "...",
-                },
-                Object {
-                  "kind": "paragraph",
-                  "text": "That’s how people lived for a long time. The fix was to write laws down, so that the power of the government would no longer be subject to the arbitrary whims of any one person. Only trouble is, what does a law mean?",
-                },
-                Object {
-                  "kind": "paragraph",
-                  "text": "Textualism says that a law means what it says in its text. Simple enough. On the other hand, Originalism says that a law means what was meant when it was originally written. Figuring this out is a little trickier – you’ve got to be not just a lawyer but also an historian to have any chance of understanding the law. The upside of Originalism is that it can help the law to be more stable against the whims of a changing culture – our Constitution is more than 220 years old, and a lot has changed since then! A great example is the 2nd amendment:",
-                },
-                Object {
-                  "excerptId": "pMHhbW_I-wquOfoyPFAVQu8DMLMpYVxhGT8R1x71hYA=",
-                  "highlightedRange": Array [
-                    283,
-                    439,
-                  ],
-                  "kind": "document",
-                  "viewRange": Array [
-                    283,
-                    439,
-                  ],
-                },
-                Object {
-                  "kind": "paragraph",
-                  "text": "The Arms of the 21st century are a lot different than the Arms of 1789! A textualist has little choice in interpreting this law – clearly automatic rifles, grenades, rockets, and even nukes are protected. They are Arms, afterall!",
-                },
-                Object {
-                  "kind": "paragraph",
-                  "text": "An originalist has to go back to 1789 to understand the original meaning. Black powder muskets were the most powerful Arms of the time, so perhaps that is what the law should protect today? Although that captures the original technology, it doesn’t capture the original intent.",
-                },
-                Object {
-                  "excerptId": "pMHhbW_I-wquOfoyPFAVQu8DMLMpYVxhGT8R1x71hYA=",
-                  "highlightedRange": Array [
-                    294,
-                    368,
-                  ],
-                  "kind": "document",
-                  "viewRange": Array [
-                    283,
-                    439,
-                  ],
-                },
-                Object {
-                  "kind": "paragraph",
-                  "text": "In 1776, George Washington led an American militia to victory against a tyrannical royal crown. As the newly free colonies organized their national government, many were afraid that it might be just as oppressive as the royal crown had been. It sure seems like the original intent of the 2nd amendment was to enshrine the right of the citizenry to have the means for armed rebellion.",
-                },
-                Object {
-                  "kind": "paragraph",
-                  "text": "If our judges get to decide that the law means whatever they want it to mean, then we still live under a King, we’ve just changed his name to Judge. That’s why it’s important to apply consistent methodology when interpreting the law. But in this case, whether you’re a Textualist or an Originalist, I don’t see how the 2nd amendment allows for any of the gun restrictions in place today.",
-                },
-              ],
-              "title": "Does a law mean what it says, or what it meant?",
-            }
-          }
-        />
-      </DropDown>
-    </div>
+    />
     <div
       className="reaction__action-container"
     >
@@ -1129,7 +649,7 @@ exports[`Reaction - spam reported 1`] = `
       <button
         className="reaction__action reaction__action--star"
         disabled={false}
-        onClick={[Function]}
+        onClick={[MockFunction]}
       >
         <i
           aria-hidden="true"
@@ -1142,94 +662,14 @@ exports[`Reaction - spam reported 1`] = `
     >
       <button
         className="reaction__action reaction__action--follow"
-        onClick={[Function]}
+        onClick={[MockFunction]}
       >
         Follow
       </button>
     </div>
     <div
       className="reaction__action-container"
-    >
-      <DropDown
-        classModifier="reaction"
-        dropdownPosition="TL"
-        toggleText="Email"
-      >
-        <EmailTake
-          takeDocument={
-            Object {
-              "blocks": Array [
-                Object {
-                  "kind": "paragraph",
-                  "text": "King: “I hereby declare that Seabiscuit shall be my royal horse!”",
-                },
-                Object {
-                  "kind": "paragraph",
-                  "text": "Subject: “But that’s MY horse!!”",
-                },
-                Object {
-                  "kind": "paragraph",
-                  "text": "King: “I said it – it’s the law of the land. Thief! Return my horse to me!”",
-                },
-                Object {
-                  "kind": "paragraph",
-                  "text": "...",
-                },
-                Object {
-                  "kind": "paragraph",
-                  "text": "That’s how people lived for a long time. The fix was to write laws down, so that the power of the government would no longer be subject to the arbitrary whims of any one person. Only trouble is, what does a law mean?",
-                },
-                Object {
-                  "kind": "paragraph",
-                  "text": "Textualism says that a law means what it says in its text. Simple enough. On the other hand, Originalism says that a law means what was meant when it was originally written. Figuring this out is a little trickier – you’ve got to be not just a lawyer but also an historian to have any chance of understanding the law. The upside of Originalism is that it can help the law to be more stable against the whims of a changing culture – our Constitution is more than 220 years old, and a lot has changed since then! A great example is the 2nd amendment:",
-                },
-                Object {
-                  "excerptId": "pMHhbW_I-wquOfoyPFAVQu8DMLMpYVxhGT8R1x71hYA=",
-                  "highlightedRange": Array [
-                    283,
-                    439,
-                  ],
-                  "kind": "document",
-                  "viewRange": Array [
-                    283,
-                    439,
-                  ],
-                },
-                Object {
-                  "kind": "paragraph",
-                  "text": "The Arms of the 21st century are a lot different than the Arms of 1789! A textualist has little choice in interpreting this law – clearly automatic rifles, grenades, rockets, and even nukes are protected. They are Arms, afterall!",
-                },
-                Object {
-                  "kind": "paragraph",
-                  "text": "An originalist has to go back to 1789 to understand the original meaning. Black powder muskets were the most powerful Arms of the time, so perhaps that is what the law should protect today? Although that captures the original technology, it doesn’t capture the original intent.",
-                },
-                Object {
-                  "excerptId": "pMHhbW_I-wquOfoyPFAVQu8DMLMpYVxhGT8R1x71hYA=",
-                  "highlightedRange": Array [
-                    294,
-                    368,
-                  ],
-                  "kind": "document",
-                  "viewRange": Array [
-                    283,
-                    439,
-                  ],
-                },
-                Object {
-                  "kind": "paragraph",
-                  "text": "In 1776, George Washington led an American militia to victory against a tyrannical royal crown. As the newly free colonies organized their national government, many were afraid that it might be just as oppressive as the royal crown had been. It sure seems like the original intent of the 2nd amendment was to enshrine the right of the citizenry to have the means for armed rebellion.",
-                },
-                Object {
-                  "kind": "paragraph",
-                  "text": "If our judges get to decide that the law means whatever they want it to mean, then we still live under a King, we’ve just changed his name to Judge. That’s why it’s important to apply consistent methodology when interpreting the law. But in this case, whether you’re a Textualist or an Originalist, I don’t see how the 2nd amendment allows for any of the gun restrictions in place today.",
-                },
-              ],
-              "title": "Does a law mean what it says, or what it meant?",
-            }
-          }
-        />
-      </DropDown>
-    </div>
+    />
     <div
       className="reaction__action-container"
     >
@@ -1312,7 +752,7 @@ exports[`Reaction - user followed 1`] = `
       <button
         className="reaction__action reaction__action--star"
         disabled={false}
-        onClick={[Function]}
+        onClick={[MockFunction]}
       >
         <i
           aria-hidden="true"
@@ -1325,94 +765,14 @@ exports[`Reaction - user followed 1`] = `
     >
       <button
         className="reaction__action reaction__action--follow"
-        onClick={[Function]}
+        onClick={[MockFunction]}
       >
         Following
       </button>
     </div>
     <div
       className="reaction__action-container"
-    >
-      <DropDown
-        classModifier="reaction"
-        dropdownPosition="TL"
-        toggleText="Email"
-      >
-        <EmailTake
-          takeDocument={
-            Object {
-              "blocks": Array [
-                Object {
-                  "kind": "paragraph",
-                  "text": "King: “I hereby declare that Seabiscuit shall be my royal horse!”",
-                },
-                Object {
-                  "kind": "paragraph",
-                  "text": "Subject: “But that’s MY horse!!”",
-                },
-                Object {
-                  "kind": "paragraph",
-                  "text": "King: “I said it – it’s the law of the land. Thief! Return my horse to me!”",
-                },
-                Object {
-                  "kind": "paragraph",
-                  "text": "...",
-                },
-                Object {
-                  "kind": "paragraph",
-                  "text": "That’s how people lived for a long time. The fix was to write laws down, so that the power of the government would no longer be subject to the arbitrary whims of any one person. Only trouble is, what does a law mean?",
-                },
-                Object {
-                  "kind": "paragraph",
-                  "text": "Textualism says that a law means what it says in its text. Simple enough. On the other hand, Originalism says that a law means what was meant when it was originally written. Figuring this out is a little trickier – you’ve got to be not just a lawyer but also an historian to have any chance of understanding the law. The upside of Originalism is that it can help the law to be more stable against the whims of a changing culture – our Constitution is more than 220 years old, and a lot has changed since then! A great example is the 2nd amendment:",
-                },
-                Object {
-                  "excerptId": "pMHhbW_I-wquOfoyPFAVQu8DMLMpYVxhGT8R1x71hYA=",
-                  "highlightedRange": Array [
-                    283,
-                    439,
-                  ],
-                  "kind": "document",
-                  "viewRange": Array [
-                    283,
-                    439,
-                  ],
-                },
-                Object {
-                  "kind": "paragraph",
-                  "text": "The Arms of the 21st century are a lot different than the Arms of 1789! A textualist has little choice in interpreting this law – clearly automatic rifles, grenades, rockets, and even nukes are protected. They are Arms, afterall!",
-                },
-                Object {
-                  "kind": "paragraph",
-                  "text": "An originalist has to go back to 1789 to understand the original meaning. Black powder muskets were the most powerful Arms of the time, so perhaps that is what the law should protect today? Although that captures the original technology, it doesn’t capture the original intent.",
-                },
-                Object {
-                  "excerptId": "pMHhbW_I-wquOfoyPFAVQu8DMLMpYVxhGT8R1x71hYA=",
-                  "highlightedRange": Array [
-                    294,
-                    368,
-                  ],
-                  "kind": "document",
-                  "viewRange": Array [
-                    283,
-                    439,
-                  ],
-                },
-                Object {
-                  "kind": "paragraph",
-                  "text": "In 1776, George Washington led an American militia to victory against a tyrannical royal crown. As the newly free colonies organized their national government, many were afraid that it might be just as oppressive as the royal crown had been. It sure seems like the original intent of the 2nd amendment was to enshrine the right of the citizenry to have the means for armed rebellion.",
-                },
-                Object {
-                  "kind": "paragraph",
-                  "text": "If our judges get to decide that the law means whatever they want it to mean, then we still live under a King, we’ve just changed his name to Judge. That’s why it’s important to apply consistent methodology when interpreting the law. But in this case, whether you’re a Textualist or an Originalist, I don’t see how the 2nd amendment allows for any of the gun restrictions in place today.",
-                },
-              ],
-              "title": "Does a law mean what it says, or what it meant?",
-            }
-          }
-        />
-      </DropDown>
-    </div>
+    />
     <div
       className="reaction__action-container"
     >
@@ -1495,7 +855,7 @@ exports[`Reaction - user unfollowed 1`] = `
       <button
         className="reaction__action reaction__action--star"
         disabled={false}
-        onClick={[Function]}
+        onClick={[MockFunction]}
       >
         <i
           aria-hidden="true"
@@ -1508,94 +868,14 @@ exports[`Reaction - user unfollowed 1`] = `
     >
       <button
         className="reaction__action reaction__action--follow"
-        onClick={[Function]}
+        onClick={[MockFunction]}
       >
         Follow
       </button>
     </div>
     <div
       className="reaction__action-container"
-    >
-      <DropDown
-        classModifier="reaction"
-        dropdownPosition="TL"
-        toggleText="Email"
-      >
-        <EmailTake
-          takeDocument={
-            Object {
-              "blocks": Array [
-                Object {
-                  "kind": "paragraph",
-                  "text": "King: “I hereby declare that Seabiscuit shall be my royal horse!”",
-                },
-                Object {
-                  "kind": "paragraph",
-                  "text": "Subject: “But that’s MY horse!!”",
-                },
-                Object {
-                  "kind": "paragraph",
-                  "text": "King: “I said it – it’s the law of the land. Thief! Return my horse to me!”",
-                },
-                Object {
-                  "kind": "paragraph",
-                  "text": "...",
-                },
-                Object {
-                  "kind": "paragraph",
-                  "text": "That’s how people lived for a long time. The fix was to write laws down, so that the power of the government would no longer be subject to the arbitrary whims of any one person. Only trouble is, what does a law mean?",
-                },
-                Object {
-                  "kind": "paragraph",
-                  "text": "Textualism says that a law means what it says in its text. Simple enough. On the other hand, Originalism says that a law means what was meant when it was originally written. Figuring this out is a little trickier – you’ve got to be not just a lawyer but also an historian to have any chance of understanding the law. The upside of Originalism is that it can help the law to be more stable against the whims of a changing culture – our Constitution is more than 220 years old, and a lot has changed since then! A great example is the 2nd amendment:",
-                },
-                Object {
-                  "excerptId": "pMHhbW_I-wquOfoyPFAVQu8DMLMpYVxhGT8R1x71hYA=",
-                  "highlightedRange": Array [
-                    283,
-                    439,
-                  ],
-                  "kind": "document",
-                  "viewRange": Array [
-                    283,
-                    439,
-                  ],
-                },
-                Object {
-                  "kind": "paragraph",
-                  "text": "The Arms of the 21st century are a lot different than the Arms of 1789! A textualist has little choice in interpreting this law – clearly automatic rifles, grenades, rockets, and even nukes are protected. They are Arms, afterall!",
-                },
-                Object {
-                  "kind": "paragraph",
-                  "text": "An originalist has to go back to 1789 to understand the original meaning. Black powder muskets were the most powerful Arms of the time, so perhaps that is what the law should protect today? Although that captures the original technology, it doesn’t capture the original intent.",
-                },
-                Object {
-                  "excerptId": "pMHhbW_I-wquOfoyPFAVQu8DMLMpYVxhGT8R1x71hYA=",
-                  "highlightedRange": Array [
-                    294,
-                    368,
-                  ],
-                  "kind": "document",
-                  "viewRange": Array [
-                    283,
-                    439,
-                  ],
-                },
-                Object {
-                  "kind": "paragraph",
-                  "text": "In 1776, George Washington led an American militia to victory against a tyrannical royal crown. As the newly free colonies organized their national government, many were afraid that it might be just as oppressive as the royal crown had been. It sure seems like the original intent of the 2nd amendment was to enshrine the right of the citizenry to have the means for armed rebellion.",
-                },
-                Object {
-                  "kind": "paragraph",
-                  "text": "If our judges get to decide that the law means whatever they want it to mean, then we still live under a King, we’ve just changed his name to Judge. That’s why it’s important to apply consistent methodology when interpreting the law. But in this case, whether you’re a Textualist or an Originalist, I don’t see how the 2nd amendment allows for any of the gun restrictions in place today.",
-                },
-              ],
-              "title": "Does a law mean what it says, or what it meant?",
-            }
-          }
-        />
-      </DropDown>
-    </div>
+    />
     <div
       className="reaction__action-container"
     >

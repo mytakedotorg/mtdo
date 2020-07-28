@@ -26,9 +26,7 @@ import {
 } from "./EditorVideoContainer";
 import { videoFactFast } from "../utils/testUtils";
 
-jest.mock("./Video", () => ({
-  default: "Video",
-}));
+jest.mock("./Video");
 
 const containerProps: EditorVideoContainerProps = {
   idx: 2,

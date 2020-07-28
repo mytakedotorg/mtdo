@@ -21,25 +21,20 @@ import * as React from "react";
 import * as renderer from "react-test-renderer";
 import BlockWriter, { InitialBlockWriterState } from "./BlockWriter";
 
-jest.mock("./BlockEditor", () => ({
-  default: "BlockEditor",
-}));
+jest.mock("./BlockEditor");
 
-jest.mock("./TimelineView", () => ({
-  default: "TimelineView",
-}));
+jest.mock("./TimelineView");
 
-jest.mock("./EditorButtons", () => ({
-  default: "EditorButtons",
-}));
+jest.mock("./EditorButtons", () => {
+  return {
+    __esModule: true,
+    default: "EditorButtons",
+  };
+});
 
-jest.mock("./DropDown", () => ({
-  default: "DropDown",
-}));
+jest.mock("./DropDown");
 
-jest.mock("./EmailTake", () => ({
-  default: "EmailTake",
-}));
+jest.mock("./EmailTake");
 
 // Object.defineProperty(window.location, "pathname", {
 //   writable: true,

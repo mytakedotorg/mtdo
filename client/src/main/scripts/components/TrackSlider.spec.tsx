@@ -31,9 +31,7 @@ const eventHandlers: TrackSliderEventHandlers = {
   onRangeChange: jest.fn(),
 };
 
-jest.mock("./RangeContainer", () => ({
-  default: "RangeContainer",
-}));
+jest.mock("./RangeContainer");
 
 test("Initial render", () => {
   const tree = renderer

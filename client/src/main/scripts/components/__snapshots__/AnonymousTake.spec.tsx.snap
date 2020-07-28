@@ -5,28 +5,6 @@ exports[`It renders 1`] = `
   className="anonymoustake"
 >
   <div>
-    <BlockEditor
-      eventHandlers={
-        Object {
-          "onDocumentClick": [Function],
-        }
-      }
-      takeDocument={
-        Object {
-          "blocks": Array [
-            Object {
-              "kind": "video",
-              "range": Array [
-                0.1,
-                5,
-              ],
-              "videoId": "iEfwIxM7MmnOKb7zt4HqW8IxUWy6F7a236fSOQlUUWI=",
-            },
-          ],
-          "title": "Introduction",
-        }
-      }
-    />
     <p
       className="anonymoustake__text"
     >

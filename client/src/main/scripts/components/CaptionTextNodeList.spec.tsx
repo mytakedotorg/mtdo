@@ -17,8 +17,8 @@
  *
  * You can contact us at team@mytake.org
  */
-import * as React from "react";
-import * as renderer from "react-test-renderer";
+import React from "react";
+import renderer from "react-test-renderer";
 import CaptionTextNodeList from "./CaptionTextNodeList";
 import { videoFactFast, videoNodes } from "../utils/testUtils";
 
@@ -30,9 +30,7 @@ const eventHandlers = {
   onScroll: onScroll,
 };
 
-jest.mock("./CaptionTextNode", () => ({
-  default: "CaptionTextNode",
-}));
+jest.mock("./CaptionTextNode");
 
 test("CaptionTextNodeList", () => {
   const tree = renderer

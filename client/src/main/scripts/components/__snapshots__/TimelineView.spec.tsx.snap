@@ -6,68 +6,10 @@ exports[`Successfully loaded a Document in view 1`] = `
 >
   <div>
     <TimelineRadioButtons
-      onChange={[Function]}
+      onChange={[MockFunction]}
       selectedOption="Documents"
-    />
-    <Timeline
-      onItemClick={[Function]}
-      selectedOption="Documents"
-      timelineItems={
-        Array [
-          Object {
-            "content": "United States Constitution",
-            "id": "c7qu-ZE5SuipqSrOO30R3mnAA7K7nJ4fQ4zVIX0A2yg=",
-            "idx": "c7qu-ZE5SuipqSrOO30R3mnAA7K7nJ4fQ4zVIX0A2yg=",
-            "kind": "document",
-            "start": 1788-06-21T00:00:00.000Z,
-          },
-          Object {
-            "content": "Bill of Rights",
-            "id": "pMHhbW_I-wquOfoyPFAVQu8DMLMpYVxhGT8R1x71hYA=",
-            "idx": "pMHhbW_I-wquOfoyPFAVQu8DMLMpYVxhGT8R1x71hYA=",
-            "kind": "document",
-            "start": 1791-12-15T00:00:00.000Z,
-          },
-          Object {
-            "content": "John F. Kennedy - Nixon (1/4)",
-            "id": "-7DeOJAVJUsifUcIaZo7c41pol_guMxR6IEgYv28bHM=",
-            "idx": "-7DeOJAVJUsifUcIaZo7c41pol_guMxR6IEgYv28bHM=",
-            "kind": "video",
-            "start": 1960-09-26T00:00:00.000Z,
-          },
-          Object {
-            "content": "John F. Kennedy - Nixon (2/4)",
-            "id": "bl03RovlxbTZK0yu25_VikP0Y2xSj-J9oFyGUTWIOZQ=",
-            "idx": "bl03RovlxbTZK0yu25_VikP0Y2xSj-J9oFyGUTWIOZQ=",
-            "kind": "video",
-            "start": 1960-10-07T00:00:00.000Z,
-          },
-        ]
-      }
     />
   </div>
-  <TimelinePreviewContainer
-    factLink={
-      Object {
-        "fact": Object {
-          "kind": "document",
-          "primaryDate": "1865-12-06",
-          "primaryDateKind": "ratified",
-          "title": "Amendment 13",
-        },
-        "hash": "o_dRqrNJ62wzlgLilTrLxkHqGmvAS9qTpa4z4pjyFqA=",
-      }
-    }
-    ranges={undefined}
-    setFactHandlers={
-      Object {
-        "handleDocumentSetClick": [Function],
-        "handleRangeCleared": [Function],
-        "handleRangeSet": [Function],
-        "handleVideoSetClick": [Function],
-      }
-    }
-  />
 </div>
 `;
 
@@ -77,68 +19,10 @@ exports[`Successfully loaded a Video in view 1`] = `
 >
   <div>
     <TimelineRadioButtons
-      onChange={[Function]}
+      onChange={[MockFunction]}
       selectedOption="Debates"
-    />
-    <Timeline
-      onItemClick={[Function]}
-      selectedOption="Debates"
-      timelineItems={
-        Array [
-          Object {
-            "content": "United States Constitution",
-            "id": "c7qu-ZE5SuipqSrOO30R3mnAA7K7nJ4fQ4zVIX0A2yg=",
-            "idx": "c7qu-ZE5SuipqSrOO30R3mnAA7K7nJ4fQ4zVIX0A2yg=",
-            "kind": "document",
-            "start": 1788-06-21T00:00:00.000Z,
-          },
-          Object {
-            "content": "Bill of Rights",
-            "id": "pMHhbW_I-wquOfoyPFAVQu8DMLMpYVxhGT8R1x71hYA=",
-            "idx": "pMHhbW_I-wquOfoyPFAVQu8DMLMpYVxhGT8R1x71hYA=",
-            "kind": "document",
-            "start": 1791-12-15T00:00:00.000Z,
-          },
-          Object {
-            "content": "John F. Kennedy - Nixon (1/4)",
-            "id": "-7DeOJAVJUsifUcIaZo7c41pol_guMxR6IEgYv28bHM=",
-            "idx": "-7DeOJAVJUsifUcIaZo7c41pol_guMxR6IEgYv28bHM=",
-            "kind": "video",
-            "start": 1960-09-26T00:00:00.000Z,
-          },
-          Object {
-            "content": "John F. Kennedy - Nixon (2/4)",
-            "id": "bl03RovlxbTZK0yu25_VikP0Y2xSj-J9oFyGUTWIOZQ=",
-            "idx": "bl03RovlxbTZK0yu25_VikP0Y2xSj-J9oFyGUTWIOZQ=",
-            "kind": "video",
-            "start": 1960-10-07T00:00:00.000Z,
-          },
-        ]
-      }
     />
   </div>
-  <TimelinePreviewContainer
-    factLink={
-      Object {
-        "fact": Object {
-          "kind": "video",
-          "primaryDate": "2016-10-09",
-          "primaryDateKind": "recorded",
-          "title": "Donald Trump - Hillary Clinton (2/3)",
-        },
-        "hash": "iEfwIxM7MmnOKb7zt4HqW8IxUWy6F7a236fSOQlUUWI=",
-      }
-    }
-    ranges={undefined}
-    setFactHandlers={
-      Object {
-        "handleDocumentSetClick": [Function],
-        "handleRangeCleared": [Function],
-        "handleRangeSet": [Function],
-        "handleVideoSetClick": [Function],
-      }
-    }
-  />
 </div>
 `;
 
@@ -148,13 +32,8 @@ exports[`Successfully loaded view 1`] = `
 >
   <div>
     <TimelineRadioButtons
-      onChange={[Function]}
+      onChange={[MockFunction]}
       selectedOption="Debates"
-    />
-    <Timeline
-      onItemClick={[Function]}
-      selectedOption="Debates"
-      timelineItems={Array []}
     />
   </div>
 </div>
