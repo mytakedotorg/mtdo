@@ -110,6 +110,7 @@ public class Prod extends Jooby {
 		jooby.use(new TakeReaction());
 		jooby.use(new TakeEmail());
 		jooby.use(new Shares());
+		jooby.use(new RedirectException.Module());
 		// These controllers need to be last, because otherwise
 		// they will swallow every `/user/take` and `/user` URL.
 		jooby.use(new Takes());
