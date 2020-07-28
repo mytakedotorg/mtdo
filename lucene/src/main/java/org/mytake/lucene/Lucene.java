@@ -29,9 +29,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.TimeZone;
+import java.util.TreeSet;
 import java2ts.Search;
 import java2ts.Search.FactResultList;
 import java2ts.Search.VideoResult;
@@ -51,17 +52,15 @@ import org.apache.lucene.document.TextField;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
-import org.apache.lucene.index.Term;
-import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.BooleanClause.Occur;
 import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
-import org.apache.lucene.search.TermQuery;
 import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.MMapDirectory;
+import org.apache.lucene.util.QueryBuilder;
 
 public class Lucene implements AutoCloseable {
 	public static final String INDEX_ARCHIVE = "foundation-index.zip";
@@ -159,32 +158,40 @@ public class Lucene implements AutoCloseable {
 	}
 
 	static class NextRequest {
-		Search.Request request;
-		List<String> people;
+		TreeSet<String> clauses = new TreeSet<>();
+		TreeSet<String> exclude = new TreeSet<>();
+
+		NextRequest(String q) {
+			String[] clausesRaw = q.split(",", -1);
+			for (String clause : clausesRaw) {
+				String trimmed = clause.trim().toLowerCase(Locale.ROOT);
+				if (trimmed.isEmpty()) {
+					continue;
+				}
+				if (trimmed.charAt(0) == '-') {
+					exclude.add(trimmed.substring(1));
+				} else {
+					clauses.add(trimmed);
+				}
+			}
+		}
 	}
 
 	public FactResultList searchDebate(Search.Request request) throws IOException {
-		NextRequest next = new NextRequest();
-		next.request = request;
-		next.people = Collections.emptyList();
+		NextRequest next = new NextRequest(request.q);
 		return searchDebate(next);
 	}
 
 	FactResultList searchDebate(NextRequest request) throws IOException {
-		QueryParser parser = new QueryParser(CONTENT, analyzer);
-		Query phraseQuery = parser.createPhraseQuery(CONTENT, request.request.q);
-
 		BooleanQuery.Builder finalQuery = new BooleanQuery.Builder();
-		finalQuery.add(phraseQuery, Occur.MUST);
-		if (!request.people.isEmpty()) {
-			BooleanQuery.Builder speakerQuery = new BooleanQuery.Builder();
-			for (String person : request.people) {
-				speakerQuery.add(new TermQuery(new Term(SPEAKER, person)), Occur.SHOULD);
+		{
+			QueryBuilder phraseParser = new QueryBuilder(analyzer);
+			for (String clause : request.clauses) {
+				finalQuery.add(phraseParser.createPhraseQuery(CONTENT, clause), Occur.SHOULD);
 			}
-			finalQuery.add(speakerQuery.build(), Occur.MUST);
 		}
-		List<Document> queryResults = runQuery(finalQuery.build());
 
+		List<Document> queryResults = runQuery(finalQuery.build());
 		FactResultList resultList = new FactResultList();
 		resultList.facts = new ArrayList<>(queryResults.size());
 		for (int i = 0; i < queryResults.size(); ++i) {
