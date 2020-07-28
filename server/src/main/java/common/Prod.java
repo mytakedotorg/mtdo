@@ -89,6 +89,7 @@ public class Prod extends Jooby {
 		EmailSender.init(jooby);
 		Mods.init(jooby);
 		jooby.use(new JsoniterModule());
+		jooby.use(new MyFlash());
 	}
 
 	static void commonDb(Jooby jooby) {
