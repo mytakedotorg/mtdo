@@ -25,7 +25,6 @@ import VideoResultPreview from "./VideoResultPreview";
 import { VideoResultPreviewEventHandlers } from "./VideoResultPreview";
 import { alertErr } from "../utils/functions";
 import { Foundation } from "../java2ts/Foundation";
-
 import { FactTurns } from "../utils/factResults";
 
 export type SelectionOptions = "Containing" | "BeforeAndAfter";
@@ -54,6 +53,11 @@ export class VideoResultsList extends React.Component<
     this.state = {
       fixVideo: false,
       selectedOption: "BeforeAndAfter",
+      videoProps: props.factTurns.length
+        ? {
+            videoId: props.factTurns[0].videoFact.youtubeId,
+          }
+        : undefined,
     };
   }
   handleChange = (ev: React.ChangeEvent<HTMLInputElement>) => {
@@ -81,13 +85,6 @@ export class VideoResultsList extends React.Component<
       },
     });
   };
-  handleReady = (youtubeId: string) => {
-    this.setState({
-      videoProps: {
-        videoId: youtubeId,
-      },
-    });
-  };
   handleScroll = (fixVideo: boolean) => {
     if (this.state.fixVideo != fixVideo) {
       this.setState({
@@ -97,6 +94,7 @@ export class VideoResultsList extends React.Component<
   };
   render() {
     const fixedClass = this.state.fixVideo ? "results__push" : "";
+    resultPreviewEventHandlers.onPlayClick = this.handlePlayClick;
     return (
       <div className="results">
         <div className="results__inner-container">
@@ -125,17 +123,11 @@ export class VideoResultsList extends React.Component<
               </div>
             </div>
           )}
-          {this.props.factTurns.map((videoResult, idx) => {
-            const eventHandlers: VideoResultPreviewEventHandlers = {
-              onPlayClick: this.handlePlayClick,
-            };
-            if (idx === 0) {
-              eventHandlers.onReady = this.handleReady;
-            }
+          {this.props.factTurns.map((videoResult) => {
             return (
               <VideoResultPreview
-                key={idx.toString()}
-                eventHandlers={eventHandlers}
+                key={videoResult.videoFact.youtubeId}
+                eventHandlers={resultPreviewEventHandlers}
                 searchTerm={this.props.searchTerm}
                 sortBy={this.state.selectedOption}
                 turns={videoResult.turns}
@@ -148,5 +140,14 @@ export class VideoResultsList extends React.Component<
     );
   }
 }
+
+/**
+ * This object is created in root file scope so that it isn't
+ * re-created every render cycle. If it is re-created, then child
+ * components will re-render unnecessarily.
+ */
+let resultPreviewEventHandlers: VideoResultPreviewEventHandlers = {
+  onPlayClick: () => {},
+};
 
 export default VideoResultsList;

@@ -17,15 +17,15 @@
  *
  * You can contact us at team@mytake.org
  */
-import React, { useEffect } from "react";
-import VideoResultTurnList from "./VideoResultTurnList";
+import React from "react";
+import VideoResult, { PlayEvent } from "./VideoResult";
 import { SelectionOptions } from "./VideoResultsList";
-import { PlayEvent } from "./VideoResult";
 import { Foundation } from "../java2ts/Foundation";
+import { MultiHighlight, TurnFinder } from "../utils/searchFunc";
+import { alertErr } from "../utils/functions";
 
 export interface VideoResultPreviewEventHandlers {
   onPlayClick: PlayEvent;
-  onReady?: (youtubeId: string) => any;
 }
 
 interface VideoResultPreviewProps {
@@ -37,32 +37,75 @@ interface VideoResultPreviewProps {
 }
 
 const VideoResultPreview: React.FC<VideoResultPreviewProps> = (props) => {
-  useEffect(() => {
-    if (props.eventHandlers.onReady) {
-      props.eventHandlers.onReady(props.videoFact.youtubeId);
-    }
-  }, []);
-
   const { searchTerm, sortBy, turns, videoFact } = props;
-  return (
+  let allVideoResults: JSX.Element[] = [];
+  turns.forEach((turn) => {
+    const turnContent = getTurnContent(turn, videoFact);
+    const multiHighlights = getMultiHighlights(searchTerm, sortBy, turnContent);
+    const videoResults = multiHighlights.map((multiHighlight) => {
+      return (
+        <VideoResult
+          key={getUniqueKey(turn, multiHighlight)}
+          multiHighlight={multiHighlight}
+          onPlayClick={props.eventHandlers.onPlayClick}
+          sortBy={props.sortBy}
+          turn={turn}
+          turnContent={turnContent}
+          videoFact={props.videoFact}
+        />
+      );
+    });
+    allVideoResults = allVideoResults.concat(videoResults);
+  });
+  return allVideoResults.length > 0 ? (
     <div className="results__preview">
       <h2 className="results__subheading">
         {videoFact.fact.title} - {videoFact.fact.primaryDate}
       </h2>
-      {turns.map((turn, idx) => {
-        return (
-          <VideoResultTurnList
-            key={idx.toString()}
-            onPlayClick={props.eventHandlers.onPlayClick}
-            searchTerm={searchTerm}
-            sortBy={sortBy}
-            turn={turn}
-            videoFact={videoFact}
-          />
-        );
-      })}
+      {allVideoResults}
     </div>
-  );
+  ) : null;
+};
+
+const getTurnContent = (
+  turn: number,
+  videoFact: Foundation.VideoFactContent
+): string => {
+  let fullTurnText;
+  const firstWord = videoFact.speakerWord[turn];
+  const firstChar = videoFact.charOffsets[firstWord];
+
+  if (videoFact.speakerWord[turn + 1]) {
+    const lastWord = videoFact.speakerWord[turn + 1];
+    const lastChar = videoFact.charOffsets[lastWord] - 1;
+    fullTurnText = videoFact.plainText.substring(firstChar, lastChar);
+  } else {
+    // Result is in last turn
+    fullTurnText = videoFact.plainText.substring(firstChar);
+  }
+  return fullTurnText;
+};
+
+const getMultiHighlights = (
+  searchTerm: string,
+  sortBy: SelectionOptions,
+  turnContent: string
+): MultiHighlight[] => {
+  const turnFinder = new TurnFinder(searchTerm);
+  const turnWithResults = turnFinder.findResults(turnContent);
+  if (sortBy === "Containing") {
+    return turnWithResults.expandBy(1);
+  } else if (sortBy === "BeforeAndAfter") {
+    return turnWithResults.expandBy(2);
+  } else {
+    const msg = "VideoResultTurn: Unknown radio selection";
+    alertErr(msg);
+    throw msg;
+  }
+};
+
+const getUniqueKey = (turn: number, { cut }: MultiHighlight): string => {
+  return `${turn}.${cut[0]}.${cut[1]}`;
 };
 
 export default VideoResultPreview;
