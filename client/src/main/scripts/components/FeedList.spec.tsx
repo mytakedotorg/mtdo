@@ -22,7 +22,10 @@ import * as renderer from "react-test-renderer";
 import FeedList from "./FeedList";
 import { cards } from "../utils/testUtils";
 
-jest.mock("./FeedCardContainer");
+jest.mock("./FeedCardContainer", () => ({
+  __esModule: true,
+  default: "FeedCardContainer",
+}));
 
 test("FeedList", () => {
   const tree = renderer.create(<FeedList cards={cards} />).toJSON();

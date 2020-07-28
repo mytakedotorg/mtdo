@@ -21,7 +21,10 @@ import * as React from "react";
 import * as renderer from "react-test-renderer";
 import EditorButtons from "./EditorButtons";
 
-jest.mock("./Banner");
+jest.mock("./Banner", () => ({
+  __esModule: true,
+  default: "Banner",
+}));
 
 const eventHandlers = {
   handleDeleteClick: jest.fn(),

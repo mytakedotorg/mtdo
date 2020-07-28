@@ -21,7 +21,10 @@ import * as React from "react";
 import * as renderer from "react-test-renderer";
 import SearchBar from "./SearchBar";
 
-jest.mock("./DropDown");
+jest.mock("./DropDown", () => ({
+  __esModule: true,
+  default: "DropDown",
+}));
 
 test("SearchBar", () => {
   const tree = renderer

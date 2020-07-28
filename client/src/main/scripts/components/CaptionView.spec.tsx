@@ -23,9 +23,15 @@ import CaptionView, { CaptionViewEventHandlers } from "./CaptionView";
 import { TimeRange, TRACKSTYLES__RANGE } from "./Video";
 import { videoFactLink, videoFactFast } from "../utils/testUtils";
 
-jest.mock("./Document");
+jest.mock("./Document", () => ({
+  __esModule: true,
+  default: "Document",
+}));
 
-jest.mock("./ClipEditor");
+jest.mock("./ClipEditor", () => ({
+  __esModule: true,
+  default: "ClipEditor",
+}));
 
 const eventHandlers: CaptionViewEventHandlers = {
   onAfterRangeChange: jest.fn(),

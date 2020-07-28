@@ -31,7 +31,10 @@ import {
   videoFactLink,
 } from "../utils/testUtils";
 
-jest.mock("./TimelinePreview");
+jest.mock("./TimelinePreview", () => ({
+  __esModule: true,
+  default: "TimelinePreview",
+}));
 
 const setFactHandlers = {
   handleDocumentSetClick: jest.fn(),

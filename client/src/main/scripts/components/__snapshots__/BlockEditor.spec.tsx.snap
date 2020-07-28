@@ -57,7 +57,31 @@ exports[`Read only 1`] = `
         </div>
         <div
           className="editor__block editor__block--base"
-        />
+        >
+          <EditorDocumentContainer
+            active={false}
+            block={
+              Object {
+                "excerptId": "united-states-constitution",
+                "highlightedRange": Array [
+                  335,
+                  438,
+                ],
+                "kind": "document",
+                "viewRange": Array [
+                  327,
+                  500,
+                ],
+              }
+            }
+            eventHandlers={
+              Object {
+                "onDocumentClick": [MockFunction],
+              }
+            }
+            idx={1}
+          />
+        </div>
       </div>
     </div>
   </div>
@@ -131,7 +155,34 @@ exports[`Simple block editor model 1`] = `
         </div>
         <div
           className="editor__block editor__block--base"
-        />
+        >
+          <EditorDocumentContainer
+            active={false}
+            block={
+              Object {
+                "excerptId": "united-states-constitution",
+                "highlightedRange": Array [
+                  335,
+                  438,
+                ],
+                "kind": "document",
+                "viewRange": Array [
+                  327,
+                  500,
+                ],
+              }
+            }
+            eventHandlers={
+              Object {
+                "handleChange": [MockFunction],
+                "handleDelete": [MockFunction],
+                "handleEnterPress": [MockFunction],
+                "handleFocus": [MockFunction],
+              }
+            }
+            idx={1}
+          />
+        </div>
       </div>
     </div>
   </div>
@@ -205,7 +256,34 @@ exports[`With active 1`] = `
         </div>
         <div
           className="editor__block editor__block--base"
-        />
+        >
+          <EditorDocumentContainer
+            active={false}
+            block={
+              Object {
+                "excerptId": "united-states-constitution",
+                "highlightedRange": Array [
+                  335,
+                  438,
+                ],
+                "kind": "document",
+                "viewRange": Array [
+                  327,
+                  500,
+                ],
+              }
+            }
+            eventHandlers={
+              Object {
+                "handleChange": [MockFunction],
+                "handleDelete": [MockFunction],
+                "handleEnterPress": [MockFunction],
+                "handleFocus": [MockFunction],
+              }
+            }
+            idx={1}
+          />
+        </div>
       </div>
     </div>
   </div>

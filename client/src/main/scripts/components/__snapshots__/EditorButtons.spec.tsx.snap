@@ -4,6 +4,11 @@ exports[`Initial status 1`] = `
 <div
   className="editor__meta"
 >
+  <Banner
+    isSuccess={true}
+  >
+    
+  </Banner>
   <button
     className="editor__button editor__button--disabled"
     disabled={true}
@@ -32,6 +37,11 @@ exports[`Publishing 1`] = `
 <div
   className="editor__meta"
 >
+  <Banner
+    isSuccess={true}
+  >
+    Publishing Take.
+  </Banner>
   <button
     className="editor__button editor__button--save"
     disabled={false}
@@ -60,6 +70,11 @@ exports[`Publishing error 1`] = `
 <div
   className="editor__meta"
 >
+  <Banner
+    isSuccess={false}
+  >
+    There was an error publishing your Take.
+  </Banner>
   <button
     className="editor__button editor__button--save"
     disabled={false}
@@ -88,6 +103,11 @@ exports[`Save successful 1`] = `
 <div
   className="editor__meta"
 >
+  <Banner
+    isSuccess={true}
+  >
+    Save successful!
+  </Banner>
   <button
     className="editor__button editor__button--disabled"
     disabled={true}
@@ -116,6 +136,11 @@ exports[`Saving 1`] = `
 <div
   className="editor__meta"
 >
+  <Banner
+    isSuccess={true}
+  >
+    
+  </Banner>
   <button
     className="editor__button editor__button--save"
     disabled={false}
@@ -144,6 +169,11 @@ exports[`Saving 2`] = `
 <div
   className="editor__meta"
 >
+  <Banner
+    isSuccess={true}
+  >
+    Saving Take.
+  </Banner>
   <button
     className="editor__button editor__button--save"
     disabled={false}
@@ -172,6 +202,11 @@ exports[`Title too long 1`] = `
 <div
   className="editor__meta"
 >
+  <Banner
+    isSuccess={false}
+  >
+    Title cannot be longer than 255 characters.
+  </Banner>
   <button
     className="editor__button editor__button--save"
     disabled={false}
@@ -200,6 +235,11 @@ exports[`Unknown error 1`] = `
 <div
   className="editor__meta"
 >
+  <Banner
+    isSuccess={false}
+  >
+    There was an error modifying your Take.
+  </Banner>
   <button
     className="editor__button editor__button--save"
     disabled={false}
@@ -228,6 +268,11 @@ exports[`Unsaved 1`] = `
 <div
   className="editor__meta"
 >
+  <Banner
+    isSuccess={true}
+  >
+    
+  </Banner>
   <button
     className="editor__button editor__button--save"
     disabled={false}

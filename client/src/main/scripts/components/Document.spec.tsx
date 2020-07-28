@@ -31,9 +31,15 @@ const eventHandlers = {
   onScroll: onScroll,
 };
 
-jest.mock("./DocumentTextNodeList");
+jest.mock("./DocumentTextNodeList", () => ({
+  __esModule: true,
+  default: "DocumentTextNodeList",
+}));
 
-jest.mock("./CaptionTextNodeList");
+jest.mock("./CaptionTextNodeList", () => ({
+  __esModule: true,
+  default: "CaptionTextNodeList",
+}));
 
 test("Document component", () => {
   const tree = renderer

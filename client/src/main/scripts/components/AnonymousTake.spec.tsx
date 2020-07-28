@@ -22,7 +22,10 @@ import * as renderer from "react-test-renderer";
 import AnonymousTake from "./AnonymousTake";
 import { anonymousPath } from "../utils/testUtils";
 
-jest.mock("./BlockEditor");
+jest.mock("./BlockEditor", () => ({
+  __esModule: true,
+  default: "BlockEditor",
+}));
 
 test("It renders", () => {
   const tree = renderer.create(<AnonymousTake path={anonymousPath} />).toJSON();

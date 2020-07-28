@@ -21,7 +21,10 @@ import * as React from "react";
 import * as renderer from "react-test-renderer";
 import FoundationView from "./FoundationView";
 
-jest.mock("./TimelineView");
+jest.mock("./TimelineView", () => ({
+  __esModule: true,
+  default: "TimelineView",
+}));
 
 test("With fact in URL", () => {
   const path = "/foundation/bill-of-rights";
