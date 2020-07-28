@@ -20,9 +20,12 @@
 package forms.api;
 
 import com.diffplug.common.base.Unhandled;
+import java.util.Set;
 
 /** The contract that all forms must meet. */
-public interface FormDef extends LegacyFormDef {
+public interface FormDef {
+	Set<String> fieldNames();
+
 	Method method();
 
 	String actionUrl();

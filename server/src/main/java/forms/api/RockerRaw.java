@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2017 MyTake.org, Inc.
+ * Copyright (C) 2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -21,19 +21,40 @@ package forms.api;
 
 import com.fizzed.rocker.ContentType;
 import com.fizzed.rocker.RenderingException;
-import com.fizzed.rocker.runtime.DefaultRockerModel;
 import com.fizzed.rocker.runtime.DefaultRockerTemplate;
 import com.google.common.base.Preconditions;
 import com.google.common.html.HtmlEscapers;
 import com.google.common.xml.XmlEscapers;
+import common.CustomRockerModel;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /** Simple way to insert raw content into a rocker template. */
-public class RockerRaw extends DefaultRockerModel {
-	private final List<String> toWrite = new ArrayList<>();
+public class RockerRaw extends CustomRockerModel {
+	public static RockerRaw raw(String raw) {
+		return new RockerRaw(Collections.singletonList(raw));
+	}
+
+	public static RockerRaw safe(String raw) {
+		return new RockerRaw().appendSafe(raw);
+	}
+
+	public static RockerRaw empty() {
+		return new RockerRaw();
+	}
+
+	private final List<String> toWrite;
+
+	public RockerRaw() {
+		this(new ArrayList<>());
+	}
+
+	RockerRaw(List<String> toWrite) {
+		this.toWrite = toWrite;
+	}
 
 	/** Appends the given raw content. */
 	public RockerRaw appendRaw(String str) {
@@ -61,6 +82,12 @@ public class RockerRaw extends DefaultRockerModel {
 	/** Safely escapes HTML content. */
 	public RockerRaw appendSafe(String raw) {
 		appendRaw(HtmlEscapers.htmlEscaper().escape(raw));
+		return this;
+	}
+
+	/** Appends the content of another RockerRaw into this one. */
+	public RockerRaw appendRocker(RockerRaw other) {
+		toWrite.addAll(other.toWrite);
 		return this;
 	}
 

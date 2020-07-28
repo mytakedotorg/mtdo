@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2017 MyTake.org, Inc.
+ * Copyright (C) 2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -20,58 +20,79 @@
 package forms.meta;
 
 import forms.api.FormValidation;
-import java.util.regex.Pattern;
+import java.util.List;
 import org.apache.commons.validator.routines.EmailValidator;
 
 public interface Validator<T> {
-	void validate(FormValidation<?> validation, String fieldName, T value);
+	void validate(FormValidation.AbstractBuilder<?, ?> validation, String fieldName, T value);
 
-	default void validate(MetaFormValidation validation, MetaField<T> field) {
-		if (validation.parsedValue().keySet().contains(field)) {
-			validate(validation, field.name(), validation.parsedValue().get(field));
-		} else {
-			validation.errorForField(field, "Missing");
+	default void validate(FormValidation.AbstractBuilder<?, ?> validation, MetaField<? extends T> field) {
+		if (validation.def().fieldNames().contains(field.name())) {
+			validate(validation, field.name(), validation.value(field));
+		} else if (validation.error(field) == null) {
+			validation.addError(field, "Missing");
 		}
 	}
 
-	public static Validator<String> integerBetween(int min, int max) {
+	public static Validator<String> name() {
 		return (validation, fieldName, value) -> {
-			try {
-				int parsed = Integer.parseInt(value.trim());
-				if (parsed < min) {
-					validation.errorForField(fieldName, "Must be greater than " + min);
-				} else if (parsed > max) {
-					validation.errorForField(fieldName, "Must be less than " + max);
-				}
-			} catch (IllegalArgumentException e) {
-				validation.errorForField(fieldName, "Must be an integer");
+			if (value.isEmpty()) {
+				validation.addError(fieldName, "Name can't be empty");
 			}
-		};
-	}
-
-	public static Validator<String> strLength(int minLength, int maxLength) {
-		return (validation, fieldName, value) -> {
-			if (value.length() < minLength) {
-				validation.errorForField(fieldName, "Must be at least " + minLength + " characters long");
-			}
-			if (value.length() > maxLength) {
-				validation.errorForField(fieldName, "Must be no longer than " + maxLength + " characters");
-			}
-		};
-	}
-
-	public static Validator<String> regexMustMatch(Pattern pattern, String error) {
-		return (validation, fieldName, value) -> {
-			if (!pattern.matcher(value).matches()) {
-				validation.errorForField(fieldName, error);
+			if (!value.trim().equals(value)) {
+				validation.addError(fieldName, "Name cannot have leading or trailing spaces");
 			}
 		};
 	}
 
 	public static Validator<String> email() {
 		return (validation, fieldName, value) -> {
-			if (!EmailValidator.getInstance().isValid(value)) {
-				validation.errorForField(fieldName, "Invalid email");
+			boolean allowLocal = false;
+			boolean allowTld = true;
+			if (!EmailValidator.getInstance(allowLocal, allowTld).isValid(value)) {
+				validation.addError(fieldName, "Invalid email");
+			}
+		};
+	}
+
+	public static Validator<String> phoneNumber() {
+		return (validation, fieldName, value) -> {
+			final String PHONE_NUMBER_REGEX = "\\d{3}-?\\d{3}-?\\d{4}"; // XXX-XXX-XXXX
+			if (!value.matches(PHONE_NUMBER_REGEX)) {
+				validation.addError(fieldName, "Phone number is invalid, format XXX-XXX-XXXX");
+			}
+		};
+	}
+
+	public static <T> Validator<T> required() {
+		return (validation, fieldName, value) -> {
+			String rawValue = validation.value(fieldName);
+			if (rawValue == null || rawValue.isEmpty()) {
+				validation.addError(fieldName, "Can't be empty");
+			}
+		};
+	}
+
+	public static Validator<String> isOneOf(List<String> stringList) {
+		return (validation, fieldName, value) -> {
+			if (!stringList.contains(value)) {
+				validation.addError(fieldName, "Expected field to be in " + stringList.toString());
+			}
+		};
+	}
+
+	public static Validator<Integer> greaterThan(int min) {
+		return (validation, fieldName, value) -> {
+			if (!(value > min)) {
+				validation.addError(fieldName, "Must be greater than " + min);
+			}
+		};
+	}
+
+	public static Validator<Integer> lessThan(int max) {
+		return (validation, fieldName, value) -> {
+			if (!(value < max)) {
+				validation.addError(fieldName, "Must be less than " + max);
 			}
 		};
 	}

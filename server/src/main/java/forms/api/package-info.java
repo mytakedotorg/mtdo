@@ -3,8 +3,8 @@
  * Here's the outline of our form infrastructure:
  * 
  * - {@link LegacyFormDef} defines the schema for a form.
- * - {@link FormValidation} models errors at the field-level and the whole-form level, as well as an optional success message.
- * - {@link FormValidation#markup(String)} creates a {@link FormMarkup} object, which can be passed as an argument to a Rocker template for creating a form and displaying errors.
+ * - {@link LegacyFormValidation} models errors at the field-level and the whole-form level, as well as an optional success message.
+ * - {@link LegacyFormValidation#markup(String)} creates a {@link LegacyFormMarkup} object, which can be passed as an argument to a Rocker template for creating a form and displaying errors.
  * 
  * To make it easy to define per-field validation, we have the {@link forms.meta} package.  Here is its outline:
  * 
