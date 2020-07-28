@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2018 MyTake.org, Inc.
+ * Copyright (C) 2018-2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -23,8 +23,6 @@ import com.diffplug.common.collect.Lists;
 import compat.java2ts.VideoFactContentJava;
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 import java.util.Objects;
 import java2ts.Foundation;
 import java2ts.Foundation.Speaker;
@@ -41,7 +39,7 @@ public class LuceneTest {
 	public TemporaryFolder tempFolder = new TemporaryFolder();
 
 	@Test
-	public void test() throws IOException {
+	public void broadTest() throws IOException {
 		Speaker luke = new Speaker();
 		luke.fullName = "Luke Skywalker";
 		luke.role = "candidate";
@@ -69,16 +67,8 @@ public class LuceneTest {
 		}
 
 		try (Lucene lucene = new Lucene(tempFolder.getRoot().toPath())) {
-			Lucene.NextRequest request = new Lucene.NextRequest();
-			request.request = new Search.Request();
-			request.request.q = "common";
-			request.people = Collections.emptyList();
-
 			// both people say common
 			newQuery("common").expect(lucene, new VidResult(HASH, 0), new VidResult(HASH, 1));
-			// this finds the one that only luke said
-			newQuery("common").people("Luke Skywalker").expect(lucene, new VidResult(HASH, 0));
-			newQuery("common").people("Darth Vader").expect(lucene, new VidResult(HASH, 1));
 
 			// no people, but search a word that only they said
 			newQuery("luke").expect(lucene, new VidResult(HASH, 0));
@@ -90,10 +80,14 @@ public class LuceneTest {
 			newQuery("Luke common").expect(lucene, new VidResult(HASH, 0));
 			newQuery("Darth COMMON").expect(lucene, new VidResult(HASH, 1));
 
+			// phrase ignores punctuation in source
 			newQuery("several beans").expect(lucene);
 			newQuery("several green beans").expect(lucene, new VidResult(HASH, 1));
 			newQuery("green beans").expect(lucene, new VidResult(HASH, 1));
 			newQuery("several green").expect(lucene, new VidResult(HASH, 1));
+
+			// multiclause
+			newQuery("luke common, darth common").expect(lucene, new VidResult(HASH, 0), new VidResult(HASH, 1));
 		}
 	}
 
@@ -103,23 +97,14 @@ public class LuceneTest {
 
 	static class QueryBuilder {
 		private String searchTerm;
-		private List<String> people = Collections.emptyList();
 
 		public QueryBuilder searchTerm(String searchTerm) {
 			this.searchTerm = searchTerm;
 			return this;
 		}
 
-		public QueryBuilder people(String... people) {
-			this.people = Arrays.asList(people);
-			return this;
-		}
-
 		public void expect(Lucene lucene, VidResult... results) throws IOException {
-			Lucene.NextRequest request = new Lucene.NextRequest();
-			request.request = new Search.Request();
-			request.request.q = searchTerm;
-			request.people = people;
+			Lucene.NextRequest request = new Lucene.NextRequest(searchTerm);
 			Assertions.assertThat(Lists.transform(lucene.searchDebate(request).facts, VidResult::new)).containsExactlyInAnyOrder(results);
 		}
 	}

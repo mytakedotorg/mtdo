@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2018 MyTake.org, Inc.
+ * Copyright (C) 2018-2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -29,26 +29,52 @@ export interface MultiHighlight {
   highlights: Array<[number, number]>;
 }
 
+function cleanupRegex(string: String): String {
+  const alphaNumWhitespaceOnly = string.replace("[^a-z0-9s]", "");
+  return alphaNumWhitespaceOnly.replace(" ", "\\W+"); // all commas, dashes, quotes, etc. get smushed into one group
+}
+
 /** This class finds matches within a turn, returning them as TurnWithResults. */
 export class TurnFinder {
-  regex: RegExp;
+  regexInclude: RegExp;
+  regexExclude?: RegExp;
 
   constructor(searchTerm: string) {
-    // i = ignore case
-    // '\W+' means that all commas, dashes, quotes, etc. get smushed into one group
-    this.regex = new RegExp(searchTerm.replace(" ", "\\W+"), "ig");
+    let include = "";
+    let exclude = "";
+    for (const clause of searchTerm.toLowerCase().split(",")) {
+      const trimmed = clause.trim();
+      if (trimmed.length == 0) {
+        continue;
+      }
+      if (trimmed.charAt(0) === "-") {
+        exclude = exclude + "|" + cleanupRegex(trimmed.substr(1));
+      } else {
+        include = include + "|" + cleanupRegex(trimmed);
+      }
+    }
+    this.regexInclude = new RegExp(include.slice(1), "ig");
+    if (exclude.length > 0) {
+      this.regexExclude = new RegExp(exclude.slice(1), "ig");
+    }
   }
 
   /** Finds all the results in the given turnContent. */
   findResults(turnContent: string): TurnWithResults {
-    this.regex.lastIndex = 0;
+    this.regexInclude.lastIndex = 0;
     let foundOffsets: Array<[number, number]> = [];
-    let found = this.regex.exec(turnContent);
+    let found = this.regexInclude.exec(turnContent);
     while (found != null) {
       const lastIndex = found.index + found[0].length;
+      if (this.regexExclude) {
+        // TODO: if this exclude regex matches at all, we should not include the result.
+        // it's a little tricky because it might be a "look ahead" or "look behind", e.g.
+        //   wall, -wall street <-- I want wall, but not wall street
+        //   wall, -border wall <-- I want wall, but not border wall
+      }
       foundOffsets.push([found.index, lastIndex]);
-      this.regex.lastIndex = lastIndex + 1;
-      found = this.regex.exec(turnContent);
+      this.regexInclude.lastIndex = lastIndex + 1;
+      found = this.regexInclude.exec(turnContent);
     }
     return new TurnWithResults(turnContent, foundOffsets);
   }
