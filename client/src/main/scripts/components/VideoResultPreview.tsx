@@ -45,7 +45,7 @@ const VideoResultPreview: React.FC<VideoResultPreviewProps> = (props) => {
     const videoResults = multiHighlights.map((multiHighlight) => {
       return (
         <VideoResult
-          key={getUniqueKey(turn, multiHighlight)}
+          key={getUniqueKey(videoFact.youtubeId, turn, multiHighlight)}
           multiHighlight={multiHighlight}
           onPlayClick={props.eventHandlers.onPlayClick}
           sortBy={props.sortBy}
@@ -104,8 +104,12 @@ const getMultiHighlights = (
   }
 };
 
-const getUniqueKey = (turn: number, { cut }: MultiHighlight): string => {
-  return `${turn}.${cut[0]}.${cut[1]}`;
+const getUniqueKey = (
+  youtubeId: string,
+  turn: number,
+  { cut }: MultiHighlight
+): string => {
+  return `${youtubeId}.${turn}.${cut[0]}.${cut[1]}`;
 };
 
 export default VideoResultPreview;
