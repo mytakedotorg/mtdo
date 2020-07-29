@@ -29,8 +29,8 @@ import { SearchDatabase } from "./SearchDatabase";
 import { reject } from "lodash";
 
 export class SearchDatabaseApi {
-  private _searchDatabase: SearchDatabase | undefined;
-  private static instance: SearchDatabaseApi | undefined;
+  private _searchDatabase?: SearchDatabase;
+  private static instance?: SearchDatabaseApi;
   private constructor(private searchTerm: string) {}
 
   static getInstance(searchTerm?: string): SearchDatabaseApi {
@@ -41,12 +41,12 @@ export class SearchDatabaseApi {
       SearchDatabaseApi.instance = new SearchDatabaseApi(searchTerm);
       return SearchDatabaseApi.instance;
     }
-    // if (
-    //   SearchDatabaseApi.instance.searchTerm &&
-    //   SearchDatabaseApi.instance.searchTerm !== searchTerm
-    // ) {
-    //   throw "SearchDatabaseApi: cannot change search term";
-    // }
+    if (
+      SearchDatabaseApi.instance.searchTerm &&
+      SearchDatabaseApi.instance.searchTerm !== searchTerm
+    ) {
+      throw "SearchDatabaseApi: cannot change search term";
+    }
     return SearchDatabaseApi.instance;
   }
 
