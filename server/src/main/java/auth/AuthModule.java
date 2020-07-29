@@ -81,12 +81,12 @@ public class AuthModule implements Jooby.Module {
 		CreateAccountForm.urlCode.get(env, CreateAccountForm::confirm);
 
 		env.router().get(Routes.LOGOUT, (req, rsp) -> {
-			AuthUser.clearCookies(rsp);
+			AuthUser.clearCookies(req, rsp);
 			rsp.redirect(HomeFeed.URL);
 		});
 		// a missing or expired login redirects to the login page
 		env.router().err(JWTVerificationException.class, (req, rsp, err) -> {
-			AuthUser.clearCookies(rsp);
+			AuthUser.clearCookies(req, rsp);
 			rsp.redirect(Status.TEMPORARY_REDIRECT, UrlEncodedPath.path(Routes.LOGIN)
 					.paramIfPresent(LOGIN_EMAIL, AuthUser.usernameForError(req))
 					.paramPathAndQuery(REDIRECT, req)

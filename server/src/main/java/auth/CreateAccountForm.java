@@ -160,7 +160,7 @@ public class CreateAccountForm extends PostForm<CreateAccountForm> {
 				} else {
 					// clear the user's existing cookies if they're clicking a "confirm" link for someone else
 					if (userOpt.isPresent() && !userOpt.get().username().equals(username)) {
-						AuthUser.clearCookies(rsp);
+						AuthUser.clearCookies(req, rsp);
 					}
 
 					boolean emailAlreadyUsed = msg_EMAIL_ALREADY_USED.equals(form.error(CREATE_EMAIL));

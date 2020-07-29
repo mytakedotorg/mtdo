@@ -108,7 +108,7 @@ public class LoginForm extends PostForm<LoginForm> {
 			String errorMsg;
 			if (link == null || now.after(link.getExpiresAt())) {
 				errorMsg = "This link expired, try again.";
-			} else if (link != null && ip.equals(link.getRequestorIp())) {
+			} else if (link != null && !ip.equals(link.getRequestorIp())) {
 				errorMsg = "Make sure to open the link from the same device you requested it from.";
 			} else {
 				errorMsg = null;
@@ -118,7 +118,7 @@ public class LoginForm extends PostForm<LoginForm> {
 				// else we have no choice but to show an error
 				req.flash("error", errorMsg);
 				// and clear their login cookies
-				AuthUser.clearCookies(rsp);
+				AuthUser.clearCookies(req, rsp);
 				UrlEncodedPath path = UrlEncodedPath.path(Routes.LOGIN);
 				if (req.param(LOGIN_EMAIL.name()).isSet()) {
 					path.param(LOGIN_EMAIL, req.param(LOGIN_EMAIL.name()).value());
