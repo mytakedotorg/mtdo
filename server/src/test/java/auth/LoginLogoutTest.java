@@ -48,7 +48,7 @@ public class LoginLogoutTest {
 					asserter.contains("A login email has been sent to samples@email.com");
 				}).responseAssert(response -> {
 					// no cookies
-					Assertions.assertThat(response.extract().cookies().keySet()).isEmpty();
+					Assertions.assertThat(response.extract().cookies().keySet()).containsExactly("jooby.flash");
 				});
 
 		EmailAssert loginEmail = dev.waitForEmail();
