@@ -75,15 +75,10 @@ public class CreateAccountForm extends PostForm<CreateAccountForm> {
 		if (!form.valuePresent(ACCEPT_TERMS) || !form.value(ACCEPT_TERMS)) {
 			return retry.addError(ACCEPT_TERMS, "Must accept the terms to create an account");
 		}
-		// username validation
-		Validator.strLength(FACEBOOK_MIN_USERNAME, FACEBOOK_MAX_USERNAME).validate(form, CREATE_USERNAME);
-		Validator.regexMustMatch(LOWERCASE_AND_DASH, msg_ALLOWED_CHARACTERS).validate(form, CREATE_USERNAME);
-		// email validation
-		Validator.email().validate(form, CREATE_EMAIL);
-		Validator.strLength(0, VarChars.EMAIL).validate(form, CREATE_EMAIL);
-
 		String username = Text.lowercase(form.value(CREATE_USERNAME));
 		String email = Text.lowercase(form.value(CREATE_EMAIL));
+
+		validateUsernameFormat(username, retry);
 		if (ReservedUsernames.isReserved(username)) {
 			return retry.addError(CREATE_USERNAME, msg_USERNAME_NOT_AVAILABLE);
 		}
@@ -119,6 +114,15 @@ public class CreateAccountForm extends PostForm<CreateAccountForm> {
 
 		req.flash(AuthModule.FLASH_EMAIL, form.value(CREATE_EMAIL));
 		return ValidateResult.redirect(AuthModule.URL_confirm_account_sent);
+	}
+
+	static void validateUsernameFormat(String username, FormValidation.Builder<CreateAccountForm> retry) {
+		// username validation
+		Validator.strLength(FACEBOOK_MIN_USERNAME, FACEBOOK_MAX_USERNAME).validate(retry, CREATE_USERNAME);
+		Validator.regexMustMatch(LOWERCASE_AND_DASH, msg_ALLOWED_CHARACTERS).validate(retry, CREATE_USERNAME);
+		// email validation
+		Validator.email().validate(retry, CREATE_EMAIL);
+		Validator.strLength(0, VarChars.EMAIL).validate(retry, CREATE_EMAIL);
 	}
 
 	private static void validateUsernameEmailUnique(String username, String email, DSLContext dsl, FormValidation.Builder<CreateAccountForm> form) {

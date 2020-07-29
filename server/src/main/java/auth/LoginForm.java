@@ -66,7 +66,7 @@ public class LoginForm extends PostForm<LoginForm> {
 	protected ValidateResult<LoginForm> validate(Request req, FormValidation.Sensitive<LoginForm> form) {
 		String email = Text.lowercase(form.value(LOGIN_EMAIL));
 		FormValidation.Builder<LoginForm> retry = form.keepAll();
-		Validator.email().validate(form, LOGIN_EMAIL);
+		Validator.email().validate(retry, LOGIN_EMAIL);
 		try (DSLContext dsl = req.require(DSLContext.class)) {
 			AccountRecord account = DbMisc.fetchOne(dsl, ACCOUNT.EMAIL, email);
 			if (account == null) {

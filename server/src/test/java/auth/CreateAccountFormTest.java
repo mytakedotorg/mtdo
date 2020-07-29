@@ -20,25 +20,12 @@
 package auth;
 
 import forms.api.FormValidation;
-import forms.meta.FormSubmit;
-import forms.meta.PostForm;
+import forms.meta.TypedFormDef;
 import javax.annotation.Nullable;
+import org.assertj.core.api.Assertions;
 import org.junit.Test;
 
 public class CreateAccountFormTest {
-	@Test
-	public void allFieldsBroken() {
-		FormSubmit.create(CreateAccountForm.class)
-				.set(AuthModule.CREATE_USERNAME, "a")
-				.set(AuthModule.CREATE_EMAIL, "nope")
-				.set(AuthModule.ACCEPT_TERMS, false)
-				.set(AuthModule.REDIRECT, "")
-				.post();
-		//						"createuser", "Must be at least 5 characters long",
-		//						"acceptterms", "Must accept the terms to create an account",
-		//						"createemail", "Invalid email");
-	}
-
 	@Test
 	public void usernameValidation() {
 		usernameCase("", "Must be at least 5 characters long");
@@ -53,17 +40,20 @@ public class CreateAccountFormTest {
 	}
 
 	private void usernameCase(String username, @Nullable String error) {
-		CreateAccountForm formDef = PostForm.create(CreateAccountForm.class);
-		FormValidation.Sensitive<CreateAccountForm> sensitive = FormValidation.emptySensitive(formDef)
+		FormValidation.Sensitive<CreateAccountForm> sensitive = FormValidation.emptySensitive(TypedFormDef.create(CreateAccountForm.class))
 				.set(AuthModule.CREATE_USERNAME, username)
 				.set(AuthModule.CREATE_EMAIL, "name@email.com")
 				.set(AuthModule.ACCEPT_TERMS, true)
 				.set(AuthModule.REDIRECT, "");
-		//		formDef.validate(null, sensitive);
-		//		if (error == null) {
-		//			assertion.noError();
-		//		} else {
-		//			assertion.hasFieldErrors("createuser", error);
-		//		}
+		FormValidation.Builder<CreateAccountForm> retry = sensitive.keepAll();
+		CreateAccountForm.validateUsernameFormat(username, retry);
+		if (error == null) {
+			Assertions.assertThat(retry.builder().noErrors()).isTrue();
+		} else {
+			String actualError = retry.builder().build().errors().values().stream()
+					.filter(value -> value != null)
+					.findAny().get();
+			Assertions.assertThat(actualError).isEqualTo(error);
+		}
 	}
 }

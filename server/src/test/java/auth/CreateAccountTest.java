@@ -67,7 +67,7 @@ public class CreateAccountTest {
 		link = confirmationEmail.extractLink("Visit the ");
 
 		// click the link
-		PageAssert.assertThatGet(link, Status.OK)
+		PageAssert.assertThat(RestAssured.given().urlEncodingEnabled(false).redirects().follow(false).get(link), Status.OK)
 				// it should have login cookies
 				.responseAssert(response -> {
 					Account account = dev.fetchRecord(ACCOUNT, ACCOUNT.USERNAME, "alexander").into(Account.class);
@@ -95,7 +95,7 @@ public class CreateAccountTest {
 	@Test
 	public void _03_doubleConfirmNotLoggedIn() throws MessagingException {
 		PageAssert.assertThat(RestAssured.given()
-				.redirects().follow(false)
+				.redirects().follow(false).urlEncodingEnabled(false)
 				.get(link), Status.FOUND)
 				// it should remove the login cookie
 				.responseAssert(response -> {

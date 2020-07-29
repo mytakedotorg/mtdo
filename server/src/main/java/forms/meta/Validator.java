@@ -25,9 +25,9 @@ import java.util.regex.Pattern;
 import org.apache.commons.validator.routines.EmailValidator;
 
 public interface Validator<T> {
-	void validate(FormValidation.AbstractBuilder<?, ?> validation, String fieldName, T value);
+	void validate(FormValidation.Builder<?> validation, String fieldName, T value);
 
-	default void validate(FormValidation.AbstractBuilder<?, ?> validation, MetaField<? extends T> field) {
+	default void validate(FormValidation.Builder<?> validation, MetaField<? extends T> field) {
 		if (validation.def().fieldNames().contains(field.name())) {
 			validate(validation, field.name(), validation.value(field));
 		} else if (validation.error(field) == null) {
