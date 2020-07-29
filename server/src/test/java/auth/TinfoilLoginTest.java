@@ -39,9 +39,9 @@ public class TinfoilLoginTest {
 		FormSubmit.create(TinfoilLoginForm.class)
 				.set(TinfoilLoginForm.USERNAME, "samples")
 				.set(TinfoilLoginForm.PASSWORD, "Ijk07hx8GrfgJV6b3q+FxXY8zUvBl88VzIG0PPQ32Jc=")
-				.post()
+				.postDebugCookies()
 				.then()
-				.statusCode(Status.FOUND.value())
+				.statusCode(Status.SEE_OTHER.value())
 				.cookie(AuthUser.LOGIN_COOKIE, loginCookie);
 	}
 
@@ -50,7 +50,7 @@ public class TinfoilLoginTest {
 		FormSubmit.create(TinfoilLoginForm.class)
 				.set(TinfoilLoginForm.USERNAME, "samples")
 				.set(TinfoilLoginForm.PASSWORD, "Ijk07hx8GrfgJV6b3q+FxXY8zUvBl88VzIG0PPQ32Jc=E")
-				.post()
+				.postDebugCookies()
 				.then()
 				.cookies(Collections.emptyMap());
 	}
