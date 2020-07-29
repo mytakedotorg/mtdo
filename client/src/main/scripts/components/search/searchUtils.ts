@@ -17,7 +17,7 @@
  *
  * You can contact us at team@mytake.org
  */
-import { Search } from "../java2ts/Search";
+import { Search } from "../../java2ts/Search";
 
 /**
  * Offsets to cut out of the turn content, along with all the offsets

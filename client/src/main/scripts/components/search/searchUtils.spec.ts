@@ -17,7 +17,7 @@
  *
  * You can contact us at team@mytake.org
  */
-import { TurnFinder } from "./searchFunc";
+import { TurnFinder } from "./searchUtils";
 
 test("turnfinder-corner-case", () => {
   let finder = new TurnFinder("farm");

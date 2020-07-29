@@ -19,13 +19,13 @@
  */
 import * as React from "react";
 import SearchRadioButtons from "./SearchRadioButtons";
-import VideoLite from "./VideoLite";
-import VideoPlaceholder from "./VideoPlaceholder";
+import VideoLite from "../VideoLite";
+import VideoPlaceholder from "../VideoPlaceholder";
 import VideoResultPreview from "./VideoResultPreview";
 import { VideoResultPreviewEventHandlers } from "./VideoResultPreview";
-import { alertErr } from "../utils/functions";
-import { Foundation } from "../java2ts/Foundation";
-import { SearchDatabaseApi } from "../database/SearchDatabaseApi";
+import { alertErr } from "../../utils/functions";
+import { Foundation } from "../../java2ts/Foundation";
+import { SearchDatabaseApi } from "./database/SearchDatabaseApi";
 
 export type SelectionOptions = "Containing" | "BeforeAndAfter";
 

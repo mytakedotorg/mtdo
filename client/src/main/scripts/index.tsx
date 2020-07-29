@@ -29,7 +29,7 @@ import FeedList from "./components/FeedList";
 import FoundationView from "./components/FoundationView";
 import SearchBar from "./components/SearchBar";
 import UserNav from "./components/UserNav";
-import VideoResultsLoader from "./components/VideoResultsLoader";
+import VideoResultsLoader from "./components/search/VideoResultsLoader";
 import { TakeDocument } from "./components/BlockEditor";
 import { Card } from "./components/FeedList";
 import { alertErr } from "./utils/functions";

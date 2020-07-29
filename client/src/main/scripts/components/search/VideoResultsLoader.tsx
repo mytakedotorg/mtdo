@@ -19,7 +19,7 @@
  */
 import React, { useState, useEffect } from "react";
 import VideoResultsList from "./VideoResultsList";
-import { SearchDatabaseApi } from "../database/SearchDatabaseApi";
+import { SearchDatabaseApi } from "./database/SearchDatabaseApi";
 
 interface VideoResultsLoaderProps {
   searchTerm: string;

@@ -20,9 +20,9 @@
 import React from "react";
 import VideoResult, { PlayEvent } from "./VideoResult";
 import { SelectionOptions } from "./VideoResultsList";
-import { Foundation } from "../java2ts/Foundation";
-import { MultiHighlight, TurnFinder } from "../utils/searchFunc";
-import { alertErr } from "../utils/functions";
+import { Foundation } from "../../java2ts/Foundation";
+import { MultiHighlight, TurnFinder } from "./searchUtils";
+import { alertErr } from "../../utils/functions";
 
 export interface VideoResultPreviewEventHandlers {
   onPlayClick: PlayEvent;

@@ -20,7 +20,7 @@
 import * as React from "react";
 import * as renderer from "react-test-renderer";
 import VideoResult from "./VideoResult";
-import { kennedyNixon } from "../utils/testUtils";
+import { kennedyNixon } from "../../utils/testUtils";
 
 test("VideoResultPreview containing", () => {
   const tree = renderer

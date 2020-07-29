@@ -18,11 +18,11 @@
  * You can contact us at team@mytake.org
  */
 import * as React from "react";
-import { Foundation } from "../java2ts/Foundation";
+import { Foundation } from "../../java2ts/Foundation";
 import { SelectionOptions } from "./VideoResultsList";
-import { convertSecondsToTimestamp, slugify } from "../utils/functions";
-import { MultiHighlight } from "../utils/searchFunc";
-import { Routes } from "../java2ts/Routes";
+import { convertSecondsToTimestamp, slugify } from "../../utils/functions";
+import { MultiHighlight } from "./searchUtils";
+import { Routes } from "../../java2ts/Routes";
 var bs = require("binary-search");
 
 export type PlayEvent = (

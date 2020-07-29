@@ -17,14 +17,14 @@
  *
  * You can contact us at team@mytake.org
  */
-import { Foundation } from "../java2ts/Foundation";
-import { Routes } from "../java2ts/Routes";
-import { Search } from "../java2ts/Search";
+import { Foundation } from "../../../java2ts/Foundation";
+import { Routes } from "../../../java2ts/Routes";
+import { Search } from "../../../java2ts/Search";
 import {
   fetchFactReturningPromise,
   postRequest,
   VideoFactHashMap,
-} from "../utils/databaseAPI";
+} from "../../../utils/databaseAPI";
 import { SearchDatabase } from "./SearchDatabase";
 import { reject } from "lodash";
 

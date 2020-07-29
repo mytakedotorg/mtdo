@@ -20,7 +20,7 @@
 import * as React from "react";
 import * as renderer from "react-test-renderer";
 import VideoResultPreview from "./VideoResultPreview";
-import { kennedyNixon } from "../utils/testUtils";
+import { kennedyNixon } from "../../utils/testUtils";
 
 jest.mock("./VideoResult", () => ({
   __esModule: true,
