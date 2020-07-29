@@ -128,6 +128,15 @@ public abstract class MetaField<T> {
 		}
 	}
 
+	public T parseOrDefault(Request req, T defaultValue) {
+		Mutant mutant = req.param(name);
+		if (mutant.isSet()) {
+			return parser().convert(mutant.value());
+		} else {
+			return defaultValue;
+		}
+	}
+
 	static class StringMetaField extends MetaField<String> {
 		public StringMetaField(String name) {
 			super(name);

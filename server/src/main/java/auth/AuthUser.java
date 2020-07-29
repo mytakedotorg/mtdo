@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2017-2018 MyTake.org, Inc.
+ * Copyright (C) 2017-2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -33,6 +33,8 @@ import common.Time;
 import common.UrlEncodedPath;
 import db.tables.pojos.Account;
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 import java2ts.LoginCookie;
@@ -145,21 +147,24 @@ public class AuthUser {
 		}
 	}
 
-	static void login(Account account, Request req, Response rsp) {
+	static List<Cookie> login(Account account, Request req) {
 		boolean isSecurable = UrlEncodedPath.isSecurable(req);
+		List<Cookie> cookies = new ArrayList<>();
 
 		Cookie.Definition httpCookie = new Cookie.Definition(LOGIN_COOKIE, jwtToken(req, account));
 		httpCookie.httpOnly(true);
 		httpCookie.secure(isSecurable);
 		httpCookie.maxAge((int) TimeUnit.DAYS.toSeconds(LOGIN_DAYS));
-		rsp.cookie(httpCookie);
+		cookies.add(httpCookie.toCookie());
 
 		LoginCookie cookie = new LoginCookie();
 		cookie.username = account.getUsername();
 		Cookie.Definition uiCookie = new Cookie.Definition(LOGIN_UI_COOKIE, JsonStream.serialize(cookie));
 		uiCookie.secure(isSecurable);
 		uiCookie.maxAge((int) TimeUnit.DAYS.toSeconds(LOGIN_DAYS));
-		rsp.cookie(uiCookie);
+		cookies.add(uiCookie.toCookie());
+
+		return cookies;
 	}
 
 	static void clearCookies(Response rsp) {

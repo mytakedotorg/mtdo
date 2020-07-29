@@ -41,25 +41,22 @@ public class UrlRandomCode<T extends UpdatableRecordImpl<T>> {
 	private final TableField<T, String> code;
 	private final TableField<T, Timestamp> createdAt;
 	private final TableField<T, String> requestorIp;
-	private final TableField<T, Integer> userId;
 
-	public UrlRandomCode(String baseUrl, TableField<T, String> code, TableField<T, Timestamp> createdAt, TableField<T, String> requestorIp, TableField<T, Integer> userId) {
+	public UrlRandomCode(String baseUrl, TableField<T, String> code, TableField<T, Timestamp> createdAt, TableField<T, String> requestorIp) {
 		Preconditions.checkArgument(baseUrl.startsWith("/"));
 		Preconditions.checkArgument(baseUrl.endsWith("/"));
 		this.baseUrl = baseUrl;
 		this.code = code;
 		this.createdAt = createdAt;
 		this.requestorIp = requestorIp;
-		this.userId = userId;
 	}
 
-	public T createRecord(Request req, DSLContext dsl, Timestamp now, String requestorIp, int userId) {
+	public T createRecord(Request req, DSLContext dsl, Timestamp now, String requestorIp) {
 		String code = RandomString.get(req.require(SecureRandom.class), CODE_LENGTH);
 		T record = dsl.newRecord(this.code.getTable());
 		record.set(this.code, code);
 		record.set(this.createdAt, now);
 		record.set(this.requestorIp, requestorIp);
-		record.set(this.userId, userId);
 		return record;
 	}
 

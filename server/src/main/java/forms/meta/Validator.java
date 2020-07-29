@@ -21,6 +21,7 @@ package forms.meta;
 
 import forms.api.FormValidation;
 import java.util.List;
+import java.util.regex.Pattern;
 import org.apache.commons.validator.routines.EmailValidator;
 
 public interface Validator<T> {
@@ -93,6 +94,25 @@ public interface Validator<T> {
 		return (validation, fieldName, value) -> {
 			if (!(value < max)) {
 				validation.addError(fieldName, "Must be less than " + max);
+			}
+		};
+	}
+
+	public static Validator<String> strLength(int minLength, int maxLength) {
+		return (validation, fieldName, value) -> {
+			if (value.length() < minLength) {
+				validation.addError(fieldName, "Must be at least " + minLength + " characters long");
+			}
+			if (value.length() > maxLength) {
+				validation.addError(fieldName, "Must be no longer than " + maxLength + " characters");
+			}
+		};
+	}
+
+	public static Validator<String> regexMustMatch(Pattern pattern, String error) {
+		return (validation, fieldName, value) -> {
+			if (!pattern.matcher(value).matches()) {
+				validation.addError(fieldName, error);
 			}
 		};
 	}

@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2017-2018 MyTake.org, Inc.
+ * Copyright (C) 2017-2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -30,7 +30,7 @@ import common.JoobyDevRule;
 import common.PageAssert;
 import common.UrlEncodedPath;
 import db.tables.pojos.Account;
-import forms.meta.MetaFormSubmit;
+import forms.meta.FormSubmit;
 import io.restassured.RestAssured;
 import java.util.Collections;
 import javax.mail.MessagingException;
@@ -50,12 +50,12 @@ public class CreateAccountTest {
 	@Test
 	public void _01_createAccount() throws MessagingException {
 		// post the account form
-		PageAssert.assertThat(MetaFormSubmit.create(CreateAccountForm.class)
+		PageAssert.assertThat(FormSubmit.create(CreateAccountForm.class)
 				.set(CREATE_USERNAME, "alexander")
 				.set(CREATE_EMAIL, "alexander@hamilton.com")
 				.set(ACCEPT_TERMS, true)
 				.set(REDIRECT, "")
-				.post("/login"), Status.OK)
+				.post(), Status.OK)
 				.bodyAssert(asserter -> {
 					asserter.contains("A confirmation email has been sent");
 				});

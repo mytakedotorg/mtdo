@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2017-2018 MyTake.org, Inc.
+ * Copyright (C) 2017-2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -26,29 +26,26 @@ import static auth.AuthModule.REDIRECT;
 import static db.Tables.ACCOUNT;
 import static db.Tables.CONFIRMACCOUNTLINK;
 
-import com.google.common.collect.ImmutableSet;
+import common.DbMisc;
 import common.EmailSender;
-import common.Emails;
 import common.IpGetter;
 import common.Mods;
-import common.RandomString;
+import common.RedirectException;
 import common.Text;
 import common.Time;
 import common.UrlEncodedPath;
+import common.UrlRandomCode;
+import controllers.HomeFeed;
 import db.VarChars;
 import db.tables.pojos.Account;
 import db.tables.records.AccountRecord;
 import db.tables.records.ConfirmaccountlinkRecord;
-import forms.meta.MetaField;
-import forms.meta.MetaFormDef;
-import forms.meta.MetaFormValidation;
+import forms.api.FormValidation;
+import forms.api.FormValidation.Sensitive;
+import forms.meta.PostForm;
+import forms.meta.TypedFormDef;
 import forms.meta.Validator;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
 import java.util.Optional;
-import java.util.Random;
-import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 import java2ts.Routes;
@@ -56,7 +53,7 @@ import org.jooby.Request;
 import org.jooby.Response;
 import org.jooq.DSLContext;
 
-public class CreateAccountForm extends MetaFormDef.HandleValid {
+public class CreateAccountForm extends PostForm<CreateAccountForm> {
 	/** Email links are good for this long. */
 	public static final int CONFIRM_WITHIN_MINUTES = 10;
 
@@ -68,124 +65,104 @@ public class CreateAccountForm extends MetaFormDef.HandleValid {
 	private static final String msg_ALLOWED_CHARACTERS = "Can only use lowercase letters, numbers, and '-'";
 	private static final String msg_USERNAME_NOT_AVAILABLE = "Username is not available";
 
-	@Override
-	public Set<MetaField<?>> fields() {
-		return ImmutableSet.of(ACCEPT_TERMS, CREATE_USERNAME, CREATE_EMAIL, REDIRECT);
+	public CreateAccountForm() {
+		super(Routes.LOGIN, ACCEPT_TERMS, CREATE_USERNAME, CREATE_EMAIL, REDIRECT);
 	}
 
 	@Override
-	protected void validate(MetaFormValidation validation) {
-		// keep all fields except ACCEPT_TERMS
-		validation.keep(CREATE_USERNAME, CREATE_EMAIL, REDIRECT);
+	protected ValidateResult<CreateAccountForm> validate(Request req, Sensitive<CreateAccountForm> fromUser) {
+		FormValidation.Builder<CreateAccountForm> form = fromUser.keep(CREATE_USERNAME, CREATE_EMAIL, REDIRECT);
+		if (!form.value(ACCEPT_TERMS)) {
+			return form.addError(ACCEPT_TERMS, "Must accept the terms to create an account");
+		}
+		// username validation
+		Validator.strLength(FACEBOOK_MIN_USERNAME, FACEBOOK_MAX_USERNAME).validate(form, CREATE_USERNAME);
+		Validator.regexMustMatch(LOWERCASE_AND_DASH, msg_ALLOWED_CHARACTERS).validate(form, CREATE_USERNAME);
+		// email validation
+		Validator.email().validate(form, CREATE_EMAIL);
+		Validator.strLength(0, VarChars.EMAIL).validate(form, CREATE_EMAIL);
 
-		if (!validation.parsed(ACCEPT_TERMS)) {
-			validation.errorForField(ACCEPT_TERMS, "Must accept the terms to create an account");
+		String username = Text.lowercase(form.value(CREATE_USERNAME));
+		String email = Text.lowercase(form.value(CREATE_EMAIL));
+		if (ReservedUsernames.isReserved(username)) {
+			return form.addError(CREATE_USERNAME, msg_USERNAME_NOT_AVAILABLE);
 		}
 
-		validateUsername(validation, CREATE_USERNAME);
+		ConfirmaccountlinkRecord confirm;
+		try (DSLContext dsl = req.require(DSLContext.class)) {
+			validateUsernameEmailUnique(username, email, dsl, form);
+			if (!form.noErrors()) {
+				return form;
+			}
 
-		Validator.strLength(0, VarChars.EMAIL).validate(validation, CREATE_EMAIL);
-		Validator.email().validate(validation, CREATE_EMAIL);
-	}
-
-	static void validateUsername(MetaFormValidation validation, MetaField<String> field) {
-		Validator.strLength(FACEBOOK_MIN_USERNAME, FACEBOOK_MAX_USERNAME).validate(validation, field);
-		Validator.regexMustMatch(LOWERCASE_AND_DASH, msg_ALLOWED_CHARACTERS).validate(validation, field);
-	}
-
-	static void validateUsernameEmail(String username, String email, DSLContext dsl, MetaFormValidation validation) {
-		Integer existingAccountId = dsl.selectFrom(ACCOUNT)
-				.where(ACCOUNT.USERNAME.eq(username))
-				.fetchOne(ACCOUNT.ID);
-		if (existingAccountId != null) {
-			validation.errorForField(CREATE_USERNAME, msg_USERNAME_NOT_AVAILABLE);
+			Time.AddableTimestamp now = req.require(Time.class).nowTimestamp();
+			String ip = req.require(IpGetter.class).ip(req);
+			confirm = urlCode.createRecord(req, dsl, now, ip);
+			confirm.setExpiresAt(now.plus(CONFIRM_WITHIN_MINUTES, TimeUnit.MINUTES));
+			confirm.setUsername(username);
+			confirm.setEmail(email);
+			confirm.insert();
 		}
 
-		Integer accountId = dsl.selectFrom(ACCOUNT)
-				.where(ACCOUNT.EMAIL.eq(email))
-				.fetchOne(ACCOUNT.ID);
-		if (accountId != null) {
-			validation.errorForField(CREATE_EMAIL, msg_EMAIL_ALREADY_USED);
+		// send a confirmation email
+		UrlEncodedPath path = urlCode.recordToUrl(req, confirm);
+		if (form.valuePresent(REDIRECT)) {
+			path.param(REDIRECT, form.value(REDIRECT));
+		}
+		path.param(CREATE_USERNAME, username);
+		path.param(CREATE_EMAIL, email);
+
+		req.require(EmailSender.class).send(htmlEmail -> htmlEmail
+				.setHtmlMsg(views.Auth.createAccountEmail.template(username, path.build()).renderToString())
+				.setSubject("MyTake.org account confirmation")
+				.addTo(email));
+
+		return ValidateResult.redirect(AuthModule.URL_confirm_account_sent);
+	}
+
+	private static void validateUsernameEmailUnique(String username, String email, DSLContext dsl, FormValidation.Builder<CreateAccountForm> form) {
+		if (DbMisc.fetchOne(dsl, ACCOUNT.USERNAME, username, ACCOUNT.ID) != null) {
+			form.addError(CREATE_USERNAME, msg_USERNAME_NOT_AVAILABLE);
+		}
+		if (DbMisc.fetchOne(dsl, ACCOUNT.EMAIL, email, ACCOUNT.ID) != null) {
+			form.addError(CREATE_EMAIL, msg_EMAIL_ALREADY_USED);
 		}
 	}
 
 	private static final String msg_EMAIL_ALREADY_USED = "This email is already used by another account";
 
-	@Override
-	public boolean handleSuccessful(MetaFormValidation validation, Request req, Response rsp) throws Throwable {
-		String username = Text.lowercase(validation.parsed(CREATE_USERNAME));
-		String email = Text.lowercase(validation.parsed(CREATE_EMAIL));
-		if (ReservedUsernames.isReserved(username)) {
-			validation.errorForField(msg_USERNAME_NOT_AVAILABLE);
-		} else {
-			try (DSLContext dsl = req.require(DSLContext.class)) {
-				validateUsernameEmail(username, email, dsl, validation);
-				if (validation.noErrors()) {
-					String code = RandomString.get(req.require(Random.class), VarChars.CODE);
+	public static void confirm(Request req, Response rsp) throws Throwable {
+		String username = CREATE_USERNAME.parseOrDefault(req, "");
+		String email = CREATE_EMAIL.parseOrDefault(req, "");
 
-					// store it in the database
-					ConfirmaccountlinkRecord confirm = dsl.newRecord(CONFIRMACCOUNTLINK);
-					confirm.setCode(code);
-					Time time = req.require(Time.class);
-					confirm.setCreatedAt(time.nowTimestamp());
-					confirm.setExpiresAt(time.nowTimestamp().plus(CONFIRM_WITHIN_MINUTES, TimeUnit.MINUTES));
-					confirm.setRequestorIp(req.require(IpGetter.class).ip(req));
-					confirm.setUsername(username);
-					confirm.setEmail(email);
-					confirm.insert();
-
-					// send a confirmation email
-					UrlEncodedPath path = EmailConfirmationForm.generateLink(req, validation, AuthModule.URL_confirm_account + code);
-					path.param(CREATE_USERNAME, username);
-					path.param(CREATE_EMAIL, email);
-
-					req.require(EmailSender.class).send(htmlEmail -> htmlEmail
-							.setHtmlMsg(views.Auth.createAccountEmail.template(username, path.build()).renderToString())
-							.setSubject("MyTake.org account confirmation")
-							.addTo(email));
-
-					rsp.send(views.Auth.createAccountEmailSent.template(email, Emails.TEAM));
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-
-	private static String getNullToEmpty(Request req, MetaField<String> field) throws UnsupportedEncodingException {
-		return URLDecoder.decode(req.param(field.name()).value(""), StandardCharsets.UTF_8.name());
-	}
-
-	public static void confirm(String code, Request req, Response rsp) throws Throwable {
 		Optional<AuthUser> userOpt = AuthUser.authOpt(req);
-		// might be a race condition here, depending on issue #97
-		//    - fetch code
-		//    - create account
-		//    - delete all confirmaccounts for that username and email
-		// all of the above needs to be a transaction to ensure that the
-		// account insertion won't hit uniqueness constraints on username
-		// and email
-		Time time = req.require(Time.class);
+		Time.AddableTimestamp now = req.require(Time.class).nowTimestamp();
 		String ip = req.require(IpGetter.class).ip(req);
-		try (DSLContext dsl = req.require(DSLContext.class)) {
-			ConfirmaccountlinkRecord link = dsl.selectFrom(CONFIRMACCOUNTLINK)
-					.where(CONFIRMACCOUNTLINK.CODE.eq(code))
-					.fetchOne();
-			MetaFormValidation createAccountValidation = EmailConfirmationForm.nullIfValid(CreateAccountForm.class, req, link,
-					ConfirmaccountlinkRecord::getExpiresAt, ConfirmaccountlinkRecord::getRequestorIp);
-			if (createAccountValidation != null) {
-				String username = getNullToEmpty(req, CREATE_USERNAME);
+		DbMisc.transaction(req, dsl -> {
+			ConfirmaccountlinkRecord record = urlCode.tryGetRecord(req, dsl);
+
+			FormValidation.Builder<CreateAccountForm> form = FormValidation.emptyBuilder(TypedFormDef.create(CreateAccountForm.class));
+			form.set(CREATE_USERNAME, username);
+			form.set(CREATE_EMAIL, email);
+			form.set(REDIRECT, REDIRECT.parseOrDefault(req, HomeFeed.URL));
+			validateUsernameEmailUnique(username, email, dsl, form);
+
+			// if the record doesn't match the url, then there was tampering, and we just bail
+			if (record != null && (!record.getUsername().equals(username) || !record.getEmail().equals(email))) {
+				throw RedirectException.notFoundError();
+			}
+
+			if (record == null) {
 				if (userOpt.isPresent() && userOpt.get().username().equals(username)) {
+					// they're already logged-in
 					rsp.send(views.Auth.alreadyConfirmed.template(username));
 				} else {
+					// clear the user's existing cookies if they're clicking a "confirm" link for someone else
 					if (userOpt.isPresent() && !userOpt.get().username().equals(username)) {
-						// clear the user's existing cookies if they're clicking a "confirm" link for someone else
 						AuthUser.clearCookies(rsp);
 					}
-					String email = getNullToEmpty(req, CREATE_EMAIL);
-					validateUsernameEmail(username, email, dsl, createAccountValidation);
-					boolean emailAlreadyUsed = msg_EMAIL_ALREADY_USED.equals(
-							createAccountValidation.errorForField(AuthModule.CREATE_EMAIL.name()));
+
+					boolean emailAlreadyUsed = msg_EMAIL_ALREADY_USED.equals(form.error(CREATE_EMAIL));
 					if (emailAlreadyUsed) {
 						// since the email is already used, they probably just need to login
 						UrlEncodedPath path = UrlEncodedPath.path(Routes.LOGIN)
@@ -196,39 +173,39 @@ public class CreateAccountForm extends MetaFormDef.HandleValid {
 						rsp.redirect(path.build());
 					} else {
 						// we'll let them try to create their account again
-						rsp.send(views.Auth.createAccountUnknown.template(createAccountValidation.markup(Routes.LOGIN)));
+						rsp.send(views.Auth.createAccountUnknown.template(form.build().markup()));
 					}
 				}
 			} else {
 				AccountRecord account = dsl.newRecord(ACCOUNT);
-				account.setUsername(link.getUsername());
-				account.setEmail(link.getEmail());
-				account.setCreatedAt(time.nowTimestamp());
+				account.setUsername(record.getUsername());
+				account.setEmail(record.getEmail());
+				account.setCreatedAt(now);
 				account.setCreatedIp(ip);
-				account.setUpdatedAt(time.nowTimestamp());
+				account.setUpdatedAt(now);
 				account.setUpdatedIp(ip);
-				account.setLastSeenAt(time.nowTimestamp());
+				account.setLastSeenAt(now);
 				account.setLastSeenIp(ip);
-				account.setLastEmailedAt(time.nowTimestamp());
+				account.setLastEmailedAt(now);
 				account.insert();
 
 				// delete all other requests from that email and username
 				dsl.deleteFrom(CONFIRMACCOUNTLINK)
-						.where(CONFIRMACCOUNTLINK.EMAIL.eq(link.getEmail()))
-						.or(CONFIRMACCOUNTLINK.USERNAME.eq(link.getUsername()))
-						.execute();
+				.where(CONFIRMACCOUNTLINK.EMAIL.eq(record.getEmail()))
+				.or(CONFIRMACCOUNTLINK.USERNAME.eq(record.getUsername()))
+				.execute();
 
-				AuthUser.login(account.into(Account.class), req, rsp);
+				AuthUser.login(account.into(Account.class), req).forEach(rsp::cookie);
 				rsp.send(views.Auth.createAccountSuccess.template(account.getUsername()));
-
-				req.require(Mods.class).send(email -> email
-						.setSubject("New user " + account.getUsername())
-						.setMsg(Mods.table(
-								"Username", link.getUsername(),
-								"Email", link.getEmail(),
-								"User id", account.getId().toString(),
-								"Link", "https://mytake.org/" + account.getUsername())));
 			}
-		}
+		});
+		req.require(Mods.class).send(emailHtml -> emailHtml
+				.setSubject("New user " + username)
+				.setMsg(Mods.table(
+						"Username", username,
+						"Email", email,
+						"Link", "https://mytake.org/" + username)));
 	}
+
+	static final UrlRandomCode<ConfirmaccountlinkRecord> urlCode = new UrlRandomCode<>(AuthModule.URL_confirm_account, CONFIRMACCOUNTLINK.CODE, CONFIRMACCOUNTLINK.CREATED_AT, CONFIRMACCOUNTLINK.REQUESTOR_IP);
 }

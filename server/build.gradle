@@ -133,6 +133,7 @@ dependencies {
 	// common libs
 	implementation 'commons-validator:commons-validator:1.6'
 	implementation 'com.diffplug.durian:durian-core:1.2.0'
+	implementation 'com.diffplug.durian:durian-collect:1.2.0'
 	implementation 'commons-codec:commons-codec:1.14'
 	implementation 'org.pcollections:pcollections:3.1.3'
 
