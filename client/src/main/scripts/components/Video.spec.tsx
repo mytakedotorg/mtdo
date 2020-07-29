@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2017-2018 MyTake.org, Inc.
+ * Copyright (C) 2017-2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -23,18 +23,22 @@ import Video from "./Video";
 import { videoFactLink, videoFactFast } from "../utils/testUtils";
 
 jest.mock("react-youtube", () => ({
+  __esModule: true,
   default: "YouTube",
 }));
 
 jest.mock("./CaptionView", () => ({
+  __esModule: true,
   default: "CaptionView",
 }));
 
 jest.mock("./DropDown", () => ({
+  __esModule: true,
   default: "DropDown",
 }));
 
 jest.mock("./EmailTake", () => ({
+  __esModule: true,
   default: "EmailTake",
 }));
 

@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2017-2018 MyTake.org, Inc.
+ * Copyright (C) 2017-2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -24,10 +24,12 @@ import { TimeRange, TRACKSTYLES__RANGE } from "./Video";
 import { videoFactLink, videoFactFast } from "../utils/testUtils";
 
 jest.mock("./Document", () => ({
+  __esModule: true,
   default: "Document",
 }));
 
 jest.mock("./ClipEditor", () => ({
+  __esModule: true,
   default: "ClipEditor",
 }));
 

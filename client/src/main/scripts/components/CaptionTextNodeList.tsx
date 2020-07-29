@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2017-2019 MyTake.org, Inc.
+ * Copyright (C) 2017-2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -60,8 +60,6 @@ class CaptionTextNodeList extends React.Component<
     return true;
   }
   render() {
-    let wordCount: number;
-    let nextWordCount: number;
     return (
       <div
         className="document__text document__text--caption"

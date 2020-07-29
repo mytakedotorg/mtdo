@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2017-2018 MyTake.org, Inc.
+ * Copyright (C) 2017-2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -18,7 +18,7 @@
  * You can contact us at team@mytake.org
  */
 import * as React from "react";
-import * as keycode from "keycode";
+import keycode from "keycode";
 import EditorDocumentContainer from "./EditorDocumentContainer";
 import EditorVideoContainer from "./EditorVideoContainer";
 import { Foundation } from "../java2ts/Foundation";

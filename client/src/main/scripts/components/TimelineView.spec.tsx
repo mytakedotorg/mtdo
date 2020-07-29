@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2017-2018 MyTake.org, Inc.
+ * Copyright (C) 2017-2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -32,14 +32,17 @@ import {
 import { SetFactHandlers } from "./TimelinePreview";
 
 jest.mock("./TimelinePreviewContainer", () => ({
+  __esModule: true,
   default: "TimelinePreviewContainer",
 }));
 
 jest.mock("./Timeline", () => ({
+  __esModule: true,
   default: "Timeline",
 }));
 
 jest.mock("./TimelineRadioButtons", () => ({
+  __esModule: true,
   default: "TimelineRadioButtons",
 }));
 

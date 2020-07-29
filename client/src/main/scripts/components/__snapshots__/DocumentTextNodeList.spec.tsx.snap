@@ -3,7 +3,7 @@
 exports[`DocumentTextNodeList 1`] = `
 <div
   className="document__text"
-  onMouseUp={[Function]}
+  onMouseUp={[MockFunction]}
 >
   <DocumentTextNode
     documentNode={

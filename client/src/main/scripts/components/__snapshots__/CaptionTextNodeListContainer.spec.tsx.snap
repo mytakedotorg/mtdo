@@ -9,7 +9,7 @@ exports[`CaptionTextNodeListContainer 1`] = `
   >
     -
   </h3>
-  <CaptionTextNode
+  <CaptionTextNodeList
     documentNodes={
       Array [
         "Good evening I'm Martha Raddatz from ABC News.",
@@ -18,7 +18,7 @@ exports[`CaptionTextNodeListContainer 1`] = `
     }
     eventHandlers={
       Object {
-        "onMouseUp": [Function],
+        "onMouseUp": [MockFunction],
         "onScroll": [Function],
       }
     }

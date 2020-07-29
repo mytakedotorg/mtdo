@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2017-2020 MyTake.org, Inc.
+ * Copyright (C) 2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -17,28 +17,21 @@
  *
  * You can contact us at team@mytake.org
  */
-import * as React from "react";
-import * as renderer from "react-test-renderer";
-import DocumentTextNodeList from "./DocumentTextNodeList";
-import { documentNodes } from "../utils/testUtils";
+import { useEffect, useRef } from "react";
 
-const onMouseUp = jest.fn();
-const className = "document__text";
-
-jest.mock("./DocumentTextNode", () => ({
-  __esModule: true,
-  default: "DocumentTextNode",
-}));
-
-test("DocumentTextNodeList", () => {
-  const tree = renderer
-    .create(
-      <DocumentTextNodeList
-        documentNodes={documentNodes}
-        onMouseUp={onMouseUp}
-        className={className}
-      />
-    )
-    .toJSON();
-  expect(tree).toMatchSnapshot();
-});
+export function useTraceUpdate(props: any) {
+  console.warn("DEV USE ONLY");
+  const prev = useRef(props);
+  useEffect(() => {
+    const changedProps = Object.entries(props).reduce((ps, [k, v]) => {
+      if (prev.current[k] !== v) {
+        (ps as any)[k] = [prev.current[k], v];
+      }
+      return ps;
+    }, {});
+    if (Object.keys(changedProps).length > 0) {
+      console.log("Changed props:", changedProps);
+    }
+    prev.current = props;
+  });
+}

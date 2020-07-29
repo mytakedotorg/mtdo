@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2017-2018 MyTake.org, Inc.
+ * Copyright (C) 2017-2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -17,8 +17,8 @@
  *
  * You can contact us at team@mytake.org
  */
-import * as React from "react";
-import * as renderer from "react-test-renderer";
+import React from "react";
+import renderer from "react-test-renderer";
 import CaptionTextNodeList from "./CaptionTextNodeList";
 import { videoFactFast, videoNodes } from "../utils/testUtils";
 
@@ -31,6 +31,7 @@ const eventHandlers = {
 };
 
 jest.mock("./CaptionTextNode", () => ({
+  __esModule: true,
   default: "CaptionTextNode",
 }));
 

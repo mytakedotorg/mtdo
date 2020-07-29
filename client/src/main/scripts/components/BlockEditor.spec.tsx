@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2017-2018 MyTake.org, Inc.
+ * Copyright (C) 2017-2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -54,10 +54,12 @@ const ReadingEventHandler = {
 };
 
 jest.mock("./EditorDocumentContainer", () => ({
+  __esModule: true,
   default: "EditorDocumentContainer",
 }));
 
 jest.mock("./EditorVideoContainer", () => ({
+  __esModule: true,
   default: "EditorVideoContainer",
 }));
 

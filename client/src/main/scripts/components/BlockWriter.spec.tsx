@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2017-2018 MyTake.org, Inc.
+ * Copyright (C) 2017-2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -22,22 +22,27 @@ import * as renderer from "react-test-renderer";
 import BlockWriter, { InitialBlockWriterState } from "./BlockWriter";
 
 jest.mock("./BlockEditor", () => ({
+  __esModule: true,
   default: "BlockEditor",
 }));
 
 jest.mock("./TimelineView", () => ({
+  __esModule: true,
   default: "TimelineView",
 }));
 
 jest.mock("./EditorButtons", () => ({
+  __esModule: true,
   default: "EditorButtons",
 }));
 
 jest.mock("./DropDown", () => ({
+  __esModule: true,
   default: "DropDown",
 }));
 
 jest.mock("./EmailTake", () => ({
+  __esModule: true,
   default: "EmailTake",
 }));
 

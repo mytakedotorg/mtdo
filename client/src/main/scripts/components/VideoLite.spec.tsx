@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2018 MyTake.org, Inc.
+ * Copyright (C) 2018-2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -23,6 +23,7 @@ import VideoLite from "./VideoLite";
 import { videoFactFast } from "../utils/testUtils";
 
 jest.mock("react-youtube", () => ({
+  __esModule: true,
   default: "YouTube",
 }));
 
