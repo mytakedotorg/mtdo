@@ -25,14 +25,11 @@ import VideoResultPreview from "./VideoResultPreview";
 import { VideoResultPreviewEventHandlers } from "./VideoResultPreview";
 import { alertErr } from "../utils/functions";
 import { Foundation } from "../java2ts/Foundation";
-import { FactTurns } from "../utils/factResults";
+import { SearchDatabaseApi } from "../database/SearchDatabaseApi";
 
 export type SelectionOptions = "Containing" | "BeforeAndAfter";
 
-export interface VideoResultsListProps {
-  searchTerm: string;
-  factTurns: FactTurns[];
-}
+export interface VideoResultsListProps {}
 
 interface VideoResultsListState {
   fixVideo: boolean;
@@ -47,15 +44,16 @@ export class VideoResultsList extends React.Component<
   VideoResultsListProps,
   VideoResultsListState
 > {
+  private searchDatabase = SearchDatabaseApi.getInstance().searchDatabase;
   constructor(props: VideoResultsListProps) {
     super(props);
-
+    const { factTurns } = this.searchDatabase;
     this.state = {
       fixVideo: false,
       selectedOption: "BeforeAndAfter",
-      videoProps: props.factTurns.length
+      videoProps: factTurns.length
         ? {
-            videoId: props.factTurns[0].videoFact.youtubeId,
+            videoId: factTurns[0].videoFact.youtubeId,
           }
         : undefined,
     };
@@ -95,14 +93,14 @@ export class VideoResultsList extends React.Component<
   render() {
     const fixedClass = this.state.fixVideo ? "results__push" : "";
     resultPreviewEventHandlers.onPlayClick = this.handlePlayClick;
+    const { factTurns, searchTerm } = this.searchDatabase;
     return (
       <div className="results">
         <div className="results__inner-container">
           <h1 className="results__heading">Search Results</h1>
-          {this.props.factTurns.length === 0 ? (
+          {factTurns.length === 0 ? (
             <p className="turn__results">
-              Search returned no results for{" "}
-              <strong>{this.props.searchTerm}</strong>
+              Search returned no results for <strong>{searchTerm}</strong>
             </p>
           ) : (
             <div>
@@ -123,12 +121,12 @@ export class VideoResultsList extends React.Component<
               </div>
             </div>
           )}
-          {this.props.factTurns.map((videoResult) => {
+          {factTurns.map((videoResult) => {
             return (
               <VideoResultPreview
                 key={videoResult.videoFact.youtubeId}
                 eventHandlers={resultPreviewEventHandlers}
-                searchTerm={this.props.searchTerm}
+                searchTerm={searchTerm}
                 sortBy={this.state.selectedOption}
                 turns={videoResult.turns}
                 videoFact={videoResult.videoFact}

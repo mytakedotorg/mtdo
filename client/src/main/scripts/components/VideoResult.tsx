@@ -131,7 +131,7 @@ class VideoResult extends React.Component<VideoResultProps, VideoResultState> {
       if (highlightedText) {
         const newSpan: React.ReactNode = React.createElement(
           "strong",
-          {},
+          { key: `${highlight[0]}.${highlight[1]}` },
           highlightedText
         );
         highlightedCut.push(newSpan);

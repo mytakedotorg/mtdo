@@ -17,88 +17,30 @@
  *
  * You can contact us at team@mytake.org
  */
-import * as React from "react";
+import React, { useState, useEffect } from "react";
 import VideoResultsList from "./VideoResultsList";
-import { Routes } from "../java2ts/Routes";
-import { Search } from "../java2ts/Search";
-import { postRequest } from "../utils/databaseAPI";
-import { getSortedFactTurns, FactTurns } from "../utils/factResults";
+import { SearchDatabaseApi } from "../database/SearchDatabaseApi";
 
 interface VideoResultsLoaderProps {
   searchTerm: string;
 }
 
-interface VideoResultsLoaderState {
-  loading: boolean;
-  factTurns: FactTurns[];
-}
+const VideoResultsLoader: React.FC<VideoResultsLoaderProps> = (props) => {
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
-class VideoResultsLoader extends React.Component<
-  VideoResultsLoaderProps,
-  VideoResultsLoaderState
-> {
-  constructor(props: VideoResultsLoaderProps) {
-    super(props);
+  useEffect(() => {
+    async function connectSearchDatabase() {
+      await SearchDatabaseApi.getInstance(props.searchTerm).connect();
+      setIsLoading(false);
+    }
 
-    this.state = {
-      loading: true,
-      factTurns: [],
-    };
-  }
-  getFactResults = (): void => {
-    const bodyJson: Search.Request = {
-      q: this.props.searchTerm,
-    };
-    postRequest(
-      Routes.API_SEARCH,
-      bodyJson,
-      function (json: Search.FactResultList) {
-        this.getFacts(json);
-      }.bind(this)
-    );
-  };
-  getFacts = (searchResults: Search.FactResultList): void => {
-    getSortedFactTurns(searchResults).then((factTurns) => {
-      this.setState({
-        loading: false,
-        factTurns,
-      });
-    });
-  };
-  componentDidMount() {
-    this.getFactResults();
-  }
-  render() {
-    return (
-      <VideoResultsLoaderBranch
-        containerProps={this.props}
-        containerState={this.state}
-      />
-    );
-  }
-}
+    connectSearchDatabase();
+  }, []);
 
-interface VideoResultsLoaderBranchProps {
-  containerProps: VideoResultsLoaderProps;
-  containerState: VideoResultsLoaderState;
-}
-
-const VideoResultsLoaderBranch: React.StatelessComponent<VideoResultsLoaderBranchProps> = (
-  props
-) => {
-  if (props.containerState.loading) {
-    return <VideoResultLoadingView />;
-  } else {
-    return (
-      <VideoResultsList
-        factTurns={props.containerState.factTurns}
-        searchTerm={props.containerProps.searchTerm}
-      />
-    );
-  }
+  return isLoading ? <VideoResultLoadingView /> : <VideoResultsList />;
 };
 
-export const VideoResultLoadingView: React.StatelessComponent<{}> = (props) => (
+export const VideoResultLoadingView: React.FC = () => (
   <div className="results">
     <div className="results__inner-container">
       <h1 className="results__heading">Searching...</h1>

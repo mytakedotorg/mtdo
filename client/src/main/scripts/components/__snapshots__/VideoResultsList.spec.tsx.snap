@@ -15,8 +15,7 @@ exports[`VideoResultsList no results 1`] = `
     <p
       className="turn__results"
     >
-      Search returned no results for
-       
+      Search returned no results for 
       <strong>
         gibberish
       </strong>
