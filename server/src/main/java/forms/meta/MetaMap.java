@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2017-2018 MyTake.org, Inc.
+ * Copyright (C) 2017-2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -129,14 +129,6 @@ public class MetaMap {
 	////////////////////////////////////////
 	static String cap(String input) {
 		return input.substring(0, 1).toUpperCase(Locale.ROOT) + input.substring(1);
-	}
-
-	public static MetaMap buildFrom(Object value, Class<? extends MetaFormDef> formDefClazz) {
-		return buildFrom(value, MetaFormDef.create(formDefClazz));
-	}
-
-	public static MetaMap buildFrom(Object value, MetaFormDef formDef) {
-		return buildFrom(value, formDef.fields());
 	}
 
 	public static MetaMap buildFrom(Object value, Iterable<MetaField<?>> fields) {

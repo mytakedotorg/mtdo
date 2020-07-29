@@ -1,6 +1,6 @@
 @*
  * MyTake.org website and tooling.
- * Copyright (C) 2018 MyTake.org, Inc.
+ * Copyright (C) 2018-2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -21,7 +21,7 @@
 @import auth.TinfoilLoginForm
 @import forms.api.FormMarkup
 
-@args(FormMarkup login)
+@args(FormMarkup<TinfoilLoginForm> login)
 
 @views.base.template("Tinfoil login", "Tinfoil login") -> {
 

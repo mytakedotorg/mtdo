@@ -17,43 +17,13 @@
  *
  * You can contact us at team@mytake.org
  */
-package forms.api;
+package common;
 
-import com.diffplug.common.base.Unhandled;
-import java.util.Set;
+/** Exception whose message we intend to show the user. */
+public class UserException extends RuntimeException {
+	private static final long serialVersionUID = 5802002798148547582L;
 
-/** The contract that all forms must meet. */
-public interface FormDef {
-	Set<String> fieldNames();
-
-	Method method();
-
-	String actionUrl();
-
-	public enum Method {
-		GET, POST;
-
-		void addAttr(RockerRaw openForm) {
-			switch (this) {
-			case GET:
-				openForm.appendAttr("method", "get");
-				break;
-			case POST:
-				openForm.appendAttr("method", "post", "enctype", "application/x-www-form-urlencoded");
-				break;
-			default:
-				throw Unhandled.enumException(this);
-			}
-		}
-
-		public <T> T getPost(T get, T post) {
-			// @formatter:off
-			switch (this) {
-			case GET:	return get;
-			case POST:	return post;
-			default:	throw Unhandled.enumException(this);
-			}
-			// @formatter:on
-		}
+	public UserException(String message) {
+		super(message);
 	}
 }
