@@ -63,14 +63,14 @@ public class LoginForm extends PostForm<LoginForm> {
 	}
 
 	@Override
-	protected ValidateResult<LoginForm> validate(Request req, FormValidation.Sensitive<LoginForm> fromUser) {
-		String email = Text.lowercase(fromUser.value(LOGIN_EMAIL));
-		FormValidation.Builder<LoginForm> form = fromUser.keepAll();
+	protected ValidateResult<LoginForm> validate(Request req, FormValidation.Sensitive<LoginForm> form) {
+		String email = Text.lowercase(form.value(LOGIN_EMAIL));
+		FormValidation.Builder<LoginForm> retry = form.keepAll();
 		Validator.email().validate(form, LOGIN_EMAIL);
 		try (DSLContext dsl = req.require(DSLContext.class)) {
 			AccountRecord account = DbMisc.fetchOne(dsl, ACCOUNT.EMAIL, email);
 			if (account == null) {
-				return form.addError(LOGIN_EMAIL, "No account for this email");
+				return retry.addError(LOGIN_EMAIL, "No account for this email");
 			} else {
 				Time.AddableTimestamp now = req.require(Time.class).nowTimestamp();
 				String ip = req.require(IpGetter.class).ip(req);
@@ -94,6 +94,7 @@ public class LoginForm extends PostForm<LoginForm> {
 				account.setLastEmailedAt(now);
 				account.update();
 
+				req.flash(AuthModule.FLASH_EMAIL, form.value(LOGIN_EMAIL));
 				return ValidateResult.redirect(AuthModule.URL_confirm_login_sent);
 			}
 		}

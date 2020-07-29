@@ -54,8 +54,8 @@ public class AuthModule implements Jooby.Module {
 	static final String URL_confirm = "/confirm";
 	public static final String URL_confirm_login = URL_confirm + "/login/";
 	public static final String URL_confirm_account = URL_confirm + "/account/";
-	public static final String URL_confirm_login_sent = URL_confirm_login + "/sent";
-	public static final String URL_confirm_account_sent = URL_confirm_account + "/sent";
+	public static final String URL_confirm_login_sent = URL_confirm_login + "sent";
+	public static final String URL_confirm_account_sent = URL_confirm_account + "sent";
 
 	@Override
 	public void configure(Env env, Config conf, Binder binder) throws Throwable {

@@ -70,10 +70,10 @@ public class CreateAccountForm extends PostForm<CreateAccountForm> {
 	}
 
 	@Override
-	protected ValidateResult<CreateAccountForm> validate(Request req, Sensitive<CreateAccountForm> fromUser) {
-		FormValidation.Builder<CreateAccountForm> form = fromUser.keep(CREATE_USERNAME, CREATE_EMAIL, REDIRECT);
-		if (!form.value(ACCEPT_TERMS)) {
-			return form.addError(ACCEPT_TERMS, "Must accept the terms to create an account");
+	protected ValidateResult<CreateAccountForm> validate(Request req, Sensitive<CreateAccountForm> form) {
+		FormValidation.Builder<CreateAccountForm> retry = form.keep(CREATE_USERNAME, CREATE_EMAIL, REDIRECT);
+		if (!form.valuePresent(ACCEPT_TERMS) || !form.value(ACCEPT_TERMS)) {
+			return retry.addError(ACCEPT_TERMS, "Must accept the terms to create an account");
 		}
 		// username validation
 		Validator.strLength(FACEBOOK_MIN_USERNAME, FACEBOOK_MAX_USERNAME).validate(form, CREATE_USERNAME);
@@ -85,14 +85,14 @@ public class CreateAccountForm extends PostForm<CreateAccountForm> {
 		String username = Text.lowercase(form.value(CREATE_USERNAME));
 		String email = Text.lowercase(form.value(CREATE_EMAIL));
 		if (ReservedUsernames.isReserved(username)) {
-			return form.addError(CREATE_USERNAME, msg_USERNAME_NOT_AVAILABLE);
+			return retry.addError(CREATE_USERNAME, msg_USERNAME_NOT_AVAILABLE);
 		}
 
 		ConfirmaccountlinkRecord confirm;
 		try (DSLContext dsl = req.require(DSLContext.class)) {
-			validateUsernameEmailUnique(username, email, dsl, form);
-			if (!form.noErrors()) {
-				return form;
+			validateUsernameEmailUnique(username, email, dsl, retry);
+			if (!retry.noErrors()) {
+				return retry;
 			}
 
 			Time.AddableTimestamp now = req.require(Time.class).nowTimestamp();
@@ -117,6 +117,7 @@ public class CreateAccountForm extends PostForm<CreateAccountForm> {
 				.setSubject("MyTake.org account confirmation")
 				.addTo(email));
 
+		req.flash(AuthModule.FLASH_EMAIL, form.value(CREATE_EMAIL));
 		return ValidateResult.redirect(AuthModule.URL_confirm_account_sent);
 	}
 
@@ -191,9 +192,9 @@ public class CreateAccountForm extends PostForm<CreateAccountForm> {
 
 				// delete all other requests from that email and username
 				dsl.deleteFrom(CONFIRMACCOUNTLINK)
-				.where(CONFIRMACCOUNTLINK.EMAIL.eq(record.getEmail()))
-				.or(CONFIRMACCOUNTLINK.USERNAME.eq(record.getUsername()))
-				.execute();
+						.where(CONFIRMACCOUNTLINK.EMAIL.eq(record.getEmail()))
+						.or(CONFIRMACCOUNTLINK.USERNAME.eq(record.getUsername()))
+						.execute();
 
 				AuthUser.login(account.into(Account.class), req).forEach(rsp::cookie);
 				rsp.send(views.Auth.createAccountSuccess.template(account.getUsername()));
