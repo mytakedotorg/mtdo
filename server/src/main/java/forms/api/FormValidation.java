@@ -120,13 +120,13 @@ public class FormValidation<F extends FormDef> {
 		}
 
 		private Builder<F> keep(Predicate<String> toKeep) {
-			Builder<F> copy = new Builder<>(def, formError, values, errors);
-			for (String key : copy.values.keySet()) {
+			HashPMap<String, String> values = this.values;
+			for (String key : values.keySet()) {
 				if (!toKeep.test(key)) {
-					copy.values = copy.values.minus(key);
+					values = values.minus(key);
 				}
 			}
-			return copy;
+			return new Builder<>(def, formError, values, errors);
 		}
 
 		public Builder<F> keep(MetaField<?>... fields) {
