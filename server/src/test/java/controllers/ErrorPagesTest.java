@@ -78,18 +78,17 @@ public class ErrorPagesTest {
 			System.setErr(errCapture);
 			Snapshot.match("testInternalUser", RestAssured.get("/internalError"));
 			errCapture.close();
-			Snapshot.match("_02_testInternalConsole", removeJvmVersion(buffer.toString()));
-			String body = dev.waitForEmail().bodyRaw();
-			Matcher matcher = Pattern.compile("<html>([\\s\\S]*)<\\/html>").matcher(body);
-			matcher.find();
-			Snapshot.match("_02_testInternalDevEmail", removeJvmVersion(matcher.group(1)));
+			Snapshot.match("_02_testInternalConsole", cleanup("Internal error", "stacktrace=", buffer.toString()));
+			Snapshot.match("_02_testInternalDevEmail", cleanup("<html>", "stacktrace=", dev.waitForEmail().bodyRaw()));
 		} finally {
 			System.setErr(errStream);
 		}
 	}
 
 	/** So that tests don't require a specific build of JVM. */
-	private static String removeJvmVersion(String raw) {
-		return raw.toString().replaceAll("\\(Java/.*\\)", "");
+	private static String cleanup(String before, String after, String raw) {
+		Matcher matcher = Pattern.compile(Pattern.quote(before) + "([\\s\\S]*)" + Pattern.quote(after)).matcher(raw);
+		matcher.find();
+		return matcher.group(1).replaceAll("\\(Java/.*\\)", "");
 	}
 }
