@@ -1,0 +1,118 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link rel="apple-touch-icon-precomposed" sizes="57x57" href="/assets/permanent/apple-touch-icon-57x57-52a4d6c3cf.png" />
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="/assets/permanent/apple-touch-icon-114x114-930959478a.png" />
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="/assets/permanent/apple-touch-icon-72x72-1696be69d2.png" />
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/assets/permanent/apple-touch-icon-144x144-171a583232.png" />
+<link rel="apple-touch-icon-precomposed" sizes="120x120" href="/assets/permanent/apple-touch-icon-120x120-a35a2e0938.png" />
+<link rel="apple-touch-icon-precomposed" sizes="152x152" href="/assets/permanent/apple-touch-icon-152x152-61007a3637.png" />
+<link rel="icon" type="image/png" href="/assets/permanent/favicon-196x196-cddcf3ec80.png" sizes="196x196" />
+<link rel="icon" type="image/png" href="/assets/permanent/favicon-32x32-9dd6ce9560.png" sizes="32x32" />
+<link rel="icon" type="image/png" href="/assets/permanent/favicon-16x16-f499376446.png" sizes="16x16" />
+
+<meta name="application-name" content="MyTake.org"/>
+<meta name="msapplication-TileColor" content="#FFFFFF" />
+<meta name="msapplication-TileImage" content="/assets/permanent/mstile-144x144-171a583232.png" />
+
+<title>Error</title>
+<meta name="description" content="Whoops. Something went wrong. | MyTake.org">
+<meta name="author" content="MyTake.org">
+
+<!-- For 2:1 image aspect ratio -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@mytakedotorg">
+<meta name="twitter:title" content="Error">
+<meta name="twitter:description" content="Whoops. Something went wrong.">
+<meta property="og:title" content="Error" />
+<meta property="og:description" content="Whoops. Something went wrong." />
+<meta property="fb:app_id" content="203240867180202" />
+
+<link rel="stylesheet" href="/assets-dev/styles/main.css">
+<link rel="stylesheet" href="/assets-dev/styles/vis.css">
+<link rel="stylesheet" href="/assets-dev/styles/rc-slider.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Merriweather:400,400i,700|Source+Sans+Pro:300,400,700" crossorigin="anonymous">
+<script src="https://use.fontawesome.com/be03d6dcba.js"></script>
+<!--[if lt IE 9]>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
+<![endif]-->
+</head>
+
+<body>
+<script>
+	window.fbAsyncInit = function() {
+		FB.init({
+			appId            : '203240867180202',
+			autoLogAppEvents : true,
+			xfbml            : true,
+			version          : 'v3.0'
+		});
+	};
+
+	(function(d, s, id){
+			var js, fjs = d.getElementsByTagName(s)[0];
+			if (d.getElementById(id)) {return;}
+			js = d.createElement(s); js.id = id;
+			js.src = "https://connect.facebook.net/en_US/sdk.js";
+			fjs.parentNode.insertBefore(js, fjs);
+		}(document, 'script', 'facebook-jssdk'));
+</script>
+<header class="header" role="banner">
+	<a class="header__skip-link" href="#app" tabindex="1">Skip to main content</a>
+	<div class="header__top">
+		<div class="header__inner-container">
+			<div class="header__logo-container">
+					<a class="header__logo-link" href="/"><span /></a>
+					<div class="header__logo-image-container">
+						<img class="header__logo-image" src="/assets/permanent/mytakedotorg-9c5e6c8a85.png" width="114" height="100" alt="MyTake.org | Fundamentals, in context." />
+					</div>
+					<em class="header__logo-title"><span class="header__color--blue">MyTake</span><span class="header__color--red">.org</span></em>
+					<span class="header__logo-tagline">Fundamentals, in context.</span>
+			</div>
+			<div id="usernav" class="header__usernav"></div>
+			<a class="header__fork-link" href="https://github.com/mytakedotorg/mytakedotorg" target="_blank"><img class="header__fork-img" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
+		</div>
+	</div>
+	<div id="searchbar" class="header__searchbar"></div>
+</header>
+
+<div class="about">
+<p class="about__text">We have something to tell you.</p>
+</div>
+
+
+
+<footer class="footer">
+<hr class="footer__hr" />
+	<div class="footer__nav">
+		<ul class="nav__list nav__list--buttons">
+			<li class="nav__list-item nav__list-item--button">
+				<span class="nav__button">
+					<a class="nav__link nav__link--bottom" href="/foundation"><span class="nav__link-text nav__link-text--bottom">FOUNDATION</span></a>
+				</span>
+			</li>
+			<li class="nav__list-item nav__list-item--button">
+				<span class="nav__button">
+					<a class="nav__link nav__link--bottom" href="/about"><span class="nav__link-text nav__link-text--bottom">ABOUT US</span></a>
+				</span>
+			</li>
+		</ul>
+		<ul class="nav__list nav__list--links">
+			<li class="nav__list-item nav__list-item--link"><a class="nav__link nav__link--bottom" href="/tos"><span class="nav__link-text nav__link-text--bottom">TERMS OF SERVICES</span></a></li>
+			<li class="nav__list-item nav__list-item--link"><a class="nav__link nav__link--bottom" href="/privacy"><span class="nav__link-text nav__link-text--bottom">PRIVACY POLICY</span></a></li>
+			<li class="nav__list-item nav__list-item--link"><a class="nav__link nav__link--bottom" href="/faq"><span class="nav__link-text nav__link-text--bottom">FAQs/GUIDELINES</span></a></li>
+		</ul>
+	</div>
+</footer>
+<div class="fade-overlay"></div>
+<script type="text/javascript" src="https://unpkg.com/react@16.13.1/umd/react.production.min.js" integrity="sha384-Q5wFTPC/kyhbXJt5GLrIeka2uDOSTG7m1zpW91iMO1DJb7+vOwu2lgZC30d4uQmU" crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://unpkg.com/react-dom@16.13.1/umd/react-dom.production.min.js" integrity="sha384-T6Etav7ShYqIZe+prlqxX/h04T1Iu9ynDpcgx0iBgcl5u+AVlStV2kv3mMxfnV1C" crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.js" integrity="sha384-2SbSbzJpoRtEf9BFT5KZAulTQs1JBK0XiQr38Mh0w8+wH0Ubuam+p5csoi5zCV7T" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/assets-dev/scripts/app.bundle.js"></script>
+</body>
+</html>

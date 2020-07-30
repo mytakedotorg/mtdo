@@ -1,0 +1,64 @@
+Internal error erjchFbCXxMlUfFXx3oY
+  rootCause=java.lang.IllegalArgumentException: Oh noes!!
+  env.auth=Optional.empty
+  env.route.method=GET
+  env.route.path=/internalError
+  env.route.pattern=/internalError
+  env.route.name=/anonymous
+  env.locals.base_scripts=<script type="text/javascript" src="https://unpkg.com/react@16.13.1/umd/react.production.min.js" integrity="sha384-Q5wFTPC/kyhbXJt5GLrIeka2uDOSTG7m1zpW91iMO1DJb7+vOwu2lgZC30d4uQmU" crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://unpkg.com/react-dom@16.13.1/umd/react-dom.production.min.js" integrity="sha384-T6Etav7ShYqIZe+prlqxX/h04T1Iu9ynDpcgx0iBgcl5u+AVlStV2kv3mMxfnV1C" crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.js" integrity="sha384-2SbSbzJpoRtEf9BFT5KZAulTQs1JBK0XiQr38Mh0w8+wH0Ubuam+p5csoi5zCV7T" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/assets-dev/scripts/app.bundle.js"></script>
+  env.locals.path=/internalError
+  env.locals.fbappid=203240867180202
+  env.locals.react_styles=<link rel="stylesheet" href="/assets-dev/styles/main.css">
+<link rel="stylesheet" href="/assets-dev/styles/vis.css">
+<link rel="stylesheet" href="/assets-dev/styles/rc-slider.css">
+  env.locals.reactCore_styles=<link rel="stylesheet" href="/assets-dev/styles/main.css">
+<link rel="stylesheet" href="/assets-dev/styles/vis.css">
+<link rel="stylesheet" href="/assets-dev/styles/rc-slider.css">
+  env.locals.contextPath=
+  env.locals.react_scripts=<script type="text/javascript" src="https://unpkg.com/react@16.13.1/umd/react.production.min.js" integrity="sha384-Q5wFTPC/kyhbXJt5GLrIeka2uDOSTG7m1zpW91iMO1DJb7+vOwu2lgZC30d4uQmU" crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://unpkg.com/react-dom@16.13.1/umd/react-dom.production.min.js" integrity="sha384-T6Etav7ShYqIZe+prlqxX/h04T1Iu9ynDpcgx0iBgcl5u+AVlStV2kv3mMxfnV1C" crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.js" integrity="sha384-2SbSbzJpoRtEf9BFT5KZAulTQs1JBK0XiQr38Mh0w8+wH0Ubuam+p5csoi5zCV7T" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/assets-dev/scripts/app.bundle.js"></script>
+  env.locals.base_styles=<link rel="stylesheet" href="/assets-dev/styles/main.css">
+<link rel="stylesheet" href="/assets-dev/styles/vis.css">
+<link rel="stylesheet" href="/assets-dev/styles/rc-slider.css">
+  env.locals.reactCore_scripts=<script type="text/javascript" src="https://unpkg.com/react@16.13.1/umd/react.production.min.js" integrity="sha384-Q5wFTPC/kyhbXJt5GLrIeka2uDOSTG7m1zpW91iMO1DJb7+vOwu2lgZC30d4uQmU" crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://unpkg.com/react-dom@16.13.1/umd/react-dom.production.min.js" integrity="sha384-T6Etav7ShYqIZe+prlqxX/h04T1Iu9ynDpcgx0iBgcl5u+AVlStV2kv3mMxfnV1C" crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.js" integrity="sha384-2SbSbzJpoRtEf9BFT5KZAulTQs1JBK0XiQr38Mh0w8+wH0Ubuam+p5csoi5zCV7T" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/assets-dev/scripts/app.bundle.js"></script>
+  env.headers.Accept=[*/*]
+  env.headers.Host=[localhost:8080]
+  env.headers.Connection=[Keep-Alive]
+  env.headers.User-Agent=[Apache-HttpClient/4.5.3 ]
+  env.headers.Accept-Encoding=[gzip,deflate]
+  env.headers.content-length=[0]
+  stacktrace=java.lang.IllegalArgumentException: Oh noes!!
+	at controllers.ErrorPagesTest$App.lambda$1(ErrorPagesTest.java:48)
+	at org.jooby.Route$OneArgHandler.handle(Route.java:1818)
+	at org.jooby.internal.RouteImpl.handle(RouteImpl.java:280)
+	at org.jooby.internal.RouteChain.next(RouteChain.java:262)
+	at org.jooby.Route$Chain.next(Route.java:2164)
+	at org.jooby.internal.handlers.FlashScopeHandler.handle(FlashScopeHandler.java:262)
+	at org.jooby.internal.RouteImpl.handle(RouteImpl.java:280)
+	at org.jooby.internal.RouteChain.next(RouteChain.java:262)
+	at org.jooby.Route$Chain.next(Route.java:2164)
+	at org.jooby.Route$Before.handle(Route.java:1925)
+	at org.jooby.internal.RouteImpl.handle(RouteImpl.java:280)
+	at org.jooby.internal.RouteChain.next(RouteChain.java:262)
+	at org.jooby.Route$Chain.next(Route.java:2164)
+	at org.jooby.internal.HttpHandlerImpl.handle(HttpHandlerImpl.java:496)
+	at org.jooby.internal.netty.NettyHandler.channelRead0(NettyHandler.java:274)
+	at io.netty.channel.SimpleChannelInboundHandler.channelRead(SimpleChannelInboundHandler.java:99)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:374)
+	at io.netty.channel.AbstractChannelHandlerContext.access$600(AbstractChannelHandlerContext.java:56)
+	at io.netty.channel.AbstractChannelHandlerContext$7.run(AbstractChannelHandlerContext.java:365)
+	at io.netty.util.concurrent.DefaultEventExecutor.run(DefaultEventExecutor.java:66)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$6.run(SingleThreadEventExecutor.java:1050)
+	at io.netty.util.internal.ThreadExecutorMap$2.run(ThreadExecutorMap.java:74)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.lang.Thread.run(Thread.java:748)
+
+
