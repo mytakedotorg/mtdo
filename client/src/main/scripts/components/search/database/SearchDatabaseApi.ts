@@ -20,148 +20,83 @@
 import { Foundation } from "../../../java2ts/Foundation";
 import { Routes } from "../../../java2ts/Routes";
 import { Search } from "../../../java2ts/Search";
-import {
-  fetchFactReturningPromise,
-  postRequest,
-  VideoFactHashMap,
-} from "../../../utils/databaseAPI";
-import { SearchDatabase } from "./SearchDatabase";
-import { reject } from "lodash";
+import { postRequestReturningPromise } from "../../../utils/databaseAPI";
+import { FoundationData } from "../../../utils/foundationData/FoundationData";
+import { FoundationDataBuilder } from "../../../utils/foundationData/FoundationDataBuilder";
 
-export class SearchDatabaseApi {
-  private _searchDatabase?: SearchDatabase;
-  private static instance?: SearchDatabaseApi;
-  private constructor(private searchTerm: string) {}
+class SearchResult {
+  constructor(
+    private _factTurns: VideoFactsToTurns[],
+    private _searchTerm: string
+  ) {}
 
-  static getInstance(searchTerm?: string): SearchDatabaseApi {
-    if (!SearchDatabaseApi.instance) {
-      if (!searchTerm) {
-        throw "SearchDatabaseApi: Must provide a searchTerm when creating an instance";
-      }
-      SearchDatabaseApi.instance = new SearchDatabaseApi(searchTerm);
-      return SearchDatabaseApi.instance;
-    }
-    if (
-      SearchDatabaseApi.instance.searchTerm &&
-      SearchDatabaseApi.instance.searchTerm !== searchTerm
-    ) {
-      throw "SearchDatabaseApi: cannot change search term";
-    }
-    return SearchDatabaseApi.instance;
+  get factTurns() {
+    return this._factTurns;
   }
 
-  connect = (): Promise<void> => {
-    return new Promise((resolve) => {
-      const bodyJson: Search.Request = {
-        q: this.searchTerm,
-      };
-      postRequest(
-        Routes.API_SEARCH,
-        bodyJson,
-        (json: Search.FactResultList) => {
-          try {
-            this.getFacts(json, resolve);
-          } catch (err) {
-            reject(err);
-          }
-        }
-      );
-    });
+  get searchTerm() {
+    return this._searchTerm;
+  }
+}
+
+// What's the advantage of this class instead of having the `search` function call `searchImpl` directly?
+class SearchWithData {
+  constructor(
+    public searchTerm: string,
+    public videoResults: Search.VideoResult[],
+    public foundationData: FoundationData
+  ) {}
+}
+
+export async function search(searchTerm: string): Promise<SearchResult> {
+  const bodyJson: Search.Request = {
+    q: searchTerm,
   };
+  const factResults: Search.FactResultList = await postRequestReturningPromise(
+    Routes.API_SEARCH,
+    bodyJson
+  );
 
-  get searchDatabase() {
-    if (!this._searchDatabase) {
-      throw "SearchDatabaseApi: Database must be loaded before it can be accessed. Ensure connect has been called.";
-    }
-    return this._searchDatabase;
-  }
+  const builder = new FoundationDataBuilder(); // This should probably live elsewhere
+  factResults.facts.forEach((fact) => builder.add(fact.hash));
+  const foundationData = await builder.build();
+  return searchImpl(
+    new SearchWithData(searchTerm, factResults.facts, foundationData)
+  );
+}
 
-  private getFacts(
-    factList: Search.FactResultList,
-    onSuccess: (value?: void | PromiseLike<void> | undefined) => void
-  ) {
-    const hashesToTurns = createHashMap(factList);
-    if (!hashesToTurns) {
-      this._searchDatabase = new SearchDatabase([], this.searchTerm);
-      return;
-    }
-    const innerPromises: Promise<VideoFactHashMap>[] = [];
-    hashesToTurns.forEach((turns, hash) => {
-      innerPromises.push(fetchFactReturningPromise(hash));
-    });
-
-    Promise.all(innerPromises).then((videoFacts: VideoFactHashMap[]) => {
-      const factTurns = processFacts(hashesToTurns, videoFacts);
-      this._searchDatabase = new SearchDatabase(factTurns, this.searchTerm);
-      onSuccess();
+function searchImpl(searchWithData: SearchWithData): SearchResult {
+  const { foundationData, searchTerm, videoResults } = searchWithData;
+  const hashesToTurns = createHashesToTurns(videoResults);
+  const videoFactsToTurns: VideoFactsToTurns[] = [];
+  for (const [hash, turns] of hashesToTurns) {
+    const videoFact = foundationData.getVideo(hash);
+    turns.sort((a, b) => a - b);
+    videoFactsToTurns.push({
+      turns,
+      videoFact,
     });
   }
-
-  static processFacts = (
-    hashesToTurns: HashesToTurns,
-    videoFacts: VideoFactHashMap[]
-  ): FactTurns[] => {
-    let factTurnsArr: FactTurns[] = [];
-    for (const videoFact of videoFacts) {
-      const turns = hashesToTurns.get(videoFact.hash);
-      if (!turns) {
-        throw "Expect hashesToTurns map to have a valid value for each key";
-      }
-      factTurnsArr.push({
-        turns,
-        videoFact: videoFact.videoFact,
-      });
-    }
-    factTurnsArr.sort((aFactTurns, bFactTurns) => {
-      const a = aFactTurns.videoFact.fact.primaryDate;
-      const b = bFactTurns.videoFact.fact.primaryDate;
-      return a == b ? 0 : +(a > b) || -1;
-    });
-
-    return factTurnsArr;
-  };
+  videoFactsToTurns.sort((aFactTurns, bFactTurns) => {
+    const a = aFactTurns.videoFact.fact.primaryDate;
+    const b = bFactTurns.videoFact.fact.primaryDate;
+    return a == b ? 0 : +(a > b) || -1;
+  });
+  return new SearchResult(videoFactsToTurns, searchTerm);
 }
 
 export type HashesToTurns = Map<string, number[]>;
 
-export interface FactTurns {
+export interface VideoFactsToTurns {
   videoFact: Foundation.VideoFactContent;
   turns: number[];
 }
 
-export const getSortedFactTurns = (
-  searchResults: Search.FactResultList
-): Promise<FactTurns[]> => {
-  return new Promise((resolve, reject) => {
-    const hashesToTurns = createHashMap(searchResults);
-    if (!hashesToTurns) {
-      return resolve([]);
-    }
-    const innerPromises: Promise<VideoFactHashMap>[] = [];
-    // for (const result of hashesToTurns.keys()) {
-    hashesToTurns.forEach((turns, hash) => {
-      try {
-        innerPromises.push(fetchFactReturningPromise(hash));
-      } catch (err) {
-        reject(err);
-      }
-    });
-
-    Promise.all(innerPromises).then((videoFacts: VideoFactHashMap[]) => {
-      resolve(processFacts(hashesToTurns, videoFacts));
-    });
-  });
-};
-
-export const createHashMap = (
-  results: Search.FactResultList
-): HashesToTurns | undefined => {
-  const facts: Search.VideoResult[] = results.facts;
-  if (facts.length <= 0) {
-    return undefined;
-  }
-
+export const createHashesToTurns = (
+  facts: Search.VideoResult[]
+): HashesToTurns => {
   const hashesToTurns: HashesToTurns = new Map();
+
   facts.forEach((f) => {
     const existingTurns = hashesToTurns.get(f.hash);
     if (!existingTurns) {
@@ -175,28 +110,4 @@ export const createHashMap = (
     turnList.sort((a, b) => a - b);
   }
   return hashesToTurns;
-};
-
-export const processFacts = (
-  hashesToTurns: HashesToTurns,
-  videoFacts: VideoFactHashMap[]
-): FactTurns[] => {
-  let factTurnsArr: FactTurns[] = [];
-  for (const videoFact of videoFacts) {
-    const turns = hashesToTurns.get(videoFact.hash);
-    if (!turns) {
-      throw "Expect hashesToTurns map to have a valid value for each key";
-    }
-    factTurnsArr.push({
-      turns,
-      videoFact: videoFact.videoFact,
-    });
-  }
-  factTurnsArr.sort((aFactTurns, bFactTurns) => {
-    const a = aFactTurns.videoFact.fact.primaryDate;
-    const b = bFactTurns.videoFact.fact.primaryDate;
-    return a == b ? 0 : +(a > b) || -1;
-  });
-
-  return factTurnsArr;
 };
