@@ -33,7 +33,6 @@ import controllers.TakeEmail;
 import controllers.TakeReaction;
 import controllers.Takes;
 import java.security.SecureRandom;
-import java.util.Random;
 import javax.sql.DataSource;
 import json.JsoniterModule;
 import org.flywaydb.core.Flyway;
@@ -55,7 +54,7 @@ public class Prod extends Jooby {
 			byte[] seed = nativeRandom.generateSeed(55);
 			SecureRandom pureJava = SecureRandom.getInstance("SHA1PRNG");
 			pureJava.setSeed(seed);
-			binder.bind(Random.class).toInstance(pureJava);
+			binder.bind(SecureRandom.class).toInstance(pureJava);
 		});
 		realtime(this);
 		use(new HerokuDatabase.Module());
@@ -110,11 +109,13 @@ public class Prod extends Jooby {
 		jooby.use(new TakeReaction());
 		jooby.use(new TakeEmail());
 		jooby.use(new Shares());
-		jooby.use(new RedirectException.Module());
 		// These controllers need to be last, because otherwise
 		// they will swallow every `/user/take` and `/user` URL.
 		jooby.use(new Takes());
 		jooby.use(new Profile());
+		// But it is okay to put the error tracing stuff after that
+		jooby.use(new RedirectException.Module());
+		jooby.use(new controllers.ErrorPages());
 	}
 
 	public static void main(String[] args) {
