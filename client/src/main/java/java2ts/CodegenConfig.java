@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2017-2018 MyTake.org, Inc.
+ * Copyright (C) 2017-2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -54,9 +54,7 @@ public class CodegenConfig implements StaticCodegenConfig {
 				TypeLiteral.create(FollowJson.FollowRes.class),
 				TypeLiteral.create(Search.Request.class),
 				TypeLiteral.create(Search.VideoResult.class),
-				TypeLiteral.create(Search.FactResultList.class),
-				TypeLiteral.create(Share.ShareReq.class),
-				TypeLiteral.create(Share.ShareRes.class)
+				TypeLiteral.create(Search.FactResultList.class)
 		};
 	}
 
