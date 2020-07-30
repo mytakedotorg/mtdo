@@ -1,6 +1,6 @@
 apply plugin: 'java'
 
-String VER_LUCENE = '8.5.2'
+String VER_LUCENE = '8.6.0'
 dependencies {
 	implementation project(':client')
 	implementation 'com.diffplug.durian:durian-core:1.2.0'

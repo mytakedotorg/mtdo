@@ -1,5 +1,5 @@
 plugins {
-	id 'nu.studer.rocker' version '2.0'						// https://github.com/etiennestuder/gradle-rocker-plugin
+	id 'nu.studer.rocker' version '2.2.1'					// https://github.com/etiennestuder/gradle-rocker-plugin
 	id 'com.github.johnrengelman.shadow' version '6.0.0'	// http://imperceptiblethoughts.com/shadow/#
 }
 
@@ -108,7 +108,7 @@ repositories {
 	}
 }
 dependencies {
-	String JOOBY_VER = '1.6.7'
+	String JOOBY_VER = '1.6.8'
 	// jooby
 	implementation "org.jooby:jooby-netty:$JOOBY_VER"
 	implementation "org.jooby:jooby-rocker:$JOOBY_VER"
