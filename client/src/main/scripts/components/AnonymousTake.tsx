@@ -20,15 +20,24 @@
 import * as React from "react";
 import BlockEditor, { TakeBlock, TakeDocument } from "./BlockEditor";
 import { alertErr, slugify } from "../utils/functions";
-import { Share } from "../java2ts/Share";
 import { Routes } from "../java2ts/Routes";
 
 interface AnonymousTakeProps {
   path: string;
 }
 
+interface ShareReq {
+  title : string;
+  hStart : string;
+  hEnd : string;
+  docId? : string;
+  vidId? : string;
+  vStart? : string;
+  vEnd? : string;
+}
+
 interface AnonymousTakeState {
-  take?: Share.ShareReq;
+  take?: ShareReq;
 }
 
 class AnonymousTake extends React.Component<
@@ -40,7 +49,7 @@ class AnonymousTake extends React.Component<
 
     this.state = {};
   }
-  buildTakeDocument = (takeObject: Share.ShareReq): TakeDocument => {
+  buildTakeDocument = (takeObject: ShareReq): TakeDocument => {
     const highlightedRange: [number, number] = [
       parseFloat(takeObject.hStart),
       parseFloat(takeObject.hEnd),
@@ -88,7 +97,7 @@ class AnonymousTake extends React.Component<
     const slugifiedTitle = pathArr[2];
     const foundationVersion = pathArr[3];
     const base64Str = pathArr[4];
-    const decodedTakeObject: Share.ShareReq = JSON.parse(atob(base64Str));
+    const decodedTakeObject: ShareReq = JSON.parse(atob(base64Str));
     if (slugify(decodedTakeObject.title) !== slugifiedTitle) {
       const msg = "AnonymousTake: Error decoding base64. Titles do not match";
       alertErr(msg);

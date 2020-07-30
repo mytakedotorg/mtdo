@@ -27,7 +27,16 @@ import {
 } from "../utils/functions";
 import { LoginCookie } from "../java2ts/LoginCookie";
 import { Routes } from "../java2ts/Routes";
-import { Share } from "../java2ts/Share";
+
+interface ShareReq {
+  title : string;
+  hStart : string;
+  hEnd : string;
+  docId? : string;
+  vidId? : string;
+  vStart? : string;
+  vEnd? : string;
+}
 
 declare global {
   interface Window {
@@ -67,7 +76,7 @@ class QuickShare extends React.Component<QuickShareProps, QuickShareState> {
     };
   }
   copyToClipboard = () => {
-    const request: Share.ShareReq = this.createRequestObject();
+    const request: ShareReq = this.createRequestObject();
     this.createShareableURL(request);
     if (this.state.url) {
       copyToClipboard(this.state.url);
@@ -96,29 +105,30 @@ class QuickShare extends React.Component<QuickShareProps, QuickShareState> {
   };
   handleChangeComplete = () => {
     this.timerId = null;
-    const request: Share.ShareReq = this.createRequestObject();
+    const request: ShareReq = this.createRequestObject();
     this.createShareableURL(request);
     this.setState({ isCopiedToClipboard: false });
   };
   handleFacebookClick = () => {
-    const request: Share.ShareReq = this.createRequestObject();
+    const request: ShareReq = this.createRequestObject();
     this.logToServer(request);
     const url = this.createShareableURL(request);
     this.showFacebookDialog(url);
   };
   handleTwitterClick = () => {
-    const request: Share.ShareReq = this.createRequestObject();
+    const request: ShareReq = this.createRequestObject();
     this.logToServer(request);
     const url = this.createShareableURL(request);
     const twitterUrl = this.createTwitterUrl(url);
     window.open(twitterUrl, "_blank");
   };
-  logToServer = (request: Share.ShareReq) => {
-    postRequest(Routes.API_SHARE, request, () => {});
+  logToServer = (request: ShareReq) => {
+    // TODO: reqork saving
+    // postRequest(Routes.API_SHARE, request, () => {});
   };
-  createRequestObject = (): Share.ShareReq => {
+  createRequestObject = (): ShareReq => {
     const { highlightedRange, isDocument, factHash, viewRange } = this.props;
-    let request: Share.ShareReq = {
+    let request: ShareReq = {
       title: this.state.title ? this.state.title : this.UNTITLED,
       vidId: isDocument ? undefined : factHash,
       docId: isDocument ? factHash : undefined,
@@ -139,12 +149,12 @@ class QuickShare extends React.Component<QuickShareProps, QuickShareState> {
     }
     return request;
   };
-  encodeRequestObject = (req: Share.ShareReq): string => {
+  encodeRequestObject = (req: ShareReq): string => {
     const requestStr = JSON.stringify(req);
     const encodedStr = btoa(requestStr);
     return encodedStr;
   };
-  createShareableURL = (req: Share.ShareReq): string => {
+  createShareableURL = (req: ShareReq): string => {
     const encodedReq: string = this.encodeRequestObject(req);
     ///anonymous/:title/v1/BASE64-ENCODED-JSON
     const cookieStr = getUserCookieString();
@@ -204,7 +214,7 @@ class QuickShare extends React.Component<QuickShareProps, QuickShareState> {
     }
   }
   componentDidMount() {
-    const request: Share.ShareReq = this.createRequestObject();
+    const request: ShareReq = this.createRequestObject();
     this.createShareableURL(request);
   }
   render() {
