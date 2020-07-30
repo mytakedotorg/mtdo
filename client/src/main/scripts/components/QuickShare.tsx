@@ -29,13 +29,13 @@ import { LoginCookie } from "../java2ts/LoginCookie";
 import { Routes } from "../java2ts/Routes";
 
 interface ShareReq {
-  title : string;
-  hStart : string;
-  hEnd : string;
-  docId? : string;
-  vidId? : string;
-  vStart? : string;
-  vEnd? : string;
+  title: string;
+  hStart: string;
+  hEnd: string;
+  docId?: string;
+  vidId?: string;
+  vStart?: string;
+  vEnd?: string;
 }
 
 declare global {

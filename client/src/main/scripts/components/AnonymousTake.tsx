@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2018 MyTake.org, Inc.
+ * Copyright (C) 2018-2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -27,13 +27,13 @@ interface AnonymousTakeProps {
 }
 
 interface ShareReq {
-  title : string;
-  hStart : string;
-  hEnd : string;
-  docId? : string;
-  vidId? : string;
-  vStart? : string;
-  vEnd? : string;
+  title: string;
+  hStart: string;
+  hEnd: string;
+  docId?: string;
+  vidId?: string;
+  vStart?: string;
+  vEnd?: string;
 }
 
 interface AnonymousTakeState {
