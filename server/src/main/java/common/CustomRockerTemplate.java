@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2017-2018 MyTake.org, Inc.
+ * Copyright (C) 2017-2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -23,6 +23,7 @@ import com.fizzed.rocker.RockerModel;
 import com.google.common.base.Preconditions;
 import forms.api.RockerRaw;
 import java.util.Iterator;
+import java.util.Locale;
 import org.jooby.rocker.RequestRockerTemplate;
 
 public abstract class CustomRockerTemplate extends RequestRockerTemplate {
@@ -64,5 +65,14 @@ public abstract class CustomRockerTemplate extends RequestRockerTemplate {
 		String fbAppId = (String) locals.get(CustomAssets.FB_APP_ID);
 		Preconditions.checkNotNull(fbAppId);
 		return new RockerRaw().appendRaw(fbAppId);
+	}
+
+	/** Returns the single or plural stream as appropriate, based on the count. */
+	public static String capitalize(String input) {
+		if (input.isEmpty()) {
+			return input;
+		} else {
+			return input.substring(0, 1).toUpperCase(Locale.ROOT) + input.substring(1);
+		}
 	}
 }

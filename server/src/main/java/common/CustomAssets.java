@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2017-2018 MyTake.org, Inc.
+ * Copyright (C) 2017-2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -69,13 +69,7 @@ public class CustomAssets implements Jooby.Module {
 			env.router().assets("/assets/**");
 		}
 		// key, style, key, script
-		List<String> keyValue = new ArrayList<>(4 * compiler.fileset().size());
-		for (String fileset : compiler.fileset()) {
-			keyValue.add(fileset + CustomAssets._STYLES);
-			keyValue.add(styles(url, compiler, fileset));
-			keyValue.add(fileset + CustomAssets._SCRIPTS);
-			keyValue.add(scripts(url, compiler, fileset));
-		}
+		List<String> keyValue = keyValueFor(compiler, url);
 		env.router().before((req, rsp) -> {
 			for (int i = 0; i < keyValue.size() / 2; ++i) {
 				String key = keyValue.get(2 * i);
@@ -84,6 +78,17 @@ public class CustomAssets implements Jooby.Module {
 			}
 			req.set(FB_APP_ID, fbAppId);
 		});
+	}
+
+	static List<String> keyValueFor(AssetCompiler compiler, BiFunction<String, String, String> url) {
+		List<String> keyValue = new ArrayList<>(4 * compiler.fileset().size());
+		for (String fileset : compiler.fileset()) {
+			keyValue.add(fileset + CustomAssets._STYLES);
+			keyValue.add(styles(url, compiler, fileset));
+			keyValue.add(fileset + CustomAssets._SCRIPTS);
+			keyValue.add(scripts(url, compiler, fileset));
+		}
+		return keyValue;
 	}
 
 	private static final String SLASH_SHA_384 = "/sha384-";
