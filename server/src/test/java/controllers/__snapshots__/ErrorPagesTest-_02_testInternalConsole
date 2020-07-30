@@ -36,7 +36,7 @@ Internal error erjchFbCXxMlUfFXx3oY
   env.headers.Accept-Encoding=[gzip,deflate]
   env.headers.content-length=[0]
   stacktrace=java.lang.IllegalArgumentException: Oh noes!!
-	at controllers.ErrorPagesTest$App.lambda$1(ErrorPagesTest.java:48)
+	at controllers.ErrorPagesTest$App.lambda$1(ErrorPagesTest.java:45)
 	at org.jooby.Route$OneArgHandler.handle(Route.java:1818)
 	at org.jooby.internal.RouteImpl.handle(RouteImpl.java:280)
 	at org.jooby.internal.RouteChain.next(RouteChain.java:262)
