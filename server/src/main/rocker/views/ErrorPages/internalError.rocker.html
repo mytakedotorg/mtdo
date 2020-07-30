@@ -1,0 +1,36 @@
+@*
+ * MyTake.org website and tooling.
+ * Copyright (C) 2020 MyTake.org, Inc.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * You can contact us at team@mytake.org
+ *@
+@import auth.AuthUser
+
+@args (AuthUser auth, String errorCode)
+
+@views.base.template("Sorry about that!", "Sorry about that!") -> {
+<div class="about">
+	<p class="about__text">Oops! We've got a bug in our server.  Sorry about that!</p>
+	<p class="about__text">If you'd like to help us fix it:</p>
+	<ul class="about__list">
+		<li class="about__list-item">email us at <strong>@common.Emails.TECH.linkEmail()</strong></li>
+		<li class="about__list-item">reference the error code <strong>@errorCode</strong></li>
+		<li class="about__list-item">and tell us a little about what you were doing before it crashed</li>
+		<li class="about__list-item">we'll reply back with with a link to an <a href="https://github.com/mytakedotorg/mytakedotorg/issues">issue</a> where we are tracking the problem</li>
+		<li class="about__list-item">and hopefully even the <a href="https://github.com/mytakedotorg/mytakedotorg/pulls">code change</a> which will fix it</li>
+	</ul>
+</div>
+}

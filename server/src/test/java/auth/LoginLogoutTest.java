@@ -45,7 +45,7 @@ public class LoginLogoutTest {
 				.set(LOGIN_EMAIL, "samples@email.com")
 				.post(), Status.OK)
 				.bodyAssert(asserter -> {
-					asserter.contains("A login email has been sent to samples@email.com");
+					asserter.contains("A login email has been sent to <strong>samples@email.com</strong>");
 				}).responseAssert(response -> {
 					// no cookies
 					Assertions.assertThat(response.extract().cookies().keySet()).containsExactly("jooby.flash");

@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2017 MyTake.org, Inc.
+ * Copyright (C) 2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -20,20 +20,37 @@
 package common;
 
 import com.diffplug.common.base.Errors;
+import com.google.common.html.HtmlEscapers;
 import io.restassured.response.Response;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.function.Function;
 import javax.annotation.Nullable;
+import org.assertj.core.api.AbstractCharSequenceAssert;
 import org.assertj.core.api.Assertions;
 import org.junit.Assert;
 
 public class Snapshot {
+	/** Special match where the input model will have its userOpt and assets injected. */
+	public static AbstractCharSequenceAssert<?, String> match(String id, CustomRockerModel actual) {
+		return match(id, actual.renderTest());
+	}
+
 	/** See {@link #match(String, String) */
-	public static void match(String id, Response response) {
-		match(id, response.asString());
+	public static AbstractCharSequenceAssert<?, String> match(String id, Response response) {
+		String asStr = response.asString();
+		if (asStr.isEmpty()) {
+			asStr = "Status code: " + response.statusCode() + "\n" + response.headers();
+		}
+		return match(id, asStr);
+	}
+
+	/** Returns true iff SET_SNAPSHOTS=TRUE */
+	private static boolean setSnapshots() {
+		return "TRUE".equals(System.getProperty("SET_SNAPSHOTS"));
 	}
 
 	/**
@@ -42,20 +59,33 @@ public class Snapshot {
 	 * 
 	 * @param id the name of the snapshot, must be unique per test class
 	 * @param actual the value which needs to equal the snapshotted value
+	 * @return 
 	 */
-	public static void match(String id, String actual) {
+	public static AbstractCharSequenceAssert<?, String> match(String id, String actual) {
+		Function<String, String> transformForView;
+		if (actual.isEmpty() || actual.trim().charAt(0) == '<') {
+			// html
+			transformForView = Function.identity();
+		} else {
+			transformForView = raw -> HtmlEscapers.htmlEscaper().escape(raw).replace("\n", "<br>");
+		}
 		try {
 			IdSnapshot snapshot = IdSnapshot.capture(id);
 			if (Files.exists(snapshot.testFile)) {
 				try {
-					Assert.assertEquals(snapshot.expected(), actual);
+					Function<String, String> clean = in -> in.replaceAll("\r", "").replaceAll("\n+", "\n");
+					String expectedClean = clean.apply(snapshot.expected());
+					String actualClean = clean.apply(actual);
+					Assert.assertEquals(expectedClean, actualClean);
 				} catch (Error e) {
-					if (OpenBrowser.isInteractive()) {
+					if (setSnapshots()) {
+						Files.write(snapshot.testFile, actual.getBytes(StandardCharsets.UTF_8));
+					} else if (OpenBrowser.isInteractive()) {
 						e.printStackTrace();
 						boolean overwrite = new OpenBrowser()
-								.add("/expected", snapshot.expected())
-								.add("/actual", actual)
-								.isYes("Click yes to overwrite expected with actual for " + snapshot.label());
+								.add("/expected", transformForView.apply(snapshot.expected()))
+								.add("/actual", transformForView.apply(actual))
+								.isYes("Overwrite expected with actual for " + snapshot.label());
 						if (overwrite) {
 							Files.write(snapshot.testFile, actual.getBytes(StandardCharsets.UTF_8));
 						} else {
@@ -67,9 +97,9 @@ public class Snapshot {
 				}
 			} else {
 				Assert.assertTrue("No snapshot for " + id, OpenBrowser.isInteractive());
-				boolean writeSnapshot = new OpenBrowser()
-						.add("/first", actual)
-						.isYes("Is this snapshot okay for " + snapshot.label());
+				boolean writeSnapshot = setSnapshots() || (new OpenBrowser()
+						.add("/first", transformForView.apply(actual))
+						.isYes("Is this snapshot okay for " + snapshot.label()));
 				if (writeSnapshot) {
 					Files.createDirectories(snapshot.testFile.getParent());
 					byte[] toWrite = actual.getBytes(StandardCharsets.UTF_8);
@@ -78,6 +108,7 @@ public class Snapshot {
 					throw new AssertionError("User rejected");
 				}
 			}
+			return Assertions.assertThat(actual);
 		} catch (ClassNotFoundException | IOException e) {
 			throw Errors.asRuntime(e);
 		}
