@@ -1,6 +1,6 @@
 @*
  * MyTake.org website and tooling.
- * Copyright (C) 2018 MyTake.org, Inc.
+ * Copyright (C) 2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -17,15 +17,12 @@
  *
  * You can contact us at team@mytake.org
  *@
-@args (String title, String imgUrl)
+@args (String message)
 
-@views.naked.template(title, "A take shared by an anonymous user", "react", imgUrl) -> {
+@views.base.template("Error", "Whoops. Something went wrong.") -> {
 
-<div id="app"></div>
-<script type="text/javascript">
-window.mytake = {
-	type: "anonymoustake"
-};
-</script>
+<div class="about">
+<p class="about__text">@message</p>
+</div>
 
 }

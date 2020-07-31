@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2017 MyTake.org, Inc.
+ * Copyright (C) 2017-2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -26,7 +26,7 @@ import com.google.common.collect.ImmutableMap;
 import common.EmailAssert;
 import common.JoobyDevRule;
 import common.PageAssert;
-import forms.meta.MetaFormSubmit;
+import forms.meta.FormSubmit;
 import io.restassured.RestAssured;
 import javax.mail.MessagingException;
 import org.assertj.core.api.Assertions;
@@ -40,15 +40,15 @@ public class LoginLogoutTest {
 
 	@Test
 	public void login() throws MessagingException {
-		PageAssert.assertThat(MetaFormSubmit.create(LoginForm.class)
+		PageAssert.assertThat(FormSubmit.create(LoginForm.class)
 				.set(REDIRECT, "/redirectTarget")
 				.set(LOGIN_EMAIL, "samples@email.com")
-				.post("/login"), Status.OK)
+				.post(), Status.OK)
 				.bodyAssert(asserter -> {
-					asserter.contains("A login email has been sent to samples@email.com");
+					asserter.contains("A login email has been sent to <strong>samples@email.com</strong>");
 				}).responseAssert(response -> {
 					// no cookies
-					Assertions.assertThat(response.extract().cookies().keySet()).isEmpty();
+					Assertions.assertThat(response.extract().cookies().keySet()).containsExactly("jooby.flash");
 				});
 
 		EmailAssert loginEmail = dev.waitForEmail();

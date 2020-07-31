@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2018 MyTake.org, Inc.
+ * Copyright (C) 2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -17,27 +17,13 @@
  *
  * You can contact us at team@mytake.org
  */
-package java2ts;
+package common;
 
-public interface Share {
-	/** When someone shares a clip or an excerpt. */
-	@jsweet.lang.Interface
-	public class ShareReq implements Json {
-		public String title;
-		public String hStart;
-		public String hEnd;
-		@jsweet.lang.Optional
-		public String docId;
-		@jsweet.lang.Optional
-		public String vidId;
-		@jsweet.lang.Optional
-		public String vStart;
-		@jsweet.lang.Optional
-		public String vEnd;
-	}
+/** Exception whose message we intend to show the user. */
+public class UserException extends RuntimeException {
+	private static final long serialVersionUID = 5802002798148547582L;
 
-	@jsweet.lang.Interface
-	public class ShareRes implements Json {
-
+	public UserException(String message) {
+		super(message);
 	}
 }

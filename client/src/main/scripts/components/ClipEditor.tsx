@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2018 MyTake.org, Inc.
+ * Copyright (C) 2018-2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -18,8 +18,6 @@
  * You can contact us at team@mytake.org
  */
 import * as React from "react";
-import DropDown from "./DropDown";
-import QuickShare from "./QuickShare";
 import {
   RangeType,
   StateAuthority,
@@ -40,7 +38,6 @@ export interface ClipEditorEventHandlers {
   onPlayPausePress: () => any;
   onRangeChange: (value: [number, number] | number, type: RangeType) => any;
   onRestartPress: () => any;
-  onSendToTake: () => any;
   onSkipBackPress: (seconds: number) => any;
   onSkipForwardPress: (seconds: number) => any;
   onZoomToClipPress: () => any;
@@ -68,7 +65,6 @@ interface ClipEditorProps {
   eventHandlers: ClipEditorEventHandlers;
   rangeSliders: TimeRange[];
   stateAuthority: StateAuthority;
-  videoIdHash: string;
 }
 
 interface ClipEditorState {}
@@ -241,25 +237,6 @@ class ClipEditor extends React.Component<ClipEditorProps, ClipEditorState> {
             >
               <i className="fa fa-repeat" aria-hidden="true" /> 15s
             </button>
-            {props.captionIsHighlighted && selectionRange.end ? (
-              <DropDown
-                classModifier="clipShare"
-                dropdownPosition="CUSTOM"
-                toggleText="Share"
-              >
-                <QuickShare
-                  highlightedRange={[selectionRange.start, selectionRange.end]}
-                  isDocument={false}
-                  onSendToTake={this.props.eventHandlers.onSendToTake}
-                  factHash={this.props.videoIdHash}
-                  viewRange={
-                    zoomRange && zoomRange.end
-                      ? [zoomRange.start, zoomRange.end]
-                      : undefined
-                  }
-                />
-              </DropDown>
-            ) : null}
           </div>
         </div>
       </div>

@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2017-2018 MyTake.org, Inc.
+ * Copyright (C) 2017-2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -24,24 +24,21 @@ import static auth.AuthModule.REDIRECT;
 import static db.Tables.ACCOUNT;
 import static db.Tables.LOGINLINK;
 
-import com.google.common.collect.ImmutableSet;
+import common.DbMisc;
 import common.EmailSender;
-import common.Emails;
 import common.IpGetter;
-import common.RandomString;
 import common.Text;
 import common.Time;
 import common.UrlEncodedPath;
+import common.UrlRandomCode;
 import controllers.HomeFeed;
-import db.VarChars;
 import db.tables.pojos.Account;
 import db.tables.records.AccountRecord;
 import db.tables.records.LoginlinkRecord;
-import forms.meta.MetaField;
-import forms.meta.MetaFormDef;
-import forms.meta.MetaFormValidation;
-import java.util.Random;
-import java.util.Set;
+import forms.api.FormValidation;
+import forms.meta.PostForm;
+import forms.meta.Validator;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java2ts.Routes;
 import org.jooby.Mutant;
@@ -50,42 +47,43 @@ import org.jooby.Response;
 import org.jooby.Results;
 import org.jooq.DSLContext;
 
-public class LoginForm extends MetaFormDef.HandleValid {
+public class LoginForm extends PostForm<LoginForm> {
+	public LoginForm() {
+		super(Routes.LOGIN, LOGIN_EMAIL, REDIRECT);
+	}
+
 	public static final int EXPIRES_MINUTES = 10;
 
+	/** Populates the initial values for the given form. */
 	@Override
-	public Set<MetaField<?>> fields() {
-		return ImmutableSet.of(LOGIN_EMAIL, REDIRECT);
+	protected FormValidation<LoginForm> initialGet(Request req, Map<String, String> params) {
+		return parseMetaFieldsSkipNulls(params)
+				.keep(LOGIN_EMAIL, REDIRECT)
+				.build();
 	}
 
 	@Override
-	protected void validate(MetaFormValidation validation) {
-		validation.keepAll();
-	}
-
-	@Override
-	public boolean handleSuccessful(MetaFormValidation validation, Request req, Response rsp) throws Throwable {
-		String email = Text.lowercase(validation.parsed(LOGIN_EMAIL));
+	protected ValidateResult<LoginForm> validate(Request req, FormValidation.Sensitive<LoginForm> form) {
+		String email = Text.lowercase(form.value(LOGIN_EMAIL));
+		FormValidation.Builder<LoginForm> retry = form.keepAll();
+		Validator.email().validate(retry, LOGIN_EMAIL);
 		try (DSLContext dsl = req.require(DSLContext.class)) {
-			AccountRecord account = dsl.selectFrom(ACCOUNT)
-					.where(ACCOUNT.EMAIL.eq(email))
-					.fetchOne();
+			AccountRecord account = DbMisc.fetchOne(dsl, ACCOUNT.EMAIL, email);
 			if (account == null) {
-				validation.errorForField(LOGIN_EMAIL, "No account for this email");
-				return false;
+				return retry.addError(LOGIN_EMAIL, "No account for this email");
 			} else {
-				String code = RandomString.get(req.require(Random.class), VarChars.CODE);
+				Time.AddableTimestamp now = req.require(Time.class).nowTimestamp();
+				String ip = req.require(IpGetter.class).ip(req);
 
-				LoginlinkRecord login = dsl.newRecord(LOGINLINK);
-				login.setCode(code);
-				Time time = req.require(Time.class);
-				login.setCreatedAt(time.nowTimestamp());
-				login.setExpiresAt(time.nowTimestamp().plus(EXPIRES_MINUTES, TimeUnit.MINUTES));
-				login.setRequestorIp(req.require(IpGetter.class).ip(req));
+				LoginlinkRecord login = urlCode.createRecord(req, dsl, now, ip);
+				login.setExpiresAt(now.plus(EXPIRES_MINUTES, TimeUnit.MINUTES));
 				login.setAccountId(account.getId());
 				login.insert();
 
-				UrlEncodedPath path = EmailConfirmationForm.generateLink(req, validation, AuthModule.URL_confirm_login + code);
+				UrlEncodedPath path = urlCode.recordToUrl(req, login);
+				if (form.valuePresent(REDIRECT)) {
+					path.param(REDIRECT, form.value(REDIRECT));
+				}
 				path.param(LOGIN_EMAIL, email);
 
 				req.require(EmailSender.class).send(htmlEmail -> htmlEmail
@@ -93,44 +91,65 @@ public class LoginForm extends MetaFormDef.HandleValid {
 						.setSubject("MyTake.org login link")
 						.addTo(email));
 
-				account.setLastEmailedAt(time.nowTimestamp());
+				account.setLastEmailedAt(now);
 				account.update();
 
-				rsp.send(views.Auth.loginEmailSent.template(email, Emails.TEAM));
-				return true;
+				req.flash(AuthModule.FLASH_EMAIL, form.value(LOGIN_EMAIL));
+				return ValidateResult.redirect(AuthModule.URL_confirm_login_sent);
 			}
 		}
 	}
 
-	public static void confirm(String code, Request req, Response rsp) throws Throwable {
-		Time time = req.require(Time.class);
+	public static void confirm(Request req, Response rsp) throws Throwable {
+		Time.AddableTimestamp now = req.require(Time.class).nowTimestamp();
 		try (DSLContext dsl = req.require(DSLContext.class)) {
-			LoginlinkRecord link = dsl.selectFrom(LOGINLINK)
-					.where(LOGINLINK.CODE.eq(code))
-					.fetchOne();
-			MetaFormValidation validation = EmailConfirmationForm.nullIfValid(LoginForm.class, req, link,
-					LoginlinkRecord::getExpiresAt, LoginlinkRecord::getRequestorIp);
-			if (validation != null) {
-				// show a "try again" login form
-				rsp.send(views.Auth.loginUnknown.template(validation.markup(Routes.LOGIN)));
+			LoginlinkRecord link = urlCode.tryGetRecord(req, dsl);
+			String ip = req.require(IpGetter.class).ip(req);
+			String errorMsg;
+			if (link == null || now.after(link.getExpiresAt())) {
+				errorMsg = "This link expired, try again.";
+			} else if (link != null && !ip.equals(link.getRequestorIp())) {
+				errorMsg = "Make sure to open the link from the same device you requested it from.";
 			} else {
-				// delete all login links for this account
-				dsl.deleteFrom(LOGINLINK)
-						.where(LOGINLINK.ACCOUNT_ID.eq(link.getAccountId()))
-						.execute();
-				// update the record's lastSeen
-				AccountRecord account = dsl.selectFrom(ACCOUNT)
-						.where(ACCOUNT.ID.eq(link.getAccountId()))
-						.fetchOne();
-				account.setLastSeenIp(req.require(IpGetter.class).ip(req));
-				account.setLastSeenAt(time.nowTimestamp());
-				account.update();
-				// set the login cookies
-				AuthUser.login(account.into(Account.class), req, rsp);
-				// redirect 
-				Mutant redirect = req.param(REDIRECT.name());
-				rsp.send(Results.redirect(redirect.value(HomeFeed.URL)));
+				errorMsg = null;
+			}
+
+			if (errorMsg != null) {
+				// else we have no choice but to show an error
+				req.flash("error", errorMsg);
+				// and clear their login cookies
+				AuthUser.clearCookies(req, rsp);
+				UrlEncodedPath path = UrlEncodedPath.path(Routes.LOGIN);
+				if (req.param(LOGIN_EMAIL.name()).isSet()) {
+					path.param(LOGIN_EMAIL, req.param(LOGIN_EMAIL.name()).value());
+				}
+				if (req.param(REDIRECT.name()).isSet()) {
+					path.param(REDIRECT, req.param(REDIRECT.name()).value());
+				}
+				rsp.send(Results.redirect(path.build()));
+				return;
+			}
+
+			// delete all login links for this account
+			dsl.deleteFrom(LOGINLINK)
+					.where(LOGINLINK.ACCOUNT_ID.eq(link.getAccountId()))
+					.execute();
+			// update the record's lastSeen
+			AccountRecord account = DbMisc.fetchOne(dsl, ACCOUNT.ID, link.getAccountId());
+			account.setLastSeenIp(ip);
+			account.setLastSeenAt(now);
+			account.update();
+			// set the login cookies
+			AuthUser.login(account.into(Account.class), req).forEach(rsp::cookie);
+			// redirect 
+			Mutant redirect = req.param(REDIRECT.name());
+			if (redirect.isSet()) {
+				rsp.redirect(redirect.value());
+			} else {
+				rsp.redirect(HomeFeed.URL);
 			}
 		}
 	}
+
+	static final UrlRandomCode<LoginlinkRecord> urlCode = new UrlRandomCode<>(AuthModule.URL_confirm_login, LOGINLINK.CODE, LOGINLINK.CREATED_AT, LOGINLINK.REQUESTOR_IP);
 }

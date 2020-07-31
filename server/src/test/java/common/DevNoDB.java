@@ -22,7 +22,6 @@ package common;
 import common.Dev.GreenMailModule;
 import common.Dev.JooqDebugRenderer;
 import java.security.SecureRandom;
-import java.util.Random;
 import org.jooby.Jooby;
 import org.jooby.Results;
 
@@ -32,7 +31,7 @@ public class DevNoDB extends Jooby {
 		use((env, conf, binder) -> {
 			SecureRandom random = SecureRandom.getInstance("SHA1PRNG");
 			random.setSeed(new byte[1]);
-			binder.bind(Random.class).toInstance(random);
+			binder.bind(SecureRandom.class).toInstance(random);
 		});
 		use(new GreenMailModule());
 		Prod.commonNoDb(this);

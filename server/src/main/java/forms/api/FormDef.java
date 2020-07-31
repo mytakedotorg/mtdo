@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2017 MyTake.org, Inc.
+ * Copyright (C) 2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -19,11 +19,41 @@
  */
 package forms.api;
 
+import com.diffplug.common.base.Unhandled;
 import java.util.Set;
 
 /** The contract that all forms must meet. */
 public interface FormDef {
-	/** Returns the field names for the given form. */
 	Set<String> fieldNames();
 
+	Method method();
+
+	String actionUrl();
+
+	public enum Method {
+		GET, POST;
+
+		void addAttr(RockerRaw openForm) {
+			switch (this) {
+			case GET:
+				openForm.appendAttr("method", "get");
+				break;
+			case POST:
+				openForm.appendAttr("method", "post", "enctype", "application/x-www-form-urlencoded");
+				break;
+			default:
+				throw Unhandled.enumException(this);
+			}
+		}
+
+		public <T> T getPost(T get, T post) {
+			// @formatter:off
+			switch (this) {
+			case GET:	return get;
+			case POST:	return post;
+			default:	throw Unhandled.enumException(this);
+			}
+			// @formatter:on
+		}
+	}
 }

@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2017-2018 MyTake.org, Inc.
+ * Copyright (C) 2017-2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -23,16 +23,19 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.google.inject.Binder;
 import com.typesafe.config.Config;
+import common.CustomRockerModel;
+import common.Emails;
 import common.UrlEncodedPath;
 import controllers.HomeFeed;
 import forms.meta.MetaField;
-import forms.meta.MetaFormDef;
-import forms.meta.MetaFormValidation;
-import java.util.List;
+import forms.meta.PostForm;
 import java.util.Optional;
+import java.util.function.Function;
 import java2ts.Routes;
 import org.jooby.Env;
 import org.jooby.Jooby;
+import org.jooby.Results;
+import org.jooby.Route.OneArgHandler;
 import org.jooby.Status;
 
 /** The login module.  Must be before all modules that require login. */
@@ -51,6 +54,8 @@ public class AuthModule implements Jooby.Module {
 	static final String URL_confirm = "/confirm";
 	public static final String URL_confirm_login = URL_confirm + "/login/";
 	public static final String URL_confirm_account = URL_confirm + "/account/";
+	public static final String URL_confirm_login_sent = URL_confirm_login + "sent";
+	public static final String URL_confirm_account_sent = URL_confirm_account + "sent";
 
 	@Override
 	public void configure(Env env, Config conf, Binder binder) throws Throwable {
@@ -59,43 +64,29 @@ public class AuthModule implements Jooby.Module {
 		Algorithm algorithm = Algorithm.HMAC256(secret);
 		binder.bind(Algorithm.class).toInstance(algorithm);
 
-		env.router().get(Routes.LOGIN, req -> {
+		PostForm.hookMultiple(env.router(), (req, validations) -> {
 			Optional<AuthUser> userOpt = AuthUser.authOpt(req);
 			if (userOpt.isPresent()) {
 				return views.Auth.alreadyLoggedIn.template(userOpt.get().username());
-			} else {
-				// we might have gotten here from a JWTVerificationException, and we want to tell the user why
-				String loginReason = req.param(LOGIN_REASON.name()).value(null);
-				// initialize the form parameters
-				MetaFormValidation login = MetaFormValidation.empty(LoginForm.class)
-						.initIfPresent(req, REDIRECT, LOGIN_EMAIL);
-				MetaFormValidation createAccount = MetaFormValidation.empty(CreateAccountForm.class)
-						.initIfPresent(req, REDIRECT, CREATE_USERNAME, CREATE_EMAIL);
-				return views.Auth.login.template(loginReason, login.markup(Routes.LOGIN), createAccount.markup(Routes.LOGIN));
 			}
-		});
-		env.router().post(Routes.LOGIN, (req, rsp) -> {
-			List<MetaFormValidation> validations = MetaFormDef.HandleValid.validation(req, rsp, LoginForm.class, CreateAccountForm.class);
-			if (!validations.isEmpty()) {
-				String loginReason = null;
-				MetaFormValidation login = validations.get(0);
-				MetaFormValidation createAccount = validations.get(1);
-				rsp.send(views.Auth.login.template(loginReason, login.markup(Routes.LOGIN), createAccount.markup(Routes.LOGIN)));
-			}
-		});
-		env.router().get(URL_confirm_account + ":code", (req, rsp) -> {
-			CreateAccountForm.confirm(req.param("code").value(), req, rsp);
-		});
-		env.router().get(URL_confirm_login + ":code", (req, rsp) -> {
-			LoginForm.confirm(req.param("code").value(), req, rsp);
-		});
+			String loginReason = req.param(LOGIN_REASON.name()).value(null);
+			return views.Auth.login.template(loginReason,
+					validations.get(LoginForm.class).markup(),
+					validations.get(CreateAccountForm.class).markup());
+		}, LoginForm.class, CreateAccountForm.class);
+		env.router().get(URL_confirm_login_sent, redirectHomeIfAlreadyVisited(email -> views.Auth.loginEmailSent.template(email, Emails.TEAM)));
+		env.router().get(URL_confirm_account_sent, redirectHomeIfAlreadyVisited(email -> views.Auth.createAccountEmailSent.template(email, Emails.TEAM)));
+
+		LoginForm.urlCode.get(env, LoginForm::confirm);
+		CreateAccountForm.urlCode.get(env, CreateAccountForm::confirm);
+
 		env.router().get(Routes.LOGOUT, (req, rsp) -> {
-			AuthUser.clearCookies(rsp);
+			AuthUser.clearCookies(req, rsp);
 			rsp.redirect(HomeFeed.URL);
 		});
 		// a missing or expired login redirects to the login page
 		env.router().err(JWTVerificationException.class, (req, rsp, err) -> {
-			AuthUser.clearCookies(rsp);
+			AuthUser.clearCookies(req, rsp);
 			rsp.redirect(Status.TEMPORARY_REDIRECT, UrlEncodedPath.path(Routes.LOGIN)
 					.paramIfPresent(LOGIN_EMAIL, AuthUser.usernameForError(req))
 					.paramPathAndQuery(REDIRECT, req)
@@ -103,16 +94,18 @@ public class AuthModule implements Jooby.Module {
 					.build());
 		});
 		// page for tinfoil agent to gain access
-		env.router().get(TinfoilLoginForm.URL, req -> {
-			MetaFormValidation login = MetaFormValidation.empty(TinfoilLoginForm.class);
-			return views.Auth.tinfoilLogin.template(login.markup(TinfoilLoginForm.URL));
-		});
-		env.router().post(TinfoilLoginForm.URL, (req, rsp) -> {
-			List<MetaFormValidation> validations = MetaFormDef.HandleValid.validation(req, rsp, TinfoilLoginForm.class);
-			if (!validations.isEmpty()) {
-				MetaFormValidation login = validations.get(0);
-				rsp.send(views.Auth.tinfoilLogin.template(login.markup(TinfoilLoginForm.URL)));
-			}
+		PostForm.hook(env.router(), TinfoilLoginForm.class, (req, form) -> {
+			return views.Auth.tinfoilLogin.template(form.markup());
 		});
 	}
+
+	private static OneArgHandler redirectHomeIfAlreadyVisited(Function<String, CustomRockerModel> emailToTemplate) {
+		return req -> {
+			String email = req.ifFlash(FLASH_EMAIL).orElse(null);
+			return email == null ? Results.redirect("/") : emailToTemplate.apply(email);
+		};
+	}
+
+	public static final String FLASH_EMAIL = "email";
+
 }

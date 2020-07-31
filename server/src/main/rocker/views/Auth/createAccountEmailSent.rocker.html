@@ -1,6 +1,6 @@
 @*
  * MyTake.org website and tooling.
- * Copyright (C) 2017 MyTake.org, Inc.
+ * Copyright (C) 2017-2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -17,18 +17,18 @@
  *
  * You can contact us at team@mytake.org
  *@
-@args(String to, String from)
+@args(String to, common.Emails from)
 
 @views.base.template("Confirmation email sent", "Confirmation email sent") -> {
 
 <section class="section">
 	<div class="section__inner">
 		<p class="section__text">
-			A confirmation email has been sent to @raw(to).
+			A confirmation email has been sent to <strong>@raw(to)</strong>.
 			Click the link in the email to confirm your account.
 		</p>
 		<p class="section__text">
-			Make sure your spam filter allows emails from @raw(from).
+			Make sure your spam filter allows emails from <strong>@raw(from.email())</strong>.
 		</p>
 	</div>
 </section>

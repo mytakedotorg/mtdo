@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2017 MyTake.org, Inc.
+ * Copyright (C) 2017-2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -19,7 +19,41 @@
  */
 package common;
 
-public class Emails {
-	public static final String TEAM = "team@mytake.org";
-	public static final String TEAM_NAME = "The MyTake.org Team";
+import forms.api.RockerRaw;
+import java.util.Objects;
+
+public enum Emails {
+	TEAM("team", "Team"), TECH("tech", "Technology Team");
+
+	public static final String ADDRESS_1 = "340 S Lemon Ave #3433";
+	public static final String ADDRESS_2 = "Walnut, CA 91789";
+
+	private final String email;
+	private final String name;
+
+	Emails(String email, String name) {
+		this.email = Objects.requireNonNull(email);
+		this.name = Objects.requireNonNull(name);
+	}
+
+	@Override
+	public String toString() {
+		throw new UnsupportedOperationException("You probably want linkEmail() or link(String body)");
+	}
+
+	public String email() {
+		return email + "@mytake.org";
+	}
+
+	public String title() {
+		return "The MyTake.org " + name;
+	}
+
+	public RockerRaw linkEmail() {
+		return link(email());
+	}
+
+	public RockerRaw link(String body) {
+		return RockerRaw.raw("<a href=\"mailto:" + email() + "\">" + body + "</a>");
+	}
 }

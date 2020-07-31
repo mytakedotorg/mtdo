@@ -238,7 +238,6 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
       onPlayPausePress: this.props.eventHandlers.onPlayPausePress,
       onRestartPress: this.props.eventHandlers.onRestartPress,
       onRangeChange: this.props.eventHandlers.onRangeChange,
-      onSendToTake: this.props.eventHandlers.onSendToTake,
       onSkipBackPress: this.props.eventHandlers.onSkipBackPress,
       onSkipForwardPress: this.props.eventHandlers.onSkipForwardPress,
       onZoomToClipPress: this.props.eventHandlers.onZoomToClipPress,
@@ -265,7 +264,6 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
           videoDuration={this.props.videoDuration}
           rangeSliders={this.props.rangeSliders}
           stateAuthority={this.props.stateAuthority}
-          videoIdHash={this.props.videoFactHash}
         />
         {this.props.videoFact.plainText.length > 0 &&
         this.state.highlightedNodes ? (

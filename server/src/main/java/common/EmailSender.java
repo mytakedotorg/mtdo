@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2017 MyTake.org, Inc.
+ * Copyright (C) 2017-2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -43,13 +43,17 @@ public class EmailSender {
 	}
 
 	/** Sends an email. If no "from" is specified, it will be from {@link Emails#TEAM}. */
-	public void send(Throwing.Consumer<HtmlEmail> sender) throws Throwable {
-		HtmlEmail htmlEmail = registry.require(HtmlEmail.class);
-		htmlEmail.setFrom(Emails.TEAM, Emails.TEAM_NAME);
-		sender.accept(htmlEmail);
-		executor.execute(() -> {
-			Errors.log().run(htmlEmail::send);
-		});
+	public void send(Throwing.Consumer<HtmlEmail> sender) {
+		try {
+			HtmlEmail htmlEmail = registry.require(HtmlEmail.class);
+			htmlEmail.setFrom(Emails.TEAM.email(), Emails.TEAM.name());
+			sender.accept(htmlEmail);
+			executor.execute(() -> {
+				Errors.log().run(htmlEmail::send);
+			});
+		} catch (Throwable e) {
+			throw Errors.asRuntime(e);
+		}
 	}
 
 	private static class Module implements Jooby.Module {

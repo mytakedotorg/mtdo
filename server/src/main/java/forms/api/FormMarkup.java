@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2017 MyTake.org, Inc.
+ * Copyright (C) 2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -20,6 +20,7 @@
 package forms.api;
 
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Sets;
 import com.google.common.collect.Sets.SetView;
 import forms.meta.MetaField;
@@ -27,29 +28,55 @@ import java.util.HashSet;
 import java.util.Set;
 
 /** Creates a form, with validation fields and CSRF protection, inside a Rocker template. */
-public class FormMarkup {
-	private final String postUrl;
+public class FormMarkup<F extends FormDef> {
 	private final FormDef def;
-	private final FormValidation<?> validation;
+	private final FormValidation<F> validation;
 
-	public FormMarkup(String postUrl, FormDef def, FormValidation<?> validation) {
-		this.postUrl = postUrl;
+	public FormMarkup(FormDef def, FormValidation<F> validation) {
 		this.def = def;
 		this.validation = validation;
+	}
+
+	public FormMarkup<F> standardPolicies() {
+		return labelPolicy("class", "form__label")
+				.inputPolicy("class", "form__input form__input--inline");
+	}
+
+	public FormValidation<F> validation() {
+		return validation;
+	}
+
+	ImmutableMap<String, String> labelPolicy = ImmutableMap.of();
+	ImmutableMap<String, String> inputPolicy = ImmutableMap.of();
+
+	public FormMarkup<F> labelPolicy(String... attributes) {
+		this.labelPolicy = toMap(attributes);
+		return this;
+	}
+
+	public FormMarkup<F> inputPolicy(String... attributes) {
+		this.inputPolicy = toMap(attributes);
+		return this;
+	}
+
+	private static ImmutableMap<String, String> toMap(String... keyValues) {
+		ImmutableMap.Builder<String, String> builder = ImmutableMap.builder();
+		for (int i = 0; i < keyValues.length / 2; ++i) {
+			builder.put(keyValues[2 * i], keyValues[2 * i + 1]);
+		}
+		return builder.build();
 	}
 
 	/** Used to validate that every field is created. */
 	private final Set<String> usedFields = new HashSet<>();
 
 	public RockerRaw openForm(String... attributes) {
-		return new RockerRaw()
-				.appendRaw("<form")
-				.appendAttr(
-						"enctype", "application/x-www-form-urlencoded",
-						"action", postUrl,
-						"method", "post")
-				.appendAttr(attributes)
-				.appendRaw(">");
+		RockerRaw openForm = new RockerRaw();
+		openForm.appendRaw("<form").appendAttr("action", def.actionUrl());
+		def.method().addAttr(openForm);
+		openForm.appendAttr(attributes);
+		openForm.appendRaw(">");
+		return openForm;
 	}
 
 	public FormFieldBuilder field(MetaField<?> field) {
@@ -57,7 +84,7 @@ public class FormMarkup {
 	}
 
 	public FormFieldBuilder field(String name) {
-		return new FormFieldBuilder(this, name, validation);
+		return new FormFieldBuilder(this, name);
 	}
 
 	void usedField(String name) {
@@ -73,33 +100,15 @@ public class FormMarkup {
 		SetView<String> unknown = Sets.difference(usedFields, def.fieldNames());
 		Preconditions.checkState(unused.isEmpty() && unknown.isEmpty(), "unused=%s unknown=%s", unused, unknown);
 
-		return new RockerRaw()
-				// CSRF
-				.appendRaw("<input")
-				.appendAttr("type", "hidden", "name", CSRF_FIELD, "value", "TODO")
-				.appendRaw(">")
-				.appendRaw("</input>\n")
-				// then close the form
-				.appendRaw("</form>\n");
-	}
-
-	public static final String CSRF_FIELD = "csrf";
-
-	public RockerRaw formSuccess() {
-		RockerRaw raw = new RockerRaw();
-		if (validation.successForForm() != null) {
-			raw.appendRaw("<div class=\"alert alert-success\">")
-					.appendSafe(validation.successForForm())
-					.appendRaw("</div>\n");
-		}
-		return raw;
+		// then close the form
+		return new RockerRaw().appendRaw("</form>\n");
 	}
 
 	public RockerRaw formError() {
 		RockerRaw raw = new RockerRaw();
-		if (validation.errorForForm() != null) {
-			raw.appendRaw("<div class=\"alert alert-error\">")
-					.appendSafe(validation.errorForForm())
+		if (validation.formError() != null) {
+			raw.appendRaw("<div class=\"alert alert-danger\">")
+					.appendSafe(validation.formError())
 					.appendRaw("</div>\n");
 		}
 		return raw;

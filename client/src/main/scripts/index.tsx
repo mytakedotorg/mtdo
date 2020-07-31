@@ -23,7 +23,6 @@ import BlockWriter, {
   InitialBlockWriterState,
   initialState,
 } from "./components/BlockWriter";
-import AnonymousTake from "./components/AnonymousTake";
 import BlockReader from "./components/BlockReader";
 import FeedList from "./components/FeedList";
 import FoundationView from "./components/FoundationView";
@@ -62,10 +61,6 @@ interface SearchArgs {
   searchTerm: string;
 }
 
-interface AnonymousTakeArgs {
-  type: "anonymoustake";
-}
-
 declare global {
   interface Window {
     mytake?:
@@ -73,8 +68,7 @@ declare global {
       | ShowTakeArgs
       | FoundationArgs
       | NewTakeArgs
-      | SearchArgs
-      | AnonymousTakeArgs;
+      | SearchArgs;
   }
 }
 
@@ -129,9 +123,6 @@ if (app) {
         break;
       case "search":
         Root = <VideoResultsLoader searchTerm={window.mytake.searchTerm} />;
-        break;
-      case "anonymoustake":
-        Root = <AnonymousTake path={window.location.pathname} />;
         break;
       default:
         alertErr("index: unknown argument structure");

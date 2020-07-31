@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2017 MyTake.org, Inc.
+ * Copyright (C) 2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -19,25 +19,33 @@
  */
 package forms.api;
 
+import com.google.common.collect.ImmutableMap;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+
 /** Builds a single field for a form. */
 public class FormFieldBuilder extends RockerRaw {
-	private final FormMarkup owner;
+	private final FormMarkup<?> owner;
 	private final String field;
-	private final FormValidation<?> validation;
 
-	FormFieldBuilder(FormMarkup owner, String field, FormValidation<?> validation) {
+	FormFieldBuilder(FormMarkup<?> owner, String field) {
 		this.owner = owner;
 		this.field = field;
-		this.validation = validation;
 	}
 
 	public FormFieldBuilder errorSpan(String... attributes) {
-		String error = validation.errorForField(field);
+		String error = owner.validation().errors().get(field);
 		if (error != null) {
-			appendRaw("<span");
-			appendAttr(attributes);
+			appendRaw("<span ");
+			if (attributes.length == 0) {
+				appendRaw("class=\"error\"");
+			} else {
+				appendAttr(attributes);
+			}
 			appendRaw(">");
-			appendSafe(validation.errorForField(field));
+			appendSafe(owner.validation().errors().get(field));
 			appendRaw("</span>\n");
 		}
 		return this;
@@ -46,23 +54,102 @@ public class FormFieldBuilder extends RockerRaw {
 	public FormFieldBuilder label(String label, String... attributes) {
 		appendRaw("<label");
 		appendAttr("for", field);
-		appendAttr(attributes);
+		appendAttr(owner.labelPolicy, attributes);
 		appendRaw(">");
 		appendSafe(label);
 		appendRaw("</label>\n");
 		return this;
 	}
 
+	public static final String TEXTAREA = "textarea";
+
+	private static final int TEXTAREA_MIN_ROW = 3;
+	private static final int TEXTAREA_MIN_COL = 60;
+
+	private void appendTextAreaRowsCols(int rows, int cols) {
+		rows = Math.max(rows, TEXTAREA_MIN_ROW);
+		cols = Math.max(cols, TEXTAREA_MIN_COL);
+		appendAttr("rows", Integer.toString(rows), "cols", Integer.toString(cols));
+		appendRaw(">");
+	}
+
 	public FormFieldBuilder input(String type, String... attributes) {
 		owner.usedField(field);
-		appendRaw("<input");
-		appendAttr("name", field, "type", type);
-		appendAttr(attributes);
-		String value = validation.initialValues.get(field);
-		if (value != null) {
-			appendAttr("value", value);
+		String value = owner.validation().values().get(field);
+		if (type.equals(TEXTAREA)) {
+			appendRaw("<textarea");
+			appendAttr("name", field);
+			if (value != null) {
+				String lines[] = value.split("\\r?\\n");
+				int rows = lines.length;
+				int cols = Arrays.stream(lines)
+						.mapToInt(String::length)
+						.max().orElse(0);
+				appendTextAreaRowsCols(rows + 2, cols);
+				appendSafe(value);
+			} else {
+				appendTextAreaRowsCols(0, 0);
+			}
+			appendRaw("</textarea>\n");
+		} else {
+			appendRaw("<input");
+			appendAttr("name", field, "type", type);
+			appendAttr(owner.inputPolicy, attributes);
+			if (value != null) {
+				if (type.equals("checkbox")) {
+					if (value.equals("on")) {
+						appendAttr("checked", null);
+					}
+				} else {
+					appendAttr("value", value);
+				}
+			}
+			appendRaw(">");
 		}
+		return this;
+	}
+
+	private void appendAttr(ImmutableMap<String, String> policy, String[] attributes) {
+		List<String> policyOverloads = new ArrayList<>();
+		for (int i = 0; i < attributes.length / 2; ++i) {
+			String key = attributes[2 * i];
+			String value = attributes[2 * i + 1];
+			if (policy.containsKey(key)) {
+				policyOverloads.add(key);
+			}
+			appendAttr(key, value);
+		}
+		for (Map.Entry<String, String> entry : policy.entrySet()) {
+			if (!policyOverloads.contains(entry.getKey())) {
+				appendAttr(entry.getKey(), entry.getValue());
+			}
+		}
+	}
+
+	public FormFieldBuilder openSelect(String... attributes) {
+		owner.usedField(field);
+		appendRaw("<select");
+		appendAttr("name", field);
+		appendAttr(attributes);
 		appendRaw(">");
+		return this;
+	}
+
+	public FormFieldBuilder options(Map<String, String> valuesToContent, String... attributes) {
+		for (Map.Entry<String, String> item : valuesToContent.entrySet()) {
+			String value = item.getKey();
+			String content = item.getValue();
+			appendRaw("<option value=\"");
+			appendRaw(value);
+			appendRaw("\">");
+			appendRaw(content);
+			appendRaw("</option>");
+		}
+		return this;
+	}
+
+	public FormFieldBuilder closeSelect() {
+		appendRaw("</select>");
 		return this;
 	}
 

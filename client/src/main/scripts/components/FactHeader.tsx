@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2017-2018 MyTake.org, Inc.
+ * Copyright (C) 2017-2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -18,8 +18,6 @@
  * You can contact us at team@mytake.org
  */
 import * as React from "react";
-import DropDown from "./DropDown";
-import QuickShare from "./QuickShare";
 
 interface FactHeaderProps {
   heading: string;
@@ -51,13 +49,9 @@ class FactHeader extends React.Component<FactHeaderProps, FactHeaderState> {
 
 interface StickyFactHeaderProps {
   heading: string;
-  highlightedRange: [number, number];
-  factHash: string;
   onClearClick: () => void;
-  onSetClick: () => void;
   textIsHighlighted: boolean;
   isDocument: boolean;
-  viewRange: [number, number];
 }
 
 interface StickyFactHeaderState {
@@ -79,9 +73,6 @@ export class StickyFactHeader extends React.Component<
   }
   handleClearClick = () => {
     this.props.onClearClick();
-  };
-  handleSetClick = () => {
-    this.props.onSetClick();
   };
   handleResize = () => {
     this.calculateOffset();
@@ -139,21 +130,6 @@ export class StickyFactHeader extends React.Component<
                 : "Highlight captions to create a video clip"}
             </p>
           )}
-          {this.props.textIsHighlighted ? (
-            <DropDown
-              classModifier="docShare"
-              dropdownPosition="CUSTOM"
-              toggleText="Share"
-            >
-              <QuickShare
-                highlightedRange={this.props.highlightedRange}
-                isDocument={true}
-                onSendToTake={this.handleSetClick}
-                factHash={this.props.factHash}
-                viewRange={this.props.viewRange}
-              />
-            </DropDown>
-          ) : null}
         </div>
       </div>
     );
