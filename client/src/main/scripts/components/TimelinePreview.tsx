@@ -282,12 +282,8 @@ export default class TimelinePreview extends React.Component<
         <div className={"timeline__preview"}>
           <StickyFactHeader
             heading={this.props.factLink.fact.title}
-            highlightedRange={this.state.highlightedRange}
-            factHash={this.props.factLink.hash}
             onClearClick={this.handleClearClick}
-            onSetClick={this.handleSetClick}
             textIsHighlighted={this.state.textIsHighlighted}
-            viewRange={this.state.viewRange}
             isDocument={
               this.props.factLink.fact.kind === "document" ? true : false
             }

@@ -24,7 +24,6 @@ import {
   initialRangeSliders,
   unzoomedRangeSliders,
   zoomedRangeSliders,
-  videoFactLink,
 } from "../utils/testUtils";
 
 jest.mock("./ZoomViewer", () => ({
@@ -37,18 +36,12 @@ jest.mock("./TrackSlider", () => ({
   default: "TrackSlider",
 }));
 
-jest.mock("./QuickShare", () => ({
-  __esModule: true,
-  default: "QuickShare",
-}));
-
 const eventHandlers: ClipEditorEventHandlers = {
   onAfterRangeChange: jest.fn(),
   onClearPress: jest.fn(),
   onPlayPausePress: jest.fn(),
   onRangeChange: jest.fn(),
   onRestartPress: jest.fn(),
-  onSendToTake: jest.fn(),
   onSkipBackPress: jest.fn(),
   onSkipForwardPress: jest.fn(),
   onZoomToClipPress: jest.fn(),
@@ -66,7 +59,6 @@ test("Initial ClipEditor", () => {
         isZoomedToClip={false}
         rangeSliders={initialRangeSliders}
         stateAuthority={"SCROLL"}
-        videoIdHash={videoFactLink.hash}
       />
     )
     .toJSON();
@@ -85,7 +77,6 @@ test("ClipEditor with zoomed selection", () => {
         isZoomedToClip={true}
         rangeSliders={zoomedRangeSliders}
         stateAuthority={"SCROLL"}
-        videoIdHash={videoFactLink.hash}
       />
     )
     .toJSON();
@@ -104,7 +95,6 @@ test("ClipEditor with zoomed selection", () => {
         isZoomedToClip={false}
         rangeSliders={unzoomedRangeSliders}
         stateAuthority={"SCROLL"}
-        videoIdHash={videoFactLink.hash}
       />
     )
     .toJSON();
