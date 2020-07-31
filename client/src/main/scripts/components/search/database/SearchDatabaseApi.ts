@@ -26,20 +26,11 @@ import { FoundationDataBuilder } from "../../../utils/foundationData/FoundationD
 
 class SearchResult {
   constructor(
-    private _factTurns: VideoFactsToTurns[],
-    private _searchTerm: string
+    public factTurns: VideoFactsToTurns[],
+    public searchTerm: string
   ) {}
-
-  get factTurns() {
-    return this._factTurns;
-  }
-
-  get searchTerm() {
-    return this._searchTerm;
-  }
 }
 
-// What's the advantage of this class instead of having the `search` function call `searchImpl` directly?
 class SearchWithData {
   constructor(
     public searchTerm: string,
@@ -57,7 +48,7 @@ export async function search(searchTerm: string): Promise<SearchResult> {
     bodyJson
   );
 
-  const builder = new FoundationDataBuilder(); // This should probably live elsewhere
+  const builder = new FoundationDataBuilder();
   factResults.facts.forEach((fact) => builder.add(fact.hash));
   const foundationData = await builder.build();
   return searchImpl(
