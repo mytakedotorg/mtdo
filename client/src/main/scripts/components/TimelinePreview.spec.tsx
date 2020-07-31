@@ -70,7 +70,7 @@ describe("Foundation Document", () => {
     // Header button is sibling along with h2.document__heading
 
     // On initial render, there is 1 button
-    expect(wrapper.find(".document__header-actions").children().length).toBe(2);
+    expect(wrapper.find(".document__header-actions").children().length).toBe(1);
 
     // When the button, "Clear Selection" is clicked, it is hidden and a paragraph is shown instead
     wrapper.find(".document__header-actions").childAt(0).simulate("click");
@@ -78,7 +78,7 @@ describe("Foundation Document", () => {
 
     // When some more text is highlighted, the "Clear Selection" button is shown again
     wrapper.setState({ textIsHighlighted: true });
-    expect(wrapper.find(".document__header-actions").children().length).toBe(2);
+    expect(wrapper.find(".document__header-actions").children().length).toBe(1);
   });
 
   test("Set text click works for initial highlight", () => {

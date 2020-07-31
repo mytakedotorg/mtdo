@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2017-2018 MyTake.org, Inc.
+ * Copyright (C) 2017-2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -29,8 +29,6 @@ public class Routes {
 	public static final String API_FOLLOW_TELL = "/api/followTell";
 	public static final String API_IMAGES = "/api/images";
 	public static final String API_SEARCH = "/api/search";
-	public static final String API_SHARE = "/api/share";
-	public static final String API_SHARE_VIEW = "/api/share-view";
 
 	public static final String MODS = "/mods";
 	public static final String MODS_DRAFTS = "/mods/drafts/";
