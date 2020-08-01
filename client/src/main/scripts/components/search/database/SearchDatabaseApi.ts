@@ -20,7 +20,6 @@
 import { Foundation } from "../../../java2ts/Foundation";
 import { Routes } from "../../../java2ts/Routes";
 import { Search } from "../../../java2ts/Search";
-import { postRequestReturningPromise } from "../../../utils/databaseAPI";
 import { FoundationData } from "../../../utils/foundationData/FoundationData";
 import { FoundationDataBuilder } from "../../../utils/foundationData/FoundationDataBuilder";
 
@@ -33,26 +32,19 @@ export class SearchResult {
 
 class SearchWithData {
   constructor(
-    public searchTerm: string,
+    public searchQuery: string,
     public videoResults: Search.VideoResult[],
     public foundationData: FoundationData
   ) {}
 }
 
-export async function search(searchTerm: string): Promise<SearchResult> {
-  const bodyJson: Search.Request = {
-    q: searchTerm,
-  };
-  const factResults: Search.FactResultList = await postRequestReturningPromise(
-    Routes.API_SEARCH,
-    bodyJson
-  );
-
+export async function search(searchQuery: string): Promise<SearchResult> {
+  const factResults: Search.FactResultList = await searchRequest(searchQuery);
   const builder = new FoundationDataBuilder();
   factResults.facts.forEach((fact) => builder.add(fact.hash));
   const foundationData = await builder.build();
   return searchImpl(
-    new SearchWithData(searchTerm, factResults.facts, foundationData)
+    new SearchWithData(searchQuery, factResults.facts, foundationData)
   );
 }
 
@@ -75,7 +67,7 @@ function searchImpl(searchWithData: SearchWithData): SearchResult {
     return hashesToTurns;
   };
 
-  const { foundationData, searchTerm, videoResults } = searchWithData;
+  const { foundationData, searchQuery, videoResults } = searchWithData;
   const hashesToTurns = createHashesToTurns(videoResults);
   const videoFactsToTurns: VideoFactsToTurns[] = [];
   for (const [hash, turns] of hashesToTurns) {
@@ -91,8 +83,36 @@ function searchImpl(searchWithData: SearchWithData): SearchResult {
     const b = bFactTurns.videoFact.fact.primaryDate;
     return a == b ? 0 : +(a > b) || -1;
   });
-  return new SearchResult(videoFactsToTurns, searchTerm);
+  return new SearchResult(videoFactsToTurns, searchQuery);
 }
+
+const searchRequest = (searchQuery: string) => {
+  const bodyJson: Search.Request = {
+    q: searchQuery,
+  };
+  const headers = new Headers();
+  headers.append("Accept", "application/json");
+  headers.append("Content-Type", "application/json");
+
+  const request: RequestInit = {
+    method: "POST",
+    credentials: "include",
+    headers: headers,
+    body: JSON.stringify(bodyJson),
+  };
+  return fetch(Routes.API_SEARCH, request).then((response) => {
+    const contentType = response.headers.get("content-type");
+    if (
+      contentType &&
+      contentType.indexOf("application/json") >= 0 &&
+      response.ok
+    ) {
+      return response.json();
+    } else {
+      throw `Unexpected response from ${Routes.API_SEARCH}.`;
+    }
+  });
+};
 
 export type HashesToTurns = Map<string, number[]>;
 

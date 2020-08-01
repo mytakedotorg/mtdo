@@ -17,13 +17,14 @@
  *
  * You can contact us at team@mytake.org
  */
-import * as React from "react";
+import React, { useState, useEffect } from "react";
 import { FoundationNode } from "../common/CaptionNodes";
 import { alertErr } from "../utils/functions";
-import { isVideo, isDocument, fetchFact } from "../utils/databaseAPI";
 import TimelinePreview, { Ranges, SetFactHandlers } from "./TimelinePreview";
 import TimelinePreviewLoadingView from "./TimelinePreviewLoadingView";
 import { Foundation } from "../java2ts/Foundation";
+import { isVideo, isDocument } from "../utils/foundationData/FoundationData";
+import { FoundationDataBuilder } from "../utils/foundationData/FoundationDataBuilder";
 
 export interface TimelinePreviewContainerProps {
   factLink: Foundation.FactLink;
@@ -38,103 +39,64 @@ export interface TimelinePreviewContainerState {
   nodes?: FoundationNode[];
 }
 
-export default class TimelinePreviewContainer extends React.Component<
-  TimelinePreviewContainerProps,
-  TimelinePreviewContainerState
-> {
-  constructor(props: TimelinePreviewContainerProps) {
-    super(props);
-
-    this.state = {
-      loading: true,
-    };
-  }
-  getFact = (factHash: string) => {
-    fetchFact(
-      factHash,
-      (
-        error: string | Error | null,
-        factContent:
-          | Foundation.DocumentFactContent
-          | Foundation.VideoFactContent
-      ) => {
-        if (error) {
-          if (typeof error != "string") {
-            alertErr("TimelinePreviewContainer: " + error.message);
-          } else {
-            alertErr("TimelinePreviewContainer: " + error);
-          }
-          throw error;
-        } else {
-          let nodes: FoundationNode[] = [];
-
-          if (isDocument(factContent)) {
-            for (let documentComponent of factContent.components) {
-              nodes.push({
-                component: documentComponent.component,
-                innerHTML: [documentComponent.innerHTML],
-                offset: documentComponent.offset,
-              });
-            }
-
-            this.setState({
-              loading: false,
-              nodes: nodes,
-            });
-          } else if (isVideo(factContent)) {
-            this.setState({
-              loading: false,
-              videoFact: factContent,
-            });
-          } else {
-            alertErr("TimelinePreviewContainer: Unknown kind of Fact");
-            throw "Unknown kind of Fact";
-          }
-        }
-      }
-    );
-  };
-  componentDidMount() {
-    this.getFact(this.props.factLink.hash);
-  }
-  componentWillReceiveProps(nextProps: TimelinePreviewContainerProps) {
-    if (this.props.factLink.hash !== nextProps.factLink.hash) {
-      this.setState({
-        loading: true,
-      });
-      this.getFact(nextProps.factLink.hash);
-    }
-  }
-  render() {
-    return (
-      <TimelinePreviewContainerBranch
-        containerProps={this.props}
-        containerState={this.state}
-      />
-    );
-  }
-}
-
-interface TimelinePreviewContainerBranchProps {
-  containerProps: TimelinePreviewContainerProps;
-  containerState: TimelinePreviewContainerState;
-}
-
-export const TimelinePreviewContainerBranch: React.StatelessComponent<TimelinePreviewContainerBranchProps> = (
+const TimelinePreviewContainer: React.FC<TimelinePreviewContainerProps> = (
   props
 ) => {
-  if (props.containerState.loading) {
-    return <TimelinePreviewLoadingView />;
-  } else {
-    return (
-      <TimelinePreview
-        factLink={props.containerProps.factLink}
-        videoFact={props.containerState.videoFact}
-        nodes={props.containerState.nodes}
-        setFactHandlers={props.containerProps.setFactHandlers}
-        ranges={props.containerProps.ranges}
-        offset={props.containerProps.offset}
-      />
-    );
-  }
+  const [state, setState] = useState<TimelinePreviewContainerState>({
+    loading: true,
+  });
+
+  useEffect(() => {
+    const getFact = async (factHash: string) => {
+      const builder = new FoundationDataBuilder();
+      builder.add(factHash);
+      const foundationData = await builder.build();
+      const factContent = foundationData.getFactContent(factHash);
+
+      let nodes: FoundationNode[] = [];
+      if (isDocument(factContent)) {
+        for (let documentComponent of factContent.components) {
+          nodes.push({
+            component: documentComponent.component,
+            innerHTML: [documentComponent.innerHTML],
+            offset: documentComponent.offset,
+          });
+        }
+        setState({
+          loading: false,
+          nodes: nodes,
+        });
+      } else if (isVideo(factContent)) {
+        setState({
+          loading: false,
+          videoFact: factContent,
+        });
+      } else {
+        alertErr("TimelinePreviewContainer: Unknown kind of Fact");
+        throw "Unknown kind of Fact";
+      }
+    };
+
+    setState((prevState) => ({
+      ...prevState,
+      loading: true,
+    }));
+
+    getFact(props.factLink.hash);
+  }, [props.factLink.hash]);
+
+  return state.loading ? (
+    <TimelinePreviewLoadingView />
+  ) : (
+    <TimelinePreview
+      factLink={props.factLink}
+      videoFact={state.videoFact}
+      nodes={state.nodes}
+      setFactHandlers={props.setFactHandlers}
+      ranges={props.ranges}
+      offset={props.offset}
+    />
+  );
 };
+
+export default TimelinePreviewContainer;

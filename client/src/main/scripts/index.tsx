@@ -122,7 +122,7 @@ if (app) {
         );
         break;
       case "search":
-        Root = <VideoResultsLoader searchTerm={window.mytake.searchTerm} />;
+        Root = <VideoResultsLoader searchQuery={window.mytake.searchTerm} />;
         break;
       default:
         alertErr("index: unknown argument structure");

@@ -17,24 +17,60 @@
  *
  * You can contact us at team@mytake.org
  */
-import {
-  fetchFactReturningPromise,
-  FactHashMap,
-} from "../../utils/databaseAPI";
-import { FoundationData } from "./FoundationData";
+import { isVideo, FoundationData } from "./FoundationData";
+import { Foundation } from "../../java2ts/Foundation";
+import { Routes } from "../../java2ts/Routes";
+import { decodeVideoFact } from "../../common/DecodeVideoFact";
+
+type FactHashMap = [
+  string,
+  Foundation.VideoFactContent | Foundation.DocumentFactContent
+];
 
 export class FoundationDataBuilder {
   requestedFacts: Set<string> = new Set();
 
-  add = (hash: string) => {
+  add(hash: string): void {
     this.requestedFacts.add(hash);
-  };
+  }
 
-  build = async (): Promise<FoundationData> => {
+  async build(): Promise<FoundationData> {
     const promises: Promise<FactHashMap>[] = [];
     for (const hash of this.requestedFacts) {
-      promises.push(fetchFactReturningPromise(hash));
+      promises.push(this.getFact(hash));
     }
     return new FoundationData(new Map(await Promise.all(promises)));
-  };
+  }
+
+  private getFact(factHash: string): Promise<FactHashMap> {
+    const headers = new Headers();
+
+    headers.append("Accept", "application/json");
+
+    const request: RequestInit = {
+      method: "GET",
+      headers: headers,
+      cache: "default",
+    };
+
+    return fetch(Routes.FOUNDATION_DATA + "/" + factHash + ".json", request)
+      .then(function (response: Response) {
+        const contentType = response.headers.get("content-type");
+        if (
+          contentType &&
+          contentType.indexOf("application/json") >= 0 &&
+          response.ok
+        ) {
+          return response.json();
+        }
+        throw "Expected an OK JSON response";
+      })
+      .then(function (
+        json:
+          | Foundation.VideoFactContentEncoded
+          | Foundation.DocumentFactContent
+      ) {
+        return [factHash, isVideo(json) ? decodeVideoFact(json) : json];
+      });
+  }
 }

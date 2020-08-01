@@ -18,7 +18,6 @@
  * You can contact us at team@mytake.org
  */
 import { Foundation } from "../../java2ts/Foundation";
-import { isDocument, isVideo } from "../../utils/databaseAPI";
 
 export class FoundationData {
   constructor(
@@ -28,19 +27,52 @@ export class FoundationData {
     >
   ) {}
 
-  getDocument = (hash: string): Foundation.DocumentFactContent => {
+  getDocument(hash: string): Foundation.DocumentFactContent {
     const content = this.hashToContent.get(hash);
     if (isDocument(content)) {
       return content;
     }
-    throw `Content of hash ${hash} is not a document.`;
-  };
+    throw `Content of hash ${hash} is not a document or is not loaded.`;
+  }
 
-  getVideo = (hash: string): Foundation.VideoFactContent => {
+  getVideo(hash: string): Foundation.VideoFactContent {
     const content = this.hashToContent.get(hash);
     if (isVideo(content)) {
       return content;
     }
-    throw `Content of hash ${hash} is not a video.`;
-  };
+    throw `Content of hash ${hash} is not a video or is not loaded.`;
+  }
+
+  getFactContent(
+    hash: string
+  ): Foundation.VideoFactContent | Foundation.DocumentFactContent {
+    const content = this.hashToContent.get(hash);
+    if (content) {
+      return content;
+    }
+    throw `Content of hash ${hash} is not loaded.`;
+  }
+}
+
+type VideoContent =
+  | Foundation.VideoFactContent
+  | Foundation.VideoFactContentEncoded;
+export function isVideo(
+  fact?: Foundation.FactContent | null
+): fact is VideoContent {
+  if (fact) {
+    return (fact as VideoContent).fact.kind === "video";
+  } else {
+    return false;
+  }
+}
+
+export function isDocument(
+  fact?: Foundation.DocumentFactContent | Foundation.VideoFactContent | null
+): fact is Foundation.DocumentFactContent {
+  if (fact) {
+    return (fact as Foundation.DocumentFactContent).fact.kind === "document";
+  } else {
+    return false;
+  }
 }

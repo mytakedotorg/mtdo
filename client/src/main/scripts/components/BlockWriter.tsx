@@ -717,7 +717,7 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
             Add Facts to your Take from the timeline below.
           </p>
         </div>
-        <TimelineView
+        <TimelineLoader
           path={window.location.pathname}
           setFactHandlers={setFactHandlers}
         />
