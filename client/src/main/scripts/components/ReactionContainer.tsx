@@ -21,11 +21,11 @@ import * as React from "react";
 import { Routes } from "../java2ts/Routes";
 import { TakeReactionJson } from "../java2ts/TakeReactionJson";
 import { FollowJson } from "../java2ts/FollowJson";
-import { postRequest } from "../utils/databaseAPI";
 import { alertErr, getUsernameFromURL, isLoggedIn } from "../utils/functions";
 import { TakeDocument } from "./BlockEditor";
 import DropDown from "./DropDown";
 import EmailTake from "./EmailTake";
+import { validateResponse } from "../utils/foundationData/FoundationDataBuilder";
 
 interface ReactionContainerProps {
   takeId: number;
@@ -50,59 +50,74 @@ class ReactionContainer extends React.Component<
 
     this.state = {};
   }
-  fetchReactions = () => {
-    setTimeout(() => {
-      const takeViewBodyJson: TakeReactionJson.ViewReq = {
-        take_id: this.props.takeId,
+  fetchReactions = async () => {
+    await wait(2000);
+    const headers = new Headers();
+    headers.append("Accept", "application/json");
+    headers.append("Content-Type", "application/json");
+    const takeViewBody: TakeReactionJson.ViewReq = {
+      take_id: this.props.takeId,
+    };
+    const takeViewReq: RequestInit = {
+      method: "POST",
+      credentials: "include",
+      headers: headers,
+      body: JSON.stringify(takeViewBody),
+    };
+    const takeViewRes = await fetch(Routes.API_TAKE_VIEW, takeViewReq);
+    validateResponse(takeViewRes, Routes.API_TAKE_VIEW);
+    const takeReaction: TakeReactionJson.ViewRes = await takeViewRes.json();
+    this.setState({
+      takeState: takeReaction.takeState,
+      userState: takeReaction.userState,
+    });
+
+    if (isLoggedIn()) {
+      this.username = getUsernameFromURL();
+      const followAskBody: FollowJson.FollowAskReq = {
+        username: this.username,
       };
-      postRequest(
-        Routes.API_TAKE_VIEW,
-        takeViewBodyJson,
-        (json: TakeReactionJson.ViewRes) => {
-          this.setState({
-            takeState: json.takeState,
-            userState: json.userState,
-          });
-        }
-      );
-      if (isLoggedIn()) {
-        this.username = getUsernameFromURL();
-        const followAskBodyJson: FollowJson.FollowAskReq = {
-          username: this.username,
-        };
-        postRequest(
-          Routes.API_FOLLOW_ASK,
-          followAskBodyJson,
-          (json: FollowJson.FollowRes) => {
-            this.setState({
-              isFollowing: json.isFollowing,
-            });
-          }
-        );
-      }
-    }, 2000);
+      const followAskReq: RequestInit = {
+        method: "POST",
+        credentials: "include",
+        headers: headers,
+        body: JSON.stringify(followAskBody),
+      };
+      const followAskRes = await fetch(Routes.API_FOLLOW_ASK, followAskReq);
+      validateResponse(followAskRes, Routes.API_FOLLOW_ASK);
+      const followRes: FollowJson.FollowRes = await followAskRes.json();
+      this.setState({
+        isFollowing: followRes.isFollowing,
+      });
+    }
   };
-  followButtonPress = () => {
+  followButtonPress = async () => {
     if (isLoggedIn()) {
       if (!this.username) {
         this.username = getUsernameFromURL();
       }
-      const followTellBodyJson: FollowJson.FollowTellReq = {
+      const headers = new Headers();
+      headers.append("Accept", "application/json");
+      headers.append("Content-Type", "application/json");
+      const followTellBody: FollowJson.FollowTellReq = {
         isFollowing:
           typeof this.state.isFollowing == "boolean"
             ? !this.state.isFollowing
             : true,
         username: this.username,
       };
-      postRequest(
-        Routes.API_FOLLOW_TELL,
-        followTellBodyJson,
-        (json: FollowJson.FollowRes) => {
-          this.setState({
-            isFollowing: json.isFollowing,
-          });
-        }
-      );
+      const followTellReq: RequestInit = {
+        method: "POST",
+        credentials: "include",
+        headers: headers,
+        body: JSON.stringify(followTellBody),
+      };
+      const followTellRes = await fetch(Routes.API_FOLLOW_TELL, followTellReq);
+      validateResponse(followTellRes, Routes.API_FOLLOW_TELL);
+      const followRes: FollowJson.FollowRes = await followTellRes.json();
+      this.setState({
+        isFollowing: followRes.isFollowing,
+      });
     } else {
       //User not logged in, redirect to /login
       window.location.href =
@@ -112,28 +127,14 @@ class ReactionContainer extends React.Component<
         "&loginreason=Login+or+create+an+account+to+follow+another+user.";
     }
   };
-  starButtonPress = () => {
+  starButtonPress = async () => {
     if (this.state.userState) {
       const userState = {
         ...this.state.userState,
         like: !this.state.userState.like,
       };
 
-      const bodyJson: TakeReactionJson.ReactReq = {
-        take_id: this.props.takeId,
-        userState: userState,
-      };
-
-      postRequest(
-        Routes.API_TAKE_REACT,
-        bodyJson,
-        (json: TakeReactionJson.ReactRes) => {
-          this.setState({
-            takeState: json.takeState,
-            userState: json.userState,
-          });
-        }
-      );
+      this.postReact(userState);
     } else {
       window.location.href =
         Routes.LOGIN +
@@ -169,21 +170,7 @@ class ReactionContainer extends React.Component<
           throw "Unknown report button type";
       }
 
-      const bodyJson: TakeReactionJson.ReactReq = {
-        take_id: this.props.takeId,
-        userState: userState,
-      };
-
-      postRequest(
-        Routes.API_TAKE_REACT,
-        bodyJson,
-        (json: TakeReactionJson.ReactRes) => {
-          this.setState({
-            takeState: json.takeState,
-            userState: json.userState,
-          });
-        }
-      );
+      this.postReact(userState);
     } else {
       window.location.href =
         Routes.LOGIN +
@@ -191,6 +178,30 @@ class ReactionContainer extends React.Component<
         window.location.pathname +
         "&loginreason=You+must+have+an+account+to+report+a+Take.";
     }
+  };
+  postReact = async (userState: TakeReactionJson.UserState) => {
+    const headers = new Headers();
+    headers.append("Accept", "application/json");
+    headers.append("Content-Type", "application/json");
+
+    const takeReactBody: TakeReactionJson.ReactReq = {
+      take_id: this.props.takeId,
+      userState: userState,
+    };
+
+    const takeReactReq: RequestInit = {
+      method: "POST",
+      credentials: "include",
+      headers: headers,
+      body: JSON.stringify(takeReactBody),
+    };
+    const takeReactRes = await fetch(Routes.API_TAKE_REACT, takeReactReq);
+    validateResponse(takeReactRes, Routes.API_TAKE_REACT);
+    const reactRes: TakeReactionJson.ReactRes = await takeReactRes.json();
+    this.setState({
+      takeState: reactRes.takeState,
+      userState: reactRes.userState,
+    });
   };
   componentDidMount() {
     this.fetchReactions();
@@ -389,5 +400,11 @@ export class Reaction extends React.Component<ReactionProps, ReactionState> {
     );
   }
 }
+
+const wait = (ms: number): Promise<void> => {
+  return new Promise((res) => {
+    setTimeout(res, ms);
+  });
+};
 
 export default ReactionContainer;

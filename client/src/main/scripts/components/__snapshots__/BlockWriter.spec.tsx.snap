@@ -109,17 +109,19 @@ exports[`Bigger block writer model 1`] = `
       Add Facts to your Take from the timeline below.
     </p>
   </div>
-  <TimelineView
-    path="/"
-    setFactHandlers={
-      Object {
-        "handleDocumentSetClick": [Function],
-        "handleRangeCleared": [Function],
-        "handleRangeSet": [Function],
-        "handleVideoSetClick": [Function],
-      }
-    }
-  />
+  <div
+    className="timeline__preview"
+  >
+    <div
+      className="document document--static"
+    >
+      <p
+        className="document__text"
+      >
+        Loading Timeline
+      </p>
+    </div>
+  </div>
 </div>
 `;
 
@@ -200,16 +202,18 @@ exports[`Simple block writer model 1`] = `
       Add Facts to your Take from the timeline below.
     </p>
   </div>
-  <TimelineView
-    path="/"
-    setFactHandlers={
-      Object {
-        "handleDocumentSetClick": [Function],
-        "handleRangeCleared": [Function],
-        "handleRangeSet": [Function],
-        "handleVideoSetClick": [Function],
-      }
-    }
-  />
+  <div
+    className="timeline__preview"
+  >
+    <div
+      className="document document--static"
+    >
+      <p
+        className="document__text"
+      >
+        Loading Timeline
+      </p>
+    </div>
+  </div>
 </div>
 `;

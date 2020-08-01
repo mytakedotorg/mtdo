@@ -21,9 +21,9 @@ import React, { useState, useEffect } from "react";
 import TimelineView from "./TimelineView";
 import { SetFactHandlers } from "./TimelinePreview";
 import TimelineLoadingView from "./TimelineLoadingView";
-import { Foundation } from "..//java2ts/Foundation";
+import { Foundation } from "../java2ts/Foundation";
 import { Routes } from "../java2ts/Routes";
-import { alertErr } from "../utils/functions";
+import { validateResponse } from "../utils/foundationData/FoundationDataBuilder";
 
 interface TimelineLoaderProps {
   path: string;
@@ -92,19 +92,6 @@ const TimelineLoader: React.FC<TimelineLoaderProps> = (props) => {
   ) : (
     <TimelineLoadingView />
   );
-};
-
-const validateResponse = (response: Response, route: string) => {
-  const contentType = response.headers.get("content-type");
-  if (
-    !contentType ||
-    contentType.indexOf("application/json") === -1 ||
-    !response.ok
-  ) {
-    const msg = `Unexpected response from ${route}.`;
-    alertErr(msg);
-    throw msg;
-  }
 };
 
 export default TimelineLoader;

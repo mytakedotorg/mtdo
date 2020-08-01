@@ -21,6 +21,7 @@ import { isVideo, FoundationData } from "./FoundationData";
 import { Foundation } from "../../java2ts/Foundation";
 import { Routes } from "../../java2ts/Routes";
 import { decodeVideoFact } from "../../common/DecodeVideoFact";
+import { alertErr } from "../functions";
 
 type FactHashMap = [
   string,
@@ -55,15 +56,8 @@ export class FoundationDataBuilder {
 
     return fetch(Routes.FOUNDATION_DATA + "/" + factHash + ".json", request)
       .then(function (response: Response) {
-        const contentType = response.headers.get("content-type");
-        if (
-          contentType &&
-          contentType.indexOf("application/json") >= 0 &&
-          response.ok
-        ) {
-          return response.json();
-        }
-        throw "Expected an OK JSON response";
+        validateResponse(response, Routes.FOUNDATION_DATA);
+        return response.json();
       })
       .then(function (
         json:
@@ -74,3 +68,16 @@ export class FoundationDataBuilder {
       });
   }
 }
+
+export const validateResponse = (response: Response, route: string) => {
+  const contentType = response.headers.get("content-type");
+  if (
+    !contentType ||
+    contentType.indexOf("application/json") === -1 ||
+    !response.ok
+  ) {
+    const msg = `Unexpected response from ${route}.`;
+    alertErr(msg);
+    throw msg;
+  }
+};

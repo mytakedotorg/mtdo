@@ -25,7 +25,7 @@ import BlockEditor, {
   TakeDocument,
   VideoBlock,
 } from "./BlockEditor";
-import TimelineView from "./TimelineView";
+import TimelineLoader from "./TimelineLoader";
 import EditorButtons from "./EditorButtons";
 import DropDown from "./DropDown";
 import EmailTake from "./EmailTake";

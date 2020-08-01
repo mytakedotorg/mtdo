@@ -32,7 +32,7 @@ test("VideoResultPreview containing", () => {
     .create(
       <VideoResultPreview
         eventHandlers={{ onPlayClick: jest.fn() }}
-        searchTerm="richard"
+        searchQuery="richard"
         sortBy="Containing"
         turns={[2, 0]}
         videoFact={kennedyNixon}

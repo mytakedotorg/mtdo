@@ -17,10 +17,10 @@
  *
  * You can contact us at team@mytake.org
  */
-import * as React from "react";
+import React, { useState, useEffect } from "react";
 import DocumentTextNodeList from "./DocumentTextNodeList";
-import { fetchFact } from "../utils/databaseAPI";
 import { Foundation } from "../java2ts/Foundation";
+import { FoundationDataBuilder } from "../utils/foundationData/FoundationDataBuilder";
 import { FoundationNode } from "../common/CaptionNodes";
 import { alertErr, getHighlightedNodes } from "../utils/functions";
 import { TakeBlock } from "./BlockEditor";
@@ -41,37 +41,27 @@ export interface FeedCardContainerState {
   videoFact?: Foundation.VideoFactContent;
 }
 
-class FeedCardContainer extends React.Component<
-  FeedCardContainerProps,
-  FeedCardContainerState
-> {
-  constructor(props: FeedCardContainerProps) {
-    super(props);
+const FeedCardLoader: React.FC<FeedCardContainerProps> = (props) => {
+  const [state, setState] = useState<FeedCardContainerState>({
+    loading: true,
+  });
 
-    this.state = {
-      loading: true,
-    };
-  }
-  getDocumentFact = (factHash: string) => {
-    fetchFact(
-      factHash,
-      (
-        error: string | Error | null,
-        factContent: Foundation.DocumentFactContent
-      ) => {
-        if (error) {
-          if (typeof error != "string") {
-            alertErr("FeedCardContainer: " + error.message);
-          } else {
-            alertErr("FeedCardContainer: " + error);
-          }
-          throw error;
-        } else if (!factContent) {
-          alertErr("FeedCardContainer: factContent missing from JSON");
-          throw "FeedCardContainer: factContent missing from JSON";
-        } else {
+  useEffect(() => {
+    const getFacts = async () => {
+      const builder = new FoundationDataBuilder();
+      props.blocks.forEach((b) => {
+        if (b.kind === "document") {
+          builder.add(b.excerptId);
+        } else if (b.kind === "video") {
+          builder.add(b.videoId);
+        }
+      });
+      const foundationData = await builder.build();
+      props.blocks.forEach((b) => {
+        if (b.kind === "document") {
+          const documentContent = foundationData.getDocument(b.excerptId);
           let nodes: FoundationNode[] = [];
-          for (let documentComponent of factContent.components) {
+          for (let documentComponent of documentContent.components) {
             nodes.push({
               component: documentComponent.component,
               innerHTML: [documentComponent.innerHTML],
@@ -79,75 +69,33 @@ class FeedCardContainer extends React.Component<
             });
           }
 
-          this.setState({
+          setState({
             loading: false,
             document: {
-              fact: factContent.fact,
+              fact: documentContent.fact,
               nodes: nodes,
             },
           });
-        }
-      }
-    );
-  };
-  getVideoFact = (factHash: string) => {
-    fetchFact(
-      factHash,
-      (
-        error: string | Error | null,
-        factContent: Foundation.VideoFactContent
-      ) => {
-        if (error) {
-          if (typeof error != "string") {
-            alertErr("FeedCardContainer: " + error.message);
-          } else {
-            alertErr("FeedCardContainer: " + error);
-          }
-          throw error;
-        } else if (!factContent) {
-          alertErr("FeedCardContainer: factContent missing from JSON");
-          throw "FeedCardContainer: factContent missing from JSON";
-        } else {
-          this.setState({
+        } else if (b.kind === "video") {
+          const videoContent = foundationData.getVideo(b.videoId);
+          setState({
             loading: false,
-            videoFact: factContent,
+            videoFact: videoContent,
           });
         }
-      }
-    );
-  };
-  componentDidMount() {
-    for (let block of this.props.blocks) {
-      if (block.kind === "document") {
-        this.getDocumentFact(block.excerptId);
-      } else if (block.kind === "video") {
-        this.getVideoFact(block.videoId);
-      }
-    }
-  }
-  render() {
-    return (
-      <FeedCardBranch containerProps={this.props} containerState={this.state} />
-    );
-  }
-}
+      });
+    };
 
-interface FeedCardBranchProps {
-  containerProps: FeedCardContainerProps;
-  containerState: FeedCardContainerState;
-}
-
-export const FeedCardBranch: React.StatelessComponent<FeedCardBranchProps> = (
-  props
-) => {
-  if (props.containerState.loading) {
+    getFacts();
+  }, []);
+  if (state.loading) {
     return <FeedCardLoadingView />;
   } else {
     return (
       <FeedCard
-        {...props.containerProps}
-        document={props.containerState.document}
-        videoFact={props.containerState.videoFact}
+        {...props}
+        document={state.document}
+        videoFact={state.videoFact}
       />
     );
   }
@@ -256,4 +204,4 @@ class FeedCard extends React.Component<FeedCardProps, {}> {
   }
 }
 
-export default FeedCardContainer;
+export default FeedCardLoader;

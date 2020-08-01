@@ -359,11 +359,13 @@ export default class TimelineView extends React.Component<
           selectedOption={this.state.selectedOption}
           onChange={this.handleChange}
         />
-        <Timeline
-          onItemClick={this.handleClick}
-          selectedOption={this.state.selectedOption}
-          timelineItems={this.state.timelineItems}
-        />
+        {this.state.timelineItems.length > 0 && (
+          <Timeline
+            onItemClick={this.handleClick}
+            selectedOption={this.state.selectedOption}
+            timelineItems={this.state.timelineItems}
+          />
+        )}
         {this.state.factLink ? (
           <TimelinePreviewContainer
             factLink={this.state.factLink}
