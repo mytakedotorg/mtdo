@@ -30,18 +30,22 @@ export interface VideoResultPreviewEventHandlers {
 
 interface VideoResultPreviewProps {
   eventHandlers: VideoResultPreviewEventHandlers;
-  searchTerm: string;
+  searchQuery: string;
   sortBy: SelectionOptions;
   turns: number[];
   videoFact: Foundation.VideoFactContent;
 }
 
 const VideoResultPreview: React.FC<VideoResultPreviewProps> = (props) => {
-  const { searchTerm, sortBy, turns, videoFact } = props;
+  const { searchQuery, sortBy, turns, videoFact } = props;
   let allVideoResults: JSX.Element[] = [];
   turns.forEach((turn) => {
     const turnContent = getTurnContent(turn, videoFact);
-    const multiHighlights = getMultiHighlights(searchTerm, sortBy, turnContent);
+    const multiHighlights = getMultiHighlights(
+      searchQuery,
+      sortBy,
+      turnContent
+    );
     const videoResults = multiHighlights.map((multiHighlight) => {
       return (
         <VideoResult

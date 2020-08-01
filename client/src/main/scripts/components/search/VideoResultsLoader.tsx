@@ -19,43 +19,34 @@
  */
 import React, { useState, useEffect } from "react";
 import VideoResultsList from "./VideoResultsList";
-import { search, VideoFactsToTurns } from "./database/SearchDatabaseApi";
+import { search, SearchResult } from "./database/SearchDatabaseApi";
 
 interface VideoResultsLoaderProps {
-  searchTerm: string;
+  searchQuery: string;
 }
 
 interface VideoResultsLoaderState {
-  isLoading: boolean;
-  videoFactsToTurns: VideoFactsToTurns[];
+  searchResult?: SearchResult;
 }
 
 const VideoResultsLoader: React.FC<VideoResultsLoaderProps> = (props) => {
-  const [state, setState] = useState<VideoResultsLoaderState>({
-    isLoading: true,
-    videoFactsToTurns: [],
-  });
+  const [state, setState] = useState<VideoResultsLoaderState>({});
 
   useEffect(() => {
     async function connectSearchDatabase() {
-      const result = await search(props.searchTerm);
-      console.log(result.factTurns);
+      const searchResult = await search(props.searchQuery);
       setState({
-        isLoading: false,
-        videoFactsToTurns: result.factTurns,
+        searchResult,
       });
     }
 
     connectSearchDatabase();
   }, []);
 
-  return state.isLoading ? (
-    <VideoResultLoadingView />
+  return state.searchResult ? (
+    <VideoResultsList searchResult={state.searchResult} />
   ) : (
-    <VideoResultsList
-      searchTerm={props.searchTerm}
-      videoFactsToTurns={state.videoFactsToTurns}
-    />
+    <VideoResultLoadingView />
   );
 };
 

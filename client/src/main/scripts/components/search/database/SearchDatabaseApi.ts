@@ -24,10 +24,10 @@ import { postRequestReturningPromise } from "../../../utils/databaseAPI";
 import { FoundationData } from "../../../utils/foundationData/FoundationData";
 import { FoundationDataBuilder } from "../../../utils/foundationData/FoundationDataBuilder";
 
-class SearchResult {
+export class SearchResult {
   constructor(
     public factTurns: VideoFactsToTurns[],
-    public searchTerm: string
+    public searchQuery: string
   ) {}
 }
 
@@ -57,6 +57,24 @@ export async function search(searchTerm: string): Promise<SearchResult> {
 }
 
 function searchImpl(searchWithData: SearchWithData): SearchResult {
+  const createHashesToTurns = (facts: Search.VideoResult[]): HashesToTurns => {
+    const hashesToTurns: HashesToTurns = new Map();
+
+    facts.forEach((f) => {
+      const existingTurns = hashesToTurns.get(f.hash);
+      if (!existingTurns) {
+        hashesToTurns.set(f.hash, [f.turn]);
+      } else {
+        existingTurns.push(f.turn);
+      }
+    });
+
+    for (const turnList of hashesToTurns.values()) {
+      turnList.sort((a, b) => a - b);
+    }
+    return hashesToTurns;
+  };
+
   const { foundationData, searchTerm, videoResults } = searchWithData;
   const hashesToTurns = createHashesToTurns(videoResults);
   const videoFactsToTurns: VideoFactsToTurns[] = [];
@@ -82,23 +100,3 @@ export interface VideoFactsToTurns {
   videoFact: Foundation.VideoFactContent;
   turns: number[];
 }
-
-export const createHashesToTurns = (
-  facts: Search.VideoResult[]
-): HashesToTurns => {
-  const hashesToTurns: HashesToTurns = new Map();
-
-  facts.forEach((f) => {
-    const existingTurns = hashesToTurns.get(f.hash);
-    if (!existingTurns) {
-      hashesToTurns.set(f.hash, [f.turn]);
-    } else {
-      existingTurns.push(f.turn);
-    }
-  });
-
-  for (const turnList of hashesToTurns.values()) {
-    turnList.sort((a, b) => a - b);
-  }
-  return hashesToTurns;
-};
