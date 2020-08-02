@@ -26,14 +26,14 @@ import { Foundation } from "../java2ts/Foundation";
 import { isVideo, isDocument } from "../utils/foundationData/FoundationData";
 import { FoundationDataBuilder } from "../utils/foundationData/FoundationDataBuilder";
 
-export interface TimelinePreviewContainerProps {
+interface TimelinePreviewContainerProps {
   factLink: Foundation.FactLink;
   setFactHandlers?: SetFactHandlers;
   ranges?: Ranges;
   offset?: number;
 }
 
-export interface TimelinePreviewContainerState {
+interface TimelinePreviewContainerState {
   loading: boolean;
   videoFact?: Foundation.VideoFactContent;
   nodes?: FoundationNode[];

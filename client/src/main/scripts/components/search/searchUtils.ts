@@ -85,7 +85,7 @@ export class TurnFinder {
  * Use "expandBy" to find the MultiHighlight that would
  * contain more sentences.
  */
-export class TurnWithResults {
+class TurnWithResults {
   turnContent: string;
   foundOffsets: Array<[number, number]>;
 

@@ -25,14 +25,14 @@ import { FoundationNode } from "../common/CaptionNodes";
 import { alertErr, getHighlightedNodes } from "../utils/functions";
 import { TakeBlock } from "./BlockEditor";
 
-export interface FeedCardContainerProps {
+interface FeedCardContainerProps {
   username: string;
   title: string;
   titleSlug: string;
   blocks: TakeBlock[];
 }
 
-export interface FeedCardContainerState {
+interface FeedCardContainerState {
   loading: boolean;
   document?: {
     fact: Foundation.Fact;

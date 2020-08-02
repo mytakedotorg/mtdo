@@ -40,7 +40,7 @@ interface TimelineViewProps {
   setFactHandlers?: SetFactHandlers;
 }
 
-export interface TimelineViewState {
+interface TimelineViewState {
   factLink: Foundation.FactLink | null;
   selectedOption: SelectionOptions;
   timelineItems: TimelineItemData[];

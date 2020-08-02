@@ -50,7 +50,7 @@ const VideoResultsLoader: React.FC<VideoResultsLoaderProps> = (props) => {
   );
 };
 
-export const VideoResultLoadingView: React.FC = () => (
+const VideoResultLoadingView: React.FC = () => (
   <div className="results">
     <div className="results__inner-container">
       <h1 className="results__heading">Searching...</h1>

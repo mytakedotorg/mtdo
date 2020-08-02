@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2017-2019 MyTake.org, Inc.
+ * Copyright (C) 2017-2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -18,7 +18,6 @@
  * You can contact us at team@mytake.org
  */
 import { Foundation } from "../java2ts/Foundation";
-import { Search } from "../java2ts/Search";
 import { TimelineItemData } from "../components/Timeline";
 import { CaptionNodeArr, FoundationNode } from "../common/CaptionNodes";
 import { Card } from "../components/FeedList";
@@ -458,35 +457,6 @@ const takeDocument: TakeDocument = {
   ],
 };
 
-function logMeasurements(measures: any) {
-  let highest;
-  let lowest;
-  let sum = 0;
-  for (const measure of measures) {
-    const duration = measure.duration;
-    sum += duration;
-    if (!highest && !lowest) {
-      highest = duration;
-      lowest = duration;
-    } else {
-      if (duration > highest) {
-        highest = duration;
-      }
-      if (duration < lowest) {
-        lowest = duration;
-      }
-    }
-  }
-
-  console.log("Fastest: ", lowest);
-  console.log("Slowest: ", highest);
-  console.log("Avg: ", sum / measures.length);
-
-  // Clean up the stored markers.
-  performance.clearMarks();
-  performance.clearMeasures();
-}
-
 const initialRangeSliders: TimeRange[] = [
   {
     start: 0.75,
@@ -640,42 +610,8 @@ const unzoomedRangeSliders: TimeRange[] = [
   },
 ];
 
-const zoomRange: TimeRange = {
-  start: 4,
-  end: 82,
-  type: "ZOOM",
-  styles: {
-    rail: {
-      backgroundColor: "#d3dae3",
-    },
-    track: {
-      backgroundColor: "#758aa8",
-    },
-    handle: {
-      backgroundColor: "#758aa8",
-      border: "1px solid #2c4770",
-    },
-  },
-  label: "Zoom",
-};
-
 const rangeStyle: StylesObject = {
   backgroundColor: "#758aa8",
-};
-
-const hash = "11X2vfxeT_gkZDKP3jVEMWteTbEvb0rMhF9pnYteVJk=";
-
-const factResultList: Search.FactResultList = {
-  facts: [
-    {
-      hash: hash,
-      turn: 2,
-    },
-    {
-      hash: hash,
-      turn: 0,
-    },
-  ],
 };
 
 const kennedyNixon: Foundation.VideoFactContent = {
@@ -1006,18 +942,12 @@ const kennedyNixon: Foundation.VideoFactContent = {
   },
 };
 
-const anonymousPath =
-  "/anonymous/introduction/v1/eyJ0aXRsZSI6IkludHJvZHVjdGlvbiIsInZpZElkIjoiaUVmd0l4TTdNbW5PS2I3enQ0SHFXOEl4VVd5NkY3YTIzNmZTT1FsVVVXST0iLCJoU3RhcnQiOiIwLjEiLCJoRW5kIjoiNSIsInZTdGFydCI6Ii0wLjM5IiwidkVuZCI6IjUuNDkifQ==";
-
 export {
-  anonymousPath,
   cards,
   documentFactLink,
   documentNodes,
   initialRangeSliders,
-  factResultList,
   kennedyNixon,
-  logMeasurements,
   rangeStyle,
   takeDocument,
   timelineItems,
@@ -1026,5 +956,4 @@ export {
   videoFactLink,
   videoNodes,
   zoomedRangeSliders,
-  zoomRange,
 };
