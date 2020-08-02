@@ -30,62 +30,6 @@ import {
   VideoBlock,
 } from "../components/BlockEditor";
 
-function getAllFacts(
-  callback: (
-    error: string | Error | null,
-    factLinks: Foundation.FactLink[]
-  ) => any
-): void {
-  const indexHeaders = new Headers();
-
-  indexHeaders.append("Accept", "application/json");
-  indexHeaders.append("Cache-Control", "no-cache"); // https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control
-
-  const indexRequestOptions: RequestInit = {
-    method: "GET",
-    headers: indexHeaders,
-    cache: "no-cache", // https://developer.mozilla.org/en-US/docs/Web/API/Request/cache
-  };
-
-  fetch(Routes.FOUNDATION_INDEX_HASH, indexRequestOptions)
-    .then((response: Response) => {
-      const contentType = response.headers.get("content-type");
-      if (
-        contentType &&
-        contentType.indexOf("application/json") >= 0 &&
-        response.ok
-      ) {
-        return response.json();
-      } else {
-        callback("Error retrieving Facts", []);
-      }
-    })
-    .then((json: Foundation.IndexPointer) => {
-      const headers = new Headers();
-
-      headers.append("Accept", "application/json");
-
-      const requestOptions: RequestInit = {
-        method: "GET",
-        headers: headers,
-        cache: "default",
-      };
-      return fetch(
-        Routes.FOUNDATION_DATA + "/" + json.hash + ".json",
-        requestOptions
-      );
-    })
-    .then((response: Response) => {
-      return response.json();
-    })
-    .then((json: Foundation.FactLink[]) => {
-      callback(null, json);
-    })
-    .catch((error: TypeError) => {
-      callback(error, []);
-    });
-}
-
 function fetchFact(
   factHash: string,
   callback: (
@@ -421,4 +365,4 @@ function drawFacts(
   }
 }
 
-export { getAllFacts, fetchFact, isDocument, isVideo };
+export { fetchFact, isDocument, isVideo };
