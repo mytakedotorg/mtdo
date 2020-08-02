@@ -327,49 +327,6 @@ export function slugify(text: string): string {
     .replace(/[^\w-]+/g, ""); //remove non-alphanumics and non-hyphens
 }
 
-export function getWordCount(selection: Selection): number {
-  // Cursor is in a block of caption text
-
-  // Get the text Node
-  const textNode = selection.anchorNode;
-
-  // Get the character offset of the cursor position in the Node
-  const anchorOffset = selection.anchorOffset;
-
-  // Get the word offset of the cursor position in the Node
-  let wordCount;
-  if (textNode?.textContent) {
-    wordCount = textNode.textContent
-      .toString()
-      .substring(0, anchorOffset)
-      .split(" ").length;
-  } else {
-    wordCount = 0;
-  }
-
-  let paragraphNode;
-  if (textNode?.parentNode) {
-    paragraphNode = textNode.parentNode.parentNode;
-  } else {
-    alertErr("functions: Unknown HTML Structure");
-    throw "Unknown HTML Structure";
-  }
-
-  if (paragraphNode && paragraphNode.parentNode) {
-    let captionBlock: Node = paragraphNode.parentNode;
-
-    while (captionBlock && captionBlock.previousSibling) {
-      captionBlock = captionBlock.previousSibling;
-      const prevTextNode = captionBlock.childNodes[1].childNodes[0];
-      if (prevTextNode.textContent) {
-        wordCount += prevTextNode.textContent.toString().split(" ").length;
-      }
-    }
-  }
-
-  return wordCount;
-}
-
 function isCaptionNode(htmlRange: Range): boolean {
   if (
     htmlRange.startContainer.parentNode &&
