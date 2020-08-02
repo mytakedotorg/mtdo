@@ -23,8 +23,6 @@ import { TakeReactionJson } from "../java2ts/TakeReactionJson";
 import { FollowJson } from "../java2ts/FollowJson";
 import { alertErr, getUsernameFromURL, isLoggedIn } from "../utils/functions";
 import { TakeDocument } from "./BlockEditor";
-import DropDown from "./DropDown";
-import EmailTake from "./EmailTake";
 import { post } from "../utils/foundationData/FoundationDataBuilder";
 
 interface ReactionContainerProps {
@@ -276,20 +274,6 @@ export class Reaction extends React.Component<ReactionProps, ReactionState> {
             >
               {props.containerState.isFollowing ? "Following" : "Follow"}
             </button>
-          </div>
-          <div className="reaction__action-container">
-            <DropDown
-              classModifier="reaction"
-              dropdownPosition="TL"
-              toggleText="Email"
-            >
-              <EmailTake
-                takeDocument={(Object as any).assign(
-                  {},
-                  props.containerProps.takeDocument
-                )}
-              />
-            </DropDown>
           </div>
           <div className="reaction__action-container">
             <button

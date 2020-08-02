@@ -24,7 +24,6 @@ public class Routes {
 	public static final String API = "/api";
 	public static final String API_TAKE_VIEW = "/api/takeView";
 	public static final String API_TAKE_REACT = "/api/takeReact";
-	public static final String API_EMAIL_SELF = "/api/emailSelf";
 	public static final String API_FOLLOW_ASK = "/api/followAsk";
 	public static final String API_FOLLOW_TELL = "/api/followTell";
 	public static final String API_IMAGES = "/api/images";

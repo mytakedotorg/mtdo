@@ -28,7 +28,6 @@ import controllers.HomeFeed;
 import controllers.Profile;
 import controllers.Redirects;
 import controllers.SearchModule;
-import controllers.TakeEmail;
 import controllers.TakeReaction;
 import controllers.Takes;
 import java.security.SecureRandom;
@@ -106,7 +105,6 @@ public class Prod extends Jooby {
 		jooby.use(new AuthModule());
 		jooby.use(new NotFound());
 		jooby.use(new TakeReaction());
-		jooby.use(new TakeEmail());
 		// These controllers need to be last, because otherwise
 		// they will swallow every `/user/take` and `/user` URL.
 		jooby.use(new Takes());

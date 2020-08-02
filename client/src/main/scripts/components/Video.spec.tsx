@@ -37,11 +37,6 @@ jest.mock("./DropDown", () => ({
   default: "DropDown",
 }));
 
-jest.mock("./EmailTake", () => ({
-  __esModule: true,
-  default: "EmailTake",
-}));
-
 const mockFn = jest.fn();
 
 test("Video", () => {

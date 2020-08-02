@@ -27,8 +27,6 @@ import BlockEditor, {
 } from "./BlockEditor";
 import TimelineLoader from "./TimelineLoader";
 import EditorButtons from "./EditorButtons";
-import DropDown from "./DropDown";
-import EmailTake from "./EmailTake";
 import { postRequest, fetchFact } from "../utils/databaseAPI";
 import { DraftRev } from "../java2ts/DraftRev";
 import { DraftPost } from "../java2ts/DraftPost";
@@ -698,20 +696,6 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
               eventHandlers={buttonEventHandlers}
               status={this.state.status}
             />
-            <div className="editor__share">
-              <DropDown
-                classModifier="editor"
-                dropdownPosition="TL"
-                toggleText="Email"
-              >
-                <EmailTake
-                  takeDocument={(Object as any).assign(
-                    {},
-                    this.state.takeDocument
-                  )}
-                />
-              </DropDown>
-            </div>
           </div>
           <p className="timeline__instructions">
             Add Facts to your Take from the timeline below.
