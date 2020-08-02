@@ -51,7 +51,6 @@ public class CodegenConfig implements StaticCodegenConfig {
 				TypeLiteral.create(FollowJson.FollowAskReq.class),
 				TypeLiteral.create(FollowJson.FollowTellReq.class),
 				TypeLiteral.create(FollowJson.FollowRes.class),
-				TypeLiteral.create(Search.Request.class),
 				TypeLiteral.create(Search.VideoResult.class),
 				TypeLiteral.create(Search.FactResultList.class)
 		};
