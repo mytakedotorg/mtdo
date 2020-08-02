@@ -63,7 +63,6 @@ export class FoundationDataTestBuilder {
     const builder = new FoundationDataTestBuilder();
     for (const factLink of AllFromDisk.index) {
       builder.loadHashFromDisk(factLink.hash);
-      console.log(factLink.hash);
     }
     return builder.build();
   }
