@@ -61,7 +61,7 @@ export class FoundationDataBuilder {
       "no-cache"
     );
     return get<Foundation.FactLink[]>(
-      Routes.FOUNDATION_DATA + '/' + indexPointer.hash + ".json"
+      Routes.FOUNDATION_DATA + "/" + indexPointer.hash + ".json"
     );
   }
 }
