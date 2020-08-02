@@ -27,10 +27,13 @@ import BlockEditor, {
 } from "./BlockEditor";
 import TimelineLoader from "./TimelineLoader";
 import EditorButtons from "./EditorButtons";
-import { postRequest, fetchFact } from "../utils/databaseAPI";
 import { DraftRev } from "../java2ts/DraftRev";
 import { DraftPost } from "../java2ts/DraftPost";
 import { Foundation } from "../java2ts/Foundation";
+import {
+  FoundationDataBuilder,
+  post,
+} from "../utils/foundationData/FoundationDataBuilder";
 import { PublishResult } from "../java2ts/PublishResult";
 import { Routes } from "../java2ts/Routes";
 import { alertErr, getFirstFactBlock, slugify } from "../utils/functions";
@@ -337,18 +340,17 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
     ) {
       if (typeof this.state.parentRev != undefined && this.state.parentRev) {
         // Draft has been saved
-        const bodyJson: DraftRev = {
+        post<DraftRev, void>(Routes.DRAFTS_DELETE, {
           draftid: this.state.parentRev.draftid,
           lastrevid: this.state.parentRev.lastrevid,
-        };
-        postRequest(Routes.DRAFTS_DELETE, bodyJson, () => {});
+        });
       } else {
         // Draft is unsaved, server doesn't know about it.
         window.location.href = Routes.DRAFTS;
       }
     }
   };
-  handlePublishClick = () => {
+  handlePublishClick = async () => {
     if (
       confirm(
         "This action cannot be undone. Are you sure you want to publish this draft?"
@@ -365,7 +367,7 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
               message: "Publishing Take.",
             },
           });
-          const bodyJson: DraftPost = {
+          const draftPost: DraftPost = {
             parentRev: this.state.parentRev,
             title: this.state.takeDocument.title,
             blocks: this.state.takeDocument.blocks,
@@ -375,56 +377,26 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
           let imageUrl: string;
           if (firstFact) {
             if (firstFact.kind === "document") {
-              fetchFact(
-                firstFact.excerptId,
-                (
-                  error: string | Error | null,
-                  fact: Foundation.DocumentFactContent
-                ) => {
-                  if (error) {
-                    const msg = "BlockWriter: error fetching document fact.";
-                    alertErr(msg);
-                    throw msg;
-                  }
-                  const hRange = firstFact.highlightedRange;
-                  const vRange = firstFact.viewRange;
-                  bodyJson.imageUrl =
-                    "/" +
-                    slugify(fact.fact.title) +
-                    "_" +
-                    hRange[0] +
-                    "-" +
-                    hRange[1] +
-                    "_" +
-                    vRange[0] +
-                    "-" +
-                    vRange[1] +
-                    ".png";
-                  this.publishTake(bodyJson);
-                }
+              const fact = await FoundationDataBuilder.justOneDocument(
+                firstFact.excerptId
               );
+              const hRange = firstFact.highlightedRange;
+              const vRange = firstFact.viewRange;
+              draftPost.imageUrl = `/${slugify(fact.fact.title)}_${hRange[0]}-${
+                hRange[1]
+              }_${vRange[0]}-${vRange[1]}.png`;
+              this.publishTake(draftPost);
             } else if (firstFact.kind === "video") {
-              fetchFact(
-                firstFact.videoId,
-                (
-                  error: string | Error | null,
-                  fact: Foundation.VideoFactContent
-                ) => {
-                  if (error) {
-                    const msg = "BlockWriter: error fetching video fact.";
-                    alertErr(msg);
-                    throw msg;
-                  }
-                  const range = firstFact.range;
-                  let imageUrl = "/" + slugify(fact.fact.title);
-                  if (range) {
-                    imageUrl += "_" + range[0] + "-" + range[1];
-                  }
-                  imageUrl += ".png";
-                  bodyJson.imageUrl = imageUrl;
-                  this.publishTake(bodyJson);
-                }
+              const fact = await FoundationDataBuilder.justOneDocument(
+                firstFact.videoId
               );
+              const rangeUrl = firstFact.range
+                ? `_${firstFact.range[0]}-${firstFact.range[1]}`
+                : "";
+              draftPost.imageUrl = `/${slugify(
+                fact.fact.title
+              )}${rangeUrl}.png`;
+              this.publishTake(draftPost);
             } else {
               const msg =
                 "BlockWriter: Expected block to be either a document or a video";
@@ -433,7 +405,7 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
             }
           } else {
             // bodyJson.imageUrl is "" here
-            this.publishTake(bodyJson);
+            this.publishTake(draftPost);
           }
         } else {
           this.setState({
@@ -456,7 +428,7 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
     }
   };
   getImageUrl = () => {};
-  handleSaveClick = () => {
+  handleSaveClick = async () => {
     const { title } = this.state.takeDocument;
     if (title.length <= 255) {
       if (title.length > 0) {
@@ -468,28 +440,21 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
             message: "Saving Take.",
           },
         });
-        const bodyJson: DraftPost = {
+        const parentRev = await post<DraftPost, DraftRev>(Routes.DRAFTS_SAVE, {
           parentRev: this.state.parentRev,
           title: title,
           blocks: this.state.takeDocument.blocks,
           imageUrl: "",
-        };
-        postRequest(
-          Routes.DRAFTS_SAVE,
-          bodyJson,
-          function (json: DraftRev) {
-            const parentRev: DraftRev = json;
-            this.setState({
-              parentRev: parentRev,
-              status: {
-                saved: true,
-                saving: false,
-                error: false,
-                message: "Save successful!",
-              },
-            });
-          }.bind(this)
-        );
+        });
+        this.setState({
+          parentRev: parentRev,
+          status: {
+            saved: true,
+            saving: false,
+            error: false,
+            message: "Save successful!",
+          },
+        });
       } else {
         this.setState({
           status: {
@@ -560,17 +525,17 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
       viewRange,
     };
   };
-  publishTake = (bodyJson: DraftPost) => {
-    postRequest(Routes.DRAFTS_PUBLISH, bodyJson, function (
-      json: PublishResult
-    ) {
-      if (!json.conflict) {
-        window.location.href = json.publishedUrl;
-      } else {
-        alertErr("BlockWriter: error publishing Take.");
-        throw "There was an error publishing your Take.";
-      }
-    });
+  publishTake = async (draftPost: DraftPost) => {
+    const publish = await post<DraftPost, PublishResult>(
+      Routes.DRAFTS_PUBLISH,
+      draftPost
+    );
+    if (!publish.conflict) {
+      window.location.href = publish.publishedUrl;
+    } else {
+      alertErr("BlockWriter: error publishing Take.");
+      throw "There was an error publishing your Take.";
+    }
   };
   handleTakeBlockChange = (stateIndex: number, value: string): void => {
     if (stateIndex === -1) {

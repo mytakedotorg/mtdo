@@ -20,11 +20,11 @@
 import * as React from "react";
 import keycode from "keycode";
 import DocumentTextNodeList from "./DocumentTextNodeList";
-import { alertErr, getHighlightedNodes } from "../utils/functions";
+import { getHighlightedNodes } from "../utils/functions";
 import { FoundationNode } from "../common/CaptionNodes";
-import { fetchFact } from "../utils/databaseAPI";
 import { DocumentBlock } from "../java2ts/DocumentBlock";
 import { Foundation } from "../java2ts/Foundation";
+import { FoundationDataBuilder } from "../utils/foundationData/FoundationDataBuilder";
 import {
   isWriteOnly,
   ReadingEventHandlers,
@@ -57,41 +57,24 @@ class EditorDocumentContainer extends React.Component<
       loading: true,
     };
   }
-  getFact = (factHash: string) => {
-    fetchFact(
-      factHash,
-      (
-        error: string | Error | null,
-        factContent: Foundation.DocumentFactContent
-      ) => {
-        if (error) {
-          if (typeof error != "string") {
-            alertErr("EditorDocumentContainer: " + error.message);
-          } else {
-            alertErr("EditorDocumentContainer: " + error);
-          }
-          throw error;
-        } else {
-          let nodes: FoundationNode[] = [];
-
-          for (let documentComponent of factContent.components) {
-            nodes.push({
-              component: documentComponent.component,
-              innerHTML: [documentComponent.innerHTML],
-              offset: documentComponent.offset,
-            });
-          }
-
-          this.setState({
-            loading: false,
-            document: {
-              fact: factContent.fact,
-              nodes: nodes,
-            },
-          });
-        }
+  getFact = async (factHash: string) => {
+    const factContent = await FoundationDataBuilder.justOneDocument(factHash);
+    const nodes: FoundationNode[] = factContent.components.map(
+      (documentComponent) => {
+        return {
+          component: documentComponent.component,
+          innerHTML: [documentComponent.innerHTML],
+          offset: documentComponent.offset,
+        };
       }
     );
+    this.setState({
+      loading: false,
+      document: {
+        fact: factContent.fact,
+        nodes: nodes,
+      },
+    });
   };
   componentDidMount() {
     this.getFact(this.props.block.excerptId);
