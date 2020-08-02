@@ -23,61 +23,58 @@ import { Routes } from "../../java2ts/Routes";
 import { decodeVideoFact } from "../../common/DecodeVideoFact";
 import { alertErr } from "../functions";
 
-type FactHashMap = [
-  string,
-  Foundation.VideoFactContent | Foundation.DocumentFactContent
-];
-
 export class FoundationDataBuilder {
-  requestedFacts: Set<string> = new Set();
+  requestedFacts: string[] = [];
 
   add(hash: string): void {
-    this.requestedFacts.add(hash);
+    if (this.requestedFacts.indexOf(hash) === -1) {
+      this.requestedFacts.push(hash);
+    }
   }
 
   async build(): Promise<FoundationData> {
-    const promises: Promise<FactHashMap>[] = [];
-    for (const hash of this.requestedFacts) {
-      promises.push(this.getFact(hash));
-    }
-    return new FoundationData(new Map(await Promise.all(promises)));
+    const facts = await Promise.all(
+      this.requestedFacts.map((hash) => this.getFact(hash))
+    );
+    const map = new Map(
+      this.requestedFacts.map((hash, idx) => [hash, facts[idx]])
+    );
+    return new FoundationData(map);
   }
 
-  private getFact(factHash: string): Promise<FactHashMap> {
-    const headers = new Headers();
+  private async getFact(
+    factHash: string
+  ): Promise<Foundation.VideoFactContent | Foundation.DocumentFactContent> {
+    const factContent = await get<Foundation.FactContent>(
+      Routes.FOUNDATION_DATA + "/" + factHash + ".json"
+    );
+    if (isVideo(factContent)) {
+      return decodeVideoFact(factContent as Foundation.VideoFactContentEncoded);
+    } else {
+      return factContent as Foundation.DocumentFactContent;
+    }
+  }
 
-    headers.append("Accept", "application/json");
-
-    const request: RequestInit = {
-      method: "GET",
-      headers: headers,
-      cache: "default",
-    };
-
-    return fetch(Routes.FOUNDATION_DATA + "/" + factHash + ".json", request)
-      .then(function (response: Response) {
-        validateResponse(response, Routes.FOUNDATION_DATA);
-        return response.json();
-      })
-      .then(function (
-        json:
-          | Foundation.VideoFactContentEncoded
-          | Foundation.DocumentFactContent
-      ) {
-        return [factHash, isVideo(json) ? decodeVideoFact(json) : json];
-      });
+  static async index(): Promise<Foundation.FactLink[]> {
+    const indexPointer = await get<Foundation.IndexPointer>(
+      Routes.FOUNDATION_INDEX_HASH,
+      "no-cache"
+    );
+    return get<Foundation.FactLink[]>(
+      Routes.FOUNDATION_DATA + indexPointer.hash + ".json"
+    );
   }
 }
 
-export const validateResponse = (response: Response, route: string) => {
-  const contentType = response.headers.get("content-type");
-  if (
-    !contentType ||
-    contentType.indexOf("application/json") === -1 ||
-    !response.ok
-  ) {
-    const msg = `Unexpected response from ${route}.`;
-    alertErr(msg);
-    throw msg;
-  }
-};
+async function get<T>(
+  path: string,
+  cache: RequestCache = "default"
+): Promise<T> {
+  const response = await fetch(
+    new Request(path, {
+      method: "get",
+      cache: cache,
+    })
+  );
+  return await response.json();
+}
