@@ -199,49 +199,6 @@ function isVideo(fact?: Foundation.FactContent | null): fact is VideoContent {
   }
 }
 
-function postRequest(
-  route: string,
-  bodyJson: any,
-  successCb: (json?: any) => void
-) {
-  const headers = new Headers();
-
-  headers.append("Accept", "application/json"); // This one is enough for GET requests
-  headers.append("Content-Type", "application/json"); // This one sends body
-
-  const request: RequestInit = {
-    method: "POST",
-    credentials: "include",
-    headers: headers,
-    body: JSON.stringify(bodyJson),
-  };
-  fetch(route, request)
-    .then(function (response: Response) {
-      const contentType = response.headers.get("content-type");
-      if (
-        contentType &&
-        contentType.indexOf("application/json") >= 0 &&
-        response.ok
-      ) {
-        return response.json();
-      } else if (route === Routes.DRAFTS_DELETE && response.ok) {
-        window.location.href = Routes.DRAFTS;
-      } else {
-        alertErr(
-          "databaseAPI + " + route + ": Unexpected response from server."
-        );
-        throw "Unexpected response from server.";
-      }
-    })
-    .then((json: any) => {
-      successCb(json);
-    })
-    .catch(function (error: Error) {
-      alertErr("databaseAPI + " + route + ": " + error.message);
-      throw error;
-    });
-}
-
 interface DocumentImageURI {
   imageProps: ImageProps;
   url: string;
@@ -464,4 +421,4 @@ function drawFacts(
   }
 }
 
-export { getAllFacts, fetchFact, isDocument, isVideo, postRequest };
+export { getAllFacts, fetchFact, isDocument, isVideo };
