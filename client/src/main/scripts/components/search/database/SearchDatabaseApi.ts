@@ -21,7 +21,10 @@ import { Foundation } from "../../../java2ts/Foundation";
 import { Routes } from "../../../java2ts/Routes";
 import { Search } from "../../../java2ts/Search";
 import { FoundationData } from "../../../utils/foundationData/FoundationData";
-import { FoundationDataBuilder } from "../../../utils/foundationData/FoundationDataBuilder";
+import {
+  FoundationDataBuilder,
+  get,
+} from "../../../utils/foundationData/FoundationDataBuilder";
 
 export class SearchResult {
   constructor(
@@ -39,7 +42,9 @@ export class SearchWithData {
 }
 
 export async function search(searchQuery: string): Promise<SearchResult> {
-  const factResults: Search.FactResultList = await searchRequest(searchQuery);
+  const factResults = await get<Search.FactResultList>(
+    `${Routes.API_SEARCH}?${Search.QUERY}=${encodeURIComponent(searchQuery)}`
+  );
   const builder = new FoundationDataBuilder();
   factResults.facts.forEach((fact) => builder.add(fact.hash));
   const foundationData = await builder.build();
@@ -85,34 +90,6 @@ export function searchImpl(searchWithData: SearchWithData): SearchResult {
   });
   return new SearchResult(videoFactsToTurns, searchQuery);
 }
-
-const searchRequest = (searchQuery: string) => {
-  const bodyJson: Search.Request = {
-    q: searchQuery,
-  };
-  const headers = new Headers();
-  headers.append("Accept", "application/json");
-  headers.append("Content-Type", "application/json");
-
-  const request: RequestInit = {
-    method: "POST",
-    credentials: "include",
-    headers: headers,
-    body: JSON.stringify(bodyJson),
-  };
-  return fetch(Routes.API_SEARCH, request).then((response) => {
-    const contentType = response.headers.get("content-type");
-    if (
-      contentType &&
-      contentType.indexOf("application/json") >= 0 &&
-      response.ok
-    ) {
-      return response.json();
-    } else {
-      throw `Unexpected response from ${Routes.API_SEARCH}.`;
-    }
-  });
-};
 
 export type HashesToTurns = Map<string, number[]>;
 
