@@ -22,8 +22,7 @@ import TimelineView from "./TimelineView";
 import { SetFactHandlers } from "./TimelinePreview";
 import TimelineLoadingView from "./TimelineLoadingView";
 import { Foundation } from "../java2ts/Foundation";
-import { Routes } from "../java2ts/Routes";
-import { validateResponse } from "../utils/foundationData/FoundationDataBuilder";
+import { FoundationDataBuilder } from "../utils/foundationData/FoundationDataBuilder";
 
 interface TimelineLoaderProps {
   path: string;
@@ -39,47 +38,11 @@ const TimelineLoader: React.FC<TimelineLoaderProps> = (props) => {
 
   useEffect(() => {
     async function getAllFacts() {
-      const indexHeaders = new Headers();
-
-      indexHeaders.append("Accept", "application/json");
-      indexHeaders.append("Cache-Control", "no-cache");
-
-      const indexRequestOptions: RequestInit = {
-        method: "GET",
-        headers: indexHeaders,
-        cache: "no-cache", // https://developer.mozilla.org/en-US/docs/Web/API/Request/cache
-      };
-
-      const indexHashRes = await fetch(
-        Routes.FOUNDATION_INDEX_HASH,
-        indexRequestOptions
-      );
-
-      validateResponse(indexHashRes, Routes.FOUNDATION_INDEX_HASH);
-
-      const indexPointer: Foundation.IndexPointer = await indexHashRes.json();
-
-      const headers = new Headers();
-      headers.append("Accept", "application/json");
-      const requestOptions: RequestInit = {
-        method: "GET",
-        headers: headers,
-        cache: "default",
-      };
-
-      const foundationRes = await fetch(
-        Routes.FOUNDATION_DATA + "/" + indexPointer.hash + ".json",
-        requestOptions
-      );
-
-      validateResponse(foundationRes, Routes.FOUNDATION_DATA);
-
-      const allFacts: Foundation.FactLink[] = await foundationRes.json();
+      const allFacts: Foundation.FactLink[] = await FoundationDataBuilder.index();
       setState({
         facts: allFacts,
       });
     }
-
     getAllFacts();
   }, []);
 

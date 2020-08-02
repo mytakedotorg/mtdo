@@ -66,7 +66,7 @@ export class FoundationDataBuilder {
   }
 }
 
-async function get<T>(
+export async function get<T>(
   path: string,
   cache: RequestCache = "default"
 ): Promise<T> {
@@ -74,7 +74,22 @@ async function get<T>(
     new Request(path, {
       method: "get",
       cache: cache,
+      credentials: "omit",
     })
   );
-  return await response.json();
+  return response.json();
+}
+
+export async function post<T, R>(path: string, body: T): Promise<R> {
+  const response = await fetch(
+    new Request(path, {
+      method: "post",
+      credentials: "same-origin",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body),
+    })
+  );
+  return response.json();
 }
