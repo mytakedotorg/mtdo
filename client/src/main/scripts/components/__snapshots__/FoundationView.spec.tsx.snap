@@ -19,9 +19,19 @@ exports[`With fact in URL 1`] = `
         Explore Facts in the timeline below.
       </p>
     </div>
-    <TimelineView
-      path="/foundation/bill-of-rights"
-    />
+    <div
+      className="timeline__preview"
+    >
+      <div
+        className="document document--static"
+      >
+        <p
+          className="document__text"
+        >
+          Loading Timeline
+        </p>
+      </div>
+    </div>
   </div>
 </div>
 `;
@@ -45,9 +55,19 @@ exports[`Without fact in URL 1`] = `
         Explore Facts in the timeline below.
       </p>
     </div>
-    <TimelineView
-      path="/foundation"
-    />
+    <div
+      className="timeline__preview"
+    >
+      <div
+        className="document document--static"
+      >
+        <p
+          className="document__text"
+        >
+          Loading Timeline
+        </p>
+      </div>
+    </div>
   </div>
 </div>
 `;

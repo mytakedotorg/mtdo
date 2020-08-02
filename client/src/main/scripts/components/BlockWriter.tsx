@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2017-2018 MyTake.org, Inc.
+ * Copyright (C) 2017-2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -25,7 +25,7 @@ import BlockEditor, {
   TakeDocument,
   VideoBlock,
 } from "./BlockEditor";
-import TimelineView from "./TimelineView";
+import TimelineLoader from "./TimelineLoader";
 import EditorButtons from "./EditorButtons";
 import DropDown from "./DropDown";
 import EmailTake from "./EmailTake";
@@ -717,7 +717,7 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
             Add Facts to your Take from the timeline below.
           </p>
         </div>
-        <TimelineView
+        <TimelineLoader
           path={window.location.pathname}
           setFactHandlers={setFactHandlers}
         />

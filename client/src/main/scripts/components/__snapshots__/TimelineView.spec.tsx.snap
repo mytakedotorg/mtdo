@@ -4,67 +4,23 @@ exports[`Successfully loaded a Document in view 1`] = `
 <div
   className="timeline__view"
 >
-  <div>
-    <TimelineRadioButtons
-      onChange={[MockFunction]}
-      selectedOption="Documents"
-    />
-    <Timeline
-      onItemClick={[MockFunction]}
-      selectedOption="Documents"
-      timelineItems={
-        Array [
-          Object {
-            "content": "United States Constitution",
-            "id": "c7qu-ZE5SuipqSrOO30R3mnAA7K7nJ4fQ4zVIX0A2yg=",
-            "idx": "c7qu-ZE5SuipqSrOO30R3mnAA7K7nJ4fQ4zVIX0A2yg=",
-            "kind": "document",
-            "start": 1788-06-21T00:00:00.000Z,
-          },
-          Object {
-            "content": "Bill of Rights",
-            "id": "pMHhbW_I-wquOfoyPFAVQu8DMLMpYVxhGT8R1x71hYA=",
-            "idx": "pMHhbW_I-wquOfoyPFAVQu8DMLMpYVxhGT8R1x71hYA=",
-            "kind": "document",
-            "start": 1791-12-15T00:00:00.000Z,
-          },
-          Object {
-            "content": "John F. Kennedy - Nixon (1/4)",
-            "id": "-7DeOJAVJUsifUcIaZo7c41pol_guMxR6IEgYv28bHM=",
-            "idx": "-7DeOJAVJUsifUcIaZo7c41pol_guMxR6IEgYv28bHM=",
-            "kind": "video",
-            "start": 1960-09-26T00:00:00.000Z,
-          },
-          Object {
-            "content": "John F. Kennedy - Nixon (2/4)",
-            "id": "bl03RovlxbTZK0yu25_VikP0Y2xSj-J9oFyGUTWIOZQ=",
-            "idx": "bl03RovlxbTZK0yu25_VikP0Y2xSj-J9oFyGUTWIOZQ=",
-            "kind": "video",
-            "start": 1960-10-07T00:00:00.000Z,
-          },
-        ]
-      }
-    />
-  </div>
-  <TimelinePreviewContainer
-    factLink={
-      Object {
-        "fact": Object {
+  <TimelineRadioButtons
+    onChange={[Function]}
+    selectedOption="Debates"
+  />
+  <Timeline
+    onItemClick={[Function]}
+    selectedOption="Debates"
+    timelineItems={
+      Array [
+        Object {
+          "content": "Amendment 13",
+          "id": "o_dRqrNJ62wzlgLilTrLxkHqGmvAS9qTpa4z4pjyFqA=",
+          "idx": "o_dRqrNJ62wzlgLilTrLxkHqGmvAS9qTpa4z4pjyFqA=",
           "kind": "document",
-          "primaryDate": "1865-12-06",
-          "primaryDateKind": "ratified",
-          "title": "Amendment 13",
+          "start": 1865-12-06T00:00:00.000Z,
         },
-        "hash": "o_dRqrNJ62wzlgLilTrLxkHqGmvAS9qTpa4z4pjyFqA=",
-      }
-    }
-    setFactHandlers={
-      Object {
-        "handleDocumentSetClick": [MockFunction],
-        "handleRangeCleared": [MockFunction],
-        "handleRangeSet": [MockFunction],
-        "handleVideoSetClick": [MockFunction],
-      }
+      ]
     }
   />
 </div>
@@ -74,106 +30,24 @@ exports[`Successfully loaded a Video in view 1`] = `
 <div
   className="timeline__view"
 >
-  <div>
-    <TimelineRadioButtons
-      onChange={[MockFunction]}
-      selectedOption="Debates"
-    />
-    <Timeline
-      onItemClick={[MockFunction]}
-      selectedOption="Debates"
-      timelineItems={
-        Array [
-          Object {
-            "content": "United States Constitution",
-            "id": "c7qu-ZE5SuipqSrOO30R3mnAA7K7nJ4fQ4zVIX0A2yg=",
-            "idx": "c7qu-ZE5SuipqSrOO30R3mnAA7K7nJ4fQ4zVIX0A2yg=",
-            "kind": "document",
-            "start": 1788-06-21T00:00:00.000Z,
-          },
-          Object {
-            "content": "Bill of Rights",
-            "id": "pMHhbW_I-wquOfoyPFAVQu8DMLMpYVxhGT8R1x71hYA=",
-            "idx": "pMHhbW_I-wquOfoyPFAVQu8DMLMpYVxhGT8R1x71hYA=",
-            "kind": "document",
-            "start": 1791-12-15T00:00:00.000Z,
-          },
-          Object {
-            "content": "John F. Kennedy - Nixon (1/4)",
-            "id": "-7DeOJAVJUsifUcIaZo7c41pol_guMxR6IEgYv28bHM=",
-            "idx": "-7DeOJAVJUsifUcIaZo7c41pol_guMxR6IEgYv28bHM=",
-            "kind": "video",
-            "start": 1960-09-26T00:00:00.000Z,
-          },
-          Object {
-            "content": "John F. Kennedy - Nixon (2/4)",
-            "id": "bl03RovlxbTZK0yu25_VikP0Y2xSj-J9oFyGUTWIOZQ=",
-            "idx": "bl03RovlxbTZK0yu25_VikP0Y2xSj-J9oFyGUTWIOZQ=",
-            "kind": "video",
-            "start": 1960-10-07T00:00:00.000Z,
-          },
-        ]
-      }
-    />
-  </div>
-  <TimelinePreviewContainer
-    factLink={
-      Object {
-        "fact": Object {
+  <TimelineRadioButtons
+    onChange={[Function]}
+    selectedOption="Debates"
+  />
+  <Timeline
+    onItemClick={[Function]}
+    selectedOption="Debates"
+    timelineItems={
+      Array [
+        Object {
+          "content": "Donald Trump - Hillary Clinton (2/3)",
+          "id": "iEfwIxM7MmnOKb7zt4HqW8IxUWy6F7a236fSOQlUUWI=",
+          "idx": "iEfwIxM7MmnOKb7zt4HqW8IxUWy6F7a236fSOQlUUWI=",
           "kind": "video",
-          "primaryDate": "2016-10-09",
-          "primaryDateKind": "recorded",
-          "title": "Donald Trump - Hillary Clinton (2/3)",
+          "start": 2016-10-09T00:00:00.000Z,
         },
-        "hash": "iEfwIxM7MmnOKb7zt4HqW8IxUWy6F7a236fSOQlUUWI=",
-      }
-    }
-    setFactHandlers={
-      Object {
-        "handleDocumentSetClick": [MockFunction],
-        "handleRangeCleared": [MockFunction],
-        "handleRangeSet": [MockFunction],
-        "handleVideoSetClick": [MockFunction],
-      }
+      ]
     }
   />
-</div>
-`;
-
-exports[`Successfully loaded view 1`] = `
-<div
-  className="timeline__view"
->
-  <div>
-    <TimelineRadioButtons
-      onChange={[MockFunction]}
-      selectedOption="Debates"
-    />
-    <Timeline
-      onItemClick={[MockFunction]}
-      selectedOption="Debates"
-      timelineItems={Array []}
-    />
-  </div>
-</div>
-`;
-
-exports[`View loading 1`] = `
-<div
-  className="timeline__view"
->
-  <div
-    className="timeline__preview"
-  >
-    <div
-      className="document document--static"
-    >
-      <p
-        className="document__text"
-      >
-        Loading Timeline
-      </p>
-    </div>
-  </div>
 </div>
 `;

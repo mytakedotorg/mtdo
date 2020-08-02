@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2017-2018 MyTake.org, Inc.
+ * Copyright (C) 2017-2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -21,11 +21,11 @@ import * as React from "react";
 import { Routes } from "../java2ts/Routes";
 import { TakeReactionJson } from "../java2ts/TakeReactionJson";
 import { FollowJson } from "../java2ts/FollowJson";
-import { postRequest } from "../utils/databaseAPI";
 import { alertErr, getUsernameFromURL, isLoggedIn } from "../utils/functions";
 import { TakeDocument } from "./BlockEditor";
 import DropDown from "./DropDown";
 import EmailTake from "./EmailTake";
+import { post } from "../utils/foundationData/FoundationDataBuilder";
 
 interface ReactionContainerProps {
   takeId: number;
@@ -50,59 +50,46 @@ class ReactionContainer extends React.Component<
 
     this.state = {};
   }
-  fetchReactions = () => {
-    setTimeout(() => {
-      const takeViewBodyJson: TakeReactionJson.ViewReq = {
-        take_id: this.props.takeId,
-      };
-      postRequest(
-        Routes.API_TAKE_VIEW,
-        takeViewBodyJson,
-        (json: TakeReactionJson.ViewRes) => {
-          this.setState({
-            takeState: json.takeState,
-            userState: json.userState,
-          });
-        }
-      );
-      if (isLoggedIn()) {
-        this.username = getUsernameFromURL();
-        const followAskBodyJson: FollowJson.FollowAskReq = {
-          username: this.username,
-        };
-        postRequest(
-          Routes.API_FOLLOW_ASK,
-          followAskBodyJson,
-          (json: FollowJson.FollowRes) => {
-            this.setState({
-              isFollowing: json.isFollowing,
-            });
-          }
-        );
-      }
-    }, 2000);
+  fetchReactions = async () => {
+    await wait(2000);
+    const takeReaction = await post<
+      TakeReactionJson.ViewReq,
+      TakeReactionJson.ViewRes
+    >(Routes.API_TAKE_VIEW, { take_id: this.props.takeId });
+    this.setState({
+      takeState: takeReaction.takeState,
+      userState: takeReaction.userState,
+    });
+
+    if (isLoggedIn()) {
+      this.username = getUsernameFromURL();
+      const followRes = await post<
+        FollowJson.FollowAskReq,
+        FollowJson.FollowRes
+      >(Routes.API_FOLLOW_ASK, { username: this.username });
+      this.setState({
+        isFollowing: followRes.isFollowing,
+      });
+    }
   };
-  followButtonPress = () => {
+  followButtonPress = async () => {
     if (isLoggedIn()) {
       if (!this.username) {
         this.username = getUsernameFromURL();
       }
-      const followTellBodyJson: FollowJson.FollowTellReq = {
+      const followRes = await post<
+        FollowJson.FollowTellReq,
+        FollowJson.FollowRes
+      >(Routes.API_FOLLOW_TELL, {
         isFollowing:
           typeof this.state.isFollowing == "boolean"
             ? !this.state.isFollowing
             : true,
         username: this.username,
-      };
-      postRequest(
-        Routes.API_FOLLOW_TELL,
-        followTellBodyJson,
-        (json: FollowJson.FollowRes) => {
-          this.setState({
-            isFollowing: json.isFollowing,
-          });
-        }
-      );
+      });
+      this.setState({
+        isFollowing: followRes.isFollowing,
+      });
     } else {
       //User not logged in, redirect to /login
       window.location.href =
@@ -112,34 +99,15 @@ class ReactionContainer extends React.Component<
         "&loginreason=Login+or+create+an+account+to+follow+another+user.";
     }
   };
-  starButtonPress = () => {
+  starButtonPress = async () => {
     if (this.state.userState) {
       const userState = {
         ...this.state.userState,
         like: !this.state.userState.like,
       };
-
-      const bodyJson: TakeReactionJson.ReactReq = {
-        take_id: this.props.takeId,
-        userState: userState,
-      };
-
-      postRequest(
-        Routes.API_TAKE_REACT,
-        bodyJson,
-        (json: TakeReactionJson.ReactRes) => {
-          this.setState({
-            takeState: json.takeState,
-            userState: json.userState,
-          });
-        }
-      );
+      this.postReact(userState);
     } else {
-      window.location.href =
-        Routes.LOGIN +
-        "?redirect=" +
-        window.location.pathname +
-        "&loginreason=You+must+have+an+account+to+star+a+Take.";
+      window.location.href = `${Routes.LOGIN}?redirect=${window.location.pathname}&loginreason=You+must+have+an+account+to+star+a+Take.`;
     }
   };
   reportButtonPress = (type: abuseType) => {
@@ -169,28 +137,23 @@ class ReactionContainer extends React.Component<
           throw "Unknown report button type";
       }
 
-      const bodyJson: TakeReactionJson.ReactReq = {
-        take_id: this.props.takeId,
-        userState: userState,
-      };
-
-      postRequest(
-        Routes.API_TAKE_REACT,
-        bodyJson,
-        (json: TakeReactionJson.ReactRes) => {
-          this.setState({
-            takeState: json.takeState,
-            userState: json.userState,
-          });
-        }
-      );
+      this.postReact(userState);
     } else {
-      window.location.href =
-        Routes.LOGIN +
-        "?redirect=" +
-        window.location.pathname +
-        "&loginreason=You+must+have+an+account+to+report+a+Take.";
+      window.location.href = `${Routes.LOGIN}?redirect=${window.location.pathname}&loginreason=You+must+have+an+account+to+report+a+Take.`;
     }
+  };
+  postReact = async (userState: TakeReactionJson.UserState) => {
+    const reactRes = await post<
+      TakeReactionJson.ReactReq,
+      TakeReactionJson.ReactRes
+    >(Routes.API_TAKE_REACT, {
+      take_id: this.props.takeId,
+      userState: userState,
+    });
+    this.setState({
+      takeState: reactRes.takeState,
+      userState: reactRes.userState,
+    });
   };
   componentDidMount() {
     this.fetchReactions();
@@ -389,5 +352,11 @@ export class Reaction extends React.Component<ReactionProps, ReactionState> {
     );
   }
 }
+
+const wait = (ms: number): Promise<void> => {
+  return new Promise((res) => {
+    setTimeout(res, ms);
+  });
+};
 
 export default ReactionContainer;

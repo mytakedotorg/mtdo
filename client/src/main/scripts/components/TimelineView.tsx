@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2017-2018 MyTake.org, Inc.
+ * Copyright (C) 2017-2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -19,11 +19,9 @@
  */
 import * as React from "react";
 import Timeline, { TimelineItemData } from "./Timeline";
-import TimelineLoadingView from "./TimelineLoadingView";
 import TimelinePreviewContainer from "./TimelinePreviewContainer";
 import TimelineRadioButtons from "./TimelineRadioButtons";
 import { SetFactHandlers } from "./TimelinePreview";
-import { getAllFacts } from "../utils/databaseAPI";
 import { Foundation } from "../java2ts/Foundation";
 import { Routes } from "../java2ts/Routes";
 import { alertErr, slugify } from "../utils/functions";
@@ -37,13 +35,13 @@ interface URLValues {
 export type SelectionOptions = "Debates" | "Documents";
 
 interface TimelineViewProps {
+  factLinks: Foundation.FactLink[];
   path: string;
   setFactHandlers?: SetFactHandlers;
 }
 
 export interface TimelineViewState {
   factLink: Foundation.FactLink | null;
-  loading: boolean;
   selectedOption: SelectionOptions;
   timelineItems: TimelineItemData[];
   urlValues: URLValues | null;
@@ -54,7 +52,6 @@ export default class TimelineView extends React.Component<
   TimelineViewProps,
   TimelineViewState
 > {
-  private factLinks: Foundation.FactLink[] = [];
   private updatingURL: boolean;
   constructor(props: TimelineViewProps) {
     super(props);
@@ -65,72 +62,56 @@ export default class TimelineView extends React.Component<
 
     this.state = {
       factLink: null,
-      loading: true,
       selectedOption: "Debates",
       timelineItems: [],
       urlValues: urlValues,
       URLIsValid: urlValues === null ? true : false,
     };
   }
-  initializeTimeline = (
-    error: string | Error | null,
-    factlinks: Foundation.FactLink[]
-  ) => {
+  initializeTimeline = () => {
+    const { factLinks } = this.props;
     let timelineItems: TimelineItemData[] = [];
-    if (error) {
-      if (typeof error != "string") {
-        alertErr("TimelineView: " + error.message);
-      } else {
-        alertErr("TimelineView: " + error);
-      }
-      throw error;
-    } else {
-      let currentFactLink: Foundation.FactLink | null = null;
-      let URLIsValid = this.state.URLIsValid;
-      for (let factlink of factlinks) {
-        if (!URLIsValid) {
-          // Try to match the fact title from the hash with a valid title from the server
-          if (
-            this.state.urlValues &&
-            this.state.urlValues.factTitleSlug === slugify(factlink.fact.title)
-          ) {
-            currentFactLink = factlink;
-            URLIsValid = true;
-          }
-        }
-        let idx = factlink.hash;
-        timelineItems = [
-          ...timelineItems,
-          {
-            id: idx,
-            idx: idx,
-            start: new Date(factlink.fact.primaryDate),
-            content: factlink.fact.title,
-            kind: factlink.fact.kind,
-          },
-        ];
-      }
-      if (URLIsValid) {
-        this.factLinks = factlinks;
-        const newStateObject = {
-          loading: false,
-          factLink: currentFactLink ? currentFactLink : null,
-          timelineItems: timelineItems,
-          URLIsValid: true,
-        };
 
-        this.setState({
-          ...newStateObject,
-        });
-      } else {
-        if (window.location.pathname.startsWith(Routes.FOUNDATION + "/")) {
-          window.location.href = Routes.FOUNDATION;
+    let currentFactLink: Foundation.FactLink | null = null;
+    let URLIsValid = this.state.URLIsValid;
+    for (let factlink of factLinks) {
+      if (!URLIsValid) {
+        // Try to match the fact title from the hash with a valid title from the server
+        if (
+          this.state.urlValues &&
+          this.state.urlValues.factTitleSlug === slugify(factlink.fact.title)
+        ) {
+          currentFactLink = factlink;
+          URLIsValid = true;
         }
+      }
+      let idx = factlink.hash;
+      timelineItems = [
+        ...timelineItems,
+        {
+          id: idx,
+          idx: idx,
+          start: new Date(factlink.fact.primaryDate),
+          content: factlink.fact.title,
+          kind: factlink.fact.kind,
+        },
+      ];
+    }
+    if (URLIsValid) {
+      const newStateObject = {
+        factLink: currentFactLink ? currentFactLink : null,
+        timelineItems: timelineItems,
+        URLIsValid: true,
+      };
+
+      this.setState({
+        ...newStateObject,
+      });
+    } else {
+      if (window.location.pathname.startsWith(Routes.FOUNDATION + "/")) {
+        window.location.href = Routes.FOUNDATION;
       }
     }
-  };
-  getTimelineItems = () => {
-    getAllFacts(this.initializeTimeline);
   };
   handleChange = (ev: React.ChangeEvent<HTMLInputElement>) => {
     const value = ev.target.value;
@@ -143,7 +124,7 @@ export default class TimelineView extends React.Component<
     }
   };
   handleClick = (factHash: string) => {
-    for (let factLink of this.factLinks) {
+    for (let factLink of this.props.factLinks) {
       if (factLink.hash === factHash) {
         const factTitleSlug = slugify(factLink.fact.title);
         const stateObject: TimelineViewState = {
@@ -180,7 +161,7 @@ export default class TimelineView extends React.Component<
       this.updatingURL = false;
     } else {
       // Back button was pressed to get here but no state was pushed, reinitialize state
-      this.initializeTimeline(null, this.factLinks);
+      this.initializeTimeline();
     }
   };
   handleRangeSet = (
@@ -316,6 +297,9 @@ export default class TimelineView extends React.Component<
       Routes.DRAFTS_NEW + "/#" + excerptTitle + "&" + range[0] + "&" + range[1];
   };
   parseURL = (path: string): URLValues | null => {
+    /**
+     * @TODO https://github.com/mytakedotorg/mytakedotorg/issues/291
+     */
     const pathArr = path.substring(1).split("/");
     if (pathArr.length > 1) {
       if (Routes.FOUNDATION_V1.indexOf(pathArr[0]) !== -1) {
@@ -348,96 +332,44 @@ export default class TimelineView extends React.Component<
     }
   };
   componentDidMount() {
-    this.getTimelineItems();
+    this.initializeTimeline();
     window.addEventListener("popstate", this.handlePopState);
   }
   componentWillUnmount() {
     window.removeEventListener("popstate", this.handlePopState);
   }
   render() {
-    const setFactHandlers: SetFactHandlers = this.props.setFactHandlers
-      ? {
-          ...this.props.setFactHandlers,
-        }
-      : {
-          handleDocumentSetClick: this.handleDocumentSetClick,
-          handleVideoSetClick: this.handleVideoSetClick,
-          handleRangeSet: this.handleRangeSet,
-          handleRangeCleared: this.handleRangeCleared,
-        };
-    const eventHandlers: EventHandlers = {
-      handleChange: this.handleChange,
-      handleClick: this.handleClick,
-    };
-    return (
-      <TimelineViewBranch
-        containerState={this.state}
-        setFactHandlers={setFactHandlers}
-        eventHandlers={eventHandlers}
-      />
-    );
-  }
-}
-
-export interface EventHandlers {
-  handleChange: (ev: React.ChangeEvent<HTMLInputElement>) => any;
-  handleClick: (excerptId: string) => void;
-}
-
-interface TimelineViewBranchProps {
-  containerState: TimelineViewState;
-  setFactHandlers: SetFactHandlers;
-  eventHandlers: EventHandlers;
-}
-
-interface TimelineViewBranchState {}
-
-export class TimelineViewBranch extends React.Component<
-  TimelineViewBranchProps,
-  TimelineViewBranchState
-> {
-  constructor(props: TimelineViewBranchProps) {
-    super(props);
-  }
-  render() {
-    const { props } = this;
+    const { urlValues } = this.state;
     let ranges;
-    if (
-      props.containerState.urlValues &&
-      props.containerState.urlValues.highlightedRange
-    ) {
-      if (props.containerState.urlValues.viewRange) {
+    if (urlValues && urlValues.highlightedRange) {
+      if (urlValues.viewRange) {
         ranges = {
-          highlightedRange: props.containerState.urlValues.highlightedRange,
-          viewRange: props.containerState.urlValues.viewRange,
+          highlightedRange: urlValues.highlightedRange,
+          viewRange: urlValues.viewRange,
         };
       } else {
         ranges = {
-          highlightedRange: props.containerState.urlValues.highlightedRange,
+          highlightedRange: urlValues.highlightedRange,
         };
       }
     }
     return (
       <div className={"timeline__view"}>
-        {props.containerState.loading ? (
-          <TimelineLoadingView />
-        ) : (
-          <div>
-            <TimelineRadioButtons
-              selectedOption={props.containerState.selectedOption}
-              onChange={props.eventHandlers.handleChange}
-            />
-            <Timeline
-              onItemClick={props.eventHandlers.handleClick}
-              selectedOption={props.containerState.selectedOption}
-              timelineItems={props.containerState.timelineItems}
-            />
-          </div>
+        <TimelineRadioButtons
+          selectedOption={this.state.selectedOption}
+          onChange={this.handleChange}
+        />
+        {this.state.timelineItems.length > 0 && (
+          <Timeline
+            onItemClick={this.handleClick}
+            selectedOption={this.state.selectedOption}
+            timelineItems={this.state.timelineItems}
+          />
         )}
-        {props.containerState.factLink ? (
+        {this.state.factLink ? (
           <TimelinePreviewContainer
-            factLink={props.containerState.factLink}
-            setFactHandlers={props.setFactHandlers}
+            factLink={this.state.factLink}
+            setFactHandlers={this.props.setFactHandlers}
             ranges={ranges}
           />
         ) : null}

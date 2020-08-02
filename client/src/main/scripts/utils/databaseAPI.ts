@@ -142,17 +142,17 @@ function fetchFact(
     });
 }
 
-export interface VideoFactHashMap {
-  hash: string;
-  videoFact: Foundation.VideoFactContent;
-}
+export type FactHashMap = [
+  string,
+  Foundation.VideoFactContent | Foundation.DocumentFactContent
+];
 
 export function fetchFactReturningPromise(
   factHash: string
-): Promise<VideoFactHashMap> {
+): Promise<FactHashMap> {
   const headers = new Headers();
 
-  headers.append("Accept", "application/json"); // This one is enough for GET requests
+  headers.append("Accept", "application/json");
 
   const request: RequestInit = {
     method: "GET",
@@ -170,17 +170,17 @@ export function fetchFactReturningPromise(
       ) {
         return response.json();
       }
+      throw "Expected an OK JSON response";
     })
-    .then(function (json: Foundation.VideoFactContentEncoded) {
-      return {
-        hash: factHash,
-        videoFact: decodeVideoFact(json),
-      };
+    .then(function (
+      json: Foundation.VideoFactContentEncoded | Foundation.DocumentFactContent
+    ) {
+      return [factHash, isVideo(json) ? decodeVideoFact(json) : json];
     });
 }
 
 function isDocument(
-  fact: Foundation.DocumentFactContent | Foundation.VideoFactContent | null
+  fact?: Foundation.DocumentFactContent | Foundation.VideoFactContent | null
 ): fact is Foundation.DocumentFactContent {
   if (fact) {
     return (fact as Foundation.DocumentFactContent).fact.kind === "document";
@@ -189,11 +189,12 @@ function isDocument(
   }
 }
 
-function isVideo(
-  fact: Foundation.DocumentFactContent | Foundation.VideoFactContent | null
-): fact is Foundation.VideoFactContent {
+export type VideoContent =
+  | Foundation.VideoFactContent
+  | Foundation.VideoFactContentEncoded;
+function isVideo(fact?: Foundation.FactContent | null): fact is VideoContent {
   if (fact) {
-    return (fact as Foundation.VideoFactContent).fact.kind === "video";
+    return (fact as VideoContent).fact.kind === "video";
   } else {
     return false;
   }
@@ -242,6 +243,38 @@ function postRequest(
       alertErr("databaseAPI + " + route + ": " + error.message);
       throw error;
     });
+}
+
+// @TODO refactor to replace `postRequet` that accepts a callback with this
+export function postRequestReturningPromise(route: string, bodyJson: any) {
+  const headers = new Headers();
+
+  headers.append("Accept", "application/json"); // This one is enough for GET requests
+  headers.append("Content-Type", "application/json"); // This one sends body
+
+  const request: RequestInit = {
+    method: "POST",
+    credentials: "include",
+    headers: headers,
+    body: JSON.stringify(bodyJson),
+  };
+  return fetch(route, request).then((response) => {
+    const contentType = response.headers.get("content-type");
+    if (
+      contentType &&
+      contentType.indexOf("application/json") >= 0 &&
+      response.ok
+    ) {
+      return response.json();
+    } else if (route === Routes.DRAFTS_DELETE && response.ok) {
+      window.location.href = Routes.DRAFTS;
+    } else if (route === Routes.API_EMAIL_SELF && response.ok) {
+      return;
+    } else {
+      alertErr("databaseAPI + " + route + ": Unexpected response from server.");
+      throw "Unexpected response from server.";
+    }
+  });
 }
 
 interface DocumentImageURI {

@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2017-2018 MyTake.org, Inc.
+ * Copyright (C) 2017-2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -18,7 +18,7 @@
  * You can contact us at team@mytake.org
  */
 import * as React from "react";
-import TimelineView from "./TimelineView";
+import TimelineLoader from "./TimelineLoader";
 import { Routes } from "../java2ts/Routes";
 
 interface FoundationViewProps {
@@ -34,7 +34,7 @@ class FoundationView extends React.Component<FoundationViewProps, {}> {
     return (
       <div className="foundation">
         {!this.props.path.startsWith(Routes.FOUNDATION) ? (
-          <TimelineView path={this.props.path} />
+          <TimelineLoader path={this.props.path} />
         ) : (
           <div>
             <div className="foundation__inner-container">
@@ -52,7 +52,7 @@ class FoundationView extends React.Component<FoundationViewProps, {}> {
                 Explore Facts in the timeline below.
               </p>
             </div>
-            <TimelineView path={this.props.path} />
+            <TimelineLoader path={this.props.path} />
           </div>
         )}
       </div>
