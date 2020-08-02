@@ -18,13 +18,13 @@
  * You can contact us at team@mytake.org
  */
 import * as React from "react";
-import { FT } from "../java2ts/FT";
 import { FoundationNode } from "../common/CaptionNodes";
 import {
   DocumentBlock,
   TakeBlock,
   VideoBlock,
 } from "../components/BlockEditor";
+import { FT } from "../java2ts/FT";
 var bs = require("binary-search");
 
 export function getNodesInRange(

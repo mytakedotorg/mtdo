@@ -17,13 +17,13 @@
  *
  * You can contact us at team@mytake.org
  */
-import React, { useState, useEffect } from "react";
-import DocumentTextNodeList from "./DocumentTextNodeList";
+import React, { useEffect, useState } from "react";
+import { FoundationNode } from "../common/CaptionNodes";
 import { FT } from "../java2ts/FT";
 import { FoundationDataBuilder } from "../utils/foundationData/FoundationDataBuilder";
-import { FoundationNode } from "../common/CaptionNodes";
 import { alertErr, getHighlightedNodes } from "../utils/functions";
 import { TakeBlock } from "./BlockEditor";
+import DocumentTextNodeList from "./DocumentTextNodeList";
 
 interface FeedCardContainerProps {
   username: string;

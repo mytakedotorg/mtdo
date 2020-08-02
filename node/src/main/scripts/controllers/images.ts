@@ -17,11 +17,11 @@
  *
  * You can contact us at team@mytake.org
  */
+import * as express from "express";
 import { Request, Response } from "express";
-import { FT } from "../java2ts/FT";
 import { decodeVideoFact } from "../common/DecodeVideoFact";
 import { drawDocumentFact, drawVideoFact } from "../common/DrawFacts";
-import * as express from "express";
+import { FT } from "../java2ts/FT";
 const { registerFont, createCanvas } = require("canvas");
 const router = express.Router();
 registerFont("Merriweather-Regular.ttf", {

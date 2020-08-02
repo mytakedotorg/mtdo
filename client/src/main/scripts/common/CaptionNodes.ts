@@ -18,8 +18,8 @@
  * You can contact us at team@mytake.org
  */
 import * as React from "react";
-var bs = require("binary-search");
 import { FT } from "../java2ts/FT";
+var bs = require("binary-search");
 export type CaptionNodeArr = Array<CaptionNode | Array<CaptionNode>>;
 
 export type CaptionNode =

@@ -17,12 +17,12 @@
  *
  * You can contact us at team@mytake.org
  */
-import React, { useState, useEffect } from "react";
-import TimelineView from "./TimelineView";
-import { SetFactHandlers } from "./TimelinePreview";
-import TimelineLoadingView from "./TimelineLoadingView";
+import React, { useEffect, useState } from "react";
 import { FT } from "../java2ts/FT";
 import { FoundationDataBuilder } from "../utils/foundationData/FoundationDataBuilder";
+import TimelineLoadingView from "./TimelineLoadingView";
+import { SetFactHandlers } from "./TimelinePreview";
+import TimelineView from "./TimelineView";
 
 interface TimelineLoaderProps {
   path: string;

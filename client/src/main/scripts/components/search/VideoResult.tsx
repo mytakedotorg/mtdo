@@ -19,10 +19,10 @@
  */
 import * as React from "react";
 import { FT } from "../../java2ts/FT";
-import { SelectionOptions } from "./VideoResultsList";
+import { Routes } from "../../java2ts/Routes";
 import { convertSecondsToTimestamp, slugify } from "../../utils/functions";
 import { MultiHighlight } from "./searchUtils";
-import { Routes } from "../../java2ts/Routes";
+import { SelectionOptions } from "./VideoResultsList";
 var bs = require("binary-search");
 
 export type PlayEvent = (

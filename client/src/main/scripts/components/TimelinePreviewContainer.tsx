@@ -17,14 +17,14 @@
  *
  * You can contact us at team@mytake.org
  */
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { FoundationNode } from "../common/CaptionNodes";
+import { FT } from "../java2ts/FT";
+import { isDocument, isVideo } from "../utils/foundationData/FoundationData";
+import { FoundationDataBuilder } from "../utils/foundationData/FoundationDataBuilder";
 import { alertErr } from "../utils/functions";
 import TimelinePreview, { Ranges, SetFactHandlers } from "./TimelinePreview";
 import TimelinePreviewLoadingView from "./TimelinePreviewLoadingView";
-import { FT } from "../java2ts/FT";
-import { isVideo, isDocument } from "../utils/foundationData/FoundationData";
-import { FoundationDataBuilder } from "../utils/foundationData/FoundationDataBuilder";
 
 interface TimelinePreviewContainerProps {
   factLink: FT.FactLink;

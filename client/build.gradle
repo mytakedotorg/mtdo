@@ -20,11 +20,11 @@ spotless {
 		licenseHeaderFile rootProject.file('gradle/spotless-license-agpl.java'), '(import|const|declare|export|var) '
 		target 'src/main/scripts/**'
 		targetExclude '**/java2ts/**', '**/__snapshots__/**', '**/*.json'
-		prettier(VER_PRETTIER)
+		prettier(['prettier': VER_PRETTIER, 'prettier-plugin-organize-imports': VER_PRETTIER_ORGANIZE_IMPORTS])
 	}
 	format 'js', {
 		target 'gulpfile.js'
-		prettier(VER_PRETTIER)
+		prettier(['prettier': VER_PRETTIER, 'prettier-plugin-organize-imports': VER_PRETTIER_ORGANIZE_IMPORTS])
 	}
 }
 

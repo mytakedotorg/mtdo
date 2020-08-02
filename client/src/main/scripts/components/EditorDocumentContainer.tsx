@@ -17,19 +17,19 @@
  *
  * You can contact us at team@mytake.org
  */
-import * as React from "react";
 import keycode from "keycode";
-import DocumentTextNodeList from "./DocumentTextNodeList";
-import { getHighlightedNodes } from "../utils/functions";
+import * as React from "react";
 import { FoundationNode } from "../common/CaptionNodes";
 import { DocumentBlock } from "../java2ts/DocumentBlock";
 import { FT } from "../java2ts/FT";
 import { FoundationDataBuilder } from "../utils/foundationData/FoundationDataBuilder";
+import { getHighlightedNodes } from "../utils/functions";
 import {
   isWriteOnly,
   ReadingEventHandlers,
   WritingEventHandlers,
 } from "./BlockEditor";
+import DocumentTextNodeList from "./DocumentTextNodeList";
 
 export interface EditorDocumentContainerProps {
   idx: number;

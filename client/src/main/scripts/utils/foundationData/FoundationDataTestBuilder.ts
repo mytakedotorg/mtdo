@@ -17,12 +17,11 @@
  *
  * You can contact us at team@mytake.org
  */
-import { isVideo, FoundationData } from "./FoundationData";
-import { FT } from "../../java2ts/FT";
 import { decodeVideoFact } from "../../common/DecodeVideoFact";
+import { FT } from "../../java2ts/FT";
+import { FoundationData, isVideo } from "./FoundationData";
 
 import fs = require("fs");
-import content from "*.sbv";
 
 export class FoundationDataTestBuilder {
   private hashToContent: Map<

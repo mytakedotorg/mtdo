@@ -19,12 +19,12 @@
  */
 import * as React from "react";
 import YouTube from "react-youtube";
-import isEqual = require("lodash/isEqual");
 import { getCharRangeFromVideoRange } from "../common/CaptionNodes";
-import { alertErr, copyToClipboard, slugify } from "../utils/functions";
 import { FT } from "../java2ts/FT";
-import CaptionView, { CaptionViewEventHandlers } from "./CaptionView";
 import { Routes } from "../java2ts/Routes";
+import { alertErr, copyToClipboard, slugify } from "../utils/functions";
+import CaptionView, { CaptionViewEventHandlers } from "./CaptionView";
+import isEqual = require("lodash/isEqual");
 
 interface YTPlayerParameters {
   rel: number;

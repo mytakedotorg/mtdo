@@ -18,13 +18,13 @@
  * You can contact us at team@mytake.org
  */
 import * as React from "react";
-import Timeline, { TimelineItemData } from "./Timeline";
-import TimelinePreviewContainer from "./TimelinePreviewContainer";
-import TimelineRadioButtons from "./TimelineRadioButtons";
-import { SetFactHandlers } from "./TimelinePreview";
 import { FT } from "../java2ts/FT";
 import { Routes } from "../java2ts/Routes";
 import { alertErr, slugify } from "../utils/functions";
+import Timeline, { TimelineItemData } from "./Timeline";
+import { SetFactHandlers } from "./TimelinePreview";
+import TimelinePreviewContainer from "./TimelinePreviewContainer";
+import TimelineRadioButtons from "./TimelineRadioButtons";
 
 interface URLValues {
   factTitleSlug: string;

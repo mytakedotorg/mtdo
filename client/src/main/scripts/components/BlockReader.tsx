@@ -18,11 +18,11 @@
  * You can contact us at team@mytake.org
  */
 import * as React from "react";
-import BlockEditor, { TakeDocument } from "./BlockEditor";
-import ReactionContainer from "./ReactionContainer";
-import { slugify } from "../utils/functions";
 import { FT } from "../java2ts/FT";
 import { Routes } from "../java2ts/Routes";
+import { slugify } from "../utils/functions";
+import BlockEditor, { TakeDocument } from "./BlockEditor";
+import ReactionContainer from "./ReactionContainer";
 
 interface BlockReaderProps {
   initState: TakeDocument;

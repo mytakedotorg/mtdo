@@ -17,14 +17,14 @@
  *
  * You can contact us at team@mytake.org
  */
-import * as React from "react";
 import keycode from "keycode";
-import Video from "./Video";
+import * as React from "react";
 import { FT } from "../java2ts/FT";
-import { FoundationDataBuilder } from "../utils/foundationData/FoundationDataBuilder";
 import { Routes } from "../java2ts/Routes";
 import { VideoBlock } from "../java2ts/VideoBlock";
+import { FoundationDataBuilder } from "../utils/foundationData/FoundationDataBuilder";
 import { isWriteOnly, WritingEventHandlers } from "./BlockEditor";
+import Video from "./Video";
 
 export interface EditorVideoContainerProps {
   idx: number;

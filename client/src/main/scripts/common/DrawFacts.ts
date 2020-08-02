@@ -20,15 +20,15 @@
 import { ReactElement } from "react";
 import { FT } from "../java2ts/FT";
 import { ImageProps } from "../java2ts/ImageProps";
+import { loadImage } from "../utils/loadImage";
 import {
+  CaptionNode,
+  FoundationNode,
   getCaptionNodeArray,
   getCharRangeFromVideoRange,
   highlightCaption,
-  CaptionNode,
-  FoundationNode,
 } from "./CaptionNodes";
 import { getHighlightedNodes } from "./DocumentNodes";
-import { loadImage } from "../utils/loadImage";
 
 const drawSpecs = Object.freeze({
   textMargin: 16,

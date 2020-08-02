@@ -17,12 +17,12 @@
  *
  * You can contact us at team@mytake.org
  */
-import { FT } from "../java2ts/FT";
-import { TimelineItemData } from "../components/Timeline";
 import { CaptionNodeArr, FoundationNode } from "../common/CaptionNodes";
-import { Card } from "../components/FeedList";
 import { TakeDocument } from "../components/BlockEditor";
+import { Card } from "../components/FeedList";
+import { TimelineItemData } from "../components/Timeline";
 import { StylesObject, TimeRange } from "../components/Video";
+import { FT } from "../java2ts/FT";
 
 const videoFactFast: FT.VideoFactContent = {
   fact: {

@@ -17,11 +17,10 @@
  *
  * You can contact us at team@mytake.org
  */
-import { isVideo, FoundationData } from "./FoundationData";
+import { decodeVideoFact } from "../../common/DecodeVideoFact";
 import { FT } from "../../java2ts/FT";
 import { Routes } from "../../java2ts/Routes";
-import { decodeVideoFact } from "../../common/DecodeVideoFact";
-import { alertErr } from "../functions";
+import { FoundationData, isVideo } from "./FoundationData";
 
 export class FoundationDataBuilder {
   requestedFacts: string[] = [];

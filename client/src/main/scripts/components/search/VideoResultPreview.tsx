@@ -18,11 +18,11 @@
  * You can contact us at team@mytake.org
  */
 import React from "react";
+import { FT } from "../../java2ts/FT";
+import { alertErr } from "../../utils/functions";
+import { MultiHighlight, TurnFinder } from "./searchUtils";
 import VideoResult, { PlayEvent } from "./VideoResult";
 import { SelectionOptions } from "./VideoResultsList";
-import { FT } from "../../java2ts/FT";
-import { MultiHighlight, TurnFinder } from "./searchUtils";
-import { alertErr } from "../../utils/functions";
 
 export interface VideoResultPreviewEventHandlers {
   onPlayClick: PlayEvent;

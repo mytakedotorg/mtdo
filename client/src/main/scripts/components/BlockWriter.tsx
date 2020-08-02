@@ -18,6 +18,15 @@
  * You can contact us at team@mytake.org
  */
 import * as React from "react";
+import { DraftPost } from "../java2ts/DraftPost";
+import { DraftRev } from "../java2ts/DraftRev";
+import { PublishResult } from "../java2ts/PublishResult";
+import { Routes } from "../java2ts/Routes";
+import {
+  FoundationDataBuilder,
+  post,
+} from "../utils/foundationData/FoundationDataBuilder";
+import { alertErr, getFirstFactBlock, slugify } from "../utils/functions";
 import BlockEditor, {
   DocumentBlock,
   ParagraphBlock,
@@ -25,18 +34,8 @@ import BlockEditor, {
   TakeDocument,
   VideoBlock,
 } from "./BlockEditor";
-import TimelineLoader from "./TimelineLoader";
 import EditorButtons from "./EditorButtons";
-import { DraftRev } from "../java2ts/DraftRev";
-import { DraftPost } from "../java2ts/DraftPost";
-import { FT } from "../java2ts/FT";
-import {
-  FoundationDataBuilder,
-  post,
-} from "../utils/foundationData/FoundationDataBuilder";
-import { PublishResult } from "../java2ts/PublishResult";
-import { Routes } from "../java2ts/Routes";
-import { alertErr, getFirstFactBlock, slugify } from "../utils/functions";
+import TimelineLoader from "./TimelineLoader";
 
 interface BlockWriterProps {
   initState: InitialBlockWriterState;

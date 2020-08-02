@@ -18,10 +18,10 @@
  * You can contact us at team@mytake.org
  */
 import * as React from "react";
-import { alertErr } from "../utils/functions";
 import { CaptionNodeArr } from "../common/CaptionNodes";
-import NumberLineTransform from "../utils/numberLineTransform";
 import { FT } from "../java2ts/FT";
+import { alertErr } from "../utils/functions";
+import NumberLineTransform from "../utils/numberLineTransform";
 import CaptionTextNodeList, {
   CaptionTextNodeListEventHandlers,
 } from "./CaptionTextNodeList";

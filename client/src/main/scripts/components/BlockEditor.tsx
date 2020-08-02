@@ -17,14 +17,14 @@
  *
  * You can contact us at team@mytake.org
  */
-import * as React from "react";
 import keycode from "keycode";
-import EditorDocumentContainer from "./EditorDocumentContainer";
-import EditorVideoContainer from "./EditorVideoContainer";
+import * as React from "react";
+import { DocumentBlock } from "../java2ts/DocumentBlock";
 import { FT } from "../java2ts/FT";
 import { ParagraphBlock } from "../java2ts/ParagraphBlock";
-import { DocumentBlock } from "../java2ts/DocumentBlock";
 import { VideoBlock } from "../java2ts/VideoBlock";
+import EditorDocumentContainer from "./EditorDocumentContainer";
+import EditorVideoContainer from "./EditorVideoContainer";
 export { ParagraphBlock, DocumentBlock, VideoBlock };
 export type TakeBlock = ParagraphBlock | DocumentBlock | VideoBlock;
 export interface TakeDocument {
