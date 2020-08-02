@@ -40,7 +40,6 @@ public class CodegenConfig implements StaticCodegenConfig {
 		return new TypeLiteral[]{
 				TypeLiteral.create(DraftRev.class),
 				TypeLiteral.create(DraftPost.class),
-				TypeLiteral.create(EmailSelf.class),
 				TypeLiteral.create(PublishResult.class),
 				TypeLiteral.create(LoginCookie.class),
 				TypeLiteral.create(TakeReactionJson.UserState.class),

@@ -20,7 +20,6 @@
 import { ImageProps } from "../java2ts/ImageProps";
 import { Foundation } from "../java2ts/Foundation";
 import { Routes } from "../java2ts/Routes";
-import { EmailSelf } from "../java2ts/EmailSelf";
 import { decodeVideoFact } from "../common/DecodeVideoFact";
 import { drawVideoFact, drawDocument, drawSpecs } from "../common/DrawFacts";
 import { FoundationNode } from "../common/CaptionNodes";
