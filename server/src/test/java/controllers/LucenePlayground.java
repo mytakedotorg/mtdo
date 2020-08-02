@@ -21,7 +21,6 @@ package controllers;
 
 import com.jsoniter.output.JsonStream;
 import java.io.IOException;
-import java2ts.Search;
 import java2ts.Search.FactResultList;
 import org.mytake.lucene.Lucene;
 
@@ -30,9 +29,7 @@ public class LucenePlayground {
 		try (Lucene lucene = Lucene.openFromArchive()) {
 			// this prints something to the console
 			// which is used by VideoResultsList.spec.tsx
-			Search.Request request = new Search.Request();
-			request.q = "social security";
-			FactResultList resultList = lucene.searchDebate(request);
+			FactResultList resultList = lucene.searchDebate("social security");
 			System.out.println(JsonStream.serialize(resultList));
 		}
 	}
