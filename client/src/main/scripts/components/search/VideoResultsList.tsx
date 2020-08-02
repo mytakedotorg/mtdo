@@ -29,7 +29,7 @@ import { SearchResult } from "./database/SearchDatabaseApi";
 
 export type SelectionOptions = "Containing" | "BeforeAndAfter";
 
-export interface VideoResultsListProps {
+interface VideoResultsListProps {
   searchResult: SearchResult;
 }
 

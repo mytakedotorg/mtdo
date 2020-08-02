@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2018-2019 MyTake.org, Inc.
+ * Copyright (C) 2018-2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -30,7 +30,7 @@ import {
 import { getHighlightedNodes } from "./DocumentNodes";
 import { loadImage } from "../utils/loadImage";
 
-export const drawSpecs = Object.freeze({
+const drawSpecs = Object.freeze({
   textMargin: 16,
   width: 480,
   linewidth: 468,
@@ -111,7 +111,7 @@ export function drawVideoFact(
   });
 }
 
-export function drawCaption(
+function drawCaption(
   canvas: HTMLCanvasElement,
   thumb: HTMLImageElement,
   text: string
@@ -176,7 +176,7 @@ interface Dimensions {
   totalHeight: number;
 }
 
-export function drawText(
+function drawText(
   ctx: CanvasRenderingContext2D,
   words: string,
   fontsize: number,
@@ -251,7 +251,7 @@ export function drawText(
   };
 }
 
-export function drawDocumentText(
+function drawDocumentText(
   ctx: CanvasRenderingContext2D,
   nodes: FoundationNode[],
   title: string
@@ -332,7 +332,7 @@ export function drawDocumentText(
   return y;
 }
 
-export function drawDocument(
+function drawDocument(
   canvas: HTMLCanvasElement,
   nodes: FoundationNode[],
   title: string

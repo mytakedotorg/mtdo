@@ -53,7 +53,7 @@ interface TimelineRange {
   end: Date;
 }
 
-export interface TimelineSelectEventHandlerProps {
+interface TimelineSelectEventHandlerProps {
   items: TimelineItemData["id"][];
   event: Event;
 }

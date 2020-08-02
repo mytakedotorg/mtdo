@@ -33,7 +33,7 @@ interface YTPlayerParameters {
   playsinline: number;
 }
 
-export interface VideoLiteProps {
+interface VideoLiteProps {
   isFixed: boolean;
   onScroll: (fixVideo: boolean) => any;
   videoId: string;

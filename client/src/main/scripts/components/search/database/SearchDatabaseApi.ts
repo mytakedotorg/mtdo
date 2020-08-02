@@ -91,9 +91,9 @@ export function searchImpl(searchWithData: SearchWithData): SearchResult {
   return new SearchResult(videoFactsToTurns, searchQuery);
 }
 
-export type HashesToTurns = Map<string, number[]>;
+type HashesToTurns = Map<string, number[]>;
 
-export interface VideoFactsToTurns {
+interface VideoFactsToTurns {
   videoFact: Foundation.VideoFactContent;
   turns: number[];
 }
