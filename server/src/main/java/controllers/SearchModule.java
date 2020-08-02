@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2017-2018 MyTake.org, Inc.
+ * Copyright (C) 2017-2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -21,30 +21,31 @@ package controllers;
 
 import com.google.inject.Binder;
 import com.typesafe.config.Config;
+import forms.meta.MetaField;
 import java2ts.Routes;
-import java2ts.Search;
 import org.jooby.Env;
 import org.jooby.Jooby;
 import org.jooby.Results;
 import org.mytake.lucene.Lucene;
 
 public class SearchModule implements Jooby.Module {
+	private static final MetaField<String> Q = MetaField.string("q");
+
 	@Override
 	public void configure(Env env, Config conf, Binder binder) throws Throwable {
 		Lucene lucene = Lucene.openFromArchive();
 		env.onStop(() -> {
 			lucene.close();
 		});
-		env.router().post(Routes.API_SEARCH, req -> {
-			Search.Request request = req.body(Search.Request.class);
-			return lucene.searchDebate(request);
+		env.router().get(Routes.API_SEARCH, req -> {
+			return lucene.searchDebate(Q.parse(req));
 		});
 		env.router().get(Routes.SEARCH, req -> {
-			Search.Request request = req.params(Search.Request.class);
-			if (request.q == null) {
+			String query = Q.parseOrDefault(req, "");
+			if (query.isEmpty()) {
 				return Results.redirect(Routes.FOUNDATION);
 			} else {
-				return views.Search.searchResults.template(request.q);
+				return views.Search.searchResults.template(query);
 			}
 		});
 	}

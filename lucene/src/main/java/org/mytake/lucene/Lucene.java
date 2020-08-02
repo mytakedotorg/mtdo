@@ -33,7 +33,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 import java.util.TreeSet;
-import java2ts.Search;
 import java2ts.Search.FactResultList;
 import java2ts.Search.VideoResult;
 import org.apache.lucene.analysis.Analyzer;
@@ -176,8 +175,8 @@ public class Lucene implements AutoCloseable {
 		}
 	}
 
-	public FactResultList searchDebate(Search.Request request) throws IOException {
-		NextRequest next = new NextRequest(request.q);
+	public FactResultList searchDebate(String query) throws IOException {
+		NextRequest next = new NextRequest(query);
 		return searchDebate(next);
 	}
 
