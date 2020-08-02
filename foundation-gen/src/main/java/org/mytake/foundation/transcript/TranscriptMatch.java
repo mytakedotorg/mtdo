@@ -1,6 +1,6 @@
 /*
  * MyTake.org transcript GUI.
- * Copyright (C) 2018 MyTake.org, Inc.
+ * Copyright (C) 2018-2020 MyTake.org, Inc.
  * 
  * The MyTake.org transcript GUI is licensed under EPLv2
  * because SWT is incompatible with AGPLv3, the rest of
@@ -23,7 +23,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-import java2ts.Foundation;
+import java2ts.FT;
 import javax.annotation.Nullable;
 import org.eclipse.jgit.diff.Edit;
 import org.eclipse.jgit.diff.MyersDiff;
@@ -32,7 +32,7 @@ import org.eclipse.jgit.diff.SequenceComparator;
 import org.mytake.foundation.transcript.SaidTranscript.Turn;
 
 public class TranscriptMatch {
-	private final Foundation.VideoFactMeta meta;
+	private final FT.VideoFactMeta meta;
 	private final SaidTranscript said;
 	private final VttTranscript vtt;
 
@@ -41,11 +41,11 @@ public class TranscriptMatch {
 
 	private final List<Edit> editList;
 
-	public TranscriptMatch(Foundation.VideoFactMeta meta, SaidTranscript said, VttTranscript vtt) {
+	public TranscriptMatch(FT.VideoFactMeta meta, SaidTranscript said, VttTranscript vtt) {
 		this(meta, said, vtt, vtt.words());
 	}
 
-	private TranscriptMatch(Foundation.VideoFactMeta meta, SaidTranscript said, VttTranscript vtt, List<Word.Vtt> vttWords) {
+	private TranscriptMatch(FT.VideoFactMeta meta, SaidTranscript said, VttTranscript vtt, List<Word.Vtt> vttWords) {
 		this.meta = meta;
 		this.said = said;
 		this.vtt = vtt;
@@ -80,7 +80,7 @@ public class TranscriptMatch {
 		return new TranscriptMatch(meta, said, vtt, new ArrayList<>(newVtt));
 	}
 
-	public Foundation.VideoFactMeta meta() {
+	public FT.VideoFactMeta meta() {
 		return meta;
 	}
 

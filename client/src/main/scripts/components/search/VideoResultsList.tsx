@@ -24,7 +24,7 @@ import VideoPlaceholder from "../VideoPlaceholder";
 import VideoResultPreview from "./VideoResultPreview";
 import { VideoResultPreviewEventHandlers } from "./VideoResultPreview";
 import { alertErr } from "../../utils/functions";
-import { Foundation } from "../../java2ts/Foundation";
+import { FT } from "../../java2ts/FT";
 import { SearchResult } from "./database/SearchDatabaseApi";
 
 export type SelectionOptions = "Containing" | "BeforeAndAfter";
@@ -74,7 +74,7 @@ export class VideoResultsList extends React.Component<
     }
   };
   handlePlayClick = (
-    videoFact: Foundation.VideoFactContent,
+    videoFact: FT.VideoFactContent,
     clipRange: [number, number]
   ) => {
     this.setState({

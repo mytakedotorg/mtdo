@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2018-2019 MyTake.org, Inc.
+ * Copyright (C) 2018-2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -19,7 +19,7 @@
  */
 import * as React from "react";
 var bs = require("binary-search");
-import { Foundation } from "../java2ts/Foundation";
+import { FT } from "../java2ts/FT";
 export type CaptionNodeArr = Array<CaptionNode | Array<CaptionNode>>;
 
 export type CaptionNode =
@@ -39,7 +39,7 @@ export interface FoundationNode {
 }
 
 export function getCaptionNodeArray(
-  videoFact: Foundation.VideoFactContent
+  videoFact: FT.VideoFactContent
 ): Array<string> {
   let output: Array<string> = [];
   let prevOffset = 0;

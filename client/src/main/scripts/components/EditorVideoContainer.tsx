@@ -20,7 +20,7 @@
 import * as React from "react";
 import keycode from "keycode";
 import Video from "./Video";
-import { Foundation } from "../java2ts/Foundation";
+import { FT } from "../java2ts/FT";
 import { FoundationDataBuilder } from "../utils/foundationData/FoundationDataBuilder";
 import { Routes } from "../java2ts/Routes";
 import { VideoBlock } from "../java2ts/VideoBlock";
@@ -35,7 +35,7 @@ export interface EditorVideoContainerProps {
 
 export interface EditorVideoContainerState {
   loading: boolean;
-  videoFact?: Foundation.VideoFactContent;
+  videoFact?: FT.VideoFactContent;
 }
 
 class EditorVideoContainer extends React.Component<
@@ -106,7 +106,7 @@ const VideoLoadingView: React.StatelessComponent<{}> = (props) => (
 interface EditorVideoBlockProps {
   idx: number;
   active: boolean;
-  videoFact: Foundation.VideoFactContent;
+  videoFact: FT.VideoFactContent;
   factHash: string;
   range?: [number, number];
   eventHandlers?: WritingEventHandlers;

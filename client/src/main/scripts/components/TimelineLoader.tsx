@@ -21,7 +21,7 @@ import React, { useState, useEffect } from "react";
 import TimelineView from "./TimelineView";
 import { SetFactHandlers } from "./TimelinePreview";
 import TimelineLoadingView from "./TimelineLoadingView";
-import { Foundation } from "../java2ts/Foundation";
+import { FT } from "../java2ts/FT";
 import { FoundationDataBuilder } from "../utils/foundationData/FoundationDataBuilder";
 
 interface TimelineLoaderProps {
@@ -30,7 +30,7 @@ interface TimelineLoaderProps {
 }
 
 interface TimelineLoaderState {
-  facts?: Foundation.FactLink[];
+  facts?: FT.FactLink[];
 }
 
 const TimelineLoader: React.FC<TimelineLoaderProps> = (props) => {
@@ -38,7 +38,7 @@ const TimelineLoader: React.FC<TimelineLoaderProps> = (props) => {
 
   useEffect(() => {
     async function getAllFacts() {
-      const allFacts: Foundation.FactLink[] = await FoundationDataBuilder.index();
+      const allFacts: FT.FactLink[] = await FoundationDataBuilder.index();
       setState({
         facts: allFacts,
       });

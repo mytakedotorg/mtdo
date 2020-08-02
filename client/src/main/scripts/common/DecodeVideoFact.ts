@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2018-2019 MyTake.org, Inc.
+ * Copyright (C) 2018-2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -18,11 +18,11 @@
  * You can contact us at team@mytake.org
  */
 var base64toArrayBuffer = require("base64-arraybuffer");
-import { Foundation } from "../java2ts/Foundation";
+import { FT } from "../java2ts/FT";
 
 export function decodeVideoFact(
-  encoded: Foundation.VideoFactContentEncoded
-): Foundation.VideoFactContent {
+  encoded: FT.VideoFactContentEncoded
+): FT.VideoFactContent {
   const data: ArrayBuffer = base64toArrayBuffer.decode(encoded.data);
   // TODO: data is little-endian.  If the user's browser is big-endian,
   // the decoding will be invalid.  Someday we should detect if the

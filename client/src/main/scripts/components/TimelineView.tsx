@@ -22,7 +22,7 @@ import Timeline, { TimelineItemData } from "./Timeline";
 import TimelinePreviewContainer from "./TimelinePreviewContainer";
 import TimelineRadioButtons from "./TimelineRadioButtons";
 import { SetFactHandlers } from "./TimelinePreview";
-import { Foundation } from "../java2ts/Foundation";
+import { FT } from "../java2ts/FT";
 import { Routes } from "../java2ts/Routes";
 import { alertErr, slugify } from "../utils/functions";
 
@@ -35,13 +35,13 @@ interface URLValues {
 export type SelectionOptions = "Debates" | "Documents";
 
 interface TimelineViewProps {
-  factLinks: Foundation.FactLink[];
+  factLinks: FT.FactLink[];
   path: string;
   setFactHandlers?: SetFactHandlers;
 }
 
 interface TimelineViewState {
-  factLink: Foundation.FactLink | null;
+  factLink: FT.FactLink | null;
   selectedOption: SelectionOptions;
   timelineItems: TimelineItemData[];
   urlValues: URLValues | null;
@@ -72,7 +72,7 @@ export default class TimelineView extends React.Component<
     const { factLinks } = this.props;
     let timelineItems: TimelineItemData[] = [];
 
-    let currentFactLink: Foundation.FactLink | null = null;
+    let currentFactLink: FT.FactLink | null = null;
     let URLIsValid = this.state.URLIsValid;
     for (let factlink of factLinks) {
       if (!URLIsValid) {

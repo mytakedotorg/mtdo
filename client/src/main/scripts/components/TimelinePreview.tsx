@@ -32,7 +32,7 @@ import {
   getStartRangeOffsetTop,
   highlightText,
 } from "../utils/functions";
-import { Foundation } from "../java2ts/Foundation";
+import { FT } from "../java2ts/FT";
 import { Routes } from "../java2ts/Routes";
 
 export interface SetFactHandlers {
@@ -55,9 +55,9 @@ export interface Ranges {
 }
 
 interface TimelinePreviewProps {
-  factLink: Foundation.FactLink;
+  factLink: FT.FactLink;
   nodes?: FoundationNode[];
-  videoFact?: Foundation.VideoFactContent;
+  videoFact?: FT.VideoFactContent;
   setFactHandlers?: SetFactHandlers;
   ranges?: Ranges;
   offset?: number;

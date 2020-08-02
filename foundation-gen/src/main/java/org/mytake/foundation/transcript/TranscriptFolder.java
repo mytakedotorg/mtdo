@@ -1,6 +1,6 @@
 /*
  * MyTake.org transcript GUI.
- * Copyright (C) 2018 MyTake.org, Inc.
+ * Copyright (C) 2018-2020 MyTake.org, Inc.
  * 
  * The MyTake.org transcript GUI is licensed under EPLv2
  * because SWT is incompatible with AGPLv3, the rest of
@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-import java2ts.Foundation;
+import java2ts.FT;
 import org.mytake.foundation.JsonMisc;
 import org.mytake.foundation.transcript.VttTranscript.Mode;
 
@@ -106,8 +106,8 @@ public class TranscriptFolder {
 	/** Loads the given transcript. */
 	public TranscriptMatch loadTranscript(String name) throws IOException {
 		// load and validate the json speakers
-		Foundation.VideoFactMeta meta = loadMetaNoValidation(name);
-		for (Foundation.Speaker speaker : meta.speakers) {
+		FT.VideoFactMeta meta = loadMetaNoValidation(name);
+		for (FT.Speaker speaker : meta.speakers) {
 			Preconditions.checkArgument(people.contains(speaker.fullName), "Unknown person: %s", speaker.fullName);
 			Preconditions.checkArgument(roles.contains(speaker.role), "Unknown role: %s", speaker.role);
 		}
@@ -118,8 +118,8 @@ public class TranscriptFolder {
 	}
 
 	/** Loads transcript metadata without any validation. */
-	public Foundation.VideoFactMeta loadMetaNoValidation(String name) throws IOException {
-		return JsonMisc.fromJson(fileMeta(name), Foundation.VideoFactMeta.class);
+	public FT.VideoFactMeta loadMetaNoValidation(String name) throws IOException {
+		return JsonMisc.fromJson(fileMeta(name), FT.VideoFactMeta.class);
 	}
 
 	File fileMeta(String name) {

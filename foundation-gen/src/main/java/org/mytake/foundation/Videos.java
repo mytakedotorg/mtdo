@@ -1,6 +1,6 @@
 /*
  * MyTake.org transcript GUI.
- * Copyright (C) 2018 MyTake.org, Inc.
+ * Copyright (C) 2018-2020 MyTake.org, Inc.
  * 
  * The MyTake.org transcript GUI is licensed under EPLv2
  * because SWT is incompatible with AGPLv3, the rest of
@@ -15,7 +15,7 @@ package org.mytake.foundation;
 
 import com.diffplug.common.base.Throwing;
 import compat.java2ts.VideoFactContentJava;
-import java2ts.Foundation.VideoFactMeta;
+import java2ts.FT.VideoFactMeta;
 import org.mytake.foundation.transcript.TranscriptFolder;
 import org.mytake.foundation.transcript.TranscriptMatch;
 

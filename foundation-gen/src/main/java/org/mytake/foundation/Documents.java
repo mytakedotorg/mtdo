@@ -1,6 +1,6 @@
 /*
  * MyTake.org transcript GUI.
- * Copyright (C) 2017-2018 MyTake.org, Inc.
+ * Copyright (C) 2017-2020 MyTake.org, Inc.
  * 
  * The MyTake.org transcript GUI is licensed under EPLv2
  * because SWT is incompatible with AGPLv3, the rest of
@@ -17,9 +17,9 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.security.NoSuchAlgorithmException;
-import java2ts.Foundation;
-import java2ts.Foundation.DocumentFactContent;
-import java2ts.Foundation.Fact;
+import java2ts.FT;
+import java2ts.FT.DocumentFactContent;
+import java2ts.FT.Fact;
 import org.mytake.foundation.parsers.FoundationParser;
 
 public class Documents {
@@ -53,7 +53,7 @@ public class Documents {
 	}
 
 	private void add(String title, String date) throws NoSuchAlgorithmException, IOException {
-		add(title, date, "ratified", Foundation.KIND_DOCUMENT);
+		add(title, date, "ratified", FT.KIND_DOCUMENT);
 	}
 
 	private void add(String title, String date, String dateKind, String kind) throws NoSuchAlgorithmException, IOException {

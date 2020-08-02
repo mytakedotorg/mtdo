@@ -17,7 +17,7 @@
  *
  * You can contact us at team@mytake.org
  */
-import { Foundation } from "../../../java2ts/Foundation";
+import { FT } from "../../../java2ts/FT";
 import { Routes } from "../../../java2ts/Routes";
 import { Search } from "../../../java2ts/Search";
 import { FoundationData } from "../../../utils/foundationData/FoundationData";
@@ -94,6 +94,6 @@ export function searchImpl(searchWithData: SearchWithData): SearchResult {
 type HashesToTurns = Map<string, number[]>;
 
 interface VideoFactsToTurns {
-  videoFact: Foundation.VideoFactContent;
+  videoFact: FT.VideoFactContent;
   turns: number[];
 }

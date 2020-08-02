@@ -21,7 +21,7 @@ import * as React from "react";
 import { CaptionNode, CaptionNodeArr } from "../common/CaptionNodes";
 import CaptionTextNode from "./CaptionTextNode";
 import isEqual = require("lodash/isEqual");
-import { Foundation } from "../java2ts/Foundation";
+import { FT } from "../java2ts/FT";
 
 export interface CaptionTextNodeListEventHandlers {
   onMouseUp: () => any;
@@ -31,7 +31,7 @@ export interface CaptionTextNodeListEventHandlers {
 interface CaptionTextNodeListProps {
   documentNodes: CaptionNodeArr;
   eventHandlers: CaptionTextNodeListEventHandlers;
-  videoFact: Foundation.VideoFactContent;
+  videoFact: FT.VideoFactContent;
 }
 
 interface CaptionTextNodeListState {}

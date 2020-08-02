@@ -1,6 +1,6 @@
 /*
  * MyTake.org transcript GUI.
- * Copyright (C) 2017-2018 MyTake.org, Inc.
+ * Copyright (C) 2017-2020 MyTake.org, Inc.
  * 
  * The MyTake.org transcript GUI is licensed under EPLv2
  * because SWT is incompatible with AGPLv3, the rest of
@@ -16,7 +16,7 @@ package org.mytake.foundation;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java2ts.Foundation.IndexPointer;
+import java2ts.FT.IndexPointer;
 import java2ts.Routes;
 import org.mytake.lucene.Lucene;
 import org.mytake.lucene.ZipMisc;

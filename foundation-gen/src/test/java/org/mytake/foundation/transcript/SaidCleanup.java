@@ -21,7 +21,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java2ts.Foundation.VideoFactMeta;
+import java2ts.FT.VideoFactMeta;
 import org.mytake.foundation.transcript.SaidTranscript.Turn;
 
 /**

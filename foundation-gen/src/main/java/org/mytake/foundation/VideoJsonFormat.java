@@ -25,9 +25,9 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-import java2ts.Foundation.Fact;
-import java2ts.Foundation.Speaker;
-import java2ts.Foundation.VideoFactMeta;
+import java2ts.FT.Fact;
+import java2ts.FT.Speaker;
+import java2ts.FT.VideoFactMeta;
 
 /** Format-friendly version of {@link VideoFactMeta#VideoFactMeta}. */
 public class VideoJsonFormat {

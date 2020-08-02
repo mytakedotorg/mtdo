@@ -18,7 +18,7 @@
  * You can contact us at team@mytake.org
  */
 import * as React from "react";
-import { Foundation } from "../java2ts/Foundation";
+import { FT } from "../java2ts/FT";
 import { FoundationNode } from "../common/CaptionNodes";
 import {
   DocumentBlock,
@@ -591,7 +591,7 @@ export function getSimpleRangesFromHTMLRange(
 
 export function getWordRangeFromCharRange(
   charRange: [number, number],
-  videoFact: Foundation.VideoFactContent
+  videoFact: FT.VideoFactContent
 ): [number, number] {
   const firstChar = charRange[0];
   const lastChar = charRange[1];

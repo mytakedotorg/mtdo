@@ -20,7 +20,7 @@
 import React from "react";
 import VideoResult, { PlayEvent } from "./VideoResult";
 import { SelectionOptions } from "./VideoResultsList";
-import { Foundation } from "../../java2ts/Foundation";
+import { FT } from "../../java2ts/FT";
 import { MultiHighlight, TurnFinder } from "./searchUtils";
 import { alertErr } from "../../utils/functions";
 
@@ -33,7 +33,7 @@ interface VideoResultPreviewProps {
   searchQuery: string;
   sortBy: SelectionOptions;
   turns: number[];
-  videoFact: Foundation.VideoFactContent;
+  videoFact: FT.VideoFactContent;
 }
 
 const VideoResultPreview: React.FC<VideoResultPreviewProps> = (props) => {
@@ -73,7 +73,7 @@ const VideoResultPreview: React.FC<VideoResultPreviewProps> = (props) => {
 
 const getTurnContent = (
   turn: number,
-  videoFact: Foundation.VideoFactContent
+  videoFact: FT.VideoFactContent
 ): string => {
   let fullTurnText;
   const firstWord = videoFact.speakerWord[turn];

@@ -22,12 +22,12 @@ import { FoundationNode } from "../common/CaptionNodes";
 import { alertErr } from "../utils/functions";
 import TimelinePreview, { Ranges, SetFactHandlers } from "./TimelinePreview";
 import TimelinePreviewLoadingView from "./TimelinePreviewLoadingView";
-import { Foundation } from "../java2ts/Foundation";
+import { FT } from "../java2ts/FT";
 import { isVideo, isDocument } from "../utils/foundationData/FoundationData";
 import { FoundationDataBuilder } from "../utils/foundationData/FoundationDataBuilder";
 
 interface TimelinePreviewContainerProps {
-  factLink: Foundation.FactLink;
+  factLink: FT.FactLink;
   setFactHandlers?: SetFactHandlers;
   ranges?: Ranges;
   offset?: number;
@@ -35,7 +35,7 @@ interface TimelinePreviewContainerProps {
 
 interface TimelinePreviewContainerState {
   loading: boolean;
-  videoFact?: Foundation.VideoFactContent;
+  videoFact?: FT.VideoFactContent;
   nodes?: FoundationNode[];
 }
 

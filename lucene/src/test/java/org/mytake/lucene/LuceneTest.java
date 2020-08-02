@@ -24,8 +24,8 @@ import compat.java2ts.VideoFactContentJava;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Objects;
-import java2ts.Foundation;
-import java2ts.Foundation.Speaker;
+import java2ts.FT;
+import java2ts.FT.Speaker;
 import java2ts.Search;
 import org.assertj.core.api.Assertions;
 import org.junit.Rule;
@@ -48,8 +48,8 @@ public class LuceneTest {
 		darth.role = "candidate";
 
 		VideoFactContentJava fact = new VideoFactContentJava();
-		fact.fact = new Foundation.Fact();
-		fact.fact.kind = Foundation.KIND_VIDEO;
+		fact.fact = new FT.Fact();
+		fact.fact.kind = FT.KIND_VIDEO;
 		fact.fact.primaryDate = "2010-11-12";
 		fact.fact.primaryDateKind = "recorded";
 		fact.fact.title = "Title";

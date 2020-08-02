@@ -17,17 +17,17 @@
  *
  * You can contact us at team@mytake.org
  */
-import { Foundation } from "../../java2ts/Foundation";
+import { FT } from "../../java2ts/FT";
 
 export class FoundationData {
   constructor(
     private hashToContent: Map<
       string,
-      Foundation.VideoFactContent | Foundation.DocumentFactContent
+      FT.VideoFactContent | FT.DocumentFactContent
     >
   ) {}
 
-  getDocument(hash: string): Foundation.DocumentFactContent {
+  getDocument(hash: string): FT.DocumentFactContent {
     const content = this.hashToContent.get(hash);
     if (isDocument(content)) {
       return content;
@@ -35,7 +35,7 @@ export class FoundationData {
     throw `Content of hash ${hash} is not a document or is not loaded.`;
   }
 
-  getVideo(hash: string): Foundation.VideoFactContent {
+  getVideo(hash: string): FT.VideoFactContent {
     const content = this.hashToContent.get(hash);
     if (isVideo(content)) {
       return content;
@@ -43,9 +43,7 @@ export class FoundationData {
     throw `Content of hash ${hash} is not a video or is not loaded.`;
   }
 
-  getFactContent(
-    hash: string
-  ): Foundation.VideoFactContent | Foundation.DocumentFactContent {
+  getFactContent(hash: string): FT.VideoFactContent | FT.DocumentFactContent {
     const content = this.hashToContent.get(hash);
     if (content) {
       return content;
@@ -54,12 +52,8 @@ export class FoundationData {
   }
 }
 
-type VideoContent =
-  | Foundation.VideoFactContent
-  | Foundation.VideoFactContentEncoded;
-export function isVideo(
-  fact?: Foundation.FactContent | null
-): fact is VideoContent {
+type VideoContent = FT.VideoFactContent | FT.VideoFactContentEncoded;
+export function isVideo(fact?: FT.FactContent | null): fact is VideoContent {
   if (fact) {
     return (fact as VideoContent).fact.kind === "video";
   } else {
@@ -68,10 +62,10 @@ export function isVideo(
 }
 
 export function isDocument(
-  fact?: Foundation.DocumentFactContent | Foundation.VideoFactContent | null
-): fact is Foundation.DocumentFactContent {
+  fact?: FT.DocumentFactContent | FT.VideoFactContent | null
+): fact is FT.DocumentFactContent {
   if (fact) {
-    return (fact as Foundation.DocumentFactContent).fact.kind === "document";
+    return (fact as FT.DocumentFactContent).fact.kind === "document";
   } else {
     return false;
   }

@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2017-2018 MyTake.org, Inc.
+ * Copyright (C) 2017-2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -21,7 +21,7 @@ import * as React from "react";
 import BlockEditor, { TakeDocument } from "./BlockEditor";
 import ReactionContainer from "./ReactionContainer";
 import { slugify } from "../utils/functions";
-import { Foundation } from "../java2ts/Foundation";
+import { FT } from "../java2ts/FT";
 import { Routes } from "../java2ts/Routes";
 
 interface BlockReaderProps {
@@ -42,7 +42,7 @@ class BlockReader extends React.Component<BlockReaderProps, BlockReaderState> {
     };
   }
   handleClick = (
-    factLink: Foundation.FactLink,
+    factLink: FT.FactLink,
     highlightedRange: [number, number],
     viewRange: [number, number]
   ) => {

@@ -18,7 +18,7 @@
  * You can contact us at team@mytake.org
  */
 import * as React from "react";
-import { Foundation } from "../../java2ts/Foundation";
+import { FT } from "../../java2ts/FT";
 import { SelectionOptions } from "./VideoResultsList";
 import { convertSecondsToTimestamp, slugify } from "../../utils/functions";
 import { MultiHighlight } from "./searchUtils";
@@ -26,7 +26,7 @@ import { Routes } from "../../java2ts/Routes";
 var bs = require("binary-search");
 
 export type PlayEvent = (
-  videoFact: Foundation.VideoFactContent,
+  videoFact: FT.VideoFactContent,
   clipRange: [number, number]
 ) => any;
 
@@ -35,7 +35,7 @@ interface VideoResultProps {
   turn: number;
   turnContent: string;
   sortBy: SelectionOptions;
-  videoFact: Foundation.VideoFactContent;
+  videoFact: FT.VideoFactContent;
   onPlayClick: PlayEvent;
 }
 interface VideoResultState {}

@@ -5,7 +5,7 @@ import java.util.Arrays;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 
-import java2ts.Foundation.Speaker;
+import java2ts.FT.Speaker;
 
 public class VideoFactContentJavaTest {
 	@Test

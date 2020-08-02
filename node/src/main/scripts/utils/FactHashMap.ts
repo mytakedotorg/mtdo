@@ -19,10 +19,10 @@
  */
 const fs = require("fs");
 const axios = require("axios").default;
-import { Foundation } from "../java2ts/Foundation";
+import { FT } from "../java2ts/FT";
 
 interface HashToFact {
-  [hash: string]: Foundation.DocumentFactContent | Foundation.VideoFactContent;
+  [hash: string]: FT.DocumentFactContent | FT.VideoFactContent;
 }
 
 interface VidHashToThumb {
@@ -40,7 +40,7 @@ const FactHashMap = class FactHashMap {
         __dirname +
         "/../../../../../foundation/src/main/resources/foundation-index-hash.json";
       fs.readFile(index, "UTF-8", (err: Error, data: string) => {
-        const indexPointer: Foundation.IndexPointer = JSON.parse(data);
+        const indexPointer: FT.IndexPointer = JSON.parse(data);
         const indexHash = indexPointer.hash;
         fs.readdir(dataDir, (err: Error, data: string[]) => {
           if (err) {
@@ -48,7 +48,7 @@ const FactHashMap = class FactHashMap {
           }
           // Create a map of hash to FactContent
           const promises: Promise<
-            Foundation.DocumentFactContent | Foundation.VideoFactContent
+            FT.DocumentFactContent | FT.VideoFactContent
           >[] = [];
           let hashesToFacts: HashToFact = {};
           for (let file of data) {
@@ -64,8 +64,8 @@ const FactHashMap = class FactHashMap {
                         rejectFile(err);
                       } else {
                         const json:
-                          | Foundation.DocumentFactContent
-                          | Foundation.VideoFactContent = JSON.parse(data);
+                          | FT.DocumentFactContent
+                          | FT.VideoFactContent = JSON.parse(data);
                         hashesToFacts[hash] = json;
                         resolveFile(json);
                       }
@@ -96,7 +96,7 @@ export const fetchYTThumbs = (
       if (factContent.fact.kind === "video") {
         const imageURI =
           "https://img.youtube.com/vi/" +
-          (factContent as Foundation.VideoFactContent).youtubeId +
+          (factContent as FT.VideoFactContent).youtubeId +
           "/0.jpg";
         promises.push(
           new Promise((resolveThumb, rejectThumb) => {

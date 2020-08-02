@@ -23,7 +23,7 @@ import DocumentTextNodeList from "./DocumentTextNodeList";
 import { getHighlightedNodes } from "../utils/functions";
 import { FoundationNode } from "../common/CaptionNodes";
 import { DocumentBlock } from "../java2ts/DocumentBlock";
-import { Foundation } from "../java2ts/Foundation";
+import { FT } from "../java2ts/FT";
 import { FoundationDataBuilder } from "../utils/foundationData/FoundationDataBuilder";
 import {
   isWriteOnly,
@@ -41,7 +41,7 @@ export interface EditorDocumentContainerProps {
 export interface EditorDocumentContainerState {
   loading: boolean;
   document?: {
-    fact: Foundation.Fact;
+    fact: FT.Fact;
     nodes: FoundationNode[];
   };
 }
@@ -125,7 +125,7 @@ interface DocumentProps {
   active: boolean;
   block: DocumentBlock;
   document: {
-    fact: Foundation.Fact;
+    fact: FT.Fact;
     nodes: FoundationNode[];
   };
   eventHandlers: WritingEventHandlers | ReadingEventHandlers;
@@ -154,7 +154,7 @@ class Document extends React.Component<DocumentProps, DocumentState> {
     if (isWriteOnly(this.props.eventHandlers)) {
       this.props.eventHandlers.handleFocus(this.props.idx);
     } else {
-      const factlink: Foundation.FactLink = {
+      const factlink: FT.FactLink = {
         fact: this.props.document.fact,
         hash: this.props.block.excerptId,
       };

@@ -1,6 +1,6 @@
 /*
  * MyTake.org transcript GUI.
- * Copyright (C) 2017 MyTake.org, Inc.
+ * Copyright (C) 2017-2020 MyTake.org, Inc.
  * 
  * The MyTake.org transcript GUI is licensed under EPLv2
  * because SWT is incompatible with AGPLv3, the rest of
@@ -17,7 +17,7 @@ import com.diffplug.common.base.Preconditions;
 import com.diffplug.common.collect.ImmutableSet;
 import java.util.ArrayList;
 import java.util.List;
-import java2ts.Foundation.DocumentComponent;
+import java2ts.FT.DocumentComponent;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;

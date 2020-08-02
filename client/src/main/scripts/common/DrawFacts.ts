@@ -18,7 +18,7 @@
  * You can contact us at team@mytake.org
  */
 import { ReactElement } from "react";
-import { Foundation } from "../java2ts/Foundation";
+import { FT } from "../java2ts/FT";
 import { ImageProps } from "../java2ts/ImageProps";
 import {
   getCaptionNodeArray,
@@ -40,7 +40,7 @@ const drawSpecs = Object.freeze({
 
 export function drawDocumentFact(
   canvas: HTMLCanvasElement,
-  factContent: Foundation.DocumentFactContent,
+  factContent: FT.DocumentFactContent,
   highlightedRange: [number, number],
   viewRange: [number, number]
 ) {
@@ -67,7 +67,7 @@ export function drawDocumentFact(
 
 export function drawVideoFact(
   canvas: HTMLCanvasElement,
-  factContent: Foundation.VideoFactContent,
+  factContent: FT.VideoFactContent,
   highlightedRange: [number, number]
 ): Promise<ImageProps> {
   const captionNodes = getCaptionNodeArray(factContent);

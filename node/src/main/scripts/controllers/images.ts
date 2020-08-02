@@ -18,7 +18,7 @@
  * You can contact us at team@mytake.org
  */
 import { Request, Response } from "express";
-import { Foundation } from "../java2ts/Foundation";
+import { FT } from "../java2ts/FT";
 import { decodeVideoFact } from "../common/DecodeVideoFact";
 import { drawDocumentFact, drawVideoFact } from "../common/DrawFacts";
 import * as express from "express";
@@ -66,7 +66,7 @@ function documentRangeFromString(rangeStr: string): [number, number] | null {
 }
 
 function videoFactImage(
-  videoFact: Foundation.VideoFactContentEncoded,
+  videoFact: FT.VideoFactContentEncoded,
   hStart: number,
   hEnd: number
 ): Promise<string> {
@@ -88,7 +88,7 @@ function videoFactImage(
 }
 
 function documentFactImage(
-  documentFact: Foundation.DocumentFactContent,
+  documentFact: FT.DocumentFactContent,
   hStart: number,
   hEnd: number,
   vStart: number,
@@ -133,7 +133,7 @@ router.get("/:" + IMAGEKEY, (req: Request, res: Response) => {
         return res.status(404).send("Not found");
       }
 
-      const documentFact: Foundation.DocumentFactContent =
+      const documentFact: FT.DocumentFactContent =
         req.app.locals.factHashMap[docId];
       if (documentFact) {
         const png = documentFactImage(
@@ -166,7 +166,7 @@ router.get("/:" + IMAGEKEY, (req: Request, res: Response) => {
         return res.status(404).send("Not found");
       }
 
-      const videoFact: Foundation.VideoFactContentEncoded =
+      const videoFact: FT.VideoFactContentEncoded =
         req.app.locals.factHashMap[vidId];
 
       if (videoFact) {

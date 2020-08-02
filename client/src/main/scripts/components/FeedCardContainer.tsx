@@ -19,7 +19,7 @@
  */
 import React, { useState, useEffect } from "react";
 import DocumentTextNodeList from "./DocumentTextNodeList";
-import { Foundation } from "../java2ts/Foundation";
+import { FT } from "../java2ts/FT";
 import { FoundationDataBuilder } from "../utils/foundationData/FoundationDataBuilder";
 import { FoundationNode } from "../common/CaptionNodes";
 import { alertErr, getHighlightedNodes } from "../utils/functions";
@@ -35,10 +35,10 @@ interface FeedCardContainerProps {
 interface FeedCardContainerState {
   loading: boolean;
   document?: {
-    fact: Foundation.Fact;
+    fact: FT.Fact;
     nodes: FoundationNode[];
   };
-  videoFact?: Foundation.VideoFactContent;
+  videoFact?: FT.VideoFactContent;
 }
 
 const FeedCardLoader: React.FC<FeedCardContainerProps> = (props) => {
@@ -113,10 +113,10 @@ interface FeedCardProps {
   title: string;
   blocks: TakeBlock[];
   document?: {
-    fact: Foundation.Fact;
+    fact: FT.Fact;
     nodes: FoundationNode[];
   };
-  videoFact?: Foundation.VideoFactContent;
+  videoFact?: FT.VideoFactContent;
 }
 
 class FeedCard extends React.Component<FeedCardProps, {}> {

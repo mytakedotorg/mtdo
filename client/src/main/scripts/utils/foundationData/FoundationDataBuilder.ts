@@ -18,7 +18,7 @@
  * You can contact us at team@mytake.org
  */
 import { isVideo, FoundationData } from "./FoundationData";
-import { Foundation } from "../../java2ts/Foundation";
+import { FT } from "../../java2ts/FT";
 import { Routes } from "../../java2ts/Routes";
 import { decodeVideoFact } from "../../common/DecodeVideoFact";
 import { alertErr } from "../functions";
@@ -44,38 +44,36 @@ export class FoundationDataBuilder {
 
   private async getFact(
     factHash: string
-  ): Promise<Foundation.VideoFactContent | Foundation.DocumentFactContent> {
-    const factContent = await get<Foundation.FactContent>(
+  ): Promise<FT.VideoFactContent | FT.DocumentFactContent> {
+    const factContent = await get<FT.FactContent>(
       Routes.FOUNDATION_DATA + "/" + factHash + ".json"
     );
     if (isVideo(factContent)) {
-      return decodeVideoFact(factContent as Foundation.VideoFactContentEncoded);
+      return decodeVideoFact(factContent as FT.VideoFactContentEncoded);
     } else {
-      return factContent as Foundation.DocumentFactContent;
+      return factContent as FT.DocumentFactContent;
     }
   }
 
-  static async index(): Promise<Foundation.FactLink[]> {
-    const indexPointer = await get<Foundation.IndexPointer>(
+  static async index(): Promise<FT.FactLink[]> {
+    const indexPointer = await get<FT.IndexPointer>(
       Routes.FOUNDATION_INDEX_HASH,
       "no-cache"
     );
-    return get<Foundation.FactLink[]>(
+    return get<FT.FactLink[]>(
       Routes.FOUNDATION_DATA + "/" + indexPointer.hash + ".json"
     );
   }
 
   static async justOneDocument(
     factHash: string
-  ): Promise<Foundation.DocumentFactContent> {
+  ): Promise<FT.DocumentFactContent> {
     const builder = new FoundationDataBuilder();
     builder.add(factHash);
     return (await builder.build()).getDocument(factHash);
   }
 
-  static async justOneVideo(
-    factHash: string
-  ): Promise<Foundation.VideoFactContent> {
+  static async justOneVideo(factHash: string): Promise<FT.VideoFactContent> {
     const builder = new FoundationDataBuilder();
     builder.add(factHash);
     return (await builder.build()).getVideo(factHash);

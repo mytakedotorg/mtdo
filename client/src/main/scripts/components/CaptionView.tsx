@@ -36,7 +36,7 @@ import {
   CaptionNodeArr,
 } from "../common/CaptionNodes";
 import { RangeType, StateAuthority, TimeRange } from "./Video";
-import { Foundation } from "../java2ts/Foundation";
+import { FT } from "../java2ts/FT";
 import { Routes } from "../java2ts/Routes";
 
 export interface CaptionViewEventHandlers {
@@ -60,7 +60,7 @@ export interface CaptionViewEventHandlers {
 }
 
 interface CaptionViewProps {
-  videoFact: Foundation.VideoFactContent;
+  videoFact: FT.VideoFactContent;
   videoFactHash: string;
   timer: number;
   captionIsHighlighted: boolean;
@@ -89,7 +89,7 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
   getCaptionData = (nextProps?: CaptionViewProps): string[] => {
     let captionIsHighlighted: boolean;
     let highlightedCharRange: [number, number] | undefined;
-    let videoFact: Foundation.VideoFactContent | undefined;
+    let videoFact: FT.VideoFactContent | undefined;
 
     if (nextProps) {
       captionIsHighlighted = nextProps.captionIsHighlighted;

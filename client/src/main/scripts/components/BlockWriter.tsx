@@ -29,7 +29,7 @@ import TimelineLoader from "./TimelineLoader";
 import EditorButtons from "./EditorButtons";
 import { DraftRev } from "../java2ts/DraftRev";
 import { DraftPost } from "../java2ts/DraftPost";
-import { Foundation } from "../java2ts/Foundation";
+import { FT } from "../java2ts/FT";
 import {
   FoundationDataBuilder,
   post,

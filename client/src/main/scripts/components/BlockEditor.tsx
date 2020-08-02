@@ -21,7 +21,7 @@ import * as React from "react";
 import keycode from "keycode";
 import EditorDocumentContainer from "./EditorDocumentContainer";
 import EditorVideoContainer from "./EditorVideoContainer";
-import { Foundation } from "../java2ts/Foundation";
+import { FT } from "../java2ts/FT";
 import { ParagraphBlock } from "../java2ts/ParagraphBlock";
 import { DocumentBlock } from "../java2ts/DocumentBlock";
 import { VideoBlock } from "../java2ts/VideoBlock";
@@ -52,7 +52,7 @@ interface ParagraphBlockState {
 }
 export interface ReadingEventHandlers {
   onDocumentClick: (
-    fact: Foundation.FactLink,
+    fact: FT.FactLink,
     highlightedRange: [number, number],
     viewRange: [number, number]
   ) => void;
