@@ -20,12 +20,11 @@
 import * as React from "react";
 import keycode from "keycode";
 import Video from "./Video";
-import { fetchFact } from "../utils/databaseAPI";
 import { Foundation } from "../java2ts/Foundation";
+import { FoundationDataBuilder } from "../utils/foundationData/FoundationDataBuilder";
 import { Routes } from "../java2ts/Routes";
 import { VideoBlock } from "../java2ts/VideoBlock";
 import { isWriteOnly, WritingEventHandlers } from "./BlockEditor";
-import { alertErr } from "../utils/functions";
 
 export interface EditorVideoContainerProps {
   idx: number;
@@ -49,28 +48,12 @@ class EditorVideoContainer extends React.Component<
       loading: true,
     };
   }
-  getFact = (factHash: string) => {
-    fetchFact(
-      factHash,
-      (
-        error: string | Error | null,
-        factContent: Foundation.VideoFactContent
-      ) => {
-        if (error) {
-          if (typeof error != "string") {
-            alertErr("EditorVideoContainer: " + error.message);
-          } else {
-            alertErr("EditorVideoContainer: " + error);
-          }
-          throw error;
-        } else {
-          this.setState({
-            loading: false,
-            videoFact: factContent,
-          });
-        }
-      }
-    );
+  getFact = async (factHash: string) => {
+    const factContent = await FoundationDataBuilder.justOneVideo(factHash);
+    this.setState({
+      loading: false,
+      videoFact: factContent,
+    });
   };
   componentDidMount() {
     this.getFact(this.props.block.videoId);

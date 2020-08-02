@@ -64,6 +64,22 @@ export class FoundationDataBuilder {
       Routes.FOUNDATION_DATA + "/" + indexPointer.hash + ".json"
     );
   }
+
+  static async justOneDocument(
+    factHash: string
+  ): Promise<Foundation.DocumentFactContent> {
+    const builder = new FoundationDataBuilder();
+    builder.add(factHash);
+    return (await builder.build()).getDocument(factHash);
+  }
+
+  static async justOneVideo(
+    factHash: string
+  ): Promise<Foundation.VideoFactContent> {
+    const builder = new FoundationDataBuilder();
+    builder.add(factHash);
+    return (await builder.build()).getVideo(factHash);
+  }
 }
 
 export async function get<T>(
