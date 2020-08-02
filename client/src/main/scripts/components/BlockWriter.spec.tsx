@@ -41,11 +41,6 @@ jest.mock("./DropDown", () => ({
   default: "DropDown",
 }));
 
-jest.mock("./EmailTake", () => ({
-  __esModule: true,
-  default: "EmailTake",
-}));
-
 // Object.defineProperty(window.location, "pathname", {
 //   writable: true,
 //   value: "/drafts/new"

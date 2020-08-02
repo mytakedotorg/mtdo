@@ -52,11 +52,6 @@ jest.mock("./DropDown", () => ({
   default: "DropDown",
 }));
 
-jest.mock("./EmailTake", () => ({
-  __esModule: true,
-  default: "EmailTake",
-}));
-
 test("Reaction - loading", () => {
   const tree = renderer
     .create(

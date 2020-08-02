@@ -63,45 +63,6 @@ exports[`Bigger block writer model 1`] = `
           }
         }
       />
-      <div
-        className="editor__share"
-      >
-        <DropDown
-          classModifier="editor"
-          dropdownPosition="TL"
-          toggleText="Email"
-        >
-          <EmailTake
-            takeDocument={
-              Object {
-                "blocks": Array [
-                  Object {
-                    "kind": "paragraph",
-                    "text": "Some text.",
-                  },
-                  Object {
-                    "excerptId": "o_dRqrNJ62wzlgLilTrLxkHqGmvAS9qTpa4z4pjyFqA=",
-                    "highlightedRange": Array [
-                      31,
-                      42,
-                    ],
-                    "kind": "document",
-                    "viewRange": Array [
-                      0,
-                      218,
-                    ],
-                  },
-                  Object {
-                    "kind": "paragraph",
-                    "text": "",
-                  },
-                ],
-                "title": "00new take",
-              }
-            }
-          />
-        </DropDown>
-      </div>
     </div>
     <p
       className="timeline__instructions"
@@ -172,29 +133,6 @@ exports[`Simple block writer model 1`] = `
           }
         }
       />
-      <div
-        className="editor__share"
-      >
-        <DropDown
-          classModifier="editor"
-          dropdownPosition="TL"
-          toggleText="Email"
-        >
-          <EmailTake
-            takeDocument={
-              Object {
-                "blocks": Array [
-                  Object {
-                    "kind": "paragraph",
-                    "text": "",
-                  },
-                ],
-                "title": "",
-              }
-            }
-          />
-        </DropDown>
-      </div>
     </div>
     <p
       className="timeline__instructions"
