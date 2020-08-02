@@ -30,7 +30,7 @@ export class SearchResult {
   ) {}
 }
 
-class SearchWithData {
+export class SearchWithData {
   constructor(
     public searchQuery: string,
     public videoResults: Search.VideoResult[],
@@ -48,7 +48,7 @@ export async function search(searchQuery: string): Promise<SearchResult> {
   );
 }
 
-function searchImpl(searchWithData: SearchWithData): SearchResult {
+export function searchImpl(searchWithData: SearchWithData): SearchResult {
   const createHashesToTurns = (facts: Search.VideoResult[]): HashesToTurns => {
     const hashesToTurns: HashesToTurns = new Map();
 
