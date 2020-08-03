@@ -20,6 +20,7 @@
 import { decodeVideoFact } from "../../common/DecodeVideoFact";
 import { FT } from "../../java2ts/FT";
 import { Routes } from "../../java2ts/Routes";
+import { get } from "../../network";
 import { FoundationData, isVideo } from "./FoundationData";
 
 export class FoundationDataBuilder {
@@ -77,18 +78,4 @@ export class FoundationDataBuilder {
     builder.add(factHash);
     return (await builder.build()).getVideo(factHash);
   }
-}
-
-export async function get<T>(
-  path: string,
-  cache: RequestCache = "default"
-): Promise<T> {
-  const response = await fetch(
-    new Request(path, {
-      method: "get",
-      cache: cache,
-      credentials: "omit",
-    })
-  );
-  return response.json();
 }

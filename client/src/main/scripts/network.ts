@@ -30,3 +30,17 @@ export async function post<T, R>(path: string, body: T): Promise<R> {
   );
   return response.json();
 }
+
+export async function get<T>(
+  path: string,
+  cache: RequestCache = "default"
+): Promise<T> {
+  const response = await fetch(
+    new Request(path, {
+      method: "get",
+      cache: cache,
+      credentials: "omit",
+    })
+  );
+  return response.json();
+}

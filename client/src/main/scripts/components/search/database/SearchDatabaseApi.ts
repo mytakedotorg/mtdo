@@ -20,11 +20,9 @@
 import { FT } from "../../../java2ts/FT";
 import { Routes } from "../../../java2ts/Routes";
 import { Search } from "../../../java2ts/Search";
+import { get } from "../../../network";
 import { FoundationData } from "../../../utils/foundationData/FoundationData";
-import {
-  FoundationDataBuilder,
-  get,
-} from "../../../utils/foundationData/FoundationDataBuilder";
+import { FoundationDataBuilder } from "../../../utils/foundationData/FoundationDataBuilder";
 
 export class SearchResult {
   constructor(
