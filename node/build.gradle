@@ -32,6 +32,9 @@ spotless {
 		prettier(['prettier': VER_PRETTIER, 'prettier-plugin-organize-imports': VER_PRETTIER_ORGANIZE_IMPORTS])
 	}
 }
+tasks.named('spotlessTypescript') {
+	dependsOn 'beforeCompile'
+}
 
 /////////////////////////////////
 // smoke test the node project //
