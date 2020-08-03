@@ -22,11 +22,13 @@ import { FT } from "../../java2ts/FT";
 import { Routes } from "../../java2ts/Routes";
 import { Search } from "../../java2ts/Search";
 import { get } from "../../network";
+import { MultiHighlight, TurnFinder } from "./searchUtils";
 var bs = require("binary-search");
 
 export class SearchResult {
   constructor(
-    public factTurns: VideoFactsToTurns[],
+    public factHits: VideoFactsToSearchHits[],
+    public mode: SearchMode,
     public searchQuery: string
   ) {}
 }
@@ -35,11 +37,20 @@ export class _SearchWithData {
   constructor(
     public searchQuery: string,
     public videoResults: Search.VideoResult[],
-    public foundationData: Foundation
+    public foundationData: Foundation,
+    public mode: SearchMode
   ) {}
 }
 
-export async function search(searchQuery: string): Promise<SearchResult> {
+export enum SearchMode {
+  Containing,
+  BeforeAndAfter,
+}
+
+export async function search(
+  searchQuery: string,
+  mode: SearchMode
+): Promise<SearchResult> {
   const factResults = await get<Search.FactResultList>(
     `${Routes.API_SEARCH}?${Search.QUERY}=${encodeURIComponent(searchQuery)}`
   );
@@ -47,7 +58,7 @@ export async function search(searchQuery: string): Promise<SearchResult> {
   factResults.facts.forEach((fact) => builder.add(fact.hash));
   const foundationData = await builder.build();
   return _searchImpl(
-    new _SearchWithData(searchQuery, factResults.facts, foundationData)
+    new _SearchWithData(searchQuery, factResults.facts, foundationData, mode)
   );
 }
 
@@ -70,30 +81,45 @@ export function _searchImpl(searchWithData: _SearchWithData): SearchResult {
     return hashesToTurns;
   };
 
-  const { foundationData, searchQuery, videoResults } = searchWithData;
+  const { foundationData, mode, searchQuery, videoResults } = searchWithData;
   const hashesToTurns = createHashesToTurns(videoResults);
-  const videoFactsToTurns: VideoFactsToTurns[] = [];
+  const turnFinder = new TurnFinder(searchQuery);
+  const videoFactsToHits: VideoFactsToSearchHits[] = [];
   for (const [hash, turns] of hashesToTurns) {
     const videoFact = foundationData.getVideo(hash);
     turns.sort((a, b) => a - b);
-    videoFactsToTurns.push({
-      turns,
-      videoFact,
+    turns.forEach((t) => {
+      const turnWithResults = turnFinder.findResults(
+        getTurnContent(t, videoFact)
+      );
+      let multiHighlights: MultiHighlight[] = [];
+      if (mode === SearchMode.Containing) {
+        multiHighlights = turnWithResults.expandBy(1);
+      }
+      if (mode === SearchMode.BeforeAndAfter) {
+        multiHighlights = turnWithResults.expandBy(2);
+      }
+      videoFactsToHits.push({
+        searchHits: multiHighlights.map(
+          (m) => new SearchHit(m.highlights, m.cut, t, videoFact)
+        ),
+        videoFact,
+      });
     });
   }
-  videoFactsToTurns.sort((aFactTurns, bFactTurns) => {
+  videoFactsToHits.sort((aFactTurns, bFactTurns) => {
     const a = aFactTurns.videoFact.fact.primaryDate;
     const b = bFactTurns.videoFact.fact.primaryDate;
     return a == b ? 0 : +(a > b) || -1;
   });
-  return new SearchResult(videoFactsToTurns, searchQuery);
+  return new SearchResult(videoFactsToHits, mode, searchQuery);
 }
 
 type HashesToTurns = Map<string, number[]>;
 
-interface VideoFactsToTurns {
+interface VideoFactsToSearchHits {
   videoFact: FT.VideoFactContent;
-  turns: number[];
+  searchHits: SearchHit[];
 }
 
 interface SeachHitContent {
@@ -101,11 +127,13 @@ interface SeachHitContent {
   isHighlighted: boolean;
 }
 
-class SearchHit {
+export class SearchHit {
+  private clipRangeCache?: [number, number];
+  // Offsets are relative to the beginning of the turn
   constructor(
     private highlightOffsets: Array<[number, number]>,
-    private hitOffsets: [number, number],
-    private turn: number,
+    public readonly hitOffsets: [number, number],
+    public readonly turn: number,
     private videoFact: FT.VideoFactContent
   ) {}
 
@@ -116,6 +144,9 @@ class SearchHit {
   }
 
   getClipRange(): [number, number] {
+    if (this.clipRangeCache) {
+      return this.clipRangeCache;
+    }
     const { hitOffsets, turn, videoFact } = this;
     const veryFirstWord = videoFact.speakerWord[turn];
     const firstChar = videoFact.charOffsets[veryFirstWord];
@@ -154,12 +185,14 @@ class SearchHit {
       clipEnd = videoFact.timestamps[lastWord] + 2;
     }
 
-    return [clipStart, clipEnd];
+    this.clipRangeCache = [clipStart, clipEnd];
+    return this.clipRangeCache;
   }
 
   getContent(): SeachHitContent[] {
     const searchHitContents: SeachHitContent[] = [];
-    const turnContent = this.getTurnContent();
+    const { turn, videoFact } = this;
+    const turnContent = getTurnContent(turn, videoFact);
     let contentStartIdx = this.hitOffsets[0];
     this.highlightOffsets.forEach((highlight) => {
       const textBeforeHighlight = turnContent.substring(
@@ -193,21 +226,20 @@ class SearchHit {
     }
     return searchHitContents;
   }
+}
 
-  private getTurnContent = (): string => {
-    const { turn, videoFact } = this;
-    let fullTurnText;
-    const firstWord = videoFact.speakerWord[turn];
-    const firstChar = videoFact.charOffsets[firstWord];
+function getTurnContent(turn: number, videoFact: FT.VideoFactContent): string {
+  let fullTurnText;
+  const firstWord = videoFact.speakerWord[turn];
+  const firstChar = videoFact.charOffsets[firstWord];
 
-    if (videoFact.speakerWord[turn + 1]) {
-      const lastWord = videoFact.speakerWord[turn + 1];
-      const lastChar = videoFact.charOffsets[lastWord] - 1;
-      fullTurnText = videoFact.plainText.substring(firstChar, lastChar);
-    } else {
-      // Result is in last turn
-      fullTurnText = videoFact.plainText.substring(firstChar);
-    }
-    return fullTurnText;
-  };
+  if (videoFact.speakerWord[turn + 1]) {
+    const lastWord = videoFact.speakerWord[turn + 1];
+    const lastChar = videoFact.charOffsets[lastWord] - 1;
+    fullTurnText = videoFact.plainText.substring(firstChar, lastChar);
+  } else {
+    // Result is in last turn
+    fullTurnText = videoFact.plainText.substring(firstChar);
+  }
+  return fullTurnText;
 }

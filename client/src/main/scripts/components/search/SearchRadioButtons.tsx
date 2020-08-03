@@ -18,11 +18,11 @@
  * You can contact us at team@mytake.org
  */
 import * as React from "react";
-import { SelectionOptions } from "./VideoResultsList";
+import { SearchMode } from "./search";
 
 interface SearchRadioButtonsProps {
-  onChange: (ev: React.ChangeEvent<HTMLInputElement>) => any;
-  selectedOption: SelectionOptions;
+  onChange(mode: SearchMode): void;
+  selectedOption: SearchMode;
 }
 
 const SearchRadioButtons: React.StatelessComponent<SearchRadioButtonsProps> = (
@@ -38,8 +38,8 @@ const SearchRadioButtons: React.StatelessComponent<SearchRadioButtonsProps> = (
             className="searchradio__radio"
             name="type"
             value="Containing"
-            onChange={props.onChange}
-            checked={props.selectedOption === "Containing"}
+            onChange={() => props.onChange(SearchMode.Containing)}
+            checked={props.selectedOption === SearchMode.Containing}
           />
           <label
             htmlFor="radio--containing"
@@ -55,8 +55,8 @@ const SearchRadioButtons: React.StatelessComponent<SearchRadioButtonsProps> = (
             className="searchradio__radio"
             name="type"
             value="BeforeAndAfter"
-            onChange={props.onChange}
-            checked={props.selectedOption === "BeforeAndAfter"}
+            onChange={() => props.onChange(SearchMode.BeforeAndAfter)}
+            checked={props.selectedOption === SearchMode.BeforeAndAfter}
           />
           <label
             htmlFor="radio--beforeandafter"

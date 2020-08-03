@@ -17,7 +17,6 @@
  *
  * You can contact us at team@mytake.org
  */
-import { Search } from "../../java2ts/Search";
 
 /**
  * Offsets to cut out of the turn content, along with all the offsets
@@ -39,10 +38,10 @@ export class TurnFinder {
   regexInclude: RegExp;
   regexExclude?: RegExp;
 
-  constructor(searchTerm: string) {
+  constructor(searchQuery: string) {
     let include = "";
     let exclude = "";
-    for (const clause of searchTerm.toLowerCase().split(",")) {
+    for (const clause of searchQuery.toLowerCase().split(",")) {
       const trimmed = clause.trim();
       if (trimmed.length == 0) {
         continue;

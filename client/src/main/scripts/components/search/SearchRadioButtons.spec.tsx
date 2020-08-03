@@ -19,12 +19,16 @@
  */
 import * as React from "react";
 import * as renderer from "react-test-renderer";
+import { SearchMode } from "./search";
 import SearchRadioButtons from "./SearchRadioButtons";
 
 test("SearchRadioButtons Containing", () => {
   const tree = renderer
     .create(
-      <SearchRadioButtons onChange={jest.fn()} selectedOption="Containing" />
+      <SearchRadioButtons
+        onChange={jest.fn()}
+        selectedOption={SearchMode.Containing}
+      />
     )
     .toJSON();
   expect(tree).toMatchSnapshot();
@@ -35,7 +39,7 @@ test("SearchRadioButtons BeforeAndAfter", () => {
     .create(
       <SearchRadioButtons
         onChange={jest.fn()}
-        selectedOption="BeforeAndAfter"
+        selectedOption={SearchMode.BeforeAndAfter}
       />
     )
     .toJSON();
