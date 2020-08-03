@@ -17,19 +17,19 @@
  *
  * You can contact us at team@mytake.org
  */
-import * as React from "react";
 import keycode from "keycode";
-import DocumentTextNodeList from "./DocumentTextNodeList";
-import { getHighlightedNodes } from "../utils/functions";
+import * as React from "react";
 import { FoundationNode } from "../common/CaptionNodes";
+import { FoundationFetcher } from "../common/foundation";
 import { DocumentBlock } from "../java2ts/DocumentBlock";
-import { Foundation } from "../java2ts/Foundation";
-import { FoundationDataBuilder } from "../utils/foundationData/FoundationDataBuilder";
+import { FT } from "../java2ts/FT";
+import { getHighlightedNodes } from "../utils/functions";
 import {
   isWriteOnly,
   ReadingEventHandlers,
   WritingEventHandlers,
 } from "./BlockEditor";
+import DocumentTextNodeList from "./DocumentTextNodeList";
 
 export interface EditorDocumentContainerProps {
   idx: number;
@@ -41,7 +41,7 @@ export interface EditorDocumentContainerProps {
 export interface EditorDocumentContainerState {
   loading: boolean;
   document?: {
-    fact: Foundation.Fact;
+    fact: FT.Fact;
     nodes: FoundationNode[];
   };
 }
@@ -58,7 +58,7 @@ class EditorDocumentContainer extends React.Component<
     };
   }
   getFact = async (factHash: string) => {
-    const factContent = await FoundationDataBuilder.justOneDocument(factHash);
+    const factContent = await FoundationFetcher.justOneDocument(factHash);
     const nodes: FoundationNode[] = factContent.components.map(
       (documentComponent) => {
         return {
@@ -125,7 +125,7 @@ interface DocumentProps {
   active: boolean;
   block: DocumentBlock;
   document: {
-    fact: Foundation.Fact;
+    fact: FT.Fact;
     nodes: FoundationNode[];
   };
   eventHandlers: WritingEventHandlers | ReadingEventHandlers;
@@ -154,7 +154,7 @@ class Document extends React.Component<DocumentProps, DocumentState> {
     if (isWriteOnly(this.props.eventHandlers)) {
       this.props.eventHandlers.handleFocus(this.props.idx);
     } else {
-      const factlink: Foundation.FactLink = {
+      const factlink: FT.FactLink = {
         fact: this.props.document.fact,
         hash: this.props.block.excerptId,
       };

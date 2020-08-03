@@ -17,14 +17,14 @@
  *
  * You can contact us at team@mytake.org
  */
-import * as React from "react";
 import keycode from "keycode";
+import * as React from "react";
+import { DocumentBlock } from "../java2ts/DocumentBlock";
+import { FT } from "../java2ts/FT";
+import { ParagraphBlock } from "../java2ts/ParagraphBlock";
+import { VideoBlock } from "../java2ts/VideoBlock";
 import EditorDocumentContainer from "./EditorDocumentContainer";
 import EditorVideoContainer from "./EditorVideoContainer";
-import { Foundation } from "../java2ts/Foundation";
-import { ParagraphBlock } from "../java2ts/ParagraphBlock";
-import { DocumentBlock } from "../java2ts/DocumentBlock";
-import { VideoBlock } from "../java2ts/VideoBlock";
 export { ParagraphBlock, DocumentBlock, VideoBlock };
 export type TakeBlock = ParagraphBlock | DocumentBlock | VideoBlock;
 export interface TakeDocument {
@@ -52,7 +52,7 @@ interface ParagraphBlockState {
 }
 export interface ReadingEventHandlers {
   onDocumentClick: (
-    fact: Foundation.FactLink,
+    fact: FT.FactLink,
     highlightedRange: [number, number],
     viewRange: [number, number]
   ) => void;

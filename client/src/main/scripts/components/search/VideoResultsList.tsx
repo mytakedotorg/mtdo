@@ -18,14 +18,15 @@
  * You can contact us at team@mytake.org
  */
 import * as React from "react";
-import SearchRadioButtons from "./SearchRadioButtons";
+import { FT } from "../../java2ts/FT";
+import { alertErr } from "../../utils/functions";
 import VideoLite from "../VideoLite";
 import VideoPlaceholder from "../VideoPlaceholder";
-import VideoResultPreview from "./VideoResultPreview";
-import { VideoResultPreviewEventHandlers } from "./VideoResultPreview";
-import { alertErr } from "../../utils/functions";
-import { Foundation } from "../../java2ts/Foundation";
-import { SearchResult } from "./database/SearchDatabaseApi";
+import { SearchResult } from "./search";
+import SearchRadioButtons from "./SearchRadioButtons";
+import VideoResultPreview, {
+  VideoResultPreviewEventHandlers,
+} from "./VideoResultPreview";
 
 export type SelectionOptions = "Containing" | "BeforeAndAfter";
 
@@ -74,7 +75,7 @@ export class VideoResultsList extends React.Component<
     }
   };
   handlePlayClick = (
-    videoFact: Foundation.VideoFactContent,
+    videoFact: FT.VideoFactContent,
     clipRange: [number, number]
   ) => {
     this.setState({

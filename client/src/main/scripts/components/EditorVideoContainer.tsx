@@ -17,14 +17,14 @@
  *
  * You can contact us at team@mytake.org
  */
-import * as React from "react";
 import keycode from "keycode";
-import Video from "./Video";
-import { Foundation } from "../java2ts/Foundation";
-import { FoundationDataBuilder } from "../utils/foundationData/FoundationDataBuilder";
+import * as React from "react";
+import { FoundationFetcher } from "../common/foundation";
+import { FT } from "../java2ts/FT";
 import { Routes } from "../java2ts/Routes";
 import { VideoBlock } from "../java2ts/VideoBlock";
 import { isWriteOnly, WritingEventHandlers } from "./BlockEditor";
+import Video from "./Video";
 
 export interface EditorVideoContainerProps {
   idx: number;
@@ -35,7 +35,7 @@ export interface EditorVideoContainerProps {
 
 export interface EditorVideoContainerState {
   loading: boolean;
-  videoFact?: Foundation.VideoFactContent;
+  videoFact?: FT.VideoFactContent;
 }
 
 class EditorVideoContainer extends React.Component<
@@ -49,7 +49,7 @@ class EditorVideoContainer extends React.Component<
     };
   }
   getFact = async (factHash: string) => {
-    const factContent = await FoundationDataBuilder.justOneVideo(factHash);
+    const factContent = await FoundationFetcher.justOneVideo(factHash);
     this.setState({
       loading: false,
       videoFact: factContent,
@@ -106,7 +106,7 @@ const VideoLoadingView: React.StatelessComponent<{}> = (props) => (
 interface EditorVideoBlockProps {
   idx: number;
   active: boolean;
-  videoFact: Foundation.VideoFactContent;
+  videoFact: FT.VideoFactContent;
   factHash: string;
   range?: [number, number];
   eventHandlers?: WritingEventHandlers;

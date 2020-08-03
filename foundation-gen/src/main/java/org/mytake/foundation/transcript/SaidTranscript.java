@@ -28,7 +28,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Set;
-import java2ts.Foundation.VideoFactMeta;
+import java2ts.FT.VideoFactMeta;
 
 /**
  * Format is:

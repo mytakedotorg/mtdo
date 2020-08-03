@@ -17,17 +17,16 @@
  *
  * You can contact us at team@mytake.org
  */
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { FoundationNode } from "../common/CaptionNodes";
+import { FoundationFetcher, isDocument, isVideo } from "../common/foundation";
+import { FT } from "../java2ts/FT";
 import { alertErr } from "../utils/functions";
 import TimelinePreview, { Ranges, SetFactHandlers } from "./TimelinePreview";
 import TimelinePreviewLoadingView from "./TimelinePreviewLoadingView";
-import { Foundation } from "../java2ts/Foundation";
-import { isVideo, isDocument } from "../utils/foundationData/FoundationData";
-import { FoundationDataBuilder } from "../utils/foundationData/FoundationDataBuilder";
 
 interface TimelinePreviewContainerProps {
-  factLink: Foundation.FactLink;
+  factLink: FT.FactLink;
   setFactHandlers?: SetFactHandlers;
   ranges?: Ranges;
   offset?: number;
@@ -35,7 +34,7 @@ interface TimelinePreviewContainerProps {
 
 interface TimelinePreviewContainerState {
   loading: boolean;
-  videoFact?: Foundation.VideoFactContent;
+  videoFact?: FT.VideoFactContent;
   nodes?: FoundationNode[];
 }
 
@@ -48,7 +47,7 @@ const TimelinePreviewContainer: React.FC<TimelinePreviewContainerProps> = (
 
   useEffect(() => {
     const getFact = async (factHash: string) => {
-      const builder = new FoundationDataBuilder();
+      const builder = new FoundationFetcher();
       builder.add(factHash);
       const foundationData = await builder.build();
       const factContent = foundationData.getFactContent(factHash);

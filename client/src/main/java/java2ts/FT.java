@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2017-2018 MyTake.org, Inc.
+ * Copyright (C) 2017-2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -22,7 +22,7 @@ package java2ts;
 import def.js.ArrayLike;
 import java.util.List;
 
-public interface Foundation {
+public interface FT {
 	public static final String KIND_VIDEO = "video";
 	public static final String KIND_DOCUMENT = "document";
 

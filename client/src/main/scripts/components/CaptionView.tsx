@@ -18,26 +18,25 @@
  * You can contact us at team@mytake.org
  */
 import * as React from "react";
-import * as ReactDOM from "react-dom";
-import isEqual = require("lodash/isEqual");
-import CaptionTextNodeListContainer, {
-  CaptionTextNodeListContainerEventHandlers,
-} from "./CaptionTextNodeListContainer";
-import ClipEditor, { ClipEditorEventHandlers } from "./ClipEditor";
+import {
+  CaptionNodeArr,
+  getCaptionNodeArray,
+  highlightCaption,
+} from "../common/CaptionNodes";
+import { FT } from "../java2ts/FT";
+import { Routes } from "../java2ts/Routes";
 import {
   alertErr,
   getSimpleRangesFromHTMLRange,
   getWordRangeFromCharRange,
   SimpleRanges,
 } from "../utils/functions";
-import {
-  getCaptionNodeArray,
-  highlightCaption,
-  CaptionNodeArr,
-} from "../common/CaptionNodes";
+import CaptionTextNodeListContainer, {
+  CaptionTextNodeListContainerEventHandlers,
+} from "./CaptionTextNodeListContainer";
+import ClipEditor, { ClipEditorEventHandlers } from "./ClipEditor";
 import { RangeType, StateAuthority, TimeRange } from "./Video";
-import { Foundation } from "../java2ts/Foundation";
-import { Routes } from "../java2ts/Routes";
+import isEqual = require("lodash/isEqual");
 
 export interface CaptionViewEventHandlers {
   onAfterRangeChange: (
@@ -60,7 +59,7 @@ export interface CaptionViewEventHandlers {
 }
 
 interface CaptionViewProps {
-  videoFact: Foundation.VideoFactContent;
+  videoFact: FT.VideoFactContent;
   videoFactHash: string;
   timer: number;
   captionIsHighlighted: boolean;
@@ -89,7 +88,7 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
   getCaptionData = (nextProps?: CaptionViewProps): string[] => {
     let captionIsHighlighted: boolean;
     let highlightedCharRange: [number, number] | undefined;
-    let videoFact: Foundation.VideoFactContent | undefined;
+    let videoFact: FT.VideoFactContent | undefined;
 
     if (nextProps) {
       captionIsHighlighted = nextProps.captionIsHighlighted;

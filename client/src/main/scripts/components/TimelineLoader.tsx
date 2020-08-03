@@ -17,12 +17,12 @@
  *
  * You can contact us at team@mytake.org
  */
-import React, { useState, useEffect } from "react";
-import TimelineView from "./TimelineView";
-import { SetFactHandlers } from "./TimelinePreview";
+import React, { useEffect, useState } from "react";
+import { FoundationFetcher } from "../common/foundation";
+import { FT } from "../java2ts/FT";
 import TimelineLoadingView from "./TimelineLoadingView";
-import { Foundation } from "../java2ts/Foundation";
-import { FoundationDataBuilder } from "../utils/foundationData/FoundationDataBuilder";
+import { SetFactHandlers } from "./TimelinePreview";
+import TimelineView from "./TimelineView";
 
 interface TimelineLoaderProps {
   path: string;
@@ -30,7 +30,7 @@ interface TimelineLoaderProps {
 }
 
 interface TimelineLoaderState {
-  facts?: Foundation.FactLink[];
+  facts?: FT.FactLink[];
 }
 
 const TimelineLoader: React.FC<TimelineLoaderProps> = (props) => {
@@ -38,7 +38,7 @@ const TimelineLoader: React.FC<TimelineLoaderProps> = (props) => {
 
   useEffect(() => {
     async function getAllFacts() {
-      const allFacts: Foundation.FactLink[] = await FoundationDataBuilder.index();
+      const allFacts: FT.FactLink[] = await FoundationFetcher.index();
       setState({
         facts: allFacts,
       });

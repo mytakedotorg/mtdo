@@ -19,12 +19,12 @@
  */
 import * as React from "react";
 import YouTube from "react-youtube";
-import isEqual = require("lodash/isEqual");
 import { getCharRangeFromVideoRange } from "../common/CaptionNodes";
-import { alertErr, copyToClipboard, slugify } from "../utils/functions";
-import { Foundation } from "../java2ts/Foundation";
-import CaptionView, { CaptionViewEventHandlers } from "./CaptionView";
+import { FT } from "../java2ts/FT";
 import { Routes } from "../java2ts/Routes";
+import { alertErr, copyToClipboard, slugify } from "../utils/functions";
+import CaptionView, { CaptionViewEventHandlers } from "./CaptionView";
+import isEqual = require("lodash/isEqual");
 
 interface YTPlayerParameters {
   rel: number;
@@ -78,7 +78,7 @@ interface VideoProps {
   onSetClick: (range: [number, number]) => void;
   onRangeSet?: (videoRange: [number, number]) => void;
   onClearClick?: () => void;
-  videoFact: Foundation.VideoFactContent;
+  videoFact: FT.VideoFactContent;
   videoFactHash: string;
   className?: string;
   clipRange?: [number, number] | null;
@@ -190,7 +190,7 @@ class Video extends React.Component<VideoProps, VideoState> {
     }
   };
   getCharRange = (
-    videoFact: Foundation.VideoFactContent,
+    videoFact: FT.VideoFactContent,
     timeRange?: [number, number] | null
   ): [number, number] => {
     if (timeRange && videoFact.plainText.length > 0) {

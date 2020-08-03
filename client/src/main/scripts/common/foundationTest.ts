@@ -17,35 +17,31 @@
  *
  * You can contact us at team@mytake.org
  */
-import { isVideo, FoundationData } from "./FoundationData";
-import { Foundation } from "../../java2ts/Foundation";
-import { decodeVideoFact } from "../../common/DecodeVideoFact";
+import { FT } from "../java2ts/FT";
+import { Foundation, isVideo } from "./foundation";
+import { decodeVideoFact } from "./video";
 
 import fs = require("fs");
-import content from "*.sbv";
 
-export class FoundationDataTestBuilder {
+export class FoundationHarness {
   private hashToContent: Map<
     string,
-    Foundation.VideoFactContent | Foundation.DocumentFactContent
+    FT.VideoFactContent | FT.DocumentFactContent
   > = new Map();
 
   loadHashFromDisk(hash: string): void {
     this.hashToContent.set(hash, AllFromDisk.fromDisk(hash));
   }
 
-  set(
-    hash: string,
-    fact: Foundation.VideoFactContent | Foundation.DocumentFactContent
-  ): void {
+  set(hash: string, fact: FT.VideoFactContent | FT.DocumentFactContent): void {
     this.hashToContent.set(hash, fact);
   }
 
-  build(): FoundationData {
-    return new FoundationData(new Map(this.hashToContent));
+  build(): Foundation {
+    return new Foundation(new Map(this.hashToContent));
   }
 
-  static loadAllFromDisk(): FoundationData {
+  static loadAllFromDisk(): Foundation {
     if (AllFromDisk.indexPointer.hash === "") {
       AllFromDisk.indexPointer = JSON.parse(
         fs.readFileSync(
@@ -60,7 +56,7 @@ export class FoundationDataTestBuilder {
         )
       );
     }
-    const builder = new FoundationDataTestBuilder();
+    const builder = new FoundationHarness();
     for (const factLink of AllFromDisk.index) {
       builder.loadHashFromDisk(factLink.hash);
     }
@@ -69,16 +65,14 @@ export class FoundationDataTestBuilder {
 }
 
 class AllFromDisk {
-  static indexPointer: Foundation.IndexPointer = { hash: "" };
-  static index: Foundation.FactLink[];
+  static indexPointer: FT.IndexPointer = { hash: "" };
+  static index: FT.FactLink[];
   private static hashToContent: Map<
     string,
-    Foundation.VideoFactContent | Foundation.DocumentFactContent
+    FT.VideoFactContent | FT.DocumentFactContent
   > = new Map();
 
-  static fromDisk(
-    hash: string
-  ): Foundation.VideoFactContent | Foundation.DocumentFactContent {
+  static fromDisk(hash: string): FT.VideoFactContent | FT.DocumentFactContent {
     let content = this.hashToContent.get(hash)!;
     if (!content) {
       const raw = JSON.parse(
@@ -88,9 +82,9 @@ class AllFromDisk {
         )
       );
       if (isVideo(raw)) {
-        content = decodeVideoFact(raw as Foundation.VideoFactContentEncoded);
+        content = decodeVideoFact(raw as FT.VideoFactContentEncoded);
       } else {
-        content = raw as Foundation.DocumentFactContent;
+        content = raw as FT.DocumentFactContent;
       }
       this.hashToContent.set(hash, content);
     }

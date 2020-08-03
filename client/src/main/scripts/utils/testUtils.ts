@@ -17,14 +17,14 @@
  *
  * You can contact us at team@mytake.org
  */
-import { Foundation } from "../java2ts/Foundation";
-import { TimelineItemData } from "../components/Timeline";
 import { CaptionNodeArr, FoundationNode } from "../common/CaptionNodes";
-import { Card } from "../components/FeedList";
 import { TakeDocument } from "../components/BlockEditor";
+import { Card } from "../components/FeedList";
+import { TimelineItemData } from "../components/Timeline";
 import { StylesObject, TimeRange } from "../components/Video";
+import { FT } from "../java2ts/FT";
 
-const videoFactFast: Foundation.VideoFactContent = {
+const videoFactFast: FT.VideoFactContent = {
   fact: {
     title: "Donald Trump - Hillary Clinton (2/3)",
     primaryDate: "2016-10-09",
@@ -276,7 +276,7 @@ const timelineItems: TimelineItemData[] = [
   },
 ];
 
-const documentFactLink: Foundation.FactLink = {
+const documentFactLink: FT.FactLink = {
   fact: {
     title: "Amendment 13",
     primaryDate: "1865-12-06",
@@ -303,7 +303,7 @@ const documentNodes: FoundationNode[] = [
   },
 ];
 
-const videoFactLink: Foundation.FactLink = {
+const videoFactLink: FT.FactLink = {
   fact: {
     title: "Donald Trump - Hillary Clinton (2/3)",
     primaryDate: "2016-10-09",
@@ -614,7 +614,7 @@ const rangeStyle: StylesObject = {
   backgroundColor: "#758aa8",
 };
 
-const kennedyNixon: Foundation.VideoFactContent = {
+const kennedyNixon: FT.VideoFactContent = {
   fact: {
     title: "Presidential Debate - Kennedy, Nixon (1 of 4)",
     primaryDate: "1960-09-26",

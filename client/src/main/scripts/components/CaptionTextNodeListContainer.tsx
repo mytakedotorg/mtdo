@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2018-2019 MyTake.org, Inc.
+ * Copyright (C) 2018-2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -18,10 +18,10 @@
  * You can contact us at team@mytake.org
  */
 import * as React from "react";
-import { alertErr } from "../utils/functions";
 import { CaptionNodeArr } from "../common/CaptionNodes";
+import { FT } from "../java2ts/FT";
+import { alertErr } from "../utils/functions";
 import NumberLineTransform from "../utils/numberLineTransform";
-import { Foundation } from "../java2ts/Foundation";
 import CaptionTextNodeList, {
   CaptionTextNodeListEventHandlers,
 } from "./CaptionTextNodeList";
@@ -38,7 +38,7 @@ interface CaptionTextNodeListContainerProps {
   documentNodes: CaptionNodeArr;
   eventHandlers: CaptionTextNodeListContainerEventHandlers;
   stateAuthority: StateAuthority;
-  videoFact: Foundation.VideoFactContent;
+  videoFact: FT.VideoFactContent;
   view: TimeRange;
 }
 

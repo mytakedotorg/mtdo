@@ -17,13 +17,13 @@
  *
  * You can contact us at team@mytake.org
  */
-import React, { useState, useEffect } from "react";
-import DocumentTextNodeList from "./DocumentTextNodeList";
-import { Foundation } from "../java2ts/Foundation";
-import { FoundationDataBuilder } from "../utils/foundationData/FoundationDataBuilder";
+import React, { useEffect, useState } from "react";
 import { FoundationNode } from "../common/CaptionNodes";
+import { FoundationFetcher } from "../common/foundation";
+import { FT } from "../java2ts/FT";
 import { alertErr, getHighlightedNodes } from "../utils/functions";
 import { TakeBlock } from "./BlockEditor";
+import DocumentTextNodeList from "./DocumentTextNodeList";
 
 interface FeedCardContainerProps {
   username: string;
@@ -35,10 +35,10 @@ interface FeedCardContainerProps {
 interface FeedCardContainerState {
   loading: boolean;
   document?: {
-    fact: Foundation.Fact;
+    fact: FT.Fact;
     nodes: FoundationNode[];
   };
-  videoFact?: Foundation.VideoFactContent;
+  videoFact?: FT.VideoFactContent;
 }
 
 const FeedCardLoader: React.FC<FeedCardContainerProps> = (props) => {
@@ -48,7 +48,7 @@ const FeedCardLoader: React.FC<FeedCardContainerProps> = (props) => {
 
   useEffect(() => {
     const getFacts = async () => {
-      const builder = new FoundationDataBuilder();
+      const builder = new FoundationFetcher();
       props.blocks.forEach((b) => {
         if (b.kind === "document") {
           builder.add(b.excerptId);
@@ -113,10 +113,10 @@ interface FeedCardProps {
   title: string;
   blocks: TakeBlock[];
   document?: {
-    fact: Foundation.Fact;
+    fact: FT.Fact;
     nodes: FoundationNode[];
   };
-  videoFact?: Foundation.VideoFactContent;
+  videoFact?: FT.VideoFactContent;
 }
 
 class FeedCard extends React.Component<FeedCardProps, {}> {

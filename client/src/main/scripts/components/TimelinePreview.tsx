@@ -18,22 +18,21 @@
  * You can contact us at team@mytake.org
  */
 import * as React from "react";
-import * as ReactDOM from "react-dom";
-import isEqual = require("lodash/isEqual");
-import Document, { DocumentEventHandlers } from "./Document";
-import FactHeader, { StickyFactHeader } from "./FactHeader";
-import DocumentTextNodeList from "./DocumentTextNodeList";
-import Video from "./Video";
 import { FoundationNode } from "../common/CaptionNodes";
+import { FT } from "../java2ts/FT";
+import { Routes } from "../java2ts/Routes";
 import {
-  getNodesInRange,
   getHighlightedNodes,
+  getNodesInRange,
   getSimpleRangesFromHTMLRange,
   getStartRangeOffsetTop,
   highlightText,
 } from "../utils/functions";
-import { Foundation } from "../java2ts/Foundation";
-import { Routes } from "../java2ts/Routes";
+import Document, { DocumentEventHandlers } from "./Document";
+import DocumentTextNodeList from "./DocumentTextNodeList";
+import FactHeader, { StickyFactHeader } from "./FactHeader";
+import Video from "./Video";
+import isEqual = require("lodash/isEqual");
 
 export interface SetFactHandlers {
   handleDocumentSetClick: (
@@ -55,9 +54,9 @@ export interface Ranges {
 }
 
 interface TimelinePreviewProps {
-  factLink: Foundation.FactLink;
+  factLink: FT.FactLink;
   nodes?: FoundationNode[];
-  videoFact?: Foundation.VideoFactContent;
+  videoFact?: FT.VideoFactContent;
   setFactHandlers?: SetFactHandlers;
   ranges?: Ranges;
   offset?: number;

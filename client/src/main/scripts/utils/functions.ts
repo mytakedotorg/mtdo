@@ -18,13 +18,13 @@
  * You can contact us at team@mytake.org
  */
 import * as React from "react";
-import { Foundation } from "../java2ts/Foundation";
 import { FoundationNode } from "../common/CaptionNodes";
 import {
   DocumentBlock,
   TakeBlock,
   VideoBlock,
 } from "../components/BlockEditor";
+import { FT } from "../java2ts/FT";
 var bs = require("binary-search");
 
 export function getNodesInRange(
@@ -591,7 +591,7 @@ export function getSimpleRangesFromHTMLRange(
 
 export function getWordRangeFromCharRange(
   charRange: [number, number],
-  videoFact: Foundation.VideoFactContent
+  videoFact: FT.VideoFactContent
 ): [number, number] {
   const firstChar = charRange[0];
   const lastChar = charRange[1];

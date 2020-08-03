@@ -17,9 +17,9 @@
  *
  * You can contact us at team@mytake.org
  */
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import { search, SearchResult } from "./search";
 import VideoResultsList from "./VideoResultsList";
-import { search, SearchResult } from "./database/SearchDatabaseApi";
 
 interface VideoResultsLoaderProps {
   searchQuery: string;

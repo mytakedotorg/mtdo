@@ -1,6 +1,6 @@
 /*
  * MyTake.org transcript GUI.
- * Copyright (C) 2017-2018 MyTake.org, Inc.
+ * Copyright (C) 2017-2020 MyTake.org, Inc.
  * 
  * The MyTake.org transcript GUI is licensed under EPLv2
  * because SWT is incompatible with AGPLv3, the rest of
@@ -20,8 +20,8 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java2ts.Foundation;
-import java2ts.Foundation.FactLink;
+import java2ts.FT;
+import java2ts.FT.FactLink;
 
 public class FactWriter {
 	final List<FactLink> factLinks = new ArrayList<>();
@@ -39,7 +39,7 @@ public class FactWriter {
 				.replaceAll("[^\\w-]+", ""); // replace non-alphanumerics and non-hyphens
 	}
 
-	public String writeAndReturnHash(Foundation.FactContent content) throws IOException, NoSuchAlgorithmException {
+	public String writeAndReturnHash(FT.FactContent content) throws IOException, NoSuchAlgorithmException {
 		Hashed hashed = Hashed.asJson(content);
 		Files.write(dstDir.resolve(hashed.hash + ".json"), hashed.content);
 
