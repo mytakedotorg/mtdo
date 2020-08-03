@@ -19,8 +19,8 @@
  */
 import * as express from "express";
 import { Request, Response } from "express";
-import { decodeVideoFact } from "../common/DecodeVideoFact";
 import { drawDocumentFact, drawVideoFact } from "../common/DrawFacts";
+import { decodeVideoFact } from "../common/video";
 import { FT } from "../java2ts/FT";
 const { registerFont, createCanvas } = require("canvas");
 const router = express.Router();
