@@ -20,7 +20,7 @@
 import { FT } from "../java2ts/FT";
 import { Routes } from "../java2ts/Routes";
 import { get } from "../network";
-import { decodeVideoFact } from "./DecodeVideoFact";
+import { decodeVideoFact } from "./video";
 
 export class Foundation {
   constructor(

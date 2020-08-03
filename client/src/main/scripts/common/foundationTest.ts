@@ -18,8 +18,8 @@
  * You can contact us at team@mytake.org
  */
 import { FT } from "../java2ts/FT";
-import { decodeVideoFact } from "./DecodeVideoFact";
 import { Foundation, isVideo } from "./foundation";
+import { decodeVideoFact } from "./video";
 
 import fs = require("fs");
 
