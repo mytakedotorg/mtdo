@@ -50,6 +50,11 @@ node {
 		inputs.dir('src/main/scripts')
 		outputs.dir('build/test-results/jest')
 	}
+	tasks.named('beforeCompile') {
+		doLast {
+			setup.start(project)
+		}
+	}
 }
 tasks.register('test') {
 	dependsOn 'npm_run_test_ci'
