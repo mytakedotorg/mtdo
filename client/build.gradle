@@ -27,9 +27,6 @@ spotless {
 		prettier(['prettier': VER_PRETTIER, 'prettier-plugin-organize-imports': VER_PRETTIER_ORGANIZE_IMPORTS])
 	}
 }
-tasks.named('spotlessTypescript') {
-	dependsOn 'jsweet'
-}
 dependencies {
 	api "com.jsoniter:jsoniter:$VER_JSONITER"
 	api "org.jsweet:jsweet-core:$VER_JSWEET_CORE"
@@ -71,6 +68,15 @@ apply plugin: 'org.mytake.gradle.node'
 node {
 	setup.nodeVersion = buildsrc.NvmRc.read(file('../.nvmrc'))
 	setup.npmVersion = 'provided'
+
+	// this kludge is required by 'prettier-plugin-organize-imports'
+	tasks.named('spotlessTypescript') {
+		def jsweet = tasks.named('jsweet').get()
+		jsweet.doLast {
+			setup.start(project)
+		}
+		dependsOn jsweet
+	}
 
 	npmRun('test_ci') {
 		dependsOn('jsweet')
