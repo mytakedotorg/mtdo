@@ -17,11 +17,11 @@
  *
  * You can contact us at team@mytake.org
  */
-import { Foundation, FoundationFetcher } from "../../../common/foundation";
-import { FT } from "../../../java2ts/FT";
-import { Routes } from "../../../java2ts/Routes";
-import { Search } from "../../../java2ts/Search";
-import { get } from "../../../network";
+import { Foundation, FoundationFetcher } from "../../common/foundation";
+import { FT } from "../../java2ts/FT";
+import { Routes } from "../../java2ts/Routes";
+import { Search } from "../../java2ts/Search";
+import { get } from "../../network";
 
 export class SearchResult {
   constructor(

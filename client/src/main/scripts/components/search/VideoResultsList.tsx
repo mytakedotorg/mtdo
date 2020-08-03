@@ -22,7 +22,7 @@ import { FT } from "../../java2ts/FT";
 import { alertErr } from "../../utils/functions";
 import VideoLite from "../VideoLite";
 import VideoPlaceholder from "../VideoPlaceholder";
-import { SearchResult } from "./database/SearchDatabaseApi";
+import { SearchResult } from "./search";
 import SearchRadioButtons from "./SearchRadioButtons";
 import VideoResultPreview, {
   VideoResultPreviewEventHandlers,
