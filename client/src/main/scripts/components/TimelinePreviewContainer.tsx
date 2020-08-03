@@ -19,9 +19,8 @@
  */
 import React, { useEffect, useState } from "react";
 import { FoundationNode } from "../common/CaptionNodes";
+import { FoundationFetcher, isDocument, isVideo } from "../common/foundation";
 import { FT } from "../java2ts/FT";
-import { isDocument, isVideo } from "../utils/foundationData/FoundationData";
-import { FoundationDataBuilder } from "../utils/foundationData/FoundationDataBuilder";
 import { alertErr } from "../utils/functions";
 import TimelinePreview, { Ranges, SetFactHandlers } from "./TimelinePreview";
 import TimelinePreviewLoadingView from "./TimelinePreviewLoadingView";
@@ -48,7 +47,7 @@ const TimelinePreviewContainer: React.FC<TimelinePreviewContainerProps> = (
 
   useEffect(() => {
     const getFact = async (factHash: string) => {
-      const builder = new FoundationDataBuilder();
+      const builder = new FoundationFetcher();
       builder.add(factHash);
       const foundationData = await builder.build();
       const factContent = foundationData.getFactContent(factHash);

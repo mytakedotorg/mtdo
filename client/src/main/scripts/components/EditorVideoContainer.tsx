@@ -19,10 +19,10 @@
  */
 import keycode from "keycode";
 import * as React from "react";
+import { FoundationFetcher } from "../common/foundation";
 import { FT } from "../java2ts/FT";
 import { Routes } from "../java2ts/Routes";
 import { VideoBlock } from "../java2ts/VideoBlock";
-import { FoundationDataBuilder } from "../utils/foundationData/FoundationDataBuilder";
 import { isWriteOnly, WritingEventHandlers } from "./BlockEditor";
 import Video from "./Video";
 
@@ -49,7 +49,7 @@ class EditorVideoContainer extends React.Component<
     };
   }
   getFact = async (factHash: string) => {
-    const factContent = await FoundationDataBuilder.justOneVideo(factHash);
+    const factContent = await FoundationFetcher.justOneVideo(factHash);
     this.setState({
       loading: false,
       videoFact: factContent,

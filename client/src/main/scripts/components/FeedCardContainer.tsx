@@ -19,8 +19,8 @@
  */
 import React, { useEffect, useState } from "react";
 import { FoundationNode } from "../common/CaptionNodes";
+import { FoundationFetcher } from "../common/foundation";
 import { FT } from "../java2ts/FT";
-import { FoundationDataBuilder } from "../utils/foundationData/FoundationDataBuilder";
 import { alertErr, getHighlightedNodes } from "../utils/functions";
 import { TakeBlock } from "./BlockEditor";
 import DocumentTextNodeList from "./DocumentTextNodeList";
@@ -48,7 +48,7 @@ const FeedCardLoader: React.FC<FeedCardContainerProps> = (props) => {
 
   useEffect(() => {
     const getFacts = async () => {
-      const builder = new FoundationDataBuilder();
+      const builder = new FoundationFetcher();
       props.blocks.forEach((b) => {
         if (b.kind === "document") {
           builder.add(b.excerptId);

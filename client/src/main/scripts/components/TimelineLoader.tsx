@@ -18,8 +18,8 @@
  * You can contact us at team@mytake.org
  */
 import React, { useEffect, useState } from "react";
+import { FoundationFetcher } from "../common/foundation";
 import { FT } from "../java2ts/FT";
-import { FoundationDataBuilder } from "../utils/foundationData/FoundationDataBuilder";
 import TimelineLoadingView from "./TimelineLoadingView";
 import { SetFactHandlers } from "./TimelinePreview";
 import TimelineView from "./TimelineView";
@@ -38,7 +38,7 @@ const TimelineLoader: React.FC<TimelineLoaderProps> = (props) => {
 
   useEffect(() => {
     async function getAllFacts() {
-      const allFacts: FT.FactLink[] = await FoundationDataBuilder.index();
+      const allFacts: FT.FactLink[] = await FoundationFetcher.index();
       setState({
         facts: allFacts,
       });

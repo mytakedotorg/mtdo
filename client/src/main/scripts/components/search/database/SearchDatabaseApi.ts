@@ -17,12 +17,11 @@
  *
  * You can contact us at team@mytake.org
  */
+import { Foundation, FoundationFetcher } from "../../../common/foundation";
 import { FT } from "../../../java2ts/FT";
 import { Routes } from "../../../java2ts/Routes";
 import { Search } from "../../../java2ts/Search";
 import { get } from "../../../network";
-import { FoundationData } from "../../../utils/foundationData/FoundationData";
-import { FoundationDataBuilder } from "../../../utils/foundationData/FoundationDataBuilder";
 
 export class SearchResult {
   constructor(
@@ -35,7 +34,7 @@ export class SearchWithData {
   constructor(
     public searchQuery: string,
     public videoResults: Search.VideoResult[],
-    public foundationData: FoundationData
+    public foundationData: Foundation
   ) {}
 }
 
@@ -43,7 +42,7 @@ export async function search(searchQuery: string): Promise<SearchResult> {
   const factResults = await get<Search.FactResultList>(
     `${Routes.API_SEARCH}?${Search.QUERY}=${encodeURIComponent(searchQuery)}`
   );
-  const builder = new FoundationDataBuilder();
+  const builder = new FoundationFetcher();
   factResults.facts.forEach((fact) => builder.add(fact.hash));
   const foundationData = await builder.build();
   return searchImpl(

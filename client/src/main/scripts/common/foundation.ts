@@ -17,9 +17,12 @@
  *
  * You can contact us at team@mytake.org
  */
-import { FT } from "../../java2ts/FT";
+import { FT } from "../java2ts/FT";
+import { Routes } from "../java2ts/Routes";
+import { get } from "../network";
+import { decodeVideoFact } from "./DecodeVideoFact";
 
-export class FoundationData {
+export class Foundation {
   constructor(
     private hashToContent: Map<
       string,
@@ -68,5 +71,62 @@ export function isDocument(
     return (fact as FT.DocumentFactContent).fact.kind === "document";
   } else {
     return false;
+  }
+}
+
+export class FoundationFetcher {
+  requestedFacts: string[] = [];
+
+  add(hash: string): void {
+    if (this.requestedFacts.indexOf(hash) === -1) {
+      this.requestedFacts.push(hash);
+    }
+  }
+
+  async build(): Promise<Foundation> {
+    const facts = await Promise.all(
+      this.requestedFacts.map((hash) => this.getFact(hash))
+    );
+    const map = new Map(
+      this.requestedFacts.map((hash, idx) => [hash, facts[idx]])
+    );
+    return new Foundation(map);
+  }
+
+  private async getFact(
+    factHash: string
+  ): Promise<FT.VideoFactContent | FT.DocumentFactContent> {
+    const factContent = await get<FT.FactContent>(
+      Routes.FOUNDATION_DATA + "/" + factHash + ".json"
+    );
+    if (isVideo(factContent)) {
+      return decodeVideoFact(factContent as FT.VideoFactContentEncoded);
+    } else {
+      return factContent as FT.DocumentFactContent;
+    }
+  }
+
+  static async index(): Promise<FT.FactLink[]> {
+    const indexPointer = await get<FT.IndexPointer>(
+      Routes.FOUNDATION_INDEX_HASH,
+      "no-cache"
+    );
+    return get<FT.FactLink[]>(
+      Routes.FOUNDATION_DATA + "/" + indexPointer.hash + ".json"
+    );
+  }
+
+  static async justOneDocument(
+    factHash: string
+  ): Promise<FT.DocumentFactContent> {
+    const builder = new FoundationFetcher();
+    builder.add(factHash);
+    return (await builder.build()).getDocument(factHash);
+  }
+
+  static async justOneVideo(factHash: string): Promise<FT.VideoFactContent> {
+    const builder = new FoundationFetcher();
+    builder.add(factHash);
+    return (await builder.build()).getVideo(factHash);
   }
 }

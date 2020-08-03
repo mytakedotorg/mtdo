@@ -17,9 +17,9 @@
  *
  * You can contact us at team@mytake.org
  */
-import { decodeVideoFact } from "../../common/DecodeVideoFact";
-import { FT } from "../../java2ts/FT";
-import { FoundationData, isVideo } from "./FoundationData";
+import { FT } from "../java2ts/FT";
+import { decodeVideoFact } from "./DecodeVideoFact";
+import { Foundation, isVideo } from "./foundation";
 
 import fs = require("fs");
 
@@ -37,11 +37,11 @@ export class FoundationDataTestBuilder {
     this.hashToContent.set(hash, fact);
   }
 
-  build(): FoundationData {
-    return new FoundationData(new Map(this.hashToContent));
+  build(): Foundation {
+    return new Foundation(new Map(this.hashToContent));
   }
 
-  static loadAllFromDisk(): FoundationData {
+  static loadAllFromDisk(): Foundation {
     if (AllFromDisk.indexPointer.hash === "") {
       AllFromDisk.indexPointer = JSON.parse(
         fs.readFileSync(
