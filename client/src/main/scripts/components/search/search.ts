@@ -30,7 +30,7 @@ export class SearchResult {
   ) {}
 }
 
-export class SearchWithData {
+export class _SearchWithData {
   constructor(
     public searchQuery: string,
     public videoResults: Search.VideoResult[],
@@ -45,12 +45,12 @@ export async function search(searchQuery: string): Promise<SearchResult> {
   const builder = new FoundationFetcher();
   factResults.facts.forEach((fact) => builder.add(fact.hash));
   const foundationData = await builder.build();
-  return searchImpl(
-    new SearchWithData(searchQuery, factResults.facts, foundationData)
+  return _searchImpl(
+    new _SearchWithData(searchQuery, factResults.facts, foundationData)
   );
 }
 
-export function searchImpl(searchWithData: SearchWithData): SearchResult {
+export function _searchImpl(searchWithData: _SearchWithData): SearchResult {
   const createHashesToTurns = (facts: Search.VideoResult[]): HashesToTurns => {
     const hashesToTurns: HashesToTurns = new Map();
 
