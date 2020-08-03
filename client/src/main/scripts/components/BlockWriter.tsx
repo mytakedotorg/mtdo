@@ -22,10 +22,8 @@ import { DraftPost } from "../java2ts/DraftPost";
 import { DraftRev } from "../java2ts/DraftRev";
 import { PublishResult } from "../java2ts/PublishResult";
 import { Routes } from "../java2ts/Routes";
-import {
-  FoundationDataBuilder,
-  post,
-} from "../utils/foundationData/FoundationDataBuilder";
+import { post } from "../network";
+import { FoundationDataBuilder } from "../utils/foundationData/FoundationDataBuilder";
 import { alertErr, getFirstFactBlock, slugify } from "../utils/functions";
 import BlockEditor, {
   DocumentBlock,

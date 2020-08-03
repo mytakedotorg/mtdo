@@ -92,17 +92,3 @@ export async function get<T>(
   );
   return response.json();
 }
-
-export async function post<T, R>(path: string, body: T): Promise<R> {
-  const response = await fetch(
-    new Request(path, {
-      method: "post",
-      credentials: "same-origin",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(body),
-    })
-  );
-  return response.json();
-}

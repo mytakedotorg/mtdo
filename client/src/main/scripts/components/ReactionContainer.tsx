@@ -18,12 +18,12 @@
  * You can contact us at team@mytake.org
  */
 import * as React from "react";
+import { FollowJson } from "../java2ts/FollowJson";
 import { Routes } from "../java2ts/Routes";
 import { TakeReactionJson } from "../java2ts/TakeReactionJson";
-import { FollowJson } from "../java2ts/FollowJson";
+import { post } from "../network";
 import { alertErr, getUsernameFromURL, isLoggedIn } from "../utils/functions";
 import { TakeDocument } from "./BlockEditor";
-import { post } from "../utils/foundationData/FoundationDataBuilder";
 
 interface ReactionContainerProps {
   takeId: number;
