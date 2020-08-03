@@ -23,7 +23,7 @@ import { Foundation, isVideo } from "./foundation";
 
 import fs = require("fs");
 
-export class FoundationDataTestBuilder {
+export class FoundationHarness {
   private hashToContent: Map<
     string,
     FT.VideoFactContent | FT.DocumentFactContent
@@ -56,7 +56,7 @@ export class FoundationDataTestBuilder {
         )
       );
     }
-    const builder = new FoundationDataTestBuilder();
+    const builder = new FoundationHarness();
     for (const factLink of AllFromDisk.index) {
       builder.loadHashFromDisk(factLink.hash);
     }
