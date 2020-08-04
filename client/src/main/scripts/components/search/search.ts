@@ -64,35 +64,37 @@ export async function search(
 
 export function _searchImpl(searchWithData: _SearchWithData): SearchResult {
   const { foundationData, mode, searchQuery, videoResults } = searchWithData;
-  const hashesToTurns = groupBy(videoResults, result => result.hash);
+  const groupedByFactMap = groupBy(videoResults, result => result.hash);
+  const groupedByFact = Array.from(groupedByFactMap.values());
   const turnFinder = new TurnFinder(searchQuery);
-  const videoFactsToHits: VideoFactsToSearchHits[] = [];
-  for (const [hash, turns] of hashesToTurns) {
-    const videoFact = foundationData.getVideo(hash);
-    turns.sort((a, b) => a - b);
-    turns.forEach((t) => {
+  const hitsPerFact = groupedByFact.map(turns => {
+    const videoFact = foundationData.getVideo(turns[0].hash);
+    turns.sort((a, b) => a.turn - b.turn);    
+    return turns.flatMap(t => {
       const turnWithResults = turnFinder.findResults(
-        getTurnContent(t, videoFact)
+        getTurnContent(t.turn, videoFact)
       );
       const expandBy: Record<SearchMode, number> = {
         [SearchMode.Containing]: 1, // Record<> makes this exhausitive
         [SearchMode.BeforeAndAfter]: 2, // compile error if missing case
       };
-      const multiHighlights = turnWithResults.expandBy(expandBy[mode]);
-      videoFactsToHits.push({
-        searchHits: multiHighlights.map(
-          (m) => new SearchHit(m.highlights, m.cut, t, videoFact)
-        ),
-        videoFact,
-      });
+       const multiHighlights = turnWithResults.expandBy(expandBy[mode]);
+       return multiHighlights.map((m) => new SearchHit(m.highlights, m.cut, t.turn, videoFact));
     });
-  }
-  videoFactsToHits.sort((aFactTurns, bFactTurns) => {
-    const a = aFactTurns.videoFact.fact.primaryDate;
-    const b = bFactTurns.videoFact.fact.primaryDate;
+  });
+  hitsPerFact.sort((aHits, bHits) => {
+    const a = aHits[0].videoFact.fact.primaryDate
+    const b = bHits[0].videoFact.fact.primaryDate;
     return a == b ? 0 : +(a > b) || -1;
   });
-  return new SearchResult(videoFactsToHits, mode, searchQuery);
+  return new SearchResult(
+    hitsPerFact.map(hits => {
+      return {
+        videoFact: hits[0].videoFact,
+        searchHits: hits
+      }
+    })
+   , mode, searchQuery);
 }
 
 interface VideoFactsToSearchHits {
@@ -112,7 +114,7 @@ export class SearchHit {
     private highlightOffsets: Array<[number, number]>,
     public readonly hitOffsets: [number, number],
     public readonly turn: number,
-    private videoFact: FT.VideoFactContent
+    public videoFact: FT.VideoFactContent
   ) {}
 
   getSpeaker(): string {
