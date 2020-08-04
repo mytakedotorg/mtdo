@@ -63,22 +63,8 @@ export async function search(
 }
 
 export function _searchImpl(searchWithData: _SearchWithData): SearchResult {
-  const createHashesToTurns = (facts: Search.VideoResult[]): HashesToTurns => {
-    const hashesToTurns: HashesToTurns = new Map();
-
-    facts.forEach((f) => {
-      const existingTurns = hashesToTurns.get(f.hash);
-      if (!existingTurns) {
-        hashesToTurns.set(f.hash, [f.turn]);
-      } else {
-        existingTurns.push(f.turn);
-      }
-    });
-    return hashesToTurns;
-  };
-
   const { foundationData, mode, searchQuery, videoResults } = searchWithData;
-  const hashesToTurns = createHashesToTurns(videoResults);
+  const hashesToTurns = groupBy(videoResults, result => result.hash);
   const turnFinder = new TurnFinder(searchQuery);
   const videoFactsToHits: VideoFactsToSearchHits[] = [];
   for (const [hash, turns] of hashesToTurns) {
@@ -108,8 +94,6 @@ export function _searchImpl(searchWithData: _SearchWithData): SearchResult {
   });
   return new SearchResult(videoFactsToHits, mode, searchQuery);
 }
-
-type HashesToTurns = Map<string, number[]>;
 
 interface VideoFactsToSearchHits {
   videoFact: FT.VideoFactContent;
@@ -236,4 +220,18 @@ function getTurnContent(turn: number, videoFact: FT.VideoFactContent): string {
     fullTurnText = videoFact.plainText.substring(firstChar);
   }
   return fullTurnText;
+}
+
+function groupBy<K, V>(list: V[],  keyGetter: (k: V) => K):  Map<K,V[]>{
+  const map = new Map<K,V[]>();
+  list.forEach((item) => {
+       const key = keyGetter(item);
+       const collection = map.get(key);
+       if (!collection) {
+           map.set(key, [item]);
+       } else {
+           collection.push(item);
+       }
+  });
+  return map;
 }
