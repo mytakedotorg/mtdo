@@ -74,10 +74,6 @@ export function _searchImpl(searchWithData: _SearchWithData): SearchResult {
         existingTurns.push(f.turn);
       }
     });
-
-    for (const turnList of hashesToTurns.values()) {
-      turnList.sort((a, b) => a - b);
-    }
     return hashesToTurns;
   };
 
