@@ -17,20 +17,9 @@
  *
  * You can contact us at team@mytake.org
  */
-
-/**
- * Offsets to cut out of the turn content, along with all the offsets
- * to highlight within that content.  The highlights are relative to
- * the start of the turn's content, not the start of the cut.
- */
 export interface MultiHighlight {
   cut: [number, number];
   highlights: Array<[number, number]>;
-}
-
-function cleanupRegex(string: String): String {
-  const alphaNumWhitespaceOnly = string.replace("[^a-z0-9s]", "");
-  return alphaNumWhitespaceOnly.replace(" ", "\\W+"); // all commas, dashes, quotes, etc. get smushed into one group
 }
 
 /** This class finds matches within a turn, returning them as TurnWithResults. */

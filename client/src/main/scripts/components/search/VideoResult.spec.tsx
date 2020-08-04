@@ -17,7 +17,6 @@
  *
  * You can contact us at team@mytake.org
  */
-
 import React from "react";
 import renderer from "react-test-renderer";
 import { kennedyNixon } from "../../utils/testUtils";
