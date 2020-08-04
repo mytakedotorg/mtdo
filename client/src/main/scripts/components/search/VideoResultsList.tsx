@@ -115,7 +115,6 @@ export class VideoResultsList extends React.Component<
                   )}
                   onPlayClick={this.handlePlayClick}
                   searchHit={h}
-                  videoFact={f.videoFact}
                 />
               );
             });

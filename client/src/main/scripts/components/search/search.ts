@@ -151,10 +151,10 @@ export class SearchHit {
   private clipRangeCache?: [number, number];
   // Offsets are relative to the beginning of the turn
   constructor(
-    private highlightOffsets: Array<[number, number]>,
+    private readonly highlightOffsets: Array<[number, number]>,
     public readonly hitOffsets: [number, number],
     public readonly turn: number,
-    public videoFact: FT.VideoFactContent
+    public readonly videoFact: FT.VideoFactContent
   ) {}
 
   getSpeaker(): string {

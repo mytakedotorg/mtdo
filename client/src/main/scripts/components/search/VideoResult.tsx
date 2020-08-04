@@ -29,13 +29,13 @@ export type PlayEvent = (
 ) => any;
 
 interface VideoResultProps {
-  videoFact: FT.VideoFactContent;
   searchHit: SearchHit;
   onPlayClick: PlayEvent;
 }
 
 const VideoResult: React.FC<VideoResultProps> = (props) => {
-  const { onPlayClick, searchHit, videoFact } = props;
+  const { onPlayClick, searchHit } = props;
+  const { videoFact } = searchHit;
   const clipRange = searchHit.getClipRange();
 
   const handlePlayClick = () => {

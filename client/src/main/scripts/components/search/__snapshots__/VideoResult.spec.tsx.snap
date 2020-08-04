@@ -30,7 +30,7 @@ exports[`VideoResultPreview before and after 1`] = `
         className="turn__button turn__button--open"
         onClick={[Function]}
       >
-        Open
+        Context
       </button>
     </div>
   </div>
@@ -76,7 +76,7 @@ exports[`VideoResultPreview containing 1`] = `
         className="turn__button turn__button--open"
         onClick={[Function]}
       >
-        Open
+        Context
       </button>
     </div>
   </div>
