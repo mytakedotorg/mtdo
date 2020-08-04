@@ -22,7 +22,7 @@ import { FT } from "../../java2ts/FT";
 import { Routes } from "../../java2ts/Routes";
 import { Search } from "../../java2ts/Search";
 import { get } from "../../network";
-import { MultiHighlight, TurnFinder } from "./searchUtils";
+import { TurnFinder } from "./searchUtils";
 var bs = require("binary-search");
 
 export class SearchResult {
@@ -92,13 +92,11 @@ export function _searchImpl(searchWithData: _SearchWithData): SearchResult {
       const turnWithResults = turnFinder.findResults(
         getTurnContent(t, videoFact)
       );
-      let multiHighlights: MultiHighlight[] = [];
-      if (mode === SearchMode.Containing) {
-        multiHighlights = turnWithResults.expandBy(1);
-      }
-      if (mode === SearchMode.BeforeAndAfter) {
-        multiHighlights = turnWithResults.expandBy(2);
-      }
+      const expandBy: Record<SearchMode, number> = {
+        [SearchMode.Containing]: 1, // Record<> makes this exhausitive
+        [SearchMode.BeforeAndAfter]: 2, // compile error if missing case
+      };
+      const multiHighlights = turnWithResults.expandBy(expandBy[mode]);
       videoFactsToHits.push({
         searchHits: multiHighlights.map(
           (m) => new SearchHit(m.highlights, m.cut, t, videoFact)
