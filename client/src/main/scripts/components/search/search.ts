@@ -28,7 +28,6 @@ var bs = require("binary-search");
 export class SearchResult {
   constructor(
     public factHits: VideoFactsToSearchHits[],
-    public mode: SearchMode,
     public searchQuery: string
   ) {}
 }
@@ -64,37 +63,78 @@ export async function search(
 
 export function _searchImpl(searchWithData: _SearchWithData): SearchResult {
   const { foundationData, mode, searchQuery, videoResults } = searchWithData;
-  const groupedByFactMap = groupBy(videoResults, result => result.hash);
+
+  /**
+   * Map of fact hashes to an array of video results. e.g.:
+   *
+   * {
+   *   key: "abc",
+   *   value: [
+   *     {turn: 1, hash: "abc"},
+   *     {turn: 2, hash: "abc"}
+   *   ]
+   * },
+   * {
+   *   key: "def",
+   *   value: [
+   *     {turn: 1, hash: "def"},
+   *     {turn: 2, hash: "def"}
+   *   ]
+   * }
+   */
+  const groupedByFactMap = groupBy(videoResults, (result) => result.hash);
+
+  /**
+   * Array of video result arrays, grouped by fact. e.g.:
+   *
+   * [
+   *   [
+   *     {turn: 1, hash: "abc"},
+   *     {turn: 2, hash: "abc"}
+   *   ],
+   *   [
+   *     {turn: 1, hash: "def"},
+   *     {turn: 2, hash: "def"}
+   *   ]
+   * ]
+   */
   const groupedByFact = Array.from(groupedByFactMap.values());
   const turnFinder = new TurnFinder(searchQuery);
-  const hitsPerFact = groupedByFact.map(turns => {
-    const videoFact = foundationData.getVideo(turns[0].hash);
-    turns.sort((a, b) => a.turn - b.turn);    
-    return turns.flatMap(t => {
+
+  // Array of SearchHit arrays, grouped by fact
+  const hitsPerFact = groupedByFact.map((videoResults) => {
+    const videoFact = foundationData.getVideo(videoResults[0].hash);
+    // Sort hits by turn
+    videoResults.sort((a, b) => a.turn - b.turn);
+    return videoResults.flatMap((v) => {
       const turnWithResults = turnFinder.findResults(
-        getTurnContent(t.turn, videoFact)
+        getTurnContent(v.turn, videoFact)
       );
       const expandBy: Record<SearchMode, number> = {
         [SearchMode.Containing]: 1, // Record<> makes this exhausitive
         [SearchMode.BeforeAndAfter]: 2, // compile error if missing case
       };
-       const multiHighlights = turnWithResults.expandBy(expandBy[mode]);
-       return multiHighlights.map((m) => new SearchHit(m.highlights, m.cut, t.turn, videoFact));
+      const multiHighlights = turnWithResults.expandBy(expandBy[mode]);
+      return multiHighlights.map(
+        (m) => new SearchHit(m.highlights, m.cut, v.turn, videoFact)
+      );
     });
   });
+  // Sort videos by date, oldest first
   hitsPerFact.sort((aHits, bHits) => {
-    const a = aHits[0].videoFact.fact.primaryDate
+    const a = aHits[0].videoFact.fact.primaryDate;
     const b = bHits[0].videoFact.fact.primaryDate;
     return a == b ? 0 : +(a > b) || -1;
   });
   return new SearchResult(
-    hitsPerFact.map(hits => {
+    hitsPerFact.map((hits) => {
       return {
         videoFact: hits[0].videoFact,
-        searchHits: hits
-      }
-    })
-   , mode, searchQuery);
+        searchHits: hits,
+      };
+    }),
+    searchQuery
+  );
 }
 
 interface VideoFactsToSearchHits {
@@ -224,16 +264,16 @@ function getTurnContent(turn: number, videoFact: FT.VideoFactContent): string {
   return fullTurnText;
 }
 
-function groupBy<K, V>(list: V[],  keyGetter: (k: V) => K):  Map<K,V[]>{
-  const map = new Map<K,V[]>();
+function groupBy<K, V>(list: V[], keyGetter: (k: V) => K): Map<K, V[]> {
+  const map = new Map<K, V[]>();
   list.forEach((item) => {
-       const key = keyGetter(item);
-       const collection = map.get(key);
-       if (!collection) {
-           map.set(key, [item]);
-       } else {
-           collection.push(item);
-       }
+    const key = keyGetter(item);
+    const collection = map.get(key);
+    if (!collection) {
+      map.set(key, [item]);
+    } else {
+      collection.push(item);
+    }
   });
   return map;
 }

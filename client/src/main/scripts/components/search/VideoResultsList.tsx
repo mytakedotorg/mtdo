@@ -26,6 +26,7 @@ import SearchRadioButtons from "./SearchRadioButtons";
 import VideoResult from "./VideoResult";
 
 interface VideoResultsListProps {
+  mode: SearchMode;
   searchResult: SearchResult;
   onModeChange(mode: SearchMode): void;
 }
@@ -73,8 +74,8 @@ export class VideoResultsList extends React.Component<
     }
   };
   render() {
-    const { onModeChange, searchResult } = this.props;
-    const { factHits, mode, searchQuery } = searchResult;
+    const { mode, onModeChange, searchResult } = this.props;
+    const { factHits, searchQuery } = searchResult;
     const fixedClass = this.state.fixVideo ? "results__push" : "";
     return (
       <div className="results">

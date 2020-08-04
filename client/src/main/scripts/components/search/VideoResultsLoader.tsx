@@ -63,6 +63,7 @@ const VideoResultsLoader: React.FC<VideoResultsLoaderProps> = (props) => {
   return state.searchResult ? (
     <VideoResultsList
       onModeChange={handleModeChange}
+      mode={mode}
       searchResult={state.searchResult}
     />
   ) : (
