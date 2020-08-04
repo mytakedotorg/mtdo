@@ -21,6 +21,7 @@ import * as React from "react";
 import { FT } from "../../java2ts/FT";
 import VideoLite from "../VideoLite";
 import VideoPlaceholder from "../VideoPlaceholder";
+import NGramViewer from "./NGramViewer";
 import { SearchMode, SearchResult } from "./search";
 import SearchRadioButtons from "./SearchRadioButtons";
 import VideoResult from "./VideoResult";
@@ -87,6 +88,7 @@ export class VideoResultsList extends React.Component<
             </p>
           ) : (
             <div>
+              <NGramViewer searchResult={searchResult} />
               {this.state.videoProps ? (
                 <VideoLite
                   {...this.state.videoProps}
