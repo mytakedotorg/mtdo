@@ -22,7 +22,7 @@ import { FT } from "../../java2ts/FT";
 import { Routes } from "../../java2ts/Routes";
 import { Search } from "../../java2ts/Search";
 import { get } from "../../network";
-import { MultiHighlight, TurnFinder } from "./searchUtils";
+import { TurnFinder } from "./searchUtils";
 var bs = require("binary-search");
 
 export class SearchResult {
@@ -63,59 +63,39 @@ export async function search(
 }
 
 export function _searchImpl(searchWithData: _SearchWithData): SearchResult {
-  const createHashesToTurns = (facts: Search.VideoResult[]): HashesToTurns => {
-    const hashesToTurns: HashesToTurns = new Map();
-
-    facts.forEach((f) => {
-      const existingTurns = hashesToTurns.get(f.hash);
-      if (!existingTurns) {
-        hashesToTurns.set(f.hash, [f.turn]);
-      } else {
-        existingTurns.push(f.turn);
-      }
-    });
-
-    for (const turnList of hashesToTurns.values()) {
-      turnList.sort((a, b) => a - b);
-    }
-    return hashesToTurns;
-  };
-
   const { foundationData, mode, searchQuery, videoResults } = searchWithData;
-  const hashesToTurns = createHashesToTurns(videoResults);
+  const groupedByFactMap = groupBy(videoResults, result => result.hash);
+  const groupedByFact = Array.from(groupedByFactMap.values());
   const turnFinder = new TurnFinder(searchQuery);
-  const videoFactsToHits: VideoFactsToSearchHits[] = [];
-  for (const [hash, turns] of hashesToTurns) {
-    const videoFact = foundationData.getVideo(hash);
-    turns.sort((a, b) => a - b);
-    turns.forEach((t) => {
+  const hitsPerFact = groupedByFact.map(turns => {
+    const videoFact = foundationData.getVideo(turns[0].hash);
+    turns.sort((a, b) => a.turn - b.turn);    
+    return turns.flatMap(t => {
       const turnWithResults = turnFinder.findResults(
-        getTurnContent(t, videoFact)
+        getTurnContent(t.turn, videoFact)
       );
-      let multiHighlights: MultiHighlight[] = [];
-      if (mode === SearchMode.Containing) {
-        multiHighlights = turnWithResults.expandBy(1);
-      }
-      if (mode === SearchMode.BeforeAndAfter) {
-        multiHighlights = turnWithResults.expandBy(2);
-      }
-      videoFactsToHits.push({
-        searchHits: multiHighlights.map(
-          (m) => new SearchHit(m.highlights, m.cut, t, videoFact)
-        ),
-        videoFact,
-      });
+      const expandBy: Record<SearchMode, number> = {
+        [SearchMode.Containing]: 1, // Record<> makes this exhausitive
+        [SearchMode.BeforeAndAfter]: 2, // compile error if missing case
+      };
+       const multiHighlights = turnWithResults.expandBy(expandBy[mode]);
+       return multiHighlights.map((m) => new SearchHit(m.highlights, m.cut, t.turn, videoFact));
     });
-  }
-  videoFactsToHits.sort((aFactTurns, bFactTurns) => {
-    const a = aFactTurns.videoFact.fact.primaryDate;
-    const b = bFactTurns.videoFact.fact.primaryDate;
+  });
+  hitsPerFact.sort((aHits, bHits) => {
+    const a = aHits[0].videoFact.fact.primaryDate
+    const b = bHits[0].videoFact.fact.primaryDate;
     return a == b ? 0 : +(a > b) || -1;
   });
-  return new SearchResult(videoFactsToHits, mode, searchQuery);
+  return new SearchResult(
+    hitsPerFact.map(hits => {
+      return {
+        videoFact: hits[0].videoFact,
+        searchHits: hits
+      }
+    })
+   , mode, searchQuery);
 }
-
-type HashesToTurns = Map<string, number[]>;
 
 interface VideoFactsToSearchHits {
   videoFact: FT.VideoFactContent;
@@ -134,7 +114,7 @@ export class SearchHit {
     private highlightOffsets: Array<[number, number]>,
     public readonly hitOffsets: [number, number],
     public readonly turn: number,
-    private videoFact: FT.VideoFactContent
+    public videoFact: FT.VideoFactContent
   ) {}
 
   getSpeaker(): string {
@@ -242,4 +222,18 @@ function getTurnContent(turn: number, videoFact: FT.VideoFactContent): string {
     fullTurnText = videoFact.plainText.substring(firstChar);
   }
   return fullTurnText;
+}
+
+function groupBy<K, V>(list: V[],  keyGetter: (k: V) => K):  Map<K,V[]>{
+  const map = new Map<K,V[]>();
+  list.forEach((item) => {
+       const key = keyGetter(item);
+       const collection = map.get(key);
+       if (!collection) {
+           map.set(key, [item]);
+       } else {
+           collection.push(item);
+       }
+  });
+  return map;
 }
