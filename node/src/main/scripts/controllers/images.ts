@@ -19,8 +19,8 @@
  */
 import { createCanvas, registerFont } from "canvas";
 import { FoundationFetcher } from "../common/foundation";
-import { drawDocumentFact, drawVideoFact } from "../drawfacts";
 import { FT } from "../java2ts/FT";
+import { drawDocumentFact, drawVideoFact } from "./images-drawfacts";
 
 registerFont("Merriweather-Regular.ttf", {
   family: "Merriweather",

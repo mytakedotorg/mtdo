@@ -25,10 +25,10 @@ import {
   getCaptionNodeArray,
   getCharRangeFromVideoRange,
   highlightCaption,
-} from "./common/CaptionNodes";
-import { getHighlightedNodes } from "./common/DocumentNodes";
-import { FT } from "./java2ts/FT";
-import { ImageProps } from "./java2ts/ImageProps";
+} from "../common/CaptionNodes";
+import { getHighlightedNodes } from "../common/DocumentNodes";
+import { FT } from "../java2ts/FT";
+import { ImageProps } from "../java2ts/ImageProps";
 
 const drawSpecs = Object.freeze({
   textMargin: 16,
