@@ -17,13 +17,11 @@
  *
  * You can contact us at team@mytake.org
  */
-import * as express from "express";
-import { Request, Response } from "express";
-import { drawDocumentFact, drawVideoFact } from "../common/DrawFacts";
-import { decodeVideoFact } from "../common/video";
+import { createCanvas, registerFont } from "canvas";
+import { FoundationFetcher } from "../common/foundation";
+import { drawDocumentFact, drawVideoFact } from "../drawfacts";
 import { FT } from "../java2ts/FT";
-const { registerFont, createCanvas } = require("canvas");
-const router = express.Router();
+
 registerFont("Merriweather-Regular.ttf", {
   family: "Merriweather",
   weight: "normal",
@@ -33,58 +31,48 @@ registerFont("Merriweather-Bold.ttf", {
   weight: "bold",
 });
 
-function videoRangeFromString(rangeStr: string): [number, number] | null {
+function videoRangeFromString(rangeStr: string): [number, number] | undefined {
   if (rangeStr.startsWith("_")) {
     rangeStr = rangeStr.substring(1);
   }
   const rangeArr = rangeStr.split("-");
   if (rangeArr.length != 2) {
-    return null;
+    return undefined;
   }
   const start = parseFloat(rangeArr[0]);
   const end = parseFloat(rangeArr[1]);
   if (isNaN(start) || isNaN(end)) {
-    return null;
+    return undefined;
   }
   return [start, end];
 }
 
-function documentRangeFromString(rangeStr: string): [number, number] | null {
+function documentRangeFromString(
+  rangeStr: string
+): [number, number] | undefined {
   if (rangeStr.startsWith("_")) {
     rangeStr = rangeStr.substring(1);
   }
   const rangeArr = rangeStr.split("-");
   if (rangeArr.length != 2) {
-    return null;
+    return undefined;
   }
   const start = parseFloat(rangeArr[0]);
   const end = parseFloat(rangeArr[1]);
   if (isNaN(start) || isNaN(end)) {
-    return null;
+    return undefined;
   }
   return [start, end];
 }
 
 function videoFactImage(
-  videoFact: FT.VideoFactContentEncoded,
+  videoFact: FT.VideoFactContent,
   hStart: number,
   hEnd: number
-): Promise<string> {
+): string {
   const canvas = createCanvas(480, 360);
-  const ctx = canvas.getContext("2d");
-  if (ctx) {
-    return new Promise(function (resolve, reject) {
-      drawVideoFact(canvas, decodeVideoFact(videoFact), [hStart, hEnd])
-        .then(() => {
-          resolve(canvas.toDataURL());
-        })
-        .catch((err) => {
-          reject(err);
-        });
-    });
-  } else {
-    throw "Error getting canvas context";
-  }
+  drawVideoFact(canvas, videoFact, [hStart, hEnd]);
+  return canvas.toDataURL();
 }
 
 function documentFactImage(
@@ -96,19 +84,15 @@ function documentFactImage(
 ): string {
   const canvas = createCanvas(480, 360);
   const ctx = canvas.getContext("2d");
-  if (ctx) {
-    drawDocumentFact(canvas, documentFact, [hStart, hEnd], [vStart, vEnd]);
-    return canvas.toDataURL();
-  } else {
-    throw "Error getting canvas context";
-  }
+  drawDocumentFact(ctx.canvas, documentFact, [hStart, hEnd], [vStart, vEnd]);
+  return canvas.toDataURL();
 }
 
-const IMAGEKEY = "imgkey";
-router.get("/:" + IMAGEKEY, (req: Request, res: Response) => {
+export async function generateImage(
+  imgKeyAndExtension: string
+): Promise<Buffer | undefined> {
   // Expect imgKey for videos to be like "/vidId_hStart-hEnd.png
   // Expect imgKey for docs to be like "/docId_hStart-hEnd_vStart-vEnd.png
-  const imgKeyAndExtension: string = req.params[IMAGEKEY];
   const imgKey = imgKeyAndExtension.substring(
     0,
     imgKeyAndExtension.lastIndexOf(".")
@@ -118,79 +102,43 @@ router.get("/:" + IMAGEKEY, (req: Request, res: Response) => {
   const vidRegex = /_[0-9]{4}.[0-9]{3}-[0-9]{4}.[0-9]{3}$/;
   if (docRegex.test(imgKey)) {
     // Document fact
-    const docRanges = imgKey.match(docRegex);
-    if (docRanges !== null) {
-      const docId = imgKey.split(docRanges[0])[0];
-      let rangeStr = docRanges[0];
-      if (rangeStr.startsWith("_")) {
-        rangeStr = rangeStr.substring(1);
-      }
-      const hRangeStr = rangeStr.split("_")[0];
-      const vRangeStr = rangeStr.split("_")[1];
-      const hRange = documentRangeFromString(hRangeStr);
-      const vRange = documentRangeFromString(vRangeStr);
-      if (hRange == null || vRange == null) {
-        return res.status(404).send("Not found");
-      }
-
-      const documentFact: FT.DocumentFactContent =
-        req.app.locals.factHashMap[docId];
-      if (documentFact) {
-        const png = documentFactImage(
-          documentFact,
-          hRange[0],
-          hRange[1],
-          vRange[0],
-          vRange[1]
-        );
-        const img = new Buffer(png.split(",")[1], "base64"); // Remove "data:image/png;base64,"
-        res.writeHead(200, {
-          "Content-Type": "image/png",
-          "Content-Length": img.length,
-        });
-        return res.end(img);
-      } else {
-        return res.status(404).send("Not found");
-      }
-    } else {
-      throw "Error in document fact regex";
+    const docRanges = imgKey.match(docRegex)!;
+    const docId = imgKey.split(docRanges[0])[0];
+    let rangeStr = docRanges[0];
+    if (rangeStr.startsWith("_")) {
+      rangeStr = rangeStr.substring(1);
     }
+    const hRangeStr = rangeStr.split("_")[0];
+    const vRangeStr = rangeStr.split("_")[1];
+    const hRange = documentRangeFromString(hRangeStr);
+    const vRange = documentRangeFromString(vRangeStr);
+    if (hRange == null || vRange == null) {
+      return undefined;
+    }
+
+    const documentFact = await FoundationFetcher.justOneDocument(docId);
+    const png = documentFactImage(
+      documentFact,
+      hRange[0],
+      hRange[1],
+      vRange[0],
+      vRange[1]
+    );
+    return new Buffer(png.split(",")[1], "base64"); // Remove "data:image/png;base64,"
   } else if (vidRegex.test(imgKey)) {
     // Video fact
-    const vidRange = imgKey.match(vidRegex);
-    if (vidRange !== null) {
-      const vidId = imgKey.split(vidRange[0])[0];
-      const hRangeStr = vidRange[0];
-      const hRange = videoRangeFromString(hRangeStr);
-      if (hRange == null) {
-        return res.status(404).send("Not found");
-      }
-
-      const videoFact: FT.VideoFactContentEncoded =
-        req.app.locals.factHashMap[vidId];
-
-      if (videoFact) {
-        videoFactImage(videoFact, hRange[0], hRange[1])
-          .then(function (png: string) {
-            const img = new Buffer(png.split(",")[1], "base64"); // Remove "data:image/png;base64,"
-            res.writeHead(200, {
-              "Content-Type": "image/png",
-              "Content-Length": img.length,
-            });
-            return res.end(img);
-          })
-          .catch(function () {
-            throw "Error creating image buffer";
-          });
-      } else {
-        return res.status(404).send("Not found");
-      }
-    } else {
-      throw "Error in video fact regex";
+    const vidRange = imgKey.match(vidRegex)!;
+    const vidId = imgKey.split(vidRange[0])[0];
+    const hRangeStr = vidRange[0];
+    const hRange = videoRangeFromString(hRangeStr);
+    if (hRange == null) {
+      return undefined;
     }
-  } else {
-    return res.status(404).send("Not found");
-  }
-});
 
-export default router;
+    const videoFact = await FoundationFetcher.justOneVideo(vidId);
+    const png = await videoFactImage(videoFact, hRange[0], hRange[1]);
+    return new Buffer(png.split(",")[1], "base64"); // Remove "data:image/png;base64,"
+  } else {
+    return undefined;
+  }
+}

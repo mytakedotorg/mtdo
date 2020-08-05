@@ -17,18 +17,18 @@
  *
  * You can contact us at team@mytake.org
  */
+import { Canvas, CanvasRenderingContext2D, Image, loadImage } from "canvas";
 import { ReactElement } from "react";
-import { FT } from "../java2ts/FT";
-import { ImageProps } from "../java2ts/ImageProps";
-import { loadImage } from "../utils/loadImage";
 import {
   CaptionNode,
   FoundationNode,
   getCaptionNodeArray,
   getCharRangeFromVideoRange,
   highlightCaption,
-} from "./CaptionNodes";
-import { getHighlightedNodes } from "./DocumentNodes";
+} from "./common/CaptionNodes";
+import { getHighlightedNodes } from "./common/DocumentNodes";
+import { FT } from "./java2ts/FT";
+import { ImageProps } from "./java2ts/ImageProps";
 
 const drawSpecs = Object.freeze({
   textMargin: 16,
@@ -65,8 +65,8 @@ export function drawDocumentFact(
   drawDocument(canvas, [...highlightedNodes], title);
 }
 
-export function drawVideoFact(
-  canvas: HTMLCanvasElement,
+export async function drawVideoFact(
+  canvas: Canvas,
   factContent: FT.VideoFactContent,
   highlightedRange: [number, number]
 ): Promise<ImageProps> {
@@ -103,71 +103,61 @@ export function drawVideoFact(
   highlightedText = highlightedText.trimRight();
   highlightedText += '"';
 
-  const src = "https://img.youtube.com/vi/" + factContent.youtubeId + "/0.jpg";
-  return new Promise(function (resolve, reject) {
-    loadImage(src).then((img: HTMLImageElement) => {
-      return resolve(drawCaption(canvas, img, highlightedText));
-    });
-  });
+  const img = await loadImage(
+    `https://img.youtube.com/vi/${factContent.youtubeId}/0.jpg`
+  );
+  return drawCaption(canvas, img, highlightedText);
 }
 
-function drawCaption(
-  canvas: HTMLCanvasElement,
-  thumb: HTMLImageElement,
-  text: string
-): ImageProps {
+function drawCaption(canvas: Canvas, thumb: Image, text: string): ImageProps {
   const ctx = canvas.getContext("2d");
 
   canvas.width = drawSpecs.width * 2;
-  (canvas as any).style = {};
-  canvas.style.width = drawSpecs.width + "px";
+  (canvas as any).style = {
+    width: drawSpecs.width + "px",
+  };
 
-  if (ctx) {
-    // Set font styles
-    const textSize = 15;
-    ctx.font = "Bold " + textSize.toString() + "px Merriweather";
+  // Set font styles
+  const textSize = 15;
+  ctx.font = "Bold " + textSize.toString() + "px Merriweather";
 
-    // Draw text once to calculate height
-    const height =
-      drawText(
-        ctx,
-        text,
-        textSize,
-        0,
-        drawSpecs.thumbHeight + drawSpecs.textMargin
-      ).totalHeight + drawSpecs.thumbHeight;
-
-    canvas.height = height * 2;
-    canvas.style.height = height + "px";
-
-    ctx.scale(2, 2);
-
-    // Draw grey background
-    ctx.fillStyle = "#f2f4f7";
-    ctx.fillRect(0, 0, drawSpecs.width, height);
-    ctx.fillStyle = "#051a38";
-
-    ctx.drawImage(thumb, 0, 0);
-
-    // Not sure why, but font has been reset at this point, so must set it again
-    ctx.font = "Bold " + textSize.toString() + "px Merriweather";
+  // Draw text once to calculate height
+  const height =
     drawText(
       ctx,
       text,
       textSize,
       0,
       drawSpecs.thumbHeight + drawSpecs.textMargin
-    );
+    ).totalHeight + drawSpecs.thumbHeight;
 
-    return {
-      dataUri: canvas.toDataURL("image/png"),
-      width: drawSpecs.width.toString(),
-      height: height.toString(),
-    };
-  } else {
-    const errStr = "Error getting canvas context";
-    throw errStr;
-  }
+  canvas.height = height * 2;
+  (canvas as any).style.height = height + "px";
+
+  ctx.scale(2, 2);
+
+  // Draw grey background
+  ctx.fillStyle = "#f2f4f7";
+  ctx.fillRect(0, 0, drawSpecs.width, height);
+  ctx.fillStyle = "#051a38";
+
+  ctx.drawImage(thumb, 0, 0);
+
+  // Not sure why, but font has been reset at this point, so must set it again
+  ctx.font = "Bold " + textSize.toString() + "px Merriweather";
+  drawText(
+    ctx,
+    text,
+    textSize,
+    0,
+    drawSpecs.thumbHeight + drawSpecs.textMargin
+  );
+
+  return {
+    dataUri: canvas.toDataURL("image/png"),
+    width: drawSpecs.width.toString(),
+    height: height.toString(),
+  };
 }
 
 interface Dimensions {
@@ -337,38 +327,33 @@ function drawDocument(
   nodes: FoundationNode[],
   title: string
 ): ImageProps {
-  const ctx = canvas.getContext("2d");
+  const ctx = canvas.getContext("2d")! as CanvasRenderingContext2D;
 
   canvas.width = drawSpecs.width * 2;
   (canvas as any).style = {};
   canvas.style.width = drawSpecs.width + "px";
 
-  if (ctx) {
-    // Draw the document once to calculate height
-    const height = drawDocumentText(ctx, [...nodes], title);
+  // Draw the document once to calculate height
+  const height = drawDocumentText(ctx, [...nodes], title);
 
-    canvas.height = height * 2;
-    canvas.style.height = height + "px";
+  canvas.height = height * 2;
+  canvas.style.height = height + "px";
 
-    ctx.scale(2, 2);
+  ctx.scale(2, 2);
 
-    // Draw grey background
-    ctx.fillStyle = "#f2f4f7";
-    ctx.fillRect(0, 0, drawSpecs.width, height);
+  // Draw grey background
+  ctx.fillStyle = "#f2f4f7";
+  ctx.fillRect(0, 0, drawSpecs.width, height);
 
-    // Set text color
-    ctx.fillStyle = "#051a38";
+  // Set text color
+  ctx.fillStyle = "#051a38";
 
-    // Draw document again to draw the text
-    drawDocumentText(ctx, [...nodes], title);
+  // Draw document again to draw the text
+  drawDocumentText(ctx, [...nodes], title);
 
-    return {
-      dataUri: canvas.toDataURL("image/png"),
-      width: drawSpecs.width.toString(),
-      height: height.toString(),
-    };
-  } else {
-    const errStr = "Error getting canvas context";
-    throw errStr;
-  }
+  return {
+    dataUri: canvas.toDataURL("image/png"),
+    width: drawSpecs.width.toString(),
+    height: height.toString(),
+  };
 }
