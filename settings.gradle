@@ -1,6 +1,6 @@
 pluginManagement {
 	plugins {
-		id 'com.diffplug.spotless'                version '5.0.0'
+		id 'com.diffplug.spotless'                version '5.1.1'
 		id 'com.diffplug.eclipse.apt'             version '3.23.0'
 		id 'com.diffplug.eclipse.resourcefilters' version '3.23.0'
 	}
