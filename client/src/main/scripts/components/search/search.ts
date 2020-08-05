@@ -151,7 +151,7 @@ export class SearchHit {
   private clipRangeCache?: [number, number];
   // Offsets are relative to the beginning of the turn
   constructor(
-    private readonly highlightOffsets: Array<[number, number]>,
+    private readonly highlightOffsets: Array<[number, number, string]>,
     public readonly hitOffsets: [number, number],
     public readonly turn: number,
     public readonly videoFact: FT.VideoFactContent

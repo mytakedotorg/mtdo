@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2018-2020 MyTake.org, Inc.
+ * Copyright (C) 2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -19,7 +19,7 @@
  */
 export interface MultiHighlight {
   cut: [number, number];
-  highlights: Array<[number, number]>;
+  highlights: Array<[number, number, string]>;
 }
 /**
  * Offsets to cut out of the turn content, along with all the offsets
@@ -27,14 +27,15 @@ export interface MultiHighlight {
  * the start of the turn's content, not the start of the cut.
  */
 
-function cleanupRegex(string: String): String {
-  const alphaNumWhitespaceOnly = string.replace("[^a-z0-9s]", "");
+function cleanupRegex(str: string): string {
+  const alphaNumWhitespaceOnly = str.replace("[^a-z0-9s]", "");
   return alphaNumWhitespaceOnly.replace(" ", "\\W+"); // all commas, dashes, quotes, etc. get smushed into one group
 }
 
 /** This class finds matches within a turn, returning them as TurnWithResults. */
 export class TurnFinder {
   regexInclude: RegExp;
+  regexIncludePerTerm: [RegExp, string][] = [];
   regexExclude?: RegExp;
 
   constructor(searchQuery: string) {
@@ -48,7 +49,9 @@ export class TurnFinder {
       if (trimmed.charAt(0) === "-") {
         exclude = exclude + "|" + cleanupRegex(trimmed.substr(1));
       } else {
-        include = include + "|" + cleanupRegex(trimmed);
+        const toInclude = cleanupRegex(trimmed);
+        this.regexIncludePerTerm.push([new RegExp(toInclude, "ig"), trimmed]);
+        include = include + "|" + toInclude;
       }
     }
     this.regexInclude = new RegExp(include.slice(1), "ig");
@@ -60,19 +63,26 @@ export class TurnFinder {
   /** Finds all the results in the given turnContent. */
   findResults(turnContent: string): TurnWithResults {
     this.regexInclude.lastIndex = 0;
-    let foundOffsets: Array<[number, number]> = [];
+    let foundOffsets: Array<[number, number, string]> = [];
     let found = this.regexInclude.exec(turnContent);
     while (found != null) {
-      const lastIndex = found.index + found[0].length;
-      if (this.regexExclude) {
-        // TODO: if this exclude regex matches at all, we should not include the result.
-        // it's a little tricky because it might be a "look ahead" or "look behind", e.g.
-        //   wall, -wall street <-- I want wall, but not wall street
-        //   wall, -border wall <-- I want wall, but not border wall
-      }
-      foundOffsets.push([found.index, lastIndex]);
+      const foundHunk = found[0];
+      const foundTerm = this.regexIncludePerTerm.find((regexAndTerm) =>
+        regexAndTerm[0].test(foundHunk)
+      )![1];
+      const lastIndex = found.index + foundHunk.length;
+
+      foundOffsets.push([found.index, lastIndex, foundTerm]);
       this.regexInclude.lastIndex = lastIndex + 1;
       found = this.regexInclude.exec(turnContent);
+    }
+    if (this.regexExclude) {
+      // TODO: in a second pass, if this exclude regex matches at all,
+      // then we should not remove that found entry
+      //
+      // it's a little tricky because it might be a "look ahead" or "look behind", e.g.
+      //   wall, -wall street <-- I want wall, but not wall street
+      //   wall, -border wall <-- I want wall, but not border wall
     }
     return new TurnWithResults(turnContent, foundOffsets);
   }
@@ -85,9 +95,12 @@ export class TurnFinder {
  */
 class TurnWithResults {
   turnContent: string;
-  foundOffsets: Array<[number, number]>;
+  foundOffsets: Array<[number, number, string]>;
 
-  constructor(turnContent: string, foundOffsets: Array<[number, number]>) {
+  constructor(
+    turnContent: string,
+    foundOffsets: Array<[number, number, string]>
+  ) {
     this.turnContent = turnContent;
     this.foundOffsets = foundOffsets;
   }
@@ -96,7 +109,7 @@ class TurnWithResults {
   expandBy(numSentencesBuffer: number): MultiHighlight[] {
     let multiHighlights: MultiHighlight[] = [];
 
-    let expanded: Array<[number, number]> = [];
+    let expanded: Array<[number, number, string]> = [];
     for (var found of this.foundOffsets) {
       // initialize around the found word
       let start = this.prevPunc(found[0]);
