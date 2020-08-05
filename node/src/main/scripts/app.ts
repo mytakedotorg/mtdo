@@ -18,13 +18,12 @@
  * You can contact us at team@mytake.org
  */
 import * as express from "express";
+import { NextFunction, Request, Response } from "express";
+// Require routes
+import { generateImage } from "./controllers/images";
 require("source-map-support").install();
 const logger = require("morgan");
-import FactHashMap, { fetchYTThumbs } from "./utils/FactHashMap";
 const app = express();
-import { Request, Response, NextFunction } from "express";
-// Require routes
-import images from "./controllers/images";
 
 if (app.get("env") === "production") {
   app.set("trust proxy", 1); // trust first proxy
@@ -33,33 +32,20 @@ if (app.get("env") === "production") {
   app.use(logger("dev"));
 }
 
-let isReady: boolean = false;
-new FactHashMap().load().then((factHashMap) => {
-  app.locals.factHashMap = factHashMap;
-  fetchYTThumbs(factHashMap)
-    .then((vidHashMap) => {
-      app.locals.vidHashMap = vidHashMap;
-      isReady = true;
-    })
-    .catch((err) => {
-      console.error("Failed to load hashmap and youtube thumbnails");
-    });
-});
-
-app.use("/api/images", (req: Request, res: Response, next: NextFunction) => {
-  if (isReady) return next();
-  const intervalId = setInterval(() => {
-    if (isReady) {
-      clearInterval(intervalId);
-      next();
-    }
-  }, 20);
-});
-
-app.use("/api/images", images);
-
-app.get("/favicon.ico", (req: Request, res: Response) => {
-  res.status(204);
+const IMAGEKEY = "imgkey";
+app.use(`/api/images/:${IMAGEKEY}`, async (req: Request, res: Response) => {
+  const imgKeyAndExtension: string = req.params[IMAGEKEY];
+  const buf = await generateImage(imgKeyAndExtension);
+  if (buf) {
+    res
+      .writeHead(200, {
+        "Content-Type": "image/png",
+        "Content-Length": buf.length,
+      })
+      .end(buf);
+  } else {
+    res.status(404).send("Not found");
+  }
 });
 
 declare global {
