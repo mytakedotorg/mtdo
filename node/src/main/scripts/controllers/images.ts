@@ -67,24 +67,21 @@ function documentRangeFromString(
 
 function videoFactImage(
   videoFact: FT.VideoFactContent,
-  hStart: number,
-  hEnd: number
+  highlight: [number, number]
 ): string {
   const canvas = createCanvas(480, 360);
-  drawVideoFact(canvas, videoFact, [hStart, hEnd]);
+  drawVideoFact(canvas, videoFact, highlight);
   return canvas.toDataURL();
 }
 
 function documentFactImage(
   documentFact: FT.DocumentFactContent,
-  hStart: number,
-  hEnd: number,
-  vStart: number,
-  vEnd: number
+  highlight: [number, number],
+  view: [number, number]
 ): string {
   const canvas = createCanvas(480, 360);
   const ctx = canvas.getContext("2d");
-  drawDocumentFact(ctx.canvas, documentFact, [hStart, hEnd], [vStart, vEnd]);
+  drawDocumentFact(ctx.canvas, documentFact, highlight, view);
   return canvas.toDataURL();
 }
 
@@ -117,13 +114,7 @@ export async function generateImage(
     }
 
     const documentFact = await FoundationFetcher.justOneDocument(docId);
-    const png = documentFactImage(
-      documentFact,
-      hRange[0],
-      hRange[1],
-      vRange[0],
-      vRange[1]
-    );
+    const png = documentFactImage(documentFact, hRange, vRange);
     return new Buffer(png.split(",")[1], "base64"); // Remove "data:image/png;base64,"
   } else if (vidRegex.test(imgKey)) {
     // Video fact
@@ -136,7 +127,7 @@ export async function generateImage(
     }
 
     const videoFact = await FoundationFetcher.justOneVideo(vidId);
-    const png = await videoFactImage(videoFact, hRange[0], hRange[1]);
+    const png = await videoFactImage(videoFact, hRange);
     return new Buffer(png.split(",")[1], "base64"); // Remove "data:image/png;base64,"
   } else {
     return undefined;
