@@ -10,14 +10,10 @@
   },
   "main": "src/main/dist/index.js",
   "scripts": {
-    "build": "gulp build",
-    "formatlist": "prettier --list-different '*.js' 'src/main/scripts/**/*.ts'",
-    "formatwrite": "prettier --write         '*.js' 'src/main/scripts/**/*.ts'",
-    "runDev": "gulp proxy",
-    "start": "node src/main/dist/server.js",
+    "start": "gulp default",
+    "deploy": "gulp buildProd",
     "test": "jest",
-    "test_ci": "jest --maxWorkers=2 --ci --reporters=jest-junit",
-    "todd": "gulp -v"
+    "test_ci": "jest --maxWorkers=2 --ci --reporters=jest-junit"
   },
   "author": "",
   "license": "GPL-2.0",
