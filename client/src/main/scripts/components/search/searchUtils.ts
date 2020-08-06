@@ -67,14 +67,17 @@ export class TurnFinder {
     let found = this.regexInclude.exec(turnContent);
     while (found != null) {
       const foundHunk = found[0];
-      const foundTerm = this.regexIncludePerTerm.find((regexAndTerm) =>
-        regexAndTerm[0].test(foundHunk)
-      )![1];
-      const lastIndex = found.index + foundHunk.length;
+      const foundTerm = this.regexIncludePerTerm.find((regexAndTerm) => {
+        regexAndTerm[0].lastIndex = 0;
+        return regexAndTerm[0].test(foundHunk);
+      });
+      if (foundTerm) {
+        const lastIndex = found.index + foundHunk.length;
 
-      foundOffsets.push([found.index, lastIndex, foundTerm]);
-      this.regexInclude.lastIndex = lastIndex + 1;
-      found = this.regexInclude.exec(turnContent);
+        foundOffsets.push([found.index, lastIndex, foundTerm[1]]);
+        this.regexInclude.lastIndex = lastIndex + 1;
+        found = this.regexInclude.exec(turnContent);
+      }
     }
     if (this.regexExclude) {
       // TODO: in a second pass, if this exclude regex matches at all,
@@ -109,7 +112,6 @@ class TurnWithResults {
   expandBy(numSentencesBuffer: number): MultiHighlight[] {
     let multiHighlights: MultiHighlight[] = [];
 
-    let expanded: Array<[number, number, string]> = [];
     for (var found of this.foundOffsets) {
       // initialize around the found word
       let start = this.prevPunc(found[0]);
