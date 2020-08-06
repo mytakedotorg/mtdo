@@ -4,12 +4,20 @@
 
 .ngram__inner-container {
   max-width: 100%;
-  width: 560px;
-  height: 318px;
+  width: $column-width;
   margin-bottom: $page-margin-mobile * $vertical-margin-multiplier;
   margin-left: auto;
   margin-right: auto;
   @media #{$mq-medium} {
     margin-bottom: $content-margin * $vertical-margin-multiplier;
   }
+}
+
+.ngram__term-list {
+  display: flex;
+  justify-content: space-around;
+}
+
+.ngram__term {
+  font-size: 16px;
 }

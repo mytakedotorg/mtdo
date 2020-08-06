@@ -22,15 +22,19 @@ import React, { useEffect, useRef } from "react";
 import { FT } from "../../java2ts/FT";
 import { SearchHit, SearchResult } from "./search";
 
-const SVG_PADDING = 50;
-const SVG_WIDTH = 510;
+const SVG_PADDING_LEFT = 25;
+const SVG_PADDING_TOP = 40;
+const SVG_WIDTH = 768;
 const SVG_HEIGHT = 318;
+const colors = d3.scaleOrdinal(d3.schemeSet2).range();
+
 interface NGramViewerProps {
   searchResult: SearchResult;
 }
 
 const NGramViewer: React.FC<NGramViewerProps> = ({ searchResult }) => {
   const svgEl = useRef<SVGSVGElement>(null);
+  const searchTerms = getSearchTerms(searchResult.searchQuery);
   useEffect(() => {
     if (svgEl.current) {
       drawChart(svgEl.current, searchResult);
@@ -40,6 +44,19 @@ const NGramViewer: React.FC<NGramViewerProps> = ({ searchResult }) => {
     <div className="ngram__outer-container">
       <div className="ngram__inner-container">
         <svg ref={svgEl} width={SVG_WIDTH} height={SVG_HEIGHT}></svg>
+        <div className="ngram__term-list">
+          {searchTerms.map((term, idx) => {
+            return (
+              <span
+                key={term}
+                style={{ color: colors[idx] }}
+                className="ngram__term"
+              >
+                {term}
+              </span>
+            );
+          })}
+        </div>
       </div>
     </div>
   );
@@ -51,7 +68,7 @@ function drawChart(svgElement: SVGSVGElement, searchResult: SearchResult) {
     .append("g")
     .attr(
       "transform",
-      "translate(" + SVG_PADDING + "," + SVG_PADDING / 2 + ")"
+      "translate(" + SVG_PADDING_LEFT + "," + SVG_PADDING_TOP / 2 + ")"
     );
   const { hitsPerYear, allSearchTerms } = getNumberOfHitsPerYear(searchResult);
   const yearMinMax = d3.extent(hitsPerYear, (hit) => hit.year) as [Date, Date];
@@ -59,26 +76,26 @@ function drawChart(svgElement: SVGSVGElement, searchResult: SearchResult) {
   const xScale = d3
     .scaleTime()
     .domain(padYears(yearMinMax, 1))
-    .range([0, SVG_WIDTH - SVG_PADDING]);
+    .range([0, SVG_WIDTH - SVG_PADDING_LEFT * 2]);
   // draw x-axis
   svg
     .append("g")
-    .attr("transform", "translate(0," + (SVG_HEIGHT - SVG_PADDING) + ")")
+    .attr("transform", "translate(0," + (SVG_HEIGHT - SVG_PADDING_TOP) + ")")
     .call(d3.axisBottom(xScale));
 
   const hitMax = d3.max(hitsPerYear, (h) => h.hitCount)!;
-  allSearchTerms.forEach((term) => {
+  // get y-axis ticks
+  const yScale = d3
+    .scaleLinear()
+    .domain([0, hitMax + Math.round(hitMax * 0.1)])
+    .range([SVG_HEIGHT - SVG_PADDING_TOP, 0]);
+  // draw y-axis
+  svg.append("g").call(d3.axisLeft(yScale));
+
+  allSearchTerms.forEach((term, idx) => {
     const hitsPerYearForTerm = hitsPerYear.filter(
       (hpy) => hpy.searchTerm === term
     );
-    // get y-axis ticks
-    const yScale = d3
-      .scaleLinear()
-      .domain([0, hitMax + Math.round(hitMax * 0.1)])
-      .range([SVG_HEIGHT - SVG_PADDING, 0]);
-
-    // draw y-axis
-    svg.append("g").call(d3.axisLeft(yScale)); // @TODO only need to draw this once
     const line = d3
       .line<HitsPerYear>()
       .x((d) => xScale(d.year))
@@ -87,8 +104,8 @@ function drawChart(svgElement: SVGSVGElement, searchResult: SearchResult) {
       .append("path")
       .datum(hitsPerYearForTerm)
       .attr("fill", "none")
-      .attr("stroke", "steelblue")
-      .attr("stroke-width", 1.5)
+      .attr("stroke", colors[idx])
+      .attr("stroke-width", 2)
       .attr("d", line);
   });
 }
@@ -125,7 +142,7 @@ const ALL_DEBATE_YEARS = [
   "2020",
 ];
 function getNumberOfHitsPerYear(searchResult: SearchResult): HitsPerYearList {
-  const terms = new Set<string>(getSearchTerms(searchResult.searchQuery));
+  const terms = getSearchTerms(searchResult.searchQuery);
   const hitsPerYear: HitsPerYear[] = [];
   ALL_DEBATE_YEARS.forEach((y) => {
     terms.forEach((t) => {
@@ -149,7 +166,7 @@ function getNumberOfHitsPerYear(searchResult: SearchResult): HitsPerYearList {
   });
   return {
     hitsPerYear,
-    allSearchTerms: Array.from(terms),
+    allSearchTerms: terms,
   };
 }
 
@@ -162,10 +179,14 @@ function padYears(dates: [Date, Date], numYears: number): [Date, Date] {
 }
 
 function getSearchTerms(searchQuery: string): string[] {
-  return searchQuery
-    .split(",")
-    .map((t) => t.trim())
-    .filter((t) => t.length > 0);
+  return [
+    ...new Set(
+      searchQuery
+        .split(",")
+        .map((t) => t.trim())
+        .filter((t) => t.length > 0)
+    ),
+  ];
 }
 
 export function _getSearchTerms(searchQuery: string): string[] {
