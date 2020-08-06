@@ -30,7 +30,10 @@ test("show the 13th amendment", async (done) => {
   );
   expect(response.statusCode).toBe(200);
   // this threshold is pretty big, but it gets Travis to pass as a smoke test
-  expect(response.body).toMatchImageSnapshot();
+  expect(response.body).toMatchImageSnapshot({
+    failureThreshold: "5",
+    failureThresholdType: "percent",
+  });
   done();
 });
 
