@@ -17,7 +17,12 @@
  *
  * You can contact us at team@mytake.org
  */
-import { _getSearchTerms } from "./NGramViewer";
+import React from "react";
+import renderer from "react-test-renderer";
+import { FoundationHarness } from "../../common/foundationTest";
+import NGramViewer, { _getSearchTerms } from "./NGramViewer";
+import { SearchMode, _searchImpl, _SearchWithData } from "./search";
+import socialSecuritySearchResults from "./testData/socialSecuritySearchResults.json";
 
 test("NGramViewer parses search terms", () => {
   const searchQueries = [
@@ -33,4 +38,19 @@ test("NGramViewer parses search terms", () => {
     const terms = _getSearchTerms(q);
     expect(terms).toEqual(expectedTerms[idx]);
   });
+});
+
+test("NGramViewer social security", () => {
+  const result = _searchImpl(
+    new _SearchWithData(
+      "social security",
+      socialSecuritySearchResults.facts,
+      FoundationHarness.loadAllFromDisk(),
+      SearchMode.BeforeAndAfter
+    )
+  );
+
+  const tree = renderer.create(<NGramViewer searchResult={result} />).toJSON();
+
+  expect(tree).toMatchSnapshot();
 });

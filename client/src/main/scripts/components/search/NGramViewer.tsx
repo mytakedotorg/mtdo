@@ -18,8 +18,7 @@
  * You can contact us at team@mytake.org
  */
 import * as d3 from "d3";
-import React, { useEffect, useRef, useState } from "react";
-import { FoundationFetcher } from "../../common/foundation";
+import React, { useEffect, useRef } from "react";
 import { FT } from "../../java2ts/FT";
 import { SearchHit, SearchResult } from "./search";
 
@@ -32,18 +31,11 @@ interface NGramViewerProps {
 
 const NGramViewer: React.FC<NGramViewerProps> = ({ searchResult }) => {
   const svgEl = useRef<SVGSVGElement>(null);
-  const [index, setIndex] = useState<FT.FactLink[]>([]);
   useEffect(() => {
-    const getIndex = async () => {
-      setIndex(await FoundationFetcher.index());
-    };
-    getIndex();
-  }, []);
-  useEffect(() => {
-    if (index.length > 0) {
-      drawChart(svgEl.current, searchResult, index);
+    if (svgEl.current) {
+      drawChart(svgEl.current, searchResult);
     }
-  }, [svgEl, index.length]);
+  }, [svgEl]);
   return (
     <div className="ngram__outer-container">
       <div className="ngram__inner-container">
@@ -53,14 +45,7 @@ const NGramViewer: React.FC<NGramViewerProps> = ({ searchResult }) => {
   );
 };
 
-function drawChart(
-  svgElement: SVGSVGElement | null,
-  searchResult: SearchResult,
-  foundationIndex: FT.FactLink[]
-) {
-  if (!svgElement) {
-    return;
-  }
+function drawChart(svgElement: SVGSVGElement, searchResult: SearchResult) {
   const svg = d3
     .select(svgElement)
     .append("g")
@@ -68,83 +53,81 @@ function drawChart(
       "transform",
       "translate(" + SVG_PADDING + "," + SVG_PADDING / 2 + ")"
     );
-  const { hitsPerYear, allSearchTerms } = getNumberOfHitsPerYear(
-    searchResult,
-    foundationIndex
-  );
-  const yearMinMax = d3.extent(hitsPerYear, (hit) => hit.year);
-  if (isNotEmpty(yearMinMax)) {
-    // get x-axis ticks
-    const x = d3
-      .scaleTime()
-      .domain(padYears(yearMinMax, 1))
-      .range([0, SVG_WIDTH - SVG_PADDING]);
-    // draw x-axix
+  const { hitsPerYear, allSearchTerms } = getNumberOfHitsPerYear(searchResult);
+  const yearMinMax = d3.extent(hitsPerYear, (hit) => hit.year) as [Date, Date];
+  // get x-axis ticks
+  const xScale = d3
+    .scaleTime()
+    .domain(padYears(yearMinMax, 1))
+    .range([0, SVG_WIDTH - SVG_PADDING]);
+  // draw x-axis
+  svg
+    .append("g")
+    .attr("transform", "translate(0," + (SVG_HEIGHT - SVG_PADDING) + ")")
+    .call(d3.axisBottom(xScale));
+
+  const hitMax = d3.max(hitsPerYear, (h) => h.hitCount)!;
+  allSearchTerms.forEach((term) => {
+    const hitsPerYearForTerm = hitsPerYear.filter(
+      (hpy) => hpy.searchTerm === term
+    );
+    // get y-axis ticks
+    const yScale = d3
+      .scaleLinear()
+      .domain([0, hitMax + Math.round(hitMax * 0.1)])
+      .range([SVG_HEIGHT - SVG_PADDING, 0]);
+
+    // draw y-axis
+    svg.append("g").call(d3.axisLeft(yScale)); // @TODO only need to draw this once
+    const line = d3
+      .line<HitsPerYear>()
+      .x((d) => xScale(d.year))
+      .y((d) => yScale(d.hitCount));
     svg
-      .append("g")
-      .attr("transform", "translate(0," + (SVG_HEIGHT - SVG_PADDING) + ")")
-      .call(d3.axisBottom(x));
-
-    const hitMax = d3.max(hitsPerYear, (h) => h.hitCount);
-    allSearchTerms.forEach((term) => {
-      const hitsPerYearForTerm = hitsPerYear.filter(
-        (hpy) => hpy.searchTerm === term
-      );
-      if (hitMax) {
-        const y = d3
-          .scaleLinear()
-          .domain([0, hitMax + Math.round(hitMax * 0.1)])
-          .range([SVG_HEIGHT - SVG_PADDING, 0]);
-
-        svg.append("g").call(d3.axisLeft(y));
-        const line = d3
-          .line<HitsPerYear>()
-          .x((d) => x(d.year))
-          .y((d) => y(d.hitCount));
-        svg
-          .append("path")
-          .datum(hitsPerYearForTerm)
-          .attr("fill", "none")
-          .attr("stroke", "steelblue")
-          .attr("stroke-width", 1.5)
-          .attr("d", line);
-      }
-    });
-  }
+      .append("path")
+      .datum(hitsPerYearForTerm)
+      .attr("fill", "none")
+      .attr("stroke", "steelblue")
+      .attr("stroke-width", 1.5)
+      .attr("d", line);
+  });
 }
 
 const getYearFromVideoFact = (videoFact: FT.VideoFactContent): Date => {
   const date = d3.timeParse("%Y-%m-%d")(videoFact.fact.primaryDate);
-  if (!date) {
-    throw `Error parsing date from video fact ${videoFact.fact.title}`;
-  }
-  date.setMonth(0); // January
-  date.setDate(1); // 1st
-  return date;
+  date!.setMonth(0); // January
+  date!.setDate(1); // 1st
+  return date!;
 };
 
 interface HitsPerYear {
   year: Date;
   hitCount: number;
-  searchTerm?: string;
+  searchTerm: string;
 }
 interface HitsPerYearList {
   hitsPerYear: HitsPerYear[];
   allSearchTerms: string[];
 }
-function getNumberOfHitsPerYear(
-  searchResult: SearchResult,
-  foundationIndex: FT.FactLink[]
-): HitsPerYearList {
-  const uniqueYears = new Set<string>();
+const ALL_DEBATE_YEARS = [
+  "1960",
+  "1976",
+  "1980",
+  "1984",
+  "1988",
+  "1992",
+  "1996",
+  "2000",
+  "2004",
+  "2008",
+  "2012",
+  "2016",
+  "2020",
+];
+function getNumberOfHitsPerYear(searchResult: SearchResult): HitsPerYearList {
   const terms = new Set<string>(getSearchTerms(searchResult.searchQuery));
-  foundationIndex.forEach((f) => {
-    if (f.fact.kind === "video") {
-      uniqueYears.add(f.fact.primaryDate.split("-")[0]);
-    }
-  });
   const hitsPerYear: HitsPerYear[] = [];
-  uniqueYears.forEach((y) => {
+  ALL_DEBATE_YEARS.forEach((y) => {
     terms.forEach((t) => {
       hitsPerYear.push({
         year: new Date(parseInt(y), 0),
@@ -160,10 +143,7 @@ function getNumberOfHitsPerYear(
       const existingHit = hitsPerYear.find(
         (h) =>
           h.year.getFullYear() === year.getFullYear() && h.searchTerm === term
-      );
-      if (!existingHit) {
-        throw "NGramViewer: Foundation error. Year missing from index.";
-      }
+      )!;
       existingHit.hitCount += hitCount;
     }
   });
@@ -171,12 +151,6 @@ function getNumberOfHitsPerYear(
     hitsPerYear,
     allSearchTerms: Array.from(terms),
   };
-}
-
-function isNotEmpty<T>(
-  d3Extent: [undefined, undefined] | [T, T]
-): d3Extent is [T, T] {
-  return !!d3Extent[0] && !!d3Extent[1];
 }
 
 function padYears(dates: [Date, Date], numYears: number): [Date, Date] {
