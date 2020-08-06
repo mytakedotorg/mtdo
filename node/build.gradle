@@ -25,15 +25,12 @@ spotless {
 		licenseHeaderFile rootProject.file('gradle/spotless-license-agpl.java'), '(import|const|declare|export|var) '
 		target 'src/main/scripts/**/*.ts'
 		targetExclude 'src/main/scripts/java2ts/**', 'src/main/scripts/common/**', 'src/main/scripts/server.ts', '**/__snapshots__/**'
-		prettier(['prettier': VER_PRETTIER, 'prettier-plugin-organize-imports': VER_PRETTIER_ORGANIZE_IMPORTS])
+		prettier(VER_PRETTIER)
 	}
 	format 'js', {
 		target 'gulpfile.js'
-		prettier(['prettier': VER_PRETTIER, 'prettier-plugin-organize-imports': VER_PRETTIER_ORGANIZE_IMPORTS])
+		prettier(VER_PRETTIER)
 	}
-}
-tasks.named('spotlessTypescript') {
-	dependsOn 'beforeCompile'
 }
 
 /////////////////////////////////
@@ -49,11 +46,6 @@ node {
 		dependsOn 'beforeCompile'
 		inputs.dir('src/main/scripts')
 		outputs.dir('build/test-results/jest')
-	}
-	tasks.named('beforeCompile') {
-		doLast {
-			setup.start(project)
-		}
 	}
 }
 tasks.register('test') {

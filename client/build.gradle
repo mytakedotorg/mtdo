@@ -20,11 +20,11 @@ spotless {
 		licenseHeaderFile rootProject.file('gradle/spotless-license-agpl.java'), '(import|const|declare|export|var) '
 		target 'src/main/scripts/**'
 		targetExclude '**/java2ts/**', '**/__snapshots__/**', '**/*.json'
-		prettier(['prettier': VER_PRETTIER, 'prettier-plugin-organize-imports': VER_PRETTIER_ORGANIZE_IMPORTS])
+		prettier(VER_PRETTIER)
 	}
 	format 'js', {
 		target 'gulpfile.js'
-		prettier(['prettier': VER_PRETTIER, 'prettier-plugin-organize-imports': VER_PRETTIER_ORGANIZE_IMPORTS])
+		prettier(VER_PRETTIER)
 	}
 }
 dependencies {
@@ -69,15 +69,6 @@ node {
 	setup.nodeVersion = buildsrc.NvmRc.read(file('../.nvmrc'))
 	setup.npmVersion = 'provided'
 
-	// this kludge is required by 'prettier-plugin-organize-imports'
-	tasks.named('spotlessTypescript') {
-		def jsweet = tasks.named('jsweet').get()
-		jsweet.doLast {
-			setup.start(project)
-		}
-		dependsOn jsweet
-	}
-
 	npmRun('test_ci') {
 		dependsOn('jsweet')
 		dependsOn(':foundation-gen:generateFoundation')
@@ -113,7 +104,6 @@ node {
 				inputs.file('tsconfig.json').withPathSensitivity(PathSensitivity.RELATIVE)
 			}
 			outputs.dir("src/main/resources/assets/${taskName}")
-
 		}
 	}
 	gulp 'revProd', {
