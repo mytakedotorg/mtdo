@@ -128,7 +128,7 @@ export async function generateImage(
 
     const videoFact = await FoundationFetcher.justOneVideo(vidId);
     const png = await videoFactImage(videoFact, hRange);
-    return new Buffer(png.slice(png.indexOf(',') + 1), "base64"); // Remove "data:image/png;base64,"
+    return new Buffer(png.slice(png.indexOf(",") + 1), "base64"); // Remove "data:image/png;base64,"
   } else {
     return undefined;
   }
