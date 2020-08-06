@@ -24,7 +24,12 @@ import { SearchHit } from "./search";
 import VideoResult from "./VideoResult";
 
 test("VideoResultPreview containing", () => {
-  const searchHit = new SearchHit([[18, 28]], [14, 239], 0, kennedyNixon);
+  const searchHit = new SearchHit(
+    [[18, 28, "television"]],
+    [14, 239],
+    0,
+    kennedyNixon
+  );
   const tree = renderer
     .create(<VideoResult searchHit={searchHit} onPlayClick={jest.fn()} />)
     .toJSON();
@@ -32,7 +37,12 @@ test("VideoResultPreview containing", () => {
 });
 
 test("VideoResultPreview before and after", () => {
-  const searchHit = new SearchHit([[18, 28]], [0, 276], 0, kennedyNixon);
+  const searchHit = new SearchHit(
+    [[18, 28, "television"]],
+    [0, 276],
+    0,
+    kennedyNixon
+  );
   const tree = renderer
     .create(<VideoResult searchHit={searchHit} onPlayClick={jest.fn()} />)
     .toJSON();

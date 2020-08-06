@@ -1,0 +1,30 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NGramViewer social security 1`] = `
+<div
+  className="ngram__outer-container"
+>
+  <div
+    className="ngram__inner-container"
+  >
+    <svg
+      height={318}
+      width={768}
+    />
+    <div
+      className="ngram__term-list"
+    >
+      <span
+        className="ngram__term"
+        style={
+          Object {
+            "color": "#66c2a5",
+          }
+        }
+      >
+        social security
+      </span>
+    </div>
+  </div>
+</div>
+`;
