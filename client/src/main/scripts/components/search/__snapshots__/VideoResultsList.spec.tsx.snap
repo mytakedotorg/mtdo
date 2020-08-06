@@ -38,6 +38,18 @@ exports[`VideoResultsList social security 1`] = `
     </h1>
     <div>
       <div
+        className="ngram__outer-container"
+      >
+        <div
+          className="ngram__inner-container"
+        >
+          <svg
+            height={318}
+            width={510}
+          />
+        </div>
+      </div>
+      <div
         className="video__outer-container"
       >
         <div
