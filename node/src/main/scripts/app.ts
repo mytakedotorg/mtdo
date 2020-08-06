@@ -35,18 +35,33 @@ if (app.get("env") === "production") {
 const IMAGEKEY = "imgkey";
 app.use(`/api/images/:${IMAGEKEY}`, async (req: Request, res: Response) => {
   const imgKeyAndExtension: string = req.params[IMAGEKEY];
-  const buf = await generateImage(imgKeyAndExtension);
-  if (buf) {
-    res
-      .writeHead(200, {
-        "Content-Type": "image/png",
-        "Content-Length": buf.length,
-      })
-      .end(buf);
-  } else {
-    res.status(404).send("Not found");
+  try {
+    const bufOrErrorMsg = await generateImage(imgKeyAndExtension);
+    if (bufOrErrorMsg instanceof Buffer) {
+      res
+        .writeHead(200, {
+          "Content-Type": "image/png",
+          "Content-Length": bufOrErrorMsg.length,
+        })
+        .end(bufOrErrorMsg);
+    } else {
+      logErrorAndSend404(imgKeyAndExtension, bufOrErrorMsg, res);
+    }
+  } catch (error) {
+    logErrorAndSend404(imgKeyAndExtension, error.toString(), res);
   }
 });
+
+function logErrorAndSend404(
+  imgKeyAndExtension: string,
+  errorMsg: string,
+  res: Response
+) {
+  console.warn("#####################");
+  console.warn(imgKeyAndExtension);
+  console.warn(errorMsg);
+  res.status(404).send("Not found");
+}
 
 declare global {
   interface Error {

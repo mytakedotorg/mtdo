@@ -87,7 +87,7 @@ function documentFactImage(
 
 export async function generateImage(
   imgKeyAndExtension: string
-): Promise<Buffer | undefined> {
+): Promise<Buffer | string> {
   // Expect imgKey for videos to be like "/vidId_hStart-hEnd.png
   // Expect imgKey for docs to be like "/docId_hStart-hEnd_vStart-vEnd.png
   const imgKey = imgKeyAndExtension.substring(
@@ -109,13 +109,13 @@ export async function generateImage(
     const vRangeStr = rangeStr.split("_")[1];
     const hRange = documentRangeFromString(hRangeStr);
     const vRange = documentRangeFromString(vRangeStr);
-    if (hRange == null || vRange == null) {
-      return undefined;
+    if (!hRange || !vRange) {
+      return "Document range not specified";
     }
 
     const documentFact = await FoundationFetcher.justOneDocument(docId);
     const png = documentFactImage(documentFact, hRange, vRange);
-    return new Buffer(png.split(",")[1], "base64"); // Remove "data:image/png;base64,"
+    return new Buffer(png.slice(png.indexOf(",") + 1), "base64"); // Remove "data:image/png;base64,"
   } else if (vidRegex.test(imgKey)) {
     // Video fact
     const vidRange = imgKey.match(vidRegex)!;
@@ -123,13 +123,13 @@ export async function generateImage(
     const hRangeStr = vidRange[0];
     const hRange = videoRangeFromString(hRangeStr);
     if (hRange == null) {
-      return undefined;
+      return "Video range not specified";
     }
 
     const videoFact = await FoundationFetcher.justOneVideo(vidId);
     const png = await videoFactImage(videoFact, hRange);
     return new Buffer(png.slice(png.indexOf(",") + 1), "base64"); // Remove "data:image/png;base64,"
   } else {
-    return undefined;
+    return "Neither document nor video";
   }
 }
