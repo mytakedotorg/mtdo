@@ -17,7 +17,7 @@
  *
  * You can contact us at team@mytake.org
  */
-import { Canvas, CanvasRenderingContext2D, Image, loadImage } from "canvas";
+import { Canvas, CanvasRenderingContext2D } from "canvas";
 import { ReactElement } from "react";
 import {
   CaptionNode,
@@ -35,7 +35,6 @@ const drawSpecs = Object.freeze({
   width: 480,
   linewidth: 468,
   lineheight: 1.5, //multiplier
-  thumbHeight: 360,
 });
 
 export function drawDocumentFact(
@@ -103,13 +102,10 @@ export async function drawVideoFact(
   highlightedText = highlightedText.trimRight();
   highlightedText += '"';
 
-  const img = await loadImage(
-    `https://img.youtube.com/vi/${factContent.youtubeId}/0.jpg`
-  );
-  return drawCaption(canvas, img, highlightedText);
+  return drawCaption(canvas, highlightedText);
 }
 
-function drawCaption(canvas: Canvas, thumb: Image, text: string): ImageProps {
+function drawCaption(canvas: Canvas, text: string): ImageProps {
   const ctx = canvas.getContext("2d");
 
   canvas.width = drawSpecs.width * 2;
@@ -122,14 +118,8 @@ function drawCaption(canvas: Canvas, thumb: Image, text: string): ImageProps {
   ctx.font = "Bold " + textSize.toString() + "px Merriweather";
 
   // Draw text once to calculate height
-  const height =
-    drawText(
-      ctx,
-      text,
-      textSize,
-      0,
-      drawSpecs.thumbHeight + drawSpecs.textMargin
-    ).totalHeight + drawSpecs.thumbHeight;
+  const height = drawText(ctx, text, textSize, 0, drawSpecs.textMargin)
+    .totalHeight;
 
   canvas.height = height * 2;
   (canvas as any).style.height = height + "px";
@@ -141,17 +131,9 @@ function drawCaption(canvas: Canvas, thumb: Image, text: string): ImageProps {
   ctx.fillRect(0, 0, drawSpecs.width, height);
   ctx.fillStyle = "#051a38";
 
-  ctx.drawImage(thumb, 0, 0);
-
   // Not sure why, but font has been reset at this point, so must set it again
   ctx.font = "Bold " + textSize.toString() + "px Merriweather";
-  drawText(
-    ctx,
-    text,
-    textSize,
-    0,
-    drawSpecs.thumbHeight + drawSpecs.textMargin
-  );
+  drawText(ctx, text, textSize, 0, drawSpecs.textMargin);
 
   return {
     dataUri: canvas.toDataURL("image/png"),
