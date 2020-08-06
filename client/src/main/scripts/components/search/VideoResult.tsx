@@ -28,7 +28,7 @@ export type PlayEvent = (
   clipRange: [number, number]
 ) => any;
 
-interface VideoResultProps {
+export interface VideoResultProps {
   searchHit: SearchHit;
   onPlayClick: PlayEvent;
 }
