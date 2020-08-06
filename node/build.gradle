@@ -47,10 +47,18 @@ node {
 		inputs.dir('src/main/scripts')
 		outputs.dir('build/test-results/jest')
 	}
+	npmRun('deploy') {
+		dependsOn 'beforeCompile'
+		inputs.dir('src/main/scripts')
+		outputs.dir('src/main/dist')
+	}
 }
 tasks.register('test') {
 	dependsOn 'npm_run_test_ci'
 }
 tasks.named('check') {
 	dependsOn 'test'
+}
+tasks.named('assemble') {
+	dependsOn 'npm_run_deploy'
 }
