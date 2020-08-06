@@ -18,7 +18,8 @@
  * You can contact us at team@mytake.org
  */
 import React, { useEffect, useState } from "react";
-import { search, SearchResult } from "./search";
+import { alertErr } from "../../utils/functions";
+import { search, SearchMode, SearchResult } from "./search";
 import VideoResultsList from "./VideoResultsList";
 
 interface VideoResultsLoaderProps {
@@ -31,20 +32,40 @@ interface VideoResultsLoaderState {
 
 const VideoResultsLoader: React.FC<VideoResultsLoaderProps> = (props) => {
   const [state, setState] = useState<VideoResultsLoaderState>({});
+  const [mode, setMode] = useState<SearchMode>(SearchMode.BeforeAndAfter);
+
+  const handleModeChange = (newMode: SearchMode) => {
+    if (
+      newMode === SearchMode.Containing ||
+      newMode === SearchMode.BeforeAndAfter
+    ) {
+      if (newMode !== mode) {
+        setMode(newMode);
+      }
+    } else {
+      const msg = "VideoResults: Unknown radio button selection";
+      alertErr(msg);
+      throw msg;
+    }
+  };
 
   useEffect(() => {
     async function connectSearchDatabase() {
-      const searchResult = await search(props.searchQuery);
+      const searchResult = await search(props.searchQuery, mode);
       setState({
         searchResult,
       });
     }
 
     connectSearchDatabase();
-  }, []);
+  }, [mode]);
 
   return state.searchResult ? (
-    <VideoResultsList searchResult={state.searchResult} />
+    <VideoResultsList
+      onModeChange={handleModeChange}
+      mode={mode}
+      searchResult={state.searchResult}
+    />
   ) : (
     <VideoResultLoadingView />
   );

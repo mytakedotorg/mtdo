@@ -17,17 +17,15 @@
  *
  * You can contact us at team@mytake.org
  */
-import { Search } from "../../java2ts/Search";
-
+export interface MultiHighlight {
+  cut: [number, number];
+  highlights: Array<[number, number]>;
+}
 /**
  * Offsets to cut out of the turn content, along with all the offsets
  * to highlight within that content.  The highlights are relative to
  * the start of the turn's content, not the start of the cut.
  */
-export interface MultiHighlight {
-  cut: [number, number];
-  highlights: Array<[number, number]>;
-}
 
 function cleanupRegex(string: String): String {
   const alphaNumWhitespaceOnly = string.replace("[^a-z0-9s]", "");
@@ -39,10 +37,10 @@ export class TurnFinder {
   regexInclude: RegExp;
   regexExclude?: RegExp;
 
-  constructor(searchTerm: string) {
+  constructor(searchQuery: string) {
     let include = "";
     let exclude = "";
-    for (const clause of searchTerm.toLowerCase().split(",")) {
+    for (const clause of searchQuery.toLowerCase().split(",")) {
       const trimmed = clause.trim();
       if (trimmed.length == 0) {
         continue;

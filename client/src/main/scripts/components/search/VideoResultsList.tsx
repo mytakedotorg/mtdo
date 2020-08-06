@@ -19,24 +19,20 @@
  */
 import * as React from "react";
 import { FT } from "../../java2ts/FT";
-import { alertErr } from "../../utils/functions";
 import VideoLite from "../VideoLite";
 import VideoPlaceholder from "../VideoPlaceholder";
-import { SearchResult } from "./search";
+import { SearchMode, SearchResult } from "./search";
 import SearchRadioButtons from "./SearchRadioButtons";
-import VideoResultPreview, {
-  VideoResultPreviewEventHandlers,
-} from "./VideoResultPreview";
-
-export type SelectionOptions = "Containing" | "BeforeAndAfter";
+import VideoResult from "./VideoResult";
 
 interface VideoResultsListProps {
+  mode: SearchMode;
   searchResult: SearchResult;
+  onModeChange(mode: SearchMode): void;
 }
 
 interface VideoResultsListState {
   fixVideo: boolean;
-  selectedOption: SelectionOptions;
   videoProps?: {
     videoId: string;
     clipRange?: [number, number];
@@ -49,31 +45,16 @@ export class VideoResultsList extends React.Component<
 > {
   constructor(props: VideoResultsListProps) {
     super(props);
-    const { factTurns } = props.searchResult;
+    const { factHits } = props.searchResult;
     this.state = {
       fixVideo: false,
-      selectedOption: "BeforeAndAfter",
-      videoProps: factTurns.length
+      videoProps: factHits.length
         ? {
-            videoId: factTurns[0].videoFact.youtubeId,
+            videoId: factHits[0].videoFact.youtubeId,
           }
         : undefined,
     };
   }
-  handleChange = (ev: React.ChangeEvent<HTMLInputElement>) => {
-    const value = ev.target.value;
-    if (value === "Containing" || value === "BeforeAndAfter") {
-      if (value !== this.state.selectedOption) {
-        this.setState({
-          selectedOption: value,
-        });
-      }
-    } else {
-      const msg = "VideoResults: Unknown radio button";
-      alertErr(msg);
-      throw msg;
-    }
-  };
   handlePlayClick = (
     videoFact: FT.VideoFactContent,
     clipRange: [number, number]
@@ -93,14 +74,14 @@ export class VideoResultsList extends React.Component<
     }
   };
   render() {
-    const { factTurns, searchQuery } = this.props.searchResult;
+    const { mode, onModeChange, searchResult } = this.props;
+    const { factHits, searchQuery } = searchResult;
     const fixedClass = this.state.fixVideo ? "results__push" : "";
-    resultPreviewEventHandlers.onPlayClick = this.handlePlayClick;
     return (
       <div className="results">
         <div className="results__inner-container">
           <h1 className="results__heading">Search Results</h1>
-          {factTurns.length === 0 ? (
+          {factHits.length === 0 ? (
             <p className="turn__results">
               Search returned no results for <strong>{searchQuery}</strong>
             </p>
@@ -117,23 +98,34 @@ export class VideoResultsList extends React.Component<
               )}
               <div className={fixedClass}>
                 <SearchRadioButtons
-                  onChange={this.handleChange}
-                  selectedOption={this.state.selectedOption}
+                  onChange={onModeChange}
+                  selectedOption={mode}
                 />
               </div>
             </div>
           )}
-          {factTurns.map((v) => {
-            return (
-              <VideoResultPreview
-                key={v.videoFact.youtubeId}
-                eventHandlers={resultPreviewEventHandlers}
-                searchQuery={searchQuery}
-                sortBy={this.state.selectedOption}
-                turns={v.turns}
-                videoFact={v.videoFact}
-              />
-            );
+          {factHits.map((f) => {
+            const results = f.searchHits.map((h) => {
+              return (
+                <VideoResult
+                  key={getUniqueKey(
+                    f.videoFact.youtubeId,
+                    h.turn,
+                    h.hitOffsets
+                  )}
+                  onPlayClick={this.handlePlayClick}
+                  searchHit={h}
+                />
+              );
+            });
+            return results.length > 0 ? (
+              <div className="results__preview">
+                <h2 className="results__subheading">
+                  {f.videoFact.fact.title} - {f.videoFact.fact.primaryDate}
+                </h2>
+                {results}
+              </div>
+            ) : null;
           })}
         </div>
       </div>
@@ -141,13 +133,12 @@ export class VideoResultsList extends React.Component<
   }
 }
 
-/**
- * This object is created in root file scope so that it isn't
- * re-created every render cycle. If it is re-created, then child
- * components will re-render unnecessarily.
- */
-let resultPreviewEventHandlers: VideoResultPreviewEventHandlers = {
-  onPlayClick: () => {},
+const getUniqueKey = (
+  youtubeId: string,
+  turn: number,
+  hitOffsets: [number, number]
+): string => {
+  return `${youtubeId}.${turn}.${hitOffsets[0]}.${hitOffsets[1]}`;
 };
 
 export default VideoResultsList;
