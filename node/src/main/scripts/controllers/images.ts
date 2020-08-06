@@ -105,10 +105,9 @@ export async function generateImage(
     if (rangeStr.startsWith("_")) {
       rangeStr = rangeStr.substring(1);
     }
-    const hRangeStr = rangeStr.split("_")[0];
-    const vRangeStr = rangeStr.split("_")[1];
-    const hRange = documentRangeFromString(hRangeStr);
-    const vRange = documentRangeFromString(vRangeStr);
+    const ranges = rangeStr.split("_");
+    const hRange = documentRangeFromString(ranges[0]);
+    const vRange = documentRangeFromString(ranges[1]);
     if (!hRange || !vRange) {
       return "Document range not specified";
     }
