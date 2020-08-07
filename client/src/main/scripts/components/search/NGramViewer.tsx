@@ -38,9 +38,12 @@ interface NGramViewerProps {
 const NGramViewer: React.FC<NGramViewerProps> = ({ searchResult }) => {
   const svgEl = useRef<SVGSVGElement>(null);
   const searchTerms = getSearchTerms(searchResult.searchQuery);
+  const handleBarClick = (year: string) => {
+    console.log(`TODO bar clicked for year ${year}.`);
+  };
   useEffect(() => {
     if (svgEl.current) {
-      drawChart(svgEl.current, searchResult);
+      drawChart(svgEl.current, searchResult, handleBarClick);
     }
   }, [svgEl]);
   return (
@@ -65,7 +68,11 @@ const NGramViewer: React.FC<NGramViewerProps> = ({ searchResult }) => {
   );
 };
 
-function drawChart(svgElement: SVGSVGElement, searchResult: SearchResult) {
+function drawChart(
+  svgElement: SVGSVGElement,
+  searchResult: SearchResult,
+  onBarClick: (year: string) => void
+) {
   const svg = d3
     .select(svgElement)
     .append("g")
@@ -112,7 +119,10 @@ function drawChart(svgElement: SVGSVGElement, searchResult: SearchResult) {
       )
       .attr("y", (d) => yScale(d.hitCount))
       .attr("height", (d) => yScale(0) - yScale(d.hitCount))
-      .attr("width", xScale.bandwidth() / allSearchTerms.length);
+      .attr("width", xScale.bandwidth() / allSearchTerms.length)
+      .on("click", function (d) {
+        onBarClick(d.year);
+      });
   });
 }
 
@@ -157,7 +167,7 @@ function getNumberOfHitsPerYear(searchResult: SearchResult): HitsPerYearList {
           })
           .flatMap((sh) => {
             return sh.highlightOffsets.filter((ho) => {
-              return ho[2] === searchTerm;
+              return ho[2] === searchTerm.toLowerCase();
             });
           });
       }).length,
