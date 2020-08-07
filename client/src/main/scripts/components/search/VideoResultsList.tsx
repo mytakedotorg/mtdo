@@ -20,11 +20,11 @@
 import * as React from "react";
 import { FT } from "../../java2ts/FT";
 import VideoLite from "../VideoLite";
-import VideoPlaceholder from "../VideoPlaceholder";
 import NGramViewer from "./NGramViewer";
 import { SearchMode, SearchResult } from "./search";
 import SearchRadioButtons from "./SearchRadioButtons";
 import VideoResult from "./VideoResult";
+import VideoResultsHeader from "./VideoResultsHeader";
 
 interface VideoResultsListProps {
   mode: SearchMode;
@@ -34,6 +34,7 @@ interface VideoResultsListProps {
 
 interface VideoResultsListState {
   fixVideo: boolean;
+  isVideoPlaying: boolean;
   videoProps?: {
     videoId: string;
     clipRange?: [number, number];
@@ -49,6 +50,7 @@ export class VideoResultsList extends React.Component<
     const { factHits } = props.searchResult;
     this.state = {
       fixVideo: false,
+      isVideoPlaying: false,
       videoProps: factHits.length
         ? {
             videoId: factHits[0].videoFact.youtubeId,
@@ -61,6 +63,7 @@ export class VideoResultsList extends React.Component<
     clipRange: [number, number]
   ) => {
     this.setState({
+      isVideoPlaying: true,
       videoProps: {
         videoId: videoFact.youtubeId,
         clipRange: clipRange,
@@ -73,6 +76,11 @@ export class VideoResultsList extends React.Component<
         fixVideo: fixVideo,
       });
     }
+  };
+  handleClipEnd = () => {
+    this.setState({
+      isVideoPlaying: false,
+    });
   };
   render() {
     const { mode, onModeChange, searchResult } = this.props;
@@ -87,24 +95,27 @@ export class VideoResultsList extends React.Component<
               Search returned no results for <strong>{searchQuery}</strong>
             </p>
           ) : (
-            <div>
-              <NGramViewer searchResult={searchResult} />
-              {this.state.videoProps ? (
-                <VideoLite
-                  {...this.state.videoProps}
-                  onScroll={this.handleScroll}
-                  isFixed={this.state.fixVideo}
-                />
-              ) : (
-                <VideoPlaceholder />
-              )}
+            <>
+              <VideoResultsHeader
+                onScroll={this.handleScroll}
+                isFixed={this.state.fixVideo}
+              >
+                {this.state.videoProps && this.state.isVideoPlaying ? (
+                  <VideoLite
+                    {...this.state.videoProps}
+                    onClipEnd={this.handleClipEnd}
+                  />
+                ) : (
+                  <NGramViewer searchResult={searchResult} />
+                )}
+              </VideoResultsHeader>
               <div className={fixedClass}>
                 <SearchRadioButtons
                   onChange={onModeChange}
                   selectedOption={mode}
                 />
               </div>
-            </div>
+            </>
           )}
           {factHits.map((f) => {
             const results = f.searchHits.map((h) => {

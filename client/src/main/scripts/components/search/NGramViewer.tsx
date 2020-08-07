@@ -24,8 +24,8 @@ import { SearchResult } from "./search";
 
 const SVG_PADDING_LEFT = 25;
 const SVG_PADDING_TOP = 40;
-const SVG_WIDTH = 768;
-const SVG_HEIGHT = 318;
+const SVG_WIDTH = 700;
+const SVG_HEIGHT = 268;
 const colors = d3
   .scaleOrdinal(d3.schemeSet2)
   .range()
@@ -122,7 +122,8 @@ function drawChart(
       .attr("width", xScale.bandwidth() / allSearchTerms.length)
       .on("click", function (d) {
         onBarClick(d.year);
-      });
+      })
+      .style("cursor", "pointer");
   });
 }
 
