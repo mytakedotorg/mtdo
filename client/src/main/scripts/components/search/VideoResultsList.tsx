@@ -121,7 +121,7 @@ export class VideoResultsList extends React.Component<
               );
             });
             return results.length > 0 ? (
-              <div className="results__preview">
+              <div className="results__preview" key={f.videoFact.youtubeId}>
                 <h2 className="results__subheading">
                   {f.videoFact.fact.title} - {f.videoFact.fact.primaryDate}
                 </h2>

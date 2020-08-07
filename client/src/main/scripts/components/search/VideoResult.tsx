@@ -80,7 +80,7 @@ const VideoResult: React.FC<VideoResultProps> = (props) => {
       <p className="turn__results">
         {searchHit.getContent().map((hitContent) => {
           return hitContent.isHighlighted ? (
-            <strong>{hitContent.text}</strong>
+            <strong key={hitContent.text}>{hitContent.text}</strong>
           ) : (
             hitContent.text
           );
