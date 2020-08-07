@@ -20,13 +20,16 @@
 import * as d3 from "d3";
 import React, { useEffect, useRef } from "react";
 import { FT } from "../../java2ts/FT";
-import { SearchHit, SearchResult } from "./search";
+import { SearchResult } from "./search";
 
 const SVG_PADDING_LEFT = 25;
 const SVG_PADDING_TOP = 40;
 const SVG_WIDTH = 768;
 const SVG_HEIGHT = 318;
-const colors = d3.scaleOrdinal(d3.schemeSet2).range();
+const colors = d3
+  .scaleOrdinal(d3.schemeSet2)
+  .range()
+  .map((c) => d3.rgb(c).darker(0.25).toString());
 
 interface NGramViewerProps {
   searchResult: SearchResult;
@@ -71,12 +74,12 @@ function drawChart(svgElement: SVGSVGElement, searchResult: SearchResult) {
       "translate(" + SVG_PADDING_LEFT + "," + SVG_PADDING_TOP / 2 + ")"
     );
   const { hitsPerYear, allSearchTerms } = getNumberOfHitsPerYear(searchResult);
-  const yearMinMax = d3.extent(hitsPerYear, (hit) => hit.year) as [Date, Date];
   // get x-axis ticks
   const xScale = d3
-    .scaleTime()
-    .domain(padYears(yearMinMax, 1))
-    .range([0, SVG_WIDTH - SVG_PADDING_LEFT * 2]);
+    .scaleBand()
+    .domain(ALL_DEBATE_YEARS)
+    .range([0, SVG_WIDTH - SVG_PADDING_LEFT * 2])
+    .padding(0.1);
   // draw x-axis
   svg
     .append("g")
@@ -96,29 +99,29 @@ function drawChart(svgElement: SVGSVGElement, searchResult: SearchResult) {
     const hitsPerYearForTerm = hitsPerYear.filter(
       (hpy) => hpy.searchTerm === term
     );
-    const line = d3
-      .line<HitsPerYear>()
-      .x((d) => xScale(d.year))
-      .y((d) => yScale(d.hitCount));
     svg
-      .append("path")
-      .datum(hitsPerYearForTerm)
-      .attr("fill", "none")
-      .attr("stroke", colors[idx])
-      .attr("stroke-width", 2)
-      .attr("d", line);
+      .append("g")
+      .attr("fill", colors[idx])
+      .selectAll("rect")
+      .data(hitsPerYearForTerm)
+      .join("rect")
+      .attr(
+        "x",
+        (d) =>
+          xScale(d.year)! + (xScale.bandwidth() / allSearchTerms.length) * idx
+      )
+      .attr("y", (d) => yScale(d.hitCount))
+      .attr("height", (d) => yScale(0) - yScale(d.hitCount))
+      .attr("width", xScale.bandwidth() / allSearchTerms.length);
   });
 }
 
-const getYearFromVideoFact = (videoFact: FT.VideoFactContent): Date => {
-  const date = d3.timeParse("%Y-%m-%d")(videoFact.fact.primaryDate);
-  date!.setMonth(0); // January
-  date!.setDate(1); // 1st
-  return date!;
+const getYearFromVideoFact = (videoFact: FT.VideoFactContent): string => {
+  return videoFact.fact.primaryDate.split("-")[0];
 };
 
 interface HitsPerYear {
-  year: Date;
+  year: string; // 4 character year representation, e.g. "2020"
   hitCount: number;
   searchTerm: string;
 }
@@ -128,6 +131,7 @@ interface HitsPerYearList {
 }
 const ALL_DEBATE_YEARS = [
   "1960",
+  ",",
   "1976",
   "1980",
   "1984",
@@ -143,39 +147,27 @@ const ALL_DEBATE_YEARS = [
 ];
 function getNumberOfHitsPerYear(searchResult: SearchResult): HitsPerYearList {
   const terms = getSearchTerms(searchResult.searchQuery);
-  const hitsPerYear: HitsPerYear[] = [];
-  ALL_DEBATE_YEARS.forEach((y) => {
-    terms.forEach((t) => {
-      hitsPerYear.push({
-        year: new Date(parseInt(y), 0),
-        hitCount: 0,
-        searchTerm: t,
-      });
-    });
-  });
-  searchResult.factHits.forEach((hit) => {
-    const year = getYearFromVideoFact(hit.videoFact);
-    const hitsPerTerm = getHitsPerTerm(hit.searchHits);
-    for (const [term, hitCount] of hitsPerTerm) {
-      const existingHit = hitsPerYear.find(
-        (h) =>
-          h.year.getFullYear() === year.getFullYear() && h.searchTerm === term
-      )!;
-      existingHit.hitCount += hitCount;
-    }
-  });
+  const hitsPerYear: HitsPerYear[] = ALL_DEBATE_YEARS.flatMap((year) =>
+    terms.map((searchTerm) => ({
+      year,
+      hitCount: searchResult.factHits.flatMap((hit) => {
+        return hit.searchHits
+          .filter((sh) => {
+            return getYearFromVideoFact(sh.videoFact) === year;
+          })
+          .flatMap((sh) => {
+            return sh.highlightOffsets.filter((ho) => {
+              return ho[2] === searchTerm;
+            });
+          });
+      }).length,
+      searchTerm,
+    }))
+  );
   return {
     hitsPerYear,
     allSearchTerms: terms,
   };
-}
-
-function padYears(dates: [Date, Date], numYears: number): [Date, Date] {
-  const firstDate = new Date(dates[0]);
-  firstDate.setFullYear(firstDate.getFullYear() - numYears);
-  const secondDate = new Date(dates[1]);
-  secondDate.setFullYear(secondDate.getFullYear() + numYears);
-  return [firstDate, secondDate];
 }
 
 function getSearchTerms(searchQuery: string): string[] {
@@ -191,23 +183,6 @@ function getSearchTerms(searchQuery: string): string[] {
 
 export function _getSearchTerms(searchQuery: string): string[] {
   return getSearchTerms(searchQuery);
-}
-
-function getHitsPerTerm(searchHits: SearchHit[]): Map<string, number> {
-  const hitsPerTerm: Map<string, number> = new Map();
-  searchHits.forEach((hit) => {
-    hit.highlightOffsets.forEach((h) => {
-      const term = h[2];
-      let count: number;
-      if (hitsPerTerm.has(term)) {
-        count = hitsPerTerm.get(term)! + 1;
-      } else {
-        count = 1;
-      }
-      hitsPerTerm.set(term, count);
-    });
-  });
-  return hitsPerTerm;
 }
 
 export default NGramViewer;
