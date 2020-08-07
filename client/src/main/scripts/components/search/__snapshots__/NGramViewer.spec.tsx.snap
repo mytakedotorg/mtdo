@@ -18,7 +18,7 @@ exports[`NGramViewer social security 1`] = `
         className="ngram__term"
         style={
           Object {
-            "color": "#66c2a5",
+            "color": "rgb(93, 177, 151)",
           }
         }
       >
