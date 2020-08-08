@@ -17,8 +17,13 @@
  *
  * You can contact us at team@mytake.org
  */
+import smoothscroll from "smoothscroll-polyfill";
+
+// kick off the polyfill!
 export const windowUtils = {
   init: () => {
+    smoothscroll.polyfill();
+
     (window as any).YTConfig = {
       host: "https://www.youtube.com",
     };
