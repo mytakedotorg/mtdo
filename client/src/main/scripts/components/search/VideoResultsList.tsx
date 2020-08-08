@@ -45,6 +45,7 @@ export class VideoResultsList extends React.Component<
   VideoResultsListProps,
   VideoResultsListState
 > {
+  private dateToDivMap: Map<string, HTMLDivElement> = new Map();
   constructor(props: VideoResultsListProps) {
     super(props);
     const { factHits } = props.searchResult;
@@ -58,6 +59,15 @@ export class VideoResultsList extends React.Component<
         : undefined,
     };
   }
+  handleBarClick = (year: string) => {
+    for (const [date, div] of this.dateToDivMap) {
+      if (date.substring(0, 4) === year) {
+        const y = div.getBoundingClientRect().top - 318 + window.pageYOffset;
+        window.scrollTo({ top: y, behavior: "smooth" });
+        break;
+      }
+    }
+  };
   handlePlayClick = (
     videoFact: FT.VideoFactContent,
     clipRange: [number, number]
@@ -106,7 +116,10 @@ export class VideoResultsList extends React.Component<
                     onClipEnd={this.handleClipEnd}
                   />
                 ) : (
-                  <NGramViewer searchResult={searchResult} />
+                  <NGramViewer
+                    searchResult={searchResult}
+                    onBarClick={this.handleBarClick}
+                  />
                 )}
               </VideoResultsHeader>
               <div className={fixedClass}>
@@ -132,7 +145,13 @@ export class VideoResultsList extends React.Component<
               );
             });
             return results.length > 0 ? (
-              <div className="results__preview" key={f.videoFact.youtubeId}>
+              <div
+                className="results__preview"
+                key={f.videoFact.youtubeId}
+                ref={(div: HTMLDivElement) => {
+                  this.dateToDivMap.set(f.videoFact.fact.primaryDate, div);
+                }}
+              >
                 <h2 className="results__subheading">
                   {f.videoFact.fact.title} - {f.videoFact.fact.primaryDate}
                 </h2>

@@ -24,7 +24,7 @@ import { SearchResult } from "./search";
 
 const SVG_PADDING_LEFT = 25;
 const SVG_PADDING_TOP = 40;
-const SVG_WIDTH = 700;
+const SVG_WIDTH = Math.min(700, window.innerWidth);
 const SVG_HEIGHT = 268;
 const colors = d3
   .scaleOrdinal(d3.schemeSet2)
@@ -33,17 +33,18 @@ const colors = d3
 
 interface NGramViewerProps {
   searchResult: SearchResult;
+  onBarClick(year: string): void;
 }
 
-const NGramViewer: React.FC<NGramViewerProps> = ({ searchResult }) => {
+const NGramViewer: React.FC<NGramViewerProps> = ({
+  onBarClick,
+  searchResult,
+}) => {
   const svgEl = useRef<SVGSVGElement>(null);
   const searchTerms = getSearchTerms(searchResult.searchQuery);
-  const handleBarClick = (year: string) => {
-    console.log(`TODO bar clicked for year ${year}.`);
-  };
   useEffect(() => {
     if (svgEl.current) {
-      drawChart(svgEl.current, searchResult, handleBarClick);
+      drawChart(svgEl.current, searchResult, onBarClick);
     }
   }, [svgEl]);
   return (
