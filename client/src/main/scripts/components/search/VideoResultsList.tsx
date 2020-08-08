@@ -63,7 +63,12 @@ export class VideoResultsList extends React.Component<
     for (const [date, div] of this.dateToDivMap) {
       if (date.substring(0, 4) === year) {
         const y = div.getBoundingClientRect().top - 318 + window.pageYOffset;
-        window.scrollTo({ top: y, behavior: "smooth" });
+        scrollTo(y, () => {
+          div.classList.toggle("results__preview--fade");
+          setTimeout(() => {
+            div.classList.toggle("results__preview--fade");
+          }, 500);
+        });
         break;
       }
     }
@@ -163,6 +168,24 @@ export class VideoResultsList extends React.Component<
       </div>
     );
   }
+}
+
+// scrollTo with completion callback https://stackoverflow.com/a/55686711
+function scrollTo(offset: number, callback: () => void) {
+  const fixedOffset = offset.toFixed(),
+    onScroll = function () {
+      if (window.pageYOffset.toFixed() === fixedOffset) {
+        window.removeEventListener("scroll", onScroll);
+        callback();
+      }
+    };
+
+  window.addEventListener("scroll", onScroll);
+  onScroll();
+  window.scrollTo({
+    top: offset,
+    behavior: "smooth",
+  });
 }
 
 const getUniqueKey = (

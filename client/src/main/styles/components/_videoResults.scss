@@ -44,6 +44,13 @@
 .results__text {
   @include body;
 }
+.results__preview {
+  opacity: 1;
+  transition: opacity 0.5s;
+}
+.results__preview--fade {
+  opacity: 0;
+}
 .searchradio__radio {
   margin-right: 1rem;
 }
