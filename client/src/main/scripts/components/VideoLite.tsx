@@ -73,22 +73,22 @@ class VideoLite extends React.Component<VideoLiteProps, VideoLiteState> {
     };
   }
   cueVideo = (props: VideoLiteProps) => {
-    if (this.player) {
-      if (props.clipRange) {
-        this.player.cueVideoById({
-          videoId: props.videoId,
-          startSeconds: props.clipRange[0],
-          endSeconds: props.clipRange[1],
-          suggestedQuality: "default",
-        });
-        this.playerVars.start = props.clipRange[0];
-        this.playerVars.end = props.clipRange[1];
-      } else {
-        this.player.cueVideoById({
-          videoId: props.videoId,
-          suggestedQuality: "default",
-        });
-      }
+    if (props.clipRange) {
+      this.player.cueVideoById({
+        videoId: props.videoId,
+        startSeconds: props.clipRange[0],
+        endSeconds: props.clipRange[1],
+        suggestedQuality: "default",
+      });
+      this.player.seekTo(props.clipRange[0]);
+      this.player.playVideo();
+      this.playerVars.start = props.clipRange[0];
+      this.playerVars.end = props.clipRange[1];
+    } else {
+      this.player.cueVideoById({
+        videoId: props.videoId,
+        suggestedQuality: "default",
+      });
     }
   };
   handlePause = (event: any) => {
@@ -155,10 +155,8 @@ class VideoLite extends React.Component<VideoLiteProps, VideoLiteState> {
     this.stopTimer();
   }
   componentWillReceiveProps(nextProps: VideoLiteProps) {
-    if (nextProps.videoId && !this.props.videoId) {
-      this.cueVideo(nextProps);
-    }
     if (
+      (nextProps.videoId && !this.props.videoId) ||
       (nextProps.clipRange && !this.props.clipRange) ||
       (nextProps.clipRange &&
         this.props.clipRange &&
@@ -166,10 +164,6 @@ class VideoLite extends React.Component<VideoLiteProps, VideoLiteState> {
         nextProps.clipRange[1] !== this.props.clipRange[1])
     ) {
       this.cueVideo(nextProps);
-      this.player.seekTo(nextProps.clipRange[0]);
-      this.player.playVideo();
-      this.playerVars.start = nextProps.clipRange[0];
-      this.playerVars.end = nextProps.clipRange[1];
     }
   }
   render() {
