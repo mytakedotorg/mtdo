@@ -38,11 +38,6 @@ jest.mock("./NGramViewer", () => ({
   },
 }));
 
-jest.mock("../VideoPlaceholder", () => ({
-  __esModule: true,
-  default: "VideoPlaceholder",
-}));
-
 jest.mock("../VideoLite", () => ({
   __esModule: true,
   default: "VideoLite",
