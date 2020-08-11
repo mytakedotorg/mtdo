@@ -37,22 +37,21 @@ exports[`VideoResultsList social security 1`] = `
       Search Results
     </h1>
     <div>
-      <div>
-        NGramViewer: 
-      </div>
-      <VideoLite
-        isFixed={false}
-        onScroll={[Function]}
-        videoId="CsurHThBBkk"
-      />
       <div
         className=""
       >
-        <SearchRadioButtons
-          onChange={[MockFunction]}
-          selectedOption={1}
-        />
+        <div>
+          NGramViewer: 
+        </div>
       </div>
+    </div>
+    <div
+      className=""
+    >
+      <SearchRadioButtons
+        onChange={[MockFunction]}
+        selectedOption={1}
+      />
     </div>
     <div
       className="results__preview"

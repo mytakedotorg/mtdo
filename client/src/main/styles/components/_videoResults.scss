@@ -44,6 +44,13 @@
 .results__text {
   @include body;
 }
+.results__preview {
+  opacity: 1;
+  transition: opacity 0.5s;
+}
+.results__preview--fade {
+  opacity: 0;
+}
 .searchradio__radio {
   margin-right: 1rem;
 }
@@ -143,4 +150,18 @@
   @include body;
   flex: 1;
   margin: 0;
+}
+.results-header__fixed {
+  position: fixed;
+  top: 0;
+  z-index: 1;
+  left: 0;
+  width: 100%;
+  background-color: white;
+  box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.7);
+  .video__video-container,
+  .ngram__inner-container {
+    margin-bottom: 0;
+    vertical-align: text-bottom;
+  }
 }

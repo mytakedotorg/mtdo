@@ -14,19 +14,6 @@ $video-header-height: 60px;
     margin-bottom: $content-margin * $vertical-margin-multiplier;
   }
 }
-.video__fixed {
-  position: fixed;
-  top: 0;
-  z-index: 1;
-  left: 0;
-  width: 100%;
-  background-color: white;
-  box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.7);
-  .video__video-container {
-    margin-bottom: 0;
-    vertical-align: text-bottom;
-  }
-}
 .video__inner-container--push {
   margin-top: 118px;
 }

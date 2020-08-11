@@ -20,11 +20,11 @@
 import * as React from "react";
 import { FT } from "../../java2ts/FT";
 import VideoLite from "../VideoLite";
-import VideoPlaceholder from "../VideoPlaceholder";
 import NGramViewer from "./NGramViewer";
 import { SearchMode, SearchResult } from "./search";
 import SearchRadioButtons from "./SearchRadioButtons";
 import VideoResult from "./VideoResult";
+import VideoResultsHeader from "./VideoResultsHeader";
 
 interface VideoResultsListProps {
   mode: SearchMode;
@@ -34,6 +34,7 @@ interface VideoResultsListProps {
 
 interface VideoResultsListState {
   fixVideo: boolean;
+  isVideoPlaying: boolean;
   videoProps?: {
     videoId: string;
     clipRange?: [number, number];
@@ -44,11 +45,13 @@ export class VideoResultsList extends React.Component<
   VideoResultsListProps,
   VideoResultsListState
 > {
+  private dateToDivMap: Map<string, HTMLDivElement> = new Map();
   constructor(props: VideoResultsListProps) {
     super(props);
     const { factHits } = props.searchResult;
     this.state = {
       fixVideo: false,
+      isVideoPlaying: false,
       videoProps: factHits.length
         ? {
             videoId: factHits[0].videoFact.youtubeId,
@@ -56,11 +59,26 @@ export class VideoResultsList extends React.Component<
         : undefined,
     };
   }
+  handleBarClick = (year: string) => {
+    for (const [date, div] of this.dateToDivMap) {
+      if (date.substring(0, 4) === year) {
+        const y = div.getBoundingClientRect().top - 318 + window.pageYOffset;
+        scrollTo(y, () => {
+          div.classList.toggle("results__preview--fade");
+          setTimeout(() => {
+            div.classList.toggle("results__preview--fade");
+          }, 500);
+        });
+        break;
+      }
+    }
+  };
   handlePlayClick = (
     videoFact: FT.VideoFactContent,
     clipRange: [number, number]
   ) => {
     this.setState({
+      isVideoPlaying: true,
       videoProps: {
         videoId: videoFact.youtubeId,
         clipRange: clipRange,
@@ -73,6 +91,11 @@ export class VideoResultsList extends React.Component<
         fixVideo: fixVideo,
       });
     }
+  };
+  handleClipEnd = () => {
+    this.setState({
+      isVideoPlaying: false,
+    });
   };
   render() {
     const { mode, onModeChange, searchResult } = this.props;
@@ -87,24 +110,30 @@ export class VideoResultsList extends React.Component<
               Search returned no results for <strong>{searchQuery}</strong>
             </p>
           ) : (
-            <div>
-              <NGramViewer searchResult={searchResult} />
-              {this.state.videoProps ? (
-                <VideoLite
-                  {...this.state.videoProps}
-                  onScroll={this.handleScroll}
-                  isFixed={this.state.fixVideo}
-                />
-              ) : (
-                <VideoPlaceholder />
-              )}
+            <>
+              <VideoResultsHeader
+                onScroll={this.handleScroll}
+                isFixed={this.state.fixVideo}
+              >
+                {this.state.videoProps && this.state.isVideoPlaying ? (
+                  <VideoLite
+                    {...this.state.videoProps}
+                    onClipEnd={this.handleClipEnd}
+                  />
+                ) : (
+                  <NGramViewer
+                    searchResult={searchResult}
+                    onBarClick={this.handleBarClick}
+                  />
+                )}
+              </VideoResultsHeader>
               <div className={fixedClass}>
                 <SearchRadioButtons
                   onChange={onModeChange}
                   selectedOption={mode}
                 />
               </div>
-            </div>
+            </>
           )}
           {factHits.map((f) => {
             const results = f.searchHits.map((h) => {
@@ -121,7 +150,13 @@ export class VideoResultsList extends React.Component<
               );
             });
             return results.length > 0 ? (
-              <div className="results__preview">
+              <div
+                className="results__preview"
+                key={f.videoFact.youtubeId}
+                ref={(div: HTMLDivElement) => {
+                  this.dateToDivMap.set(f.videoFact.fact.primaryDate, div);
+                }}
+              >
                 <h2 className="results__subheading">
                   {f.videoFact.fact.title} - {f.videoFact.fact.primaryDate}
                 </h2>
@@ -133,6 +168,24 @@ export class VideoResultsList extends React.Component<
       </div>
     );
   }
+}
+
+// scrollTo with completion callback https://stackoverflow.com/a/55686711
+function scrollTo(offset: number, callback: () => void) {
+  const fixedOffset = offset.toFixed(),
+    onScroll = function () {
+      if (window.pageYOffset.toFixed() === fixedOffset) {
+        window.removeEventListener("scroll", onScroll);
+        callback();
+      }
+    };
+
+  window.addEventListener("scroll", onScroll);
+  onScroll();
+  window.scrollTo({
+    top: offset,
+    behavior: "smooth",
+  });
 }
 
 const getUniqueKey = (

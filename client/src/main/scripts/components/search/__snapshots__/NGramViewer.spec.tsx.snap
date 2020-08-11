@@ -8,8 +8,8 @@ exports[`NGramViewer social security 1`] = `
     className="ngram__inner-container"
   >
     <svg
-      height={318}
-      width={768}
+      height={268}
+      width={700}
     />
     <div
       className="ngram__term-list"
@@ -18,7 +18,7 @@ exports[`NGramViewer social security 1`] = `
         className="ngram__term"
         style={
           Object {
-            "color": "#66c2a5",
+            "color": "rgb(93, 177, 151)",
           }
         }
       >

@@ -50,7 +50,9 @@ test("NGramViewer social security", () => {
     )
   );
 
-  const tree = renderer.create(<NGramViewer searchResult={result} />).toJSON();
+  const tree = renderer
+    .create(<NGramViewer searchResult={result} onBarClick={jest.fn()} />)
+    .toJSON();
 
   expect(tree).toMatchSnapshot();
 });

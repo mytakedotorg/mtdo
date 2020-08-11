@@ -32,6 +32,7 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-youtube": "^7.11.2",
+    "smoothscroll-polyfill": "^0.4.4",
     "vis": "^4.21.0"
   },
   "devDependencies": {
@@ -43,6 +44,7 @@
     "@types/react": "^16.9.43",
     "@types/react-dom": "^16.9.8",
     "@types/react-test-renderer": "^16.9.2",
+    "@types/smoothscroll-polyfill": "^0.3.1",
     "@types/webpack-env": "^1.13.6",
     "@types/youtube": "0.0.39",
     "awesome-typescript-loader": "^5.2.1",
