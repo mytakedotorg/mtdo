@@ -52,6 +52,9 @@ node {
 		inputs.dir('src/main/scripts')
 		outputs.dir('src/main/dist')
 	}
+	npmArbitraryCmd('pruneDependencies', 'prune --production') {
+		mustRunAfter 'assemble'
+	}
 }
 tasks.register('test') {
 	dependsOn 'npm_run_test_ci'

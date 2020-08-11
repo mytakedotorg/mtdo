@@ -63,6 +63,7 @@ tasks.eclipse.dependsOn(tasks.cleanEclipse)
 // heroku deploys fatjar (and deletes everything else)
 task stage {
 	dependsOn ':server:shadowJar'
+	dependsOn ':node:assemble', ':node:pruneDependencies'
 	doLast {
 		delete fileTree(dir: '.', exclude: [
 			'Procfile',
@@ -71,7 +72,9 @@ task stage {
 			'.profile.d/**',
 			'.jdk/**',
 			'.heroku/**',
-			'server/build/libs/server-all.jar'
+			'server/build/libs/server-all.jar',
+			'node/dist',
+			'node/node_modules'
 		])
 	}
 }
