@@ -29,10 +29,7 @@ test("NGramViewer parses search terms", () => {
     "Wall, -Wall Street",
     "global warming, climate change",
   ];
-  const expectedTerms = [
-    ["Wall", "-Wall Street"],
-    ["global warming", "climate change"],
-  ];
+  const expectedTerms = [["Wall"], ["global warming", "climate change"]];
 
   searchQueries.forEach((q, idx) => {
     const terms = _getSearchTerms(q);

@@ -188,7 +188,7 @@ function getSearchTerms(searchQuery: string): string[] {
       searchQuery
         .split(",")
         .map((t) => t.trim())
-        .filter((t) => t.length > 0)
+        .filter((t) => t.length > 0 && t.charAt(0) !== "-")
     ),
   ];
 }

@@ -102,24 +102,26 @@ export function _searchImpl(searchWithData: _SearchWithData): SearchResult {
   const turnFinder = new TurnFinder(searchQuery);
 
   // Array of SearchHit arrays, grouped by fact
-  const hitsPerFact = groupedByFact.map((videoResults) => {
-    const videoFact = foundationData.getVideo(videoResults[0].hash);
-    // Sort hits by turn
-    videoResults.sort((a, b) => a.turn - b.turn);
-    return videoResults.flatMap((v) => {
-      const turnWithResults = turnFinder.findResults(
-        getTurnContent(v.turn, videoFact)
-      );
-      const expandBy: Record<SearchMode, number> = {
-        [SearchMode.Containing]: 1, // Record<> makes this exhausitive
-        [SearchMode.BeforeAndAfter]: 2, // compile error if missing case
-      };
-      const multiHighlights = turnWithResults.expandBy(expandBy[mode]);
-      return multiHighlights.map(
-        (m) => new SearchHit(m.highlights, m.cut, v.turn, videoFact)
-      );
-    });
-  });
+  const hitsPerFact = groupedByFact
+    .map((videoResults) => {
+      const videoFact = foundationData.getVideo(videoResults[0].hash);
+      // Sort hits by turn
+      videoResults.sort((a, b) => a.turn - b.turn);
+      return videoResults.flatMap((v) => {
+        const turnWithResults = turnFinder.findResults(
+          getTurnContent(v.turn, videoFact)
+        );
+        const expandBy: Record<SearchMode, number> = {
+          [SearchMode.Containing]: 1, // Record<> makes this exhausitive
+          [SearchMode.BeforeAndAfter]: 2, // compile error if missing case
+        };
+        const multiHighlights = turnWithResults.expandBy(expandBy[mode]);
+        return multiHighlights.map(
+          (m) => new SearchHit(m.highlights, m.cut, v.turn, videoFact)
+        );
+      });
+    })
+    .filter((hpf) => hpf.length > 0);
   // Sort videos by date, oldest first
   hitsPerFact.sort((aHits, bHits) => {
     const a = aHits[0].videoFact.fact.primaryDate;
