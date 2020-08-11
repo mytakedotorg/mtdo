@@ -100,6 +100,13 @@ $palettes: (
     text: $base-lightest,
     text--special: $white,
   ),
+  home: (
+    searchbar-border: $action,
+    searchbar-button: $action,
+    searchbar-button--hover: $action-light,
+    searchbar-button-text: $white,
+    title: $base-darkest,
+  ),
   button: (
     background--action: $action,
     background--base: $base,

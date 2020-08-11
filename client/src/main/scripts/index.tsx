@@ -19,18 +19,18 @@
  */
 import * as React from "react";
 import * as ReactDOM from "react-dom";
+import { TakeDocument } from "./components/BlockEditor";
+import BlockReader from "./components/BlockReader";
 import BlockWriter, {
   InitialBlockWriterState,
   initialState,
 } from "./components/BlockWriter";
-import BlockReader from "./components/BlockReader";
-import FeedList from "./components/FeedList";
+import { Card } from "./components/FeedList";
 import FoundationView from "./components/FoundationView";
+import Home from "./components/Home";
+import VideoResultsLoader from "./components/search/VideoResultsLoader";
 import SearchBar from "./components/SearchBar";
 import UserNav from "./components/UserNav";
-import VideoResultsLoader from "./components/search/VideoResultsLoader";
-import { TakeDocument } from "./components/BlockEditor";
-import { Card } from "./components/FeedList";
 import { alertErr } from "./utils/functions";
 import { windowUtils } from "./utils/window";
 
@@ -61,14 +61,16 @@ interface SearchArgs {
   searchTerm: string;
 }
 
+type MyTakePage =
+  | HomeArgs
+  | ShowTakeArgs
+  | FoundationArgs
+  | NewTakeArgs
+  | SearchArgs;
+
 declare global {
   interface Window {
-    mytake?:
-      | HomeArgs
-      | ShowTakeArgs
-      | FoundationArgs
-      | NewTakeArgs
-      | SearchArgs;
+    mytake?: MyTakePage;
   }
 }
 
@@ -111,7 +113,7 @@ if (app) {
         );
         break;
       case "home":
-        Root = <FeedList cards={window.mytake.cards} />;
+        Root = <Home />;
         break;
       case "showtake":
         Root = (
@@ -138,15 +140,12 @@ if (app) {
 const searchBarContainer: HTMLElement | null = document.getElementById(
   "searchbar"
 );
-if (searchBarContainer) {
+if (!isHomePage(window.mytake)) {
   let searchTerm = "";
-  if (typeof window.mytake != "undefined" && window.mytake.type === "search") {
+  if (isSearchPage(window.mytake)) {
     searchTerm = window.mytake.searchTerm;
   }
   ReactDOM.render(<SearchBar searchTerm={searchTerm} />, searchBarContainer);
-} else {
-  alertErr("index: couldn't find div#searchbar");
-  throw "Couldn't find div#searchbar";
 }
 
 const userNavContainer: HTMLElement | null = document.getElementById("usernav");
@@ -155,4 +154,12 @@ if (userNavContainer) {
 } else {
   alertErr("index: couldn't find div#usernav");
   throw "Couldn't find div#usernav";
+}
+
+function isHomePage(page?: MyTakePage): page is HomeArgs {
+  return (page as HomeArgs).type === "home";
+}
+
+function isSearchPage(page?: MyTakePage): page is SearchArgs {
+  return (page as SearchArgs).type === "search";
 }
