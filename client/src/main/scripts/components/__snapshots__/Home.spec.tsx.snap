@@ -3,7 +3,7 @@
 exports[`Home 1`] = `
 Array [
   <section
-    className="home__section undefined"
+    className="home__section"
   >
     <div
       className="home__section-content home__searchbar"
@@ -51,7 +51,7 @@ Array [
     className="home__section hero"
   >
     <div
-      className="home__section-content undefined"
+      className="home__section-content"
     >
       <div
         className="home__boxes"
