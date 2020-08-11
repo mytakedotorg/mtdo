@@ -72,7 +72,10 @@ const Home: React.FC = () => {
       </HomeSection>
       <HomeSection containerClassName="hero">
         <div className="home__boxes">
-          <p>Use commas between search terms.</p>
+          <p>
+            Use commas between search terms. E.g. "climate change, global
+            warming".
+          </p>
           <p>
             Use a minus sign to exclude a search term. E.g. "wall, -wall street"
             will include anything about a wall except for Wall Street.
