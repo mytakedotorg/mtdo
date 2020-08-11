@@ -101,10 +101,18 @@ export class VideoResultsList extends React.Component<
     const { mode, onModeChange, searchResult } = this.props;
     const { factHits, searchQuery } = searchResult;
     const fixedClass = this.state.fixVideo ? "results__push" : "";
+    const searchResultCount = searchResult.factHits.reduce(
+      (accumulator, fh) => {
+        return accumulator + fh.searchHits.length;
+      },
+      0
+    );
     return (
       <div className="results">
         <div className="results__inner-container">
-          <h1 className="results__heading">Search Results</h1>
+          <h1 className="results__heading">
+            {searchResultCount} Search Results
+          </h1>
           {factHits.length === 0 ? (
             <p className="turn__results">
               Search returned no results for <strong>{searchQuery}</strong>

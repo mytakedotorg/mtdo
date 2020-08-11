@@ -81,11 +81,23 @@ export class TurnFinder {
     }
     if (this.regexExclude) {
       // TODO: in a second pass, if this exclude regex matches at all,
-      // then we should not remove that found entry
+      // then we should remove that found entry
       //
       // it's a little tricky because it might be a "look ahead" or "look behind", e.g.
       //   wall, -wall street <-- I want wall, but not wall street
       //   wall, -border wall <-- I want wall, but not border wall
+      this.regexExclude.lastIndex = 0;
+      let foundNegative = this.regexExclude.exec(turnContent);
+      while (foundNegative != null) {
+        const foundNegativeHunk = foundNegative[0];
+        const lastNegativeIndex =
+          foundNegative.index + foundNegativeHunk.length;
+        foundOffsets = foundOffsets.filter((fo) => {
+          return fo[0] !== foundNegative?.index;
+        });
+        this.regexExclude.lastIndex = lastNegativeIndex + 1;
+        foundNegative = this.regexExclude.exec(turnContent);
+      }
     }
     return new TurnWithResults(turnContent, foundOffsets);
   }

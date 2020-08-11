@@ -10,7 +10,8 @@ exports[`VideoResultsList no results 1`] = `
     <h1
       className="results__heading"
     >
-      Search Results
+      0
+       Search Results
     </h1>
     <p
       className="turn__results"
@@ -34,7 +35,8 @@ exports[`VideoResultsList social security 1`] = `
     <h1
       className="results__heading"
     >
-      Search Results
+      144
+       Search Results
     </h1>
     <div>
       <div
@@ -1556,6 +1558,136 @@ exports[`VideoResultsList social security 1`] = `
          
         150
         565
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`VideoResultsList wall, -wall street 1`] = `
+<div
+  className="results"
+>
+  <div
+    className="results__inner-container"
+  >
+    <h1
+      className="results__heading"
+    >
+      7
+       Search Results
+    </h1>
+    <div>
+      <div
+        className=""
+      >
+        <div>
+          NGramViewer: 
+        </div>
+      </div>
+    </div>
+    <div
+      className=""
+    >
+      <SearchRadioButtons
+        onChange={[MockFunction]}
+        selectedOption={1}
+      />
+    </div>
+    <div
+      className="results__preview"
+    >
+      <h2
+        className="results__subheading"
+      >
+        Presidential Debate - Mondale, Reagan (1 of 2)
+         - 
+        1984-10-07
+      </h2>
+      <div>
+        VideoResult: 
+        L7MdD72ZqJ0
+         
+        43
+         
+        87
+        643
+      </div>
+    </div>
+    <div
+      className="results__preview"
+    >
+      <h2
+        className="results__subheading"
+      >
+        Presidential Debate - McCain, Obama (2 of 3)
+         - 
+        2008-10-07
+      </h2>
+      <div>
+        VideoResult: 
+        57qocCPgp3U
+         
+        38
+         
+        0
+        200
+      </div>
+    </div>
+    <div
+      className="results__preview"
+    >
+      <h2
+        className="results__subheading"
+      >
+        Presidential Debate - Clinton, Trump (3 of 3)
+         - 
+        2016-10-19
+      </h2>
+      <div>
+        VideoResult: 
+        eXNnggT5fPM
+         
+        31
+         
+        217
+        354
+      </div>
+      <div>
+        VideoResult: 
+        eXNnggT5fPM
+         
+        32
+         
+        1534
+        1694
+      </div>
+      <div>
+        VideoResult: 
+        eXNnggT5fPM
+         
+        34
+         
+        1437
+        1853
+      </div>
+      <div>
+        VideoResult: 
+        eXNnggT5fPM
+         
+        38
+         
+        298
+        515
+      </div>
+      <div>
+        VideoResult: 
+        eXNnggT5fPM
+         
+        45
+         
+        0
+        13
       </div>
     </div>
   </div>
