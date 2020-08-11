@@ -87,7 +87,9 @@ export class TurnFinder {
         const lastNegativeIndex =
           foundNegative.index + foundNegativeHunk.length;
         foundOffsets = foundOffsets.filter((fo) => {
-          return fo[0] !== foundNegative?.index;
+          // include only if there is no overlap between what the negate found
+          // https://stackoverflow.com/a/3269471/1153071
+          return !(fo[0] <= lastNegativeIndex && foundNegative!.index <= fo[1]);
         });
         this.regexExclude.lastIndex = lastNegativeIndex + 1;
         foundNegative = this.regexExclude.exec(turnContent);
