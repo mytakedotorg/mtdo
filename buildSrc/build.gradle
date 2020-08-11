@@ -10,12 +10,6 @@ repositories {
 		}
 	}
 	maven {
-		url 'https://jitpack.io'
-		content {
-			includeGroup 'com.github.eirslett.frontend-maven-plugin'
-		}
-	}
-	maven {
 		url 'http://repository.jsweet.org/artifactory/libs-release-local'
 		allowInsecureProtocol true
 		content {
@@ -33,7 +27,7 @@ new File(projectDir.parentFile, 'gradle.properties').withInputStream {
 
 dependencies {
 	// node.js
-	api 'com.github.eirslett.frontend-maven-plugin:frontend-plugin-core:ad1062d382' // JitPack HEAD as of 04/23/2020
+	api 'com.github.eirslett:frontend-maven-plugin:1.10.0' // JitPack HEAD as of 04/23/2020
 	// https://github.com/palantir/docker-compose-rule
 	api "com.palantir.docker.compose:docker-compose-rule-core:${props.VER_PALANTIR_DOCKER_COMPOSE}"
 	api "com.palantir.docker.compose:docker-compose-rule-junit4:${props.VER_PALANTIR_DOCKER_COMPOSE}"
