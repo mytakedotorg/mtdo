@@ -94,11 +94,17 @@ const HomeSection: React.FC<HomeSectionProps> = ({
   containerClassName,
   innerContainerClassName,
 }) => {
+  let outerClass = "home__section";
+  if (containerClassName) {
+    outerClass += ` ${containerClassName}`;
+  }
+  let innerClass = "home__section-content";
+  if (innerContainerClassName) {
+    innerClass += ` ${innerContainerClassName}`;
+  }
   return (
-    <section className={`home__section ${containerClassName}`}>
-      <div className={`home__section-content ${innerContainerClassName}`}>
-        {children}
-      </div>
+    <section className={outerClass}>
+      <div className={innerClass}>{children}</div>
     </section>
   );
 };

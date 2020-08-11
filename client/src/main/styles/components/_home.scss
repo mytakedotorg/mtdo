@@ -3,7 +3,15 @@
 }
 
 .home__section-content {
-  @include content-column;
+  max-width: 100%;
+  margin: auto;
+  @media screen and (max-width: 768px - 1) {
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+  @media screen and (min-width: 768px) {
+    width: $column-width;
+  }
 }
 
 .home__search-form {
@@ -72,5 +80,6 @@
   p {
     @include body--lead;
     color: lighten($base-lightest, 35%);
+    margin-right: 8px;
   }
 }
