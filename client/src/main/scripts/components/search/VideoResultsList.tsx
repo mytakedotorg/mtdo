@@ -37,7 +37,7 @@ interface VideoResultsListState {
   isVideoPlaying: boolean;
   videoProps?: {
     videoId: string;
-    clipRange?: [number, number];
+    clipRange: [number, number];
   };
 }
 
@@ -55,6 +55,7 @@ export class VideoResultsList extends React.Component<
       videoProps: factHits.length
         ? {
             videoId: factHits[0].videoFact.youtubeId,
+            clipRange: factHits[0].searchHits[0].getClipRange(),
           }
         : undefined,
     };

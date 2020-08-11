@@ -36,7 +36,7 @@ interface YTPlayerParameters {
 interface VideoLiteProps {
   onClipEnd(): void;
   videoId: string;
-  clipRange?: [number, number];
+  clipRange: [number, number];
 }
 
 interface VideoLiteState {
@@ -62,34 +62,25 @@ class VideoLite extends React.Component<VideoLiteProps, VideoLiteState> {
       modestbranding: 1,
     };
 
-    if (props.clipRange) {
-      this.playerVars.start = props.clipRange[0];
-      this.playerVars.end = props.clipRange[1];
-    }
+    this.playerVars.start = props.clipRange[0];
+    this.playerVars.end = props.clipRange[1];
 
     this.state = {
-      currentTime: props.clipRange ? props.clipRange[0] : 0,
+      currentTime: props.clipRange[0],
       isPaused: true,
     };
   }
   cueVideo = (props: VideoLiteProps) => {
-    if (props.clipRange) {
-      this.player.cueVideoById({
-        videoId: props.videoId,
-        startSeconds: props.clipRange[0],
-        endSeconds: props.clipRange[1],
-        suggestedQuality: "default",
-      });
-      this.player.seekTo(props.clipRange[0]);
-      this.player.playVideo();
-      this.playerVars.start = props.clipRange[0];
-      this.playerVars.end = props.clipRange[1];
-    } else {
-      this.player.cueVideoById({
-        videoId: props.videoId,
-        suggestedQuality: "default",
-      });
-    }
+    this.player.cueVideoById({
+      videoId: props.videoId,
+      startSeconds: props.clipRange[0],
+      endSeconds: props.clipRange[1],
+      suggestedQuality: "default",
+    });
+    this.player.seekTo(props.clipRange[0]);
+    this.player.playVideo();
+    this.playerVars.start = props.clipRange[0];
+    this.playerVars.end = props.clipRange[1];
   };
   handlePause = (event: any) => {
     // Player was paused with player controls
@@ -156,12 +147,9 @@ class VideoLite extends React.Component<VideoLiteProps, VideoLiteState> {
   }
   componentWillReceiveProps(nextProps: VideoLiteProps) {
     if (
-      (nextProps.videoId && !this.props.videoId) ||
-      (nextProps.clipRange && !this.props.clipRange) ||
-      (nextProps.clipRange &&
-        this.props.clipRange &&
-        nextProps.clipRange[0] !== this.props.clipRange[0] &&
-        nextProps.clipRange[1] !== this.props.clipRange[1])
+      nextProps.videoId !== this.props.videoId ||
+      nextProps.clipRange[0] !== this.props.clipRange[0] ||
+      nextProps.clipRange[1] !== this.props.clipRange[1]
     ) {
       this.cueVideo(nextProps);
     }
