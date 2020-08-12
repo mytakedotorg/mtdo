@@ -102,16 +102,11 @@ export class VideoResultsList extends React.Component<
     const { mode, onModeChange, searchResult } = this.props;
     const { factHits, searchQuery } = searchResult;
     const fixedClass = this.state.fixVideo ? "results__push" : "";
-    const searchResultCount = searchResult.factHits.reduce(
-      (totalHitCount, fh) =>
-        totalHitCount +
-        fh.searchHits.reduce(
-          (totalPerSearchHit, sh) =>
-            totalPerSearchHit + sh.highlightOffsets.length,
-          0
-        ),
-      0
-    );
+    const searchResultCount = searchResult.factHits
+      .flatMap((factHit) => factHit.searchHits)
+      .reduce((total, hits) => {
+        return total + hits.highlightOffsets.length;
+      }, 0);
     return (
       <div className="results">
         <div className="results__inner-container">
