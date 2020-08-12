@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2018-2020 MyTake.org, Inc.
+ * Copyright (C) 2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -17,32 +17,31 @@
  *
  * You can contact us at team@mytake.org
  */
-import { Search } from "../../java2ts/Search";
-
+export interface MultiHighlight {
+  cut: [number, number];
+  highlights: Array<[number, number, string]>;
+}
 /**
  * Offsets to cut out of the turn content, along with all the offsets
  * to highlight within that content.  The highlights are relative to
  * the start of the turn's content, not the start of the cut.
  */
-export interface MultiHighlight {
-  cut: [number, number];
-  highlights: Array<[number, number]>;
-}
 
-function cleanupRegex(string: String): String {
-  const alphaNumWhitespaceOnly = string.replace("[^a-z0-9s]", "");
+function cleanupRegex(str: string): string {
+  const alphaNumWhitespaceOnly = str.replace("[^a-z0-9s]", "");
   return alphaNumWhitespaceOnly.replace(" ", "\\W+"); // all commas, dashes, quotes, etc. get smushed into one group
 }
 
 /** This class finds matches within a turn, returning them as TurnWithResults. */
 export class TurnFinder {
   regexInclude: RegExp;
+  regexIncludePerTerm: [RegExp, string][] = [];
   regexExclude?: RegExp;
 
-  constructor(searchTerm: string) {
+  constructor(searchQuery: string) {
     let include = "";
     let exclude = "";
-    for (const clause of searchTerm.toLowerCase().split(",")) {
+    for (const clause of searchQuery.toLowerCase().split(",")) {
       const trimmed = clause.trim();
       if (trimmed.length == 0) {
         continue;
@@ -50,7 +49,9 @@ export class TurnFinder {
       if (trimmed.charAt(0) === "-") {
         exclude = exclude + "|" + cleanupRegex(trimmed.substr(1));
       } else {
-        include = include + "|" + cleanupRegex(trimmed);
+        const toInclude = cleanupRegex(trimmed);
+        this.regexIncludePerTerm.push([new RegExp(toInclude, "ig"), trimmed]);
+        include = include + "|" + toInclude;
       }
     }
     this.regexInclude = new RegExp(include.slice(1), "ig");
@@ -62,19 +63,35 @@ export class TurnFinder {
   /** Finds all the results in the given turnContent. */
   findResults(turnContent: string): TurnWithResults {
     this.regexInclude.lastIndex = 0;
-    let foundOffsets: Array<[number, number]> = [];
+    let foundOffsets: Array<[number, number, string]> = [];
     let found = this.regexInclude.exec(turnContent);
     while (found != null) {
-      const lastIndex = found.index + found[0].length;
-      if (this.regexExclude) {
-        // TODO: if this exclude regex matches at all, we should not include the result.
-        // it's a little tricky because it might be a "look ahead" or "look behind", e.g.
-        //   wall, -wall street <-- I want wall, but not wall street
-        //   wall, -border wall <-- I want wall, but not border wall
+      const foundHunk = found[0];
+      const foundTerm = this.regexIncludePerTerm.find((regexAndTerm) => {
+        regexAndTerm[0].lastIndex = 0;
+        return regexAndTerm[0].test(foundHunk);
+      });
+      if (foundTerm) {
+        const lastIndex = found.index + foundHunk.length;
+
+        foundOffsets.push([found.index, lastIndex, foundTerm[1]]);
+        this.regexInclude.lastIndex = lastIndex + 1;
+        found = this.regexInclude.exec(turnContent);
       }
-      foundOffsets.push([found.index, lastIndex]);
-      this.regexInclude.lastIndex = lastIndex + 1;
-      found = this.regexInclude.exec(turnContent);
+    }
+    if (this.regexExclude) {
+      this.regexExclude.lastIndex = 0;
+      let foundNegative = this.regexExclude.exec(turnContent);
+      while (foundNegative != null) {
+        const foundNegativeHunk = foundNegative[0];
+        const lastNegativeIndex =
+          foundNegative.index + foundNegativeHunk.length;
+        foundOffsets = foundOffsets.filter((fo) => {
+          return fo[0] !== foundNegative?.index;
+        });
+        this.regexExclude.lastIndex = lastNegativeIndex + 1;
+        foundNegative = this.regexExclude.exec(turnContent);
+      }
     }
     return new TurnWithResults(turnContent, foundOffsets);
   }
@@ -87,9 +104,12 @@ export class TurnFinder {
  */
 class TurnWithResults {
   turnContent: string;
-  foundOffsets: Array<[number, number]>;
+  foundOffsets: Array<[number, number, string]>;
 
-  constructor(turnContent: string, foundOffsets: Array<[number, number]>) {
+  constructor(
+    turnContent: string,
+    foundOffsets: Array<[number, number, string]>
+  ) {
     this.turnContent = turnContent;
     this.foundOffsets = foundOffsets;
   }
@@ -98,7 +118,6 @@ class TurnWithResults {
   expandBy(numSentencesBuffer: number): MultiHighlight[] {
     let multiHighlights: MultiHighlight[] = [];
 
-    let expanded: Array<[number, number]> = [];
     for (var found of this.foundOffsets) {
       // initialize around the found word
       let start = this.prevPunc(found[0]);

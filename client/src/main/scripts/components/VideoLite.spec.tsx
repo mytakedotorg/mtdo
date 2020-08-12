@@ -19,8 +19,8 @@
  */
 import * as React from "react";
 import * as renderer from "react-test-renderer";
-import VideoLite from "./VideoLite";
 import { videoFactFast } from "../utils/testUtils";
+import VideoLite from "./VideoLite";
 
 jest.mock("react-youtube", () => ({
   __esModule: true,
@@ -33,8 +33,7 @@ test("Video", () => {
       <VideoLite
         videoId={videoFactFast.youtubeId}
         clipRange={[10, 20]}
-        isFixed={false}
-        onScroll={jest.fn()}
+        onClipEnd={jest.fn()}
       />
     )
     .toJSON();

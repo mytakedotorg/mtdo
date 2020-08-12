@@ -2,7 +2,7 @@
   "compilerOptions": {
     "downlevelIteration": true,
     "resolveJsonModule": true,
-    "lib": ["es2015", "dom"],
+    "lib": ["es2019", "dom"],
     "sourceMap": false,
     "noImplicitAny": true,
     "module": "commonjs",

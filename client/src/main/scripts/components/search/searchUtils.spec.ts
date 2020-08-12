@@ -20,16 +20,30 @@
 import { TurnFinder } from "./searchUtils";
 
 test("turnfinder-corner-case", () => {
-  let finder = new TurnFinder("farm");
-  let withResults = finder.findResults(
+  const finder = new TurnFinder("farm");
+  const withResults = finder.findResults(
     "Uh - Senator Kennedy, during your brief speech a few minutes ago you mentioned farm surpluses."
   );
   expect(withResults.foundOffsets.length).toBe(1);
-  let expanded = withResults.expandBy(1);
+  const expanded = withResults.expandBy(1);
 
   expect(expanded.length).toBe(1);
   expect(expanded[0].cut[0]).toBe(0);
   // to find these, look at "col" value in bottom-right of VSCode.  Might be worth making a nice test harness
   // to make it easier to read than a number, dunno
   expect(expanded[0].cut[1]).toBe(94);
+});
+
+test("turnfinder-negative-clause", () => {
+  const finder = new TurnFinder("wall, -wall street");
+  const withResults = finder.findResults(
+    "We're going to build a wall around wall street."
+  );
+
+  expect(withResults.foundOffsets.length).toBe(1);
+
+  const highlightedOffset = withResults.foundOffsets[0];
+  expect(highlightedOffset[0]).toBe(23);
+  expect(highlightedOffset[1]).toBe(27);
+  expect(highlightedOffset[2]).toBe("wall");
 });
