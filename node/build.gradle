@@ -50,7 +50,7 @@ node {
 	npmRun('deploy') {
 		dependsOn 'beforeCompile'
 		inputs.dir('src/main/scripts')
-		outputs.dir('src/main/dist')
+		outputs.dir('build/dist')
 	}
 	npmArbitraryCmd('pruneDependencies', 'prune --production') {
 		mustRunAfter 'assemble'
