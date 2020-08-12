@@ -6,7 +6,7 @@ const sourcemaps = require("gulp-sourcemaps");
 
 const config = {
   src: "./src/main/scripts/**/*.ts",
-  dist: "./src/main/dist",
+  dist: "./build/dist",
 };
 
 const BUILD = "build";

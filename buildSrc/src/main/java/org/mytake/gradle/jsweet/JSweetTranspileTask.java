@@ -131,7 +131,7 @@ public class JSweetTranspileTask extends DefaultTask {
 			// make sure we use the npm that we intend
 			NodePlugin.Extension node = getProject().getExtensions().getByType(NodePlugin.Extension.class);
 			node.setup.start(getProject());
-			ProcessUtil.addExtraPath(new File(getProject().getBuildDir(), "node-install/node").getAbsolutePath());
+			ProcessUtil.addExtraPath(new File(getProject().getRootProject().getBuildDir(), "node-install/node").getAbsolutePath());
 			transpiler.transpile(transpilationHandler, sourceFiles);
 
 			FileMisc.flatten(new File(configuration.getTsOut(), configuration.getTsOut().getName()));

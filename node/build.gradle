@@ -50,8 +50,12 @@ node {
 	npmRun('deploy') {
 		dependsOn 'beforeCompile'
 		inputs.dir('src/main/scripts')
-		outputs.dir('src/main/dist')
+		outputs.dir('build/dist')
 	}
+	npmArbitraryCmd('pruneDependencies', 'prune --production') {
+		mustRunAfter 'assemble'
+	}
+	copyNodeExe() // used by :stage for heroku
 }
 tasks.register('test') {
 	dependsOn 'npm_run_test_ci'

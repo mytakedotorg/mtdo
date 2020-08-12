@@ -14,7 +14,8 @@
     "SECRET_TOKEN": {
       "description": "Secret key for signing cookies",
       "generator": "secret"
-    }
+    },
+    "WEB_CMD": "java -cp server/build/libs/server-all.jar common.Prod heroku port=$PORT"
   },
   "addons": [
     {
