@@ -103,9 +103,13 @@ export class VideoResultsList extends React.Component<
     const { factHits, searchQuery } = searchResult;
     const fixedClass = this.state.fixVideo ? "results__push" : "";
     const searchResultCount = searchResult.factHits.reduce(
-      (accumulator, fh) => {
-        return accumulator + fh.searchHits.length;
-      },
+      (totalHitCount, fh) =>
+        totalHitCount +
+        fh.searchHits.reduce(
+          (totalPerSearchHit, sh) =>
+            totalPerSearchHit + sh.highlightOffsets.length,
+          0
+        ),
       0
     );
     return (
