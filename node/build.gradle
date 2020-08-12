@@ -55,6 +55,7 @@ node {
 	npmArbitraryCmd('pruneDependencies', 'prune --production') {
 		mustRunAfter 'assemble'
 	}
+	copyNodeExe() // used by :stage for heroku
 }
 tasks.register('test') {
 	dependsOn 'npm_run_test_ci'

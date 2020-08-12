@@ -1,5 +1,6 @@
 package org.mytake.gradle.node;
 
+import java.nio.file.Files;
 import java.util.Collections;
 import java.util.Objects;
 
@@ -60,6 +61,10 @@ public class NodePlugin implements Plugin<Project> {
 				taskConfig.execute(task);
 			});
 		}
+
+		public TaskProvider<?> copyNodeExe() {
+			return project.getTasks().register("copyNodeExe", InstallTask.class);
+		}
 	}
 
 	public abstract static class NpxTask extends DefaultTask {
@@ -97,6 +102,16 @@ public class NodePlugin implements Plugin<Project> {
 			// run the gulp task
 			ProxyConfig proxyConfig = new ProxyConfig(Collections.emptyList());
 			setup.factory().getNpmRunner(proxyConfig, null).execute(cmd, null);
+		}
+	}
+
+	public static class InstallTask extends DefaultTask {
+		@TaskAction
+		public void install() throws Exception {
+			SetupCleanupNode setup = getProject().getPlugins().apply(NodePlugin.class).extension.setup;
+			setup.start(getProject());
+			// copy the node directory to the root path of this project
+			Files.copy(setup.nodePath(), getProject().getProjectDir().toPath().resolve("node"));
 		}
 	}
 
