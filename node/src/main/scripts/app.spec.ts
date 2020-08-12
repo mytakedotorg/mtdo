@@ -44,6 +44,28 @@ test("show some video captions", async (done) => {
   );
   expect(response.statusCode).toBe(200);
   // travis image is a different size, can't replicate on a dev machine...
-  //expect(response.body).toMatchImageSnapshot();
+  expect(response.body).toMatchImageSnapshot({
+    failureThreshold: "5",
+    failureThresholdType: "percent",
+  });
+  done();
+});
+
+test("invalid fact should not hang", async (done) => {
+  const originalWarn = console.warn;
+  try {
+    const consoleOutput: string[] = [];
+    console.warn = (arg: any) => consoleOutput.push(arg.toString());
+    const response = await request(underTest).get(
+      "/api/images/vrhLapmIbWECYassLC2Umf7Z16fusYgWWGhTP7KgIYU=_5839.620-5949.290.png"
+    );
+    expect(response.statusCode).toBe(404);
+    expect(consoleOutput.join("\n")).toMatchSnapshot();
+  } catch (error) {
+    throw error;
+  } finally {
+    console.warn = originalWarn;
+  }
+
   done();
 });
