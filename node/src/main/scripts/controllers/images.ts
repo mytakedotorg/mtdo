@@ -22,15 +22,6 @@ import { FoundationFetcher } from "../common/foundation";
 import { FT } from "../java2ts/FT";
 import { drawDocumentFact, drawVideoFact } from "./images-drawfacts";
 
-registerFont("Merriweather-Regular.ttf", {
-  family: "Merriweather",
-  weight: "normal",
-});
-registerFont("Merriweather-Bold.ttf", {
-  family: "Merriweather",
-  weight: "bold",
-});
-
 function videoRangeFromString(rangeStr: string): [number, number] | undefined {
   if (rangeStr.startsWith("_")) {
     rangeStr = rangeStr.substring(1);
