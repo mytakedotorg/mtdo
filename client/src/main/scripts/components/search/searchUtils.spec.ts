@@ -47,3 +47,36 @@ test("turnfinder-negative-clause", () => {
   expect(highlightedOffset[1]).toBe(27);
   expect(highlightedOffset[2]).toBe("wall");
 });
+
+test("turnfinder-negative-clause-2", () => {
+  const finder = new TurnFinder("wall, -border wall");
+  const withResults = finder.findResults(
+    "We're going to build a wall around a border wall."
+  );
+
+  expect(withResults.foundOffsets.length).toBe(1);
+
+  const highlightedOffset = withResults.foundOffsets[0];
+  expect(highlightedOffset[0]).toBe(23);
+  expect(highlightedOffset[1]).toBe(27);
+  expect(highlightedOffset[2]).toBe("wall");
+});
+
+test("turnfinder-negative-clause-3", () => {
+  const finder = new TurnFinder("states, -united states of america");
+  const withResults = finder.findResults(
+    "Several states compose the united states of america. The United States of America comprises several states."
+  );
+
+  expect(withResults.foundOffsets.length).toBe(2);
+
+  const firstOffset = withResults.foundOffsets[0];
+  expect(firstOffset[0]).toBe(8);
+  expect(firstOffset[1]).toBe(14);
+  expect(firstOffset[2]).toBe("states");
+
+  const secondOffset = withResults.foundOffsets[1];
+  expect(secondOffset[0]).toBe(100);
+  expect(secondOffset[1]).toBe(106);
+  expect(secondOffset[2]).toBe("states");
+});
