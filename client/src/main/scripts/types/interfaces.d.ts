@@ -24,10 +24,3 @@ declare module "*.sbv" {
   const content: any;
   export default content;
 }
-
-// This one is missing from @types/facebook-js-sdk. Declaration merging here.
-declare namespace facebook {
-  interface InitParams {
-    autoLogAppEvents?: boolean;
-  }
-}
