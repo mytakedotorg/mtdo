@@ -20,7 +20,7 @@ public class VideoFactContentJava extends FactContent {
 	public List<Speaker> speakers;
 	public String plainText;
 	public int[] wordChar;
-	public double[] timestamps;
+	public double[] wordTime;
 	public int[] turnSpeaker;
 	public int[] turnWord;
 
@@ -42,7 +42,7 @@ public class VideoFactContentJava extends FactContent {
 		ByteBuffer buffer = ByteBuffer.allocate(size);
 		buffer.order(ENDIAN);
 		buffer.position(buffer.asIntBuffer().put(wordChar).position() * 4);
-		buffer.position(buffer.position() + buffer.asFloatBuffer().put(d2f(timestamps)).position() * 4);
+		buffer.position(buffer.position() + buffer.asFloatBuffer().put(d2f(wordTime)).position() * 4);
 		buffer.position(buffer.position() + buffer.asIntBuffer().put(turnSpeaker).put(turnWord).position() * 4);
 
 		byte[] bytes = new byte[buffer.capacity()];
@@ -79,7 +79,7 @@ public class VideoFactContentJava extends FactContent {
 		java.plainText = encoded.plainText;
 		// create the new arrays
 		java.wordChar = new int[encoded.totalWords];
-		float[] timestamps = new float[encoded.totalWords];
+		float[] wordTime = new float[encoded.totalWords];
 		java.turnSpeaker = new int[encoded.totalTurns];
 		java.turnWord = new int[encoded.totalTurns];
 		// decode into these arrays
@@ -87,10 +87,10 @@ public class VideoFactContentJava extends FactContent {
 		ByteBuffer buffer = ByteBuffer.wrap(data);
 		buffer.order(ENDIAN);
 		buffer.position(buffer.asIntBuffer().get(java.wordChar).position() * 4);
-		buffer.position(buffer.position() + buffer.asFloatBuffer().get(timestamps).position() * 4);
+		buffer.position(buffer.position() + buffer.asFloatBuffer().get(wordTime).position() * 4);
 		buffer.asIntBuffer().get(java.turnSpeaker).get(java.turnWord);
 		// float to double
-		java.timestamps = f2d(timestamps);
+		java.wordTime = f2d(wordTime);
 		return java;
 	}
 

@@ -73,7 +73,7 @@ export async function drawVideoFact(
 
   const characterRange = getCharRangeFromVideoRange(
     factContent.wordChar,
-    factContent.timestamps,
+    factContent.wordTime,
     highlightedRange
   );
 

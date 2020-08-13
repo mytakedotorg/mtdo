@@ -37,7 +37,7 @@ public class Videos {
 
 				empty.plainText = "";
 				empty.wordChar = new int[0];
-				empty.timestamps = new double[0];
+				empty.wordTime = new double[0];
 				empty.turnSpeaker = empty.wordChar;
 				empty.turnWord = empty.wordChar;
 				factContent = empty;

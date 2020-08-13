@@ -186,7 +186,7 @@ export class SearchHit {
       firstWord = -firstWord - 2;
     }
 
-    const clipStart = videoFact.timestamps[firstWord];
+    const clipStart = videoFact.wordTime[firstWord];
 
     let lastWord = bs(
       videoFact.wordChar, // haystack
@@ -202,10 +202,10 @@ export class SearchHit {
     }
 
     let clipEnd;
-    if (videoFact.timestamps[lastWord + 1]) {
-      clipEnd = videoFact.timestamps[lastWord + 1];
+    if (videoFact.wordTime[lastWord + 1]) {
+      clipEnd = videoFact.wordTime[lastWord + 1];
     } else {
-      clipEnd = videoFact.timestamps[lastWord] + 2;
+      clipEnd = videoFact.wordTime[lastWord] + 2;
     }
 
     this.clipRangeCache = [clipStart, clipEnd];

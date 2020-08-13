@@ -70,8 +70,8 @@ public interface FT {
 		public String plainText;
 		/** Word n starts at wordChar[n]. */
 		public ArrayLike<Number> wordChar;
-		/** Word n is spoken at timestamps[n]. */
-		public ArrayLike<Number> timestamps;
+		/** Word n is spoken at wordTime[n]. */
+		public ArrayLike<Number> wordTime;
 		/**
 		 * speakers[turnSpeaker[0]] = the first person who speaks.
 		 * speakers[turnSpeaker[1]] = the second person who speaks.
@@ -91,7 +91,7 @@ public interface FT {
 		public int totalWords;
 		public int totalTurns;
 		/**
-		 * [wordChar, timestamps, turnSpeaker, turnWord], little-endian Base64 encoded.
+		 * [wordChar, wordTime, turnSpeaker, turnWord], little-endian Base64 encoded.
 		 */
 		public String data;
 	}

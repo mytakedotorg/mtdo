@@ -134,8 +134,8 @@ public class TranscriptMatch {
 		java.durationSeconds = meta.durationSeconds.doubleValue();
 		java.speakers = meta.speakers;
 		java.plainText = said.turns().stream().map(Turn::said).collect(Collectors.joining(" "));
-		java.timestamps = vttWords.stream().mapToDouble(Word.Vtt::time).toArray();
-		java.wordChar = new int[java.timestamps.length];
+		java.wordTime = vttWords.stream().mapToDouble(Word.Vtt::time).toArray();
+		java.wordChar = new int[java.wordTime.length];
 		java.wordChar[0] = 0;
 		int startOffset = 0;
 		int i = 0;

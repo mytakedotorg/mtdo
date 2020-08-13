@@ -187,9 +187,9 @@ class CaptionTextNodeListContainer extends React.Component<
         const idxOfLastWordInParagraph = turnWordMap[speakerIdx + 1];
         if (!idxOfLastWordInParagraph) {
           // We're at the end, return the last paragraph
-          const timestamps = this.props.videoFact.timestamps;
-          const timeOfFirstWord = timestamps[timestamps.length - 2];
-          const timeOfLastWord = timestamps[timestamps.length - 1];
+          const wordTime = this.props.videoFact.wordTime;
+          const timeOfFirstWord = wordTime[wordTime.length - 2];
+          const timeOfLastWord = wordTime[wordTime.length - 1];
           this.setState({
             wordTimestampAtViewStart: timeOfFirstWord,
           });
@@ -235,9 +235,9 @@ class CaptionTextNodeListContainer extends React.Component<
               captionNodeContainer.children[speakerIdx + loopCounter + 1];
             if (typeof documentNode === "undefined") {
               // We're at the last speaker anyway
-              const timestamps = this.props.videoFact.timestamps;
-              const timeOfFirstWord = timestamps[timestamps.length - 2];
-              const timeOfLastWord = timestamps[timestamps.length - 1];
+              const wordTime = this.props.videoFact.wordTime;
+              const timeOfFirstWord = wordTime[wordTime.length - 2];
+              const timeOfLastWord = wordTime[wordTime.length - 1];
               this.setState({
                 wordTimestampAtViewStart: timeOfFirstWord,
               });
@@ -297,10 +297,8 @@ class CaptionTextNodeListContainer extends React.Component<
           throw msg;
         }
 
-        const timeOfFirstWord = this.props.videoFact.timestamps[
-          indexOfFirstWord
-        ];
-        const timeOfLastWord = this.props.videoFact.timestamps[indexOfLastWord];
+        const timeOfFirstWord = this.props.videoFact.wordTime[indexOfFirstWord];
+        const timeOfLastWord = this.props.videoFact.wordTime[indexOfLastWord];
 
         if (
           typeof timeOfFirstWord !== "undefined" &&
@@ -356,7 +354,7 @@ class CaptionTextNodeListContainer extends React.Component<
         const timer = time ? time : this.props.captionTimer;
 
         let wordIdx = bs(
-          this.props.videoFact.timestamps, // haystack
+          this.props.videoFact.wordTime, // haystack
           timer, // needle
           (element: number, needle: number) => {
             return element - needle;

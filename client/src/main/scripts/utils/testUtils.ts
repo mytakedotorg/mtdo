@@ -139,7 +139,7 @@ const videoFactFast: FT.VideoFactContent = {
     "90": 549,
     length: 91,
   },
-  timestamps: {
+  wordTime: {
     "0": 0.75,
     "1": 0.9599999785423279,
     "2": 1.559999942779541,
@@ -787,7 +787,7 @@ const kennedyNixon: FT.VideoFactContent = {
   },
 
   turnWord: [0],
-  timestamps: {
+  wordTime: {
     "0": 1.5199999809265137,
     "1": 2.5199999809265137,
     "2": 2.700000047683716,

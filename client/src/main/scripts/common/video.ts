@@ -33,7 +33,7 @@ export function decodeVideoFact(
   var offset = 0;
   const wordChar = new Int32Array(data, offset, encoded.totalWords);
   offset += encoded.totalWords * Int32Array.BYTES_PER_ELEMENT;
-  const timestamps = new Float32Array(data, offset, encoded.totalWords);
+  const wordTime = new Float32Array(data, offset, encoded.totalWords);
   offset += encoded.totalWords * Float32Array.BYTES_PER_ELEMENT;
   const turnSpeaker = new Int32Array(data, offset, encoded.totalTurns);
   offset += encoded.totalTurns * Int32Array.BYTES_PER_ELEMENT;
@@ -49,7 +49,7 @@ export function decodeVideoFact(
     speakers: encoded.speakers,
     plainText: encoded.plainText,
     wordChar: wordChar,
-    timestamps: timestamps,
+    wordTime: wordTime,
     turnSpeaker: turnSpeaker,
     turnWord: turnWord,
   };

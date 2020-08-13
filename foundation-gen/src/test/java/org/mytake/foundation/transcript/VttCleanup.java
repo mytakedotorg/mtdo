@@ -24,7 +24,7 @@ import org.mytake.foundation.transcript.VttTranscript.Mode;
 
 /**
  * YouTube is now making lots of junky lines.
- * - removes all lines with no timestamps
+ * - removes all lines with no wordTime
  * - removes all style tokens
  * - removes all punctuation
  * - makes all tokens lowercase
@@ -62,7 +62,7 @@ public class VttCleanup {
 					if (token.isTime()) {
 						double newEnd = token.assertTime().timestamp;
 						if (DoubleMath.fuzzyEquals(newEnd, end, 0.01)) {
-							throw new IllegalArgumentException("Duplicate timestamps!" + token);
+							throw new IllegalArgumentException("Duplicate wordTime!" + token);
 						}
 						end = newEnd;
 					}

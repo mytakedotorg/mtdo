@@ -199,8 +199,8 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
         highlightedNodes: newNodes,
       });
 
-      const startTime = videoFact.timestamps[simpleRanges.wordRange[0]];
-      const endTime = videoFact.timestamps[simpleRanges.wordRange[1]];
+      const startTime = videoFact.wordTime[simpleRanges.wordRange[0]];
+      const endTime = videoFact.wordTime[simpleRanges.wordRange[1]];
 
       this.props.eventHandlers.onHighlight(
         [startTime, endTime],
