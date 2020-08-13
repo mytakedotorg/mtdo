@@ -22,15 +22,13 @@ import {
   CaptionNodeArr,
   getCaptionNodeArray,
   highlightCaption,
-} from "../common/CaptionNodes";
-import { FT } from "../java2ts/FT";
-import { Routes } from "../java2ts/Routes";
-import {
-  alertErr,
   getSimpleRangesFromHTMLRange,
   getWordRangeFromCharRange,
   SimpleRanges,
-} from "../utils/functions";
+} from "../common/CaptionNodes";
+import { FT } from "../java2ts/FT";
+import { Routes } from "../java2ts/Routes";
+import { alertErr } from "../utils/functions";
 import CaptionTextNodeListContainer, {
   CaptionTextNodeListContainerEventHandlers,
 } from "./CaptionTextNodeListContainer";

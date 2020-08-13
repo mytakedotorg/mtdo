@@ -18,10 +18,10 @@
  * You can contact us at team@mytake.org
  */
 import React, { useEffect, useState } from "react";
-import { FoundationNode } from "../common/CaptionNodes";
+import { FoundationNode, getHighlightedNodes } from "../common/CaptionNodes";
 import { FoundationFetcher } from "../common/foundation";
 import { FT } from "../java2ts/FT";
-import { alertErr, getHighlightedNodes } from "../utils/functions";
+import { alertErr } from "../utils/functions";
 import { TakeBlock } from "./BlockEditor";
 import DocumentTextNodeList from "./DocumentTextNodeList";
 
