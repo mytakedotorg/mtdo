@@ -18,14 +18,13 @@
  * You can contact us at team@mytake.org
  */
 import { Foundation, FoundationFetcher } from "../../common/foundation";
-import { groupBy } from "../../common/functions";
+import { groupBy, bsRoundEarly } from "../../common/functions";
 import { getTurnContent } from "../../common/video";
 import { FT } from "../../java2ts/FT";
 import { Routes } from "../../java2ts/Routes";
 import { Search } from "../../java2ts/Search";
 import { get } from "../../network";
 import { TurnFinder } from "./searchUtils";
-var bs = require("binary-search");
 
 export class SearchResult {
   constructor(
@@ -174,34 +173,17 @@ export class SearchHit {
     const { hitOffsets, turn, videoFact } = this;
     const veryFirstWord = videoFact.turnWord[turn];
     const firstChar = videoFact.wordChar[veryFirstWord];
-    let firstWord = bs(
-      videoFact.wordChar, // haystack
-      firstChar + hitOffsets[0], // needle
-      (element: number, needle: number) => {
-        return element - needle;
-      }
-    );
 
-    // usually the timestamp is between two words, in which case it returns (-insertionPoint - 2)
-    if (firstWord < 0) {
-      firstWord = -firstWord - 2;
-    }
+    const firstWord = bsRoundEarly(
+      videoFact.wordChar,
+      firstChar + hitOffsets[0]
+    );
+    const lastWord = bsRoundEarly(
+      videoFact.wordChar,
+      firstChar + hitOffsets[1]
+    );
 
     const clipStart = videoFact.wordTime[firstWord];
-
-    let lastWord = bs(
-      videoFact.wordChar, // haystack
-      firstChar + hitOffsets[1], // needle
-      (element: number, needle: number) => {
-        return element - needle;
-      }
-    );
-
-    // usually the timestamp is between two words, in which case it returns (-insertionPoint - 2)
-    if (lastWord < 0) {
-      lastWord = -lastWord - 2;
-    }
-
     let clipEnd;
     if (videoFact.wordTime[lastWord + 1]) {
       clipEnd = videoFact.wordTime[lastWord + 1];
