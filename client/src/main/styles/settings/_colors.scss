@@ -163,6 +163,8 @@ $palettes: (
     text--green: $secondary,
     background: $white,
     border: $base-lightest,
+    icon: $base-light,
+    icon--hover: $base-lightest,
   ),
   trackSlider: (
     color--handle: $base-dark,

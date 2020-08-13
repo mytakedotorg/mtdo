@@ -23,7 +23,9 @@ import { slugify } from "../../common/functions";
 import { convertSecondsToTimestamp } from "../../common/video";
 import { FT } from "../../java2ts/FT";
 import { Routes } from "../../java2ts/Routes";
+import DropDown from "../DropDown";
 import { SearchHit } from "./search";
+import SharePreview from "./SharePreview";
 
 export type PlayEvent = (
   videoFact: FT.VideoFactContent,
@@ -91,12 +93,13 @@ const VideoResult: React.FC<VideoResultProps> = (props) => {
           >
             <Play size={20} />
           </button>
-          <button
-            className="turn__button turn__button--share"
-            onClick={handleShareClick}
+          <DropDown
+            classModifier="share"
+            dropdownPosition="CUSTOM"
+            toggleText={<Share />}
           >
-            <Share />
-          </button>
+            <SharePreview />
+          </DropDown>
         </div>
       </div>
       <p className="turn__results">

@@ -68,7 +68,7 @@
   @include body("sans");
 }
 @mixin turnBackground {
-  background: linear-gradient(lighten(#758aa8, 40%), white);
+  background: linear-gradient(lighten($base-lightest, 40%), white);
 }
 .turn {
   @include turnBackground();
@@ -112,8 +112,8 @@
   align-items: center;
 }
 .turn__button--play {
-  border: 2px solid palette(button, color--borderless);
-  color: palette(button, color--borderless);
+  border: 2px solid palette(share, icon);
+  color: palette(share, icon);
   padding-top: 0;
   padding-bottom: 0;
   border-radius: 5px;
@@ -121,14 +121,16 @@
   width: 60px;
   cursor: pointer;
   &:hover {
-    color: palette(button, color--borderless-hover);
-    border-color: palette(button, color--borderless-hover);
+    color: palette(share, icon--hover);
+    border-color: palette(share, icon--hover);
   }
   svg {
     fill: $white;
   }
 }
-.turn__button--share {
+.dropdown__toggle--share {
+  display: flex;
+  align-items: center;
   @include button--borderless;
   background: transparent;
 }
@@ -139,11 +141,11 @@
 }
 .turn__button--bookmark-solid {
   svg {
-    fill: palette(button, color--borderless);
+    fill: palette(share, icon);
   }
   &:hover {
     svg {
-      fill: palette(button, color--borderless-hover);
+      fill: palette(share, icon--hover);
     }
   }
 }
@@ -155,7 +157,7 @@
 .results-header__fixed {
   position: fixed;
   top: 0;
-  z-index: 1;
+  z-index: 2;
   left: 0;
   width: 100%;
   background-color: white;
