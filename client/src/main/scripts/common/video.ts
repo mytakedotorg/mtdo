@@ -58,3 +58,22 @@ export function decodeVideoFact(
     speakerWord: speakerWord,
   };
 }
+
+export function getTurnContent(
+  turn: number,
+  videoFact: FT.VideoFactContent
+): string {
+  const firstWord = videoFact.speakerWord[turn];
+  const firstChar = videoFact.charOffsets[firstWord];
+
+  let fullTurnText;
+  if (videoFact.speakerWord[turn + 1]) {
+    const lastWord = videoFact.speakerWord[turn + 1];
+    const lastChar = videoFact.charOffsets[lastWord] - 1;
+    fullTurnText = videoFact.plainText.substring(firstChar, lastChar);
+  } else {
+    // Result is in last turn
+    fullTurnText = videoFact.plainText.substring(firstChar);
+  }
+  return fullTurnText;
+}

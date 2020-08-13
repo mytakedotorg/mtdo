@@ -18,6 +18,7 @@
  * You can contact us at team@mytake.org
  */
 import { Foundation, FoundationFetcher } from "../../common/foundation";
+import { getTurnContent } from "../../common/video";
 import { FT } from "../../java2ts/FT";
 import { Routes } from "../../java2ts/Routes";
 import { Search } from "../../java2ts/Search";
@@ -248,22 +249,6 @@ export class SearchHit {
     }
     return searchHitContents;
   }
-}
-
-function getTurnContent(turn: number, videoFact: FT.VideoFactContent): string {
-  let fullTurnText;
-  const firstWord = videoFact.speakerWord[turn];
-  const firstChar = videoFact.charOffsets[firstWord];
-
-  if (videoFact.speakerWord[turn + 1]) {
-    const lastWord = videoFact.speakerWord[turn + 1];
-    const lastChar = videoFact.charOffsets[lastWord] - 1;
-    fullTurnText = videoFact.plainText.substring(firstChar, lastChar);
-  } else {
-    // Result is in last turn
-    fullTurnText = videoFact.plainText.substring(firstChar);
-  }
-  return fullTurnText;
 }
 
 function groupBy<K, V>(list: V[], keyGetter: (k: V) => K): Map<K, V[]> {
