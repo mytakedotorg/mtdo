@@ -20,7 +20,7 @@
 import * as React from "react";
 import { FT } from "../java2ts/FT";
 import { Routes } from "../java2ts/Routes";
-import { slugify } from "../utils/functions";
+import { slugify } from "../common/functions";
 import Timeline, { TimelineItemData } from "./Timeline";
 import { SetFactHandlers } from "./TimelinePreview";
 import TimelinePreviewContainer from "./TimelinePreviewContainer";
