@@ -62,14 +62,12 @@ export function getTurnContent(
   const firstWord = videoFact.turnWord[turn];
   const firstChar = videoFact.wordChar[firstWord];
 
-  let fullTurnText;
   if (videoFact.turnWord[turn + 1]) {
     const lastWord = videoFact.turnWord[turn + 1];
     const lastChar = videoFact.wordChar[lastWord] - 1;
-    fullTurnText = videoFact.plainText.substring(firstChar, lastChar);
+    return videoFact.plainText.substring(firstChar, lastChar);
   } else {
     // Result is in last turn
-    fullTurnText = videoFact.plainText.substring(firstChar);
+    return videoFact.plainText.substring(firstChar);
   }
-  return fullTurnText;
 }
