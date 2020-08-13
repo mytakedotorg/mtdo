@@ -17,6 +17,8 @@
  *
  * You can contact us at team@mytake.org
  */
+import binarySearch from "binary-search";
+
 export function slugify(text: string): string {
   return text
     .toLowerCase()
@@ -27,7 +29,7 @@ export function slugify(text: string): string {
 
 /**
  * groups values by any arbitrary key.
- * can't be replaced by _.groupBy because it is constrained to string keys
+ * can't be replaced by _.groupBy because _ is constrained to string keys
  */
 export function groupBy<K, V>(list: V[], keyGetter: (k: V) => K): Map<K, V[]> {
   const map = new Map<K, V[]>();
@@ -41,4 +43,27 @@ export function groupBy<K, V>(list: V[], keyGetter: (k: V) => K): Map<K, V[]> {
     }
   });
   return map;
+}
+
+/**
+ * Performs a binary search where not-exactly-found elements are rounded to the early side.
+ */
+export function bsRoundEarly(
+  sorted: ArrayLike<number>,
+  needle: number
+): number {
+  let idx = binarySearch(sorted, needle, (element: number, target: number) => {
+    return element - target;
+  });
+  if (idx == -1) {
+    // the element would be inserted before the first element
+    return 0;
+  } else if (idx < 0) {
+    // the element would be inserted somewhere besides the very beginning, and we'll round early
+    // so if it would be inserted after x, we'll just return x
+    return -idx - 2;
+  } else {
+    // we got very lucky, and found the exact right spot
+    return idx;
+  }
 }

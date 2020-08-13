@@ -19,6 +19,7 @@
  */
 import * as React from "react";
 import { CaptionNodeArr } from "../common/CaptionNodes";
+import { bsRoundEarly } from "../common/functions";
 import { FT } from "../java2ts/FT";
 import NumberLineTransform from "../utils/numberLineTransform";
 import CaptionTextNodeList, {
@@ -344,38 +345,11 @@ class CaptionTextNodeListContainer extends React.Component<
       let captionNodeContainer = this.captionTextNodeList.getContainer();
       if (captionNodeContainer) {
         const timer = time ? time : this.props.captionTimer;
-
-        let wordIdx = bs(
-          this.props.videoFact.wordTime, // haystack
-          timer, // needle
-          (element: number, needle: number) => {
-            return element - needle;
-          }
-        );
-
-        // usually the timestamp is between two words, in which case it returns (-insertionPoint - 2)
-        if (wordIdx < 0) {
-          wordIdx = -wordIdx - 2;
-        }
+        const wordIdx = bsRoundEarly(this.props.videoFact.wordTime, timer);
 
         // find the speaker for that word
-        let speakerIdx = bs(
-          this.props.videoFact.turnWord, // haystack
-          wordIdx, // needle
-          (element: number, needle: number) => {
-            return element - needle;
-          }
-        );
-
-        if (speakerIdx < 0) {
-          speakerIdx = -speakerIdx - 2;
-          if (speakerIdx < 0) {
-            // If still negative, it means we're at the first node
-            speakerIdx = 0;
-          }
-        }
-
-        if (typeof captionNodeContainer.children[speakerIdx] == "undefined") {
+        let speakerIdx = bsRoundEarly(this.props.videoFact.turnWord, wordIdx);
+        if (!captionNodeContainer.children[speakerIdx]) {
           // If we're at the end, it can be length + 1. Just return the last valid speakername
           speakerIdx--;
         }
