@@ -32,7 +32,7 @@ import VideoResultsLoader from "./components/search/VideoResultsLoader";
 import { TakeDocument } from "./components/BlockEditor";
 import { Card } from "./components/FeedList";
 import { alertErr } from "./utils/functions";
-import { windowUtils } from "./utils/window";
+import { windowUtils } from "./browser";
 
 windowUtils.init();
 
