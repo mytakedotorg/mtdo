@@ -321,8 +321,8 @@ class CaptionTextNodeListContainer extends React.Component<
   getWord = (wordIdx: number) => {
     const { videoFact } = this.props;
     const transcript = videoFact.plainText;
-    const charStart = videoFact.charOffsets[wordIdx];
-    const charEnd = videoFact.charOffsets[wordIdx + 1];
+    const charStart = videoFact.wordChar[wordIdx];
+    const charEnd = videoFact.wordChar[wordIdx + 1];
 
     if (charEnd) {
       return transcript.substring(charStart, charEnd);

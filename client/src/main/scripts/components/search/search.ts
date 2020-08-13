@@ -172,9 +172,9 @@ export class SearchHit {
     }
     const { hitOffsets, turn, videoFact } = this;
     const veryFirstWord = videoFact.turnWord[turn];
-    const firstChar = videoFact.charOffsets[veryFirstWord];
+    const firstChar = videoFact.wordChar[veryFirstWord];
     let firstWord = bs(
-      videoFact.charOffsets, // haystack
+      videoFact.wordChar, // haystack
       firstChar + hitOffsets[0], // needle
       (element: number, needle: number) => {
         return element - needle;
@@ -189,7 +189,7 @@ export class SearchHit {
     const clipStart = videoFact.timestamps[firstWord];
 
     let lastWord = bs(
-      videoFact.charOffsets, // haystack
+      videoFact.wordChar, // haystack
       firstChar + hitOffsets[1], // needle
       (element: number, needle: number) => {
         return element - needle;

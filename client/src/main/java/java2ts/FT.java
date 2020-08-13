@@ -68,8 +68,8 @@ public interface FT {
 	@jsweet.lang.Interface
 	public class VideoFactContent extends VideoFactMeta {
 		public String plainText;
-		/** Word n starts at charOffsets[n]. */
-		public ArrayLike<Number> charOffsets;
+		/** Word n starts at wordChar[n]. */
+		public ArrayLike<Number> wordChar;
 		/** Word n is spoken at timestamps[n]. */
 		public ArrayLike<Number> timestamps;
 		/**
@@ -78,8 +78,8 @@ public interface FT {
 		 */
 		public ArrayLike<Number> turnSpeaker;
 		/**
-		 * charOffsets[turnWord[0]] = the character offset where the first person starts
-		 * charOffsets[charOffsets[1]] = the character offset where the second person starts
+		 * wordChar[turnWord[0]] = the character offset where the first person starts
+		 * wordChar[wordChar[1]] = the character offset where the second person starts
 		 */
 		public ArrayLike<Number> turnWord;
 	}
@@ -91,7 +91,7 @@ public interface FT {
 		public int totalWords;
 		public int totalTurns;
 		/**
-		 * [charOffsets, timestamps, turnSpeaker, turnWord], little-endian Base64 encoded.
+		 * [wordChar, timestamps, turnSpeaker, turnWord], little-endian Base64 encoded.
 		 */
 		public String data;
 	}

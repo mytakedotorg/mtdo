@@ -19,7 +19,7 @@ public class VideoFactContentJava extends FactContent {
 	public double durationSeconds;
 	public List<Speaker> speakers;
 	public String plainText;
-	public int[] charOffsets;
+	public int[] wordChar;
 	public double[] timestamps;
 	public int[] turnSpeaker;
 	public int[] turnWord;
@@ -32,16 +32,16 @@ public class VideoFactContentJava extends FactContent {
 		encoded.youtubeId = youtubeId;
 		encoded.speakers = speakers;
 		encoded.plainText = plainText;
-		encoded.totalWords = charOffsets.length;
+		encoded.totalWords = wordChar.length;
 		encoded.totalTurns = turnSpeaker.length;
 
-		int totalWords = charOffsets.length;
+		int totalWords = wordChar.length;
 		int totalTurns = turnSpeaker.length;
 
 		int size = 8 * totalWords + 8 * totalTurns;
 		ByteBuffer buffer = ByteBuffer.allocate(size);
 		buffer.order(ENDIAN);
-		buffer.position(buffer.asIntBuffer().put(charOffsets).position() * 4);
+		buffer.position(buffer.asIntBuffer().put(wordChar).position() * 4);
 		buffer.position(buffer.position() + buffer.asFloatBuffer().put(d2f(timestamps)).position() * 4);
 		buffer.position(buffer.position() + buffer.asIntBuffer().put(turnSpeaker).put(turnWord).position() * 4);
 
@@ -78,7 +78,7 @@ public class VideoFactContentJava extends FactContent {
 		java.speakers = encoded.speakers;
 		java.plainText = encoded.plainText;
 		// create the new arrays
-		java.charOffsets = new int[encoded.totalWords];
+		java.wordChar = new int[encoded.totalWords];
 		float[] timestamps = new float[encoded.totalWords];
 		java.turnSpeaker = new int[encoded.totalTurns];
 		java.turnWord = new int[encoded.totalTurns];
@@ -86,7 +86,7 @@ public class VideoFactContentJava extends FactContent {
 		byte[] data = Base64.getDecoder().decode(encoded.data);
 		ByteBuffer buffer = ByteBuffer.wrap(data);
 		buffer.order(ENDIAN);
-		buffer.position(buffer.asIntBuffer().get(java.charOffsets).position() * 4);
+		buffer.position(buffer.asIntBuffer().get(java.wordChar).position() * 4);
 		buffer.position(buffer.position() + buffer.asFloatBuffer().get(timestamps).position() * 4);
 		buffer.asIntBuffer().get(java.turnSpeaker).get(java.turnWord);
 		// float to double

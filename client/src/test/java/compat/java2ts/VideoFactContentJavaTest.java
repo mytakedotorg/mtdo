@@ -22,7 +22,7 @@ public class VideoFactContentJavaTest {
 		java.durationSeconds = 123;
 		java.speakers = Arrays.asList(jack, jill);
 		java.plainText = "Jack said Jill said";
-		java.charOffsets = new int[] {0, 5, 10, 15};
+		java.wordChar = new int[] {0, 5, 10, 15};
 		java.timestamps = new double[] {0, 1, 2, 3};
 		java.turnSpeaker = new int[] {0, 1};
 		java.turnWord = new int[] {0, 2};
@@ -32,7 +32,7 @@ public class VideoFactContentJavaTest {
 		Assertions.assertThat(roundtrip.durationSeconds).isEqualTo(java.durationSeconds);
 		Assertions.assertThat(roundtrip.speakers).isEqualTo(java.speakers);
 		Assertions.assertThat(roundtrip.plainText).isEqualTo(java.plainText);
-		Assertions.assertThat(roundtrip.charOffsets).isEqualTo(java.charOffsets);
+		Assertions.assertThat(roundtrip.wordChar).isEqualTo(java.wordChar);
 		Assertions.assertThat(roundtrip.timestamps).isEqualTo(java.timestamps);
 		Assertions.assertThat(roundtrip.turnSpeaker).isEqualTo(java.turnSpeaker);
 		Assertions.assertThat(roundtrip.turnWord).isEqualTo(java.turnWord);

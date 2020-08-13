@@ -106,7 +106,7 @@ public class Lucene implements AutoCloseable {
 				doc.add(new LongPoint(Lucene.DATE, parseDate(videoFact.fact.primaryDate)));
 
 				// the text that we're indexing (not stored)
-				int start = videoFact.charOffsets[videoFact.turnWord[i]];
+				int start = videoFact.wordChar[videoFact.turnWord[i]];
 				try {
 					String sub = videoFact.plainText.substring(start, end);
 					doc.add(new TextField(Lucene.CONTENT, sub, Store.NO));

@@ -135,16 +135,16 @@ public class TranscriptMatch {
 		java.speakers = meta.speakers;
 		java.plainText = said.turns().stream().map(Turn::said).collect(Collectors.joining(" "));
 		java.timestamps = vttWords.stream().mapToDouble(Word.Vtt::time).toArray();
-		java.charOffsets = new int[java.timestamps.length];
-		java.charOffsets[0] = 0;
+		java.wordChar = new int[java.timestamps.length];
+		java.wordChar[0] = 0;
 		int startOffset = 0;
 		int i = 0;
 		outer: for (Turn turn : said.turns()) {
 			List<Word.Said> words = turn.indexedWords(startOffset);
 			for (Word.Said word : words) {
-				java.charOffsets[i] = word.startIdx();
+				java.wordChar[i] = word.startIdx();
 				++i;
-				if (i == java.charOffsets.length) {
+				if (i == java.wordChar.length) {
 					break outer;
 				}
 			}

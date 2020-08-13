@@ -600,7 +600,7 @@ export function getWordRangeFromCharRange(
     return element - needle;
   };
 
-  let firstWordIdx = bs(videoFact.charOffsets, firstChar, comparator);
+  let firstWordIdx = bs(videoFact.wordChar, firstChar, comparator);
 
   if (firstWordIdx < 0) {
     firstWordIdx = -firstWordIdx - 2;
@@ -610,7 +610,7 @@ export function getWordRangeFromCharRange(
     }
   }
 
-  let lastWordIdx = bs(videoFact.charOffsets, lastChar + 1, comparator);
+  let lastWordIdx = bs(videoFact.wordChar, lastChar + 1, comparator);
 
   if (lastWordIdx < 0) {
     lastWordIdx = -lastWordIdx - 2;

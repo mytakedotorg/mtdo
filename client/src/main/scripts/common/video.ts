@@ -31,7 +31,7 @@ export function decodeVideoFact(
   // with.
 
   var offset = 0;
-  const charOffsets = new Int32Array(data, offset, encoded.totalWords);
+  const wordChar = new Int32Array(data, offset, encoded.totalWords);
   offset += encoded.totalWords * Int32Array.BYTES_PER_ELEMENT;
   const timestamps = new Float32Array(data, offset, encoded.totalWords);
   offset += encoded.totalWords * Float32Array.BYTES_PER_ELEMENT;
@@ -48,7 +48,7 @@ export function decodeVideoFact(
     youtubeId: encoded.youtubeId,
     speakers: encoded.speakers,
     plainText: encoded.plainText,
-    charOffsets: charOffsets,
+    wordChar: wordChar,
     timestamps: timestamps,
     turnSpeaker: turnSpeaker,
     turnWord: turnWord,
@@ -60,12 +60,12 @@ export function getTurnContent(
   videoFact: FT.VideoFactContent
 ): string {
   const firstWord = videoFact.turnWord[turn];
-  const firstChar = videoFact.charOffsets[firstWord];
+  const firstChar = videoFact.wordChar[firstWord];
 
   let fullTurnText;
   if (videoFact.turnWord[turn + 1]) {
     const lastWord = videoFact.turnWord[turn + 1];
-    const lastChar = videoFact.charOffsets[lastWord] - 1;
+    const lastChar = videoFact.wordChar[lastWord] - 1;
     fullTurnText = videoFact.plainText.substring(firstChar, lastChar);
   } else {
     // Result is in last turn
