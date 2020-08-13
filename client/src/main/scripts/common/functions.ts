@@ -24,3 +24,21 @@ export function slugify(text: string): string {
     .replace(/[-]+/g, "-") //replace multiple hyphens with single hyphen
     .replace(/[^\w-]+/g, ""); //remove non-alphanumics and non-hyphens
 }
+
+/**
+ * groups values by any arbitrary key.
+ * can't be replaced by _.groupBy because it is constrained to string keys
+ */
+export function groupBy<K, V>(list: V[], keyGetter: (k: V) => K): Map<K, V[]> {
+  const map = new Map<K, V[]>();
+  list.forEach((item) => {
+    const key = keyGetter(item);
+    const collection = map.get(key);
+    if (!collection) {
+      map.set(key, [item]);
+    } else {
+      collection.push(item);
+    }
+  });
+  return map;
+}

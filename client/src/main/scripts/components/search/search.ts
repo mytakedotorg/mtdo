@@ -18,6 +18,7 @@
  * You can contact us at team@mytake.org
  */
 import { Foundation, FoundationFetcher } from "../../common/foundation";
+import { groupBy } from "../../common/functions";
 import { getTurnContent } from "../../common/video";
 import { FT } from "../../java2ts/FT";
 import { Routes } from "../../java2ts/Routes";
@@ -249,18 +250,4 @@ export class SearchHit {
     }
     return searchHitContents;
   }
-}
-
-function groupBy<K, V>(list: V[], keyGetter: (k: V) => K): Map<K, V[]> {
-  const map = new Map<K, V[]>();
-  list.forEach((item) => {
-    const key = keyGetter(item);
-    const collection = map.get(key);
-    if (!collection) {
-      map.set(key, [item]);
-    } else {
-      collection.push(item);
-    }
-  });
-  return map;
 }
