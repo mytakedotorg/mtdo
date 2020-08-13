@@ -24,7 +24,7 @@ import { DraftRev } from "../java2ts/DraftRev";
 import { PublishResult } from "../java2ts/PublishResult";
 import { Routes } from "../java2ts/Routes";
 import { post } from "../network";
-import { alertErr, getFirstFactBlock, slugify } from "../utils/functions";
+import { slugify } from "../utils/functions";
 import BlockEditor, {
   DocumentBlock,
   ParagraphBlock,
@@ -395,10 +395,7 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
               )}${rangeUrl}.png`;
               this.publishTake(draftPost);
             } else {
-              const msg =
-                "BlockWriter: Expected block to be either a document or a video";
-              alertErr(msg);
-              throw msg;
+              throw "BlockWriter: Expected block to be either a document or a video";
             }
           } else {
             // bodyJson.imageUrl is "" here
@@ -480,9 +477,7 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
     const regex = /^[A-Za-z0-9\-\=\/\+\_]+$/; //URL encoded base 64
 
     if (factHash.length != 44 || !regex.test(factHash)) {
-      const error = "BlockWriter: Invalid fact hash in hash URL";
-      alertErr(error);
-      throw error;
+      throw "BlockWriter: Invalid fact hash in hash URL";
     }
 
     const highlightedRange: [number, number] = [
@@ -530,7 +525,6 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
     if (!publish.conflict) {
       window.location.href = publish.publishedUrl;
     } else {
-      alertErr("BlockWriter: error publishing Take.");
       throw "There was an error publishing your Take.";
     }
   };
@@ -670,6 +664,17 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
       </div>
     );
   }
+}
+
+function getFirstFactBlock(
+  blockList: TakeBlock[]
+): VideoBlock | DocumentBlock | null {
+  for (let block of blockList) {
+    if (block.kind === "document" || block.kind === "video") {
+      return block;
+    }
+  }
+  return null;
 }
 
 export default BlockWriter;

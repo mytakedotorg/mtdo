@@ -31,8 +31,7 @@ import UserNav from "./components/UserNav";
 import VideoResultsLoader from "./components/search/VideoResultsLoader";
 import { TakeDocument } from "./components/BlockEditor";
 import { Card } from "./components/FeedList";
-import { alertErr } from "./utils/functions";
-import { windowUtils } from "./utils/window";
+import { windowUtils } from "./browser";
 
 windowUtils.init();
 
@@ -125,11 +124,9 @@ if (app) {
         Root = <VideoResultsLoader searchQuery={window.mytake.searchTerm} />;
         break;
       default:
-        alertErr("index: unknown argument structure");
         throw "Unknown argument structure";
     }
   } else {
-    alertErr("index: window.mytake is undefined");
     throw "window.mytake is undefined";
   }
   ReactDOM.render(Root, app);
@@ -145,7 +142,6 @@ if (searchBarContainer) {
   }
   ReactDOM.render(<SearchBar searchTerm={searchTerm} />, searchBarContainer);
 } else {
-  alertErr("index: couldn't find div#searchbar");
   throw "Couldn't find div#searchbar";
 }
 
@@ -153,6 +149,5 @@ const userNavContainer: HTMLElement | null = document.getElementById("usernav");
 if (userNavContainer) {
   ReactDOM.render(<UserNav />, userNavContainer);
 } else {
-  alertErr("index: couldn't find div#usernav");
   throw "Couldn't find div#usernav";
 }
