@@ -19,10 +19,10 @@ public class VideoFactContentJava extends FactContent {
 	public double durationSeconds;
 	public List<Speaker> speakers;
 	public String plainText;
-	public int[] charOffsets;
-	public double[] timestamps;
-	public int[] speakerPerson;
-	public int[] speakerWord;
+	public int[] wordChar;
+	public double[] wordTime;
+	public int[] turnSpeaker;
+	public int[] turnWord;
 
 	/** Encode the arrays into a byte array. */
 	public VideoFactContentEncoded toEncoded() {
@@ -32,18 +32,18 @@ public class VideoFactContentJava extends FactContent {
 		encoded.youtubeId = youtubeId;
 		encoded.speakers = speakers;
 		encoded.plainText = plainText;
-		encoded.numWords = charOffsets.length;
-		encoded.numSpeakerSections = speakerPerson.length;
+		encoded.totalWords = wordChar.length;
+		encoded.totalTurns = turnSpeaker.length;
 
-		int numWords = charOffsets.length;
-		int numSpeakerSections = speakerPerson.length;
+		int totalWords = wordChar.length;
+		int totalTurns = turnSpeaker.length;
 
-		int size = 8 * numWords + 8 * numSpeakerSections;
+		int size = 8 * totalWords + 8 * totalTurns;
 		ByteBuffer buffer = ByteBuffer.allocate(size);
 		buffer.order(ENDIAN);
-		buffer.position(buffer.asIntBuffer().put(charOffsets).position() * 4);
-		buffer.position(buffer.position() + buffer.asFloatBuffer().put(d2f(timestamps)).position() * 4);
-		buffer.position(buffer.position() + buffer.asIntBuffer().put(speakerPerson).put(speakerWord).position() * 4);
+		buffer.position(buffer.asIntBuffer().put(wordChar).position() * 4);
+		buffer.position(buffer.position() + buffer.asFloatBuffer().put(d2f(wordTime)).position() * 4);
+		buffer.position(buffer.position() + buffer.asIntBuffer().put(turnSpeaker).put(turnWord).position() * 4);
 
 		byte[] bytes = new byte[buffer.capacity()];
 		buffer.flip();
@@ -78,19 +78,19 @@ public class VideoFactContentJava extends FactContent {
 		java.speakers = encoded.speakers;
 		java.plainText = encoded.plainText;
 		// create the new arrays
-		java.charOffsets = new int[encoded.numWords];
-		float[] timestamps = new float[encoded.numWords];
-		java.speakerPerson = new int[encoded.numSpeakerSections];
-		java.speakerWord = new int[encoded.numSpeakerSections];
+		java.wordChar = new int[encoded.totalWords];
+		float[] wordTime = new float[encoded.totalWords];
+		java.turnSpeaker = new int[encoded.totalTurns];
+		java.turnWord = new int[encoded.totalTurns];
 		// decode into these arrays
 		byte[] data = Base64.getDecoder().decode(encoded.data);
 		ByteBuffer buffer = ByteBuffer.wrap(data);
 		buffer.order(ENDIAN);
-		buffer.position(buffer.asIntBuffer().get(java.charOffsets).position() * 4);
-		buffer.position(buffer.position() + buffer.asFloatBuffer().get(timestamps).position() * 4);
-		buffer.asIntBuffer().get(java.speakerPerson).get(java.speakerWord);
+		buffer.position(buffer.asIntBuffer().get(java.wordChar).position() * 4);
+		buffer.position(buffer.position() + buffer.asFloatBuffer().get(wordTime).position() * 4);
+		buffer.asIntBuffer().get(java.turnSpeaker).get(java.turnWord);
 		// float to double
-		java.timestamps = f2d(timestamps);
+		java.wordTime = f2d(wordTime);
 		return java;
 	}
 

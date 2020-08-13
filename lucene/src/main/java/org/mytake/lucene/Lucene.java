@@ -94,19 +94,19 @@ public class Lucene implements AutoCloseable {
 
 		public void writeVideo(String hash, VideoFactContentJava videoFact) throws IOException {
 			int end = videoFact.plainText.length();
-			for (int i = videoFact.speakerWord.length - 1; i >= 0; --i) {
+			for (int i = videoFact.turnWord.length - 1; i >= 0; --i) {
 				Document doc = new Document();
 				// stored but not indexed
 				doc.add(new StoredField(Lucene.HASH, hash));
 				doc.add(new StoredField(Lucene.TURN, i));
 
 				// indexed but not stored
-				String speaker = videoFact.speakers.get(videoFact.speakerPerson[i]).fullName;
+				String speaker = videoFact.speakers.get(videoFact.turnSpeaker[i]).fullName;
 				doc.add(new StringField(Lucene.SPEAKER, speaker, Store.NO));
 				doc.add(new LongPoint(Lucene.DATE, parseDate(videoFact.fact.primaryDate)));
 
 				// the text that we're indexing (not stored)
-				int start = videoFact.charOffsets[videoFact.speakerWord[i]];
+				int start = videoFact.wordChar[videoFact.turnWord[i]];
 				try {
 					String sub = videoFact.plainText.substring(start, end);
 					doc.add(new TextField(Lucene.CONTENT, sub, Store.NO));

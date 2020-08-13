@@ -72,8 +72,8 @@ export async function drawVideoFact(
   const captionNodes = getCaptionNodeArray(factContent);
 
   const characterRange = getCharRangeFromVideoRange(
-    factContent.charOffsets,
-    factContent.timestamps,
+    factContent.wordChar,
+    factContent.wordTime,
     highlightedRange
   );
 

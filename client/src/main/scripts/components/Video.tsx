@@ -195,8 +195,8 @@ class Video extends React.Component<VideoProps, VideoState> {
   ): [number, number] => {
     if (timeRange && videoFact.plainText.length > 0) {
       const charRange = getCharRangeFromVideoRange(
-        videoFact.charOffsets,
-        videoFact.timestamps,
+        videoFact.wordChar,
+        videoFact.wordTime,
         timeRange
       );
       return charRange;

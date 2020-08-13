@@ -43,7 +43,7 @@ public class SaidCleanup {
 				while (turns.hasNext()) {
 					Turn next = turns.next();
 					if (last.speaker().equals(next.speaker())) {
-						last = Turn.speakerWords(last.speaker(), last.said() + " " + next.said());
+						last = Turn.turnWords(last.speaker(), last.said() + " " + next.said());
 					} else {
 						clean.add(last);
 						last = next;

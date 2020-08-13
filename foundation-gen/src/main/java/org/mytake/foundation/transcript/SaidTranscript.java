@@ -86,7 +86,7 @@ public abstract class SaidTranscript {
 			return saidWords;
 		}
 
-		public static Turn speakerWords(String speaker, String words) {
+		public static Turn turnWords(String speaker, String words) {
 			return new AutoValue_SaidTranscript_Turn(speaker, words);
 		}
 	}
@@ -111,7 +111,7 @@ public abstract class SaidTranscript {
 				String speaker = line.substring(0, firstColon);
 				Preconditions.checkArgument(people.contains(speaker), "No such person %s, available: %s", speaker, people);
 				String words = line.substring(firstColon + 1).trim();
-				turns.add(Turn.speakerWords(speaker, words));
+				turns.add(Turn.turnWords(speaker, words));
 
 				++lineCount;
 				String emptyLine = reader.readLine();

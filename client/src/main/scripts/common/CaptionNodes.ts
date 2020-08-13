@@ -44,9 +44,9 @@ export function getCaptionNodeArray(
   let output: Array<string> = [];
   let prevOffset = 0;
 
-  for (let n = 1; n < videoFact.speakerWord.length; n++) {
-    let wordIdx = videoFact.speakerWord[n];
-    let charOffset = videoFact.charOffsets[wordIdx];
+  for (let n = 1; n < videoFact.turnWord.length; n++) {
+    let wordIdx = videoFact.turnWord[n];
+    let charOffset = videoFact.wordChar[wordIdx];
     let innerHTML = videoFact.plainText.substring(prevOffset, charOffset);
     output.push(innerHTML);
     prevOffset = charOffset;
@@ -56,7 +56,7 @@ export function getCaptionNodeArray(
 }
 
 export function getCharRangeFromVideoRange(
-  charOffsets: ArrayLike<number>,
+  wordChar: ArrayLike<number>,
   timeStamps: ArrayLike<number>,
   timeRange: [number, number]
 ): [number, number] {
@@ -87,8 +87,8 @@ export function getCharRangeFromVideoRange(
     }
   }
 
-  const startCharIndex = charOffsets[firstWordIdx];
-  const endCharIndex = charOffsets[lastWordIdx + 1];
+  const startCharIndex = wordChar[firstWordIdx];
+  const endCharIndex = wordChar[lastWordIdx + 1];
 
   return [startCharIndex, endCharIndex];
 }

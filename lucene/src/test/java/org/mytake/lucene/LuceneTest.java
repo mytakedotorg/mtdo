@@ -57,10 +57,10 @@ public class LuceneTest {
 		fact.durationSeconds = 123;
 		fact.speakers = Arrays.asList(luke, darth);
 		fact.plainText = "Luke common Darth common several, green beans";
-		fact.charOffsets = new int[]{0, 5, 12, 18, 25, 29, 34, 37};
-		fact.timestamps = new double[]{0, 1, 2, 3, 4, 5, 6, 7};
-		fact.speakerPerson = new int[]{0, 1};
-		fact.speakerWord = new int[]{0, 2};
+		fact.wordChar = new int[]{0, 5, 12, 18, 25, 29, 34, 37};
+		fact.wordTime = new double[]{0, 1, 2, 3, 4, 5, 6, 7};
+		fact.turnSpeaker = new int[]{0, 1};
+		fact.turnWord = new int[]{0, 2};
 
 		try (Lucene.Writer writer = new Lucene.Writer(tempFolder.getRoot().toPath())) {
 			writer.writeVideo(HASH, fact);
