@@ -1,5 +1,6 @@
 package org.mytake.gradle.node;
 
+import java.nio.file.Files;
 import java.util.Collections;
 import java.util.Objects;
 
@@ -34,8 +35,8 @@ public class NodePlugin implements Plugin<Project> {
 		public final SetupCleanupNode setup = new SetupCleanupNode();
 
 		public TaskProvider<?> gulp(String name, Action<Task> taskConfig) {
-			return project.getTasks().register("gulp_" + name, GulpTask.class, task -> {
-				task.taskName = name;
+			return project.getTasks().register("gulp_" + name, NpxTask.class, task -> {
+				task.cmd = "gulp " + name;
 				task.getInputs().file("package-lock.json").withPathSensitivity(PathSensitivity.RELATIVE);
 				task.getInputs().file("gulpfile.js").withPathSensitivity(PathSensitivity.RELATIVE);
 				task.getInputs().property("nodeVersion", setup.nodeVersion);
@@ -45,44 +46,33 @@ public class NodePlugin implements Plugin<Project> {
 		}
 
 		public TaskProvider<?> npmRun(String name, Action<Task> taskConfig) {
-			return project.getTasks().register("npm_run_" + name, NpmRunTask.class, task -> {
-				task.taskName = name;
+			return project.getTasks().register("npm_run_" + name, NpmTask.class, task -> {
+				task.cmd = "run " + name;
 				task.getInputs().file("package-lock.json").withPathSensitivity(PathSensitivity.RELATIVE);
 				task.getInputs().property("nodeVersion", setup.nodeVersion);
 				task.getInputs().property("npmVersion", setup.npmVersion);
 				taskConfig.execute(task);
 			});
 		}
-	}
 
-	@CacheableTask
-	public abstract static class GulpTask extends DefaultTask {
-		public String taskName;
-
-		@Input
-		public String getTaskName() {
-			return taskName;
+		public TaskProvider<?> npmArbitraryCmd(String gradleName, String cmd, Action<Task> taskConfig) {
+			return project.getTasks().register(gradleName, NpmTask.class, task -> {
+				task.cmd = cmd;
+				taskConfig.execute(task);
+			});
 		}
 
-		@TaskAction
-		public void npmCiGulpTask() throws Exception {
-			SetupCleanupNode setup = getProject().getPlugins().apply(NodePlugin.class).extension.setup;
-			// install node, npm, and package-lock.json
-			setup.start(getProject());
-			// run the gulp tas
-			ProxyConfig proxyConfig = new ProxyConfig(Collections.emptyList());
-			setup.factory().getNpxRunner(proxyConfig, null)
-			.execute("gulp " + taskName, null);
+		public TaskProvider<?> copyNodeExe() {
+			return project.getTasks().register("copyNodeExe", InstallTask.class);
 		}
 	}
 
-	@CacheableTask
-	public abstract static class NpmRunTask extends DefaultTask {
-		public String taskName;
+	public abstract static class NpxTask extends DefaultTask {
+		public String cmd;
 
 		@Input
-		public String getTaskName() {
-			return taskName;
+		public String getCmd() {
+			return cmd;
 		}
 
 		@TaskAction
@@ -92,8 +82,36 @@ public class NodePlugin implements Plugin<Project> {
 			setup.start(getProject());
 			// run the gulp task
 			ProxyConfig proxyConfig = new ProxyConfig(Collections.emptyList());
-			setup.factory().getNpmRunner(proxyConfig, null)
-			.execute("run " + taskName, null);
+			setup.factory().getNpxRunner(proxyConfig, null).execute(cmd, null);
+		}
+	}
+
+	public abstract static class NpmTask extends DefaultTask {
+		public String cmd;
+
+		@Input
+		public String getCmd() {
+			return cmd;
+		}
+
+		@TaskAction
+		public void npmRunTask() throws Exception {
+			SetupCleanupNode setup = getProject().getPlugins().apply(NodePlugin.class).extension.setup;
+			// install node, npm, and package-lock.json
+			setup.start(getProject());
+			// run the gulp task
+			ProxyConfig proxyConfig = new ProxyConfig(Collections.emptyList());
+			setup.factory().getNpmRunner(proxyConfig, null).execute(cmd, null);
+		}
+	}
+
+	public static class InstallTask extends DefaultTask {
+		@TaskAction
+		public void install() throws Exception {
+			SetupCleanupNode setup = getProject().getPlugins().apply(NodePlugin.class).extension.setup;
+			setup.start(getProject());
+			// copy the node directory to the root path of this project
+			Files.copy(setup.nodePath(), getProject().getProjectDir().toPath().resolve("node"));
 		}
 	}
 

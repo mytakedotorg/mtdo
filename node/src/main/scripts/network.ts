@@ -17,32 +17,17 @@
  *
  * You can contact us at team@mytake.org
  */
-const fetch = require("node-fetch");
-
-export async function post<T, R>(path: string, body: T): Promise<R> {
-  const response = await fetch(
-    new Request(path, {
-      method: "post",
-      credentials: "same-origin",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(body),
-    })
-  );
-  return response.json();
-}
+const fetch = require("make-fetch-happen").defaults({
+  cacheManager: "./build/runtime-cache", // path where cache will be written (and read)
+});
 
 export async function get<T>(
   path: string,
   cache: RequestCache = "default"
 ): Promise<T> {
-  const response = await fetch(
-    new Request(path, {
-      method: "get",
-      cache: cache,
-      credentials: "omit",
-    })
-  );
+  if (path.startsWith("/")) {
+    path = "https://mytake.org" + path;
+  }
+  const response = await fetch(path);
   return response.json();
 }

@@ -31,18 +31,14 @@ export function decodeVideoFact(
   // with.
 
   var offset = 0;
-  const charOffsets = new Int32Array(data, offset, encoded.numWords);
-  offset += encoded.numWords * Int32Array.BYTES_PER_ELEMENT;
-  const timestamps = new Float32Array(data, offset, encoded.numWords);
-  offset += encoded.numWords * Float32Array.BYTES_PER_ELEMENT;
-  const speakerPerson = new Int32Array(
-    data,
-    offset,
-    encoded.numSpeakerSections
-  );
-  offset += encoded.numSpeakerSections * Int32Array.BYTES_PER_ELEMENT;
-  const speakerWord = new Int32Array(data, offset, encoded.numSpeakerSections);
-  offset += encoded.numSpeakerSections * Int32Array.BYTES_PER_ELEMENT;
+  const wordChar = new Int32Array(data, offset, encoded.totalWords);
+  offset += encoded.totalWords * Int32Array.BYTES_PER_ELEMENT;
+  const wordTime = new Float32Array(data, offset, encoded.totalWords);
+  offset += encoded.totalWords * Float32Array.BYTES_PER_ELEMENT;
+  const turnSpeaker = new Int32Array(data, offset, encoded.totalTurns);
+  offset += encoded.totalTurns * Int32Array.BYTES_PER_ELEMENT;
+  const turnWord = new Int32Array(data, offset, encoded.totalTurns);
+  offset += encoded.totalTurns * Int32Array.BYTES_PER_ELEMENT;
   if (offset != data.byteLength) {
     throw Error("Sizes don't match");
   }
@@ -52,9 +48,51 @@ export function decodeVideoFact(
     youtubeId: encoded.youtubeId,
     speakers: encoded.speakers,
     plainText: encoded.plainText,
-    charOffsets: charOffsets,
-    timestamps: timestamps,
-    speakerPerson: speakerPerson,
-    speakerWord: speakerWord,
+    wordChar: wordChar,
+    wordTime: wordTime,
+    turnSpeaker: turnSpeaker,
+    turnWord: turnWord,
   };
+}
+
+export function getTurnContent(
+  turn: number,
+  videoFact: FT.VideoFactContent
+): string {
+  const firstWord = videoFact.turnWord[turn];
+  const firstChar = videoFact.wordChar[firstWord];
+
+  if (videoFact.turnWord[turn + 1]) {
+    const lastWord = videoFact.turnWord[turn + 1];
+    const lastChar = videoFact.wordChar[lastWord] - 1;
+    return videoFact.plainText.substring(firstChar, lastChar);
+  } else {
+    // Result is in last turn
+    return videoFact.plainText.substring(firstChar);
+  }
+}
+
+export function convertSecondsToTimestamp(totalSeconds: number): string {
+  let truncated = Math.round(totalSeconds);
+
+  const hours = Math.floor(truncated / 3600);
+  truncated %= 3600;
+  const minutes = Math.floor(truncated / 60);
+  const SS = zeroPad(truncated % 60);
+
+  if (hours > 0) {
+    return hours.toString() + ":" + zeroPad(minutes) + ":" + SS;
+  } else {
+    return minutes.toString() + ":" + SS;
+  }
+}
+
+function zeroPad(someNumber: number): string {
+  if (someNumber == 0) {
+    return "00";
+  } else {
+    return someNumber < 10
+      ? "0" + someNumber.toString()
+      : someNumber.toString();
+  }
 }

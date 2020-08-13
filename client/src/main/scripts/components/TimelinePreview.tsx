@@ -18,16 +18,17 @@
  * You can contact us at team@mytake.org
  */
 import * as React from "react";
-import { FoundationNode } from "../common/CaptionNodes";
-import { FT } from "../java2ts/FT";
-import { Routes } from "../java2ts/Routes";
 import {
+  FoundationNode,
   getHighlightedNodes,
   getNodesInRange,
   getSimpleRangesFromHTMLRange,
   getStartRangeOffsetTop,
   highlightText,
-} from "../utils/functions";
+} from "../common/CaptionNodes";
+import { FT } from "../java2ts/FT";
+import { Routes } from "../java2ts/Routes";
+import {} from "../common/functions";
 import Document, { DocumentEventHandlers } from "./Document";
 import DocumentTextNodeList from "./DocumentTextNodeList";
 import FactHeader, { StickyFactHeader } from "./FactHeader";

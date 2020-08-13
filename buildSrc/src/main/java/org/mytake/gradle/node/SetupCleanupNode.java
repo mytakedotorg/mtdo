@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Collections;
 
 import org.gradle.api.Project;
@@ -26,13 +27,17 @@ public class SetupCleanupNode implements Serializable {
 
 	public void start(Project project) throws Exception {
 		workingDir = project.getProjectDir();
-		installDir = new File(project.getBuildDir(), "node-install");
+		installDir = new File(project.getRootProject().getBuildDir(), "node-install");
 		packageLockJson = Files.readAllBytes(workingDir.toPath().resolve("package-lock.json"));
 		new Impl().start(keyFile(project), this);
 	}
 
 	FrontendPluginFactory factory() {
 		return new FrontendPluginFactory(workingDir, installDir);
+	}
+
+	public Path nodePath() {
+		return installDir.toPath().resolve("node/node");
 	}
 
 	private static File keyFile(Project project) {

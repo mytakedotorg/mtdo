@@ -22,15 +22,12 @@ import {
   CaptionNodeArr,
   getCaptionNodeArray,
   highlightCaption,
-} from "../common/CaptionNodes";
-import { FT } from "../java2ts/FT";
-import { Routes } from "../java2ts/Routes";
-import {
-  alertErr,
   getSimpleRangesFromHTMLRange,
   getWordRangeFromCharRange,
   SimpleRanges,
-} from "../utils/functions";
+} from "../common/CaptionNodes";
+import { FT } from "../java2ts/FT";
+import { Routes } from "../java2ts/Routes";
 import CaptionTextNodeListContainer, {
   CaptionTextNodeListContainerEventHandlers,
 } from "./CaptionTextNodeListContainer";
@@ -133,9 +130,7 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
         return { ...rangeSlider };
       }
     }
-    const msg = "Video: Can't find range of type " + type;
-    alertErr(msg);
-    throw msg;
+    throw "Video: Can't find range of type " + type;
   };
   handleClearClick = () => {
     const { videoFact } = this.props;
@@ -199,8 +194,8 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
         highlightedNodes: newNodes,
       });
 
-      const startTime = videoFact.timestamps[simpleRanges.wordRange[0]];
-      const endTime = videoFact.timestamps[simpleRanges.wordRange[1]];
+      const startTime = videoFact.wordTime[simpleRanges.wordRange[0]];
+      const endTime = videoFact.wordTime[simpleRanges.wordRange[1]];
 
       this.props.eventHandlers.onHighlight(
         [startTime, endTime],

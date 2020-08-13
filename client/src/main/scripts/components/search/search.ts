@@ -18,6 +18,8 @@
  * You can contact us at team@mytake.org
  */
 import { Foundation, FoundationFetcher } from "../../common/foundation";
+import { groupBy } from "../../common/functions";
+import { getTurnContent } from "../../common/video";
 import { FT } from "../../java2ts/FT";
 import { Routes } from "../../java2ts/Routes";
 import { Search } from "../../java2ts/Search";
@@ -161,7 +163,7 @@ export class SearchHit {
 
   getSpeaker(): string {
     const { turn, videoFact } = this;
-    const fullName = videoFact.speakers[videoFact.speakerPerson[turn]].fullName;
+    const fullName = videoFact.speakers[videoFact.turnSpeaker[turn]].fullName;
     return fullName.substring(fullName.lastIndexOf(" "));
   }
 
@@ -170,10 +172,10 @@ export class SearchHit {
       return this.clipRangeCache;
     }
     const { hitOffsets, turn, videoFact } = this;
-    const veryFirstWord = videoFact.speakerWord[turn];
-    const firstChar = videoFact.charOffsets[veryFirstWord];
+    const veryFirstWord = videoFact.turnWord[turn];
+    const firstChar = videoFact.wordChar[veryFirstWord];
     let firstWord = bs(
-      videoFact.charOffsets, // haystack
+      videoFact.wordChar, // haystack
       firstChar + hitOffsets[0], // needle
       (element: number, needle: number) => {
         return element - needle;
@@ -185,10 +187,10 @@ export class SearchHit {
       firstWord = -firstWord - 2;
     }
 
-    const clipStart = videoFact.timestamps[firstWord];
+    const clipStart = videoFact.wordTime[firstWord];
 
     let lastWord = bs(
-      videoFact.charOffsets, // haystack
+      videoFact.wordChar, // haystack
       firstChar + hitOffsets[1], // needle
       (element: number, needle: number) => {
         return element - needle;
@@ -201,10 +203,10 @@ export class SearchHit {
     }
 
     let clipEnd;
-    if (videoFact.timestamps[lastWord + 1]) {
-      clipEnd = videoFact.timestamps[lastWord + 1];
+    if (videoFact.wordTime[lastWord + 1]) {
+      clipEnd = videoFact.wordTime[lastWord + 1];
     } else {
-      clipEnd = videoFact.timestamps[lastWord] + 2;
+      clipEnd = videoFact.wordTime[lastWord] + 2;
     }
 
     this.clipRangeCache = [clipStart, clipEnd];
@@ -248,34 +250,4 @@ export class SearchHit {
     }
     return searchHitContents;
   }
-}
-
-function getTurnContent(turn: number, videoFact: FT.VideoFactContent): string {
-  let fullTurnText;
-  const firstWord = videoFact.speakerWord[turn];
-  const firstChar = videoFact.charOffsets[firstWord];
-
-  if (videoFact.speakerWord[turn + 1]) {
-    const lastWord = videoFact.speakerWord[turn + 1];
-    const lastChar = videoFact.charOffsets[lastWord] - 1;
-    fullTurnText = videoFact.plainText.substring(firstChar, lastChar);
-  } else {
-    // Result is in last turn
-    fullTurnText = videoFact.plainText.substring(firstChar);
-  }
-  return fullTurnText;
-}
-
-function groupBy<K, V>(list: V[], keyGetter: (k: V) => K): Map<K, V[]> {
-  const map = new Map<K, V[]>();
-  list.forEach((item) => {
-    const key = keyGetter(item);
-    const collection = map.get(key);
-    if (!collection) {
-      map.set(key, [item]);
-    } else {
-      collection.push(item);
-    }
-  });
-  return map;
 }

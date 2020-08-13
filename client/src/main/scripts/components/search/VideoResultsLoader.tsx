@@ -18,7 +18,6 @@
  * You can contact us at team@mytake.org
  */
 import React, { useEffect, useState } from "react";
-import { alertErr } from "../../utils/functions";
 import { search, SearchMode, SearchResult } from "./search";
 import VideoResultsList from "./VideoResultsList";
 
@@ -43,9 +42,7 @@ const VideoResultsLoader: React.FC<VideoResultsLoaderProps> = (props) => {
         setMode(newMode);
       }
     } else {
-      const msg = "VideoResults: Unknown radio button selection";
-      alertErr(msg);
-      throw msg;
+      throw "VideoResults: Unknown radio button selection";
     }
   };
 

@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2017-2019 MyTake.org, Inc.
+ * Copyright (C) 2017-2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -19,7 +19,6 @@
  */
 import * as React from "react";
 import { FoundationNode } from "../common/CaptionNodes";
-import { alertErr } from "../utils/functions";
 
 interface DataAttributes {
   "data-char-offset": number;
@@ -53,7 +52,6 @@ class DocumentTextNode extends React.Component<
       case "p":
         return <p {...attributes}>{documentNode.innerHTML}</p>;
       default:
-        alertErr("DocumentTextNode: Unknown documentNode.component");
         throw "Unknown documentNode.component";
     }
   }

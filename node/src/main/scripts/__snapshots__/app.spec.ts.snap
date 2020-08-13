@@ -1,0 +1,7 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`invalid fact should not hang 1`] = `
+"#####################
+vrhLapmIbWECYassLC2Umf7Z16fusYgWWGhTP7KgIYU=_5839.620-5949.290.png
+FetchError: invalid json response body at https://mytake.org/foundation-data/vrhLapmIbWECYassLC2Umf7Z16fusYgWWGhTP7KgIYU=.json reason: Unexpected token < in JSON at position 0"
+`;

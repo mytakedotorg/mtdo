@@ -36,10 +36,10 @@ public class Videos {
 				empty.speakers = meta.speakers;
 
 				empty.plainText = "";
-				empty.charOffsets = new int[0];
-				empty.timestamps = new double[0];
-				empty.speakerPerson = empty.charOffsets;
-				empty.speakerWord = empty.charOffsets;
+				empty.wordChar = new int[0];
+				empty.wordTime = new double[0];
+				empty.turnSpeaker = empty.wordChar;
+				empty.turnWord = empty.wordChar;
 				factContent = empty;
 			}
 			consumer.accept(factContent);

@@ -45,7 +45,7 @@ const videoFactFast: FT.VideoFactContent = {
   ],
   plainText:
     "Good evening I'm Martha Raddatz from ABC News. And I'm Anderson Cooper from CNN. We want to welcome you to Washington University in St. Louis for the second presidential debate between Hillary Clinton and Donald Trump sponsored by the Commission on Presidential Debates. tonight's debate is a Town Hall format, which gives voters a chance to directly ask the candidates questions. Martha and I will ask follow-up questions but the night really belongs to the people in this room and to people across the country who have submitted questions online.",
-  charOffsets: {
+  wordChar: {
     "0": 0,
     "1": 5,
     "2": 13,
@@ -139,7 +139,7 @@ const videoFactFast: FT.VideoFactContent = {
     "90": 549,
     length: 91,
   },
-  timestamps: {
+  wordTime: {
     "0": 0.75,
     "1": 0.9599999785423279,
     "2": 1.559999942779541,
@@ -233,12 +233,12 @@ const videoFactFast: FT.VideoFactContent = {
     "90": 28.829999923706055,
     length: 91,
   },
-  speakerPerson: {
+  turnSpeaker: {
     "0": 0,
     "1": 1,
     length: 2,
   },
-  speakerWord: {
+  turnWord: {
     "0": 0,
     "1": 8,
     length: 2,
@@ -631,8 +631,8 @@ const kennedyNixon: FT.VideoFactContent = {
   ],
   plainText:
     "Good evening. The television and radio stations of the United States and their affiliated stations are proud to provide facilities for a discussion of issues in the current political campaign by the two major candidates for the presidency. The candidates need no introduction. The Republican candidate, Vice President Richard M. Nixon, and the Democratic candidate, Senator John F. Kennedy. According to rules set by the candidates themselves, each man shall make an opening statement of approximately eight minutes' duration and a closing statement of approximately three minutes' duration. In between the candidates will answer, or comment upon answers to questions put by a panel of correspondents. In this, the first discussion in a series of four - joint appearances, the subject matter has been agreed, will be restricted to internal or domestic American matters. And now for the first opening statement by Senator John F. Kennedy.",
-  speakerPerson: [0],
-  charOffsets: {
+  turnSpeaker: [0],
+  wordChar: {
     "0": 0,
     "1": 5,
     "2": 14,
@@ -786,8 +786,8 @@ const kennedyNixon: FT.VideoFactContent = {
     length: 150,
   },
 
-  speakerWord: [0],
-  timestamps: {
+  turnWord: [0],
+  wordTime: {
     "0": 1.5199999809265137,
     "1": 2.5199999809265137,
     "2": 2.700000047683716,

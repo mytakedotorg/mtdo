@@ -68,30 +68,30 @@ public interface FT {
 	@jsweet.lang.Interface
 	public class VideoFactContent extends VideoFactMeta {
 		public String plainText;
-		/** Word n starts at charOffsets[n]. */
-		public ArrayLike<Number> charOffsets;
-		/** Word n is spoken at timestamps[n]. */
-		public ArrayLike<Number> timestamps;
+		/** Word n starts at wordChar[n]. */
+		public ArrayLike<Number> wordChar;
+		/** Word n is spoken at wordTime[n]. */
+		public ArrayLike<Number> wordTime;
 		/**
-		 * speakers[speakerPerson[0]] = the first person who speaks.
-		 * speakers[speakerPerson[1]] = the second person who speaks.
+		 * speakers[turnSpeaker[0]] = the first person who speaks.
+		 * speakers[turnSpeaker[1]] = the second person who speaks.
 		 */
-		public ArrayLike<Number> speakerPerson;
+		public ArrayLike<Number> turnSpeaker;
 		/**
-		 * charOffsets[speakerWord[0]] = the character offset where the first person starts
-		 * charOffsets[charOffsets[1]] = the character offset where the second person starts
+		 * wordChar[turnWord[0]] = the character offset where the first person starts
+		 * wordChar[wordChar[1]] = the character offset where the second person starts
 		 */
-		public ArrayLike<Number> speakerWord;
+		public ArrayLike<Number> turnWord;
 	}
 
 	@jsweet.lang.Interface
 	public class VideoFactContentEncoded extends VideoFactMeta {
 		public String plainText;
 		/** Count of the words. */
-		public int numWords;
-		public int numSpeakerSections;
+		public int totalWords;
+		public int totalTurns;
 		/**
-		 * [charOffsets, timestamps, speakerPerson, speakerWord], little-endian Base64 encoded.
+		 * [wordChar, wordTime, turnSpeaker, turnWord], little-endian Base64 encoded.
 		 */
 		public String data;
 	}

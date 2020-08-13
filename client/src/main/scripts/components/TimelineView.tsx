@@ -20,7 +20,7 @@
 import * as React from "react";
 import { FT } from "../java2ts/FT";
 import { Routes } from "../java2ts/Routes";
-import { alertErr, slugify } from "../utils/functions";
+import { slugify } from "../common/functions";
 import Timeline, { TimelineItemData } from "./Timeline";
 import { SetFactHandlers } from "./TimelinePreview";
 import TimelinePreviewContainer from "./TimelinePreviewContainer";
@@ -216,15 +216,10 @@ export default class TimelineView extends React.Component<
 
           window.history.pushState(stateObject, "UnusedTitle", newURL);
         } else {
-          const msg =
-            "TimelineView: can't set a range when factLink is null (1)";
-          alertErr(msg);
-          throw msg;
+          throw "TimelineView: can't set a range when factLink is null (1)";
         }
       } else {
-        const msg = "TimelineView: can't set a range when factLink is null (2)";
-        alertErr(msg);
-        throw msg;
+        throw "TimelineView: can't set a range when factLink is null (2)";
       }
     }
   };
@@ -259,15 +254,10 @@ export default class TimelineView extends React.Component<
 
           window.history.pushState(stateObject, "UnusedTitle", newURL);
         } else {
-          const msg =
-            "TimelineView: can't set a range when factLink is null (1)";
-          alertErr(msg);
-          throw msg;
+          throw "TimelineView: can't set a range when factLink is null (1)";
         }
       } else {
-        const msg = "TimelineView: can't clear a range when factLink is null";
-        alertErr(msg);
-        throw msg;
+        throw "TimelineView: can't clear a range when factLink is null";
       }
     }
   };

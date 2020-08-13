@@ -134,28 +134,28 @@ public class TranscriptMatch {
 		java.durationSeconds = meta.durationSeconds.doubleValue();
 		java.speakers = meta.speakers;
 		java.plainText = said.turns().stream().map(Turn::said).collect(Collectors.joining(" "));
-		java.timestamps = vttWords.stream().mapToDouble(Word.Vtt::time).toArray();
-		java.charOffsets = new int[java.timestamps.length];
-		java.charOffsets[0] = 0;
+		java.wordTime = vttWords.stream().mapToDouble(Word.Vtt::time).toArray();
+		java.wordChar = new int[java.wordTime.length];
+		java.wordChar[0] = 0;
 		int startOffset = 0;
 		int i = 0;
 		outer: for (Turn turn : said.turns()) {
 			List<Word.Said> words = turn.indexedWords(startOffset);
 			for (Word.Said word : words) {
-				java.charOffsets[i] = word.startIdx();
+				java.wordChar[i] = word.startIdx();
 				++i;
-				if (i == java.charOffsets.length) {
+				if (i == java.wordChar.length) {
 					break outer;
 				}
 			}
 			startOffset += turn.said().length() + 1;
 		}
 		List<String> speakersByName = meta.speakers.stream().map(speaker -> speaker.fullName).collect(Collectors.toList());
-		java.speakerPerson = said.turns().stream().map(Turn::speaker).mapToInt(speakersByName::indexOf).toArray();
-		java.speakerWord = new int[said.turns().size()];
-		java.speakerWord[0] = 0;
+		java.turnSpeaker = said.turns().stream().map(Turn::speaker).mapToInt(speakersByName::indexOf).toArray();
+		java.turnWord = new int[said.turns().size()];
+		java.turnWord[0] = 0;
 		for (i = 1; i < said.turns().size(); ++i) {
-			java.speakerWord[i] = java.speakerWord[i - 1] + said.turns().get(i - 1).indexedWords(0).size();
+			java.turnWord[i] = java.turnWord[i - 1] + said.turns().get(i - 1).indexedWords(0).size();
 		}
 		return java;
 	}

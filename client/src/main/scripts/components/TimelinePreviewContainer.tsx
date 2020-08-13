@@ -21,7 +21,6 @@ import React, { useEffect, useState } from "react";
 import { FoundationNode } from "../common/CaptionNodes";
 import { FoundationFetcher, isDocument, isVideo } from "../common/foundation";
 import { FT } from "../java2ts/FT";
-import { alertErr } from "../utils/functions";
 import TimelinePreview, { Ranges, SetFactHandlers } from "./TimelinePreview";
 import TimelinePreviewLoadingView from "./TimelinePreviewLoadingView";
 
@@ -71,7 +70,6 @@ const TimelinePreviewContainer: React.FC<TimelinePreviewContainerProps> = (
           videoFact: factContent,
         });
       } else {
-        alertErr("TimelinePreviewContainer: Unknown kind of Fact");
         throw "Unknown kind of Fact";
       }
     };

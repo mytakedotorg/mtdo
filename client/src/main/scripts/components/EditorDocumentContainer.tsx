@@ -19,11 +19,10 @@
  */
 import keycode from "keycode";
 import * as React from "react";
-import { FoundationNode } from "../common/CaptionNodes";
+import { FoundationNode, getHighlightedNodes } from "../common/CaptionNodes";
 import { FoundationFetcher } from "../common/foundation";
 import { DocumentBlock } from "../java2ts/DocumentBlock";
 import { FT } from "../java2ts/FT";
-import { getHighlightedNodes } from "../utils/functions";
 import {
   isWriteOnly,
   ReadingEventHandlers,
