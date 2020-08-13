@@ -35,7 +35,7 @@ exports[`VideoResultsList social security 1`] = `
     <h1
       className="results__heading"
     >
-      144
+      252
        Search Results
     </h1>
     <div>
@@ -1574,7 +1574,7 @@ exports[`VideoResultsList wall, -wall street 1`] = `
     <h1
       className="results__heading"
     >
-      7
+      14
        Search Results
     </h1>
     <div>
