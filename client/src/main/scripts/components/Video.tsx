@@ -22,7 +22,8 @@ import YouTube from "react-youtube";
 import { getCharRangeFromVideoRange } from "../common/CaptionNodes";
 import { FT } from "../java2ts/FT";
 import { Routes } from "../java2ts/Routes";
-import { copyToClipboard, slugify } from "../utils/functions";
+import { slugify } from "../utils/functions";
+import { copyToClipboard } from "../browser";
 import CaptionView, { CaptionViewEventHandlers } from "./CaptionView";
 import isEqual = require("lodash/isEqual");
 

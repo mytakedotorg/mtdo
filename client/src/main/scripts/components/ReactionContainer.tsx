@@ -22,7 +22,7 @@ import { FollowJson } from "../java2ts/FollowJson";
 import { Routes } from "../java2ts/Routes";
 import { TakeReactionJson } from "../java2ts/TakeReactionJson";
 import { post } from "../network";
-import { getUsernameFromURL, isLoggedIn } from "../utils/functions";
+import { getUsernameFromURL, isLoggedIn } from "../browser";
 import { TakeDocument } from "./BlockEditor";
 
 interface ReactionContainerProps {
