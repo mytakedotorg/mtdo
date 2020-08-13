@@ -32,13 +32,13 @@ public class VideoFactContentJava extends FactContent {
 		encoded.youtubeId = youtubeId;
 		encoded.speakers = speakers;
 		encoded.plainText = plainText;
-		encoded.numWords = charOffsets.length;
-		encoded.numSpeakerSections = speakerPerson.length;
+		encoded.totalWords = charOffsets.length;
+		encoded.totalTurns = speakerPerson.length;
 
-		int numWords = charOffsets.length;
-		int numSpeakerSections = speakerPerson.length;
+		int totalWords = charOffsets.length;
+		int totalTurns = speakerPerson.length;
 
-		int size = 8 * numWords + 8 * numSpeakerSections;
+		int size = 8 * totalWords + 8 * totalTurns;
 		ByteBuffer buffer = ByteBuffer.allocate(size);
 		buffer.order(ENDIAN);
 		buffer.position(buffer.asIntBuffer().put(charOffsets).position() * 4);
@@ -78,10 +78,10 @@ public class VideoFactContentJava extends FactContent {
 		java.speakers = encoded.speakers;
 		java.plainText = encoded.plainText;
 		// create the new arrays
-		java.charOffsets = new int[encoded.numWords];
-		float[] timestamps = new float[encoded.numWords];
-		java.speakerPerson = new int[encoded.numSpeakerSections];
-		java.speakerWord = new int[encoded.numSpeakerSections];
+		java.charOffsets = new int[encoded.totalWords];
+		float[] timestamps = new float[encoded.totalWords];
+		java.speakerPerson = new int[encoded.totalTurns];
+		java.speakerWord = new int[encoded.totalTurns];
 		// decode into these arrays
 		byte[] data = Base64.getDecoder().decode(encoded.data);
 		ByteBuffer buffer = ByteBuffer.wrap(data);

@@ -88,8 +88,8 @@ public interface FT {
 	public class VideoFactContentEncoded extends VideoFactMeta {
 		public String plainText;
 		/** Count of the words. */
-		public int numWords;
-		public int numSpeakerSections;
+		public int totalWords;
+		public int totalTurns;
 		/**
 		 * [charOffsets, timestamps, speakerPerson, speakerWord], little-endian Base64 encoded.
 		 */

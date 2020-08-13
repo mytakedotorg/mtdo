@@ -31,18 +31,14 @@ export function decodeVideoFact(
   // with.
 
   var offset = 0;
-  const charOffsets = new Int32Array(data, offset, encoded.numWords);
-  offset += encoded.numWords * Int32Array.BYTES_PER_ELEMENT;
-  const timestamps = new Float32Array(data, offset, encoded.numWords);
-  offset += encoded.numWords * Float32Array.BYTES_PER_ELEMENT;
-  const speakerPerson = new Int32Array(
-    data,
-    offset,
-    encoded.numSpeakerSections
-  );
-  offset += encoded.numSpeakerSections * Int32Array.BYTES_PER_ELEMENT;
-  const speakerWord = new Int32Array(data, offset, encoded.numSpeakerSections);
-  offset += encoded.numSpeakerSections * Int32Array.BYTES_PER_ELEMENT;
+  const charOffsets = new Int32Array(data, offset, encoded.totalWords);
+  offset += encoded.totalWords * Int32Array.BYTES_PER_ELEMENT;
+  const timestamps = new Float32Array(data, offset, encoded.totalWords);
+  offset += encoded.totalWords * Float32Array.BYTES_PER_ELEMENT;
+  const speakerPerson = new Int32Array(data, offset, encoded.totalTurns);
+  offset += encoded.totalTurns * Int32Array.BYTES_PER_ELEMENT;
+  const speakerWord = new Int32Array(data, offset, encoded.totalTurns);
+  offset += encoded.totalTurns * Int32Array.BYTES_PER_ELEMENT;
   if (offset != data.byteLength) {
     throw Error("Sizes don't match");
   }
