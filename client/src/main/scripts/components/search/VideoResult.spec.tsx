@@ -23,6 +23,11 @@ import { kennedyNixon } from "../../utils/testUtils";
 import { SearchHit } from "./search";
 import VideoResult from "./VideoResult";
 
+jest.mock("./SharePreview", () => ({
+  __esModule: true,
+  default: "SharePreview",
+}));
+
 test("VideoResultPreview containing", () => {
   const searchHit = new SearchHit(
     [[18, 28, "television"]],
