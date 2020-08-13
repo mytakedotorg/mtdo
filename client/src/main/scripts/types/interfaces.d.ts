@@ -17,6 +17,5 @@
  *
  * You can contact us at team@mytake.org
  */
-declare module "canvas";
 declare module "react-youtube";
 declare module "rc-slider";
