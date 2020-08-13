@@ -101,7 +101,7 @@ function drawChart(
     .domain([0, hitMax + Math.round(hitMax * 0.1)])
     .range([SVG_HEIGHT - SVG_PADDING_TOP, 0]);
   // draw y-axis
-  svg.append("g").call(d3.axisLeft(yScale));
+  svg.append("g").call(d3.axisLeft(yScale).ticks(hitMax, "d"));
 
   allSearchTerms.forEach((term, idx) => {
     const hitsPerYearForTerm = hitsPerYear.filter(
