@@ -42,6 +42,20 @@ export function convertSecondsToTimestamp(totalSeconds: number): string {
   }
 }
 
+function zeroPad(someNumber: number): string {
+  if (someNumber == 0) {
+    return "00";
+  }
+
+  let twoDigitStr: string;
+  if (someNumber < 10) {
+    twoDigitStr = "0" + someNumber.toString();
+  } else {
+    twoDigitStr = someNumber.toString();
+  }
+  return twoDigitStr;
+}
+
 export function slugify(text: string): string {
   return text
     .toLowerCase()
