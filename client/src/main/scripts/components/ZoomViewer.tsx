@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2018 MyTake.org, Inc.
+ * Copyright (C) 2018-2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -19,7 +19,6 @@
  */
 import * as React from "react";
 import { TimeRange } from "./Video";
-import { alertErr } from "../utils/functions";
 import NumberLineTransform from "../utils/numberLineTransform";
 
 interface ZoomViewerProps {
@@ -76,14 +75,10 @@ class ZoomViewer extends React.Component<ZoomViewerProps, ZoomViewerState> {
         ctx.lineTo(nlt.toAfter(zoomRange.end), 0);
         ctx.stroke();
       } else {
-        const msg = "ZoomViewer: Error getting canvas context";
-        alertErr(msg);
-        throw msg;
+        throw "ZoomViewer: Error getting canvas context";
       }
     } else {
-      const msg = "ZoomViewer: Expect zoom range to have an end";
-      alertErr(msg);
-      throw msg;
+      throw "ZoomViewer: Expect zoom range to have an end";
     }
   };
   componentDidMount() {

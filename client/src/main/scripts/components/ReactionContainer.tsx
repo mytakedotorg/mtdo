@@ -22,7 +22,7 @@ import { FollowJson } from "../java2ts/FollowJson";
 import { Routes } from "../java2ts/Routes";
 import { TakeReactionJson } from "../java2ts/TakeReactionJson";
 import { post } from "../network";
-import { alertErr, getUsernameFromURL, isLoggedIn } from "../utils/functions";
+import { getUsernameFromURL, isLoggedIn } from "../utils/functions";
 import { TakeDocument } from "./BlockEditor";
 
 interface ReactionContainerProps {
@@ -131,7 +131,6 @@ class ReactionContainer extends React.Component<
           };
           break;
         default:
-          alertErr("ReactionContainer: Unknown report button type");
           throw "Unknown report button type";
       }
 

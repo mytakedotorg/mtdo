@@ -18,7 +18,6 @@
  * You can contact us at team@mytake.org
  */
 import * as React from "react";
-import { alertErr } from "../utils/functions";
 
 interface DropDownProps {
   children?: React.ReactNode;
@@ -121,9 +120,7 @@ class DropDown extends React.Component<DropDownProps, DropDownState> {
           dropDownClassModifier = this.props.classModifier;
           break;
         default:
-          const msg = "DropDown: Unknown position.";
-          alertErr(msg);
-          throw msg;
+          throw "DropDown: Unknown position.";
       }
     }
 

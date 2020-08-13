@@ -28,7 +28,6 @@ import {
 } from "../common/CaptionNodes";
 import { FT } from "../java2ts/FT";
 import { Routes } from "../java2ts/Routes";
-import { alertErr } from "../utils/functions";
 import CaptionTextNodeListContainer, {
   CaptionTextNodeListContainerEventHandlers,
 } from "./CaptionTextNodeListContainer";
@@ -131,9 +130,7 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
         return { ...rangeSlider };
       }
     }
-    const msg = "Video: Can't find range of type " + type;
-    alertErr(msg);
-    throw msg;
+    throw "Video: Can't find range of type " + type;
   };
   handleClearClick = () => {
     const { videoFact } = this.props;

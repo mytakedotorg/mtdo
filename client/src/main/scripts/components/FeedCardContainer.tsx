@@ -21,7 +21,6 @@ import React, { useEffect, useState } from "react";
 import { FoundationNode, getHighlightedNodes } from "../common/CaptionNodes";
 import { FoundationFetcher } from "../common/foundation";
 import { FT } from "../java2ts/FT";
-import { alertErr } from "../utils/functions";
 import { TakeBlock } from "./BlockEditor";
 import DocumentTextNodeList from "./DocumentTextNodeList";
 
@@ -158,9 +157,6 @@ class FeedCard extends React.Component<FeedCardProps, {}> {
                 </div>
               );
             } else {
-              alertErr(
-                "FeedCardContainer: documentNodes missing in DocumentBlock"
-              );
               throw "FeedCardContainer: documentNodes missing in DocumentBlock";
             }
           } else if (block.kind === "video") {
@@ -178,7 +174,6 @@ class FeedCard extends React.Component<FeedCardProps, {}> {
                 </div>
               );
             } else {
-              alertErr("FeedCardContainer: videoFact missing in VideoBlock");
               throw "FeedCardContainer: videoFact missing in VideoBlock";
             }
           }

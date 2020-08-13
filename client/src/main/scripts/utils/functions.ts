@@ -64,17 +64,6 @@ export function slugify(text: string): string {
     .replace(/[^\w-]+/g, ""); //remove non-alphanumics and non-hyphens
 }
 
-export function alertErr(errMsg: string) {
-  const msg =
-    "Something went wrong. To help us figure it out, please copy and paste the information from below into an email to team@mytake.org. Thank you." +
-    "\n\n" +
-    "Error message: " +
-    errMsg +
-    "\nURL: " +
-    window.location.href;
-  alert(msg);
-}
-
 function getCookieValue(a: string): string {
   // https://stackoverflow.com/questions/5639346/what-is-the-shortest-function-for-reading-a-cookie-by-name-in-javascript?noredirect=1&lq=1
   const b = document.cookie.match("(^|;)\\s*" + a + "\\s*=\\s*([^;]+)");
@@ -105,9 +94,7 @@ export function copyToClipboard(text: string): boolean {
   try {
     const success = document.execCommand("copy");
   } catch (err) {
-    const msg = "Video: Unable to copy text";
-    alertErr(msg);
-    throw msg;
+    throw "Unable to copy text";
   }
   document.body.removeChild(textArea);
   return true;

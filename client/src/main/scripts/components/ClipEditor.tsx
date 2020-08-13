@@ -27,7 +27,6 @@ import {
 } from "./Video";
 import ZoomViewer from "./ZoomViewer";
 import TrackSlider, { TrackSliderEventHandlers } from "./TrackSlider";
-import { alertErr } from "../utils/functions";
 
 export interface ClipEditorEventHandlers {
   onAfterRangeChange: (
@@ -140,9 +139,7 @@ class ClipEditor extends React.Component<ClipEditorProps, ClipEditorState> {
     }
 
     if (!viewRange || !selectionRange) {
-      const msg = "ClipEditor: view and selection ranges are required";
-      alertErr(msg);
-      throw msg;
+      throw "ClipEditor: view and selection ranges are required";
     }
 
     const eventHandlers: TrackSliderEventHandlers = {

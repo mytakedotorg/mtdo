@@ -22,7 +22,7 @@ import YouTube from "react-youtube";
 import { getCharRangeFromVideoRange } from "../common/CaptionNodes";
 import { FT } from "../java2ts/FT";
 import { Routes } from "../java2ts/Routes";
-import { alertErr, copyToClipboard, slugify } from "../utils/functions";
+import { copyToClipboard, slugify } from "../utils/functions";
 import CaptionView, { CaptionViewEventHandlers } from "./CaptionView";
 import isEqual = require("lodash/isEqual");
 
@@ -160,9 +160,7 @@ class Video extends React.Component<VideoProps, VideoState> {
         text +=
           "/" + selection.start.toFixed(3) + "-" + selection.end.toFixed(3);
       } else {
-        const msg = "Video: Expect selection to exist.";
-        alertErr(msg);
-        throw msg;
+        throw "Video: Expect selection to exist.";
       }
     }
 
@@ -183,9 +181,7 @@ class Video extends React.Component<VideoProps, VideoState> {
         this.playerVars.start = selectionRange.start;
         this.playerVars.end = selectionRange.end;
       } else {
-        const msg = "Video: Can't find selection range. (1)";
-        alertErr(msg);
-        throw msg;
+        throw "Video: Can't find selection range. (1)";
       }
     }
   };
@@ -361,14 +357,10 @@ class Video extends React.Component<VideoProps, VideoState> {
               typeof selectionRange.end !== "number" ||
               typeof value !== "object"
             ) {
-              const msg = "Video.tsx. Expect SELECTION range to have an end";
-              alertErr(msg);
-              throw msg;
+              throw "Video.tsx. Expect SELECTION range to have an end";
             }
             if (typeof zoomedRange.end !== "number") {
-              const msg = "Video.tsx. Expect ZOOM range to have an end";
-              alertErr(msg);
-              throw msg;
+              throw "Video.tsx. Expect ZOOM range to have an end";
             }
             // Determine which handle is being changed
             let nextSelectionStart;
@@ -404,10 +396,7 @@ class Video extends React.Component<VideoProps, VideoState> {
                 nextSelectionStart = selectionRange.start;
                 nextSelectionEnd = Math.min(value[1], zoomedRange.end - 0.1);
               } else {
-                const msg =
-                  "Video: Can't determine which selection handle is changing.";
-                alertErr(msg);
-                throw msg;
+                throw "Video: Can't determine which selection handle is changing.";
               }
             }
             const nextSelection: TimeRange = {
@@ -435,9 +424,7 @@ class Video extends React.Component<VideoProps, VideoState> {
               rangeSliders: this.updateRangeSlider(nextSelection),
             });
           } else {
-            const msg = "Video: Can't find selection or zoom range.";
-            alertErr(msg);
-            throw msg;
+            throw "Video: Can't find selection or zoom range.";
           }
           break;
         case "VIEW":
@@ -450,9 +437,7 @@ class Video extends React.Component<VideoProps, VideoState> {
               typeof transcriptViewRange.end !== "number" ||
               typeof value !== "object"
             ) {
-              const msg = "Video.tsx. Expect VIEW range to have an end";
-              alertErr(msg);
-              throw msg;
+              throw "Video.tsx. Expect VIEW range to have an end";
             }
             if (value[0] !== transcriptViewRange.start) {
               if (zoomedRange) {
@@ -487,10 +472,7 @@ class Video extends React.Component<VideoProps, VideoState> {
                 nextViewEnd = value[1];
               }
             } else {
-              const msg =
-                "Video: Can't determine which view handle is changing.";
-              alertErr(msg);
-              throw msg;
+              throw "Video: Can't determine which view handle is changing.";
             }
             const nextView: TimeRange = {
               start: nextViewStart,
@@ -504,16 +486,12 @@ class Video extends React.Component<VideoProps, VideoState> {
               rangeSliders: this.updateRangeSlider(nextView),
             });
           } else {
-            const msg = "Video: Can't find view range.";
-            alertErr(msg);
-            throw msg;
+            throw "Video: Can't find view range.";
           }
           break;
         case "ZOOM":
           if (typeof value !== "object") {
-            const msg = "Video.tsx. Expect ZOOM range to be an array";
-            alertErr(msg);
-            throw msg;
+            throw "Video.tsx. Expect ZOOM range to be an array";
           }
           const nextZoom: TimeRange = {
             start: value[0],
@@ -536,9 +514,7 @@ class Video extends React.Component<VideoProps, VideoState> {
           break;
         case "CURRENT_TIME":
           if (typeof value !== "number") {
-            const msg = "Video.tsx. Expect CURRENT_TIME value to be a number";
-            alertErr(msg);
-            throw msg;
+            throw "Video.tsx. Expect CURRENT_TIME value to be a number";
           }
           if (
             zoomedRange &&
@@ -571,9 +547,7 @@ class Video extends React.Component<VideoProps, VideoState> {
           }
           break;
         default:
-          const msg = "Video: Unknown range type.";
-          alertErr(msg);
-          throw msg;
+          throw "Video: Unknown range type.";
       }
     }
     // // Clear the selection
@@ -603,9 +577,7 @@ class Video extends React.Component<VideoProps, VideoState> {
           console.warn("Player not ready");
         }
       } else {
-        const msg = "Video: Can't find selection range. (2)";
-        alertErr(msg);
-        throw msg;
+        throw "Video: Can't find selection range. (2)";
       }
     } else {
       this.setState({
@@ -651,9 +623,7 @@ class Video extends React.Component<VideoProps, VideoState> {
         this.props.onSetClick([clipStart, clipEnd]);
       }
     } else {
-      const msg = "Video: Can't find selection range. (3)";
-      alertErr(msg);
-      throw msg;
+      throw "Video: Can't find selection range. (3)";
     }
   };
   handleSkipBackPress = (seconds: number) => {
@@ -685,14 +655,10 @@ class Video extends React.Component<VideoProps, VideoState> {
         }
         this.buttonTimer = window.setTimeout(this.handleAfterButtonPress, 200);
       } else {
-        const msg = "Video: Error getting clip. Cannot zoom to clip.";
-        alertErr(msg);
-        throw msg;
+        throw "Video: Error getting clip. Cannot zoom to clip.";
       }
     } else {
-      const msg = "Video: Clip not set. Cannot zoom to clip.";
-      alertErr(msg);
-      throw msg;
+      throw "Video: Clip not set. Cannot zoom to clip.";
     }
   };
   handleAfterButtonPress = () => {

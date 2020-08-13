@@ -20,7 +20,6 @@
 import * as React from "react";
 import { CaptionNodeArr } from "../common/CaptionNodes";
 import { FT } from "../java2ts/FT";
-import { alertErr } from "../utils/functions";
 import NumberLineTransform from "../utils/numberLineTransform";
 import CaptionTextNodeList, {
   CaptionTextNodeListEventHandlers,
@@ -128,10 +127,7 @@ class CaptionTextNodeListContainer extends React.Component<
     if (captionTextContainer && captionTextContainer.children[0]) {
       paragraphElement = captionTextContainer.children[0];
     } else {
-      const msg =
-        "CaptionTextNodeList: Couldn't find paragraph inside caption node";
-      alertErr(msg);
-      throw msg;
+      throw "CaptionTextNodeList: Couldn't find paragraph inside caption node";
     }
 
     return paragraphElement;
@@ -292,9 +288,7 @@ class CaptionTextNodeListContainer extends React.Component<
         }
 
         if (typeof indexOfLastWord === "undefined") {
-          const msg = "CaptionTextNodeList: Couldn't find index of last word";
-          alertErr(msg);
-          throw msg;
+          throw "CaptionTextNodeList: Couldn't find index of last word";
         }
 
         const timeOfFirstWord = this.props.videoFact.wordTime[indexOfFirstWord];
@@ -309,9 +303,7 @@ class CaptionTextNodeListContainer extends React.Component<
           });
           this.props.eventHandlers.onScroll([timeOfFirstWord, timeOfLastWord]);
         } else {
-          const msg = "CaptionTextNodeList: Couldn't find words in view range";
-          alertErr(msg);
-          throw msg;
+          throw "CaptionTextNodeList: Couldn't find words in view range";
         }
       }
     }
@@ -395,11 +387,10 @@ class CaptionTextNodeListContainer extends React.Component<
         if (captionTextContainer && captionTextContainer.children[1]) {
           hiddenTextElement = captionTextContainer.children[1];
         } else {
-          const msg =
+          throw (
             "CaptionTextNodeList: Couldn't find caption node at index " +
-            speakerIdx;
-          alertErr(msg);
-          throw msg;
+            speakerIdx
+          );
         }
 
         let height = 0;
@@ -440,10 +431,7 @@ class CaptionTextNodeListContainer extends React.Component<
           // Set the parent container's scrollTop value to the offsetTop
           captionNodeContainer.scrollTop = childTop;
         } else {
-          const msg =
-            "CaptionTextNodeList: Couldn't find end of word range for last speaker.";
-          alertErr(msg);
-          throw msg;
+          throw "CaptionTextNodeList: Couldn't find end of word range for last speaker.";
         }
       }
     }
