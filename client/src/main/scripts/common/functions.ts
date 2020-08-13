@@ -45,16 +45,7 @@ export function groupBy<K, V>(list: V[], keyGetter: (k: V) => K): Map<K, V[]> {
   return map;
 }
 
-/**
- * Performs a binary search where not-exactly-found elements are rounded to the early side.
- */
-export function bsRoundEarly(
-  sorted: ArrayLike<number>,
-  needle: number
-): number {
-  let idx = binarySearch(sorted, needle, (element: number, target: number) => {
-    return element - target;
-  });
+function bsRoundEarlyHelper(idx: number): number {
   if (idx == -1) {
     // the element would be inserted before the first element
     return 0;
@@ -66,4 +57,36 @@ export function bsRoundEarly(
     // we got very lucky, and found the exact right spot
     return idx;
   }
+}
+
+/**
+ * Performs a binary search where not-exactly-found elements are rounded to the early side.
+ * Can't be replaced by _.sortedIndex() because we want to round to early side
+ */
+export function bsRoundEarly(
+  sorted: ArrayLike<number>,
+  needle: number
+): number {
+  return bsRoundEarlyHelper(
+    binarySearch(sorted, needle, (element: number, target: number) => {
+      return element - target;
+    })
+  );
+}
+
+/**
+ * Performs a binary search where not-exactly-found elements are rounded to the early side.
+ * Can't be replaced by _.sortedIndex() because we want to round to early side.
+ * Can't be replaced by _.sortedIndexBy() because we only want to map the haystack, not the needle
+ */
+export function bsRoundEarlyMapped<T>(
+  sorted: ArrayLike<T>,
+  needle: number,
+  mapper: (arg0: T) => number
+): number {
+  return bsRoundEarlyHelper(
+    binarySearch(sorted, needle, (element: T, target: number) => {
+      return mapper(element) - target;
+    })
+  );
 }

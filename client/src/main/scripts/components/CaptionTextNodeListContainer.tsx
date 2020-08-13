@@ -19,14 +19,13 @@
  */
 import * as React from "react";
 import { CaptionNodeArr } from "../common/CaptionNodes";
-import { bsRoundEarly } from "../common/functions";
+import { bsRoundEarly, bsRoundEarlyMapped } from "../common/functions";
 import { FT } from "../java2ts/FT";
 import NumberLineTransform from "../utils/numberLineTransform";
 import CaptionTextNodeList, {
   CaptionTextNodeListEventHandlers,
 } from "./CaptionTextNodeList";
 import { StateAuthority, TimeRange } from "./Video";
-var bs = require("binary-search");
 
 export interface CaptionTextNodeListContainerEventHandlers {
   onMouseUp: () => any;
@@ -84,21 +83,11 @@ class CaptionTextNodeListContainer extends React.Component<
             currentSpeaker: "-",
           });
         } else {
-          let speakerIdx = bs(
+          const speakerIdx = bsRoundEarlyMapped(
             captionNodeContainer.children,
             parentTop,
-            (child: HTMLDivElement, parentTop: number) => {
-              return child.offsetTop - parentTop;
-            }
+            (child) => (child as HTMLDivElement).offsetTop
           );
-
-          if (speakerIdx < 0) {
-            speakerIdx = -speakerIdx - 2;
-            if (speakerIdx < 0) {
-              // If still negative, it means we're at the first node
-              speakerIdx = 0;
-            }
-          }
 
           if (!this.preventScroll) {
             // is this.preventScroll = true, then we already have the view range
