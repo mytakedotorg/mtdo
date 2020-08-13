@@ -124,19 +124,7 @@ export function getUsernameFromURL(): string {
 export function isLoggedIn(): boolean {
   return getUserCookieString() ? true : false;
 }
-export function ancestorHasClass(
-  element: HTMLElement | null,
-  classname: string
-): boolean {
-  if (element) {
-    if (element.classList.contains(classname)) {
-      return true;
-    }
-    return ancestorHasClass(element.parentElement, classname);
-  } else {
-    return false;
-  }
-}
+
 export function getFirstFactBlock(
   blockList: TakeBlock[]
 ): VideoBlock | DocumentBlock | null {

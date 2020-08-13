@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2018 MyTake.org, Inc.
+ * Copyright (C) 2018-2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -18,7 +18,7 @@
  * You can contact us at team@mytake.org
  */
 import * as React from "react";
-import { alertErr, ancestorHasClass } from "../utils/functions";
+import { alertErr } from "../utils/functions";
 
 interface DropDownProps {
   children?: React.ReactNode;
@@ -149,6 +149,20 @@ class DropDown extends React.Component<DropDownProps, DropDownState> {
         </div>
       </div>
     );
+  }
+}
+
+function ancestorHasClass(
+  element: HTMLElement | null,
+  classname: string
+): boolean {
+  if (element) {
+    if (element.classList.contains(classname)) {
+      return true;
+    }
+    return ancestorHasClass(element.parentElement, classname);
+  } else {
+    return false;
   }
 }
 
