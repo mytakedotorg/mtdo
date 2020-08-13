@@ -153,9 +153,9 @@ if (userNavContainer) {
 }
 
 function isHomePage(page?: MyTakePage): page is HomeArgs {
-  return (page as HomeArgs).type === "home";
+  return (page as HomeArgs)?.type === "home";
 }
 
 function isSearchPage(page?: MyTakePage): page is SearchArgs {
-  return (page as SearchArgs).type === "search";
+  return (page as SearchArgs)?.type === "search";
 }
