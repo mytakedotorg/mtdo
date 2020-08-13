@@ -24,7 +24,7 @@ import { DraftRev } from "../java2ts/DraftRev";
 import { PublishResult } from "../java2ts/PublishResult";
 import { Routes } from "../java2ts/Routes";
 import { post } from "../network";
-import { alertErr, getFirstFactBlock, slugify } from "../utils/functions";
+import { alertErr, slugify } from "../utils/functions";
 import BlockEditor, {
   DocumentBlock,
   ParagraphBlock,
@@ -670,6 +670,17 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
       </div>
     );
   }
+}
+
+function getFirstFactBlock(
+  blockList: TakeBlock[]
+): VideoBlock | DocumentBlock | null {
+  for (let block of blockList) {
+    if (block.kind === "document" || block.kind === "video") {
+      return block;
+    }
+  }
+  return null;
 }
 
 export default BlockWriter;

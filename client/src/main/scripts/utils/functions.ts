@@ -17,26 +17,6 @@
  *
  * You can contact us at team@mytake.org
  */
-import {
-  DocumentBlock,
-  TakeBlock,
-  VideoBlock,
-} from "../components/BlockEditor";
-
-function zeroPad(someNumber: number): string {
-  if (someNumber == 0) {
-    return "00";
-  }
-
-  let twoDigitStr: string;
-  if (someNumber < 10) {
-    twoDigitStr = "0" + someNumber.toString();
-  } else {
-    twoDigitStr = someNumber.toString();
-  }
-  return twoDigitStr;
-}
-
 export function convertSecondsToTimestamp(totalSeconds: number): string {
   let truncated = totalSeconds | 0;
 
@@ -123,15 +103,4 @@ export function getUsernameFromURL(): string {
 }
 export function isLoggedIn(): boolean {
   return getUserCookieString() ? true : false;
-}
-
-export function getFirstFactBlock(
-  blockList: TakeBlock[]
-): VideoBlock | DocumentBlock | null {
-  for (let block of blockList) {
-    if (block.kind === "document" || block.kind === "video") {
-      return block;
-    }
-  }
-  return null;
 }
