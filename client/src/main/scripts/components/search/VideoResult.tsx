@@ -18,10 +18,11 @@
  * You can contact us at team@mytake.org
  */
 import * as React from "react";
-import { FT } from "../../java2ts/FT";
-import { Routes } from "../../java2ts/Routes";
+import { Bookmark, Play, Share } from "react-feather";
 import { slugify } from "../../common/functions";
 import { convertSecondsToTimestamp } from "../../common/video";
+import { FT } from "../../java2ts/FT";
+import { Routes } from "../../java2ts/Routes";
 import { SearchHit } from "./search";
 
 export type PlayEvent = (
@@ -30,12 +31,13 @@ export type PlayEvent = (
 ) => any;
 
 export interface VideoResultProps {
+  isBookmarked?: boolean;
   searchHit: SearchHit;
   onPlayClick: PlayEvent;
 }
 
 const VideoResult: React.FC<VideoResultProps> = (props) => {
-  const { onPlayClick, searchHit } = props;
+  const { isBookmarked, onPlayClick, searchHit } = props;
   const { videoFact } = searchHit;
   const clipRange = searchHit.getClipRange();
 
@@ -43,7 +45,11 @@ const VideoResult: React.FC<VideoResultProps> = (props) => {
     onPlayClick(videoFact, clipRange);
   };
 
-  const handleOpenClick = () => {
+  const handleShareClick = () => {
+    console.log("todo");
+  };
+
+  const open = () => {
     window.location.href =
       Routes.FOUNDATION_V1 +
       "/" +
@@ -54,27 +60,42 @@ const VideoResult: React.FC<VideoResultProps> = (props) => {
       clipRange[1].toFixed(3);
   };
 
+  const handleBookmarkClick = () => {
+    console.log("TODO");
+  };
+
+  let bookmarkClass = "turn__button turn__button--bookmark";
+  if (isBookmarked) {
+    bookmarkClass += " turn__button--bookmark-solid";
+  }
   return (
     <div className="turn">
       <div className="turn__info">
-        <h3 className="turn__speaker">{searchHit.getSpeaker()}</h3>
-        <p className="turn__time">
-          {convertSecondsToTimestamp(clipRange[0]) +
-            " - " +
-            convertSecondsToTimestamp(clipRange[1])}
-        </p>
-        <div className="turn__actions">
+        <div className="turn__info-row">
+          <h3 className="turn__speaker">{searchHit.getSpeaker()}</h3>
+          <button className={bookmarkClass} onClick={handleBookmarkClick}>
+            <Bookmark />
+          </button>
+        </div>
+        <div className="turn__info-row">
+          <span className="turn__time">
+            {convertSecondsToTimestamp(clipRange[0]) +
+              " - " +
+              convertSecondsToTimestamp(clipRange[1])}
+          </span>
+        </div>
+        <div className="turn__info-row">
           <button
             className="turn__button turn__button--play"
             onClick={handlePlayClick}
           >
-            Play
+            <Play size={20} />
           </button>
           <button
-            className="turn__button turn__button--open"
-            onClick={handleOpenClick}
+            className="turn__button turn__button--share"
+            onClick={handleShareClick}
           >
-            Context
+            <Share />
           </button>
         </div>
       </div>

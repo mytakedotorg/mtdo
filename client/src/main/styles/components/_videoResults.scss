@@ -74,11 +74,9 @@
   @include turnBackground();
   position: relative;
   padding-bottom: $content-margin;
-  @media #{$mq-medium} {
-    display: flex;
-    justify-content: space-around;
-    align-items: flex-start;
-  }
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-start;
   &:before {
     content: "";
     @include turnBackground();
@@ -93,58 +91,61 @@
   }
 }
 .turn__info {
-  width: 100%;
-  // background-color: grey;
-  @media #{$mq-medium} {
-    width: 150px;
-  }
+  width: 125px;
+}
+.turn__info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-right: 16px;
+  height: 34px;
 }
 .turn__speaker {
   @include typography($sans, 400, 20px, 1.7em);
-  display: inline;
-  margin-right: $page-margin-mobile;
-  @media #{$mq-medium} {
-    margin: 0;
-    margin-top: -7px;
-    display: block;
-  }
+  margin: 0;
 }
 .turn__time {
   @include typography($sans, 400, 16px, 1.7em);
-  display: inline;
-  margin-right: $page-margin-mobile;
-  @media #{$mq-medium} {
-    display: block;
-    margin-bottom: 0;
-    margin-top: -3px;
-  }
-}
-.turn__actions {
-  display: inline;
-  @media #{$mq-medium} {
-    display: block;
-  }
 }
 .turn__button {
-  margin-top: -3px;
+  display: flex;
+  align-items: center;
 }
 .turn__button--play {
-  @include body("sans");
-  @include button--blue;
-  line-height: 21px;
+  border: 2px solid palette(button, color--borderless);
+  color: palette(button, color--borderless);
   padding-top: 0;
   padding-bottom: 0;
   border-radius: 5px;
+  justify-content: center;
+  width: 60px;
   cursor: pointer;
-  margin-right: $page-margin-mobile;
-  @media #{$mq-medium} {
-    margin-right: $content-margin;
+  &:hover {
+    color: palette(button, color--borderless-hover);
+    border-color: palette(button, color--borderless-hover);
+  }
+  svg {
+    fill: $white;
   }
 }
-.turn__button--open {
-  @include body("sans");
+.turn__button--share {
   @include button--borderless;
   background: transparent;
+}
+.turn__button--bookmark {
+  @include button--borderless;
+  background: transparent;
+  height: 34px;
+}
+.turn__button--bookmark-solid {
+  svg {
+    fill: palette(button, color--borderless);
+  }
+  &:hover {
+    svg {
+      fill: palette(button, color--borderless-hover);
+    }
+  }
 }
 .turn__results {
   @include body;
