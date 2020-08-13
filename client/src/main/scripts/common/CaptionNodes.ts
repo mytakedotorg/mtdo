@@ -18,8 +18,8 @@
  * You can contact us at team@mytake.org
  */
 import * as React from "react";
+import { bsRoundEarly } from "../common/functions";
 import { FT } from "../java2ts/FT";
-var bs = require("binary-search");
 export type CaptionNodeArr = Array<CaptionNode | Array<CaptionNode>>;
 
 export type CaptionNode =
@@ -60,32 +60,8 @@ export function getCharRangeFromVideoRange(
   timeStamps: ArrayLike<number>,
   timeRange: [number, number]
 ): [number, number] {
-  const startTime = timeRange[0];
-  const endTime = timeRange[1];
-
-  const comparator = (element: number, needle: number) => {
-    return element - needle;
-  };
-
-  let firstWordIdx = bs(timeStamps, startTime, comparator);
-
-  if (firstWordIdx < 0) {
-    firstWordIdx = -firstWordIdx - 2;
-    if (firstWordIdx < 0) {
-      // If still negative, it means we're at the first word
-      firstWordIdx = 0;
-    }
-  }
-
-  let lastWordIdx = bs(timeStamps, endTime, comparator);
-
-  if (lastWordIdx < 0) {
-    lastWordIdx = -lastWordIdx - 2;
-    if (lastWordIdx < 0) {
-      // If still negative, it means we're at the first word
-      lastWordIdx = 0;
-    }
-  }
+  const firstWordIdx = bsRoundEarly(timeStamps, timeRange[0]);
+  const lastWordIdx = bsRoundEarly(timeStamps, timeRange[1]);
 
   const startCharIndex = wordChar[firstWordIdx];
   const endCharIndex = wordChar[lastWordIdx + 1];
@@ -454,35 +430,8 @@ export function getWordRangeFromCharRange(
   charRange: [number, number],
   videoFact: FT.VideoFactContent
 ): [number, number] {
-  const firstChar = charRange[0];
-  const lastChar = charRange[1];
-
-  const comparator = (element: number, needle: number) => {
-    return element - needle;
-  };
-
-  let firstWordIdx = bs(videoFact.wordChar, firstChar, comparator);
-
-  if (firstWordIdx < 0) {
-    firstWordIdx = -firstWordIdx - 2;
-    if (firstWordIdx < 0) {
-      // If still negative, it means we're at the first word
-      firstWordIdx = 0;
-    }
-  }
-
-  let lastWordIdx = bs(videoFact.wordChar, lastChar + 1, comparator);
-
-  if (lastWordIdx < 0) {
-    lastWordIdx = -lastWordIdx - 2;
-    if (lastWordIdx < 0) {
-      // If still negative, it means we're at the first word
-      lastWordIdx = 0;
-    }
-  }
-
-  lastWordIdx -= 1;
-
+  const firstWordIdx = bsRoundEarly(videoFact.wordChar, charRange[0]);
+  const lastWordIdx = bsRoundEarly(videoFact.wordChar, charRange[1] + 1) - 1;
   return [firstWordIdx, lastWordIdx];
 }
 

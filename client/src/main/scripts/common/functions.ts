@@ -17,6 +17,8 @@
  *
  * You can contact us at team@mytake.org
  */
+import binarySearch from "binary-search";
+
 export function slugify(text: string): string {
   return text
     .toLowerCase()
@@ -27,7 +29,7 @@ export function slugify(text: string): string {
 
 /**
  * groups values by any arbitrary key.
- * can't be replaced by _.groupBy because it is constrained to string keys
+ * can't be replaced by _.groupBy because _ is constrained to string keys
  */
 export function groupBy<K, V>(list: V[], keyGetter: (k: V) => K): Map<K, V[]> {
   const map = new Map<K, V[]>();
@@ -41,4 +43,50 @@ export function groupBy<K, V>(list: V[], keyGetter: (k: V) => K): Map<K, V[]> {
     }
   });
   return map;
+}
+
+function bsRoundEarlyHelper(idx: number): number {
+  if (idx == -1) {
+    // the element would be inserted before the first element
+    return 0;
+  } else if (idx < 0) {
+    // the element would be inserted somewhere besides the very beginning, and we'll round early
+    // so if it would be inserted after x, we'll just return x
+    return -idx - 2;
+  } else {
+    // we got very lucky, and found the exact right spot
+    return idx;
+  }
+}
+
+/**
+ * Performs a binary search where not-exactly-found elements are rounded to the early side.
+ * Can't be replaced by _.sortedIndex() because we want to round to early side
+ */
+export function bsRoundEarly(
+  sorted: ArrayLike<number>,
+  needle: number
+): number {
+  return bsRoundEarlyHelper(
+    binarySearch(sorted, needle, (element: number, target: number) => {
+      return element - target;
+    })
+  );
+}
+
+/**
+ * Performs a binary search where not-exactly-found elements are rounded to the early side.
+ * Can't be replaced by _.sortedIndex() because we want to round to early side.
+ * Can't be replaced by _.sortedIndexBy() because we only want to map the haystack, not the needle
+ */
+export function bsRoundEarlyMapped<T>(
+  sorted: ArrayLike<T>,
+  needle: number,
+  mapper: (arg0: T) => number
+): number {
+  return bsRoundEarlyHelper(
+    binarySearch(sorted, needle, (element: T, target: number) => {
+      return mapper(element) - target;
+    })
+  );
 }
