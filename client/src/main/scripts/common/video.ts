@@ -71,3 +71,28 @@ export function getTurnContent(
     return videoFact.plainText.substring(firstChar);
   }
 }
+
+export function convertSecondsToTimestamp(totalSeconds: number): string {
+  let truncated = Math.round(totalSeconds);
+
+  const hours = Math.floor(truncated / 3600);
+  truncated %= 3600;
+  const minutes = Math.floor(truncated / 60);
+  const SS = zeroPad(truncated % 60);
+
+  if (hours > 0) {
+    return hours.toString() + ":" + zeroPad(minutes) + ":" + SS;
+  } else {
+    return minutes.toString() + ":" + SS;
+  }
+}
+
+function zeroPad(someNumber: number): string {
+  if (someNumber == 0) {
+    return "00";
+  } else {
+    return someNumber < 10
+      ? "0" + someNumber.toString()
+      : someNumber.toString();
+  }
+}

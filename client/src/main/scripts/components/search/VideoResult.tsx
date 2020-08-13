@@ -20,7 +20,8 @@
 import * as React from "react";
 import { FT } from "../../java2ts/FT";
 import { Routes } from "../../java2ts/Routes";
-import { convertSecondsToTimestamp, slugify } from "../../utils/functions";
+import { slugify } from "../../common/functions";
+import { convertSecondsToTimestamp } from "../../common/video";
 import { SearchHit } from "./search";
 
 export type PlayEvent = (

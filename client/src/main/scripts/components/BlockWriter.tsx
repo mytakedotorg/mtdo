@@ -24,7 +24,7 @@ import { DraftRev } from "../java2ts/DraftRev";
 import { PublishResult } from "../java2ts/PublishResult";
 import { Routes } from "../java2ts/Routes";
 import { post } from "../network";
-import { slugify } from "../utils/functions";
+import { slugify } from "../common/functions";
 import BlockEditor, {
   DocumentBlock,
   ParagraphBlock,

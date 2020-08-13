@@ -15,7 +15,7 @@ exports[`VideoResultPreview before and after 1`] = `
     <p
       className="turn__time"
     >
-      0:1 - 0:17
+      0:02 - 0:17
     </p>
     <div
       className="turn__actions"
@@ -61,7 +61,7 @@ exports[`VideoResultPreview containing 1`] = `
     <p
       className="turn__time"
     >
-      0:2 - 0:15
+      0:03 - 0:15
     </p>
     <div
       className="turn__actions"
