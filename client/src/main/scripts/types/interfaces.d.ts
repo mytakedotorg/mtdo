@@ -25,11 +25,6 @@ declare module "*.sbv" {
   export default content;
 }
 
-declare interface String {
-  startsWith(search: string, pos?: number): boolean;
-  includes(searchString: string, pos?: number): boolean;
-}
-
 // This one is missing from @types/facebook-js-sdk. Declaration merging here.
 declare namespace facebook {
   interface InitParams {
