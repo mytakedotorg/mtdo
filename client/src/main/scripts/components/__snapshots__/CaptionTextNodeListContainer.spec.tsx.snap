@@ -24,7 +24,35 @@ exports[`CaptionTextNodeListContainer 1`] = `
     }
     videoFact={
       Object {
-        "charOffsets": Object {
+        "durationSeconds": 5624,
+        "fact": Object {
+          "kind": "video",
+          "primaryDate": "2016-10-09",
+          "primaryDateKind": "recorded",
+          "title": "Donald Trump - Hillary Clinton (2/3)",
+        },
+        "plainText": "Good evening I'm Martha Raddatz from ABC News. And I'm Anderson Cooper from CNN. We want to welcome you to Washington University in St. Louis for the second presidential debate between Hillary Clinton and Donald Trump sponsored by the Commission on Presidential Debates. tonight's debate is a Town Hall format, which gives voters a chance to directly ask the candidates questions. Martha and I will ask follow-up questions but the night really belongs to the people in this room and to people across the country who have submitted questions online.",
+        "speakers": Array [
+          Object {
+            "fullName": "Martha Raddatz",
+            "role": "moderator",
+          },
+          Object {
+            "fullName": "Anderson Cooper",
+            "role": "moderator",
+          },
+        ],
+        "turnSpeaker": Object {
+          "0": 0,
+          "1": 1,
+          "length": 2,
+        },
+        "turnWord": Object {
+          "0": 0,
+          "1": 8,
+          "length": 2,
+        },
+        "wordChar": Object {
           "0": 0,
           "1": 5,
           "10": 55,
@@ -118,35 +146,7 @@ exports[`CaptionTextNodeListContainer 1`] = `
           "90": 549,
           "length": 91,
         },
-        "durationSeconds": 5624,
-        "fact": Object {
-          "kind": "video",
-          "primaryDate": "2016-10-09",
-          "primaryDateKind": "recorded",
-          "title": "Donald Trump - Hillary Clinton (2/3)",
-        },
-        "plainText": "Good evening I'm Martha Raddatz from ABC News. And I'm Anderson Cooper from CNN. We want to welcome you to Washington University in St. Louis for the second presidential debate between Hillary Clinton and Donald Trump sponsored by the Commission on Presidential Debates. tonight's debate is a Town Hall format, which gives voters a chance to directly ask the candidates questions. Martha and I will ask follow-up questions but the night really belongs to the people in this room and to people across the country who have submitted questions online.",
-        "speakerPerson": Object {
-          "0": 0,
-          "1": 1,
-          "length": 2,
-        },
-        "speakerWord": Object {
-          "0": 0,
-          "1": 8,
-          "length": 2,
-        },
-        "speakers": Array [
-          Object {
-            "fullName": "Martha Raddatz",
-            "role": "moderator",
-          },
-          Object {
-            "fullName": "Anderson Cooper",
-            "role": "moderator",
-          },
-        ],
-        "timestamps": Object {
+        "wordTime": Object {
           "0": 0.75,
           "1": 0.9599999785423279,
           "10": 4.258999824523926,
