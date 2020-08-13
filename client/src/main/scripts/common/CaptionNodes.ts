@@ -44,8 +44,8 @@ export function getCaptionNodeArray(
   let output: Array<string> = [];
   let prevOffset = 0;
 
-  for (let n = 1; n < videoFact.speakerWord.length; n++) {
-    let wordIdx = videoFact.speakerWord[n];
+  for (let n = 1; n < videoFact.turnWord.length; n++) {
+    let wordIdx = videoFact.turnWord[n];
     let charOffset = videoFact.charOffsets[wordIdx];
     let innerHTML = videoFact.plainText.substring(prevOffset, charOffset);
     output.push(innerHTML);

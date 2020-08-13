@@ -110,7 +110,7 @@ class CaptionTextNodeListContainer extends React.Component<
           }
 
           const fullName = this.props.videoFact.speakers[
-            this.props.videoFact.speakerPerson[speakerIdx]
+            this.props.videoFact.turnSpeaker[speakerIdx]
           ].fullName;
 
           this.setState({
@@ -180,11 +180,11 @@ class CaptionTextNodeListContainer extends React.Component<
         // Calculate the number of lines in it based on the lineHeight
         const totalLinesInParagraph = Math.ceil(height / lineHeight);
 
-        const speakerWordMap = this.props.videoFact.speakerWord;
+        const turnWordMap = this.props.videoFact.turnWord;
 
         // Get the word range of the current speaker
-        const idxOfFirstWordInParagraph = speakerWordMap[speakerIdx];
-        const idxOfLastWordInParagraph = speakerWordMap[speakerIdx + 1];
+        const idxOfFirstWordInParagraph = turnWordMap[speakerIdx];
+        const idxOfLastWordInParagraph = turnWordMap[speakerIdx + 1];
         if (!idxOfLastWordInParagraph) {
           // We're at the end, return the last paragraph
           const timestamps = this.props.videoFact.timestamps;
@@ -264,9 +264,9 @@ class CaptionTextNodeListContainer extends React.Component<
 
               if (numberOfNextLinesInView <= totalLinesInNextParagraph) {
                 const idxOfFirstWordOfNextSpeaker =
-                  speakerWordMap[speakerIdx + loopCounter];
+                  turnWordMap[speakerIdx + loopCounter];
                 const idxOfLastWordOfNextSpeaker =
-                  speakerWordMap[speakerIdx + loopCounter + 1];
+                  turnWordMap[speakerIdx + loopCounter + 1];
                 // calculate the word idx
                 numberLineTransform.setBefore(0, totalLinesInNextParagraph);
                 numberLineTransform.setAfter(
@@ -370,7 +370,7 @@ class CaptionTextNodeListContainer extends React.Component<
 
         // find the speaker for that word
         let speakerIdx = bs(
-          this.props.videoFact.speakerWord, // haystack
+          this.props.videoFact.turnWord, // haystack
           wordIdx, // needle
           (element: number, needle: number) => {
             return element - needle;
@@ -407,9 +407,9 @@ class CaptionTextNodeListContainer extends React.Component<
         let height = 0;
         let numberOfLines = -1;
         hiddenTextElement.innerHTML = "";
-        const speakerWord = this.props.videoFact.speakerWord;
-        if (speakerWord[speakerIdx + 1]) {
-          for (let i = speakerWord[speakerIdx]; i < wordIdx; i++) {
+        const turnWord = this.props.videoFact.turnWord;
+        if (turnWord[speakerIdx + 1]) {
+          for (let i = turnWord[speakerIdx]; i < wordIdx; i++) {
             hiddenTextElement.innerHTML += this.getWord(i);
             if (hiddenTextElement.clientHeight !== height) {
               height = hiddenTextElement.clientHeight;

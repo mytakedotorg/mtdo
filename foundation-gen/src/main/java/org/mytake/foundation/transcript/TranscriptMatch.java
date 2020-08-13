@@ -151,11 +151,11 @@ public class TranscriptMatch {
 			startOffset += turn.said().length() + 1;
 		}
 		List<String> speakersByName = meta.speakers.stream().map(speaker -> speaker.fullName).collect(Collectors.toList());
-		java.speakerPerson = said.turns().stream().map(Turn::speaker).mapToInt(speakersByName::indexOf).toArray();
-		java.speakerWord = new int[said.turns().size()];
-		java.speakerWord[0] = 0;
+		java.turnSpeaker = said.turns().stream().map(Turn::speaker).mapToInt(speakersByName::indexOf).toArray();
+		java.turnWord = new int[said.turns().size()];
+		java.turnWord[0] = 0;
 		for (i = 1; i < said.turns().size(); ++i) {
-			java.speakerWord[i] = java.speakerWord[i - 1] + said.turns().get(i - 1).indexedWords(0).size();
+			java.turnWord[i] = java.turnWord[i - 1] + said.turns().get(i - 1).indexedWords(0).size();
 		}
 		return java;
 	}

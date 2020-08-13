@@ -35,9 +35,9 @@ export function decodeVideoFact(
   offset += encoded.totalWords * Int32Array.BYTES_PER_ELEMENT;
   const timestamps = new Float32Array(data, offset, encoded.totalWords);
   offset += encoded.totalWords * Float32Array.BYTES_PER_ELEMENT;
-  const speakerPerson = new Int32Array(data, offset, encoded.totalTurns);
+  const turnSpeaker = new Int32Array(data, offset, encoded.totalTurns);
   offset += encoded.totalTurns * Int32Array.BYTES_PER_ELEMENT;
-  const speakerWord = new Int32Array(data, offset, encoded.totalTurns);
+  const turnWord = new Int32Array(data, offset, encoded.totalTurns);
   offset += encoded.totalTurns * Int32Array.BYTES_PER_ELEMENT;
   if (offset != data.byteLength) {
     throw Error("Sizes don't match");
@@ -50,8 +50,8 @@ export function decodeVideoFact(
     plainText: encoded.plainText,
     charOffsets: charOffsets,
     timestamps: timestamps,
-    speakerPerson: speakerPerson,
-    speakerWord: speakerWord,
+    turnSpeaker: turnSpeaker,
+    turnWord: turnWord,
   };
 }
 
@@ -59,12 +59,12 @@ export function getTurnContent(
   turn: number,
   videoFact: FT.VideoFactContent
 ): string {
-  const firstWord = videoFact.speakerWord[turn];
+  const firstWord = videoFact.turnWord[turn];
   const firstChar = videoFact.charOffsets[firstWord];
 
   let fullTurnText;
-  if (videoFact.speakerWord[turn + 1]) {
-    const lastWord = videoFact.speakerWord[turn + 1];
+  if (videoFact.turnWord[turn + 1]) {
+    const lastWord = videoFact.turnWord[turn + 1];
     const lastChar = videoFact.charOffsets[lastWord] - 1;
     fullTurnText = videoFact.plainText.substring(firstChar, lastChar);
   } else {

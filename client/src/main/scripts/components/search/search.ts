@@ -162,7 +162,7 @@ export class SearchHit {
 
   getSpeaker(): string {
     const { turn, videoFact } = this;
-    const fullName = videoFact.speakers[videoFact.speakerPerson[turn]].fullName;
+    const fullName = videoFact.speakers[videoFact.turnSpeaker[turn]].fullName;
     return fullName.substring(fullName.lastIndexOf(" "));
   }
 
@@ -171,7 +171,7 @@ export class SearchHit {
       return this.clipRangeCache;
     }
     const { hitOffsets, turn, videoFact } = this;
-    const veryFirstWord = videoFact.speakerWord[turn];
+    const veryFirstWord = videoFact.turnWord[turn];
     const firstChar = videoFact.charOffsets[veryFirstWord];
     let firstWord = bs(
       videoFact.charOffsets, // haystack

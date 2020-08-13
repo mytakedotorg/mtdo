@@ -24,8 +24,8 @@ public class VideoFactContentJavaTest {
 		java.plainText = "Jack said Jill said";
 		java.charOffsets = new int[] {0, 5, 10, 15};
 		java.timestamps = new double[] {0, 1, 2, 3};
-		java.speakerPerson = new int[] {0, 1};
-		java.speakerWord = new int[] {0, 2};
+		java.turnSpeaker = new int[] {0, 1};
+		java.turnWord = new int[] {0, 2};
 
 		VideoFactContentJava roundtrip = VideoFactContentJava.decode(java.toEncoded());
 		Assertions.assertThat(roundtrip.youtubeId).isEqualTo(java.youtubeId);
@@ -34,7 +34,7 @@ public class VideoFactContentJavaTest {
 		Assertions.assertThat(roundtrip.plainText).isEqualTo(java.plainText);
 		Assertions.assertThat(roundtrip.charOffsets).isEqualTo(java.charOffsets);
 		Assertions.assertThat(roundtrip.timestamps).isEqualTo(java.timestamps);
-		Assertions.assertThat(roundtrip.speakerPerson).isEqualTo(java.speakerPerson);
-		Assertions.assertThat(roundtrip.speakerWord).isEqualTo(java.speakerWord);
+		Assertions.assertThat(roundtrip.turnSpeaker).isEqualTo(java.turnSpeaker);
+		Assertions.assertThat(roundtrip.turnWord).isEqualTo(java.turnWord);
 	}
 }

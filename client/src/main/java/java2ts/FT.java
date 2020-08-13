@@ -73,15 +73,15 @@ public interface FT {
 		/** Word n is spoken at timestamps[n]. */
 		public ArrayLike<Number> timestamps;
 		/**
-		 * speakers[speakerPerson[0]] = the first person who speaks.
-		 * speakers[speakerPerson[1]] = the second person who speaks.
+		 * speakers[turnSpeaker[0]] = the first person who speaks.
+		 * speakers[turnSpeaker[1]] = the second person who speaks.
 		 */
-		public ArrayLike<Number> speakerPerson;
+		public ArrayLike<Number> turnSpeaker;
 		/**
-		 * charOffsets[speakerWord[0]] = the character offset where the first person starts
+		 * charOffsets[turnWord[0]] = the character offset where the first person starts
 		 * charOffsets[charOffsets[1]] = the character offset where the second person starts
 		 */
-		public ArrayLike<Number> speakerWord;
+		public ArrayLike<Number> turnWord;
 	}
 
 	@jsweet.lang.Interface
@@ -91,7 +91,7 @@ public interface FT {
 		public int totalWords;
 		public int totalTurns;
 		/**
-		 * [charOffsets, timestamps, speakerPerson, speakerWord], little-endian Base64 encoded.
+		 * [charOffsets, timestamps, turnSpeaker, turnWord], little-endian Base64 encoded.
 		 */
 		public String data;
 	}

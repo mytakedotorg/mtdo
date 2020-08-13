@@ -38,8 +38,8 @@ public class Videos {
 				empty.plainText = "";
 				empty.charOffsets = new int[0];
 				empty.timestamps = new double[0];
-				empty.speakerPerson = empty.charOffsets;
-				empty.speakerWord = empty.charOffsets;
+				empty.turnSpeaker = empty.charOffsets;
+				empty.turnWord = empty.charOffsets;
 				factContent = empty;
 			}
 			consumer.accept(factContent);
