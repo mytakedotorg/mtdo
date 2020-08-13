@@ -25,15 +25,6 @@ declare module "*.sbv" {
   export default content;
 }
 
-// https://github.com/niklasvh/base64-arraybuffer/pull/9
-declare module "base64-arraybuffer" {
-  class Base64ArrayBuffer {
-    encode(buffer: ArrayBuffer): string;
-    decode(str: string): ArrayBuffer;
-  }
-  export default Base64ArrayBuffer;
-}
-
 declare interface String {
   startsWith(search: string, pos?: number): boolean;
   includes(searchString: string, pos?: number): boolean;
