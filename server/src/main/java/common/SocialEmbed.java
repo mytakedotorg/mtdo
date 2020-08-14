@@ -22,10 +22,8 @@ package common;
 import com.google.inject.Binder;
 import com.typesafe.config.Config;
 import forms.api.RockerRaw;
-import java2ts.Routes;
 import org.jooby.Env;
 import org.jooby.Jooby;
-import views.SocialEmbed.socialImage;
 
 public class SocialEmbed {
 	public static SocialEmbed todo() {
@@ -44,7 +42,7 @@ public class SocialEmbed {
 	public static class DevModule implements Jooby.Module {
 		@Override
 		public void configure(Env env, Config conf, Binder binder) throws Throwable {
-			env.router().get(Routes.API + "/dev/socialImage", req -> socialImage.template());
+			//env.router().get(Routes.API + "/dev/socialImage", req -> socialImage.template());
 		}
 	}
 }
