@@ -44,12 +44,14 @@ node {
 
 	npmRun('test_ci') {
 		dependsOn 'beforeCompile'
-		inputs.dir('src/main/scripts')
+		inputs.file('tsconfig.json').withPathSensitivity(PathSensitivity.RELATIVE)
+		inputs.dir('src/main/scripts').withPathSensitivity(PathSensitivity.RELATIVE)
 		outputs.dir('build/test-results/jest')
 	}
 	npmRun('deploy') {
 		dependsOn 'beforeCompile'
-		inputs.dir('src/main/scripts')
+		inputs.file('tsconfig.json').withPathSensitivity(PathSensitivity.RELATIVE)
+		inputs.dir('src/main/scripts').withPathSensitivity(PathSensitivity.RELATIVE)
 		outputs.dir('build/dist')
 	}
 	npmArbitraryCmd('pruneDependencies', 'prune --production') {
