@@ -8,18 +8,34 @@
   display: flex;
 }
 .share-preview__links {
-  width: 150px;
+  width: 100px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-start;
   padding-top: 8px;
   border-right: 1px solid palette(dropdown, border);
+  text-align: center;
+  @media screen and (min-width: 480px) {
+    width: 150px;
+  }
   a {
-    @include typography($sans, 400, 16px, 1.7em);
+    @include typography($sans, 400, 16px, 1.2em);
     text-decoration: none;
-    color: palette(share, text);
+    color: palette(share, button-text);
     margin-left: 8px;
+    margin-bottom: 8px;
+    padding: 2px 4px;
+    width: 100px - 16px - 8px;
+    border-radius: 5px;
+    background: palette(share, button-background);
+    &:hover {
+      background: palette(share, button-background--hover);
+    }
+    @media screen and (min-width: 480px) {
+      @include typography($sans, 400, 16px, 1.7em);
+      width: 150px - 16px - 8px;
+    }
   }
 }
 .share-preview__preview-container {
