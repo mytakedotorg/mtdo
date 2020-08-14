@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2017-2018 MyTake.org, Inc.
+ * Copyright (C) 2017-2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -104,10 +104,9 @@ public class Mods {
 											.where(TAKEDRAFT.ID.eq(draftId))))
 							.fetchOne();
 					if (rev == null) {
-						return NotFound.result();
-					} else {
-						return views.Drafts.editTake.template(rev.getTitle(), rev.getBlocks(), draftId, rev.getId());
+						throw RedirectException.notFoundError();
 					}
+					return views.Drafts.editTake.template(rev.getTitle(), rev.getBlocks(), draftId, rev.getId());
 				}
 			});
 		}

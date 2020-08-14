@@ -1,6 +1,6 @@
 @*
  * MyTake.org website and tooling.
- * Copyright (C) 2017-2018 MyTake.org, Inc.
+ * Copyright (C) 2017-2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -17,11 +17,12 @@
  *
  * You can contact us at team@mytake.org
  *@
+@import common.SocialEmbed
 @import db.tables.records.TakepublishedRecord
 
-@args (TakepublishedRecord take, String imgUrl)
+@args (TakepublishedRecord take, SocialEmbed social)
 
-@views.naked.template(take.getTitle(), take.getTitle(), "react", imgUrl) -> {
+@views.reactApp.template(take.getTitle(), take.getTitle(), social) -> {
 
 <div id="app"></div>
 <script type="text/javascript">

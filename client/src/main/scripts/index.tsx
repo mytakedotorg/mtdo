@@ -60,84 +60,69 @@ interface SearchArgs {
   searchTerm: string;
 }
 
+type MtdoArgs =
+  | HomeArgs
+  | ShowTakeArgs
+  | FoundationArgs
+  | NewTakeArgs
+  | SearchArgs;
+
 declare global {
   interface Window {
-    mytake?:
-      | HomeArgs
-      | ShowTakeArgs
-      | FoundationArgs
-      | NewTakeArgs
-      | SearchArgs;
+    mytake?: MtdoArgs;
   }
 }
 
-const app: HTMLElement | null = document.getElementById("app");
-if (app) {
-  let Root;
-  if (typeof window.mytake != "undefined") {
-    switch (window.mytake.type) {
-      case "foundation":
-        Root = (
-          <FoundationView
-            path={window.location.pathname}
-            search={window.location.search}
-          />
-        );
-        break;
-      case "new-take":
-        let initJson: InitialBlockWriterState;
-        let windowState = window.mytake.blockWriterState;
-        if (typeof windowState != "undefined") {
-          if (
-            windowState.takeDocument.blocks === null ||
-            windowState.takeDocument.blocks.length === 0
-          ) {
-            windowState = {
-              ...windowState,
-              takeDocument: {
-                ...windowState.takeDocument,
-                blocks: [...initialState.takeDocument.blocks],
-              },
-            };
-          }
-          initJson = windowState;
-        } else {
-          initJson = (Object as any).assign({}, initialState);
+function reactElementForPage(args: MtdoArgs): React.SFCElement<any> {
+  switch (args.type) {
+    case "foundation":
+      return (
+        <FoundationView
+          path={window.location.pathname}
+          search={window.location.search}
+        />
+      );
+    case "new-take":
+      let initJson: InitialBlockWriterState;
+      if (args.blockWriterState) {
+        initJson = args.blockWriterState;
+        if (!initJson.takeDocument.blocks) {
+          initJson = {
+            ...initJson,
+            takeDocument: {
+              ...initJson.takeDocument,
+              blocks: [...initialState.takeDocument.blocks],
+            },
+          };
         }
+      } else {
+        initJson = (Object as any).assign({}, initialState);
+      }
+      return (
+        <BlockWriter initState={initJson} hashUrl={window.location.hash} />
+      );
+    case "home":
+      return <FeedList cards={args.cards} />;
+    case "showtake":
+      return <BlockReader initState={args.takeDocument} takeId={args.takeId} />;
+    case "search":
+      return <VideoResultsLoader searchQuery={args.searchTerm} />;
+  }
+}
 
-        Root = (
-          <BlockWriter initState={initJson} hashUrl={window.location.hash} />
-        );
-        break;
-      case "home":
-        Root = <FeedList cards={window.mytake.cards} />;
-        break;
-      case "showtake":
-        Root = (
-          <BlockReader
-            initState={window.mytake.takeDocument}
-            takeId={window.mytake.takeId}
-          />
-        );
-        break;
-      case "search":
-        Root = <VideoResultsLoader searchQuery={window.mytake.searchTerm} />;
-        break;
-      default:
-        throw "Unknown argument structure";
-    }
+const app = document.getElementById("app");
+if (app) {
+  if (window.mytake) {
+    ReactDOM.render(reactElementForPage(window.mytake), app);
   } else {
     throw "window.mytake is undefined";
   }
-  ReactDOM.render(Root, app);
 }
 
-const searchBarContainer: HTMLElement | null = document.getElementById(
-  "searchbar"
-);
+const searchBarContainer = document.getElementById("searchbar");
 if (searchBarContainer) {
   let searchTerm = "";
-  if (typeof window.mytake != "undefined" && window.mytake.type === "search") {
+  if (window.mytake && window.mytake.type === "search") {
     searchTerm = window.mytake.searchTerm;
   }
   ReactDOM.render(<SearchBar searchTerm={searchTerm} />, searchBarContainer);
@@ -145,7 +130,7 @@ if (searchBarContainer) {
   throw "Couldn't find div#searchbar";
 }
 
-const userNavContainer: HTMLElement | null = document.getElementById("usernav");
+const userNavContainer = document.getElementById("usernav");
 if (userNavContainer) {
   ReactDOM.render(<UserNav />, userNavContainer);
 } else {

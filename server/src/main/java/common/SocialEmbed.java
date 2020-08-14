@@ -1,6 +1,6 @@
-@*
+/*
  * MyTake.org website and tooling.
- * Copyright (C) 2017-2020 MyTake.org, Inc.
+ * Copyright (C) 2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -16,14 +16,33 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * You can contact us at team@mytake.org
- *@
-@args()
+ */
+package common;
 
-@naked.template("Not found", "Not found", "react", "") -> {
-<section class="section">
-	<div class="section__inner">
-		<h1 class="section__heading">404</h1>
-		<p class="section__text section__text--alert">Sorry, must be a typo in the URL.</p>
-	</div>
-</section>
+import com.google.inject.Binder;
+import com.typesafe.config.Config;
+import forms.api.RockerRaw;
+import org.jooby.Env;
+import org.jooby.Jooby;
+
+public class SocialEmbed {
+	public static SocialEmbed todo() {
+		return null;
+	}
+
+	public static SocialEmbed todo(String input) {
+		return null;
+	}
+
+	public RockerRaw header() {
+		return RockerRaw.empty();
+	}
+
+	/** Dev-only module for designing the social cards with live hotreload. */
+	public static class DevModule implements Jooby.Module {
+		@Override
+		public void configure(Env env, Config conf, Binder binder) throws Throwable {
+			//env.router().get(Routes.API + "/dev/socialImage", req -> socialImage.template());
+		}
+	}
 }
