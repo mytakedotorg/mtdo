@@ -20,7 +20,7 @@
 import * as React from "react";
 
 export function socialHeader(arg: string): React.ReactElement {
-  return <SocialHeader embed={arg} />
+  return <SocialHeader embed={arg} />;
 }
 
 export type SocialHeaderProps = {
@@ -28,7 +28,14 @@ export type SocialHeaderProps = {
 };
 
 export const SocialHeader: React.FC<SocialHeaderProps> = (props) => {
-  return <Twitter title={props.embed} desc={props.embed} image={props.embed} imageAlt={props.embed} />;
+  return (
+    <Twitter
+      title={props.embed}
+      desc={props.embed}
+      image={props.embed}
+      imageAlt={props.embed}
+    />
+  );
 };
 
 // https://developer.twitter.com/en/docs/twitter-for-websites/cards/overview/summary-card-with-large-image
@@ -58,4 +65,3 @@ const Twitter: React.FC<TwitterProps> = (props) => {
     </header>
   );
 };
-

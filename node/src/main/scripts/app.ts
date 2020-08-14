@@ -19,8 +19,8 @@
  */
 import * as express from "express";
 import { NextFunction, Request, Response } from "express";
-import ReactDOMServer from 'react-dom/server'
-import { socialHeader } from "./common/social/SocialHeader"
+import ReactDOMServer from "react-dom/server";
+import { socialHeader } from "./common/social/SocialHeader";
 // Require routes
 import { generateImage } from "./controllers/images";
 import rison from "rison";
@@ -60,18 +60,14 @@ app.use(`/api/social-header/:${ARG}`, async (req: Request, res: Response) => {
     const arg = req.params[ARG];
     res.writeHead(200, {
       "Content-Type": "text/plain",
-    })
+    });
     res.send(ReactDOMServer.renderToString(socialHeader(arg)));
   } catch (error) {
     logErrorAndSend404(req, error.toString(), res);
   }
 });
 
-function logErrorAndSend404(
-  req: Request,
-  errorMsg: string,
-  res: Response
-) {
+function logErrorAndSend404(req: Request, errorMsg: string, res: Response) {
   console.warn("#####################");
   console.warn(req.path);
   console.warn(errorMsg);
