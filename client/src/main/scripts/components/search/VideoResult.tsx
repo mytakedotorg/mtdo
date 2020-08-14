@@ -75,11 +75,15 @@ const VideoResult: React.FC<VideoResultProps> = (props) => {
       <div className="turn__info">
         <div className="turn__info-row">
           <h3 className="turn__speaker">{searchHit.getSpeaker()}</h3>
-          <button className={bookmarkClass} onClick={handleBookmarkClick}>
-            <Bookmark />
-          </button>
+          <DropDown
+            classModifier="share"
+            dropdownPosition="CUSTOM"
+            toggleText={<Share />}
+          >
+            <SharePreview />
+          </DropDown>
         </div>
-        <div className="turn__info-row">
+        <div className="turn__info-row turn__info-row--short">
           <span className="turn__time">
             {convertSecondsToTimestamp(clipRange[0]) +
               " - " +
@@ -93,13 +97,9 @@ const VideoResult: React.FC<VideoResultProps> = (props) => {
           >
             <Play size={20} />
           </button>
-          <DropDown
-            classModifier="share"
-            dropdownPosition="CUSTOM"
-            toggleText={<Share />}
-          >
-            <SharePreview />
-          </DropDown>
+          <button className={bookmarkClass} onClick={handleBookmarkClick}>
+            <Bookmark />
+          </button>
         </div>
       </div>
       <p className="turn__results">
