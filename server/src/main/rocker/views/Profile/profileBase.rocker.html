@@ -22,7 +22,7 @@
 
 @args(AccountRecord account, boolean isLoggedIn, Mode activeMode, RockerBody content)
 
-@views.naked.template("MyTake.org", account.getUsername(), "reactApp", "") -> {
+@views.naked.template("MyTake.org", account.getUsername(), null) -> {
 
 <div class="profile">
 	<div class="profile__usercard">

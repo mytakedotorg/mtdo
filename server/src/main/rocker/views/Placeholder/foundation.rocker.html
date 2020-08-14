@@ -17,8 +17,10 @@
  *
  * You can contact us at team@mytake.org
  *@
-@args(String imgPath)
-@views.naked.template("MyTake.org", "Your bicycle for politics", "reactApp", imgPath) -> {
+@import common.SocialEmbed
+
+@args(SocialEmbed social)
+@views.naked.template("MyTake.org", "Your bicycle for politics", social) -> {
 <div id="app"></div>
 <script type="text/javascript">
 	window.mytake = {

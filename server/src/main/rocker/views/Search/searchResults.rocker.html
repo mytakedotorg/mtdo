@@ -17,9 +17,11 @@
  *
  * You can contact us at team@mytake.org
  *@
-@args(String searchTerm)
+@import common.SocialEmbed
 
-@views.naked.template("MyTake.org", "Your bicycle for politics", "reactApp", "") -> {
+@args(String searchTerm, SocialEmbed social)
+
+@views.naked.template("MyTake.org", "Your bicycle for politics", social) -> {
 <div id="app"></div>
 <script type="text/javascript">
 

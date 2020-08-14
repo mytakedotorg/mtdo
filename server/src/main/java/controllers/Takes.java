@@ -25,6 +25,7 @@ import static db.Tables.TAKEPUBLISHED;
 import com.google.inject.Binder;
 import com.typesafe.config.Config;
 import common.NotFound;
+import common.SocialEmbed;
 import common.Text;
 import db.tables.records.TakepublishedRecord;
 import org.jooby.Env;
@@ -52,7 +53,7 @@ public class Takes implements Jooby.Module {
 					return NotFound.result();
 				} else {
 					String imageUrl = take.getImageUrl();
-					return views.Takes.showTake.template(take, imageUrl);
+					return views.Takes.showTake.template(take, SocialEmbed.todo(imageUrl));
 				}
 			}
 		});

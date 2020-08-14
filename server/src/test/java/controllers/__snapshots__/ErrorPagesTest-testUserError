@@ -24,13 +24,6 @@
 <meta name="description" content="Whoops. Something went wrong. | MyTake.org">
 <meta name="author" content="MyTake.org">
 
-<!-- For 2:1 image aspect ratio -->
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:site" content="@mytakedotorg">
-<meta name="twitter:title" content="Error">
-<meta name="twitter:description" content="Whoops. Something went wrong.">
-<meta property="og:title" content="Error" />
-<meta property="og:description" content="Whoops. Something went wrong." />
 <meta property="fb:app_id" content="203240867180202" />
 
 <link rel="stylesheet" href="/assets-dev/styles/main.css">

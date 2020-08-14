@@ -1,6 +1,6 @@
-@*
+/*
  * MyTake.org website and tooling.
- * Copyright (C) 2017-2020 MyTake.org, Inc.
+ * Copyright (C) 2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -16,24 +16,34 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * You can contact us at team@mytake.org
- *@
-@import common.SocialEmbed
-@import db.tables.records.TakepublishedRecord
+ */
+package common;
 
-@args (TakepublishedRecord take, SocialEmbed social)
+import com.google.inject.Binder;
+import com.typesafe.config.Config;
+import forms.api.RockerRaw;
+import java2ts.Routes;
+import org.jooby.Env;
+import org.jooby.Jooby;
+import views.SocialEmbed.socialcard;
 
-@views.naked.template(take.getTitle(), take.getTitle(), social) -> {
+public class SocialEmbed {
+	public static SocialEmbed todo() {
+		return null;
+	}
 
-<div id="app"></div>
-<script type="text/javascript">
-window.mytake = {
-	type: "showtake",
-	takeDocument: {
-	title: "@raw(take.getTitle())",
-	blocks: @raw(take.getBlocks())
-	},
-	takeId: @raw(take.getId())
-};
-</script>
+	public static SocialEmbed todo(String input) {
+		return null;
+	}
 
+	public static class DevModule implements Jooby.Module {
+		@Override
+		public void configure(Env env, Config conf, Binder binder) throws Throwable {
+			//env.router().get(Routes.API + "/socialcard", req -> socialcard.template());
+		}
+	}
+
+	public RockerRaw header() {
+		return RockerRaw.empty();
+	}
 }

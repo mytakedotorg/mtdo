@@ -21,6 +21,7 @@ package controllers;
 
 import com.google.inject.Binder;
 import com.typesafe.config.Config;
+import common.SocialEmbed;
 import forms.meta.MetaField;
 import java2ts.Routes;
 import org.jooby.Env;
@@ -45,7 +46,7 @@ public class SearchModule implements Jooby.Module {
 			if (query.isEmpty()) {
 				return Results.redirect(Routes.FOUNDATION);
 			} else {
-				return views.Search.searchResults.template(query);
+				return views.Search.searchResults.template(query, SocialEmbed.todo());
 			}
 		});
 	}
