@@ -19,8 +19,11 @@
  */
 import * as express from "express";
 import { NextFunction, Request, Response } from "express";
+import ReactDOMServer from 'react-dom/server'
+import { socialHeader } from "./common/social/SocialHeader"
 // Require routes
 import { generateImage } from "./controllers/images";
+import rison from "rison";
 require("source-map-support").install();
 const logger = require("morgan");
 const app = express();
@@ -32,10 +35,10 @@ if (app.get("env") === "production") {
   app.use(logger("dev"));
 }
 
-const IMAGEKEY = "imgkey";
-app.use(`/api/images/:${IMAGEKEY}`, async (req: Request, res: Response) => {
-  const imgKeyAndExtension: string = req.params[IMAGEKEY];
+const ARG = "arg";
+app.use(`/api/social-image/:${ARG}`, async (req: Request, res: Response) => {
   try {
+    const imgKeyAndExtension = req.params[ARG];
     const bufOrErrorMsg = await generateImage(imgKeyAndExtension);
     if (bufOrErrorMsg instanceof Buffer) {
       res
@@ -45,20 +48,32 @@ app.use(`/api/images/:${IMAGEKEY}`, async (req: Request, res: Response) => {
         })
         .end(bufOrErrorMsg);
     } else {
-      logErrorAndSend404(imgKeyAndExtension, bufOrErrorMsg, res);
+      logErrorAndSend404(req, bufOrErrorMsg, res);
     }
   } catch (error) {
-    logErrorAndSend404(imgKeyAndExtension, error.toString(), res);
+    logErrorAndSend404(req, error.toString(), res);
+  }
+});
+
+app.use(`/api/social-header/:${ARG}`, async (req: Request, res: Response) => {
+  try {
+    const arg = req.params[ARG];
+    res.writeHead(200, {
+      "Content-Type": "text/plain",
+    })
+    res.send(ReactDOMServer.renderToString(socialHeader(arg)));
+  } catch (error) {
+    logErrorAndSend404(req, error.toString(), res);
   }
 });
 
 function logErrorAndSend404(
-  imgKeyAndExtension: string,
+  req: Request,
   errorMsg: string,
   res: Response
 ) {
   console.warn("#####################");
-  console.warn(imgKeyAndExtension);
+  console.warn(req.path);
   console.warn(errorMsg);
   res.status(404).send("Not found");
 }
