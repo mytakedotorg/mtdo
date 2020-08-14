@@ -17,19 +17,61 @@
  *
  * You can contact us at team@mytake.org
  */
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { copyToClipboard } from "../../browser";
+import { SearchHit } from "./search";
+import SearchHitContent from "./SearchHitContent";
 
-interface SharePreviewProps {}
+export interface SharePreviewProps {
+  contextUrl: string;
+  searchHit: SearchHit;
+}
 
-const SharePreview: React.FC<SharePreviewProps> = (props) => {
+const SharePreview: React.FC<SharePreviewProps> = ({
+  contextUrl,
+  searchHit,
+}) => {
+  const [isCopied, setIsCopied] = useState<boolean>(false);
+
+  useEffect(() => {
+    // Reset `isCopied` state after an interval
+    const INTERVAL = 5000;
+    let timerId: number | undefined;
+    if (isCopied) {
+      timerId = window.setTimeout(() => setIsCopied(false), INTERVAL);
+    }
+    return () => {
+      clearTimeout(timerId);
+    };
+  }, [isCopied]);
+
+  const viewFullContext = (
+    e: React.MouseEvent<HTMLAnchorElement, MouseEvent>
+  ) => {
+    e.preventDefault();
+    window.location.href = contextUrl;
+  };
+
+  const copyUrl = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+    e.preventDefault();
+    const url =
+      window.location.protocol + "//" + window.location.host + contextUrl;
+    copyToClipboard(url);
+    setIsCopied(true);
+  };
+
   return (
     <div
       className="share-preview"
       style={{ maxWidth: `${window.innerWidth - 16}px` }}
     >
       <div className="share-preview__links">
-        <a href="#">View full context</a>
-        <a href="#">Copy URL to quote</a>
+        <a onClick={viewFullContext}>View full context</a>
+        {isCopied ? (
+          <span>Copied to clipboard</span>
+        ) : (
+          <a onClick={copyUrl}>Copy URL to quote</a>
+        )}
       </div>
       <div className="share-preview__preview-container">
         <div className="share-preview__label">
@@ -43,16 +85,17 @@ const SharePreview: React.FC<SharePreviewProps> = (props) => {
             <p className="share-preview__tilde">∼∼∼ ∼∼∼ ∼∼∼∼∼ ∼∼∼∼∼ ∼∼∼∼∼∼∼∼</p>
             <p className="share-preview__tilde">∼∼ ∼∼∼∼∼∼∼∼ ∼∼ ∼∼∼ ∼ ∼∼∼ ∼∼</p>
             <div className="share-preview__content">
-              <p>
-                Some text here that's useful. Some text here that's useful. Some
-                text here that's useful. Some text here that's useful. Some text
-                here that's useful. Some text here that's useful. Some text here
-                that's useful.{" "}
-              </p>
+              <SearchHitContent
+                className="turn__results"
+                searchHit={searchHit}
+              />
             </div>
             <div className="share-preview__content-meta">
               <p className="share-preview__mytake">MyTake.org</p>
-              <p className="share-preview__title">Some debate title here</p>
+              <p className="share-preview__title">
+                {searchHit.videoFact.fact.title} -{" "}
+                {searchHit.videoFact.fact.primaryDate}
+              </p>
             </div>
             <div className="share-preview__icons">
               <i className="fa fa-thumbs-up" aria-hidden="true"></i>

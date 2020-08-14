@@ -7,6 +7,15 @@
   width: 650px;
   display: flex;
 }
+@mixin preview-link {
+  margin-left: 8px;
+  margin-bottom: 8px;
+  padding: 2px 4px;
+  width: 100px - 16px - 8px;
+  @media screen and (min-width: 480px) {
+    width: 150px - 16px - 8px;
+  }
+}
 .share-preview__links {
   width: 100px;
   display: flex;
@@ -23,19 +32,21 @@
     @include typography($sans, 400, 16px, 1.2em);
     text-decoration: none;
     color: palette(share, button-text);
-    margin-left: 8px;
-    margin-bottom: 8px;
-    padding: 2px 4px;
-    width: 100px - 16px - 8px;
+    @include preview-link;
     border-radius: 5px;
     background: palette(share, button-background);
     &:hover {
+      cursor: pointer;
       background: palette(share, button-background--hover);
     }
     @media screen and (min-width: 480px) {
       @include typography($sans, 400, 16px, 1.7em);
-      width: 150px - 16px - 8px;
     }
+  }
+  span {
+    @include heading6;
+    @include preview-link;
+    color: palette(share, text--green);
   }
 }
 .share-preview__preview-container {

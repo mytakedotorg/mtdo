@@ -1,0 +1,110 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SharePreview renders 1`] = `
+<div
+  className="share-preview"
+  style={
+    Object {
+      "maxWidth": "1008px",
+    }
+  }
+>
+  <div
+    className="share-preview__links"
+  >
+    <a
+      onClick={[Function]}
+    >
+      View full context
+    </a>
+    <a
+      onClick={[Function]}
+    >
+      Copy URL to quote
+    </a>
+  </div>
+  <div
+    className="share-preview__preview-container"
+  >
+    <div
+      className="share-preview__label"
+    >
+      <span>
+        Preview
+      </span>
+    </div>
+    <div
+      className="share-preview__card"
+    >
+      <div
+        className="share-preview__avatar"
+      >
+        <i
+          aria-hidden="true"
+          className="fa fa-user"
+        />
+      </div>
+      <div
+        className="share-preview__preview"
+      >
+        <p
+          className="share-preview__tilde"
+        >
+          ∼∼∼ ∼∼∼ ∼∼∼∼∼ ∼∼∼∼∼ ∼∼∼∼∼∼∼∼
+        </p>
+        <p
+          className="share-preview__tilde"
+        >
+          ∼∼ ∼∼∼∼∼∼∼∼ ∼∼ ∼∼∼ ∼ ∼∼∼ ∼∼
+        </p>
+        <div
+          className="share-preview__content"
+        >
+          <p
+            className="turn__results"
+          >
+            The 
+            <strong>
+              television
+            </strong>
+             and radio stations of the United States and their affiliated stations are proud to provide facilities for a discussion of issues in the current political campaign by the two major candidates for the presidency.
+          </p>
+        </div>
+        <div
+          className="share-preview__content-meta"
+        >
+          <p
+            className="share-preview__mytake"
+          >
+            MyTake.org
+          </p>
+          <p
+            className="share-preview__title"
+          >
+            Presidential Debate - Kennedy, Nixon (1 of 4)
+             -
+             
+            1960-09-26
+          </p>
+        </div>
+        <div
+          className="share-preview__icons"
+        >
+          <i
+            aria-hidden="true"
+            className="fa fa-thumbs-up"
+          />
+          <i
+            aria-hidden="true"
+            className="fa fa-comment"
+          />
+          <i
+            aria-hidden="true"
+            className="fa fa-share-alt"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

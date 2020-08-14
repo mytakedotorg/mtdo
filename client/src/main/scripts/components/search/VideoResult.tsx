@@ -25,6 +25,7 @@ import { FT } from "../../java2ts/FT";
 import { Routes } from "../../java2ts/Routes";
 import DropDown from "../DropDown";
 import { SearchHit } from "./search";
+import SearchHitContent from "./SearchHitContent";
 import SharePreview from "./SharePreview";
 
 export type PlayEvent = (
@@ -42,28 +43,21 @@ const VideoResult: React.FC<VideoResultProps> = (props) => {
   const { isBookmarked, onPlayClick, searchHit } = props;
   const { videoFact } = searchHit;
   const clipRange = searchHit.getClipRange();
+  const contextUrl =
+    Routes.FOUNDATION_V1 +
+    "/" +
+    slugify(videoFact.fact.title) +
+    "/" +
+    clipRange[0].toFixed(3) +
+    "-" +
+    clipRange[1].toFixed(3);
 
   const handlePlayClick = () => {
     onPlayClick(videoFact, clipRange);
   };
 
-  const handleShareClick = () => {
-    console.log("todo");
-  };
-
-  const open = () => {
-    window.location.href =
-      Routes.FOUNDATION_V1 +
-      "/" +
-      slugify(videoFact.fact.title) +
-      "/" +
-      clipRange[0].toFixed(3) +
-      "-" +
-      clipRange[1].toFixed(3);
-  };
-
   const handleBookmarkClick = () => {
-    console.log("TODO");
+    throw "TODO";
   };
 
   let bookmarkClass = "turn__button turn__button--bookmark";
@@ -80,7 +74,7 @@ const VideoResult: React.FC<VideoResultProps> = (props) => {
             dropdownPosition="CUSTOM"
             toggleText={<Share />}
           >
-            <SharePreview />
+            <SharePreview contextUrl={contextUrl} searchHit={searchHit} />
           </DropDown>
         </div>
         <div className="turn__info-row turn__info-row--short">
@@ -102,15 +96,7 @@ const VideoResult: React.FC<VideoResultProps> = (props) => {
           </button>
         </div>
       </div>
-      <p className="turn__results">
-        {searchHit.getContent().map((hitContent) => {
-          return hitContent.isHighlighted ? (
-            <strong key={hitContent.text}>{hitContent.text}</strong>
-          ) : (
-            hitContent.text
-          );
-        })}
-      </p>
+      <SearchHitContent className="turn__results" searchHit={searchHit} />
     </div>
   );
 };

@@ -21,23 +21,9 @@ import React from "react";
 import renderer from "react-test-renderer";
 import { kennedyNixon } from "../../utils/testUtils";
 import { SearchHit } from "./search";
-import { SearchHitContentProps } from "./SearchHitContent";
-import { SearchHitMock } from "./SearchHitContent.spec";
-import { SharePreviewProps } from "./SharePreview";
-import VideoResult from "./VideoResult";
+import SharePreview from "./SharePreview";
 
-jest.mock("./SharePreview", () => ({
-  __esModule: true,
-  default: (props: SharePreviewProps) => SearchHitMock("SharePreview")(props),
-}));
-
-jest.mock("./SearchHitContent", () => ({
-  __esModule: true,
-  default: (props: SearchHitContentProps) =>
-    SearchHitMock("SearchHitContent")(props),
-}));
-
-test("VideoResultPreview containing", () => {
+test("SharePreview renders", () => {
   const searchHit = new SearchHit(
     [[18, 28, "television"]],
     [14, 239],
@@ -45,20 +31,9 @@ test("VideoResultPreview containing", () => {
     kennedyNixon
   );
   const tree = renderer
-    .create(<VideoResult searchHit={searchHit} onPlayClick={jest.fn()} />)
-    .toJSON();
-  expect(tree).toMatchSnapshot();
-});
-
-test("VideoResultPreview before and after", () => {
-  const searchHit = new SearchHit(
-    [[18, 28, "television"]],
-    [0, 276],
-    0,
-    kennedyNixon
-  );
-  const tree = renderer
-    .create(<VideoResult searchHit={searchHit} onPlayClick={jest.fn()} />)
+    .create(
+      <SharePreview searchHit={searchHit} contextUrl="/foundation/example" />
+    )
     .toJSON();
   expect(tree).toMatchSnapshot();
 });
