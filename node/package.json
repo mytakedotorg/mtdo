@@ -15,8 +15,8 @@
     "test": "jest",
     "test_ci": "jest --maxWorkers=2 --ci --reporters=jest-junit"
   },
-  "author": "",
-  "license": "GPL-2.0",
+  "author": "MyTake.org, Inc.",
+  "license": "AGPL-3.0",
   "dependencies": {
     "@types/express": "^4.17.7",
     "@types/node": "^12.12.54",
