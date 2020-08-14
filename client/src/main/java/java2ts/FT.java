@@ -22,6 +22,7 @@ package java2ts;
 import def.js.ArrayLike;
 import java.util.List;
 
+/** Foundation Types. */
 public interface FT {
 	public static final String KIND_VIDEO = "video";
 	public static final String KIND_DOCUMENT = "document";
