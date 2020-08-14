@@ -103,7 +103,6 @@ public class Prod extends Jooby {
 		jooby.use(new About());
 		jooby.use(new Drafts());
 		jooby.use(new AuthModule());
-		jooby.use(new NotFound());
 		jooby.use(new TakeReaction());
 		// These controllers need to be last, because otherwise
 		// they will swallow every `/user/take` and `/user` URL.

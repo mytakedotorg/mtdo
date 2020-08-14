@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2017-2018 MyTake.org, Inc.
+ * Copyright (C) 2017-2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -27,7 +27,7 @@ import static db.Tables.TAKEREACTION;
 import auth.AuthUser;
 import com.google.inject.Binder;
 import com.typesafe.config.Config;
-import common.NotFound;
+import common.RedirectException;
 import common.Text;
 import common.Time;
 import db.enums.Reaction;
@@ -92,66 +92,65 @@ public class Profile implements Jooby.Module {
 						.where(ACCOUNT.USERNAME.eq(username))
 						.fetchOne();
 				if (account == null) {
-					return NotFound.result();
-				} else {
-					// figure out if the user is logged-in
-					int userId = account.getId();
-					Optional<AuthUser> user = AuthUser.authOpt(req);
-					boolean isLoggedIn = user.isPresent() && user.get().id() == userId;
-					// and what tab they're opening
-					Mutant tab = req.param(Routes.PROFILE_TAB);
-					Mode mode = !tab.isSet() ? Mode.published : Mode.valueOf(tab.value());
-					if (mode.requiresLogin() && !isLoggedIn) {
-						return NotFound.result();
-					}
-					// then find the right record and render it
-					switch (mode) {
-					case published:
-						Result<?> published = dsl
-								.select(TAKEPUBLISHED.TITLE, TAKEPUBLISHED.TITLE_SLUG, TAKEPUBLISHED.PUBLISHED_AT)
-								.from(TAKEPUBLISHED)
-								.where(TAKEPUBLISHED.USER_ID.eq(userId))
-								.orderBy(TAKEPUBLISHED.PUBLISHED_AT.desc(), TAKEPUBLISHED.TITLE_SLUG.asc())
-								.fetch();
-						return views.Profile.profilePublished.template(account, isLoggedIn, published);
-					case stars:
-						Result<?> likes = dsl.select(TAKEPUBLISHED.TITLE, TAKEPUBLISHED.TITLE_SLUG, TAKEREACTION.REACTED_AT, ACCOUNT.USERNAME)
-								.from(TAKEPUBLISHED)
-								.innerJoin(TAKEREACTION)
-								.on(TAKEPUBLISHED.ID.eq(TAKEREACTION.TAKE_ID))
-								.innerJoin(ACCOUNT)
-								.on(TAKEPUBLISHED.USER_ID.eq(ACCOUNT.ID))
-								.where(TAKEREACTION.USER_ID.eq(userId).and(TAKEREACTION.KIND.eq(Reaction.like)))
-								.orderBy(TAKEREACTION.REACTED_AT.desc(), TAKEPUBLISHED.TITLE_SLUG.asc())
-								.fetch();
-						return views.Profile.profileStars.template(account, isLoggedIn, likes);
-					case followers:
-						Result<?> followers = dsl
-								.select(FOLLOW.AUTHOR, FOLLOW.FOLLOWER, FOLLOW.FOLLOWED_AT, ACCOUNT.USERNAME)
-								.from(ACCOUNT)
-								.innerJoin(FOLLOW)
-								.on(ACCOUNT.ID.eq(FOLLOW.FOLLOWER))
-								.where(FOLLOW.AUTHOR.eq(userId))
-								.orderBy(FOLLOW.FOLLOWED_AT.desc())
-								.fetch();
-						return views.Profile.profileFollowers.template(account, isLoggedIn, followers);
-					case following:
-						Result<?> following = dsl
-								.select(FOLLOW.AUTHOR, FOLLOW.FOLLOWER, FOLLOW.FOLLOWED_AT, ACCOUNT.USERNAME)
-								.from(ACCOUNT)
-								.innerJoin(FOLLOW)
-								.on(ACCOUNT.ID.eq(FOLLOW.AUTHOR))
-								.where(FOLLOW.FOLLOWER.eq(userId))
-								.orderBy(FOLLOW.FOLLOWED_AT.desc())
-								.fetch();
-						return views.Profile.profileFollowing.template(account, isLoggedIn, following);
-					case edit:
-						return views.Profile.profileTodo.template(account, isLoggedIn, mode);
-					case drafts:
-						return Results.redirect(Routes.DRAFTS);
-					default:
-						throw new IllegalArgumentException("Unhandled tab mode");
-					}
+					throw RedirectException.notFoundError();
+				}
+				// figure out if the user is logged-in
+				int userId = account.getId();
+				Optional<AuthUser> user = AuthUser.authOpt(req);
+				boolean isLoggedIn = user.isPresent() && user.get().id() == userId;
+				// and what tab they're opening
+				Mutant tab = req.param(Routes.PROFILE_TAB);
+				Mode mode = !tab.isSet() ? Mode.published : Mode.valueOf(tab.value());
+				if (mode.requiresLogin() && !isLoggedIn) {
+					throw RedirectException.notFoundError();
+				}
+				// then find the right record and render it
+				switch (mode) {
+				case published:
+					Result<?> published = dsl
+							.select(TAKEPUBLISHED.TITLE, TAKEPUBLISHED.TITLE_SLUG, TAKEPUBLISHED.PUBLISHED_AT)
+							.from(TAKEPUBLISHED)
+							.where(TAKEPUBLISHED.USER_ID.eq(userId))
+							.orderBy(TAKEPUBLISHED.PUBLISHED_AT.desc(), TAKEPUBLISHED.TITLE_SLUG.asc())
+							.fetch();
+					return views.Profile.profilePublished.template(account, isLoggedIn, published);
+				case stars:
+					Result<?> likes = dsl.select(TAKEPUBLISHED.TITLE, TAKEPUBLISHED.TITLE_SLUG, TAKEREACTION.REACTED_AT, ACCOUNT.USERNAME)
+							.from(TAKEPUBLISHED)
+							.innerJoin(TAKEREACTION)
+							.on(TAKEPUBLISHED.ID.eq(TAKEREACTION.TAKE_ID))
+							.innerJoin(ACCOUNT)
+							.on(TAKEPUBLISHED.USER_ID.eq(ACCOUNT.ID))
+							.where(TAKEREACTION.USER_ID.eq(userId).and(TAKEREACTION.KIND.eq(Reaction.like)))
+							.orderBy(TAKEREACTION.REACTED_AT.desc(), TAKEPUBLISHED.TITLE_SLUG.asc())
+							.fetch();
+					return views.Profile.profileStars.template(account, isLoggedIn, likes);
+				case followers:
+					Result<?> followers = dsl
+							.select(FOLLOW.AUTHOR, FOLLOW.FOLLOWER, FOLLOW.FOLLOWED_AT, ACCOUNT.USERNAME)
+							.from(ACCOUNT)
+							.innerJoin(FOLLOW)
+							.on(ACCOUNT.ID.eq(FOLLOW.FOLLOWER))
+							.where(FOLLOW.AUTHOR.eq(userId))
+							.orderBy(FOLLOW.FOLLOWED_AT.desc())
+							.fetch();
+					return views.Profile.profileFollowers.template(account, isLoggedIn, followers);
+				case following:
+					Result<?> following = dsl
+							.select(FOLLOW.AUTHOR, FOLLOW.FOLLOWER, FOLLOW.FOLLOWED_AT, ACCOUNT.USERNAME)
+							.from(ACCOUNT)
+							.innerJoin(FOLLOW)
+							.on(ACCOUNT.ID.eq(FOLLOW.AUTHOR))
+							.where(FOLLOW.FOLLOWER.eq(userId))
+							.orderBy(FOLLOW.FOLLOWED_AT.desc())
+							.fetch();
+					return views.Profile.profileFollowing.template(account, isLoggedIn, following);
+				case edit:
+					return views.Profile.profileTodo.template(account, isLoggedIn, mode);
+				case drafts:
+					return Results.redirect(Routes.DRAFTS);
+				default:
+					throw new IllegalArgumentException("Unhandled tab mode");
 				}
 			}
 		});

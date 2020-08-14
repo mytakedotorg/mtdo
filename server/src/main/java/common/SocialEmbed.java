@@ -25,7 +25,7 @@ import forms.api.RockerRaw;
 import java2ts.Routes;
 import org.jooby.Env;
 import org.jooby.Jooby;
-import views.SocialEmbed.socialcard;
+import views.SocialEmbed.socialImage;
 
 public class SocialEmbed {
 	public static SocialEmbed todo() {
@@ -36,14 +36,15 @@ public class SocialEmbed {
 		return null;
 	}
 
+	public RockerRaw header() {
+		return RockerRaw.empty();
+	}
+
+	/** Dev-only module for designing the social cards with live hotreload. */
 	public static class DevModule implements Jooby.Module {
 		@Override
 		public void configure(Env env, Config conf, Binder binder) throws Throwable {
-			//env.router().get(Routes.API + "/socialcard", req -> socialcard.template());
+			env.router().get(Routes.API + "/dev/socialImage", req -> socialImage.template());
 		}
-	}
-
-	public RockerRaw header() {
-		return RockerRaw.empty();
 	}
 }

@@ -21,7 +21,7 @@ package controllers;
 
 import com.google.inject.Binder;
 import com.typesafe.config.Config;
-import common.NotFound;
+import common.RedirectException;
 import common.SocialEmbed;
 import java2ts.Routes;
 import org.jooby.Env;
@@ -38,7 +38,7 @@ public class FoundationAssets implements Jooby.Module {
 			String rangeStr = req.param("videoRange").value();
 			String rangeArr[] = rangeStr.split("-");
 			if (rangeArr.length != 2) {
-				return NotFound.result();
+				throw RedirectException.notFoundError();
 			}
 			String imgPath = Takes.vidImageUrl(titleSlug, rangeArr[0], rangeArr[1]);
 			return views.Placeholder.foundation.template(SocialEmbed.todo(imgPath));
@@ -51,7 +51,7 @@ public class FoundationAssets implements Jooby.Module {
 			String hRangeArr[] = hRangeStr.split("-");
 			String vRangeArr[] = vRangeStr.split("-");
 			if (hRangeArr.length != 2 || vRangeArr.length != 2) {
-				return NotFound.result();
+				throw RedirectException.notFoundError();
 			}
 			String imgPath = Takes.docImageUrl(titleSlug, hRangeArr[0], hRangeArr[1], vRangeArr[0], vRangeArr[1]);
 			return views.Placeholder.foundation.template(SocialEmbed.todo(imgPath));
