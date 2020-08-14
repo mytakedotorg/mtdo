@@ -1,13 +1,14 @@
 {
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
-    "lib": ["es2015"],
+    "lib": ["es6"],
     "sourceMap": true,
     "noImplicitAny": true,
     "module": "commonjs",
     "moduleResolution": "node",
     "target": "es6",
-    "strictNullChecks": true
+    "jsx": "react",
+    "strictNullChecks": true,
   },
   "include": ["./src/main/scripts/**/*.ts"],
   "exclude": ["./node_modules/**"]
