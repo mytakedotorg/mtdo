@@ -92,7 +92,7 @@ public class Profile implements Jooby.Module {
 						.where(ACCOUNT.USERNAME.eq(username))
 						.fetchOne();
 				if (account == null) {
-					throw RedirectException.notFoundError();
+					throw RedirectException.notFoundError("Unknown user " + username);
 				}
 				// figure out if the user is logged-in
 				int userId = account.getId();
