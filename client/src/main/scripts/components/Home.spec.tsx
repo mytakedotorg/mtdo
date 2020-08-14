@@ -1,4 +1,4 @@
-@*
+/*
  * MyTake.org website and tooling.
  * Copyright (C) 2017-2020 MyTake.org, Inc.
  *
@@ -16,15 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * You can contact us at team@mytake.org
- *@
-@args()
+ */
+import * as React from "react";
+import * as renderer from "react-test-renderer";
+import Home from "./Home";
 
-@views.reactApp.template("MyTake.org", "Your bicycle for politics", null) -> {
-<div id="app"></div>
-<script type="text/javascript">
-window.mytake = {
-	type: "home",
-	cards: []
-};
-</script>
-}
+test("Home", () => {
+  const tree = renderer.create(<Home />).toJSON();
+  expect(tree).toMatchSnapshot();
+});

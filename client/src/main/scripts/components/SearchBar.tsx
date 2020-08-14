@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2018 MyTake.org, Inc.
+ * Copyright (C) 2018-2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -18,12 +18,11 @@
  * You can contact us at team@mytake.org
  */
 import * as React from "react";
-import * as ReactDOM from "react-dom";
-import DropDown from "./DropDown";
 import { Routes } from "../java2ts/Routes";
+import DropDown from "./DropDown";
 
 interface SearchBarProps {
-  searchTerm: string;
+  searchTerm?: string;
 }
 interface SearchBarState {
   value: string;
@@ -33,17 +32,13 @@ class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
     super(props);
 
     this.state = {
-      value: props.searchTerm,
+      value: props.searchTerm || "",
     };
   }
   clearSearch = () => {
     this.setState({
       value: "",
     });
-  };
-  handleRemoveTagClick = (event: React.MouseEvent<HTMLDivElement>) => {
-    window.location.href =
-      Routes.SEARCH + "?searchTerm=" + encodeURIComponent(this.state.value);
   };
   handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({ value: event.target.value });
@@ -91,52 +86,6 @@ class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
               <i className="fa fa-times-circle" aria-hidden="true" />
             </span>
           </form>
-        </div>
-        <div className="searchbar__filter-button-list">
-          <div className="searchbar__button searchbar__button--filter">
-            <a
-              className="searchbar__button-link"
-              href={
-                Routes.SEARCH +
-                "?searchTerm=" +
-                encodeURIComponent(this.state.value) +
-                "&" +
-                "f=in+debates+said+by+donald+trump"
-              }
-            >
-              <span className="searchbar__button-text">
-                in debates said by Donald Trump
-              </span>
-            </a>
-            <div
-              className="searchbar__button-close"
-              onClick={this.handleRemoveTagClick}
-            >
-              <i className="fa fa-times" aria-hidden="true" />
-            </div>
-          </div>
-          <div className="searchbar__button searchbar__button--filter">
-            <a
-              className="searchbar__button-link"
-              href={
-                Routes.SEARCH +
-                "?searchTerm=" +
-                encodeURIComponent(this.state.value) +
-                "&" +
-                "f=in+the+constitution"
-              }
-            >
-              <span className="searchbar__button-text">
-                in the Constitution
-              </span>
-            </a>
-            <div
-              className="searchbar__button-close"
-              onClick={this.handleRemoveTagClick}
-            >
-              <i className="fa fa-times" aria-hidden="true" />
-            </div>
-          </div>
         </div>
         <div className="searchbar__toggle-container">
           <div className="searchbar__button searchbar__button--filter-toggle">

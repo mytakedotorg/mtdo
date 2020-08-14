@@ -1,6 +1,6 @@
-@*
+/*
  * MyTake.org website and tooling.
- * Copyright (C) 2017-2020 MyTake.org, Inc.
+ * Copyright (C) 2018-2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -16,15 +16,30 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * You can contact us at team@mytake.org
- *@
-@args()
+ */
+import React from "react";
+import { SearchHit } from "./search";
 
-@views.reactApp.template("MyTake.org", "Your bicycle for politics", null) -> {
-<div id="app"></div>
-<script type="text/javascript">
-window.mytake = {
-	type: "home",
-	cards: []
-};
-</script>
+export interface SearchHitContentProps {
+  className?: string;
+  searchHit: SearchHit;
 }
+
+const SearchHitContent: React.FC<SearchHitContentProps> = ({
+  className,
+  searchHit,
+}) => {
+  return (
+    <p className={className}>
+      {searchHit.getContent().map((hitContent) => {
+        return hitContent.isHighlighted ? (
+          <strong key={hitContent.text}>{hitContent.text}</strong>
+        ) : (
+          hitContent.text
+        );
+      })}
+    </p>
+  );
+};
+
+export default SearchHitContent;

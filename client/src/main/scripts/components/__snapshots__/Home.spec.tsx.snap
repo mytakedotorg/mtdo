@@ -1,0 +1,69 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Home 1`] = `
+Array [
+  <section
+    className="home__section"
+  >
+    <div
+      className="home__section-content home__searchbar"
+    >
+      <h1
+        className="home__heading"
+      >
+        Search the Foundation
+      </h1>
+      <form
+        action="javascript:void(0)"
+        className="home__search-form"
+        onSubmit={[Function]}
+      >
+        <input
+          className="home__search-input"
+          onChange={[Function]}
+          placeholder="wall, -wall street"
+          results={5}
+          type="search"
+          value=""
+        />
+        <span
+          className="home__search-clear home__search-clear--hidden"
+          onClick={[Function]}
+        >
+          <i
+            aria-hidden="true"
+            className="fa fa-times-circle"
+          />
+        </span>
+        <button
+          className="home__search-button"
+          type="submit"
+        >
+          <i
+            aria-hidden="true"
+            className="fa fa-search"
+          />
+        </button>
+      </form>
+    </div>
+  </section>,
+  <section
+    className="home__section hero"
+  >
+    <div
+      className="home__section-content"
+    >
+      <div
+        className="home__boxes"
+      >
+        <p>
+          Use commas between search terms. E.g. "climate change, global warming".
+        </p>
+        <p>
+          Use a minus sign to exclude a search term. E.g. "wall, -wall street" will include anything about a wall except for Wall Street.
+        </p>
+      </div>
+    </div>
+  </section>,
+]
+`;

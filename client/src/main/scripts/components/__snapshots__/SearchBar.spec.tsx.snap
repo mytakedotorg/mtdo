@@ -32,56 +32,6 @@ exports[`SearchBar 1`] = `
     </form>
   </div>
   <div
-    className="searchbar__filter-button-list"
-  >
-    <div
-      className="searchbar__button searchbar__button--filter"
-    >
-      <a
-        className="searchbar__button-link"
-        href="/search?searchTerm=search%20term&f=in+debates+said+by+donald+trump"
-      >
-        <span
-          className="searchbar__button-text"
-        >
-          in debates said by Donald Trump
-        </span>
-      </a>
-      <div
-        className="searchbar__button-close"
-        onClick={[Function]}
-      >
-        <i
-          aria-hidden="true"
-          className="fa fa-times"
-        />
-      </div>
-    </div>
-    <div
-      className="searchbar__button searchbar__button--filter"
-    >
-      <a
-        className="searchbar__button-link"
-        href="/search?searchTerm=search%20term&f=in+the+constitution"
-      >
-        <span
-          className="searchbar__button-text"
-        >
-          in the Constitution
-        </span>
-      </a>
-      <div
-        className="searchbar__button-close"
-        onClick={[Function]}
-      >
-        <i
-          aria-hidden="true"
-          className="fa fa-times"
-        />
-      </div>
-    </div>
-  </div>
-  <div
     className="searchbar__toggle-container"
   >
     <div

@@ -100,6 +100,13 @@ $palettes: (
     text: $base-lightest,
     text--special: $white,
   ),
+  home: (
+    searchbar-border: $action,
+    searchbar-button: $action,
+    searchbar-button--hover: $action-light,
+    searchbar-button-text: $white,
+    title: $base-darkest,
+  ),
   button: (
     background--action: $action,
     background--base: $base,
@@ -156,6 +163,11 @@ $palettes: (
     text--green: $secondary,
     background: $white,
     border: $base-lightest,
+    button-text: $white,
+    button-background: $action,
+    button-background--hover: $action-light,
+    icon: $base-light,
+    icon--hover: $base-lightest,
   ),
   trackSlider: (
     color--handle: $base-dark,

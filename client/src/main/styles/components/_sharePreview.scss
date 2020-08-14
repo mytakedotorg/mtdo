@@ -1,0 +1,125 @@
+.dropdown__dropdown--share {
+  z-index: 1;
+  left: -85px;
+  top: 26px;
+}
+.share-preview {
+  width: 650px;
+  display: flex;
+}
+@mixin preview-link {
+  margin-left: 8px;
+  margin-bottom: 8px;
+  padding: 2px 4px;
+  width: 100px - 16px - 8px;
+  @media screen and (min-width: 480px) {
+    width: 150px - 16px - 8px;
+  }
+}
+.share-preview__links {
+  width: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding-top: 8px;
+  border-right: 1px solid palette(dropdown, border);
+  text-align: center;
+  @media screen and (min-width: 480px) {
+    width: 150px;
+  }
+  a {
+    @include typography($sans, 400, 16px, 1.2em);
+    text-decoration: none;
+    color: palette(share, button-text);
+    @include preview-link;
+    border-radius: 5px;
+    background: palette(share, button-background);
+    &:hover {
+      cursor: pointer;
+      background: palette(share, button-background--hover);
+    }
+    @media screen and (min-width: 480px) {
+      @include typography($sans, 400, 16px, 1.7em);
+    }
+  }
+  span {
+    @include heading6;
+    @include preview-link;
+    color: palette(share, text--green);
+  }
+}
+.share-preview__preview-container {
+  background-color: lighten($base-lightest, 40%);
+  flex: 1;
+  position: relative;
+  padding: 16px;
+}
+.share-preview__label {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: $white;
+  border-left: 1px solid palette(dropdown, border);
+  border-bottom: 1px solid palette(dropdown, border);
+  padding-left: 8px;
+  padding-right: 8px;
+  span {
+    @include typography($sans, 400, 16px, 1.7em);
+  }
+}
+.share-preview__card {
+  background-color: $white;
+  border-radius: 15px;
+  box-shadow: 1px 1px 3px $base-lightest;
+  .fa {
+    color: palette(share, icon);
+  }
+  display: flex;
+}
+.share-preview__avatar {
+  width: 50px;
+  display: flex;
+  justify-content: center;
+  padding-top: 8px;
+  .fa {
+    font-size: 36px;
+  }
+}
+.share-preview__preview {
+  padding-right: 8px;
+  flex: 1;
+}
+.share-preview__tilde {
+  @include typography($sans, 400, 12px, 0);
+}
+.share-preview__content {
+  background-color: $base-light;
+  padding: 4px;
+  p {
+    @include typography($serif, 400, 12px, 1.5em);
+    margin: 0;
+  }
+}
+.share-preview__content-meta {
+  background-color: lighten($base-lightest, 40%);
+  padding-left: 4px;
+  padding-right: 4px;
+  margin-bottom: 4px;
+}
+.share-preview__mytake {
+  @include typography($sans, 400, 16px, 1.5em);
+  margin: 0;
+}
+.share-preview__title {
+  @include typography($sans, 700, 15px, 1.3em);
+  margin: 0;
+}
+.share-preview__icons {
+  text-align: right;
+  margin-bottom: 4px;
+  .fa {
+    font-size: 18px;
+    margin-left: 4px;
+  }
+}

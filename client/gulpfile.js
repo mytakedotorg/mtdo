@@ -181,6 +181,7 @@ function webpackCfg(mode) {
       ],
     },
     externals: {
+      "feather-icons": "feather",
       react: "React",
       "react-dom": "ReactDOM",
       vis: "vis",

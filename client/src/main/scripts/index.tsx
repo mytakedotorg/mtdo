@@ -19,19 +19,19 @@
  */
 import * as React from "react";
 import * as ReactDOM from "react-dom";
+import { windowUtils } from "./browser";
+import { TakeDocument } from "./components/BlockEditor";
+import BlockReader from "./components/BlockReader";
 import BlockWriter, {
   InitialBlockWriterState,
   initialState,
 } from "./components/BlockWriter";
-import BlockReader from "./components/BlockReader";
-import FeedList from "./components/FeedList";
+import { Card } from "./components/FeedList";
 import FoundationView from "./components/FoundationView";
+import Home from "./components/Home";
+import VideoResultsLoader from "./components/search/VideoResultsLoader";
 import SearchBar from "./components/SearchBar";
 import UserNav from "./components/UserNav";
-import VideoResultsLoader from "./components/search/VideoResultsLoader";
-import { TakeDocument } from "./components/BlockEditor";
-import { Card } from "./components/FeedList";
-import { windowUtils } from "./browser";
 
 windowUtils.init();
 
@@ -102,7 +102,7 @@ function reactElementForPage(args: MtdoArgs): React.SFCElement<any> {
         <BlockWriter initState={initJson} hashUrl={window.location.hash} />
       );
     case "home":
-      return <FeedList cards={args.cards} />;
+      return <Home />;
     case "showtake":
       return <BlockReader initState={args.takeDocument} takeId={args.takeId} />;
     case "search":
@@ -119,15 +119,13 @@ if (app) {
   }
 }
 
-const searchBarContainer = document.getElementById("searchbar");
-if (searchBarContainer) {
+if (!isHomePage(window.mytake)) {
+  const searchBarContainer = document.getElementById("searchbar")!;
   let searchTerm = "";
-  if (window.mytake && window.mytake.type === "search") {
+  if (isSearchPage(window.mytake)) {
     searchTerm = window.mytake.searchTerm;
   }
   ReactDOM.render(<SearchBar searchTerm={searchTerm} />, searchBarContainer);
-} else {
-  throw "Couldn't find div#searchbar";
 }
 
 const userNavContainer = document.getElementById("usernav");
@@ -135,4 +133,12 @@ if (userNavContainer) {
   ReactDOM.render(<UserNav />, userNavContainer);
 } else {
   throw "Couldn't find div#usernav";
+}
+
+function isHomePage(page?: MtdoArgs): page is HomeArgs {
+  return (page as HomeArgs)?.type === "home";
+}
+
+function isSearchPage(page?: MtdoArgs): page is SearchArgs {
+  return (page as SearchArgs)?.type === "search";
 }

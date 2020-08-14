@@ -68,17 +68,15 @@
   @include body("sans");
 }
 @mixin turnBackground {
-  background: linear-gradient(lighten(#758aa8, 40%), white);
+  background: linear-gradient(lighten($base-lightest, 40%), white);
 }
 .turn {
   @include turnBackground();
   position: relative;
   padding-bottom: $content-margin;
-  @media #{$mq-medium} {
-    display: flex;
-    justify-content: space-around;
-    align-items: flex-start;
-  }
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-start;
   &:before {
     content: "";
     @include turnBackground();
@@ -93,58 +91,66 @@
   }
 }
 .turn__info {
-  width: 100%;
-  // background-color: grey;
-  @media #{$mq-medium} {
-    width: 150px;
-  }
+  width: 125px;
+}
+.turn__info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-right: 16px;
+  height: 34px;
+}
+.turn__info-row--short {
+  height: 20px;
 }
 .turn__speaker {
   @include typography($sans, 400, 20px, 1.7em);
-  display: inline;
-  margin-right: $page-margin-mobile;
-  @media #{$mq-medium} {
-    margin: 0;
-    margin-top: -7px;
-    display: block;
-  }
+  margin: 0;
 }
 .turn__time {
   @include typography($sans, 400, 16px, 1.7em);
-  display: inline;
-  margin-right: $page-margin-mobile;
-  @media #{$mq-medium} {
-    display: block;
-    margin-bottom: 0;
-    margin-top: -3px;
-  }
-}
-.turn__actions {
-  display: inline;
-  @media #{$mq-medium} {
-    display: block;
-  }
 }
 .turn__button {
-  margin-top: -3px;
+  display: flex;
+  align-items: center;
 }
 .turn__button--play {
-  @include body("sans");
-  @include button--blue;
-  line-height: 21px;
+  border: 2px solid palette(share, icon);
+  color: palette(share, icon);
   padding-top: 0;
   padding-bottom: 0;
   border-radius: 5px;
+  justify-content: center;
+  width: 60px;
   cursor: pointer;
-  margin-right: $page-margin-mobile;
-  @media #{$mq-medium} {
-    margin-right: $content-margin;
+  &:hover {
+    color: palette(share, icon--hover);
+    border-color: palette(share, icon--hover);
+  }
+  svg {
+    fill: $white;
   }
 }
-.turn__button--open {
-  @include body("sans");
+.dropdown__toggle--share {
+  display: flex;
+  align-items: center;
   @include button--borderless;
   background: transparent;
+}
+.turn__button--bookmark {
+  @include button--borderless;
+  background: transparent;
+  height: 34px;
+}
+.turn__button--bookmark-solid {
+  svg {
+    fill: palette(share, icon);
+  }
+  &:hover {
+    svg {
+      fill: palette(share, icon--hover);
+    }
+  }
 }
 .turn__results {
   @include body;
@@ -154,7 +160,7 @@
 .results-header__fixed {
   position: fixed;
   top: 0;
-  z-index: 1;
+  z-index: 2;
   left: 0;
   width: 100%;
   background-color: white;

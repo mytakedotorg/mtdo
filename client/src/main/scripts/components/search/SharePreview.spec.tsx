@@ -1,6 +1,6 @@
-@*
+/*
  * MyTake.org website and tooling.
- * Copyright (C) 2017-2020 MyTake.org, Inc.
+ * Copyright (C) 2018-2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -16,15 +16,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * You can contact us at team@mytake.org
- *@
-@args()
+ */
+import React from "react";
+import renderer from "react-test-renderer";
+import { kennedyNixon } from "../../utils/testUtils";
+import { SearchHit } from "./search";
+import SharePreview from "./SharePreview";
 
-@views.reactApp.template("MyTake.org", "Your bicycle for politics", null) -> {
-<div id="app"></div>
-<script type="text/javascript">
-window.mytake = {
-	type: "home",
-	cards: []
-};
-</script>
-}
+test("SharePreview renders", () => {
+  const searchHit = new SearchHit(
+    [[18, 28, "television"]],
+    [14, 239],
+    0,
+    kennedyNixon
+  );
+  const tree = renderer
+    .create(
+      <SharePreview searchHit={searchHit} contextUrl="/foundation/example" />
+    )
+    .toJSON();
+  expect(tree).toMatchSnapshot();
+});
