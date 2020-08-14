@@ -29,7 +29,7 @@ import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.diffplug.common.collect.ImmutableList;
 import com.jsoniter.output.JsonStream;
-import common.NotFound;
+import common.RedirectException;
 import common.Time;
 import common.UrlEncodedPath;
 import db.tables.pojos.Account;
@@ -69,7 +69,7 @@ public class AuthUser {
 	public void requireMod(DSLContext dsl) {
 		boolean isMod = dsl.fetchCount(dsl.selectFrom(MODERATOR).where(MODERATOR.ID.eq(id))) == 1;
 		if (!isMod) {
-			throw NotFound.exception();
+			throw RedirectException.notFoundError();
 		}
 	}
 

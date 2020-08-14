@@ -56,6 +56,7 @@ public class Dev extends DevNoDB {
 
 	private Dev(CleanPostgresModule postgresModule) {
 		use(postgresModule);
+		use(new SocialEmbed.DevModule());
 		Prod.commonDb(this);
 		Prod.controllers(this);
 	}

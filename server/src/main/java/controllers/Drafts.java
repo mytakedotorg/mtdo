@@ -28,7 +28,7 @@ import com.google.inject.Binder;
 import com.typesafe.config.Config;
 import common.IpGetter;
 import common.Mods;
-import common.NotFound;
+import common.RedirectException;
 import common.Text;
 import common.Time;
 import db.tables.records.TakedraftRecord;
@@ -58,7 +58,7 @@ public class Drafts implements Jooby.Module {
 					.and(TAKEDRAFT.USER_ID.eq(user.id()))
 					.fetchOne();
 			if (draft == null) {
-				throw NotFound.exception();
+				throw RedirectException.notFoundError();
 			} else {
 				return draft;
 			}
@@ -94,7 +94,7 @@ public class Drafts implements Jooby.Module {
 					deleteDraft(dsl, draft);
 					return Status.OK;
 				} else {
-					return NotFound.result();
+					throw RedirectException.notFoundError();
 				}
 			}
 		});
@@ -191,7 +191,7 @@ public class Drafts implements Jooby.Module {
 										.and(TAKEDRAFT.USER_ID.eq(user.id()))))
 						.fetchOne();
 				if (rev == null) {
-					return NotFound.result();
+					throw RedirectException.notFoundError();
 				} else {
 					return views.Drafts.editTake.template(rev.getTitle(), rev.getBlocks(), draftId, rev.getId());
 				}

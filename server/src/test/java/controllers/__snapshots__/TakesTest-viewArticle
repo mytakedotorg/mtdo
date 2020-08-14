@@ -24,15 +24,6 @@
 <meta name="description" content="Why it&#39;s so hard to have peace | MyTake.org">
 <meta name="author" content="MyTake.org">
 
-<!-- For 2:1 image aspect ratio -->
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:site" content="@mytakedotorg">
-<meta name="twitter:title" content="Why it&#39;s so hard to have peace">
-<meta name="twitter:description" content="Why it&#39;s so hard to have peace">
-<meta property="og:title" content="Why it&#39;s so hard to have peace" />
-<meta property="og:description" content="Why it&#39;s so hard to have peace" />
-<meta property="og:image" content="https://node.mytake.org/api/images/presidential-debate-clinton-trump-2-of-3_304.000-321.000.png" />
-<meta name="twitter:image" content="http://node.mytake.org/api/images/presidential-debate-clinton-trump-2-of-3_304.000-321.000.png">
 <meta property="fb:app_id" content="203240867180202" />
 
 <link rel="stylesheet" href="/assets-dev/styles/main.css">

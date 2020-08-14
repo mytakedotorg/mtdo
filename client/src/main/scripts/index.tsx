@@ -60,7 +60,7 @@ interface SearchArgs {
   searchTerm: string;
 }
 
-type MyTakePage =
+type MtdoArgs =
   | HomeArgs
   | ShowTakeArgs
   | FoundationArgs
@@ -69,75 +69,58 @@ type MyTakePage =
 
 declare global {
   interface Window {
-    mytake?: MyTakePage;
+    mytake?: MtdoArgs;
   }
 }
 
-const app: HTMLElement | null = document.getElementById("app");
-if (app) {
-  let Root;
-  if (typeof window.mytake != "undefined") {
-    switch (window.mytake.type) {
-      case "foundation":
-        Root = (
-          <FoundationView
-            path={window.location.pathname}
-            search={window.location.search}
-          />
-        );
-        break;
-      case "new-take":
-        let initJson: InitialBlockWriterState;
-        let windowState = window.mytake.blockWriterState;
-        if (typeof windowState != "undefined") {
-          if (
-            windowState.takeDocument.blocks === null ||
-            windowState.takeDocument.blocks.length === 0
-          ) {
-            windowState = {
-              ...windowState,
-              takeDocument: {
-                ...windowState.takeDocument,
-                blocks: [...initialState.takeDocument.blocks],
-              },
-            };
-          }
-          initJson = windowState;
-        } else {
-          initJson = (Object as any).assign({}, initialState);
+function reactElementForPage(args: MtdoArgs): React.SFCElement<any> {
+  switch (args.type) {
+    case "foundation":
+      return (
+        <FoundationView
+          path={window.location.pathname}
+          search={window.location.search}
+        />
+      );
+    case "new-take":
+      let initJson: InitialBlockWriterState;
+      if (args.blockWriterState) {
+        initJson = args.blockWriterState;
+        if (!initJson.takeDocument.blocks) {
+          initJson = {
+            ...initJson,
+            takeDocument: {
+              ...initJson.takeDocument,
+              blocks: [...initialState.takeDocument.blocks],
+            },
+          };
         }
+      } else {
+        initJson = (Object as any).assign({}, initialState);
+      }
+      return (
+        <BlockWriter initState={initJson} hashUrl={window.location.hash} />
+      );
+    case "home":
+      return <Home />;
+    case "showtake":
+      return <BlockReader initState={args.takeDocument} takeId={args.takeId} />;
+    case "search":
+      return <VideoResultsLoader searchQuery={args.searchTerm} />;
+  }
+}
 
-        Root = (
-          <BlockWriter initState={initJson} hashUrl={window.location.hash} />
-        );
-        break;
-      case "home":
-        Root = <Home />;
-        break;
-      case "showtake":
-        Root = (
-          <BlockReader
-            initState={window.mytake.takeDocument}
-            takeId={window.mytake.takeId}
-          />
-        );
-        break;
-      case "search":
-        Root = <VideoResultsLoader searchQuery={window.mytake.searchTerm} />;
-        break;
-      default:
-        throw "Unknown argument structure";
-    }
+const app = document.getElementById("app");
+if (app) {
+  if (window.mytake) {
+    ReactDOM.render(reactElementForPage(window.mytake), app);
   } else {
     throw "window.mytake is undefined";
   }
-  ReactDOM.render(Root, app);
 }
 
-const searchBarContainer: HTMLElement | null = document.getElementById(
-  "searchbar"
-);
 if (!isHomePage(window.mytake)) {
+  const searchBarContainer = document.getElementById("searchbar")!;
   let searchTerm = "";
   if (isSearchPage(window.mytake)) {
     searchTerm = window.mytake.searchTerm;
@@ -145,17 +128,17 @@ if (!isHomePage(window.mytake)) {
   ReactDOM.render(<SearchBar searchTerm={searchTerm} />, searchBarContainer);
 }
 
-const userNavContainer: HTMLElement | null = document.getElementById("usernav");
+const userNavContainer = document.getElementById("usernav");
 if (userNavContainer) {
   ReactDOM.render(<UserNav />, userNavContainer);
 } else {
   throw "Couldn't find div#usernav";
 }
 
-function isHomePage(page?: MyTakePage): page is HomeArgs {
+function isHomePage(page?: MtdoArgs): page is HomeArgs {
   return (page as HomeArgs)?.type === "home";
 }
 
-function isSearchPage(page?: MyTakePage): page is SearchArgs {
+function isSearchPage(page?: MtdoArgs): page is SearchArgs {
   return (page as SearchArgs)?.type === "search";
 }

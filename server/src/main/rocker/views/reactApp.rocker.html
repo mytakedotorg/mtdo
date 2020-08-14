@@ -1,6 +1,6 @@
 @*
  * MyTake.org website and tooling.
- * Copyright (C) 2017-2018 MyTake.org, Inc.
+ * Copyright (C) 2017-2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -17,7 +17,9 @@
  *
  * You can contact us at team@mytake.org
  *@
-@args (String title, String description, String fileset, String imgPath, RockerBody content)
+@import common.SocialEmbed
+
+@args (String title, String description, SocialEmbed social, RockerBody content)
 
 <!doctype html>
 
@@ -45,27 +47,12 @@
 <meta name="description" content="@description | MyTake.org">
 <meta name="author" content="MyTake.org">
 
-<!-- For 2:1 image aspect ratio -->
-<meta name="twitter:card" content="summary_large_image">
-@*
-<!-- For 1:1 image aspect ratio -->
-<meta name="twitter:card" content="summary">
-*@
-<meta name="twitter:site" content="@@mytakedotorg">
-<meta name="twitter:title" content="@title">
-<meta name="twitter:description" content="@description">
-<meta property="og:title" content="@title" />
-<meta property="og:description" content="@description" />
-@*
-<meta property="og:url" content="https://mytake.org@url" />
-*@
-@if (!imgPath.isEmpty()) {
-<meta property="og:image" content="https://node.mytake.org/api/images@imgPath" />
-<meta name="twitter:image" content="http://node.mytake.org/api/images@imgPath">
+@if (social != null) {
+	@social.header()
 }
 <meta property="fb:app_id" content="@fbAppId()" />
 
-@style(fileset)
+@style("reactApp")
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Merriweather:400,400i,700|Source+Sans+Pro:300,400,700" crossorigin="anonymous">
 <script src="https://use.fontawesome.com/be03d6dcba.js"></script>
 <!--[if lt IE 9]>
@@ -136,6 +123,6 @@
 	</div>
 </footer>
 <div class="fade-overlay"></div>
-@script(fileset)
+@script("reactApp")
 </body>
 </html>
