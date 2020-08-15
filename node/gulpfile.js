@@ -5,7 +5,7 @@ const nodemon = require("gulp-nodemon");
 const sourcemaps = require("gulp-sourcemaps");
 
 const config = {
-  src: "./src/main/scripts/**/*.ts",
+  src: "./src/main/scripts/**/*.{ts,tsx}",
   dist: "./build/dist",
 };
 
