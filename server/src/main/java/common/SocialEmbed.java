@@ -40,15 +40,15 @@ import views.SocialEmbed.socialImage;
 
 public class SocialEmbed {
 	public static final String DEV_SOCIAL_IMAGE = Routes.API + "/dev/socialImage/";
-	public static final String NODE_SOCIAL_HEADERS = Routes.API + "/dev/socialImage/";
-	public static final String NODE_SOCIAL_IMAGE = Routes.API + "/dev/socialImage/";
+	public static final String NODE_SOCIAL_HEADERS = "/static/social-header/";
+	public static final String NODE_SOCIAL_IMAGE = "/static/social-image/";
 
 	private static final int MAX_WAIT_MS = 500;
 	private static final int NODE_DEV_PORT = 4000;
 	private static final boolean isHerokuProd = "true".equals(System.getenv("HEROKU_NAKED_PROD"));
 
-	public static SocialEmbed get(Request req, String input) throws IOException {
-		return req.require(GetHeader.class).get(input);
+	public static SocialEmbed get(Request req, String embedRison) throws IOException {
+		return req.require(GetHeader.class).get(NODE_SOCIAL_HEADERS + embedRison);
 	}
 
 	public static SocialEmbed todo() {
