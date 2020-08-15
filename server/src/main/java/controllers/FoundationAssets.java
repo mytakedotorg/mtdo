@@ -32,7 +32,6 @@ public class FoundationAssets implements Jooby.Module {
 	@Override
 	public void configure(Env env, Config conf, Binder binder) throws Throwable {
 		env.router().get(Routes.FOUNDATION, () -> views.Placeholder.foundation.template(SocialEmbed.todo()));
-		// Foundation catch-all (nothing is highlighted)
 		env.router().get(Routes.FOUNDATION + "/**", req -> {
 			String path = req.rawPath();
 			int embedSlash = path.indexOf('/', Routes.FOUNDATION.length() + 1);
@@ -42,14 +41,13 @@ public class FoundationAssets implements Jooby.Module {
 				if (titleSlug.isEmpty()) { // trailing slash
 					throw RedirectException.permanent(Routes.FOUNDATION);
 				}
-				// title may be empty
-				embed = SocialEmbed.todo(titleSlug);
+				embed = SocialEmbed.todo(titleSlug); // something appropriate for summarizing the entire fact
 			} else {
 				String embedRison = path.substring(embedSlash + 1);
 				if (embedRison.isEmpty()) {  // trailing slash
 					throw RedirectException.permanent(path.substring(0, embedSlash));
 				}
-				embed = SocialEmbed.get(req, embedRison);
+				embed = SocialEmbed.get(req, embedRison); // get the specific embed from node.mytake.org
 			}
 			return views.Placeholder.foundation.template(embed);
 		});
