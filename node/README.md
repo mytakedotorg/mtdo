@@ -6,9 +6,9 @@
 - `./gradlew beforeCompile` (populates the `common` and `java2ts` directories of `src/main/scripts`)
 - `npm start` to launch the server
     - if you change a file and save, it will automatically rebuild and restart the server
-    - [13th Amendment](http://localhost:3000/api/images/o_dRqrNJ62wzlgLilTrLxkHqGmvAS9qTpa4z4pjyFqA=_54-86_0-218.jpg)
-    - [Mondale Reagan](http://localhost:3000/api/images/hNPKEqwAyuJdu2OQY6ESAieCq_xQXX1it4bjA7DRlIg=_5839.620-5949.290.png)
-    - [broken link](http://localhost:3000/api/images/vrhLapmIbWECYassLC2Umf7Z16fusYgWWGhTP7KgIYU=_5839.620-5949.290.jpg)
+    - [13th Amendment](http://localhost:4000/api/images/o_dRqrNJ62wzlgLilTrLxkHqGmvAS9qTpa4z4pjyFqA=_54-86_0-218.jpg)
+    - [Mondale Reagan](http://localhost:4000/api/images/hNPKEqwAyuJdu2OQY6ESAieCq_xQXX1it4bjA7DRlIg=_5839.620-5949.290.png)
+    - [broken link](http://localhost:4000/api/images/vrhLapmIbWECYassLC2Umf7Z16fusYgWWGhTP7KgIYU=_5839.620-5949.290.jpg)
 
 ## Deployment
 
