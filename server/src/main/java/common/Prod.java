@@ -85,6 +85,7 @@ public class Prod extends Jooby {
 		CustomAssets.initTemplates(jooby);
 		EmailSender.init(jooby);
 		Mods.init(jooby);
+		SocialEmbed.init(jooby);
 		jooby.use(new JsoniterModule());
 		jooby.use(new MyFlash());
 	}

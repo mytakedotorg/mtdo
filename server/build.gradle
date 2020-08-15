@@ -130,6 +130,8 @@ dependencies {
 	implementation "org.postgresql:postgresql:${VER_POSTGRESQL_DRIVER}"
 	// flyway
 	implementation "org.flywaydb:flyway-core:${VER_FLYWAY}"
+	// fetch headers from node.mytake.org
+	implementation 'org.apache.httpcomponents:httpclient:4.5.12'
 	// common libs
 	implementation 'commons-validator:commons-validator:1.6'
 	implementation 'com.diffplug.durian:durian-core:1.2.0'
@@ -166,9 +168,15 @@ tasks.register('runDev', JavaExec) {
 	]
 }
 
-task setSnapshots(type: Test) {
+tasks.register('setSnapshots', Test) {
 	systemProperties(['SET_SNAPSHOTS': 'TRUE'])
-	flywayJooq.neededBy(it)
+}
+// the tests need the node.mytake.org server in order to get their social headers
+'setSnapshots:test'.split(':').each { taskName ->
+	tasks.named(taskName) {
+		flywayJooq.neededBy(it)
+		dependsOn(':node:assemble')
+	}
 }
 
 /////////////
