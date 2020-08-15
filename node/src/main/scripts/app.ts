@@ -36,7 +36,7 @@ if (app.get("env") === "production") {
 }
 
 const ARG = "arg";
-app.use(`/api/social-image/:${ARG}`, async (req: Request, res: Response) => {
+app.use(`/static/social-image/:${ARG}`, async (req, res) => {
   try {
     const imgKeyAndExtension = req.params[ARG];
     const bufOrErrorMsg = await generateImage(imgKeyAndExtension);
@@ -55,7 +55,7 @@ app.use(`/api/social-image/:${ARG}`, async (req: Request, res: Response) => {
   }
 });
 
-app.use(`/api/social-header/:${ARG}`, async (req: Request, res: Response) => {
+app.use(`/static/social-header/:${ARG}`, async (req, res) => {
   try {
     const arg = req.params[ARG];
     res.writeHead(200, {
