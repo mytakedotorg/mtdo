@@ -45,6 +45,8 @@ export type TextCut = {
 export type Social = VideoCut | TextCut;
 
 export function encodeSocial(embed: Social) {
+  // TODO: limit floating point precision
+  // https://github.com/w33ble/rison-node/issues/4
   return rison.encode_object(embed);
 }
 
