@@ -21,10 +21,18 @@ import * as React from "react";
 import { FT } from "../java2ts/FT";
 import { Routes } from "../java2ts/Routes";
 import { slugify } from "../common/functions";
+import {
+  encodeSocial,
+  decodeSocial,
+  VideoCut,
+  TextCut,
+} from "../common/social/social";
 import Timeline, { TimelineItemData } from "./Timeline";
 import { SetFactHandlers } from "./TimelinePreview";
 import TimelinePreviewContainer from "./TimelinePreviewContainer";
 import TimelineRadioButtons from "./TimelineRadioButtons";
+
+type TimelineSocial = VideoCut | TextCut;
 
 interface URLValues {
   factTitleSlug: string;
@@ -138,7 +146,7 @@ export default class TimelineView extends React.Component<
           window.history.pushState(
             stateObject,
             "UnusedTitle",
-            Routes.FOUNDATION_V1 + "/" + factTitleSlug
+            Routes.FOUNDATION + "/" + factTitleSlug
           );
         }
         this.setState({
@@ -185,25 +193,26 @@ export default class TimelineView extends React.Component<
           },
         };
 
-        let newURL = Routes.FOUNDATION_V1 + "/" + factTitleSlug + "/";
-
+        let social: TimelineSocial;
         if (!viewRange) {
           // Video fact
-          newURL +=
-            highlightedRange[0].toFixed(3) +
-            "-" +
-            highlightedRange[1].toFixed(3);
+          social = {
+            cut: highlightedRange,
+            fact: factLink.hash,
+            kind: "videoCut",
+          };
         } else {
           // Document fact
-          newURL +=
-            highlightedRange[0].toString() +
-            "-" +
-            highlightedRange[1].toString() +
-            "/" +
-            viewRange[0].toString() +
-            "-" +
-            viewRange[1].toString();
+          social = {
+            cut: viewRange,
+            bold: [highlightedRange],
+            fact: factLink.hash,
+            kind: "textCut",
+          };
         }
+        let newURL = `${Routes.FOUNDATION}/${factTitleSlug}/${encodeSocial(
+          social
+        )}`;
 
         if (oldURLValues) {
           this.setState({
@@ -241,8 +250,7 @@ export default class TimelineView extends React.Component<
           },
         };
 
-        let newURL = Routes.FOUNDATION_V1 + "/" + factTitleSlug;
-
+        let newURL = `${Routes.FOUNDATION}/${factTitleSlug}`;
         if (oldURLValues) {
           this.setState({
             urlValues: {
@@ -251,7 +259,6 @@ export default class TimelineView extends React.Component<
               viewRange: undefined,
             },
           });
-
           window.history.pushState(stateObject, "UnusedTitle", newURL);
         } else {
           throw "TimelineView: can't set a range when factLink is null (1)";
@@ -287,38 +294,58 @@ export default class TimelineView extends React.Component<
       Routes.DRAFTS_NEW + "/#" + excerptTitle + "&" + range[0] + "&" + range[1];
   };
   parseURL = (path: string): URLValues | null => {
-    /**
-     * @TODO https://github.com/mytakedotorg/mytakedotorg/issues/291
-     */
-    const pathArr = path.substring(1).split("/");
-    if (pathArr.length > 1) {
-      if (Routes.FOUNDATION_V1.indexOf(pathArr[0]) !== -1) {
-        const factTitleSlug = pathArr[1];
-        let highlightedRange: [number, number] | undefined;
-        let viewRange: [number, number] | undefined;
-        if (pathArr[2] && pathArr[2].indexOf("-") !== -1) {
-          highlightedRange = [
-            parseFloat(pathArr[2].split("-")[0]),
-            parseFloat(pathArr[2].split("-")[1]),
-          ];
-          if (pathArr[3] && pathArr[3].indexOf("-") !== -1) {
-            viewRange = [
-              parseInt(pathArr[3].split("-")[0]),
-              parseInt(pathArr[3].split("-")[1]),
-            ];
-          }
-        }
-        return {
-          factTitleSlug: factTitleSlug,
-          highlightedRange: highlightedRange,
-          viewRange: viewRange,
-        };
-      } else {
-        //route not /foundation-v1
-        return null;
+    let titleSlug: string | null;
+    let social: TimelineSocial | null;
+
+    const embedSlash = path.indexOf("/", Routes.FOUNDATION.length + 1);
+    let embed: TimelineSocial;
+    if (embedSlash == -1) {
+      titleSlug = path.substring(Routes.FOUNDATION.length + 1);
+      if (titleSlug === "") {
+        // trailing slash
+        titleSlug = null;
       }
+      social = null;
     } else {
+      titleSlug = path.substring(Routes.FOUNDATION.length + 1);
+      const embedRison = path.substring(embedSlash + 1);
+      if (embedRison === "") {
+        // trailing slash
+        social = null;
+      } else {
+        social = decodeSocial(embedRison);
+      }
+    }
+    if (!titleSlug) {
       return null;
+    } else if (!social) {
+      return {
+        factTitleSlug: titleSlug,
+      };
+    } else {
+      /**
+       * @TODO https://github.com/mytakedotorg/mytakedotorg/issues/291
+       * Perhaps URLValues ought to replace highlightedRange/viewRange with TimelineSocial?
+       */
+      return {
+        factTitleSlug: titleSlug,
+        highlightedRange: (() => {
+          switch (social.kind) {
+            case "textCut":
+              return social.bold ? social.bold[0] : undefined;
+            case "videoCut":
+              return undefined;
+          }
+        })(),
+        viewRange: (() => {
+          switch (social.kind) {
+            case "textCut":
+              return social.cut;
+            case "videoCut":
+              return social.cut;
+          }
+        })(),
+      };
     }
   };
   componentDidMount() {

@@ -21,6 +21,7 @@ import * as React from "react";
 import { FT } from "../java2ts/FT";
 import { Routes } from "../java2ts/Routes";
 import { slugify } from "../common/functions";
+import { encodeSocial, TextCut } from "../common/social/social";
 import BlockEditor, { TakeDocument } from "./BlockEditor";
 import ReactionContainer from "./ReactionContainer";
 
@@ -46,19 +47,15 @@ class BlockReader extends React.Component<BlockReaderProps, BlockReaderState> {
     highlightedRange: [number, number],
     viewRange: [number, number]
   ) => {
-    const { title } = factLink.fact;
-    window.location.href =
-      Routes.FOUNDATION_V1 +
-      "/" +
-      slugify(title) +
-      "/" +
-      highlightedRange[0] +
-      "-" +
-      highlightedRange[1] +
-      "/" +
-      viewRange[0] +
-      "-" +
-      viewRange[1];
+    const social: TextCut = {
+      cut: viewRange,
+      bold: [highlightedRange],
+      fact: factLink.hash,
+      kind: "textCut",
+    };
+    window.location.href = `${Routes.FOUNDATION}/${slugify(
+      factLink.fact.title
+    )}/${encodeSocial(social)}`;
   };
   render() {
     const eventHandlers = {
