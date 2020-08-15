@@ -75,6 +75,10 @@ node {
 		inputs.dir('src/main/scripts')
 		outputs.dir('build/test-results/jest')
 	}
+	npmRun('updateSnapshot') {
+		dependsOn('jsweet')
+		dependsOn(':foundation-gen:generateFoundation')
+	}
 
 	// every gulp task automatically installs from package-lock.json using 'npm ci'
 	// and adds that and gulpfile.js as input files
@@ -121,6 +125,9 @@ clean {
 // hook the gradle defaults into our npm tasks
 tasks.named('test') {
 	dependsOn 'npm_run_test_ci'
+}
+tasks.register('updateSnapshot') {
+	dependsOn 'npm_run_updateSnapshot'
 }
 tasks.named('check') {
 	dependsOn 'test'

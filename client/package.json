@@ -14,7 +14,8 @@
     "clean": "gulp clean",
     "deploy": "gulp buildProd",
     "test": "jest",
-    "test_ci": "jest --maxWorkers=2 --ci --reporters=jest-junit"
+    "test_ci": "jest --maxWorkers=2 --ci --reporters=jest-junit",
+    "updateSnapshot": "jest --updateSnapshot"
   },
   "author": "MyTake.org, Inc.",
   "license": "AGPL-3.0",

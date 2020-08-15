@@ -48,6 +48,9 @@ node {
 		inputs.dir('src/main/scripts').withPathSensitivity(PathSensitivity.RELATIVE)
 		outputs.dir('build/test-results/jest')
 	}
+	npmRun('updateSnapshot') {
+		dependsOn 'beforeCompile'
+	}
 	gulp('build') {
 		dependsOn 'beforeCompile'
 		inputs.file('tsconfig.json').withPathSensitivity(PathSensitivity.RELATIVE)
@@ -61,6 +64,9 @@ node {
 }
 tasks.register('test') {
 	dependsOn 'npm_run_test_ci'
+}
+tasks.register('updateSnapshot') {
+	dependsOn 'npm_run_updateSnapshot'
 }
 tasks.named('check') {
 	dependsOn 'test'
