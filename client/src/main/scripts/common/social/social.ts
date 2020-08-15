@@ -17,16 +17,37 @@
  *
  * You can contact us at team@mytake.org
  */
-import * as React from "react";
+import rison from "rison";
 
-export type SocialImageProps = {
-  embed: string;
+/* TODO, for search
+export type VideoTurn = {
+    kind: "videoTurn";
+    fact: string;
+    turn: number;
+    cut: [number, number];
+    bold?: Array<[number, number]>;
+};
+*/
+
+export type VideoCut = {
+  cut: [number, number];
+  fact: string;
+  kind: "videoCut";
 };
 
-export const SocialImage: React.FC<SocialImageProps> = (props) => {
-  return (
-    <div className="socialImage">
-      <p>{props.embed}</p>
-    </div>
-  );
+export type TextCut = {
+  cut: [number, number];
+  bold?: Array<[number, number]>;
+  fact: string;
+  kind: "textCut";
 };
+
+export type Social = VideoCut | TextCut;
+
+export function encodeSocial(embed: Social) {
+  return rison.encode_object(embed);
+}
+
+export function decodeSocial(encoded: string): Social {
+  return rison.decode_object(encoded);
+}
