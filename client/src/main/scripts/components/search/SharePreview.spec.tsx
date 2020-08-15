@@ -28,7 +28,8 @@ test("SharePreview renders", () => {
     [[18, 28, "television"]],
     [14, 239],
     0,
-    kennedyNixon
+    kennedyNixon,
+    "factHash"
   );
   const tree = renderer
     .create(
