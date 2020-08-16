@@ -119,13 +119,15 @@ if (app) {
   }
 }
 
-if (!isHomePage(window.mytake)) {
+if (isSearchPage(window.mytake)) {
   const searchBarContainer = document.getElementById("searchbar")!;
-  let searchTerm = "";
-  if (isSearchPage(window.mytake)) {
-    searchTerm = window.mytake.searchTerm;
-  }
-  ReactDOM.render(<SearchBar searchTerm={searchTerm} />, searchBarContainer);
+  ReactDOM.render(
+    <SearchBar
+      initialSearchQuery={window.mytake.searchTerm}
+      classModifier="search"
+    />,
+    searchBarContainer
+  );
 }
 
 const userNavContainer = document.getElementById("usernav");
@@ -133,10 +135,6 @@ if (userNavContainer) {
   ReactDOM.render(<UserNav />, userNavContainer);
 } else {
   throw "Couldn't find div#usernav";
-}
-
-function isHomePage(page?: MtdoArgs): page is HomeArgs {
-  return (page as HomeArgs)?.type === "home";
 }
 
 function isSearchPage(page?: MtdoArgs): page is SearchArgs {

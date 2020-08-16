@@ -32,6 +32,7 @@ $nav-height: 35px;
   display: flex;
   justify-content: flex-start;
   text-decoration: none;
+  width: 175px;
 }
 .header__logo-image-container {
   height: 32px;
@@ -52,7 +53,10 @@ $nav-height: 35px;
   color: palette(header, text--red);
 }
 .header__searchbar {
-  height: 3.5rem;
-  line-height: 3.5rem;
-  background-color: palette(searchbar, background);
+  flex: 1;
+  height: 40px;
+  line-height: 40px;
+}
+.header__usernav {
+  width: 175px;
 }

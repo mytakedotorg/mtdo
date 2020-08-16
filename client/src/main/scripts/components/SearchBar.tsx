@@ -17,111 +17,71 @@
  *
  * You can contact us at team@mytake.org
  */
-import * as React from "react";
+import React, { useState } from "react";
+import { Search, XCircle } from "react-feather";
 import { Routes } from "../java2ts/Routes";
-import DropDown from "./DropDown";
 
 interface SearchBarProps {
-  searchTerm?: string;
+  classModifier?: string;
+  placeholder?: string;
+  initialSearchQuery?: string;
 }
-interface SearchBarState {
-  value: string;
-}
-class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
-  constructor(props: SearchBarProps) {
-    super(props);
 
-    this.state = {
-      value: props.searchTerm || "",
-    };
-  }
-  clearSearch = () => {
-    this.setState({
-      value: "",
-    });
+const SearchBar: React.FC<SearchBarProps> = ({
+  classModifier,
+  placeholder,
+  initialSearchQuery,
+}) => {
+  const [inputValue, setInputValue] = useState<string>(
+    initialSearchQuery || ""
+  );
+  const BEMModifier = classModifier || "";
+
+  const clearSearch = () => {
+    setInputValue("");
   };
-  handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({ value: event.target.value });
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setInputValue(event.target.value);
   };
-  handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     window.location.href =
-      Routes.SEARCH + "?q=" + encodeURIComponent(this.state.value);
+      Routes.SEARCH +
+      "?q=" +
+      encodeURIComponent(inputValue || placeholder || "");
   };
-  render() {
-    const Toggle = (
-      <span className="searchbar__toggle-element">
-        <span className="searchbar__toggle-text searchbar__toggle-text--filter-icon">
-          <i className="fa fa-filter" aria-hidden="true" />
-        </span>
-        <span className="searchbar__toggle-text searchbar__toggle-text--caret-icon">
-          <i className="fa fa-caret-down" aria-hidden="true" />
-        </span>
-        <span className="searchbar__toggle-text searchbar__toggle-text--user">
-          <span className="searchbar__filter-text">search in...</span>
-        </span>
-      </span>
-    );
-    let searchCancelClass = "searchbar__cancel";
-    if (!this.state.value) {
-      searchCancelClass += " searchbar__cancel--hidden";
-    }
-    return (
-      <div className="searchbar">
-        <div className="searchbar__input-container">
-          <form
-            className="searchbox__form"
-            onSubmit={this.handleSubmit}
-            action="javascript:void(0)" // Required for iOS search keyboard
-          >
-            <input
-              className="searchbar__input"
-              type="search"
-              value={this.state.value}
-              placeholder="Search the Foundation"
-              results={5}
-              onChange={this.handleChange}
-            />
-            <span className={searchCancelClass} onClick={this.clearSearch}>
-              <i className="fa fa-times-circle" aria-hidden="true" />
-            </span>
-          </form>
-        </div>
-        <div className="searchbar__toggle-container">
-          <div className="searchbar__button searchbar__button--filter-toggle">
-            <DropDown
-              classModifier="searchbar"
-              dropdownPosition="BL"
-              toggleText={Toggle}
-            >
-              <div className="searchbar__dropdown">
-                <p className="searchbar__dropdown-text">
-                  <i
-                    className="fa fa-exclamation-triangle"
-                    aria-hidden="true"
-                  />
-                  Under construction
-                </p>
-                <p className="searchbar__dropdown-link">
-                  <a
-                    className="searchbar__link"
-                    href="https://meta.mytake.org/t/how-to-contribute-to-mytake-org/29"
-                  >
-                    How to help
-                  </a>
-                </p>
-                <p className="searchbar__dropdown-link">
-                  <a className="searchbar__link" href={Routes.FOUNDATION}>
-                    Browse the Foundation
-                  </a>
-                </p>
-              </div>
-            </DropDown>
-          </div>
-        </div>
-      </div>
-    );
+
+  let searchCancelClass = `searchbar__cancel searchbar__cancel--${BEMModifier}`;
+  if (!inputValue) {
+    searchCancelClass += " searchbar__cancel--hidden";
   }
-}
+  return (
+    <form
+      className={`searchbar__form searchbar__form--${BEMModifier}`}
+      onSubmit={handleSubmit}
+      action="javascript:void(0)" // Required for iOS search keyboard
+    >
+      <input
+        className={`searchbar__input searchbar__input--${BEMModifier}`}
+        type="search"
+        value={inputValue}
+        placeholder={placeholder}
+        results={5}
+        onChange={handleChange}
+      />
+      <span className={searchCancelClass} onClick={clearSearch}>
+        <XCircle />
+      </span>
+      <button
+        type="submit"
+        className={`searchbar__button searchbar__button--${BEMModifier}`}
+      >
+        <Search />
+      </button>
+    </form>
+  );
+};
 
 export default SearchBar;

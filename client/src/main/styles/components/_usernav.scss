@@ -7,6 +7,7 @@
 .dropdown__toggle--usernav {
   display: flex;
   align-items: center;
+  justify-content: flex-end;
   @include typography($sans, 300, 18px, 40px);
   color: palette(nav, text);
   svg {
