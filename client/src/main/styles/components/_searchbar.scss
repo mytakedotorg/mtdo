@@ -41,13 +41,19 @@ input[type="search"] {
 .searchbar__input--search {
   line-height: 3rem;
 }
+.searchbar__input-container {
+  position: relative;
+  display: flex;
+  flex: 1;
+}
 .searchbar__cancel {
   color: palette(searchbar, cancel-icon);
-  font-size: 15px;
   position: absolute;
-  top: 1px;
-  right: 9px;
+  right: 8px;
   cursor: pointer;
+}
+.searchbar__cancel--search {
+  top: 4px;
 }
 .searchbar__cancel--hidden {
   display: none;

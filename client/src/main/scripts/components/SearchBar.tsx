@@ -63,17 +63,21 @@ const SearchBar: React.FC<SearchBarProps> = ({
       onSubmit={handleSubmit}
       action="javascript:void(0)" // Required for iOS search keyboard
     >
-      <input
-        className={`searchbar__input searchbar__input--${BEMModifier}`}
-        type="search"
-        value={inputValue}
-        placeholder={placeholder}
-        results={5}
-        onChange={handleChange}
-      />
-      <span className={searchCancelClass} onClick={clearSearch}>
-        <XCircle />
-      </span>
+      <div
+        className={`searchbar__input-container searchbar__input-container--${BEMModifier}`}
+      >
+        <input
+          className={`searchbar__input searchbar__input--${BEMModifier}`}
+          type="search"
+          value={inputValue}
+          placeholder={placeholder}
+          results={5}
+          onChange={handleChange}
+        />
+        <span className={searchCancelClass} onClick={clearSearch}>
+          <XCircle />
+        </span>
+      </div>
       <button
         type="submit"
         className={`searchbar__button searchbar__button--${BEMModifier}`}
