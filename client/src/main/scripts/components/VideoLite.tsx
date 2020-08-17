@@ -162,18 +162,14 @@ class VideoLite extends React.Component<VideoLiteProps, VideoLiteState> {
     };
 
     return (
-      <div className="video__outer-container">
-        <div className="video__video-container">
-          <YouTube
-            videoId={this.props.videoId}
-            opts={opts}
-            onReady={this.handleReady}
-            onPause={this.handlePause}
-            onStateChange={this.handleStateChange}
-            className="video__video"
-          />
-        </div>
-      </div>
+      <YouTube
+        videoId={this.props.videoId}
+        opts={opts}
+        onReady={this.handleReady}
+        onPause={this.handlePause}
+        onStateChange={this.handleStateChange}
+        className="video__video"
+      />
     );
   }
 }

@@ -99,6 +99,11 @@ const SearchContainer: React.FC<SearchContainerProps> = ({
   return (
     <>
       <div className="search__sticky">
+        {videoProps && isVideoPlaying && (
+          <div className="search__video">
+            <VideoLite {...videoProps} onClipEnd={handleClipEnd} />
+          </div>
+        )}
         <SearchBar initialSearchQuery={searchQuery} classModifier="mobile" />
         <h1 className="results__heading">{searchResultCount} Results Found</h1>
         {factHits.length === 0 ? (
@@ -106,16 +111,10 @@ const SearchContainer: React.FC<SearchContainerProps> = ({
             Search returned no results for <strong>{searchQuery}</strong>
           </p>
         ) : (
-          <>
-            {videoProps && isVideoPlaying ? (
-              <VideoLite {...videoProps} onClipEnd={handleClipEnd} />
-            ) : (
-              <NGramViewer
-                searchResult={searchResult}
-                onBarClick={handleBarClick}
-              />
-            )}
-          </>
+          <NGramViewer
+            searchResult={searchResult}
+            onBarClick={handleBarClick}
+          />
         )}
       </div>
       <div className="results">

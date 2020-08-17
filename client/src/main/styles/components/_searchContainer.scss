@@ -8,3 +8,12 @@
     top: 40px;
   }
 }
+.search__video {
+  position: fixed;
+  top: 40px;
+  background-color: $white;
+  div {
+    @include content-column;
+    text-align: center;
+  }
+}
