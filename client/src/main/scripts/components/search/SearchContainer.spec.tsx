@@ -32,7 +32,7 @@ import socialSecuritySearchResults from "./testData/socialSecuritySearchResults.
 import wallSearchResults from "./testData/wallSearchResults.json";
 import { VideoResultsListProps } from "./VideoResultsList";
 
-jest.mock("../Searchbar", () => ({
+jest.mock("../SearchBar", () => ({
   __esModule: true,
   default: "Searchbar",
 }));
