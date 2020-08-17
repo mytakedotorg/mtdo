@@ -16,7 +16,7 @@
 .searchbar__form--mobile {
   padding-right: 4px;
   padding-left: 4px;
-  margin-top: 8px;
+  padding-top: 8px;
   flex-direction: column;
   @media screen and (min-width: 768px + 1) {
     display: none;

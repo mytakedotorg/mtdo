@@ -9,7 +9,7 @@
   }
 }
 .search__video {
-  position: fixed;
+  position: absolute;
   top: 0;
   background-color: $white;
   z-index: 1;
@@ -19,6 +19,6 @@
     text-align: center;
   }
   @media screen and (min-width: 768px) {
-    top: 40px;
+    // top: 40px;
   }
 }
