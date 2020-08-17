@@ -62,7 +62,10 @@ const SearchContainer: React.FC<SearchContainerProps> = ({
   const handleBarClick = (year: string) => {
     for (const [date, div] of dateToDivMap) {
       if (date.substring(0, 4) === year) {
-        const y = div.getBoundingClientRect().top - 318 + window.pageYOffset;
+        const y =
+          div.getBoundingClientRect().top -
+          getStickyHeaderHeight() +
+          window.pageYOffset;
         scrollTo(y, () => {
           div.classList.toggle("results__preview--fade");
           setTimeout(() => {
@@ -149,4 +152,16 @@ function scrollTo(offset: number, callback: () => void) {
   });
 }
 
+function getStickyHeaderHeight(): number {
+  const NGRAM_CONTAINER_HEIGHT = 218;
+  if (window.innerWidth > 768) {
+    const HEADER_HEIGHT = 40;
+    const HEADING_HEIGHT = 44;
+    return HEADER_HEIGHT + HEADING_HEIGHT + NGRAM_CONTAINER_HEIGHT;
+  } else {
+    const MOBILE_HEADING_HEIGHT = 31;
+    const SEARCHBAR_HEIGHT = 88;
+    return SEARCHBAR_HEIGHT + MOBILE_HEADING_HEIGHT + NGRAM_CONTAINER_HEIGHT;
+  }
+}
 export default SearchContainer;
