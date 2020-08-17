@@ -25,7 +25,7 @@ import { SearchResult } from "./search";
 const SVG_PADDING_LEFT = 25;
 const SVG_PADDING_TOP = 40;
 const SVG_WIDTH = Math.min(700, window.innerWidth);
-const SVG_HEIGHT = 268;
+const SVG_HEIGHT = 200;
 const colors = d3
   .scaleOrdinal(d3.schemeSet2)
   .range()

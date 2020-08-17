@@ -19,7 +19,7 @@
  */
 import React, { useEffect, useState } from "react";
 import { search, SearchMode, SearchResult } from "./search";
-import VideoResultsList from "./VideoResultsList";
+import SearchContainer from "./SearchContainer";
 
 interface VideoResultsLoaderProps {
   searchQuery: string;
@@ -58,7 +58,7 @@ const VideoResultsLoader: React.FC<VideoResultsLoaderProps> = (props) => {
   }, [mode]);
 
   return state.searchResult ? (
-    <VideoResultsList
+    <SearchContainer
       onModeChange={handleModeChange}
       mode={mode}
       searchResult={state.searchResult}

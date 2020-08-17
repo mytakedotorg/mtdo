@@ -128,6 +128,8 @@ if (isSearchPage(window.mytake)) {
     />,
     searchBarContainer
   );
+  const header = document.getElementsByTagName("header")[0];
+  header.classList.add("header--search");
 }
 
 const userNavContainer = document.getElementById("usernav");

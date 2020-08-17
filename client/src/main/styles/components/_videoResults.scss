@@ -29,17 +29,18 @@
   }
 }
 .results__heading {
-  @include heading1;
+  @include heading2;
   color: palette(foundation, text);
-  margin-top: $page-margin-mobile * $vertical-margin-multiplier;
+  margin-top: 0;
+  margin-bottom: 0;
   text-align: left;
   @media #{$mq-medium} {
-    margin-top: $content-margin * $vertical-margin-multiplier;
     text-align: center;
   }
 }
 .results__subheading {
   @include heading3;
+  // margin-top: 0;
 }
 .results__text {
   @include body;

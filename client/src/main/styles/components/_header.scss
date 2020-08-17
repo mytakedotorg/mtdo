@@ -7,6 +7,12 @@ $nav-height: 35px;
   background-color: white;
   margin-bottom: 0; // This is necessary for meta.mytake.org
 }
+.header--search {
+  @media screen and (min-width: 768px) {
+    position: sticky;
+    top: 0;
+  }
+}
 .header__top {
   height: 40px;
   display: flex;

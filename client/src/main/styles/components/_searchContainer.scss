@@ -1,0 +1,10 @@
+.search__sticky {
+  @include content-column;
+  position: sticky;
+  top: 0;
+  background-color: $white;
+  z-index: 1;
+  @media screen and (min-width: 768px) {
+    top: 40px;
+  }
+}

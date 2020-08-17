@@ -13,6 +13,9 @@
     margin-right: auto;
   }
 }
+.searchbar__form--mobile {
+  display: none;
+}
 .searchbar__input {
   @include typography($sans, 400, 16px, 3.4rem);
   flex: 1;
