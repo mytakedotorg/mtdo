@@ -8,7 +8,7 @@ exports[`NGramViewer social security 1`] = `
     className="ngram__inner-container"
   >
     <svg
-      height={268}
+      height={200}
       width={700}
     />
     <div

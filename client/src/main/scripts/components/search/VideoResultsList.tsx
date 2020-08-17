@@ -21,7 +21,7 @@ import React from "react";
 import { SearchResult } from "./search";
 import VideoResult, { PlayEvent } from "./VideoResult";
 
-interface VideoResultsListProps {
+export interface VideoResultsListProps {
   dateToDivMap: Map<string, HTMLDivElement>;
   searchResult: SearchResult;
   onPlayClick: PlayEvent;

@@ -1,1695 +1,1614 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`VideoResultsList no results 1`] = `
-<div
-  className="results"
->
-  <div
-    className="results__inner-container"
-  >
-    <h1
-      className="results__heading"
-    >
-      0
-       Search Results
-    </h1>
-    <p
-      className="turn__results"
-    >
-      Search returned no results for 
-      <strong>
-        gibberish
-      </strong>
-    </p>
-  </div>
-</div>
-`;
+exports[`VideoResultsList no results 1`] = `null`;
 
 exports[`VideoResultsList social security 1`] = `
-<div
-  className="results"
->
+Array [
   <div
-    className="results__inner-container"
+    className="results__preview"
   >
-    <h1
-      className="results__heading"
+    <h2
+      className="results__subheading"
     >
-      252
-       Search Results
-    </h1>
+      Presidential Debate - Kennedy, Nixon (1 of 4)
+       - 
+      1960-09-26
+    </h2>
     <div>
-      <div
-        className=""
-      >
-        <div>
-          NGramViewer: 
-        </div>
-      </div>
+      VideoResult: 
+      CsurHThBBkk
+       
+      38
+       
+      332
+      552
     </div>
-    <div
-      className=""
+    <div>
+      VideoResult: 
+      CsurHThBBkk
+       
+      38
+       
+      553
+      1072
+    </div>
+    <div>
+      VideoResult: 
+      CsurHThBBkk
+       
+      39
+       
+      358
+      749
+    </div>
+    <div>
+      VideoResult: 
+      CsurHThBBkk
+       
+      49
+       
+      1121
+      1456
+    </div>
+    <div>
+      VideoResult: 
+      CsurHThBBkk
+       
+      56
+       
+      1021
+      1240
+    </div>
+    <div>
+      VideoResult: 
+      CsurHThBBkk
+       
+      56
+       
+      1281
+      1520
+    </div>
+    <div>
+      VideoResult: 
+      CsurHThBBkk
+       
+      70
+       
+      1937
+      2316
+    </div>
+    <div>
+      VideoResult: 
+      CsurHThBBkk
+       
+      72
+       
+      543
+      851
+    </div>
+  </div>,
+  <div
+    className="results__preview"
+  >
+    <h2
+      className="results__subheading"
     >
-      <SearchRadioButtons
-        onChange={[MockFunction]}
-        selectedOption={1}
-      />
+      Presidential Debate - Kennedy, Nixon (3 of 4)
+       - 
+      1960-10-13
+    </h2>
+    <div>
+      VideoResult: 
+      PdjgZ5xx42o
+       
+      46
+       
+      1462
+      2260
     </div>
-    <div
-      className="results__preview"
+    <div>
+      VideoResult: 
+      PdjgZ5xx42o
+       
+      48
+       
+      300
+      666
+    </div>
+  </div>,
+  <div
+    className="results__preview"
+  >
+    <h2
+      className="results__subheading"
     >
-      <h2
-        className="results__subheading"
-      >
-        Presidential Debate - Kennedy, Nixon (1 of 4)
-         - 
-        1960-09-26
-      </h2>
-      <div>
-        VideoResult: 
-        CsurHThBBkk
-         
-        38
-         
-        332
-        552
-      </div>
-      <div>
-        VideoResult: 
-        CsurHThBBkk
-         
-        38
-         
-        553
-        1072
-      </div>
-      <div>
-        VideoResult: 
-        CsurHThBBkk
-         
-        39
-         
-        358
-        749
-      </div>
-      <div>
-        VideoResult: 
-        CsurHThBBkk
-         
-        49
-         
-        1121
-        1456
-      </div>
-      <div>
-        VideoResult: 
-        CsurHThBBkk
-         
-        56
-         
-        1021
-        1240
-      </div>
-      <div>
-        VideoResult: 
-        CsurHThBBkk
-         
-        56
-         
-        1281
-        1520
-      </div>
-      <div>
-        VideoResult: 
-        CsurHThBBkk
-         
-        70
-         
-        1937
-        2316
-      </div>
-      <div>
-        VideoResult: 
-        CsurHThBBkk
-         
-        72
-         
-        543
-        851
-      </div>
+      Presidential Debate - Carter, Ford (1 of 3)
+       - 
+      1976-09-23
+    </h2>
+    <div>
+      VideoResult: 
+      Zbe9FnAmkSk
+       
+      17
+       
+      0
+      286
     </div>
-    <div
-      className="results__preview"
+  </div>,
+  <div
+    className="results__preview"
+  >
+    <h2
+      className="results__subheading"
     >
-      <h2
-        className="results__subheading"
-      >
-        Presidential Debate - Kennedy, Nixon (3 of 4)
-         - 
-        1960-10-13
-      </h2>
-      <div>
-        VideoResult: 
-        PdjgZ5xx42o
-         
-        46
-         
-        1462
-        2260
-      </div>
-      <div>
-        VideoResult: 
-        PdjgZ5xx42o
-         
-        48
-         
-        300
-        666
-      </div>
+      Presidential Debate - Anderson, Reagan (1 of 2)
+       - 
+      1980-09-21
+    </h2>
+    <div>
+      VideoResult: 
+      pZqindVjd54
+       
+      12
+       
+      886
+      1153
     </div>
-    <div
-      className="results__preview"
+  </div>,
+  <div
+    className="results__preview"
+  >
+    <h2
+      className="results__subheading"
     >
-      <h2
-        className="results__subheading"
-      >
-        Presidential Debate - Carter, Ford (1 of 3)
-         - 
-        1976-09-23
-      </h2>
-      <div>
-        VideoResult: 
-        Zbe9FnAmkSk
-         
-        17
-         
-        0
-        286
-      </div>
+      Presidential Debate - Carter, Reagan (2 of 2)
+       - 
+      1980-10-28
+    </h2>
+    <div>
+      VideoResult: 
+      a1J1TkWCLhs
+       
+      98
+       
+      0
+      413
     </div>
-    <div
-      className="results__preview"
+    <div>
+      VideoResult: 
+      a1J1TkWCLhs
+       
+      99
+       
+      0
+      1139
+    </div>
+    <div>
+      VideoResult: 
+      a1J1TkWCLhs
+       
+      101
+       
+      0
+      408
+    </div>
+    <div>
+      VideoResult: 
+      a1J1TkWCLhs
+       
+      102
+       
+      0
+      1176
+    </div>
+    <div>
+      VideoResult: 
+      a1J1TkWCLhs
+       
+      104
+       
+      28
+      1101
+    </div>
+    <div>
+      VideoResult: 
+      a1J1TkWCLhs
+       
+      106
+       
+      0
+      900
+    </div>
+    <div>
+      VideoResult: 
+      a1J1TkWCLhs
+       
+      108
+       
+      364
+      524
+    </div>
+    <div>
+      VideoResult: 
+      a1J1TkWCLhs
+       
+      108
+       
+      525
+      958
+    </div>
+    <div>
+      VideoResult: 
+      a1J1TkWCLhs
+       
+      110
+       
+      0
+      369
+    </div>
+  </div>,
+  <div
+    className="results__preview"
+  >
+    <h2
+      className="results__subheading"
     >
-      <h2
-        className="results__subheading"
-      >
-        Presidential Debate - Anderson, Reagan (1 of 2)
-         - 
-        1980-09-21
-      </h2>
-      <div>
-        VideoResult: 
-        pZqindVjd54
-         
-        12
-         
-        886
-        1153
-      </div>
+      Presidential Debate - Mondale, Reagan (1 of 2)
+       - 
+      1984-10-07
+    </h2>
+    <div>
+      VideoResult: 
+      L7MdD72ZqJ0
+       
+      9
+       
+      0
+      338
     </div>
-    <div
-      className="results__preview"
+    <div>
+      VideoResult: 
+      L7MdD72ZqJ0
+       
+      11
+       
+      405
+      942
+    </div>
+    <div>
+      VideoResult: 
+      L7MdD72ZqJ0
+       
+      13
+       
+      0
+      509
+    </div>
+    <div>
+      VideoResult: 
+      L7MdD72ZqJ0
+       
+      13
+       
+      510
+      692
+    </div>
+    <div>
+      VideoResult: 
+      L7MdD72ZqJ0
+       
+      24
+       
+      84
+      350
+    </div>
+    <div>
+      VideoResult: 
+      L7MdD72ZqJ0
+       
+      24
+       
+      351
+      762
+    </div>
+    <div>
+      VideoResult: 
+      L7MdD72ZqJ0
+       
+      26
+       
+      0
+      521
+    </div>
+    <div>
+      VideoResult: 
+      L7MdD72ZqJ0
+       
+      26
+       
+      550
+      805
+    </div>
+    <div>
+      VideoResult: 
+      L7MdD72ZqJ0
+       
+      26
+       
+      806
+      1113
+    </div>
+    <div>
+      VideoResult: 
+      L7MdD72ZqJ0
+       
+      50
+       
+      146
+      435
+    </div>
+    <div>
+      VideoResult: 
+      L7MdD72ZqJ0
+       
+      78
+       
+      781
+      1021
+    </div>
+    <div>
+      VideoResult: 
+      L7MdD72ZqJ0
+       
+      78
+       
+      1138
+      1644
+    </div>
+    <div>
+      VideoResult: 
+      L7MdD72ZqJ0
+       
+      88
+       
+      0
+      388
+    </div>
+    <div>
+      VideoResult: 
+      L7MdD72ZqJ0
+       
+      110
+       
+      703
+      997
+    </div>
+    <div>
+      VideoResult: 
+      L7MdD72ZqJ0
+       
+      112
+       
+      69
+      704
+    </div>
+    <div>
+      VideoResult: 
+      L7MdD72ZqJ0
+       
+      116
+       
+      6
+      716
+    </div>
+  </div>,
+  <div
+    className="results__preview"
+  >
+    <h2
+      className="results__subheading"
     >
-      <h2
-        className="results__subheading"
-      >
-        Presidential Debate - Carter, Reagan (2 of 2)
-         - 
-        1980-10-28
-      </h2>
-      <div>
-        VideoResult: 
-        a1J1TkWCLhs
-         
-        98
-         
-        0
-        413
-      </div>
-      <div>
-        VideoResult: 
-        a1J1TkWCLhs
-         
-        99
-         
-        0
-        1139
-      </div>
-      <div>
-        VideoResult: 
-        a1J1TkWCLhs
-         
-        101
-         
-        0
-        408
-      </div>
-      <div>
-        VideoResult: 
-        a1J1TkWCLhs
-         
-        102
-         
-        0
-        1176
-      </div>
-      <div>
-        VideoResult: 
-        a1J1TkWCLhs
-         
-        104
-         
-        28
-        1101
-      </div>
-      <div>
-        VideoResult: 
-        a1J1TkWCLhs
-         
-        106
-         
-        0
-        900
-      </div>
-      <div>
-        VideoResult: 
-        a1J1TkWCLhs
-         
-        108
-         
-        364
-        524
-      </div>
-      <div>
-        VideoResult: 
-        a1J1TkWCLhs
-         
-        108
-         
-        525
-        958
-      </div>
-      <div>
-        VideoResult: 
-        a1J1TkWCLhs
-         
-        110
-         
-        0
-        369
-      </div>
+      Presidential Debate - Bush, Dukakis (1 of 2)
+       - 
+      1988-09-25
+    </h2>
+    <div>
+      VideoResult: 
+      HXuffF9Sib0
+       
+      16
+       
+      0
+      202
     </div>
-    <div
-      className="results__preview"
+  </div>,
+  <div
+    className="results__preview"
+  >
+    <h2
+      className="results__subheading"
     >
-      <h2
-        className="results__subheading"
-      >
-        Presidential Debate - Mondale, Reagan (1 of 2)
-         - 
-        1984-10-07
-      </h2>
-      <div>
-        VideoResult: 
-        L7MdD72ZqJ0
-         
-        9
-         
-        0
-        338
-      </div>
-      <div>
-        VideoResult: 
-        L7MdD72ZqJ0
-         
-        11
-         
-        405
-        942
-      </div>
-      <div>
-        VideoResult: 
-        L7MdD72ZqJ0
-         
-        13
-         
-        0
-        509
-      </div>
-      <div>
-        VideoResult: 
-        L7MdD72ZqJ0
-         
-        13
-         
-        510
-        692
-      </div>
-      <div>
-        VideoResult: 
-        L7MdD72ZqJ0
-         
-        24
-         
-        84
-        350
-      </div>
-      <div>
-        VideoResult: 
-        L7MdD72ZqJ0
-         
-        24
-         
-        351
-        762
-      </div>
-      <div>
-        VideoResult: 
-        L7MdD72ZqJ0
-         
-        26
-         
-        0
-        521
-      </div>
-      <div>
-        VideoResult: 
-        L7MdD72ZqJ0
-         
-        26
-         
-        550
-        805
-      </div>
-      <div>
-        VideoResult: 
-        L7MdD72ZqJ0
-         
-        26
-         
-        806
-        1113
-      </div>
-      <div>
-        VideoResult: 
-        L7MdD72ZqJ0
-         
-        50
-         
-        146
-        435
-      </div>
-      <div>
-        VideoResult: 
-        L7MdD72ZqJ0
-         
-        78
-         
-        781
-        1021
-      </div>
-      <div>
-        VideoResult: 
-        L7MdD72ZqJ0
-         
-        78
-         
-        1138
-        1644
-      </div>
-      <div>
-        VideoResult: 
-        L7MdD72ZqJ0
-         
-        88
-         
-        0
-        388
-      </div>
-      <div>
-        VideoResult: 
-        L7MdD72ZqJ0
-         
-        110
-         
-        703
-        997
-      </div>
-      <div>
-        VideoResult: 
-        L7MdD72ZqJ0
-         
-        112
-         
-        69
-        704
-      </div>
-      <div>
-        VideoResult: 
-        L7MdD72ZqJ0
-         
-        116
-         
-        6
-        716
-      </div>
+      Presidential Debate - Bush, Dukakis (2 of 2)
+       - 
+      1988-10-13
+    </h2>
+    <div>
+      VideoResult: 
+      KxvfacuEbnA
+       
+      11
+       
+      23
+      353
     </div>
-    <div
-      className="results__preview"
+    <div>
+      VideoResult: 
+      KxvfacuEbnA
+       
+      21
+       
+      281
+      621
+    </div>
+    <div>
+      VideoResult: 
+      KxvfacuEbnA
+       
+      97
+       
+      0
+      442
+    </div>
+    <div>
+      VideoResult: 
+      KxvfacuEbnA
+       
+      100
+       
+      0
+      121
+    </div>
+    <div>
+      VideoResult: 
+      KxvfacuEbnA
+       
+      100
+       
+      271
+      834
+    </div>
+    <div>
+      VideoResult: 
+      KxvfacuEbnA
+       
+      100
+       
+      849
+      1349
+    </div>
+    <div>
+      VideoResult: 
+      KxvfacuEbnA
+       
+      100
+       
+      1350
+      1806
+    </div>
+    <div>
+      VideoResult: 
+      KxvfacuEbnA
+       
+      102
+       
+      0
+      208
+    </div>
+    <div>
+      VideoResult: 
+      KxvfacuEbnA
+       
+      102
+       
+      721
+      972
+    </div>
+    <div>
+      VideoResult: 
+      KxvfacuEbnA
+       
+      111
+       
+      0
+      380
+    </div>
+    <div>
+      VideoResult: 
+      KxvfacuEbnA
+       
+      112
+       
+      0
+      302
+    </div>
+    <div>
+      VideoResult: 
+      KxvfacuEbnA
+       
+      112
+       
+      852
+      1563
+    </div>
+    <div>
+      VideoResult: 
+      KxvfacuEbnA
+       
+      114
+       
+      0
+      1199
+    </div>
+    <div>
+      VideoResult: 
+      KxvfacuEbnA
+       
+      116
+       
+      0
+      1123
+    </div>
+    <div>
+      VideoResult: 
+      KxvfacuEbnA
+       
+      120
+       
+      275
+      560
+    </div>
+    <div>
+      VideoResult: 
+      KxvfacuEbnA
+       
+      122
+       
+      0
+      386
+    </div>
+    <div>
+      VideoResult: 
+      KxvfacuEbnA
+       
+      125
+       
+      0
+      194
+    </div>
+    <div>
+      VideoResult: 
+      KxvfacuEbnA
+       
+      126
+       
+      0
+      65
+    </div>
+  </div>,
+  <div
+    className="results__preview"
+  >
+    <h2
+      className="results__subheading"
     >
-      <h2
-        className="results__subheading"
-      >
-        Presidential Debate - Bush, Dukakis (1 of 2)
-         - 
-        1988-09-25
-      </h2>
-      <div>
-        VideoResult: 
-        HXuffF9Sib0
-         
-        16
-         
-        0
-        202
-      </div>
+      Presidential Debate - Bush, Clinton, Perot (1 of 3)
+       - 
+      1992-10-11
+    </h2>
+    <div>
+      VideoResult: 
+      9Z43XV4T8Bc
+       
+      46
+       
+      256
+      509
     </div>
-    <div
-      className="results__preview"
+    <div>
+      VideoResult: 
+      9Z43XV4T8Bc
+       
+      124
+       
+      0
+      545
+    </div>
+    <div>
+      VideoResult: 
+      9Z43XV4T8Bc
+       
+      124
+       
+      981
+      1112
+    </div>
+  </div>,
+  <div
+    className="results__preview"
+  >
+    <h2
+      className="results__subheading"
     >
-      <h2
-        className="results__subheading"
-      >
-        Presidential Debate - Bush, Dukakis (2 of 2)
-         - 
-        1988-10-13
-      </h2>
-      <div>
-        VideoResult: 
-        KxvfacuEbnA
-         
-        11
-         
-        23
-        353
-      </div>
-      <div>
-        VideoResult: 
-        KxvfacuEbnA
-         
-        21
-         
-        281
-        621
-      </div>
-      <div>
-        VideoResult: 
-        KxvfacuEbnA
-         
-        97
-         
-        0
-        442
-      </div>
-      <div>
-        VideoResult: 
-        KxvfacuEbnA
-         
-        100
-         
-        0
-        121
-      </div>
-      <div>
-        VideoResult: 
-        KxvfacuEbnA
-         
-        100
-         
-        271
-        834
-      </div>
-      <div>
-        VideoResult: 
-        KxvfacuEbnA
-         
-        100
-         
-        849
-        1349
-      </div>
-      <div>
-        VideoResult: 
-        KxvfacuEbnA
-         
-        100
-         
-        1350
-        1806
-      </div>
-      <div>
-        VideoResult: 
-        KxvfacuEbnA
-         
-        102
-         
-        0
-        208
-      </div>
-      <div>
-        VideoResult: 
-        KxvfacuEbnA
-         
-        102
-         
-        721
-        972
-      </div>
-      <div>
-        VideoResult: 
-        KxvfacuEbnA
-         
-        111
-         
-        0
-        380
-      </div>
-      <div>
-        VideoResult: 
-        KxvfacuEbnA
-         
-        112
-         
-        0
-        302
-      </div>
-      <div>
-        VideoResult: 
-        KxvfacuEbnA
-         
-        112
-         
-        852
-        1563
-      </div>
-      <div>
-        VideoResult: 
-        KxvfacuEbnA
-         
-        114
-         
-        0
-        1199
-      </div>
-      <div>
-        VideoResult: 
-        KxvfacuEbnA
-         
-        116
-         
-        0
-        1123
-      </div>
-      <div>
-        VideoResult: 
-        KxvfacuEbnA
-         
-        120
-         
-        275
-        560
-      </div>
-      <div>
-        VideoResult: 
-        KxvfacuEbnA
-         
-        122
-         
-        0
-        386
-      </div>
-      <div>
-        VideoResult: 
-        KxvfacuEbnA
-         
-        125
-         
-        0
-        194
-      </div>
-      <div>
-        VideoResult: 
-        KxvfacuEbnA
-         
-        126
-         
-        0
-        65
-      </div>
+      Presidential Debate - Bush, Clinton, Perot (2 of 3)
+       - 
+      1992-10-15
+    </h2>
+    <div>
+      VideoResult: 
+      0Z9DZ715Ku4
+       
+      13
+       
+      1462
+      1862
     </div>
-    <div
-      className="results__preview"
+    <div>
+      VideoResult: 
+      0Z9DZ715Ku4
+       
+      137
+       
+      33
+      311
+    </div>
+    <div>
+      VideoResult: 
+      0Z9DZ715Ku4
+       
+      139
+       
+      0
+      304
+    </div>
+    <div>
+      VideoResult: 
+      0Z9DZ715Ku4
+       
+      139
+       
+      733
+      941
+    </div>
+    <div>
+      VideoResult: 
+      0Z9DZ715Ku4
+       
+      153
+       
+      926
+      1359
+    </div>
+  </div>,
+  <div
+    className="results__preview"
+  >
+    <h2
+      className="results__subheading"
     >
-      <h2
-        className="results__subheading"
-      >
-        Presidential Debate - Bush, Clinton, Perot (1 of 3)
-         - 
-        1992-10-11
-      </h2>
-      <div>
-        VideoResult: 
-        9Z43XV4T8Bc
-         
-        46
-         
-        256
-        509
-      </div>
-      <div>
-        VideoResult: 
-        9Z43XV4T8Bc
-         
-        124
-         
-        0
-        545
-      </div>
-      <div>
-        VideoResult: 
-        9Z43XV4T8Bc
-         
-        124
-         
-        981
-        1112
-      </div>
+      Presidential Debate - Clinton, Dole (1 of 2)
+       - 
+      1996-10-06
+    </h2>
+    <div>
+      VideoResult: 
+      JcyqYFlh_x4
+       
+      7
+       
+      452
+      645
     </div>
-    <div
-      className="results__preview"
+    <div>
+      VideoResult: 
+      JcyqYFlh_x4
+       
+      21
+       
+      223
+      434
+    </div>
+    <div>
+      VideoResult: 
+      JcyqYFlh_x4
+       
+      21
+       
+      786
+      1099
+    </div>
+    <div>
+      VideoResult: 
+      JcyqYFlh_x4
+       
+      23
+       
+      0
+      354
+    </div>
+  </div>,
+  <div
+    className="results__preview"
+  >
+    <h2
+      className="results__subheading"
     >
-      <h2
-        className="results__subheading"
-      >
-        Presidential Debate - Bush, Clinton, Perot (2 of 3)
-         - 
-        1992-10-15
-      </h2>
-      <div>
-        VideoResult: 
-        0Z9DZ715Ku4
-         
-        13
-         
-        1462
-        1862
-      </div>
-      <div>
-        VideoResult: 
-        0Z9DZ715Ku4
-         
-        137
-         
-        33
-        311
-      </div>
-      <div>
-        VideoResult: 
-        0Z9DZ715Ku4
-         
-        139
-         
-        0
-        304
-      </div>
-      <div>
-        VideoResult: 
-        0Z9DZ715Ku4
-         
-        139
-         
-        733
-        941
-      </div>
-      <div>
-        VideoResult: 
-        0Z9DZ715Ku4
-         
-        153
-         
-        926
-        1359
-      </div>
+      Presidential Debate - Clinton, Dole (2 of 2)
+       - 
+      1996-10-16
+    </h2>
+    <div>
+      VideoResult: 
+      T_ttLcdbAPE
+       
+      40
+       
+      42
+      404
     </div>
-    <div
-      className="results__preview"
+    <div>
+      VideoResult: 
+      T_ttLcdbAPE
+       
+      41
+       
+      0
+      930
+    </div>
+    <div>
+      VideoResult: 
+      T_ttLcdbAPE
+       
+      41
+       
+      1355
+      1948
+    </div>
+    <div>
+      VideoResult: 
+      T_ttLcdbAPE
+       
+      42
+       
+      118
+      313
+    </div>
+    <div>
+      VideoResult: 
+      T_ttLcdbAPE
+       
+      42
+       
+      410
+      632
+    </div>
+    <div>
+      VideoResult: 
+      T_ttLcdbAPE
+       
+      42
+       
+      977
+      1179
+    </div>
+    <div>
+      VideoResult: 
+      T_ttLcdbAPE
+       
+      55
+       
+      1038
+      1127
+    </div>
+    <div>
+      VideoResult: 
+      T_ttLcdbAPE
+       
+      76
+       
+      571
+      749
+    </div>
+    <div>
+      VideoResult: 
+      T_ttLcdbAPE
+       
+      106
+       
+      786
+      1065
+    </div>
+    <div>
+      VideoResult: 
+      T_ttLcdbAPE
+       
+      111
+       
+      0
+      296
+    </div>
+    <div>
+      VideoResult: 
+      T_ttLcdbAPE
+       
+      112
+       
+      111
+      538
+    </div>
+    <div>
+      VideoResult: 
+      T_ttLcdbAPE
+       
+      112
+       
+      574
+      935
+    </div>
+    <div>
+      VideoResult: 
+      T_ttLcdbAPE
+       
+      112
+       
+      953
+      1053
+    </div>
+    <div>
+      VideoResult: 
+      T_ttLcdbAPE
+       
+      113
+       
+      57
+      488
+    </div>
+    <div>
+      VideoResult: 
+      T_ttLcdbAPE
+       
+      113
+       
+      1244
+      1433
+    </div>
+    <div>
+      VideoResult: 
+      T_ttLcdbAPE
+       
+      116
+       
+      251
+      441
+    </div>
+  </div>,
+  <div
+    className="results__preview"
+  >
+    <h2
+      className="results__subheading"
     >
-      <h2
-        className="results__subheading"
-      >
-        Presidential Debate - Clinton, Dole (1 of 2)
-         - 
-        1996-10-06
-      </h2>
-      <div>
-        VideoResult: 
-        JcyqYFlh_x4
-         
-        7
-         
-        452
-        645
-      </div>
-      <div>
-        VideoResult: 
-        JcyqYFlh_x4
-         
-        21
-         
-        223
-        434
-      </div>
-      <div>
-        VideoResult: 
-        JcyqYFlh_x4
-         
-        21
-         
-        786
-        1099
-      </div>
-      <div>
-        VideoResult: 
-        JcyqYFlh_x4
-         
-        23
-         
-        0
-        354
-      </div>
+      Presidential Debate - Bush, Gore (1 of 3)
+       - 
+      2000-10-03
+    </h2>
+    <div>
+      VideoResult: 
+      NQFabXU_52Q
+       
+      3
+       
+      137
+      407
     </div>
-    <div
-      className="results__preview"
+    <div>
+      VideoResult: 
+      NQFabXU_52Q
+       
+      9
+       
+      224
+      518
+    </div>
+    <div>
+      VideoResult: 
+      NQFabXU_52Q
+       
+      14
+       
+      1382
+      2221
+    </div>
+    <div>
+      VideoResult: 
+      NQFabXU_52Q
+       
+      95
+       
+      957
+      1262
+    </div>
+    <div>
+      VideoResult: 
+      NQFabXU_52Q
+       
+      95
+       
+      1331
+      1561
+    </div>
+    <div>
+      VideoResult: 
+      NQFabXU_52Q
+       
+      130
+       
+      909
+      1458
+    </div>
+    <div>
+      VideoResult: 
+      NQFabXU_52Q
+       
+      131
+       
+      495
+      772
+    </div>
+    <div>
+      VideoResult: 
+      NQFabXU_52Q
+       
+      132
+       
+      755
+      1045
+    </div>
+    <div>
+      VideoResult: 
+      NQFabXU_52Q
+       
+      134
+       
+      0
+      243
+    </div>
+    <div>
+      VideoResult: 
+      NQFabXU_52Q
+       
+      137
+       
+      178
+      683
+    </div>
+    <div>
+      VideoResult: 
+      NQFabXU_52Q
+       
+      137
+       
+      747
+      1526
+    </div>
+    <div>
+      VideoResult: 
+      NQFabXU_52Q
+       
+      137
+       
+      1527
+      1711
+    </div>
+    <div>
+      VideoResult: 
+      NQFabXU_52Q
+       
+      138
+       
+      0
+      490
+    </div>
+    <div>
+      VideoResult: 
+      NQFabXU_52Q
+       
+      138
+       
+      727
+      1040
+    </div>
+    <div>
+      VideoResult: 
+      NQFabXU_52Q
+       
+      138
+       
+      1158
+      1742
+    </div>
+    <div>
+      VideoResult: 
+      NQFabXU_52Q
+       
+      139
+       
+      0
+      354
+    </div>
+    <div>
+      VideoResult: 
+      NQFabXU_52Q
+       
+      139
+       
+      355
+      536
+    </div>
+    <div>
+      VideoResult: 
+      NQFabXU_52Q
+       
+      140
+       
+      0
+      125
+    </div>
+    <div>
+      VideoResult: 
+      NQFabXU_52Q
+       
+      140
+       
+      169
+      291
+    </div>
+    <div>
+      VideoResult: 
+      NQFabXU_52Q
+       
+      140
+       
+      595
+      775
+    </div>
+    <div>
+      VideoResult: 
+      NQFabXU_52Q
+       
+      143
+       
+      0
+      181
+    </div>
+    <div>
+      VideoResult: 
+      NQFabXU_52Q
+       
+      144
+       
+      225
+      483
+    </div>
+  </div>,
+  <div
+    className="results__preview"
+  >
+    <h2
+      className="results__subheading"
     >
-      <h2
-        className="results__subheading"
-      >
-        Presidential Debate - Clinton, Dole (2 of 2)
-         - 
-        1996-10-16
-      </h2>
-      <div>
-        VideoResult: 
-        T_ttLcdbAPE
-         
-        40
-         
-        42
-        404
-      </div>
-      <div>
-        VideoResult: 
-        T_ttLcdbAPE
-         
-        41
-         
-        0
-        930
-      </div>
-      <div>
-        VideoResult: 
-        T_ttLcdbAPE
-         
-        41
-         
-        1355
-        1948
-      </div>
-      <div>
-        VideoResult: 
-        T_ttLcdbAPE
-         
-        42
-         
-        118
-        313
-      </div>
-      <div>
-        VideoResult: 
-        T_ttLcdbAPE
-         
-        42
-         
-        410
-        632
-      </div>
-      <div>
-        VideoResult: 
-        T_ttLcdbAPE
-         
-        42
-         
-        977
-        1179
-      </div>
-      <div>
-        VideoResult: 
-        T_ttLcdbAPE
-         
-        55
-         
-        1038
-        1127
-      </div>
-      <div>
-        VideoResult: 
-        T_ttLcdbAPE
-         
-        76
-         
-        571
-        749
-      </div>
-      <div>
-        VideoResult: 
-        T_ttLcdbAPE
-         
-        106
-         
-        786
-        1065
-      </div>
-      <div>
-        VideoResult: 
-        T_ttLcdbAPE
-         
-        111
-         
-        0
-        296
-      </div>
-      <div>
-        VideoResult: 
-        T_ttLcdbAPE
-         
-        112
-         
-        111
-        538
-      </div>
-      <div>
-        VideoResult: 
-        T_ttLcdbAPE
-         
-        112
-         
-        574
-        935
-      </div>
-      <div>
-        VideoResult: 
-        T_ttLcdbAPE
-         
-        112
-         
-        953
-        1053
-      </div>
-      <div>
-        VideoResult: 
-        T_ttLcdbAPE
-         
-        113
-         
-        57
-        488
-      </div>
-      <div>
-        VideoResult: 
-        T_ttLcdbAPE
-         
-        113
-         
-        1244
-        1433
-      </div>
-      <div>
-        VideoResult: 
-        T_ttLcdbAPE
-         
-        116
-         
-        251
-        441
-      </div>
+      Presidential Debate - Bush, Gore (3 of 3)
+       - 
+      2000-10-17
+    </h2>
+    <div>
+      VideoResult: 
+      ZFbyKIUp1E8
+       
+      85
+       
+      130
+      300
     </div>
-    <div
-      className="results__preview"
+    <div>
+      VideoResult: 
+      ZFbyKIUp1E8
+       
+      140
+       
+      0
+      239
+    </div>
+    <div>
+      VideoResult: 
+      ZFbyKIUp1E8
+       
+      181
+       
+      1022
+      1357
+    </div>
+    <div>
+      VideoResult: 
+      ZFbyKIUp1E8
+       
+      183
+       
+      156
+      326
+    </div>
+    <div>
+      VideoResult: 
+      ZFbyKIUp1E8
+       
+      183
+       
+      1081
+      1405
+    </div>
+    <div>
+      VideoResult: 
+      ZFbyKIUp1E8
+       
+      185
+       
+      203
+      483
+    </div>
+    <div>
+      VideoResult: 
+      ZFbyKIUp1E8
+       
+      185
+       
+      646
+      1159
+    </div>
+  </div>,
+  <div
+    className="results__preview"
+  >
+    <h2
+      className="results__subheading"
     >
-      <h2
-        className="results__subheading"
-      >
-        Presidential Debate - Bush, Gore (1 of 3)
-         - 
-        2000-10-03
-      </h2>
-      <div>
-        VideoResult: 
-        NQFabXU_52Q
-         
-        3
-         
-        137
-        407
-      </div>
-      <div>
-        VideoResult: 
-        NQFabXU_52Q
-         
-        9
-         
-        224
-        518
-      </div>
-      <div>
-        VideoResult: 
-        NQFabXU_52Q
-         
-        14
-         
-        1382
-        2221
-      </div>
-      <div>
-        VideoResult: 
-        NQFabXU_52Q
-         
-        95
-         
-        957
-        1262
-      </div>
-      <div>
-        VideoResult: 
-        NQFabXU_52Q
-         
-        95
-         
-        1331
-        1561
-      </div>
-      <div>
-        VideoResult: 
-        NQFabXU_52Q
-         
-        130
-         
-        909
-        1458
-      </div>
-      <div>
-        VideoResult: 
-        NQFabXU_52Q
-         
-        131
-         
-        495
-        772
-      </div>
-      <div>
-        VideoResult: 
-        NQFabXU_52Q
-         
-        132
-         
-        755
-        1045
-      </div>
-      <div>
-        VideoResult: 
-        NQFabXU_52Q
-         
-        134
-         
-        0
-        243
-      </div>
-      <div>
-        VideoResult: 
-        NQFabXU_52Q
-         
-        137
-         
-        178
-        683
-      </div>
-      <div>
-        VideoResult: 
-        NQFabXU_52Q
-         
-        137
-         
-        747
-        1526
-      </div>
-      <div>
-        VideoResult: 
-        NQFabXU_52Q
-         
-        137
-         
-        1527
-        1711
-      </div>
-      <div>
-        VideoResult: 
-        NQFabXU_52Q
-         
-        138
-         
-        0
-        490
-      </div>
-      <div>
-        VideoResult: 
-        NQFabXU_52Q
-         
-        138
-         
-        727
-        1040
-      </div>
-      <div>
-        VideoResult: 
-        NQFabXU_52Q
-         
-        138
-         
-        1158
-        1742
-      </div>
-      <div>
-        VideoResult: 
-        NQFabXU_52Q
-         
-        139
-         
-        0
-        354
-      </div>
-      <div>
-        VideoResult: 
-        NQFabXU_52Q
-         
-        139
-         
-        355
-        536
-      </div>
-      <div>
-        VideoResult: 
-        NQFabXU_52Q
-         
-        140
-         
-        0
-        125
-      </div>
-      <div>
-        VideoResult: 
-        NQFabXU_52Q
-         
-        140
-         
-        169
-        291
-      </div>
-      <div>
-        VideoResult: 
-        NQFabXU_52Q
-         
-        140
-         
-        595
-        775
-      </div>
-      <div>
-        VideoResult: 
-        NQFabXU_52Q
-         
-        143
-         
-        0
-        181
-      </div>
-      <div>
-        VideoResult: 
-        NQFabXU_52Q
-         
-        144
-         
-        225
-        483
-      </div>
+      Presidential Debate - Bush, Kerry (3 of 3)
+       - 
+      2004-10-13
+    </h2>
+    <div>
+      VideoResult: 
+      lyj-qVXQMdI
+       
+      56
+       
+      4
+      250
     </div>
-    <div
-      className="results__preview"
+    <div>
+      VideoResult: 
+      lyj-qVXQMdI
+       
+      57
+       
+      0
+      223
+    </div>
+    <div>
+      VideoResult: 
+      lyj-qVXQMdI
+       
+      57
+       
+      832
+      1357
+    </div>
+    <div>
+      VideoResult: 
+      lyj-qVXQMdI
+       
+      59
+       
+      0
+      552
+    </div>
+    <div>
+      VideoResult: 
+      lyj-qVXQMdI
+       
+      59
+       
+      1227
+      1326
+    </div>
+    <div>
+      VideoResult: 
+      lyj-qVXQMdI
+       
+      59
+       
+      1356
+      1441
+    </div>
+    <div>
+      VideoResult: 
+      lyj-qVXQMdI
+       
+      60
+       
+      0
+      411
+    </div>
+    <div>
+      VideoResult: 
+      lyj-qVXQMdI
+       
+      61
+       
+      184
+      632
+    </div>
+    <div>
+      VideoResult: 
+      lyj-qVXQMdI
+       
+      61
+       
+      1162
+      1361
+    </div>
+    <div>
+      VideoResult: 
+      lyj-qVXQMdI
+       
+      61
+       
+      1853
+      1995
+    </div>
+    <div>
+      VideoResult: 
+      lyj-qVXQMdI
+       
+      63
+       
+      0
+      155
+    </div>
+  </div>,
+  <div
+    className="results__preview"
+  >
+    <h2
+      className="results__subheading"
     >
-      <h2
-        className="results__subheading"
-      >
-        Presidential Debate - Bush, Gore (3 of 3)
-         - 
-        2000-10-17
-      </h2>
-      <div>
-        VideoResult: 
-        ZFbyKIUp1E8
-         
-        85
-         
-        130
-        300
-      </div>
-      <div>
-        VideoResult: 
-        ZFbyKIUp1E8
-         
-        140
-         
-        0
-        239
-      </div>
-      <div>
-        VideoResult: 
-        ZFbyKIUp1E8
-         
-        181
-         
-        1022
-        1357
-      </div>
-      <div>
-        VideoResult: 
-        ZFbyKIUp1E8
-         
-        183
-         
-        156
-        326
-      </div>
-      <div>
-        VideoResult: 
-        ZFbyKIUp1E8
-         
-        183
-         
-        1081
-        1405
-      </div>
-      <div>
-        VideoResult: 
-        ZFbyKIUp1E8
-         
-        185
-         
-        203
-        483
-      </div>
-      <div>
-        VideoResult: 
-        ZFbyKIUp1E8
-         
-        185
-         
-        646
-        1159
-      </div>
+      Presidential Debate - McCain, Obama (2 of 3)
+       - 
+      2008-10-07
+    </h2>
+    <div>
+      VideoResult: 
+      57qocCPgp3U
+       
+      27
+       
+      0
+      143
     </div>
-    <div
-      className="results__preview"
+    <div>
+      VideoResult: 
+      57qocCPgp3U
+       
+      43
+       
+      0
+      413
+    </div>
+    <div>
+      VideoResult: 
+      57qocCPgp3U
+       
+      43
+       
+      414
+      741
+    </div>
+    <div>
+      VideoResult: 
+      57qocCPgp3U
+       
+      44
+       
+      95
+      497
+    </div>
+    <div>
+      VideoResult: 
+      57qocCPgp3U
+       
+      44
+       
+      1745
+      2268
+    </div>
+    <div>
+      VideoResult: 
+      57qocCPgp3U
+       
+      46
+       
+      6
+      109
+    </div>
+  </div>,
+  <div
+    className="results__preview"
+  >
+    <h2
+      className="results__subheading"
     >
-      <h2
-        className="results__subheading"
-      >
-        Presidential Debate - Bush, Kerry (3 of 3)
-         - 
-        2004-10-13
-      </h2>
-      <div>
-        VideoResult: 
-        lyj-qVXQMdI
-         
-        56
-         
-        4
-        250
-      </div>
-      <div>
-        VideoResult: 
-        lyj-qVXQMdI
-         
-        57
-         
-        0
-        223
-      </div>
-      <div>
-        VideoResult: 
-        lyj-qVXQMdI
-         
-        57
-         
-        832
-        1357
-      </div>
-      <div>
-        VideoResult: 
-        lyj-qVXQMdI
-         
-        59
-         
-        0
-        552
-      </div>
-      <div>
-        VideoResult: 
-        lyj-qVXQMdI
-         
-        59
-         
-        1227
-        1326
-      </div>
-      <div>
-        VideoResult: 
-        lyj-qVXQMdI
-         
-        59
-         
-        1356
-        1441
-      </div>
-      <div>
-        VideoResult: 
-        lyj-qVXQMdI
-         
-        60
-         
-        0
-        411
-      </div>
-      <div>
-        VideoResult: 
-        lyj-qVXQMdI
-         
-        61
-         
-        184
-        632
-      </div>
-      <div>
-        VideoResult: 
-        lyj-qVXQMdI
-         
-        61
-         
-        1162
-        1361
-      </div>
-      <div>
-        VideoResult: 
-        lyj-qVXQMdI
-         
-        61
-         
-        1853
-        1995
-      </div>
-      <div>
-        VideoResult: 
-        lyj-qVXQMdI
-         
-        63
-         
-        0
-        155
-      </div>
+      Presidential Debate - Obama, Romney (1 of 3)
+       - 
+      2012-10-03
+    </h2>
+    <div>
+      VideoResult: 
+      --oqXCLAbLg
+       
+      62
+       
+      123
+      206
     </div>
-    <div
-      className="results__preview"
+    <div>
+      VideoResult: 
+      --oqXCLAbLg
+       
+      63
+       
+      0
+      234
+    </div>
+    <div>
+      VideoResult: 
+      --oqXCLAbLg
+       
+      63
+       
+      235
+      498
+    </div>
+    <div>
+      VideoResult: 
+      --oqXCLAbLg
+       
+      63
+       
+      783
+      1043
+    </div>
+    <div>
+      VideoResult: 
+      --oqXCLAbLg
+       
+      63
+       
+      2064
+      2302
+    </div>
+    <div>
+      VideoResult: 
+      --oqXCLAbLg
+       
+      64
+       
+      0
+      106
+    </div>
+    <div>
+      VideoResult: 
+      --oqXCLAbLg
+       
+      65
+       
+      0
+      432
+    </div>
+    <div>
+      VideoResult: 
+      --oqXCLAbLg
+       
+      65
+       
+      659
+      804
+    </div>
+    <div>
+      VideoResult: 
+      --oqXCLAbLg
+       
+      65
+       
+      1908
+      2199
+    </div>
+  </div>,
+  <div
+    className="results__preview"
+  >
+    <h2
+      className="results__subheading"
     >
-      <h2
-        className="results__subheading"
-      >
-        Presidential Debate - McCain, Obama (2 of 3)
-         - 
-        2008-10-07
-      </h2>
-      <div>
-        VideoResult: 
-        57qocCPgp3U
-         
-        27
-         
-        0
-        143
-      </div>
-      <div>
-        VideoResult: 
-        57qocCPgp3U
-         
-        43
-         
-        0
-        413
-      </div>
-      <div>
-        VideoResult: 
-        57qocCPgp3U
-         
-        43
-         
-        414
-        741
-      </div>
-      <div>
-        VideoResult: 
-        57qocCPgp3U
-         
-        44
-         
-        95
-        497
-      </div>
-      <div>
-        VideoResult: 
-        57qocCPgp3U
-         
-        44
-         
-        1745
-        2268
-      </div>
-      <div>
-        VideoResult: 
-        57qocCPgp3U
-         
-        46
-         
-        6
-        109
-      </div>
+      Presidential Debate - Obama, Romney (2 of 3)
+       - 
+      2012-10-16
+    </h2>
+    <div>
+      VideoResult: 
+      nchGzjFHB-g
+       
+      120
+       
+      113
+      249
     </div>
-    <div
-      className="results__preview"
+  </div>,
+  <div
+    className="results__preview"
+  >
+    <h2
+      className="results__subheading"
     >
-      <h2
-        className="results__subheading"
-      >
-        Presidential Debate - Obama, Romney (1 of 3)
-         - 
-        2012-10-03
-      </h2>
-      <div>
-        VideoResult: 
-        --oqXCLAbLg
-         
-        62
-         
-        123
-        206
-      </div>
-      <div>
-        VideoResult: 
-        --oqXCLAbLg
-         
-        63
-         
-        0
-        234
-      </div>
-      <div>
-        VideoResult: 
-        --oqXCLAbLg
-         
-        63
-         
-        235
-        498
-      </div>
-      <div>
-        VideoResult: 
-        --oqXCLAbLg
-         
-        63
-         
-        783
-        1043
-      </div>
-      <div>
-        VideoResult: 
-        --oqXCLAbLg
-         
-        63
-         
-        2064
-        2302
-      </div>
-      <div>
-        VideoResult: 
-        --oqXCLAbLg
-         
-        64
-         
-        0
-        106
-      </div>
-      <div>
-        VideoResult: 
-        --oqXCLAbLg
-         
-        65
-         
-        0
-        432
-      </div>
-      <div>
-        VideoResult: 
-        --oqXCLAbLg
-         
-        65
-         
-        659
-        804
-      </div>
-      <div>
-        VideoResult: 
-        --oqXCLAbLg
-         
-        65
-         
-        1908
-        2199
-      </div>
+      Presidential Debate - Clinton, Trump (3 of 3)
+       - 
+      2016-10-19
+    </h2>
+    <div>
+      VideoResult: 
+      eXNnggT5fPM
+       
+      318
+       
+      11
+      818
     </div>
-    <div
-      className="results__preview"
-    >
-      <h2
-        className="results__subheading"
-      >
-        Presidential Debate - Obama, Romney (2 of 3)
-         - 
-        2012-10-16
-      </h2>
-      <div>
-        VideoResult: 
-        nchGzjFHB-g
-         
-        120
-         
-        113
-        249
-      </div>
+    <div>
+      VideoResult: 
+      eXNnggT5fPM
+       
+      322
+       
+      0
+      313
     </div>
-    <div
-      className="results__preview"
-    >
-      <h2
-        className="results__subheading"
-      >
-        Presidential Debate - Clinton, Trump (3 of 3)
-         - 
-        2016-10-19
-      </h2>
-      <div>
-        VideoResult: 
-        eXNnggT5fPM
-         
-        318
-         
-        11
-        818
-      </div>
-      <div>
-        VideoResult: 
-        eXNnggT5fPM
-         
-        322
-         
-        0
-        313
-      </div>
-      <div>
-        VideoResult: 
-        eXNnggT5fPM
-         
-        323
-         
-        0
-        357
-      </div>
-      <div>
-        VideoResult: 
-        eXNnggT5fPM
-         
-        325
-         
-        150
-        565
-      </div>
+    <div>
+      VideoResult: 
+      eXNnggT5fPM
+       
+      323
+       
+      0
+      357
     </div>
-  </div>
-</div>
+    <div>
+      VideoResult: 
+      eXNnggT5fPM
+       
+      325
+       
+      150
+      565
+    </div>
+  </div>,
+]
 `;
 
 exports[`VideoResultsList wall, -wall street 1`] = `
-<div
-  className="results"
->
+Array [
   <div
-    className="results__inner-container"
+    className="results__preview"
   >
-    <h1
-      className="results__heading"
+    <h2
+      className="results__subheading"
     >
-      14
-       Search Results
-    </h1>
+      Presidential Debate - Mondale, Reagan (1 of 2)
+       - 
+      1984-10-07
+    </h2>
     <div>
-      <div
-        className=""
-      >
-        <div>
-          NGramViewer: 
-        </div>
-      </div>
+      VideoResult: 
+      L7MdD72ZqJ0
+       
+      43
+       
+      87
+      643
     </div>
-    <div
-      className=""
+  </div>,
+  <div
+    className="results__preview"
+  >
+    <h2
+      className="results__subheading"
     >
-      <SearchRadioButtons
-        onChange={[MockFunction]}
-        selectedOption={1}
-      />
+      Presidential Debate - McCain, Obama (2 of 3)
+       - 
+      2008-10-07
+    </h2>
+    <div>
+      VideoResult: 
+      57qocCPgp3U
+       
+      38
+       
+      0
+      200
     </div>
-    <div
-      className="results__preview"
+  </div>,
+  <div
+    className="results__preview"
+  >
+    <h2
+      className="results__subheading"
     >
-      <h2
-        className="results__subheading"
-      >
-        Presidential Debate - Mondale, Reagan (1 of 2)
-         - 
-        1984-10-07
-      </h2>
-      <div>
-        VideoResult: 
-        L7MdD72ZqJ0
-         
-        43
-         
-        87
-        643
-      </div>
+      Presidential Debate - Clinton, Trump (3 of 3)
+       - 
+      2016-10-19
+    </h2>
+    <div>
+      VideoResult: 
+      eXNnggT5fPM
+       
+      31
+       
+      217
+      354
     </div>
-    <div
-      className="results__preview"
-    >
-      <h2
-        className="results__subheading"
-      >
-        Presidential Debate - McCain, Obama (2 of 3)
-         - 
-        2008-10-07
-      </h2>
-      <div>
-        VideoResult: 
-        57qocCPgp3U
-         
-        38
-         
-        0
-        200
-      </div>
+    <div>
+      VideoResult: 
+      eXNnggT5fPM
+       
+      32
+       
+      1534
+      1694
     </div>
-    <div
-      className="results__preview"
-    >
-      <h2
-        className="results__subheading"
-      >
-        Presidential Debate - Clinton, Trump (3 of 3)
-         - 
-        2016-10-19
-      </h2>
-      <div>
-        VideoResult: 
-        eXNnggT5fPM
-         
-        31
-         
-        217
-        354
-      </div>
-      <div>
-        VideoResult: 
-        eXNnggT5fPM
-         
-        32
-         
-        1534
-        1694
-      </div>
-      <div>
-        VideoResult: 
-        eXNnggT5fPM
-         
-        34
-         
-        1437
-        1853
-      </div>
-      <div>
-        VideoResult: 
-        eXNnggT5fPM
-         
-        38
-         
-        298
-        515
-      </div>
-      <div>
-        VideoResult: 
-        eXNnggT5fPM
-         
-        45
-         
-        0
-        13
-      </div>
+    <div>
+      VideoResult: 
+      eXNnggT5fPM
+       
+      34
+       
+      1437
+      1853
     </div>
-  </div>
-</div>
+    <div>
+      VideoResult: 
+      eXNnggT5fPM
+       
+      38
+       
+      298
+      515
+    </div>
+    <div>
+      VideoResult: 
+      eXNnggT5fPM
+       
+      45
+       
+      0
+      13
+    </div>
+  </div>,
+]
 `;

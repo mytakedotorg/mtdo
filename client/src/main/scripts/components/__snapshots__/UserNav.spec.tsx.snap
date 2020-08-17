@@ -1,0 +1,99 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`UserNav logged in 1`] = `
+<DropDown
+  classModifier="usernav"
+  disabled={false}
+  dropdownPosition="BL"
+  toggleText={
+    <React.Fragment>
+      <ChevronDown />
+      samples
+    </React.Fragment>
+  }
+>
+  <ul
+    className="usernav__list"
+  >
+    <li
+      className="usernav__list-item"
+    >
+      <a
+        className="usernav__link"
+        href="/drafts/new"
+      >
+        New Draft
+      </a>
+    </li>
+    <li
+      className="usernav__list-item"
+    >
+      <a
+        className="usernav__link"
+        href="/drafts"
+      >
+        Drafts
+      </a>
+    </li>
+    <li
+      className="usernav__list-item"
+    >
+      <a
+        className="usernav__link"
+        href="/samples"
+      >
+        Published
+      </a>
+    </li>
+    <li
+      className="usernav__list-item"
+    >
+      <a
+        className="usernav__link"
+        href="/samples?tab=stars"
+      >
+        Stars
+      </a>
+    </li>
+    <li
+      className="usernav__list-item"
+    >
+      <a
+        className="usernav__link"
+        href="/samples?tab=edit"
+      >
+        Profile
+      </a>
+    </li>
+    <li
+      className="usernav__list-item"
+    >
+      <a
+        className="usernav__link"
+        href="/logout"
+      >
+        Logout
+      </a>
+    </li>
+  </ul>
+</DropDown>
+`;
+
+exports[`UserNav logged out 1`] = `
+<DropDown
+  classModifier="usernav"
+  disabled={true}
+  dropdownPosition="BL"
+  toggleText={
+    <a
+      href="/login"
+    >
+      Login
+    </a>
+  }
+>
+  <ul
+    className="usernav__list"
+  />
+</DropDown>
+`;
