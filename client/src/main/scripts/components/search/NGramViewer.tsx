@@ -19,6 +19,7 @@
  */
 import * as d3 from "d3";
 import React, { useEffect, useRef } from "react";
+import { CornerLeftUp } from "react-feather";
 import { FT } from "../../java2ts/FT";
 import { SearchResult } from "./search";
 
@@ -51,18 +52,24 @@ const NGramViewer: React.FC<NGramViewerProps> = ({
     <div className="ngram__outer-container">
       <div className="ngram__inner-container">
         <svg ref={svgEl} width={SVG_WIDTH} height={SVG_HEIGHT}></svg>
-        <div className="ngram__term-list">
-          {searchTerms.map((term, idx) => {
-            return (
-              <span
-                key={term}
-                style={{ color: colors[idx] }}
-                className="ngram__term"
-              >
-                {term}
-              </span>
-            );
-          })}
+        <div className="ngram__legend">
+          <div className="ngram__term-list">
+            {searchTerms.map((term, idx) => {
+              return (
+                <span
+                  key={term}
+                  style={{ color: colors[idx] }}
+                  className="ngram__text ngram__text--term"
+                >
+                  {term}
+                </span>
+              );
+            })}
+          </div>
+          <div className="ngram__term-list">
+            <CornerLeftUp />
+            <span className="ngram__text">click any year to scroll</span>
+          </div>
         </div>
       </div>
     </div>
@@ -79,29 +86,30 @@ function drawChart(
     .append("g")
     .attr(
       "transform",
-      "translate(" + SVG_PADDING_LEFT + "," + SVG_PADDING_TOP / 2 + ")"
+      "translate(" + SVG_PADDING_LEFT + "," + SVG_PADDING_TOP / 3 + ")"
     );
   const { hitsPerYear, allSearchTerms } = getNumberOfHitsPerYear(searchResult);
-  // get x-axis ticks
+  // X-Axis
   const xScale = d3
     .scaleBand()
     .domain(ALL_DEBATE_YEARS)
     .range([0, SVG_WIDTH - SVG_PADDING_LEFT * 2])
     .padding(0.1);
-  // draw x-axis
-  svg
+  const xAxisGenerator = d3.axisBottom(xScale);
+  const xAxis = svg
     .append("g")
     .attr("transform", "translate(0," + (SVG_HEIGHT - SVG_PADDING_TOP) + ")")
-    .call(d3.axisBottom(xScale));
-
+    .call(xAxisGenerator);
+  xAxis.selectAll(".tick text").attr("transform", "translate(10, 5)rotate(45)");
+  xAxis.selectAll(".tick line").attr("visibility", "hidden");
   const hitMax = d3.max(hitsPerYear, (h) => h.hitCount)!;
-  // get y-axis ticks
+  // Y-Axis
   const yScale = d3
     .scaleLinear()
     .domain([0, hitMax + Math.round(hitMax * 0.1)])
     .range([SVG_HEIGHT - SVG_PADDING_TOP, 0]);
-  // draw y-axis
-  svg.append("g").call(d3.axisLeft(yScale).ticks(hitMax, "d"));
+  const yAxisGenerator = d3.axisLeft(yScale).ticks(Math.min(hitMax, 5), "d");
+  svg.append("g").call(yAxisGenerator);
 
   allSearchTerms.forEach((term, idx) => {
     const hitsPerYearForTerm = hitsPerYear.filter(

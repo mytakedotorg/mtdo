@@ -6,19 +6,28 @@
   max-width: 100%;
   width: 700px;
   height: 218px;
-  margin-bottom: $page-margin-mobile * $vertical-margin-multiplier;
+  padding-bottom: 8px;
   margin-left: auto;
   margin-right: auto;
-  @media #{$mq-medium} {
-    margin-bottom: $content-margin * $vertical-margin-multiplier;
+}
+
+.ngram__legend {
+  display: flex;
+  justify-content: space-between;
+}
+.ngram__term-list {
+  display: flex;
+  justify-content: flex-start;
+  padding-bottom: 4px;
+  svg {
+    margin-top: -10px;
   }
 }
 
-.ngram__term-list {
-  display: flex;
-  justify-content: space-around;
-}
-
-.ngram__term {
+.ngram__text {
   font-size: 16px;
+}
+.ngram__text--term {
+  font-weight: 600;
+  margin-right: 8px;
 }
