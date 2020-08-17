@@ -34,8 +34,10 @@
   margin-top: 0;
   margin-bottom: 0;
   text-align: left;
+  margin-left: 4px;
   @media #{$mq-medium} {
     text-align: center;
+    margin-left: 0;
   }
 }
 .results__subheading {

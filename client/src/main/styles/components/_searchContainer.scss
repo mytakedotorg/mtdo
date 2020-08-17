@@ -10,10 +10,15 @@
 }
 .search__video {
   position: fixed;
-  top: 40px;
+  top: 0;
   background-color: $white;
+  z-index: 1;
+  max-width: 100%;
   div {
     @include content-column;
     text-align: center;
+  }
+  @media screen and (min-width: 768px) {
+    top: 40px;
   }
 }

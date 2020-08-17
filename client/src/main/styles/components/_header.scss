@@ -39,6 +39,7 @@ $nav-height: 35px;
   justify-content: flex-start;
   text-decoration: none;
   width: 175px;
+  margin-right: 8px;
 }
 .header__logo-image-container {
   height: 32px;
@@ -62,7 +63,13 @@ $nav-height: 35px;
   flex: 1;
   height: 40px;
   line-height: 40px;
+  margin-right: 8px;
+  @media screen and (max-width: 768px) {
+    display: none;
+  }
 }
 .header__usernav {
-  width: 175px;
+  @media screen and (min-width: 1034px) {
+    width: 175px;
+  }
 }
