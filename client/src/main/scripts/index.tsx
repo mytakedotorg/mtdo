@@ -19,7 +19,7 @@
  */
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { windowUtils } from "./browser";
+import { getUserCookieString, windowUtils } from "./browser";
 import { TakeDocument } from "./components/BlockEditor";
 import BlockReader from "./components/BlockReader";
 import BlockWriter, {
@@ -32,6 +32,7 @@ import Home from "./components/Home";
 import VideoResultsLoader from "./components/search/VideoResultsLoader";
 import SearchBar from "./components/SearchBar";
 import UserNav from "./components/UserNav";
+import { LoginCookie } from "./java2ts/LoginCookie";
 
 windowUtils.init();
 
@@ -134,7 +135,11 @@ if (isSearchPage(window.mytake)) {
 
 const userNavContainer = document.getElementById("usernav");
 if (userNavContainer) {
-  ReactDOM.render(<UserNav />, userNavContainer);
+  const cookieString = getUserCookieString();
+  let cookie = cookieString
+    ? (JSON.parse(JSON.parse(cookieString)) as LoginCookie)
+    : null;
+  ReactDOM.render(<UserNav cookie={cookie} />, userNavContainer);
 } else {
   throw "Couldn't find div#usernav";
 }

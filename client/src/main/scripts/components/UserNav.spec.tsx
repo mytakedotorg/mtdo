@@ -17,23 +17,24 @@
  *
  * You can contact us at team@mytake.org
  */
-import * as React from "react";
-import { mount, ReactWrapper } from "enzyme";
+import React from "react";
+import renderer from "react-test-renderer";
 import UserNav from "./UserNav";
 
-let wrapper: ReactWrapper;
+jest.mock("./DropDown", () => ({
+  __esModule: true,
+  default: "DropDown",
+}));
 
-describe("UserNav", () => {
-  beforeAll(() => {
-    wrapper = mount(<UserNav />);
-  });
+test("UserNav logged out", () => {
+  const tree = renderer.create(<UserNav cookie={null} />).toJSON();
+  expect(tree).toMatchSnapshot();
+});
 
-  test("UserNav logged out", () => {
-    expect(wrapper.find(".usernav__dropdown").children().length).toBe(0);
-  });
-
-  test("UserNav logged in", () => {
-    wrapper.setState({ cookie: { username: "Samples" } });
-    expect(wrapper.find(".usernav__dropdown").children().length).toBe(6);
-  });
+test("UserNav logged in", () => {
+  const cookie = {
+    username: "samples",
+  };
+  const tree = renderer.create(<UserNav cookie={cookie} />).toJSON();
+  expect(tree).toMatchSnapshot();
 });

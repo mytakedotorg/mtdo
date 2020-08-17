@@ -19,18 +19,15 @@
  */
 import * as React from "react";
 import { ChevronDown } from "react-feather";
-import { getUserCookieString } from "../browser";
 import { LoginCookie } from "../java2ts/LoginCookie";
 import { Routes } from "../java2ts/Routes";
 import DropDown from "./DropDown";
 
-interface UserNavProps {}
+interface UserNavProps {
+  cookie: LoginCookie | null;
+}
 
-const UserNav: React.FC<UserNavProps> = () => {
-  const cookieString = getUserCookieString(); // Not pure
-  let cookie = cookieString
-    ? (JSON.parse(JSON.parse(cookieString)) as LoginCookie)
-    : null;
+const UserNav: React.FC<UserNavProps> = ({ cookie }) => {
   let navLinks: { name: string; href: string }[] = [];
   if (cookie) {
     navLinks = [
@@ -68,7 +65,7 @@ const UserNav: React.FC<UserNavProps> = () => {
       <ul className="usernav__list">
         {navLinks.map(({ name, href }) => {
           return (
-            <li className="usernav__list-item">
+            <li className="usernav__list-item" key={name}>
               <a className="usernav__link" href={href}>
                 {name}
               </a>
