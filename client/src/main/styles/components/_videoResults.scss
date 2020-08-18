@@ -114,6 +114,7 @@
   @include typography($sans, 400, 16px, 1.7em);
 }
 .turn__button {
+  background: none;
   display: flex;
   align-items: center;
 }
