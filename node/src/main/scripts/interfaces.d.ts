@@ -17,39 +17,4 @@
  *
  * You can contact us at team@mytake.org
  */
-const rison = require("rison-node");
-
-/* TODO, for search
-export type VideoTurn = {
-    kind: "videoTurn";
-    fact: string;
-    turn: number;
-    cut: [number, number];
-    bold?: Array<[number, number]>;
-};
-*/
-
-export type VideoCut = {
-  cut: [number, number];
-  fact: string;
-  kind: "videoCut";
-};
-
-export type TextCut = {
-  cut: [number, number];
-  bold?: Array<[number, number]>;
-  fact: string;
-  kind: "textCut";
-};
-
-export type Social = VideoCut | TextCut;
-
-export function encodeSocial(embed: Social) {
-  // TODO: limit floating point precision
-  // https://github.com/w33ble/rison-node/issues/4
-  return rison.encode_object(embed);
-}
-
-export function decodeSocial(encoded: string): Social {
-  return rison.decode_object(encoded);
-}
+declare module "rison-node";

@@ -19,3 +19,4 @@
  */
 declare module "react-youtube";
 declare module "rc-slider";
+declare module "rison-node";
