@@ -19,7 +19,7 @@
  */
 import * as express from "express";
 import { NextFunction, Request, Response } from "express";
-import ReactDOMServer from "react-dom/server";
+const ReactDOMServer = require("react-dom/server");
 import { decodeSocial } from "./common/social/social";
 import { socialHeader } from "./common/social/SocialHeader";
 import { Routes } from "./java2ts/Routes";
@@ -60,10 +60,8 @@ app.use(`${Routes.PATH_NODE_SOCIAL_HEADER}:${ARG}`, async (req, res) => {
   try {
     const arg = req.params[ARG];
     const social = decodeSocial(arg);
-    res.writeHead(200, {
-      "Content-Type": "text/plain",
-    });
-    res.send(ReactDOMServer.renderToString(await socialHeader(social, arg)));
+    const html = ReactDOMServer.renderToString(await socialHeader(social, arg));
+    res.contentType("text/plain").send(html);
   } catch (error) {
     logErrorAndSend404(req, error, res);
   }
