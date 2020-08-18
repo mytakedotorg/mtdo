@@ -20,10 +20,11 @@
 import * as express from "express";
 import { NextFunction, Request, Response } from "express";
 import ReactDOMServer from "react-dom/server";
+import { decodeSocial } from "./common/social/social";
 import { socialHeader } from "./common/social/SocialHeader";
+import { Routes } from "./java2ts/Routes";
 // Require routes
 import { generateImage } from "./controllers/images";
-import rison from "rison";
 require("source-map-support").install();
 const logger = require("morgan");
 const app = express();
@@ -36,7 +37,7 @@ if (app.get("env") === "production") {
 }
 
 const ARG = "arg";
-app.use(`/static/social-image/:${ARG}`, async (req, res) => {
+app.use(`${Routes.PATH_NODE_SOCIAL_IMAGE}:${ARG}`, async (req, res) => {
   try {
     const imgKeyAndExtension = req.params[ARG];
     const bufOrErrorMsg = await generateImage(imgKeyAndExtension);
@@ -55,22 +56,23 @@ app.use(`/static/social-image/:${ARG}`, async (req, res) => {
   }
 });
 
-app.use(`/static/social-header/:${ARG}`, async (req, res) => {
+app.use(`${Routes.PATH_NODE_SOCIAL_HEADER}:${ARG}`, async (req, res) => {
   try {
     const arg = req.params[ARG];
+    const social = decodeSocial(arg);
     res.writeHead(200, {
       "Content-Type": "text/plain",
     });
-    res.send(ReactDOMServer.renderToString(socialHeader(arg)));
+    res.send(ReactDOMServer.renderToString(await socialHeader(social, arg)));
   } catch (error) {
-    logErrorAndSend404(req, error.toString(), res);
+    logErrorAndSend404(req, error, res);
   }
 });
 
-function logErrorAndSend404(req: Request, errorMsg: string, res: Response) {
+function logErrorAndSend404(req: Request, error: any, res: Response) {
   console.warn("#####################");
-  console.warn(req.path);
-  console.warn(errorMsg);
+  console.warn(req.originalUrl);
+  console.warn(error.stack);
   res.status(404).send("Not found");
 }
 

@@ -59,4 +59,8 @@ public class Routes {
 	public static final String TOS = "/tos";
 	public static final String FAQ = "/faq";
 	public static final String RULES = "/rules";
+
+	public static final String PATH_NODE_SOCIAL_IMAGE = "/static/social-image/";
+	public static final String PATH_NODE_SOCIAL_HEADER = "/static/social-header/";
+	public static final String URL_NODE_SOCIAL_IMAGE = "https://node.mytake.org" + PATH_NODE_SOCIAL_IMAGE;
 }

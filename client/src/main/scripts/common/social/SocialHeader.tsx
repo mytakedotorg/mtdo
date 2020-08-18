@@ -18,25 +18,60 @@
  * You can contact us at team@mytake.org
  */
 import * as React from "react";
+import { Social, TextCut, VideoCut } from "../social/social";
+import { FoundationFetcher } from "../../common/foundation";
+import { FT } from "../../java2ts/FT";
+import { Routes } from "../../java2ts/Routes";
 
-export function socialHeader(arg: string): React.ReactElement {
-  return <SocialHeader embed={arg} />;
+export async function socialHeader(
+  social: Social,
+  socialRison: string
+): Promise<React.ReactElement> {
+  switch (social.kind) {
+    case "textCut":
+      return headerTextCut(
+        social,
+        socialRison,
+        await FoundationFetcher.justOneDocument(social.fact)
+      );
+    case "videoCut":
+      return headerVideoCut(
+        social,
+        socialRison,
+        await FoundationFetcher.justOneVideo(social.fact)
+      );
+  }
 }
 
-export type SocialHeaderProps = {
-  embed: string;
-};
-
-export const SocialHeader: React.FC<SocialHeaderProps> = (props) => {
+function headerTextCut(
+  social: Social,
+  socialRison: string,
+  fact: FT.DocumentFactContent
+): React.ReactElement {
   return (
     <Twitter
-      title={props.embed}
-      desc={props.embed}
-      image={props.embed}
-      imageAlt={props.embed}
+      title={fact.fact.title}
+      desc={"TODO"}
+      image={Routes.URL_NODE_SOCIAL_IMAGE + socialRison}
+      imageAlt={""}
     />
   );
-};
+}
+
+function headerVideoCut(
+  social: Social,
+  socialRison: string,
+  fact: FT.VideoFactContent
+): React.ReactElement {
+  return (
+    <Twitter
+      title={fact.fact.title}
+      desc={"TODO"}
+      image={Routes.URL_NODE_SOCIAL_IMAGE + socialRison}
+      imageAlt={""}
+    />
+  );
+}
 
 // https://developer.twitter.com/en/docs/twitter-for-websites/cards/overview/summary-card-with-large-image
 interface TwitterProps {
@@ -52,6 +87,7 @@ interface TwitterProps {
   imageAlt: string;
 }
 
+// const Twitter: React.FC = () => <h1>Hello</h1>;
 const Twitter: React.FC<TwitterProps> = (props) => {
   return (
     <header>

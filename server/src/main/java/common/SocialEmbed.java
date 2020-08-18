@@ -39,16 +39,12 @@ import org.jooby.Request;
 import views.SocialEmbed.socialImage;
 
 public class SocialEmbed {
-	public static final String DEV_SOCIAL_IMAGE = Routes.API + "/dev/socialImage/";
-	public static final String NODE_SOCIAL_HEADERS = "/static/social-header/";
-	public static final String NODE_SOCIAL_IMAGE = "/static/social-image/";
-
 	private static final int MAX_WAIT_MS = 500;
 	private static final int NODE_DEV_PORT = 4000;
 	private static final boolean isHerokuProd = "true".equals(System.getenv("HEROKU_NAKED_PROD"));
 
 	public static SocialEmbed get(Request req, String embedRison) throws IOException {
-		return req.require(GetHeader.class).get(NODE_SOCIAL_HEADERS + embedRison);
+		return req.require(GetHeader.class).get(Routes.PATH_NODE_SOCIAL_HEADER + embedRison);
 	}
 
 	public static SocialEmbed todo() {
@@ -75,17 +71,7 @@ public class SocialEmbed {
 		private final RequestConfig requestCfg;
 
 		private GetHeader(Env env, String httpDomain) throws URISyntaxException, UnknownHostException {
-			if (httpDomain.isEmpty()) {
-				httpDomain = "http://localhost:" + NODE_DEV_PORT;
-			}
 			this.httpDomain = httpDomain;
-
-			//			if (httpDomain.isEmpty()) {
-			//				host = new HttpHost(InetAddress.getLocalHost(), NODE_DEV_PORT);
-			//			} else {
-			//				URI uri = new URI(httpDomain);
-			//				host = new HttpHost(uri.getHost());
-			//			}
 
 			connectionPool = new PoolingHttpClientConnectionManager();
 			int numConnections = env.config().getInt("runtime.processors-x2");
@@ -108,6 +94,9 @@ public class SocialEmbed {
 				body = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
 				EntityUtils.consume(response.getEntity());
 			}
+			if (!httpDomain.equals(HTTPS_NODE)) {
+				body = body.replace(HTTPS_NODE, httpDomain);
+			}
 			System.out.println("#################");
 			System.out.println(body);
 			return new SocialEmbed(body);
@@ -118,19 +107,22 @@ public class SocialEmbed {
 		jooby.use((env, conf, binder) -> {
 			if (isHerokuProd) {
 				// everywhere besides prod, we want to rewr
-				env.router().get(DEV_SOCIAL_IMAGE, req -> socialImage.template());
+				env.router().get(Routes.PATH_NODE_SOCIAL_HEADER, req -> socialImage.template());
 			}
 			String base;
 			if (isHerokuProd) {
-				base = "https://node.mytake.org";
+				base = HTTPS_NODE;
 			} else if (env.name().equals("heroku")) {
 				base = "https://mtdo-node-staging.herokuapp.com";
 			} else if (env.name().equals("dev")) {
-				base = "";
+				base = HTTP_LOCAL_DEV;
 			} else {
 				throw Unhandled.stringException(env.name());
 			}
 			binder.bind(GetHeader.class).toInstance(new GetHeader(env, base));
 		});
 	}
+
+	private static final String HTTPS_NODE = "https://node.mytake.org";
+	private static final String HTTP_LOCAL_DEV = "http://localhost:" + NODE_DEV_PORT;
 }

@@ -19,14 +19,24 @@
  */
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { SocialImage } from "./common/social/SocialImage";
+import { decodeSocial } from "./common/social/social";
+import { socialImage } from "./common/social/SocialImage";
 
 (window as any).render = (args: string) => {
   // on the node.mytake.org server,
   // this function is called over and over by puppeteer
   // on a single page
-  const app = document.getElementById("socialembed")!;
-  ReactDOM.render(<SocialImage embed={args} />, app);
+  const social = decodeSocial(args);
+  const promiseImage = socialImage(social);
+  promiseImage.then(
+    (reactRoot) => {
+      ReactDOM.render(reactRoot, document.getElementById("socialembed")!);
+      console.log(args);
+    },
+    (err) => {
+      console.warn(err);
+    }
+  );
 };
 
 if (window.location.hash) {

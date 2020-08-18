@@ -18,12 +18,44 @@
  * You can contact us at team@mytake.org
  */
 import * as React from "react";
+import { Social, TextCut, VideoCut } from "../social/social";
+import { FoundationFetcher } from "../../common/foundation";
+import { FT } from "../../java2ts/FT";
 
-export type SocialImageProps = {
+export async function socialImage(social: Social): Promise<React.ReactElement> {
+  switch (social.kind) {
+    case "textCut":
+      return imageTextCut(
+        social,
+        await FoundationFetcher.justOneDocument(social.fact)
+      );
+    case "videoCut":
+      return imageVideoCut(
+        social,
+        await FoundationFetcher.justOneVideo(social.fact)
+      );
+  }
+}
+
+function imageTextCut(
+  social: Social,
+  fact: FT.DocumentFactContent
+): React.ReactElement {
+  return <Render embed={JSON.stringify(social)} />;
+}
+
+function imageVideoCut(
+  social: Social,
+  fact: FT.VideoFactContent
+): React.ReactElement {
+  return <Render embed={JSON.stringify(social)} />;
+}
+
+interface ToEmbed {
   embed: string;
-};
+}
 
-export const SocialImage: React.FC<SocialImageProps> = (props) => {
+export const Render: React.FC<ToEmbed> = (props) => {
   return (
     <div className="socialImage">
       <p>{props.embed}</p>
