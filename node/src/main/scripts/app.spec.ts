@@ -25,7 +25,7 @@ expect.extend({ toMatchImageSnapshot });
 
 test("headers test videoCut", async (done) => {
   const response = await request(underTest).get(
-    "/static/social-header/cut:!(592.8200073242188,597.8300170898438),fact:SBB1OUGW-772ujnPCA71sp6td19UbtbXPpZ4wEEib_I=,kind:videoCut"
+    "/static/social-header/cut:!(2007.9000244140625,2046.1099853515625),fact:oZVEQzZXVzx3lM_PbszcA35XYBJxEDHwJirpx1c7hhg=,kind:videoCut"
   );
   expect(response.statusCode).toBe(200);
   expect(response.type).toBe("text/plain");
