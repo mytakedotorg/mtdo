@@ -19,7 +19,7 @@
  */
 import * as React from "react";
 import { Routes } from "../java2ts/Routes";
-import TimelineLoader from "./TimelineLoader";
+import TimelineLoader from "./timeline/TimelineLoader";
 
 interface FoundationViewProps {
   path: string;

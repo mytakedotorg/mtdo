@@ -25,14 +25,14 @@ import {
   getSimpleRangesFromHTMLRange,
   getStartRangeOffsetTop,
   highlightText,
-} from "../common/CaptionNodes";
-import {} from "../common/functions";
-import { FT } from "../java2ts/FT";
-import { Routes } from "../java2ts/Routes";
-import Document, { DocumentEventHandlers } from "./Document";
-import DocumentTextNodeList from "./DocumentTextNodeList";
-import FactHeader, { StickyFactHeader } from "./FactHeader";
-import Video from "./Video";
+} from "../../common/CaptionNodes";
+import {} from "../../common/functions";
+import { FT } from "../../java2ts/FT";
+import { Routes } from "../../java2ts/Routes";
+import Document, { DocumentEventHandlers } from "../Document";
+import DocumentTextNodeList from "../DocumentTextNodeList";
+import FactHeader, { StickyFactHeader } from "../FactHeader";
+import Video from "../Video";
 import isEqual = require("lodash/isEqual");
 
 export interface SetFactHandlers {

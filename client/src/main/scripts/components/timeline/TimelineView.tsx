@@ -18,10 +18,10 @@
  * You can contact us at team@mytake.org
  */
 import React, { useState } from "react";
-import { slugify } from "../common/functions";
-import { decodeSocial, encodeSocial } from "../common/social/social";
-import { FT } from "../java2ts/FT";
-import { Routes } from "../java2ts/Routes";
+import { slugify } from "../../common/functions";
+import { decodeSocial, encodeSocial } from "../../common/social/social";
+import { FT } from "../../java2ts/FT";
+import { Routes } from "../../java2ts/Routes";
 import Timeline, { TimelineItemData } from "./Timeline";
 import { SetFactHandlers } from "./TimelinePreview";
 import TimelinePreviewContainer, {

@@ -18,10 +18,14 @@
  * You can contact us at team@mytake.org
  */
 import React, { useEffect, useState } from "react";
-import { FoundationNode } from "../common/CaptionNodes";
-import { FoundationFetcher, isDocument, isVideo } from "../common/foundation";
-import { TextCut, VideoCut } from "../common/social/social";
-import { FT } from "../java2ts/FT";
+import { FoundationNode } from "../../common/CaptionNodes";
+import {
+  FoundationFetcher,
+  isDocument,
+  isVideo,
+} from "../../common/foundation";
+import { TextCut, VideoCut } from "../../common/social/social";
+import { FT } from "../../java2ts/FT";
 import { SetFactHandlers } from "./TimelinePreview";
 import TimelinePreviewLoadingView from "./TimelinePreviewLoadingView";
 
