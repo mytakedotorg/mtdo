@@ -1,22 +1,30 @@
 # MyTake.org Node.js API server
 
-## Dev quickstart
+This server has two routes:
+
+- `/static/social-image/` renders a social media preview image using puppeteer
+  - this gets called by social media website
+- `/static/social-header/` renders meta tags for the social media preview
+  - this gets called only by our own `mytake.org` web server
+
+## Dev
+
+See [`DEV_QUICKSTART.md` in the parent folder](../DEV_QUICKSTART.md) for details/ 
+
 
 - `nvm use` to get the correct version of node and npm
 - `./gradlew beforeCompile` (populates the `common` and `java2ts` directories of `src/main/scripts`)
-- `npm start` to launch the server
+- `npm start` to launch the server at port `4000`
     - if you change a file and save, it will automatically rebuild and restart the server
-    - [13th Amendment](http://localhost:4000/api/images/o_dRqrNJ62wzlgLilTrLxkHqGmvAS9qTpa4z4pjyFqA=_54-86_0-218.jpg)
-    - [Mondale Reagan](http://localhost:4000/api/images/hNPKEqwAyuJdu2OQY6ESAieCq_xQXX1it4bjA7DRlIg=_5839.620-5949.290.png)
-    - [broken link](http://localhost:4000/api/images/vrhLapmIbWECYassLC2Umf7Z16fusYgWWGhTP7KgIYU=_5839.620-5949.290.jpg)
 
 ## Deployment
 
-This server is deployed to `node.mytake.org` using Heroku, in lockstep with the Java served up at `mytake.org`.
+- This server is deployed to `node.mytake.org` using Heroku, in lockstep with the Java served up at `mytake.org`.
+- A staging instance is always available `mtdo-node-staging.herokuapp.com`, autodeploys from `master`
 
-## Requirements
+## Social embed requirements
 
-TL;DR our target image is 1200x628 (even though Twitter prefers 1200x675).
+TL;DR our target image is 1200x628 (even though Twitter maybe prefers 1200x675).
 
 - Facebook
   - [debugger](https://developers.facebook.com/tools/debug/)

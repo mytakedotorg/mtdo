@@ -39,6 +39,8 @@ import org.jooby.Request;
 import views.SocialEmbed.socialImage;
 
 public class SocialEmbed {
+	private static final String DEV_URL = "/devSocialEmbed";
+
 	private static final int MAX_WAIT_MS = 500;
 	private static final int NODE_DEV_PORT = 4000;
 	private static final boolean isHerokuProd = "true".equals(System.getenv("HEROKU_NAKED_PROD"));
@@ -107,6 +109,7 @@ public class SocialEmbed {
 
 	/** Removes react cruft (unneeded meta closing tags and header wrapper) */
 	static String cleanupHeaders(String input) {
+		// if these replace calls are changed, you must sync with the Typescript socialEmbed.tsx debugging code
 		return input
 				.replace("<header data-reactroot=\"\">", "")
 				.replace("</header>", "")
@@ -117,7 +120,7 @@ public class SocialEmbed {
 		jooby.use((env, conf, binder) -> {
 			if (!isHerokuProd) {
 				// everywhere besides prod, we want to show the social preview here
-				env.router().get(Routes.PATH_NODE_SOCIAL_HEADER, req -> socialImage.template());
+				env.router().get(DEV_URL, req -> socialImage.template());
 			}
 			String base;
 			if (isHerokuProd) {
