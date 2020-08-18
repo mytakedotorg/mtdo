@@ -104,11 +104,16 @@ input[type="search"] {
 .searchbar__text {
   @include typography($sans, 400, 22px, 36px);
   color: $white;
+}
+.searchbar__text--home {
+  display: none;
+}
+.searchbar__text--search {
   @media screen and (min-width: 768px + 1) {
     display: none;
   }
 }
-.searchbar__icon {
+.searchbar__icon--search {
   @media screen and (max-width: 768px) {
     display: none;
   }
