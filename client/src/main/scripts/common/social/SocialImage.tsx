@@ -20,6 +20,7 @@
 import * as React from "react";
 import { Social, TextCut, VideoCut } from "../social/social";
 import { FoundationFetcher } from "../../common/foundation";
+import { getCut } from "../../common/video";
 import { FT } from "../../java2ts/FT";
 
 export async function socialImage(social: Social): Promise<React.ReactElement> {
@@ -38,27 +39,20 @@ export async function socialImage(social: Social): Promise<React.ReactElement> {
 }
 
 function imageTextCut(
-  social: Social,
+  social: TextCut,
   fact: FT.DocumentFactContent
 ): React.ReactElement {
-  return <Render embed={JSON.stringify(social)} />;
+  return <div className="todo"></div>;
 }
 
 function imageVideoCut(
-  social: Social,
+  social: VideoCut,
   fact: FT.VideoFactContent
 ): React.ReactElement {
-  return <Render embed={JSON.stringify(social)} />;
-}
-
-interface ToEmbed {
-  embed: string;
-}
-
-export const Render: React.FC<ToEmbed> = (props) => {
+  const [speaker, said] = getCut(fact, social.cut);
   return (
-    <div className="socialImage">
-      <p>{props.embed}</p>
+    <div className="videocut">
+      <p className="videocut__said">{said}</p>
     </div>
   );
-};
+}

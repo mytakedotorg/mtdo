@@ -20,6 +20,7 @@
 import * as React from "react";
 import { Social, TextCut, VideoCut } from "../social/social";
 import { FoundationFetcher } from "../../common/foundation";
+import { getCut } from "../../common/video";
 import { FT } from "../../java2ts/FT";
 import { Routes } from "../../java2ts/Routes";
 
@@ -44,7 +45,7 @@ export async function socialHeader(
 }
 
 function headerTextCut(
-  social: Social,
+  social: TextCut,
   socialRison: string,
   fact: FT.DocumentFactContent
 ): React.ReactElement {
@@ -59,16 +60,17 @@ function headerTextCut(
 }
 
 function headerVideoCut(
-  social: Social,
+  social: VideoCut,
   socialRison: string,
   fact: FT.VideoFactContent
 ): React.ReactElement {
+  const [speaker, said] = getCut(fact, social.cut);
   return (
     <Twitter
-      title={fact.fact.title}
-      desc={"TODO"}
+      title={`${speaker.fullName} in ${fact.fact.primaryDate.slice(0, 4)}`}
+      desc={fact.fact.title}
       image={Routes.URL_NODE_SOCIAL_IMAGE + socialRison}
-      imageAlt={""}
+      imageAlt={said}
     />
   );
 }
