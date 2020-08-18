@@ -100,7 +100,13 @@ function drawChart(
     .append("g")
     .attr("transform", "translate(0," + (SVG_HEIGHT - SVG_PADDING_TOP) + ")")
     .call(xAxisGenerator);
-  xAxis.selectAll(".tick text").attr("transform", "translate(10, 5)rotate(45)");
+  xAxis
+    .selectAll(".tick text")
+    .attr("transform", "translate(10, 5)rotate(45)")
+    .style("cursor", "pointer")
+    .on("click", function (year: string) {
+      onBarClick(year);
+    });
   xAxis.selectAll(".tick line").attr("visibility", "hidden");
   const hitMax = d3.max(hitsPerYear, (h) => h.hitCount)!;
   // Y-Axis
