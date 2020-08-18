@@ -77,12 +77,7 @@ declare global {
 function reactElementForPage(args: MtdoArgs): React.SFCElement<any> {
   switch (args.type) {
     case "foundation":
-      return (
-        <FoundationView
-          path={window.location.pathname}
-          search={window.location.search}
-        />
-      );
+      return <FoundationView path={window.location.pathname} />;
     case "new-take":
       let initJson: InitialBlockWriterState;
       if (args.blockWriterState) {

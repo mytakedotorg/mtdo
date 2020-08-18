@@ -20,15 +20,16 @@
 import React, { useEffect, useState } from "react";
 import { FoundationNode } from "../common/CaptionNodes";
 import { FoundationFetcher, isDocument, isVideo } from "../common/foundation";
+import { TextCut, VideoCut } from "../common/social/social";
 import { FT } from "../java2ts/FT";
-import TimelinePreview, { Ranges, SetFactHandlers } from "./TimelinePreview";
+import { SetFactHandlers } from "./TimelinePreview";
 import TimelinePreviewLoadingView from "./TimelinePreviewLoadingView";
 
+export type TimelineSocial = VideoCut | TextCut;
+
 interface TimelinePreviewContainerProps {
-  factLink: FT.FactLink;
+  selectedFact: TimelineSocial;
   setFactHandlers?: SetFactHandlers;
-  ranges?: Ranges;
-  offset?: number;
 }
 
 interface TimelinePreviewContainerState {
@@ -79,20 +80,21 @@ const TimelinePreviewContainer: React.FC<TimelinePreviewContainerProps> = (
       loading: true,
     }));
 
-    getFact(props.factLink.hash);
-  }, [props.factLink.hash]);
+    getFact(props.selectedFact.fact);
+  }, [props.selectedFact.fact]);
 
   return state.loading ? (
     <TimelinePreviewLoadingView />
   ) : (
-    <TimelinePreview
-      factLink={props.factLink}
-      videoFact={state.videoFact}
-      nodes={state.nodes}
-      setFactHandlers={props.setFactHandlers}
-      ranges={props.ranges}
-      offset={props.offset}
-    />
+    <p>todo</p>
+    // <TimelinePreview
+    //   factLink={props.factLink}
+    //   videoFact={state.videoFact}
+    //   nodes={state.nodes}
+    //   setFactHandlers={props.setFactHandlers}
+    //   ranges={props.ranges}
+    //   offset={props.offset}
+    // />
   );
 };
 

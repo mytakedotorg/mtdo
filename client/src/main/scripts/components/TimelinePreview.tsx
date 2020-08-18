@@ -26,9 +26,9 @@ import {
   getStartRangeOffsetTop,
   highlightText,
 } from "../common/CaptionNodes";
+import {} from "../common/functions";
 import { FT } from "../java2ts/FT";
 import { Routes } from "../java2ts/Routes";
-import {} from "../common/functions";
 import Document, { DocumentEventHandlers } from "./Document";
 import DocumentTextNodeList from "./DocumentTextNodeList";
 import FactHeader, { StickyFactHeader } from "./FactHeader";

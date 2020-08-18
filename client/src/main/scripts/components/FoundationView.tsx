@@ -18,12 +18,11 @@
  * You can contact us at team@mytake.org
  */
 import * as React from "react";
-import TimelineLoader from "./TimelineLoader";
 import { Routes } from "../java2ts/Routes";
+import TimelineLoader from "./TimelineLoader";
 
 interface FoundationViewProps {
   path: string;
-  search: string;
 }
 
 class FoundationView extends React.Component<FoundationViewProps, {}> {
@@ -39,15 +38,6 @@ class FoundationView extends React.Component<FoundationViewProps, {}> {
           <div>
             <div className="foundation__inner-container">
               <h1 className="foundation__heading">Foundation of Facts</h1>
-              {this.props.search ? (
-                <p className="timeline__instructions timeline__instructions--red">
-                  We haven't implemented this yet! Help us finish it on{" "}
-                  <a href="https://github.com/mytakedotorg/mytakedotorg/projects/3">
-                    GitHub
-                  </a>
-                  .
-                </p>
-              ) : null}
               <p className="timeline__instructions">
                 Explore Facts in the timeline below.
               </p>

@@ -18,10 +18,10 @@
  * You can contact us at team@mytake.org
  */
 import * as React from "react";
-import { Social, TextCut, VideoCut } from "../social/social";
 import { FoundationFetcher } from "../../common/foundation";
 import { getCut } from "../../common/video";
 import { FT } from "../../java2ts/FT";
+import { Social, TextCut, VideoCut } from "../social/social";
 
 export async function socialImage(social: Social): Promise<React.ReactElement> {
   switch (social.kind) {

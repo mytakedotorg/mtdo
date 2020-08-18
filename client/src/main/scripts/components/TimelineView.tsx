@@ -17,22 +17,17 @@
  *
  * You can contact us at team@mytake.org
  */
-import * as React from "react";
+import React, { useState } from "react";
+import { slugify } from "../common/functions";
+import { decodeSocial, encodeSocial } from "../common/social/social";
 import { FT } from "../java2ts/FT";
 import { Routes } from "../java2ts/Routes";
-import { slugify } from "../common/functions";
-import {
-  encodeSocial,
-  decodeSocial,
-  VideoCut,
-  TextCut,
-} from "../common/social/social";
 import Timeline, { TimelineItemData } from "./Timeline";
 import { SetFactHandlers } from "./TimelinePreview";
-import TimelinePreviewContainer from "./TimelinePreviewContainer";
+import TimelinePreviewContainer, {
+  TimelineSocial,
+} from "./TimelinePreviewContainer";
 import TimelineRadioButtons from "./TimelineRadioButtons";
-
-type TimelineSocial = VideoCut | TextCut;
 
 interface URLValues {
   factTitleSlug: string;
@@ -56,7 +51,95 @@ interface TimelineViewState {
   URLIsValid: boolean;
 }
 
-export default class TimelineView extends React.Component<
+const TimelineView: React.FC<TimelineViewProps> = ({
+  factLinks,
+  setFactHandlers,
+}) => {
+  const [selectedOption, setSelectedOption] = useState<SelectionOptions>(
+    "Debates"
+  );
+  const [selectedFact, setSelectedFact] = useState<TimelineSocial | null>(null);
+  const timelineItems = getTimelineItems(selectedOption, factLinks);
+
+  const handleChange = (ev: React.ChangeEvent<HTMLInputElement>) => {
+    const value = ev.target.value as SelectionOptions;
+    if (value !== selectedOption) {
+      setSelectedOption(value);
+    }
+  };
+
+  const handleItemClick = (factHash: string) => {
+    // for (let factLink of this.props.factLinks) {
+    //   if (factLink.hash === factHash) {
+    //     const factTitleSlug = slugify(factLink.fact.title);
+    //     const stateObject: TimelineViewState = {
+    //       ...this.state,
+    //       factLink: factLink,
+    //       urlValues: {
+    //         factTitleSlug: factTitleSlug,
+    //       },
+    //     };
+    //     if (this.props.path.startsWith(Routes.FOUNDATION)) {
+    //       window.history.pushState(
+    //         stateObject,
+    //         "UnusedTitle",
+    //         Routes.FOUNDATION + "/" + factTitleSlug
+    //       );
+    //     }
+    //     this.setState({
+    //       factLink: factLink,
+    //       urlValues: {
+    //         factTitleSlug: factTitleSlug,
+    //       },
+    //     });
+    //   }
+    // }
+  };
+
+  return (
+    <div className={"timeline__view"}>
+      <TimelineRadioButtons
+        selectedOption={selectedOption}
+        onChange={handleChange}
+      />
+      <Timeline
+        onItemClick={handleItemClick}
+        selectedOption={selectedOption}
+        timelineItems={timelineItems}
+      />
+      {selectedFact && (
+        <TimelinePreviewContainer
+          selectedFact={selectedFact}
+          setFactHandlers={setFactHandlers}
+        />
+      )}
+    </div>
+  );
+};
+
+function getTimelineItems(
+  selectedOption: SelectionOptions,
+  factLinks: FT.FactLink[]
+): TimelineItemData[] {
+  const targetKindMap: Record<SelectionOptions, string> = {
+    Debates: "video",
+    Documents: "document",
+  };
+  const targetKind = targetKindMap[selectedOption];
+
+  return factLinks
+    .filter((fl) => fl.fact.kind === targetKind)
+    .map((fl) => ({
+      id: fl.hash,
+      idx: fl.hash,
+      start: new Date(fl.fact.primaryDate),
+      content: fl.fact.title,
+      kind: fl.fact.kind,
+    }));
+}
+export default TimelineView;
+
+class TimelineViewClass extends React.Component<
   TimelineViewProps,
   TimelineViewState
 > {
@@ -121,16 +204,7 @@ export default class TimelineView extends React.Component<
       }
     }
   };
-  handleChange = (ev: React.ChangeEvent<HTMLInputElement>) => {
-    const value = ev.target.value;
-    if (value === "Debates" || value === "Documents") {
-      if (value !== this.state.selectedOption) {
-        this.setState({
-          selectedOption: value,
-        });
-      }
-    }
-  };
+
   handleClick = (factHash: string) => {
     for (let factLink of this.props.factLinks) {
       if (factLink.hash === factHash) {
@@ -372,10 +446,10 @@ export default class TimelineView extends React.Component<
     }
     return (
       <div className={"timeline__view"}>
-        <TimelineRadioButtons
+        {/* <TimelineRadioButtons
           selectedOption={this.state.selectedOption}
           onChange={this.handleChange}
-        />
+        /> */}
         {this.state.timelineItems.length > 0 && (
           <Timeline
             onItemClick={this.handleClick}
@@ -383,13 +457,13 @@ export default class TimelineView extends React.Component<
             timelineItems={this.state.timelineItems}
           />
         )}
-        {this.state.factLink ? (
+        {/* {this.state.factLink ? (
           <TimelinePreviewContainer
-            factLink={this.state.factLink}
+            selectedFact={this.state.factLink}
             setFactHandlers={this.props.setFactHandlers}
             ranges={ranges}
           />
-        ) : null}
+        ) : null} */}
       </div>
     );
   }
