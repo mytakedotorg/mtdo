@@ -19,9 +19,12 @@
  */
 import React, { useEffect, useState } from "react";
 import { FoundationFetcher } from "../../common/foundation";
+import { decodeSocial } from "../../common/social/social";
 import { FT } from "../../java2ts/FT";
+import { Routes } from "../../java2ts/Routes";
 import TimelineLoadingView from "./TimelineLoadingView";
 import { SetFactHandlers } from "./TimelinePreview";
+import { TimelineSocial } from "./TimelinePreviewLegacy";
 import TimelineView from "./TimelineView";
 
 interface TimelineLoaderProps {
@@ -46,8 +49,23 @@ const TimelineLoader: React.FC<TimelineLoaderProps> = (props) => {
     getAllFacts();
   }, []);
 
+  const parseURL = (path: string): TimelineSocial | string | null => {
+    const embedSlash = path.indexOf("/", Routes.FOUNDATION.length + 1);
+    if (embedSlash == -1 || path === Routes.FOUNDATION + "/") {
+      return null;
+    }
+    const embedRison = path.substring(embedSlash + 1);
+    if (embedRison === "") {
+      // trailing slash
+      return path.substring(Routes.FOUNDATION.length + 1, path.length - 1);
+    } else {
+      return decodeSocial(embedRison);
+    }
+  };
+
   return state.facts ? (
     <TimelineView
+      initialFact={parseURL(props.path)}
       factLinks={state.facts}
       path={props.path}
       setFactHandlers={props.setFactHandlers}

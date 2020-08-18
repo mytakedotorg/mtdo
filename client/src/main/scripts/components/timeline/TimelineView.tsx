@@ -24,9 +24,8 @@ import { FT } from "../../java2ts/FT";
 import { Routes } from "../../java2ts/Routes";
 import Timeline, { TimelineItemData } from "./Timeline";
 import { SetFactHandlers } from "./TimelinePreview";
-import TimelinePreviewContainer, {
-  TimelineSocial,
-} from "./TimelinePreviewContainer";
+import TimelinePreviewContainer from "./TimelinePreviewContainer";
+import { TimelineSocial } from "./TimelinePreviewLegacy";
 import TimelineRadioButtons from "./TimelineRadioButtons";
 
 interface URLValues {
@@ -35,9 +34,10 @@ interface URLValues {
   viewRange?: [number, number];
 }
 
-export type SelectionOptions = "Debates" | "Documents";
+export type SelectionOptions = "Debates" | "Documents"; // TODO replace with enum
 
 interface TimelineViewProps {
+  initialFact: TimelineSocial | string | null;
   factLinks: FT.FactLink[];
   path: string;
   setFactHandlers?: SetFactHandlers;
@@ -51,14 +51,26 @@ interface TimelineViewState {
   URLIsValid: boolean;
 }
 
+function factToSelectedOption(social: TimelineSocial): SelectionOptions {
+  switch (social.kind) {
+    case "textCut":
+      return "Documents";
+    case "videoCut":
+      return "Debates";
+  }
+}
+
 const TimelineView: React.FC<TimelineViewProps> = ({
+  initialFact,
   factLinks,
   setFactHandlers,
 }) => {
   const [selectedOption, setSelectedOption] = useState<SelectionOptions>(
-    "Debates"
+    factToSelectedOption(initialFact)
   );
-  const [selectedFact, setSelectedFact] = useState<TimelineSocial | null>(null);
+  const [selectedFact, setSelectedFact] = useState<TimelineSocial | null>(
+    initialFact
+  );
   const timelineItems = getTimelineItems(selectedOption, factLinks);
 
   const handleChange = (ev: React.ChangeEvent<HTMLInputElement>) => {

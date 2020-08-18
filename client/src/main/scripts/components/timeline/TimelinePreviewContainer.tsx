@@ -24,12 +24,10 @@ import {
   isDocument,
   isVideo,
 } from "../../common/foundation";
-import { TextCut, VideoCut } from "../../common/social/social";
 import { FT } from "../../java2ts/FT";
 import { SetFactHandlers } from "./TimelinePreview";
+import TimelinePreviewLegacy, { TimelineSocial } from "./TimelinePreviewLegacy";
 import TimelinePreviewLoadingView from "./TimelinePreviewLoadingView";
-
-export type TimelineSocial = VideoCut | TextCut;
 
 interface TimelinePreviewContainerProps {
   selectedFact: TimelineSocial;
@@ -90,15 +88,12 @@ const TimelinePreviewContainer: React.FC<TimelinePreviewContainerProps> = (
   return state.loading ? (
     <TimelinePreviewLoadingView />
   ) : (
-    <p>todo</p>
-    // <TimelinePreview
-    //   factLink={props.factLink}
-    //   videoFact={state.videoFact}
-    //   nodes={state.nodes}
-    //   setFactHandlers={props.setFactHandlers}
-    //   ranges={props.ranges}
-    //   offset={props.offset}
-    // />
+    <TimelinePreviewLegacy
+      selectedFact={props.selectedFact}
+      setFactHandlers={props.setFactHandlers}
+      nodes={state.nodes!}
+      videoFact={state.videoFact!}
+    />
   );
 };
 
