@@ -154,14 +154,25 @@ function scrollTo(offset: number, callback: () => void) {
 
 function getStickyHeaderHeight(): number {
   const NGRAM_CONTAINER_HEIGHT = 218;
+  const NGRAM_MARGIN_BOTTOM = 8;
   if (window.innerWidth > 768) {
     const HEADER_HEIGHT = 40;
     const HEADING_HEIGHT = 44;
-    return HEADER_HEIGHT + HEADING_HEIGHT + NGRAM_CONTAINER_HEIGHT;
+    return (
+      HEADER_HEIGHT +
+      HEADING_HEIGHT +
+      NGRAM_CONTAINER_HEIGHT +
+      NGRAM_MARGIN_BOTTOM
+    );
   } else {
     const MOBILE_HEADING_HEIGHT = 31;
     const SEARCHBAR_HEIGHT = 88;
-    return SEARCHBAR_HEIGHT + MOBILE_HEADING_HEIGHT + NGRAM_CONTAINER_HEIGHT;
+    return (
+      SEARCHBAR_HEIGHT +
+      MOBILE_HEADING_HEIGHT +
+      NGRAM_CONTAINER_HEIGHT +
+      NGRAM_MARGIN_BOTTOM
+    );
   }
 }
 export default SearchContainer;
