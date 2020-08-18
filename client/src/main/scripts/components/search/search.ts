@@ -18,7 +18,7 @@
  * You can contact us at team@mytake.org
  */
 import { Foundation, FoundationFetcher } from "../../common/foundation";
-import { bsRoundEarly, groupBy } from "../../common/functions";
+import { abbreviate, bsRoundEarly, groupBy } from "../../common/functions";
 import { getTurnContent } from "../../common/video";
 import { FT } from "../../java2ts/FT";
 import { Routes } from "../../java2ts/Routes";
@@ -200,16 +200,8 @@ export class SearchHit {
     const { turn, videoFact } = this;
     let turnContent = getTurnContent(turn, videoFact);
     let contentStartIdx = this.hitOffsets[0];
-    if (maxLength && turnContent.length > maxLength) {
-      const nextWhiteSpaceIndex = turnContent.indexOf(
-        " ",
-        contentStartIdx + maxLength
-      );
-      const turnContentEndIndex =
-        nextWhiteSpaceIndex === -1
-          ? contentStartIdx + maxLength
-          : nextWhiteSpaceIndex;
-      turnContent = turnContent.substring(0, turnContentEndIndex) + "...";
+    if (maxLength && this.hitOffsets[1] - this.hitOffsets[0] > maxLength) {
+      turnContent = abbreviate(turnContent, maxLength + contentStartIdx);
     }
     this.highlightOffsets.forEach((highlight) => {
       const textBeforeHighlight = turnContent.substring(

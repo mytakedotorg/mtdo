@@ -90,3 +90,13 @@ export function bsRoundEarlyMapped<T>(
     })
   );
 }
+
+export function abbreviate(inStr: string, maxLength: number): string {
+  if (inStr.length <= maxLength) {
+    return inStr;
+  }
+  const lastWhiteSpaceIndex = inStr.lastIndexOf(" ", maxLength);
+  const inStrEndIndex =
+    lastWhiteSpaceIndex === -1 ? maxLength : lastWhiteSpaceIndex;
+  return inStr.substring(0, inStrEndIndex) + "...";
+}
