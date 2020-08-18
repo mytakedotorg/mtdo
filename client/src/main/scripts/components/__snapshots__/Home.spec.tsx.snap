@@ -68,7 +68,13 @@ Array [
           className="searchbar__button searchbar__button--home"
           type="submit"
         >
+          <span
+            className="searchbar__text searchbar__text--home"
+          >
+            Search
+          </span>
           <svg
+            className="searchbar__icon searchbar__icon--home"
             fill="none"
             height={24}
             stroke="currentColor"

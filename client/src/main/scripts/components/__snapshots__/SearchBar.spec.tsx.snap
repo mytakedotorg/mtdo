@@ -55,7 +55,13 @@ exports[`SearchBar 1`] = `
     className="searchbar__button searchbar__button--"
     type="submit"
   >
+    <span
+      className="searchbar__text searchbar__text--"
+    >
+      Search
+    </span>
     <svg
+      className="searchbar__icon searchbar__icon--"
       fill="none"
       height={24}
       stroke="currentColor"
