@@ -1,0 +1,24 @@
+.search__sticky {
+  @include content-column;
+  position: sticky;
+  top: 0;
+  background-color: $white;
+  z-index: 2;
+  @media screen and (min-width: 768px) {
+    top: 40px;
+  }
+}
+.search__video {
+  position: absolute;
+  top: 0;
+  background-color: $white;
+  z-index: 1;
+  max-width: 100%;
+  div {
+    @include content-column;
+    text-align: center;
+  }
+  @media screen and (min-width: 768px) {
+    // top: 40px;
+  }
+}

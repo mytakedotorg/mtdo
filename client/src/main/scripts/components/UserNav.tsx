@@ -18,108 +18,63 @@
  * You can contact us at team@mytake.org
  */
 import * as React from "react";
-import DropDown from "./DropDown";
-import { getUserCookieString } from "../browser";
+import { ChevronDown } from "react-feather";
 import { LoginCookie } from "../java2ts/LoginCookie";
 import { Routes } from "../java2ts/Routes";
+import DropDown from "./DropDown";
 
-interface UserNavProps {}
-interface UserNavState {
+interface UserNavProps {
   cookie: LoginCookie | null;
 }
-class UserNav extends React.Component<UserNavProps, UserNavState> {
-  constructor(props: UserNavProps) {
-    super(props);
 
-    const cookieString = getUserCookieString();
-    let cookie: LoginCookie | null;
-    if (cookieString) {
-      cookie = JSON.parse(JSON.parse(cookieString));
-    } else {
-      cookie = null;
-    }
+const UserNav: React.FC<UserNavProps> = ({ cookie }) => {
+  let navLinks: { name: string; href: string }[] = [];
+  if (cookie) {
+    navLinks = [
+      { name: "New Draft", href: Routes.DRAFTS_NEW },
+      { name: "Drafts", href: Routes.DRAFTS },
+      { name: "Published", href: `/${cookie.username}` },
+      {
+        name: "Stars",
+        href: `/${cookie.username}?${Routes.PROFILE_TAB}=${Routes.PROFILE_TAB_STARS}`,
+      },
+      {
+        name: "Profile",
+        href: `/${cookie.username}?${Routes.PROFILE_TAB}=${Routes.PROFILE_TAB_EDIT}`,
+      },
+      { name: "Logout", href: Routes.LOGOUT },
+    ];
+  }
 
-    this.state = {
-      cookie: cookie,
-    };
-  }
-  renderNavLink = (text: string, href: string) => {
-    return (
-      <li className="usernav__list-item">
-        <a className="usernav__link" href={href}>
-          {text}
-        </a>
-      </li>
-    );
-  };
-  render() {
-    let Toggle;
-    if (this.state.cookie) {
-      Toggle = (
-        <span className="usernav__toggle-element">
-          <span className="usernav__toggle-text usernav__toggle-text--icon">
-            <i className="fa fa-bars" aria-hidden="true" />
-          </span>
-          <span className="usernav__toggle-text usernav__toggle-text--user">
-            <span className="usernav__caret">
-              <i className="fa fa-caret-down" aria-hidden="true" />
-            </span>
-            {this.state.cookie.username}
-          </span>
-        </span>
-      );
-    } else {
-      Toggle = (
-        <a className="usernav__toggle-element" href={Routes.LOGIN}>
-          <span className="usernav__toggle-text usernav__toggle-text--login">
-            Login
-          </span>
-        </a>
-      );
-    }
-    return (
-      <div className="usernav">
-        <span className="usernav__icon">
-          <DropDown
-            classModifier="usernav"
-            disabled={this.state.cookie ? false : true}
-            dropdownPosition="BL"
-            toggleText={Toggle}
-          >
-            {this.state.cookie ? (
-              <ul className="usernav__dropdown">
-                {this.renderNavLink("New Draft", Routes.DRAFTS_NEW)}
-                {this.renderNavLink("Drafts", Routes.DRAFTS)}
-                {this.renderNavLink(
-                  "Published",
-                  "/" + this.state.cookie.username
-                )}
-                {this.renderNavLink(
-                  "Stars",
-                  "/" +
-                    this.state.cookie.username +
-                    "?" +
-                    Routes.PROFILE_TAB +
-                    "=" +
-                    Routes.PROFILE_TAB_STARS
-                )}
-                {this.renderNavLink(
-                  "Profile",
-                  "/" +
-                    this.state.cookie.username +
-                    "?" +
-                    Routes.PROFILE_TAB +
-                    "=" +
-                    Routes.PROFILE_TAB_EDIT
-                )}
-                {this.renderNavLink("Logout", Routes.LOGOUT)}
-              </ul>
-            ) : null}
-          </DropDown>
-        </span>
-      </div>
-    );
-  }
-}
+  return (
+    <DropDown
+      classModifier="usernav"
+      disabled={!cookie}
+      dropdownPosition="BL"
+      toggleText={
+        cookie ? (
+          <>
+            <ChevronDown />
+            {cookie.username}
+          </>
+        ) : (
+          <a href={Routes.LOGIN}>Login</a>
+        )
+      }
+    >
+      <ul className="usernav__list">
+        {navLinks.map(({ name, href }) => {
+          return (
+            <li className="usernav__list-item" key={name}>
+              <a className="usernav__link" href={href}>
+                {name}
+              </a>
+            </li>
+          );
+        })}
+      </ul>
+    </DropDown>
+  );
+};
 
 export default UserNav;

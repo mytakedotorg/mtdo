@@ -19,13 +19,14 @@
  */
 import * as d3 from "d3";
 import React, { useEffect, useRef } from "react";
+import { CornerLeftUp } from "react-feather";
 import { FT } from "../../java2ts/FT";
 import { SearchResult } from "./search";
 
 const SVG_PADDING_LEFT = 25;
 const SVG_PADDING_TOP = 40;
 const SVG_WIDTH = Math.min(700, window.innerWidth);
-const SVG_HEIGHT = 268;
+const SVG_HEIGHT = 200;
 const colors = d3
   .scaleOrdinal(d3.schemeSet2)
   .range()
@@ -51,18 +52,24 @@ const NGramViewer: React.FC<NGramViewerProps> = ({
     <div className="ngram__outer-container">
       <div className="ngram__inner-container">
         <svg ref={svgEl} width={SVG_WIDTH} height={SVG_HEIGHT}></svg>
-        <div className="ngram__term-list">
-          {searchTerms.map((term, idx) => {
-            return (
-              <span
-                key={term}
-                style={{ color: colors[idx] }}
-                className="ngram__term"
-              >
-                {term}
-              </span>
-            );
-          })}
+        <div className="ngram__legend">
+          <div className="ngram__term-list">
+            {searchTerms.map((term, idx) => {
+              return (
+                <span
+                  key={term}
+                  style={{ color: colors[idx] }}
+                  className="ngram__text ngram__text--term"
+                >
+                  {term}
+                </span>
+              );
+            })}
+          </div>
+          <div className="ngram__term-list">
+            <CornerLeftUp />
+            <span className="ngram__text">click any year to scroll</span>
+          </div>
         </div>
       </div>
     </div>
@@ -79,29 +86,36 @@ function drawChart(
     .append("g")
     .attr(
       "transform",
-      "translate(" + SVG_PADDING_LEFT + "," + SVG_PADDING_TOP / 2 + ")"
+      "translate(" + SVG_PADDING_LEFT + "," + SVG_PADDING_TOP / 3 + ")"
     );
   const { hitsPerYear, allSearchTerms } = getNumberOfHitsPerYear(searchResult);
-  // get x-axis ticks
+  // X-Axis
   const xScale = d3
     .scaleBand()
     .domain(ALL_DEBATE_YEARS)
     .range([0, SVG_WIDTH - SVG_PADDING_LEFT * 2])
     .padding(0.1);
-  // draw x-axis
-  svg
+  const xAxisGenerator = d3.axisBottom(xScale);
+  const xAxis = svg
     .append("g")
     .attr("transform", "translate(0," + (SVG_HEIGHT - SVG_PADDING_TOP) + ")")
-    .call(d3.axisBottom(xScale));
-
+    .call(xAxisGenerator);
+  xAxis
+    .selectAll(".tick text")
+    .attr("transform", "translate(10, 5)rotate(45)")
+    .style("cursor", "pointer")
+    .on("click", function (year: string) {
+      onBarClick(year);
+    });
+  xAxis.selectAll(".tick line").attr("visibility", "hidden");
   const hitMax = d3.max(hitsPerYear, (h) => h.hitCount)!;
-  // get y-axis ticks
+  // Y-Axis
   const yScale = d3
     .scaleLinear()
     .domain([0, hitMax + Math.round(hitMax * 0.1)])
     .range([SVG_HEIGHT - SVG_PADDING_TOP, 0]);
-  // draw y-axis
-  svg.append("g").call(d3.axisLeft(yScale).ticks(hitMax, "d"));
+  const yAxisGenerator = d3.axisLeft(yScale).ticks(Math.min(hitMax, 5), "d");
+  svg.append("g").call(yAxisGenerator);
 
   allSearchTerms.forEach((term, idx) => {
     const hitsPerYearForTerm = hitsPerYear.filter(
@@ -187,7 +201,7 @@ function getSearchTerms(searchQuery: string): string[] {
     ...new Set(
       searchQuery
         .split(",")
-        .map((t) => t.trim())
+        .map((t) => t.trim().toLowerCase())
         .filter((t) => t.length > 0 && t.charAt(0) !== "-")
     ),
   ];

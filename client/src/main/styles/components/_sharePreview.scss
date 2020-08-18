@@ -94,7 +94,7 @@
   @include typography($sans, 400, 12px, 0);
 }
 .share-preview__content {
-  background-color: $base-light;
+  background-color: lighten($base-lightest, 10%);
   padding: 4px;
   p {
     @include typography($serif, 400, 12px, 1.5em);
@@ -102,7 +102,7 @@
   }
 }
 .share-preview__content-meta {
-  background-color: lighten($base-lightest, 40%);
+  background-color: lighten($base-lightest, 30%);
   padding-left: 4px;
   padding-right: 4px;
   margin-bottom: 4px;

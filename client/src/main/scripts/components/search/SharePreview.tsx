@@ -87,6 +87,7 @@ const SharePreview: React.FC<SharePreviewProps> = ({
             <div className="share-preview__content">
               <SearchHitContent
                 className="turn__results"
+                maxLength={200}
                 searchHit={searchHit}
               />
             </div>

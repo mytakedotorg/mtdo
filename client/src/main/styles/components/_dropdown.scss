@@ -1,16 +1,6 @@
 .dropdown {
   position: relative;
 }
-.dropdown--usernav {
-  position: absolute;
-  top: 0;
-  right: $page-margin-mobile;
-  @media #{$mq-medium} {
-    right: $content-margin;
-  }
-  width: 100%;
-  height: 100%;
-}
 .dropdown--clipShare {
   height: 35px;
 }
@@ -30,13 +20,6 @@
 .dropdown__toggle--reaction {
   @include button--borderless;
   line-height: 35px;
-}
-.dropdown__toggle--usernav {
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 100%;
-  height: 100%;
 }
 .dropdown__toggle--clipShare,
 .dropdown__toggle--docShare {

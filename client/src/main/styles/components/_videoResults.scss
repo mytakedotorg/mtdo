@@ -12,11 +12,11 @@
 }
 .results {
   @include content-column;
-  overflow: hidden;
+  overflow-x: hidden;
 }
 .results__inner-container {
-  padding-left: $page-margin-mobile;
-  padding-right: $page-margin-mobile;
+  padding-left: 4px;
+  padding-right: 4px;
   @media #{$mq-medium} {
     padding-left: $content-margin;
     padding-right: $content-margin;
@@ -29,13 +29,15 @@
   }
 }
 .results__heading {
-  @include heading1;
+  @include heading2;
   color: palette(foundation, text);
-  margin-top: $page-margin-mobile * $vertical-margin-multiplier;
+  margin-top: 0;
+  margin-bottom: 0;
   text-align: left;
+  margin-left: 4px;
   @media #{$mq-medium} {
-    margin-top: $content-margin * $vertical-margin-multiplier;
     text-align: center;
+    margin-left: 0;
   }
 }
 .results__subheading {
@@ -91,17 +93,18 @@
   }
 }
 .turn__info {
-  width: 125px;
+  width: 111px;
 }
 .turn__info-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-right: 16px;
+  padding-right: 4px;
   height: 34px;
 }
 .turn__info-row--short {
   height: 20px;
+  margin-top: -9px;
 }
 .turn__speaker {
   @include typography($sans, 400, 20px, 1.7em);
@@ -111,6 +114,7 @@
   @include typography($sans, 400, 16px, 1.7em);
 }
 .turn__button {
+  background: none;
   display: flex;
   align-items: center;
 }

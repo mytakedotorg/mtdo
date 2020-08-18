@@ -19,7 +19,7 @@
  */
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { windowUtils } from "./browser";
+import { getUserCookieString, windowUtils } from "./browser";
 import { TakeDocument } from "./components/BlockEditor";
 import BlockReader from "./components/BlockReader";
 import BlockWriter, {
@@ -32,6 +32,7 @@ import Home from "./components/Home";
 import VideoResultsLoader from "./components/search/VideoResultsLoader";
 import SearchBar from "./components/SearchBar";
 import UserNav from "./components/UserNav";
+import { LoginCookie } from "./java2ts/LoginCookie";
 
 windowUtils.init();
 
@@ -119,24 +120,28 @@ if (app) {
   }
 }
 
-if (!isHomePage(window.mytake)) {
+if (isSearchPage(window.mytake)) {
   const searchBarContainer = document.getElementById("searchbar")!;
-  let searchTerm = "";
-  if (isSearchPage(window.mytake)) {
-    searchTerm = window.mytake.searchTerm;
-  }
-  ReactDOM.render(<SearchBar searchTerm={searchTerm} />, searchBarContainer);
+  ReactDOM.render(
+    <SearchBar
+      initialSearchQuery={window.mytake.searchTerm}
+      classModifier="search"
+    />,
+    searchBarContainer
+  );
+  const header = document.getElementsByTagName("header")[0];
+  header.classList.add("header--search");
 }
 
 const userNavContainer = document.getElementById("usernav");
 if (userNavContainer) {
-  ReactDOM.render(<UserNav />, userNavContainer);
+  const cookieString = getUserCookieString();
+  let cookie = cookieString
+    ? (JSON.parse(JSON.parse(cookieString)) as LoginCookie)
+    : null;
+  ReactDOM.render(<UserNav cookie={cookie} />, userNavContainer);
 } else {
   throw "Couldn't find div#usernav";
-}
-
-function isHomePage(page?: MtdoArgs): page is HomeArgs {
-  return (page as HomeArgs)?.type === "home";
 }
 
 function isSearchPage(page?: MtdoArgs): page is SearchArgs {
