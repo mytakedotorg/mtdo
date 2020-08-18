@@ -27,6 +27,7 @@ interface SearchBarProps {
   initialSearchQuery?: string;
 }
 
+const SEARCH_TERM_LIMIT = 5;
 const SearchBar: React.FC<SearchBarProps> = ({
   classModifier,
   placeholder,
@@ -47,10 +48,15 @@ const SearchBar: React.FC<SearchBarProps> = ({
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    const searchQuery = inputValue
+      .split(",")
+      .filter((_, index) => index < SEARCH_TERM_LIMIT)
+      .join(",");
+
     window.location.href =
       Routes.SEARCH +
       "?q=" +
-      encodeURIComponent(inputValue || placeholder || "");
+      encodeURIComponent(searchQuery || placeholder || "");
   };
 
   let searchCancelClass = `searchbar__cancel searchbar__cancel--${BEMModifier}`;
@@ -82,7 +88,10 @@ const SearchBar: React.FC<SearchBarProps> = ({
         type="submit"
         className={`searchbar__button searchbar__button--${BEMModifier}`}
       >
-        <Search />
+        <span className={`searchbar__text searchbar__text--${BEMModifier}`}>
+          Search
+        </span>
+        <Search className={`searchbar__icon searchbar__icon--${BEMModifier}`} />
       </button>
     </form>
   );

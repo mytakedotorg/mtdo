@@ -12,10 +12,11 @@
 }
 .results {
   @include content-column;
+  overflow-x: hidden;
 }
 .results__inner-container {
-  padding-left: $page-margin-mobile;
-  padding-right: $page-margin-mobile;
+  padding-left: 4px;
+  padding-right: 4px;
   @media #{$mq-medium} {
     padding-left: $content-margin;
     padding-right: $content-margin;
@@ -41,7 +42,6 @@
 }
 .results__subheading {
   @include heading3;
-  // margin-top: 0;
 }
 .results__text {
   @include body;
@@ -93,17 +93,18 @@
   }
 }
 .turn__info {
-  width: 125px;
+  width: 106px;
 }
 .turn__info-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-right: 16px;
+  padding-right: 4px;
   height: 34px;
 }
 .turn__info-row--short {
   height: 20px;
+  margin-top: -9px;
 }
 .turn__speaker {
   @include typography($sans, 400, 20px, 1.7em);

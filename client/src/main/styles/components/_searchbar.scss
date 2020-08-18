@@ -101,3 +101,15 @@ input[type="search"] {
   border-radius: 5px;
   height: 36px;
 }
+.searchbar__text {
+  @include typography($sans, 400, 22px, 36px);
+  color: $white;
+  @media screen and (min-width: 768px + 1) {
+    display: none;
+  }
+}
+.searchbar__icon {
+  @media screen and (max-width: 768px) {
+    display: none;
+  }
+}
