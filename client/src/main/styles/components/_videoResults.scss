@@ -12,7 +12,6 @@
 }
 .results {
   @include content-column;
-  overflow: hidden;
 }
 .results__inner-container {
   padding-left: $page-margin-mobile;
