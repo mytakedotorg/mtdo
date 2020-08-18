@@ -54,20 +54,22 @@ public class CustomAssets implements Jooby.Module {
 	public void configure(Env env, Config conf, Binder binder) throws Throwable {
 		env.router().assets("/favicon.ico", "/assets/permanent/favicon-6022c3e42d.ico");
 
-		Config config = ConfigFactory.parseResources("assets.conf");
-		AssetCompiler compiler = new AssetCompiler(config);
+		Config config;
 		BiFunction<String, String, String> url;
 		String fbAppId = conf.getString("application.fbAppId");
 		if (env.name().equals("dev")) {
+			config = ConfigFactory.parseResources("assets.dev.conf");
 			url = (type, raw) -> "/assets-dev/" + type + raw;
 			env.router().assets("/assets-dev/**");
 			env.router().assets("/assets/**");
 		} else {
+			config = ConfigFactory.parseResources("assets.conf");
 			byte[] manifest = Resources.toByteArray(CustomAssets.class.getResource("/assets/manifest.json"));
 			Map<String, Any> map = JsonIterator.deserialize(manifest).asMap();
 			url = (type, raw) -> "/assets/" + type + "/" + Objects.requireNonNull(map.get(raw.substring(1)), "No fingerprinted version of " + raw + ", only has: " + map.keySet());
 			env.router().assets("/assets/**");
 		}
+		AssetCompiler compiler = new AssetCompiler(config);
 		// key, style, key, script
 		List<String> keyValue = keyValueFor(compiler, url);
 		env.router().before((req, rsp) -> {
