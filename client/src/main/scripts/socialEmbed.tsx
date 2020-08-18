@@ -19,8 +19,10 @@
  */
 import * as React from "react";
 import * as ReactDOM from "react-dom";
+import { renderToString } from "react-dom/server";
 import { decodeSocial } from "./common/social/social";
 import { socialImage } from "./common/social/SocialImage";
+import { socialHeader } from "./common/social/SocialHeader";
 
 (window as any).render = (args: string) => {
   // on the node.mytake.org server,
@@ -31,7 +33,6 @@ import { socialImage } from "./common/social/SocialImage";
   promiseImage.then(
     (reactRoot) => {
       ReactDOM.render(reactRoot, document.getElementById("socialembed")!);
-      console.log(args);
     },
     (err) => {
       console.warn(err);
@@ -40,7 +41,26 @@ import { socialImage } from "./common/social/SocialImage";
 };
 
 if (window.location.hash) {
+  const toRender = window.location.hash.substr(1);
   // this is used only for dev mode, to allow easy hotreload debugging of images
-  // const embed: Embed = JSON.parse(btoa(window.location.hash));
-  (window as any).render(window.location.hash);
+  (window as any).render(toRender);
+
+  // and we'll also print out the headers to console
+  const social = decodeSocial(toRender);
+  socialHeader(social, toRender).then(
+    (reactRoot) => {
+      const asString = renderToString(reactRoot);
+      const socialEmbedCleanup = asString
+        // if these replace calls are changed, you must sync with the Java code SocialEmbed.cleanupHeaders
+        .replace('<header data-reactroot="">', "")
+        .replace("</header>", "")
+        .replace(/"\/>/g, '">\n');
+      console.log("### for ###");
+      console.log(toRender);
+      console.log(socialEmbedCleanup);
+    },
+    (err) => {
+      console.warn(err);
+    }
+  );
 }
