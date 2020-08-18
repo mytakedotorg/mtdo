@@ -24,18 +24,14 @@ import forms.api.RockerRaw;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.UnknownHostException;
-import java.nio.charset.StandardCharsets;
+import java.util.concurrent.TimeUnit;
 import java2ts.Routes;
-import org.apache.http.client.config.RequestConfig;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
-import org.apache.http.util.EntityUtils;
+import okhttp3.ConnectionPool;
+import okhttp3.HttpUrl;
+import okhttp3.OkHttpClient;
+import okhttp3.Response;
 import org.jooby.Env;
 import org.jooby.Jooby;
-import org.jooby.Request;
 import views.SocialEmbed.socialImage;
 
 public class SocialEmbed {
@@ -45,7 +41,7 @@ public class SocialEmbed {
 	private static final int NODE_DEV_PORT = 4000;
 	private static final boolean isHerokuProd = "true".equals(System.getenv("HEROKU_NAKED_PROD"));
 
-	public static SocialEmbed get(Request req, String embedRison) throws IOException {
+	public static SocialEmbed get(org.jooby.Request req, String embedRison) throws IOException {
 		return req.require(GetHeader.class).get(Routes.PATH_NODE_SOCIAL_HEADER + embedRison);
 	}
 
@@ -69,33 +65,30 @@ public class SocialEmbed {
 
 	static class GetHeader {
 		private final String httpDomain;
-		private final CloseableHttpClient client;
+		private final HttpUrl httpDomainOk;
+		private final OkHttpClient client;
 
 		private GetHeader(Env env, String httpDomain) throws URISyntaxException, UnknownHostException {
 			this.httpDomain = httpDomain;
+			this.httpDomainOk = HttpUrl.get(httpDomain);
 
-			PoolingHttpClientConnectionManager connectionPool = new PoolingHttpClientConnectionManager();
 			int numConnections = env.config().getInt("runtime.processors-x2");
-			connectionPool.setMaxTotal(numConnections);
-			connectionPool.setDefaultMaxPerRoute(numConnections);
-
-			RequestConfig requestCfg = RequestConfig.custom()
-					.setConnectTimeout(MAX_WAIT_MS)
-					.setConnectionRequestTimeout(MAX_WAIT_MS)
+			int minutesIdleBeforeClosed = 1;
+			client = new OkHttpClient.Builder()
+					.callTimeout(MAX_WAIT_MS, TimeUnit.MILLISECONDS)
+					.connectionPool(new ConnectionPool(numConnections, minutesIdleBeforeClosed, TimeUnit.MINUTES))
 					.build();
 
-			client = HttpClients.custom()
-					.setConnectionManager(connectionPool)
-					.setDefaultRequestConfig(requestCfg)
-					.build();
-			env.onStop(client::close);
+			env.onStop(client.connectionPool()::evictAll);
 		}
 
 		SocialEmbed get(String path) throws IOException {
 			String body;
-			try (CloseableHttpResponse response = client.execute(new HttpGet(httpDomain + path))) {
-				body = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
-				EntityUtils.consume(response.getEntity());
+			{
+				HttpUrl url = httpDomainOk.newBuilder().encodedPath(path).build();
+				try (Response response = client.newCall(new okhttp3.Request.Builder().url(url).build()).execute()) {
+					body = response.body().string();
+				}
 			}
 			body = cleanupHeaders(body);
 			if (!httpDomain.equals(HTTPS_NODE)) {
