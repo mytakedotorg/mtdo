@@ -67,46 +67,56 @@ public class SocialEmbed {
 
 	static class GetHeader {
 		private final String httpDomain;
-		private final PoolingHttpClientConnectionManager connectionPool;
-		private final RequestConfig requestCfg;
+		private final CloseableHttpClient client;
 
 		private GetHeader(Env env, String httpDomain) throws URISyntaxException, UnknownHostException {
 			this.httpDomain = httpDomain;
 
-			connectionPool = new PoolingHttpClientConnectionManager();
+			PoolingHttpClientConnectionManager connectionPool = new PoolingHttpClientConnectionManager();
 			int numConnections = env.config().getInt("runtime.processors-x2");
 			connectionPool.setMaxTotal(numConnections);
 			connectionPool.setDefaultMaxPerRoute(numConnections);
 
-			requestCfg = RequestConfig.custom()
+			RequestConfig requestCfg = RequestConfig.custom()
 					.setConnectTimeout(MAX_WAIT_MS)
 					.setConnectionRequestTimeout(MAX_WAIT_MS)
 					.build();
+
+			client = HttpClients.custom()
+					.setConnectionManager(connectionPool)
+					.setDefaultRequestConfig(requestCfg)
+					.build();
+			env.onStop(client::close);
 		}
 
 		SocialEmbed get(String path) throws IOException {
 			String body;
-			try (CloseableHttpClient client = HttpClients.custom()
-					.setConnectionManager(connectionPool)
-					.setDefaultRequestConfig(requestCfg)
-					.build();
-					CloseableHttpResponse response = client.execute(new HttpGet(httpDomain + path))) {
+			try (CloseableHttpResponse response = client.execute(new HttpGet(httpDomain + path))) {
 				body = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
 				EntityUtils.consume(response.getEntity());
 			}
+			body = cleanupHeaders(body);
 			if (!httpDomain.equals(HTTPS_NODE)) {
+				// node.mytake.org always returns node.mytake.org URLs, even when running on dev machines
+				// or the staging instance on Heroku, so we have to adjust for that here.
 				body = body.replace(HTTPS_NODE, httpDomain);
 			}
-			System.out.println("#################");
-			System.out.println(body);
 			return new SocialEmbed(body);
 		}
 	}
 
+	/** Removes react cruft (unneeded meta closing tags and header wrapper) */
+	static String cleanupHeaders(String input) {
+		return input
+				.replace("<header data-reactroot=\"\">", "")
+				.replace("</header>", "")
+				.replace("\"/>", "\">\n");
+	}
+
 	public static void init(Jooby jooby) {
 		jooby.use((env, conf, binder) -> {
-			if (isHerokuProd) {
-				// everywhere besides prod, we want to rewr
+			if (!isHerokuProd) {
+				// everywhere besides prod, we want to show the social preview here
 				env.router().get(Routes.PATH_NODE_SOCIAL_HEADER, req -> socialImage.template());
 			}
 			String base;
