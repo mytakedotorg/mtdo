@@ -17,58 +17,20 @@
  *
  * You can contact us at team@mytake.org
  */
-import React, { useState } from "react";
-import { Routes } from "../java2ts/Routes";
+import React from "react";
+import SearchBar from "./SearchBar";
 
 const PLACEHOLDER_SEARCH_QUERY = "wall, -wall street";
 
 const Home: React.FC = () => {
-  const [searchQuery, setSearchQuery] = useState<string>("");
-
-  const clearSearch = () => {
-    setSearchQuery("");
-  };
-
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchQuery(event.target.value);
-  };
-
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    window.location.href =
-      Routes.SEARCH +
-      "?q=" +
-      encodeURIComponent(searchQuery || PLACEHOLDER_SEARCH_QUERY);
-  };
-
-  let searchCancelClass = "home__search-clear";
-  if (!searchQuery) {
-    searchCancelClass += " home__search-clear--hidden";
-  }
   return (
     <>
       <HomeSection innerContainerClassName={"home__searchbar"}>
         <h1 className="home__heading">Search the Foundation</h1>
-        <form
-          className="home__search-form"
-          onSubmit={handleSubmit}
-          action="javascript:void(0)" // Required for iOS search keyboard
-        >
-          <input
-            className="home__search-input"
-            type="search"
-            value={searchQuery}
-            placeholder={PLACEHOLDER_SEARCH_QUERY}
-            results={5}
-            onChange={handleChange}
-          />
-          <span className={searchCancelClass} onClick={clearSearch}>
-            <i className="fa fa-times-circle" aria-hidden="true" />
-          </span>
-          <button type="submit" className="home__search-button">
-            <i className="fa fa-search" aria-hidden="true" />
-          </button>
-        </form>
+        <SearchBar
+          classModifier="home"
+          placeholder={PLACEHOLDER_SEARCH_QUERY}
+        />
       </HomeSection>
       <HomeSection containerClassName="hero">
         <div className="home__boxes">

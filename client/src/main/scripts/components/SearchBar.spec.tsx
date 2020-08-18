@@ -28,7 +28,7 @@ jest.mock("./DropDown", () => ({
 
 test("SearchBar", () => {
   const tree = renderer
-    .create(<SearchBar searchTerm={"search term"} />)
+    .create(<SearchBar initialSearchQuery={"search term"} />)
     .toJSON();
   expect(tree).toMatchSnapshot();
 });

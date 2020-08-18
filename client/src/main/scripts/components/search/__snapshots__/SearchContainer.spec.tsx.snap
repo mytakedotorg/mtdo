@@ -1,0 +1,170 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SearchContainer no results 1`] = `
+Array [
+  <div
+    className="search__sticky"
+  >
+    <Searchbar
+      classModifier="mobile"
+      initialSearchQuery="gibberish"
+    />
+    <h1
+      className="results__heading"
+    >
+      0
+       Results Found
+    </h1>
+    <p
+      className="turn__results"
+    >
+      Search returned no results for 
+      <strong>
+        gibberish
+      </strong>
+    </p>
+  </div>,
+  <div
+    className="results"
+  >
+    <div
+      className="results__inner-container"
+    >
+      <SearchRadioButtons
+        onChange={[MockFunction]}
+        selectedOption={0}
+      />
+      <div>
+        VideoResultsList: 
+        0
+         hits for
+         
+        gibberish
+      </div>
+    </div>
+  </div>,
+]
+`;
+
+exports[`SearchContainer social security 1`] = `
+Array [
+  <div
+    className="search__sticky"
+  >
+    <Searchbar
+      classModifier="mobile"
+      initialSearchQuery="social security"
+    />
+    <h1
+      className="results__heading"
+    >
+      252
+       Results Found
+    </h1>
+    <div>
+      NGramViewer: 
+    </div>
+  </div>,
+  <div
+    className="results"
+  >
+    <div
+      className="results__inner-container"
+    >
+      <SearchRadioButtons
+        onChange={[MockFunction]}
+        selectedOption={0}
+      />
+      <div>
+        VideoResultsList: 
+        19
+         hits for
+         
+        social security
+      </div>
+    </div>
+  </div>,
+]
+`;
+
+exports[`SearchContainer social security before and after 1`] = `
+Array [
+  <div
+    className="search__sticky"
+  >
+    <Searchbar
+      classModifier="mobile"
+      initialSearchQuery="social security"
+    />
+    <h1
+      className="results__heading"
+    >
+      252
+       Results Found
+    </h1>
+    <div>
+      NGramViewer: 
+    </div>
+  </div>,
+  <div
+    className="results"
+  >
+    <div
+      className="results__inner-container"
+    >
+      <SearchRadioButtons
+        onChange={[MockFunction]}
+        selectedOption={1}
+      />
+      <div>
+        VideoResultsList: 
+        19
+         hits for
+         
+        social security
+      </div>
+    </div>
+  </div>,
+]
+`;
+
+exports[`SearchContainer wall, -wall street 1`] = `
+Array [
+  <div
+    className="search__sticky"
+  >
+    <Searchbar
+      classModifier="mobile"
+      initialSearchQuery="wall, -wall street"
+    />
+    <h1
+      className="results__heading"
+    >
+      14
+       Results Found
+    </h1>
+    <div>
+      NGramViewer: 
+    </div>
+  </div>,
+  <div
+    className="results"
+  >
+    <div
+      className="results__inner-container"
+    >
+      <SearchRadioButtons
+        onChange={[MockFunction]}
+        selectedOption={0}
+      />
+      <div>
+        VideoResultsList: 
+        3
+         hits for
+         
+        wall, -wall street
+      </div>
+    </div>
+  </div>,
+]
+`;

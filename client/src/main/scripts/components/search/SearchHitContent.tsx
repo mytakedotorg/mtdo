@@ -22,16 +22,18 @@ import { SearchHit } from "./search";
 
 export interface SearchHitContentProps {
   className?: string;
+  maxLength?: number;
   searchHit: SearchHit;
 }
 
 const SearchHitContent: React.FC<SearchHitContentProps> = ({
   className,
+  maxLength,
   searchHit,
 }) => {
   return (
     <p className={className}>
-      {searchHit.getContent().map((hitContent) => {
+      {searchHit.getContent(maxLength).map((hitContent) => {
         return hitContent.isHighlighted ? (
           <strong key={hitContent.text}>{hitContent.text}</strong>
         ) : (
