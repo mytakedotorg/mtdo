@@ -18,7 +18,11 @@
  * You can contact us at team@mytake.org
  */
 import React, { useState } from "react";
-import { Corpus, TimelineSocial } from "../../common/social/social";
+import {
+  Corpus,
+  PreviewSocial,
+  TimelineSocial,
+} from "../../common/social/social";
 import { FT } from "../../java2ts/FT";
 import Timeline, { TimelineItemData } from "./Timeline";
 import { SetFactHandlers } from "./TimelinePreview";
@@ -45,36 +49,46 @@ interface TimelineViewState {
   URLIsValid: boolean;
 }
 
-function factToSelectedOption(
-  factLinks: FT.FactLink[],
-  social: TimelineSocial
-): Corpus {
-  switch (social.kind) {
-    case "factUncut":
-    case "textCut":
-    case "videoCut":
-      switch (initialFactToSelectedFact(factLinks, social)?.fact.kind) {
-        case "video":
-          return Corpus.Debates;
-        case "document":
-          return Corpus.Documents;
-        default:
-          return Corpus.Documents;
-      }
-    case "timeline":
-      return social.corpus;
-  }
-}
+// function factToSelectedOption(
+//   factLinks: FT.FactLink[],
+//   social: TimelineSocial
+// ): Corpus {
+//   switch (social.kind) {
+//     case "factUncut":
+//     case "textCut":
+//     case "videoCut":
+//       switch (initialFactToSocial(social)?.kind) {
+//         case "video":
+//           return Corpus.Debates;
+//         case "document":
+//           return Corpus.Documents;
+//         default:
+//           return Corpus.Documents;
+//       }
+//     case "timeline":
+//       return social.corpus;
+//   }
+// }
 
-function initialFactToSelectedFact(
-  factLinks: FT.FactLink[],
-  social: TimelineSocial
-): FT.FactLink | null {
+// function initialFactToSelectedFact(
+//   factLinks: FT.FactLink[],
+//   social: TimelineSocial
+// ): FT.FactLink | null {
+//   switch (social.kind) {
+//     case "factUncut":
+//     case "textCut":
+//     case "videoCut":
+//       return factLinks.find((fl) => fl.hash === social.fact)!;
+//     case "timeline":
+//       return null;
+//   }
+// }
+function initialFactToSocial(social: TimelineSocial): PreviewSocial | null {
   switch (social.kind) {
     case "factUncut":
     case "textCut":
     case "videoCut":
-      return factLinks.find((fl) => fl.hash === social.fact)!;
+      return social;
     case "timeline":
       return null;
   }
@@ -84,11 +98,9 @@ const TimelineView: React.FC<TimelineViewProps> = ({
   factLinks,
   setFactHandlers,
 }) => {
-  const [selectedOption, setSelectedOption] = useState<Corpus>(
-    factToSelectedOption(factLinks, initialFact)
-  );
-  const [selectedFact, setSelectedFact] = useState<FT.FactLink | null>(
-    initialFactToSelectedFact(factLinks, initialFact)
+  const [selectedOption, setSelectedOption] = useState<Corpus>(Corpus.Debates);
+  const [social, setSocial] = useState<PreviewSocial | null>(
+    initialFactToSocial(initialFact)
   );
   const timelineItems = getTimelineItems(selectedOption, factLinks);
 
@@ -138,9 +150,9 @@ const TimelineView: React.FC<TimelineViewProps> = ({
         selectedOption={selectedOption}
         timelineItems={timelineItems}
       />
-      {selectedFact && (
+      {social && (
         <TimelinePreviewContainer
-          selectedFact={selectedFact}
+          social={social}
           setFactHandlers={setFactHandlers}
         />
       )}

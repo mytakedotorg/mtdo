@@ -24,12 +24,14 @@ import {
   isDocument,
   isVideo,
 } from "../../common/foundation";
+import { PreviewSocial } from "../../common/social/social";
 import { FT } from "../../java2ts/FT";
-import TimelinePreview, { SetFactHandlers } from "./TimelinePreview";
+import { SetFactHandlers } from "./TimelinePreview";
+import TimelinePreviewLegacy from "./TimelinePreviewLegacy";
 import TimelinePreviewLoadingView from "./TimelinePreviewLoadingView";
 
 interface TimelinePreviewContainerProps {
-  selectedFact: FT.FactLink;
+  social: PreviewSocial;
   setFactHandlers?: SetFactHandlers;
 }
 
@@ -40,7 +42,7 @@ interface TimelinePreviewContainerState {
 }
 
 const TimelinePreviewContainer: React.FC<TimelinePreviewContainerProps> = ({
-  selectedFact,
+  social,
   setFactHandlers,
 }) => {
   const [state, setState] = useState<TimelinePreviewContainerState>({
@@ -78,21 +80,17 @@ const TimelinePreviewContainer: React.FC<TimelinePreviewContainerProps> = ({
       ...prevState,
       loading: true,
     }));
-    if (selectedFact) {
-      getFact(selectedFact.hash);
-    }
-  }, [selectedFact?.fact]);
+    getFact(social.fact);
+  }, [social.fact]);
 
   return state.loading ? (
     <TimelinePreviewLoadingView />
   ) : (
-    <TimelinePreview
-      factLink={selectedFact}
+    <TimelinePreviewLegacy
+      social={social}
       setFactHandlers={setFactHandlers}
       nodes={state.nodes!}
       videoFact={state.videoFact!}
-      // todo ranges
-      // todo offset
     />
   );
 };
