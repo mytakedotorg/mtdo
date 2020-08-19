@@ -20,6 +20,7 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import * as vis from "vis";
+import { Corpus } from "../../common/social/social";
 
 interface TimelineItemProps {
   item: vis.DataItem;
@@ -60,7 +61,7 @@ interface TimelineSelectEventHandlerProps {
 
 interface TimelineProps {
   onItemClick: (excerptId: string) => void;
-  selectedOption: "Debates" | "Documents";
+  selectedOption: Corpus;
   timelineItems: TimelineItemData[];
 }
 
@@ -102,9 +103,9 @@ export default class Timeline extends React.Component<
   };
   filterTimeline = (timelineItem: TimelineItemData) => {
     return (
-      (this.props.selectedOption === "Debates" &&
+      (this.props.selectedOption === Corpus.Debates &&
         timelineItem.kind === "video") ||
-      (this.props.selectedOption === "Documents" &&
+      (this.props.selectedOption === Corpus.Documents &&
         timelineItem.kind === "document")
     );
   };
@@ -114,7 +115,7 @@ export default class Timeline extends React.Component<
 
     let width = document.body.getBoundingClientRect().width;
 
-    if (this.props.selectedOption === "Debates") {
+    if (this.props.selectedOption === Corpus.Debates) {
       if (width < 480) {
         start = new Date(2013, 0, 1);
       } else if (width < 768) {
@@ -127,7 +128,7 @@ export default class Timeline extends React.Component<
       end = new Date(2021, 0, 1);
     }
 
-    if (this.props.selectedOption === "Documents") {
+    if (this.props.selectedOption === Corpus.Documents) {
       start = new Date(1770, 0, 1);
       end = new Date();
     }

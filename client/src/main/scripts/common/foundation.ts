@@ -124,6 +124,14 @@ export class FoundationFetcher {
     return (await builder.build()).getDocument(factHash);
   }
 
+  static async justOneFact(
+    factHash: string
+  ): Promise<FT.VideoFactContent | FT.DocumentFactContent> {
+    const builder = new FoundationFetcher();
+    builder.add(factHash);
+    return (await builder.build()).getFactContent(factHash);
+  }
+
   static async justOneVideo(factHash: string): Promise<FT.VideoFactContent> {
     const builder = new FoundationFetcher();
     builder.add(factHash);

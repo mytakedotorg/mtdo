@@ -19,12 +19,15 @@
  */
 import React, { useEffect, useState } from "react";
 import { FoundationFetcher } from "../../common/foundation";
-import { decodeSocial } from "../../common/social/social";
+import {
+  Corpus,
+  decodeSocial,
+  TimelineSocial,
+} from "../../common/social/social";
 import { FT } from "../../java2ts/FT";
 import { Routes } from "../../java2ts/Routes";
 import TimelineLoadingView from "./TimelineLoadingView";
 import { SetFactHandlers } from "./TimelinePreview";
-import { TimelineSocial } from "./TimelinePreviewLegacy";
 import TimelineView from "./TimelineView";
 
 interface TimelineLoaderProps {
@@ -35,6 +38,11 @@ interface TimelineLoaderProps {
 interface TimelineLoaderState {
   facts?: FT.FactLink[];
 }
+
+const DEFAULT_TIMELINE_SOCIAL: TimelineSocial = {
+  kind: "timeline",
+  corpus: Corpus.Debates,
+};
 
 const TimelineLoader: React.FC<TimelineLoaderProps> = (props) => {
   const [state, setState] = useState<TimelineLoaderState>({});
@@ -49,17 +57,17 @@ const TimelineLoader: React.FC<TimelineLoaderProps> = (props) => {
     getAllFacts();
   }, []);
 
-  const parseURL = (path: string): TimelineSocial | string | null => {
-    const embedSlash = path.indexOf("/", Routes.FOUNDATION.length + 1);
-    if (embedSlash == -1 || path === Routes.FOUNDATION + "/") {
-      return null;
+  const parseURL = (path: string): TimelineSocial => {
+    const embedSlash = path.lastIndexOf("/");
+    if (embedSlash <= Routes.FOUNDATION.length) {
+      return DEFAULT_TIMELINE_SOCIAL;
     }
     const embedRison = path.substring(embedSlash + 1);
-    if (embedRison === "") {
-      // trailing slash
-      return path.substring(Routes.FOUNDATION.length + 1, path.length - 1);
-    } else {
+    try {
       return decodeSocial(embedRison);
+    } catch (err) {
+      console.log(err);
+      return DEFAULT_TIMELINE_SOCIAL;
     }
   };
 
@@ -67,7 +75,6 @@ const TimelineLoader: React.FC<TimelineLoaderProps> = (props) => {
     <TimelineView
       initialFact={parseURL(props.path)}
       factLinks={state.facts}
-      path={props.path}
       setFactHandlers={props.setFactHandlers}
     />
   ) : (

@@ -19,6 +19,7 @@
  */
 import * as React from "react";
 import * as renderer from "react-test-renderer";
+import { Corpus } from "../../common/social/social";
 import { timelineItems } from "../../utils/testUtils";
 import Timeline from "./Timeline";
 
@@ -33,7 +34,7 @@ test("Debates Timeline", () => {
       <Timeline
         timelineItems={timelineItems}
         onItemClick={jest.fn()}
-        selectedOption={"Debates"}
+        selectedOption={Corpus.Debates}
       />
     )
     .toJSON();
@@ -46,7 +47,7 @@ test("Documents Timeline", () => {
       <Timeline
         timelineItems={timelineItems}
         onItemClick={jest.fn()}
-        selectedOption={"Documents"}
+        selectedOption={Corpus.Documents}
       />
     )
     .toJSON();

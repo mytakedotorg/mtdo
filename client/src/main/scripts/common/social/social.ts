@@ -35,6 +35,11 @@ export type VideoCut = {
   kind: "videoCut";
 };
 
+export type FactUncut = {
+  fact: string;
+  kind: "factUncut";
+};
+
 export type TextCut = {
   cut: [number, number];
   bold?: Array<[number, number]>;
@@ -42,7 +47,19 @@ export type TextCut = {
   kind: "textCut";
 };
 
-export type Social = VideoCut | TextCut;
+export type Timeline = {
+  kind: "timeline";
+  corpus: Corpus;
+};
+
+export enum Corpus {
+  "Debates",
+  "Documents",
+}
+
+export type Social = VideoCut | TextCut | FactUncut | Timeline;
+export type PreviewSocial = VideoCut | TextCut | FactUncut;
+export type TimelineSocial = VideoCut | TextCut | FactUncut | Timeline;
 
 export function encodeSocial(embed: Social) {
   // TODO: limit floating point precision

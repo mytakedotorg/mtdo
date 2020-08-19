@@ -25,12 +25,11 @@ import {
   isVideo,
 } from "../../common/foundation";
 import { FT } from "../../java2ts/FT";
-import { SetFactHandlers } from "./TimelinePreview";
-import TimelinePreviewLegacy, { TimelineSocial } from "./TimelinePreviewLegacy";
+import TimelinePreview, { SetFactHandlers } from "./TimelinePreview";
 import TimelinePreviewLoadingView from "./TimelinePreviewLoadingView";
 
 interface TimelinePreviewContainerProps {
-  selectedFact: TimelineSocial;
+  selectedFact: FT.FactLink;
   setFactHandlers?: SetFactHandlers;
 }
 
@@ -40,19 +39,17 @@ interface TimelinePreviewContainerState {
   nodes?: FoundationNode[];
 }
 
-const TimelinePreviewContainer: React.FC<TimelinePreviewContainerProps> = (
-  props
-) => {
+const TimelinePreviewContainer: React.FC<TimelinePreviewContainerProps> = ({
+  selectedFact,
+  setFactHandlers,
+}) => {
   const [state, setState] = useState<TimelinePreviewContainerState>({
     loading: true,
   });
 
   useEffect(() => {
     const getFact = async (factHash: string) => {
-      const builder = new FoundationFetcher();
-      builder.add(factHash);
-      const foundationData = await builder.build();
-      const factContent = foundationData.getFactContent(factHash);
+      const factContent = await FoundationFetcher.justOneFact(factHash);
 
       let nodes: FoundationNode[] = [];
       if (isDocument(factContent)) {
@@ -81,18 +78,21 @@ const TimelinePreviewContainer: React.FC<TimelinePreviewContainerProps> = (
       ...prevState,
       loading: true,
     }));
-
-    getFact(props.selectedFact.fact);
-  }, [props.selectedFact.fact]);
+    if (selectedFact) {
+      getFact(selectedFact.hash);
+    }
+  }, [selectedFact?.fact]);
 
   return state.loading ? (
     <TimelinePreviewLoadingView />
   ) : (
-    <TimelinePreviewLegacy
-      selectedFact={props.selectedFact}
-      setFactHandlers={props.setFactHandlers}
+    <TimelinePreview
+      factLink={selectedFact}
+      setFactHandlers={setFactHandlers}
       nodes={state.nodes!}
       videoFact={state.videoFact!}
+      // todo ranges
+      // todo offset
     />
   );
 };

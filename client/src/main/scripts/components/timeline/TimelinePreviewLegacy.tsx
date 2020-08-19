@@ -1,14 +1,12 @@
 import React from "react";
 import { FoundationNode } from "../../common/CaptionNodes";
-import { TextCut, VideoCut } from "../../common/social/social";
+import { PreviewSocial } from "../../common/social/social";
 import { FT } from "../../java2ts/FT";
 import TimelinePreview, { SetFactHandlers } from "./TimelinePreview";
 
-export type TimelineSocial = VideoCut | TextCut;
-
 interface TimelinePreviewLegacyProps {
   nodes: FoundationNode[];
-  selectedFact: TimelineSocial;
+  selectedFact: PreviewSocial;
   setFactHandlers?: SetFactHandlers;
   videoFact: FT.VideoFactContent;
 }

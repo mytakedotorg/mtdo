@@ -18,11 +18,11 @@
  * You can contact us at team@mytake.org
  */
 import * as React from "react";
-import { SelectionOptions } from "./TimelineView";
+import { Corpus } from "../../common/social/social";
 
 interface TimelineRadioButtonsProps {
   onChange: (ev: React.ChangeEvent<HTMLInputElement>) => any;
-  selectedOption: SelectionOptions;
+  selectedOption: Corpus;
 }
 
 const TimelineRadioButtons: React.StatelessComponent<TimelineRadioButtonsProps> = (
@@ -38,7 +38,7 @@ const TimelineRadioButtons: React.StatelessComponent<TimelineRadioButtonsProps> 
           name="type"
           value="Debates"
           onChange={props.onChange}
-          checked={props.selectedOption === "Debates"}
+          checked={props.selectedOption === Corpus.Debates}
         />
         <label htmlFor="radio--debates" className="timeline__radio-label">
           Debates
@@ -50,7 +50,7 @@ const TimelineRadioButtons: React.StatelessComponent<TimelineRadioButtonsProps> 
           name="type"
           value="Documents"
           onChange={props.onChange}
-          checked={props.selectedOption === "Documents"}
+          checked={props.selectedOption === Corpus.Documents}
         />
         <label htmlFor="radio--documents" className="timeline__radio-label">
           Founding Documents
