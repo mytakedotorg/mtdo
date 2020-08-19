@@ -18,7 +18,6 @@
  * You can contact us at team@mytake.org
  */
 import React from "react";
-import { FoundationNode } from "../../common/CaptionNodes";
 import { isDocument, isVideo } from "../../common/foundation";
 import { PreviewSocial } from "../../common/social/social";
 import { FT } from "../../java2ts/FT";
@@ -28,12 +27,6 @@ interface TimelinePreviewLegacyProps {
   social: PreviewSocial;
   setFactHandlers?: SetFactHandlers;
   factContent: FT.VideoFactContent | FT.DocumentFactContent;
-}
-
-function isFoundationNodeList(
-  fact: FoundationNode[] | FT.VideoFactContent
-): fact is FoundationNode[] {
-  return Array.isArray(fact);
 }
 
 const TimelinePreviewLegacy: React.FC<TimelinePreviewLegacyProps> = ({
