@@ -171,12 +171,9 @@ tasks.register('runDev', JavaExec) {
 tasks.register('updateSnapshot', Test) {
 	systemProperties(['SET_SNAPSHOTS': 'TRUE'])
 }
-// the tests need the node.mytake.org server in order to get their social headers
-'updateSnapshot:test'.split(':').each { taskName ->
-	tasks.named(taskName) {
-		flywayJooq.neededBy(it)
-		dependsOn(':node:assemble')
-	}
+tasks.named('test') {
+	flywayJooq.neededBy(it)
+	dependsOn(':node:assemble')
 }
 
 /////////////
