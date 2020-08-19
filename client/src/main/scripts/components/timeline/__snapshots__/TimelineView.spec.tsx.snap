@@ -6,12 +6,22 @@ exports[`Successfully loaded a Document in view 1`] = `
 >
   <TimelineRadioButtons
     onChange={[Function]}
-    selectedOption="Debates"
+    selectedOption="Documents"
   />
   <Timeline
     onItemClick={[Function]}
-    selectedOption="Debates"
-    timelineItems={Array []}
+    selectedOption="Documents"
+    timelineItems={
+      Array [
+        Object {
+          "content": "Amendment 13",
+          "id": "o_dRqrNJ62wzlgLilTrLxkHqGmvAS9qTpa4z4pjyFqA=",
+          "idx": "o_dRqrNJ62wzlgLilTrLxkHqGmvAS9qTpa4z4pjyFqA=",
+          "kind": "document",
+          "start": 1865-12-06T00:00:00.000Z,
+        },
+      ]
+    }
   />
   <TimelinePreviewContainer
     social={

@@ -49,12 +49,37 @@ function getUrlFromSocial(
   return `${Routes.FOUNDATION}/${encodeSocial(social)}`;
 }
 
+function getSelectedOptionFromInitialFact(
+  initialFact: PreviewSocial | null,
+  factLinks: FT.FactLink[]
+): Corpus {
+  switch (initialFact?.kind) {
+    case "factUncut":
+      switch (factLinks.find((fl) => fl.hash === initialFact.fact)?.fact.kind) {
+        case "video":
+          return Corpus.Debates;
+        case "document":
+          return Corpus.Debates;
+        default:
+          // todo gitfact
+          return Corpus.Debates;
+      }
+    case "textCut":
+      return Corpus.Documents;
+    case "videoCut":
+      return Corpus.Debates;
+  }
+  return Corpus.Debates;
+}
+
 const TimelineView: React.FC<TimelineViewProps> = ({
   initialFact,
   factLinks,
   setFactHandlers,
 }) => {
-  const [selectedOption, setSelectedOption] = useState<Corpus>(Corpus.Debates);
+  const [selectedOption, setSelectedOption] = useState<Corpus>(
+    getSelectedOptionFromInitialFact(initialFact, factLinks)
+  );
   const [social, setSocial] = useState<PreviewSocial | null>(initialFact);
   const timelineItems = getTimelineItems(selectedOption, factLinks);
 
