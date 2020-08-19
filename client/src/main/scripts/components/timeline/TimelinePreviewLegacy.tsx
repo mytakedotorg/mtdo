@@ -1,21 +1,26 @@
 import React from "react";
 import { FoundationNode } from "../../common/CaptionNodes";
+import { isDocument, isVideo } from "../../common/foundation";
 import { PreviewSocial } from "../../common/social/social";
 import { FT } from "../../java2ts/FT";
 import TimelinePreview, { SetFactHandlers } from "./TimelinePreview";
 
 interface TimelinePreviewLegacyProps {
-  nodes: FoundationNode[];
   social: PreviewSocial;
   setFactHandlers?: SetFactHandlers;
-  videoFact: FT.VideoFactContent;
+  factContent: FT.VideoFactContent | FT.DocumentFactContent;
+}
+
+function isFoundationNodeList(
+  fact: FoundationNode[] | FT.VideoFactContent
+): fact is FoundationNode[] {
+  return Array.isArray(fact);
 }
 
 const TimelinePreviewLegacy: React.FC<TimelinePreviewLegacyProps> = ({
-  nodes,
   social,
   setFactHandlers,
-  videoFact,
+  factContent,
 }) => {
   const cut = getCut(social);
   const ranges = cut
@@ -27,11 +32,19 @@ const TimelinePreviewLegacy: React.FC<TimelinePreviewLegacyProps> = ({
   return (
     <TimelinePreview
       factLink={{
-        fact: videoFact.fact,
+        fact: factContent.fact,
         hash: social.fact,
       }}
-      videoFact={videoFact}
-      nodes={nodes}
+      videoFact={isVideo(factContent) ? factContent : undefined}
+      nodes={
+        isDocument(factContent)
+          ? factContent.components.map((dc) => ({
+              component: dc.component,
+              innerHTML: [dc.innerHTML],
+              offset: dc.offset,
+            }))
+          : undefined
+      }
       setFactHandlers={setFactHandlers}
       ranges={ranges}
     />

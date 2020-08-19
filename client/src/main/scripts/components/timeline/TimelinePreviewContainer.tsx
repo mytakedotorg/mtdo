@@ -18,12 +18,7 @@
  * You can contact us at team@mytake.org
  */
 import React, { useEffect, useState } from "react";
-import { FoundationNode } from "../../common/CaptionNodes";
-import {
-  FoundationFetcher,
-  isDocument,
-  isVideo,
-} from "../../common/foundation";
+import { FoundationFetcher } from "../../common/foundation";
 import { PreviewSocial } from "../../common/social/social";
 import { FT } from "../../java2ts/FT";
 import { SetFactHandlers } from "./TimelinePreview";
@@ -37,8 +32,7 @@ interface TimelinePreviewContainerProps {
 
 interface TimelinePreviewContainerState {
   loading: boolean;
-  videoFact?: FT.VideoFactContent;
-  nodes?: FoundationNode[];
+  factContent?: FT.VideoFactContent | FT.DocumentFactContent;
 }
 
 const TimelinePreviewContainer: React.FC<TimelinePreviewContainerProps> = ({
@@ -52,28 +46,10 @@ const TimelinePreviewContainer: React.FC<TimelinePreviewContainerProps> = ({
   useEffect(() => {
     const getFact = async (factHash: string) => {
       const factContent = await FoundationFetcher.justOneFact(factHash);
-
-      let nodes: FoundationNode[] = [];
-      if (isDocument(factContent)) {
-        for (let documentComponent of factContent.components) {
-          nodes.push({
-            component: documentComponent.component,
-            innerHTML: [documentComponent.innerHTML],
-            offset: documentComponent.offset,
-          });
-        }
-        setState({
-          loading: false,
-          nodes: nodes,
-        });
-      } else if (isVideo(factContent)) {
-        setState({
-          loading: false,
-          videoFact: factContent,
-        });
-      } else {
-        throw "Unknown kind of Fact";
-      }
+      setState({
+        loading: false,
+        factContent,
+      });
     };
 
     setState((prevState) => ({
@@ -89,8 +65,7 @@ const TimelinePreviewContainer: React.FC<TimelinePreviewContainerProps> = ({
     <TimelinePreviewLegacy
       social={social}
       setFactHandlers={setFactHandlers}
-      nodes={state.nodes!}
-      videoFact={state.videoFact!}
+      factContent={state.factContent!}
     />
   );
 };
