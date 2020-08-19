@@ -25,6 +25,7 @@ import { socialHeader } from "./common/social/SocialHeader";
 import { Routes } from "./java2ts/Routes";
 // Require routes
 import { generateImage } from "./controllers/images";
+import { RenderQueue } from "./renderer";
 require("source-map-support").install();
 const logger = require("morgan");
 const app = express();
@@ -39,18 +40,9 @@ if (app.get("env") === "production") {
 const ARG = "arg";
 app.use(`${Routes.PATH_NODE_SOCIAL_IMAGE}:${ARG}`, async (req, res) => {
   try {
-    const imgKeyAndExtension = req.params[ARG];
-    const bufOrErrorMsg = await generateImage(imgKeyAndExtension);
-    if (bufOrErrorMsg instanceof Buffer) {
-      res
-        .writeHead(200, {
-          "Content-Type": "image/png",
-          "Content-Length": bufOrErrorMsg.length,
-        })
-        .end(bufOrErrorMsg);
-    } else {
-      logErrorAndSend404(req, bufOrErrorMsg, res);
-    }
+    const rison = req.params[ARG];
+    const buf = RenderQueue.render(rison);
+    res.contentType("image/png").send(buf);
   } catch (error) {
     logErrorAndSend404(req, error.toString(), res);
   }
@@ -58,9 +50,11 @@ app.use(`${Routes.PATH_NODE_SOCIAL_IMAGE}:${ARG}`, async (req, res) => {
 
 app.use(`${Routes.PATH_NODE_SOCIAL_HEADER}:${ARG}`, async (req, res) => {
   try {
-    const arg = req.params[ARG];
-    const social = decodeSocial(arg);
-    const html = ReactDOMServer.renderToString(await socialHeader(social, arg));
+    const rison = req.params[ARG];
+    const social = decodeSocial(rison);
+    const html = ReactDOMServer.renderToString(
+      await socialHeader(social, rison)
+    );
     res.contentType("text/plain").send(html);
   } catch (error) {
     logErrorAndSend404(req, error, res);
