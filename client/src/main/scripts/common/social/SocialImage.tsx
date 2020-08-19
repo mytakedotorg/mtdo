@@ -22,13 +22,7 @@ import { FoundationFetcher } from "../../common/foundation";
 import { getCut } from "../../common/video";
 import { FT } from "../../java2ts/FT";
 import { abbreviate } from "../functions";
-import {
-  FactUncut,
-  Social,
-  TextCut,
-  Timeline,
-  VideoCut,
-} from "../social/social";
+import { FactUncut, Social, TextCut, VideoCut } from "../social/social";
 
 export async function socialImage(social: Social): Promise<React.ReactElement> {
   switch (social.kind) {
@@ -47,8 +41,6 @@ export async function socialImage(social: Social): Promise<React.ReactElement> {
         social,
         await FoundationFetcher.justOneFact(social.fact)
       );
-    case "timeline":
-      return timeline(social);
   }
 }
 
@@ -78,9 +70,5 @@ function imageFactUncut(
   social: FactUncut,
   fact: FT.DocumentFactContent | FT.VideoFactContent
 ): React.ReactElement {
-  return <div className="todo"></div>;
-}
-
-function timeline(social: Timeline): React.ReactElement {
   return <div className="todo"></div>;
 }

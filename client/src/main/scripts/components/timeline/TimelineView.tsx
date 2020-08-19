@@ -22,7 +22,7 @@ import { slugify } from "../..//common/functions";
 import {
   Corpus,
   encodeSocial,
-  TimelineSocial,
+  PreviewSocial,
 } from "../../common/social/social";
 import { FT } from "../../java2ts/FT";
 import { Routes } from "../../java2ts/Routes";
@@ -31,46 +31,21 @@ import { SetFactHandlers } from "./TimelinePreview";
 import TimelinePreviewContainer from "./TimelinePreviewContainer";
 import TimelineRadioButtons from "./TimelineRadioButtons";
 
-interface URLValues {
-  factTitleSlug: string;
-  highlightedRange?: [number, number];
-  viewRange?: [number, number];
-}
-
 interface TimelineViewProps {
-  initialFact: TimelineSocial;
+  initialFact: PreviewSocial | null;
   factLinks: FT.FactLink[];
   setFactHandlers?: SetFactHandlers;
 }
 
-interface TimelineViewState {
-  factLink: FT.FactLink | null;
-  selectedOption: Corpus;
-  timelineItems: TimelineItemData[];
-  urlValues: URLValues | null;
-  URLIsValid: boolean;
-}
-
-interface HasFact {
-  fact: string;
-}
-
-function hasFact(social: TimelineSocial | HasFact): social is HasFact {
-  return (social as HasFact).fact !== undefined;
-}
-
 function getUrlFromSocial(
-  social: TimelineSocial,
+  social: PreviewSocial,
   factLinks: FT.FactLink[]
 ): string {
-  if (hasFact(social)) {
-    const title = factLinks.find((fl) => fl.hash === social.fact)?.fact.title;
-    if (title) {
-      const slugTitle = slugify(title);
-      return `${Routes.FOUNDATION}/${slugTitle}/${encodeSocial(social)}`;
-    }
+  const title = factLinks.find((fl) => fl.hash === social.fact)?.fact.title;
+  if (title) {
+    const slugTitle = slugify(title);
+    return `${Routes.FOUNDATION}/${slugTitle}/${encodeSocial(social)}`;
   }
-
   return `${Routes.FOUNDATION}/${encodeSocial(social)}`;
 }
 
@@ -80,7 +55,7 @@ const TimelineView: React.FC<TimelineViewProps> = ({
   setFactHandlers,
 }) => {
   const [selectedOption, setSelectedOption] = useState<Corpus>(Corpus.Debates);
-  const [social, setSocial] = useState<TimelineSocial>(initialFact);
+  const [social, setSocial] = useState<PreviewSocial | null>(initialFact);
   const timelineItems = getTimelineItems(selectedOption, factLinks);
 
   const handleChange = (ev: React.ChangeEvent<HTMLInputElement>) => {
@@ -127,7 +102,7 @@ const TimelineView: React.FC<TimelineViewProps> = ({
         selectedOption={selectedOption}
         timelineItems={timelineItems}
       />
-      {hasFact(social) && (
+      {social && (
         <TimelinePreviewContainer
           social={social}
           setFactHandlers={setFactHandlers}

@@ -19,11 +19,7 @@
  */
 import React, { useEffect, useState } from "react";
 import { FoundationFetcher } from "../../common/foundation";
-import {
-  Corpus,
-  decodeSocial,
-  TimelineSocial,
-} from "../../common/social/social";
+import { decodeSocial, PreviewSocial } from "../../common/social/social";
 import { FT } from "../../java2ts/FT";
 import { Routes } from "../../java2ts/Routes";
 import TimelineLoadingView from "./TimelineLoadingView";
@@ -39,11 +35,6 @@ interface TimelineLoaderState {
   facts?: FT.FactLink[];
 }
 
-const DEFAULT_TIMELINE_SOCIAL: TimelineSocial = {
-  kind: "timeline",
-  corpus: Corpus.Debates,
-};
-
 const TimelineLoader: React.FC<TimelineLoaderProps> = (props) => {
   const [state, setState] = useState<TimelineLoaderState>({});
 
@@ -57,17 +48,17 @@ const TimelineLoader: React.FC<TimelineLoaderProps> = (props) => {
     getAllFacts();
   }, []);
 
-  const parseURL = (path: string): TimelineSocial => {
+  const parseURL = (path: string): PreviewSocial | null => {
     const embedSlash = path.lastIndexOf("/");
     if (embedSlash <= Routes.FOUNDATION.length) {
-      return DEFAULT_TIMELINE_SOCIAL;
+      return null;
     }
     const embedRison = path.substring(embedSlash + 1);
     try {
       return decodeSocial(embedRison);
     } catch (err) {
       console.log(err);
-      return DEFAULT_TIMELINE_SOCIAL;
+      return null;
     }
   };
 

@@ -47,19 +47,13 @@ export type TextCut = {
   kind: "textCut";
 };
 
-export type Timeline = {
-  kind: "timeline";
-  corpus: Corpus;
-};
-
 export enum Corpus {
   "Debates" = "Debates",
   "Documents" = "Documents",
 }
 
-export type Social = VideoCut | TextCut | FactUncut | Timeline;
+export type Social = VideoCut | TextCut | FactUncut;
 export type PreviewSocial = VideoCut | TextCut | FactUncut;
-export type TimelineSocial = VideoCut | TextCut | FactUncut | Timeline;
 
 export function encodeSocial(embed: Social) {
   // TODO: limit floating point precision

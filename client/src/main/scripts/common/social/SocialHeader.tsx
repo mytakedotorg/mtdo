@@ -22,13 +22,7 @@ import { FoundationFetcher } from "../../common/foundation";
 import { getCut } from "../../common/video";
 import { FT } from "../../java2ts/FT";
 import { Routes } from "../../java2ts/Routes";
-import {
-  FactUncut,
-  Social,
-  TextCut,
-  Timeline,
-  VideoCut,
-} from "../social/social";
+import { FactUncut, Social, TextCut, VideoCut } from "../social/social";
 
 export async function socialHeader(
   social: Social,
@@ -53,23 +47,7 @@ export async function socialHeader(
         socialRison,
         await FoundationFetcher.justOneFact(social.fact)
       );
-    case "timeline":
-      return headerTimeline(social, socialRison);
   }
-}
-
-function headerTimeline(
-  social: Timeline,
-  socialRison: string
-): React.ReactElement {
-  return (
-    <Twitter
-      title={"TODO"}
-      desc={"TODO"}
-      image={Routes.URL_NODE_SOCIAL_IMAGE + socialRison}
-      imageAlt={""}
-    />
-  );
 }
 
 function headerFactUncut(
