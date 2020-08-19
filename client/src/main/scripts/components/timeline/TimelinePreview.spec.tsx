@@ -17,10 +17,10 @@
  *
  * You can contact us at team@mytake.org
  */
-import * as React from "react";
 import { mount, ReactWrapper } from "enzyme";
+import * as React from "react";
+import { documentFactLink, documentNodes } from "../../utils/testUtils";
 import TimelinePreview from "./TimelinePreview";
-import { documentFactLink, documentNodes } from "../utils/testUtils";
 
 const onDocumentSetClick = jest.fn();
 const onVideoSetClick = jest.fn();

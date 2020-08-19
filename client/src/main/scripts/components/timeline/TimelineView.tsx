@@ -37,7 +37,7 @@ interface URLValues {
 export type SelectionOptions = "Debates" | "Documents"; // TODO replace with enum
 
 interface TimelineViewProps {
-  initialFact: TimelineSocial | string | null;
+  initialFact?: TimelineSocial | string | null;
   factLinks: FT.FactLink[];
   path: string;
   setFactHandlers?: SetFactHandlers;
@@ -66,10 +66,10 @@ const TimelineView: React.FC<TimelineViewProps> = ({
   setFactHandlers,
 }) => {
   const [selectedOption, setSelectedOption] = useState<SelectionOptions>(
-    factToSelectedOption(initialFact)
+    factToSelectedOption(initialFact as TimelineSocial) // TODO
   );
   const [selectedFact, setSelectedFact] = useState<TimelineSocial | null>(
-    initialFact
+    initialFact as TimelineSocial // TODO
   );
   const timelineItems = getTimelineItems(selectedOption, factLinks);
 

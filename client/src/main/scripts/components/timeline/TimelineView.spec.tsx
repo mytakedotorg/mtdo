@@ -19,8 +19,8 @@
  */
 import React from "react";
 import renderer from "react-test-renderer";
+import { documentFactLink, videoFactLink } from "../../utils/testUtils";
 import TimelineView from "./TimelineView";
-import { documentFactLink, videoFactLink } from "../utils/testUtils";
 
 jest.mock("./TimelinePreviewContainer", () => ({
   __esModule: true,

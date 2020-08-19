@@ -19,8 +19,8 @@
  */
 import * as React from "react";
 import * as renderer from "react-test-renderer";
+import { timelineItems } from "../../utils/testUtils";
 import Timeline from "./Timeline";
-import { timelineItems } from "../utils/testUtils";
 
 // These tests do not work as expected. Vis.Timeline is a Portal component.
 // The timelineItems are "rendered" outside of the root React component in the
