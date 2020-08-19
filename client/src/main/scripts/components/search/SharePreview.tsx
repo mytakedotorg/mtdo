@@ -86,7 +86,7 @@ const SharePreview: React.FC<SharePreviewProps> = ({
             <p className="share-preview__tilde">∼∼ ∼∼∼∼∼∼∼∼ ∼∼ ∼∼∼ ∼ ∼∼∼ ∼∼</p>
             <div className="share-preview__content">
               <SearchHitContent
-                className="turn__results"
+                className="share-preview__text share-preview__text--app"
                 maxLength={200}
                 searchHit={searchHit}
               />

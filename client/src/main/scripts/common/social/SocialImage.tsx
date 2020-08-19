@@ -21,6 +21,7 @@ import * as React from "react";
 import { FoundationFetcher } from "../../common/foundation";
 import { getCut } from "../../common/video";
 import { FT } from "../../java2ts/FT";
+import { abbreviate } from "../functions";
 import { Social, TextCut, VideoCut } from "../social/social";
 
 export async function socialImage(social: Social): Promise<React.ReactElement> {
@@ -51,8 +52,11 @@ function imageVideoCut(
 ): React.ReactElement {
   const [speaker, said] = getCut(fact, social.cut);
   return (
-    <div className="videocut">
-      <p className="videocut__said">{said}</p>
+    <div className="share-preview__content share-preview__content--embed">
+      <p className="share-preview__text share-preview__text--embed">
+        {abbreviate(said, 590)}
+      </p>
+      <p className="share-preview__speaker">-{speaker.fullName}</p>
     </div>
   );
 }
