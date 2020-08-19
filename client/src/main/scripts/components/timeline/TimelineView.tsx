@@ -84,7 +84,7 @@ const TimelineView: React.FC<TimelineViewProps> = ({
   const timelineItems = getTimelineItems(selectedOption, factLinks);
 
   const handleChange = (ev: React.ChangeEvent<HTMLInputElement>) => {
-    const value = +ev.target.value as Corpus;
+    const value = ev.target.value as Corpus;
     if (value !== selectedOption) {
       setSelectedOption(value);
     }

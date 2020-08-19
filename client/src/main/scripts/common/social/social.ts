@@ -53,8 +53,8 @@ export type Timeline = {
 };
 
 export enum Corpus {
-  "Debates",
-  "Documents",
+  "Debates" = "Debates",
+  "Documents" = "Documents",
 }
 
 export type Social = VideoCut | TextCut | FactUncut | Timeline;
