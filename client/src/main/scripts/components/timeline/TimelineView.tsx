@@ -17,13 +17,15 @@
  *
  * You can contact us at team@mytake.org
  */
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { slugify } from "../..//common/functions";
 import {
   Corpus,
-  PreviewSocial,
+  encodeSocial,
   TimelineSocial,
 } from "../../common/social/social";
 import { FT } from "../../java2ts/FT";
+import { Routes } from "../../java2ts/Routes";
 import Timeline, { TimelineItemData } from "./Timeline";
 import { SetFactHandlers } from "./TimelinePreview";
 import TimelinePreviewContainer from "./TimelinePreviewContainer";
@@ -49,59 +51,36 @@ interface TimelineViewState {
   URLIsValid: boolean;
 }
 
-// function factToSelectedOption(
-//   factLinks: FT.FactLink[],
-//   social: TimelineSocial
-// ): Corpus {
-//   switch (social.kind) {
-//     case "factUncut":
-//     case "textCut":
-//     case "videoCut":
-//       switch (initialFactToSocial(social)?.kind) {
-//         case "video":
-//           return Corpus.Debates;
-//         case "document":
-//           return Corpus.Documents;
-//         default:
-//           return Corpus.Documents;
-//       }
-//     case "timeline":
-//       return social.corpus;
-//   }
-// }
-
-// function initialFactToSelectedFact(
-//   factLinks: FT.FactLink[],
-//   social: TimelineSocial
-// ): FT.FactLink | null {
-//   switch (social.kind) {
-//     case "factUncut":
-//     case "textCut":
-//     case "videoCut":
-//       return factLinks.find((fl) => fl.hash === social.fact)!;
-//     case "timeline":
-//       return null;
-//   }
-// }
-function initialFactToSocial(social: TimelineSocial): PreviewSocial | null {
-  switch (social.kind) {
-    case "factUncut":
-    case "textCut":
-    case "videoCut":
-      return social;
-    case "timeline":
-      return null;
-  }
+interface HasFact {
+  fact: string;
 }
+
+function hasFact(social: TimelineSocial | HasFact): social is HasFact {
+  return (social as HasFact).fact !== undefined;
+}
+
+function getUrlFromSocial(
+  social: TimelineSocial,
+  factLinks: FT.FactLink[]
+): string {
+  if (hasFact(social)) {
+    const title = factLinks.find((fl) => fl.hash === social.fact)?.fact.title;
+    if (title) {
+      const slugTitle = slugify(title);
+      return `${Routes.FOUNDATION}/${slugTitle}/${encodeSocial(social)}`;
+    }
+  }
+
+  return `${Routes.FOUNDATION}/${encodeSocial(social)}`;
+}
+
 const TimelineView: React.FC<TimelineViewProps> = ({
   initialFact,
   factLinks,
   setFactHandlers,
 }) => {
   const [selectedOption, setSelectedOption] = useState<Corpus>(Corpus.Debates);
-  const [social, setSocial] = useState<PreviewSocial | null>(
-    initialFactToSocial(initialFact)
-  );
+  const [social, setSocial] = useState<TimelineSocial>(initialFact);
   const timelineItems = getTimelineItems(selectedOption, factLinks);
 
   const handleChange = (ev: React.ChangeEvent<HTMLInputElement>) => {
@@ -111,33 +90,31 @@ const TimelineView: React.FC<TimelineViewProps> = ({
     }
   };
 
-  const handleItemClick = (factHash: string) => {
-    // for (let factLink of this.props.factLinks) {
-    //   if (factLink.hash === factHash) {
-    //     const factTitleSlug = slugify(factLink.fact.title);
-    //     const stateObject: TimelineViewState = {
-    //       ...this.state,
-    //       factLink: factLink,
-    //       urlValues: {
-    //         factTitleSlug: factTitleSlug,
-    //       },
-    //     };
-    //     if (this.props.path.startsWith(Routes.FOUNDATION)) {
-    //       window.history.pushState(
-    //         stateObject,
-    //         "UnusedTitle",
-    //         Routes.FOUNDATION + "/" + factTitleSlug
-    //       );
-    //     }
-    //     this.setState({
-    //       factLink: factLink,
-    //       urlValues: {
-    //         factTitleSlug: factTitleSlug,
-    //       },
-    //     });
-    //   }
-    // }
+  const handleItemClick = (factHash?: string) => {
+    if (factHash) {
+      setSocial({
+        kind: "factUncut",
+        fact: factHash,
+      });
+    }
   };
+
+  const handlePopState = () => {};
+
+  useEffect(() => {
+    window.addEventListener("popstate", handlePopState);
+    return () => {
+      window.removeEventListener("popstate", handlePopState);
+    };
+  }, []);
+
+  useEffect(() => {
+    window.history.pushState(
+      {},
+      "UnusedTitle",
+      getUrlFromSocial(social!, factLinks)
+    );
+  }, [social]);
 
   return (
     <div className={"timeline__view"}>
@@ -150,7 +127,7 @@ const TimelineView: React.FC<TimelineViewProps> = ({
         selectedOption={selectedOption}
         timelineItems={timelineItems}
       />
-      {social && (
+      {hasFact(social) && (
         <TimelinePreviewContainer
           social={social}
           setFactHandlers={setFactHandlers}
