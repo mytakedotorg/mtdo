@@ -21,7 +21,7 @@ import * as React from "react";
 import * as renderer from "react-test-renderer";
 import FoundationView from "./FoundationView";
 
-jest.mock("./TimelineView", () => ({
+jest.mock("./timeline/TimelineView", () => ({
   __esModule: true,
   default: "TimelineView",
 }));
