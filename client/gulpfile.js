@@ -130,11 +130,7 @@ function stylesTask(mode, type) {
 function webpackCfg(mode) {
   function entryFor(mode, filename) {
     if (mode === DEV) {
-      return [
-        "webpack/hot/dev-server",
-        "webpack-hot-middleware/client",
-        __dirname + filename,
-      ];
+      return ["webpack/hot/dev-server", __dirname + filename];
     } else {
       return [__dirname + filename];
     }

@@ -11,17 +11,7 @@ exports[`Successfully loaded a Document in view 1`] = `
   <Timeline
     onItemClick={[Function]}
     selectedOption="Debates"
-    timelineItems={
-      Array [
-        Object {
-          "content": "Amendment 13",
-          "id": "o_dRqrNJ62wzlgLilTrLxkHqGmvAS9qTpa4z4pjyFqA=",
-          "idx": "o_dRqrNJ62wzlgLilTrLxkHqGmvAS9qTpa4z4pjyFqA=",
-          "kind": "document",
-          "start": 1865-12-06T00:00:00.000Z,
-        },
-      ]
-    }
+    timelineItems={Array []}
   />
 </div>
 `;
