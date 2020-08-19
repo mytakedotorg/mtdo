@@ -22,10 +22,11 @@ package common;
 import com.diffplug.common.base.Unhandled;
 import forms.api.RockerRaw;
 import java.io.IOException;
-import java.net.URISyntaxException;
-import java.net.UnknownHostException;
+import java.net.BindException;
+import java.net.ServerSocket;
 import java.util.concurrent.TimeUnit;
 import java2ts.Routes;
+import javax.annotation.Nullable;
 import okhttp3.ConnectionPool;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
@@ -41,8 +42,8 @@ public class SocialEmbed {
 	private static final int NODE_DEV_PORT = 4000;
 	private static final boolean isHerokuProd = "true".equals(System.getenv("HEROKU_NAKED_PROD"));
 
-	public static SocialEmbed get(org.jooby.Request req, String embedRison) throws IOException {
-		return req.require(GetHeader.class).get(Routes.PATH_NODE_SOCIAL_HEADER + embedRison);
+	public static SocialEmbed get(org.jooby.Request req, String socialRison) throws IOException {
+		return req.require(GetHeader.class).get(req, socialRison);
 	}
 
 	public static SocialEmbed todo() {
@@ -64,11 +65,19 @@ public class SocialEmbed {
 	}
 
 	static class GetHeader {
+		public SocialEmbed get(org.jooby.Request req, String socialRison) {
+			System.err.println("social embed for " + req.rawPath());
+			System.err.println("  http://localhost:3000" + DEV_URL + "#" + socialRison);
+			return new SocialEmbed("<!-- socialRison: " + socialRison + " -->");
+		}
+	}
+
+	static class GetHeaderProd extends GetHeader {
 		private final String httpDomain;
 		private final HttpUrl httpDomainOk;
 		private final OkHttpClient client;
 
-		private GetHeader(Env env, String httpDomain) throws URISyntaxException, UnknownHostException {
+		private GetHeaderProd(Env env, @Nullable String httpDomain) {
 			this.httpDomain = httpDomain;
 			this.httpDomainOk = HttpUrl.get(httpDomain);
 
@@ -76,24 +85,32 @@ public class SocialEmbed {
 			int minutesIdleBeforeClosed = 1;
 			client = new OkHttpClient.Builder()
 					.callTimeout(MAX_WAIT_MS, TimeUnit.MILLISECONDS)
+					.retryOnConnectionFailure(true)
 					.connectionPool(new ConnectionPool(numConnections, minutesIdleBeforeClosed, TimeUnit.MINUTES))
 					.build();
 
 			env.onStop(client.connectionPool()::evictAll);
 		}
 
-		SocialEmbed get(String path) throws IOException {
+		@Override
+		public SocialEmbed get(org.jooby.Request req, String socialRison) {
 			String body;
 			{
-				HttpUrl url = httpDomainOk.newBuilder().encodedPath(path).build();
+				HttpUrl url = httpDomainOk.newBuilder().encodedPath(Routes.PATH_NODE_SOCIAL_HEADER + socialRison).build();
 				try (Response response = client.newCall(new okhttp3.Request.Builder().url(url).build()).execute()) {
 					body = response.body().string();
+				} catch (IOException e) {
+					System.err.println("-----------------------");
+					System.err.println(url.toString());
+					e.printStackTrace();
+					// this ought to hook into https://github.com/mytakedotorg/mytakedotorg/issues/328
+					body = "<!-- temporary header failure, don't cache -->";
 				}
 			}
 			body = cleanupHeaders(body);
 			if (!httpDomain.equals(HTTPS_NODE)) {
-				// node.mytake.org always returns node.mytake.org URLs, even when running on dev machines
-				// or the staging instance on Heroku, so we have to adjust for that here.
+				// node.mytake.org always returns node.mytake.org image URLs, even when running on
+				// dev machines or the staging instance on Heroku, so we have to adjust for that here.
 				body = body.replace(HTTPS_NODE, httpDomain);
 			}
 			return new SocialEmbed(body);
@@ -115,18 +132,29 @@ public class SocialEmbed {
 				// everywhere besides prod, we want to show the social preview here
 				env.router().get(DEV_URL, req -> socialImage.template());
 			}
-			String base;
-			if (isHerokuProd) {
-				base = HTTPS_NODE;
-			} else if (env.name().equals("heroku")) {
-				base = "https://mtdo-node-staging.herokuapp.com";
-			} else if (env.name().equals("dev")) {
-				base = HTTP_LOCAL_DEV;
-			} else {
-				throw Unhandled.stringException(env.name());
-			}
-			binder.bind(GetHeader.class).toInstance(new GetHeader(env, base));
+			// bind the GetHeader instance for all templates
+			binder.bind(GetHeader.class).toInstance(getInstance(env));
 		});
+	}
+
+	private static GetHeader getInstance(Env env) throws IOException {
+		String base;
+		if (env.name().equals("dev")) {
+			try (ServerSocket socket = new ServerSocket(NODE_DEV_PORT)) {
+				// the node server is not running, so we will use the dev instance
+				return new GetHeader();
+			} catch (BindException e) {
+				// the node server is running, so we'll work with it
+				base = HTTP_LOCAL_DEV;
+			}
+		} else if (isHerokuProd) {
+			base = HTTPS_NODE;
+		} else if (env.name().equals("heroku")) {
+			base = "https://mtdo-node-staging.herokuapp.com";
+		} else {
+			throw Unhandled.stringException(env.name());
+		}
+		return new GetHeaderProd(env, base);
 	}
 
 	private static final String HTTPS_NODE = "https://node.mytake.org";
