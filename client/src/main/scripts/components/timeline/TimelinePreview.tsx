@@ -323,9 +323,7 @@ export default class TimelinePreview extends React.Component<
               videoFact={this.props.videoFact}
               videoFactHash={this.props.factLink.hash}
               clipRange={
-                this.props.ranges && !this.props.ranges.viewRange
-                  ? this.props.ranges.highlightedRange
-                  : null
+                this.props.ranges && this.props.ranges.highlightedRange
               }
               className={"video__inner-container"}
             />

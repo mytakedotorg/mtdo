@@ -34,7 +34,6 @@ const TimelinePreviewLegacy: React.FC<TimelinePreviewLegacyProps> = ({
       nodes={nodes}
       setFactHandlers={setFactHandlers}
       ranges={ranges}
-      offset={0}
     />
   );
 };
