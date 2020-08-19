@@ -34,22 +34,13 @@ public class FoundationAssets implements Jooby.Module {
 		env.router().get(Routes.FOUNDATION, () -> views.Placeholder.foundation.template(SocialEmbed.todo()));
 		env.router().get(Routes.FOUNDATION + "/**", req -> {
 			String path = req.rawPath();
-			int embedSlash = path.indexOf('/', Routes.FOUNDATION.length() + 1);
-			SocialEmbed embed;
-			if (embedSlash == -1) {
-				String titleSlug = path.substring(Routes.FOUNDATION.length() + 1);
-				if (titleSlug.isEmpty()) { // trailing slash
-					throw RedirectException.permanent(Routes.FOUNDATION);
-				}
-				embed = SocialEmbed.todo(titleSlug); // something appropriate for summarizing the entire fact
-			} else {
-				String embedRison = path.substring(embedSlash + 1);
-				if (embedRison.isEmpty()) {  // trailing slash
-					throw RedirectException.permanent(path.substring(0, embedSlash));
-				}
-				embed = SocialEmbed.get(req, embedRison); // get the specific embed from node.mytake.org
+			int embedSlash = path.lastIndexOf('/');
+			String embedRison = path.substring(embedSlash + 1);
+			if (embedRison.isEmpty()) {
+				// trailing slash
+				throw RedirectException.permanent(Routes.FOUNDATION);
 			}
-			return views.Placeholder.foundation.template(embed);
+			return views.Placeholder.foundation.template(SocialEmbed.get(req, embedRison));
 		});
 		env.router().assets(Routes.FOUNDATION_INDEX_HASH, new AssetHandler(Routes.FOUNDATION_INDEX_HASH).etag(false).maxAge(0));
 		env.router().assets(Routes.FOUNDATION_DATA + "/*");
