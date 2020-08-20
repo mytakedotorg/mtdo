@@ -87,13 +87,13 @@
 		<div class="profile__nav">
 			<div class="tab-nav">
 				<ul class="tab-nav__list">
-			<li class="tab-nav__list-item"><a href="/empty" class="tab-nav__link tab-nav__link--active">published</a></li><li class="tab-nav__list-item"><a href="/empty?tab=stars" class="tab-nav__link tab-nav__link--inactive">stars</a></li><li class="tab-nav__list-item"><a href="/empty?tab=followers" class="tab-nav__link tab-nav__link--inactive">followers</a></li><li class="tab-nav__list-item"><a href="/empty?tab=following" class="tab-nav__link tab-nav__link--inactive">following</a></li>
+			<li class="tab-nav__list-item"><a href="/empty?tab=bookmarks" class="tab-nav__link tab-nav__link--active">bookmarks</a></li><li class="tab-nav__list-item"><a href="/empty?tab=followers" class="tab-nav__link tab-nav__link--inactive">followers</a></li><li class="tab-nav__list-item"><a href="/empty?tab=following" class="tab-nav__link tab-nav__link--inactive">following</a></li>
 				</ul>
 			</div>
 		</div>
 		<div class="profile__tab-content">
 			<div class="tab">
-	<h2 class="tab-title">No published Takes.</h2>
+	<h2 class="tab-title">Bookmarks</h2>
 </div>
 
 

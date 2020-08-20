@@ -87,7 +87,7 @@
 		<div class="profile__nav">
 			<div class="tab-nav">
 				<ul class="tab-nav__list">
-			<li class="tab-nav__list-item"><a href="/samples" class="tab-nav__link tab-nav__link--inactive">published</a></li><li class="tab-nav__list-item"><a href="/samples?tab=stars" class="tab-nav__link tab-nav__link--inactive">stars</a></li><li class="tab-nav__list-item"><a href="/samples?tab=followers" class="tab-nav__link tab-nav__link--inactive">followers</a></li><li class="tab-nav__list-item"><a href="/samples?tab=following" class="tab-nav__link tab-nav__link--active">following</a></li><li class="tab-nav__list-item"><a href="/samples?tab=edit" class="tab-nav__link tab-nav__link--inactive">edit</a></li><li class="tab-nav__list-item"><a href="/samples?tab=drafts" class="tab-nav__link tab-nav__link--inactive">drafts</a></li>
+			<li class="tab-nav__list-item"><a href="/samples?tab=bookmarks" class="tab-nav__link tab-nav__link--inactive">bookmarks</a></li><li class="tab-nav__list-item"><a href="/samples?tab=followers" class="tab-nav__link tab-nav__link--inactive">followers</a></li><li class="tab-nav__list-item"><a href="/samples?tab=following" class="tab-nav__link tab-nav__link--active">following</a></li>
 				</ul>
 			</div>
 		</div>

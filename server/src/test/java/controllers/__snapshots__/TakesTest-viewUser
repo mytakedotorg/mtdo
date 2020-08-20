@@ -87,26 +87,13 @@
 		<div class="profile__nav">
 			<div class="tab-nav">
 				<ul class="tab-nav__list">
-			<li class="tab-nav__list-item"><a href="/samples" class="tab-nav__link tab-nav__link--active">published</a></li><li class="tab-nav__list-item"><a href="/samples?tab=stars" class="tab-nav__link tab-nav__link--inactive">stars</a></li><li class="tab-nav__list-item"><a href="/samples?tab=followers" class="tab-nav__link tab-nav__link--inactive">followers</a></li><li class="tab-nav__list-item"><a href="/samples?tab=following" class="tab-nav__link tab-nav__link--inactive">following</a></li>
+			<li class="tab-nav__list-item"><a href="/samples?tab=bookmarks" class="tab-nav__link tab-nav__link--active">bookmarks</a></li><li class="tab-nav__list-item"><a href="/samples?tab=followers" class="tab-nav__link tab-nav__link--inactive">followers</a></li><li class="tab-nav__list-item"><a href="/samples?tab=following" class="tab-nav__link tab-nav__link--inactive">following</a></li>
 				</ul>
 			</div>
 		</div>
 		<div class="profile__tab-content">
 			<div class="tab">
-	<div class="takelist">
-		<div class="takelist__take">
-			<h2 class="takelist__title"><a class="takelist__link" href="/samples/does-a-law-mean-what-it-says-or-what-it-meant">Does a law mean what it says, or what it meant?</a></h2>
-			<span class="takelist__aside">Published on Jan 01 1970</span>
-		</div>
-		<div class="takelist__take">
-			<h2 class="takelist__title"><a class="takelist__link" href="/samples/dont-worry-well-protect-the-constitution-for-you">Don&#39;t worry, we&#39;ll protect the Constitution for you!</a></h2>
-			<span class="takelist__aside">Published on Jan 01 1970</span>
-		</div>
-		<div class="takelist__take">
-			<h2 class="takelist__title"><a class="takelist__link" href="/samples/why-its-so-hard-to-have-peace">Why it&#39;s so hard to have peace</a></h2>
-			<span class="takelist__aside">Published on Jan 01 1970</span>
-		</div>
-	</div>
+	<h2 class="tab-title">Bookmarks</h2>
 </div>
 
 

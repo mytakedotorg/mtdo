@@ -87,18 +87,13 @@
 		<div class="profile__nav">
 			<div class="tab-nav">
 				<ul class="tab-nav__list">
-			<li class="tab-nav__list-item"><a href="/other" class="tab-nav__link tab-nav__link--active">published</a></li><li class="tab-nav__list-item"><a href="/other?tab=stars" class="tab-nav__link tab-nav__link--inactive">stars</a></li><li class="tab-nav__list-item"><a href="/other?tab=followers" class="tab-nav__link tab-nav__link--inactive">followers</a></li><li class="tab-nav__list-item"><a href="/other?tab=following" class="tab-nav__link tab-nav__link--inactive">following</a></li>
+			<li class="tab-nav__list-item"><a href="/other?tab=bookmarks" class="tab-nav__link tab-nav__link--active">bookmarks</a></li><li class="tab-nav__list-item"><a href="/other?tab=followers" class="tab-nav__link tab-nav__link--inactive">followers</a></li><li class="tab-nav__list-item"><a href="/other?tab=following" class="tab-nav__link tab-nav__link--inactive">following</a></li>
 				</ul>
 			</div>
 		</div>
 		<div class="profile__tab-content">
 			<div class="tab">
-	<div class="takelist">
-		<div class="takelist__take">
-			<h2 class="takelist__title"><a class="takelist__link" href="/other/i-am-a-strawman">I am a strawman</a></h2>
-			<span class="takelist__aside">Published on Jan 01 1970</span>
-		</div>
-	</div>
+	<h2 class="tab-title">Bookmarks</h2>
 </div>
 
 

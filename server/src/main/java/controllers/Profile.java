@@ -48,7 +48,12 @@ import org.jooq.Result;
 public class Profile implements Jooby.Module {
 	/** Represents a single mode in the profile page. */
 	public enum Mode {
-		published, stars, followers, following, edit, drafts;
+		/** The definition order represents the order the tabs will appear in the UI */
+		bookmarks, published, stars, followers, following, edit, drafts;
+
+		public boolean isHidden() {
+			return this == published || this == stars || this == edit || this == drafts;
+		}
 
 		public boolean requiresLogin() {
 			return this == edit || this == drafts;
@@ -66,7 +71,7 @@ public class Profile implements Jooby.Module {
 		public String render(AccountRecord account, boolean loggedIn) {
 			StringBuilder builder = new StringBuilder();
 			for (Mode mode : Mode.values()) {
-				if (mode.requiresLogin() && !loggedIn) {
+				if (mode.isHidden() || mode.requiresLogin() && !loggedIn) {
 					continue;
 				}
 				builder.append("<li class=\"tab-nav__list-item\"><a href=\"");
@@ -100,7 +105,7 @@ public class Profile implements Jooby.Module {
 				boolean isLoggedIn = user.isPresent() && user.get().id() == userId;
 				// and what tab they're opening
 				Mutant tab = req.param(Routes.PROFILE_TAB);
-				Mode mode = !tab.isSet() ? Mode.published : Mode.valueOf(tab.value());
+				Mode mode = !tab.isSet() ? Mode.bookmarks : Mode.valueOf(tab.value());
 				if (mode.requiresLogin() && !isLoggedIn) {
 					throw RedirectException.notFoundError();
 				}
@@ -149,6 +154,8 @@ public class Profile implements Jooby.Module {
 					return views.Profile.profileTodo.template(account, isLoggedIn, mode);
 				case drafts:
 					return Results.redirect(Routes.DRAFTS);
+				case bookmarks:
+					return views.Profile.profileBookmarks.template(account, isLoggedIn);
 				default:
 					throw new IllegalArgumentException("Unhandled tab mode");
 				}

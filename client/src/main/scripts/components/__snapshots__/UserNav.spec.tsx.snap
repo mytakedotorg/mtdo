@@ -20,9 +20,9 @@ exports[`UserNav logged in 1`] = `
     >
       <a
         className="usernav__link"
-        href="/drafts/new"
+        href="/samples?tab=bookmarks"
       >
-        New Draft
+        Bookmarks
       </a>
     </li>
     <li
@@ -30,9 +30,9 @@ exports[`UserNav logged in 1`] = `
     >
       <a
         className="usernav__link"
-        href="/drafts"
+        href="/samples?tab=following"
       >
-        Drafts
+        Following
       </a>
     </li>
     <li
@@ -40,29 +40,9 @@ exports[`UserNav logged in 1`] = `
     >
       <a
         className="usernav__link"
-        href="/samples"
+        href="/samples?tab=followers"
       >
-        Published
-      </a>
-    </li>
-    <li
-      className="usernav__list-item"
-    >
-      <a
-        className="usernav__link"
-        href="/samples?tab=stars"
-      >
-        Stars
-      </a>
-    </li>
-    <li
-      className="usernav__list-item"
-    >
-      <a
-        className="usernav__link"
-        href="/samples?tab=edit"
-      >
-        Profile
+        Followers
       </a>
     </li>
     <li
