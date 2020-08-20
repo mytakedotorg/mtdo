@@ -44,6 +44,9 @@ public class Routes {
 	public static final String PROFILE_TAB = "tab";
 	public static final String PROFILE_TAB_STARS = "stars";
 	public static final String PROFILE_TAB_EDIT = "edit";
+	public static final String PROFILE_TAB_BOOKMARKS = "bookmarks";
+	public static final String PROFILE_TAB_FOLLOWING = "following";
+	public static final String PROFILE_TAB_FOLLOWERS = "followers";
 
 	public static final String ANONYMOUS = "/anonymous";
 	public static final String SEARCH = "/search";

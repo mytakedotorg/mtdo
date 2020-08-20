@@ -31,16 +31,17 @@ const UserNav: React.FC<UserNavProps> = ({ cookie }) => {
   let navLinks: { name: string; href: string }[] = [];
   if (cookie) {
     navLinks = [
-      { name: "New Draft", href: Routes.DRAFTS_NEW },
-      { name: "Drafts", href: Routes.DRAFTS },
-      { name: "Published", href: `/${cookie.username}` },
       {
-        name: "Stars",
-        href: `/${cookie.username}?${Routes.PROFILE_TAB}=${Routes.PROFILE_TAB_STARS}`,
+        name: "Bookmarks",
+        href: `/${cookie.username}?${Routes.PROFILE_TAB}=${Routes.PROFILE_TAB_BOOKMARKS}`,
       },
       {
-        name: "Profile",
-        href: `/${cookie.username}?${Routes.PROFILE_TAB}=${Routes.PROFILE_TAB_EDIT}`,
+        name: "Following",
+        href: `/${cookie.username}?${Routes.PROFILE_TAB}=${Routes.PROFILE_TAB_FOLLOWING}`,
+      },
+      {
+        name: "Followers",
+        href: `/${cookie.username}?${Routes.PROFILE_TAB}=${Routes.PROFILE_TAB_FOLLOWERS}`,
       },
       { name: "Logout", href: Routes.LOGOUT },
     ];
