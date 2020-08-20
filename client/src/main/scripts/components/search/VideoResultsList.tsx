@@ -50,7 +50,10 @@ const VideoResultsList: React.FC<VideoResultsListProps> = ({
             className="results__preview"
             key={f.videoFact.youtubeId}
             ref={(div: HTMLDivElement) => {
-              dateToDivMap.set(f.videoFact.fact.primaryDate, div);
+              const date = f.videoFact.fact.primaryDate;
+              if (!dateToDivMap.has(date)) {
+                dateToDivMap.set(date, div);
+              }
             }}
           >
             <h2 className="results__subheading">

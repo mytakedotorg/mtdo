@@ -75,7 +75,7 @@ export function isDocument(
 }
 
 function url(hash: string): string {
-  return `https://mytake.org${Routes.FOUNDATION_DATA}/${hash}.json`;
+  return `${window.location.protocol}//${window.location.host}/${Routes.FOUNDATION_DATA}/${hash}.json`;
 }
 
 export class FoundationFetcher {
