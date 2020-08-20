@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2020 MyTake.org, Inc.
+ * Copyright (C) 2019-2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -17,10 +17,18 @@
  *
  * You can contact us at team@mytake.org
  */
+const underTest = require("./app");
+const request = require("supertest");
 const { toMatchImageSnapshot } = require("jest-image-snapshot");
 
 expect.extend({ toMatchImageSnapshot });
 
-test("so that build will succeed", (done) => {
+test("headers test videoCut", async (done) => {
+  const response = await request(underTest).get(
+    "/static/social-header/cut:!(2007.9000244140625,2046.1099853515625),fact:oZVEQzZXVzx3lM_PbszcA35XYBJxEDHwJirpx1c7hhg=,kind:videoCut"
+  );
+  expect(response.statusCode).toBe(200);
+  expect(response.type).toBe("text/plain");
+  expect(response.text).toMatchSnapshot();
   done();
 });
