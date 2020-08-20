@@ -20,6 +20,7 @@
 package java2ts;
 
 import def.js.ArrayLike;
+import java.util.Date;
 import java.util.List;
 
 /** Foundation Types. */
@@ -107,5 +108,13 @@ public interface FT {
 		public String component;
 		public String innerHTML;
 		public int offset;
+	}
+
+	@jsweet.lang.Interface
+	public class Bookmark {
+		public String fact;
+		public int start;
+		public int end;
+		public Date savedAt;
 	}
 }
