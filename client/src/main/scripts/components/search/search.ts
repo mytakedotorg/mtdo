@@ -118,7 +118,7 @@ export function _searchImpl(searchWithData: _SearchWithData): SearchResult {
         };
         const multiHighlights = turnWithResults.expandBy(expandBy[mode]);
         return multiHighlights.map(
-          (m) => new SearchHit(m.highlights, m.cut, v.turn, videoFact)
+          (m) => new SearchHit(m.highlights, m.cut, v.turn, videoFact, v.hash)
         );
       });
     })
@@ -157,7 +157,8 @@ export class SearchHit {
     readonly highlightOffsets: Array<[number, number, string]>,
     readonly hitOffsets: [number, number],
     readonly turn: number,
-    readonly videoFact: FT.VideoFactContent
+    readonly videoFact: FT.VideoFactContent,
+    readonly videoFactHash: string
   ) {}
 
   getSpeaker(): string {

@@ -125,8 +125,8 @@
 	</div>
 </footer>
 <div class="fade-overlay"></div>
-<script type="text/javascript" src="https://unpkg.com/react@16.13.1/umd/react.production.min.js" integrity="sha384-Q5wFTPC/kyhbXJt5GLrIeka2uDOSTG7m1zpW91iMO1DJb7+vOwu2lgZC30d4uQmU" crossorigin="anonymous"></script>
-<script type="text/javascript" src="https://unpkg.com/react-dom@16.13.1/umd/react-dom.production.min.js" integrity="sha384-T6Etav7ShYqIZe+prlqxX/h04T1Iu9ynDpcgx0iBgcl5u+AVlStV2kv3mMxfnV1C" crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://unpkg.com/react@16.13.1/umd/react.development.js" integrity="sha384-U5suA1hvaY3jdSj/eys1iFOLEhVOrzFChmEU4xdxiMixWT3xOdKJB5nNd1OF9xim" crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://unpkg.com/react-dom@16.13.1/umd/react-dom.development.js" integrity="sha384-kaOkZyb5Zt3xjd+db4haVYVQCb1G7SF1nBLglYfcovj2yYb58gL0ntVd/oCqN1CE" crossorigin="anonymous"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.js" integrity="sha384-2SbSbzJpoRtEf9BFT5KZAulTQs1JBK0XiQr38Mh0w8+wH0Ubuam+p5csoi5zCV7T" crossorigin="anonymous"></script>
 <script type="text/javascript" src="/assets-dev/scripts/app.bundle.js"></script>
 </body>

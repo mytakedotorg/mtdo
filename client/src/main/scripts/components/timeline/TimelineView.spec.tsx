@@ -19,8 +19,9 @@
  */
 import React from "react";
 import renderer from "react-test-renderer";
+import { TextCut, VideoCut } from "../../common/social/social";
+import { documentFactLink, videoFactLink } from "../../utils/testUtils";
 import TimelineView from "./TimelineView";
-import { documentFactLink, videoFactLink } from "../utils/testUtils";
 
 jest.mock("./TimelinePreviewContainer", () => ({
   __esModule: true,
@@ -38,17 +39,29 @@ jest.mock("./TimelineRadioButtons", () => ({
 }));
 
 test("Successfully loaded a Document in view", () => {
+  const initialFact: TextCut = {
+    kind: "textCut",
+    cut: [54, 86],
+    fact: documentFactLink.hash,
+  };
   const tree = renderer
     .create(
-      <TimelineView factLinks={[documentFactLink]} path={"/foundation"} />
+      <TimelineView factLinks={[documentFactLink]} initialFact={initialFact} />
     )
     .toJSON();
   expect(tree).toMatchSnapshot();
 });
 
 test("Successfully loaded a Video in view", () => {
+  const initialFact: VideoCut = {
+    kind: "videoCut",
+    fact: videoFactLink.hash,
+    cut: [0, 15],
+  };
   const tree = renderer
-    .create(<TimelineView factLinks={[videoFactLink]} path={"/foundation"} />)
+    .create(
+      <TimelineView factLinks={[videoFactLink]} initialFact={initialFact} />
+    )
     .toJSON();
   expect(tree).toMatchSnapshot();
 });

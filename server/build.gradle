@@ -130,6 +130,8 @@ dependencies {
 	implementation "org.postgresql:postgresql:${VER_POSTGRESQL_DRIVER}"
 	// flyway
 	implementation "org.flywaydb:flyway-core:${VER_FLYWAY}"
+	// fetch headers from node.mytake.org
+	implementation 'com.squareup.okhttp3:okhttp:4.8.1'
 	// common libs
 	implementation 'commons-validator:commons-validator:1.6'
 	implementation 'com.diffplug.durian:durian-core:1.2.0'
@@ -154,6 +156,16 @@ dependencies {
 	implementation 'com.auth0:java-jwt:3.10.3'
 }
 
+// renders the socialEmbed template to disk for node
+tasks.register('renderSocialTemplate', JavaExec) {
+	dependsOn 'testClasses'
+	classpath = sourceSets.test.runtimeClasspath
+	main = 'common.SocialEmbedTest'
+	args = [
+		file('../node/build/dist-client/socialEmbed.html').absolutePath
+	]
+}
+
 // see common.DevHotReload in an IDE for faster dev
 tasks.register('runDev', JavaExec) {
 	dependsOn 'testClasses'
@@ -166,9 +178,12 @@ tasks.register('runDev', JavaExec) {
 	]
 }
 
-task setSnapshots(type: Test) {
+tasks.register('updateSnapshot', Test) {
 	systemProperties(['SET_SNAPSHOTS': 'TRUE'])
+}
+tasks.named('test') {
 	flywayJooq.neededBy(it)
+	dependsOn(':node:assemble')
 }
 
 /////////////

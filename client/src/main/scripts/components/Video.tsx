@@ -23,6 +23,7 @@ import { getCharRangeFromVideoRange } from "../common/CaptionNodes";
 import { FT } from "../java2ts/FT";
 import { Routes } from "../java2ts/Routes";
 import { slugify } from "../common/functions";
+import { encodeSocial, VideoCut } from "../common/social/social";
 import { copyToClipboard } from "../browser";
 import CaptionView, { CaptionViewEventHandlers } from "./CaptionView";
 import isEqual = require("lodash/isEqual");
@@ -147,24 +148,19 @@ class Video extends React.Component<VideoProps, VideoState> {
     };
   }
   copyURL = () => {
-    let text =
-      window.location.protocol +
-      "//" +
-      window.location.host +
-      Routes.FOUNDATION_V1 +
-      "/" +
-      slugify(this.props.videoFact.fact.title);
-
+    const loc = window.location;
+    let text = `${loc.protocol}//${loc.host}${Routes.FOUNDATION}/${slugify(
+      this.props.videoFact.fact.title
+    )}`;
     if (this.state.captionIsHighlighted) {
-      const selection = this.getRangeSlider("SELECTION");
-      if (selection && selection.end) {
-        text +=
-          "/" + selection.start.toFixed(3) + "-" + selection.end.toFixed(3);
-      } else {
-        throw "Video: Expect selection to exist.";
-      }
+      const sel = this.getRangeSlider("SELECTION")!;
+      const social: VideoCut = {
+        cut: [sel.start, sel.end!],
+        fact: this.props.videoFactHash,
+        kind: "videoCut",
+      };
+      text += `/${encodeSocial(social)}`;
     }
-
     this.setState({
       isCopiedToClipBoard: copyToClipboard(text),
     });

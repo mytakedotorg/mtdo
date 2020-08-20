@@ -74,6 +74,10 @@ export function isDocument(
   }
 }
 
+function url(hash: string): string {
+  return `https://mytake.org${Routes.FOUNDATION_DATA}/${hash}.json`;
+}
+
 export class FoundationFetcher {
   requestedFacts: string[] = [];
 
@@ -96,9 +100,7 @@ export class FoundationFetcher {
   private async getFact(
     factHash: string
   ): Promise<FT.VideoFactContent | FT.DocumentFactContent> {
-    const factContent = await get<FT.FactContent>(
-      Routes.FOUNDATION_DATA + "/" + factHash + ".json"
-    );
+    const factContent = await get<FT.FactContent>(url(factHash));
     if (isVideo(factContent)) {
       return decodeVideoFact(factContent as FT.VideoFactContentEncoded);
     } else {
@@ -111,9 +113,7 @@ export class FoundationFetcher {
       Routes.FOUNDATION_INDEX_HASH,
       "no-cache"
     );
-    return get<FT.FactLink[]>(
-      Routes.FOUNDATION_DATA + "/" + indexPointer.hash + ".json"
-    );
+    return get<FT.FactLink[]>(url(indexPointer.hash));
   }
 
   static async justOneDocument(
@@ -122,6 +122,14 @@ export class FoundationFetcher {
     const builder = new FoundationFetcher();
     builder.add(factHash);
     return (await builder.build()).getDocument(factHash);
+  }
+
+  static async justOneFact(
+    factHash: string
+  ): Promise<FT.VideoFactContent | FT.DocumentFactContent> {
+    const builder = new FoundationFetcher();
+    builder.add(factHash);
+    return (await builder.build()).getFactContent(factHash);
   }
 
   static async justOneVideo(factHash: string): Promise<FT.VideoFactContent> {

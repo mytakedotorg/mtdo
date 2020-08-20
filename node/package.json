@@ -11,12 +11,12 @@
   "main": "src/main/dist/index.js",
   "scripts": {
     "start": "gulp default",
-    "deploy": "gulp build",
     "test": "jest",
-    "test_ci": "jest --maxWorkers=2 --ci --reporters=jest-junit"
+    "test_ci": "jest --maxWorkers=2 --ci --reporters=jest-junit",
+    "updateSnapshot": "jest --updateSnapshot"
   },
-  "author": "",
-  "license": "GPL-2.0",
+  "author": "MyTake.org, Inc.",
+  "license": "AGPL-3.0",
   "dependencies": {
     "@types/express": "^4.17.7",
     "@types/node": "^12.12.54",
@@ -29,13 +29,16 @@
     "morgan": "^1.9.0",
     "puppeteer": "^5.2.1",
     "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "rison-node": "^2.1.1",
     "source-map-support": "^0.5.6"
   },
   "devDependencies": {
     "@types/jest": "^26.0.9",
     "@types/jest-image-snapshot": "^3.1.0",
-    "@types/react": "^16.9.43",
     "@types/puppeteer": "^3.0.1",
+    "@types/react": "^16.9.46",
+    "@types/react-dom": "^16.9.8",
     "@types/supertest": "^2.0.10",
     "gulp": "^4.0.2",
     "gulp-nodemon": "^2.5.0",

@@ -6,11 +6,11 @@ exports[`Successfully loaded a Document in view 1`] = `
 >
   <TimelineRadioButtons
     onChange={[Function]}
-    selectedOption="Debates"
+    selectedOption="Documents"
   />
   <Timeline
     onItemClick={[Function]}
-    selectedOption="Debates"
+    selectedOption="Documents"
     timelineItems={
       Array [
         Object {
@@ -21,6 +21,18 @@ exports[`Successfully loaded a Document in view 1`] = `
           "start": 1865-12-06T00:00:00.000Z,
         },
       ]
+    }
+  />
+  <TimelinePreviewContainer
+    social={
+      Object {
+        "cut": Array [
+          54,
+          86,
+        ],
+        "fact": "o_dRqrNJ62wzlgLilTrLxkHqGmvAS9qTpa4z4pjyFqA=",
+        "kind": "textCut",
+      }
     }
   />
 </div>
@@ -47,6 +59,18 @@ exports[`Successfully loaded a Video in view 1`] = `
           "start": 2016-10-09T00:00:00.000Z,
         },
       ]
+    }
+  />
+  <TimelinePreviewContainer
+    social={
+      Object {
+        "cut": Array [
+          0,
+          15,
+        ],
+        "fact": "iEfwIxM7MmnOKb7zt4HqW8IxUWy6F7a236fSOQlUUWI=",
+        "kind": "videoCut",
+      }
     }
   />
 </div>

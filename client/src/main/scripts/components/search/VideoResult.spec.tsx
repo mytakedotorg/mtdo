@@ -42,7 +42,8 @@ test("VideoResultPreview containing", () => {
     [[18, 28, "television"]],
     [14, 239],
     0,
-    kennedyNixon
+    kennedyNixon,
+    "factHash"
   );
   const tree = renderer
     .create(<VideoResult searchHit={searchHit} onPlayClick={jest.fn()} />)
@@ -55,7 +56,8 @@ test("VideoResultPreview before and after", () => {
     [[18, 28, "television"]],
     [0, 276],
     0,
-    kennedyNixon
+    kennedyNixon,
+    "factHash"
   );
   const tree = renderer
     .create(<VideoResult searchHit={searchHit} onPlayClick={jest.fn()} />)

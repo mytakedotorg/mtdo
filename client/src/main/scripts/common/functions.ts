@@ -17,7 +17,7 @@
  *
  * You can contact us at team@mytake.org
  */
-import binarySearch from "binary-search";
+const binarySearch = require("binary-search");
 
 export function slugify(text: string): string {
   return text

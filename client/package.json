@@ -14,10 +14,11 @@
     "clean": "gulp clean",
     "deploy": "gulp buildProd",
     "test": "jest",
-    "test_ci": "jest --maxWorkers=2 --ci --reporters=jest-junit"
+    "test_ci": "jest --maxWorkers=2 --ci --reporters=jest-junit",
+    "updateSnapshot": "jest --updateSnapshot"
   },
-  "author": "",
-  "license": "GPL-2.0",
+  "author": "MyTake.org, Inc.",
+  "license": "AGPL-3.0",
   "dependencies": {
     "@types/facebook-js-sdk": "^2.8.5",
     "@types/jest": "^26.0.9",
@@ -32,6 +33,7 @@
     "react-dom": "^16.13.1",
     "react-feather": "^2.0.8",
     "react-youtube": "^7.11.3",
+    "rison-node": "^2.1.1",
     "smoothscroll-polyfill": "^0.4.4",
     "vis": "^4.21.0"
   },

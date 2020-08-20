@@ -21,6 +21,7 @@ import * as React from "react";
 import { Bookmark, Play, Share } from "react-feather";
 import { slugify } from "../../common/functions";
 import { convertSecondsToTimestamp } from "../../common/video";
+import { encodeSocial, VideoCut } from "../../common/social/social";
 import { FT } from "../../java2ts/FT";
 import { Routes } from "../../java2ts/Routes";
 import DropDown from "../DropDown";
@@ -43,14 +44,14 @@ const VideoResult: React.FC<VideoResultProps> = (props) => {
   const { isBookmarked, onPlayClick, searchHit } = props;
   const { videoFact } = searchHit;
   const clipRange = searchHit.getClipRange();
-  const contextUrl =
-    Routes.FOUNDATION_V1 +
-    "/" +
-    slugify(videoFact.fact.title) +
-    "/" +
-    clipRange[0].toFixed(3) +
-    "-" +
-    clipRange[1].toFixed(3);
+  const social: VideoCut = {
+    cut: clipRange,
+    fact: searchHit.videoFactHash,
+    kind: "videoCut",
+  };
+  const contextUrl = `${Routes.FOUNDATION}/${slugify(
+    videoFact.fact.title
+  )}/${encodeSocial(social)}`;
 
   const handlePlayClick = () => {
     onPlayClick(videoFact, clipRange);

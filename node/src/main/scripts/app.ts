@@ -19,8 +19,13 @@
  */
 import * as express from "express";
 import { NextFunction, Request, Response } from "express";
+const ReactDOMServer = require("react-dom/server");
+import { decodeSocial } from "./common/social/social";
+import { socialHeader } from "./common/social/SocialHeader";
+import { Routes } from "./java2ts/Routes";
 // Require routes
 import { generateImage } from "./controllers/images";
+import { RenderQueue } from "./renderer";
 require("source-map-support").install();
 const logger = require("morgan");
 const app = express();
@@ -32,34 +37,34 @@ if (app.get("env") === "production") {
   app.use(logger("dev"));
 }
 
-const IMAGEKEY = "imgkey";
-app.use(`/api/images/:${IMAGEKEY}`, async (req: Request, res: Response) => {
-  const imgKeyAndExtension: string = req.params[IMAGEKEY];
+const ARG = "arg";
+app.use(`${Routes.PATH_NODE_SOCIAL_IMAGE}:${ARG}`, async (req, res) => {
   try {
-    const bufOrErrorMsg = await generateImage(imgKeyAndExtension);
-    if (bufOrErrorMsg instanceof Buffer) {
-      res
-        .writeHead(200, {
-          "Content-Type": "image/png",
-          "Content-Length": bufOrErrorMsg.length,
-        })
-        .end(bufOrErrorMsg);
-    } else {
-      logErrorAndSend404(imgKeyAndExtension, bufOrErrorMsg, res);
-    }
+    const rison = req.params[ARG];
+    const buf = RenderQueue.render(rison);
+    res.contentType("image/png").send(buf);
   } catch (error) {
-    logErrorAndSend404(imgKeyAndExtension, error.toString(), res);
+    logErrorAndSend404(req, error.toString(), res);
   }
 });
 
-function logErrorAndSend404(
-  imgKeyAndExtension: string,
-  errorMsg: string,
-  res: Response
-) {
+app.use(`${Routes.PATH_NODE_SOCIAL_HEADER}:${ARG}`, async (req, res) => {
+  try {
+    const rison = req.params[ARG];
+    const social = decodeSocial(rison);
+    const html = ReactDOMServer.renderToString(
+      await socialHeader(social, rison)
+    );
+    res.contentType("text/plain").send(html);
+  } catch (error) {
+    logErrorAndSend404(req, error, res);
+  }
+});
+
+function logErrorAndSend404(req: Request, error: any, res: Response) {
   console.warn("#####################");
-  console.warn(imgKeyAndExtension);
-  console.warn(errorMsg);
+  console.warn(req.originalUrl);
+  console.warn(error.stack);
   res.status(404).send("Not found");
 }
 

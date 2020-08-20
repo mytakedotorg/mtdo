@@ -19,12 +19,12 @@
  */
 import * as React from "react";
 import { FoundationFetcher } from "../common/foundation";
+import { slugify } from "../common/functions";
 import { DraftPost } from "../java2ts/DraftPost";
 import { DraftRev } from "../java2ts/DraftRev";
 import { PublishResult } from "../java2ts/PublishResult";
 import { Routes } from "../java2ts/Routes";
 import { post } from "../network";
-import { slugify } from "../common/functions";
 import BlockEditor, {
   DocumentBlock,
   ParagraphBlock,
@@ -33,7 +33,7 @@ import BlockEditor, {
   VideoBlock,
 } from "./BlockEditor";
 import EditorButtons from "./EditorButtons";
-import TimelineLoader from "./TimelineLoader";
+import TimelineLoader from "./timeline/TimelineLoader";
 
 interface BlockWriterProps {
   initState: InitialBlockWriterState;

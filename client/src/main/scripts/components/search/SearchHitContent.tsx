@@ -33,9 +33,9 @@ const SearchHitContent: React.FC<SearchHitContentProps> = ({
 }) => {
   return (
     <p className={className}>
-      {searchHit.getContent(maxLength).map((hitContent) => {
+      {searchHit.getContent(maxLength).map((hitContent, index) => {
         return hitContent.isHighlighted ? (
-          <strong key={hitContent.text}>{hitContent.text}</strong>
+          <strong key={index}>{hitContent.text}</strong>
         ) : (
           hitContent.text
         );

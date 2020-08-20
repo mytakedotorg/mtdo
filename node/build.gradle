@@ -14,8 +14,14 @@ tasks.register('syncClientJava2Ts', Sync) {
 	into 'src/main/scripts/java2ts'
 }
 
+tasks.register('syncClientScripts', Copy) {
+	dependsOn ':client:gulp_scriptsDev', ':client:gulp_stylesDev'
+	from '../client/src/main/resources/assets-dev'
+	into 'build/dist-client/assets-dev'
+}
+
 tasks.register('beforeCompile') {
-	dependsOn 'syncClientUtils', 'syncClientJava2Ts'
+	dependsOn 'syncClientUtils', 'syncClientJava2Ts', 'syncClientScripts', ':server:renderSocialTemplate'
 }
 
 apply plugin: 'com.diffplug.spotless'
@@ -38,18 +44,22 @@ spotless {
 /////////////////////////////////
 apply plugin: 'org.mytake.gradle.node'
 node {
-	// node 10.x is needed for node-canvas
 	setup.nodeVersion = buildsrc.NvmRc.read(file('../.nvmrc'))
 	setup.npmVersion = 'provided'
 
 	npmRun('test_ci') {
 		dependsOn 'beforeCompile'
-		inputs.dir('src/main/scripts')
+		inputs.file('tsconfig.json').withPathSensitivity(PathSensitivity.RELATIVE)
+		inputs.dir('src/main/scripts').withPathSensitivity(PathSensitivity.RELATIVE)
 		outputs.dir('build/test-results/jest')
 	}
-	npmRun('deploy') {
+	npmRun('updateSnapshot') {
 		dependsOn 'beforeCompile'
-		inputs.dir('src/main/scripts')
+	}
+	gulp('build') {
+		dependsOn 'beforeCompile'
+		inputs.file('tsconfig.json').withPathSensitivity(PathSensitivity.RELATIVE)
+		inputs.dir('src/main/scripts').withPathSensitivity(PathSensitivity.RELATIVE)
 		outputs.dir('build/dist')
 	}
 	npmArbitraryCmd('pruneDependencies', 'prune --production') {
@@ -60,9 +70,12 @@ node {
 tasks.register('test') {
 	dependsOn 'npm_run_test_ci'
 }
+tasks.register('updateSnapshot') {
+	dependsOn 'npm_run_updateSnapshot'
+}
 tasks.named('check') {
 	dependsOn 'test'
 }
 tasks.named('assemble') {
-	dependsOn 'npm_run_deploy'
+	dependsOn 'gulp_build'
 }

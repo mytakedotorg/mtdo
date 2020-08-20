@@ -18,8 +18,10 @@
  * You can contact us at team@mytake.org
  */
 import React, { useEffect, useState } from "react";
-import { FoundationFetcher } from "../common/foundation";
-import { FT } from "../java2ts/FT";
+import { FoundationFetcher } from "../../common/foundation";
+import { decodeSocial, PreviewSocial } from "../../common/social/social";
+import { FT } from "../../java2ts/FT";
+import { Routes } from "../../java2ts/Routes";
 import TimelineLoadingView from "./TimelineLoadingView";
 import { SetFactHandlers } from "./TimelinePreview";
 import TimelineView from "./TimelineView";
@@ -46,10 +48,24 @@ const TimelineLoader: React.FC<TimelineLoaderProps> = (props) => {
     getAllFacts();
   }, []);
 
+  const parseURL = (path: string): PreviewSocial | null => {
+    const embedSlash = path.lastIndexOf("/");
+    if (embedSlash <= Routes.FOUNDATION.length) {
+      return null;
+    }
+    const embedRison = path.substring(embedSlash + 1);
+    try {
+      return decodeSocial(embedRison);
+    } catch (err) {
+      console.log(err);
+      return null;
+    }
+  };
+
   return state.facts ? (
     <TimelineView
+      initialFact={parseURL(props.path)}
       factLinks={state.facts}
-      path={props.path}
       setFactHandlers={props.setFactHandlers}
     />
   ) : (

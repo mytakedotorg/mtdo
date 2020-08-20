@@ -49,7 +49,6 @@ public class Routes {
 	public static final String SEARCH = "/search";
 	public static final String TIMELINE = "/timeline";
 	public static final String FOUNDATION = "/foundation";
-	public static final String FOUNDATION_V1 = "/foundation-v1";
 	public static final String FOUNDATION_DATA = "/foundation-data";
 	public static final String FOUNDATION_INDEX_HASH = "/foundation-index-hash.json";
 
@@ -60,4 +59,8 @@ public class Routes {
 	public static final String TOS = "/tos";
 	public static final String FAQ = "/faq";
 	public static final String RULES = "/rules";
+
+	public static final String PATH_NODE_SOCIAL_HEADER = "/static/social-header/";
+	public static final String PATH_NODE_SOCIAL_IMAGE = "/static/social-image/";
+	public static final String URL_NODE_SOCIAL_IMAGE = "https://node.mytake.org/static/social-image/";
 }

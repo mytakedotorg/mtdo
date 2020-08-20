@@ -20,7 +20,7 @@
 import { CaptionNodeArr, FoundationNode } from "../common/CaptionNodes";
 import { TakeDocument } from "../components/BlockEditor";
 import { Card } from "../components/FeedList";
-import { TimelineItemData } from "../components/Timeline";
+import { TimelineItemData } from "../components/timeline/Timeline";
 import { StylesObject, TimeRange } from "../components/Video";
 import { FT } from "../java2ts/FT";
 

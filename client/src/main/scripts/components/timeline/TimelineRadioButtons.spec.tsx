@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2017-2018 MyTake.org, Inc.
+ * Copyright (C) 2017-2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -19,34 +19,26 @@
  */
 import * as React from "react";
 import * as renderer from "react-test-renderer";
-import Timeline from "./Timeline";
-import { timelineItems } from "../utils/testUtils";
+import { Corpus } from "../../common/social/social";
+import TimelineRadioButtons from "./TimelineRadioButtons";
 
-// These tests do not work as expected. Vis.Timeline is a Portal component.
-// The timelineItems are "rendered" outside of the root React component in the
-// virtual DOM. These snapshots just show empty divs. Not sure how to test this.
-// https://github.com/airbnb/enzyme/issues/252 might be a start.
+const mockFn = jest.fn();
 
-test("Debates Timeline", () => {
+test("Debates selected", () => {
   const tree = renderer
     .create(
-      <Timeline
-        timelineItems={timelineItems}
-        onItemClick={jest.fn()}
-        selectedOption={"Debates"}
-      />
+      <TimelineRadioButtons onChange={mockFn} selectedOption={Corpus.Debates} />
     )
     .toJSON();
   expect(tree).toMatchSnapshot();
 });
 
-test("Documents Timeline", () => {
+test("Documents selected", () => {
   const tree = renderer
     .create(
-      <Timeline
-        timelineItems={timelineItems}
-        onItemClick={jest.fn()}
-        selectedOption={"Documents"}
+      <TimelineRadioButtons
+        onChange={mockFn}
+        selectedOption={Corpus.Documents}
       />
     )
     .toJSON();

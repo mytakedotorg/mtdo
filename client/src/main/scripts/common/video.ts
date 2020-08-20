@@ -18,6 +18,7 @@
  * You can contact us at team@mytake.org
  */
 var base64toArrayBuffer = require("base64-arraybuffer");
+import { bsRoundEarly } from "./functions";
 import { FT } from "../java2ts/FT";
 
 export function decodeVideoFact(
@@ -95,4 +96,26 @@ function zeroPad(someNumber: number): string {
       ? "0" + someNumber.toString()
       : someNumber.toString();
   }
+}
+
+/**
+ * Assumes that both timestamps come from the same speaker.
+ * Bad assumption in general, but okay for now.
+ */
+export function getCut(
+  fact: FT.VideoFactContent,
+  cut: [number, number]
+): [FT.Speaker, string] {
+  const wordStart = bsRoundEarly(fact.wordTime, cut[0]);
+  let wordEnd = bsRoundEarly(fact.wordTime, cut[1]) + 1;
+  if (fact.wordTime[wordEnd]) {
+    --wordEnd;
+  }
+  const text = fact.plainText.slice(
+    fact.wordChar[wordStart],
+    fact.wordChar[wordEnd] - 1
+  );
+  const turn = bsRoundEarly(fact.turnWord, wordStart);
+  const speaker = fact.speakers[fact.turnSpeaker[turn]];
+  return [speaker, text];
 }

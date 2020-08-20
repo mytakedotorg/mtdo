@@ -26,7 +26,7 @@ jest.mock("./BlockEditor", () => ({
   default: "BlockEditor",
 }));
 
-jest.mock("./TimelineView", () => ({
+jest.mock("./timeline/TimelineView", () => ({
   __esModule: true,
   default: "TimelineView",
 }));

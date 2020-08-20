@@ -130,11 +130,7 @@ function stylesTask(mode, type) {
 function webpackCfg(mode) {
   function entryFor(mode, filename) {
     if (mode === DEV) {
-      return [
-        "webpack/hot/dev-server",
-        "webpack-hot-middleware/client",
-        __dirname + filename,
-      ];
+      return ["webpack/hot/dev-server", __dirname + filename];
     } else {
       return [__dirname + filename];
     }
@@ -143,6 +139,7 @@ function webpackCfg(mode) {
     mode: mode === PROD ? "production" : "development",
     entry: {
       app: entryFor(mode, "/src/main/scripts/index.tsx"),
+      socialEmbed: entryFor(mode, "/src/main/scripts/socialEmbed.tsx"),
     },
     output: {
       filename: "[name].bundle.js",
@@ -165,10 +162,7 @@ function webpackCfg(mode) {
       rules: [
         {
           test: /\.tsx?$/,
-          exclude: [
-            /node_modules/,
-            __dirname + "/src/main/scripts/utils/drawVideoFact.ts",
-          ],
+          exclude: [/node_modules/],
           use:
             mode === PROD
               ? [{ loader: "awesome-typescript-loader" }]
