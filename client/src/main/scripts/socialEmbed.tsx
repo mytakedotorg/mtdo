@@ -32,9 +32,13 @@ import { socialHeader } from "./common/social/SocialHeader";
   const promiseImage = socialImage(social);
   promiseImage.then(
     (reactRoot) => {
-      ReactDOM.render(reactRoot, document.getElementById("socialembed")!);
-      // this log statement is a signal to puppeteer that we are ready for a screenshot
-      console.log(args);
+      ReactDOM.render(
+        reactRoot,
+        document.getElementById("socialembed")!,
+        () => {
+          console.log(args);
+        }
+      );
     },
     (err) => {
       console.warn(err);
