@@ -33,12 +33,10 @@ function pathToTemplate(): string {
 }
 
 export class RenderQueue {
-  static browserPromise = launch({
-    args: ["--no-sandbox", "--disable-web-security"],
-  });
-
   static async render(socialRison: string): Promise<Buffer> {
-    const browser = await RenderQueue.browserPromise;
+    const browser = await launch({
+      args: ["--no-sandbox", "--disable-web-security"],
+    });
     const page = await browser.newPage();
     await page.setViewport({
       width: 600,
@@ -64,12 +62,8 @@ export class RenderQueue {
       fullPage: true,
     });
     await page.close();
-    return buffer;
-  }
-
-  static async close() {
-    const browser = await RenderQueue.browserPromise;
     await browser.close();
+    return buffer;
   }
 }
 

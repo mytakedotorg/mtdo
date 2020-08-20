@@ -26,7 +26,6 @@ test("show the 13th amendment", async (done) => {
   const buffer = await RenderQueue.render(
     "cut:!(2007.9000244140625,2046.1099853515625),fact:oZVEQzZXVzx3lM_PbszcA35XYBJxEDHwJirpx1c7hhg=,kind:videoCut"
   );
-  await RenderQueue.close();
   expect(buffer).toMatchImageSnapshot({
     failureThreshold: 5,
     failureThresholdType: "percent",
