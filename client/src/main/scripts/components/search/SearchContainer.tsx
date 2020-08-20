@@ -40,13 +40,14 @@ interface VideoPlayerState {
   };
 }
 
+const dateToDivMap: Map<string, HTMLDivElement> = new Map();
+
 const SearchContainer: React.FC<SearchContainerProps> = ({
   mode,
   onModeChange,
   searchResult,
 }) => {
   const { factHits, searchQuery } = searchResult;
-  const dateToDivMap: Map<string, HTMLDivElement> = new Map();
   const [{ isVideoPlaying, videoProps }, setVideoPlayerState] = useState<
     VideoPlayerState
   >({
