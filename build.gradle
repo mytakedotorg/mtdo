@@ -74,6 +74,7 @@ task stage {
 			'.heroku/**',
 			'server/build/libs/server-all.jar',
 			'node/build/dist/**',
+			'node/build/dist-client/**',
 			'node/node',
 			'node/node_modules/**'
 		])

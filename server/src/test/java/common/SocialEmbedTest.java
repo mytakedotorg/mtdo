@@ -19,8 +19,14 @@
  */
 package common;
 
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
+import views.SocialEmbed.socialImage;
 
 public class SocialEmbedTest {
 	@Test
@@ -33,5 +39,13 @@ public class SocialEmbedTest {
 						"<meta name=\"twitter:description\" content=\"TODO\">\n" +
 						"<meta name=\"twitter:image\" content=\"http://localhost:4000/static/social-header/cut:!(2361.449951171875,2378.56005859375),fact:&#x27;1b7OOH2CJQjbBSDkuo2L9MVFp5UKRpaavk4fotdq2Ds=&#x27;,kind:videoCut\">\n" +
 						"<meta name=\"twitter:image:alt\" content=\"\">\n");
+	}
+
+	public static void main(String[] args) throws IOException {
+		String toSave = socialImage.template().renderTest()
+				.replace("\"/assets-dev/", "\"./assets-dev/");
+		Path file = Paths.get(args[0]);
+		Files.createDirectories(file.getParent());
+		Files.write(file, toSave.getBytes(StandardCharsets.UTF_8));
 	}
 }

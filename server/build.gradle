@@ -156,6 +156,16 @@ dependencies {
 	implementation 'com.auth0:java-jwt:3.10.3'
 }
 
+// renders the socialEmbed template to disk for node
+tasks.register('renderSocialTemplate', JavaExec) {
+	dependsOn 'testClasses'
+	classpath = sourceSets.test.runtimeClasspath
+	main = 'common.SocialEmbedTest'
+	args = [
+		file('../node/build/dist-client/socialEmbed.html').absolutePath
+	]
+}
+
 // see common.DevHotReload in an IDE for faster dev
 tasks.register('runDev', JavaExec) {
 	dependsOn 'testClasses'
@@ -171,12 +181,9 @@ tasks.register('runDev', JavaExec) {
 tasks.register('updateSnapshot', Test) {
 	systemProperties(['SET_SNAPSHOTS': 'TRUE'])
 }
-// the tests need the node.mytake.org server in order to get their social headers
-'updateSnapshot:test'.split(':').each { taskName ->
-	tasks.named(taskName) {
-		flywayJooq.neededBy(it)
-		dependsOn(':node:assemble')
-	}
+tasks.named('test') {
+	flywayJooq.neededBy(it)
+	dependsOn(':node:assemble')
 }
 
 /////////////

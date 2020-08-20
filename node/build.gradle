@@ -14,8 +14,14 @@ tasks.register('syncClientJava2Ts', Sync) {
 	into 'src/main/scripts/java2ts'
 }
 
+tasks.register('syncClientScripts', Copy) {
+	dependsOn ':client:gulp_scriptsDev', ':client:gulp_stylesDev'
+	from '../client/src/main/resources/assets-dev'
+	into 'build/dist-client/assets-dev'
+}
+
 tasks.register('beforeCompile') {
-	dependsOn 'syncClientUtils', 'syncClientJava2Ts'
+	dependsOn 'syncClientUtils', 'syncClientJava2Ts', 'syncClientScripts', ':server:renderSocialTemplate'
 }
 
 apply plugin: 'com.diffplug.spotless'
@@ -38,7 +44,6 @@ spotless {
 /////////////////////////////////
 apply plugin: 'org.mytake.gradle.node'
 node {
-	// node 10.x is needed for node-canvas
 	setup.nodeVersion = buildsrc.NvmRc.read(file('../.nvmrc'))
 	setup.npmVersion = 'provided'
 

@@ -32,7 +32,13 @@ import { socialHeader } from "./common/social/SocialHeader";
   const promiseImage = socialImage(social);
   promiseImage.then(
     (reactRoot) => {
-      ReactDOM.render(reactRoot, document.getElementById("socialembed")!);
+      ReactDOM.render(
+        reactRoot,
+        document.getElementById("socialembed")!,
+        () => {
+          console.log(args);
+        }
+      );
     },
     (err) => {
       console.warn(err);
