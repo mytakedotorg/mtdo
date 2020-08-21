@@ -17,8 +17,8 @@
  *
  * You can contact us at team@mytake.org
  */
-import { MatchImageSnapshotOptions } from "jest-image-snapshot";
-
-export const imgDiffCfg: MatchImageSnapshotOptions = {
-  blur: 1,
+export const imgDiffCfg: any = {
+  comparisonMethod: "ssim",
+  failureThreshold: 0.01,
+  failureThresholdType: "percent",
 };
