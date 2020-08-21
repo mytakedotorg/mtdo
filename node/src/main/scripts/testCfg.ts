@@ -17,6 +17,7 @@
  *
  * You can contact us at team@mytake.org
  */
+const underTest = require("./app");
 const request = require("supertest");
 
 export async function expect404(url: string) {
@@ -26,7 +27,12 @@ export async function expect404(url: string) {
     console.warn = (arg: any) => consoleOutput.push(arg.toString());
     const response = await request(underTest).get(url);
     expect(response.statusCode).toBe(404);
-    expect(consoleOutput.join("\n")).toMatchSnapshot();
+    expect(
+      // stop stacktrace before path-dependent stuff comes in
+      consoleOutput
+        .map((line) => line.replace(/at .*\/mytakedotorg/, "/mytakedotorg"))
+        .join("\n")
+    ).toMatchSnapshot();
   } catch (error) {
     throw error;
   } finally {
