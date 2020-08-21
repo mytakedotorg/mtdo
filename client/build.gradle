@@ -136,11 +136,6 @@ tasks.named('processResources') {
 	dependsOn 'gulp_stylesDev', 'gulp_scriptsDev', 'gulp_revProd'
 }
 
-// on Heroku, we can ignore the dev tasks
-if (buildsrc.Env.isHeroku()) {
-	gulp_stylesDev.enabled = false
-	gulp_scriptsDev.enabled = false
-}
 gradle.taskGraph.whenReady { taskGraph ->
 	boolean disableProd = false
 	if (taskGraph.hasTask(':server:runDev')) {
