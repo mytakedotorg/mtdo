@@ -37,33 +37,38 @@ export class RenderQueue {
     const browser = await launch({
       args: ["--no-sandbox", "--disable-web-security"],
     });
-    const page = await browser.newPage();
-    await page.setViewport({
-      width: 600,
-      height: 314, // aspect ratio of 1.91
-      deviceScaleFactor: 2,
-    });
-    await page.goto("file://" + pathToTemplate());
-    await page.evaluate((arg) => {
-      (window as any).render(arg);
-    }, socialRison);
+    try {
+      const page = await browser.newPage();
+      try {
+        await page.setViewport({
+          width: 600,
+          height: 314, // aspect ratio of 1.91
+          deviceScaleFactor: 2,
+        });
+        await page.goto("file://" + pathToTemplate());
+        await page.evaluate((arg) => {
+          (window as any).render(arg);
+        }, socialRison);
 
-    const blocker = new Blocker<string>();
-    page.on("console", (msg) => {
-      blocker.set(msg.text());
-    });
-    const consoleMsg = await blocker.get();
-    if (consoleMsg !== socialRison) {
-      throw `Expected ${socialRison} but was ${consoleMsg}`;
+        const blocker = new Blocker<string>();
+        page.on("console", (msg) => {
+          blocker.set(msg.text());
+        });
+        const consoleMsg = await blocker.get();
+        if (consoleMsg !== socialRison) {
+          throw `Expected ${socialRison} but was ${consoleMsg}`;
+        }
+        return await page.screenshot({
+          encoding: "binary",
+          type: "png",
+          fullPage: true,
+        });
+      } finally {
+        await page.close();
+      }
+    } finally {
+      await browser.close();
     }
-    const buffer = await page.screenshot({
-      encoding: "binary",
-      type: "png",
-      fullPage: true,
-    });
-    await page.close();
-    await browser.close();
-    return buffer;
   }
 }
 

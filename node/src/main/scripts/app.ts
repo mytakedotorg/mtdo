@@ -44,7 +44,7 @@ app.use(`${Routes.PATH_NODE_SOCIAL_IMAGE}:${ARG}`, async (req, res) => {
     const buf = await RenderQueue.render(rison);
     res.contentType("image/png").send(buf);
   } catch (error) {
-    logErrorAndSend404(req, error.toString(), res);
+    logErrorAndSend404(req, error, res);
   }
 });
 

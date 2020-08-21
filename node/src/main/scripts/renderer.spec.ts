@@ -31,6 +31,18 @@ test("render single videoCut", async (done) => {
   done();
 });
 
+test("render bad videoCut", async (done) => {
+  expect.assertions(1);
+  try {
+    await RenderQueue.render(
+      "cut:!(2007.9000244140625,2046.1099853515625),fact:OZVEQzZXVzx3lM_PbszcA35XYBJxEDHwJirpx1c7hhg=,kind:videoCut"
+    );
+  } catch (err) {
+    expect(err.toString()).toMatchSnapshot();
+  }
+  done();
+});
+
 test("render multiple videoCut", async (done) => {
   // search cuba, and grab the first clip from each debate
   const toRender = [

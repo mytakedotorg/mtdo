@@ -20,15 +20,38 @@
 const underTest = require("./app");
 const request = require("supertest");
 const { toMatchImageSnapshot } = require("jest-image-snapshot");
+import { imgDiffCfg } from "./imageSnapshot";
+import { expect404 } from "./expect404";
 
 expect.extend({ toMatchImageSnapshot });
 
-test("headers test videoCut", async (done) => {
+test("videoCut headers", async (done) => {
   const response = await request(underTest).get(
     "/static/social-header/cut:!(2007.9000244140625,2046.1099853515625),fact:oZVEQzZXVzx3lM_PbszcA35XYBJxEDHwJirpx1c7hhg=,kind:videoCut"
   );
   expect(response.statusCode).toBe(200);
   expect(response.type).toBe("text/plain");
   expect(response.text).toMatchSnapshot();
+
+  // change fact to invalid hash, should be clean 404
+  expect404(
+    "/static/social-header/cut:!(2007.9000244140625,2046.1099853515625),fact:OZVEQzZXVzx3lM_PbszcA35XYBJxEDHwJirpx1c7hhg=,kind:videoCut"
+  );
+  done();
+});
+
+test("videoCut image", async (done) => {
+  const response = await request(underTest).get(
+    "/static/social-image/cut:!(2007.9000244140625,2046.1099853515625),fact:oZVEQzZXVzx3lM_PbszcA35XYBJxEDHwJirpx1c7hhg=,kind:videoCut"
+  );
+  expect(response.statusCode).toBe(200);
+  expect(response.type).toBe("image/png");
+  expect(response.body).toMatchImageSnapshot(imgDiffCfg);
+
+  // change fact to invalid hash, should be clean 404
+  expect404(
+    "/static/social-image/cut:!(2007.9000244140625,2046.1099853515625),fact:OZVEQzZXVzx3lM_PbszcA35XYBJxEDHwJirpx1c7hhg=,kind:videoCut"
+  );
+
   done();
 });
