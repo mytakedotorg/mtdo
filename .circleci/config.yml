@@ -43,3 +43,5 @@ jobs:
           path: server/build/test-results/test
       - store_test_results:
           path: node/build/test-results/jest
+      - store_artifacts:
+          path: node/src/main/scripts/__image_snapshots__/__diff_output__/
