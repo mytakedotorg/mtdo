@@ -19,6 +19,9 @@
  */
 export const imgDiffCfg: any = {
   comparisonMethod: "ssim",
+  customDiffConfig: {
+    ssim: "fast",
+  },
   failureThreshold: 0.01,
   failureThresholdType: "percent",
 };
