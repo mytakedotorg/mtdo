@@ -59,30 +59,12 @@ public class Profile implements Jooby.Module {
 			return this == edit || this == drafts;
 		}
 
-		private String url(AccountRecord account) {
+		public String url(AccountRecord account) {
 			if (this == published) {
 				return "/" + account.getUsername();
 			} else {
 				return "/" + account.getUsername() + "?" + Routes.PROFILE_TAB + "=" + name();
 			}
-		}
-
-		/** Renders the entire nav header, assuming that this Mode is active and the account is the given account. */
-		public String render(AccountRecord account, boolean loggedIn) {
-			StringBuilder builder = new StringBuilder();
-			for (Mode mode : Mode.values()) {
-				if (mode.isHidden() || mode.requiresLogin() && !loggedIn) {
-					continue;
-				}
-				builder.append("<li class=\"tab-nav__list-item\"><a href=\"");
-				builder.append(mode.url(account));
-				builder.append("\" class=\"tab-nav__link tab-nav__link--");
-				builder.append(mode == this ? "active" : "inactive");
-				builder.append("\">");
-				builder.append(mode.name());
-				builder.append("</a></li>");
-			}
-			return builder.toString();
 		}
 	}
 

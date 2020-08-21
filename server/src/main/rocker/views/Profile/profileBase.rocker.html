@@ -47,7 +47,11 @@
 		<div class="profile__nav">
 			<div class="tab-nav">
 				<ul class="tab-nav__list">
-			@raw(activeMode.render(account, isLoggedIn))
+					@for (Mode mode : Mode.values()) {
+						@if (!mode.isHidden() && (isLoggedIn || !mode.requiresLogin())) {
+							<li class="tab-nav__list-item"><a href="@mode.url(account)" class="tab-nav__link tab-nav__link--@(mode == activeMode ? "active" : "inactive")">@mode.name()</a></li>
+						}
+					}
 				</ul>
 			</div>
 		</div>
