@@ -6,7 +6,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: nedtwigg/testrunner:1.2.0
+      - image: nedtwigg/testrunner:1.3.1
       - image: circleci/postgres:10.3-alpine-ram
     working_directory: ~/mytakedotorg
     environment:
@@ -43,3 +43,5 @@ jobs:
           path: server/build/test-results/test
       - store_test_results:
           path: node/build/test-results/jest
+      - store_artifacts:
+          path: node/src/main/scripts/__image_snapshots__/__diff_output__/

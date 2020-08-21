@@ -41,10 +41,10 @@ const ARG = "arg";
 app.use(`${Routes.PATH_NODE_SOCIAL_IMAGE}:${ARG}`, async (req, res) => {
   try {
     const rison = req.params[ARG];
-    const buf = RenderQueue.render(rison);
+    const buf = await RenderQueue.render(rison);
     res.contentType("image/png").send(buf);
   } catch (error) {
-    logErrorAndSend404(req, error.toString(), res);
+    logErrorAndSend404(req, error, res);
   }
 });
 
@@ -65,7 +65,7 @@ function logErrorAndSend404(req: Request, error: any, res: Response) {
   console.warn("#####################");
   console.warn(req.originalUrl);
   console.warn(error.stack);
-  res.status(404).send("Not found");
+  res.status(404).end();
 }
 
 declare global {
