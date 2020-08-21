@@ -18,9 +18,8 @@
  * You can contact us at team@mytake.org
  */
 export const imgDiffCfg: any = {
-  comparisonMethod: "ssim",
   customDiffConfig: {
-    ssim: "fast",
+    threshold: 0.3,
   },
   failureThreshold: 0.01,
   failureThresholdType: "percent",
