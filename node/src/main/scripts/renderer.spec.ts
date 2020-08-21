@@ -19,7 +19,7 @@
  */
 import { RenderQueue } from "./renderer";
 import { toMatchImageSnapshot } from "jest-image-snapshot";
-import { imgDiffCfg } from "./imageSnapshot";
+import { imgDiffCfg } from "./testCfg";
 
 expect.extend({ toMatchImageSnapshot });
 

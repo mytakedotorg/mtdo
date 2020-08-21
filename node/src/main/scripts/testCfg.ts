@@ -17,7 +17,6 @@
  *
  * You can contact us at team@mytake.org
  */
-const underTest = require("./app");
 const request = require("supertest");
 
 export async function expect404(url: string) {
@@ -34,3 +33,14 @@ export async function expect404(url: string) {
     console.warn = originalWarn;
   }
 }
+
+export const imgDiffCfg: any = {
+  customDiffConfig: {
+    threshold: 0.3,
+  },
+  failureThreshold: 0.1,
+  // 10% error is a lot!  But text has slightly
+  // different widths on mac vs linux, so very
+  // different
+  failureThresholdType: "percent",
+};

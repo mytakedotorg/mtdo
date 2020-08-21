@@ -20,8 +20,7 @@
 const underTest = require("./app");
 const request = require("supertest");
 const { toMatchImageSnapshot } = require("jest-image-snapshot");
-import { imgDiffCfg } from "./imageSnapshot";
-import { expect404 } from "./expect404";
+import { expect404, imgDiffCfg } from "./testCfg";
 
 expect.extend({ toMatchImageSnapshot });
 
