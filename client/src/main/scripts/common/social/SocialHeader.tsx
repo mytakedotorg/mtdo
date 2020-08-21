@@ -23,6 +23,7 @@ import { getCut } from "../../common/video";
 import { FT } from "../../java2ts/FT";
 import { Routes } from "../../java2ts/Routes";
 import { FactUncut, Social, TextCut, VideoCut } from "../social/social";
+import { HeaderTags } from "./SocialHeaderTemplate";
 
 export async function socialHeader(
   social: Social,
@@ -56,10 +57,11 @@ function headerFactUncut(
   fact: FT.DocumentFactContent | FT.VideoFactContent
 ): React.ReactElement {
   return (
-    <Twitter
+    <HeaderTags
+      url={`https://mytake.org/foundation/${socialRison}`}
+      rison={socialRison}
       title={fact.fact.title}
       desc={"TODO"}
-      image={Routes.URL_NODE_SOCIAL_IMAGE + socialRison + ".png"}
       imageAlt={""}
     />
   );
@@ -71,10 +73,11 @@ function headerTextCut(
   fact: FT.DocumentFactContent
 ): React.ReactElement {
   return (
-    <Twitter
+    <HeaderTags
+      url={`https://mytake.org/foundation/${socialRison}`}
+      rison={socialRison}
       title={fact.fact.title}
       desc={"TODO"}
-      image={Routes.URL_NODE_SOCIAL_IMAGE + socialRison + ".png"}
       imageAlt={""}
     />
   );
@@ -87,40 +90,12 @@ function headerVideoCut(
 ): React.ReactElement {
   const [speaker, said] = getCut(fact, social.cut);
   return (
-    <Twitter
+    <HeaderTags
+      url={`https://mytake.org/foundation/${socialRison}`}
+      rison={socialRison}
       title={`${speaker.fullName} in ${fact.fact.primaryDate.slice(0, 4)}`}
       desc={fact.fact.title}
-      image={Routes.URL_NODE_SOCIAL_IMAGE + socialRison + ".png"}
       imageAlt={said}
     />
   );
 }
-
-// https://developer.twitter.com/en/docs/twitter-for-websites/cards/overview/summary-card-with-large-image
-interface TwitterProps {
-  /** Needs to start with @ */
-  creator?: string;
-  title: string;
-  /** A description that concisely summarizes the content as appropriate for presentation within a Tweet. You should not re-use the title as the description or use this field to describe the general services provided by the website. Platform specific behaviors:
-        iOS, Android: Not displayed
-        Web: Truncated to three lines in timeline and expanded Tweet */
-  desc: string;
-  image: string;
-  /** Max 420 characters. */
-  imageAlt: string;
-}
-
-// const Twitter: React.FC = () => <h1>Hello</h1>;
-const Twitter: React.FC<TwitterProps> = (props) => {
-  return (
-    <header>
-      <meta name="twitter:card" content="summary_large_image" />
-      <meta name="twitter:site" content="@mytakedotorg" />
-      {props.creator && <meta name="twitter:creator" content={props.creator} />}
-      <meta name="twitter:title" content={props.title} />
-      <meta name="twitter:description" content={props.desc} />
-      <meta name="twitter:image" content={props.image} />
-      <meta name="twitter:image:alt" content={props.imageAlt} />
-    </header>
-  );
-};
