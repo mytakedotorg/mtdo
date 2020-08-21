@@ -59,7 +59,7 @@ function headerFactUncut(
     <Twitter
       title={fact.fact.title}
       desc={"TODO"}
-      image={Routes.URL_NODE_SOCIAL_IMAGE + socialRison}
+      image={Routes.URL_NODE_SOCIAL_IMAGE + socialRison + ".png"}
       imageAlt={""}
     />
   );
@@ -74,7 +74,7 @@ function headerTextCut(
     <Twitter
       title={fact.fact.title}
       desc={"TODO"}
-      image={Routes.URL_NODE_SOCIAL_IMAGE + socialRison}
+      image={Routes.URL_NODE_SOCIAL_IMAGE + socialRison + ".png"}
       imageAlt={""}
     />
   );
@@ -90,7 +90,7 @@ function headerVideoCut(
     <Twitter
       title={`${speaker.fullName} in ${fact.fact.primaryDate.slice(0, 4)}`}
       desc={fact.fact.title}
-      image={Routes.URL_NODE_SOCIAL_IMAGE + socialRison}
+      image={Routes.URL_NODE_SOCIAL_IMAGE + socialRison + ".png"}
       imageAlt={said}
     />
   );

@@ -41,7 +41,7 @@ test("videoCut headers", async (done) => {
 
 test("videoCut image", async (done) => {
   const response = await request(underTest).get(
-    "/static/social-image/cut:!(2007.9000244140625,2046.1099853515625),fact:oZVEQzZXVzx3lM_PbszcA35XYBJxEDHwJirpx1c7hhg=,kind:videoCut"
+    "/static/social-image/cut:!(2007.9000244140625,2046.1099853515625),fact:oZVEQzZXVzx3lM_PbszcA35XYBJxEDHwJirpx1c7hhg=,kind:videoCut.png"
   );
   expect(response.statusCode).toBe(200);
   expect(response.type).toBe("image/png");
@@ -49,7 +49,7 @@ test("videoCut image", async (done) => {
 
   // change fact to invalid hash, should be clean 404
   expect404(
-    "/static/social-image/cut:!(2007.9000244140625,2046.1099853515625),fact:OZVEQzZXVzx3lM_PbszcA35XYBJxEDHwJirpx1c7hhg=,kind:videoCut"
+    "/static/social-image/cut:!(2007.9000244140625,2046.1099853515625),fact:OZVEQzZXVzx3lM_PbszcA35XYBJxEDHwJirpx1c7hhg=,kind:videoCut.png"
   );
 
   done();

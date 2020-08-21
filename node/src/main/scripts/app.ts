@@ -40,7 +40,8 @@ if (app.get("env") === "production") {
 const ARG = "arg";
 app.use(`${Routes.PATH_NODE_SOCIAL_IMAGE}:${ARG}`, async (req, res) => {
   try {
-    const rison = req.params[ARG];
+    const risonPng = req.params[ARG];
+    const rison = risonPng.slice(0, -".png".length);
     const buf = await RenderQueue.render(rison);
     res.contentType("image/png").send(buf);
   } catch (error) {
