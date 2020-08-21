@@ -38,7 +38,7 @@ test("render bad videoCut", async (done) => {
       "cut:!(2007.9000244140625,2046.1099853515625),fact:OZVEQzZXVzx3lM_PbszcA35XYBJxEDHwJirpx1c7hhg=,kind:videoCut"
     );
   } catch (err) {
-    expect(err.toString()).toMatchSnapshot();
+    expect(err).toMatchSnapshot();
   }
   done();
 });

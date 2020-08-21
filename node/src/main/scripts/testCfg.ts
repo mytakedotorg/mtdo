@@ -20,11 +20,11 @@
 const underTest = require("./app");
 const request = require("supertest");
 
-export async function expect404(url: string) {
+export async function expect404(url: string, done: jest.DoneCallback) {
   const originalWarn = console.warn;
   try {
     const consoleOutput: string[] = [];
-    console.warn = (arg: any) => consoleOutput.push(arg.toString());
+    console.warn = (arg: any) => consoleOutput.push(toStringSafe(arg));
     const response = await request(underTest).get(url);
     expect(response.statusCode).toBe(404);
     expect(
@@ -33,11 +33,16 @@ export async function expect404(url: string) {
         .map((line) => line.replace(/at .*\/mytakedotorg/, "/mytakedotorg"))
         .join("\n")
     ).toMatchSnapshot();
+    done();
   } catch (error) {
-    throw error;
+    done.fail(error);
   } finally {
     console.warn = originalWarn;
   }
+}
+
+function toStringSafe(arg: any): string {
+  return "" + arg;
 }
 
 export const imgDiffCfg: any = {
