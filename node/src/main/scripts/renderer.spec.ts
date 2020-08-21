@@ -19,6 +19,7 @@
  */
 import { RenderQueue } from "./renderer";
 import { toMatchImageSnapshot } from "jest-image-snapshot";
+import { imgDiffCfg } from "./imageSnapshot";
 
 expect.extend({ toMatchImageSnapshot });
 
@@ -26,7 +27,7 @@ test("render single videoCut", async (done) => {
   const buffer = await RenderQueue.render(
     "cut:!(2007.9000244140625,2046.1099853515625),fact:oZVEQzZXVzx3lM_PbszcA35XYBJxEDHwJirpx1c7hhg=,kind:videoCut"
   );
-  expect(buffer).toMatchImageSnapshot();
+  expect(buffer).toMatchImageSnapshot(imgDiffCfg);
   done();
 });
 
@@ -44,7 +45,7 @@ test("render multiple videoCut", async (done) => {
   const promises = toRender.map((rison) => RenderQueue.render(rison));
   const buffers = await Promise.all(promises);
   for (let buffer of buffers) {
-    expect(buffer).toMatchImageSnapshot();
+    expect(buffer).toMatchImageSnapshot(imgDiffCfg);
   }
   done();
 });
