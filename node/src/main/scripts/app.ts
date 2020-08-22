@@ -24,7 +24,6 @@ import { decodeSocial } from "./common/social/social";
 import { socialHeader } from "./common/social/SocialHeader";
 import { Routes } from "./java2ts/Routes";
 // Require routes
-import { generateImage } from "./controllers/images";
 import { RenderQueue } from "./renderer";
 require("source-map-support").install();
 const logger = require("morgan");
