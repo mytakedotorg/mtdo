@@ -51,6 +51,16 @@ test("videoCut image", async (done) => {
   done();
 });
 
+test("videoCut image twitter", async (done) => {
+  const response = await request(underTest).get(
+    "/static/social-image-twitter/cut:!(2007.9000244140625,2046.1099853515625),fact:oZVEQzZXVzx3lM_PbszcA35XYBJxEDHwJirpx1c7hhg=,kind:videoCut.png"
+  );
+  expect(response.statusCode).toBe(200);
+  expect(response.type).toBe("image/png");
+  expect(response.body).toMatchImageSnapshot(imgDiffCfg);
+  done();
+});
+
 test("videoCut image 404 invalid hash", async (done) => {
   expect404(
     "/static/social-image/cut:!(2007.9000244140625,2046.1099853515625),fact:OZVEQzZXVzx3lM_PbszcA35XYBJxEDHwJirpx1c7hhg=,kind:videoCut.png",

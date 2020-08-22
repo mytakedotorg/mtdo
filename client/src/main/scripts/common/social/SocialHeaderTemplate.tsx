@@ -43,7 +43,7 @@ export const HeaderTags: React.FC<HeaderTagsProps> = (props) => {
     creator: props.creatorTwitter,
     title: props.title,
     desc: props.desc,
-    image: `https://node.mytake.org${Routes.PATH_NODE_SOCIAL_IMAGE}${props.rison}.png`,
+    image: `https://node.mytake.org${Routes.PATH_NODE_SOCIAL_IMAGE_TWITTER}${props.rison}.png`,
     imageAlt: props.imageAlt,
   };
   return (

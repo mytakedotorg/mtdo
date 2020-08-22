@@ -56,6 +56,7 @@ export class RenderQueue {
     try {
       const page = await browser.newPage();
       try {
+        console.log(arToViewport[ar])
         await page.setViewport(arToViewport[ar]);
         await page.goto("file://" + pathToTemplate());
         await page.evaluate((arg) => {
@@ -73,7 +74,7 @@ export class RenderQueue {
         return await page.screenshot({
           encoding: "binary",
           type: "png",
-          fullPage: true,
+          fullPage: false,
         });
       } finally {
         await page.close();
