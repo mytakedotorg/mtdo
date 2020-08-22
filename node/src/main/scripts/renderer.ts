@@ -17,7 +17,8 @@
  *
  * You can contact us at team@mytake.org
  */
-import { launch } from "puppeteer";
+import { launch, Viewport } from "puppeteer";
+import { DIM_OG, DIM_TWITTER } from "./common/social/SocialHeaderTemplate";
 
 function pathToTemplate(): string {
   const TARGET = "node/build/dist-client/socialEmbed.html";
@@ -32,19 +33,30 @@ function pathToTemplate(): string {
   }
 }
 
+export type AspectRatio = "twitter" | "facebook";
+
+const arToViewport: Record<AspectRatio, Viewport> = {
+  twitter: {
+    width: DIM_TWITTER[0] / 2,
+    height: DIM_TWITTER[1] / 2,
+    deviceScaleFactor: 2,
+  },
+  facebook: {
+    width: DIM_OG[0] / 2,
+    height: DIM_OG[1] / 2,
+    deviceScaleFactor: 2,
+  },
+};
+
 export class RenderQueue {
-  static async render(socialRison: string): Promise<Buffer> {
+  static async render(socialRison: string, ar: AspectRatio): Promise<Buffer> {
     const browser = await launch({
       args: ["--no-sandbox", "--disable-web-security"],
     });
     try {
       const page = await browser.newPage();
       try {
-        await page.setViewport({
-          width: 600,
-          height: 314, // aspect ratio of 1.91
-          deviceScaleFactor: 2,
-        });
+        await page.setViewport(arToViewport[ar]);
         await page.goto("file://" + pathToTemplate());
         await page.evaluate((arg) => {
           (window as any).render(arg);
