@@ -35,6 +35,7 @@ export interface HeaderTagsProps {
 export const HeaderTags: React.FC<HeaderTagsProps> = (props) => {
   const og: OgProps = {
     title: props.title,
+    desc: props.desc,
     url: props.url,
     image: `https://node.mytake.org${Routes.PATH_NODE_SOCIAL_IMAGE}${props.rison}.png`,
     imageAlt: props.imageAlt,
@@ -49,7 +50,8 @@ export const HeaderTags: React.FC<HeaderTagsProps> = (props) => {
   return (
     <header>
       <meta property="og:title" content={og.title} />
-      <meta property="og:type" content="website" />
+      <meta property="og:description" content={og.desc} />
+      <meta property="og:type" content="article" />
       <meta property="og:url" content={og.url} />
       <meta property="og:image" content={og.image} />
       <meta property="og:image:secure_url" content={og.image} />
@@ -71,6 +73,7 @@ export const HeaderTags: React.FC<HeaderTagsProps> = (props) => {
 // https://ogp.me/
 interface OgProps {
   title: string;
+  desc: string;
   url: string;
   image: string;
   imageAlt: string;
