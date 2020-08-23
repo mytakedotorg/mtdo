@@ -34,18 +34,22 @@ export interface HeaderTagsProps {
 
 export const HeaderTags: React.FC<HeaderTagsProps> = (props) => {
   const og: OgProps = {
-    title: props.title,
-    desc: props.desc,
+    /** 30-60, max of 90 */
+    title: _ellipsify(props.title, 90),
+    /** 55-200, max of 300 */
+    desc: _ellipsify(props.desc, 300),
     url: props.url,
     image: `https://node.mytake.org${Routes.PATH_NODE_SOCIAL_IMAGE}${props.rison}.png`,
-    imageAlt: props.imageAlt,
+    imageAlt: _ellipsify(props.imageAlt, 420),
   };
   const twit: TwitterProps = {
     creator: props.creatorTwitter,
-    title: props.title,
-    desc: props.desc,
+    /** 30-60, max of 70 */
+    title: _ellipsify(props.title, 70),
+    /** 55-200 */
+    desc: _ellipsify(props.desc, 300),
     image: `https://node.mytake.org${Routes.PATH_NODE_SOCIAL_IMAGE_TWITTER}${props.rison}.png`,
-    imageAlt: props.imageAlt,
+    imageAlt: _ellipsify(props.imageAlt, 420),
   };
   return (
     <header>
@@ -91,4 +95,13 @@ interface TwitterProps {
   image: string;
   /** Max 420 characters. */
   imageAlt: string;
+}
+
+export function _ellipsify(arg: string, maxChars: number) {
+  if (arg.length <= maxChars) {
+    return arg;
+  } else {
+    const lastSpace = arg.lastIndexOf(" ", maxChars - 3);
+    return arg.slice(0, lastSpace) + "...";
+  }
 }
