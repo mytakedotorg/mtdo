@@ -25,7 +25,8 @@ expect.extend({ toMatchImageSnapshot });
 
 test("render single videoCut", async (done) => {
   const buffer = await RenderQueue.render(
-    "cut:!(2007.9000244140625,2046.1099853515625),fact:oZVEQzZXVzx3lM_PbszcA35XYBJxEDHwJirpx1c7hhg=,kind:videoCut"
+    "cut:!(2007.9000244140625,2046.1099853515625),fact:oZVEQzZXVzx3lM_PbszcA35XYBJxEDHwJirpx1c7hhg=,kind:videoCut",
+    "facebook"
   );
   expect(buffer).toMatchImageSnapshot(imgDiffCfg);
   done();
@@ -35,10 +36,11 @@ test("render bad videoCut", async (done) => {
   expect.assertions(1);
   try {
     await RenderQueue.render(
-      "cut:!(2007.9000244140625,2046.1099853515625),fact:OZVEQzZXVzx3lM_PbszcA35XYBJxEDHwJirpx1c7hhg=,kind:videoCut"
+      "cut:!(2007.9000244140625,2046.1099853515625),fact:OZVEQzZXVzx3lM_PbszcA35XYBJxEDHwJirpx1c7hhg=,kind:videoCut",
+      "facebook"
     );
   } catch (err) {
-    expect(err.toString()).toMatchSnapshot();
+    expect(err).toMatchSnapshot();
   }
   done();
 });
@@ -54,10 +56,16 @@ test("render multiple videoCut", async (done) => {
     "cut:!(2409.35009765625,2416.639892578125),fact:KIrlje7ZKQM8ujNt-ikGEW_goD_c3Yz1zWwMsKGsipk=,kind:videoCut",
     "cut:!(80.46900177001953,113.04000091552734),fact:HTRxrXaUzuW1NNhfUVCi9Gwl_VZWzSAudlXjqny6udM=,kind:videoCut",
   ];
-  const promises = toRender.map((rison) => RenderQueue.render(rison));
+  const promises = toRender.map((rison) =>
+    RenderQueue.render(rison, "facebook")
+  );
   const buffers = await Promise.all(promises);
   for (let buffer of buffers) {
     expect(buffer).toMatchImageSnapshot(imgDiffCfg);
   }
   done();
+});
+
+afterAll(() => {
+  RenderQueue.shutdown();
 });

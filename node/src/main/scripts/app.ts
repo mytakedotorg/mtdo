@@ -24,8 +24,7 @@ import { decodeSocial } from "./common/social/social";
 import { socialHeader } from "./common/social/SocialHeader";
 import { Routes } from "./java2ts/Routes";
 // Require routes
-import { generateImage } from "./controllers/images";
-import { RenderQueue } from "./renderer";
+import { AspectRatio, RenderQueue } from "./renderer";
 require("source-map-support").install();
 const logger = require("morgan");
 const app = express();
@@ -38,15 +37,25 @@ if (app.get("env") === "production") {
 }
 
 const ARG = "arg";
-app.use(`${Routes.PATH_NODE_SOCIAL_IMAGE}:${ARG}`, async (req, res) => {
-  try {
-    const rison = req.params[ARG];
-    const buf = await RenderQueue.render(rison);
-    res.contentType("image/png").send(buf);
-  } catch (error) {
-    logErrorAndSend404(req, error, res);
-  }
-});
+const DOT_PNG = ".png";
+
+function renderHandler(ar: AspectRatio): express.Handler {
+  return async (req, res) => {
+    try {
+      const risonPng = req.params[ARG];
+      const rison = risonPng.slice(0, -DOT_PNG.length);
+      const buf = await RenderQueue.render(rison, ar);
+      res.contentType("image/png").send(buf);
+    } catch (error) {
+      logErrorAndSend404(req, error, res);
+    }
+  };
+}
+app.use(`${Routes.PATH_NODE_SOCIAL_IMAGE}:${ARG}`, renderHandler("facebook"));
+app.use(
+  `${Routes.PATH_NODE_SOCIAL_IMAGE_TWITTER}:${ARG}`,
+  renderHandler("twitter")
+);
 
 app.use(`${Routes.PATH_NODE_SOCIAL_HEADER}:${ARG}`, async (req, res) => {
   try {
