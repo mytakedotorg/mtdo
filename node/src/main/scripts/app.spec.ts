@@ -21,6 +21,7 @@ const underTest = require("./app");
 const request = require("supertest");
 const { toMatchImageSnapshot } = require("jest-image-snapshot");
 import { expect404, imgDiffCfg } from "./testCfg";
+import { RenderQueue } from "./renderer";
 
 expect.extend({ toMatchImageSnapshot });
 
@@ -66,4 +67,8 @@ test("videoCut image 404 invalid hash", async (done) => {
     "/static/social-image/cut:!(2007.9000244140625,2046.1099853515625),fact:OZVEQzZXVzx3lM_PbszcA35XYBJxEDHwJirpx1c7hhg=,kind:videoCut.png",
     done
   );
+});
+
+afterAll(() => {
+  RenderQueue.shutdown();
 });

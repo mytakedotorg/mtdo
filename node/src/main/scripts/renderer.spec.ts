@@ -65,3 +65,7 @@ test("render multiple videoCut", async (done) => {
   }
   done();
 });
+
+afterAll(() => {
+  RenderQueue.shutdown();
+});

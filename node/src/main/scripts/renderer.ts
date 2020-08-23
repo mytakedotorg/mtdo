@@ -119,11 +119,28 @@ export class RenderQueue {
     }
   }
 
-  static instance = new RenderQueue().init();
+  static instance?: Promise<RenderQueue>;
+
+  static warmup(): Promise<RenderQueue> {
+    if (!this.instance) {
+      this.instance = new RenderQueue().init();
+    }
+    return this.instance;
+  }
 
   static async render(socialRison: string, ar: AspectRatio): Promise<Buffer> {
-    const queue = await this.instance;
+    const queue = await this.warmup();
     return queue.renderOne(socialRison, ar);
+  }
+
+  static async shutdown(): Promise<void> {
+    if (this.instance) {
+      const queue = await this.instance;
+      await queue.pool.drain();
+      await queue.pool.clear();
+      await queue.browser.close();
+      this.instance = undefined;
+    }
   }
 }
 
