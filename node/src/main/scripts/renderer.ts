@@ -34,16 +34,6 @@ function pathToTemplate(): string {
   }
 }
 
-/** https://github.com/coopernurse/node-pool#createpool */
-const pagePoolOptions: Options = {
-  max: 4,
-  min: 2,
-  acquireTimeoutMillis: 2_000,
-  evictionRunIntervalMillis: 10_000,
-  numTestsPerEvictionRun: 1,
-  idleTimeoutMillis: 10_000,
-};
-
 export type AspectRatio = "twitter" | "facebook";
 
 const arToViewport: Record<AspectRatio, Viewport> = {
@@ -63,7 +53,12 @@ export class RenderQueue {
   browser: Browser;
   pool: Pool<Page>;
 
-  private async init(): Promise<RenderQueue> {
+  private async init(numTabs = 2): Promise<RenderQueue> {
+    /** https://github.com/coopernurse/node-pool#createpool */
+    const pagePoolOptions: Options = {
+      max: numTabs,
+      min: numTabs,
+    };
     this.browser = await launch({
       args: ["--no-sandbox", "--disable-web-security"],
     });
@@ -121,9 +116,9 @@ export class RenderQueue {
 
   static instance?: Promise<RenderQueue>;
 
-  static warmup(): Promise<RenderQueue> {
+  static warmup(numTabs?: number): Promise<RenderQueue> {
     if (!this.instance) {
-      this.instance = new RenderQueue().init();
+      this.instance = new RenderQueue().init(numTabs);
     }
     return this.instance;
   }
