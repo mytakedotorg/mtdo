@@ -17,7 +17,9 @@
  *
  * You can contact us at team@mytake.org
  */
-import { launch } from "puppeteer";
+import { launch, Viewport, Page, Browser } from "puppeteer";
+import { DIM_OG, DIM_TWITTER } from "./common/social/SocialHeaderTemplate";
+import { createPool, Options, Pool } from "generic-pool";
 
 function pathToTemplate(): string {
   const TARGET = "node/build/dist-client/socialEmbed.html";
@@ -32,42 +34,107 @@ function pathToTemplate(): string {
   }
 }
 
+export type AspectRatio = "twitter" | "facebook";
+
+const arToViewport: Record<AspectRatio, Viewport> = {
+  twitter: {
+    width: DIM_TWITTER[0] / 2,
+    height: DIM_TWITTER[1] / 2,
+    deviceScaleFactor: 2,
+  },
+  facebook: {
+    width: DIM_OG[0] / 2,
+    height: DIM_OG[1] / 2,
+    deviceScaleFactor: 2,
+  },
+};
+
 export class RenderQueue {
-  static async render(socialRison: string): Promise<Buffer> {
-    const browser = await launch({
+  browser: Browser;
+  pool: Pool<Page>;
+
+  private async init(numTabs = 2): Promise<RenderQueue> {
+    /** https://github.com/coopernurse/node-pool#createpool */
+    const pagePoolOptions: Options = {
+      max: numTabs,
+      min: numTabs,
+    };
+    this.browser = await launch({
       args: ["--no-sandbox", "--disable-web-security"],
     });
-    try {
-      const page = await browser.newPage();
-      try {
-        await page.setViewport({
-          width: 600,
-          height: 314, // aspect ratio of 1.91
-          deviceScaleFactor: 2,
-        });
-        await page.goto("file://" + pathToTemplate());
-        await page.evaluate((arg) => {
-          (window as any).render(arg);
-        }, socialRison);
+    this.pool = createPool(
+      {
+        create: async () => {
+          const page = await this.browser.newPage();
+          await page.goto("file://" + pathToTemplate());
+          return page;
+        },
+        destroy: async (page) => {
+          await page.close();
+        },
+      },
+      pagePoolOptions
+    );
+    return this;
+  }
 
-        const blocker = new Blocker<string>();
-        page.on("console", (msg) => {
-          blocker.set(msg.text());
-        });
-        const consoleMsg = await blocker.get();
-        if (consoleMsg !== socialRison) {
-          throw `Expected ${socialRison} but was ${consoleMsg}`;
-        }
-        return await page.screenshot({
-          encoding: "binary",
-          type: "png",
-          fullPage: true,
-        });
-      } finally {
-        await page.close();
+  private async renderOne(
+    socialRison: string,
+    ar: AspectRatio
+  ): Promise<Buffer> {
+    const page = await this.pool.acquire();
+    try {
+      await page.setViewport(arToViewport[ar]);
+
+      const blocker = new Blocker<string>();
+      page.on("console", (msg) => {
+        blocker.set(msg.text());
+      });
+
+      await page.evaluate((arg) => {
+        (window as any).render(arg);
+      }, socialRison);
+
+      const consoleMsg = await blocker.get();
+      if (consoleMsg !== socialRison) {
+        throw `Expected ${socialRison} but was ${consoleMsg}`;
       }
-    } finally {
-      await browser.close();
+      const buffer = await page.screenshot({
+        encoding: "binary",
+        type: "png",
+        fullPage: false,
+      });
+      page.removeAllListeners();
+      this.pool.release(page);
+      return buffer;
+    } catch (err) {
+      page.removeAllListeners();
+      this.pool.destroy(page);
+      throw err;
+    }
+  }
+
+  static instance?: Promise<RenderQueue>;
+
+  static warmup(numTabs?: number): Promise<RenderQueue> {
+    if (!this.instance) {
+      this.instance = new RenderQueue().init(numTabs);
+    }
+    return this.instance;
+  }
+
+  static async render(socialRison: string, ar: AspectRatio): Promise<Buffer> {
+    const queue = await this.warmup();
+    return queue.renderOne(socialRison, ar);
+  }
+
+  static async shutdown(): Promise<void> {
+    if (this.instance) {
+      const queue = await this.instance;
+      await queue.pool.drain();
+      await queue.pool.clear();
+      await queue.browser.close();
+      this.instance = undefined;
     }
   }
 }

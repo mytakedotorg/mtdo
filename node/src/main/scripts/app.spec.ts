@@ -21,6 +21,7 @@ const underTest = require("./app");
 const request = require("supertest");
 const { toMatchImageSnapshot } = require("jest-image-snapshot");
 import { expect404, imgDiffCfg } from "./testCfg";
+import { RenderQueue } from "./renderer";
 
 expect.extend({ toMatchImageSnapshot });
 
@@ -31,26 +32,43 @@ test("videoCut headers", async (done) => {
   expect(response.statusCode).toBe(200);
   expect(response.type).toBe("text/plain");
   expect(response.text).toMatchSnapshot();
-
-  // change fact to invalid hash, should be clean 404
-  expect404(
-    "/static/social-header/cut:!(2007.9000244140625,2046.1099853515625),fact:OZVEQzZXVzx3lM_PbszcA35XYBJxEDHwJirpx1c7hhg=,kind:videoCut"
-  );
   done();
+});
+
+test("videoCut headers 404 invalid hash", async (done) => {
+  expect404(
+    "/static/social-header/cut:!(2007.9000244140625,2046.1099853515625),fact:OZVEQzZXVzx3lM_PbszcA35XYBJxEDHwJirpx1c7hhg=,kind:videoCut",
+    done
+  );
 });
 
 test("videoCut image", async (done) => {
   const response = await request(underTest).get(
-    "/static/social-image/cut:!(2007.9000244140625,2046.1099853515625),fact:oZVEQzZXVzx3lM_PbszcA35XYBJxEDHwJirpx1c7hhg=,kind:videoCut"
+    "/static/social-image/cut:!(2007.9000244140625,2046.1099853515625),fact:oZVEQzZXVzx3lM_PbszcA35XYBJxEDHwJirpx1c7hhg=,kind:videoCut.png"
   );
   expect(response.statusCode).toBe(200);
   expect(response.type).toBe("image/png");
   expect(response.body).toMatchImageSnapshot(imgDiffCfg);
-
-  // change fact to invalid hash, should be clean 404
-  expect404(
-    "/static/social-image/cut:!(2007.9000244140625,2046.1099853515625),fact:OZVEQzZXVzx3lM_PbszcA35XYBJxEDHwJirpx1c7hhg=,kind:videoCut"
-  );
-
   done();
+});
+
+test("videoCut image twitter", async (done) => {
+  const response = await request(underTest).get(
+    "/static/social-image-twitter/cut:!(2007.9000244140625,2046.1099853515625),fact:oZVEQzZXVzx3lM_PbszcA35XYBJxEDHwJirpx1c7hhg=,kind:videoCut.png"
+  );
+  expect(response.statusCode).toBe(200);
+  expect(response.type).toBe("image/png");
+  expect(response.body).toMatchImageSnapshot(imgDiffCfg);
+  done();
+});
+
+test("videoCut image 404 invalid hash", async (done) => {
+  expect404(
+    "/static/social-image/cut:!(2007.9000244140625,2046.1099853515625),fact:OZVEQzZXVzx3lM_PbszcA35XYBJxEDHwJirpx1c7hhg=,kind:videoCut.png",
+    done
+  );
+});
+
+afterAll(() => {
+  RenderQueue.shutdown();
 });

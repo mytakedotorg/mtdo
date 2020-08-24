@@ -20,7 +20,8 @@ See [`DEV_QUICKSTART.md` in the parent folder](../DEV_QUICKSTART.md) for details
 ## Deployment
 
 - This server is deployed to `node.mytake.org` using Heroku, in lockstep with the Java served up at `mytake.org`.
-- A staging instance is always available `mtdo-node-staging.herokuapp.com`, autodeploys from `master`
+- A staging instance is always available `mtdo-node-staging.herokuapp.com`, autodeploys from `master`.
+- You can change the number of puppeteer tabs used in parallel with the `NUM_TABS` environment variable.
 
 ## Social embed requirements
 
