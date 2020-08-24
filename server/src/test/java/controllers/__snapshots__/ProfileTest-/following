@@ -88,6 +88,7 @@
 	</div>
 	<div class="profile__tabs">
 		<ul class="tab-nav__list">
+					<li class="tab-nav__list-item"><a href="/samples?tab=profile" class="tab-nav__link tab-nav__link--inactive">profile</a></li>
 					<li class="tab-nav__list-item"><a href="/samples?tab=bookmarks" class="tab-nav__link tab-nav__link--inactive">bookmarks</a></li>
 					<li class="tab-nav__list-item"><a href="/samples?tab=followers" class="tab-nav__link tab-nav__link--inactive">followers</a></li>
 					<li class="tab-nav__list-item"><a href="/samples?tab=following" class="tab-nav__link tab-nav__link--active">following</a></li>
