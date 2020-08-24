@@ -34,15 +34,8 @@ const VideoResultsLoader: React.FC<VideoResultsLoaderProps> = (props) => {
   const [mode, setMode] = useState<SearchMode>(SearchMode.BeforeAndAfter);
 
   const handleModeChange = (newMode: SearchMode) => {
-    if (
-      newMode === SearchMode.Containing ||
-      newMode === SearchMode.BeforeAndAfter
-    ) {
-      if (newMode !== mode) {
-        setMode(newMode);
-      }
-    } else {
-      throw "VideoResults: Unknown radio button selection";
+    if (newMode !== mode) {
+      setMode(newMode);
     }
   };
 

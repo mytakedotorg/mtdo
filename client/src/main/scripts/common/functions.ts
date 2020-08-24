@@ -100,3 +100,14 @@ export function abbreviate(inStr: string, maxLength: number): string {
     lastWhiteSpaceIndex === -1 ? maxLength : lastWhiteSpaceIndex;
   return inStr.substring(0, inStrEndIndex) + "...";
 }
+
+// https://stackoverflow.com/a/901144
+export function getQueryParameterByName(name: string, url?: string) {
+  if (!url) url = window.location.href;
+  name = name.replace(/[\[\]]/g, '\\$&');
+  var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+      results = regex.exec(url);
+  if (!results) return null;
+  if (!results[2]) return '';
+  return decodeURIComponent(results[2].replace(/\+/g, ' '));
+}

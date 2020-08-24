@@ -33,6 +33,9 @@ import VideoResultsLoader from "./components/search/VideoResultsLoader";
 import SearchBar from "./components/SearchBar";
 import UserNav from "./components/UserNav";
 import { LoginCookie } from "./java2ts/LoginCookie";
+import { Routes } from "./java2ts/Routes";
+import Bookmarks from "./components/bookmarks/Bookmarks";
+import { getQueryParameterByName } from "./common/functions";
 
 windowUtils.init();
 
@@ -139,6 +142,17 @@ if (userNavContainer) {
   throw "Couldn't find div#usernav";
 }
 
+if (isBookmarksTab()) {
+  const bookmarksContainer = document.getElementById("bookmarks");
+  ReactDOM.render(
+    <Bookmarks />,
+    bookmarksContainer
+  );
+}
 function isSearchPage(page?: MtdoArgs): page is SearchArgs {
   return (page as SearchArgs)?.type === "search";
+}
+
+function isBookmarksTab(): boolean {
+  return getQueryParameterByName(Routes.PROFILE_TAB) === Routes.PROFILE_TAB_BOOKMARKS;
 }
