@@ -1,10 +1,11 @@
 {
-    "files.exclude": {
-        "**/.gradle": true,
-        "**/.jsweet": true,
-        "**/.settings": true,
-        "**/node_modules": true,
-        "**/bin": true,
-        "**/build": true
-    }
+  "files.exclude": {
+    "**/.gradle": true,
+    "**/.jsweet": true,
+    "**/.settings": true,
+    "**/node_modules": true,
+    "**/bin": true,
+    "**/build": true
+  },
+  "typescript.tsdk": "./client/node_modules/typescript/lib"
 }
