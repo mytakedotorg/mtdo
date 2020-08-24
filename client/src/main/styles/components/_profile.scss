@@ -1,93 +1,67 @@
 $usercard-width: 200px;
 .profile {
-  margin-top: $content-margin;
-  margin-left: auto;
-  margin-right: auto;
-  width: $column-width--lg;
+  width: $column-width - 32px;
   max-width: 100%;
-  @include clearfix;
+  margin: auto;
+  @media screen and (max-width: 768px - 1) {
+    padding-left: 4px;
+    padding-right: 4px;
+  }
 }
 .profile__usercard {
   display: flex;
-  width: $column-width;
-  max-width: 100%;
-  margin: auto;
-  min-height: 175px;
-  @media #{$mq-large} {
-    display: block;
-    width: $usercard-width;
-    float: left;
-  }
+  margin-top: $content-margin;
 }
 .profile__image-container {
-  float: left;
   width: 100px;
-  margin-left: $page-margin-mobile;
-  margin-top: $content-margin;
-  @media #{$mq-medium} {
-    width: 200px;
-  }
-  @media #{$mq-large} {
-    width: 100%;
-  }
+  margin-right: 16px
 }
 .profile__image {
   max-width: 100%;
   height: auto;
+  margin-top: 4px;
+  margin-bottom: -2px;
 }
 .profile__info {
   flex: 1;
-  margin-left: $content-margin;
-  margin-right: $page-margin-mobile;
-  @media #{$mq-large} {
-    float: left;
-  }
-}
-.profile__text--name {
-  @include heading2;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 .profile__text--username {
   @include heading2--no-lh;
-  line-height: 1rem;
+  line-height: 1em;
+  margin-top: 0;
+  margin-bottom: 0;
 }
 .profile__text--bio {
   @include body;
+  margin-top: 4px;
 }
 .profile__text--small {
   @include body--small;
-  line-height: 1.2rem;
+  line-height: 1.4em;
+  margin: 0;
 }
 .profile__tabs {
-  max-width: 100%;
-  @media #{$mq-large} {
-    width: $column-width--lg - $usercard-width;
-    float: left;
-  }
+  margin-top: 16px;
 }
-.tab-nav {
-  @include content-column;
-  margin-top: $content-margin;
+.profile__tab-content {
+  margin-top: 16px;
 }
 .tab-nav__list {
   list-style: none;
   padding: 0;
   margin: 0;
+  display: flex;
+  justify-content: flex-start;
 }
 .tab-nav__list-item {
-  display: inline-block;
-  height: $nav-height - 5px;
-  line-height: $nav-height - 5px;
-  margin-left: $page-margin-mobile;
-  margin-right: $page-margin-mobile;
+  height: 20px;
+  margin-right: 16px;
   padding-bottom: 2.5px;
   padding-top: 2.5px;
   background-color: palette(profile, tab-background);
-  @media #{$mq-small} {
-    margin-right: $content-margin;
-  }
-  @media #{$mq-medium} {
-    margin-left: $content-margin;
-  }
 }
 .tab-nav__link {
   text-decoration: none;
@@ -103,10 +77,7 @@ $usercard-width: 200px;
 .tab-nav__link--active {
   border-bottom: 3px solid palette(profile, tab-border--active);
 }
-.tab {
-  @include content-column;
-}
 .tab-title {
   @include heading2;
-  margin-left: $content-margin;
+  margin-top: 0;
 }

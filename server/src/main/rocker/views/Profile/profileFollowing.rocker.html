@@ -28,7 +28,6 @@
 
 @views.Profile.profileBase.template(account, isLoggedIn, Mode.following) -> {
 
-	<div class="tab">
 @if (profiles.isEmpty()) {
 	<h2 class="tab-title">Not following anyone.</h2>
 } else {
@@ -45,6 +44,5 @@
 	}
 	</div>
 }
-</div>
 
 }
