@@ -30,7 +30,7 @@ export async function expect404(url: string, done: jest.DoneCallback) {
     expect(
       // stop stacktrace before path-dependent stuff comes in
       consoleOutput
-        .map((line) => line.replace(/at .*\/mytakedotorg/, "/mytakedotorg"))
+        .map((line) => line.replace(/at .*?\/node\//, "at mytakedotorg/node/"))
         .join("\n")
     ).toMatchSnapshot();
     done();
