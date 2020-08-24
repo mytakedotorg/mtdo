@@ -49,14 +49,14 @@ public class Profile implements Jooby.Module {
 	/** Represents a single mode in the profile page. */
 	public enum Mode {
 		/** The definition order represents the order the tabs will appear in the UI */
-		bookmarks, published, stars, followers, following, edit, drafts;
+		profile, bookmarks, published, stars, followers, following, drafts;
 
 		public boolean isHidden() {
-			return this == published || this == stars || this == edit || this == drafts;
+			return this == published || this == stars || this == drafts;
 		}
 
 		public boolean requiresLogin() {
-			return this == edit || this == drafts;
+			return this == profile || this == drafts;
 		}
 
 		public String url(AccountRecord account) {
@@ -132,7 +132,7 @@ public class Profile implements Jooby.Module {
 							.orderBy(FOLLOW.FOLLOWED_AT.desc())
 							.fetch();
 					return views.Profile.profileFollowing.template(account, isLoggedIn, following);
-				case edit:
+				case profile:
 					return views.Profile.profileTodo.template(account, isLoggedIn, mode);
 				case drafts:
 					return Results.redirect(Routes.DRAFTS);
