@@ -179,6 +179,9 @@ $palettes: (
     cancel-icon: $base-lightest,
     text--dark: $base-darkest,
     icon: $tertiary,
+    button: $base,
+    input-border: $base,
+    button--hover: $base-light
   ),
   anonymous: (
     text: $base-lightest,

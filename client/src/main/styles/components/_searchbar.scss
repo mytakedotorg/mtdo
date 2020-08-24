@@ -28,7 +28,6 @@
   margin: 0;
   padding: 0;
   border-style: solid;
-  border-color: palette(home, searchbar-border);
   border-width: 1px 0 1px 1px;
   border-radius: 5px 0 0 5px;
   padding-left: $content-margin/2;
@@ -36,6 +35,9 @@
   &::-ms-clear {
     display: none;
   }
+}
+.searchbar__input--search {
+  border-color: palette(searchbar, input-border);
 }
 .searchbar__input--mobile {
   border-width: 1px;
@@ -76,9 +78,7 @@ input[type="search"] {
   display: none;
 }
 .searchbar__button {
-  background-color: palette(home, searchbar-button);
   border-style: solid;
-  border-color: palette(home, searchbar-border);
   border-width: 1px;
   border-radius: 0 5px 5px 0;
   display: flex;
@@ -86,20 +86,27 @@ input[type="search"] {
   align-items: center;
   cursor: pointer;
   width: 5rem;
-  &:hover {
-    background-color: palette(home, searchbar-button--hover);
-  }
   svg {
     color: palette(home, searchbar-button-text);
   }
 }
 .searchbar__button--search {
   height: 3.2rem;
+  background-color: palette(searchbar, button);
+  border-color: palette(searchbar, button);
+  &:hover {
+    background-color: palette(searchbar, button--hover);
+  }
 }
 .searchbar__button--mobile {
   width: 100%;
   border-radius: 5px;
   height: 36px;
+  background-color: palette(searchbar, button);
+  border-color: palette(searchbar, button);
+  &:hover {
+    background-color: palette(searchbar, button--hover);
+  }
 }
 .searchbar__text {
   @include typography($sans, 400, 22px, 36px);

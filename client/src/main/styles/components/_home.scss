@@ -29,10 +29,16 @@
 
 .searchbar__input--home {
   line-height: 3.5rem;
+  border-color: palette(home, searchbar-border);
 }
 
 .searchbar__button--home {
   height: 3.7rem;
+  background-color: palette(home, searchbar-button);
+  border-color: palette(home, searchbar-border);
+  &:hover {
+    background-color: palette(home, searchbar-button--hover);
+  }
 }
 
 .searchbar__cancel--home {
