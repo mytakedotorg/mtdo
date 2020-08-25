@@ -20,12 +20,14 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { getUserCookieString, windowUtils } from "./browser";
+import { getQueryParameterByName } from "./common/functions";
 import { TakeDocument } from "./components/BlockEditor";
 import BlockReader from "./components/BlockReader";
 import BlockWriter, {
   InitialBlockWriterState,
   initialState,
 } from "./components/BlockWriter";
+import BookmarksLoader from "./components/bookmarks/BookmarksLoader";
 import { Card } from "./components/FeedList";
 import FoundationView from "./components/FoundationView";
 import Home from "./components/Home";
@@ -34,8 +36,6 @@ import SearchBar from "./components/SearchBar";
 import UserNav from "./components/UserNav";
 import { LoginCookie } from "./java2ts/LoginCookie";
 import { Routes } from "./java2ts/Routes";
-import Bookmarks from "./components/bookmarks/Bookmarks";
-import { getQueryParameterByName } from "./common/functions";
 
 windowUtils.init();
 
@@ -144,15 +144,14 @@ if (userNavContainer) {
 
 if (isBookmarksTab()) {
   const bookmarksContainer = document.getElementById("bookmarks");
-  ReactDOM.render(
-    <Bookmarks />,
-    bookmarksContainer
-  );
+  ReactDOM.render(<BookmarksLoader />, bookmarksContainer);
 }
 function isSearchPage(page?: MtdoArgs): page is SearchArgs {
   return (page as SearchArgs)?.type === "search";
 }
 
 function isBookmarksTab(): boolean {
-  return getQueryParameterByName(Routes.PROFILE_TAB) === Routes.PROFILE_TAB_BOOKMARKS;
+  return (
+    getQueryParameterByName(Routes.PROFILE_TAB) === Routes.PROFILE_TAB_BOOKMARKS
+  );
 }

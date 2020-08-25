@@ -18,13 +18,13 @@
  * You can contact us at team@mytake.org
  */
 import React, { useEffect, useState } from "react";
-import { BookmarksMode, getBookmarks } from "./bookmarks";
+import { BookmarksMode, BookmarksResult, getBookmarks } from "./bookmarks";
 import BookmarksList from "./BookmarksList";
 
 interface BookmarksLoaderProps {}
 
 interface BookmarksLoaderState {
-  bookmarks?: any[];
+  bookmarksResult?: BookmarksResult;
 }
 
 const BookmarksLoader: React.FC<BookmarksLoaderProps> = (props) => {
@@ -39,13 +39,24 @@ const BookmarksLoader: React.FC<BookmarksLoaderProps> = (props) => {
 
   useEffect(() => {
     async function connect() {
-      const searchResult = await getBookmarks(mode);
+      const bookmarksResult = await getBookmarks(mode);
+      setState({
+        bookmarksResult,
+      });
     }
 
     connect();
   }, [mode]);
 
-  return state.bookmarks ? <BookmarksList /> : <BookmarksLoadingView />;
+  return state.bookmarksResult ? (
+    <BookmarksList
+      mode={mode}
+      bookmarksResult={state.bookmarksResult}
+      onModeChange={handleModeChange}
+    />
+  ) : (
+    <BookmarksLoadingView />
+  );
 };
 
 const BookmarksLoadingView: React.FC = () => (

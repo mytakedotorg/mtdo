@@ -18,12 +18,35 @@
  * You can contact us at team@mytake.org
  */
 import React from "react";
+import { FT } from "../../java2ts/FT";
+import { BookmarksMode, BookmarksResult } from "./bookmarks";
+import BookmarksSortBy from "./BookmarksSortBy";
 
-const BookmarksList: React.FC = () => {
+interface BookmarksListProps {
+  mode: BookmarksMode;
+  bookmarksResult: BookmarksResult;
+  onModeChange(mode: BookmarksMode): void;
+}
+const BookmarksList: React.FC<BookmarksListProps> = ({
+  bookmarksResult,
+  onModeChange,
+  mode,
+}) => {
+  const handlePlayClick = (
+    videoFact: FT.VideoFactContent,
+    clipRange: [number, number]
+  ) => {
+    throw "todo";
+  };
   return (
-    <div className="bookmarks">
-      <div className="bookmarks__inner-container">
-        <h2 className="bookmarks__heading">Bookmarks</h2>
+    <div className="results">
+      <div className="results__inner-container">
+        <BookmarksSortBy onChange={onModeChange} selectedOption={mode} />
+        {/* <VideoResultsList
+            dateToDivMap={dateToDivMap}
+            onPlayClick={handlePlayClick}
+            searchResult={searchResult}
+          /> */}
       </div>
     </div>
   );
