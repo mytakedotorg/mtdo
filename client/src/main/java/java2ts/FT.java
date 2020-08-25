@@ -109,12 +109,4 @@ public interface FT {
 		public String innerHTML;
 		public int offset;
 	}
-
-	@jsweet.lang.Interface
-	public class Bookmark {
-		public String fact;
-		public int start;
-		public int end;
-		public Date savedAt;
-	}
 }
