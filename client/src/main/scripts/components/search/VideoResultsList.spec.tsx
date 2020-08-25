@@ -33,8 +33,8 @@ jest.mock("./VideoResult", () => ({
     const { searchHit } = props;
     return (
       <div>
-        VideoResult: {searchHit.videoFact.youtubeId} {searchHit.turn}{" "}
-        {searchHit.hitOffsets}
+        VideoResult: {searchHit.videoFact.youtubeId} {searchHit.videoTurn.turn}{" "}
+        {searchHit.videoTurn.cut}
       </div>
     );
   },

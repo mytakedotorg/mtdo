@@ -111,11 +111,7 @@ function reactElementForPage(args: MtdoArgs): React.SFCElement<any> {
 
 const app = document.getElementById("app");
 if (app) {
-  if (window.mytake) {
-    ReactDOM.render(reactElementForPage(window.mytake), app);
-  } else {
-    throw "window.mytake is undefined";
-  }
+  ReactDOM.render(reactElementForPage(window.mytake!), app);
 }
 
 if (isSearchPage(window.mytake)) {
@@ -132,15 +128,11 @@ if (isSearchPage(window.mytake)) {
 }
 
 const userNavContainer = document.getElementById("usernav");
-if (userNavContainer) {
-  const cookieString = getUserCookieString();
-  let cookie = cookieString
-    ? (JSON.parse(JSON.parse(cookieString)) as LoginCookie)
-    : null;
-  ReactDOM.render(<UserNav cookie={cookie} />, userNavContainer);
-} else {
-  throw "Couldn't find div#usernav";
-}
+const cookieString = getUserCookieString();
+let cookie = cookieString
+  ? (JSON.parse(JSON.parse(cookieString)) as LoginCookie)
+  : null;
+ReactDOM.render(<UserNav cookie={cookie} />, userNavContainer!);
 
 if (isBookmarksTab()) {
   const bookmarksContainer = document.getElementById("bookmarks");

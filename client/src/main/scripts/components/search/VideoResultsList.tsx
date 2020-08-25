@@ -39,7 +39,11 @@ const VideoResultsList: React.FC<VideoResultsListProps> = ({
         const results = f.searchHits.map((h) => {
           return (
             <VideoResult
-              key={getUniqueKey(f.videoFact.youtubeId, h.turn, h.hitOffsets)}
+              key={getUniqueKey(
+                f.videoFact.youtubeId,
+                h.videoTurn.turn,
+                h.videoTurn.cut
+              )}
               onPlayClick={onPlayClick}
               searchHit={h}
             />

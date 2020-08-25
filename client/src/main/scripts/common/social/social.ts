@@ -19,15 +19,13 @@
  */
 const rison = require("rison-node");
 
-/* TODO, for search
 export type VideoTurn = {
-    kind: "videoTurn";
-    fact: string;
-    turn: number;
-    cut: [number, number];
-    bold?: Array<[number, number]>;
+  kind: "videoTurn";
+  fact: string;
+  turn: number;
+  cut: [number, number];
+  bold?: Array<[number, number]>;
 };
-*/
 
 export type VideoCut = {
   cut: [number, number];

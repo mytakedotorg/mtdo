@@ -18,8 +18,9 @@
  * You can contact us at team@mytake.org
  */
 var base64toArrayBuffer = require("base64-arraybuffer");
-import { bsRoundEarly } from "./functions";
 import { FT } from "../java2ts/FT";
+import { bsRoundEarly } from "./functions";
+import { VideoCut, VideoTurn } from "./social/social";
 
 export function decodeVideoFact(
   encoded: FT.VideoFactContentEncoded
@@ -106,6 +107,15 @@ export function getCut(
   fact: FT.VideoFactContent,
   cut: [number, number]
 ): [FT.Speaker, string] {
+  const { text, turn } = getTurnFromCut(fact, cut);
+  const speaker = fact.speakers[fact.turnSpeaker[turn]];
+  return [speaker, text];
+}
+
+function getTurnFromCut(
+  fact: FT.VideoFactContent,
+  cut: [number, number]
+): { turn: number; text: string } {
   const wordStart = bsRoundEarly(fact.wordTime, cut[0]);
   let wordEnd = bsRoundEarly(fact.wordTime, cut[1]) + 1;
   if (fact.wordTime[wordEnd]) {
@@ -115,7 +125,29 @@ export function getCut(
     fact.wordChar[wordStart],
     fact.wordChar[wordEnd] - 1
   );
-  const turn = bsRoundEarly(fact.turnWord, wordStart);
-  const speaker = fact.speakers[fact.turnSpeaker[turn]];
-  return [speaker, text];
+  return {
+    text,
+    turn: bsRoundEarly(fact.turnWord, wordStart),
+  };
+}
+
+export function cutToTurn(
+  { cut, fact }: VideoCut,
+  videoFact: FT.VideoFactContent
+): VideoTurn {
+  const { turn } = getTurnFromCut(videoFact, cut);
+  return {
+    cut,
+    fact,
+    kind: "videoTurn",
+    turn,
+  };
+}
+
+export function turnToCut({ cut, fact }: VideoTurn): VideoCut {
+  return {
+    cut,
+    fact,
+    kind: "videoCut",
+  };
 }

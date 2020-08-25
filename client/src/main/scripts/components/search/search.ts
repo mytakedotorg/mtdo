@@ -19,6 +19,7 @@
  */
 import { Foundation, FoundationFetcher } from "../../common/foundation";
 import { abbreviate, bsRoundEarly, groupBy } from "../../common/functions";
+import { VideoTurn } from "../../common/social/social";
 import { getTurnContent } from "../../common/video";
 import { FT } from "../../java2ts/FT";
 import { Routes } from "../../java2ts/Routes";
@@ -105,7 +106,8 @@ export function _searchImpl(searchWithData: _SearchWithData): SearchResult {
   // Array of SearchHit arrays, grouped by fact
   const hitsPerFact = groupedByFact
     .map((videoResults) => {
-      const videoFact = foundationData.getVideo(videoResults[0].hash);
+      const hash = videoResults[0].hash;
+      const videoFact = foundationData.getVideo(hash);
       // Sort hits by turn
       videoResults.sort((a, b) => a.turn - b.turn);
       return videoResults.flatMap((v) => {
@@ -118,7 +120,13 @@ export function _searchImpl(searchWithData: _SearchWithData): SearchResult {
         };
         const multiHighlights = turnWithResults.expandBy(expandBy[mode]);
         return multiHighlights.map(
-          (m) => new SearchHit(m.highlights, m.cut, v.turn, videoFact, v.hash)
+          (m) =>
+            new SearchHit(m.highlights, videoFact, {
+              kind: "videoTurn",
+              fact: hash,
+              turn: v.turn,
+              cut: m.cut,
+            })
         );
       });
     })
@@ -155,15 +163,14 @@ export class SearchHit {
   // Offsets are relative to the beginning of the turn
   constructor(
     readonly highlightOffsets: Array<[number, number, string]>,
-    readonly hitOffsets: [number, number],
-    readonly turn: number,
     readonly videoFact: FT.VideoFactContent,
-    readonly videoFactHash: string
+    readonly videoTurn: VideoTurn
   ) {}
 
   getSpeaker(): string {
-    const { turn, videoFact } = this;
-    const fullName = videoFact.speakers[videoFact.turnSpeaker[turn]].fullName;
+    const { videoTurn, videoFact } = this;
+    const fullName =
+      videoFact.speakers[videoFact.turnSpeaker[videoTurn.turn]].fullName;
     return fullName.substring(fullName.lastIndexOf(" "));
   }
 
@@ -171,18 +178,13 @@ export class SearchHit {
     if (this.clipRangeCache) {
       return this.clipRangeCache;
     }
-    const { hitOffsets, turn, videoFact } = this;
+    const { videoTurn, videoFact } = this;
+    const { cut, turn } = videoTurn;
     const veryFirstWord = videoFact.turnWord[turn];
     const firstChar = videoFact.wordChar[veryFirstWord];
 
-    const firstWord = bsRoundEarly(
-      videoFact.wordChar,
-      firstChar + hitOffsets[0]
-    );
-    const lastWord = bsRoundEarly(
-      videoFact.wordChar,
-      firstChar + hitOffsets[1]
-    );
+    const firstWord = bsRoundEarly(videoFact.wordChar, firstChar + cut[0]);
+    const lastWord = bsRoundEarly(videoFact.wordChar, firstChar + cut[1]);
 
     const clipStart = videoFact.wordTime[firstWord];
     let clipEnd;
@@ -198,10 +200,11 @@ export class SearchHit {
 
   getContent(maxLength?: number): SeachHitContent[] {
     const searchHitContents: SeachHitContent[] = [];
-    const { turn, videoFact } = this;
+    const { videoTurn, videoFact } = this;
+    const { cut, turn } = videoTurn;
     let turnContent = getTurnContent(turn, videoFact);
-    let contentStartIdx = this.hitOffsets[0];
-    if (maxLength && this.hitOffsets[1] - this.hitOffsets[0] > maxLength) {
+    let contentStartIdx = cut[0];
+    if (maxLength && cut[1] - cut[0] > maxLength) {
       turnContent = abbreviate(turnContent, maxLength + contentStartIdx);
     }
     this.highlightOffsets.forEach((highlight) => {
@@ -226,7 +229,7 @@ export class SearchHit {
     });
     const textAfterAllHighlights = turnContent.substring(
       contentStartIdx,
-      this.hitOffsets[1]
+      cut[1]
     );
     if (textAfterAllHighlights) {
       searchHitContents.push({

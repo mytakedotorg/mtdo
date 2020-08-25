@@ -19,6 +19,7 @@
  */
 import React from "react";
 import renderer from "react-test-renderer";
+import { VideoTurn } from "../../common/social/social";
 import { kennedyNixon } from "../../utils/testUtils";
 import { SearchHit } from "./search";
 import { SearchHitContentProps } from "./SearchHitContent";
@@ -38,12 +39,17 @@ jest.mock("./SearchHitContent", () => ({
 }));
 
 test("VideoResultPreview containing", () => {
+  const videoTurn: VideoTurn = {
+    kind: "videoTurn",
+    fact: "factHash",
+    turn: 0,
+    cut: [14, 239],
+    bold: [[18, 28]],
+  };
   const searchHit = new SearchHit(
     [[18, 28, "television"]],
-    [14, 239],
-    0,
     kennedyNixon,
-    "factHash"
+    videoTurn
   );
   const tree = renderer
     .create(<VideoResult searchHit={searchHit} onPlayClick={jest.fn()} />)
@@ -52,12 +58,17 @@ test("VideoResultPreview containing", () => {
 });
 
 test("VideoResultPreview before and after", () => {
+  const videoTurn: VideoTurn = {
+    kind: "videoTurn",
+    fact: "factHash",
+    turn: 0,
+    cut: [0, 276],
+    bold: [[18, 28]],
+  };
   const searchHit = new SearchHit(
     [[18, 28, "television"]],
-    [0, 276],
-    0,
     kennedyNixon,
-    "factHash"
+    videoTurn
   );
   const tree = renderer
     .create(<VideoResult searchHit={searchHit} onPlayClick={jest.fn()} />)
