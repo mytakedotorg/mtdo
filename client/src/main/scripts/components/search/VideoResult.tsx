@@ -43,7 +43,6 @@ export interface VideoResultProps {
 const VideoResult: React.FC<VideoResultProps> = (props) => {
   const { isBookmarked, onPlayClick, searchHit } = props;
   const { videoFact } = searchHit;
-  const clipRange = searchHit.getClipRange();
   const social = turnToCut(props.searchHit.videoTurn, videoFact);
 
   const contextUrl = `${Routes.FOUNDATION}/${slugify(
@@ -51,7 +50,7 @@ const VideoResult: React.FC<VideoResultProps> = (props) => {
   )}/${encodeSocial(social)}`;
 
   const handlePlayClick = () => {
-    onPlayClick(videoFact, clipRange);
+    onPlayClick(videoFact, social.cut);
   };
 
   const handleBookmarkClick = () => {
@@ -77,9 +76,9 @@ const VideoResult: React.FC<VideoResultProps> = (props) => {
         </div>
         <div className="turn__info-row turn__info-row--short">
           <span className="turn__time">
-            {convertSecondsToTimestamp(clipRange[0]) +
+            {convertSecondsToTimestamp(social.cut[0]) +
               " - " +
-              convertSecondsToTimestamp(clipRange[1])}
+              convertSecondsToTimestamp(social.cut[1])}
           </span>
         </div>
         <div className="turn__info-row">
