@@ -1,0 +1,61 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`BookmarksList date bookmarked 1`] = `
+<div
+  className="results"
+>
+  <div
+    className="results__inner-container"
+  >
+    <BookmarksSortBy
+      onChange={[MockFunction]}
+      selectedOption="DateBookmarked"
+    />
+    <div>
+      BookmarksResultList: 
+      0
+       hits
+    </div>
+  </div>
+</div>
+`;
+
+exports[`BookmarksList date happened 1`] = `
+<div
+  className="results"
+>
+  <div
+    className="results__inner-container"
+  >
+    <BookmarksSortBy
+      onChange={[MockFunction]}
+      selectedOption="DateBookmarked"
+    />
+    <div>
+      BookmarksResultList: 
+      0
+       hits
+    </div>
+  </div>
+</div>
+`;
+
+exports[`BookmarksList no results 1`] = `
+<div
+  className="results"
+>
+  <div
+    className="results__inner-container"
+  >
+    <BookmarksSortBy
+      onChange={[MockFunction]}
+      selectedOption="DateBookmarked"
+    />
+    <div>
+      BookmarksResultList: 
+      0
+       hits
+    </div>
+  </div>
+</div>
+`;

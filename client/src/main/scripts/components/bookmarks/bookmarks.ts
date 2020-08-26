@@ -52,7 +52,7 @@ export async function getBookmarks(
   );
 }
 
-function _bookmarksImpl(
+export function _bookmarksImpl(
   bookmarksWithData: _BookmarksWithData
 ): BookmarksResult {
   const { foundationData, mode, bookmarks } = bookmarksWithData;

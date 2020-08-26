@@ -51,7 +51,7 @@ const BookmarksSortBy: React.FC<BookmarksSortByProps> = ({
         onChange={handleChange}
       >
         {Object.keys(BookmarksMode).map((mode) => (
-          <option value={mode}>
+          <option value={mode} key={mode}>
             {sortOptionName(mode as keyof typeof BookmarksMode)}
           </option>
         ))}
