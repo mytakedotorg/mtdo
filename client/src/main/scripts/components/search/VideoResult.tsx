@@ -44,7 +44,7 @@ const VideoResult: React.FC<VideoResultProps> = (props) => {
   const { isBookmarked, onPlayClick, searchHit } = props;
   const { videoFact } = searchHit;
   const clipRange = searchHit.getClipRange();
-  const social = turnToCut(props.searchHit.videoTurn);
+  const social = turnToCut(props.searchHit.videoTurn, videoFact);
 
   const contextUrl = `${Routes.FOUNDATION}/${slugify(
     videoFact.fact.title

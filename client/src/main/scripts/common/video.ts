@@ -20,7 +20,12 @@
 var base64toArrayBuffer = require("base64-arraybuffer");
 import { FT } from "../java2ts/FT";
 import { bsRoundEarly } from "./functions";
-import { VideoCut, VideoTurn } from "./social/social";
+import {
+  CharOffsetRange,
+  ClipRange,
+  VideoCut,
+  VideoTurn,
+} from "./social/social";
 
 export function decodeVideoFact(
   encoded: FT.VideoFactContentEncoded
@@ -105,16 +110,16 @@ function zeroPad(someNumber: number): string {
  */
 export function getCut(
   fact: FT.VideoFactContent,
-  cut: [number, number]
+  cut: ClipRange
 ): [FT.Speaker, string] {
-  const { text, turn } = getTurnFromCut(fact, cut);
+  const { text, turn } = getTurnFromClipRange(fact, cut);
   const speaker = fact.speakers[fact.turnSpeaker[turn]];
   return [speaker, text];
 }
 
-function getTurnFromCut(
+function getTurnFromClipRange(
   fact: FT.VideoFactContent,
-  cut: [number, number]
+  cut: ClipRange
 ): { turn: number; text: string } {
   const wordStart = bsRoundEarly(fact.wordTime, cut[0]);
   let wordEnd = bsRoundEarly(fact.wordTime, cut[1]) + 1;
@@ -131,23 +136,37 @@ function getTurnFromCut(
   };
 }
 
+function getClipRangeFromTurn(
+  fact: FT.VideoFactContent,
+  cut: CharOffsetRange
+): ClipRange {
+  const wordStart = bsRoundEarly(fact.wordChar, cut[0]);
+  const wordEnd = bsRoundEarly(fact.wordChar, cut[1]) + 1;
+  const clipStart = fact.wordTime[wordStart];
+  const clipEnd = fact.wordTime[wordEnd];
+  return [clipStart, clipEnd];
+}
+
 export function cutToTurn(
-  { cut, fact }: VideoCut,
+  videoCut: VideoCut,
   videoFact: FT.VideoFactContent
 ): VideoTurn {
-  const { turn } = getTurnFromCut(videoFact, cut);
+  const { turn } = getTurnFromClipRange(videoFact, videoCut.cut);
   return {
-    cut,
-    fact,
+    cut: videoCut.cut,
+    fact: videoCut.fact,
     kind: "videoTurn",
     turn,
   };
 }
 
-export function turnToCut({ cut, fact }: VideoTurn): VideoCut {
+export function turnToCut(
+  videoTurn: VideoTurn,
+  videoFact: FT.VideoFactContent
+): VideoCut {
   return {
-    cut,
-    fact,
+    cut: getClipRangeFromTurn(videoFact, videoTurn.cut),
+    fact: videoTurn.fact,
     kind: "videoCut",
   };
 }
