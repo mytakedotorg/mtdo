@@ -20,7 +20,6 @@
 package java2ts;
 
 import def.js.ArrayLike;
-import java.util.Date;
 import java.util.List;
 
 /** Foundation Types. */
