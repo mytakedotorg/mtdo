@@ -35,7 +35,7 @@ const BookmarksResultList: React.FC<BookmarksResultListProps> = ({
 }) => {
   return (
     <>
-      {bookmarksResult.factHits.map((f) => {
+      {bookmarksResult.factHits.map((f, idx) => {
         const results = f.bookmarkHits.map((h) => {
           switch (h.bookmark.content.kind) {
             case "videoCut":
@@ -54,7 +54,7 @@ const BookmarksResultList: React.FC<BookmarksResultListProps> = ({
           }
         });
         return results.length > 0 ? (
-          <div className="results__preview" key={f.hash}>
+          <div className="results__preview" key={idx}>
             <h2 className="results__subheading">
               {f.bookmarkHits[0].fact.fact.title} -{" "}
               {f.bookmarkHits[0].fact.fact.primaryDate}
