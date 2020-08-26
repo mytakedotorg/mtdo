@@ -1,5 +1,247 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`BookmarksResultList 1`] = `null`;
+exports[`BookmarksResultList DateBookmarked 1`] = `
+Array [
+  <div
+    className="results__preview"
+  >
+    <h2
+      className="results__subheading"
+    >
+      Presidential Debate - Clinton, Trump (3 of 3)
+       -
+       
+      2016-10-19
+    </h2>
+    <div>
+      VideoResult: 
+      eXNnggT5fPM
+       
+      38
+       
+      298
+      515
+    </div>
+  </div>,
+  <div
+    className="results__preview"
+  >
+    <h2
+      className="results__subheading"
+    >
+      Presidential Debate - McCain, Obama (2 of 3)
+       -
+       
+      2008-10-07
+    </h2>
+    <div>
+      VideoResult: 
+      57qocCPgp3U
+       
+      38
+       
+      0
+      200
+    </div>
+  </div>,
+  <div
+    className="results__preview"
+  >
+    <h2
+      className="results__subheading"
+    >
+      Presidential Debate - Bush, Clinton, Perot (1 of 3)
+       -
+       
+      1992-10-11
+    </h2>
+    <div>
+      VideoResult: 
+      9Z43XV4T8Bc
+       
+      139
+       
+      1179
+      1357
+    </div>
+    <div>
+      VideoResult: 
+      9Z43XV4T8Bc
+       
+      7
+       
+      413
+      773
+    </div>
+    <div>
+      VideoResult: 
+      9Z43XV4T8Bc
+       
+      5
+       
+      0
+      856
+    </div>
+  </div>,
+  <div
+    className="results__preview"
+  >
+    <h2
+      className="results__subheading"
+    >
+      Presidential Debate - Clinton, Trump (2 of 3)
+       -
+       
+      2016-10-09
+    </h2>
+    <div>
+      VideoResult: 
+      FcDNuWIs2qk
+       
+      147
+       
+      0
+      74
+    </div>
+  </div>,
+  <div
+    className="results__preview"
+  >
+    <h2
+      className="results__subheading"
+    >
+      Presidential Debate - Clinton, Trump (3 of 3)
+       -
+       
+      2016-10-19
+    </h2>
+    <div>
+      VideoResult: 
+      eXNnggT5fPM
+       
+      241
+       
+      27
+      101
+    </div>
+  </div>,
+]
+`;
+
+exports[`BookmarksResultList DateHappened 1`] = `
+Array [
+  <div
+    className="results__preview"
+  >
+    <h2
+      className="results__subheading"
+    >
+      Presidential Debate - Bush, Clinton, Perot (1 of 3)
+       -
+       
+      1992-10-11
+    </h2>
+    <div>
+      VideoResult: 
+      9Z43XV4T8Bc
+       
+      5
+       
+      0
+      856
+    </div>
+    <div>
+      VideoResult: 
+      9Z43XV4T8Bc
+       
+      7
+       
+      413
+      773
+    </div>
+    <div>
+      VideoResult: 
+      9Z43XV4T8Bc
+       
+      139
+       
+      1179
+      1357
+    </div>
+  </div>,
+  <div
+    className="results__preview"
+  >
+    <h2
+      className="results__subheading"
+    >
+      Presidential Debate - McCain, Obama (2 of 3)
+       -
+       
+      2008-10-07
+    </h2>
+    <div>
+      VideoResult: 
+      57qocCPgp3U
+       
+      38
+       
+      0
+      200
+    </div>
+  </div>,
+  <div
+    className="results__preview"
+  >
+    <h2
+      className="results__subheading"
+    >
+      Presidential Debate - Clinton, Trump (3 of 3)
+       -
+       
+      2016-10-19
+    </h2>
+    <div>
+      VideoResult: 
+      eXNnggT5fPM
+       
+      38
+       
+      298
+      515
+    </div>
+    <div>
+      VideoResult: 
+      eXNnggT5fPM
+       
+      241
+       
+      27
+      101
+    </div>
+  </div>,
+  <div
+    className="results__preview"
+  >
+    <h2
+      className="results__subheading"
+    >
+      Presidential Debate - Clinton, Trump (2 of 3)
+       -
+       
+      2016-10-09
+    </h2>
+    <div>
+      VideoResult: 
+      FcDNuWIs2qk
+       
+      147
+       
+      0
+      74
+    </div>
+  </div>,
+]
+`;
 
 exports[`BookmarksResultList no results 1`] = `null`;

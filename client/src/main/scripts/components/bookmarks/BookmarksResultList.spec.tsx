@@ -23,6 +23,7 @@ import { FoundationHarness } from "../../common/foundationTest";
 import { VideoResultProps } from "../shared/VideoResult";
 import { BookmarksMode, _bookmarksImpl, _BookmarksWithData } from "./bookmarks";
 import BookmarksResultList from "./BookmarksResultList";
+import samplebookmarks from "./testData/samplebookmarks.json";
 
 jest.mock("../shared/VideoResult", () => ({
   __esModule: true,
@@ -36,12 +37,29 @@ jest.mock("../shared/VideoResult", () => ({
   },
 }));
 
-test("BookmarksResultList", () => {
+test("BookmarksResultList DateHappened", () => {
   const result = _bookmarksImpl(
     new _BookmarksWithData(
       FoundationHarness.loadAllFromDisk(),
       BookmarksMode.DateHappened,
-      [] // TODO use some data
+      samplebookmarks.bookmarks
+    )
+  );
+
+  const tree = renderer
+    .create(
+      <BookmarksResultList onPlayClick={jest.fn()} bookmarksResult={result} />
+    )
+    .toJSON();
+  expect(tree).toMatchSnapshot();
+});
+
+test("BookmarksResultList DateBookmarked", () => {
+  const result = _bookmarksImpl(
+    new _BookmarksWithData(
+      FoundationHarness.loadAllFromDisk(),
+      BookmarksMode.DateBookmarked,
+      samplebookmarks.bookmarks
     )
   );
 
