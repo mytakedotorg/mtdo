@@ -18,8 +18,8 @@
  * You can contact us at team@mytake.org
  */
 import React from "react";
+import VideoResult, { PlayEvent } from "../shared/VideoResult";
 import { SearchResult } from "./search";
-import VideoResult, { PlayEvent } from "./VideoResult";
 
 export interface VideoResultsListProps {
   dateToDivMap: Map<string, HTMLDivElement>;

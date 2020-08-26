@@ -29,7 +29,7 @@ import {
 import { FT } from "../../java2ts/FT";
 import { Routes } from "../../java2ts/Routes";
 import DropDown from "../DropDown";
-import HitContent from "./SearchHitContent";
+import HitContent from "./HitContent";
 import SharePreview from "./SharePreview";
 
 export type PlayEvent = (

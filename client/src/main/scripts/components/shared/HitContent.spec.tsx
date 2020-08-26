@@ -20,28 +20,29 @@
 import React from "react";
 import renderer from "react-test-renderer";
 import { VideoTurn } from "../../common/social/social";
+import { FT } from "../../java2ts/FT";
 import { kennedyNixon } from "../../utils/testUtils";
-import { SearchHit } from "./search";
-import SearchHitContent from "./SearchHitContent";
+import HitContent from "./HitContent";
 
-interface SearchHitProps {
-  searchHit: SearchHit;
+interface HitProps {
+  videoFact: FT.VideoFactContent;
+  videoTurn: VideoTurn;
 }
 
-export const SearchHitMock = (componentName: string) => ({
-  searchHit,
+export const HitMock = (componentName: string) => ({
+  videoFact,
+  videoTurn,
   ...rest
-}: SearchHitProps): JSX.Element => {
+}: HitProps): JSX.Element => {
   return (
     <div>
-      {componentName}: {JSON.stringify(rest)} {searchHit.videoFact.fact.title}{" "}
-      {searchHit.videoTurn.turn} {searchHit.videoTurn.cut}{" "}
-      {searchHit.highlightOffsets}
+      {componentName}: {JSON.stringify(rest)} {videoFact.fact.title}{" "}
+      {videoTurn.turn} {videoTurn.cut} {videoTurn.bold}
     </div>
   );
 };
 
-test("SearchHitContent renders", () => {
+test("HitContent renders", () => {
   const videoTurn: VideoTurn = {
     kind: "videoTurn",
     fact: "factHash",
@@ -49,13 +50,14 @@ test("SearchHitContent renders", () => {
     cut: [14, 239],
     bold: [[18, 28]],
   };
-  const searchHit = new SearchHit(
-    [[18, 28, "television"]],
-    kennedyNixon,
-    videoTurn
-  );
   const tree = renderer
-    .create(<SearchHitContent searchHit={searchHit} className="testClass" />)
+    .create(
+      <HitContent
+        videoFact={kennedyNixon}
+        videoTurn={videoTurn}
+        className="testClass"
+      />
+    )
     .toJSON();
   expect(tree).toMatchSnapshot();
 });

@@ -21,7 +21,6 @@ import React from "react";
 import renderer from "react-test-renderer";
 import { VideoTurn } from "../../common/social/social";
 import { kennedyNixon } from "../../utils/testUtils";
-import { SearchHit } from "./search";
 import SharePreview from "./SharePreview";
 
 test("SharePreview renders", () => {
@@ -32,14 +31,13 @@ test("SharePreview renders", () => {
     cut: [14, 239],
     bold: [[18, 28]],
   };
-  const searchHit = new SearchHit(
-    [[18, 28, "television"]],
-    kennedyNixon,
-    videoTurn
-  );
   const tree = renderer
     .create(
-      <SharePreview searchHit={searchHit} contextUrl="/foundation/example" />
+      <SharePreview
+        videoFact={kennedyNixon}
+        videoTurn={videoTurn}
+        contextUrl="/foundation/example"
+      />
     )
     .toJSON();
   expect(tree).toMatchSnapshot();

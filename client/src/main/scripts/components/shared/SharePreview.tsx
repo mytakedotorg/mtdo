@@ -21,7 +21,7 @@ import React, { useEffect, useState } from "react";
 import { copyToClipboard } from "../../browser";
 import { VideoTurn } from "../../common/social/social";
 import { FT } from "../../java2ts/FT";
-import SearchHitContent from "./SearchHitContent";
+import HitContent from "./HitContent";
 
 export interface SharePreviewProps {
   contextUrl: string;
@@ -81,7 +81,7 @@ const SharePreview: React.FC<SharePreviewProps> = ({
             <p className="share-preview__tilde">∼∼∼ ∼∼∼ ∼∼∼∼∼ ∼∼∼∼∼ ∼∼∼∼∼∼∼∼</p>
             <p className="share-preview__tilde">∼∼ ∼∼∼∼∼∼∼∼ ∼∼ ∼∼∼ ∼ ∼∼∼ ∼∼</p>
             <div className="share-preview__content">
-              <SearchHitContent
+              <HitContent
                 className="share-preview__text share-preview__text--app"
                 maxLength={200}
                 videoTurn={videoTurn}
