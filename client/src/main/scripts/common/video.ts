@@ -19,7 +19,7 @@
  */
 var base64toArrayBuffer = require("base64-arraybuffer");
 import { FT } from "../java2ts/FT";
-import { bsRoundEarly } from "./functions";
+import { abbreviate, bsRoundEarly } from "./functions";
 import { ClipRange, VideoCut, VideoTurn } from "./social/social";
 
 export function decodeVideoFact(
@@ -170,4 +170,62 @@ export function turnToCut(
     fact: videoTurn.fact,
     kind: "videoCut",
   };
+}
+
+interface SeachHitContent {
+  text: string;
+  isHighlighted: boolean;
+}
+
+export function getHighlightedContent(
+  videoTurn: VideoTurn,
+  videoFact: FT.VideoFactContent,
+  maxLength?: number
+): SeachHitContent[] {
+  const searchHitContents: SeachHitContent[] = [];
+  let turnContent = getTurnContent(videoTurn.turn, videoFact);
+  let contentStartIdx = videoTurn.cut[0];
+  if (maxLength && videoTurn.cut[1] - videoTurn.cut[0] > maxLength) {
+    turnContent = abbreviate(turnContent, maxLength + contentStartIdx);
+  }
+  videoTurn.bold?.forEach((highlight) => {
+    const textBeforeHighlight = turnContent.substring(
+      contentStartIdx,
+      highlight[0]
+    );
+    const textOfHighlight = turnContent.substring(highlight[0], highlight[1]);
+    if (textBeforeHighlight) {
+      searchHitContents.push({
+        text: textBeforeHighlight,
+        isHighlighted: false,
+      });
+    }
+    if (textOfHighlight) {
+      searchHitContents.push({
+        text: textOfHighlight,
+        isHighlighted: true,
+      });
+    }
+    contentStartIdx = highlight[1];
+  });
+  const textAfterAllHighlights = turnContent.substring(
+    contentStartIdx,
+    videoTurn.cut[1]
+  );
+  if (textAfterAllHighlights) {
+    searchHitContents.push({
+      text: textAfterAllHighlights,
+      isHighlighted: false,
+    });
+  }
+  return searchHitContents;
+}
+
+export function getSpeaker(
+  videoTurn: VideoTurn,
+  videoFact: FT.VideoFactContent
+): string {
+  const fullName =
+    videoFact.speakers[videoFact.turnSpeaker[videoTurn.turn]].fullName;
+  return fullName.substring(fullName.lastIndexOf(" "));
 }

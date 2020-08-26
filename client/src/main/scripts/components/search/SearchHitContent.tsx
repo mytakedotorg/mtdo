@@ -18,6 +18,7 @@
  * You can contact us at team@mytake.org
  */
 import React from "react";
+import { getHighlightedContent } from "../../common/video";
 import { SearchHit } from "./search";
 
 export interface SearchHitContentProps {
@@ -33,7 +34,11 @@ const SearchHitContent: React.FC<SearchHitContentProps> = ({
 }) => {
   return (
     <p className={className}>
-      {searchHit.getContent(maxLength).map((hitContent, index) => {
+      {getHighlightedContent(
+        searchHit.videoTurn,
+        searchHit.videoFact,
+        maxLength
+      ).map((hitContent, index) => {
         return hitContent.isHighlighted ? (
           <strong key={index}>{hitContent.text}</strong>
         ) : (

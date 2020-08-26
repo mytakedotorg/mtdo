@@ -21,7 +21,11 @@ import * as React from "react";
 import { Bookmark, Play, Share } from "react-feather";
 import { slugify } from "../../common/functions";
 import { encodeSocial } from "../../common/social/social";
-import { convertSecondsToTimestamp, turnToCut } from "../../common/video";
+import {
+  convertSecondsToTimestamp,
+  getSpeaker,
+  turnToCut,
+} from "../../common/video";
 import { FT } from "../../java2ts/FT";
 import { Routes } from "../../java2ts/Routes";
 import DropDown from "../DropDown";
@@ -65,7 +69,9 @@ const VideoResult: React.FC<VideoResultProps> = (props) => {
     <div className="turn">
       <div className="turn__info">
         <div className="turn__info-row">
-          <h3 className="turn__speaker">{searchHit.getSpeaker()}</h3>
+          <h3 className="turn__speaker">
+            {getSpeaker(searchHit.videoTurn, searchHit.videoFact)}
+          </h3>
           <DropDown
             classModifier="share"
             dropdownPosition="CUSTOM"
