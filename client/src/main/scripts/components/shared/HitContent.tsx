@@ -25,29 +25,27 @@ import { getHighlightedContent } from "../../common/video";
 export interface HitContentProps {
   className?: string;
   maxLength?: number;
-  videoTurn: VideoTurn
-  videoFact: FT.VideoFactContent
+  videoTurn: VideoTurn;
+  videoFact: FT.VideoFactContent;
 }
 
 const HitContent: React.FC<HitContentProps> = ({
   className,
   maxLength,
   videoTurn,
-  videoFact
+  videoFact,
 }) => {
   return (
     <p className={className}>
-      {getHighlightedContent(
-        videoTurn,
-        videoFact,
-        maxLength
-      ).map((hitContent, index) => {
-        return hitContent.isHighlighted ? (
-          <strong key={index}>{hitContent.text}</strong>
-        ) : (
-          hitContent.text
-        );
-      })}
+      {getHighlightedContent(videoTurn, videoFact, maxLength).map(
+        (hitContent, index) => {
+          return hitContent.isHighlighted ? (
+            <strong key={index}>{hitContent.text}</strong>
+          ) : (
+            hitContent.text
+          );
+        }
+      )}
     </p>
   );
 };
