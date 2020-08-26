@@ -20,7 +20,12 @@
 var base64toArrayBuffer = require("base64-arraybuffer");
 import { FT } from "../java2ts/FT";
 import { abbreviate, bsRoundEarly } from "./functions";
-import { ClipRange, VideoCut, VideoTurn } from "./social/social";
+import {
+  CharOffsetRange,
+  ClipRange,
+  VideoCut,
+  VideoTurn,
+} from "./social/social";
 
 export function decodeVideoFact(
   encoded: FT.VideoFactContentEncoded
@@ -112,22 +117,30 @@ export function getCut(
   return [speaker, text];
 }
 
+type TurnInfo = {
+  turn: number;
+  text: string;
+  cut: CharOffsetRange;
+};
 function getTurnFromClipRange(
   fact: FT.VideoFactContent,
   cut: ClipRange
-): { turn: number; text: string } {
+): TurnInfo {
   const wordStart = bsRoundEarly(fact.wordTime, cut[0]);
   let wordEnd = bsRoundEarly(fact.wordTime, cut[1]) + 1;
   if (fact.wordTime[wordEnd]) {
     --wordEnd;
   }
-  const text = fact.plainText.slice(
-    fact.wordChar[wordStart],
-    fact.wordChar[wordEnd] - 1
-  );
+  const firstCharOfCut = fact.wordChar[wordStart];
+  const lastCharOfCut = fact.wordChar[wordEnd] - 1;
+  const text = fact.plainText.slice(firstCharOfCut, lastCharOfCut);
+  const turn = bsRoundEarly(fact.turnWord, wordStart);
+  const firstWordOfTurn = fact.turnWord[turn];
+  const firstCharOfTurn = fact.wordChar[firstWordOfTurn];
   return {
+    cut: [firstCharOfCut - firstCharOfTurn, lastCharOfCut - firstCharOfTurn],
     text,
-    turn: bsRoundEarly(fact.turnWord, wordStart),
+    turn,
   };
 }
 
@@ -135,12 +148,12 @@ export function cutToTurn(
   videoCut: VideoCut,
   videoFact: FT.VideoFactContent
 ): VideoTurn {
-  const { turn } = getTurnFromClipRange(videoFact, videoCut.cut);
+  const turnInfo = getTurnFromClipRange(videoFact, videoCut.cut);
   return {
-    cut: videoCut.cut,
+    cut: turnInfo.cut,
     fact: videoCut.fact,
     kind: "videoTurn",
-    turn,
+    turn: turnInfo.turn,
   };
 }
 
