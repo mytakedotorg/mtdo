@@ -21,7 +21,7 @@ import { Foundation, FoundationFetcher } from "../../common/foundation";
 import { groupBy } from "../../common/functions";
 import { VideoCut } from "../../common/social/social";
 import { FT } from "../../java2ts/FT";
-import sampleBookmarks from "./samplebookmarks.json";
+import sampleBookmarks from "./testData/samplebookmarks.json";
 
 export class BookmarksResult {
   constructor(public factHits: FactToBookmarkHits[]) {}
@@ -31,7 +31,7 @@ export class _BookmarksWithData {
   constructor(
     public foundationData: Foundation,
     public mode: BookmarksMode,
-    public bookmarks: Bookmark[]
+    public bookmarksRaw: FTBookmarkIntermediate[]
   ) {}
 }
 
@@ -43,9 +43,9 @@ export enum BookmarksMode {
 export async function getBookmarks(
   mode: BookmarksMode
 ): Promise<BookmarksResult> {
-  const bookmarks = parseBookmarksJSON(await _getTemp());
+  const bookmarks = await _getTemp();
   const builder = new FoundationFetcher();
-  bookmarks.forEach((b) => builder.add(b.content.fact));
+  bookmarks.forEach((b) => builder.add(b.fact));
   const foundationData = await builder.build();
   return _bookmarksImpl(
     new _BookmarksWithData(foundationData, mode, bookmarks)
@@ -55,7 +55,8 @@ export async function getBookmarks(
 export function _bookmarksImpl(
   bookmarksWithData: _BookmarksWithData
 ): BookmarksResult {
-  const { foundationData, mode, bookmarks } = bookmarksWithData;
+  const { foundationData, mode, bookmarksRaw } = bookmarksWithData;
+  const bookmarks = parseBookmarksJSON(bookmarksRaw);
 
   let groupedByFact: Bookmark[][];
   switch (mode) {
