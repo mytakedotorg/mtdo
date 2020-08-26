@@ -45,13 +45,6 @@ const SharePreview: React.FC<SharePreviewProps> = ({
     };
   }, [isCopied]);
 
-  const viewFullContext = (
-    e: React.MouseEvent<HTMLAnchorElement, MouseEvent>
-  ) => {
-    e.preventDefault();
-    window.location.href = contextUrl;
-  };
-
   const copyUrl = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
     e.preventDefault();
     const url =
@@ -66,7 +59,7 @@ const SharePreview: React.FC<SharePreviewProps> = ({
       style={{ maxWidth: `${window.innerWidth - 16}px` }}
     >
       <div className="share-preview__links">
-        <a onClick={viewFullContext}>View full context</a>
+        <a href={contextUrl}>View full context</a>
         {isCopied ? (
           <span>Copied to clipboard</span>
         ) : (

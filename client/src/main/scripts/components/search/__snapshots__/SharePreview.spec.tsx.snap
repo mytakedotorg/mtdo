@@ -13,7 +13,7 @@ exports[`SharePreview renders 1`] = `
     className="share-preview__links"
   >
     <a
-      onClick={[Function]}
+      href="/foundation/example"
     >
       View full context
     </a>
