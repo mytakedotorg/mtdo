@@ -80,10 +80,10 @@ VideoFactContent = {
       lastname: Cooper
     }
   ],
-  charOffsets: [0, 5, 13, 17, 24, 32, 37, 41, 47, 51, 55, 64, 71, 76], // Length 14, 1 entry for each word
-  timeStamps: [/* Length 14, omitting data for brevity */],
-  speakerPerson: [0, 1], // 2 people have spoken, first Raddatz, then Cooper. 
-  speakerWord: [0, 8], // 2 people have spoken, Raddatz at word 0, Cooper at word 8
+  wordChar: [0, 5, 13, 17, 24, 32, 37, 41, 47, 51, 55, 64, 71, 76], // Length 14, 1 character offset entry for each word
+  wordTime: [0.75, 0.96, 1.56, 1.92, 2.13, 2.52, 3.06, 3.09, 3.66, 3.87, 4.26, 4.53, 4.68, 5.1], // Length 14, 1 timestamp entry for each word
+  turnSpeaker: [0, 1], // 2 people have spoken, first Raddatz, then Cooper.
+  turnWord: [0, 8], // Turn 1 started at word 0, turn 2 at word 8
   ... // Other fields are self explanatory, like youtubeId
 }
 ```
