@@ -48,16 +48,8 @@ const SearchContainer: React.FC<SearchContainerProps> = ({
   searchResult,
 }) => {
   const { factHits, searchQuery } = searchResult;
-  const [{ isVideoPlaying, videoProps }, setVideoPlayerState] = useState<
-    VideoPlayerState
-  >({
+  const [videoPlayerState, setVideoPlayerState] = useState<VideoPlayerState>({
     isVideoPlaying: false,
-    videoProps: factHits.length
-      ? {
-          videoId: factHits[0].videoFact.youtubeId,
-          clipRange: factHits[0].searchHits[0].getClipRange(),
-        }
-      : undefined,
   });
 
   const handleBarClick = (year: string) => {
@@ -103,9 +95,12 @@ const SearchContainer: React.FC<SearchContainerProps> = ({
   return (
     <>
       <div className="search__sticky">
-        {videoProps && isVideoPlaying && (
+        {videoPlayerState.videoProps && videoPlayerState.isVideoPlaying && (
           <div className="search__video">
-            <VideoLite {...videoProps} onClipEnd={handleClipEnd} />
+            <VideoLite
+              {...videoPlayerState.videoProps}
+              onClipEnd={handleClipEnd}
+            />
           </div>
         )}
         <SearchBar initialSearchQuery={searchQuery} classModifier="mobile" />

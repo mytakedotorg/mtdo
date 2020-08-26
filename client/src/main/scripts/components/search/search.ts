@@ -18,7 +18,7 @@
  * You can contact us at team@mytake.org
  */
 import { Foundation, FoundationFetcher } from "../../common/foundation";
-import { abbreviate, bsRoundEarly, groupBy } from "../../common/functions";
+import { abbreviate, groupBy } from "../../common/functions";
 import { VideoTurn } from "../../common/social/social";
 import { getTurnContent } from "../../common/video";
 import { FT } from "../../java2ts/FT";
@@ -172,30 +172,6 @@ export class SearchHit {
     const fullName =
       videoFact.speakers[videoFact.turnSpeaker[videoTurn.turn]].fullName;
     return fullName.substring(fullName.lastIndexOf(" "));
-  }
-
-  getClipRange(): [number, number] {
-    if (this.clipRangeCache) {
-      return this.clipRangeCache;
-    }
-    const { videoTurn, videoFact } = this;
-    const { cut, turn } = videoTurn;
-    const veryFirstWord = videoFact.turnWord[turn];
-    const firstChar = videoFact.wordChar[veryFirstWord];
-
-    const firstWord = bsRoundEarly(videoFact.wordChar, firstChar + cut[0]);
-    const lastWord = bsRoundEarly(videoFact.wordChar, firstChar + cut[1]);
-
-    const clipStart = videoFact.wordTime[firstWord];
-    let clipEnd;
-    if (videoFact.wordTime[lastWord + 1]) {
-      clipEnd = videoFact.wordTime[lastWord + 1];
-    } else {
-      clipEnd = videoFact.wordTime[lastWord] + 2;
-    }
-
-    this.clipRangeCache = [clipStart, clipEnd];
-    return this.clipRangeCache;
   }
 
   getContent(maxLength?: number): SeachHitContent[] {
