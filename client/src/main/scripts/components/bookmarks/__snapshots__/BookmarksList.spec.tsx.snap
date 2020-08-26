@@ -13,7 +13,7 @@ exports[`BookmarksList date bookmarked 1`] = `
     />
     <div>
       BookmarksResultList: 
-      0
+      5
        hits
     </div>
   </div>
@@ -33,7 +33,7 @@ exports[`BookmarksList date happened 1`] = `
     />
     <div>
       BookmarksResultList: 
-      0
+      4
        hits
     </div>
   </div>

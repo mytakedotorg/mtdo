@@ -23,6 +23,7 @@ import { FoundationHarness } from "../../common/foundationTest";
 import { BookmarksMode, _bookmarksImpl, _BookmarksWithData } from "./bookmarks";
 import BookmarksList from "./BookmarksList";
 import { BookmarksResultListProps } from "./BookmarksResultList";
+import samplebookmarks from "./testData/samplebookmarks.json";
 
 jest.mock("./BookmarksSortBy", () => ({
   __esModule: true,
@@ -44,7 +45,7 @@ test("BookmarksList date happened", () => {
     new _BookmarksWithData(
       FoundationHarness.loadAllFromDisk(),
       BookmarksMode.DateHappened,
-      [] // TODO use some data
+      samplebookmarks.bookmarks
     )
   );
 
@@ -64,8 +65,8 @@ test("BookmarksList date bookmarked", () => {
   const result = _bookmarksImpl(
     new _BookmarksWithData(
       FoundationHarness.loadAllFromDisk(),
-      BookmarksMode.DateHappened,
-      [] // TODO use some data
+      BookmarksMode.DateBookmarked,
+      samplebookmarks.bookmarks
     )
   );
 
