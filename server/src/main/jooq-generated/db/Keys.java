@@ -5,6 +5,8 @@ package db;
 
 
 import db.tables.Account;
+import db.tables.Bookmark;
+import db.tables.BookmarksLastChange;
 import db.tables.Confirmaccountlink;
 import db.tables.FlywaySchemaHistory;
 import db.tables.Follow;
@@ -16,6 +18,8 @@ import db.tables.Takepublished;
 import db.tables.Takereaction;
 import db.tables.Takerevision;
 import db.tables.records.AccountRecord;
+import db.tables.records.BookmarkRecord;
+import db.tables.records.BookmarksLastChangeRecord;
 import db.tables.records.ConfirmaccountlinkRecord;
 import db.tables.records.FlywaySchemaHistoryRecord;
 import db.tables.records.FollowRecord;
@@ -57,6 +61,8 @@ public class Keys {
     public static final UniqueKey<AccountRecord> ACCOUNT_PKEY = UniqueKeys0.ACCOUNT_PKEY;
     public static final UniqueKey<AccountRecord> ACCOUNT_USERNAME_KEY = UniqueKeys0.ACCOUNT_USERNAME_KEY;
     public static final UniqueKey<AccountRecord> ACCOUNT_EMAIL_KEY = UniqueKeys0.ACCOUNT_EMAIL_KEY;
+    public static final UniqueKey<BookmarkRecord> BOOKMARK_PKEY = UniqueKeys0.BOOKMARK_PKEY;
+    public static final UniqueKey<BookmarksLastChangeRecord> BOOKMARKS_LAST_CHANGE_PKEY = UniqueKeys0.BOOKMARKS_LAST_CHANGE_PKEY;
     public static final UniqueKey<ConfirmaccountlinkRecord> CONFIRMACCOUNTLINK_PKEY = UniqueKeys0.CONFIRMACCOUNTLINK_PKEY;
     public static final UniqueKey<FlywaySchemaHistoryRecord> FLYWAY_SCHEMA_HISTORY_PK = UniqueKeys0.FLYWAY_SCHEMA_HISTORY_PK;
     public static final UniqueKey<FollowRecord> FOLLOW_PKEY = UniqueKeys0.FOLLOW_PKEY;
@@ -72,6 +78,8 @@ public class Keys {
     // FOREIGN KEY definitions
     // -------------------------------------------------------------------------
 
+    public static final ForeignKey<BookmarkRecord, AccountRecord> BOOKMARK__BOOKMARK_SAVED_BY_FKEY = ForeignKeys0.BOOKMARK__BOOKMARK_SAVED_BY_FKEY;
+    public static final ForeignKey<BookmarksLastChangeRecord, AccountRecord> BOOKMARKS_LAST_CHANGE__BOOKMARKS_LAST_CHANGE_SAVED_BY_FKEY = ForeignKeys0.BOOKMARKS_LAST_CHANGE__BOOKMARKS_LAST_CHANGE_SAVED_BY_FKEY;
     public static final ForeignKey<FollowRecord, AccountRecord> FOLLOW__FOLLOW_AUTHOR_FKEY = ForeignKeys0.FOLLOW__FOLLOW_AUTHOR_FKEY;
     public static final ForeignKey<FollowRecord, AccountRecord> FOLLOW__FOLLOW_FOLLOWER_FKEY = ForeignKeys0.FOLLOW__FOLLOW_FOLLOWER_FKEY;
     public static final ForeignKey<LoginlinkRecord, AccountRecord> LOGINLINK__LOGINLINK_ACCOUNT_ID_FKEY = ForeignKeys0.LOGINLINK__LOGINLINK_ACCOUNT_ID_FKEY;
@@ -97,6 +105,8 @@ public class Keys {
         public static final UniqueKey<AccountRecord> ACCOUNT_PKEY = Internal.createUniqueKey(Account.ACCOUNT, "account_pkey", new TableField[] { Account.ACCOUNT.ID }, true);
         public static final UniqueKey<AccountRecord> ACCOUNT_USERNAME_KEY = Internal.createUniqueKey(Account.ACCOUNT, "account_username_key", new TableField[] { Account.ACCOUNT.USERNAME }, true);
         public static final UniqueKey<AccountRecord> ACCOUNT_EMAIL_KEY = Internal.createUniqueKey(Account.ACCOUNT, "account_email_key", new TableField[] { Account.ACCOUNT.EMAIL }, true);
+        public static final UniqueKey<BookmarkRecord> BOOKMARK_PKEY = Internal.createUniqueKey(Bookmark.BOOKMARK, "bookmark_pkey", new TableField[] { Bookmark.BOOKMARK.SAVED_BY, Bookmark.BOOKMARK.FACT_HASH, Bookmark.BOOKMARK.CUT_START, Bookmark.BOOKMARK.CUT_END }, true);
+        public static final UniqueKey<BookmarksLastChangeRecord> BOOKMARKS_LAST_CHANGE_PKEY = Internal.createUniqueKey(BookmarksLastChange.BOOKMARKS_LAST_CHANGE, "bookmarks_last_change_pkey", new TableField[] { BookmarksLastChange.BOOKMARKS_LAST_CHANGE.SAVED_BY }, true);
         public static final UniqueKey<ConfirmaccountlinkRecord> CONFIRMACCOUNTLINK_PKEY = Internal.createUniqueKey(Confirmaccountlink.CONFIRMACCOUNTLINK, "confirmaccountlink_pkey", new TableField[] { Confirmaccountlink.CONFIRMACCOUNTLINK.CODE }, true);
         public static final UniqueKey<FlywaySchemaHistoryRecord> FLYWAY_SCHEMA_HISTORY_PK = Internal.createUniqueKey(FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY, "flyway_schema_history_pk", new TableField[] { FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY.INSTALLED_RANK }, true);
         public static final UniqueKey<FollowRecord> FOLLOW_PKEY = Internal.createUniqueKey(Follow.FOLLOW, "follow_pkey", new TableField[] { Follow.FOLLOW.AUTHOR, Follow.FOLLOW.FOLLOWER }, true);
@@ -110,6 +120,8 @@ public class Keys {
     }
 
     private static class ForeignKeys0 {
+        public static final ForeignKey<BookmarkRecord, AccountRecord> BOOKMARK__BOOKMARK_SAVED_BY_FKEY = Internal.createForeignKey(Keys.ACCOUNT_PKEY, Bookmark.BOOKMARK, "bookmark_saved_by_fkey", new TableField[] { Bookmark.BOOKMARK.SAVED_BY }, true);
+        public static final ForeignKey<BookmarksLastChangeRecord, AccountRecord> BOOKMARKS_LAST_CHANGE__BOOKMARKS_LAST_CHANGE_SAVED_BY_FKEY = Internal.createForeignKey(Keys.ACCOUNT_PKEY, BookmarksLastChange.BOOKMARKS_LAST_CHANGE, "bookmarks_last_change_saved_by_fkey", new TableField[] { BookmarksLastChange.BOOKMARKS_LAST_CHANGE.SAVED_BY }, true);
         public static final ForeignKey<FollowRecord, AccountRecord> FOLLOW__FOLLOW_AUTHOR_FKEY = Internal.createForeignKey(Keys.ACCOUNT_PKEY, Follow.FOLLOW, "follow_author_fkey", new TableField[] { Follow.FOLLOW.AUTHOR }, true);
         public static final ForeignKey<FollowRecord, AccountRecord> FOLLOW__FOLLOW_FOLLOWER_FKEY = Internal.createForeignKey(Keys.ACCOUNT_PKEY, Follow.FOLLOW, "follow_follower_fkey", new TableField[] { Follow.FOLLOW.FOLLOWER }, true);
         public static final ForeignKey<LoginlinkRecord, AccountRecord> LOGINLINK__LOGINLINK_ACCOUNT_ID_FKEY = Internal.createForeignKey(Keys.ACCOUNT_PKEY, Loginlink.LOGINLINK, "loginlink_account_id_fkey", new TableField[] { Loginlink.LOGINLINK.ACCOUNT_ID }, true);
