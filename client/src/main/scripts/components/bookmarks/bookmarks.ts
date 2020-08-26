@@ -66,13 +66,13 @@ export function _bookmarksImpl(
       );
       break;
     case BookmarksMode.DateBookmarked:
-      const sortedByDate = bookmarks.sort(
+      const sortedByDateBookmarked = bookmarks.sort(
         (a, b) => a.savedAt.getUTCDate() - b.savedAt.getUTCDate()
       );
       groupedByFact = [];
       let previousFact = "";
       let bookmarkGroup: Bookmark[] = [];
-      sortedByDate.forEach((b) => {
+      sortedByDateBookmarked.forEach((b) => {
         if (b.content.fact !== previousFact) {
           if (bookmarkGroup.length > 0) {
             groupedByFact.push(bookmarkGroup);
@@ -88,15 +88,27 @@ export function _bookmarksImpl(
       break;
   }
   return new BookmarksResult(
-    groupedByFact.map((bookmarkList) => {
-      const hash = bookmarkList[0].content.fact;
-      return {
-        hash,
-        bookmarkHits: bookmarkList.map((b) => {
-          return new BookmarkHit(foundationData.getFactContent(hash), b);
-        }),
-      };
-    })
+    groupedByFact
+      .map((bookmarkList) => {
+        const hash = bookmarkList[0].content.fact;
+        return {
+          hash,
+          bookmarkHits: bookmarkList.map((b) => {
+            return new BookmarkHit(foundationData.getFactContent(hash), b);
+          }),
+        };
+      })
+      .sort((a, b) => {
+        switch (mode) {
+          case BookmarksMode.DateHappened:
+            return (
+              new Date(a.bookmarkHits[0].fact.fact.primaryDate).getUTCDate() -
+              new Date(b.bookmarkHits[0].fact.fact.primaryDate).getUTCDate()
+            );
+          case BookmarksMode.DateBookmarked:
+            return 0; //already sorted
+        }
+      })
   );
 }
 
