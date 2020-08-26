@@ -18,25 +18,28 @@
  * You can contact us at team@mytake.org
  */
 import React from "react";
+import { FT } from "../../java2ts/FT";
+import { VideoTurn } from "../../common/social/social";
 import { getHighlightedContent } from "../../common/video";
-import { SearchHit } from "./search";
 
-export interface SearchHitContentProps {
+export interface HitContentProps {
   className?: string;
   maxLength?: number;
-  searchHit: SearchHit;
+  videoTurn: VideoTurn
+  videoFact: FT.VideoFactContent
 }
 
-const SearchHitContent: React.FC<SearchHitContentProps> = ({
+const HitContent: React.FC<HitContentProps> = ({
   className,
   maxLength,
-  searchHit,
+  videoTurn,
+  videoFact
 }) => {
   return (
     <p className={className}>
       {getHighlightedContent(
-        searchHit.videoTurn,
-        searchHit.videoFact,
+        videoTurn,
+        videoFact,
         maxLength
       ).map((hitContent, index) => {
         return hitContent.isHighlighted ? (
@@ -49,4 +52,4 @@ const SearchHitContent: React.FC<SearchHitContentProps> = ({
   );
 };
 
-export default SearchHitContent;
+export default HitContent;

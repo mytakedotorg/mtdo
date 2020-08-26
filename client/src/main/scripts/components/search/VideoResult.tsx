@@ -20,7 +20,7 @@
 import * as React from "react";
 import { Bookmark, Play, Share } from "react-feather";
 import { slugify } from "../../common/functions";
-import { encodeSocial } from "../../common/social/social";
+import { encodeSocial, VideoTurn } from "../../common/social/social";
 import {
   convertSecondsToTimestamp,
   getSpeaker,
@@ -29,8 +29,7 @@ import {
 import { FT } from "../../java2ts/FT";
 import { Routes } from "../../java2ts/Routes";
 import DropDown from "../DropDown";
-import { SearchHit } from "./search";
-import SearchHitContent from "./SearchHitContent";
+import HitContent from "./SearchHitContent";
 import SharePreview from "./SharePreview";
 
 export type PlayEvent = (
@@ -40,14 +39,14 @@ export type PlayEvent = (
 
 export interface VideoResultProps {
   isBookmarked?: boolean;
-  searchHit: SearchHit;
+  videoTurn: VideoTurn;
+  videoFact: FT.VideoFactContent;
   onPlayClick: PlayEvent;
 }
 
 const VideoResult: React.FC<VideoResultProps> = (props) => {
-  const { isBookmarked, onPlayClick, searchHit } = props;
-  const { videoFact } = searchHit;
-  const social = turnToCut(props.searchHit.videoTurn, videoFact);
+  const { isBookmarked, onPlayClick, videoFact, videoTurn } = props;
+  const social = turnToCut(videoTurn, videoFact);
 
   const contextUrl = `${Routes.FOUNDATION}/${slugify(
     videoFact.fact.title
@@ -69,15 +68,17 @@ const VideoResult: React.FC<VideoResultProps> = (props) => {
     <div className="turn">
       <div className="turn__info">
         <div className="turn__info-row">
-          <h3 className="turn__speaker">
-            {getSpeaker(searchHit.videoTurn, searchHit.videoFact)}
-          </h3>
+          <h3 className="turn__speaker">{getSpeaker(videoTurn, videoFact)}</h3>
           <DropDown
             classModifier="share"
             dropdownPosition="CUSTOM"
             toggleText={<Share />}
           >
-            <SharePreview contextUrl={contextUrl} searchHit={searchHit} />
+            <SharePreview
+              contextUrl={contextUrl}
+              videoFact={videoFact}
+              videoTurn={videoTurn}
+            />
           </DropDown>
         </div>
         <div className="turn__info-row turn__info-row--short">
@@ -99,7 +100,11 @@ const VideoResult: React.FC<VideoResultProps> = (props) => {
           </button>
         </div>
       </div>
-      <SearchHitContent className="turn__results" searchHit={searchHit} />
+      <HitContent
+        className="turn__results"
+        videoFact={videoFact}
+        videoTurn={videoTurn}
+      />
     </div>
   );
 };

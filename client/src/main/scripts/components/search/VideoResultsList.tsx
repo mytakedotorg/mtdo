@@ -45,7 +45,8 @@ const VideoResultsList: React.FC<VideoResultsListProps> = ({
                 h.videoTurn.cut
               )}
               onPlayClick={onPlayClick}
-              searchHit={h}
+              videoFact={h.videoFact}
+              videoTurn={h.videoTurn}
             />
           );
         });

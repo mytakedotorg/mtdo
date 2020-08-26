@@ -19,17 +19,20 @@
  */
 import React, { useEffect, useState } from "react";
 import { copyToClipboard } from "../../browser";
-import { SearchHit } from "./search";
+import { VideoTurn } from "../../common/social/social";
+import { FT } from "../../java2ts/FT";
 import SearchHitContent from "./SearchHitContent";
 
 export interface SharePreviewProps {
   contextUrl: string;
-  searchHit: SearchHit;
+  videoTurn: VideoTurn;
+  videoFact: FT.VideoFactContent;
 }
 
 const SharePreview: React.FC<SharePreviewProps> = ({
   contextUrl,
-  searchHit,
+  videoTurn,
+  videoFact,
 }) => {
   const [isCopied, setIsCopied] = useState<boolean>(false);
 
@@ -81,14 +84,14 @@ const SharePreview: React.FC<SharePreviewProps> = ({
               <SearchHitContent
                 className="share-preview__text share-preview__text--app"
                 maxLength={200}
-                searchHit={searchHit}
+                videoTurn={videoTurn}
+                videoFact={videoFact}
               />
             </div>
             <div className="share-preview__content-meta">
               <p className="share-preview__mytake">MyTake.org</p>
               <p className="share-preview__title">
-                {searchHit.videoFact.fact.title} -{" "}
-                {searchHit.videoFact.fact.primaryDate}
+                {videoFact.fact.title} - {videoFact.fact.primaryDate}
               </p>
             </div>
             <div className="share-preview__icons">
