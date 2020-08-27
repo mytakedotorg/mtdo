@@ -21,7 +21,7 @@ import org.jooq.impl.UpdatableRecordImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class BookmarkRecord extends UpdatableRecordImpl<BookmarkRecord> implements Record5<Integer, LocalDateTime, String, Integer, Integer> {
 
-    private static final long serialVersionUID = -1985853795;
+    private static final long serialVersionUID = -1723588572;
 
     /**
      * Setter for <code>public.bookmark.saved_by</code>.
@@ -54,17 +54,17 @@ public class BookmarkRecord extends UpdatableRecordImpl<BookmarkRecord> implemen
     }
 
     /**
-     * Setter for <code>public.bookmark.fact_hash</code>.
+     * Setter for <code>public.bookmark.fact</code>.
      */
-    public BookmarkRecord setFactHash(String value) {
+    public BookmarkRecord setFact(String value) {
         set(2, value);
         return this;
     }
 
     /**
-     * Getter for <code>public.bookmark.fact_hash</code>.
+     * Getter for <code>public.bookmark.fact</code>.
      */
-    public String getFactHash() {
+    public String getFact() {
         return (String) get(2);
     }
 
@@ -133,7 +133,7 @@ public class BookmarkRecord extends UpdatableRecordImpl<BookmarkRecord> implemen
 
     @Override
     public Field<String> field3() {
-        return Bookmark.BOOKMARK.FACT_HASH;
+        return Bookmark.BOOKMARK.FACT;
     }
 
     @Override
@@ -158,7 +158,7 @@ public class BookmarkRecord extends UpdatableRecordImpl<BookmarkRecord> implemen
 
     @Override
     public String component3() {
-        return getFactHash();
+        return getFact();
     }
 
     @Override
@@ -183,7 +183,7 @@ public class BookmarkRecord extends UpdatableRecordImpl<BookmarkRecord> implemen
 
     @Override
     public String value3() {
-        return getFactHash();
+        return getFact();
     }
 
     @Override
@@ -210,7 +210,7 @@ public class BookmarkRecord extends UpdatableRecordImpl<BookmarkRecord> implemen
 
     @Override
     public BookmarkRecord value3(String value) {
-        setFactHash(value);
+        setFact(value);
         return this;
     }
 
@@ -250,12 +250,12 @@ public class BookmarkRecord extends UpdatableRecordImpl<BookmarkRecord> implemen
     /**
      * Create a detached, initialised BookmarkRecord
      */
-    public BookmarkRecord(Integer savedBy, LocalDateTime savedOn, String factHash, Integer cutStart, Integer cutEnd) {
+    public BookmarkRecord(Integer savedBy, LocalDateTime savedOn, String fact, Integer cutStart, Integer cutEnd) {
         super(Bookmark.BOOKMARK);
 
         set(0, savedBy);
         set(1, savedOn);
-        set(2, factHash);
+        set(2, fact);
         set(3, cutStart);
         set(4, cutEnd);
     }

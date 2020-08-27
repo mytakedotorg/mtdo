@@ -14,11 +14,11 @@ import java.time.LocalDateTime;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Bookmark implements Serializable {
 
-    private static final long serialVersionUID = 1989941231;
+    private static final long serialVersionUID = 1466561317;
 
     private Integer       savedBy;
     private LocalDateTime savedOn;
-    private String        factHash;
+    private String        fact;
     private Integer       cutStart;
     private Integer       cutEnd;
 
@@ -27,7 +27,7 @@ public class Bookmark implements Serializable {
     public Bookmark(Bookmark value) {
         this.savedBy = value.savedBy;
         this.savedOn = value.savedOn;
-        this.factHash = value.factHash;
+        this.fact = value.fact;
         this.cutStart = value.cutStart;
         this.cutEnd = value.cutEnd;
     }
@@ -35,13 +35,13 @@ public class Bookmark implements Serializable {
     public Bookmark(
         Integer       savedBy,
         LocalDateTime savedOn,
-        String        factHash,
+        String        fact,
         Integer       cutStart,
         Integer       cutEnd
     ) {
         this.savedBy = savedBy;
         this.savedOn = savedOn;
-        this.factHash = factHash;
+        this.fact = fact;
         this.cutStart = cutStart;
         this.cutEnd = cutEnd;
     }
@@ -64,12 +64,12 @@ public class Bookmark implements Serializable {
         return this;
     }
 
-    public String getFactHash() {
-        return this.factHash;
+    public String getFact() {
+        return this.fact;
     }
 
-    public Bookmark setFactHash(String factHash) {
-        this.factHash = factHash;
+    public Bookmark setFact(String fact) {
+        this.fact = fact;
         return this;
     }
 
@@ -97,7 +97,7 @@ public class Bookmark implements Serializable {
 
         sb.append(savedBy);
         sb.append(", ").append(savedOn);
-        sb.append(", ").append(factHash);
+        sb.append(", ").append(fact);
         sb.append(", ").append(cutStart);
         sb.append(", ").append(cutEnd);
 

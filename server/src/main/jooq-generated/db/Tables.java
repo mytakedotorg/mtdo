@@ -6,7 +6,7 @@ package db;
 
 import db.tables.Account;
 import db.tables.Bookmark;
-import db.tables.BookmarksLastChange;
+import db.tables.BookmarksMod;
 import db.tables.Confirmaccountlink;
 import db.tables.FlywaySchemaHistory;
 import db.tables.Follow;
@@ -36,9 +36,9 @@ public class Tables {
     public static final Bookmark BOOKMARK = Bookmark.BOOKMARK;
 
     /**
-     * The table <code>public.bookmarks_last_change</code>.
+     * The table <code>public.bookmarks_mod</code>.
      */
-    public static final BookmarksLastChange BOOKMARKS_LAST_CHANGE = BookmarksLastChange.BOOKMARKS_LAST_CHANGE;
+    public static final BookmarksMod BOOKMARKS_MOD = BookmarksMod.BOOKMARKS_MOD;
 
     /**
      * The table <code>public.confirmaccountlink</code>.
