@@ -19,8 +19,13 @@
  */
 var base64toArrayBuffer = require("base64-arraybuffer");
 import { FT } from "../java2ts/FT";
-import { bsRoundEarly } from "./functions";
-import { VideoCut, VideoTurn } from "./social/social";
+import { abbreviate, bsRoundEarly } from "./functions";
+import {
+  CharOffsetRange,
+  ClipRange,
+  VideoCut,
+  VideoTurn,
+} from "./social/social";
 
 export function decodeVideoFact(
   encoded: FT.VideoFactContentEncoded
@@ -105,49 +110,135 @@ function zeroPad(someNumber: number): string {
  */
 export function getCut(
   fact: FT.VideoFactContent,
-  cut: [number, number]
+  cut: ClipRange
 ): [FT.Speaker, string] {
-  const { text, turn } = getTurnFromCut(fact, cut);
+  const { text, turn } = getTurnFromClipRange(fact, cut);
   const speaker = fact.speakers[fact.turnSpeaker[turn]];
   return [speaker, text];
 }
 
-function getTurnFromCut(
+type TurnInfo = {
+  turn: number;
+  text: string;
+  cut: CharOffsetRange;
+};
+function getTurnFromClipRange(
   fact: FT.VideoFactContent,
-  cut: [number, number]
-): { turn: number; text: string } {
+  cut: ClipRange
+): TurnInfo {
   const wordStart = bsRoundEarly(fact.wordTime, cut[0]);
   let wordEnd = bsRoundEarly(fact.wordTime, cut[1]) + 1;
   if (fact.wordTime[wordEnd]) {
     --wordEnd;
   }
-  const text = fact.plainText.slice(
-    fact.wordChar[wordStart],
-    fact.wordChar[wordEnd] - 1
-  );
+  const firstCharOfCut = fact.wordChar[wordStart];
+  const lastCharOfCut = fact.wordChar[wordEnd] - 1;
+  const text = fact.plainText.slice(firstCharOfCut, lastCharOfCut);
+  const turn = bsRoundEarly(fact.turnWord, wordStart);
+  const firstWordOfTurn = fact.turnWord[turn];
+  const firstCharOfTurn = fact.wordChar[firstWordOfTurn];
   return {
+    cut: [firstCharOfCut - firstCharOfTurn, lastCharOfCut - firstCharOfTurn],
     text,
-    turn: bsRoundEarly(fact.turnWord, wordStart),
-  };
-}
-
-export function cutToTurn(
-  { cut, fact }: VideoCut,
-  videoFact: FT.VideoFactContent
-): VideoTurn {
-  const { turn } = getTurnFromCut(videoFact, cut);
-  return {
-    cut,
-    fact,
-    kind: "videoTurn",
     turn,
   };
 }
 
-export function turnToCut({ cut, fact }: VideoTurn): VideoCut {
+export function cutToTurn(
+  videoCut: VideoCut,
+  videoFact: FT.VideoFactContent
+): VideoTurn {
+  const turnInfo = getTurnFromClipRange(videoFact, videoCut.cut);
   return {
-    cut,
-    fact,
+    cut: turnInfo.cut,
+    fact: videoCut.fact,
+    kind: "videoTurn",
+    turn: turnInfo.turn,
+  };
+}
+
+export function turnToCut(
+  videoTurn: VideoTurn,
+  videoFact: FT.VideoFactContent
+): VideoCut {
+  const firstWordOfTurn = videoFact.turnWord[videoTurn.turn];
+  const firstCharOfRange = videoFact.wordChar[firstWordOfTurn];
+  const wordStart = bsRoundEarly(
+    videoFact.wordChar,
+    firstCharOfRange + videoTurn.cut[0]
+  );
+  const wordEnd = bsRoundEarly(
+    videoFact.wordChar,
+    firstCharOfRange + videoTurn.cut[1]
+  );
+  const clipStart = videoFact.wordTime[wordStart];
+  let clipEnd;
+  if (videoFact.wordTime[wordEnd + 1]) {
+    clipEnd = videoFact.wordTime[wordEnd + 1];
+  } else {
+    clipEnd = videoFact.wordTime[wordEnd] + 2;
+  }
+  return {
+    cut: [clipStart, clipEnd],
+    fact: videoTurn.fact,
     kind: "videoCut",
   };
+}
+
+interface SeachHitContent {
+  text: string;
+  isHighlighted: boolean;
+}
+
+export function getHighlightedContent(
+  videoTurn: VideoTurn,
+  videoFact: FT.VideoFactContent,
+  maxLength?: number
+): SeachHitContent[] {
+  const searchHitContents: SeachHitContent[] = [];
+  let turnContent = getTurnContent(videoTurn.turn, videoFact);
+  let contentStartIdx = videoTurn.cut[0];
+  if (maxLength && videoTurn.cut[1] - videoTurn.cut[0] > maxLength) {
+    turnContent = abbreviate(turnContent, maxLength + contentStartIdx);
+  }
+  videoTurn.bold?.forEach((highlight) => {
+    const textBeforeHighlight = turnContent.substring(
+      contentStartIdx,
+      highlight[0]
+    );
+    const textOfHighlight = turnContent.substring(highlight[0], highlight[1]);
+    if (textBeforeHighlight) {
+      searchHitContents.push({
+        text: textBeforeHighlight,
+        isHighlighted: false,
+      });
+    }
+    if (textOfHighlight) {
+      searchHitContents.push({
+        text: textOfHighlight,
+        isHighlighted: true,
+      });
+    }
+    contentStartIdx = highlight[1];
+  });
+  const textAfterAllHighlights = turnContent.substring(
+    contentStartIdx,
+    videoTurn.cut[1]
+  );
+  if (textAfterAllHighlights) {
+    searchHitContents.push({
+      text: textAfterAllHighlights,
+      isHighlighted: false,
+    });
+  }
+  return searchHitContents;
+}
+
+export function getSpeaker(
+  videoTurn: VideoTurn,
+  videoFact: FT.VideoFactContent
+): string {
+  const fullName =
+    videoFact.speakers[videoFact.turnSpeaker[videoTurn.turn]].fullName;
+  return fullName.substring(fullName.lastIndexOf(" "));
 }

@@ -1,0 +1,59 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`BookmarksSortBy Date Bookmarked 1`] = `
+<div
+  className="sortby"
+>
+  <label
+    htmlFor="bookmarks-sortby"
+  >
+    Sort by:
+  </label>
+  <select
+    id="bookmarks-sortby"
+    name="sortby"
+    onChange={[Function]}
+    value="DateBookmarked"
+  >
+    <option
+      value="DateBookmarked"
+    >
+      Date bookmarked
+    </option>
+    <option
+      value="DateHappened"
+    >
+      Date happened
+    </option>
+  </select>
+</div>
+`;
+
+exports[`BookmarksSortBy Date Happened 1`] = `
+<div
+  className="sortby"
+>
+  <label
+    htmlFor="bookmarks-sortby"
+  >
+    Sort by:
+  </label>
+  <select
+    id="bookmarks-sortby"
+    name="sortby"
+    onChange={[Function]}
+    value="DateHappened"
+  >
+    <option
+      value="DateBookmarked"
+    >
+      Date bookmarked
+    </option>
+    <option
+      value="DateHappened"
+    >
+      Date happened
+    </option>
+  </select>
+</div>
+`;

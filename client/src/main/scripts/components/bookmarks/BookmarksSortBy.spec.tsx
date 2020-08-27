@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2018-2020 MyTake.org, Inc.
+ * Copyright (C) 2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -17,29 +17,30 @@
  *
  * You can contact us at team@mytake.org
  */
-import React from "react";
-import renderer from "react-test-renderer";
-import { VideoTurn } from "../../common/social/social";
-import { kennedyNixon } from "../../utils/testUtils";
-import { SearchHit } from "./search";
-import SharePreview from "./SharePreview";
+import * as React from "react";
+import * as renderer from "react-test-renderer";
+import { BookmarksMode } from "./bookmarks";
+import BookmarksSortBy from "./BookmarksSortBy";
 
-test("SharePreview renders", () => {
-  const videoTurn: VideoTurn = {
-    kind: "videoTurn",
-    fact: "factHash",
-    turn: 0,
-    cut: [14, 239],
-    bold: [[18, 28]],
-  };
-  const searchHit = new SearchHit(
-    [[18, 28, "television"]],
-    kennedyNixon,
-    videoTurn
-  );
+test("BookmarksSortBy Date Bookmarked", () => {
   const tree = renderer
     .create(
-      <SharePreview searchHit={searchHit} contextUrl="/foundation/example" />
+      <BookmarksSortBy
+        onChange={jest.fn()}
+        selectedOption={BookmarksMode.DateBookmarked}
+      />
+    )
+    .toJSON();
+  expect(tree).toMatchSnapshot();
+});
+
+test("BookmarksSortBy Date Happened", () => {
+  const tree = renderer
+    .create(
+      <BookmarksSortBy
+        onChange={jest.fn()}
+        selectedOption={BookmarksMode.DateHappened}
+      />
     )
     .toJSON();
   expect(tree).toMatchSnapshot();

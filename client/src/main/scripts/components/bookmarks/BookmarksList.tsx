@@ -20,6 +20,7 @@
 import React from "react";
 import { FT } from "../../java2ts/FT";
 import { BookmarksMode, BookmarksResult } from "./bookmarks";
+import BookmarksResultList from "./BookmarksResultList";
 import BookmarksSortBy from "./BookmarksSortBy";
 
 interface BookmarksListProps {
@@ -42,11 +43,10 @@ const BookmarksList: React.FC<BookmarksListProps> = ({
     <div className="results">
       <div className="results__inner-container">
         <BookmarksSortBy onChange={onModeChange} selectedOption={mode} />
-        {/* <VideoResultsList
-            dateToDivMap={dateToDivMap}
-            onPlayClick={handlePlayClick}
-            searchResult={searchResult}
-          /> */}
+        <BookmarksResultList
+          onPlayClick={handlePlayClick}
+          bookmarksResult={bookmarksResult}
+        />
       </div>
     </div>
   );

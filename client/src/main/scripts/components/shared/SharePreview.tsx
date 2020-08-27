@@ -19,17 +19,20 @@
  */
 import React, { useEffect, useState } from "react";
 import { copyToClipboard } from "../../browser";
-import { SearchHit } from "./search";
-import SearchHitContent from "./SearchHitContent";
+import { VideoTurn } from "../../common/social/social";
+import { FT } from "../../java2ts/FT";
+import HitContent from "./HitContent";
 
 export interface SharePreviewProps {
   contextUrl: string;
-  searchHit: SearchHit;
+  videoTurn: VideoTurn;
+  videoFact: FT.VideoFactContent;
 }
 
 const SharePreview: React.FC<SharePreviewProps> = ({
   contextUrl,
-  searchHit,
+  videoTurn,
+  videoFact,
 }) => {
   const [isCopied, setIsCopied] = useState<boolean>(false);
 
@@ -45,13 +48,6 @@ const SharePreview: React.FC<SharePreviewProps> = ({
     };
   }, [isCopied]);
 
-  const viewFullContext = (
-    e: React.MouseEvent<HTMLAnchorElement, MouseEvent>
-  ) => {
-    e.preventDefault();
-    window.location.href = contextUrl;
-  };
-
   const copyUrl = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
     e.preventDefault();
     const url =
@@ -66,7 +62,7 @@ const SharePreview: React.FC<SharePreviewProps> = ({
       style={{ maxWidth: `${window.innerWidth - 16}px` }}
     >
       <div className="share-preview__links">
-        <a onClick={viewFullContext}>View full context</a>
+        <a href={contextUrl}>View full context</a>
         {isCopied ? (
           <span>Copied to clipboard</span>
         ) : (
@@ -85,17 +81,17 @@ const SharePreview: React.FC<SharePreviewProps> = ({
             <p className="share-preview__tilde">∼∼∼ ∼∼∼ ∼∼∼∼∼ ∼∼∼∼∼ ∼∼∼∼∼∼∼∼</p>
             <p className="share-preview__tilde">∼∼ ∼∼∼∼∼∼∼∼ ∼∼ ∼∼∼ ∼ ∼∼∼ ∼∼</p>
             <div className="share-preview__content">
-              <SearchHitContent
+              <HitContent
                 className="share-preview__text share-preview__text--app"
                 maxLength={200}
-                searchHit={searchHit}
+                videoTurn={videoTurn}
+                videoFact={videoFact}
               />
             </div>
             <div className="share-preview__content-meta">
               <p className="share-preview__mytake">MyTake.org</p>
               <p className="share-preview__title">
-                {searchHit.videoFact.fact.title} -{" "}
-                {searchHit.videoFact.fact.primaryDate}
+                {videoFact.fact.title} - {videoFact.fact.primaryDate}
               </p>
             </div>
             <div className="share-preview__icons">

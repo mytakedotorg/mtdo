@@ -1,8 +1,27 @@
+/*
+ * MyTake.org website and tooling.
+ * Copyright (C) 2020 MyTake.org, Inc.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * You can contact us at team@mytake.org
+ */
 import { Foundation, FoundationFetcher } from "../../common/foundation";
 import { groupBy } from "../../common/functions";
 import { VideoCut } from "../../common/social/social";
 import { FT } from "../../java2ts/FT";
-import sampleBookmarks from "./samplebookmarks.json";
+import sampleBookmarks from "./testData/samplebookmarks.json";
 
 export class BookmarksResult {
   constructor(public factHits: FactToBookmarkHits[]) {}
@@ -12,7 +31,7 @@ export class _BookmarksWithData {
   constructor(
     public foundationData: Foundation,
     public mode: BookmarksMode,
-    public bookmarks: Bookmark[]
+    public bookmarksRaw: FTBookmarkIntermediate[]
   ) {}
 }
 
@@ -24,19 +43,20 @@ export enum BookmarksMode {
 export async function getBookmarks(
   mode: BookmarksMode
 ): Promise<BookmarksResult> {
-  const bookmarks = parseBookmarksJSON(await _getTemp());
+  const bookmarks = await _getTemp();
   const builder = new FoundationFetcher();
-  bookmarks.forEach((b) => builder.add(b.content.fact));
+  bookmarks.forEach((b) => builder.add(b.fact));
   const foundationData = await builder.build();
   return _bookmarksImpl(
     new _BookmarksWithData(foundationData, mode, bookmarks)
   );
 }
 
-function _bookmarksImpl(
+export function _bookmarksImpl(
   bookmarksWithData: _BookmarksWithData
 ): BookmarksResult {
-  const { foundationData, mode, bookmarks } = bookmarksWithData;
+  const { foundationData, mode, bookmarksRaw } = bookmarksWithData;
+  const bookmarks = parseBookmarksJSON(bookmarksRaw);
 
   let groupedByFact: Bookmark[][];
   switch (mode) {

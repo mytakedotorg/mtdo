@@ -21,27 +21,9 @@ import React from "react";
 import renderer from "react-test-renderer";
 import { VideoTurn } from "../../common/social/social";
 import { kennedyNixon } from "../../utils/testUtils";
-import { SearchHit } from "./search";
-import SearchHitContent from "./SearchHitContent";
+import SharePreview from "./SharePreview";
 
-interface SearchHitProps {
-  searchHit: SearchHit;
-}
-
-export const SearchHitMock = (componentName: string) => ({
-  searchHit,
-  ...rest
-}: SearchHitProps): JSX.Element => {
-  return (
-    <div>
-      {componentName}: {JSON.stringify(rest)} {searchHit.videoFact.fact.title}{" "}
-      {searchHit.videoTurn.turn} {searchHit.videoTurn.cut}{" "}
-      {searchHit.highlightOffsets}
-    </div>
-  );
-};
-
-test("SearchHitContent renders", () => {
+test("SharePreview renders", () => {
   const videoTurn: VideoTurn = {
     kind: "videoTurn",
     fact: "factHash",
@@ -49,13 +31,14 @@ test("SearchHitContent renders", () => {
     cut: [14, 239],
     bold: [[18, 28]],
   };
-  const searchHit = new SearchHit(
-    [[18, 28, "television"]],
-    kennedyNixon,
-    videoTurn
-  );
   const tree = renderer
-    .create(<SearchHitContent searchHit={searchHit} className="testClass" />)
+    .create(
+      <SharePreview
+        videoFact={kennedyNixon}
+        videoTurn={videoTurn}
+        contextUrl="/foundation/example"
+      />
+    )
     .toJSON();
   expect(tree).toMatchSnapshot();
 });
