@@ -8,7 +8,7 @@ import db.Keys;
 import db.Public;
 import db.tables.records.BookmarksLastChangeRecord;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
@@ -32,7 +32,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class BookmarksLastChange extends TableImpl<BookmarksLastChangeRecord> {
 
-    private static final long serialVersionUID = -302722478;
+    private static final long serialVersionUID = 910196393;
 
     /**
      * The reference instance of <code>public.bookmarks_last_change</code>
@@ -55,7 +55,7 @@ public class BookmarksLastChange extends TableImpl<BookmarksLastChangeRecord> {
     /**
      * The column <code>public.bookmarks_last_change.last_change</code>.
      */
-    public final TableField<BookmarksLastChangeRecord, Timestamp> LAST_CHANGE = createField(DSL.name("last_change"), org.jooq.impl.SQLDataType.TIMESTAMP.nullable(false), this, "");
+    public final TableField<BookmarksLastChangeRecord, LocalDateTime> LAST_CHANGE = createField(DSL.name("last_change"), org.jooq.impl.SQLDataType.LOCALDATETIME.nullable(false), this, "");
 
     /**
      * Create a <code>public.bookmarks_last_change</code> table reference
@@ -145,7 +145,7 @@ public class BookmarksLastChange extends TableImpl<BookmarksLastChangeRecord> {
     // -------------------------------------------------------------------------
 
     @Override
-    public Row2<Integer, Timestamp> fieldsRow() {
+    public Row2<Integer, LocalDateTime> fieldsRow() {
         return (Row2) super.fieldsRow();
     }
 }

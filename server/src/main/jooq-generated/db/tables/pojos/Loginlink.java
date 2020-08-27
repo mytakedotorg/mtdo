@@ -5,7 +5,7 @@ package db.tables.pojos;
 
 
 import java.io.Serializable;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 
 /**
@@ -14,13 +14,13 @@ import java.sql.Timestamp;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Loginlink implements Serializable {
 
-    private static final long serialVersionUID = 924124240;
+    private static final long serialVersionUID = 45597925;
 
-    private String    code;
-    private Timestamp createdAt;
-    private Timestamp expiresAt;
-    private String    requestorIp;
-    private Integer   accountId;
+    private String        code;
+    private LocalDateTime createdAt;
+    private LocalDateTime expiresAt;
+    private String        requestorIp;
+    private Integer       accountId;
 
     public Loginlink() {}
 
@@ -33,11 +33,11 @@ public class Loginlink implements Serializable {
     }
 
     public Loginlink(
-        String    code,
-        Timestamp createdAt,
-        Timestamp expiresAt,
-        String    requestorIp,
-        Integer   accountId
+        String        code,
+        LocalDateTime createdAt,
+        LocalDateTime expiresAt,
+        String        requestorIp,
+        Integer       accountId
     ) {
         this.code = code;
         this.createdAt = createdAt;
@@ -55,20 +55,20 @@ public class Loginlink implements Serializable {
         return this;
     }
 
-    public Timestamp getCreatedAt() {
+    public LocalDateTime getCreatedAt() {
         return this.createdAt;
     }
 
-    public Loginlink setCreatedAt(Timestamp createdAt) {
+    public Loginlink setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
         return this;
     }
 
-    public Timestamp getExpiresAt() {
+    public LocalDateTime getExpiresAt() {
         return this.expiresAt;
     }
 
-    public Loginlink setExpiresAt(Timestamp expiresAt) {
+    public Loginlink setExpiresAt(LocalDateTime expiresAt) {
         this.expiresAt = expiresAt;
         return this;
     }

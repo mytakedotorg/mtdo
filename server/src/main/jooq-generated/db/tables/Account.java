@@ -9,7 +9,7 @@ import db.Public;
 import db.bindings.PostgresInetBinding;
 import db.tables.records.AccountRecord;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
@@ -34,7 +34,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Account extends TableImpl<AccountRecord> {
 
-    private static final long serialVersionUID = 978085316;
+    private static final long serialVersionUID = -1201961153;
 
     /**
      * The reference instance of <code>public.account</code>
@@ -72,7 +72,7 @@ public class Account extends TableImpl<AccountRecord> {
     /**
      * The column <code>public.account.created_at</code>.
      */
-    public final TableField<AccountRecord, Timestamp> CREATED_AT = createField(DSL.name("created_at"), org.jooq.impl.SQLDataType.TIMESTAMP.nullable(false), this, "");
+    public final TableField<AccountRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), org.jooq.impl.SQLDataType.LOCALDATETIME.nullable(false), this, "");
 
     /**
      * The column <code>public.account.created_ip</code>.
@@ -82,7 +82,7 @@ public class Account extends TableImpl<AccountRecord> {
     /**
      * The column <code>public.account.updated_at</code>.
      */
-    public final TableField<AccountRecord, Timestamp> UPDATED_AT = createField(DSL.name("updated_at"), org.jooq.impl.SQLDataType.TIMESTAMP.nullable(false), this, "");
+    public final TableField<AccountRecord, LocalDateTime> UPDATED_AT = createField(DSL.name("updated_at"), org.jooq.impl.SQLDataType.LOCALDATETIME.nullable(false), this, "");
 
     /**
      * The column <code>public.account.updated_ip</code>.
@@ -92,7 +92,7 @@ public class Account extends TableImpl<AccountRecord> {
     /**
      * The column <code>public.account.last_seen_at</code>.
      */
-    public final TableField<AccountRecord, Timestamp> LAST_SEEN_AT = createField(DSL.name("last_seen_at"), org.jooq.impl.SQLDataType.TIMESTAMP.nullable(false), this, "");
+    public final TableField<AccountRecord, LocalDateTime> LAST_SEEN_AT = createField(DSL.name("last_seen_at"), org.jooq.impl.SQLDataType.LOCALDATETIME.nullable(false), this, "");
 
     /**
      * The column <code>public.account.last_seen_ip</code>.
@@ -102,7 +102,7 @@ public class Account extends TableImpl<AccountRecord> {
     /**
      * The column <code>public.account.last_emailed_at</code>.
      */
-    public final TableField<AccountRecord, Timestamp> LAST_EMAILED_AT = createField(DSL.name("last_emailed_at"), org.jooq.impl.SQLDataType.TIMESTAMP.nullable(false), this, "");
+    public final TableField<AccountRecord, LocalDateTime> LAST_EMAILED_AT = createField(DSL.name("last_emailed_at"), org.jooq.impl.SQLDataType.LOCALDATETIME.nullable(false), this, "");
 
     /**
      * Create a <code>public.account</code> table reference
@@ -188,7 +188,7 @@ public class Account extends TableImpl<AccountRecord> {
     // -------------------------------------------------------------------------
 
     @Override
-    public Row11<Integer, String, String, String, Timestamp, String, Timestamp, String, Timestamp, String, Timestamp> fieldsRow() {
+    public Row11<Integer, String, String, String, LocalDateTime, String, LocalDateTime, String, LocalDateTime, String, LocalDateTime> fieldsRow() {
         return (Row11) super.fieldsRow();
     }
 }

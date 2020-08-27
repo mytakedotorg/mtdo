@@ -10,7 +10,7 @@ import db.Public;
 import db.bindings.PostgresInetBinding;
 import db.tables.records.TakepublishedRecord;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
@@ -37,7 +37,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Takepublished extends TableImpl<TakepublishedRecord> {
 
-    private static final long serialVersionUID = 1133805473;
+    private static final long serialVersionUID = 2130555728;
 
     /**
      * The reference instance of <code>public.takepublished</code>
@@ -80,7 +80,7 @@ public class Takepublished extends TableImpl<TakepublishedRecord> {
     /**
      * The column <code>public.takepublished.published_at</code>.
      */
-    public final TableField<TakepublishedRecord, Timestamp> PUBLISHED_AT = createField(DSL.name("published_at"), org.jooq.impl.SQLDataType.TIMESTAMP.nullable(false), this, "");
+    public final TableField<TakepublishedRecord, LocalDateTime> PUBLISHED_AT = createField(DSL.name("published_at"), org.jooq.impl.SQLDataType.LOCALDATETIME.nullable(false), this, "");
 
     /**
      * The column <code>public.takepublished.published_ip</code>.
@@ -90,7 +90,7 @@ public class Takepublished extends TableImpl<TakepublishedRecord> {
     /**
      * The column <code>public.takepublished.deleted_at</code>.
      */
-    public final TableField<TakepublishedRecord, Timestamp> DELETED_AT = createField(DSL.name("deleted_at"), org.jooq.impl.SQLDataType.TIMESTAMP, this, "");
+    public final TableField<TakepublishedRecord, LocalDateTime> DELETED_AT = createField(DSL.name("deleted_at"), org.jooq.impl.SQLDataType.LOCALDATETIME, this, "");
 
     /**
      * The column <code>public.takepublished.deleted_ip</code>.
@@ -225,7 +225,7 @@ public class Takepublished extends TableImpl<TakepublishedRecord> {
     // -------------------------------------------------------------------------
 
     @Override
-    public Row15<Integer, Integer, String, String, JSONB, Timestamp, String, Timestamp, String, Integer, Integer, Integer, Integer, Integer, String> fieldsRow() {
+    public Row15<Integer, Integer, String, String, JSONB, LocalDateTime, String, LocalDateTime, String, Integer, Integer, Integer, Integer, Integer, String> fieldsRow() {
         return (Row15) super.fieldsRow();
     }
 }

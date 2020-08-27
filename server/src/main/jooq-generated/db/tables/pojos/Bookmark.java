@@ -5,7 +5,7 @@ package db.tables.pojos;
 
 
 import java.io.Serializable;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 
 /**
@@ -14,13 +14,13 @@ import java.sql.Timestamp;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Bookmark implements Serializable {
 
-    private static final long serialVersionUID = -460513084;
+    private static final long serialVersionUID = 1989941231;
 
-    private Integer   savedBy;
-    private Timestamp savedOn;
-    private String    factHash;
-    private Integer   cutStart;
-    private Integer   cutEnd;
+    private Integer       savedBy;
+    private LocalDateTime savedOn;
+    private String        factHash;
+    private Integer       cutStart;
+    private Integer       cutEnd;
 
     public Bookmark() {}
 
@@ -33,11 +33,11 @@ public class Bookmark implements Serializable {
     }
 
     public Bookmark(
-        Integer   savedBy,
-        Timestamp savedOn,
-        String    factHash,
-        Integer   cutStart,
-        Integer   cutEnd
+        Integer       savedBy,
+        LocalDateTime savedOn,
+        String        factHash,
+        Integer       cutStart,
+        Integer       cutEnd
     ) {
         this.savedBy = savedBy;
         this.savedOn = savedOn;
@@ -55,11 +55,11 @@ public class Bookmark implements Serializable {
         return this;
     }
 
-    public Timestamp getSavedOn() {
+    public LocalDateTime getSavedOn() {
         return this.savedOn;
     }
 
-    public Bookmark setSavedOn(Timestamp savedOn) {
+    public Bookmark setSavedOn(LocalDateTime savedOn) {
         this.savedOn = savedOn;
         return this;
     }

@@ -5,7 +5,7 @@ package db.tables.pojos;
 
 
 import java.io.Serializable;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 
 /**
@@ -14,18 +14,18 @@ import java.sql.Timestamp;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class FlywaySchemaHistory implements Serializable {
 
-    private static final long serialVersionUID = 1070484060;
+    private static final long serialVersionUID = -241750703;
 
-    private Integer   installedRank;
-    private String    version;
-    private String    description;
-    private String    type;
-    private String    script;
-    private Integer   checksum;
-    private String    installedBy;
-    private Timestamp installedOn;
-    private Integer   executionTime;
-    private Boolean   success;
+    private Integer       installedRank;
+    private String        version;
+    private String        description;
+    private String        type;
+    private String        script;
+    private Integer       checksum;
+    private String        installedBy;
+    private LocalDateTime installedOn;
+    private Integer       executionTime;
+    private Boolean       success;
 
     public FlywaySchemaHistory() {}
 
@@ -43,16 +43,16 @@ public class FlywaySchemaHistory implements Serializable {
     }
 
     public FlywaySchemaHistory(
-        Integer   installedRank,
-        String    version,
-        String    description,
-        String    type,
-        String    script,
-        Integer   checksum,
-        String    installedBy,
-        Timestamp installedOn,
-        Integer   executionTime,
-        Boolean   success
+        Integer       installedRank,
+        String        version,
+        String        description,
+        String        type,
+        String        script,
+        Integer       checksum,
+        String        installedBy,
+        LocalDateTime installedOn,
+        Integer       executionTime,
+        Boolean       success
     ) {
         this.installedRank = installedRank;
         this.version = version;
@@ -129,11 +129,11 @@ public class FlywaySchemaHistory implements Serializable {
         return this;
     }
 
-    public Timestamp getInstalledOn() {
+    public LocalDateTime getInstalledOn() {
         return this.installedOn;
     }
 
-    public FlywaySchemaHistory setInstalledOn(Timestamp installedOn) {
+    public FlywaySchemaHistory setInstalledOn(LocalDateTime installedOn) {
         this.installedOn = installedOn;
         return this;
     }
