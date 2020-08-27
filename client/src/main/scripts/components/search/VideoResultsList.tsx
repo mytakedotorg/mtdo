@@ -19,20 +19,20 @@
  */
 import React from "react";
 import { Bookmark } from "../bookmarks/bookmarks";
-import VideoResult, { PlayEvent } from "../shared/VideoResult";
+import VideoResult, { VideoResultEventHandlers } from "../shared/VideoResult";
 import { SearchResult } from "./search";
 
 export interface VideoResultsListProps {
   bookmarks: Bookmark[];
   dateToDivMap: Map<string, HTMLDivElement>;
   searchResult: SearchResult;
-  onPlayClick: PlayEvent;
+  eventHandlers: VideoResultEventHandlers;
 }
 
 const VideoResultsList: React.FC<VideoResultsListProps> = ({
   bookmarks,
   dateToDivMap,
-  onPlayClick,
+  eventHandlers,
   searchResult,
 }) => {
   const { factHits } = searchResult;
@@ -48,7 +48,7 @@ const VideoResultsList: React.FC<VideoResultsListProps> = ({
                 h.videoTurn.turn,
                 h.videoTurn.cut
               )}
-              onPlayClick={onPlayClick}
+              eventHandlers={eventHandlers}
               videoFact={h.videoFact}
               videoTurn={h.videoTurn}
             />

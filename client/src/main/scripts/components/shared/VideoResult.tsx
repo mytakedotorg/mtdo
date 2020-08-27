@@ -17,7 +17,7 @@
  *
  * You can contact us at team@mytake.org
  */
-import * as React from "react";
+import React from "react";
 import { Bookmark as BookmarkIcon, Play, Share } from "react-feather";
 import { isLoggedIn } from "../../browser";
 import { slugify } from "../../common/functions";
@@ -33,10 +33,16 @@ import {
   convertMillisecondsToSeconds,
   convertSecondsToMilliseconds,
 } from "../../utils/conversions";
-import { Bookmark, BookmarksClient } from "../bookmarks/bookmarks";
+import { Bookmark } from "../bookmarks/bookmarks";
 import DropDown from "../DropDown";
 import HitContent from "./HitContent";
 import SharePreview from "./SharePreview";
+
+export interface VideoResultEventHandlers {
+  onAddBookmark(bookmark: Bookmark): void;
+  onPlayClick: PlayEvent;
+  onRemoveBookmark(bookmark: Bookmark): void;
+}
 
 export type PlayEvent = (
   videoFact: FT.VideoFactContent,
@@ -47,47 +53,59 @@ export interface VideoResultProps {
   bookmarks: Bookmark[];
   videoTurn: VideoTurn;
   videoFact: FT.VideoFactContent;
-  onPlayClick: PlayEvent;
+  eventHandlers: VideoResultEventHandlers;
 }
 
 const VideoResult: React.FC<VideoResultProps> = (props) => {
-  const { bookmarks, onPlayClick, videoFact, videoTurn } = props;
+  const { bookmarks, eventHandlers, videoFact, videoTurn } = props;
   const social = turnToCut(videoTurn, videoFact);
   const bookmark: Bookmark | undefined = bookmarks.find((b) =>
     isBookmarkEqualToSocial(b, social)
   );
+
+  if (videoTurn.fact === "6Gh5BNxWMs8Ole1dqb_u2DJO2vKTEtjT7Cde7wcnt-o=") {
+    console.log(bookmark);
+    console.log(social);
+    if (bookmark) {
+      console.log(isBookmarkEqualToSocial(bookmark, social));
+    }
+  }
 
   const contextUrl = `${Routes.FOUNDATION}/${slugify(
     videoFact.fact.title
   )}/${encodeSocial(social)}`;
 
   const handlePlayClick = () => {
-    onPlayClick(videoFact, social.cut);
+    eventHandlers.onPlayClick(videoFact, social.cut);
   };
 
   const handleBookmarkClick = () => {
     if (isLoggedIn()) {
       if (bookmark) {
-        BookmarksClient.getInstance().remove([
-          {
-            fact: videoTurn.fact,
-            start: convertSecondsToMilliseconds(social.cut[0]),
-            end: convertSecondsToMilliseconds(social.cut[1]),
-            savedAt: bookmark.savedAt.toISOString(),
-          },
-        ]);
+        eventHandlers.onRemoveBookmark(bookmark);
       } else {
-        BookmarksClient.getInstance().add([
-          {
-            fact: videoTurn.fact,
-            start: convertSecondsToMilliseconds(social.cut[0]),
-            end: convertSecondsToMilliseconds(social.cut[1]),
-            savedAt: new Date().toISOString(),
-          },
-        ]);
+        eventHandlers.onAddBookmark({
+          content: social,
+          savedAt: new Date(),
+        });
       }
     } else {
       console.warn("TODO: launch a login modal and then add");
+      /**
+       * Get user's email then,
+       *   1. They have an existing confirmed account.
+       *     - response modal "There is a login link in your email. Click that to continue."
+       *   2. They have an existing unconfirmed account.
+       *     - response modal "There is a login link in your email. Click that to continue.
+       *                      You haven't confirmed your account yet. You have X hours left
+       *                      to confirm your account"
+       *   3. They have no account.
+       *     - Onboarding opportunity.
+       *   4. They've been blocked or rate limited.
+       *   5. Had an account and never confirmed.
+       *
+       *  Routes.API_LOGIN response is LoginCookie | { title: string, body: string} ("Welcome Back", "Go check your email");
+       */
     }
   };
 

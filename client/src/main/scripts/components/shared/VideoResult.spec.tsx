@@ -24,7 +24,7 @@ import { kennedyNixon } from "../../utils/testUtils";
 import { HitContentProps } from "./HitContent";
 import { HitMock } from "./HitContent.spec";
 import { SharePreviewProps } from "./SharePreview";
-import VideoResult from "./VideoResult";
+import VideoResult, { VideoResultEventHandlers } from "./VideoResult";
 
 jest.mock("./SharePreview", () => ({
   __esModule: true,
@@ -36,6 +36,11 @@ jest.mock("./HitContent", () => ({
   default: (props: HitContentProps) => HitMock("HitContent")(props),
 }));
 
+const eventHandlers: VideoResultEventHandlers = {
+  onPlayClick: jest.fn(),
+  onAddBookmark: jest.fn(),
+  onRemoveBookmark: jest.fn(),
+};
 test("VideoResultPreview containing", () => {
   const videoTurn: VideoTurn = {
     kind: "videoTurn",
@@ -50,7 +55,7 @@ test("VideoResultPreview containing", () => {
         bookmarks={[]}
         videoFact={kennedyNixon}
         videoTurn={videoTurn}
-        onPlayClick={jest.fn()}
+        eventHandlers={eventHandlers}
       />
     )
     .toJSON();
@@ -71,7 +76,7 @@ test("VideoResultPreview before and after", () => {
         bookmarks={[]}
         videoFact={kennedyNixon}
         videoTurn={videoTurn}
-        onPlayClick={jest.fn()}
+        eventHandlers={eventHandlers}
       />
     )
     .toJSON();

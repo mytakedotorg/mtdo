@@ -22,7 +22,10 @@ import { groupBy } from "../../common/functions";
 import { VideoCut } from "../../common/social/social";
 import { FT } from "../../java2ts/FT";
 import { Routes } from "../../java2ts/Routes";
-import { convertMillisecondsToSeconds } from "../../utils/conversions";
+import {
+  convertMillisecondsToSeconds,
+  convertSecondsToMilliseconds,
+} from "../../utils/conversions";
 
 export class BookmarksResult {
   constructor(public factHits: FactToBookmarkHits[]) {}
@@ -149,6 +152,17 @@ function parseBookmarksJSON(json: FTBookmarkIntermediate[]): Bookmark[] {
     },
     savedAt: new Date(b.savedAt),
   }));
+}
+
+export function bookmarkToIntermediate(
+  bookmark: Bookmark
+): FTBookmarkIntermediate {
+  return {
+    fact: bookmark.content.fact,
+    start: convertSecondsToMilliseconds(bookmark.content.cut[0]),
+    end: convertSecondsToMilliseconds(bookmark.content.cut[1]),
+    savedAt: bookmark.savedAt.toISOString(),
+  };
 }
 
 export class BookmarksClient {

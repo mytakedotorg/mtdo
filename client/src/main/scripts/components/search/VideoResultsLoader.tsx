@@ -17,9 +17,14 @@
  *
  * You can contact us at team@mytake.org
  */
+import _ from "lodash";
 import React, { useEffect, useState } from "react";
 import { isLoggedIn } from "../../browser";
-import { Bookmark, BookmarksClient } from "../bookmarks/bookmarks";
+import {
+  Bookmark,
+  BookmarksClient,
+  bookmarkToIntermediate,
+} from "../bookmarks/bookmarks";
 import { search, SearchMode, SearchResult } from "./search";
 import SearchContainer from "./SearchContainer";
 
@@ -35,6 +40,36 @@ const VideoResultsLoader: React.FC<VideoResultsLoaderProps> = (props) => {
   const handleModeChange = (newMode: SearchMode) => {
     if (newMode !== mode) {
       setMode(newMode);
+    }
+  };
+
+  const handleAddBookmark = (newBookmark: Bookmark) => {
+    setBookmarks((existingBookmarks) => {
+      return [...existingBookmarks, newBookmark];
+    });
+    try {
+      BookmarksClient.getInstance().add([bookmarkToIntermediate(newBookmark)]);
+    } catch (err: unknown) {
+      setBookmarks((existingBookmarks) => {
+        return existingBookmarks.filter((eb) => !_.isEqual(eb, newBookmark));
+      });
+      throw err;
+    }
+  };
+
+  const handleRemoveBookmark = (oldBookmark: Bookmark) => {
+    setBookmarks((existingBookmarks) => {
+      return existingBookmarks.filter((eb) => !_.isEqual(eb, oldBookmark));
+    });
+    try {
+      BookmarksClient.getInstance().remove([
+        bookmarkToIntermediate(oldBookmark),
+      ]);
+    } catch (err: unknown) {
+      setBookmarks((existingBookmarks) => {
+        return [...existingBookmarks, oldBookmark];
+      });
+      throw err;
     }
   };
 
@@ -58,10 +93,18 @@ const VideoResultsLoader: React.FC<VideoResultsLoaderProps> = (props) => {
     }
   }, []);
 
+  useEffect(() => {
+    console.log(bookmarks);
+  }, [bookmarks]);
+
   return searchResult ? (
     <SearchContainer
       bookmarks={bookmarks}
-      onModeChange={handleModeChange}
+      eventHandlers={{
+        onAddBookmark: handleAddBookmark,
+        onRemoveBookmark: handleRemoveBookmark,
+        onModeChange: handleModeChange,
+      }}
       mode={mode}
       searchResult={searchResult}
     />

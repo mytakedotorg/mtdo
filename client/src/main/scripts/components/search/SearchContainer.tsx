@@ -27,11 +27,17 @@ import { SearchMode, SearchResult } from "./search";
 import SearchRadioButtons from "./SearchRadioButtons";
 import VideoResultsList from "./VideoResultsList";
 
+export interface SearchContainerEventHandlers {
+  onModeChange(mode: SearchMode): void;
+  onAddBookmark(bookmark: Bookmark): void;
+  onRemoveBookmark(bookmark: Bookmark): void;
+}
+
 interface SearchContainerProps {
   bookmarks: Bookmark[];
   mode: SearchMode;
   searchResult: SearchResult;
-  onModeChange(mode: SearchMode): void;
+  eventHandlers: SearchContainerEventHandlers;
 }
 
 interface VideoPlayerState {
@@ -47,7 +53,7 @@ const dateToDivMap: Map<string, HTMLDivElement> = new Map();
 const SearchContainer: React.FC<SearchContainerProps> = ({
   bookmarks,
   mode,
-  onModeChange,
+  eventHandlers,
   searchResult,
 }) => {
   const { factHits, searchQuery } = searchResult;
@@ -121,11 +127,18 @@ const SearchContainer: React.FC<SearchContainerProps> = ({
       </div>
       <div className="results">
         <div className="results__inner-container">
-          <SearchRadioButtons onChange={onModeChange} selectedOption={mode} />
+          <SearchRadioButtons
+            onChange={eventHandlers.onModeChange}
+            selectedOption={mode}
+          />
           <VideoResultsList
             bookmarks={bookmarks}
             dateToDivMap={dateToDivMap}
-            onPlayClick={handlePlayClick}
+            eventHandlers={{
+              onAddBookmark: eventHandlers.onAddBookmark,
+              onRemoveBookmark: eventHandlers.onRemoveBookmark,
+              onPlayClick: handlePlayClick,
+            }}
             searchResult={searchResult}
           />
         </div>

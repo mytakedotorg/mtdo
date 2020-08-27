@@ -33,6 +33,13 @@ const BookmarksResultList: React.FC<BookmarksResultListProps> = ({
   bookmarksResult,
   onPlayClick,
 }) => {
+  const handleAddClick = () => {
+    console.warn("TODO");
+  };
+
+  const handleRemoveClick = () => {
+    console.warn("TODO");
+  };
   return (
     <>
       {bookmarksResult.factHits.map((f, idx) => {
@@ -47,7 +54,11 @@ const BookmarksResultList: React.FC<BookmarksResultListProps> = ({
                 <VideoResult
                   bookmarks={[]}
                   key={getUniqueKey(h.fact, videoTurn.turn, videoTurn.cut)}
-                  onPlayClick={onPlayClick}
+                  eventHandlers={{
+                    onAddBookmark: handleAddClick,
+                    onRemoveBookmark: handleRemoveClick,
+                    onPlayClick: onPlayClick,
+                  }}
                   videoFact={h.fact as FT.VideoFactContent}
                   videoTurn={videoTurn}
                 />
