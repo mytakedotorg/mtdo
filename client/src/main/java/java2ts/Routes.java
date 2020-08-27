@@ -28,6 +28,7 @@ public class Routes {
 	public static final String API_FOLLOW_TELL = "/api/followTell";
 	public static final String API_IMAGES = "/api/images";
 	public static final String API_SEARCH = "/api/search";
+	public static final String API_BOOKMARKS = "/api/bookmarks";
 
 	public static final String MODS = "/mods";
 	public static final String MODS_DRAFTS = "/mods/drafts/";
