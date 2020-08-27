@@ -47,6 +47,7 @@ test("VideoResultPreview containing", () => {
   const tree = renderer
     .create(
       <VideoResult
+        bookmarks={[]}
         videoFact={kennedyNixon}
         videoTurn={videoTurn}
         onPlayClick={jest.fn()}
@@ -67,6 +68,7 @@ test("VideoResultPreview before and after", () => {
   const tree = renderer
     .create(
       <VideoResult
+        bookmarks={[]}
         videoFact={kennedyNixon}
         videoTurn={videoTurn}
         onPlayClick={jest.fn()}

@@ -18,6 +18,7 @@
  * You can contact us at team@mytake.org
  */
 import React, { useEffect, useState } from "react";
+import { Bookmark, BookmarksClient } from "../bookmarks/bookmarks";
 import { search, SearchMode, SearchResult } from "./search";
 import SearchContainer from "./SearchContainer";
 
@@ -25,13 +26,10 @@ interface VideoResultsLoaderProps {
   searchQuery: string;
 }
 
-interface VideoResultsLoaderState {
-  searchResult?: SearchResult;
-}
-
 const VideoResultsLoader: React.FC<VideoResultsLoaderProps> = (props) => {
-  const [state, setState] = useState<VideoResultsLoaderState>({});
+  const [searchResult, setSearchResult] = useState<SearchResult | undefined>();
   const [mode, setMode] = useState<SearchMode>(SearchMode.BeforeAndAfter);
+  const [bookmarks, setBookmarks] = useState<Bookmark[]>([]);
 
   const handleModeChange = (newMode: SearchMode) => {
     if (newMode !== mode) {
@@ -42,19 +40,27 @@ const VideoResultsLoader: React.FC<VideoResultsLoaderProps> = (props) => {
   useEffect(() => {
     async function connectSearchDatabase() {
       const searchResult = await search(props.searchQuery, mode);
-      setState({
-        searchResult,
-      });
+      setSearchResult(searchResult);
     }
 
     connectSearchDatabase();
   }, [mode]);
 
-  return state.searchResult ? (
+  useEffect(() => {
+    async function loadBookmarks() {
+      const bookmarks = await new BookmarksClient().get();
+      setBookmarks(bookmarks);
+    }
+
+    loadBookmarks();
+  }, []);
+
+  return searchResult ? (
     <SearchContainer
+      bookmarks={bookmarks}
       onModeChange={handleModeChange}
       mode={mode}
-      searchResult={state.searchResult}
+      searchResult={searchResult}
     />
   ) : (
     <VideoResultLoadingView />

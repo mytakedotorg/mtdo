@@ -80,6 +80,7 @@ test("SearchContainer social security", () => {
   const tree = renderer
     .create(
       <SearchContainer
+        bookmarks={[]}
         mode={SearchMode.Containing}
         onModeChange={jest.fn()}
         searchResult={result}
@@ -102,6 +103,7 @@ test("SearchContainer social security before and after", () => {
   const tree = renderer
     .create(
       <SearchContainer
+        bookmarks={[]}
         mode={SearchMode.BeforeAndAfter}
         onModeChange={jest.fn()}
         searchResult={result}
@@ -123,6 +125,7 @@ test("SearchContainer no results", () => {
   const tree = renderer
     .create(
       <SearchContainer
+        bookmarks={[]}
         mode={SearchMode.Containing}
         onModeChange={jest.fn()}
         searchResult={result}
@@ -145,6 +148,7 @@ test("SearchContainer wall, -wall street", () => {
   const tree = renderer
     .create(
       <SearchContainer
+        bookmarks={[]}
         mode={SearchMode.Containing}
         onModeChange={jest.fn()}
         searchResult={result}

@@ -18,16 +18,19 @@
  * You can contact us at team@mytake.org
  */
 import React from "react";
+import { Bookmark } from "../bookmarks/bookmarks";
 import VideoResult, { PlayEvent } from "../shared/VideoResult";
 import { SearchResult } from "./search";
 
 export interface VideoResultsListProps {
+  bookmarks: Bookmark[];
   dateToDivMap: Map<string, HTMLDivElement>;
   searchResult: SearchResult;
   onPlayClick: PlayEvent;
 }
 
 const VideoResultsList: React.FC<VideoResultsListProps> = ({
+  bookmarks,
   dateToDivMap,
   onPlayClick,
   searchResult,
@@ -39,6 +42,7 @@ const VideoResultsList: React.FC<VideoResultsListProps> = ({
         const results = f.searchHits.map((h) => {
           return (
             <VideoResult
+              bookmarks={bookmarks}
               key={getUniqueKey(
                 f.videoFact.youtubeId,
                 h.videoTurn.turn,

@@ -54,6 +54,7 @@ test("VideoResultsList social security", () => {
   const tree = renderer
     .create(
       <VideoResultsList
+        bookmarks={[]}
         dateToDivMap={dateToDivMap}
         onPlayClick={jest.fn()}
         searchResult={result}
@@ -75,6 +76,7 @@ test("VideoResultsList no results", () => {
   const tree = renderer
     .create(
       <VideoResultsList
+        bookmarks={[]}
         dateToDivMap={dateToDivMap}
         onPlayClick={jest.fn()}
         searchResult={result}
@@ -97,6 +99,7 @@ test("VideoResultsList wall, -wall street", () => {
   const tree = renderer
     .create(
       <VideoResultsList
+        bookmarks={[]}
         dateToDivMap={dateToDivMap}
         onPlayClick={jest.fn()}
         searchResult={result}

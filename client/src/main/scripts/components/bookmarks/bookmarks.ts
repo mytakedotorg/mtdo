@@ -22,7 +22,7 @@ import { groupBy } from "../../common/functions";
 import { VideoCut } from "../../common/social/social";
 import { FT } from "../../java2ts/FT";
 import { Routes } from "../../java2ts/Routes";
-import sampleBookmarks from "./testData/samplebookmarks.json";
+import { convertMillisecondsToSeconds } from "../../utils/conversions";
 
 export class BookmarksResult {
   constructor(public factHits: FactToBookmarkHits[]) {}
@@ -44,7 +44,7 @@ export enum BookmarksMode {
 export async function getBookmarks(
   mode: BookmarksMode
 ): Promise<BookmarksResult> {
-  const bookmarks = await _getTemp();
+  const bookmarks = await new BookmarksClient().getRaw();
   const builder = new FoundationFetcher();
   bookmarks.forEach((b) => builder.add(b.fact));
   const foundationData = await builder.build();
@@ -125,15 +125,6 @@ export class BookmarkHit {
   ) {}
 }
 
-/**
- * @deprecated TODO until bookmarks endpoint is available
- */
-function _getTemp(): Promise<FTBookmarkIntermediate[]> {
-  return new Promise((res) => {
-    res(sampleBookmarks.bookmarks as FTBookmarkIntermediate[]);
-  });
-}
-
 interface FTBookmarkIntermediate {
   fact: string;
   start: number;
@@ -141,7 +132,7 @@ interface FTBookmarkIntermediate {
   savedAt: string;
 }
 
-interface Bookmark {
+export interface Bookmark {
   savedAt: Date;
   content: VideoCut;
 }
@@ -149,7 +140,10 @@ interface Bookmark {
 function parseBookmarksJSON(json: FTBookmarkIntermediate[]): Bookmark[] {
   return json.map((b) => ({
     content: {
-      cut: [b.start, b.end],
+      cut: [
+        convertMillisecondsToSeconds(b.start),
+        convertMillisecondsToSeconds(b.end),
+      ],
       fact: b.fact,
       kind: "videoCut",
     },
@@ -158,13 +152,17 @@ function parseBookmarksJSON(json: FTBookmarkIntermediate[]): Bookmark[] {
 }
 
 export class BookmarksClient {
-  async get(): Promise<FTBookmarkIntermediate[]> {
+  async getRaw(): Promise<FTBookmarkIntermediate[]> {
     const response = await fetch(
       new Request(Routes.API_BOOKMARKS, {
         method: "get",
       })
     );
     return response.json();
+  }
+
+  async get(): Promise<Bookmark[]> {
+    return parseBookmarksJSON(await this.getRaw());
   }
 
   /**

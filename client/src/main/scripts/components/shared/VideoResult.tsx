@@ -18,9 +18,10 @@
  * You can contact us at team@mytake.org
  */
 import * as React from "react";
-import { Bookmark, Play, Share } from "react-feather";
+import { Bookmark as BookmarkIcon, Play, Share } from "react-feather";
+import { isLoggedIn } from "../../browser";
 import { slugify } from "../../common/functions";
-import { encodeSocial, VideoTurn } from "../../common/social/social";
+import { encodeSocial, VideoCut, VideoTurn } from "../../common/social/social";
 import {
   convertSecondsToTimestamp,
   getSpeaker,
@@ -28,6 +29,11 @@ import {
 } from "../../common/video";
 import { FT } from "../../java2ts/FT";
 import { Routes } from "../../java2ts/Routes";
+import {
+  convertMillisecondsToSeconds,
+  convertSecondsToMilliseconds,
+} from "../../utils/conversions";
+import { Bookmark, BookmarksClient } from "../bookmarks/bookmarks";
 import DropDown from "../DropDown";
 import HitContent from "./HitContent";
 import SharePreview from "./SharePreview";
@@ -38,14 +44,14 @@ export type PlayEvent = (
 ) => any;
 
 export interface VideoResultProps {
-  isBookmarked?: boolean;
+  bookmarks: Bookmark[];
   videoTurn: VideoTurn;
   videoFact: FT.VideoFactContent;
   onPlayClick: PlayEvent;
 }
 
 const VideoResult: React.FC<VideoResultProps> = (props) => {
-  const { isBookmarked, onPlayClick, videoFact, videoTurn } = props;
+  const { bookmarks, onPlayClick, videoFact, videoTurn } = props;
   const social = turnToCut(videoTurn, videoFact);
 
   const contextUrl = `${Routes.FOUNDATION}/${slugify(
@@ -57,9 +63,22 @@ const VideoResult: React.FC<VideoResultProps> = (props) => {
   };
 
   const handleBookmarkClick = () => {
-    throw "TODO";
+    if (isLoggedIn()) {
+      new BookmarksClient().add([
+        {
+          fact: videoTurn.fact,
+          start: convertSecondsToMilliseconds(social.cut[0]),
+          end: convertSecondsToMilliseconds(social.cut[1]),
+          savedAt: new Date().toISOString(),
+        },
+      ]);
+    } else {
+      throw "TODO: launch a login modal and then add";
+    }
   };
 
+  const isBookmarked =
+    bookmarks.findIndex((b) => isBookmarkEqualToSocial(b, social)) !== -1;
   let bookmarkClass = "turn__button turn__button--bookmark";
   if (isBookmarked) {
     bookmarkClass += " turn__button--bookmark-solid";
@@ -96,7 +115,7 @@ const VideoResult: React.FC<VideoResultProps> = (props) => {
             <Play size={20} />
           </button>
           <button className={bookmarkClass} onClick={handleBookmarkClick}>
-            <Bookmark />
+            <BookmarkIcon />
           </button>
         </div>
       </div>
@@ -109,4 +128,18 @@ const VideoResult: React.FC<VideoResultProps> = (props) => {
   );
 };
 
+function isBookmarkEqualToSocial(
+  bookmark: Bookmark,
+  social: VideoCut
+): boolean {
+  const normalizedSocialCut = social.cut.map((t) =>
+    convertMillisecondsToSeconds(convertSecondsToMilliseconds(t))
+  );
+  return (
+    bookmark.content.fact === social.fact &&
+    bookmark.content.kind === social.kind &&
+    bookmark.content.cut[0] === normalizedSocialCut[0] &&
+    bookmark.content.cut[1] === normalizedSocialCut[1]
+  );
+}
 export default VideoResult;

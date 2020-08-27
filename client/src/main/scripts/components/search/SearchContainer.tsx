@@ -19,6 +19,7 @@
  */
 import React, { useState } from "react";
 import { FT } from "../../java2ts/FT";
+import { Bookmark } from "../bookmarks/bookmarks";
 import SearchBar from "../SearchBar";
 import VideoLite from "../VideoLite";
 import NGramViewer from "./NGramViewer";
@@ -27,6 +28,7 @@ import SearchRadioButtons from "./SearchRadioButtons";
 import VideoResultsList from "./VideoResultsList";
 
 interface SearchContainerProps {
+  bookmarks: Bookmark[];
   mode: SearchMode;
   searchResult: SearchResult;
   onModeChange(mode: SearchMode): void;
@@ -43,6 +45,7 @@ interface VideoPlayerState {
 const dateToDivMap: Map<string, HTMLDivElement> = new Map();
 
 const SearchContainer: React.FC<SearchContainerProps> = ({
+  bookmarks,
   mode,
   onModeChange,
   searchResult,
@@ -120,6 +123,7 @@ const SearchContainer: React.FC<SearchContainerProps> = ({
         <div className="results__inner-container">
           <SearchRadioButtons onChange={onModeChange} selectedOption={mode} />
           <VideoResultsList
+            bookmarks={bookmarks}
             dateToDivMap={dateToDivMap}
             onPlayClick={handlePlayClick}
             searchResult={searchResult}

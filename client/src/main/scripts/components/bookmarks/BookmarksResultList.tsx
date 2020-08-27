@@ -45,6 +45,7 @@ const BookmarksResultList: React.FC<BookmarksResultListProps> = ({
               );
               return (
                 <VideoResult
+                  bookmarks={[]}
                   key={getUniqueKey(h.fact, videoTurn.turn, videoTurn.cut)}
                   onPlayClick={onPlayClick}
                   videoFact={h.fact as FT.VideoFactContent}
