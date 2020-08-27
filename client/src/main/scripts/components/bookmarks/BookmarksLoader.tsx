@@ -17,8 +17,16 @@
  *
  * You can contact us at team@mytake.org
  */
+import _ from "lodash";
 import React, { useEffect, useState } from "react";
-import { BookmarksMode, BookmarksResult, getBookmarks } from "./bookmarks";
+import {
+  Bookmark,
+  BookmarksClient,
+  BookmarksMode,
+  BookmarksResult,
+  bookmarkToIntermediate,
+  getBookmarks,
+} from "./bookmarks";
 import BookmarksList from "./BookmarksList";
 
 interface BookmarksLoaderProps {}
@@ -30,10 +38,42 @@ interface BookmarksLoaderState {
 const BookmarksLoader: React.FC<BookmarksLoaderProps> = (props) => {
   const [state, setState] = useState<BookmarksLoaderState>({});
   const [mode, setMode] = useState<BookmarksMode>(BookmarksMode.DateBookmarked);
+  // TODO rename this variable to be more semantic
+  const [bookmarks, setBookmarks] = useState<Bookmark[]>([]);
 
   const handleModeChange = (newMode: BookmarksMode) => {
     if (newMode !== mode) {
       setMode(newMode);
+    }
+  };
+
+  const handleAddBookmark = (newBookmark: Bookmark) => {
+    setBookmarks((existingBookmarks) => {
+      return [...existingBookmarks, newBookmark];
+    });
+    try {
+      BookmarksClient.getInstance().add([bookmarkToIntermediate(newBookmark)]);
+    } catch (err: unknown) {
+      setBookmarks((existingBookmarks) => {
+        return existingBookmarks.filter((eb) => !_.isEqual(eb, newBookmark));
+      });
+      throw err;
+    }
+  };
+
+  const handleRemoveBookmark = (oldBookmark: Bookmark) => {
+    setBookmarks((existingBookmarks) => {
+      return existingBookmarks.filter((eb) => !_.isEqual(eb, oldBookmark));
+    });
+    try {
+      BookmarksClient.getInstance().remove([
+        bookmarkToIntermediate(oldBookmark),
+      ]);
+    } catch (err: unknown) {
+      setBookmarks((existingBookmarks) => {
+        return [...existingBookmarks, oldBookmark];
+      });
+      throw err;
     }
   };
 
@@ -43,6 +83,11 @@ const BookmarksLoader: React.FC<BookmarksLoaderProps> = (props) => {
       setState({
         bookmarksResult,
       });
+      setBookmarks(
+        bookmarksResult.factHits.flatMap((fh) =>
+          fh.bookmarkHits.map((bh) => bh.bookmark)
+        )
+      );
     }
 
     connect();
@@ -51,8 +96,13 @@ const BookmarksLoader: React.FC<BookmarksLoaderProps> = (props) => {
   return state.bookmarksResult ? (
     <BookmarksList
       mode={mode}
+      bookmarks={bookmarks}
       bookmarksResult={state.bookmarksResult}
-      onModeChange={handleModeChange}
+      eventHandlers={{
+        onAddBookmark: handleAddBookmark,
+        onRemoveBookmark: handleRemoveBookmark,
+        onModeChange: handleModeChange,
+      }}
     />
   ) : (
     <BookmarksLoadingView />

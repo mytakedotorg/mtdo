@@ -21,25 +21,20 @@ import React from "react";
 import { slugify } from "../../common/functions";
 import { cutToTurn } from "../../common/video";
 import { FT } from "../../java2ts/FT";
-import VideoResult, { PlayEvent } from "../shared/VideoResult";
-import { BookmarksResult } from "./bookmarks";
+import VideoResult, { VideoResultEventHandlers } from "../shared/VideoResult";
+import { Bookmark, BookmarksResult } from "./bookmarks";
 
 export interface BookmarksResultListProps {
+  bookmarks: Bookmark[];
   bookmarksResult: BookmarksResult;
-  onPlayClick: PlayEvent;
+  eventHandlers: VideoResultEventHandlers;
 }
 
 const BookmarksResultList: React.FC<BookmarksResultListProps> = ({
+  bookmarks,
   bookmarksResult,
-  onPlayClick,
+  eventHandlers,
 }) => {
-  const handleAddClick = () => {
-    console.warn("TODO");
-  };
-
-  const handleRemoveClick = () => {
-    console.warn("TODO");
-  };
   return (
     <>
       {bookmarksResult.factHits.map((f, idx) => {
@@ -52,13 +47,9 @@ const BookmarksResultList: React.FC<BookmarksResultListProps> = ({
               );
               return (
                 <VideoResult
-                  bookmarks={[]}
+                  bookmarks={bookmarks}
                   key={getUniqueKey(h.fact, videoTurn.turn, videoTurn.cut)}
-                  eventHandlers={{
-                    onAddBookmark: handleAddClick,
-                    onRemoveBookmark: handleRemoveClick,
-                    onPlayClick: onPlayClick,
-                  }}
+                  eventHandlers={eventHandlers}
                   videoFact={h.fact as FT.VideoFactContent}
                   videoTurn={videoTurn}
                 />

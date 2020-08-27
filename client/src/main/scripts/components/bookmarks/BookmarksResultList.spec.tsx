@@ -20,7 +20,10 @@
 import React from "react";
 import renderer from "react-test-renderer";
 import { FoundationHarness } from "../../common/foundationTest";
-import { VideoResultProps } from "../shared/VideoResult";
+import {
+  VideoResultEventHandlers,
+  VideoResultProps,
+} from "../shared/VideoResult";
 import { BookmarksMode, _bookmarksImpl, _BookmarksWithData } from "./bookmarks";
 import BookmarksResultList from "./BookmarksResultList";
 import samplebookmarks from "./testData/samplebookmarks.json";
@@ -37,6 +40,12 @@ jest.mock("../shared/VideoResult", () => ({
   },
 }));
 
+const eventHandlers: VideoResultEventHandlers = {
+  onPlayClick: jest.fn(),
+  onRemoveBookmark: jest.fn(),
+  onAddBookmark: jest.fn(),
+};
+
 test("BookmarksResultList DateHappened", () => {
   const result = _bookmarksImpl(
     new _BookmarksWithData(
@@ -48,7 +57,11 @@ test("BookmarksResultList DateHappened", () => {
 
   const tree = renderer
     .create(
-      <BookmarksResultList onPlayClick={jest.fn()} bookmarksResult={result} />
+      <BookmarksResultList
+        bookmarks={[]}
+        eventHandlers={eventHandlers}
+        bookmarksResult={result}
+      />
     )
     .toJSON();
   expect(tree).toMatchSnapshot();
@@ -65,7 +78,11 @@ test("BookmarksResultList DateBookmarked", () => {
 
   const tree = renderer
     .create(
-      <BookmarksResultList onPlayClick={jest.fn()} bookmarksResult={result} />
+      <BookmarksResultList
+        bookmarks={[]}
+        eventHandlers={eventHandlers}
+        bookmarksResult={result}
+      />
     )
     .toJSON();
   expect(tree).toMatchSnapshot();
@@ -82,7 +99,11 @@ test("BookmarksResultList no results", () => {
 
   const tree = renderer
     .create(
-      <BookmarksResultList onPlayClick={jest.fn()} bookmarksResult={result} />
+      <BookmarksResultList
+        bookmarks={[]}
+        eventHandlers={eventHandlers}
+        bookmarksResult={result}
+      />
     )
     .toJSON();
   expect(tree).toMatchSnapshot();

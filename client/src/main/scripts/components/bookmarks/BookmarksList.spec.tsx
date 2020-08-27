@@ -21,7 +21,7 @@ import React from "react";
 import renderer from "react-test-renderer";
 import { FoundationHarness } from "../../common/foundationTest";
 import { BookmarksMode, _bookmarksImpl, _BookmarksWithData } from "./bookmarks";
-import BookmarksList from "./BookmarksList";
+import BookmarksList, { BookmarksListEventHandlers } from "./BookmarksList";
 import { BookmarksResultListProps } from "./BookmarksResultList";
 import samplebookmarks from "./testData/samplebookmarks.json";
 
@@ -40,6 +40,12 @@ jest.mock("./BookmarksResultList", () => ({
   },
 }));
 
+const eventHandlers: BookmarksListEventHandlers = {
+  onModeChange: jest.fn(),
+  onRemoveBookmark: jest.fn(),
+  onAddBookmark: jest.fn(),
+};
+
 test("BookmarksList date happened", () => {
   const result = _bookmarksImpl(
     new _BookmarksWithData(
@@ -52,8 +58,9 @@ test("BookmarksList date happened", () => {
   const tree = renderer
     .create(
       <BookmarksList
+        bookmarks={[]}
         mode={BookmarksMode.DateBookmarked}
-        onModeChange={jest.fn()}
+        eventHandlers={eventHandlers}
         bookmarksResult={result}
       />
     )
@@ -73,8 +80,9 @@ test("BookmarksList date bookmarked", () => {
   const tree = renderer
     .create(
       <BookmarksList
+        bookmarks={[]}
         mode={BookmarksMode.DateBookmarked}
-        onModeChange={jest.fn()}
+        eventHandlers={eventHandlers}
         bookmarksResult={result}
       />
     )
@@ -94,8 +102,9 @@ test("BookmarksList no results", () => {
   const tree = renderer
     .create(
       <BookmarksList
+        bookmarks={[]}
         mode={BookmarksMode.DateBookmarked}
-        onModeChange={jest.fn()}
+        eventHandlers={eventHandlers}
         bookmarksResult={result}
       />
     )

@@ -19,18 +19,26 @@
  */
 import React from "react";
 import { FT } from "../../java2ts/FT";
-import { BookmarksMode, BookmarksResult } from "./bookmarks";
+import { Bookmark, BookmarksMode, BookmarksResult } from "./bookmarks";
 import BookmarksResultList from "./BookmarksResultList";
 import BookmarksSortBy from "./BookmarksSortBy";
 
+export interface BookmarksListEventHandlers {
+  onModeChange(mode: BookmarksMode): void;
+  onAddBookmark(bookmark: Bookmark): void;
+  onRemoveBookmark(bookmark: Bookmark): void;
+}
+
 interface BookmarksListProps {
   mode: BookmarksMode;
+  bookmarks: Bookmark[];
   bookmarksResult: BookmarksResult;
-  onModeChange(mode: BookmarksMode): void;
+  eventHandlers: BookmarksListEventHandlers;
 }
 const BookmarksList: React.FC<BookmarksListProps> = ({
+  bookmarks,
   bookmarksResult,
-  onModeChange,
+  eventHandlers,
   mode,
 }) => {
   const handlePlayClick = (
@@ -42,9 +50,17 @@ const BookmarksList: React.FC<BookmarksListProps> = ({
   return (
     <div className="results">
       <div className="results__inner-container">
-        <BookmarksSortBy onChange={onModeChange} selectedOption={mode} />
+        <BookmarksSortBy
+          onChange={eventHandlers.onModeChange}
+          selectedOption={mode}
+        />
         <BookmarksResultList
-          onPlayClick={handlePlayClick}
+          bookmarks={bookmarks}
+          eventHandlers={{
+            onAddBookmark: eventHandlers.onAddBookmark,
+            onRemoveBookmark: eventHandlers.onRemoveBookmark,
+            onPlayClick: handlePlayClick,
+          }}
           bookmarksResult={bookmarksResult}
         />
       </div>
