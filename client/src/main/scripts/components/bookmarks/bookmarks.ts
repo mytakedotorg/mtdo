@@ -21,6 +21,7 @@ import { Foundation, FoundationFetcher } from "../../common/foundation";
 import { groupBy } from "../../common/functions";
 import { VideoCut } from "../../common/social/social";
 import { FT } from "../../java2ts/FT";
+import { Routes } from "../../java2ts/Routes";
 import sampleBookmarks from "./testData/samplebookmarks.json";
 
 export class BookmarksResult {
@@ -142,4 +143,44 @@ function parseBookmarksJSON(json: FTBookmarkIntermediate[]): Bookmark[] {
     },
     savedAt: new Date(b.savedAt),
   }));
+}
+
+export class BookmarksClient {
+  async get(): Promise<FTBookmarkIntermediate[]> {
+    const response = await fetch(
+      new Request(Routes.API_BOOKMARKS, {
+        method: "get",
+      })
+    );
+    return response.json();
+  }
+
+  /**
+   * If you want, you could set the date of the results to this server-supplied date.
+   * It's super unimportant, completely fine to ignore it.
+   */
+  async add(bookmarks: FTBookmarkIntermediate[]): Promise<Date> {
+    const response = await fetch(
+      new Request(Routes.API_BOOKMARKS, {
+        method: "put",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(bookmarks),
+      })
+    );
+    return new Date(response.headers.get("Last-Modified")!);
+  }
+
+  async remove(bookmarks: FTBookmarkIntermediate[]): Promise<void> {
+    await fetch(
+      new Request(Routes.API_BOOKMARKS, {
+        method: "delete",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(bookmarks),
+      })
+    );
+  }
 }
