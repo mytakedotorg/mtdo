@@ -77,7 +77,7 @@ public class AuthUser {
 		return JWT.create()
 				.withIssuer(ISSUER_AUDIENCE)
 				.withAudience(ISSUER_AUDIENCE)
-				.withIssuedAt(time.nowDate())
+				.withIssuedAt(Time.toDate(time.now()))
 				.withSubject(Integer.toString(account.getId()))
 				.withClaim(CLAIM_USERNAME, account.getUsername());
 	}

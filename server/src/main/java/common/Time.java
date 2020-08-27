@@ -19,13 +19,16 @@
  */
 package common;
 
-import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
@@ -34,12 +37,8 @@ import java.util.concurrent.TimeUnit;
 public interface Time {
 	long nowMs();
 
-	default AddableDate nowDate() {
-		return new AddableDate(nowMs());
-	}
-
-	default AddableTimestamp nowTimestamp() {
-		return new AddableTimestamp(nowMs());
+	default LocalDateTime now() {
+		return LocalDateTime.ofInstant(Instant.ofEpochMilli(nowMs()), ZoneOffset.UTC);
 	}
 
 	default boolean isBeforeNowPlus(java.util.Date date, int duration, TimeUnit unit) {
@@ -123,19 +122,23 @@ public interface Time {
 		return dateFormat;
 	}
 
-	public static Timestamp parseIso(String str) {
-		return Timestamp.from(Instant.parse(str));
+	public static LocalDateTime parseIso(String str) {
+		return LocalDateTime.from(Instant.parse(str));
 	}
 
-	public static String toIso(Timestamp timestamp) {
-		return timestamp.toInstant().toString();
+	public static String toIso(LocalDateTime timestamp) {
+		return OffsetDateTime.of(timestamp, ZoneOffset.UTC).toString();
 	}
 
-	public static Timestamp parseGMT(String str) {
-		return Timestamp.from(Instant.from(DateTimeFormatter.RFC_1123_DATE_TIME.parse(str)));
+	public static LocalDateTime parseGMT(String str) {
+		return LocalDateTime.from(DateTimeFormatter.RFC_1123_DATE_TIME.parse(str));
 	}
 
-	public static String toGMT(Timestamp timestamp) {
-		return DateTimeFormatter.RFC_1123_DATE_TIME.format(timestamp.toLocalDateTime().atOffset(ZoneOffset.UTC));
+	public static String toGMT(LocalDateTime timestamp) {
+		return DateTimeFormatter.RFC_1123_DATE_TIME.format(timestamp.atOffset(ZoneOffset.UTC));
+	}
+
+	public static Date toDate(LocalDateTime dateTime) {
+		return Date.from(dateTime.atZone(ZoneId.systemDefault()).toInstant());
 	}
 }

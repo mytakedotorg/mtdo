@@ -81,7 +81,7 @@ public class InitialData {
 
 	static TakerevisionRecord draft(DSLContext dsl, Time time, int user, String title, TakeBuilder builder) {
 		TakerevisionRecord rev = dsl.newRecord(TAKEREVISION);
-		rev.setCreatedAt(time.nowTimestamp());
+		rev.setCreatedAt(time.now());
 		rev.setCreatedIp(IP);
 		rev.setTitle(title);
 		rev.setBlocks(builder.buildJson());
@@ -103,13 +103,13 @@ public class InitialData {
 		AccountRecord record = dsl.newRecord(ACCOUNT);
 		record.setUsername(username);
 		record.setEmail(email);
-		record.setCreatedAt(time.nowTimestamp());
+		record.setCreatedAt(time.now());
 		record.setCreatedIp(IP);
-		record.setUpdatedAt(time.nowTimestamp());
+		record.setUpdatedAt(time.now());
 		record.setUpdatedIp(IP);
-		record.setLastSeenAt(time.nowTimestamp());
+		record.setLastSeenAt(time.now());
 		record.setLastSeenIp(IP);
-		record.setLastEmailedAt(time.nowTimestamp());
+		record.setLastEmailedAt(time.now());
 		record.insert();
 		return record.getId();
 	}
@@ -140,7 +140,7 @@ public class InitialData {
 		record.setTitle(title);
 		String slugified = Text.slugify(title);
 		record.setTitleSlug(slugified);
-		record.setPublishedAt(time.nowTimestamp());
+		record.setPublishedAt(time.now());
 		record.setPublishedIp(IP);
 		return record;
 	}

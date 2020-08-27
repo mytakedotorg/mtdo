@@ -45,8 +45,9 @@ import forms.api.FormValidation.Sensitive;
 import forms.meta.PostForm;
 import forms.meta.TypedFormDef;
 import forms.meta.Validator;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Optional;
-import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 import java2ts.Routes;
 import org.jooby.Request;
@@ -90,10 +91,10 @@ public class CreateAccountForm extends PostForm<CreateAccountForm> {
 				return retry;
 			}
 
-			Time.AddableTimestamp now = req.require(Time.class).nowTimestamp();
+			LocalDateTime now = req.require(Time.class).now();
 			String ip = req.require(IpGetter.class).ip(req);
 			confirm = urlCode.createRecord(req, dsl, now, ip);
-			confirm.setExpiresAt(now.plus(CONFIRM_WITHIN_MINUTES, TimeUnit.MINUTES));
+			confirm.setExpiresAt(now.plus(CONFIRM_WITHIN_MINUTES, ChronoUnit.MINUTES));
 			confirm.setUsername(username);
 			confirm.setEmail(email);
 			confirm.insert();
@@ -141,7 +142,7 @@ public class CreateAccountForm extends PostForm<CreateAccountForm> {
 		String email = CREATE_EMAIL.parseOrDefault(req, "");
 
 		Optional<AuthUser> userOpt = AuthUser.authOpt(req);
-		Time.AddableTimestamp now = req.require(Time.class).nowTimestamp();
+		LocalDateTime now = req.require(Time.class).now();
 		String ip = req.require(IpGetter.class).ip(req);
 		DbMisc.transaction(req, dsl -> {
 			ConfirmaccountlinkRecord record = urlCode.tryGetRecord(req, dsl);

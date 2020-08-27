@@ -38,8 +38,9 @@ import db.tables.records.LoginlinkRecord;
 import forms.api.FormValidation;
 import forms.meta.PostForm;
 import forms.meta.Validator;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 import java2ts.Routes;
 import org.jooby.Mutant;
 import org.jooby.Request;
@@ -72,11 +73,11 @@ public class LoginForm extends PostForm<LoginForm> {
 			if (account == null) {
 				return retry.addError(LOGIN_EMAIL, "No account for this email");
 			} else {
-				Time.AddableTimestamp now = req.require(Time.class).nowTimestamp();
+				LocalDateTime now = req.require(Time.class).now();
 				String ip = req.require(IpGetter.class).ip(req);
 
 				LoginlinkRecord login = urlCode.createRecord(req, dsl, now, ip);
-				login.setExpiresAt(now.plus(EXPIRES_MINUTES, TimeUnit.MINUTES));
+				login.setExpiresAt(now.plus(EXPIRES_MINUTES, ChronoUnit.MINUTES));
 				login.setAccountId(account.getId());
 				login.insert();
 
@@ -101,12 +102,12 @@ public class LoginForm extends PostForm<LoginForm> {
 	}
 
 	public static void confirm(Request req, Response rsp) throws Throwable {
-		Time.AddableTimestamp now = req.require(Time.class).nowTimestamp();
+		LocalDateTime now = req.require(Time.class).now();
 		try (DSLContext dsl = req.require(DSLContext.class)) {
 			LoginlinkRecord link = urlCode.tryGetRecord(req, dsl);
 			String ip = req.require(IpGetter.class).ip(req);
 			String errorMsg;
-			if (link == null || now.after(link.getExpiresAt())) {
+			if (link == null || now.isAfter(link.getExpiresAt())) {
 				errorMsg = "This link expired, try again.";
 			} else if (link != null && !ip.equals(link.getRequestorIp())) {
 				errorMsg = "Make sure to open the link from the same device you requested it from.";
