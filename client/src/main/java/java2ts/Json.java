@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2017 MyTake.org, Inc.
+ * Copyright (C) 2017-2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -20,6 +20,9 @@
 package java2ts;
 
 import com.jsoniter.output.JsonStream;
+import com.jsoniter.spi.TypeLiteral;
+import java.util.ArrayList;
+import java.util.List;
 
 /** Marker interface so JsoniterModule can know that an object is Json. */
 @jsweet.lang.Interface
@@ -27,5 +30,20 @@ public interface Json {
 	@jsweet.lang.Erased
 	default String toJson() {
 		return JsonStream.serialize(this);
+	}
+
+	public static class JsonList<T> extends ArrayList<T> implements Json {
+		private static final long serialVersionUID = 2713357272578032990L;
+
+		public final TypeLiteral<List<T>> literal;
+
+		public JsonList(TypeLiteral<List<T>> literal) {
+			this.literal = literal;
+		}
+
+		public JsonList(TypeLiteral<List<T>> literal, int capacity) {
+			super(capacity);
+			this.literal = literal;
+		}
 	}
 }

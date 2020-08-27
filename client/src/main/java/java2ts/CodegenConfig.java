@@ -38,8 +38,7 @@ public class CodegenConfig implements StaticCodegenConfig {
 	@Override
 	public TypeLiteral[] whatToCodegen() {
 		return new TypeLiteral[]{
-				TypeLiteral.create(Bookmark.class),
-				TypeLiteral.create(Bookmark.ListOf.class),
+				TypeLiteral.create(Bookmark.class), Bookmark.LIST,
 				TypeLiteral.create(DraftRev.class),
 				TypeLiteral.create(DraftPost.class),
 				TypeLiteral.create(PublishResult.class),

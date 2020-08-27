@@ -19,7 +19,8 @@
  */
 package java2ts;
 
-import java.util.ArrayList;
+import com.jsoniter.spi.TypeLiteral;
+import java.util.List;
 
 public class Bookmark implements Json {
 	public String savedOn;
@@ -27,7 +28,5 @@ public class Bookmark implements Json {
 	public int start; // char offset for doc, ms for video
 	public int end; // char offset for doc, ms for video
 
-	public static class ListOf extends ArrayList<Bookmark> implements Json {
-		private static final long serialVersionUID = 5991438978669636174L;
-	}
+	public static final TypeLiteral<List<Bookmark>> LIST = new TypeLiteral<List<Bookmark>>() {};
 }
