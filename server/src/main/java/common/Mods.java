@@ -73,13 +73,13 @@ public class Mods {
 		if (moderatorEmails.isEmpty()) {
 			return;
 		}
-		registry.require(EmailSender.class).send(htmlEmail -> {
-			for (String moderatorEmail : moderatorEmails) {
-				htmlEmail.addTo(moderatorEmail);
-			}
-			sender.accept(htmlEmail);
-			htmlEmail.setSubject("[MyTake.org mod] " + htmlEmail.getSubject());
-		});
+		//		registry.require(EmailSender.class).send(htmlEmail -> {
+		//			for (String moderatorEmail : moderatorEmails) {
+		//				htmlEmail.addTo(moderatorEmail);
+		//			}
+		//			sender.accept(htmlEmail);
+		//			htmlEmail.setSubject("[MyTake.org mod] " + htmlEmail.getSubject());
+		//		});
 	}
 
 	private static class Module implements Jooby.Module {

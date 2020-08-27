@@ -86,7 +86,7 @@ public class Prod extends Jooby {
 		jooby.use(new IpGetter.Module());
 		CustomAssets.initTemplates(jooby);
 		EmailSender.init(jooby);
-		Mods.init(jooby);
+		//		Mods.init(jooby);
 		SocialEmbed.init(jooby);
 		jooby.use(new JsoniterModule());
 		jooby.use(new MyFlash());
@@ -114,7 +114,7 @@ public class Prod extends Jooby {
 		jooby.use(new Profile());
 		// But it is okay to put the error tracing stuff after that
 		jooby.use(new RedirectException.Module());
-		jooby.use(new controllers.ErrorPages());
+		//jooby.use(new controllers.ErrorPages());
 	}
 
 	public static void main(String[] args) {
