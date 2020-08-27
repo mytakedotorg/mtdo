@@ -63,14 +63,6 @@ const VideoResult: React.FC<VideoResultProps> = (props) => {
     isBookmarkEqualToSocial(b, social)
   );
 
-  if (videoTurn.fact === "6Gh5BNxWMs8Ole1dqb_u2DJO2vKTEtjT7Cde7wcnt-o=") {
-    console.log(bookmark);
-    console.log(social);
-    if (bookmark) {
-      console.log(isBookmarkEqualToSocial(bookmark, social));
-    }
-  }
-
   const contextUrl = `${Routes.FOUNDATION}/${slugify(
     videoFact.fact.title
   )}/${encodeSocial(social)}`;
@@ -165,11 +157,14 @@ function isBookmarkEqualToSocial(
   const normalizedSocialCut = social.cut.map((t) =>
     convertMillisecondsToSeconds(convertSecondsToMilliseconds(t))
   );
+  const normalizedBookmarkCut = bookmark.content.cut.map((t) =>
+    convertMillisecondsToSeconds(convertSecondsToMilliseconds(t))
+  );
   return (
     bookmark.content.fact === social.fact &&
     bookmark.content.kind === social.kind &&
-    bookmark.content.cut[0] === normalizedSocialCut[0] &&
-    bookmark.content.cut[1] === normalizedSocialCut[1]
+    normalizedBookmarkCut[0] === normalizedSocialCut[0] &&
+    normalizedBookmarkCut[1] === normalizedSocialCut[1]
   );
 }
 export default VideoResult;

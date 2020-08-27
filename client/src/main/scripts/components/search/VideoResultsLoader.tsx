@@ -93,10 +93,6 @@ const VideoResultsLoader: React.FC<VideoResultsLoaderProps> = (props) => {
     }
   }, []);
 
-  useEffect(() => {
-    console.log(bookmarks);
-  }, [bookmarks]);
-
   return searchResult ? (
     <SearchContainer
       bookmarks={bookmarks}
