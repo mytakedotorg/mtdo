@@ -28,6 +28,8 @@ import com.jsoniter.output.JsonStreamPool;
 import com.jsoniter.spi.DecodingMode;
 import com.jsoniter.spi.Slice;
 import com.typesafe.config.Config;
+
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import org.jooby.Env;
 import org.jooby.Jooby;
@@ -67,9 +69,15 @@ public class JsoniterModule implements Jooby.Module {
 				} finally {
 					JsonStreamPool.returnJsonStream(stream);
 				}
+			} else if (value == com.diffplug.common.collect.ImmutableList.of()) {
+				ctx.type(MediaType.json)
+					.length(EMPTY_JSON_LIST.length)
+					.send(EMPTY_JSON_LIST);
 			}
 		}
 	}
+
+	private static final byte[] EMPTY_JSON_LIST = "[]".getBytes(StandardCharsets.UTF_8);
 
 	static class JsonParser implements Parser {
 		@Override
