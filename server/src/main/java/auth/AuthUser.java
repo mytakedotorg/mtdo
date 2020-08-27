@@ -103,6 +103,15 @@ public class AuthUser {
 		}
 	}
 
+	/** Extracts the current AuthUser from the request, or sends 403 request. */
+	public static AuthUser authApi(Request req) {
+		try {
+			return auth(req);
+		} catch (JWTVerificationException e) {
+			throw new AuthModule.Error403();
+		}
+	}
+
 	/** Extracts the current AuthUser from the request, or throws a JWTVerificationException. */
 	public static AuthUser auth(Request req) throws JWTVerificationException {
 		// we might have done this for the request already, let's check

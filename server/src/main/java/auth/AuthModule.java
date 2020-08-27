@@ -93,6 +93,9 @@ public class AuthModule implements Jooby.Module {
 					.param(LOGIN_REASON, err.getCause().getMessage())
 					.build());
 		});
+		env.router().err(Error403.class, (req, rsp, err) -> {
+			rsp.status(Status.FORBIDDEN);
+		});
 		// page for tinfoil agent to gain access
 		PostForm.hook(env.router(), TinfoilLoginForm.class, (req, form) -> {
 			return views.Auth.tinfoilLogin.template(form.markup());
@@ -104,6 +107,10 @@ public class AuthModule implements Jooby.Module {
 			String email = req.ifFlash(FLASH_EMAIL).orElse(null);
 			return email == null ? Results.redirect("/") : emailToTemplate.apply(email);
 		};
+	}
+
+	static class Error403 extends RuntimeException {
+		private static final long serialVersionUID = -6040081842021224398L;
 	}
 
 	public static final String FLASH_EMAIL = "email";
