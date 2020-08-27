@@ -24,9 +24,6 @@ import common.Time;
 import io.restassured.http.ContentType;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-import java2ts.Bookmark;
 import java2ts.Routes;
 import javax.ws.rs.core.Response.Status;
 import org.assertj.core.api.Assertions;
@@ -34,7 +31,6 @@ import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
-import org.joda.time.Instant;
 import org.junit.ClassRule;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
@@ -65,8 +61,8 @@ public class BookmarkApiTest {
 		dev.givenUser("samples")
 				.contentType(ContentType.JSON)
 				.body("["
-						+ "{\"savedOn\":\"1970-01-01T00:00:00.000Z\",\"factHash\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"start\":2,\"end\":718},"
-						+ "{\"savedOn\":\"1970-01-01T00:00:00.000Z\",\"factHash\":\"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\",\"start\":3,\"end\":14159}"
+						+ "{\"savedAt\":\"1970-01-01T00:00:00.000Z\",\"fact\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"start\":2,\"end\":718},"
+						+ "{\"savedAt\":\"1970-01-01T00:00:00.000Z\",\"fact\":\"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\",\"start\":3,\"end\":14159}"
 						+ "]")
 				.put(Routes.API_BOOKMARKS).then()
 				.statusCode(Status.CREATED.getStatusCode())
@@ -80,8 +76,8 @@ public class BookmarkApiTest {
 				.statusCode(Status.OK.getStatusCode())
 				.contentType(ContentType.JSON)
 				.body(hasToString("["
-						+ "{\"savedOn\":\"1980-01-01T00:00:00Z\",\"factHash\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"start\":2,\"end\":718},"
-						+ "{\"savedOn\":\"1980-01-01T00:00:00Z\",\"factHash\":\"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\",\"start\":3,\"end\":14159}"
+						+ "{\"savedAt\":\"1980-01-01T00:00:00Z\",\"fact\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"start\":2,\"end\":718},"
+						+ "{\"savedAt\":\"1980-01-01T00:00:00Z\",\"fact\":\"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\",\"start\":3,\"end\":14159}"
 						+ "]"))
 				.header("Last-Modified", Matchers.equalTo("Mon, 31 Dec 1979 16:00:00 GMT"));
 	}
@@ -93,8 +89,8 @@ public class BookmarkApiTest {
 		dev.givenUser("samples")
 				.contentType(ContentType.JSON)
 				.body("["
-						+ "{\"savedOn\":\"1970-01-01T00:00:00Z\",\"factHash\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"start\":2,\"end\":718},"
-						+ "{\"savedOn\":\"1970-01-01T00:00:00Z\",\"factHash\":\"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\",\"start\":3,\"end\":14159}"
+						+ "{\"savedAt\":\"1970-01-01T00:00:00Z\",\"fact\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"start\":2,\"end\":718},"
+						+ "{\"savedAt\":\"1970-01-01T00:00:00Z\",\"fact\":\"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\",\"start\":3,\"end\":14159}"
 						+ "]")
 				.put(Routes.API_BOOKMARKS).then()
 				.statusCode(Status.CREATED.getStatusCode())
@@ -106,28 +102,34 @@ public class BookmarkApiTest {
 				.statusCode(Status.OK.getStatusCode())
 				.contentType(ContentType.JSON)
 				.body(hasToString("["
-						+ "{\"savedOn\":\"1981-01-01T00:00:00Z\",\"factHash\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"start\":2,\"end\":718},"
-						+ "{\"savedOn\":\"1981-01-01T00:00:00Z\",\"factHash\":\"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\",\"start\":3,\"end\":14159}"
+						+ "{\"savedAt\":\"1981-01-01T00:00:00Z\",\"fact\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"start\":2,\"end\":718},"
+						+ "{\"savedAt\":\"1981-01-01T00:00:00Z\",\"fact\":\"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\",\"start\":3,\"end\":14159}"
 						+ "]"))
 				.header("Last-Modified", Matchers.equalTo("Wed, 31 Dec 1980 16:00:00 GMT"));
 	}
 
-	private static Bookmark a() {
-		Bookmark bookmark = new Bookmark();
-		bookmark.factHash = Stream.generate(() -> "a").limit(44).collect(Collectors.joining());
-		bookmark.savedOn = Instant.ofEpochMilli(0).toString();
-		bookmark.start = 2;
-		bookmark.end = 718;
-		return bookmark;
+	@Test
+	public void _05_delete() throws ParseException {
+		// move forward by another year
+		dev.time().setCurrentMs(ts("1982"));
+
+		dev.givenUser("samples")
+				.contentType(ContentType.JSON)
+				.body("[{\"savedAt\":\"1970-01-01T00:00:00Z\",\"fact\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"start\":2,\"end\":718}]")
+				.delete(Routes.API_BOOKMARKS).then()
+				.statusCode(Status.OK.getStatusCode())
+				// so the last modified does too
+				.header("Last-Modified", Matchers.equalTo("Thu, 31 Dec 1981 16:00:00 GMT"))
+				.body(Matchers.equalTo(""));
 	}
 
-	private static Bookmark b() {
-		Bookmark bookmark = new Bookmark();
-		bookmark.factHash = Stream.generate(() -> "b").limit(44).collect(Collectors.joining());
-		bookmark.savedOn = Instant.ofEpochMilli(1_000_000_000).toString();
-		bookmark.start = 3;
-		bookmark.end = 14159;
-		return bookmark;
+	@Test
+	public void _06_getAfterDelete() throws ParseException {
+		dev.givenUser("samples").get(Routes.API_BOOKMARKS).then()
+				.statusCode(Status.OK.getStatusCode())
+				.contentType(ContentType.JSON)
+				.body(hasToString("[{\"savedAt\":\"1981-01-01T00:00:00Z\",\"fact\":\"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\",\"start\":3,\"end\":14159}]"))
+				.header("Last-Modified", Matchers.equalTo("Thu, 31 Dec 1981 16:00:00 GMT"));
 	}
 
 	private static long ts(String year) throws ParseException {

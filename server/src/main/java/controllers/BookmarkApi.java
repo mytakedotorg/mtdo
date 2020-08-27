@@ -82,7 +82,7 @@ public class BookmarkApi implements Jooby.Module {
 				InsertValuesStep5<BookmarkRecord, Integer, Timestamp, String, Integer, Integer> insert = dsl.insertInto(BOOKMARK,
 						BOOKMARK.SAVED_BY, BOOKMARK.SAVED_ON, BOOKMARK.FACT_HASH, BOOKMARK.CUT_START, BOOKMARK.CUT_END);
 				for (Bookmark bookmark : bookmarks) {
-					insert = insert.values(auth.id(), now, bookmark.factHash, bookmark.start, bookmark.end);
+					insert = insert.values(auth.id(), now, bookmark.fact, bookmark.start, bookmark.end);
 				}
 				// because we update timestamps on duplicate keys, there will always be an update
 				insert.onDuplicateKeyUpdate().set(BOOKMARK.SAVED_ON, now).execute();
@@ -100,7 +100,7 @@ public class BookmarkApi implements Jooby.Module {
 				for (Bookmark bookmark : bookmarks) {
 					dsl.deleteFrom(BOOKMARK)
 							.where(BOOKMARK.SAVED_BY.eq(auth.id())
-									.and(BOOKMARK.FACT_HASH.eq(bookmark.factHash))
+									.and(BOOKMARK.FACT_HASH.eq(bookmark.fact))
 									.and(BOOKMARK.CUT_START.eq(bookmark.start))
 									.and(BOOKMARK.CUT_END.eq(bookmark.end)))
 							.execute();
@@ -146,8 +146,8 @@ public class BookmarkApi implements Jooby.Module {
 
 	private static Bookmark toPojo(BookmarkRecord record) {
 		Bookmark bookmark = new Bookmark();
-		bookmark.savedOn = Time.toIso(record.getSavedOn());
-		bookmark.factHash = record.getFactHash();
+		bookmark.savedAt = Time.toIso(record.getSavedOn());
+		bookmark.fact = record.getFactHash();
 		bookmark.start = record.getCutStart();
 		bookmark.end = record.getCutEnd();
 		return bookmark;
