@@ -20,10 +20,11 @@
 package controllers;
 
 import common.JoobyDevRule;
-import common.Time;
+import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.TimeZone;
 import java2ts.Routes;
 import javax.ws.rs.core.Response.Status;
 import org.assertj.core.api.Assertions;
@@ -41,11 +42,11 @@ public class BookmarkApiTest {
 	@ClassRule
 	public static JoobyDevRule dev = JoobyDevRule.initialData();
 
-	//	@Test
-	//	public void notAuth() {
-	//		RestAssured.given().get(Routes.API_BOOKMARKS).then()
-	//				.statusCode(Status.FORBIDDEN.getStatusCode());
-	//	}
+	@Test
+	public void notAuth() {
+		RestAssured.given().get(Routes.API_BOOKMARKS).then()
+				.statusCode(Status.FORBIDDEN.getStatusCode());
+	}
 
 	@Test
 	public void _01_empty() {
@@ -134,7 +135,7 @@ public class BookmarkApiTest {
 
 	private static long ts(String year) throws ParseException {
 		SimpleDateFormat format = new SimpleDateFormat("yyyy");
-		Time.setTZ(format);
+		format.setTimeZone(TimeZone.getTimeZone("UTC"));
 		return format.parse(year).getTime();
 	}
 
