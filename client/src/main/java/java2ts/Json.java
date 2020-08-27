@@ -32,6 +32,7 @@ public interface Json {
 		return JsonStream.serialize(this);
 	}
 
+	@jsweet.lang.Erased
 	public static class JsonList<T> extends ArrayList<T> implements Json {
 		private static final long serialVersionUID = 2713357272578032990L;
 

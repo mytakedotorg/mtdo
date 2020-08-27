@@ -22,9 +22,10 @@ package java2ts;
 import com.jsoniter.spi.TypeLiteral;
 import java.util.List;
 
+@jsweet.lang.Erased
 public class Bookmark implements Json {
-	public String savedOn;
-	public String factHash;
+	public String savedAt;
+	public String fact;
 	public int start; // char offset for doc, ms for video
 	public int end; // char offset for doc, ms for video
 
