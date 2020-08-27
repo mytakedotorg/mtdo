@@ -5,7 +5,7 @@ package db.tables.pojos;
 
 
 import java.io.Serializable;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 import org.jooq.JSONB;
 
@@ -16,23 +16,23 @@ import org.jooq.JSONB;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Takepublished implements Serializable {
 
-    private static final long serialVersionUID = 1108538331;
+    private static final long serialVersionUID = 132189872;
 
-    private Integer   id;
-    private Integer   userId;
-    private String    title;
-    private String    titleSlug;
-    private JSONB     blocks;
-    private Timestamp publishedAt;
-    private String    publishedIp;
-    private Timestamp deletedAt;
-    private String    deletedIp;
-    private Integer   countView;
-    private Integer   countLike;
-    private Integer   countBookmark;
-    private Integer   countSpam;
-    private Integer   countIllegal;
-    private String    imageUrl;
+    private Integer       id;
+    private Integer       userId;
+    private String        title;
+    private String        titleSlug;
+    private JSONB         blocks;
+    private LocalDateTime publishedAt;
+    private String        publishedIp;
+    private LocalDateTime deletedAt;
+    private String        deletedIp;
+    private Integer       countView;
+    private Integer       countLike;
+    private Integer       countBookmark;
+    private Integer       countSpam;
+    private Integer       countIllegal;
+    private String        imageUrl;
 
     public Takepublished() {}
 
@@ -55,21 +55,21 @@ public class Takepublished implements Serializable {
     }
 
     public Takepublished(
-        Integer   id,
-        Integer   userId,
-        String    title,
-        String    titleSlug,
-        JSONB     blocks,
-        Timestamp publishedAt,
-        String    publishedIp,
-        Timestamp deletedAt,
-        String    deletedIp,
-        Integer   countView,
-        Integer   countLike,
-        Integer   countBookmark,
-        Integer   countSpam,
-        Integer   countIllegal,
-        String    imageUrl
+        Integer       id,
+        Integer       userId,
+        String        title,
+        String        titleSlug,
+        JSONB         blocks,
+        LocalDateTime publishedAt,
+        String        publishedIp,
+        LocalDateTime deletedAt,
+        String        deletedIp,
+        Integer       countView,
+        Integer       countLike,
+        Integer       countBookmark,
+        Integer       countSpam,
+        Integer       countIllegal,
+        String        imageUrl
     ) {
         this.id = id;
         this.userId = userId;
@@ -133,11 +133,11 @@ public class Takepublished implements Serializable {
         return this;
     }
 
-    public Timestamp getPublishedAt() {
+    public LocalDateTime getPublishedAt() {
         return this.publishedAt;
     }
 
-    public Takepublished setPublishedAt(Timestamp publishedAt) {
+    public Takepublished setPublishedAt(LocalDateTime publishedAt) {
         this.publishedAt = publishedAt;
         return this;
     }
@@ -151,11 +151,11 @@ public class Takepublished implements Serializable {
         return this;
     }
 
-    public Timestamp getDeletedAt() {
+    public LocalDateTime getDeletedAt() {
         return this.deletedAt;
     }
 
-    public Takepublished setDeletedAt(Timestamp deletedAt) {
+    public Takepublished setDeletedAt(LocalDateTime deletedAt) {
         this.deletedAt = deletedAt;
         return this;
     }

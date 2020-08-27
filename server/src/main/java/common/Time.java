@@ -19,123 +19,46 @@
  */
 package common;
 
-import java.sql.Date;
-import java.sql.Timestamp;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
-import java.util.Locale;
-import java.util.TimeZone;
-import java.util.concurrent.TimeUnit;
+import java.time.format.FormatStyle;
+import java.util.Date;
 
 /** Abstracts access to time, so we can control it for testing. */
 public interface Time {
-	long nowMs();
-
-	default AddableDate nowDate() {
-		return new AddableDate(nowMs());
-	}
-
-	default AddableTimestamp nowTimestamp() {
-		return new AddableTimestamp(nowMs());
-	}
-
-	default boolean isBeforeNowPlus(java.util.Date date, int duration, TimeUnit unit) {
-		return isBeforeNowPlus(date.getTime(), duration, unit);
-	}
-
-	default boolean isBeforeNowPlus(long time, int duration, TimeUnit unit) {
-		long mustBeBefore = nowMs() + unit.toMillis(duration);
-		return time < mustBeBefore;
-	}
-
-	/** A Timestamp that supports `plus` and `minus`. */
-	static class AddableTimestamp extends Timestamp {
-		private static final long serialVersionUID = -5087596357768273865L;
-
-		public AddableTimestamp(long time) {
-			super(time);
-		}
-
-		public AddableTimestamp plus(long duration, TimeUnit timeUnit) {
-			return new AddableTimestamp(getTime() + timeUnit.toMillis(duration));
-		}
-
-		public AddableTimestamp minus(long duration, TimeUnit timeUnit) {
-			return new AddableTimestamp(getTime() - timeUnit.toMillis(duration));
-		}
-	}
-
-	/** A Date that supports `plus` and `minus`. */
-	static class AddableDate extends Date {
-		private static final long serialVersionUID = 7583328505217059642L;
-
-		public AddableDate(long date) {
-			super(date);
-		}
-
-		public AddableDate plus(long duration, TimeUnit timeUnit) {
-			return new AddableDate(getTime() + timeUnit.toMillis(duration));
-		}
-
-		public AddableDate minus(long duration, TimeUnit timeUnit) {
-			return new AddableDate(getTime() - timeUnit.toMillis(duration));
-		}
-	}
-
-	/** Makes a Timestamp addable. */
-	public static AddableTimestamp addable(Timestamp timestamp) {
-		if (timestamp instanceof AddableTimestamp) {
-			return (AddableTimestamp) timestamp;
-		} else {
-			return new AddableTimestamp(timestamp.getTime());
-		}
-	}
-
-	/** Makes a Date addable. */
-	public static AddableDate addable(Date timestamp) {
-		if (timestamp instanceof AddableDate) {
-			return (AddableDate) timestamp;
-		} else {
-			return new AddableDate(timestamp.getTime());
-		}
-	}
-
-	/** January 1, 1970 */
-	public static DateFormat formatLong() {
-		return setTZ(new SimpleDateFormat("MMMM d, yyyy", Locale.ROOT));
-	}
+	/** DateTime in UTC. */
+	LocalDateTime now();
 
 	/** Jan 01 1970 */
-	public static DateFormat formatCompact() {
-		return setTZ(new SimpleDateFormat("MMM dd yyyy", Locale.ROOT));
+	public static DateTimeFormatter formatCompact() {
+		return DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM);
 	}
 
-	/** 1970-01-01 */
-	public static DateFormat formatHTML() {
-		return setTZ(new SimpleDateFormat("yyyy-MM-dd", Locale.ROOT));
+	public static LocalDateTime parseIso(String str) {
+		return LocalDateTime.from(Instant.parse(str));
 	}
 
-	static DateFormat setTZ(DateFormat dateFormat) {
-		dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-		return dateFormat;
+	public static String toIso(LocalDateTime timestamp) {
+		return OffsetDateTime.of(timestamp, ZoneOffset.UTC).toString();
 	}
 
-	public static Timestamp parseIso(String str) {
-		return Timestamp.from(Instant.parse(str));
+	public static LocalDateTime parseGMT(String str) {
+		return LocalDateTime.from(DateTimeFormatter.RFC_1123_DATE_TIME.parse(str));
 	}
 
-	public static String toIso(Timestamp timestamp) {
-		return timestamp.toInstant().toString();
+	public static String toGMT(LocalDateTime timestamp) {
+		return DateTimeFormatter.RFC_1123_DATE_TIME.format(timestamp.atOffset(ZoneOffset.UTC));
 	}
 
-	public static Timestamp parseGMT(String str) {
-		return Timestamp.from(Instant.from(DateTimeFormatter.RFC_1123_DATE_TIME.parse(str)));
+	public static Date toJud(LocalDateTime dateTime) {
+		return Date.from(dateTime.atZone(ZoneId.systemDefault()).toInstant());
 	}
 
-	public static String toGMT(Timestamp timestamp) {
-		return DateTimeFormatter.RFC_1123_DATE_TIME.format(timestamp.toLocalDateTime().atOffset(ZoneOffset.UTC));
+	public static LocalDateTime fromJud(Date date) {
+		return new java.sql.Timestamp(date.getTime()).toLocalDateTime();
 	}
 }

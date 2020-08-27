@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2017 MyTake.org, Inc.
+ * Copyright (C) 2017-2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -21,20 +21,26 @@ package common;
 
 import com.google.inject.Binder;
 import com.typesafe.config.Config;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import org.jooby.Env;
 import org.jooby.Jooby;
 
 /** Time provider where time can be manually forwarded by the test. */
 public class DevTime implements Time {
-	private long currentMs = 0L;
+	private LocalDateTime now = LocalDateTime.ofEpochSecond(0, 0, ZoneOffset.UTC);
 
-	public void setCurrentMs(long currentMs) {
-		this.currentMs = currentMs;
+	public void setNow(LocalDateTime now) {
+		this.now = now;
+	}
+
+	public void setYear(int year) {
+		now = LocalDateTime.of(year, 1, 1, 0, 0);
 	}
 
 	@Override
-	public long nowMs() {
-		return currentMs;
+	public LocalDateTime now() {
+		return now;
 	}
 
 	public static class Module implements Jooby.Module {

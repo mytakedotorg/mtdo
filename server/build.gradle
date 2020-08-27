@@ -36,7 +36,7 @@ flywayJooq {
 		database.inputSchema = 'public'
 		generate.pojos = true
 		generate.fluentSetters = true
-		generate.javaTimeTypes = false
+		generate.javaTimeTypes = true
 		target.packageName = 'db'
 		target.directory = 'src/main/jooq-generated'
 	}

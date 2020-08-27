@@ -5,7 +5,7 @@ package db.tables.pojos;
 
 
 import java.io.Serializable;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 
 /**
@@ -14,14 +14,14 @@ import java.sql.Timestamp;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Confirmaccountlink implements Serializable {
 
-    private static final long serialVersionUID = -1617000302;
+    private static final long serialVersionUID = 1710837149;
 
-    private String    code;
-    private Timestamp createdAt;
-    private Timestamp expiresAt;
-    private String    requestorIp;
-    private String    username;
-    private String    email;
+    private String        code;
+    private LocalDateTime createdAt;
+    private LocalDateTime expiresAt;
+    private String        requestorIp;
+    private String        username;
+    private String        email;
 
     public Confirmaccountlink() {}
 
@@ -35,12 +35,12 @@ public class Confirmaccountlink implements Serializable {
     }
 
     public Confirmaccountlink(
-        String    code,
-        Timestamp createdAt,
-        Timestamp expiresAt,
-        String    requestorIp,
-        String    username,
-        String    email
+        String        code,
+        LocalDateTime createdAt,
+        LocalDateTime expiresAt,
+        String        requestorIp,
+        String        username,
+        String        email
     ) {
         this.code = code;
         this.createdAt = createdAt;
@@ -59,20 +59,20 @@ public class Confirmaccountlink implements Serializable {
         return this;
     }
 
-    public Timestamp getCreatedAt() {
+    public LocalDateTime getCreatedAt() {
         return this.createdAt;
     }
 
-    public Confirmaccountlink setCreatedAt(Timestamp createdAt) {
+    public Confirmaccountlink setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
         return this;
     }
 
-    public Timestamp getExpiresAt() {
+    public LocalDateTime getExpiresAt() {
         return this.expiresAt;
     }
 
-    public Confirmaccountlink setExpiresAt(Timestamp expiresAt) {
+    public Confirmaccountlink setExpiresAt(LocalDateTime expiresAt) {
         this.expiresAt = expiresAt;
         return this;
     }

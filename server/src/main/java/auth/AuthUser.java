@@ -34,6 +34,7 @@ import common.Time;
 import common.UrlEncodedPath;
 import db.tables.pojos.Account;
 import java.text.ParseException;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -77,7 +78,7 @@ public class AuthUser {
 		return JWT.create()
 				.withIssuer(ISSUER_AUDIENCE)
 				.withAudience(ISSUER_AUDIENCE)
-				.withIssuedAt(time.nowDate())
+				.withIssuedAt(Time.toJud(time.now()))
 				.withSubject(Integer.toString(account.getId()))
 				.withClaim(CLAIM_USERNAME, account.getUsername());
 	}
@@ -131,7 +132,7 @@ public class AuthUser {
 				.withAudience(ISSUER_AUDIENCE)
 				.build()
 				.verify(loginCookie.value());
-		if (!req.require(Time.class).isBeforeNowPlus(decoded.getIssuedAt(), LOGIN_DAYS, TimeUnit.DAYS)) {
+		if (req.require(Time.class).now().isAfter(Time.fromJud(decoded.getIssuedAt()).plus(LOGIN_DAYS, ChronoUnit.DAYS))) {
 			throw new TokenExpiredException("Your login timed out.");
 		}
 		// create the logged-in AuthUser

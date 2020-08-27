@@ -7,7 +7,7 @@ package db.tables.pojos;
 import db.enums.Reaction;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 
 /**
@@ -16,13 +16,13 @@ import java.sql.Timestamp;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Takereaction implements Serializable {
 
-    private static final long serialVersionUID = -202143652;
+    private static final long serialVersionUID = 380406341;
 
-    private Integer   takeId;
-    private Integer   userId;
-    private Reaction  kind;
-    private Timestamp reactedAt;
-    private String    reactedIp;
+    private Integer       takeId;
+    private Integer       userId;
+    private Reaction      kind;
+    private LocalDateTime reactedAt;
+    private String        reactedIp;
 
     public Takereaction() {}
 
@@ -35,11 +35,11 @@ public class Takereaction implements Serializable {
     }
 
     public Takereaction(
-        Integer   takeId,
-        Integer   userId,
-        Reaction  kind,
-        Timestamp reactedAt,
-        String    reactedIp
+        Integer       takeId,
+        Integer       userId,
+        Reaction      kind,
+        LocalDateTime reactedAt,
+        String        reactedIp
     ) {
         this.takeId = takeId;
         this.userId = userId;
@@ -75,11 +75,11 @@ public class Takereaction implements Serializable {
         return this;
     }
 
-    public Timestamp getReactedAt() {
+    public LocalDateTime getReactedAt() {
         return this.reactedAt;
     }
 
-    public Takereaction setReactedAt(Timestamp reactedAt) {
+    public Takereaction setReactedAt(LocalDateTime reactedAt) {
         this.reactedAt = reactedAt;
         return this;
     }

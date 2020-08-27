@@ -107,7 +107,7 @@ public class Drafts implements Jooby.Module {
 				TakerevisionRecord rev = dsl.newRecord(TAKEREVISION);
 				rev.setTitle(post.title);
 				rev.setBlocks(JSONB.valueOf(post.blocks.toString()));
-				rev.setCreatedAt(req.require(Time.class).nowTimestamp());
+				rev.setCreatedAt(req.require(Time.class).now());
 				rev.setCreatedIp(req.require(IpGetter.class).ip(req));
 
 				if (draft != null && draft.getLastRevision().intValue() == post.parentRev.lastrevid) {
@@ -162,7 +162,7 @@ public class Drafts implements Jooby.Module {
 				published.setTitle(post.title);
 				published.setTitleSlug(titleSlug);
 				published.setBlocks(JSONB.valueOf(post.blocks.toString()));
-				published.setPublishedAt(req.require(Time.class).nowTimestamp());
+				published.setPublishedAt(req.require(Time.class).now());
 				published.setPublishedIp(req.require(IpGetter.class).ip(req));
 				published.setImageUrl(post.imageUrl);
 				published.insert();

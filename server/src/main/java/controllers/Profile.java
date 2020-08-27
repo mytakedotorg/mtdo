@@ -172,7 +172,7 @@ public class Profile implements Jooby.Module {
 					FollowRecord followRecord = dsl.newRecord(FOLLOW);
 					followRecord.setAuthor(authorId);
 					followRecord.setFollower(user.id());
-					followRecord.setFollowedAt(req.require(Time.class).nowTimestamp());
+					followRecord.setFollowedAt(req.require(Time.class).now());
 					followRecord.insert();
 					followRes.isFollowing = true;
 				} else {

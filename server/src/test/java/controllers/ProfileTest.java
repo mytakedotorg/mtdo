@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2018 MyTake.org, Inc.
+ * Copyright (C) 2018-2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -60,7 +60,7 @@ public class ProfileTest {
 			reaction.setTakeId(take.getId());
 			reaction.setKind(Reaction.like);
 			reaction.setReactedIp("127.0.0.1");
-			reaction.setReactedAt(dev.time().nowTimestamp());
+			reaction.setReactedAt(dev.time().now());
 			reaction.insert();
 		}
 		// look at other's stars
@@ -75,7 +75,7 @@ public class ProfileTest {
 			FollowRecord follow = dsl.newRecord(FOLLOW);
 			follow.setAuthor(other.getId());
 			follow.setFollower(samples.getId());
-			follow.setFollowedAt(dev.time().nowTimestamp());
+			follow.setFollowedAt(dev.time().now());
 			follow.insert();
 		}
 		Snapshot.match("/followers", dev.givenUser("other").get("other?tab=followers"));

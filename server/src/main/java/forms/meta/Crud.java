@@ -27,7 +27,6 @@ import forms.api.FormValidation;
 import forms.api.FormValidation.Sensitive;
 import forms.api.RockerRaw;
 import java.math.BigDecimal;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -106,10 +105,6 @@ public class Crud<R extends UpdatableRecord<R>> extends PostForm<Crud<R>> {
 
 	public Crud<R> fieldBigDecimal(String label, TableField<R, BigDecimal> dbField) {
 		return field(label, "number", dbField, MetaField.bigDecimal(dbField.getName()));
-	}
-
-	public Crud<R> fieldTimestamp(String label, TableField<R, Timestamp> dbField) {
-		return field(label, "date", dbField, MetaField.timestamp(dbField.getName()));
 	}
 
 	public Crud<R> fieldBool(String label, TableField<R, Boolean> dbField) {
