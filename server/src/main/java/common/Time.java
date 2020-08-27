@@ -23,6 +23,9 @@ import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAccessor;
 import java.util.Locale;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
@@ -118,5 +121,21 @@ public interface Time {
 	static DateFormat setTZ(DateFormat dateFormat) {
 		dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 		return dateFormat;
+	}
+
+	public static Timestamp parseIso(String str) {
+		return Timestamp.from(Instant.parse(str));
+	}
+
+	public static String toIso(Timestamp timestamp) {
+		return timestamp.toInstant().toString();
+	}
+
+	public static Timestamp parseGMT(String str) {
+		return Timestamp.from(Instant.from(DateTimeFormatter.RFC_1123_DATE_TIME.parse(str)));
+	}
+
+	public static String toGMT(Timestamp timestamp) {
+		return DateTimeFormatter.RFC_1123_DATE_TIME.format(timestamp.toInstant());
 	}
 }
