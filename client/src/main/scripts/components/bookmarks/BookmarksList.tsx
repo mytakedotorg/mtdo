@@ -45,7 +45,7 @@ const BookmarksList: React.FC<BookmarksListProps> = ({
     videoFact: FT.VideoFactContent,
     clipRange: [number, number]
   ) => {
-    throw "todo";
+    console.warn("TODO play the video");
   };
   return (
     <div className="results">
