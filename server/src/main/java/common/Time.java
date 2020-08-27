@@ -24,8 +24,8 @@ import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.TemporalAccessor;
 import java.util.Locale;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
@@ -136,6 +136,6 @@ public interface Time {
 	}
 
 	public static String toGMT(Timestamp timestamp) {
-		return DateTimeFormatter.RFC_1123_DATE_TIME.format(timestamp.toInstant());
+		return DateTimeFormatter.RFC_1123_DATE_TIME.format(timestamp.toLocalDateTime().atOffset(ZoneOffset.UTC));
 	}
 }

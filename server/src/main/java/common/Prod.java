@@ -21,6 +21,7 @@ package common;
 
 import auth.AuthModule;
 import controllers.About;
+import controllers.BookmarkApi;
 import controllers.DiscourseAuth;
 import controllers.Drafts;
 import controllers.FoundationAssets;
@@ -101,6 +102,7 @@ public class Prod extends Jooby {
 		jooby.use(new HomeFeed());
 		jooby.use(new FoundationAssets());
 		jooby.use(new SearchModule());
+		jooby.use(new BookmarkApi());
 		jooby.use(new About());
 		jooby.use(new Drafts());
 		jooby.use(new AuthModule());
