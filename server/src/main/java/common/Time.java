@@ -19,17 +19,14 @@
  */
 package common;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.util.Date;
-import java.util.Locale;
-import java.util.TimeZone;
 
 /** Abstracts access to time, so we can control it for testing. */
 public interface Time {
@@ -41,10 +38,8 @@ public interface Time {
 	}
 
 	/** Jan 01 1970 */
-	public static DateFormat formatCompact() {
-		SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd yyyy", Locale.ROOT);
-		dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-		return dateFormat;
+	public static DateTimeFormatter formatCompact() {
+		return DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM);
 	}
 
 	public static LocalDateTime parseIso(String str) {
