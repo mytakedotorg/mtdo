@@ -18,6 +18,7 @@
  * You can contact us at team@mytake.org
  */
 import React, { useEffect, useState } from "react";
+import { isLoggedIn } from "../../browser";
 import { Bookmark, BookmarksClient } from "../bookmarks/bookmarks";
 import { search, SearchMode, SearchResult } from "./search";
 import SearchContainer from "./SearchContainer";
@@ -48,11 +49,13 @@ const VideoResultsLoader: React.FC<VideoResultsLoaderProps> = (props) => {
 
   useEffect(() => {
     async function loadBookmarks() {
-      const bookmarks = await new BookmarksClient().get();
+      const bookmarks = await BookmarksClient.getInstance().get();
       setBookmarks(bookmarks);
     }
 
-    loadBookmarks();
+    if (isLoggedIn()) {
+      loadBookmarks();
+    }
   }, []);
 
   return searchResult ? (

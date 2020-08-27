@@ -53,6 +53,9 @@ export interface VideoResultProps {
 const VideoResult: React.FC<VideoResultProps> = (props) => {
   const { bookmarks, onPlayClick, videoFact, videoTurn } = props;
   const social = turnToCut(videoTurn, videoFact);
+  const bookmark: Bookmark | undefined = bookmarks.find((b) =>
+    isBookmarkEqualToSocial(b, social)
+  );
 
   const contextUrl = `${Routes.FOUNDATION}/${slugify(
     videoFact.fact.title
@@ -64,23 +67,32 @@ const VideoResult: React.FC<VideoResultProps> = (props) => {
 
   const handleBookmarkClick = () => {
     if (isLoggedIn()) {
-      new BookmarksClient().add([
-        {
-          fact: videoTurn.fact,
-          start: convertSecondsToMilliseconds(social.cut[0]),
-          end: convertSecondsToMilliseconds(social.cut[1]),
-          savedAt: new Date().toISOString(),
-        },
-      ]);
+      if (bookmark) {
+        BookmarksClient.getInstance().remove([
+          {
+            fact: videoTurn.fact,
+            start: convertSecondsToMilliseconds(social.cut[0]),
+            end: convertSecondsToMilliseconds(social.cut[1]),
+            savedAt: bookmark.savedAt.toISOString(),
+          },
+        ]);
+      } else {
+        BookmarksClient.getInstance().add([
+          {
+            fact: videoTurn.fact,
+            start: convertSecondsToMilliseconds(social.cut[0]),
+            end: convertSecondsToMilliseconds(social.cut[1]),
+            savedAt: new Date().toISOString(),
+          },
+        ]);
+      }
     } else {
-      throw "TODO: launch a login modal and then add";
+      console.warn("TODO: launch a login modal and then add");
     }
   };
 
-  const isBookmarked =
-    bookmarks.findIndex((b) => isBookmarkEqualToSocial(b, social)) !== -1;
   let bookmarkClass = "turn__button turn__button--bookmark";
-  if (isBookmarked) {
+  if (bookmark) {
     bookmarkClass += " turn__button--bookmark-solid";
   }
   return (

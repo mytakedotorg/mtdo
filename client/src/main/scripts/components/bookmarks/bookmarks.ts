@@ -44,7 +44,7 @@ export enum BookmarksMode {
 export async function getBookmarks(
   mode: BookmarksMode
 ): Promise<BookmarksResult> {
-  const bookmarks = await new BookmarksClient().getRaw();
+  const bookmarks = await BookmarksClient.getInstance().getRaw();
   const builder = new FoundationFetcher();
   bookmarks.forEach((b) => builder.add(b.fact));
   const foundationData = await builder.build();
@@ -152,10 +152,21 @@ function parseBookmarksJSON(json: FTBookmarkIntermediate[]): Bookmark[] {
 }
 
 export class BookmarksClient {
+  static instance = new BookmarksClient();
+
+  private constructor() {}
+
+  static getInstance(): BookmarksClient {
+    return this.instance;
+  }
+
   async getRaw(): Promise<FTBookmarkIntermediate[]> {
     const response = await fetch(
       new Request(Routes.API_BOOKMARKS, {
         method: "get",
+        headers: {
+          "If-Modified-Since": new Date().toUTCString(),
+        },
       })
     );
     return response.json();
