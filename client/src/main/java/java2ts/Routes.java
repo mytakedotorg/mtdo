@@ -29,6 +29,7 @@ public class Routes {
 	public static final String API_IMAGES = "/api/images";
 	public static final String API_SEARCH = "/api/search";
 	public static final String API_BOOKMARKS = "/api/bookmarks";
+	public static final String API_LOGIN = "/api/login";
 
 	public static final String MODS = "/mods";
 	public static final String MODS_DRAFTS = "/mods/drafts/";
@@ -42,6 +43,7 @@ public class Routes {
 	public static final String LOGIN = "/login";
 	public static final String LOGOUT = "/logout";
 
+	public static final String PROFILE_NO_USERNAME = "my";
 	public static final String PROFILE_TAB = "tab";
 	public static final String PROFILE_TAB_STARS = "stars";
 	public static final String PROFILE_TAB_EDIT = "edit";

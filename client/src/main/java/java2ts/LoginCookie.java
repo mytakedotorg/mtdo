@@ -21,5 +21,8 @@ package java2ts;
 
 @jsweet.lang.Interface
 public class LoginCookie {
+	@jsweet.lang.Optional
 	public String username;
+	public String email;
+	public boolean unconfirmed;
 }
