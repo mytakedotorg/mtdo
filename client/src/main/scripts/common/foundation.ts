@@ -21,6 +21,7 @@ import { FT } from "../java2ts/FT";
 import { Routes } from "../java2ts/Routes";
 import { get } from "../network";
 import { decodeVideoFact } from "./video";
+import { BookmarksClient } from "../components/bookmarks/bookmarks";
 
 export class Foundation {
   constructor(
@@ -92,6 +93,38 @@ export class FoundationFetcher {
   }
 
   async build(): Promise<Foundation> {
+    try {
+      const client = new BookmarksClient();
+      console.log("initial get");
+      console.log(await client.get());
+      console.log("initial add");
+      console.log(
+        await client.add([
+          {
+            fact: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            savedAt: "1981-01-01T00:00:00Z",
+            start: 2,
+            end: 718,
+          },
+        ])
+      );
+      console.log(await client.get());
+      console.log("initial remove");
+      console.log(
+        await client.remove([
+          {
+            fact: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            savedAt: "1981-01-01T00:00:00Z",
+            start: 2,
+            end: 718,
+          },
+        ])
+      );
+      console.log(await client.get());
+    } catch (err) {
+      console.warn(err);
+    }
+
     const facts = await Promise.all(
       this.requestedFacts.map((hash) => this.getFact(hash))
     );
