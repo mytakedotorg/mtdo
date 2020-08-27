@@ -34,14 +34,14 @@ import com.google.inject.Inject;
 import com.typesafe.config.Config;
 import db.enums.Reaction;
 import db.tables.records.TakerevisionRecord;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 import java2ts.Routes;
 import org.apache.commons.mail.HtmlEmail;
 import org.jooby.Env;
@@ -78,7 +78,7 @@ public class Mods {
 				htmlEmail.addTo(moderatorEmail);
 			}
 			sender.accept(htmlEmail);
-			htmlEmail.setSubject("[MyTake.org mod] " + htmlEmail.getSubject());
+			//htmlEmail.setSubject("[MyTake.org mod] " + htmlEmail.getSubject());
 		});
 	}
 
@@ -173,7 +173,7 @@ public class Mods {
 
 		String generateSummaryHtml() {
 			try (DSLContext dsl = registry.require(DSLContext.class)) {
-				Time.AddableTimestamp now = registry.require(Time.class).nowTimestamp();
+				LocalDateTime now = registry.require(Time.class).now();
 
 				Table<?> table = dsl.select(DSL.count().as("likecount"), TAKEREACTION.TAKE_ID, TAKEREACTION.KIND)
 						.from(TAKEREACTION)
@@ -225,8 +225,8 @@ public class Mods {
 			}
 		}
 
-		private Condition last24hrs(Time.AddableTimestamp now, TableField<?, Timestamp> field) {
-			return field.between(now.minus(24, TimeUnit.HOURS), now);
+		private Condition last24hrs(LocalDateTime now, TableField<?, LocalDateTime> field) {
+			return field.between(now.minus(24, ChronoUnit.HOURS), now);
 		}
 	}
 }

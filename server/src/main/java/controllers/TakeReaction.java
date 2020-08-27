@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2017 MyTake.org, Inc.
+ * Copyright (C) 2017-2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -146,7 +146,7 @@ public class TakeReaction implements Jooby.Module {
 			record.setTakeId(take_id);
 			record.setUserId(user.id());
 			record.setKind(reaction);
-			record.setReactedAt(req.require(Time.class).nowTimestamp());
+			record.setReactedAt(req.require(Time.class).now());
 			record.setReactedIp(req.require(IpGetter.class).ip(req));
 			record.store();
 		} else {

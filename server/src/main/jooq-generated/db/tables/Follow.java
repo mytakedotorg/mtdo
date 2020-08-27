@@ -8,7 +8,7 @@ import db.Keys;
 import db.Public;
 import db.tables.records.FollowRecord;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
@@ -32,7 +32,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Follow extends TableImpl<FollowRecord> {
 
-    private static final long serialVersionUID = 161225678;
+    private static final long serialVersionUID = 831167033;
 
     /**
      * The reference instance of <code>public.follow</code>
@@ -60,7 +60,7 @@ public class Follow extends TableImpl<FollowRecord> {
     /**
      * The column <code>public.follow.followed_at</code>.
      */
-    public final TableField<FollowRecord, Timestamp> FOLLOWED_AT = createField(DSL.name("followed_at"), org.jooq.impl.SQLDataType.TIMESTAMP.nullable(false), this, "");
+    public final TableField<FollowRecord, LocalDateTime> FOLLOWED_AT = createField(DSL.name("followed_at"), org.jooq.impl.SQLDataType.LOCALDATETIME.nullable(false), this, "");
 
     /**
      * Create a <code>public.follow</code> table reference
@@ -154,7 +154,7 @@ public class Follow extends TableImpl<FollowRecord> {
     // -------------------------------------------------------------------------
 
     @Override
-    public Row3<Integer, Integer, Timestamp> fieldsRow() {
+    public Row3<Integer, Integer, LocalDateTime> fieldsRow() {
         return (Row3) super.fieldsRow();
     }
 }

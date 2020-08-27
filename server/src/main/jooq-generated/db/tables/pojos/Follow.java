@@ -5,7 +5,7 @@ package db.tables.pojos;
 
 
 import java.io.Serializable;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 
 /**
@@ -14,11 +14,11 @@ import java.sql.Timestamp;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Follow implements Serializable {
 
-    private static final long serialVersionUID = 2005348344;
+    private static final long serialVersionUID = 1781904899;
 
-    private Integer   author;
-    private Integer   follower;
-    private Timestamp followedAt;
+    private Integer       author;
+    private Integer       follower;
+    private LocalDateTime followedAt;
 
     public Follow() {}
 
@@ -29,9 +29,9 @@ public class Follow implements Serializable {
     }
 
     public Follow(
-        Integer   author,
-        Integer   follower,
-        Timestamp followedAt
+        Integer       author,
+        Integer       follower,
+        LocalDateTime followedAt
     ) {
         this.author = author;
         this.follower = follower;
@@ -56,11 +56,11 @@ public class Follow implements Serializable {
         return this;
     }
 
-    public Timestamp getFollowedAt() {
+    public LocalDateTime getFollowedAt() {
         return this.followedAt;
     }
 
-    public Follow setFollowedAt(Timestamp followedAt) {
+    public Follow setFollowedAt(LocalDateTime followedAt) {
         this.followedAt = followedAt;
         return this;
     }

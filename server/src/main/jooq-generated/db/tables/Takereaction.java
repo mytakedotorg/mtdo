@@ -10,7 +10,7 @@ import db.bindings.PostgresInetBinding;
 import db.enums.Reaction;
 import db.tables.records.TakereactionRecord;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
@@ -34,7 +34,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Takereaction extends TableImpl<TakereactionRecord> {
 
-    private static final long serialVersionUID = 437265792;
+    private static final long serialVersionUID = -513712585;
 
     /**
      * The reference instance of <code>public.takereaction</code>
@@ -67,7 +67,7 @@ public class Takereaction extends TableImpl<TakereactionRecord> {
     /**
      * The column <code>public.takereaction.reacted_at</code>.
      */
-    public final TableField<TakereactionRecord, Timestamp> REACTED_AT = createField(DSL.name("reacted_at"), org.jooq.impl.SQLDataType.TIMESTAMP.nullable(false), this, "");
+    public final TableField<TakereactionRecord, LocalDateTime> REACTED_AT = createField(DSL.name("reacted_at"), org.jooq.impl.SQLDataType.LOCALDATETIME.nullable(false), this, "");
 
     /**
      * The column <code>public.takereaction.reacted_ip</code>.
@@ -166,7 +166,7 @@ public class Takereaction extends TableImpl<TakereactionRecord> {
     // -------------------------------------------------------------------------
 
     @Override
-    public Row5<Integer, Integer, Reaction, Timestamp, String> fieldsRow() {
+    public Row5<Integer, Integer, Reaction, LocalDateTime, String> fieldsRow() {
         return (Row5) super.fieldsRow();
     }
 }

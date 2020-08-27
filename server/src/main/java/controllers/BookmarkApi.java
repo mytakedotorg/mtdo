@@ -20,7 +20,7 @@
 package controllers;
 
 import static db.Tables.BOOKMARK;
-import static db.Tables.BOOKMARKS_LAST_CHANGE;
+import static db.Tables.BOOKMARKS_MOD;
 
 import auth.AuthUser;
 import com.diffplug.common.collect.ImmutableList;
@@ -31,7 +31,7 @@ import common.DbMisc;
 import common.RedirectException;
 import common.Time;
 import db.tables.records.BookmarkRecord;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 import java2ts.Bookmark;
 import java2ts.Json.JsonList;
@@ -52,14 +52,14 @@ public class BookmarkApi implements Jooby.Module {
 		env.router().get(Routes.API_BOOKMARKS, req -> {
 			AuthUser auth = AuthUser.authApi(req);
 			try (DSLContext dsl = req.require(DSLContext.class)) {
-				Timestamp lastSaved = DbMisc.fetchOne(dsl, BOOKMARKS_LAST_CHANGE.SAVED_BY, auth.id(), BOOKMARKS_LAST_CHANGE.LAST_CHANGE);
+				LocalDateTime lastSaved = DbMisc.fetchOne(dsl, BOOKMARKS_MOD.SAVED_BY, auth.id(), BOOKMARKS_MOD.LAST_MOD);
 				if (lastSaved == null) {
 					// user has never had bookmarks 
 					return ImmutableList.of();
 				} else {
-					Timestamp ifModifiedSince = ifModifiedSince(req);
-					if (ifModifiedSince != null && lastSaved.compareTo(ifModifiedSince) > 0) {
-						return Status.NOT_MODIFIED;
+					LocalDateTime ifModifiedSince = ifModifiedSince(req);
+					if (ifModifiedSince != null && lastSaved.compareTo(ifModifiedSince) >= 0) {
+						return new Result().status(Status.NOT_MODIFIED);
 					} else {
 						List<BookmarkRecord> records = DbMisc.selectWhere(dsl, BOOKMARK.SAVED_BY, auth.id()).fetch();
 						List<Bookmark> pojos = new JsonList<>(Bookmark.LIST, records.size());
@@ -75,12 +75,12 @@ public class BookmarkApi implements Jooby.Module {
 			AuthUser auth = AuthUser.authApi(req);
 			List<Bookmark> bookmarks = bookmarks(req);
 			if (bookmarks.isEmpty()) {
-				return Status.OK;
+				return new Result().status(Status.OK);
 			}
 			try (DSLContext dsl = req.require(DSLContext.class)) {
-				Timestamp now = req.require(Time.class).nowTimestamp();
-				InsertValuesStep5<BookmarkRecord, Integer, Timestamp, String, Integer, Integer> insert = dsl.insertInto(BOOKMARK,
-						BOOKMARK.SAVED_BY, BOOKMARK.SAVED_ON, BOOKMARK.FACT_HASH, BOOKMARK.CUT_START, BOOKMARK.CUT_END);
+				LocalDateTime now = req.require(Time.class).now();
+				InsertValuesStep5<BookmarkRecord, Integer, LocalDateTime, String, Integer, Integer> insert = dsl.insertInto(BOOKMARK,
+						BOOKMARK.SAVED_BY, BOOKMARK.SAVED_ON, BOOKMARK.FACT, BOOKMARK.CUT_START, BOOKMARK.CUT_END);
 				for (Bookmark bookmark : bookmarks) {
 					insert = insert.values(auth.id(), now, bookmark.fact, bookmark.start, bookmark.end);
 				}
@@ -94,32 +94,32 @@ public class BookmarkApi implements Jooby.Module {
 			AuthUser auth = AuthUser.authApi(req);
 			List<Bookmark> bookmarks = bookmarks(req);
 			if (bookmarks.isEmpty()) {
-				return Status.OK;
+				return new Result().status(Status.OK);
 			}
 			try (DSLContext dsl = req.require(DSLContext.class)) {
 				for (Bookmark bookmark : bookmarks) {
 					dsl.deleteFrom(BOOKMARK)
 							.where(BOOKMARK.SAVED_BY.eq(auth.id())
-									.and(BOOKMARK.FACT_HASH.eq(bookmark.fact))
+									.and(BOOKMARK.FACT.eq(bookmark.fact))
 									.and(BOOKMARK.CUT_START.eq(bookmark.start))
 									.and(BOOKMARK.CUT_END.eq(bookmark.end)))
 							.execute();
 				}
-				Timestamp now = req.require(Time.class).nowTimestamp();
-				dsl.update(BOOKMARKS_LAST_CHANGE)
-						.set(BOOKMARKS_LAST_CHANGE.LAST_CHANGE, now)
-						.where(BOOKMARKS_LAST_CHANGE.SAVED_BY.eq(auth.id()))
+				LocalDateTime now = req.require(Time.class).now();
+				dsl.update(BOOKMARKS_MOD)
+						.set(BOOKMARKS_MOD.LAST_MOD, now)
+						.where(BOOKMARKS_MOD.SAVED_BY.eq(auth.id()))
 						.execute();
 				return lastModified(now).status(Status.OK);
 			}
 		});
 	}
 
-	private static void setLastModified(DSLContext dsl, AuthUser auth, Timestamp now) {
-		dsl.insertInto(BOOKMARKS_LAST_CHANGE,
-				BOOKMARKS_LAST_CHANGE.SAVED_BY, BOOKMARKS_LAST_CHANGE.LAST_CHANGE)
+	private static void setLastModified(DSLContext dsl, AuthUser auth, LocalDateTime now) {
+		dsl.insertInto(BOOKMARKS_MOD,
+				BOOKMARKS_MOD.SAVED_BY, BOOKMARKS_MOD.LAST_MOD)
 				.values(auth.id(), now)
-				.onDuplicateKeyUpdate().set(BOOKMARKS_LAST_CHANGE.LAST_CHANGE, now)
+				.onDuplicateKeyUpdate().set(BOOKMARKS_MOD.LAST_MOD, now)
 				.execute();
 	}
 
@@ -127,11 +127,11 @@ public class BookmarkApi implements Jooby.Module {
 		return JsonIterator.deserialize(req.body(byte[].class), Bookmark.LIST);
 	}
 
-	private static Result lastModified(Timestamp now) {
+	private static Result lastModified(LocalDateTime now) {
 		return new Result().header("Last-Modified", Time.toGMT(now));
 	}
 
-	private static @Nullable Timestamp ifModifiedSince(Request req) {
+	private static @Nullable LocalDateTime ifModifiedSince(Request req) {
 		Mutant lastModified = req.header("If-Modified-Since");
 		if (lastModified.isSet()) {
 			try {
@@ -147,7 +147,7 @@ public class BookmarkApi implements Jooby.Module {
 	private static Bookmark toPojo(BookmarkRecord record) {
 		Bookmark bookmark = new Bookmark();
 		bookmark.savedAt = Time.toIso(record.getSavedOn());
-		bookmark.fact = record.getFactHash();
+		bookmark.fact = record.getFact();
 		bookmark.start = record.getCutStart();
 		bookmark.end = record.getCutEnd();
 		return bookmark;

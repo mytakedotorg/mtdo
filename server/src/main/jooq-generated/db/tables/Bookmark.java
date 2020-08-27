@@ -8,7 +8,7 @@ import db.Keys;
 import db.Public;
 import db.tables.records.BookmarkRecord;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
@@ -32,7 +32,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Bookmark extends TableImpl<BookmarkRecord> {
 
-    private static final long serialVersionUID = 829794012;
+    private static final long serialVersionUID = -73688440;
 
     /**
      * The reference instance of <code>public.bookmark</code>
@@ -55,12 +55,12 @@ public class Bookmark extends TableImpl<BookmarkRecord> {
     /**
      * The column <code>public.bookmark.saved_on</code>.
      */
-    public final TableField<BookmarkRecord, Timestamp> SAVED_ON = createField(DSL.name("saved_on"), org.jooq.impl.SQLDataType.TIMESTAMP.nullable(false), this, "");
+    public final TableField<BookmarkRecord, LocalDateTime> SAVED_ON = createField(DSL.name("saved_on"), org.jooq.impl.SQLDataType.LOCALDATETIME.nullable(false), this, "");
 
     /**
-     * The column <code>public.bookmark.fact_hash</code>.
+     * The column <code>public.bookmark.fact</code>.
      */
-    public final TableField<BookmarkRecord, String> FACT_HASH = createField(DSL.name("fact_hash"), org.jooq.impl.SQLDataType.CHAR(44).nullable(false), this, "");
+    public final TableField<BookmarkRecord, String> FACT = createField(DSL.name("fact"), org.jooq.impl.SQLDataType.CHAR(44).nullable(false), this, "");
 
     /**
      * The column <code>public.bookmark.cut_start</code>.
@@ -160,7 +160,7 @@ public class Bookmark extends TableImpl<BookmarkRecord> {
     // -------------------------------------------------------------------------
 
     @Override
-    public Row5<Integer, Timestamp, String, Integer, Integer> fieldsRow() {
+    public Row5<Integer, LocalDateTime, String, Integer, Integer> fieldsRow() {
         return (Row5) super.fieldsRow();
     }
 }

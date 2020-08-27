@@ -5,7 +5,7 @@ package db.tables.pojos;
 
 
 import java.io.Serializable;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 
 /**
@@ -14,12 +14,12 @@ import java.sql.Timestamp;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class FoundationRev implements Serializable {
 
-    private static final long serialVersionUID = 1644123494;
+    private static final long serialVersionUID = -952926639;
 
-    private Integer   version;
-    private String    description;
-    private Timestamp migratedOn;
-    private Integer   executionTimeSec;
+    private Integer       version;
+    private String        description;
+    private LocalDateTime migratedOn;
+    private Integer       executionTimeSec;
 
     public FoundationRev() {}
 
@@ -31,10 +31,10 @@ public class FoundationRev implements Serializable {
     }
 
     public FoundationRev(
-        Integer   version,
-        String    description,
-        Timestamp migratedOn,
-        Integer   executionTimeSec
+        Integer       version,
+        String        description,
+        LocalDateTime migratedOn,
+        Integer       executionTimeSec
     ) {
         this.version = version;
         this.description = description;
@@ -60,11 +60,11 @@ public class FoundationRev implements Serializable {
         return this;
     }
 
-    public Timestamp getMigratedOn() {
+    public LocalDateTime getMigratedOn() {
         return this.migratedOn;
     }
 
-    public FoundationRev setMigratedOn(Timestamp migratedOn) {
+    public FoundationRev setMigratedOn(LocalDateTime migratedOn) {
         this.migratedOn = migratedOn;
         return this;
     }

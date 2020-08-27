@@ -5,7 +5,7 @@ package db.tables.pojos;
 
 
 import java.io.Serializable;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 import org.jooq.JSONB;
 
@@ -16,14 +16,14 @@ import org.jooq.JSONB;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Takerevision implements Serializable {
 
-    private static final long serialVersionUID = 1171043697;
+    private static final long serialVersionUID = -1285534522;
 
-    private Integer   id;
-    private Integer   parentId;
-    private Timestamp createdAt;
-    private String    createdIp;
-    private String    title;
-    private JSONB     blocks;
+    private Integer       id;
+    private Integer       parentId;
+    private LocalDateTime createdAt;
+    private String        createdIp;
+    private String        title;
+    private JSONB         blocks;
 
     public Takerevision() {}
 
@@ -37,12 +37,12 @@ public class Takerevision implements Serializable {
     }
 
     public Takerevision(
-        Integer   id,
-        Integer   parentId,
-        Timestamp createdAt,
-        String    createdIp,
-        String    title,
-        JSONB     blocks
+        Integer       id,
+        Integer       parentId,
+        LocalDateTime createdAt,
+        String        createdIp,
+        String        title,
+        JSONB         blocks
     ) {
         this.id = id;
         this.parentId = parentId;
@@ -70,11 +70,11 @@ public class Takerevision implements Serializable {
         return this;
     }
 
-    public Timestamp getCreatedAt() {
+    public LocalDateTime getCreatedAt() {
         return this.createdAt;
     }
 
-    public Takerevision setCreatedAt(Timestamp createdAt) {
+    public Takerevision setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
         return this;
     }
