@@ -29,6 +29,48 @@ Array [
     <h2
       className="results__subheading"
     >
+      Presidential Debate - Clinton, Trump (2 of 3)
+       -
+       
+      2016-10-09
+    </h2>
+    <div>
+      VideoResult: 
+      FcDNuWIs2qk
+       
+      147
+       
+      0
+      74
+    </div>
+  </div>,
+  <div
+    className="results__preview"
+  >
+    <h2
+      className="results__subheading"
+    >
+      Presidential Debate - Clinton, Trump (3 of 3)
+       -
+       
+      2016-10-19
+    </h2>
+    <div>
+      VideoResult: 
+      eXNnggT5fPM
+       
+      241
+       
+      27
+      101
+    </div>
+  </div>,
+  <div
+    className="results__preview"
+  >
+    <h2
+      className="results__subheading"
+    >
       Presidential Debate - McCain, Obama (2 of 3)
        -
        
@@ -81,48 +123,6 @@ Array [
        
       0
       856
-    </div>
-  </div>,
-  <div
-    className="results__preview"
-  >
-    <h2
-      className="results__subheading"
-    >
-      Presidential Debate - Clinton, Trump (2 of 3)
-       -
-       
-      2016-10-09
-    </h2>
-    <div>
-      VideoResult: 
-      FcDNuWIs2qk
-       
-      147
-       
-      0
-      74
-    </div>
-  </div>,
-  <div
-    className="results__preview"
-  >
-    <h2
-      className="results__subheading"
-    >
-      Presidential Debate - Clinton, Trump (3 of 3)
-       -
-       
-      2016-10-19
-    </h2>
-    <div>
-      VideoResult: 
-      eXNnggT5fPM
-       
-      241
-       
-      27
-      101
     </div>
   </div>,
 ]
@@ -196,6 +196,27 @@ Array [
     <h2
       className="results__subheading"
     >
+      Presidential Debate - Clinton, Trump (2 of 3)
+       -
+       
+      2016-10-09
+    </h2>
+    <div>
+      VideoResult: 
+      FcDNuWIs2qk
+       
+      147
+       
+      0
+      74
+    </div>
+  </div>,
+  <div
+    className="results__preview"
+  >
+    <h2
+      className="results__subheading"
+    >
       Presidential Debate - Clinton, Trump (3 of 3)
        -
        
@@ -218,27 +239,6 @@ Array [
        
       27
       101
-    </div>
-  </div>,
-  <div
-    className="results__preview"
-  >
-    <h2
-      className="results__subheading"
-    >
-      Presidential Debate - Clinton, Trump (2 of 3)
-       -
-       
-      2016-10-09
-    </h2>
-    <div>
-      VideoResult: 
-      FcDNuWIs2qk
-       
-      147
-       
-      0
-      74
     </div>
   </div>,
 ]
