@@ -9,7 +9,7 @@ import db.Public;
 import db.bindings.PostgresInetBinding;
 import db.tables.records.ConfirmaccountlinkRecord;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
@@ -33,7 +33,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Confirmaccountlink extends TableImpl<ConfirmaccountlinkRecord> {
 
-    private static final long serialVersionUID = 21763591;
+    private static final long serialVersionUID = 816718144;
 
     /**
      * The reference instance of <code>public.confirmaccountlink</code>
@@ -56,12 +56,12 @@ public class Confirmaccountlink extends TableImpl<ConfirmaccountlinkRecord> {
     /**
      * The column <code>public.confirmaccountlink.created_at</code>.
      */
-    public final TableField<ConfirmaccountlinkRecord, Timestamp> CREATED_AT = createField(DSL.name("created_at"), org.jooq.impl.SQLDataType.TIMESTAMP.nullable(false), this, "");
+    public final TableField<ConfirmaccountlinkRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), org.jooq.impl.SQLDataType.LOCALDATETIME.nullable(false), this, "");
 
     /**
      * The column <code>public.confirmaccountlink.expires_at</code>.
      */
-    public final TableField<ConfirmaccountlinkRecord, Timestamp> EXPIRES_AT = createField(DSL.name("expires_at"), org.jooq.impl.SQLDataType.TIMESTAMP.nullable(false), this, "");
+    public final TableField<ConfirmaccountlinkRecord, LocalDateTime> EXPIRES_AT = createField(DSL.name("expires_at"), org.jooq.impl.SQLDataType.LOCALDATETIME.nullable(false), this, "");
 
     /**
      * The column <code>public.confirmaccountlink.requestor_ip</code>.
@@ -157,7 +157,7 @@ public class Confirmaccountlink extends TableImpl<ConfirmaccountlinkRecord> {
     // -------------------------------------------------------------------------
 
     @Override
-    public Row6<String, Timestamp, Timestamp, String, String, String> fieldsRow() {
+    public Row6<String, LocalDateTime, LocalDateTime, String, String, String> fieldsRow() {
         return (Row6) super.fieldsRow();
     }
 }

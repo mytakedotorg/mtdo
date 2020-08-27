@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2017 MyTake.org, Inc.
+ * Copyright (C) 2017-2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -28,7 +28,9 @@ import com.jsoniter.output.JsonStreamPool;
 import com.jsoniter.spi.DecodingMode;
 import com.jsoniter.spi.Slice;
 import com.typesafe.config.Config;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
+import java2ts.Json;
 import org.jooby.Env;
 import org.jooby.Jooby;
 import org.jooby.MediaType;
@@ -53,13 +55,19 @@ public class JsoniterModule implements Jooby.Module {
 	}
 
 	static class JsonRenderer implements Renderer {
+		@SuppressWarnings({"rawtypes", "unchecked"})
 		@Override
 		public void render(Object value, Context ctx) throws Exception {
 			if (value instanceof java2ts.Json) {
 				JsonStream stream = JsonStreamPool.borrowJsonStream();
 				try {
 					stream.reset(null);
-					stream.writeVal(value);
+					if (value instanceof Json.JsonList) {
+						stream.writeVal(((Json.JsonList) value).literal, value);
+					} else {
+						stream.writeVal(value);
+					}
+
 					Slice slice = stream.buffer();
 					ctx.type(MediaType.json)
 							.length(slice.len())
@@ -67,17 +75,21 @@ public class JsoniterModule implements Jooby.Module {
 				} finally {
 					JsonStreamPool.returnJsonStream(stream);
 				}
+			} else if (value == com.diffplug.common.collect.ImmutableList.of()) {
+				ctx.type(MediaType.json)
+						.length(EMPTY_JSON_LIST.length)
+						.send(EMPTY_JSON_LIST);
 			}
 		}
 	}
+
+	private static final byte[] EMPTY_JSON_LIST = "[]".getBytes(StandardCharsets.UTF_8);
 
 	static class JsonParser implements Parser {
 		@Override
 		public Object parse(com.google.inject.TypeLiteral<?> type, Context ctx) throws Throwable {
 			if (ctx.type().matches(MediaType.json)) {
-				return ctx.ifbody(body -> {
-					return JsonIterator.deserialize(body.bytes(), type.getRawType());
-				});
+				return ctx.ifbody(body -> JsonIterator.deserialize(body.bytes(), type.getRawType()));
 			} else {
 				return ctx.next();
 			}

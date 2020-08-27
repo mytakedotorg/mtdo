@@ -13,7 +13,7 @@ exports[`SharePreview renders 1`] = `
     className="share-preview__links"
   >
     <a
-      onClick={[Function]}
+      href="/foundation/example"
     >
       View full context
     </a>
@@ -82,8 +82,7 @@ exports[`SharePreview renders 1`] = `
             className="share-preview__title"
           >
             Presidential Debate - Kennedy, Nixon (1 of 4)
-             -
-             
+             - 
             1960-09-26
           </p>
         </div>

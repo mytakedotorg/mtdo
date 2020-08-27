@@ -17,7 +17,14 @@
  *
  * You can contact us at team@mytake.org
  */
+import _ from "lodash";
 import React, { useEffect, useState } from "react";
+import { isLoggedIn } from "../../browser";
+import {
+  Bookmark,
+  BookmarksClient,
+  bookmarkToIntermediate,
+} from "../bookmarks/bookmarks";
 import { search, SearchMode, SearchResult } from "./search";
 import SearchContainer from "./SearchContainer";
 
@@ -25,43 +32,77 @@ interface VideoResultsLoaderProps {
   searchQuery: string;
 }
 
-interface VideoResultsLoaderState {
-  searchResult?: SearchResult;
-}
-
 const VideoResultsLoader: React.FC<VideoResultsLoaderProps> = (props) => {
-  const [state, setState] = useState<VideoResultsLoaderState>({});
+  const [searchResult, setSearchResult] = useState<SearchResult | undefined>();
   const [mode, setMode] = useState<SearchMode>(SearchMode.BeforeAndAfter);
+  const [bookmarks, setBookmarks] = useState<Bookmark[]>([]);
 
   const handleModeChange = (newMode: SearchMode) => {
-    if (
-      newMode === SearchMode.Containing ||
-      newMode === SearchMode.BeforeAndAfter
-    ) {
-      if (newMode !== mode) {
-        setMode(newMode);
-      }
-    } else {
-      throw "VideoResults: Unknown radio button selection";
+    if (newMode !== mode) {
+      setMode(newMode);
+    }
+  };
+
+  const handleAddBookmark = (newBookmark: Bookmark) => {
+    setBookmarks((existingBookmarks) => {
+      return [...existingBookmarks, newBookmark];
+    });
+    try {
+      BookmarksClient.getInstance().add([bookmarkToIntermediate(newBookmark)]);
+    } catch (err: unknown) {
+      setBookmarks((existingBookmarks) => {
+        return existingBookmarks.filter((eb) => !_.isEqual(eb, newBookmark));
+      });
+      throw err;
+    }
+  };
+
+  const handleRemoveBookmark = (oldBookmark: Bookmark) => {
+    setBookmarks((existingBookmarks) => {
+      return existingBookmarks.filter((eb) => !_.isEqual(eb, oldBookmark));
+    });
+    try {
+      BookmarksClient.getInstance().remove([
+        bookmarkToIntermediate(oldBookmark),
+      ]);
+    } catch (err: unknown) {
+      setBookmarks((existingBookmarks) => {
+        return [...existingBookmarks, oldBookmark];
+      });
+      throw err;
     }
   };
 
   useEffect(() => {
     async function connectSearchDatabase() {
       const searchResult = await search(props.searchQuery, mode);
-      setState({
-        searchResult,
-      });
+      setSearchResult(searchResult);
     }
 
     connectSearchDatabase();
   }, [mode]);
 
-  return state.searchResult ? (
+  useEffect(() => {
+    async function loadBookmarks() {
+      const bookmarks = await BookmarksClient.getInstance().get();
+      setBookmarks(bookmarks);
+    }
+
+    if (isLoggedIn()) {
+      loadBookmarks();
+    }
+  }, []);
+
+  return searchResult ? (
     <SearchContainer
-      onModeChange={handleModeChange}
+      bookmarks={bookmarks}
+      eventHandlers={{
+        onAddBookmark: handleAddBookmark,
+        onRemoveBookmark: handleRemoveBookmark,
+        onModeChange: handleModeChange,
+      }}
       mode={mode}
-      searchResult={state.searchResult}
+      searchResult={searchResult}
     />
   ) : (
     <VideoResultLoadingView />

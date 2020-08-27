@@ -9,7 +9,7 @@ import db.Public;
 import db.bindings.PostgresInetBinding;
 import db.tables.records.TakerevisionRecord;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
@@ -35,7 +35,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Takerevision extends TableImpl<TakerevisionRecord> {
 
-    private static final long serialVersionUID = -2121078063;
+    private static final long serialVersionUID = -768771438;
 
     /**
      * The reference instance of <code>public.takerevision</code>
@@ -63,7 +63,7 @@ public class Takerevision extends TableImpl<TakerevisionRecord> {
     /**
      * The column <code>public.takerevision.created_at</code>.
      */
-    public final TableField<TakerevisionRecord, Timestamp> CREATED_AT = createField(DSL.name("created_at"), org.jooq.impl.SQLDataType.TIMESTAMP.nullable(false), this, "");
+    public final TableField<TakerevisionRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), org.jooq.impl.SQLDataType.LOCALDATETIME.nullable(false), this, "");
 
     /**
      * The column <code>public.takerevision.created_ip</code>.
@@ -173,7 +173,7 @@ public class Takerevision extends TableImpl<TakerevisionRecord> {
     // -------------------------------------------------------------------------
 
     @Override
-    public Row6<Integer, Integer, Timestamp, String, String, JSONB> fieldsRow() {
+    public Row6<Integer, Integer, LocalDateTime, String, String, JSONB> fieldsRow() {
         return (Row6) super.fieldsRow();
     }
 }

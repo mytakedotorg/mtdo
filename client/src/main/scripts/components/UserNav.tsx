@@ -30,18 +30,19 @@ interface UserNavProps {
 const UserNav: React.FC<UserNavProps> = ({ cookie }) => {
   let navLinks: { name: string; href: string }[] = [];
   if (cookie) {
+    const path = cookie.username ? cookie.username : Routes.PROFILE_NO_USERNAME;
     navLinks = [
       {
         name: "Bookmarks",
-        href: `/${cookie.username}?${Routes.PROFILE_TAB}=${Routes.PROFILE_TAB_BOOKMARKS}`,
+        href: `/${path}?${Routes.PROFILE_TAB}=${Routes.PROFILE_TAB_BOOKMARKS}`,
       },
       {
         name: "Following",
-        href: `/${cookie.username}?${Routes.PROFILE_TAB}=${Routes.PROFILE_TAB_FOLLOWING}`,
+        href: `/${path}?${Routes.PROFILE_TAB}=${Routes.PROFILE_TAB_FOLLOWING}`,
       },
       {
         name: "Followers",
-        href: `/${cookie.username}?${Routes.PROFILE_TAB}=${Routes.PROFILE_TAB_FOLLOWERS}`,
+        href: `/${path}?${Routes.PROFILE_TAB}=${Routes.PROFILE_TAB_FOLLOWERS}`,
       },
       { name: "Logout", href: Routes.LOGOUT },
     ];

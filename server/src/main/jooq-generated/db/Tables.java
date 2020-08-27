@@ -5,6 +5,8 @@ package db;
 
 
 import db.tables.Account;
+import db.tables.Bookmark;
+import db.tables.BookmarksMod;
 import db.tables.Confirmaccountlink;
 import db.tables.FlywaySchemaHistory;
 import db.tables.Follow;
@@ -27,6 +29,16 @@ public class Tables {
      * The table <code>public.account</code>.
      */
     public static final Account ACCOUNT = Account.ACCOUNT;
+
+    /**
+     * The table <code>public.bookmark</code>.
+     */
+    public static final Bookmark BOOKMARK = Bookmark.BOOKMARK;
+
+    /**
+     * The table <code>public.bookmarks_mod</code>.
+     */
+    public static final BookmarksMod BOOKMARKS_MOD = BookmarksMod.BOOKMARKS_MOD;
 
     /**
      * The table <code>public.confirmaccountlink</code>.

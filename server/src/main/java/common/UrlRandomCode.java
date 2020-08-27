@@ -21,7 +21,7 @@ package common;
 
 import com.diffplug.common.base.Preconditions;
 import java.security.SecureRandom;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import javax.annotation.Nullable;
 import org.jooby.Env;
 import org.jooby.Request;
@@ -39,10 +39,10 @@ public class UrlRandomCode<T extends UpdatableRecordImpl<T>> {
 
 	private final String baseUrl;
 	private final TableField<T, String> code;
-	private final TableField<T, Timestamp> createdAt;
+	private final TableField<T, LocalDateTime> createdAt;
 	private final TableField<T, String> requestorIp;
 
-	public UrlRandomCode(String baseUrl, TableField<T, String> code, TableField<T, Timestamp> createdAt, TableField<T, String> requestorIp) {
+	public UrlRandomCode(String baseUrl, TableField<T, String> code, TableField<T, LocalDateTime> createdAt, TableField<T, String> requestorIp) {
 		Preconditions.checkArgument(baseUrl.startsWith("/"));
 		Preconditions.checkArgument(baseUrl.endsWith("/"));
 		this.baseUrl = baseUrl;
@@ -51,7 +51,7 @@ public class UrlRandomCode<T extends UpdatableRecordImpl<T>> {
 		this.requestorIp = requestorIp;
 	}
 
-	public T createRecord(Request req, DSLContext dsl, Timestamp now, String requestorIp) {
+	public T createRecord(Request req, DSLContext dsl, LocalDateTime now, String requestorIp) {
 		String code = RandomString.get(req.require(SecureRandom.class), CODE_LENGTH);
 		T record = dsl.newRecord(this.code.getTable());
 		record.set(this.code, code);

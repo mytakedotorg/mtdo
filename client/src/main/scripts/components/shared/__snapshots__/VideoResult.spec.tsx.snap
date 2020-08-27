@@ -1,8 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`SearchHitContent renders 1`] = `
+exports[`HitContent renders 1`] = `
 <div>
-  SearchHitContent
+  HitContent
   : 
   {"className":"testClass"}
    
@@ -15,7 +15,6 @@ exports[`SearchHitContent renders 1`] = `
    
   18
   28
-  television
 </div>
 `;
 
@@ -83,7 +82,6 @@ exports[`VideoResultPreview before and after 1`] = `
              
             18
             28
-            television
           </div>
         </div>
       </div>
@@ -143,7 +141,7 @@ exports[`VideoResultPreview before and after 1`] = `
     </div>
   </div>
   <div>
-    SearchHitContent
+    HitContent
     : 
     {"className":"turn__results"}
      
@@ -156,7 +154,6 @@ exports[`VideoResultPreview before and after 1`] = `
      
     18
     28
-    television
   </div>
 </div>
 `;
@@ -225,7 +222,6 @@ exports[`VideoResultPreview containing 1`] = `
              
             18
             28
-            television
           </div>
         </div>
       </div>
@@ -285,7 +281,7 @@ exports[`VideoResultPreview containing 1`] = `
     </div>
   </div>
   <div>
-    SearchHitContent
+    HitContent
     : 
     {"className":"turn__results"}
      
@@ -298,7 +294,6 @@ exports[`VideoResultPreview containing 1`] = `
      
     18
     28
-    television
   </div>
 </div>
 `;

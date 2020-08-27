@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2017 MyTake.org, Inc.
+ * Copyright (C) 2017-2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -25,8 +25,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import common.JoobyDevRule;
 import db.tables.pojos.Confirmaccountlink;
 import db.tables.records.ConfirmaccountlinkRecord;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 import org.jooq.DSLContext;
 import org.jooq.Result;
 import org.junit.ClassRule;
@@ -54,8 +54,8 @@ public class DbPlayground {
 			//     B) db.tables.pojos.Confirmaccountlink         - just a plain POJO
 			ConfirmaccountlinkRecord inserted = dsl.newRecord(CONFIRMACCOUNTLINK);
 			inserted.setCode("should be 44 long");
-			inserted.setCreatedAt(dev.time().nowTimestamp());
-			inserted.setExpiresAt(dev.time().nowTimestamp().plus(10, TimeUnit.MINUTES));
+			inserted.setCreatedAt(dev.time().now());
+			inserted.setExpiresAt(dev.time().now().plus(10, ChronoUnit.MINUTES));
 			inserted.setRequestorIp("192.168.0.1");
 			inserted.setUsername("user");
 			inserted.setEmail("user@email.com");

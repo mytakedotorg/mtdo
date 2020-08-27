@@ -49,40 +49,22 @@ public class Profile implements Jooby.Module {
 	/** Represents a single mode in the profile page. */
 	public enum Mode {
 		/** The definition order represents the order the tabs will appear in the UI */
-		bookmarks, published, stars, followers, following, edit, drafts;
+		profile, bookmarks, published, stars, followers, following, drafts;
 
 		public boolean isHidden() {
-			return this == published || this == stars || this == edit || this == drafts;
+			return this == published || this == stars || this == drafts;
 		}
 
 		public boolean requiresLogin() {
-			return this == edit || this == drafts;
+			return this == profile || this == drafts;
 		}
 
-		private String url(AccountRecord account) {
+		public String url(AccountRecord account) {
 			if (this == published) {
 				return "/" + account.getUsername();
 			} else {
 				return "/" + account.getUsername() + "?" + Routes.PROFILE_TAB + "=" + name();
 			}
-		}
-
-		/** Renders the entire nav header, assuming that this Mode is active and the account is the given account. */
-		public String render(AccountRecord account, boolean loggedIn) {
-			StringBuilder builder = new StringBuilder();
-			for (Mode mode : Mode.values()) {
-				if (mode.isHidden() || mode.requiresLogin() && !loggedIn) {
-					continue;
-				}
-				builder.append("<li class=\"tab-nav__list-item\"><a href=\"");
-				builder.append(mode.url(account));
-				builder.append("\" class=\"tab-nav__link tab-nav__link--");
-				builder.append(mode == this ? "active" : "inactive");
-				builder.append("\">");
-				builder.append(mode.name());
-				builder.append("</a></li>");
-			}
-			return builder.toString();
 		}
 	}
 
@@ -150,7 +132,7 @@ public class Profile implements Jooby.Module {
 							.orderBy(FOLLOW.FOLLOWED_AT.desc())
 							.fetch();
 					return views.Profile.profileFollowing.template(account, isLoggedIn, following);
-				case edit:
+				case profile:
 					return views.Profile.profileTodo.template(account, isLoggedIn, mode);
 				case drafts:
 					return Results.redirect(Routes.DRAFTS);
@@ -190,7 +172,7 @@ public class Profile implements Jooby.Module {
 					FollowRecord followRecord = dsl.newRecord(FOLLOW);
 					followRecord.setAuthor(authorId);
 					followRecord.setFollower(user.id());
-					followRecord.setFollowedAt(req.require(Time.class).nowTimestamp());
+					followRecord.setFollowedAt(req.require(Time.class).now());
 					followRecord.insert();
 					followRes.isFollowing = true;
 				} else {

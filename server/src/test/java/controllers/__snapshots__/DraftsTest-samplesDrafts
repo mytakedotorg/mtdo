@@ -77,11 +77,11 @@
 
 	<div class="takelist__take">
 	<h2 class="takelist__title"><a class="takelist__link" href="/drafts/1">In my opinion</a></h2>
-	<span class="takelist__aside">Last edited Jan 01 1970</span>
+	<span class="takelist__aside">Last edited Jan 1, 1970</span>
 	</div>
 	<div class="takelist__take">
 	<h2 class="takelist__title"><a class="takelist__link" href="/drafts/2">In other words</a></h2>
-	<span class="takelist__aside">Last edited Jan 01 1970</span>
+	<span class="takelist__aside">Last edited Jan 1, 1970</span>
 	</div>
 </div>
 

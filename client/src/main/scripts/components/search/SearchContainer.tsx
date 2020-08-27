@@ -19,6 +19,7 @@
  */
 import React, { useState } from "react";
 import { FT } from "../../java2ts/FT";
+import { Bookmark } from "../bookmarks/bookmarks";
 import SearchBar from "../SearchBar";
 import VideoLite from "../VideoLite";
 import NGramViewer from "./NGramViewer";
@@ -26,10 +27,17 @@ import { SearchMode, SearchResult } from "./search";
 import SearchRadioButtons from "./SearchRadioButtons";
 import VideoResultsList from "./VideoResultsList";
 
+export interface SearchContainerEventHandlers {
+  onModeChange(mode: SearchMode): void;
+  onAddBookmark(bookmark: Bookmark): void;
+  onRemoveBookmark(bookmark: Bookmark): void;
+}
+
 interface SearchContainerProps {
+  bookmarks: Bookmark[];
   mode: SearchMode;
   searchResult: SearchResult;
-  onModeChange(mode: SearchMode): void;
+  eventHandlers: SearchContainerEventHandlers;
 }
 
 interface VideoPlayerState {
@@ -43,21 +51,14 @@ interface VideoPlayerState {
 const dateToDivMap: Map<string, HTMLDivElement> = new Map();
 
 const SearchContainer: React.FC<SearchContainerProps> = ({
+  bookmarks,
   mode,
-  onModeChange,
+  eventHandlers,
   searchResult,
 }) => {
   const { factHits, searchQuery } = searchResult;
-  const [{ isVideoPlaying, videoProps }, setVideoPlayerState] = useState<
-    VideoPlayerState
-  >({
+  const [videoPlayerState, setVideoPlayerState] = useState<VideoPlayerState>({
     isVideoPlaying: false,
-    videoProps: factHits.length
-      ? {
-          videoId: factHits[0].videoFact.youtubeId,
-          clipRange: factHits[0].searchHits[0].getClipRange(),
-        }
-      : undefined,
   });
 
   const handleBarClick = (year: string) => {
@@ -103,9 +104,12 @@ const SearchContainer: React.FC<SearchContainerProps> = ({
   return (
     <>
       <div className="search__sticky">
-        {videoProps && isVideoPlaying && (
+        {videoPlayerState.videoProps && videoPlayerState.isVideoPlaying && (
           <div className="search__video">
-            <VideoLite {...videoProps} onClipEnd={handleClipEnd} />
+            <VideoLite
+              {...videoPlayerState.videoProps}
+              onClipEnd={handleClipEnd}
+            />
           </div>
         )}
         <SearchBar initialSearchQuery={searchQuery} classModifier="mobile" />
@@ -123,10 +127,18 @@ const SearchContainer: React.FC<SearchContainerProps> = ({
       </div>
       <div className="results">
         <div className="results__inner-container">
-          <SearchRadioButtons onChange={onModeChange} selectedOption={mode} />
+          <SearchRadioButtons
+            onChange={eventHandlers.onModeChange}
+            selectedOption={mode}
+          />
           <VideoResultsList
+            bookmarks={bookmarks}
             dateToDivMap={dateToDivMap}
-            onPlayClick={handlePlayClick}
+            eventHandlers={{
+              onAddBookmark: eventHandlers.onAddBookmark,
+              onRemoveBookmark: eventHandlers.onRemoveBookmark,
+              onPlayClick: handlePlayClick,
+            }}
             searchResult={searchResult}
           />
         </div>

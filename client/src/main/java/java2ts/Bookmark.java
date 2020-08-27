@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2018-2020 MyTake.org, Inc.
+ * Copyright (C) 2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -17,31 +17,17 @@
  *
  * You can contact us at team@mytake.org
  */
-import React from "react";
-import { SearchHit } from "./search";
+package java2ts;
 
-export interface SearchHitContentProps {
-  className?: string;
-  maxLength?: number;
-  searchHit: SearchHit;
+import com.jsoniter.spi.TypeLiteral;
+import java.util.List;
+
+@jsweet.lang.Erased
+public class Bookmark implements Json {
+	public String savedAt;
+	public String fact;
+	public int start; // char offset for doc, ms for video
+	public int end; // char offset for doc, ms for video
+
+	public static final TypeLiteral<List<Bookmark>> LIST = new TypeLiteral<List<Bookmark>>() {};
 }
-
-const SearchHitContent: React.FC<SearchHitContentProps> = ({
-  className,
-  maxLength,
-  searchHit,
-}) => {
-  return (
-    <p className={className}>
-      {searchHit.getContent(maxLength).map((hitContent, index) => {
-        return hitContent.isHighlighted ? (
-          <strong key={index}>{hitContent.text}</strong>
-        ) : (
-          hitContent.text
-        );
-      })}
-    </p>
-  );
-};
-
-export default SearchHitContent;

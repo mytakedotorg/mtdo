@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2018-2020 MyTake.org, Inc.
+ * Copyright (C) 2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -17,24 +17,13 @@
  *
  * You can contact us at team@mytake.org
  */
-import React from "react";
-import renderer from "react-test-renderer";
-import { kennedyNixon } from "../../utils/testUtils";
-import { SearchHit } from "./search";
-import SharePreview from "./SharePreview";
+export function convertSecondsToMilliseconds(seconds: number): number {
+  return Math.round(seconds * 1000);
+}
 
-test("SharePreview renders", () => {
-  const searchHit = new SearchHit(
-    [[18, 28, "television"]],
-    [14, 239],
-    0,
-    kennedyNixon,
-    "factHash"
-  );
-  const tree = renderer
-    .create(
-      <SharePreview searchHit={searchHit} contextUrl="/foundation/example" />
-    )
-    .toJSON();
-  expect(tree).toMatchSnapshot();
-});
+export function convertMillisecondsToSeconds(ms: number): number {
+  if (ms === 0) {
+    return 0;
+  }
+  return ms / 1000;
+}

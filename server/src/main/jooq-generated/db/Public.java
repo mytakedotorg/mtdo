@@ -5,6 +5,8 @@ package db;
 
 
 import db.tables.Account;
+import db.tables.Bookmark;
+import db.tables.BookmarksMod;
 import db.tables.Confirmaccountlink;
 import db.tables.FlywaySchemaHistory;
 import db.tables.Follow;
@@ -31,7 +33,7 @@ import org.jooq.impl.SchemaImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Public extends SchemaImpl {
 
-    private static final long serialVersionUID = 1612154926;
+    private static final long serialVersionUID = 1998300782;
 
     /**
      * The reference instance of <code>public</code>
@@ -42,6 +44,16 @@ public class Public extends SchemaImpl {
      * The table <code>public.account</code>.
      */
     public final Account ACCOUNT = Account.ACCOUNT;
+
+    /**
+     * The table <code>public.bookmark</code>.
+     */
+    public final Bookmark BOOKMARK = Bookmark.BOOKMARK;
+
+    /**
+     * The table <code>public.bookmarks_mod</code>.
+     */
+    public final BookmarksMod BOOKMARKS_MOD = BookmarksMod.BOOKMARKS_MOD;
 
     /**
      * The table <code>public.confirmaccountlink</code>.
@@ -119,6 +131,8 @@ public class Public extends SchemaImpl {
     public final List<Table<?>> getTables() {
         return Arrays.<Table<?>>asList(
             Account.ACCOUNT,
+            Bookmark.BOOKMARK,
+            BookmarksMod.BOOKMARKS_MOD,
             Confirmaccountlink.CONFIRMACCOUNTLINK,
             FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY,
             Follow.FOLLOW,

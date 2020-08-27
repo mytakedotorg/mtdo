@@ -30,27 +30,30 @@
 			<img class="profile__image" src="/assets/permanent/blankuser-4ea73504e4.png">
 		</div>
 		<div class="profile__info">
-		@if (account.getName() != null) {
-			<h2 class="profile__text profile__text--name">@account.getName()</h2>
-			<h3 class="profile__text profile__text--username">@account.getUsername()</h2>
-		} else {
-			<h2 class="profile__text profile__text--username">@account.getUsername()</h2>
-		}
-			<p class="profile__text profile__text--bio">I have a little bio that I can put here.</p>
-			<hr />
-			<p class="profile__text profile__text--small">Some city, ST</p>
-			<p class="profile__text profile__text--small">email@@domain</p>
-			<p class="profile__text profile__text--small">myhomepage.com</p>
+			<div>
+			@if (account.getName() != null) {
+				<h2 class="profile__text profile__text--name">@account.getName()</h2>
+				<h3 class="profile__text profile__text--username">@account.getUsername()</h2>
+			} else {
+				<h2 class="profile__text profile__text--username">@account.getUsername()</h2>
+			}
+				<p class="profile__text profile__text--bio">I have a little bio that I can put here.</p>
+			</div>
+			<div>
+				<p class="profile__text profile__text--small">Some city, ST</p>
+				<p class="profile__text profile__text--small">email@@domain</p>
+				<p class="profile__text profile__text--small">myhomepage.com</p>
+			</div>
 		</div>
 	</div>
 	<div class="profile__tabs">
-		<div class="profile__nav">
-			<div class="tab-nav">
-				<ul class="tab-nav__list">
-			@raw(activeMode.render(account, isLoggedIn))
-				</ul>
-			</div>
-		</div>
+		<ul class="tab-nav__list">
+			@for (Mode mode : Mode.values()) {
+				@if (!mode.isHidden() && (isLoggedIn || !mode.requiresLogin())) {
+					<li class="tab-nav__list-item"><a href="@mode.url(account)" class="tab-nav__link tab-nav__link--@(mode == activeMode ? "active" : "inactive")">@mode.name()</a></li>
+				}
+			}
+		</ul>
 		<div class="profile__tab-content">
 			@content
 		</div>

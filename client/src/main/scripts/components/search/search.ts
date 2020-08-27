@@ -18,7 +18,8 @@
  * You can contact us at team@mytake.org
  */
 import { Foundation, FoundationFetcher } from "../../common/foundation";
-import { abbreviate, bsRoundEarly, groupBy } from "../../common/functions";
+import { groupBy } from "../../common/functions";
+import { VideoTurn } from "../../common/social/social";
 import { getTurnContent } from "../../common/video";
 import { FT } from "../../java2ts/FT";
 import { Routes } from "../../java2ts/Routes";
@@ -105,7 +106,8 @@ export function _searchImpl(searchWithData: _SearchWithData): SearchResult {
   // Array of SearchHit arrays, grouped by fact
   const hitsPerFact = groupedByFact
     .map((videoResults) => {
-      const videoFact = foundationData.getVideo(videoResults[0].hash);
+      const hash = videoResults[0].hash;
+      const videoFact = foundationData.getVideo(hash);
       // Sort hits by turn
       videoResults.sort((a, b) => a.turn - b.turn);
       return videoResults.flatMap((v) => {
@@ -118,7 +120,14 @@ export function _searchImpl(searchWithData: _SearchWithData): SearchResult {
         };
         const multiHighlights = turnWithResults.expandBy(expandBy[mode]);
         return multiHighlights.map(
-          (m) => new SearchHit(m.highlights, m.cut, v.turn, videoFact, v.hash)
+          (m) =>
+            new SearchHit(m.highlights, videoFact, {
+              kind: "videoTurn",
+              fact: hash,
+              turn: v.turn,
+              cut: m.cut,
+              bold: m.highlights.map((h) => [h[0], h[1]]),
+            })
         );
       });
     })
@@ -145,95 +154,11 @@ interface VideoFactsToSearchHits {
   searchHits: SearchHit[];
 }
 
-interface SeachHitContent {
-  text: string;
-  isHighlighted: boolean;
-}
-
 export class SearchHit {
-  private clipRangeCache?: [number, number];
   // Offsets are relative to the beginning of the turn
   constructor(
     readonly highlightOffsets: Array<[number, number, string]>,
-    readonly hitOffsets: [number, number],
-    readonly turn: number,
     readonly videoFact: FT.VideoFactContent,
-    readonly videoFactHash: string
+    readonly videoTurn: VideoTurn
   ) {}
-
-  getSpeaker(): string {
-    const { turn, videoFact } = this;
-    const fullName = videoFact.speakers[videoFact.turnSpeaker[turn]].fullName;
-    return fullName.substring(fullName.lastIndexOf(" "));
-  }
-
-  getClipRange(): [number, number] {
-    if (this.clipRangeCache) {
-      return this.clipRangeCache;
-    }
-    const { hitOffsets, turn, videoFact } = this;
-    const veryFirstWord = videoFact.turnWord[turn];
-    const firstChar = videoFact.wordChar[veryFirstWord];
-
-    const firstWord = bsRoundEarly(
-      videoFact.wordChar,
-      firstChar + hitOffsets[0]
-    );
-    const lastWord = bsRoundEarly(
-      videoFact.wordChar,
-      firstChar + hitOffsets[1]
-    );
-
-    const clipStart = videoFact.wordTime[firstWord];
-    let clipEnd;
-    if (videoFact.wordTime[lastWord + 1]) {
-      clipEnd = videoFact.wordTime[lastWord + 1];
-    } else {
-      clipEnd = videoFact.wordTime[lastWord] + 2;
-    }
-
-    this.clipRangeCache = [clipStart, clipEnd];
-    return this.clipRangeCache;
-  }
-
-  getContent(maxLength?: number): SeachHitContent[] {
-    const searchHitContents: SeachHitContent[] = [];
-    const { turn, videoFact } = this;
-    let turnContent = getTurnContent(turn, videoFact);
-    let contentStartIdx = this.hitOffsets[0];
-    if (maxLength && this.hitOffsets[1] - this.hitOffsets[0] > maxLength) {
-      turnContent = abbreviate(turnContent, maxLength + contentStartIdx);
-    }
-    this.highlightOffsets.forEach((highlight) => {
-      const textBeforeHighlight = turnContent.substring(
-        contentStartIdx,
-        highlight[0]
-      );
-      const textOfHighlight = turnContent.substring(highlight[0], highlight[1]);
-      if (textBeforeHighlight) {
-        searchHitContents.push({
-          text: textBeforeHighlight,
-          isHighlighted: false,
-        });
-      }
-      if (textOfHighlight) {
-        searchHitContents.push({
-          text: textOfHighlight,
-          isHighlighted: true,
-        });
-      }
-      contentStartIdx = highlight[1];
-    });
-    const textAfterAllHighlights = turnContent.substring(
-      contentStartIdx,
-      this.hitOffsets[1]
-    );
-    if (textAfterAllHighlights) {
-      searchHitContents.push({
-        text: textAfterAllHighlights,
-        isHighlighted: false,
-      });
-    }
-    return searchHitContents;
-  }
 }

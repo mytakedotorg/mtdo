@@ -19,11 +19,8 @@
  */
 package forms.meta;
 
-import com.diffplug.common.base.Errors;
 import com.google.common.base.Converter;
 import java.math.BigDecimal;
-import java.sql.Timestamp;
-import java.text.ParseException;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.function.Supplier;
@@ -56,14 +53,6 @@ public abstract class MetaField<T> {
 	/** Creates a field for a boolean value. */
 	public static MetaField<BigDecimal> bigDecimal(String name) {
 		return new BigDecimalMetaField(name);
-	}
-
-	public static MetaField<Timestamp> timestamp(String name) {
-		return new TimestampMetaField(name);
-	}
-
-	public static MetaField<Timestamp> timestampJdbc(String name) {
-		return new TimestampJdbcMetaField(name);
 	}
 
 	public static <T extends Enum<T>> MetaField<T> enumType(String name, Class<T> clazz) {
@@ -274,66 +263,6 @@ public abstract class MetaField<T> {
 			@Override
 			protected String doBackward(BigDecimal b) {
 				return b.toPlainString();
-			}
-		};
-	}
-
-	static class TimestampMetaField extends MetaField<Timestamp> {
-		public TimestampMetaField(String name) {
-			super(name);
-		}
-
-		@Override
-		public Converter<String, Timestamp> parser() {
-			return converter;
-		}
-
-		@Override
-		public Class<Timestamp> clazz() {
-			return Timestamp.class;
-		}
-
-		static final Converter<String, Timestamp> converter = new Converter<String, Timestamp>() {
-			@Override
-			protected Timestamp doForward(String a) {
-				try {
-					return new Timestamp(common.Time.formatHTML().parse(a).getTime());
-				} catch (ParseException e) {
-					throw Errors.asRuntime(e);
-				}
-			}
-
-			@Override
-			protected String doBackward(Timestamp b) {
-				return common.Time.formatHTML().format(b);
-			}
-		};
-	}
-
-	static class TimestampJdbcMetaField extends MetaField<Timestamp> {
-		public TimestampJdbcMetaField(String name) {
-			super(name);
-		}
-
-		@Override
-		public Converter<String, Timestamp> parser() {
-			return converter;
-		}
-
-		@Override
-		public Class<Timestamp> clazz() {
-			return Timestamp.class;
-		}
-
-		static final Converter<String, Timestamp> converter = new Converter<String, Timestamp>() {
-			@Override
-			protected Timestamp doForward(String a) {
-				return Timestamp.valueOf(a);
-			}
-
-			@Override
-			protected String doBackward(Timestamp b) {
-				return b.toString();
 			}
 		};
 	}

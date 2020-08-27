@@ -20,12 +20,14 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { getUserCookieString, windowUtils } from "./browser";
+import { getQueryParameterByName } from "./common/functions";
 import { TakeDocument } from "./components/BlockEditor";
 import BlockReader from "./components/BlockReader";
 import BlockWriter, {
   InitialBlockWriterState,
   initialState,
 } from "./components/BlockWriter";
+import BookmarksLoader from "./components/bookmarks/BookmarksLoader";
 import { Card } from "./components/FeedList";
 import FoundationView from "./components/FoundationView";
 import Home from "./components/Home";
@@ -33,6 +35,7 @@ import VideoResultsLoader from "./components/search/VideoResultsLoader";
 import SearchBar from "./components/SearchBar";
 import UserNav from "./components/UserNav";
 import { LoginCookie } from "./java2ts/LoginCookie";
+import { Routes } from "./java2ts/Routes";
 
 windowUtils.init();
 
@@ -108,11 +111,7 @@ function reactElementForPage(args: MtdoArgs): React.SFCElement<any> {
 
 const app = document.getElementById("app");
 if (app) {
-  if (window.mytake) {
-    ReactDOM.render(reactElementForPage(window.mytake), app);
-  } else {
-    throw "window.mytake is undefined";
-  }
+  ReactDOM.render(reactElementForPage(window.mytake!), app);
 }
 
 if (isSearchPage(window.mytake)) {
@@ -129,16 +128,22 @@ if (isSearchPage(window.mytake)) {
 }
 
 const userNavContainer = document.getElementById("usernav");
-if (userNavContainer) {
-  const cookieString = getUserCookieString();
-  let cookie = cookieString
-    ? (JSON.parse(JSON.parse(cookieString)) as LoginCookie)
-    : null;
-  ReactDOM.render(<UserNav cookie={cookie} />, userNavContainer);
-} else {
-  throw "Couldn't find div#usernav";
-}
+const cookieString = getUserCookieString();
+let cookie = cookieString
+  ? (JSON.parse(JSON.parse(cookieString)) as LoginCookie)
+  : null;
+ReactDOM.render(<UserNav cookie={cookie} />, userNavContainer!);
 
+if (isBookmarksTab()) {
+  const bookmarksContainer = document.getElementById("bookmarks");
+  ReactDOM.render(<BookmarksLoader />, bookmarksContainer);
+}
 function isSearchPage(page?: MtdoArgs): page is SearchArgs {
   return (page as SearchArgs)?.type === "search";
+}
+
+function isBookmarksTab(): boolean {
+  return (
+    getQueryParameterByName(Routes.PROFILE_TAB) === Routes.PROFILE_TAB_BOOKMARKS
+  );
 }

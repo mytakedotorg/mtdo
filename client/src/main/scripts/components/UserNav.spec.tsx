@@ -34,6 +34,8 @@ test("UserNav logged out", () => {
 test("UserNav logged in", () => {
   const cookie = {
     username: "samples",
+    email: "samples@email.com",
+    unconfirmed: false,
   };
   const tree = renderer.create(<UserNav cookie={cookie} />).toJSON();
   expect(tree).toMatchSnapshot();

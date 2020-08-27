@@ -19,18 +19,18 @@
  */
 const rison = require("rison-node");
 
-/* TODO, for search
+export type CharOffsetRange = [firstChar: number, lastChar: number];
 export type VideoTurn = {
-    kind: "videoTurn";
-    fact: string;
-    turn: number;
-    cut: [number, number];
-    bold?: Array<[number, number]>;
+  kind: "videoTurn";
+  fact: string;
+  turn: number;
+  cut: CharOffsetRange;
+  bold?: Array<[number, number]>;
 };
-*/
 
+export type ClipRange = [startTime: number, endTime: number];
 export type VideoCut = {
-  cut: [number, number];
+  cut: ClipRange;
   fact: string;
   kind: "videoCut";
 };

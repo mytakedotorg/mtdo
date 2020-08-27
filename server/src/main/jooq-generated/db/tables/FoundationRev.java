@@ -8,7 +8,7 @@ import db.Keys;
 import db.Public;
 import db.tables.records.FoundationRevRecord;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
@@ -32,7 +32,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class FoundationRev extends TableImpl<FoundationRevRecord> {
 
-    private static final long serialVersionUID = -1614190935;
+    private static final long serialVersionUID = 1534768364;
 
     /**
      * The reference instance of <code>public.foundation_rev</code>
@@ -60,7 +60,7 @@ public class FoundationRev extends TableImpl<FoundationRevRecord> {
     /**
      * The column <code>public.foundation_rev.migrated_on</code>.
      */
-    public final TableField<FoundationRevRecord, Timestamp> MIGRATED_ON = createField(DSL.name("migrated_on"), org.jooq.impl.SQLDataType.TIMESTAMP.nullable(false), this, "");
+    public final TableField<FoundationRevRecord, LocalDateTime> MIGRATED_ON = createField(DSL.name("migrated_on"), org.jooq.impl.SQLDataType.LOCALDATETIME.nullable(false), this, "");
 
     /**
      * The column <code>public.foundation_rev.execution_time_sec</code>.
@@ -146,7 +146,7 @@ public class FoundationRev extends TableImpl<FoundationRevRecord> {
     // -------------------------------------------------------------------------
 
     @Override
-    public Row4<Integer, String, Timestamp, Integer> fieldsRow() {
+    public Row4<Integer, String, LocalDateTime, Integer> fieldsRow() {
         return (Row4) super.fieldsRow();
     }
 }

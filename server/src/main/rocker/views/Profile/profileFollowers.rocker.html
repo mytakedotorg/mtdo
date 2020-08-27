@@ -1,6 +1,6 @@
 @*
  * MyTake.org website and tooling.
- * Copyright (C) 2018 MyTake.org, Inc.
+ * Copyright (C) 2018-2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -28,7 +28,6 @@
 
 @views.Profile.profileBase.template(account, isLoggedIn, Mode.followers) -> {
 
-	<div class="tab">
 @if (profiles.isEmpty()) {
 	<h2 class="tab-title">No followers.</h2>
 } else {
@@ -45,6 +44,5 @@
 	}
 	</div>
 }
-</div>
 
 }

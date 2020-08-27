@@ -75,31 +75,31 @@
 			<img class="profile__image" src="/assets/permanent/blankuser-4ea73504e4.png">
 		</div>
 		<div class="profile__info">
-			<h2 class="profile__text profile__text--username">samples</h2>
-			<p class="profile__text profile__text--bio">I have a little bio that I can put here.</p>
-			<hr />
-			<p class="profile__text profile__text--small">Some city, ST</p>
-			<p class="profile__text profile__text--small">email@domain</p>
-			<p class="profile__text profile__text--small">myhomepage.com</p>
+			<div>
+				<h2 class="profile__text profile__text--username">samples</h2>
+				<p class="profile__text profile__text--bio">I have a little bio that I can put here.</p>
+			</div>
+			<div>
+				<p class="profile__text profile__text--small">Some city, ST</p>
+				<p class="profile__text profile__text--small">email@domain</p>
+				<p class="profile__text profile__text--small">myhomepage.com</p>
+			</div>
 		</div>
 	</div>
 	<div class="profile__tabs">
-		<div class="profile__nav">
-			<div class="tab-nav">
-				<ul class="tab-nav__list">
-			<li class="tab-nav__list-item"><a href="/samples?tab=bookmarks" class="tab-nav__link tab-nav__link--inactive">bookmarks</a></li><li class="tab-nav__list-item"><a href="/samples?tab=followers" class="tab-nav__link tab-nav__link--inactive">followers</a></li><li class="tab-nav__list-item"><a href="/samples?tab=following" class="tab-nav__link tab-nav__link--active">following</a></li>
-				</ul>
-			</div>
-		</div>
+		<ul class="tab-nav__list">
+					<li class="tab-nav__list-item"><a href="/samples?tab=profile" class="tab-nav__link tab-nav__link--inactive">profile</a></li>
+					<li class="tab-nav__list-item"><a href="/samples?tab=bookmarks" class="tab-nav__link tab-nav__link--inactive">bookmarks</a></li>
+					<li class="tab-nav__list-item"><a href="/samples?tab=followers" class="tab-nav__link tab-nav__link--inactive">followers</a></li>
+					<li class="tab-nav__list-item"><a href="/samples?tab=following" class="tab-nav__link tab-nav__link--active">following</a></li>
+		</ul>
 		<div class="profile__tab-content">
-				<div class="tab">
-	<div class="takelist">
+				<div class="takelist">
 		<div class="takelist__take">
 			<h2 class="takelist__title"><a class="takelist__link" href="/other">other</a></h2>
-			<span class="takelist__aside">Followed on Jan 01 1970</span>
+			<span class="takelist__aside">Followed on Jan 1, 1970</span>
 		</div>
 	</div>
-</div>
 
 
 		</div>

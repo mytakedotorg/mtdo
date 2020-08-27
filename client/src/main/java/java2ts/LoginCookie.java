@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2017 MyTake.org, Inc.
+ * Copyright (C) 2017-2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -21,5 +21,8 @@ package java2ts;
 
 @jsweet.lang.Interface
 public class LoginCookie {
+	@jsweet.lang.Optional
 	public String username;
+	public String email;
+	public boolean unconfirmed;
 }

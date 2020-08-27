@@ -9,7 +9,7 @@ import db.Public;
 import db.bindings.PostgresInetBinding;
 import db.tables.records.LoginlinkRecord;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
@@ -33,7 +33,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Loginlink extends TableImpl<LoginlinkRecord> {
 
-    private static final long serialVersionUID = -1841137493;
+    private static final long serialVersionUID = 1624401786;
 
     /**
      * The reference instance of <code>public.loginlink</code>
@@ -56,12 +56,12 @@ public class Loginlink extends TableImpl<LoginlinkRecord> {
     /**
      * The column <code>public.loginlink.created_at</code>.
      */
-    public final TableField<LoginlinkRecord, Timestamp> CREATED_AT = createField(DSL.name("created_at"), org.jooq.impl.SQLDataType.TIMESTAMP.nullable(false), this, "");
+    public final TableField<LoginlinkRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), org.jooq.impl.SQLDataType.LOCALDATETIME.nullable(false), this, "");
 
     /**
      * The column <code>public.loginlink.expires_at</code>.
      */
-    public final TableField<LoginlinkRecord, Timestamp> EXPIRES_AT = createField(DSL.name("expires_at"), org.jooq.impl.SQLDataType.TIMESTAMP.nullable(false), this, "");
+    public final TableField<LoginlinkRecord, LocalDateTime> EXPIRES_AT = createField(DSL.name("expires_at"), org.jooq.impl.SQLDataType.LOCALDATETIME.nullable(false), this, "");
 
     /**
      * The column <code>public.loginlink.requestor_ip</code>.
@@ -161,7 +161,7 @@ public class Loginlink extends TableImpl<LoginlinkRecord> {
     // -------------------------------------------------------------------------
 
     @Override
-    public Row5<String, Timestamp, Timestamp, String, Integer> fieldsRow() {
+    public Row5<String, LocalDateTime, LocalDateTime, String, Integer> fieldsRow() {
         return (Row5) super.fieldsRow();
     }
 }

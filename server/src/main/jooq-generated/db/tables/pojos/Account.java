@@ -5,7 +5,7 @@ package db.tables.pojos;
 
 
 import java.io.Serializable;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 
 /**
@@ -14,19 +14,19 @@ import java.sql.Timestamp;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Account implements Serializable {
 
-    private static final long serialVersionUID = -1055588000;
+    private static final long serialVersionUID = -980992299;
 
-    private Integer   id;
-    private String    username;
-    private String    email;
-    private String    name;
-    private Timestamp createdAt;
-    private String    createdIp;
-    private Timestamp updatedAt;
-    private String    updatedIp;
-    private Timestamp lastSeenAt;
-    private String    lastSeenIp;
-    private Timestamp lastEmailedAt;
+    private Integer       id;
+    private String        username;
+    private String        email;
+    private String        name;
+    private LocalDateTime createdAt;
+    private String        createdIp;
+    private LocalDateTime updatedAt;
+    private String        updatedIp;
+    private LocalDateTime lastSeenAt;
+    private String        lastSeenIp;
+    private LocalDateTime lastEmailedAt;
 
     public Account() {}
 
@@ -45,17 +45,17 @@ public class Account implements Serializable {
     }
 
     public Account(
-        Integer   id,
-        String    username,
-        String    email,
-        String    name,
-        Timestamp createdAt,
-        String    createdIp,
-        Timestamp updatedAt,
-        String    updatedIp,
-        Timestamp lastSeenAt,
-        String    lastSeenIp,
-        Timestamp lastEmailedAt
+        Integer       id,
+        String        username,
+        String        email,
+        String        name,
+        LocalDateTime createdAt,
+        String        createdIp,
+        LocalDateTime updatedAt,
+        String        updatedIp,
+        LocalDateTime lastSeenAt,
+        String        lastSeenIp,
+        LocalDateTime lastEmailedAt
     ) {
         this.id = id;
         this.username = username;
@@ -106,11 +106,11 @@ public class Account implements Serializable {
         return this;
     }
 
-    public Timestamp getCreatedAt() {
+    public LocalDateTime getCreatedAt() {
         return this.createdAt;
     }
 
-    public Account setCreatedAt(Timestamp createdAt) {
+    public Account setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
         return this;
     }
@@ -124,11 +124,11 @@ public class Account implements Serializable {
         return this;
     }
 
-    public Timestamp getUpdatedAt() {
+    public LocalDateTime getUpdatedAt() {
         return this.updatedAt;
     }
 
-    public Account setUpdatedAt(Timestamp updatedAt) {
+    public Account setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
         return this;
     }
@@ -142,11 +142,11 @@ public class Account implements Serializable {
         return this;
     }
 
-    public Timestamp getLastSeenAt() {
+    public LocalDateTime getLastSeenAt() {
         return this.lastSeenAt;
     }
 
-    public Account setLastSeenAt(Timestamp lastSeenAt) {
+    public Account setLastSeenAt(LocalDateTime lastSeenAt) {
         this.lastSeenAt = lastSeenAt;
         return this;
     }
@@ -160,11 +160,11 @@ public class Account implements Serializable {
         return this;
     }
 
-    public Timestamp getLastEmailedAt() {
+    public LocalDateTime getLastEmailedAt() {
         return this.lastEmailedAt;
     }
 
-    public Account setLastEmailedAt(Timestamp lastEmailedAt) {
+    public Account setLastEmailedAt(LocalDateTime lastEmailedAt) {
         this.lastEmailedAt = lastEmailedAt;
         return this;
     }

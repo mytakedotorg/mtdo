@@ -19,48 +19,66 @@
  */
 import React from "react";
 import renderer from "react-test-renderer";
+import { VideoTurn } from "../../common/social/social";
 import { kennedyNixon } from "../../utils/testUtils";
-import { SearchHit } from "./search";
-import { SearchHitContentProps } from "./SearchHitContent";
-import { SearchHitMock } from "./SearchHitContent.spec";
+import { HitContentProps } from "./HitContent";
+import { HitMock } from "./HitContent.spec";
 import { SharePreviewProps } from "./SharePreview";
-import VideoResult from "./VideoResult";
+import VideoResult, { VideoResultEventHandlers } from "./VideoResult";
 
 jest.mock("./SharePreview", () => ({
   __esModule: true,
-  default: (props: SharePreviewProps) => SearchHitMock("SharePreview")(props),
+  default: (props: SharePreviewProps) => HitMock("SharePreview")(props),
 }));
 
-jest.mock("./SearchHitContent", () => ({
+jest.mock("./HitContent", () => ({
   __esModule: true,
-  default: (props: SearchHitContentProps) =>
-    SearchHitMock("SearchHitContent")(props),
+  default: (props: HitContentProps) => HitMock("HitContent")(props),
 }));
 
+const eventHandlers: VideoResultEventHandlers = {
+  onPlayClick: jest.fn(),
+  onAddBookmark: jest.fn(),
+  onRemoveBookmark: jest.fn(),
+};
 test("VideoResultPreview containing", () => {
-  const searchHit = new SearchHit(
-    [[18, 28, "television"]],
-    [14, 239],
-    0,
-    kennedyNixon,
-    "factHash"
-  );
+  const videoTurn: VideoTurn = {
+    kind: "videoTurn",
+    fact: "factHash",
+    turn: 0,
+    cut: [14, 239],
+    bold: [[18, 28]],
+  };
   const tree = renderer
-    .create(<VideoResult searchHit={searchHit} onPlayClick={jest.fn()} />)
+    .create(
+      <VideoResult
+        bookmarks={[]}
+        videoFact={kennedyNixon}
+        videoTurn={videoTurn}
+        eventHandlers={eventHandlers}
+      />
+    )
     .toJSON();
   expect(tree).toMatchSnapshot();
 });
 
 test("VideoResultPreview before and after", () => {
-  const searchHit = new SearchHit(
-    [[18, 28, "television"]],
-    [0, 276],
-    0,
-    kennedyNixon,
-    "factHash"
-  );
+  const videoTurn: VideoTurn = {
+    kind: "videoTurn",
+    fact: "factHash",
+    turn: 0,
+    cut: [0, 276],
+    bold: [[18, 28]],
+  };
   const tree = renderer
-    .create(<VideoResult searchHit={searchHit} onPlayClick={jest.fn()} />)
+    .create(
+      <VideoResult
+        bookmarks={[]}
+        videoFact={kennedyNixon}
+        videoTurn={videoTurn}
+        eventHandlers={eventHandlers}
+      />
+    )
     .toJSON();
   expect(tree).toMatchSnapshot();
 });

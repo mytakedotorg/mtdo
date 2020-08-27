@@ -21,6 +21,7 @@ package common;
 
 import auth.AuthModule;
 import controllers.About;
+import controllers.BookmarkApi;
 import controllers.DiscourseAuth;
 import controllers.Drafts;
 import controllers.FoundationAssets;
@@ -31,6 +32,8 @@ import controllers.SearchModule;
 import controllers.TakeReaction;
 import controllers.Takes;
 import java.security.SecureRandom;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import javax.sql.DataSource;
 import json.JsoniterModule;
 import org.flywaydb.core.Flyway;
@@ -62,7 +65,6 @@ public class Prod extends Jooby {
 			env.onStart(Prod::flywayMigrate);
 		});
 		use(new InitialData.Module());
-		use(new FoundationMigrationModule());
 		controllers(this);
 	}
 
@@ -76,7 +78,7 @@ public class Prod extends Jooby {
 
 	static void realtime(Jooby jooby) {
 		jooby.use((env, conf, binder) -> {
-			binder.bind(Time.class).toInstance(() -> System.currentTimeMillis());
+			binder.bind(Time.class).toInstance(() -> LocalDateTime.now(ZoneId.of("UTC")));
 		});
 	}
 
@@ -84,7 +86,7 @@ public class Prod extends Jooby {
 		jooby.use(new IpGetter.Module());
 		CustomAssets.initTemplates(jooby);
 		EmailSender.init(jooby);
-		Mods.init(jooby);
+		//		Mods.init(jooby);
 		SocialEmbed.init(jooby);
 		jooby.use(new JsoniterModule());
 		jooby.use(new MyFlash());
@@ -101,6 +103,7 @@ public class Prod extends Jooby {
 		jooby.use(new HomeFeed());
 		jooby.use(new FoundationAssets());
 		jooby.use(new SearchModule());
+		jooby.use(new BookmarkApi());
 		jooby.use(new About());
 		jooby.use(new Drafts());
 		jooby.use(new AuthModule());
@@ -111,7 +114,7 @@ public class Prod extends Jooby {
 		jooby.use(new Profile());
 		// But it is okay to put the error tracing stuff after that
 		jooby.use(new RedirectException.Module());
-		jooby.use(new controllers.ErrorPages());
+		//jooby.use(new controllers.ErrorPages());
 	}
 
 	public static void main(String[] args) {
