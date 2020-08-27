@@ -23,8 +23,6 @@ import common.JoobyDevRule;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.TimeZone;
 import java2ts.Routes;
 import javax.ws.rs.core.Response.Status;
 import org.assertj.core.api.Assertions;
@@ -58,7 +56,7 @@ public class BookmarkApiTest {
 
 	@Test
 	public void _02_save() throws ParseException {
-		dev.time().setCurrentMs(ts("1980"));
+		dev.time().setYear(1980);
 		dev.givenUser("samples")
 				.contentType(ContentType.JSON)
 				.body("["
@@ -86,7 +84,7 @@ public class BookmarkApiTest {
 	@Test
 	public void _04_saveIsIdempotent() throws ParseException {
 		// move forward by a year
-		dev.time().setCurrentMs(ts("1981"));
+		dev.time().setYear(1981);
 		dev.givenUser("samples")
 				.contentType(ContentType.JSON)
 				.body("["
@@ -112,8 +110,7 @@ public class BookmarkApiTest {
 	@Test
 	public void _05_delete() throws ParseException {
 		// move forward by another year
-		dev.time().setCurrentMs(ts("1982"));
-
+		dev.time().setYear(1982);
 		dev.givenUser("samples")
 				.contentType(ContentType.JSON)
 				.body("[{\"savedAt\":\"1970-01-01T00:00Z\",\"fact\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"start\":2,\"end\":718}]")
@@ -133,11 +130,15 @@ public class BookmarkApiTest {
 				.header("Last-Modified", Matchers.equalTo("Fri, 1 Jan 1982 00:00:00 GMT"));
 	}
 
-	private static long ts(String year) throws ParseException {
-		SimpleDateFormat format = new SimpleDateFormat("yyyy");
-		format.setTimeZone(TimeZone.getTimeZone("UTC"));
-		return format.parse(year).getTime();
-	}
+	//	@Test
+	//	public void _07_modifiedSince() throws ParseException {
+	//		dev.givenUser("samples")
+	//				.header("If-Modified-Since", Time.toGMT(LocalDateTime.of(LocalDate.of(1981, 6, 1), LocalTime.MIDNIGHT)))
+	//				.get(Routes.API_BOOKMARKS)
+	//				.then()
+	//				.statusCode(Status.NOT_MODIFIED.getStatusCode())
+	//				.body(Matchers.is(Matchers.emptyOrNullString()));
+	//	}
 
 	private static Matcher<String> hasToString(String input) {
 		return new BaseMatcher<String>() {

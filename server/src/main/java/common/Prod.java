@@ -32,6 +32,8 @@ import controllers.SearchModule;
 import controllers.TakeReaction;
 import controllers.Takes;
 import java.security.SecureRandom;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import javax.sql.DataSource;
 import json.JsoniterModule;
 import org.flywaydb.core.Flyway;
@@ -76,7 +78,7 @@ public class Prod extends Jooby {
 
 	static void realtime(Jooby jooby) {
 		jooby.use((env, conf, binder) -> {
-			binder.bind(Time.class).toInstance(() -> System.currentTimeMillis());
+			binder.bind(Time.class).toInstance(() -> LocalDateTime.now(ZoneId.of("UTC")));
 		});
 	}
 

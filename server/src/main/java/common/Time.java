@@ -30,12 +30,8 @@ import java.util.Date;
 
 /** Abstracts access to time, so we can control it for testing. */
 public interface Time {
-	long nowMs();
-
 	/** DateTime in UTC. */
-	default LocalDateTime now() {
-		return LocalDateTime.ofInstant(Instant.ofEpochMilli(nowMs()), ZoneOffset.UTC);
-	}
+	LocalDateTime now();
 
 	/** Jan 01 1970 */
 	public static DateTimeFormatter formatCompact() {
