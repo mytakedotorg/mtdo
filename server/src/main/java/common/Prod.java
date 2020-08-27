@@ -63,7 +63,6 @@ public class Prod extends Jooby {
 			env.onStart(Prod::flywayMigrate);
 		});
 		use(new InitialData.Module());
-		use(new FoundationMigrationModule());
 		controllers(this);
 	}
 
