@@ -78,7 +78,7 @@ public class Mods {
 				htmlEmail.addTo(moderatorEmail);
 			}
 			sender.accept(htmlEmail);
-			//htmlEmail.setSubject("[MyTake.org mod] " + htmlEmail.getSubject());
+			htmlEmail.setSubject("[MyTake.org mod] " + htmlEmail.getSubject());
 		});
 	}
 
