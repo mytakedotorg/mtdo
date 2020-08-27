@@ -67,7 +67,7 @@ export function _bookmarksImpl(
       break;
     case BookmarksMode.DateBookmarked:
       const sortedByDateBookmarked = bookmarks.sort(
-        (a, b) => a.savedAt.getUTCDate() - b.savedAt.getUTCDate()
+        (a, b) => a.savedAt.getTime() - b.savedAt.getTime()
       );
       groupedByFact = [];
       let previousFact = "";
@@ -102,8 +102,8 @@ export function _bookmarksImpl(
         switch (mode) {
           case BookmarksMode.DateHappened:
             return (
-              new Date(a.bookmarkHits[0].fact.fact.primaryDate).getUTCDate() -
-              new Date(b.bookmarkHits[0].fact.fact.primaryDate).getUTCDate()
+              new Date(a.bookmarkHits[0].fact.fact.primaryDate).getTime() -
+              new Date(b.bookmarkHits[0].fact.fact.primaryDate).getTime()
             );
           case BookmarksMode.DateBookmarked:
             return 0; //already sorted
