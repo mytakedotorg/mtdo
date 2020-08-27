@@ -58,41 +58,62 @@ export function _bookmarksImpl(
   const { foundationData, mode, bookmarksRaw } = bookmarksWithData;
   const bookmarks = parseBookmarksJSON(bookmarksRaw);
 
-  const groupedByFact: [Bookmark, Bookmark[]][] = Array.from(
-    groupBy(bookmarks, (b) => b.content.fact).values()
-  ).map((groupedBookmarks) => [groupedBookmarks[0], groupedBookmarks]);
+  let groupedByFact: Bookmark[][];
+  switch (mode) {
+    case BookmarksMode.DateHappened:
+      groupedByFact = Array.from(
+        groupBy(bookmarks, (b) => b.content.fact).values()
+      );
+      break;
+    case BookmarksMode.DateBookmarked:
+      const sortedByDateBookmarked = bookmarks.sort(
+        (a, b) => a.savedAt.getUTCDate() - b.savedAt.getUTCDate()
+      );
+      groupedByFact = [];
+      let previousFact = "";
+      let bookmarkGroup: Bookmark[] = [];
+      sortedByDateBookmarked.forEach((b) => {
+        if (b.content.fact !== previousFact) {
+          if (bookmarkGroup.length > 0) {
+            groupedByFact.push(bookmarkGroup);
+          }
+          previousFact = b.content.fact;
+          bookmarkGroup = [];
+        }
+        bookmarkGroup.push(b);
+      });
+      if (bookmarkGroup.length > 0) {
+        groupedByFact.push(bookmarkGroup);
+      }
+      break;
+  }
   return new BookmarksResult(
     groupedByFact
-      .map((bookmarkTuple) => {
-        const fact = foundationData.getFactContent(
-          bookmarkTuple[0].content.fact
-        );
+      .map((bookmarkList) => {
+        const hash = bookmarkList[0].content.fact;
         return {
-          fact: fact,
-          bookmarkHits: bookmarkTuple[1].map(
-            (bookmark) => new BookmarkHit(fact, bookmark)
-          ),
+          hash,
+          bookmarkHits: bookmarkList.map((b) => {
+            return new BookmarkHit(foundationData.getFactContent(hash), b);
+          }),
         };
       })
       .sort((a, b) => {
         switch (mode) {
           case BookmarksMode.DateHappened:
-            const result =
-              new Date(a.fact.fact.primaryDate).getTime() -
-              new Date(b.fact.fact.primaryDate).getTime();
-            return result;
-          case BookmarksMode.DateBookmarked:
             return (
-              a.bookmarkHits[0].bookmark.savedAt.getTime() -
-              b.bookmarkHits[0].bookmark.savedAt.getTime()
+              new Date(a.bookmarkHits[0].fact.fact.primaryDate).getUTCDate() -
+              new Date(b.bookmarkHits[0].fact.fact.primaryDate).getUTCDate()
             );
+          case BookmarksMode.DateBookmarked:
+            return 0; //already sorted
         }
       })
   );
 }
 
 interface FactToBookmarkHits {
-  fact: FT.VideoFactContent | FT.DocumentFactContent;
+  hash: string;
   bookmarkHits: BookmarkHit[];
 }
 

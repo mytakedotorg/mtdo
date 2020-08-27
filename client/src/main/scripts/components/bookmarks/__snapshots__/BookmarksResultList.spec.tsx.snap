@@ -22,36 +22,6 @@ Array [
       298
       515
     </div>
-    <div>
-      VideoResult: 
-      eXNnggT5fPM
-       
-      241
-       
-      27
-      101
-    </div>
-  </div>,
-  <div
-    className="results__preview"
-  >
-    <h2
-      className="results__subheading"
-    >
-      Presidential Debate - Clinton, Trump (2 of 3)
-       -
-       
-      2016-10-09
-    </h2>
-    <div>
-      VideoResult: 
-      FcDNuWIs2qk
-       
-      147
-       
-      0
-      74
-    </div>
   </div>,
   <div
     className="results__preview"
@@ -89,10 +59,10 @@ Array [
       VideoResult: 
       9Z43XV4T8Bc
        
-      5
+      139
        
-      0
-      856
+      1179
+      1357
     </div>
     <div>
       VideoResult: 
@@ -107,10 +77,52 @@ Array [
       VideoResult: 
       9Z43XV4T8Bc
        
-      139
+      5
        
-      1179
-      1357
+      0
+      856
+    </div>
+  </div>,
+  <div
+    className="results__preview"
+  >
+    <h2
+      className="results__subheading"
+    >
+      Presidential Debate - Clinton, Trump (2 of 3)
+       -
+       
+      2016-10-09
+    </h2>
+    <div>
+      VideoResult: 
+      FcDNuWIs2qk
+       
+      147
+       
+      0
+      74
+    </div>
+  </div>,
+  <div
+    className="results__preview"
+  >
+    <h2
+      className="results__subheading"
+    >
+      Presidential Debate - Clinton, Trump (3 of 3)
+       -
+       
+      2016-10-19
+    </h2>
+    <div>
+      VideoResult: 
+      eXNnggT5fPM
+       
+      241
+       
+      27
+      101
     </div>
   </div>,
 ]
@@ -124,45 +136,6 @@ Array [
     <h2
       className="results__subheading"
     >
-      Presidential Debate - Bush, Clinton, Perot (1 of 3)
-       -
-       
-      1992-10-11
-    </h2>
-    <div>
-      VideoResult: 
-      9Z43XV4T8Bc
-       
-      5
-       
-      0
-      856
-    </div>
-    <div>
-      VideoResult: 
-      9Z43XV4T8Bc
-       
-      7
-       
-      413
-      773
-    </div>
-    <div>
-      VideoResult: 
-      9Z43XV4T8Bc
-       
-      139
-       
-      1179
-      1357
-    </div>
-  </div>,
-  <div
-    className="results__preview"
-  >
-    <h2
-      className="results__subheading"
-    >
       Presidential Debate - McCain, Obama (2 of 3)
        -
        
@@ -197,6 +170,45 @@ Array [
        
       0
       74
+    </div>
+  </div>,
+  <div
+    className="results__preview"
+  >
+    <h2
+      className="results__subheading"
+    >
+      Presidential Debate - Bush, Clinton, Perot (1 of 3)
+       -
+       
+      1992-10-11
+    </h2>
+    <div>
+      VideoResult: 
+      9Z43XV4T8Bc
+       
+      5
+       
+      0
+      856
+    </div>
+    <div>
+      VideoResult: 
+      9Z43XV4T8Bc
+       
+      7
+       
+      413
+      773
+    </div>
+    <div>
+      VideoResult: 
+      9Z43XV4T8Bc
+       
+      139
+       
+      1179
+      1357
     </div>
   </div>,
   <div
