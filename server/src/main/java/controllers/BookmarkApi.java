@@ -58,12 +58,9 @@ public class BookmarkApi implements Jooby.Module {
 					return ImmutableList.of();
 				} else {
 					LocalDateTime ifModifiedSince = ifModifiedSince(req);
-					System.out.println("ifModifiedSince=" + ifModifiedSince);
-					if (ifModifiedSince != null && lastSaved.compareTo(ifModifiedSince) > 0) {
-						System.out.println("NOT MOD");
-						return Status.NOT_MODIFIED;
+					if (ifModifiedSince != null && lastSaved.compareTo(ifModifiedSince) >= 0) {
+						return new Result().status(Status.NOT_MODIFIED);
 					} else {
-						System.out.println("YES MOD");
 						List<BookmarkRecord> records = DbMisc.selectWhere(dsl, BOOKMARK.SAVED_BY, auth.id()).fetch();
 						List<Bookmark> pojos = new JsonList<>(Bookmark.LIST, records.size());
 						for (BookmarkRecord record : records) {
@@ -78,7 +75,7 @@ public class BookmarkApi implements Jooby.Module {
 			AuthUser auth = AuthUser.authApi(req);
 			List<Bookmark> bookmarks = bookmarks(req);
 			if (bookmarks.isEmpty()) {
-				return Status.OK;
+				return new Result().status(Status.OK);
 			}
 			try (DSLContext dsl = req.require(DSLContext.class)) {
 				LocalDateTime now = req.require(Time.class).now();
@@ -97,7 +94,7 @@ public class BookmarkApi implements Jooby.Module {
 			AuthUser auth = AuthUser.authApi(req);
 			List<Bookmark> bookmarks = bookmarks(req);
 			if (bookmarks.isEmpty()) {
-				return Status.OK;
+				return new Result().status(Status.OK);
 			}
 			try (DSLContext dsl = req.require(DSLContext.class)) {
 				for (Bookmark bookmark : bookmarks) {

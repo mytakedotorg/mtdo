@@ -20,9 +20,13 @@
 package controllers;
 
 import common.JoobyDevRule;
+import common.Time;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import java.text.ParseException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java2ts.Routes;
 import javax.ws.rs.core.Response.Status;
 import org.assertj.core.api.Assertions;
@@ -130,15 +134,30 @@ public class BookmarkApiTest {
 				.header("Last-Modified", Matchers.equalTo("Fri, 1 Jan 1982 00:00:00 GMT"));
 	}
 
-	//	@Test
-	//	public void _07_modifiedSince() throws ParseException {
-	//		dev.givenUser("samples")
-	//				.header("If-Modified-Since", Time.toGMT(LocalDateTime.of(LocalDate.of(1981, 6, 1), LocalTime.MIDNIGHT)))
-	//				.get(Routes.API_BOOKMARKS)
-	//				.then()
-	//				.statusCode(Status.NOT_MODIFIED.getStatusCode())
-	//				.body(Matchers.is(Matchers.emptyOrNullString()));
-	//	}
+	@Test
+	public void _07_modifiedSince() throws ParseException {
+		dev.givenUser("samples")
+				.header("If-Modified-Since", Time.toGMT(LocalDateTime.of(LocalDate.of(1981, 6, 1), LocalTime.MIDNIGHT)))
+				.get(Routes.API_BOOKMARKS)
+				.then()
+				.statusCode(Status.NOT_MODIFIED.getStatusCode())
+				.body(Matchers.is(Matchers.emptyOrNullString()));
+
+		dev.givenUser("samples")
+				.header("If-Modified-Since", Time.toGMT(LocalDateTime.of(LocalDate.of(1982, 1, 1), LocalTime.MIDNIGHT)))
+				.get(Routes.API_BOOKMARKS)
+				.then()
+				.statusCode(Status.NOT_MODIFIED.getStatusCode())
+				.body(Matchers.is(Matchers.emptyOrNullString()));
+
+		dev.givenUser("samples")
+				.header("If-Modified-Since", Time.toGMT(LocalDateTime.of(LocalDate.of(1983, 1, 1), LocalTime.MIDNIGHT)))
+				.get(Routes.API_BOOKMARKS)
+				.then()
+				.statusCode(Status.OK.getStatusCode())
+				.body(hasToString("[{\"savedAt\":\"1981-01-01T00:00Z\",\"fact\":\"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\",\"start\":3,\"end\":14159}]"))
+				.header("Last-Modified", Matchers.equalTo("Fri, 1 Jan 1982 00:00:00 GMT"));
+	}
 
 	private static Matcher<String> hasToString(String input) {
 		return new BaseMatcher<String>() {
