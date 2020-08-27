@@ -30,7 +30,7 @@ interface UserNavProps {
 const UserNav: React.FC<UserNavProps> = ({ cookie }) => {
   let navLinks: { name: string; href: string }[] = [];
   if (cookie) {
-    const path = cookie.username ? cookie.username : "mine";
+    const path = cookie.username ? cookie.username : Routes.PROFILE_NO_USERNAME;
     navLinks = [
       {
         name: "Bookmarks",
