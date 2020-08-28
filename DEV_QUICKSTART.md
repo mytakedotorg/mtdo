@@ -1,5 +1,11 @@
 # Dev quickstart
 
+You will need these installed on your system:
+
+- Java 8+
+- Docker
+- nvm (only if working on frontend)
+
 When you run `./gradlew runDev`, you will get a server running at `localhost:8080` with hot reload for templates.  If you then `cd` into the `client` directory, you can run:
 
 ```
