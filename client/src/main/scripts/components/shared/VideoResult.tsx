@@ -29,10 +29,6 @@ import {
 } from "../../common/video";
 import { FT } from "../../java2ts/FT";
 import { Routes } from "../../java2ts/Routes";
-import {
-  convertMillisecondsToSeconds,
-  convertSecondsToMilliseconds,
-} from "../../utils/conversions";
 import { Bookmark } from "../bookmarks/bookmarks";
 import DropDown from "../DropDown";
 import HitContent from "./HitContent";
@@ -154,12 +150,8 @@ function isBookmarkEqualToSocial(
   bookmark: Bookmark,
   social: VideoCut
 ): boolean {
-  const normalizedSocialCut = social.cut.map((t) =>
-    convertMillisecondsToSeconds(convertSecondsToMilliseconds(t))
-  );
-  const normalizedBookmarkCut = bookmark.content.cut.map((t) =>
-    convertMillisecondsToSeconds(convertSecondsToMilliseconds(t))
-  );
+  const normalizedSocialCut = social.cut.map((t) => Math.round(t));
+  const normalizedBookmarkCut = bookmark.content.cut.map((t) => Math.round(t));
   return (
     bookmark.content.fact === social.fact &&
     bookmark.content.kind === social.kind &&
