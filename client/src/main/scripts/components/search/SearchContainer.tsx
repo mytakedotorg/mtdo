@@ -18,6 +18,7 @@
  * You can contact us at team@mytake.org
  */
 import React, { useState } from "react";
+import { VideoCut } from "../../common/social/social";
 import { FT } from "../../java2ts/FT";
 import { Bookmark } from "../bookmarks/bookmarks";
 import SearchBar from "../SearchBar";
@@ -80,13 +81,13 @@ const SearchContainer: React.FC<SearchContainerProps> = ({
   };
   const handlePlayClick = (
     videoFact: FT.VideoFactContent,
-    clipRange: [number, number]
+    social: VideoCut
   ) => {
     setVideoPlayerState({
       isVideoPlaying: true,
       videoProps: {
         videoId: videoFact.youtubeId,
-        clipRange: clipRange,
+        clipRange: social.cut,
       },
     });
   };
@@ -126,24 +127,22 @@ const SearchContainer: React.FC<SearchContainerProps> = ({
         )}
       </div>
       <div className="results">
-        <div className="results__inner-container">
-          {searchResult.factHits.length > 0 && (
-            <SearchRadioButtons
-              onChange={eventHandlers.onModeChange}
-              selectedOption={mode}
-            />
-          )}
-          <VideoResultsList
-            bookmarks={bookmarks}
-            dateToDivMap={dateToDivMap}
-            eventHandlers={{
-              onAddBookmark: eventHandlers.onAddBookmark,
-              onRemoveBookmark: eventHandlers.onRemoveBookmark,
-              onPlayClick: handlePlayClick,
-            }}
-            searchResult={searchResult}
+        {searchResult.factHits.length > 0 && (
+          <SearchRadioButtons
+            onChange={eventHandlers.onModeChange}
+            selectedOption={mode}
           />
-        </div>
+        )}
+        <VideoResultsList
+          bookmarks={bookmarks}
+          dateToDivMap={dateToDivMap}
+          eventHandlers={{
+            onAddBookmark: eventHandlers.onAddBookmark,
+            onRemoveBookmark: eventHandlers.onRemoveBookmark,
+            onPlayClick: handlePlayClick,
+          }}
+          searchResult={searchResult}
+        />
       </div>
     </>
   );

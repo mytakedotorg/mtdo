@@ -20,7 +20,7 @@
 import React from "react";
 import { Bookmark as BookmarkIcon, Play, Share } from "react-feather";
 import { slugify } from "../../common/functions";
-import { encodeSocial, VideoTurn } from "../../common/social/social";
+import { encodeSocial, Social, VideoTurn } from "../../common/social/social";
 import { convertSecondsToTimestamp, getSpeaker } from "../../common/video";
 import { FT } from "../../java2ts/FT";
 import { Routes } from "../../java2ts/Routes";
@@ -34,10 +34,7 @@ export interface VideoResultEventHandlers {
   onPlayClick: PlayEvent;
 }
 
-export type PlayEvent = (
-  videoFact: FT.VideoFactContent,
-  clipRange: [number, number]
-) => any;
+export type PlayEvent = (videoFact: FT.VideoFactContent, social: Social) => any;
 
 export interface VideoResultProps {
   bookmark: Bookmark;
@@ -57,7 +54,7 @@ const VideoResult: React.FC<VideoResultProps> = (props) => {
   )}/${encodeSocial(social)}`;
 
   const handlePlayClick = () => {
-    eventHandlers.onPlayClick(videoFact, social.cut);
+    eventHandlers.onPlayClick(videoFact, social);
   };
 
   const handleBookmarkClick = () => {
