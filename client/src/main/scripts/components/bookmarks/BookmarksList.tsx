@@ -57,12 +57,14 @@ const BookmarksList: React.FC<BookmarksListProps> = ({
             selectedOption={mode}
           />
         )}
-        <button
-          className="bookmarks__remove"
-          onClick={eventHandlers.onConfirmRemoval}
-        >
-          Confirm Removal
-        </button>
+        {bookmarksToRemove.length > 0 && (
+          <button
+            className="bookmarks__remove"
+            onClick={eventHandlers.onConfirmRemoval}
+          >
+            Confirm Removal
+          </button>
+        )}
       </div>
       <div className="results__inner-container">
         <BookmarksResultList

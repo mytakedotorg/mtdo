@@ -21,20 +21,19 @@ import _ from "lodash";
 import React, { useEffect, useState } from "react";
 import {
   Bookmark,
+  BookmarksClient,
   BookmarksMode,
   BookmarksResult,
+  bookmarkToIntermediate,
   getBookmarks,
+  isBookmarkEqualToSocial,
 } from "./bookmarks";
 import BookmarksList from "./BookmarksList";
 
 interface BookmarksLoaderProps {}
 
-interface BookmarksLoaderState {
-  bookmarksResult?: BookmarksResult;
-}
-
 const BookmarksLoader: React.FC<BookmarksLoaderProps> = (props) => {
-  const [state, setState] = useState<BookmarksLoaderState>({});
+  const [result, setResult] = useState<BookmarksResult | undefined>(undefined);
   const [mode, setMode] = useState<BookmarksMode>(BookmarksMode.DateBookmarked);
   const [bookmarksToRemove, setBookmarksToRemove] = useState<Bookmark[]>([]);
 
@@ -57,24 +56,39 @@ const BookmarksLoader: React.FC<BookmarksLoaderProps> = (props) => {
   };
 
   const handleConfirmRemoval = () => {
-    // do it!
+    setResult(
+      (prevResult) =>
+        new BookmarksResult(
+          prevResult!.factHits.map((fh) => ({
+            hash: fh.hash,
+            bookmarkHits: fh.bookmarkHits.filter(
+              (bh) =>
+                !bookmarksToRemove.find((b) =>
+                  isBookmarkEqualToSocial(bh.bookmark, b.content)
+                )
+            ),
+          }))
+        )
+    );
+    setBookmarksToRemove([]);
+    BookmarksClient.getInstance().remove(
+      bookmarksToRemove.map((b) => bookmarkToIntermediate(b))
+    );
   };
 
   useEffect(() => {
     async function connect() {
       const bookmarksResult = await getBookmarks(mode);
-      setState({
-        bookmarksResult,
-      });
+      setResult(bookmarksResult);
     }
     connect();
   }, [mode]);
 
-  return state.bookmarksResult ? (
+  return result ? (
     <BookmarksList
       mode={mode}
       bookmarksToRemove={bookmarksToRemove}
-      bookmarksResult={state.bookmarksResult}
+      bookmarksResult={result}
       eventHandlers={{
         onUndoRemoveBookmark: handleUndoRemoveBookmark,
         onConfirmRemoval: handleConfirmRemoval,
