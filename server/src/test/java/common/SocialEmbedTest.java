@@ -24,23 +24,9 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import org.assertj.core.api.Assertions;
-import org.junit.Test;
 import views.SocialEmbed.socialImage;
 
 public class SocialEmbedTest {
-	@Test
-	public void cleanup() {
-		String fromServer = "<header data-reactroot=\"\"><meta name=\"twitter:card\" content=\"summary_large_image\"/><meta name=\"twitter:site\" content=\"@mytakedotorg\"/><meta name=\"twitter:title\" content=\"Presidential Debate - Clinton, Trump (2 of 3)\"/><meta name=\"twitter:description\" content=\"TODO\"/><meta name=\"twitter:image\" content=\"http://localhost:4000/static/social-header/cut:!(2361.449951171875,2378.56005859375),fact:&#x27;1b7OOH2CJQjbBSDkuo2L9MVFp5UKRpaavk4fotdq2Ds=&#x27;,kind:videoCut\"/><meta name=\"twitter:image:alt\" content=\"\"/></header>";
-		Assertions.assertThat(SocialEmbed.cleanupHeaders(fromServer)).isEqualTo(
-				"<meta name=\"twitter:card\" content=\"summary_large_image\">\n" +
-						"<meta name=\"twitter:site\" content=\"@mytakedotorg\">\n" +
-						"<meta name=\"twitter:title\" content=\"Presidential Debate - Clinton, Trump (2 of 3)\">\n" +
-						"<meta name=\"twitter:description\" content=\"TODO\">\n" +
-						"<meta name=\"twitter:image\" content=\"http://localhost:4000/static/social-header/cut:!(2361.449951171875,2378.56005859375),fact:&#x27;1b7OOH2CJQjbBSDkuo2L9MVFp5UKRpaavk4fotdq2Ds=&#x27;,kind:videoCut\">\n" +
-						"<meta name=\"twitter:image:alt\" content=\"\">\n");
-	}
-
 	public static void main(String[] args) throws IOException {
 		String toSave = socialImage.template().renderTest()
 				.replace("\"/assets-dev/", "\"./assets-dev/");

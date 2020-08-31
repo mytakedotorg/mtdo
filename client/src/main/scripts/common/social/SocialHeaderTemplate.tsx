@@ -52,7 +52,7 @@ export const HeaderTags: React.FC<HeaderTagsProps> = (props) => {
     imageAlt: _ellipsify(props.imageAlt, 420),
   };
   return (
-    <header>
+    <>
       <meta property="og:title" content={og.title} />
       <meta property="og:description" content={og.desc} />
       <meta property="og:type" content="article" />
@@ -70,7 +70,7 @@ export const HeaderTags: React.FC<HeaderTagsProps> = (props) => {
       <meta name="twitter:description" content={twit.desc} />
       <meta name="twitter:image" content={twit.image} />
       <meta name="twitter:image:alt" content={twit.imageAlt} />
-    </header>
+    </>
   );
 };
 

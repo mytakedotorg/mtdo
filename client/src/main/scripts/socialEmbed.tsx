@@ -56,11 +56,8 @@ if (window.location.hash) {
   socialHeader(social, toRender).then(
     (reactRoot) => {
       const asString = renderToString(reactRoot);
-      const socialEmbedCleanup = asString
-        // if these replace calls are changed, you must sync with the Java code SocialEmbed.cleanupHeaders
-        .replace('<header data-reactroot="">', "")
-        .replace("</header>", "")
-        .replace(/"\/>/g, '">\n');
+      // put each meta tag on its own newlines
+      const socialEmbedCleanup = asString.replace(/"\/>/g, '">\n');
       console.log("### for ###");
       console.log(toRender);
       console.log(socialEmbedCleanup);
