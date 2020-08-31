@@ -26,7 +26,7 @@ import static db.Tables.LOGINLINK;
 
 import common.DbMisc;
 import common.EmailSender;
-import common.IpGetter;
+import common.Ip;
 import common.Text;
 import common.Time;
 import common.UrlEncodedPath;
@@ -74,7 +74,7 @@ public class LoginForm extends PostForm<LoginForm> {
 				return retry.addError(LOGIN_EMAIL, "No account for this email");
 			} else {
 				LocalDateTime now = req.require(Time.class).now();
-				String ip = req.require(IpGetter.class).ip(req);
+				String ip = Ip.get(req);
 
 				LoginlinkRecord login = urlCode.createRecord(req, dsl, now, ip);
 				login.setExpiresAt(now.plus(EXPIRES_MINUTES, ChronoUnit.MINUTES));
@@ -105,7 +105,7 @@ public class LoginForm extends PostForm<LoginForm> {
 		LocalDateTime now = req.require(Time.class).now();
 		try (DSLContext dsl = req.require(DSLContext.class)) {
 			LoginlinkRecord link = urlCode.tryGetRecord(req, dsl);
-			String ip = req.require(IpGetter.class).ip(req);
+			String ip = Ip.get(req);
 			String errorMsg;
 			if (link == null || now.isAfter(link.getExpiresAt())) {
 				errorMsg = "This link expired, try again.";

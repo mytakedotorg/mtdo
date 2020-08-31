@@ -83,7 +83,7 @@ public class Prod extends Jooby {
 	}
 
 	static void commonNoDb(Jooby jooby) {
-		jooby.use(new IpGetter.Module());
+		jooby.use(new Ip.Module());
 		CustomAssets.initTemplates(jooby);
 		EmailSender.init(jooby);
 		Mods.init(jooby);

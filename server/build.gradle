@@ -15,7 +15,7 @@ spotless {
 		removeUnusedImports()
 		// see common.IpGetter
 		custom 'useIpGetter', {
-			if (it.contains('req.ip()') && !it.contains('interface IpGetter {')) {
+			if (it.contains('req.ip()') && !it.contains('abstract class Ip {')) {
 				throw new AssertionError('Use IpGetter instead of Request.ip()')
 			}
 		}
