@@ -4,10 +4,14 @@ exports[`BookmarksList date bookmarked 1`] = `
 <div
   className="results"
 >
-  <BookmarksSortBy
-    onChange={[MockFunction]}
-    selectedOption="DateBookmarked"
-  />
+  <div
+    className="results__row"
+  >
+    <BookmarksSortBy
+      onChange={[MockFunction]}
+      selectedOption="DateBookmarked"
+    />
+  </div>
   <div
     className="results__inner-container"
   >
@@ -20,14 +24,48 @@ exports[`BookmarksList date bookmarked 1`] = `
 </div>
 `;
 
+exports[`BookmarksList date happened - one marked for removal 1`] = `
+<div
+  className="results"
+>
+  <div
+    className="results__row"
+  >
+    <BookmarksSortBy
+      onChange={[MockFunction]}
+      selectedOption="DateBookmarked"
+    />
+    <button
+      className="bookmarks__remove"
+      onClick={[MockFunction]}
+    >
+      Confirm Removal
+    </button>
+  </div>
+  <div
+    className="results__inner-container"
+  >
+    <div>
+      BookmarksResultList: 
+      4
+       hits
+    </div>
+  </div>
+</div>
+`;
+
 exports[`BookmarksList date happened 1`] = `
 <div
   className="results"
 >
-  <BookmarksSortBy
-    onChange={[MockFunction]}
-    selectedOption="DateBookmarked"
-  />
+  <div
+    className="results__row"
+  >
+    <BookmarksSortBy
+      onChange={[MockFunction]}
+      selectedOption="DateBookmarked"
+    />
+  </div>
   <div
     className="results__inner-container"
   >
@@ -44,7 +82,11 @@ exports[`BookmarksList no results 1`] = `
 <div
   className="results"
 >
-  0
+  <div
+    className="results__row"
+  >
+    0
+  </div>
   <div
     className="results__inner-container"
   >

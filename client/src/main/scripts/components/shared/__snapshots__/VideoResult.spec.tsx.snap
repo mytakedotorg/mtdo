@@ -119,7 +119,7 @@ exports[`VideoResultPreview before and after 1`] = `
         </svg>
       </button>
       <button
-        className="turn__button turn__button--bookmark"
+        className="turn__button turn__button--bookmark turn__button--bookmark-solid"
         onClick={[Function]}
       >
         <svg
@@ -151,6 +151,146 @@ exports[`VideoResultPreview before and after 1`] = `
      
     0
     276
+     
+    18
+    28
+  </div>
+</div>
+`;
+
+exports[`VideoResultPreview containing - not bookmarked 1`] = `
+<div
+  className="turn"
+>
+  <div
+    className="turn__info"
+  >
+    <div
+      className="turn__info-row"
+    >
+      <h3
+        className="turn__speaker"
+      >
+         Smith
+      </h3>
+      <div
+        className="dropdown dropdown--share"
+      >
+        <span
+          className="dropdown__toggle dropdown__toggle--share"
+          onClick={[Function]}
+        >
+          <svg
+            fill="none"
+            height={24}
+            stroke="currentColor"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
+            viewBox="0 0 24 24"
+            width={24}
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"
+            />
+            <polyline
+              points="16 6 12 2 8 6"
+            />
+            <line
+              x1="12"
+              x2="12"
+              y1="2"
+              y2="15"
+            />
+          </svg>
+        </span>
+        <div
+          className="dropdown__dropdown dropdown__dropdown--hidden"
+        >
+          <div>
+            SharePreview
+            : 
+            {"contextUrl":"/foundation/presidential-debate-kennedy-nixon-1-of-4/cut:!(2.700000047683716,15.149999618530273),fact:factHash,kind:videoCut"}
+             
+            Presidential Debate - Kennedy, Nixon (1 of 4)
+             
+            0
+             
+            14
+            239
+             
+            18
+            28
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      className="turn__info-row turn__info-row--short"
+    >
+      <span
+        className="turn__time"
+      >
+        0:03 - 0:15
+      </span>
+    </div>
+    <div
+      className="turn__info-row"
+    >
+      <button
+        className="turn__button turn__button--play"
+        onClick={[Function]}
+      >
+        <svg
+          fill="none"
+          height={20}
+          stroke="currentColor"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="2"
+          viewBox="0 0 24 24"
+          width={20}
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <polygon
+            points="5 3 19 12 5 21 5 3"
+          />
+        </svg>
+      </button>
+      <button
+        className="turn__button turn__button--bookmark"
+        onClick={[Function]}
+      >
+        <svg
+          fill="none"
+          height={24}
+          stroke="currentColor"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="2"
+          viewBox="0 0 24 24"
+          width={24}
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"
+          />
+        </svg>
+      </button>
+    </div>
+  </div>
+  <div>
+    HitContent
+    : 
+    {"className":"turn__results"}
+     
+    Presidential Debate - Kennedy, Nixon (1 of 4)
+     
+    0
+     
+    14
+    239
      
     18
     28
@@ -259,7 +399,7 @@ exports[`VideoResultPreview containing 1`] = `
         </svg>
       </button>
       <button
-        className="turn__button turn__button--bookmark"
+        className="turn__button turn__button--bookmark turn__button--bookmark-solid"
         onClick={[Function]}
       >
         <svg

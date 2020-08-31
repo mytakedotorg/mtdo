@@ -20,7 +20,12 @@
 import React from "react";
 import renderer from "react-test-renderer";
 import { FoundationHarness } from "../../common/foundationTest";
-import { BookmarksMode, _bookmarksImpl, _BookmarksWithData } from "./bookmarks";
+import {
+  Bookmark,
+  BookmarksMode,
+  _bookmarksImpl,
+  _BookmarksWithData,
+} from "./bookmarks";
 import BookmarksList, { BookmarksListEventHandlers } from "./BookmarksList";
 import { BookmarksResultListProps } from "./BookmarksResultList";
 import samplebookmarks from "./testData/samplebookmarks.json";
@@ -104,6 +109,32 @@ test("BookmarksList no results", () => {
     .create(
       <BookmarksList
         bookmarksToRemove={[]}
+        mode={BookmarksMode.DateBookmarked}
+        eventHandlers={eventHandlers}
+        bookmarksResult={result}
+      />
+    )
+    .toJSON();
+  expect(tree).toMatchSnapshot();
+});
+
+test("BookmarksList date happened - one marked for removal", () => {
+  const result = _bookmarksImpl(
+    new _BookmarksWithData(
+      FoundationHarness.loadAllFromDisk(),
+      BookmarksMode.DateHappened,
+      samplebookmarks.bookmarks
+    )
+  );
+
+  const bookmarksToRemove: Bookmark[] = [
+    result.factHits[0].bookmarkHits[0].bookmark,
+  ];
+
+  const tree = renderer
+    .create(
+      <BookmarksList
+        bookmarksToRemove={bookmarksToRemove}
         mode={BookmarksMode.DateBookmarked}
         eventHandlers={eventHandlers}
         bookmarksResult={result}
