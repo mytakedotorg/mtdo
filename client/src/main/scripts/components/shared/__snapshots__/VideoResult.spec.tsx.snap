@@ -36,7 +36,7 @@ exports[`VideoResultPreview before and after 1`] = `
       <div
         className="dropdown dropdown--share"
       >
-        <span
+        <button
           className="dropdown__toggle dropdown__toggle--share"
           onClick={[Function]}
         >
@@ -64,7 +64,7 @@ exports[`VideoResultPreview before and after 1`] = `
               y2="15"
             />
           </svg>
-        </span>
+        </button>
         <div
           className="dropdown__dropdown dropdown__dropdown--hidden"
         >
@@ -176,7 +176,7 @@ exports[`VideoResultPreview containing - not bookmarked 1`] = `
       <div
         className="dropdown dropdown--share"
       >
-        <span
+        <button
           className="dropdown__toggle dropdown__toggle--share"
           onClick={[Function]}
         >
@@ -204,7 +204,7 @@ exports[`VideoResultPreview containing - not bookmarked 1`] = `
               y2="15"
             />
           </svg>
-        </span>
+        </button>
         <div
           className="dropdown__dropdown dropdown__dropdown--hidden"
         >
@@ -316,7 +316,7 @@ exports[`VideoResultPreview containing 1`] = `
       <div
         className="dropdown dropdown--share"
       >
-        <span
+        <button
           className="dropdown__toggle dropdown__toggle--share"
           onClick={[Function]}
         >
@@ -344,7 +344,7 @@ exports[`VideoResultPreview containing 1`] = `
               y2="15"
             />
           </svg>
-        </span>
+        </button>
         <div
           className="dropdown__dropdown dropdown__dropdown--hidden"
         >

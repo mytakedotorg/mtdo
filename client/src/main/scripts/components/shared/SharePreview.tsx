@@ -48,8 +48,7 @@ const SharePreview: React.FC<SharePreviewProps> = ({
     };
   }, [isCopied]);
 
-  const copyUrl = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
-    e.preventDefault();
+  const copyUrl = () => {
     const url =
       window.location.protocol + "//" + window.location.host + contextUrl;
     copyToClipboard(url);
@@ -66,7 +65,7 @@ const SharePreview: React.FC<SharePreviewProps> = ({
         {isCopied ? (
           <span>Copied to clipboard</span>
         ) : (
-          <a onClick={copyUrl}>Copy URL to quote</a>
+          <button onClick={copyUrl}>Copy URL to quote</button>
         )}
       </div>
       <div className="share-preview__preview-container">

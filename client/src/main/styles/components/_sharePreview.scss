@@ -12,8 +12,10 @@
   margin-bottom: 8px;
   padding: 2px 4px;
   width: 100px - 16px - 8px;
+  min-width: 100px - 16px - 8px;
   @media screen and (min-width: 480px) {
     width: 150px - 16px - 8px;
+    min-width: 150px - 16px - 8px;
   }
 }
 .share-preview__links {
@@ -28,9 +30,12 @@
   @media screen and (min-width: 480px) {
     width: 150px;
   }
-  a {
+  a,
+  button {
+    @include button--no-style;
     @include typography($sans, 400, 16px, 1.2em);
     text-decoration: none;
+    box-sizing: content-box;
     color: palette(share, button-text);
     @include preview-link;
     border-radius: 5px;

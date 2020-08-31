@@ -27,16 +27,12 @@ Array [
   <div
     className="results"
   >
-    <div
-      className="results__inner-container"
-    >
-      <div>
-        VideoResultsList: 
-        0
-         hits for
-         
-        gibberish
-      </div>
+    <div>
+      VideoResultsList: 
+      0
+       hits for
+       
+      gibberish
     </div>
   </div>,
 ]
@@ -64,20 +60,16 @@ Array [
   <div
     className="results"
   >
-    <div
-      className="results__inner-container"
-    >
-      <SearchRadioButtons
-        onChange={[MockFunction]}
-        selectedOption={0}
-      />
-      <div>
-        VideoResultsList: 
-        19
-         hits for
-         
-        social security
-      </div>
+    <SearchRadioButtons
+      onChange={[MockFunction]}
+      selectedOption={0}
+    />
+    <div>
+      VideoResultsList: 
+      19
+       hits for
+       
+      social security
     </div>
   </div>,
 ]
@@ -105,20 +97,16 @@ Array [
   <div
     className="results"
   >
-    <div
-      className="results__inner-container"
-    >
-      <SearchRadioButtons
-        onChange={[MockFunction]}
-        selectedOption={1}
-      />
-      <div>
-        VideoResultsList: 
-        19
-         hits for
-         
-        social security
-      </div>
+    <SearchRadioButtons
+      onChange={[MockFunction]}
+      selectedOption={1}
+    />
+    <div>
+      VideoResultsList: 
+      19
+       hits for
+       
+      social security
     </div>
   </div>,
 ]
@@ -146,20 +134,16 @@ Array [
   <div
     className="results"
   >
-    <div
-      className="results__inner-container"
-    >
-      <SearchRadioButtons
-        onChange={[MockFunction]}
-        selectedOption={0}
-      />
-      <div>
-        VideoResultsList: 
-        3
-         hits for
-         
-        wall, -wall street
-      </div>
+    <SearchRadioButtons
+      onChange={[MockFunction]}
+      selectedOption={0}
+    />
+    <div>
+      VideoResultsList: 
+      3
+       hits for
+       
+      wall, -wall street
     </div>
   </div>,
 ]

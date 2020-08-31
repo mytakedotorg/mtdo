@@ -12,7 +12,6 @@
 }
 .results {
   @include content-column;
-  overflow-x: hidden;
 }
 .results__row {
   display: flex;
@@ -20,7 +19,7 @@
   padding-left: 4px;
   padding-right: 4px;
 }
-.results__inner-container {
+@mixin inner-container-padding {
   padding-left: 4px;
   padding-right: 4px;
   @media #{$mq-medium} {
@@ -48,6 +47,7 @@
 }
 .results__subheading {
   @include heading3;
+  @include inner-container-padding;
 }
 .results__text {
   @include body;
@@ -85,18 +85,7 @@
   display: flex;
   justify-content: space-around;
   align-items: flex-start;
-  &:before {
-    content: "";
-    @include turnBackground();
-    position: absolute;
-    left: -8px;
-    height: 100%;
-    width: 768px;
-    z-index: -1;
-    @media #{$mq-medium} {
-      left: initial;
-    }
-  }
+  @include inner-container-padding;
 }
 .turn__info {
   width: 111px;

@@ -129,14 +129,14 @@ class DropDown extends React.Component<DropDownProps, DropDownState> {
         className={"dropdown dropdown--" + this.props.classModifier}
         ref={(div: HTMLDivElement) => (this.div = div)}
       >
-        <span
+        <button
           className={
             "dropdown__toggle dropdown__toggle--" + this.props.classModifier
           }
           onClick={this.toggleMenu}
         >
           {this.props.toggleText}
-        </span>
+        </button>
         <div
           className={
             "dropdown__dropdown dropdown__dropdown--" + dropDownClassModifier
