@@ -18,7 +18,10 @@
  * You can contact us at team@mytake.org
  */
 import React from "react";
+import { slugify } from "../../common/functions";
+import { encodeSocial, Social } from "../../common/social/social";
 import { FT } from "../../java2ts/FT";
+import { Routes } from "../../java2ts/Routes";
 import { Bookmark, BookmarksMode, BookmarksResult } from "./bookmarks";
 import BookmarksResultList from "./BookmarksResultList";
 import BookmarksSortBy from "./BookmarksSortBy";
@@ -42,11 +45,11 @@ const BookmarksList: React.FC<BookmarksListProps> = ({
   eventHandlers,
   mode,
 }) => {
-  const handlePlayClick = (
-    videoFact: FT.VideoFactContent,
-    clipRange: [number, number]
-  ) => {
-    console.warn("TODO play the video");
+  const handlePlayClick = (videoFact: FT.VideoFactContent, social: Social) => {
+    const contextUrl = `${Routes.FOUNDATION}/${slugify(
+      videoFact.fact.title
+    )}/${encodeSocial(social)}`;
+    window.location.href = contextUrl;
   };
   return (
     <div className="results">
@@ -66,17 +69,15 @@ const BookmarksList: React.FC<BookmarksListProps> = ({
           </button>
         )}
       </div>
-      <div className="results__inner-container">
-        <BookmarksResultList
-          bookmarksToRemove={bookmarksToRemove}
-          eventHandlers={{
-            onUndoRemoveBookmark: eventHandlers.onUndoRemoveBookmark,
-            onRemoveBookmark: eventHandlers.onRemoveBookmark,
-            onPlayClick: handlePlayClick,
-          }}
-          bookmarksResult={bookmarksResult}
-        />
-      </div>
+      <BookmarksResultList
+        bookmarksToRemove={bookmarksToRemove}
+        eventHandlers={{
+          onUndoRemoveBookmark: eventHandlers.onUndoRemoveBookmark,
+          onRemoveBookmark: eventHandlers.onRemoveBookmark,
+          onPlayClick: handlePlayClick,
+        }}
+        bookmarksResult={bookmarksResult}
+      />
     </div>
   );
 };
