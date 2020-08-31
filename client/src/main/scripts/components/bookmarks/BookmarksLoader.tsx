@@ -61,20 +61,11 @@ const BookmarksLoader: React.FC<BookmarksLoaderProps> = (props) => {
     }
   };
 
-  const handleRemoveBookmark = (oldBookmark: Bookmark) => {
+  const handleRemoveSingleBookmark = (oldBookmark: Bookmark) => {
+    // Remove in local state, but don't send to server until confirmed
     setBookmarks((existingBookmarks) => {
       return existingBookmarks.filter((eb) => !_.isEqual(eb, oldBookmark));
     });
-    try {
-      BookmarksClient.getInstance().remove([
-        bookmarkToIntermediate(oldBookmark),
-      ]);
-    } catch (err: unknown) {
-      setBookmarks((existingBookmarks) => {
-        return [...existingBookmarks, oldBookmark];
-      });
-      throw err;
-    }
   };
 
   useEffect(() => {
@@ -100,7 +91,7 @@ const BookmarksLoader: React.FC<BookmarksLoaderProps> = (props) => {
       bookmarksResult={state.bookmarksResult}
       eventHandlers={{
         onAddBookmark: handleAddBookmark,
-        onRemoveBookmark: handleRemoveBookmark,
+        onRemoveBookmark: handleRemoveSingleBookmark,
         onModeChange: handleModeChange,
       }}
     />

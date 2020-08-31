@@ -2,9 +2,20 @@
   @include body("sans");
   margin-right: 8px;
 }
-
 .sortby__select {
   @include body("sans");
   padding-left: 4px;
   padding-right: 4px;
+}
+.bookmarks__remove {
+  @include button--no-style;
+  @include typography($sans, 400, 16px, 1.7em);
+  color: palette(share, button-text);
+  background-color: palette(button, background--action);
+  border-radius: 5px;
+  padding-left: 8px;
+  padding-right: 8px;
+  &:hover {
+    background-color: palette(button, background--action-hover);
+  }
 }

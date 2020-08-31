@@ -1,16 +1,16 @@
 $usercard-width: 200px;
 .profile {
-  width: $column-width - 32px;
-  max-width: 100%;
-  margin: auto;
-  @media screen and (max-width: 768px - 1) {
-    padding-left: 4px;
-    padding-right: 4px;
+  @media screen and (min-width: 768px) {
+    width: $column-width - 32px;
+    max-width: 100%;
+    margin: auto;
   }
 }
 .profile__usercard {
   display: flex;
   margin-top: $content-margin;
+  padding-left: 4px;
+  padding-right: 4px;
 }
 .profile__image-container {
   width: 100px;
@@ -55,6 +55,8 @@ $usercard-width: 200px;
   margin: 0;
   display: flex;
   justify-content: flex-start;
+  padding-left: 4px;
+  padding-right: 4px;
 }
 .tab-nav__list-item {
   height: 20px;

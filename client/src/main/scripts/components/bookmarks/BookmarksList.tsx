@@ -47,14 +47,22 @@ const BookmarksList: React.FC<BookmarksListProps> = ({
   ) => {
     console.warn("TODO play the video");
   };
+  const handleConfirmRemoval = () => {
+    console.warn("TODO remove the bookmarks");
+  };
   return (
     <div className="results">
-      {bookmarksResult.factHits.length && (
-        <BookmarksSortBy
-          onChange={eventHandlers.onModeChange}
-          selectedOption={mode}
-        />
-      )}
+      <div className="results__row">
+        {bookmarksResult.factHits.length && (
+          <BookmarksSortBy
+            onChange={eventHandlers.onModeChange}
+            selectedOption={mode}
+          />
+        )}
+        <button className="bookmarks__remove" onClick={handleConfirmRemoval}>
+          Confirm Removal
+        </button>
+      </div>
       <div className="results__inner-container">
         <BookmarksResultList
           bookmarks={bookmarks}
