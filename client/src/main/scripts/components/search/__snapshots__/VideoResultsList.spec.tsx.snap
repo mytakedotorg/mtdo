@@ -1,6 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`VideoResultsList no results 1`] = `null`;
+exports[`VideoResultsList no results 1`] = `
+<LoginModal
+  isOpen={false}
+  onRequestClose={[Function]}
+/>
+`;
 
 exports[`VideoResultsList social security 1`] = `
 Array [
@@ -1509,6 +1514,10 @@ Array [
       565
     </div>
   </div>,
+  <LoginModal
+    isOpen={false}
+    onRequestClose={[Function]}
+  />,
 ]
 `;
 
@@ -1610,5 +1619,9 @@ Array [
       13
     </div>
   </div>,
+  <LoginModal
+    isOpen={false}
+    onRequestClose={[Function]}
+  />,
 ]
 `;
