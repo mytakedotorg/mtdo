@@ -65,7 +65,7 @@ test("BookmarksList date happened", () => {
     .create(
       <BookmarksList
         bookmarksToRemove={[]}
-        mode={BookmarksMode.DateBookmarked}
+        mode={BookmarksMode.DateHappened}
         eventHandlers={eventHandlers}
         bookmarksResult={result}
       />
@@ -109,7 +109,7 @@ test("BookmarksList no results", () => {
     .create(
       <BookmarksList
         bookmarksToRemove={[]}
-        mode={BookmarksMode.DateBookmarked}
+        mode={BookmarksMode.DateHappened}
         eventHandlers={eventHandlers}
         bookmarksResult={result}
       />
@@ -135,7 +135,7 @@ test("BookmarksList date happened - one marked for removal", () => {
     .create(
       <BookmarksList
         bookmarksToRemove={bookmarksToRemove}
-        mode={BookmarksMode.DateBookmarked}
+        mode={BookmarksMode.DateHappened}
         eventHandlers={eventHandlers}
         bookmarksResult={result}
       />

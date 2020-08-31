@@ -33,7 +33,7 @@ exports[`BookmarksList date happened - one marked for removal 1`] = `
   >
     <BookmarksSortBy
       onChange={[MockFunction]}
-      selectedOption="DateBookmarked"
+      selectedOption="DateHappened"
     />
     <button
       className="bookmarks__remove"
@@ -63,7 +63,7 @@ exports[`BookmarksList date happened 1`] = `
   >
     <BookmarksSortBy
       onChange={[MockFunction]}
-      selectedOption="DateBookmarked"
+      selectedOption="DateHappened"
     />
   </div>
   <div
