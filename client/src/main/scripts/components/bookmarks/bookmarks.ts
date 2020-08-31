@@ -219,3 +219,17 @@ export class BookmarksClient {
     );
   }
 }
+
+export function isBookmarkEqualToSocial(
+  bookmark: Bookmark,
+  social: VideoCut
+): boolean {
+  const normalizedSocialCut = social.cut.map((t) => Math.round(t));
+  const normalizedBookmarkCut = bookmark.content.cut.map((t) => Math.round(t));
+  return (
+    bookmark.content.fact === social.fact &&
+    bookmark.content.kind === social.kind &&
+    normalizedBookmarkCut[0] === normalizedSocialCut[0] &&
+    normalizedBookmarkCut[1] === normalizedSocialCut[1]
+  );
+}

@@ -35,6 +35,9 @@
   &::-ms-clear {
     display: none;
   }
+  &::-webkit-search-results-button {
+    margin-right: 8px;
+  }
 }
 .searchbar__input--search {
   border-color: palette(searchbar, input-border);

@@ -43,15 +43,18 @@ const BookmarksSortBy: React.FC<BookmarksSortByProps> = ({
   };
   return (
     <div className="sortby">
-      <label htmlFor="bookmarks-sortby">Sort by:</label>
+      <label className="sortby__label" htmlFor="bookmarks-sortby">
+        Sort by:
+      </label>
       <select
+        className="sortby__select"
         name="sortby"
         id="bookmarks-sortby"
         value={selectedOption}
         onChange={handleChange}
       >
         {Object.keys(BookmarksMode).map((mode) => (
-          <option value={mode} key={mode}>
+          <option value={mode} key={mode} className="sortby__option">
             {sortOptionName(mode as keyof typeof BookmarksMode)}
           </option>
         ))}

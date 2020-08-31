@@ -20,7 +20,9 @@
 import React from "react";
 import renderer from "react-test-renderer";
 import { VideoTurn } from "../../common/social/social";
+import { turnToCut } from "../../common/video";
 import { kennedyNixon } from "../../utils/testUtils";
+import { Bookmark } from "../bookmarks/bookmarks";
 import { HitContentProps } from "./HitContent";
 import { HitMock } from "./HitContent.spec";
 import { SharePreviewProps } from "./SharePreview";
@@ -38,8 +40,7 @@ jest.mock("./HitContent", () => ({
 
 const eventHandlers: VideoResultEventHandlers = {
   onPlayClick: jest.fn(),
-  onAddBookmark: jest.fn(),
-  onRemoveBookmark: jest.fn(),
+  onBookmarkClick: jest.fn(),
 };
 test("VideoResultPreview containing", () => {
   const videoTurn: VideoTurn = {
@@ -49,10 +50,41 @@ test("VideoResultPreview containing", () => {
     cut: [14, 239],
     bold: [[18, 28]],
   };
+  const bookmark: Bookmark = {
+    savedAt: new Date(),
+    content: turnToCut(videoTurn, kennedyNixon),
+  };
   const tree = renderer
     .create(
       <VideoResult
-        bookmarks={[]}
+        bookmark={bookmark}
+        isBookmarked={true}
+        videoFact={kennedyNixon}
+        videoTurn={videoTurn}
+        eventHandlers={eventHandlers}
+      />
+    )
+    .toJSON();
+  expect(tree).toMatchSnapshot();
+});
+
+test("VideoResultPreview containing - not bookmarked", () => {
+  const videoTurn: VideoTurn = {
+    kind: "videoTurn",
+    fact: "factHash",
+    turn: 0,
+    cut: [14, 239],
+    bold: [[18, 28]],
+  };
+  const bookmark: Bookmark = {
+    savedAt: new Date(),
+    content: turnToCut(videoTurn, kennedyNixon),
+  };
+  const tree = renderer
+    .create(
+      <VideoResult
+        bookmark={bookmark}
+        isBookmarked={false}
         videoFact={kennedyNixon}
         videoTurn={videoTurn}
         eventHandlers={eventHandlers}
@@ -70,10 +102,15 @@ test("VideoResultPreview before and after", () => {
     cut: [0, 276],
     bold: [[18, 28]],
   };
+  const bookmark: Bookmark = {
+    savedAt: new Date(),
+    content: turnToCut(videoTurn, kennedyNixon),
+  };
   const tree = renderer
     .create(
       <VideoResult
-        bookmarks={[]}
+        bookmark={bookmark}
+        isBookmarked={true}
         videoFact={kennedyNixon}
         videoTurn={videoTurn}
         eventHandlers={eventHandlers}

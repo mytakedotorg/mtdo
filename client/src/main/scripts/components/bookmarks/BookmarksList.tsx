@@ -25,18 +25,19 @@ import BookmarksSortBy from "./BookmarksSortBy";
 
 export interface BookmarksListEventHandlers {
   onModeChange(mode: BookmarksMode): void;
-  onAddBookmark(bookmark: Bookmark): void;
+  onUndoRemoveBookmark(bookmark: Bookmark): void;
+  onConfirmRemoval(): void;
   onRemoveBookmark(bookmark: Bookmark): void;
 }
 
 interface BookmarksListProps {
   mode: BookmarksMode;
-  bookmarks: Bookmark[];
+  bookmarksToRemove: Bookmark[];
   bookmarksResult: BookmarksResult;
   eventHandlers: BookmarksListEventHandlers;
 }
 const BookmarksList: React.FC<BookmarksListProps> = ({
-  bookmarks,
+  bookmarksToRemove,
   bookmarksResult,
   eventHandlers,
   mode,
@@ -49,15 +50,27 @@ const BookmarksList: React.FC<BookmarksListProps> = ({
   };
   return (
     <div className="results">
+      <div className="results__row">
+        {bookmarksResult.factHits.length && (
+          <BookmarksSortBy
+            onChange={eventHandlers.onModeChange}
+            selectedOption={mode}
+          />
+        )}
+        {bookmarksToRemove.length > 0 && (
+          <button
+            className="bookmarks__remove"
+            onClick={eventHandlers.onConfirmRemoval}
+          >
+            Confirm Removal
+          </button>
+        )}
+      </div>
       <div className="results__inner-container">
-        <BookmarksSortBy
-          onChange={eventHandlers.onModeChange}
-          selectedOption={mode}
-        />
         <BookmarksResultList
-          bookmarks={bookmarks}
+          bookmarksToRemove={bookmarksToRemove}
           eventHandlers={{
-            onAddBookmark: eventHandlers.onAddBookmark,
+            onUndoRemoveBookmark: eventHandlers.onUndoRemoveBookmark,
             onRemoveBookmark: eventHandlers.onRemoveBookmark,
             onPlayClick: handlePlayClick,
           }}

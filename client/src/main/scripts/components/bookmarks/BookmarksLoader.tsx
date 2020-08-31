@@ -26,20 +26,16 @@ import {
   BookmarksResult,
   bookmarkToIntermediate,
   getBookmarks,
+  isBookmarkEqualToSocial,
 } from "./bookmarks";
 import BookmarksList from "./BookmarksList";
 
 interface BookmarksLoaderProps {}
 
-interface BookmarksLoaderState {
-  bookmarksResult?: BookmarksResult;
-}
-
 const BookmarksLoader: React.FC<BookmarksLoaderProps> = (props) => {
-  const [state, setState] = useState<BookmarksLoaderState>({});
+  const [result, setResult] = useState<BookmarksResult | undefined>(undefined);
   const [mode, setMode] = useState<BookmarksMode>(BookmarksMode.DateBookmarked);
-  // TODO rename this variable to be more semantic
-  const [bookmarks, setBookmarks] = useState<Bookmark[]>([]);
+  const [bookmarksToRemove, setBookmarksToRemove] = useState<Bookmark[]>([]);
 
   const handleModeChange = (newMode: BookmarksMode) => {
     if (newMode !== mode) {
@@ -47,60 +43,56 @@ const BookmarksLoader: React.FC<BookmarksLoaderProps> = (props) => {
     }
   };
 
-  const handleAddBookmark = (newBookmark: Bookmark) => {
-    setBookmarks((existingBookmarks) => {
-      return [...existingBookmarks, newBookmark];
+  const handleUndoRemoveBookmark = (newBookmark: Bookmark) => {
+    setBookmarksToRemove((existingBookmarks) => {
+      return existingBookmarks.filter((eb) => !_.isEqual(eb, newBookmark));
     });
-    try {
-      BookmarksClient.getInstance().add([bookmarkToIntermediate(newBookmark)]);
-    } catch (err: unknown) {
-      setBookmarks((existingBookmarks) => {
-        return existingBookmarks.filter((eb) => !_.isEqual(eb, newBookmark));
-      });
-      throw err;
-    }
   };
 
-  const handleRemoveBookmark = (oldBookmark: Bookmark) => {
-    setBookmarks((existingBookmarks) => {
-      return existingBookmarks.filter((eb) => !_.isEqual(eb, oldBookmark));
+  const handleRemoveSingleBookmark = (oldBookmark: Bookmark) => {
+    setBookmarksToRemove((existingBookmarks) => {
+      return [...existingBookmarks, oldBookmark];
     });
-    try {
-      BookmarksClient.getInstance().remove([
-        bookmarkToIntermediate(oldBookmark),
-      ]);
-    } catch (err: unknown) {
-      setBookmarks((existingBookmarks) => {
-        return [...existingBookmarks, oldBookmark];
-      });
-      throw err;
-    }
+  };
+
+  const handleConfirmRemoval = () => {
+    setResult(
+      (prevResult) =>
+        new BookmarksResult(
+          prevResult!.factHits.map((fh) => ({
+            hash: fh.hash,
+            bookmarkHits: fh.bookmarkHits.filter(
+              (bh) =>
+                !bookmarksToRemove.find((b) =>
+                  isBookmarkEqualToSocial(bh.bookmark, b.content)
+                )
+            ),
+          }))
+        )
+    );
+    setBookmarksToRemove([]);
+    BookmarksClient.getInstance().remove(
+      bookmarksToRemove.map((b) => bookmarkToIntermediate(b))
+    );
   };
 
   useEffect(() => {
     async function connect() {
       const bookmarksResult = await getBookmarks(mode);
-      setState({
-        bookmarksResult,
-      });
-      setBookmarks(
-        bookmarksResult.factHits.flatMap((fh) =>
-          fh.bookmarkHits.map((bh) => bh.bookmark)
-        )
-      );
+      setResult(bookmarksResult);
     }
-
     connect();
   }, [mode]);
 
-  return state.bookmarksResult ? (
+  return result ? (
     <BookmarksList
       mode={mode}
-      bookmarks={bookmarks}
-      bookmarksResult={state.bookmarksResult}
+      bookmarksToRemove={bookmarksToRemove}
+      bookmarksResult={result}
       eventHandlers={{
-        onAddBookmark: handleAddBookmark,
-        onRemoveBookmark: handleRemoveBookmark,
+        onUndoRemoveBookmark: handleUndoRemoveBookmark,
+        onConfirmRemoval: handleConfirmRemoval,
+        onRemoveBookmark: handleRemoveSingleBookmark,
         onModeChange: handleModeChange,
       }}
     />

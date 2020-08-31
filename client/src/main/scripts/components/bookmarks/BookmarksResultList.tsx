@@ -21,20 +21,35 @@ import React from "react";
 import { slugify } from "../../common/functions";
 import { cutToTurn } from "../../common/video";
 import { FT } from "../../java2ts/FT";
-import VideoResult, { VideoResultEventHandlers } from "../shared/VideoResult";
-import { Bookmark, BookmarksResult } from "./bookmarks";
+import VideoResult, { PlayEvent } from "../shared/VideoResult";
+import {
+  Bookmark,
+  BookmarksResult,
+  isBookmarkEqualToSocial,
+} from "./bookmarks";
+
+export interface BookmarksResultListEventHandlers {
+  onUndoRemoveBookmark(bookmark: Bookmark): void;
+  onRemoveBookmark(bookmark: Bookmark): void;
+  onPlayClick: PlayEvent;
+}
 
 export interface BookmarksResultListProps {
-  bookmarks: Bookmark[];
+  bookmarksToRemove: Bookmark[];
   bookmarksResult: BookmarksResult;
-  eventHandlers: VideoResultEventHandlers;
+  eventHandlers: BookmarksResultListEventHandlers;
 }
 
 const BookmarksResultList: React.FC<BookmarksResultListProps> = ({
-  bookmarks,
+  bookmarksToRemove,
   bookmarksResult,
   eventHandlers,
 }) => {
+  const handleBookmarkClick = (bookmark: Bookmark, isBookmarked: boolean) => {
+    isBookmarked
+      ? eventHandlers.onRemoveBookmark(bookmark)
+      : eventHandlers.onUndoRemoveBookmark(bookmark);
+  };
   return (
     <>
       {bookmarksResult.factHits.map((f, idx) => {
@@ -47,9 +62,17 @@ const BookmarksResultList: React.FC<BookmarksResultListProps> = ({
               );
               return (
                 <VideoResult
-                  bookmarks={bookmarks}
+                  isBookmarked={
+                    !bookmarksToRemove.find((b) =>
+                      isBookmarkEqualToSocial(b, h.bookmark.content)
+                    )
+                  }
+                  bookmark={h.bookmark}
                   key={getUniqueKey(h.fact, videoTurn.turn, videoTurn.cut)}
-                  eventHandlers={eventHandlers}
+                  eventHandlers={{
+                    onPlayClick: eventHandlers.onPlayClick,
+                    onBookmarkClick: handleBookmarkClick,
+                  }}
                   videoFact={h.fact as FT.VideoFactContent}
                   videoTurn={videoTurn}
                 />

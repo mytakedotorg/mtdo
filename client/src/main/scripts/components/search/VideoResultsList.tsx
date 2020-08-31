@@ -18,15 +18,23 @@
  * You can contact us at team@mytake.org
  */
 import React from "react";
-import { Bookmark } from "../bookmarks/bookmarks";
-import VideoResult, { VideoResultEventHandlers } from "../shared/VideoResult";
+import { isLoggedIn } from "../../browser";
+import { turnToCut } from "../../common/video";
+import { Bookmark, isBookmarkEqualToSocial } from "../bookmarks/bookmarks";
+import VideoResult, { PlayEvent } from "../shared/VideoResult";
 import { SearchResult } from "./search";
+
+export interface VideoResultsListEventHandlers {
+  onPlayClick: PlayEvent;
+  onAddBookmark(bookmark: Bookmark): void;
+  onRemoveBookmark(bookmark: Bookmark): void;
+}
 
 export interface VideoResultsListProps {
   bookmarks: Bookmark[];
   dateToDivMap: Map<string, HTMLDivElement>;
   searchResult: SearchResult;
-  eventHandlers: VideoResultEventHandlers;
+  eventHandlers: VideoResultsListEventHandlers;
 }
 
 const VideoResultsList: React.FC<VideoResultsListProps> = ({
@@ -36,19 +44,57 @@ const VideoResultsList: React.FC<VideoResultsListProps> = ({
   searchResult,
 }) => {
   const { factHits } = searchResult;
+
+  const handleBookmarkClick = (bookmark: Bookmark, isBookmarked: boolean) => {
+    if (isLoggedIn()) {
+      isBookmarked
+        ? eventHandlers.onRemoveBookmark(bookmark)
+        : eventHandlers.onAddBookmark(bookmark);
+    } else {
+      console.warn("TODO: launch a login modal and then add");
+      /**
+       * Get user's email then,
+       *   1. They have an existing confirmed account.
+       *     - response modal "There is a login link in your email. Click that to continue."
+       *   2. They have an existing unconfirmed account.
+       *     - response modal "There is a login link in your email. Click that to continue.
+       *                      You haven't confirmed your account yet. You have X hours left
+       *                      to confirm your account"
+       *   3. They have no account.
+       *     - Onboarding opportunity.
+       *   4. They've been blocked or rate limited.
+       *   5. Had an account and never confirmed.
+       *
+       *  Routes.API_LOGIN response is LoginCookie | { title: string, body: string} ("Welcome Back", "Go check your email");
+       */
+    }
+  };
   return (
     <>
       {factHits.map((f) => {
         const results = f.searchHits.map((h) => {
+          const social = turnToCut(h.videoTurn, h.videoFact);
+          const bookmark: Bookmark = {
+            savedAt: new Date(),
+            content: social,
+          };
           return (
             <VideoResult
-              bookmarks={bookmarks}
+              bookmark={bookmark}
+              isBookmarked={
+                !!bookmarks.find((b) =>
+                  isBookmarkEqualToSocial(b, bookmark.content)
+                )
+              }
               key={getUniqueKey(
                 f.videoFact.youtubeId,
                 h.videoTurn.turn,
                 h.videoTurn.cut
               )}
-              eventHandlers={eventHandlers}
+              eventHandlers={{
+                onBookmarkClick: handleBookmarkClick,
+                onPlayClick: eventHandlers.onPlayClick,
+              }}
               videoFact={h.videoFact}
               videoTurn={h.videoTurn}
             />
