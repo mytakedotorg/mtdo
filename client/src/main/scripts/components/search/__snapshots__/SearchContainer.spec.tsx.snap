@@ -30,10 +30,6 @@ Array [
     <div
       className="results__inner-container"
     >
-      <SearchRadioButtons
-        onChange={[MockFunction]}
-        selectedOption={0}
-      />
       <div>
         VideoResultsList: 
         0

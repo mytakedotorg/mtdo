@@ -5,22 +5,26 @@ exports[`BookmarksSortBy Date Bookmarked 1`] = `
   className="sortby"
 >
   <label
+    className="sortby__label"
     htmlFor="bookmarks-sortby"
   >
     Sort by:
   </label>
   <select
+    className="sortby__select"
     id="bookmarks-sortby"
     name="sortby"
     onChange={[Function]}
     value="DateBookmarked"
   >
     <option
+      className="sortby__option"
       value="DateBookmarked"
     >
       Date bookmarked
     </option>
     <option
+      className="sortby__option"
       value="DateHappened"
     >
       Date happened
@@ -34,22 +38,26 @@ exports[`BookmarksSortBy Date Happened 1`] = `
   className="sortby"
 >
   <label
+    className="sortby__label"
     htmlFor="bookmarks-sortby"
   >
     Sort by:
   </label>
   <select
+    className="sortby__select"
     id="bookmarks-sortby"
     name="sortby"
     onChange={[Function]}
     value="DateHappened"
   >
     <option
+      className="sortby__option"
       value="DateBookmarked"
     >
       Date bookmarked
     </option>
     <option
+      className="sortby__option"
       value="DateHappened"
     >
       Date happened
