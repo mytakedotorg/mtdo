@@ -17,11 +17,11 @@ exports[`SharePreview renders 1`] = `
     >
       View full context
     </a>
-    <a
+    <button
       onClick={[Function]}
     >
       Copy URL to quote
-    </a>
+    </button>
   </div>
   <div
     className="share-preview__preview-container"

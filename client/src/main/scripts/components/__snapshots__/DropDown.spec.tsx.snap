@@ -4,14 +4,14 @@ exports[`DropDown BL 1`] = `
 <div
   className="dropdown dropdown--searchbar"
 >
-  <span
+  <button
     className="dropdown__toggle dropdown__toggle--searchbar"
     onClick={[Function]}
   >
     <span>
       toggle text
     </span>
-  </span>
+  </button>
   <div
     className="dropdown__dropdown dropdown__dropdown--hidden"
   >
@@ -28,14 +28,14 @@ exports[`DropDown BR 1`] = `
 <div
   className="dropdown dropdown--searchbar"
 >
-  <span
+  <button
     className="dropdown__toggle dropdown__toggle--searchbar"
     onClick={[Function]}
   >
     <span>
       toggle text
     </span>
-  </span>
+  </button>
   <div
     className="dropdown__dropdown dropdown__dropdown--hidden"
   >
@@ -52,14 +52,14 @@ exports[`DropDown TL 1`] = `
 <div
   className="dropdown dropdown--searchbar"
 >
-  <span
+  <button
     className="dropdown__toggle dropdown__toggle--searchbar"
     onClick={[Function]}
   >
     <span>
       toggle text
     </span>
-  </span>
+  </button>
   <div
     className="dropdown__dropdown dropdown__dropdown--hidden"
   >
@@ -76,14 +76,14 @@ exports[`DropDown TR 1`] = `
 <div
   className="dropdown dropdown--searchbar"
 >
-  <span
+  <button
     className="dropdown__toggle dropdown__toggle--searchbar"
     onClick={[Function]}
   >
     <span>
       toggle text
     </span>
-  </span>
+  </button>
   <div
     className="dropdown__dropdown dropdown__dropdown--hidden"
   >
@@ -100,14 +100,14 @@ exports[`DropDown disabled 1`] = `
 <div
   className="dropdown dropdown--searchbar"
 >
-  <span
+  <button
     className="dropdown__toggle dropdown__toggle--searchbar"
     onClick={[Function]}
   >
     <span>
       toggle text
     </span>
-  </span>
+  </button>
   <div
     className="dropdown__dropdown dropdown__dropdown--hidden"
   >
@@ -124,14 +124,14 @@ exports[`DropDown enabled 1`] = `
 <div
   className="dropdown dropdown--searchbar"
 >
-  <span
+  <button
     className="dropdown__toggle dropdown__toggle--searchbar"
     onClick={[Function]}
   >
     <span>
       toggle text
     </span>
-  </span>
+  </button>
   <div
     className="dropdown__dropdown dropdown__dropdown--hidden"
   >

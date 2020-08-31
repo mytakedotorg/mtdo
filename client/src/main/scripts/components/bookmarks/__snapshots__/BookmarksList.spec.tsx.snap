@@ -12,14 +12,10 @@ exports[`BookmarksList date bookmarked 1`] = `
       selectedOption="DateBookmarked"
     />
   </div>
-  <div
-    className="results__inner-container"
-  >
-    <div>
-      BookmarksResultList: 
-      5
-       hits
-    </div>
+  <div>
+    BookmarksResultList: 
+    5
+     hits
   </div>
 </div>
 `;
@@ -42,14 +38,10 @@ exports[`BookmarksList date happened - one marked for removal 1`] = `
       Confirm Removal
     </button>
   </div>
-  <div
-    className="results__inner-container"
-  >
-    <div>
-      BookmarksResultList: 
-      4
-       hits
-    </div>
+  <div>
+    BookmarksResultList: 
+    4
+     hits
   </div>
 </div>
 `;
@@ -66,14 +58,10 @@ exports[`BookmarksList date happened 1`] = `
       selectedOption="DateHappened"
     />
   </div>
-  <div
-    className="results__inner-container"
-  >
-    <div>
-      BookmarksResultList: 
-      4
-       hits
-    </div>
+  <div>
+    BookmarksResultList: 
+    4
+     hits
   </div>
 </div>
 `;
@@ -87,14 +75,10 @@ exports[`BookmarksList no results 1`] = `
   >
     0
   </div>
-  <div
-    className="results__inner-container"
-  >
-    <div>
-      BookmarksResultList: 
-      0
-       hits
-    </div>
+  <div>
+    BookmarksResultList: 
+    0
+     hits
   </div>
 </div>
 `;
