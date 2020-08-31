@@ -19,6 +19,7 @@
  */
 import * as React from "react";
 import * as ReactDOM from "react-dom";
+import Modal from "react-modal";
 import { getUserCookieString, windowUtils } from "./browser";
 import { getQueryParameterByName } from "./common/functions";
 import { TakeDocument } from "./components/BlockEditor";
@@ -112,6 +113,7 @@ function reactElementForPage(args: MtdoArgs): React.SFCElement<any> {
 const app = document.getElementById("app");
 if (app) {
   ReactDOM.render(reactElementForPage(window.mytake!), app);
+  Modal.setAppElement(app);
 }
 
 if (isSearchPage(window.mytake)) {

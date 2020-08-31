@@ -17,11 +17,12 @@
  *
  * You can contact us at team@mytake.org
  */
-import React from "react";
+import React, { useState } from "react";
 import { isLoggedIn } from "../../browser";
 import { turnToCut } from "../../common/video";
 import { Bookmark, isBookmarkEqualToSocial } from "../bookmarks/bookmarks";
 import VideoResult, { PlayEvent } from "../shared/VideoResult";
+import LoginModal from "./LoginModal";
 import { SearchResult } from "./search";
 
 export interface VideoResultsListEventHandlers {
@@ -44,6 +45,7 @@ const VideoResultsList: React.FC<VideoResultsListProps> = ({
   searchResult,
 }) => {
   const { factHits } = searchResult;
+  const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
 
   const handleBookmarkClick = (bookmark: Bookmark, isBookmarked: boolean) => {
     if (isLoggedIn()) {
@@ -51,7 +53,7 @@ const VideoResultsList: React.FC<VideoResultsListProps> = ({
         ? eventHandlers.onRemoveBookmark(bookmark)
         : eventHandlers.onAddBookmark(bookmark);
     } else {
-      console.warn("TODO: launch a login modal and then add");
+      setModalIsOpen(true);
       /**
        * Get user's email then,
        *   1. They have an existing confirmed account.
@@ -68,6 +70,11 @@ const VideoResultsList: React.FC<VideoResultsListProps> = ({
        *  Routes.API_LOGIN response is LoginCookie | { title: string, body: string} ("Welcome Back", "Go check your email");
        */
     }
+  };
+
+  const handleOnModalRequestClose = () => {
+    setModalIsOpen(false);
+    console.warn("TODO: add bookmark if user authenticated");
   };
   return (
     <>
@@ -118,6 +125,10 @@ const VideoResultsList: React.FC<VideoResultsListProps> = ({
           </div>
         ) : null;
       })}
+      <LoginModal
+        isOpen={modalIsOpen}
+        onRequestClose={handleOnModalRequestClose}
+      />
     </>
   );
 };
