@@ -17,13 +17,13 @@
  *
  * You can contact us at team@mytake.org
  */
-import _ from "lodash";
 import React, { useEffect, useState } from "react";
 import { isLoggedIn } from "../../browser";
 import {
   Bookmark,
   BookmarksClient,
   bookmarkToIntermediate,
+  isBookmarkEqualToSocial,
 } from "../bookmarks/bookmarks";
 import { search, SearchMode, SearchResult } from "./search";
 import SearchContainer from "./SearchContainer";
@@ -51,7 +51,9 @@ const VideoResultsLoader: React.FC<VideoResultsLoaderProps> = (props) => {
       BookmarksClient.getInstance().add([bookmarkToIntermediate(newBookmark)]);
     } catch (err: unknown) {
       setBookmarks((existingBookmarks) => {
-        return existingBookmarks.filter((eb) => !_.isEqual(eb, newBookmark));
+        return existingBookmarks.filter(
+          (eb) => !isBookmarkEqualToSocial(eb, newBookmark.content)
+        );
       });
       throw err;
     }
@@ -59,7 +61,9 @@ const VideoResultsLoader: React.FC<VideoResultsLoaderProps> = (props) => {
 
   const handleRemoveBookmark = (oldBookmark: Bookmark) => {
     setBookmarks((existingBookmarks) => {
-      return existingBookmarks.filter((eb) => !_.isEqual(eb, oldBookmark));
+      return existingBookmarks.filter(
+        (eb) => !isBookmarkEqualToSocial(eb, oldBookmark.content)
+      );
     });
     try {
       BookmarksClient.getInstance().remove([

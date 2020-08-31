@@ -43,7 +43,8 @@ jest.mock("./BookmarksResultList", () => ({
 const eventHandlers: BookmarksListEventHandlers = {
   onModeChange: jest.fn(),
   onRemoveBookmark: jest.fn(),
-  onAddBookmark: jest.fn(),
+  onUndoRemoveBookmark: jest.fn(),
+  onConfirmRemoval: jest.fn(),
 };
 
 test("BookmarksList date happened", () => {
@@ -58,7 +59,7 @@ test("BookmarksList date happened", () => {
   const tree = renderer
     .create(
       <BookmarksList
-        bookmarks={[]}
+        bookmarksToRemove={[]}
         mode={BookmarksMode.DateBookmarked}
         eventHandlers={eventHandlers}
         bookmarksResult={result}
@@ -80,7 +81,7 @@ test("BookmarksList date bookmarked", () => {
   const tree = renderer
     .create(
       <BookmarksList
-        bookmarks={[]}
+        bookmarksToRemove={[]}
         mode={BookmarksMode.DateBookmarked}
         eventHandlers={eventHandlers}
         bookmarksResult={result}
@@ -102,7 +103,7 @@ test("BookmarksList no results", () => {
   const tree = renderer
     .create(
       <BookmarksList
-        bookmarks={[]}
+        bookmarksToRemove={[]}
         mode={BookmarksMode.DateBookmarked}
         eventHandlers={eventHandlers}
         bookmarksResult={result}

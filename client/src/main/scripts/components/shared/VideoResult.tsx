@@ -19,14 +19,9 @@
  */
 import React from "react";
 import { Bookmark as BookmarkIcon, Play, Share } from "react-feather";
-import { isLoggedIn } from "../../browser";
 import { slugify } from "../../common/functions";
-import { encodeSocial, VideoCut, VideoTurn } from "../../common/social/social";
-import {
-  convertSecondsToTimestamp,
-  getSpeaker,
-  turnToCut,
-} from "../../common/video";
+import { encodeSocial, VideoTurn } from "../../common/social/social";
+import { convertSecondsToTimestamp, getSpeaker } from "../../common/video";
 import { FT } from "../../java2ts/FT";
 import { Routes } from "../../java2ts/Routes";
 import { Bookmark } from "../bookmarks/bookmarks";
@@ -35,9 +30,8 @@ import HitContent from "./HitContent";
 import SharePreview from "./SharePreview";
 
 export interface VideoResultEventHandlers {
-  onAddBookmark(bookmark: Bookmark): void;
+  onBookmarkClick(bookmark: Bookmark, isBookmarked: boolean): void;
   onPlayClick: PlayEvent;
-  onRemoveBookmark(bookmark: Bookmark): void;
 }
 
 export type PlayEvent = (
@@ -46,18 +40,17 @@ export type PlayEvent = (
 ) => any;
 
 export interface VideoResultProps {
-  bookmarks: Bookmark[];
+  bookmark: Bookmark;
+  isBookmarked: boolean;
   videoTurn: VideoTurn;
   videoFact: FT.VideoFactContent;
   eventHandlers: VideoResultEventHandlers;
 }
 
 const VideoResult: React.FC<VideoResultProps> = (props) => {
-  const { bookmarks, eventHandlers, videoFact, videoTurn } = props;
-  const social = turnToCut(videoTurn, videoFact);
-  const bookmark: Bookmark | undefined = bookmarks.find((b) =>
-    isBookmarkEqualToSocial(b, social)
-  );
+  const { bookmark, isBookmarked, eventHandlers, videoFact, videoTurn } = props;
+
+  const social = bookmark.content;
 
   const contextUrl = `${Routes.FOUNDATION}/${slugify(
     videoFact.fact.title
@@ -68,37 +61,11 @@ const VideoResult: React.FC<VideoResultProps> = (props) => {
   };
 
   const handleBookmarkClick = () => {
-    if (isLoggedIn()) {
-      if (bookmark) {
-        eventHandlers.onRemoveBookmark(bookmark);
-      } else {
-        eventHandlers.onAddBookmark({
-          content: social,
-          savedAt: new Date(),
-        });
-      }
-    } else {
-      console.warn("TODO: launch a login modal and then add");
-      /**
-       * Get user's email then,
-       *   1. They have an existing confirmed account.
-       *     - response modal "There is a login link in your email. Click that to continue."
-       *   2. They have an existing unconfirmed account.
-       *     - response modal "There is a login link in your email. Click that to continue.
-       *                      You haven't confirmed your account yet. You have X hours left
-       *                      to confirm your account"
-       *   3. They have no account.
-       *     - Onboarding opportunity.
-       *   4. They've been blocked or rate limited.
-       *   5. Had an account and never confirmed.
-       *
-       *  Routes.API_LOGIN response is LoginCookie | { title: string, body: string} ("Welcome Back", "Go check your email");
-       */
-    }
+    eventHandlers.onBookmarkClick(bookmark, isBookmarked);
   };
 
   let bookmarkClass = "turn__button turn__button--bookmark";
-  if (bookmark) {
+  if (isBookmarked) {
     bookmarkClass += " turn__button--bookmark-solid";
   }
   return (
@@ -146,17 +113,4 @@ const VideoResult: React.FC<VideoResultProps> = (props) => {
   );
 };
 
-function isBookmarkEqualToSocial(
-  bookmark: Bookmark,
-  social: VideoCut
-): boolean {
-  const normalizedSocialCut = social.cut.map((t) => Math.round(t));
-  const normalizedBookmarkCut = bookmark.content.cut.map((t) => Math.round(t));
-  return (
-    bookmark.content.fact === social.fact &&
-    bookmark.content.kind === social.kind &&
-    normalizedBookmarkCut[0] === normalizedSocialCut[0] &&
-    normalizedBookmarkCut[1] === normalizedSocialCut[1]
-  );
-}
 export default VideoResult;

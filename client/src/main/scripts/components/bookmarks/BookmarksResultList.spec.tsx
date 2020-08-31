@@ -20,12 +20,11 @@
 import React from "react";
 import renderer from "react-test-renderer";
 import { FoundationHarness } from "../../common/foundationTest";
-import {
-  VideoResultEventHandlers,
-  VideoResultProps,
-} from "../shared/VideoResult";
+import { VideoResultProps } from "../shared/VideoResult";
 import { BookmarksMode, _bookmarksImpl, _BookmarksWithData } from "./bookmarks";
-import BookmarksResultList from "./BookmarksResultList";
+import BookmarksResultList, {
+  BookmarksResultListEventHandlers,
+} from "./BookmarksResultList";
 import samplebookmarks from "./testData/samplebookmarks.json";
 
 jest.mock("../shared/VideoResult", () => ({
@@ -40,10 +39,10 @@ jest.mock("../shared/VideoResult", () => ({
   },
 }));
 
-const eventHandlers: VideoResultEventHandlers = {
+const eventHandlers: BookmarksResultListEventHandlers = {
   onPlayClick: jest.fn(),
   onRemoveBookmark: jest.fn(),
-  onAddBookmark: jest.fn(),
+  onUndoRemoveBookmark: jest.fn(),
 };
 
 test("BookmarksResultList DateHappened", () => {
@@ -58,7 +57,7 @@ test("BookmarksResultList DateHappened", () => {
   const tree = renderer
     .create(
       <BookmarksResultList
-        bookmarks={[]}
+        bookmarksToRemove={[]}
         eventHandlers={eventHandlers}
         bookmarksResult={result}
       />
@@ -79,7 +78,7 @@ test("BookmarksResultList DateBookmarked", () => {
   const tree = renderer
     .create(
       <BookmarksResultList
-        bookmarks={[]}
+        bookmarksToRemove={[]}
         eventHandlers={eventHandlers}
         bookmarksResult={result}
       />
@@ -100,7 +99,7 @@ test("BookmarksResultList no results", () => {
   const tree = renderer
     .create(
       <BookmarksResultList
-        bookmarks={[]}
+        bookmarksToRemove={[]}
         eventHandlers={eventHandlers}
         bookmarksResult={result}
       />
