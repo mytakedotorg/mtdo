@@ -57,7 +57,6 @@ const VideoResultsList: React.FC<VideoResultsListProps> = ({
             savedAt: new Date(),
             content: social,
           };
-          console.log(bookmarks);
           return (
             <VideoResult
               bookmark={bookmark}
