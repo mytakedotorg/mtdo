@@ -49,11 +49,13 @@ const BookmarksList: React.FC<BookmarksListProps> = ({
   };
   return (
     <div className="results">
-      <div className="results__inner-container">
+      {bookmarksResult.factHits.length && (
         <BookmarksSortBy
           onChange={eventHandlers.onModeChange}
           selectedOption={mode}
         />
+      )}
+      <div className="results__inner-container">
         <BookmarksResultList
           bookmarks={bookmarks}
           eventHandlers={{

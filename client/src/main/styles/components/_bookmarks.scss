@@ -1,0 +1,10 @@
+.sortby__label {
+  @include body("sans");
+  margin-right: 8px;
+}
+
+.sortby__select {
+  @include body("sans");
+  padding-left: 4px;
+  padding-right: 4px;
+}
