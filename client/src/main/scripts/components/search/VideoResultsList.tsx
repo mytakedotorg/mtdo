@@ -18,7 +18,7 @@
  * You can contact us at team@mytake.org
  */
 import React from "react";
-import { isLoggedIn } from "scripts/browser";
+import { isLoggedIn } from "../../browser";
 import { turnToCut } from "../../common/video";
 import { Bookmark, isBookmarkEqualToSocial } from "../bookmarks/bookmarks";
 import VideoResult, { PlayEvent } from "../shared/VideoResult";
