@@ -9,6 +9,7 @@
 }
 .dropdown__toggle {
   @include body("sans");
+  @include button--no-style;
   text-align: left;
   margin-left: $page-margin-mobile;
   margin-right: $page-margin-mobile;
