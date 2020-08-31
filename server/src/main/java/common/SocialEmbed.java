@@ -107,7 +107,6 @@ public class SocialEmbed {
 					body = "<!-- temporary header failure, don't cache -->";
 				}
 			}
-			body = cleanupHeaders(body);
 			if (!httpDomain.equals(HTTPS_NODE)) {
 				// node.mytake.org always returns node.mytake.org image URLs, even when running on
 				// dev machines or the staging instance on Heroku, so we have to adjust for that here.
@@ -115,15 +114,6 @@ public class SocialEmbed {
 			}
 			return new SocialEmbed(body);
 		}
-	}
-
-	/** Removes react cruft (unneeded meta closing tags and header wrapper) */
-	static String cleanupHeaders(String input) {
-		// if these replace calls are changed, you must sync with the Typescript socialEmbed.tsx debugging code
-		return input
-				.replace("<header data-reactroot=\"\">", "")
-				.replace("</header>", "")
-				.replace("\"/>", "\">\n");
 	}
 
 	public static void init(Jooby jooby) {
