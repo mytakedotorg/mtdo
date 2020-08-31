@@ -127,10 +127,12 @@ const SearchContainer: React.FC<SearchContainerProps> = ({
       </div>
       <div className="results">
         <div className="results__inner-container">
-          <SearchRadioButtons
-            onChange={eventHandlers.onModeChange}
-            selectedOption={mode}
-          />
+          {searchResult.factHits.length > 0 && (
+            <SearchRadioButtons
+              onChange={eventHandlers.onModeChange}
+              selectedOption={mode}
+            />
+          )}
           <VideoResultsList
             bookmarks={bookmarks}
             dateToDivMap={dateToDivMap}
