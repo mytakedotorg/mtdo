@@ -18,7 +18,6 @@
  * You can contact us at team@mytake.org
  */
 import React from "react";
-import { isLoggedIn } from "../../browser";
 import { slugify } from "../../common/functions";
 import { cutToTurn } from "../../common/video";
 import { FT } from "../../java2ts/FT";
@@ -47,28 +46,9 @@ const BookmarksResultList: React.FC<BookmarksResultListProps> = ({
   eventHandlers,
 }) => {
   const handleBookmarkClick = (bookmark: Bookmark, isBookmarked: boolean) => {
-    if (isLoggedIn()) {
-      isBookmarked
-        ? eventHandlers.onRemoveBookmark(bookmark)
-        : eventHandlers.onUndoRemoveBookmark(bookmark);
-    } else {
-      console.warn("TODO: launch a login modal and then add");
-      /**
-       * Get user's email then,
-       *   1. They have an existing confirmed account.
-       *     - response modal "There is a login link in your email. Click that to continue."
-       *   2. They have an existing unconfirmed account.
-       *     - response modal "There is a login link in your email. Click that to continue.
-       *                      You haven't confirmed your account yet. You have X hours left
-       *                      to confirm your account"
-       *   3. They have no account.
-       *     - Onboarding opportunity.
-       *   4. They've been blocked or rate limited.
-       *   5. Had an account and never confirmed.
-       *
-       *  Routes.API_LOGIN response is LoginCookie | { title: string, body: string} ("Welcome Back", "Go check your email");
-       */
-    }
+    isBookmarked
+      ? eventHandlers.onRemoveBookmark(bookmark)
+      : eventHandlers.onUndoRemoveBookmark(bookmark);
   };
   return (
     <>
