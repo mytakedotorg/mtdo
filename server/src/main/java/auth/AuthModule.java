@@ -69,15 +69,11 @@ public class AuthModule implements Jooby.Module {
 				return views.Auth.alreadyLoggedIn.template(userOpt.get().username());
 			}
 			String loginReason = req.param(LOGIN_REASON.name()).value(null);
-			return views.Auth.login.template(loginReason,
-					validations.get(LoginForm.class).markup(),
-					validations.get(CreateAccountForm.class).markup());
-		}, LoginForm.class, CreateAccountForm.class);
+			return views.Auth.login.template(loginReason, validations.get(LoginForm.class).markup());
+		}, LoginForm.class);
 		env.router().get(URL_confirm_login_sent, redirectHomeIfAlreadyVisited(email -> views.Auth.loginEmailSent.template(email, Emails.TEAM)));
-		env.router().get(URL_confirm_account_sent, redirectHomeIfAlreadyVisited(email -> views.Auth.createAccountEmailSent.template(email, Emails.TEAM)));
 
 		LoginForm.urlCode.get(env, LoginForm::confirm);
-		CreateAccountForm.urlCode.get(env, CreateAccountForm::confirm);
 
 		env.router().get(Routes.LOGOUT, (req, rsp) -> {
 			AuthUser.clearCookies(req, rsp);
