@@ -24,7 +24,6 @@ import static db.Tables.ACCOUNT;
 import com.auth0.jwt.algorithms.Algorithm;
 import common.RedirectException;
 import controllers.HomeFeed;
-import db.tables.pojos.Account;
 import db.tables.records.AccountRecord;
 import forms.api.FormValidation.Sensitive;
 import forms.meta.MetaField;
@@ -49,13 +48,12 @@ public class TinfoilLoginForm extends PostForm<TinfoilLoginForm> {
 	protected ValidateResult<TinfoilLoginForm> validate(Request req, Sensitive<TinfoilLoginForm> fromUser) {
 		String username = fromUser.value(USERNAME);
 		try (DSLContext dsl = req.require(DSLContext.class)) {
-			AccountRecord accountRecord = dsl.selectFrom(ACCOUNT)
+			AccountRecord account = dsl.selectFrom(ACCOUNT)
 					.where(ACCOUNT.USERNAME.eq(username))
 					.fetchOne();
-			if (accountRecord == null) {
+			if (account == null) {
 				throw RedirectException.notFoundError();
 			}
-			Account account = accountRecord.into(Account.class);
 			Algorithm algorithm = req.require(Algorithm.class);
 			byte[] content = (username + "|" + account.getEmail()).getBytes(StandardCharsets.UTF_8);
 			@SuppressWarnings("deprecation")

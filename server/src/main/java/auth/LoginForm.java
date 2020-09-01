@@ -32,7 +32,6 @@ import common.Time;
 import common.UrlEncodedPath;
 import common.UrlRandomCode;
 import controllers.HomeFeed;
-import db.tables.pojos.Account;
 import db.tables.records.AccountRecord;
 import db.tables.records.LoginlinkRecord;
 import forms.api.FormValidation;
@@ -141,7 +140,7 @@ public class LoginForm extends PostForm<LoginForm> {
 			account.setLastSeenAt(now);
 			account.update();
 			// set the login cookies
-			AuthUser.login(account.into(Account.class), req).forEach(rsp::cookie);
+			AuthUser.login(account, req).forEach(rsp::cookie);
 			// redirect 
 			Mutant redirect = req.param(REDIRECT.name());
 			if (redirect.isSet()) {
