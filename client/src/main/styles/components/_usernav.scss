@@ -1,15 +1,17 @@
 .dropdown--usernav {
   margin-right: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
   .dropdown__dropdown {
     top: 40px;
   }
 }
 .dropdown__toggle--usernav {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
   @include typography($sans, 300, 18px, 40px);
   color: palette(nav, text);
+  display: flex;
+  align-items: center;
   svg {
     stroke-width: 1;
     margin-top: 1px;
