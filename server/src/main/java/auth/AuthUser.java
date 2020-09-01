@@ -19,6 +19,7 @@
  */
 package auth;
 
+import static db.Tables.ACCOUNT;
 import static db.Tables.MODERATOR;
 
 import com.auth0.jwt.JWT;
@@ -29,6 +30,7 @@ import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.diffplug.common.collect.ImmutableList;
 import com.jsoniter.output.JsonStream;
+import common.DbMisc;
 import common.RedirectException;
 import common.Time;
 import common.UrlEncodedPath;
@@ -155,6 +157,17 @@ public class AuthUser {
 
 		AuthUser user = new AuthUser(userId, username, email, Boolean.parseBoolean(confirmed));
 		req.set(REQ_LOGIN_STATUS, user);
+
+		if (!user.confirmed) {
+			// if a user has an unconfirmed auth cookie, and the user in question
+			// authenticates then we need to kick the unauthenticated user out
+			try (DSLContext dsl = req.require(DSLContext.class)) {
+				boolean isConfirmedNow = DbMisc.fetchOne(dsl, ACCOUNT.ID, userId, ACCOUNT.CONFIRMED_AT) != null;
+				if (isConfirmedNow) {
+					throw new TokenExpiredException("Your login timed out.");
+				}
+			}
+		}
 		return user;
 	}
 
