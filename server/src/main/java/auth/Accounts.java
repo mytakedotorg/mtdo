@@ -30,8 +30,10 @@ import db.tables.records.AccountRecord;
 import db.tables.records.LoginlinkRecord;
 import forms.meta.Validator;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Locale;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import java2ts.LoginApi;
 import javax.annotation.Nullable;
 import org.jooby.Cookie;
@@ -86,7 +88,7 @@ class Accounts {
 			String email = emailRaw.toLowerCase(Locale.ROOT);
 			AccountRecord account = DbMisc.fetchOne(dsl, ACCOUNT.EMAIL, email);
 			if (account == null) {
-				account = newAccount(email, req);
+				account = newAccount(email, req, dsl);
 				if (ifNoAccount.create()) {
 					return Msg.titleBodyBtn("Welcome aboard!",
 							"We sent you an email with more details about what we're building together. Keep exploring and read it when you get a chance.",
@@ -122,7 +124,7 @@ class Accounts {
 		try (DSLContext dsl = req.require(DSLContext.class)) {
 			AccountRecord account = DbMisc.fetchOne(dsl, ACCOUNT.EMAIL, email);
 			if (account == null) {
-				account = newAccount(email, req);
+				account = newAccount(email, req, dsl);
 				return Msg.titleBodyBtn("Welcome aboard!",
 						"We sent you an email with more details about what we're building together. Keep exploring and read it when you get a chance.",
 						"Okay, I'll read it later.").andLoginCookieFor(account)
@@ -149,11 +151,11 @@ class Accounts {
 				"Okay, I'll try again");
 	}
 
-	private static AccountRecord newAccount(String email, Request req) {
+	private static AccountRecord newAccount(String email, Request req, DSLContext dsl) {
 		LocalDateTime now = req.require(Time.class).now();
 		String ip = Ip.get(req);
 
-		AccountRecord account = new AccountRecord();
+		AccountRecord account = dsl.newRecord(ACCOUNT);
 		account.setEmail(email);
 		account.setCreatedAt(now);
 		account.setCreatedIp(ip);
@@ -163,6 +165,7 @@ class Accounts {
 		account.setLastSeenIp(ip);
 		account.setLastEmailedAt(now);
 		account.setNewsletter(true);
+		account.insert();
 		return account;
 	}
 
@@ -203,9 +206,9 @@ class Accounts {
 			res.btn = btn;
 			Result result = Results.ok(res);
 			if (loginCookieFor != null) {
-				for (Cookie cookie : AuthUser.login(loginCookieFor, req)) {
-					result.header("Set-Cookie", cookie.encode());
-				}
+				result.header("Set-Cookie", AuthUser.login(loginCookieFor, req).stream()
+						.map(Cookie::encode)
+						.collect(Collectors.joining(",")));
 			}
 			if (sendLoginEmailTo != null) {
 				String htmlMsg;
@@ -216,6 +219,10 @@ class Accounts {
 					if (redirect != null) {
 						link.setRedirect(redirect);
 					}
+					// TODO: login vs newsletter dependent
+					link.setExpiresAt(now.plus(1, ChronoUnit.DAYS));
+					// TODO: BROKEN
+					link.setAccountId(1);
 					link.insert();
 					htmlMsg = views.Auth.loginEmail.template(sendLoginEmailTo.getEmail(), LoginForm.urlCode.recordToUrl(req, link).build()).renderToString();
 				}
