@@ -27,6 +27,8 @@ import common.DevTime;
 import common.JoobyDevRule;
 import db.tables.records.AccountRecord;
 import io.restassured.specification.RequestSpecification;
+
+import java.time.LocalDateTime;
 import java.util.Optional;
 import org.jooby.Jooby;
 import org.jooby.Status;
@@ -62,6 +64,8 @@ public class AuthUserTest {
 		account.setId(-1); // not used
 		account.setUsername(username);
 		account.setEmail("unused@email.com");
+		account.setConfirmedAt(LocalDateTime.of(2000, 1, 1, 0, 0));
+		account.setConfirmedIp("127.0.0.1");
 		return AuthModuleHarness.givenUser(app.app(), account);
 	}
 
