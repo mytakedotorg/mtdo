@@ -46,9 +46,7 @@ public class AuthModule implements Jooby.Module {
 	/** Used by {@link LoginForm} only. */
 	public static final MetaField<String> LOGIN_EMAIL = MetaField.string("loginemail");
 	/** Used by {@link CreateAccountForm} only. */
-	public static final MetaField<String> CREATE_USERNAME = MetaField.string("createuser");
 	public static final MetaField<String> CREATE_EMAIL = MetaField.string("createemail");
-	public static final MetaField<Boolean> ACCEPT_TERMS = MetaField.bool("acceptterms");
 
 	/** The URLs for this. */
 	static final String URL_confirm = "/confirm";
@@ -64,6 +62,7 @@ public class AuthModule implements Jooby.Module {
 		Algorithm algorithm = Algorithm.HMAC256(secret);
 		binder.bind(Algorithm.class).toInstance(algorithm);
 
+		env.router().post(Routes.API_LOGIN, Accounts::postToApiRoute);
 		PostForm.hookMultiple(env.router(), (req, validations) -> {
 			Optional<AuthUser> userOpt = AuthUser.authOpt(req);
 			if (userOpt.isPresent()) {

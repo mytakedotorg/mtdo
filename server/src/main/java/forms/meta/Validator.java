@@ -48,12 +48,16 @@ public interface Validator<T> {
 
 	public static Validator<String> email() {
 		return (validation, fieldName, value) -> {
-			boolean allowLocal = false;
-			boolean allowTld = true;
-			if (!EmailValidator.getInstance(allowLocal, allowTld).isValid(value)) {
+			if (!isValidEmail(value)) {
 				validation.addError(fieldName, "Invalid email");
 			}
 		};
+	}
+
+	public static boolean isValidEmail(String email) {
+		boolean allowLocal = false;
+		boolean allowTld = true;
+		return EmailValidator.getInstance(allowLocal, allowTld).isValid(email);
 	}
 
 	public static Validator<String> phoneNumber() {
