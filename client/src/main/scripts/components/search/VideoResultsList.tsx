@@ -20,9 +20,9 @@
 import React, { useState } from "react";
 import { isLoggedIn } from "../../browser";
 import { turnToCut } from "../../common/video";
+import LoginModal from "../auth/LoginModal";
 import { Bookmark, isBookmarkEqualToSocial } from "../bookmarks/bookmarks";
 import VideoResult, { PlayEvent } from "../shared/VideoResult";
-import LoginModal from "./LoginModal";
 import { SearchResult } from "./search";
 
 export interface VideoResultsListEventHandlers {
