@@ -39,7 +39,6 @@ const LoginModal: React.FC<LoginModalProps> = (props) => {
         window.location.href.indexOf("/", 8)
       )}`,
     });
-    console.log("dispatching event");
     document.dispatchEvent(new Event(COOKIE_CHANGE_EVENT));
     setLoginRes(res);
   };

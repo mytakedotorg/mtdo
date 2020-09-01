@@ -38,10 +38,8 @@ const UserNav: React.FC = () => {
   }
 
   useEffect(() => {
-    console.log("adding event listener");
     document.addEventListener(COOKIE_CHANGE_EVENT, handleCookieChange);
     return () => {
-      console.log("removing event listener");
       document.removeEventListener(COOKIE_CHANGE_EVENT, handleCookieChange);
     };
   }, []);
