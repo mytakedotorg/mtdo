@@ -18,39 +18,24 @@
  * You can contact us at team@mytake.org
  */
 import React, { useState } from "react";
-import { X } from "react-feather";
-import Modal from "react-modal";
 import { Routes } from "../../java2ts/Routes";
 import { post } from "../../network";
+import LoginModalView from "./LoginModalView";
+import { LoginReq, LoginRes } from "./LoginTypes";
 
 interface LoginModalProps {
   isOpen: boolean;
   onRequestClose(): void;
 }
 
-interface LoginReq {
-  email: string;
-  kind: string;
-  redirect?: string;
-}
-
-interface LoginRes {
-  title: string;
-  body: string;
-  btn: string;
-}
-
-const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onRequestClose }) => {
-  const [inputValue, setInputValue] = useState<string>("");
+const LoginModal: React.FC<LoginModalProps> = (props) => {
   const [loginRes, setLoginRes] = useState<LoginRes | undefined>();
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setInputValue(event.target.value);
-  };
-  const login = async () => {
+
+  const login = async (email: string) => {
     try {
       const res = await post<LoginReq, LoginRes>(Routes.API_LOGIN, {
         kind: "use",
-        email: inputValue,
+        email,
       });
       setLoginRes(res);
     } catch (err) {
@@ -58,52 +43,14 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onRequestClose }) => {
       console.warn("TODO: handle error state");
     }
   };
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    login();
-  };
+
   return (
-    <Modal
-      isOpen={isOpen}
-      portalClassName="modal__portal"
-      overlayClassName="modal__overlay"
-      className="modal"
-      onRequestClose={onRequestClose}
-      shouldFocusAfterRender={false}
-      shouldCloseOnOverlayClick={true}
-    >
-      {loginRes ? (
-        <>
-          <h2 className="modal__header">{loginRes.title}</h2>
-          <p className="modal__text">{loginRes.body}</p>
-          <button className="modal__button" onClick={onRequestClose}>
-            {loginRes.btn}
-          </button>
-        </>
-      ) : (
-        <form className="modal__form" onSubmit={handleSubmit}>
-          <label className="modal__label" htmlFor="email">
-            Email
-          </label>
-          <input
-            id="email"
-            type="email"
-            required={true}
-            className="modal__input"
-            value={inputValue}
-            onChange={handleChange}
-          />
-          <input
-            type="submit"
-            className="modal__button"
-            value="Login or Create Account"
-          />
-        </form>
-      )}
-      <button className="modal__close" onClick={onRequestClose}>
-        <X />
-      </button>
-    </Modal>
+    <LoginModalView
+      onFormSubmit={login}
+      loginRes={loginRes}
+      isOpen={props.isOpen}
+      onRequestClose={props.onRequestClose}
+    />
   );
 };
 
