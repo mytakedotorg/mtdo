@@ -17,7 +17,7 @@ import org.jooq.Field;
 import org.jooq.ForeignKey;
 import org.jooq.Name;
 import org.jooq.Record;
-import org.jooq.Row5;
+import org.jooq.Row6;
 import org.jooq.Schema;
 import org.jooq.Table;
 import org.jooq.TableField;
@@ -33,7 +33,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Loginlink extends TableImpl<LoginlinkRecord> {
 
-    private static final long serialVersionUID = 1624401786;
+    private static final long serialVersionUID = -2109071568;
 
     /**
      * The reference instance of <code>public.loginlink</code>
@@ -72,6 +72,11 @@ public class Loginlink extends TableImpl<LoginlinkRecord> {
      * The column <code>public.loginlink.account_id</code>.
      */
     public final TableField<LoginlinkRecord, Integer> ACCOUNT_ID = createField(DSL.name("account_id"), org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
+
+    /**
+     * The column <code>public.loginlink.redirect</code>.
+     */
+    public final TableField<LoginlinkRecord, String> REDIRECT = createField(DSL.name("redirect"), org.jooq.impl.SQLDataType.CLOB, this, "");
 
     /**
      * Create a <code>public.loginlink</code> table reference
@@ -157,11 +162,11 @@ public class Loginlink extends TableImpl<LoginlinkRecord> {
     }
 
     // -------------------------------------------------------------------------
-    // Row5 type methods
+    // Row6 type methods
     // -------------------------------------------------------------------------
 
     @Override
-    public Row5<String, LocalDateTime, LocalDateTime, String, Integer> fieldsRow() {
-        return (Row5) super.fieldsRow();
+    public Row6<String, LocalDateTime, LocalDateTime, String, Integer, String> fieldsRow() {
+        return (Row6) super.fieldsRow();
     }
 }
