@@ -27,7 +27,6 @@ import common.DevTime;
 import common.JoobyDevRule;
 import db.tables.records.AccountRecord;
 import io.restassured.specification.RequestSpecification;
-
 import java.time.LocalDateTime;
 import java.util.Optional;
 import org.jooby.Jooby;
