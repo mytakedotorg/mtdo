@@ -41,7 +41,7 @@ jest.mock("../shared/VideoResult", () => ({
   },
 }));
 
-jest.mock("./LoginModal", () => ({
+jest.mock("../auth/LoginModal", () => ({
   __esModule: true,
   default: "LoginModal",
 }));

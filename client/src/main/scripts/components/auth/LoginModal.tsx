@@ -46,10 +46,12 @@ const LoginModal: React.FC<LoginModalProps> = (props) => {
 
   return (
     <LoginModalView
-      onFormSubmit={login}
+      events={{
+        onFormSubmit: login,
+        onRequestClose: props.onRequestClose,
+      }}
       loginRes={loginRes}
       isOpen={props.isOpen}
-      onRequestClose={props.onRequestClose}
     />
   );
 };

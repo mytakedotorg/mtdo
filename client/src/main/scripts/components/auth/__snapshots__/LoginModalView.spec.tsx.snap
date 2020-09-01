@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`LoginModal closed 1`] = `
+exports[`LoginModalView closed 1`] = `
 <Modal
   className="modal"
   isOpen={false}
@@ -66,7 +66,7 @@ exports[`LoginModal closed 1`] = `
 </Modal>
 `;
 
-exports[`LoginModal open 1`] = `
+exports[`LoginModalView open 1`] = `
 <Modal
   className="modal"
   isOpen={true}
@@ -100,6 +100,64 @@ exports[`LoginModal open 1`] = `
       value="Login or Create Account"
     />
   </form>
+  <button
+    className="modal__close"
+    onClick={[MockFunction]}
+  >
+    <svg
+      fill="none"
+      height={24}
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="2"
+      viewBox="0 0 24 24"
+      width={24}
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <line
+        x1="18"
+        x2="6"
+        y1="6"
+        y2="18"
+      />
+      <line
+        x1="6"
+        x2="18"
+        y1="6"
+        y2="18"
+      />
+    </svg>
+  </button>
+</Modal>
+`;
+
+exports[`LoginModalView open with response 1`] = `
+<Modal
+  className="modal"
+  isOpen={true}
+  onRequestClose={[MockFunction]}
+  overlayClassName="modal__overlay"
+  portalClassName="modal__portal"
+  shouldCloseOnOverlayClick={true}
+  shouldFocusAfterRender={false}
+>
+  <h2
+    className="modal__header"
+  >
+    Title Text
+  </h2>
+  <p
+    className="modal__text"
+  >
+    Lorem ipsum body.
+  </p>
+  <button
+    className="modal__button"
+    onClick={[MockFunction]}
+  >
+    Button Text
+  </button>
   <button
     className="modal__close"
     onClick={[MockFunction]}

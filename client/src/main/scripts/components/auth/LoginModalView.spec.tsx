@@ -19,23 +19,45 @@
  */
 import React from "react";
 import renderer from "react-test-renderer";
-import LoginModal from "./LoginModal";
+import LoginModalView, { LoginModalViewEvents } from "./LoginModalView";
 
 jest.mock("react-modal", () => ({
   __esModule: true,
   default: "Modal",
 }));
 
-test("LoginModal open", () => {
+const events: LoginModalViewEvents = {
+  onFormSubmit: jest.fn(),
+  onRequestClose: jest.fn(),
+};
+
+test("LoginModalView open", () => {
   const tree = renderer
-    .create(<LoginModal isOpen={true} onRequestClose={jest.fn()} />)
+    .create(<LoginModalView isOpen={true} events={events} />)
     .toJSON();
   expect(tree).toMatchSnapshot();
 });
 
-test("LoginModal closed", () => {
+test("LoginModalView closed", () => {
   const tree = renderer
-    .create(<LoginModal isOpen={false} onRequestClose={jest.fn()} />)
+    .create(<LoginModalView isOpen={false} events={events} />)
+    .toJSON();
+  expect(tree).toMatchSnapshot();
+});
+
+test("LoginModalView open with response", () => {
+  const tree = renderer
+    .create(
+      <LoginModalView
+        isOpen={true}
+        events={events}
+        loginRes={{
+          title: "Title Text",
+          body: "Lorem ipsum body.",
+          btn: "Button Text",
+        }}
+      />
+    )
     .toJSON();
   expect(tree).toMatchSnapshot();
 });

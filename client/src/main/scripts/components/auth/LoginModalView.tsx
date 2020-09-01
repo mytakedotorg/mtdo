@@ -22,10 +22,13 @@ import { X } from "react-feather";
 import Modal from "react-modal";
 import { LoginRes } from "./LoginTypes";
 
-interface LoginModalViewProps {
-  isOpen: boolean;
+export interface LoginModalViewEvents {
   onFormSubmit(email: string): void;
   onRequestClose(): void;
+}
+interface LoginModalViewProps {
+  isOpen: boolean;
+  events: LoginModalViewEvents;
   loginRes?: LoginRes;
 }
 
@@ -36,7 +39,7 @@ const LoginModalView: React.FC<LoginModalViewProps> = (props) => {
   };
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    props.onFormSubmit(inputValue);
+    props.events.onFormSubmit(inputValue);
   };
   return (
     <Modal
@@ -44,7 +47,7 @@ const LoginModalView: React.FC<LoginModalViewProps> = (props) => {
       portalClassName="modal__portal"
       overlayClassName="modal__overlay"
       className="modal"
-      onRequestClose={props.onRequestClose}
+      onRequestClose={props.events.onRequestClose}
       shouldFocusAfterRender={false}
       shouldCloseOnOverlayClick={true}
     >
@@ -52,7 +55,10 @@ const LoginModalView: React.FC<LoginModalViewProps> = (props) => {
         <>
           <h2 className="modal__header">{props.loginRes.title}</h2>
           <p className="modal__text">{props.loginRes.body}</p>
-          <button className="modal__button" onClick={props.onRequestClose}>
+          <button
+            className="modal__button"
+            onClick={props.events.onRequestClose}
+          >
             {props.loginRes.btn}
           </button>
         </>
@@ -76,7 +82,7 @@ const LoginModalView: React.FC<LoginModalViewProps> = (props) => {
           />
         </form>
       )}
-      <button className="modal__close" onClick={props.onRequestClose}>
+      <button className="modal__close" onClick={props.events.onRequestClose}>
         <X />
       </button>
     </Modal>
