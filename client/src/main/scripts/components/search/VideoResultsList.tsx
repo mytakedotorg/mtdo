@@ -74,7 +74,6 @@ const VideoResultsList: React.FC<VideoResultsListProps> = ({
 
   const handleOnModalRequestClose = () => {
     setModalIsOpen(false);
-    console.warn("TODO: add bookmark if user authenticated");
   };
   return (
     <>

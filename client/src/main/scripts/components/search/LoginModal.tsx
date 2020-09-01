@@ -20,20 +20,47 @@
 import React, { useState } from "react";
 import { X } from "react-feather";
 import Modal from "react-modal";
+import { Routes } from "../../java2ts/Routes";
+import { post } from "../../network";
 
 interface LoginModalProps {
   isOpen: boolean;
   onRequestClose(): void;
 }
 
+interface LoginReq {
+  email: string;
+  kind: string;
+  redirect?: string;
+}
+
+interface LoginRes {
+  title: string;
+  body: string;
+  btn: string;
+}
+
 const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onRequestClose }) => {
   const [inputValue, setInputValue] = useState<string>("");
+  const [loginRes, setLoginRes] = useState<LoginRes | undefined>();
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(event.target.value);
   };
+  const login = async () => {
+    try {
+      const res = await post<LoginReq, LoginRes>(Routes.API_LOGIN, {
+        kind: "use",
+        email: inputValue,
+      });
+      setLoginRes(res);
+    } catch (err) {
+      console.error(err);
+      console.warn("TODO: handle error state");
+    }
+  };
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    alert("A name was submitted: " + inputValue);
+    login();
   };
   return (
     <Modal
@@ -45,33 +72,36 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onRequestClose }) => {
       shouldFocusAfterRender={false}
       shouldCloseOnOverlayClick={true}
     >
-      <h2 className="modal__header">Welcome back!</h2>
+      {loginRes ? (
+        <>
+          <h2 className="modal__header">{loginRes.title}</h2>
+          <p className="modal__text">{loginRes.body}</p>
+          <button className="modal__button" onClick={onRequestClose}>
+            {loginRes.btn}
+          </button>
+        </>
+      ) : (
+        <form className="modal__form" onSubmit={handleSubmit}>
+          <label className="modal__label" htmlFor="email">
+            Email
+          </label>
+          <input
+            id="email"
+            type="email"
+            required={true}
+            className="modal__input"
+            value={inputValue}
+            onChange={handleChange}
+          />
+          <input
+            type="submit"
+            className="modal__button"
+            value="Login or Create Account"
+          />
+        </form>
+      )}
       <button className="modal__close" onClick={onRequestClose}>
         <X />
-      </button>
-      <p className="modal__text">
-        We sent you an email with more details about what we’re building
-        together. Keep exploring but read it when you get a chance.
-      </p>
-      <form className="modal__form" onSubmit={handleSubmit}>
-        <label className="modal__label" htmlFor="email">
-          Email
-        </label>
-        <input
-          id="email"
-          type="text"
-          className="modal__input"
-          value={inputValue}
-          onChange={handleChange}
-        />
-        <input
-          type="submit"
-          className="modal__button"
-          value="Login or Create Account"
-        />
-      </form>
-      <button className="modal__button" onClick={onRequestClose}>
-        Okay, I'll read it later.
       </button>
     </Modal>
   );
