@@ -28,7 +28,7 @@ import com.diffplug.common.base.Unhandled;
 import com.google.common.collect.ImmutableSet;
 import com.google.inject.Binder;
 import com.typesafe.config.Config;
-import common.IpGetter;
+import common.Ip;
 import common.Mods;
 import common.Time;
 import db.enums.Reaction;
@@ -147,7 +147,7 @@ public class TakeReaction implements Jooby.Module {
 			record.setUserId(user.id());
 			record.setKind(reaction);
 			record.setReactedAt(req.require(Time.class).now());
-			record.setReactedIp(req.require(IpGetter.class).ip(req));
+			record.setReactedIp(Ip.get(req));
 			record.store();
 		} else {
 			dsl.deleteFrom(TAKEREACTION).where(

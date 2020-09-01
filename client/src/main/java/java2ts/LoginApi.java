@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2017-2020 MyTake.org, Inc.
+ * Copyright (C) 2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -17,23 +17,22 @@
  *
  * You can contact us at team@mytake.org
  */
-package auth;
+package java2ts;
 
-import static db.Tables.ACCOUNT;
-import static io.restassured.RestAssured.given;
-
-import common.DbMisc;
-import common.JoobyDevRule;
-import db.tables.records.AccountRecord;
-import io.restassured.specification.RequestSpecification;
-import org.jooby.Jooby;
-
-public class AuthModuleHarness {
-	public static RequestSpecification givenUser(Jooby app, AccountRecord account) {
-		return given().cookie(AuthUser.LOGIN_COOKIE, AuthUser.jwtToken(app, account));
+public interface LoginApi {
+	@jsweet.lang.Interface
+	public static class Req implements Json {
+		public String email;
+		public String kind;
+		/** login, use, newsletter */
+		@jsweet.lang.Optional
+		public String redirect; /** If set, login link will send user to this URL. Should start with `/`, and not include domain. */
 	}
 
-	public static String authTokenValue(JoobyDevRule dev, String username) {
-		return AuthUser.jwtToken(dev.app(), DbMisc.fetchOne(dev.dsl(), ACCOUNT.USERNAME, username));
+	@jsweet.lang.Interface
+	public static class Res implements Json {
+		public String title;
+		public String body;
+		public String btn;
 	}
 }
