@@ -205,6 +205,7 @@ public class AuthUser {
 		cookie.unconfirmed = account.getConfirmedAt() == null;
 		cookies.add(newCookie(req, LOGIN_UI_COOKIE)
 				.value(JsonStream.serialize(cookie))
+				.httpOnly(false)
 				.maxAge((int) TimeUnit.DAYS.toSeconds(LOGIN_DAYS))
 				.toCookie());
 		return cookies;

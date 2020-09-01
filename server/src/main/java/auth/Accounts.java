@@ -92,7 +92,8 @@ class Accounts {
 				if (ifNoAccount.create()) {
 					return Msg.titleBodyBtn("Welcome aboard!",
 							"We sent you an email with more details about what we're building together. Keep exploring and read it when you get a chance.",
-							"Okay, I'll read it later.").andLoginCookieFor(account)
+							"Okay, I'll read it later.")
+							.andLoginCookieFor(account)
 							.andSendLoginEmailTo(account, login);
 				} else {
 					return Msg.titleBodyBtn("Not found",
@@ -127,19 +128,21 @@ class Accounts {
 				account = newAccount(email, req, dsl);
 				return Msg.titleBodyBtn("Welcome aboard!",
 						"We sent you an email with more details about what we're building together. Keep exploring and read it when you get a chance.",
-						"Okay, I'll read it later.").andLoginCookieFor(account)
+						"Okay, I'll read it later.")
 						.andSendLoginEmailTo(account, null);
 			} else {
 				account.setNewsletter(true);
 				if (account.getConfirmedAt() != null) {
 					return Msg.titleBodyBtn("We'll be in touch!",
 							"You're signed up for our newsletter, and we'll keep you up to date on what we're building together.",
-							"Okay, I look forward to it.").andSendLoginEmailTo(account, null);
+							"Okay, I look forward to it.")
+							.andSendLoginEmailTo(account, null);
 
 				} else {
 					return Msg.titleBodyBtn("Check your email!",
 							"We sent you a message to confirm that you want to hear from us. If you don't click the confirm link, you won't get our newsletter.",
-							"Okay, I'll check my email").andSendLoginEmailTo(account, null);
+							"Okay, I'll check my email")
+							.andSendLoginEmailTo(account, null);
 				}
 			}
 		}
@@ -208,7 +211,7 @@ class Accounts {
 			if (loginCookieFor != null) {
 				result.header("Set-Cookie", AuthUser.login(loginCookieFor, req).stream()
 						.map(Cookie::encode)
-						.collect(Collectors.joining(",")));
+						.collect(Collectors.toList()));
 			}
 			if (sendLoginEmailTo != null) {
 				String htmlMsg;
@@ -216,13 +219,12 @@ class Accounts {
 					LocalDateTime now = req.require(Time.class).now();
 					String requestorIp = Ip.get(req);
 					LoginlinkRecord link = LoginForm.urlCode.createRecord(req, dsl, now, requestorIp);
-					if (redirect != null) {
+					if (redirect != null && !redirect.isEmpty()) {
 						link.setRedirect(redirect);
 					}
 					// TODO: login vs newsletter dependent
 					link.setExpiresAt(now.plus(1, ChronoUnit.DAYS));
-					// TODO: BROKEN
-					link.setAccountId(1);
+					link.setAccountId(sendLoginEmailTo.getId());
 					link.insert();
 					htmlMsg = views.Auth.loginEmail.template(sendLoginEmailTo.getEmail(), LoginForm.urlCode.recordToUrl(req, link).build()).renderToString();
 				}
