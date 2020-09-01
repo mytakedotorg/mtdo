@@ -20,7 +20,7 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import Modal from "react-modal";
-import { getUserCookieString, windowUtils } from "./browser";
+import { windowUtils } from "./browser";
 import { getQueryParameterByName } from "./common/functions";
 import { TakeDocument } from "./components/BlockEditor";
 import BlockReader from "./components/BlockReader";
@@ -35,7 +35,6 @@ import Home from "./components/Home";
 import VideoResultsLoader from "./components/search/VideoResultsLoader";
 import SearchBar from "./components/SearchBar";
 import UserNav from "./components/UserNav";
-import { LoginCookie } from "./java2ts/LoginCookie";
 import { Routes } from "./java2ts/Routes";
 
 windowUtils.init();
@@ -130,11 +129,7 @@ if (isSearchPage(window.mytake)) {
 }
 
 const userNavContainer = document.getElementById("usernav");
-const cookieString = getUserCookieString();
-let cookie = cookieString
-  ? (JSON.parse(JSON.parse(cookieString)) as LoginCookie)
-  : null;
-ReactDOM.render(<UserNav cookie={cookie} />, userNavContainer!);
+ReactDOM.render(<UserNav />, userNavContainer!);
 
 if (isBookmarksTab()) {
   const bookmarksContainer = document.getElementById("bookmarks");

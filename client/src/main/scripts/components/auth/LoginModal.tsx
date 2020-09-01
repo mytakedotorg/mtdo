@@ -21,7 +21,7 @@ import React, { useState } from "react";
 import { Routes } from "../../java2ts/Routes";
 import { post } from "../../network";
 import LoginModalView from "./LoginModalView";
-import { LoginReq, LoginRes } from "./LoginTypes";
+import { COOKIE_CHANGE_EVENT, LoginReq, LoginRes } from "./LoginTypes";
 
 interface LoginModalProps {
   isOpen: boolean;
@@ -39,6 +39,8 @@ const LoginModal: React.FC<LoginModalProps> = (props) => {
         window.location.href.indexOf("/", 8)
       )}`,
     });
+    console.log("dispatching event");
+    document.dispatchEvent(new Event(COOKIE_CHANGE_EVENT));
     setLoginRes(res);
   };
 

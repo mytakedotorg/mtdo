@@ -28,3 +28,5 @@ export interface LoginRes {
   body: string;
   btn: string;
 }
+
+export const COOKIE_CHANGE_EVENT = "mytake:cookieChange";

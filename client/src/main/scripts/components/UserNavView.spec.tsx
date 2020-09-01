@@ -19,24 +19,24 @@
  */
 import React from "react";
 import renderer from "react-test-renderer";
-import UserNav from "./UserNav";
+import UserNavView from "./UserNavView";
 
 jest.mock("./DropDown", () => ({
   __esModule: true,
   default: "DropDown",
 }));
 
-test("UserNav logged out", () => {
-  const tree = renderer.create(<UserNav cookie={null} />).toJSON();
+test("UserNavView logged out", () => {
+  const tree = renderer.create(<UserNavView cookie={null} />).toJSON();
   expect(tree).toMatchSnapshot();
 });
 
-test("UserNav logged in", () => {
+test("UserNavView logged in", () => {
   const cookie = {
     username: "samples",
     email: "samples@email.com",
     unconfirmed: false,
   };
-  const tree = renderer.create(<UserNav cookie={cookie} />).toJSON();
+  const tree = renderer.create(<UserNavView cookie={cookie} />).toJSON();
   expect(tree).toMatchSnapshot();
 });

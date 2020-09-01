@@ -17,66 +17,35 @@
  *
  * You can contact us at team@mytake.org
  */
-import * as React from "react";
-import { ChevronDown } from "react-feather";
+import React, { useEffect, useState } from "react";
+import { getUserCookieString } from "../browser";
 import { LoginCookie } from "../java2ts/LoginCookie";
-import { Routes } from "../java2ts/Routes";
-import DropDown from "./DropDown";
+import { COOKIE_CHANGE_EVENT } from "./auth/LoginTypes";
+import UserNavView from "./UserNavView";
 
-interface UserNavProps {
-  cookie: LoginCookie | null;
+function getCookie(): LoginCookie | null {
+  const cookieString = getUserCookieString();
+  return cookieString
+    ? (JSON.parse(JSON.parse(cookieString)) as LoginCookie)
+    : null;
 }
 
-const UserNav: React.FC<UserNavProps> = ({ cookie }) => {
-  let navLinks: { name: string; href: string }[] = [];
-  if (cookie) {
-    const path = cookie.username ? cookie.username : Routes.PROFILE_NO_USERNAME;
-    navLinks = [
-      {
-        name: "Bookmarks",
-        href: `/${path}?${Routes.PROFILE_TAB}=${Routes.PROFILE_TAB_BOOKMARKS}`,
-      },
-      {
-        name: "Following",
-        href: `/${path}?${Routes.PROFILE_TAB}=${Routes.PROFILE_TAB_FOLLOWING}`,
-      },
-      {
-        name: "Followers",
-        href: `/${path}?${Routes.PROFILE_TAB}=${Routes.PROFILE_TAB_FOLLOWERS}`,
-      },
-      { name: "Logout", href: Routes.LOGOUT },
-    ];
+const UserNav: React.FC = () => {
+  const [cookie, setCookie] = useState<LoginCookie | null>(getCookie());
+
+  function handleCookieChange() {
+    setCookie(getCookie());
   }
 
-  return (
-    <DropDown
-      classModifier="usernav"
-      disabled={!cookie}
-      dropdownPosition="BL"
-      toggleText={
-        cookie ? (
-          <>
-            <ChevronDown />
-            {cookie.username}
-          </>
-        ) : (
-          <a href={Routes.LOGIN}>Login</a>
-        )
-      }
-    >
-      <ul className="usernav__list">
-        {navLinks.map(({ name, href }) => {
-          return (
-            <li className="usernav__list-item" key={name}>
-              <a className="usernav__link" href={href}>
-                {name}
-              </a>
-            </li>
-          );
-        })}
-      </ul>
-    </DropDown>
-  );
+  useEffect(() => {
+    console.log("adding event listener");
+    document.addEventListener(COOKIE_CHANGE_EVENT, handleCookieChange);
+    return () => {
+      console.log("removing event listener");
+      document.removeEventListener(COOKIE_CHANGE_EVENT, handleCookieChange);
+    };
+  }, []);
+  return <UserNavView cookie={cookie} />;
 };
 
 export default UserNav;
