@@ -42,6 +42,8 @@ public class CodegenConfig implements StaticCodegenConfig {
 				TypeLiteral.create(DraftRev.class),
 				TypeLiteral.create(DraftPost.class),
 				TypeLiteral.create(PublishResult.class),
+				TypeLiteral.create(LoginApi.Req.class),
+				TypeLiteral.create(LoginApi.Res.class),
 				TypeLiteral.create(LoginCookie.class),
 				TypeLiteral.create(TakeReactionJson.UserState.class),
 				TypeLiteral.create(TakeReactionJson.TakeState.class),
