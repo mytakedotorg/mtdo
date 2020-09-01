@@ -19,11 +19,14 @@
  */
 package java2ts;
 
-public class LoginApi {
+public interface LoginApi {
 	@jsweet.lang.Interface
 	public static class Req implements Json {
 		public String email;
-		public String kind; /** login, use, newsletter */
+		public String kind;
+		/** login, use, newsletter */
+		@jsweet.lang.Optional
+		public String redirect; /** If set, login link will send user to this URL. Should start with `/`, and not include domain. */
 	}
 
 	@jsweet.lang.Interface

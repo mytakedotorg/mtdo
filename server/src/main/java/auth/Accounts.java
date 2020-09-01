@@ -23,9 +23,11 @@ import static db.Tables.ACCOUNT;
 
 import com.diffplug.common.base.Unhandled;
 import common.DbMisc;
+import common.EmailSender;
 import common.Ip;
 import common.Time;
 import db.tables.records.AccountRecord;
+import db.tables.records.LoginlinkRecord;
 import forms.meta.Validator;
 import java.time.LocalDateTime;
 import java.util.Locale;
@@ -63,7 +65,7 @@ class Accounts {
 			default: throw Unhandled.stringException(loginReq.kind);
 			}
 			// @formatter:on
-			return login(loginReq.email, ifNoAccount, req).toResult(req);
+			return login(loginReq.email, ifNoAccount, loginReq, req).toResult(req);
 		}
 	}
 
@@ -76,7 +78,7 @@ class Accounts {
 	}
 
 	/** Performs the server-side of a login operation. */
-	static Msg login(String emailRaw, IfNoAccount ifNoAccount, Request req) {
+	static Msg login(String emailRaw, IfNoAccount ifNoAccount, LoginApi.Req login, Request req) {
 		if (!Validator.isValidEmail(emailRaw)) {
 			return invalidEmail(emailRaw);
 		}
@@ -89,7 +91,7 @@ class Accounts {
 					return Msg.titleBodyBtn("Welcome aboard!",
 							"We sent you an email with more details about what we're building together. Keep exploring and read it when you get a chance.",
 							"Okay, I'll read it later.").andLoginCookieFor(account)
-							.andSendLoginEmailTo(account);
+							.andSendLoginEmailTo(account, login);
 				} else {
 					return Msg.titleBodyBtn("Not found",
 							emailRaw + " does not have an account. Check the spelling.",
@@ -98,7 +100,8 @@ class Accounts {
 			} else {
 				return Msg.titleBodyBtn("Welcome back!",
 						"We sent you an email with a login link.",
-						"Okay, I'll check my email").andSendLoginEmailTo(account);
+						"Okay, I'll check my email")
+						.andSendLoginEmailTo(account, login);
 			}
 		}
 	}
@@ -123,18 +126,18 @@ class Accounts {
 				return Msg.titleBodyBtn("Welcome aboard!",
 						"We sent you an email with more details about what we're building together. Keep exploring and read it when you get a chance.",
 						"Okay, I'll read it later.").andLoginCookieFor(account)
-						.andSendLoginEmailTo(account);
+						.andSendLoginEmailTo(account, null);
 			} else {
 				account.setNewsletter(true);
 				if (account.getConfirmedAt() != null) {
 					return Msg.titleBodyBtn("We'll be in touch!",
 							"You're signed up for our newsletter, and we'll keep you up to date on what we're building together.",
-							"Okay, I look forward to it.").andSendLoginEmailTo(account);
+							"Okay, I look forward to it.").andSendLoginEmailTo(account, null);
 
 				} else {
 					return Msg.titleBodyBtn("Check your email!",
 							"We sent you a message to confirm that you want to hear from us. If you don't click the confirm link, you won't get our newsletter.",
-							"Okay, I'll check my email").andSendLoginEmailTo(account);
+							"Okay, I'll check my email").andSendLoginEmailTo(account, null);
 				}
 			}
 		}
@@ -170,6 +173,8 @@ class Accounts {
 		@Nullable
 		AccountRecord sendLoginEmailTo;
 		@Nullable
+		String redirect;
+		@Nullable
 		AccountRecord loginCookieFor;
 
 		static Msg titleBodyBtn(String title, String body, String btn) {
@@ -180,8 +185,9 @@ class Accounts {
 			return msg;
 		}
 
-		Msg andSendLoginEmailTo(AccountRecord sendLoginEmailTo) {
+		Msg andSendLoginEmailTo(AccountRecord sendLoginEmailTo, @Nullable LoginApi.Req login) {
 			this.sendLoginEmailTo = sendLoginEmailTo;
+			this.redirect = login != null ? login.redirect : null;
 			return this;
 		}
 
@@ -202,7 +208,21 @@ class Accounts {
 				}
 			}
 			if (sendLoginEmailTo != null) {
-				// TODO: send login email
+				String htmlMsg;
+				try (DSLContext dsl = req.require(DSLContext.class)) {
+					LocalDateTime now = req.require(Time.class).now();
+					String requestorIp = Ip.get(req);
+					LoginlinkRecord link = LoginForm.urlCode.createRecord(req, dsl, now, requestorIp);
+					if (redirect != null) {
+						link.setRedirect(redirect);
+					}
+					link.insert();
+					htmlMsg = views.Auth.loginEmail.template(sendLoginEmailTo.getEmail(), LoginForm.urlCode.recordToUrl(req, link).build()).renderToString();
+				}
+				req.require(EmailSender.class).send(htmlEmail -> htmlEmail
+						.setHtmlMsg(htmlMsg)
+						.setSubject("MyTake.org welcome")
+						.addTo(sendLoginEmailTo.getEmail()));
 			}
 			return result;
 		}
