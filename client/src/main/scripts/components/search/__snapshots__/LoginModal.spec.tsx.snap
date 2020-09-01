@@ -10,11 +10,30 @@ exports[`LoginModal closed 1`] = `
   shouldCloseOnOverlayClick={true}
   shouldFocusAfterRender={false}
 >
-  <h2
-    className="modal__header"
+  <form
+    className="modal__form"
+    onSubmit={[Function]}
   >
-    Welcome back!
-  </h2>
+    <label
+      className="modal__label"
+      htmlFor="email"
+    >
+      Email
+    </label>
+    <input
+      className="modal__input"
+      id="email"
+      onChange={[Function]}
+      required={true}
+      type="email"
+      value=""
+    />
+    <input
+      className="modal__button"
+      type="submit"
+      value="Login or Create Account"
+    />
+  </form>
   <button
     className="modal__close"
     onClick={[MockFunction]}
@@ -43,40 +62,6 @@ exports[`LoginModal closed 1`] = `
         y2="18"
       />
     </svg>
-  </button>
-  <p
-    className="modal__text"
-  >
-    We sent you an email with more details about what we’re building together. Keep exploring but read it when you get a chance.
-  </p>
-  <form
-    className="modal__form"
-    onSubmit={[Function]}
-  >
-    <label
-      className="modal__label"
-      htmlFor="email"
-    >
-      Email
-    </label>
-    <input
-      className="modal__input"
-      id="email"
-      onChange={[Function]}
-      type="text"
-      value=""
-    />
-    <input
-      className="modal__button"
-      type="submit"
-      value="Login or Create Account"
-    />
-  </form>
-  <button
-    className="modal__button"
-    onClick={[MockFunction]}
-  >
-    Okay, I'll read it later.
   </button>
 </Modal>
 `;
@@ -91,11 +76,30 @@ exports[`LoginModal open 1`] = `
   shouldCloseOnOverlayClick={true}
   shouldFocusAfterRender={false}
 >
-  <h2
-    className="modal__header"
+  <form
+    className="modal__form"
+    onSubmit={[Function]}
   >
-    Welcome back!
-  </h2>
+    <label
+      className="modal__label"
+      htmlFor="email"
+    >
+      Email
+    </label>
+    <input
+      className="modal__input"
+      id="email"
+      onChange={[Function]}
+      required={true}
+      type="email"
+      value=""
+    />
+    <input
+      className="modal__button"
+      type="submit"
+      value="Login or Create Account"
+    />
+  </form>
   <button
     className="modal__close"
     onClick={[MockFunction]}
@@ -124,40 +128,6 @@ exports[`LoginModal open 1`] = `
         y2="18"
       />
     </svg>
-  </button>
-  <p
-    className="modal__text"
-  >
-    We sent you an email with more details about what we’re building together. Keep exploring but read it when you get a chance.
-  </p>
-  <form
-    className="modal__form"
-    onSubmit={[Function]}
-  >
-    <label
-      className="modal__label"
-      htmlFor="email"
-    >
-      Email
-    </label>
-    <input
-      className="modal__input"
-      id="email"
-      onChange={[Function]}
-      type="text"
-      value=""
-    />
-    <input
-      className="modal__button"
-      type="submit"
-      value="Login or Create Account"
-    />
-  </form>
-  <button
-    className="modal__button"
-    onClick={[MockFunction]}
-  >
-    Okay, I'll read it later.
   </button>
 </Modal>
 `;
