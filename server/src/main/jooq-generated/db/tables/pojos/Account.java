@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Account implements Serializable {
 
-    private static final long serialVersionUID = -980992299;
+    private static final long serialVersionUID = 487248782;
 
     private Integer       id;
     private String        username;
@@ -27,6 +27,9 @@ public class Account implements Serializable {
     private LocalDateTime lastSeenAt;
     private String        lastSeenIp;
     private LocalDateTime lastEmailedAt;
+    private LocalDateTime confirmedAt;
+    private String        confirmedIp;
+    private Boolean       newsletter;
 
     public Account() {}
 
@@ -42,6 +45,9 @@ public class Account implements Serializable {
         this.lastSeenAt = value.lastSeenAt;
         this.lastSeenIp = value.lastSeenIp;
         this.lastEmailedAt = value.lastEmailedAt;
+        this.confirmedAt = value.confirmedAt;
+        this.confirmedIp = value.confirmedIp;
+        this.newsletter = value.newsletter;
     }
 
     public Account(
@@ -55,7 +61,10 @@ public class Account implements Serializable {
         String        updatedIp,
         LocalDateTime lastSeenAt,
         String        lastSeenIp,
-        LocalDateTime lastEmailedAt
+        LocalDateTime lastEmailedAt,
+        LocalDateTime confirmedAt,
+        String        confirmedIp,
+        Boolean       newsletter
     ) {
         this.id = id;
         this.username = username;
@@ -68,6 +77,9 @@ public class Account implements Serializable {
         this.lastSeenAt = lastSeenAt;
         this.lastSeenIp = lastSeenIp;
         this.lastEmailedAt = lastEmailedAt;
+        this.confirmedAt = confirmedAt;
+        this.confirmedIp = confirmedIp;
+        this.newsletter = newsletter;
     }
 
     public Integer getId() {
@@ -169,6 +181,33 @@ public class Account implements Serializable {
         return this;
     }
 
+    public LocalDateTime getConfirmedAt() {
+        return this.confirmedAt;
+    }
+
+    public Account setConfirmedAt(LocalDateTime confirmedAt) {
+        this.confirmedAt = confirmedAt;
+        return this;
+    }
+
+    public String getConfirmedIp() {
+        return this.confirmedIp;
+    }
+
+    public Account setConfirmedIp(String confirmedIp) {
+        this.confirmedIp = confirmedIp;
+        return this;
+    }
+
+    public Boolean getNewsletter() {
+        return this.newsletter;
+    }
+
+    public Account setNewsletter(Boolean newsletter) {
+        this.newsletter = newsletter;
+        return this;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("Account (");
@@ -184,6 +223,9 @@ public class Account implements Serializable {
         sb.append(", ").append(lastSeenAt);
         sb.append(", ").append(lastSeenIp);
         sb.append(", ").append(lastEmailedAt);
+        sb.append(", ").append(confirmedAt);
+        sb.append(", ").append(confirmedIp);
+        sb.append(", ").append(newsletter);
 
         sb.append(")");
         return sb.toString();
