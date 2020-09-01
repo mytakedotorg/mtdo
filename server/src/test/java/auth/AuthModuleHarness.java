@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2017 MyTake.org, Inc.
+ * Copyright (C) 2017-2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -22,18 +22,18 @@ package auth;
 import static db.Tables.ACCOUNT;
 import static io.restassured.RestAssured.given;
 
+import common.DbMisc;
 import common.JoobyDevRule;
-import db.tables.pojos.Account;
+import db.tables.records.AccountRecord;
 import io.restassured.specification.RequestSpecification;
 import org.jooby.Jooby;
 
 public class AuthModuleHarness {
-	public static RequestSpecification givenUser(Jooby app, Account account) {
+	public static RequestSpecification givenUser(Jooby app, AccountRecord account) {
 		return given().cookie(AuthUser.LOGIN_COOKIE, AuthUser.jwtToken(app, account));
 	}
 
 	public static String authTokenValue(JoobyDevRule dev, String username) {
-		Account account = dev.fetchRecord(ACCOUNT, ACCOUNT.USERNAME, username).into(Account.class);
-		return AuthUser.jwtToken(dev.app(), account);
+		return AuthUser.jwtToken(dev.app(), DbMisc.fetchOne(dev.dsl(), ACCOUNT.USERNAME, username));
 	}
 }
