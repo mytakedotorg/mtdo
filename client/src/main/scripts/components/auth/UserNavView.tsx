@@ -19,9 +19,9 @@
  */
 import * as React from "react";
 import { ChevronDown } from "react-feather";
-import { LoginCookie } from "../java2ts/LoginCookie";
-import { Routes } from "../java2ts/Routes";
-import DropDown from "./DropDown";
+import { LoginCookie } from "../../java2ts/LoginCookie";
+import { Routes } from "../../java2ts/Routes";
+import DropDown from "../DropDown";
 
 interface UserNavViewProps {
   cookie: LoginCookie | null;

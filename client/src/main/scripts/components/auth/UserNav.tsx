@@ -18,9 +18,9 @@
  * You can contact us at team@mytake.org
  */
 import React, { useEffect, useState } from "react";
-import { getUserCookieString } from "../browser";
-import { LoginCookie } from "../java2ts/LoginCookie";
-import { COOKIE_CHANGE_EVENT } from "./auth/LoginTypes";
+import { getUserCookieString } from "../../browser";
+import { LoginCookie } from "../../java2ts/LoginCookie";
+import { COOKIE_CHANGE_EVENT } from "./LoginTypes";
 import UserNavView from "./UserNavView";
 
 function getCookie(): LoginCookie | null {

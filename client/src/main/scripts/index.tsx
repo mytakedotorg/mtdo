@@ -22,6 +22,7 @@ import * as ReactDOM from "react-dom";
 import Modal from "react-modal";
 import { windowUtils } from "./browser";
 import { getQueryParameterByName } from "./common/functions";
+import UserNav from "./components/auth/UserNav";
 import { TakeDocument } from "./components/BlockEditor";
 import BlockReader from "./components/BlockReader";
 import BlockWriter, {
@@ -34,7 +35,6 @@ import FoundationView from "./components/FoundationView";
 import Home from "./components/Home";
 import VideoResultsLoader from "./components/search/VideoResultsLoader";
 import SearchBar from "./components/SearchBar";
-import UserNav from "./components/UserNav";
 import { Routes } from "./java2ts/Routes";
 
 windowUtils.init();

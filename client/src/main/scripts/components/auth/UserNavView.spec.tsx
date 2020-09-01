@@ -21,7 +21,7 @@ import React from "react";
 import renderer from "react-test-renderer";
 import UserNavView from "./UserNavView";
 
-jest.mock("./DropDown", () => ({
+jest.mock("../DropDown", () => ({
   __esModule: true,
   default: "DropDown",
 }));
