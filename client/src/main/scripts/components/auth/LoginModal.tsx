@@ -32,16 +32,14 @@ const LoginModal: React.FC<LoginModalProps> = (props) => {
   const [loginRes, setLoginRes] = useState<LoginRes | undefined>();
 
   const login = async (email: string) => {
-    try {
-      const res = await post<LoginReq, LoginRes>(Routes.API_LOGIN, {
-        kind: "use",
-        email,
-      });
-      setLoginRes(res);
-    } catch (err) {
-      console.error(err);
-      console.warn("TODO: handle error state");
-    }
+    const res = await post<LoginReq, LoginRes>(Routes.API_LOGIN, {
+      kind: "use",
+      email,
+      redirect: `${window.location.href.substring(
+        window.location.href.indexOf("/", 8)
+      )}`,
+    });
+    setLoginRes(res);
   };
 
   return (
