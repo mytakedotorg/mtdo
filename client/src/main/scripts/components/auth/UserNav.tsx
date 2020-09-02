@@ -18,17 +18,10 @@
  * You can contact us at team@mytake.org
  */
 import React, { useEffect, useState } from "react";
-import { getUserCookieString } from "../../browser";
+import { getCookie } from "../../browser";
 import { LoginCookie } from "../../java2ts/LoginCookie";
 import { COOKIE_CHANGE_EVENT } from "./LoginTypes";
 import UserNavView from "./UserNavView";
-
-function getCookie(): LoginCookie | null {
-  const cookieString = getUserCookieString();
-  return cookieString
-    ? (JSON.parse(JSON.parse(cookieString)) as LoginCookie)
-    : null;
-}
 
 const UserNav: React.FC = () => {
   const [cookie, setCookie] = useState<LoginCookie | null>(getCookie());

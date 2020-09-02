@@ -18,6 +18,7 @@
  * You can contact us at team@mytake.org
  */
 import smoothscroll from "smoothscroll-polyfill";
+import { LoginCookie } from "./java2ts/LoginCookie";
 
 // kick off the polyfill!
 export const windowUtils = {
@@ -87,9 +88,13 @@ function getCookieValue(a: string): string {
   }
   return "";
 }
-export function getUserCookieString(): string {
-  return getCookieValue("loginui");
+export function getCookie(): LoginCookie | null {
+  const cookieString = getCookieValue("loginui");
+  return cookieString
+    ? (JSON.parse(JSON.parse(cookieString)) as LoginCookie)
+    : null;
 }
+
 export function copyToClipboard(text: string): boolean {
   const textArea = document.createElement("textarea");
   textArea.style.position = "fixed";
