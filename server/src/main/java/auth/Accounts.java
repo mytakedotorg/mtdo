@@ -26,9 +26,9 @@ import common.DbMisc;
 import common.EmailSender;
 import common.Ip;
 import common.Time;
+import db.VarChars;
 import db.tables.records.AccountRecord;
 import db.tables.records.LoginlinkRecord;
-import forms.meta.Validator;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Locale;
@@ -81,9 +81,10 @@ class Accounts {
 
 	/** Performs the server-side of a login operation. */
 	static Msg login(String emailRaw, IfNoAccount ifNoAccount, LoginApi.Req login, Request req) {
-		if (!Validator.isValidEmail(emailRaw)) {
+		if (!isValidEmail(emailRaw)) {
 			return invalidEmail(emailRaw);
 		}
+
 		try (DSLContext dsl = req.require(DSLContext.class)) {
 			String email = emailRaw.toLowerCase(Locale.ROOT);
 			AccountRecord account = DbMisc.fetchOne(dsl, ACCOUNT.EMAIL, email);
@@ -98,12 +99,12 @@ class Accounts {
 				} else {
 					return Msg.titleBodyBtn("Not found",
 							emailRaw + " does not have an account. Check the spelling.",
-							"Okay, I'll try again");
+							"Okay, I'll try again.");
 				}
 			} else {
 				return Msg.titleBodyBtn("Welcome back!",
 						"We sent you an email with a login link.",
-						"Okay, I'll check my email")
+						"Okay, I'll check my email.")
 						.andSendLoginEmailTo(account, login);
 			}
 		}
@@ -119,7 +120,7 @@ class Accounts {
 						"You can't sign other people up for them, and you're already signed-in as " + authOpt.get().email,
 						"Okay, I'll let them do it themselves.");
 			}
-		} else if (!Validator.isValidEmail(emailRaw)) {
+		} else if (!isValidEmail(emailRaw)) {
 			return invalidEmail(emailRaw);
 		}
 		try (DSLContext dsl = req.require(DSLContext.class)) {
@@ -141,17 +142,27 @@ class Accounts {
 				} else {
 					return Msg.titleBodyBtn("Check your email!",
 							"We sent you a message to confirm that you want to hear from us. If you don't click the confirm link, you won't get our newsletter.",
-							"Okay, I'll check my email")
+							"Okay, I'll check my email.")
 							.andSendLoginEmailTo(account, null);
 				}
 			}
 		}
 	}
 
+	private static boolean isValidEmail(String emailRaw) {
+		return emailRaw.length() <= VarChars.EMAIL && forms.meta.Validator.isValidEmail(emailRaw);
+	}
+
 	private static Msg invalidEmail(String emailRaw) {
-		return Msg.titleBodyBtn("Invalid email",
-				emailRaw + " is not a valid email. Check the spelling.",
-				"Okay, I'll try again");
+		if (emailRaw.length() > VarChars.EMAIL) {
+			return Msg.titleBodyBtn("Invalid email",
+					emailRaw + " is too long. Use an email with " + VarChars.EMAIL + " characters or less.",
+					"Okay, I'll try again.");
+		} else {
+			return Msg.titleBodyBtn("Invalid email",
+					emailRaw + " is not a valid email. Check the spelling.",
+					"Okay, I'll try again.");
+		}
 	}
 
 	private static AccountRecord newAccount(String email, Request req, DSLContext dsl) {
