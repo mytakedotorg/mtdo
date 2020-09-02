@@ -40,3 +40,12 @@ test("UserNavView logged in", () => {
   const tree = renderer.create(<UserNavView cookie={cookie} />).toJSON();
   expect(tree).toMatchSnapshot();
 });
+
+test("UserNavView logged in - no username", () => {
+  const cookie = {
+    email: "samples@email.com",
+    unconfirmed: false,
+  };
+  const tree = renderer.create(<UserNavView cookie={cookie} />).toJSON();
+  expect(tree).toMatchSnapshot();
+});
