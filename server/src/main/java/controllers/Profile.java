@@ -27,6 +27,7 @@ import static db.Tables.TAKEREACTION;
 import auth.AuthUser;
 import com.google.inject.Binder;
 import com.typesafe.config.Config;
+import common.DbMisc;
 import common.RedirectException;
 import common.Text;
 import common.Time;
@@ -60,10 +61,11 @@ public class Profile implements Jooby.Module {
 		}
 
 		public String url(AccountRecord account) {
+			String username = account.getUsername() == null ? Routes.PROFILE_NO_USERNAME : account.getUsername();
 			if (this == published) {
-				return "/" + account.getUsername();
+				return "/" + username;
 			} else {
-				return "/" + account.getUsername() + "?" + Routes.PROFILE_TAB + "=" + name();
+				return "/" + username + "?" + Routes.PROFILE_TAB + "=" + name();
 			}
 		}
 	}
@@ -74,17 +76,29 @@ public class Profile implements Jooby.Module {
 	public void configure(Env env, Config conf, Binder binder) throws Throwable {
 		env.router().get(USER.pattern(), req -> {
 			String username = Text.lowercase(req, "user");
+			Optional<AuthUser> authOpt = AuthUser.authOpt(req);
+			if (username.equals(Routes.PROFILE_NO_USERNAME)) {
+				if (authOpt.isPresent()) {
+					if (authOpt.get().username() != null) {
+						return Results.redirect("/" + username + req.queryString().map(str -> "?" + str).orElse(""));
+					} else {
+						username = null;
+					}
+				}
+			}
 			try (DSLContext dsl = req.require(DSLContext.class)) {
-				AccountRecord account = dsl.selectFrom(ACCOUNT)
-						.where(ACCOUNT.USERNAME.eq(username))
-						.fetchOne();
+				AccountRecord account;
+				if (username == null) {
+					account = DbMisc.fetchOne(dsl, ACCOUNT.EMAIL, authOpt.get().email());
+				} else {
+					account = DbMisc.fetchOne(dsl, ACCOUNT.USERNAME, username);
+				}
 				if (account == null) {
 					throw RedirectException.notFoundError("Unknown user " + username);
 				}
 				// figure out if the user is logged-in
 				int userId = account.getId();
-				Optional<AuthUser> user = AuthUser.authOpt(req);
-				boolean isLoggedIn = user.isPresent() && user.get().id() == userId;
+				boolean isLoggedIn = authOpt.isPresent() && authOpt.get().id() == userId;
 				// and what tab they're opening
 				Mutant tab = req.param(Routes.PROFILE_TAB);
 				Mode mode = !tab.isSet() ? Mode.bookmarks : Mode.valueOf(tab.value());

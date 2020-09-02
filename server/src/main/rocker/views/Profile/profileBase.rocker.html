@@ -22,7 +22,7 @@
 
 @args(AccountRecord account, boolean isLoggedIn, Mode activeMode, RockerBody content)
 
-@views.reactApp.template("MyTake.org", account.getUsername(), null) -> {
+@views.reactApp.template("MyTake.org", account.getUsername() != null ? account.getUsername() : account.getEmail(), null) -> {
 
 <div class="profile">
 	<div class="profile__usercard">
@@ -31,17 +31,16 @@
 		</div>
 		<div class="profile__info">
 			<div>
-			@if (account.getName() != null) {
-				<h2 class="profile__text profile__text--name">@account.getName()</h2>
-				<h3 class="profile__text profile__text--username">@account.getUsername()</h2>
-			} else {
+			@if (account.getUsername() != null) {
 				<h2 class="profile__text profile__text--username">@account.getUsername()</h2>
+				<h3 class="profile__text profile__text--email">@account.getEmail()</h3>
+			} else {
+				<h2 class="profile__text profile__text--email">@account.getEmail()</h2>
 			}
 				<p class="profile__text profile__text--bio">I have a little bio that I can put here.</p>
 			</div>
 			<div>
 				<p class="profile__text profile__text--small">Some city, ST</p>
-				<p class="profile__text profile__text--small">email@@domain</p>
 				<p class="profile__text profile__text--small">myhomepage.com</p>
 			</div>
 		</div>

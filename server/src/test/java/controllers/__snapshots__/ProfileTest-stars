@@ -77,11 +77,11 @@
 		<div class="profile__info">
 			<div>
 				<h2 class="profile__text profile__text--username">other</h2>
+				<h3 class="profile__text profile__text--email">other@email.com</h3>
 				<p class="profile__text profile__text--bio">I have a little bio that I can put here.</p>
 			</div>
 			<div>
 				<p class="profile__text profile__text--small">Some city, ST</p>
-				<p class="profile__text profile__text--small">email@domain</p>
 				<p class="profile__text profile__text--small">myhomepage.com</p>
 			</div>
 		</div>
