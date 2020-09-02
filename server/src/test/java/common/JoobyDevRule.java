@@ -25,6 +25,7 @@ import auth.AuthModuleHarness;
 import com.diffplug.common.base.Errors;
 import com.diffplug.common.base.Throwing;
 import com.icegreen.greenmail.util.GreenMail;
+import db.tables.records.AccountRecord;
 import io.restassured.specification.RequestSpecification;
 import java.util.HashMap;
 import java.util.Map;
@@ -155,5 +156,13 @@ public class JoobyDevRule extends ExternalResource {
 	/** Returns a request with cookies set for the given username. */
 	public RequestSpecification givenUser(String username) {
 		return AuthModuleHarness.givenUser(app, DbMisc.fetchOne(dsl(), ACCOUNT.USERNAME, username));
+	}
+
+	/** Returns a request with cookies set for the given username. */
+	public RequestSpecification givenEmail(String email) {
+		AccountRecord account = DbMisc.fetchOne(dsl(), ACCOUNT.EMAIL, email);
+		System.out.println("### account ###");
+		System.out.println(account.toString());
+		return AuthModuleHarness.givenUser(app, account);
 	}
 }
