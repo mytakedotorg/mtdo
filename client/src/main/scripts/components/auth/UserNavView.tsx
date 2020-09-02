@@ -49,7 +49,7 @@ const UserNavView: React.FC<UserNavViewProps> = ({ cookie }) => {
         cookie ? (
           <>
             <ChevronDown />
-            {cookie.username}
+            {cookie.username ? cookie.username : cookie.email}
           </>
         ) : (
           <a href={Routes.LOGIN}>Login</a>
