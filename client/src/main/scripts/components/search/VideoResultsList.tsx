@@ -38,6 +38,11 @@ export interface VideoResultsListProps {
   eventHandlers: VideoResultsListEventHandlers;
 }
 
+interface LoginModalState {
+  isOpen: boolean;
+  bookmarkToAdd?: Bookmark;
+}
+
 const VideoResultsList: React.FC<VideoResultsListProps> = ({
   bookmarks,
   dateToDivMap,
@@ -45,7 +50,9 @@ const VideoResultsList: React.FC<VideoResultsListProps> = ({
   searchResult,
 }) => {
   const { factHits } = searchResult;
-  const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
+  const [modalState, setModalState] = useState<LoginModalState>({
+    isOpen: false,
+  });
 
   const handleBookmarkClick = (bookmark: Bookmark, isBookmarked: boolean) => {
     if (isLoggedIn()) {
@@ -53,28 +60,16 @@ const VideoResultsList: React.FC<VideoResultsListProps> = ({
         ? eventHandlers.onRemoveBookmark(bookmark)
         : eventHandlers.onAddBookmark(bookmark);
     } else {
-      setModalIsOpen(true);
-      /**
-       * Get user's email then,
-       *   1. They have an existing confirmed account.
-       *     - response modal "There is a login link in your email. Click that to continue."
-       *   2. They have an existing unconfirmed account.
-       *     - response modal "There is a login link in your email. Click that to continue.
-       *                      You haven't confirmed your account yet. You have X hours left
-       *                      to confirm your account"
-       *   3. They have no account.
-       *     - Onboarding opportunity.
-       *   4. They've been blocked or rate limited.
-       *   5. Had an account and never confirmed.
-       *
-       *  Routes.API_LOGIN response is LoginCookie | { title: string, body: string} ("Welcome Back", "Go check your email");
-       */
+      setModalState({ isOpen: true, bookmarkToAdd: bookmark });
     }
   };
 
   const handleOnModalRequestClose = () => {
-    setModalIsOpen(false);
+    const { bookmarkToAdd } = modalState;
+    !!bookmarkToAdd && eventHandlers.onAddBookmark(bookmarkToAdd);
+    setModalState({ isOpen: false });
   };
+
   return (
     <>
       {factHits.map((f) => {
@@ -125,7 +120,7 @@ const VideoResultsList: React.FC<VideoResultsListProps> = ({
         ) : null;
       })}
       <LoginModal
-        isOpen={modalIsOpen}
+        isOpen={modalState.isOpen}
         onRequestClose={handleOnModalRequestClose}
       />
     </>
