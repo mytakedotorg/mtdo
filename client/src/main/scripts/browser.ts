@@ -122,5 +122,5 @@ export function getUsernameFromURL(): string {
   return window.location.pathname.split("/")[1];
 }
 export function isLoggedIn(): boolean {
-  return getUserCookieString() ? true : false;
+  return !!getCookie();
 }
