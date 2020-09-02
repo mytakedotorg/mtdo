@@ -25,6 +25,7 @@ import com.google.inject.Binder;
 import com.typesafe.config.Config;
 import common.CustomRockerModel;
 import common.Emails;
+import common.RedirectException;
 import common.UrlEncodedPath;
 import controllers.HomeFeed;
 import forms.meta.MetaField;
@@ -64,12 +65,18 @@ public class AuthModule implements Jooby.Module {
 
 		env.router().post(Routes.API_LOGIN, Accounts::postToApiRoute);
 		PostForm.hookMultiple(env.router(), (req, validations) -> {
-			Optional<AuthUser> userOpt = AuthUser.authOpt(req);
-			if (userOpt.isPresent()) {
-				return views.Auth.alreadyLoggedIn.template(userOpt.get().username());
+			Optional<AuthUser> authOpt = AuthUser.authOpt(req);
+			if (authOpt.isPresent()) {
+				String redirect = REDIRECT.parseOrDefault(req, "");
+				if (redirect.isEmpty()) {
+					return views.Auth.alreadyLoggedIn.template(authOpt.get().username());
+				} else {
+					throw RedirectException.temporary(redirect);
+				}
+			} else {
+				String loginReason = req.param(LOGIN_REASON.name()).value(null);
+				return views.Auth.login.template(loginReason, validations.get(LoginForm.class).markup());
 			}
-			String loginReason = req.param(LOGIN_REASON.name()).value(null);
-			return views.Auth.login.template(loginReason, validations.get(LoginForm.class).markup());
 		}, LoginForm.class);
 		env.router().get(URL_confirm_login_sent, redirectHomeIfAlreadyVisited(email -> views.Auth.loginEmailSent.template(email, Emails.TEAM)));
 
@@ -89,7 +96,7 @@ public class AuthModule implements Jooby.Module {
 					.build());
 		});
 		env.router().err(Error403.class, (req, rsp, err) -> {
-			rsp.status(Status.FORBIDDEN);
+			rsp.status(Status.FORBIDDEN).send(err.getCause().getMessage());
 		});
 		// page for tinfoil agent to gain access
 		PostForm.hook(env.router(), TinfoilLoginForm.class, (req, form) -> {
@@ -106,6 +113,10 @@ public class AuthModule implements Jooby.Module {
 
 	static class Error403 extends RuntimeException {
 		private static final long serialVersionUID = -6040081842021224398L;
+
+		Error403(String message) {
+			super(message);
+		}
 	}
 
 	public static final String FLASH_EMAIL = "email";

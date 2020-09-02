@@ -123,7 +123,7 @@ public class AuthUser {
 		try {
 			return auth(req);
 		} catch (JWTVerificationException e) {
-			throw new AuthModule.Error403();
+			throw new AuthModule.Error403(e.getMessage());
 		}
 	}
 
