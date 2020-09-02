@@ -152,7 +152,7 @@ public class AuthUser {
 		// create the logged-in AuthUser
 		int userId = Integer.parseInt(decoded.getSubject());
 		String username = decoded.getClaim(CLAIM_USERNAME).asString();
-		String email = decoded.getClaim(CLAIM_USERNAME).asString();
+		String email = decoded.getClaim(CLAIM_EMAIL).asString();
 		String confirmed = decoded.getClaim(CLAIM_CONFIRMED).asString();
 
 		AuthUser user = new AuthUser(userId, username, email, Boolean.parseBoolean(confirmed));
