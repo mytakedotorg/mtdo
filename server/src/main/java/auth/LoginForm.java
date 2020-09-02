@@ -138,6 +138,10 @@ public class LoginForm extends PostForm<LoginForm> {
 			AccountRecord account = DbMisc.fetchOne(dsl, ACCOUNT.ID, link.getAccountId());
 			account.setLastSeenIp(ip);
 			account.setLastSeenAt(now);
+			if (account.getConfirmedAt() == null) {
+				account.setConfirmedIp(ip);
+				account.setConfirmedAt(now);
+			}
 			account.update();
 			// set the login cookies
 			AuthUser.login(account, req).forEach(rsp::cookie);
