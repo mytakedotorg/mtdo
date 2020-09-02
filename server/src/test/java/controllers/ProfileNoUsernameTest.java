@@ -22,7 +22,6 @@ package controllers;
 import common.InitialData;
 import common.JoobyDevRule;
 import common.Snapshot;
-import java2ts.Routes;
 import org.junit.ClassRule;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
@@ -35,6 +34,8 @@ public class ProfileNoUsernameTest {
 
 	@Test
 	public void noUsername() {
-		Snapshot.match("my", dev.givenEmail(InitialData.EMAIL_NOUSERNAME).get("/" + Routes.PROFILE_NO_USERNAME));
+		Snapshot.match("naked", dev.givenEmail(InitialData.EMAIL_NOUSERNAME).get("/my"));
+		Snapshot.match("profile", dev.givenEmail(InitialData.EMAIL_NOUSERNAME).get("/my?tab=profile"));
+		Snapshot.match("bookmarks", dev.givenEmail(InitialData.EMAIL_NOUSERNAME).get("/my?tab=bookmarks"));
 	}
 }
