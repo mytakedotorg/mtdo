@@ -45,7 +45,12 @@ Travis runs `./gradlew check`
 
 Every PR is deployed in a test instance on Heroku.  The code is deployed as a fat jar, which you can preview using `./gradlew shadowJar`.
 
-The `master` branch is autodeployed to https://mytake-staging.herokuapp.com/.  To publish a new release to production, we manually press the "Promote to production" button in Heroku, tag the commit with `prod/yyyy-mm-dd`, and add a post in the [changelog thread on meta.mytake.org](https://meta.mytake.org/t/changes-to-the-website/30/16).
+The `staging` branch is autodeployed to https://mtdo-naked-staging.herokuapp.com/.  To publish a new release to production, we manually:
+
+- press the "Promote to production" button in Heroku
+- move the `prod` branch to wherever `staging` is
+- tag the commit with `prod/yyyy-mm-dd`
+- add a post in the [changelog thread on meta.mytake.org](https://meta.mytake.org/t/changes-to-the-website/30/16).
 
 ## Update dependencies
 
