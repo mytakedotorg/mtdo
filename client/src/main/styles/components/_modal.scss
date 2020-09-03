@@ -1,0 +1,68 @@
+.modal__portal {
+  position: relative;
+  z-index: 10;
+}
+.modal__overlay {
+  background-color: rgba(0, 0, 0, 0.1);
+  position: fixed;
+  top: 0px;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+}
+.modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  right: auto;
+  bottom: auto;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);
+  background-color: $white;
+  width: 375px;
+  padding-left: 8px;
+  padding-right: 8px;
+  box-sizing: border-box;
+  border: 1px solid palette(button, background--base-hover);
+}
+.modal__header {
+  @include typography($sans, 700, 20px, 0);
+}
+.modal__label {
+  @include typography($sans, 700, 20px, 1em);
+  margin-bottom: 8px;
+}
+.modal__form {
+  display: flex;
+  flex-direction: column;
+}
+.modal__input {
+  display: block;
+  margin-bottom: 8px;
+  @include typography($sans, 400, 16px, 1.6em);
+  padding-left: 4px;
+}
+.modal__button {
+  @include button--no-style;
+  @include typography($serif, 400, 16px, 1.2em);
+  color: palette(button, color--base);
+  margin-bottom: 8px;
+  padding: 4px 8px;
+  text-align: center;
+  background-color: palette(button, background--base);
+  border-radius: 5px;
+  width: 100%;
+  &:hover {
+    cursor: pointer;
+    background-color: palette(button, background--base-hover);
+  }
+}
+.modal__close {
+  @include button--no-style;
+  position: absolute;
+  top: 4px;
+  right: 8px;
+}
+.modal__text {
+  @include typography($sans, 400, 16px, 1.4em);
+}

@@ -19,6 +19,7 @@
  */
 package auth;
 
+import static db.Tables.ACCOUNT;
 import static db.Tables.MODERATOR;
 
 import com.auth0.jwt.JWT;
@@ -29,10 +30,11 @@ import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.diffplug.common.collect.ImmutableList;
 import com.jsoniter.output.JsonStream;
+import common.DbMisc;
 import common.RedirectException;
 import common.Time;
 import common.UrlEncodedPath;
-import db.tables.pojos.Account;
+import db.tables.records.AccountRecord;
 import java.text.ParseException;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -53,10 +55,14 @@ public class AuthUser {
 
 	final int id;
 	final String username;
+	final String email;
+	final boolean confirmed;
 
-	public AuthUser(int id, String username) {
+	public AuthUser(int id, String username, String email, boolean confirmed) {
 		this.id = id;
 		this.username = username;
+		this.email = email;
+		this.confirmed = confirmed;
 	}
 
 	public int id() {
@@ -67,6 +73,10 @@ public class AuthUser {
 		return username;
 	}
 
+	public String email() {
+		return email;
+	}
+
 	public void requireMod(DSLContext dsl) {
 		boolean isMod = dsl.fetchCount(dsl.selectFrom(MODERATOR).where(MODERATOR.ID.eq(id))) == 1;
 		if (!isMod) {
@@ -74,22 +84,26 @@ public class AuthUser {
 		}
 	}
 
-	static JWTCreator.Builder forUser(Account account, Time time) {
+	static JWTCreator.Builder forUser(AccountRecord account, Time time) {
 		return JWT.create()
 				.withIssuer(ISSUER_AUDIENCE)
 				.withAudience(ISSUER_AUDIENCE)
 				.withIssuedAt(Time.toJud(time.now()))
 				.withSubject(Integer.toString(account.getId()))
-				.withClaim(CLAIM_USERNAME, account.getUsername());
+				.withClaim(CLAIM_USERNAME, account.getUsername())
+				.withClaim(CLAIM_EMAIL, account.getEmail())
+				.withClaim(CLAIM_CONFIRMED, Boolean.toString(account.getConfirmedAt() != null));
 	}
 
-	static String jwtToken(Registry registry, Account user) {
+	static String jwtToken(Registry registry, AccountRecord user) {
 		return forUser(user, registry.require(Time.class))
 				.sign(registry.require(Algorithm.class));
 	}
 
 	static final String ISSUER_AUDIENCE = "mytake.org";
 	static final String CLAIM_USERNAME = "username";
+	static final String CLAIM_EMAIL = "email";
+	static final String CLAIM_CONFIRMED = "confirmed";
 
 	/**
 	 * If there's a cookie, validate the user, else return empty.
@@ -109,7 +123,8 @@ public class AuthUser {
 		try {
 			return auth(req);
 		} catch (JWTVerificationException e) {
-			throw new AuthModule.Error403();
+			boolean refreshMightFix = e instanceof RefreshMightFix;
+			throw new AuthModule.Error403(e.getMessage(), refreshMightFix);
 		}
 	}
 
@@ -138,10 +153,31 @@ public class AuthUser {
 		// create the logged-in AuthUser
 		int userId = Integer.parseInt(decoded.getSubject());
 		String username = decoded.getClaim(CLAIM_USERNAME).asString();
+		String email = decoded.getClaim(CLAIM_EMAIL).asString();
+		String confirmed = decoded.getClaim(CLAIM_CONFIRMED).asString();
 
-		AuthUser user = new AuthUser(userId, username);
+		AuthUser user = new AuthUser(userId, username, email, Boolean.parseBoolean(confirmed));
 		req.set(REQ_LOGIN_STATUS, user);
+
+		if (!user.confirmed) {
+			// if a user has an unconfirmed auth cookie, and the user in question
+			// authenticates then we need to kick the unauthenticated user out
+			try (DSLContext dsl = req.require(DSLContext.class)) {
+				boolean isConfirmedNow = DbMisc.fetchOne(dsl, ACCOUNT.ID, userId, ACCOUNT.CONFIRMED_AT) != null;
+				if (isConfirmedNow) {
+					throw new RefreshMightFix("Your login timed out.");
+				}
+			}
+		}
 		return user;
+	}
+
+	private static class RefreshMightFix extends TokenExpiredException {
+		private static final long serialVersionUID = 3889130945983736480L;
+
+		RefreshMightFix(String message) {
+			super(message);
+		}
 	}
 
 	static final String LOGIN_COOKIE = "login";
@@ -165,7 +201,7 @@ public class AuthUser {
 				.secure(isSecurable);
 	}
 
-	static List<Cookie> login(Account account, Request req) {
+	static List<Cookie> login(AccountRecord account, Request req) {
 		List<Cookie> cookies = new ArrayList<>();
 		cookies.add(newCookie(req, LOGIN_COOKIE)
 				.value(jwtToken(req, account))
@@ -174,9 +210,11 @@ public class AuthUser {
 				.toCookie());
 		LoginCookie cookie = new LoginCookie();
 		cookie.username = account.getUsername();
-
+		cookie.email = account.getEmail();
+		cookie.unconfirmed = account.getConfirmedAt() == null;
 		cookies.add(newCookie(req, LOGIN_UI_COOKIE)
 				.value(JsonStream.serialize(cookie))
+				.httpOnly(false)
 				.maxAge((int) TimeUnit.DAYS.toSeconds(LOGIN_DAYS))
 				.toCookie());
 		return cookies;

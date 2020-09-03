@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2018-2020 MyTake.org, Inc.
+ * Copyright (C) 2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -17,26 +17,22 @@
  *
  * You can contact us at team@mytake.org
  */
-import React from "react";
-import renderer from "react-test-renderer";
-import UserNav from "./UserNav";
+package java2ts;
 
-jest.mock("./DropDown", () => ({
-  __esModule: true,
-  default: "DropDown",
-}));
+public interface LoginApi {
+	@jsweet.lang.Interface
+	public static class Req implements Json {
+		public String email;
+		public String kind;
+		/** login, use, newsletter */
+		@jsweet.lang.Optional
+		public String redirect; /** If set, login link will send user to this URL. Should start with `/`, and not include domain. */
+	}
 
-test("UserNav logged out", () => {
-  const tree = renderer.create(<UserNav cookie={null} />).toJSON();
-  expect(tree).toMatchSnapshot();
-});
-
-test("UserNav logged in", () => {
-  const cookie = {
-    username: "samples",
-    email: "samples@email.com",
-    unconfirmed: false,
-  };
-  const tree = renderer.create(<UserNav cookie={cookie} />).toJSON();
-  expect(tree).toMatchSnapshot();
-});
+	@jsweet.lang.Interface
+	public static class Res implements Json {
+		public String title;
+		public String body;
+		public String btn;
+	}
+}

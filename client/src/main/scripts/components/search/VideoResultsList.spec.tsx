@@ -41,6 +41,11 @@ jest.mock("../shared/VideoResult", () => ({
   },
 }));
 
+jest.mock("../auth/LoginModal", () => ({
+  __esModule: true,
+  default: "LoginModal",
+}));
+
 const dateToDivMap: Map<string, HTMLDivElement> = new Map();
 const eventHandlers: VideoResultsListEventHandlers = {
   onAddBookmark: jest.fn(),

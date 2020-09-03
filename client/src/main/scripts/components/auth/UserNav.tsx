@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2017-2020 MyTake.org, Inc.
+ * Copyright (C) 2018-2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -17,23 +17,26 @@
  *
  * You can contact us at team@mytake.org
  */
-package auth;
+import React, { useEffect, useState } from "react";
+import { getCookie } from "../../browser";
+import { LoginCookie } from "../../java2ts/LoginCookie";
+import { COOKIE_CHANGE_EVENT } from "./LoginTypes";
+import UserNavView from "./UserNavView";
 
-import static db.Tables.ACCOUNT;
-import static io.restassured.RestAssured.given;
+const UserNav: React.FC = () => {
+  const [cookie, setCookie] = useState<LoginCookie | null>(getCookie());
 
-import common.DbMisc;
-import common.JoobyDevRule;
-import db.tables.records.AccountRecord;
-import io.restassured.specification.RequestSpecification;
-import org.jooby.Jooby;
+  function handleCookieChange() {
+    setCookie(getCookie());
+  }
 
-public class AuthModuleHarness {
-	public static RequestSpecification givenUser(Jooby app, AccountRecord account) {
-		return given().cookie(AuthUser.LOGIN_COOKIE, AuthUser.jwtToken(app, account));
-	}
+  useEffect(() => {
+    document.addEventListener(COOKIE_CHANGE_EVENT, handleCookieChange);
+    return () => {
+      document.removeEventListener(COOKIE_CHANGE_EVENT, handleCookieChange);
+    };
+  }, []);
+  return <UserNavView cookie={cookie} />;
+};
 
-	public static String authTokenValue(JoobyDevRule dev, String username) {
-		return AuthUser.jwtToken(dev.app(), DbMisc.fetchOne(dev.dsl(), ACCOUNT.USERNAME, username));
-	}
-}
+export default UserNav;

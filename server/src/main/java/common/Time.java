@@ -22,7 +22,6 @@ package common;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
-import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
@@ -55,10 +54,10 @@ public interface Time {
 	}
 
 	public static Date toJud(LocalDateTime dateTime) {
-		return Date.from(dateTime.atZone(ZoneId.systemDefault()).toInstant());
+		return Date.from(dateTime.atZone(ZoneOffset.UTC).toInstant());
 	}
 
 	public static LocalDateTime fromJud(Date date) {
-		return new java.sql.Timestamp(date.getTime()).toLocalDateTime();
+		return date.toInstant().atOffset(ZoneOffset.UTC).toLocalDateTime();
 	}
 }

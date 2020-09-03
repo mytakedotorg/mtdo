@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2017-2020 MyTake.org, Inc.
+ * Copyright (C) 2018-2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -17,23 +17,25 @@
  *
  * You can contact us at team@mytake.org
  */
-package auth;
+package controllers;
 
-import static db.Tables.ACCOUNT;
-import static io.restassured.RestAssured.given;
-
-import common.DbMisc;
+import common.InitialData;
 import common.JoobyDevRule;
-import db.tables.records.AccountRecord;
-import io.restassured.specification.RequestSpecification;
-import org.jooby.Jooby;
+import common.Snapshot;
+import org.junit.ClassRule;
+import org.junit.FixMethodOrder;
+import org.junit.Test;
+import org.junit.runners.MethodSorters;
 
-public class AuthModuleHarness {
-	public static RequestSpecification givenUser(Jooby app, AccountRecord account) {
-		return given().cookie(AuthUser.LOGIN_COOKIE, AuthUser.jwtToken(app, account));
-	}
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
+public class ProfileNoUsernameTest {
+	@ClassRule
+	public static JoobyDevRule dev = JoobyDevRule.initialData();
 
-	public static String authTokenValue(JoobyDevRule dev, String username) {
-		return AuthUser.jwtToken(dev.app(), DbMisc.fetchOne(dev.dsl(), ACCOUNT.USERNAME, username));
+	@Test
+	public void noUsername() {
+		Snapshot.match("naked", dev.givenEmail(InitialData.EMAIL_NOUSERNAME).get("/my"));
+		Snapshot.match("profile", dev.givenEmail(InitialData.EMAIL_NOUSERNAME).get("/my?tab=profile"));
+		Snapshot.match("bookmarks", dev.givenEmail(InitialData.EMAIL_NOUSERNAME).get("/my?tab=bookmarks"));
 	}
 }

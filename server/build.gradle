@@ -15,7 +15,7 @@ spotless {
 		removeUnusedImports()
 		// see common.IpGetter
 		custom 'useIpGetter', {
-			if (it.contains('req.ip()') && !it.contains('interface IpGetter {')) {
+			if (it.contains('req.ip()') && !it.contains('abstract class Ip {')) {
 				throw new AssertionError('Use IpGetter instead of Request.ip()')
 			}
 		}
@@ -34,7 +34,7 @@ flywayJooq {
 
 	generator {
 		database.inputSchema = 'public'
-		generate.pojos = true
+		generate.pojos = false
 		generate.fluentSetters = true
 		generate.javaTimeTypes = true
 		target.packageName = 'db'

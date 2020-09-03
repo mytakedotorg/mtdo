@@ -19,8 +19,10 @@
  */
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { getUserCookieString, windowUtils } from "./browser";
+import Modal from "react-modal";
+import { windowUtils } from "./browser";
 import { getQueryParameterByName } from "./common/functions";
+import UserNav from "./components/auth/UserNav";
 import { TakeDocument } from "./components/BlockEditor";
 import BlockReader from "./components/BlockReader";
 import BlockWriter, {
@@ -33,8 +35,6 @@ import FoundationView from "./components/FoundationView";
 import Home from "./components/Home";
 import VideoResultsLoader from "./components/search/VideoResultsLoader";
 import SearchBar from "./components/SearchBar";
-import UserNav from "./components/UserNav";
-import { LoginCookie } from "./java2ts/LoginCookie";
 import { Routes } from "./java2ts/Routes";
 
 windowUtils.init();
@@ -112,6 +112,7 @@ function reactElementForPage(args: MtdoArgs): React.SFCElement<any> {
 const app = document.getElementById("app");
 if (app) {
   ReactDOM.render(reactElementForPage(window.mytake!), app);
+  Modal.setAppElement(app);
 }
 
 if (isSearchPage(window.mytake)) {
@@ -128,11 +129,7 @@ if (isSearchPage(window.mytake)) {
 }
 
 const userNavContainer = document.getElementById("usernav");
-const cookieString = getUserCookieString();
-let cookie = cookieString
-  ? (JSON.parse(JSON.parse(cookieString)) as LoginCookie)
-  : null;
-ReactDOM.render(<UserNav cookie={cookie} />, userNavContainer!);
+ReactDOM.render(<UserNav />, userNavContainer!);
 
 if (isBookmarksTab()) {
   const bookmarksContainer = document.getElementById("bookmarks");

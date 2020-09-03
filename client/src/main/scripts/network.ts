@@ -17,17 +17,14 @@
  *
  * You can contact us at team@mytake.org
  */
+import { getFullURLPath } from "./browser";
+import { Routes } from "./java2ts/Routes";
 export async function post<T, R>(path: string, body: T): Promise<R> {
-  const response = await fetch(
-    new Request(path, {
-      method: "post",
-      credentials: "same-origin",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(body),
-    })
-  );
+  const response = await fetchWithJson({
+    path: path,
+    body: body,
+    method: "POST",
+  });
   return response.json();
 }
 
@@ -37,10 +34,51 @@ export async function get<T>(
 ): Promise<T> {
   const response = await fetch(
     new Request(path, {
-      method: "get",
+      method: "GET",
       cache: cache,
       credentials: "omit",
     })
   );
   return response.json();
+}
+
+export async function put<T>(path: string, body: T): Promise<Date> {
+  const response = await fetchWithJson({
+    path: path,
+    body: body,
+    method: "PUT",
+  });
+  return new Date(response.headers.get("Last-Modified")!);
+}
+
+export async function deleteReq<T>(path: string, body: T): Promise<Response> {
+  return fetchWithJson({ path: path, body: body, method: "DELETE" });
+}
+
+interface FetchArgs<T> {
+  path: string;
+  body: T;
+  method: "GET" | "POST" | "DELETE" | "PUT";
+}
+
+async function fetchWithJson<T>(args: FetchArgs<T>): Promise<Response> {
+  const response = await fetch(
+    new Request(args.path, {
+      method: args.method,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(args.body),
+    })
+  );
+  if (response.status === 403) {
+    if (response.headers.get("Refresh-Might-Fix") === "true") {
+      window.location.href = `${Routes.LOGIN}?redirect=${encodeURI(
+        getFullURLPath()
+      )}`;
+    } else {
+      throw new Error(await response.text());
+    }
+  }
+  return response;
 }

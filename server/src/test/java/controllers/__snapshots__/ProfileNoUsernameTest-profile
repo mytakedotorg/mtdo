@@ -21,7 +21,7 @@
 <meta name="msapplication-TileImage" content="/assets/permanent/mstile-144x144-171a583232.png" />
 
 <title>MyTake.org</title>
-<meta name="description" content="samples | MyTake.org">
+<meta name="description" content="nousername@email.com | MyTake.org">
 <meta name="author" content="MyTake.org">
 
 <meta property="fb:app_id" content="203240867180202" />
@@ -76,8 +76,7 @@
 		</div>
 		<div class="profile__info">
 			<div>
-				<h2 class="profile__text profile__text--username">samples</h2>
-				<h3 class="profile__text profile__text--email">samples@email.com</h3>
+				<h2 class="profile__text profile__text--email">nousername@email.com</h2>
 				<p class="profile__text profile__text--bio">I have a little bio that I can put here.</p>
 			</div>
 			<div>
@@ -88,12 +87,15 @@
 	</div>
 	<div class="profile__tabs">
 		<ul class="tab-nav__list">
-					<li class="tab-nav__list-item"><a href="/samples?tab=bookmarks" class="tab-nav__link tab-nav__link--active">bookmarks</a></li>
-					<li class="tab-nav__list-item"><a href="/samples?tab=followers" class="tab-nav__link tab-nav__link--inactive">followers</a></li>
-					<li class="tab-nav__list-item"><a href="/samples?tab=following" class="tab-nav__link tab-nav__link--inactive">following</a></li>
+					<li class="tab-nav__list-item"><a href="/my?tab=profile" class="tab-nav__link tab-nav__link--active">profile</a></li>
+					<li class="tab-nav__list-item"><a href="/my?tab=bookmarks" class="tab-nav__link tab-nav__link--inactive">bookmarks</a></li>
+					<li class="tab-nav__list-item"><a href="/my?tab=followers" class="tab-nav__link tab-nav__link--inactive">followers</a></li>
+					<li class="tab-nav__list-item"><a href="/my?tab=following" class="tab-nav__link tab-nav__link--inactive">following</a></li>
 		</ul>
 		<div class="profile__tab-content">
-			<div id="bookmarks"></div>
+			<div class="tab">
+	<h2 class="tab-title">TODO</h2>
+</div>
 
 
 		</div>

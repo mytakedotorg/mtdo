@@ -43,6 +43,8 @@ import org.jooq.JSONB;
 
 /** This is for setting the initial data for the case that the database is empty. */
 public class InitialData {
+	public static String EMAIL_NOUSERNAME = "nousername@email.com";
+
 	/** If the database is empty, initializes with some data. */
 	public static class Module implements Jooby.Module {
 		@Override
@@ -60,6 +62,7 @@ public class InitialData {
 
 	public static void init(DSLContext dsl, Time time) throws Exception {
 		int sampleUser = usernameEmail(dsl, time, "samples", "samples@email.com");
+		usernameEmail(dsl, time, null, EMAIL_NOUSERNAME);
 		take(dsl, time, sampleUser, "Why it's so hard to have peace", "/presidential-debate-clinton-trump-2-of-3_304.000-321.000.png");
 		take(dsl, time, sampleUser, "Does a law mean what it says, or what it meant?", "/bill-of-rights_283-439_283-439.png");
 		take(dsl, time, sampleUser, "Don't worry, we'll protect the Constitution for you!", "/united-states-constitution_17730-18357_17730-18357.png");
@@ -110,6 +113,8 @@ public class InitialData {
 		record.setLastSeenAt(time.now());
 		record.setLastSeenIp(IP);
 		record.setLastEmailedAt(time.now());
+		record.setConfirmedAt(time.now());
+		record.setConfirmedIp(IP);
 		record.insert();
 		return record.getId();
 	}

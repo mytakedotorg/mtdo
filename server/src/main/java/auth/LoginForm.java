@@ -26,13 +26,12 @@ import static db.Tables.LOGINLINK;
 
 import common.DbMisc;
 import common.EmailSender;
-import common.IpGetter;
+import common.Ip;
 import common.Text;
 import common.Time;
 import common.UrlEncodedPath;
 import common.UrlRandomCode;
 import controllers.HomeFeed;
-import db.tables.pojos.Account;
 import db.tables.records.AccountRecord;
 import db.tables.records.LoginlinkRecord;
 import forms.api.FormValidation;
@@ -74,7 +73,7 @@ public class LoginForm extends PostForm<LoginForm> {
 				return retry.addError(LOGIN_EMAIL, "No account for this email");
 			} else {
 				LocalDateTime now = req.require(Time.class).now();
-				String ip = req.require(IpGetter.class).ip(req);
+				String ip = Ip.get(req);
 
 				LoginlinkRecord login = urlCode.createRecord(req, dsl, now, ip);
 				login.setExpiresAt(now.plus(EXPIRES_MINUTES, ChronoUnit.MINUTES));
@@ -105,7 +104,7 @@ public class LoginForm extends PostForm<LoginForm> {
 		LocalDateTime now = req.require(Time.class).now();
 		try (DSLContext dsl = req.require(DSLContext.class)) {
 			LoginlinkRecord link = urlCode.tryGetRecord(req, dsl);
-			String ip = req.require(IpGetter.class).ip(req);
+			String ip = Ip.get(req);
 			String errorMsg;
 			if (link == null || now.isAfter(link.getExpiresAt())) {
 				errorMsg = "This link expired, try again.";
@@ -139,9 +138,13 @@ public class LoginForm extends PostForm<LoginForm> {
 			AccountRecord account = DbMisc.fetchOne(dsl, ACCOUNT.ID, link.getAccountId());
 			account.setLastSeenIp(ip);
 			account.setLastSeenAt(now);
+			if (account.getConfirmedAt() == null) {
+				account.setConfirmedIp(ip);
+				account.setConfirmedAt(now);
+			}
 			account.update();
 			// set the login cookies
-			AuthUser.login(account.into(Account.class), req).forEach(rsp::cookie);
+			AuthUser.login(account, req).forEach(rsp::cookie);
 			// redirect 
 			Mutant redirect = req.param(REDIRECT.name());
 			if (redirect.isSet()) {

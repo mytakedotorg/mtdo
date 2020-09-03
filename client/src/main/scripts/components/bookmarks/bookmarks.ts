@@ -22,6 +22,7 @@ import { groupBy } from "../../common/functions";
 import { VideoCut } from "../../common/social/social";
 import { FT } from "../../java2ts/FT";
 import { Routes } from "../../java2ts/Routes";
+import { deleteReq, put } from "../../network";
 import {
   convertMillisecondsToSeconds,
   convertSecondsToMilliseconds,
@@ -199,28 +200,11 @@ export class BookmarksClient {
    * It's super unimportant, completely fine to ignore it.
    */
   async add(bookmarks: FTBookmarkIntermediate[]): Promise<Date> {
-    const response = await fetch(
-      new Request(Routes.API_BOOKMARKS, {
-        method: "put",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(bookmarks),
-      })
-    );
-    return new Date(response.headers.get("Last-Modified")!);
+    return put(Routes.API_BOOKMARKS, bookmarks);
   }
 
-  async remove(bookmarks: FTBookmarkIntermediate[]): Promise<void> {
-    await fetch(
-      new Request(Routes.API_BOOKMARKS, {
-        method: "delete",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(bookmarks),
-      })
-    );
+  async remove(bookmarks: FTBookmarkIntermediate[]): Promise<Response> {
+    return deleteReq(Routes.API_BOOKMARKS, bookmarks);
   }
 }
 

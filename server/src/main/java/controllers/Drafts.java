@@ -26,7 +26,7 @@ import static db.Tables.TAKEREVISION;
 import auth.AuthUser;
 import com.google.inject.Binder;
 import com.typesafe.config.Config;
-import common.IpGetter;
+import common.Ip;
 import common.Mods;
 import common.RedirectException;
 import common.Text;
@@ -108,7 +108,7 @@ public class Drafts implements Jooby.Module {
 				rev.setTitle(post.title);
 				rev.setBlocks(JSONB.valueOf(post.blocks.toString()));
 				rev.setCreatedAt(req.require(Time.class).now());
-				rev.setCreatedIp(req.require(IpGetter.class).ip(req));
+				rev.setCreatedIp(Ip.get(req));
 
 				if (draft != null && draft.getLastRevision().intValue() == post.parentRev.lastrevid) {
 					// update an existing draft
@@ -163,7 +163,7 @@ public class Drafts implements Jooby.Module {
 				published.setTitleSlug(titleSlug);
 				published.setBlocks(JSONB.valueOf(post.blocks.toString()));
 				published.setPublishedAt(req.require(Time.class).now());
-				published.setPublishedIp(req.require(IpGetter.class).ip(req));
+				published.setPublishedIp(Ip.get(req));
 				published.setImageUrl(post.imageUrl);
 				published.insert();
 

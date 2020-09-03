@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2017 MyTake.org, Inc.
+ * Copyright (C) 2017-2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -25,8 +25,9 @@ import static org.hamcrest.Matchers.equalTo;
 import common.CustomAssets;
 import common.DevTime;
 import common.JoobyDevRule;
-import db.tables.pojos.Account;
+import db.tables.records.AccountRecord;
 import io.restassured.specification.RequestSpecification;
+import java.time.LocalDateTime;
 import java.util.Optional;
 import org.jooby.Jooby;
 import org.jooby.Status;
@@ -58,10 +59,12 @@ public class AuthUserTest {
 	public static JoobyDevRule app = new JoobyDevRule(new App());
 
 	private static RequestSpecification givenUser(String username) {
-		Account account = new Account();
+		AccountRecord account = new AccountRecord();
 		account.setId(-1); // not used
 		account.setUsername(username);
 		account.setEmail("unused@email.com");
+		account.setConfirmedAt(LocalDateTime.of(2000, 1, 1, 0, 0));
+		account.setConfirmedIp("127.0.0.1");
 		return AuthModuleHarness.givenUser(app.app(), account);
 	}
 

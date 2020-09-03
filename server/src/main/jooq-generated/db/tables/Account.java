@@ -18,7 +18,7 @@ import org.jooq.ForeignKey;
 import org.jooq.Identity;
 import org.jooq.Name;
 import org.jooq.Record;
-import org.jooq.Row11;
+import org.jooq.Row14;
 import org.jooq.Schema;
 import org.jooq.Table;
 import org.jooq.TableField;
@@ -34,7 +34,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Account extends TableImpl<AccountRecord> {
 
-    private static final long serialVersionUID = -1201961153;
+    private static final long serialVersionUID = -389459540;
 
     /**
      * The reference instance of <code>public.account</code>
@@ -57,7 +57,7 @@ public class Account extends TableImpl<AccountRecord> {
     /**
      * The column <code>public.account.username</code>.
      */
-    public final TableField<AccountRecord, String> USERNAME = createField(DSL.name("username"), org.jooq.impl.SQLDataType.VARCHAR(60).nullable(false), this, "");
+    public final TableField<AccountRecord, String> USERNAME = createField(DSL.name("username"), org.jooq.impl.SQLDataType.VARCHAR(60), this, "");
 
     /**
      * The column <code>public.account.email</code>.
@@ -103,6 +103,21 @@ public class Account extends TableImpl<AccountRecord> {
      * The column <code>public.account.last_emailed_at</code>.
      */
     public final TableField<AccountRecord, LocalDateTime> LAST_EMAILED_AT = createField(DSL.name("last_emailed_at"), org.jooq.impl.SQLDataType.LOCALDATETIME.nullable(false), this, "");
+
+    /**
+     * The column <code>public.account.confirmed_at</code>.
+     */
+    public final TableField<AccountRecord, LocalDateTime> CONFIRMED_AT = createField(DSL.name("confirmed_at"), org.jooq.impl.SQLDataType.LOCALDATETIME, this, "");
+
+    /**
+     * The column <code>public.account.confirmed_ip</code>.
+     */
+    public final TableField<AccountRecord, String> CONFIRMED_IP = createField(DSL.name("confirmed_ip"), org.jooq.impl.DefaultDataType.getDefaultDataType("\"pg_catalog\".\"inet\""), this, "", new PostgresInetBinding());
+
+    /**
+     * The column <code>public.account.newsletter</code>.
+     */
+    public final TableField<AccountRecord, Boolean> NEWSLETTER = createField(DSL.name("newsletter"), org.jooq.impl.SQLDataType.BOOLEAN, this, "");
 
     /**
      * Create a <code>public.account</code> table reference
@@ -184,11 +199,11 @@ public class Account extends TableImpl<AccountRecord> {
     }
 
     // -------------------------------------------------------------------------
-    // Row11 type methods
+    // Row14 type methods
     // -------------------------------------------------------------------------
 
     @Override
-    public Row11<Integer, String, String, String, LocalDateTime, String, LocalDateTime, String, LocalDateTime, String, LocalDateTime> fieldsRow() {
-        return (Row11) super.fieldsRow();
+    public Row14<Integer, String, String, String, LocalDateTime, String, LocalDateTime, String, LocalDateTime, String, LocalDateTime, LocalDateTime, String, Boolean> fieldsRow() {
+        return (Row14) super.fieldsRow();
     }
 }

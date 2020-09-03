@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2017-2018 MyTake.org, Inc.
+ * Copyright (C) 2017-2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -25,7 +25,7 @@ import auth.AuthModuleHarness;
 import com.diffplug.common.base.Errors;
 import com.diffplug.common.base.Throwing;
 import com.icegreen.greenmail.util.GreenMail;
-import db.tables.pojos.Account;
+import db.tables.records.AccountRecord;
 import io.restassured.specification.RequestSpecification;
 import java.util.HashMap;
 import java.util.Map;
@@ -35,8 +35,6 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import org.jooby.Jooby;
 import org.jooq.DSLContext;
-import org.jooq.Table;
-import org.jooq.TableField;
 import org.jooq.TableRecord;
 import org.junit.rules.ExternalResource;
 
@@ -100,12 +98,6 @@ public class JoobyDevRule extends ExternalResource {
 		}
 	}
 
-	public <K, R extends TableRecord<R>> R fetchRecord(Table<R> table, TableField<R, K> keyField, K key) {
-		try (DSLContext dsl = dsl()) {
-			return dsl.selectFrom(table).where(keyField.eq(key)).fetchOne();
-		}
-	}
-
 	/** The count is the number of *sent* emails - one email sent to two people is still just one email. */
 	public Map<String, EmailAssert> waitForEmails(int numberSent) {
 		GreenMail greenmail = app.require(GreenMail.class);
@@ -163,7 +155,14 @@ public class JoobyDevRule extends ExternalResource {
 
 	/** Returns a request with cookies set for the given username. */
 	public RequestSpecification givenUser(String username) {
-		Account account = fetchRecord(ACCOUNT, ACCOUNT.USERNAME, username).into(Account.class);
+		return AuthModuleHarness.givenUser(app, DbMisc.fetchOne(dsl(), ACCOUNT.USERNAME, username));
+	}
+
+	/** Returns a request with cookies set for the given username. */
+	public RequestSpecification givenEmail(String email) {
+		AccountRecord account = DbMisc.fetchOne(dsl(), ACCOUNT.EMAIL, email);
+		System.out.println("### account ###");
+		System.out.println(account.toString());
 		return AuthModuleHarness.givenUser(app, account);
 	}
 }

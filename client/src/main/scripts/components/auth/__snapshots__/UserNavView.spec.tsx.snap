@@ -1,6 +1,45 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`UserNav logged in 1`] = `
+exports[`UserNavView logged in - no username 1`] = `
+<DropDown
+  classModifier="usernav"
+  disabled={false}
+  dropdownPosition="BL"
+  toggleText={
+    <React.Fragment>
+      <ChevronDown />
+      samples@email.com
+    </React.Fragment>
+  }
+>
+  <ul
+    className="usernav__list"
+  >
+    <li
+      className="usernav__list-item"
+    >
+      <a
+        className="usernav__link"
+        href="/my?tab=bookmarks"
+      >
+        Bookmarks
+      </a>
+    </li>
+    <li
+      className="usernav__list-item"
+    >
+      <a
+        className="usernav__link"
+        href="/logout"
+      >
+        Logout
+      </a>
+    </li>
+  </ul>
+</DropDown>
+`;
+
+exports[`UserNavView logged in 1`] = `
 <DropDown
   classModifier="usernav"
   disabled={false}
@@ -30,26 +69,6 @@ exports[`UserNav logged in 1`] = `
     >
       <a
         className="usernav__link"
-        href="/samples?tab=following"
-      >
-        Following
-      </a>
-    </li>
-    <li
-      className="usernav__list-item"
-    >
-      <a
-        className="usernav__link"
-        href="/samples?tab=followers"
-      >
-        Followers
-      </a>
-    </li>
-    <li
-      className="usernav__list-item"
-    >
-      <a
-        className="usernav__link"
         href="/logout"
       >
         Logout
@@ -59,7 +78,7 @@ exports[`UserNav logged in 1`] = `
 </DropDown>
 `;
 
-exports[`UserNav logged out 1`] = `
+exports[`UserNavView logged out 1`] = `
 <DropDown
   classModifier="usernav"
   disabled={true}

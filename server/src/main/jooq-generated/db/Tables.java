@@ -7,7 +7,6 @@ package db;
 import db.tables.Account;
 import db.tables.Bookmark;
 import db.tables.BookmarksMod;
-import db.tables.Confirmaccountlink;
 import db.tables.FlywaySchemaHistory;
 import db.tables.Follow;
 import db.tables.FoundationRev;
@@ -39,11 +38,6 @@ public class Tables {
      * The table <code>public.bookmarks_mod</code>.
      */
     public static final BookmarksMod BOOKMARKS_MOD = BookmarksMod.BOOKMARKS_MOD;
-
-    /**
-     * The table <code>public.confirmaccountlink</code>.
-     */
-    public static final Confirmaccountlink CONFIRMACCOUNTLINK = Confirmaccountlink.CONFIRMACCOUNTLINK;
 
     /**
      * The table <code>public.flyway_schema_history</code>.

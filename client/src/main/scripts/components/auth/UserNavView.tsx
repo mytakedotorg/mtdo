@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2018-2020 MyTake.org, Inc.
+ * Copyright (C) 2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -19,15 +19,15 @@
  */
 import * as React from "react";
 import { ChevronDown } from "react-feather";
-import { LoginCookie } from "../java2ts/LoginCookie";
-import { Routes } from "../java2ts/Routes";
-import DropDown from "./DropDown";
+import { LoginCookie } from "../../java2ts/LoginCookie";
+import { Routes } from "../../java2ts/Routes";
+import DropDown from "../DropDown";
 
-interface UserNavProps {
+interface UserNavViewProps {
   cookie: LoginCookie | null;
 }
 
-const UserNav: React.FC<UserNavProps> = ({ cookie }) => {
+const UserNavView: React.FC<UserNavViewProps> = ({ cookie }) => {
   let navLinks: { name: string; href: string }[] = [];
   if (cookie) {
     const path = cookie.username ? cookie.username : Routes.PROFILE_NO_USERNAME;
@@ -35,14 +35,6 @@ const UserNav: React.FC<UserNavProps> = ({ cookie }) => {
       {
         name: "Bookmarks",
         href: `/${path}?${Routes.PROFILE_TAB}=${Routes.PROFILE_TAB_BOOKMARKS}`,
-      },
-      {
-        name: "Following",
-        href: `/${path}?${Routes.PROFILE_TAB}=${Routes.PROFILE_TAB_FOLLOWING}`,
-      },
-      {
-        name: "Followers",
-        href: `/${path}?${Routes.PROFILE_TAB}=${Routes.PROFILE_TAB_FOLLOWERS}`,
       },
       { name: "Logout", href: Routes.LOGOUT },
     ];
@@ -57,7 +49,7 @@ const UserNav: React.FC<UserNavProps> = ({ cookie }) => {
         cookie ? (
           <>
             <ChevronDown />
-            {cookie.username}
+            {cookie.username ? cookie.username : cookie.email}
           </>
         ) : (
           <a href={Routes.LOGIN}>Login</a>
@@ -79,4 +71,4 @@ const UserNav: React.FC<UserNavProps> = ({ cookie }) => {
   );
 };
 
-export default UserNav;
+export default UserNavView;
