@@ -21,10 +21,10 @@ import {
   Bookmark,
   bookmarkToIntermediate,
   intermediateToBookmark,
-} from "../components/bookmarks/bookmarks";
-import { FoundationHarness } from "./foundationTest";
-import { ClipRange, VideoTurn } from "./social/social";
-import { cutToTurn, turnToCut } from "./video";
+} from "./bookmarks";
+import { FoundationHarness } from "../../common/foundationTest";
+import { ClipRange, VideoTurn } from "../../common/social/social";
+import { cutToTurn, turnToCut } from "../../common/video";
 
 const turn: VideoTurn = {
   cut: [0, 13],
@@ -34,11 +34,6 @@ const turn: VideoTurn = {
 };
 const foundation = FoundationHarness.loadAllFromDisk();
 const videoFact = foundation.getVideo(turn.fact);
-
-test("turnToCut then cutToTurn", () => {
-  const cut = turnToCut(turn, videoFact);
-  expect(cutToTurn(cut, videoFact)).toEqual(turn);
-});
 
 test("bookmarkToIntermediate then intermediateToBookmark", () => {
   const bookmark: Bookmark = {
