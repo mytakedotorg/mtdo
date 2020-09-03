@@ -33,14 +33,14 @@ const events: LoginModalViewEvents = {
 
 test("LoginModalView open", () => {
   const tree = renderer
-    .create(<LoginModalView isOpen={true} events={events} />)
+    .create(<LoginModalView isOpen={true} events={events} showForm={true} />)
     .toJSON();
   expect(tree).toMatchSnapshot();
 });
 
 test("LoginModalView closed", () => {
   const tree = renderer
-    .create(<LoginModalView isOpen={false} events={events} />)
+    .create(<LoginModalView isOpen={false} events={events} showForm={true} />)
     .toJSON();
   expect(tree).toMatchSnapshot();
 });
@@ -56,6 +56,24 @@ test("LoginModalView open with response", () => {
           body: "Lorem ipsum body.",
           btn: "Button Text",
         }}
+        showForm={false}
+      />
+    )
+    .toJSON();
+  expect(tree).toMatchSnapshot();
+});
+
+test("LoginModalView open with response and form", () => {
+  const tree = renderer
+    .create(
+      <LoginModalView
+        isOpen={true}
+        events={events}
+        loginRes={{
+          title: "Login Required",
+          body: "Your login timed out.",
+        }}
+        showForm={true}
       />
     )
     .toJSON();

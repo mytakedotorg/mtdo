@@ -189,3 +189,79 @@ exports[`LoginModalView open with response 1`] = `
   </button>
 </Modal>
 `;
+
+exports[`LoginModalView open with response and form 1`] = `
+<Modal
+  className="modal"
+  isOpen={true}
+  onRequestClose={[MockFunction]}
+  overlayClassName="modal__overlay"
+  portalClassName="modal__portal"
+  shouldCloseOnOverlayClick={true}
+  shouldFocusAfterRender={false}
+>
+  <h2
+    className="modal__header"
+  >
+    Login Required
+  </h2>
+  <p
+    className="modal__text"
+  >
+    Your login timed out.
+  </p>
+  <form
+    className="modal__form"
+    onSubmit={[Function]}
+  >
+    <label
+      className="modal__label"
+      htmlFor="email"
+    >
+      Email
+    </label>
+    <input
+      className="modal__input"
+      id="email"
+      onChange={[Function]}
+      required={true}
+      type="email"
+      value=""
+    />
+    <input
+      className="modal__button"
+      type="submit"
+      value="Login or Create Account"
+    />
+  </form>
+  <button
+    className="modal__close"
+    onClick={[MockFunction]}
+  >
+    <svg
+      fill="none"
+      height={24}
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="2"
+      viewBox="0 0 24 24"
+      width={24}
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <line
+        x1="18"
+        x2="6"
+        y1="6"
+        y2="18"
+      />
+      <line
+        x1="6"
+        x2="18"
+        y1="6"
+        y2="18"
+      />
+    </svg>
+  </button>
+</Modal>
+`;
