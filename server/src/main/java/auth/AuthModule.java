@@ -96,6 +96,10 @@ public class AuthModule implements Jooby.Module {
 					.build());
 		});
 		env.router().err(Error403.class, (req, rsp, err) -> {
+			Error403 cause = (Error403) err.getCause();
+			if (cause.refreshMightFix) {
+				rsp.header("Refresh-Might-Fix", "true");
+			}
 			rsp.status(Status.FORBIDDEN).send(err.getCause().getMessage());
 		});
 		// page for tinfoil agent to gain access
@@ -113,9 +117,11 @@ public class AuthModule implements Jooby.Module {
 
 	static class Error403 extends RuntimeException {
 		private static final long serialVersionUID = -6040081842021224398L;
+		boolean refreshMightFix;
 
-		Error403(String message) {
+		Error403(String message, boolean refreshMightFix) {
 			super(message);
+			this.refreshMightFix = refreshMightFix;
 		}
 	}
 

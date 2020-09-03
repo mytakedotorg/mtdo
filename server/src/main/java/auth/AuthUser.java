@@ -123,7 +123,8 @@ public class AuthUser {
 		try {
 			return auth(req);
 		} catch (JWTVerificationException e) {
-			throw new AuthModule.Error403(e.getMessage());
+			boolean refreshMightFix = e instanceof RefreshMightFix;
+			throw new AuthModule.Error403(e.getMessage(), refreshMightFix);
 		}
 	}
 
@@ -164,11 +165,19 @@ public class AuthUser {
 			try (DSLContext dsl = req.require(DSLContext.class)) {
 				boolean isConfirmedNow = DbMisc.fetchOne(dsl, ACCOUNT.ID, userId, ACCOUNT.CONFIRMED_AT) != null;
 				if (isConfirmedNow) {
-					throw new TokenExpiredException("Your login timed out.");
+					throw new RefreshMightFix("Your login timed out.");
 				}
 			}
 		}
 		return user;
+	}
+
+	private static class RefreshMightFix extends TokenExpiredException {
+		private static final long serialVersionUID = 3889130945983736480L;
+
+		RefreshMightFix(String message) {
+			super(message);
+		}
 	}
 
 	static final String LOGIN_COOKIE = "login";

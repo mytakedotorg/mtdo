@@ -71,11 +71,12 @@ async function fetchWithJson<T>(args: FetchArgs<T>): Promise<Response> {
       body: JSON.stringify(args.body),
     })
   );
-  const refreshMightFix = response.headers.get("Refresh-Might-Fix");
-  if (refreshMightFix != null) {
-    if (refreshMightFix === "true") {
-      window.location.href = `${Routes.LOGIN}?redirect=${getFullURLPath()}`;
-    } else if (refreshMightFix === "false") {
+  if (response.status === 403) {
+    if (response.headers.get("Refresh-Might-Fix") === "true") {
+      window.location.href = `${Routes.LOGIN}?redirect=${encodeURI(
+        getFullURLPath()
+      )}`;
+    } else {
       throw new Error(await response.text());
     }
   }
