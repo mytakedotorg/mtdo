@@ -29,7 +29,8 @@ export interface LoginModalViewEvents {
 interface LoginModalViewProps {
   isOpen: boolean;
   events: LoginModalViewEvents;
-  loginRes?: LoginRes;
+  loginRes?: Partial<LoginRes>;
+  showForm: boolean;
 }
 
 const LoginModalView: React.FC<LoginModalViewProps> = (props) => {
@@ -51,18 +52,25 @@ const LoginModalView: React.FC<LoginModalViewProps> = (props) => {
       shouldFocusAfterRender={false}
       shouldCloseOnOverlayClick={true}
     >
-      {props.loginRes ? (
+      {props.loginRes && (
         <>
-          <h2 className="modal__header">{props.loginRes.title}</h2>
-          <p className="modal__text">{props.loginRes.body}</p>
-          <button
-            className="modal__button"
-            onClick={props.events.onRequestClose}
-          >
-            {props.loginRes.btn}
-          </button>
+          {props.loginRes.title && (
+            <h2 className="modal__header">{props.loginRes.title}</h2>
+          )}
+          {props.loginRes.body && (
+            <p className="modal__text">{props.loginRes.body}</p>
+          )}
+          {props.loginRes.btn && (
+            <button
+              className="modal__button"
+              onClick={props.events.onRequestClose}
+            >
+              {props.loginRes.btn}
+            </button>
+          )}
         </>
-      ) : (
+      )}
+      {props.showForm && (
         <form className="modal__form" onSubmit={handleSubmit}>
           <label className="modal__label" htmlFor="email">
             Email

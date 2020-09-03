@@ -18,39 +18,53 @@
  * You can contact us at team@mytake.org
  */
 import React, { useState } from "react";
+import { getFullURLPath } from "../../browser";
 import { Routes } from "../../java2ts/Routes";
 import { post } from "../../network";
 import LoginModalView from "./LoginModalView";
 import { COOKIE_CHANGE_EVENT, LoginReq, LoginRes } from "./LoginTypes";
 
 interface LoginModalProps {
+  initialLoginRes?: Partial<LoginRes>;
   isOpen: boolean;
-  onRequestClose(): void;
+  onRequestClose(isLoggedin: boolean): void;
 }
 
+interface LoginState {
+  loginRes?: Partial<LoginRes>;
+  isLoggedIn: boolean;
+}
 const LoginModal: React.FC<LoginModalProps> = (props) => {
-  const [loginRes, setLoginRes] = useState<LoginRes | undefined>();
+  const [loginState, setLoginState] = useState<LoginState>({
+    loginRes: props.initialLoginRes,
+    isLoggedIn: false,
+  });
 
   const login = async (email: string) => {
     const res = await post<LoginReq, LoginRes>(Routes.API_LOGIN, {
       kind: "use",
       email,
-      redirect: `${window.location.href.substring(
-        window.location.href.indexOf("/", 8)
-      )}`,
+      redirect: getFullURLPath(),
     });
     document.dispatchEvent(new Event(COOKIE_CHANGE_EVENT));
-    setLoginRes(res);
+    setLoginState({
+      loginRes: res,
+      isLoggedIn: true,
+    });
   };
 
+  const handleRequestClose = () => {
+    props.onRequestClose(loginState.isLoggedIn);
+  };
   return (
     <LoginModalView
       events={{
         onFormSubmit: login,
-        onRequestClose: props.onRequestClose,
+        onRequestClose: handleRequestClose,
       }}
-      loginRes={loginRes}
+      loginRes={loginState.loginRes}
       isOpen={props.isOpen}
+      showForm={!loginState.loginRes || !!props.initialLoginRes}
     />
   );
 };

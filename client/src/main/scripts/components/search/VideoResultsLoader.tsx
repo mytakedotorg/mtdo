@@ -19,6 +19,8 @@
  */
 import React, { useEffect, useState } from "react";
 import { isLoggedIn } from "../../browser";
+import LoginModal from "../auth/LoginModal";
+import { LoginRes } from "../auth/LoginTypes";
 import {
   Bookmark,
   BookmarksClient,
@@ -32,10 +34,23 @@ interface VideoResultsLoaderProps {
   searchQuery: string;
 }
 
+interface LoginModalState {
+  isOpen: boolean;
+  loginRes?: Partial<LoginRes>;
+}
 const VideoResultsLoader: React.FC<VideoResultsLoaderProps> = (props) => {
   const [searchResult, setSearchResult] = useState<SearchResult | undefined>();
   const [mode, setMode] = useState<SearchMode>(SearchMode.BeforeAndAfter);
   const [bookmarks, setBookmarks] = useState<Bookmark[]>([]);
+  const [loginModalState, setLoginModalState] = useState<LoginModalState>({
+    isOpen: false,
+  });
+
+  const handleModalClose = () => {
+    setLoginModalState({
+      isOpen: false,
+    });
+  };
 
   const handleModeChange = (newMode: SearchMode) => {
     if (newMode !== mode) {
@@ -50,12 +65,20 @@ const VideoResultsLoader: React.FC<VideoResultsLoaderProps> = (props) => {
     try {
       BookmarksClient.getInstance().add([bookmarkToIntermediate(newBookmark)]);
     } catch (err: unknown) {
+      debugger;
       setBookmarks((existingBookmarks) => {
         return existingBookmarks.filter(
           (eb) => !isBookmarkEqualToSocial(eb, newBookmark.content)
         );
       });
-      throw err;
+      if (typeof err !== "string") throw err;
+      setLoginModalState({
+        isOpen: true,
+        loginRes: {
+          title: "Login Required",
+          body: err,
+        },
+      });
     }
   };
 
@@ -98,16 +121,23 @@ const VideoResultsLoader: React.FC<VideoResultsLoaderProps> = (props) => {
   }, []);
 
   return searchResult ? (
-    <SearchContainer
-      bookmarks={bookmarks}
-      eventHandlers={{
-        onAddBookmark: handleAddBookmark,
-        onRemoveBookmark: handleRemoveBookmark,
-        onModeChange: handleModeChange,
-      }}
-      mode={mode}
-      searchResult={searchResult}
-    />
+    <>
+      <SearchContainer
+        bookmarks={bookmarks}
+        eventHandlers={{
+          onAddBookmark: handleAddBookmark,
+          onRemoveBookmark: handleRemoveBookmark,
+          onModeChange: handleModeChange,
+        }}
+        mode={mode}
+        searchResult={searchResult}
+      />
+      <LoginModal
+        initialLoginRes={loginModalState.loginRes}
+        isOpen={loginModalState?.isOpen}
+        onRequestClose={handleModalClose}
+      />
+    </>
   ) : (
     <VideoResultLoadingView />
   );
