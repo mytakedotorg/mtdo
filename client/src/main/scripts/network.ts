@@ -75,7 +75,7 @@ async function fetchWithJson<T>(args: FetchArgs<T>): Promise<Response> {
   if (refreshMightFix != null) {
     if (refreshMightFix === "true") {
       window.location.href = `${Routes.LOGIN}?redirect=${getFullURLPath()}`;
-    } else if (refreshMightFix === "true") {
+    } else if (refreshMightFix === "false") {
       throw new Error(await response.text());
     }
   }
