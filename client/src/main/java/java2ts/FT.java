@@ -80,7 +80,7 @@ public interface FT {
 		public ArrayLike<Number> turnSpeaker;
 		/**
 		 * wordChar[turnWord[0]] = the character offset where the first person starts
-		 * wordChar[wordChar[1]] = the character offset where the second person starts
+		 * wordChar[turnWord[1]] = the character offset where the second person starts
 		 */
 		public ArrayLike<Number> turnWord;
 	}
