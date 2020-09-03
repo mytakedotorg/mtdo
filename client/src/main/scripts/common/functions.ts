@@ -69,7 +69,12 @@ export function bsRoundEarly(
 ): number {
   return bsRoundEarlyHelper(
     binarySearch(sorted, needle, (element: number, target: number) => {
-      return element - target;
+      if (Number.isInteger(element) && Number.isInteger(target)) {
+        return element - target;
+      } else {
+        // TODO: gitfact refactor
+        return Math.round(element * 1000) - Math.round(target * 1000);
+      }
     })
   );
 }
