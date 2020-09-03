@@ -124,3 +124,8 @@ export function getUsernameFromURL(): string {
 export function isLoggedIn(): boolean {
   return !!getCookie();
 }
+export function getFullURLPath(): string {
+  return `${window.location.href.substring(
+    window.location.href.indexOf("/", 8)
+  )}`;
+}
