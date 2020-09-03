@@ -20,7 +20,7 @@ MyTake.org will ensure that the geographic, demographic, and ideological diversi
 
 ## License
 
-By contributing your code, you agree to license your contribution under the terms of the GPLv2: https://github.com/mytakedotorg/mytakedotorg/blob/master/LICENSE
+By contributing your code, you agree to license your contribution under the terms of the GPLv2: https://github.com/mytakedotorg/mytakedotorg/blob/staging/LICENSE
 
 All files are released with the GPLv2 license as such:
 

@@ -4,7 +4,7 @@
 apply plugin: 'java-library'
 apply plugin: 'com.diffplug.spotless'
 spotless {
-	ratchetFrom 'origin/master'
+	ratchetFrom 'origin/staging'
 	java {
 		target 'src/main/java/java2ts/**'
 		licenseHeaderFile(rootProject.file('gradle/spotless-license-agpl.java'))

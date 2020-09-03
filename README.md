@@ -1,6 +1,6 @@
 # [MyTake.org](https://mytake.org)
 
-[![Travis CI](https://travis-ci.org/mytakedotorg/mytakedotorg.svg?branch=master)](https://travis-ci.org/mytakedotorg/mytakedotorg)
+[![Travis CI](https://travis-ci.org/mytakedotorg/mytakedotorg.svg?branch=staging)](https://travis-ci.org/mytakedotorg/mytakedotorg)
 [![License GPLv2](https://img.shields.io/badge/license-GPLv2-brightgreen.svg)](https://tldrlegal.com/license/gnu-general-public-license-v2)
 [![Live chat](https://img.shields.io/badge/gitter-chat-brightgreen.svg)](https://gitter.im/mytakedotorg/mytakedotorg)
 

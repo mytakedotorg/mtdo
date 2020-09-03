@@ -6,7 +6,7 @@ plugins {
 apply plugin: 'java'
 apply plugin: 'com.diffplug.spotless'
 spotless {
-	ratchetFrom 'origin/master'
+	ratchetFrom 'origin/staging'
 	java {
 		target 'src/main/java/**/*.java', 'src/test/java/**/*.java'
 		licenseHeaderFile rootProject.file('gradle/spotless-license-agpl.java')
@@ -81,7 +81,7 @@ rocker {
 
 // enforce tab indentation on rocker files
 spotless {
-	ratchetFrom 'origin/master'
+	ratchetFrom 'origin/staging'
 	format 'rocker', {
 		target 'src/main/rocker/**/*.rocker.html'
 		trimTrailingWhitespace()

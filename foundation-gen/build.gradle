@@ -84,7 +84,7 @@ tasks.register('generateFoundation', JavaExec) {
 
 apply plugin: 'com.diffplug.spotless'
 spotless {
-	ratchetFrom 'origin/master'
+	ratchetFrom 'origin/staging'
 	java {
 		licenseHeaderFile rootProject.file('gradle/spotless-license-epl.java')
 		importOrder()
