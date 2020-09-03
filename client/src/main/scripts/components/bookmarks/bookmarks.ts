@@ -141,17 +141,21 @@ export interface Bookmark {
 }
 
 function parseBookmarksJSON(json: FTBookmarkIntermediate[]): Bookmark[] {
-  return json.map((b) => ({
+  return json.map(intermediateToBookmark);
+}
+
+export function intermediateToBookmark(i: FTBookmarkIntermediate): Bookmark {
+  return {
     content: {
       cut: [
-        convertMillisecondsToSeconds(b.start),
-        convertMillisecondsToSeconds(b.end),
+        convertMillisecondsToSeconds(i.start),
+        convertMillisecondsToSeconds(i.end),
       ],
-      fact: b.fact,
+      fact: i.fact,
       kind: "videoCut",
     },
-    savedAt: new Date(b.savedAt),
-  }));
+    savedAt: new Date(i.savedAt),
+  };
 }
 
 export function bookmarkToIntermediate(
