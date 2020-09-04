@@ -100,7 +100,7 @@ function imageVideoCut(
       <div className="social__image-container">
         <img
           className="social__image"
-          src="/assets/permanent/square-wheat-482248dddd.png"
+          src="https://mytake.org/assets/permanent/square-wheat-482248dddd.png"
           width="200"
           height="200"
           alt="MyTake.org | Fundamentals, in context."
