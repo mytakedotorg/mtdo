@@ -57,27 +57,20 @@ function imageVideoCut(
 ): React.ReactElement {
   const [speaker, said] = getCut(fact, social.cut);
   let classModifier: string;
-  switch (true) {
-    case said.length <= 75:
-      classModifier = "a";
-      break;
-    case said.length > 75 && said.length <= 96:
-      classModifier = "b";
-      break;
-    case said.length > 96 && said.length <= 140:
-      classModifier = "c";
-      break;
-    case said.length > 140 && said.length <= 150:
-      classModifier = "d";
-      break;
-    case said.length > 150 && said.length <= 200:
-      classModifier = "e";
-      break;
-    case said.length > 200 && said.length <= 300:
-      classModifier = "f";
-      break;
-    default:
-      classModifier = "z";
+  if (said.length <= 75) {
+    classModifier = "a";
+  } else if (said.length <= 96) {
+    classModifier = "b";
+  } else if (said.length <= 140) {
+    classModifier = "c";
+  } else if (said.length <= 150) {
+    classModifier = "d";
+  } else if (said.length <= 200) {
+    classModifier = "e";
+  } else if (said.length <= 300) {
+    classModifier = "f";
+  } else {
+    classModifier = "z";
   }
   return (
     <div className="social">
