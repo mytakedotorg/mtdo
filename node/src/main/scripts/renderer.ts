@@ -51,9 +51,11 @@ const arToViewport: Record<AspectRatio, Viewport> = {
 
 export class RenderQueue {
   browser: Browser;
+  delayMs: number;
   pool: Pool<Page>;
 
-  private async init(numTabs = 2): Promise<RenderQueue> {
+  private async init(numTabs = 2, delayMs = 1): Promise<RenderQueue> {
+    this.delayMs = delayMs;
     /** https://github.com/coopernurse/node-pool#createpool */
     const pagePoolOptions: Options = {
       max: numTabs,
@@ -99,6 +101,7 @@ export class RenderQueue {
       if (consoleMsg !== socialRison) {
         throw `Expected ${socialRison} but was ${consoleMsg}`;
       }
+      await new Promise((resolve) => setTimeout(resolve, this.delayMs));
       const buffer = await page.screenshot({
         encoding: "binary",
         type: "png",
@@ -116,9 +119,9 @@ export class RenderQueue {
 
   static instance?: Promise<RenderQueue>;
 
-  static warmup(numTabs?: number): Promise<RenderQueue> {
+  static warmup(numTabs = 2, delayMs = 1): Promise<RenderQueue> {
     if (!this.instance) {
-      this.instance = new RenderQueue().init(numTabs);
+      this.instance = new RenderQueue().init(numTabs, delayMs);
     }
     return this.instance;
   }
