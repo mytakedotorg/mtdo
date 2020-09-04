@@ -17,7 +17,7 @@
  *
  * You can contact us at team@mytake.org
  */
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { getFullURLPath } from "../../browser";
 import { Routes } from "../../java2ts/Routes";
 import { post } from "../../network";
@@ -39,6 +39,15 @@ const LoginModal: React.FC<LoginModalProps> = (props) => {
     loginRes: props.initialLoginRes,
     isLoggedIn: false,
   });
+
+  useEffect(() => {
+    if (props.initialLoginRes) {
+      setLoginState((prevState) => ({
+        ...prevState,
+        loginRes: props.initialLoginRes,
+      }));
+    }
+  }, [props.initialLoginRes]);
 
   const login = async (email: string) => {
     const res = await post<LoginReq, LoginRes>(Routes.API_LOGIN, {
