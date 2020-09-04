@@ -1,0 +1,62 @@
+.social {
+  background-color: palette(social, background);
+  box-sizing: border-box;
+  padding: 48px;
+  width: 600px;
+  height: 314px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  color: $white;
+}
+// "IBM Plex Serif", serif;: "IBM Plex Serif", serif;
+@mixin speaker-font {
+  font-family: $ibm-plex-serif;
+  font-weight: 600;
+  font-size: 24px;
+}
+@mixin text-font($fontSize: 16px) {
+  font-family: $ibm-plex-serif;
+  font-weight: 400;
+  font-size: $fontSize;
+}
+.social__speaker {
+  @include speaker-font();
+  text-align: right;
+}
+.social__quote-container {
+  width: 48px;
+}
+.social__quote {
+  @include speaker-font();
+}
+.social__row--quote {
+  display: flex;
+  justify-content: space-around;
+}
+.social__text {
+  flex: 1;
+  margin: 0;
+}
+.social__text--a, .social__quote--a {
+  @include text-font(36px);
+}
+.social__text--b, .social__quote--b {
+  @include text-font(30px);
+}
+.social__text--c, .social__quote--c {
+  @include text-font(28px)
+}
+.social__text--d, .social__quote--d {
+  @include text-font(26px);
+}
+.social__text--e {
+  @include text-font(24px);
+}
+.social__text--f {
+  @include text-font(20px);
+  line-height: 1.2em;
+}
+.social__text--z {
+  @include text-font(16px);
+}

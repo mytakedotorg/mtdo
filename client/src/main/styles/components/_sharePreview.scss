@@ -102,14 +102,6 @@
   background-color: lighten($base-lightest, 10%);
   padding: 4px;
 }
-.share-preview__content--embed {
-  width: 600px;
-  height: 314px;
-  padding-top: 8px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-}
 .share-preview__content-meta {
   background-color: lighten($base-lightest, 30%);
   padding-left: 4px;
@@ -137,9 +129,6 @@
 }
 .share-preview__text--app {
   @include typography($serif, 400, 12px, 1.5em);
-}
-.share-preview__text--embed {
-  @include typography($serif, 400, 18px, 1.5em);
 }
 .share-preview__speaker {
   font-size: 26px;
