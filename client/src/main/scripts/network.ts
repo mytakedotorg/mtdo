@@ -52,7 +52,7 @@ export async function put<T>(path: string, body: T): Promise<Date> {
 }
 
 export async function deleteReq<T>(path: string, body: T): Promise<Response> {
-  return fetchWithJson({ path: path, body: body, method: "DELETE" });
+  return await fetchWithJson({ path: path, body: body, method: "DELETE" });
 }
 
 interface FetchArgs<T> {
@@ -77,8 +77,20 @@ async function fetchWithJson<T>(args: FetchArgs<T>): Promise<Response> {
         getFullURLPath()
       )}`;
     } else {
-      throw new Error(await response.text());
+      throw new LoginError(await response.text());
     }
   }
   return response;
 }
+
+// https://stackoverflow.com/a/5251506
+interface LoginError {
+  name: string;
+  message: string;
+  stack?: string;
+}
+export const LoginError = (function (message: string) {
+  this.name = "LoginError";
+  this.message = message;
+  this.stack = new Error().stack;
+} as any) as { new (message: string): LoginError };

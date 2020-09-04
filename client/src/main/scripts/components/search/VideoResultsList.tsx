@@ -64,9 +64,9 @@ const VideoResultsList: React.FC<VideoResultsListProps> = ({
     }
   };
 
-  const handleOnModalRequestClose = () => {
+  const handleOnModalRequestClose = (isLoggedIn: boolean) => {
     const { bookmarkToAdd } = modalState;
-    !!bookmarkToAdd && eventHandlers.onAddBookmark(bookmarkToAdd);
+    isLoggedIn && !!bookmarkToAdd && eventHandlers.onAddBookmark(bookmarkToAdd);
     setModalState({ isOpen: false });
   };
 

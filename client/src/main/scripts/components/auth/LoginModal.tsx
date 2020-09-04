@@ -17,8 +17,8 @@
  *
  * You can contact us at team@mytake.org
  */
-import React, { useState } from "react";
-import { getFullURLPath } from "../../browser";
+import React, { useEffect, useState } from "react";
+import { getFullURLPath, isLoggedIn } from "../../browser";
 import { Routes } from "../../java2ts/Routes";
 import { post } from "../../network";
 import LoginModalView from "./LoginModalView";
@@ -33,12 +33,23 @@ interface LoginModalProps {
 interface LoginState {
   loginRes?: Partial<LoginRes>;
   isLoggedIn: boolean;
+  isFormSubmitted: boolean;
 }
 const LoginModal: React.FC<LoginModalProps> = (props) => {
   const [loginState, setLoginState] = useState<LoginState>({
     loginRes: props.initialLoginRes,
     isLoggedIn: false,
+    isFormSubmitted: false,
   });
+
+  useEffect(() => {
+    if (props.initialLoginRes) {
+      setLoginState((prevState) => ({
+        ...prevState,
+        loginRes: props.initialLoginRes,
+      }));
+    }
+  }, [props.initialLoginRes]);
 
   const login = async (email: string) => {
     const res = await post<LoginReq, LoginRes>(Routes.API_LOGIN, {
@@ -49,7 +60,8 @@ const LoginModal: React.FC<LoginModalProps> = (props) => {
     document.dispatchEvent(new Event(COOKIE_CHANGE_EVENT));
     setLoginState({
       loginRes: res,
-      isLoggedIn: true,
+      isLoggedIn: isLoggedIn(),
+      isFormSubmitted: true,
     });
   };
 
@@ -64,7 +76,10 @@ const LoginModal: React.FC<LoginModalProps> = (props) => {
       }}
       loginRes={loginState.loginRes}
       isOpen={props.isOpen}
-      showForm={!loginState.loginRes || !!props.initialLoginRes}
+      showForm={
+        !loginState.loginRes ||
+        (!!props.initialLoginRes && !loginState.isFormSubmitted)
+      }
     />
   );
 };
