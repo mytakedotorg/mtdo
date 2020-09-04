@@ -200,11 +200,11 @@ export class BookmarksClient {
    * It's super unimportant, completely fine to ignore it.
    */
   async add(bookmarks: FTBookmarkIntermediate[]): Promise<Date> {
-    return put(Routes.API_BOOKMARKS, bookmarks);
+    return await put(Routes.API_BOOKMARKS, bookmarks);
   }
 
   async remove(bookmarks: FTBookmarkIntermediate[]): Promise<Response> {
-    return deleteReq(Routes.API_BOOKMARKS, bookmarks);
+    return await deleteReq(Routes.API_BOOKMARKS, bookmarks);
   }
 }
 

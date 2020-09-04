@@ -52,7 +52,7 @@ export async function put<T>(path: string, body: T): Promise<Date> {
 }
 
 export async function deleteReq<T>(path: string, body: T): Promise<Response> {
-  return fetchWithJson({ path: path, body: body, method: "DELETE" });
+  return await fetchWithJson({ path: path, body: body, method: "DELETE" });
 }
 
 interface FetchArgs<T> {
