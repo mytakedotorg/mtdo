@@ -19,6 +19,7 @@
  */
 import React, { useEffect, useState } from "react";
 import { isLoggedIn } from "../../browser";
+import { LoginError } from "../../network";
 import LoginModal from "../auth/LoginModal";
 import { LoginRes } from "../auth/LoginTypes";
 import {
@@ -58,45 +59,53 @@ const VideoResultsLoader: React.FC<VideoResultsLoaderProps> = (props) => {
     }
   };
 
-  const handleAddBookmark = (newBookmark: Bookmark) => {
+  const handleAddBookmark = async (newBookmark: Bookmark) => {
     setBookmarks((existingBookmarks) => {
       return [...existingBookmarks, newBookmark];
     });
     try {
-      BookmarksClient.getInstance().add([bookmarkToIntermediate(newBookmark)]);
+      await BookmarksClient.getInstance().add([
+        bookmarkToIntermediate(newBookmark),
+      ]);
     } catch (err: unknown) {
-      debugger;
       setBookmarks((existingBookmarks) => {
         return existingBookmarks.filter(
           (eb) => !isBookmarkEqualToSocial(eb, newBookmark.content)
         );
       });
-      if (typeof err !== "string") throw err;
+      if (!(err instanceof LoginError)) throw err;
       setLoginModalState({
         isOpen: true,
         loginRes: {
           title: "Login Required",
-          body: err,
+          body: err.message,
         },
       });
     }
   };
 
-  const handleRemoveBookmark = (oldBookmark: Bookmark) => {
+  const handleRemoveBookmark = async (oldBookmark: Bookmark) => {
     setBookmarks((existingBookmarks) => {
       return existingBookmarks.filter(
         (eb) => !isBookmarkEqualToSocial(eb, oldBookmark.content)
       );
     });
     try {
-      BookmarksClient.getInstance().remove([
+      await BookmarksClient.getInstance().remove([
         bookmarkToIntermediate(oldBookmark),
       ]);
     } catch (err: unknown) {
       setBookmarks((existingBookmarks) => {
         return [...existingBookmarks, oldBookmark];
       });
-      throw err;
+      if (!(err instanceof LoginError)) throw err;
+      setLoginModalState({
+        isOpen: true,
+        loginRes: {
+          title: "Login Required",
+          body: err.message,
+        },
+      });
     }
   };
 
