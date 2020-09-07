@@ -56,12 +56,49 @@ function imageVideoCut(
   fact: FT.VideoFactContent
 ): React.ReactElement {
   const [speaker, said] = getCut(fact, social.cut);
+  let classModifier: string;
+  if (said.length <= 75) {
+    classModifier = "a";
+  } else if (said.length <= 96) {
+    classModifier = "b";
+  } else if (said.length <= 140) {
+    classModifier = "c";
+  } else if (said.length <= 150) {
+    classModifier = "d";
+  } else if (said.length <= 200) {
+    classModifier = "e";
+  } else if (said.length <= 300) {
+    classModifier = "f";
+  } else {
+    classModifier = "z";
+  }
   return (
-    <div className="share-preview__content share-preview__content--embed">
-      <p className="share-preview__text share-preview__text--embed">
-        {abbreviate(said, 590)}
-      </p>
-      <p className="share-preview__speaker">-{speaker.fullName}</p>
+    <div className="social">
+      <div className="social__content">
+        <div className="social__row social__row--quote">
+          <div className="social__quote-container">
+            <span className={`social__quote social__quote--${classModifier}`}>
+              &ldquo;
+            </span>
+          </div>
+          <p className={`social__text social__text--${classModifier}`}>
+            {abbreviate(said, 420)}
+          </p>
+        </div>
+        <div className="social__row">
+          <p className="social__speaker">{speaker.fullName}</p>
+        </div>
+      </div>
+      <div className="social__background"></div>
+      <div className="social__image-container">
+        <img
+          className="social__image"
+          src="https://mytake.org/assets/permanent/square-wheat-482248dddd.png"
+          width="200"
+          height="200"
+          alt="MyTake.org | Fundamentals, in context."
+        />
+      </div>
     </div>
   );
 }

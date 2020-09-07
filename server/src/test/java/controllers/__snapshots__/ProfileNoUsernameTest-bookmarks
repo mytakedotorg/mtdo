@@ -29,7 +29,7 @@
 <link rel="stylesheet" href="/assets-dev/styles/main.css">
 <link rel="stylesheet" href="/assets-dev/styles/vis.css">
 <link rel="stylesheet" href="/assets-dev/styles/rc-slider.css">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Merriweather:400,400i,700|Source+Sans+Pro:300,400,700" crossorigin="anonymous">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+Pro:wght@300;400;700&family=IBM+Plex+Serif:wght@400;600&display=swap" crossorigin="anonymous">
 <script src="https://use.fontawesome.com/be03d6dcba.js"></script>
 <!--[if lt IE 9]>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
