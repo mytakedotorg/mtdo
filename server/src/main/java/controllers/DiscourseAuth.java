@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2017 MyTake.org, Inc.
+ * Copyright (C) 2017-2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -21,9 +21,13 @@ package controllers;
 
 import static db.Tables.ACCOUNT;
 
+import auth.AuthModule;
 import auth.AuthUser;
 import com.google.inject.Binder;
 import com.typesafe.config.Config;
+import common.DbMisc;
+import common.RedirectException;
+import common.UrlEncodedPath;
 import db.tables.records.AccountRecord;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -60,11 +64,14 @@ public class DiscourseAuth implements Jooby.Module {
 	protected String appendUserInfoToNonce(Request req, String nonce) throws UnsupportedEncodingException {
 		// find logged-in user
 		AuthUser auth = AuthUser.auth(req);
+		if (!auth.isConfirmed() || auth.username() == null) {
+			throw RedirectException.temporary(UrlEncodedPath.path(Routes.USERNAME)
+					.paramPathAndQuery(AuthModule.REDIRECT, req)
+					.build());
+		}
 		AccountRecord account;
 		try (DSLContext dsl = req.require(DSLContext.class)) {
-			account = dsl.selectFrom(ACCOUNT)
-					.where(ACCOUNT.ID.eq(auth.id()))
-					.fetchOne();
+			account = DbMisc.fetchOne(dsl, ACCOUNT.ID, auth.id());
 		}
 		// return the logged-in user
 		String name = Optional.ofNullable(account.getName()).orElse(account.getUsername());
