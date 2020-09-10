@@ -50,7 +50,7 @@ const arToViewport: Record<AspectRatio, Viewport> = {
 };
 
 export class RenderQueue {
-  static warmup(numTabs = 2, delayMs = 2): Promise<RenderQueue> {
+  static warmup(numTabs = 2, delayMs = 3): Promise<RenderQueue> {
     if (!this.instance) {
       this.instance = new RenderQueue().init(numTabs, delayMs);
     }
