@@ -54,11 +54,11 @@ public class AuthUser {
 	public static final int LOGIN_DAYS = 7;
 
 	final int id;
-	final String username;
+	final @Nullable String username;
 	final String email;
 	final boolean confirmed;
 
-	public AuthUser(int id, String username, String email, boolean confirmed) {
+	public AuthUser(int id, @Nullable String username, String email, boolean confirmed) {
 		this.id = id;
 		this.username = username;
 		this.email = email;
@@ -69,12 +69,16 @@ public class AuthUser {
 		return id;
 	}
 
-	public String username() {
+	public @Nullable String username() {
 		return username;
 	}
 
 	public String email() {
 		return email;
+	}
+
+	public boolean isConfirmed() {
+		return confirmed;
 	}
 
 	public void requireMod(DSLContext dsl) {
@@ -85,14 +89,17 @@ public class AuthUser {
 	}
 
 	static JWTCreator.Builder forUser(AccountRecord account, Time time) {
-		return JWT.create()
+		JWTCreator.Builder builder = JWT.create()
 				.withIssuer(ISSUER_AUDIENCE)
 				.withAudience(ISSUER_AUDIENCE)
 				.withIssuedAt(Time.toJud(time.now()))
 				.withSubject(Integer.toString(account.getId()))
-				.withClaim(CLAIM_USERNAME, account.getUsername())
 				.withClaim(CLAIM_EMAIL, account.getEmail())
 				.withClaim(CLAIM_CONFIRMED, Boolean.toString(account.getConfirmedAt() != null));
+		if (account.getUsername() != null) {
+			builder = builder.withClaim(CLAIM_USERNAME, account.getUsername());
+		}
+		return builder;
 	}
 
 	static String jwtToken(Registry registry, AccountRecord user) {
