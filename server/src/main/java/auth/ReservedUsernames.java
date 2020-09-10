@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2017-2018 MyTake.org, Inc.
+ * Copyright (C) 2017-2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -37,7 +37,9 @@ class ReservedUsernames {
 			"import",			// import from e.g. Google docs?
 			"settings",			// for user settings
 			"blog",				// for a blog
-			"legal",				// for legal attributes
+			"legal",			// for legal attributes
+			"profile",			// for the user profile
+			"usernames",
 			url(Routes.API),
 			url(Routes.MODS),
 			url(Routes.DRAFTS),

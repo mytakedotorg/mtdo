@@ -101,6 +101,11 @@ public class FormSubmit {
 		return given().redirects().follow(false).params(map).post(def.actionUrl());
 	}
 
+	public Response postDebugWithCookies(Map<String, ?> cookies) {
+		Assertions.assertThat(map.keySet()).isEqualTo(def.fieldNames());
+		return given().redirects().follow(false).cookies(cookies).params(map).post(def.actionUrl());
+	}
+
 	public Response get(RequestSpecification req) {
 		Preconditions.checkArgument(def.method() == FormDef.Method.GET);
 		UrlEncodedPath path = UrlEncodedPath.path(def.actionUrl());
