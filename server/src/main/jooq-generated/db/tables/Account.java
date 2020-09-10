@@ -18,7 +18,7 @@ import org.jooq.ForeignKey;
 import org.jooq.Identity;
 import org.jooq.Name;
 import org.jooq.Record;
-import org.jooq.Row14;
+import org.jooq.Row15;
 import org.jooq.Schema;
 import org.jooq.Table;
 import org.jooq.TableField;
@@ -34,7 +34,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Account extends TableImpl<AccountRecord> {
 
-    private static final long serialVersionUID = -389459540;
+    private static final long serialVersionUID = -1834422089;
 
     /**
      * The reference instance of <code>public.account</code>
@@ -117,7 +117,12 @@ public class Account extends TableImpl<AccountRecord> {
     /**
      * The column <code>public.account.newsletter</code>.
      */
-    public final TableField<AccountRecord, Boolean> NEWSLETTER = createField(DSL.name("newsletter"), org.jooq.impl.SQLDataType.BOOLEAN, this, "");
+    public final TableField<AccountRecord, Boolean> NEWSLETTER = createField(DSL.name("newsletter"), org.jooq.impl.SQLDataType.BOOLEAN.nullable(false).defaultValue(org.jooq.impl.DSL.field("true", org.jooq.impl.SQLDataType.BOOLEAN)), this, "");
+
+    /**
+     * The column <code>public.account.username_typohard</code>.
+     */
+    public final TableField<AccountRecord, String> USERNAME_TYPOHARD = createField(DSL.name("username_typohard"), org.jooq.impl.SQLDataType.VARCHAR(100), this, "");
 
     /**
      * Create a <code>public.account</code> table reference
@@ -169,7 +174,7 @@ public class Account extends TableImpl<AccountRecord> {
 
     @Override
     public List<UniqueKey<AccountRecord>> getKeys() {
-        return Arrays.<UniqueKey<AccountRecord>>asList(Keys.ACCOUNT_PKEY, Keys.ACCOUNT_USERNAME_KEY, Keys.ACCOUNT_EMAIL_KEY);
+        return Arrays.<UniqueKey<AccountRecord>>asList(Keys.ACCOUNT_PKEY, Keys.ACCOUNT_USERNAME_KEY, Keys.ACCOUNT_EMAIL_KEY, Keys.ACCOUNT_USERNAME_TYPOHARD_KEY);
     }
 
     @Override
@@ -199,11 +204,11 @@ public class Account extends TableImpl<AccountRecord> {
     }
 
     // -------------------------------------------------------------------------
-    // Row14 type methods
+    // Row15 type methods
     // -------------------------------------------------------------------------
 
     @Override
-    public Row14<Integer, String, String, String, LocalDateTime, String, LocalDateTime, String, LocalDateTime, String, LocalDateTime, LocalDateTime, String, Boolean> fieldsRow() {
-        return (Row14) super.fieldsRow();
+    public Row15<Integer, String, String, String, LocalDateTime, String, LocalDateTime, String, LocalDateTime, String, LocalDateTime, LocalDateTime, String, Boolean, String> fieldsRow() {
+        return (Row15) super.fieldsRow();
     }
 }
