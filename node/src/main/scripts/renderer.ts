@@ -50,11 +50,33 @@ const arToViewport: Record<AspectRatio, Viewport> = {
 };
 
 export class RenderQueue {
+  static warmup(numTabs = 2, delayMs = 2): Promise<RenderQueue> {
+    if (!this.instance) {
+      this.instance = new RenderQueue().init(numTabs, delayMs);
+    }
+    return this.instance;
+  }
+
+  static async render(socialRison: string, ar: AspectRatio): Promise<Buffer> {
+    const queue = await this.warmup();
+    return queue.renderOne(socialRison, ar);
+  }
+
+  static async shutdown(): Promise<void> {
+    if (this.instance) {
+      const queue = await this.instance;
+      await queue.pool.drain();
+      await queue.pool.clear();
+      await queue.browser.close();
+      this.instance = undefined;
+    }
+  }
+
   browser: Browser;
   delayMs: number;
   pool: Pool<Page>;
 
-  private async init(numTabs = 2, delayMs = 3): Promise<RenderQueue> {
+  private async init(numTabs: number, delayMs: number): Promise<RenderQueue> {
     this.delayMs = delayMs;
     /** https://github.com/coopernurse/node-pool#createpool */
     const pagePoolOptions: Options = {
@@ -118,28 +140,6 @@ export class RenderQueue {
   }
 
   static instance?: Promise<RenderQueue>;
-
-  static warmup(numTabs = 2, delayMs = 1): Promise<RenderQueue> {
-    if (!this.instance) {
-      this.instance = new RenderQueue().init(numTabs, delayMs);
-    }
-    return this.instance;
-  }
-
-  static async render(socialRison: string, ar: AspectRatio): Promise<Buffer> {
-    const queue = await this.warmup();
-    return queue.renderOne(socialRison, ar);
-  }
-
-  static async shutdown(): Promise<void> {
-    if (this.instance) {
-      const queue = await this.instance;
-      await queue.pool.drain();
-      await queue.pool.clear();
-      await queue.browser.close();
-      this.instance = undefined;
-    }
-  }
 }
 
 class Blocker<T> {
