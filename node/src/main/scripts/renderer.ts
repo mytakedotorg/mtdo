@@ -54,7 +54,7 @@ export class RenderQueue {
   delayMs: number;
   pool: Pool<Page>;
 
-  private async init(numTabs = 2, delayMs = 1): Promise<RenderQueue> {
+  private async init(numTabs = 2, delayMs = 2): Promise<RenderQueue> {
     this.delayMs = delayMs;
     /** https://github.com/coopernurse/node-pool#createpool */
     const pagePoolOptions: Options = {
