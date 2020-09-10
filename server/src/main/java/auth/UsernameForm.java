@@ -57,18 +57,18 @@ public class UsernameForm extends PostForm<UsernameForm> {
 		if (!auth.confirmed) {
 			builder.formError("You must first confirm your email address. Check your email!").build();
 			return;
-		} else if (auth.username() != null) {
-			builder.set(USERNAME, auth.username());
+		}
+		String alreadyHasUsername;
+		if (auth.username() != null) {
+			alreadyHasUsername = auth.username();
 		} else {
 			try (DSLContext dsl = req.require(DSLContext.class)) {
-				AccountRecord account = DbMisc.fetchOne(dsl, ACCOUNT.ID, auth.id());
-				if (account.getUsername() != null) {
-					builder.set(USERNAME, account.getUsername());
-				}
+				alreadyHasUsername = DbMisc.fetchOne(dsl, ACCOUNT.ID, auth.id(), ACCOUNT.USERNAME);
 			}
 		}
-		if (builder.valuePresent(USERNAME)) {
-			builder.formError("You already have a username.");
+		if (alreadyHasUsername != null) {
+			builder.addError(USERNAME, "You already have a username.");
+			builder.set(USERNAME, alreadyHasUsername);
 		}
 	}
 
@@ -105,7 +105,7 @@ public class UsernameForm extends PostForm<UsernameForm> {
 	private static final Pattern LOWERCASE_AND_DASH = Pattern.compile("[a-z\\d-]*");
 
 	private static final String msg_ALLOWED_CHARACTERS = "Can only use lowercase letters, numbers, and '-'";
-	private static final String msg_USERNAME_ALREADY_TAKEN = "Username is already taken";
+	private static final String msg_USERNAME_ALREADY_TAKEN = "Already taken";
 	private static final String msg_USERNAME_TOO_SIMILAR_TO = "Too similar to existing user ";
 
 	static void validateFormat(FormValidation.Builder<UsernameForm> retry) {

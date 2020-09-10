@@ -92,4 +92,33 @@ public class UsernameFormTest {
 		Assertions.assertThat(cookiesNoUsername.get("loginui")).isEqualTo("\"{\\\"username\\\":null,\\\"email\\\":\\\"test@email.com\\\",\\\"unconfirmed\\\":false}\"");
 		Assertions.assertThat(cookiesUsername.get("loginui")).isEqualTo("\"{\\\"username\\\":\\\"tester\\\",\\\"email\\\":\\\"test@email.com\\\",\\\"unconfirmed\\\":false}\"");
 	}
+
+	/** Creates and confirms an account at the given email address, and returns their login cookies. */
+	private Map<String, String> createAndConfirm(String email) {
+		LoginApi.Req req = new LoginApi.Req();
+		req.email = email;
+		req.kind = "use";
+		RestAssured.given().contentType(ContentType.JSON)
+				.body(req.toJson())
+				.post(Routes.API_LOGIN);
+		String loginLink = app.waitForEmails(1).get(email)
+				.extractLink("Visit ");
+		return noRedirects().get(loginLink)
+				.then()
+				.statusCode(Status.FOUND.value())
+				.extract().cookies();
+	}
+
+	@Test
+	public void _04_typoharden() {
+		Map<String, String> cookies = createAndConfirm("blub@email.com");
+		Snapshot.match("typoharden-taken", FormSubmit.create(UsernameForm.class)
+				.set(UsernameForm.USERNAME, "tester")
+				.set(AuthModule.REDIRECT, "/")
+				.post(noRedirects().cookies(cookies))).contains("Already taken");
+		Snapshot.match("typoharden", FormSubmit.create(UsernameForm.class)
+				.set(UsernameForm.USERNAME, "teesterr")
+				.set(AuthModule.REDIRECT, "/")
+				.post(noRedirects().cookies(cookies))).contains("Too similar to existing user tester");
+	}
 }

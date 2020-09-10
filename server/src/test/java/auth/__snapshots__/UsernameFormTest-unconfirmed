@@ -79,7 +79,7 @@
 		<label for="username" class="form__label form__label--email">Username</label>
 <input name="username" type="email" class="form__input form__input--email">
 		<input name="redirect" type="hidden" value="/">
-		<input type="submit" class="form__submit form__submit--blue" disabled value="Claim username" />
+		<input type="submit" class="form__submit form__submit--blue" value="Claim username" />
 		</form>
 
 	</div>
