@@ -33,7 +33,7 @@ import CaptionTextNodeListContainer, {
 } from "./CaptionTextNodeListContainer";
 import ClipEditor, { ClipEditorEventHandlers } from "./ClipEditor";
 import { RangeType, StateAuthority, TimeRange } from "./Video";
-import isEqual = require("lodash/isEqual");
+import isEqual from "lodash/isEqual";
 
 export interface CaptionViewEventHandlers {
   onAfterRangeChange: (

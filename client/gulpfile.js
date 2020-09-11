@@ -11,6 +11,8 @@ serveStatic = require("serve-static");
 const { CheckerPlugin } = require("awesome-typescript-loader");
 webpackDevMiddleware = require("webpack-dev-middleware");
 webpackHotMiddleware = require("webpack-hot-middleware");
+const BundleAnalyzerPlugin = require("webpack-bundle-analyzer")
+  .BundleAnalyzerPlugin;
 // misc
 tasklisting = require("gulp-task-listing");
 rev = require("gulp-rev");
@@ -150,7 +152,9 @@ function webpackCfg(mode) {
     },
     plugins:
       mode === PROD
-        ? []
+        ? [
+            // new BundleAnalyzerPlugin(), // uncomment to debug bundle size
+          ]
         : [
             new CheckerPlugin(), // needed for hotreload on typescript
             new webpack.HotModuleReplacementPlugin(),
@@ -175,10 +179,10 @@ function webpackCfg(mode) {
       ],
     },
     externals: {
-      "feather-icons": "feather",
       react: "React",
       "react-dom": "ReactDOM",
       vis: "vis",
+      d3: "d3",
     },
   };
 }

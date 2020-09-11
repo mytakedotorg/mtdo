@@ -26,7 +26,7 @@ import { slugify } from "../common/functions";
 import { encodeSocial, VideoCut } from "../common/social/social";
 import { copyToClipboard } from "../browser";
 import CaptionView, { CaptionViewEventHandlers } from "./CaptionView";
-import isEqual = require("lodash/isEqual");
+import isEqual from "lodash/isEqual";
 
 interface YTPlayerParameters {
   rel: number;

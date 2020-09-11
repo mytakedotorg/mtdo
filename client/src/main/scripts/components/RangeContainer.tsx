@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2018 MyTake.org, Inc.
+ * Copyright (C) 2018-2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -21,7 +21,7 @@ import * as React from "react";
 import Slider, { Range } from "rc-slider";
 import { TrackSliderEventHandlers } from "./TrackSlider";
 import { RangeType, StateAuthority, StylesObject } from "./Video";
-import isEqual = require("lodash/isEqual");
+import isEqual from "lodash/isEqual";
 
 interface RangeContainerProps {
   defaultValue: number | [number, number];
