@@ -19,7 +19,7 @@
  */
 import * as d3 from "d3";
 import React, { useEffect, useRef } from "react";
-import { FiCornerLeftUp as CornerLeftUp } from "react-icons/fi";
+import { CornerLeftUp } from "react-feather";
 import { FT } from "../../java2ts/FT";
 import { SearchResult } from "./search";
 

@@ -18,7 +18,7 @@
  * You can contact us at team@mytake.org
  */
 import * as React from "react";
-import { FiChevronDown as ChevronDown } from "react-icons/fi";
+import { ChevronDown } from "react-feather";
 import { LoginCookie } from "../../java2ts/LoginCookie";
 import { Routes } from "../../java2ts/Routes";
 import DropDown from "../DropDown";
