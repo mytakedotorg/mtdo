@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2017-2018 MyTake.org, Inc.
+ * Copyright (C) 2017-2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -19,13 +19,8 @@
  */
 package java2ts;
 
-import com.jsoniter.any.Any;
-
 @jsweet.lang.Interface
-public class DraftPost implements Json {
-	@jsweet.lang.Optional
-	public DraftRev parentRev;
-	public String title;
-	public String imageUrl;
-	public Any blocks;
+public class DraftRev implements Json {
+	public int draftid;
+	public int lastrevid;
 }

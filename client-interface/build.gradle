@@ -1,0 +1,40 @@
+////////////////////////////////////////
+// java - gets compiled to typescript //
+////////////////////////////////////////
+apply plugin: 'java-library'
+apply plugin: 'com.diffplug.spotless'
+spotless {
+	ratchetFrom 'origin/staging'
+	java {
+		target 'src/main/java/java2ts/**'
+		licenseHeaderFile(rootProject.file('gradle/spotless-license-agpl.java'))
+		importOrder()
+		eclipse().configFile(rootProject.file('gradle/spotless.eclipseformat.xml'))
+		removeUnusedImports()
+	}
+}
+dependencies {
+	api "com.jsoniter:jsoniter:$VER_JSONITER"
+	api "org.jsweet:jsweet-core:$VER_JSWEET_CORE"
+	testImplementation "junit:junit:$VER_JUNIT"
+	testImplementation "org.assertj:assertj-core:$VER_ASSERTJ"
+}
+
+//////////////
+// jsoniter //
+//////////////
+apply plugin: 'org.mytake.gradle.jsonitercodegen'
+jsoniterCodegen { codegenClass = 'java2ts.CodegenConfig' }
+
+// generate typescript for the java in the java2ts folder
+apply plugin: 'org.mytake.gradle.jsweetcodegen'
+jsweet {
+	targetVersion = 'ES6' // should match gradle.properties VER_JSWEET_CORE
+	module = 'commonjs'
+	tsOut = file('../client/src/main/scripts/java2ts')
+	tsOnly = true
+	factoryClassName = 'org.mytake.gradle.jsweet.JSweetFactoryJsoniterAny'
+	includes= [
+		'java2ts/**'
+	]
+}

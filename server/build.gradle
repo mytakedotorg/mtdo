@@ -124,6 +124,7 @@ dependencies {
 	// json
 	implementation "com.jsoniter:jsoniter:$VER_JSONITER"
 	implementation project(':client')
+	implementation project(':client-interface')
 	implementation project(':foundation')
 	implementation project(':lucene')
 

@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2018 MyTake.org, Inc.
+ * Copyright (C) 2017-2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -19,23 +19,33 @@
  */
 package java2ts;
 
-public interface FollowJson {
-	/** Request when a take/profile is first viewed. */
-	@jsweet.lang.Interface
-	public class FollowAskReq implements Json {
-		public String username;
-	}
+@jsweet.lang.Erased
+public interface StringTypes {
+	// ParagraphBlock / DocumentBlock / VideoBlock
+	@jsweet.lang.StringType
+	@jsweet.lang.Erased
+	public interface paragraph {}
 
-	/** Request to follow/unfollow a user. */
-	@jsweet.lang.Interface
-	public class FollowTellReq implements Json {
-		public String username;
-		public boolean isFollowing;
-	}
+	@jsweet.lang.StringType
+	@jsweet.lang.Erased
+	public interface document {}
 
-	/** Response to both requests. */
-	@jsweet.lang.Interface
-	public class FollowRes implements Json {
-		public boolean isFollowing;
-	}
+	@jsweet.lang.StringType
+	@jsweet.lang.Erased
+	public interface video {}
+
+	// DocumentFact
+	@jsweet.lang.StringType
+	@jsweet.lang.Erased
+	public interface ratified {}
+
+	@jsweet.lang.StringType
+	@jsweet.lang.Erased
+	public interface published {}
+
+	// VideoFact
+	@jsweet.lang.StringType
+	@jsweet.lang.Erased
+	public interface recorded {}
+
 }

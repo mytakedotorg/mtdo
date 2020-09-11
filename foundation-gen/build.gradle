@@ -30,7 +30,7 @@ dependencies {
 	testImplementation      "com.google.auto.value:auto-value-annotations:${VER_AUTOVALUE}"
 
 	compileOnly "com.google.code.findbugs:jsr305:$VER_JSR_305"
-	implementation project(':client')
+	implementation project(':client-interface')
 	implementation project(':lucene')
 	implementation "com.jsoniter:jsoniter:$VER_JSONITER"
 	implementation 'com.google.code.gson:gson:2.8.6'

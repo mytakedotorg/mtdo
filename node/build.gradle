@@ -9,7 +9,7 @@ tasks.register('syncClientUtils', Sync) {
 }
 
 tasks.register('syncClientJava2Ts', Sync) {
-	dependsOn ':client:jsweet'
+	dependsOn ':client-interface:jsweet'
 	from '../client/src/main/scripts/java2ts'
 	into 'src/main/scripts/java2ts'
 }

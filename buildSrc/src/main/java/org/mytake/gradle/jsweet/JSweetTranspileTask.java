@@ -18,7 +18,6 @@ package org.mytake.gradle.jsweet;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
@@ -26,6 +25,7 @@ import java.util.List;
 import org.apache.commons.lang3.ArrayUtils;
 import org.codehaus.plexus.util.DirectoryScanner;
 import org.gradle.api.DefaultTask;
+import org.gradle.api.Project;
 import org.gradle.api.file.FileCollection;
 import org.gradle.api.file.SourceDirectorySet;
 import org.gradle.api.tasks.CacheableTask;
@@ -46,8 +46,6 @@ import org.jsweet.transpiler.util.ProcessUtil;
 import org.mytake.gradle.node.NodePlugin;
 
 import com.diffplug.gradle.FileMisc;
-import com.github.eirslett.maven.plugins.frontend.lib.FrontendPluginFactory;
-import com.github.eirslett.maven.plugins.frontend.lib.InstallConfig;
 
 /**
  * JSweet transpilation task
@@ -129,9 +127,11 @@ public class JSweetTranspileTask extends DefaultTask {
 			}
 
 			// make sure we use the npm that we intend
-			NodePlugin.Extension node = getProject().getExtensions().getByType(NodePlugin.Extension.class);
-			node.setup.start(getProject());
-			ProcessUtil.addExtraPath(new File(getProject().getRootProject().getBuildDir(), "node-install/node").getAbsolutePath());
+			Project root = getProject().getRootProject();
+			Project client = root.project("client");
+			NodePlugin.Extension node = client.getExtensions().getByType(NodePlugin.Extension.class);
+			node.setup.start(client);
+			ProcessUtil.addExtraPath(new File(root.getBuildDir(), "node-install/node").getAbsolutePath());
 			transpiler.transpile(transpilationHandler, sourceFiles);
 
 			FileMisc.flatten(new File(configuration.getTsOut(), configuration.getTsOut().getName()));
