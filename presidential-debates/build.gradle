@@ -57,7 +57,7 @@ spotless {
 		custom 'VideoJsonFormat', { str ->
 			ByteArrayOutputStream result = new ByteArrayOutputStream()
 			javaexec {
-				classpath configurations.foundationGenClasspath
+				classpath project.configurations.foundationGenClasspath
 				main = 'org.mytake.foundation.VideoJsonFormat'
 				standardInput = new ByteArrayInputStream(str.getBytes('UTF-8'))
 				standardOutput = result
@@ -66,6 +66,9 @@ spotless {
 		}
 	}
 }
+
 tasks.named('spotlessFoundation-video') {
 	dependsOn ':foundation-gen:jar'
+	dependsOn ':client:jar'
+	dependsOn ':lucene:jar'
 }
