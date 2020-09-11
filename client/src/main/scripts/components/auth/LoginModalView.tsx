@@ -18,7 +18,7 @@
  * You can contact us at team@mytake.org
  */
 import React, { useState } from "react";
-import { X } from "react-feather";
+import { FiX as X } from "react-icons/fi";
 import Modal from "react-modal";
 import { LoginRes } from "./LoginTypes";
 

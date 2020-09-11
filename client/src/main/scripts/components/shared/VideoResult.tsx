@@ -18,7 +18,7 @@
  * You can contact us at team@mytake.org
  */
 import React from "react";
-import { Bookmark as BookmarkIcon, Play, Share } from "react-feather";
+import { FiBookmark as BookmarkIcon, FiPlay as Play, FiShare as Share } from "react-icons/fi";
 import { slugify } from "../../common/functions";
 import { encodeSocial, Social, VideoTurn } from "../../common/social/social";
 import { convertSecondsToTimestamp, getSpeaker } from "../../common/video";
