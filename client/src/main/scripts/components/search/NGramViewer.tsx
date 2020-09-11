@@ -17,7 +17,7 @@
  *
  * You can contact us at team@mytake.org
  */
-import {scaleOrdinal, schemeSet2, rgb, select, scaleBand, axisBottom, max, scaleLinear, axisLeft} from "d3";
+import * as d3 from "d3";
 import React, { useEffect, useRef } from "react";
 import { CornerLeftUp } from "react-feather";
 import { FT } from "../../java2ts/FT";
@@ -27,9 +27,10 @@ const SVG_PADDING_LEFT = 25;
 const SVG_PADDING_TOP = 40;
 const SVG_WIDTH = Math.min(700, window.innerWidth);
 const SVG_HEIGHT = 200;
-const colors = scaleOrdinal(schemeSet2)
+const colors = d3
+  .scaleOrdinal(d3.schemeSet2)
   .range()
-  .map((c) => rgb(c).darker(0.25).toString());
+  .map((c) => d3.rgb(c).darker(0.25).toString());
 
 interface NGramViewerProps {
   searchResult: SearchResult;
@@ -80,7 +81,8 @@ function drawChart(
   searchResult: SearchResult,
   onBarClick: (year: string) => void
 ) {
-  const svg = select(svgElement)
+  const svg = d3
+    .select(svgElement)
     .append("g")
     .attr(
       "transform",
@@ -88,11 +90,12 @@ function drawChart(
     );
   const { hitsPerYear, allSearchTerms } = getNumberOfHitsPerYear(searchResult);
   // X-Axis
-  const xScale = scaleBand()
+  const xScale = d3
+    .scaleBand()
     .domain(ALL_DEBATE_YEARS)
     .range([0, SVG_WIDTH - SVG_PADDING_LEFT * 2])
     .padding(0.1);
-  const xAxisGenerator = axisBottom(xScale);
+  const xAxisGenerator = d3.axisBottom(xScale);
   const xAxis = svg
     .append("g")
     .attr("transform", "translate(0," + (SVG_HEIGHT - SVG_PADDING_TOP) + ")")
@@ -105,12 +108,13 @@ function drawChart(
       onBarClick(year);
     });
   xAxis.selectAll(".tick line").attr("visibility", "hidden");
-  const hitMax = max(hitsPerYear, (h) => h.hitCount)!;
+  const hitMax = d3.max(hitsPerYear, (h) => h.hitCount)!;
   // Y-Axis
-  const yScale = scaleLinear()
+  const yScale = d3
+    .scaleLinear()
     .domain([0, hitMax + Math.round(hitMax * 0.1)])
     .range([SVG_HEIGHT - SVG_PADDING_TOP, 0]);
-  const yAxisGenerator = axisLeft(yScale).ticks(Math.min(hitMax, 5), "d");
+  const yAxisGenerator = d3.axisLeft(yScale).ticks(Math.min(hitMax, 5), "d");
   svg.append("g").call(yAxisGenerator);
 
   allSearchTerms.forEach((term, idx) => {
