@@ -153,7 +153,7 @@ function webpackCfg(mode) {
     plugins:
       mode === PROD
         ? [
-            new BundleAnalyzerPlugin(), // uncomment to debug bundle size
+            // new BundleAnalyzerPlugin(), // uncomment to debug bundle size
           ]
         : [
             new CheckerPlugin(), // needed for hotreload on typescript
