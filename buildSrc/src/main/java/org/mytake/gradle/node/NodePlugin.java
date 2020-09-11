@@ -67,6 +67,7 @@ public class NodePlugin implements Plugin<Project> {
 		}
 	}
 
+	@CacheableTask
 	public abstract static class NpxTask extends DefaultTask {
 		public String cmd;
 
@@ -86,6 +87,7 @@ public class NodePlugin implements Plugin<Project> {
 		}
 	}
 
+	@CacheableTask
 	public abstract static class NpmTask extends DefaultTask {
 		public String cmd;
 
