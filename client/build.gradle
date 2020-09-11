@@ -20,6 +20,9 @@ spotless {
 	}
 }
 
+// used only for src/main/resources
+apply plugin: 'java-library'
+
 // don't setup any of the node stuff if we're just doing the transcriptGui
 if (gradle.startParameter.taskNames == [
 	'transcriptGui'
@@ -89,7 +92,7 @@ clean {
 }
 
 // hook the gradle defaults into our npm tasks
-tasks.register('test') {
+tasks.named('test') {
 	dependsOn 'npm_run_test_ci'
 }
 tasks.register('updateSnapshot') {
