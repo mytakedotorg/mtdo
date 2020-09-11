@@ -33,7 +33,7 @@ import Document, { DocumentEventHandlers } from "../Document";
 import DocumentTextNodeList from "../DocumentTextNodeList";
 import FactHeader, { StickyFactHeader } from "../FactHeader";
 import Video from "../Video";
-import isEqual = require("lodash/isEqual");
+import isEqual from "lodash/isEqual";
 
 export interface SetFactHandlers {
   handleDocumentSetClick: (

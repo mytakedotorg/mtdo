@@ -21,7 +21,7 @@ import * as React from "react";
 import { CaptionNode, CaptionNodeArr } from "../common/CaptionNodes";
 import { FT } from "../java2ts/FT";
 import CaptionTextNode from "./CaptionTextNode";
-import isEqual = require("lodash/isEqual");
+import isEqual from "lodash/isEqual";
 
 export interface CaptionTextNodeListEventHandlers {
   onMouseUp: () => any;

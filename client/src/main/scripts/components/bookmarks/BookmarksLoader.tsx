@@ -17,7 +17,7 @@
  *
  * You can contact us at team@mytake.org
  */
-import _ from "lodash";
+import isEqual from "lodash/isEqual";
 import React, { useEffect, useState } from "react";
 import {
   Bookmark,
@@ -45,7 +45,7 @@ const BookmarksLoader: React.FC<BookmarksLoaderProps> = (props) => {
 
   const handleUndoRemoveBookmark = (newBookmark: Bookmark) => {
     setBookmarksToRemove((existingBookmarks) => {
-      return existingBookmarks.filter((eb) => !_.isEqual(eb, newBookmark));
+      return existingBookmarks.filter((eb) => !isEqual(eb, newBookmark));
     });
   };
 

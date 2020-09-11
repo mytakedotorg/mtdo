@@ -21,7 +21,7 @@ import * as React from "react";
 import Slider, { Range } from "rc-slider";
 import { TrackSliderEventHandlers } from "./TrackSlider";
 import { RangeType, StateAuthority, StylesObject } from "./Video";
-import isEqual = require("lodash/isEqual");
+import isEqual from "lodash/isEqual";
 
 interface RangeContainerProps {
   defaultValue: number | [number, number];
