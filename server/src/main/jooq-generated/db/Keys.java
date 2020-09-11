@@ -59,6 +59,7 @@ public class Keys {
     public static final UniqueKey<AccountRecord> ACCOUNT_PKEY = UniqueKeys0.ACCOUNT_PKEY;
     public static final UniqueKey<AccountRecord> ACCOUNT_USERNAME_KEY = UniqueKeys0.ACCOUNT_USERNAME_KEY;
     public static final UniqueKey<AccountRecord> ACCOUNT_EMAIL_KEY = UniqueKeys0.ACCOUNT_EMAIL_KEY;
+    public static final UniqueKey<AccountRecord> ACCOUNT_USERNAME_TYPOHARD_KEY = UniqueKeys0.ACCOUNT_USERNAME_TYPOHARD_KEY;
     public static final UniqueKey<BookmarkRecord> BOOKMARK_PKEY = UniqueKeys0.BOOKMARK_PKEY;
     public static final UniqueKey<BookmarksModRecord> BOOKMARKS_MOD_PKEY = UniqueKeys0.BOOKMARKS_MOD_PKEY;
     public static final UniqueKey<FlywaySchemaHistoryRecord> FLYWAY_SCHEMA_HISTORY_PK = UniqueKeys0.FLYWAY_SCHEMA_HISTORY_PK;
@@ -102,6 +103,7 @@ public class Keys {
         public static final UniqueKey<AccountRecord> ACCOUNT_PKEY = Internal.createUniqueKey(Account.ACCOUNT, "account_pkey", new TableField[] { Account.ACCOUNT.ID }, true);
         public static final UniqueKey<AccountRecord> ACCOUNT_USERNAME_KEY = Internal.createUniqueKey(Account.ACCOUNT, "account_username_key", new TableField[] { Account.ACCOUNT.USERNAME }, true);
         public static final UniqueKey<AccountRecord> ACCOUNT_EMAIL_KEY = Internal.createUniqueKey(Account.ACCOUNT, "account_email_key", new TableField[] { Account.ACCOUNT.EMAIL }, true);
+        public static final UniqueKey<AccountRecord> ACCOUNT_USERNAME_TYPOHARD_KEY = Internal.createUniqueKey(Account.ACCOUNT, "account_username_typohard_key", new TableField[] { Account.ACCOUNT.USERNAME_TYPOHARD }, true);
         public static final UniqueKey<BookmarkRecord> BOOKMARK_PKEY = Internal.createUniqueKey(Bookmark.BOOKMARK, "bookmark_pkey", new TableField[] { Bookmark.BOOKMARK.SAVED_BY, Bookmark.BOOKMARK.FACT, Bookmark.BOOKMARK.CUT_START, Bookmark.BOOKMARK.CUT_END }, true);
         public static final UniqueKey<BookmarksModRecord> BOOKMARKS_MOD_PKEY = Internal.createUniqueKey(BookmarksMod.BOOKMARKS_MOD, "bookmarks_mod_pkey", new TableField[] { BookmarksMod.BOOKMARKS_MOD.SAVED_BY }, true);
         public static final UniqueKey<FlywaySchemaHistoryRecord> FLYWAY_SCHEMA_HISTORY_PK = Internal.createUniqueKey(FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY, "flyway_schema_history_pk", new TableField[] { FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY.INSTALLED_RANK }, true);

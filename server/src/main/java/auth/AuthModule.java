@@ -46,8 +46,6 @@ public class AuthModule implements Jooby.Module {
 	public static final MetaField<String> REDIRECT = MetaField.string("redirect");
 	/** Used by {@link LoginForm} only. */
 	public static final MetaField<String> LOGIN_EMAIL = MetaField.string("loginemail");
-	/** Used by {@link CreateAccountForm} only. */
-	public static final MetaField<String> CREATE_EMAIL = MetaField.string("createemail");
 
 	/** The URLs for this. */
 	static final String URL_confirm = "/confirm";
@@ -64,7 +62,7 @@ public class AuthModule implements Jooby.Module {
 		binder.bind(Algorithm.class).toInstance(algorithm);
 
 		env.router().post(Routes.API_LOGIN, Accounts::postToApiRoute);
-		PostForm.hookMultiple(env.router(), (req, validations) -> {
+		PostForm.hook(env.router(), LoginForm.class, (req, validation) -> {
 			Optional<AuthUser> authOpt = AuthUser.authOpt(req);
 			if (authOpt.isPresent()) {
 				String redirect = REDIRECT.parseOrDefault(req, "");
@@ -75,11 +73,13 @@ public class AuthModule implements Jooby.Module {
 				}
 			} else {
 				String loginReason = req.param(LOGIN_REASON.name()).value(null);
-				return views.Auth.login.template(loginReason, validations.get(LoginForm.class).markup());
+				return views.Auth.login.template(loginReason, validation.markup());
 			}
-		}, LoginForm.class);
+		});
 		env.router().get(URL_confirm_login_sent, redirectHomeIfAlreadyVisited(email -> views.Auth.loginEmailSent.template(email, Emails.TEAM)));
-
+		PostForm.hook(env.router(), UsernameForm.class, (req, validation) -> {
+			return views.Auth.username.template(validation.markup());
+		});
 		LoginForm.urlCode.get(env, LoginForm::confirm);
 
 		env.router().get(Routes.LOGOUT, (req, rsp) -> {

@@ -42,6 +42,7 @@ public class Routes {
 
 	public static final String LOGIN = "/login";
 	public static final String LOGOUT = "/logout";
+	public static final String USERNAME = "/username";
 
 	public static final String PROFILE_NO_USERNAME = "my";
 	public static final String PROFILE_TAB = "tab";
