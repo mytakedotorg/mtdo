@@ -53,10 +53,13 @@ eclipseResourceFilters {
 	exclude().folders().name('buildSrc')
 	exclude().folders().name('ide')
 	exclude().folders().name('client')
-	exclude().folders().name('server')
-	exclude().folders().name('lucene')
+	exclude().folders().name('client-interface')
 	exclude().folders().name('foundation')
 	exclude().folders().name('foundation-gen')
+	exclude().folders().name('lucene')
+	exclude().folders().name('node')
+	exclude().folders().name('server')
+	exclude().folders().name('presidential-debates')
 }
 tasks.eclipse.dependsOn(tasks.cleanEclipse)
 
