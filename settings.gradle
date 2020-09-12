@@ -13,6 +13,7 @@ plugins {
 
 
 include 'client'
+include 'client-interface'
 include 'foundation'
 include 'foundation-gen'
 include 'server'

@@ -1,17 +1,9 @@
 ////////////////////////////////////////
 // java - gets compiled to typescript //
 ////////////////////////////////////////
-apply plugin: 'java-library'
 apply plugin: 'com.diffplug.spotless'
 spotless {
 	ratchetFrom 'origin/staging'
-	java {
-		target 'src/main/java/java2ts/**'
-		licenseHeaderFile(rootProject.file('gradle/spotless-license-agpl.java'))
-		importOrder()
-		eclipse().configFile(rootProject.file('gradle/spotless.eclipseformat.xml'))
-		removeUnusedImports()
-	}
 	format 'scss', {
 		target 'src/main/styles/**/*.scss'
 		prettier(VER_PRETTIER)
@@ -27,12 +19,9 @@ spotless {
 		prettier(VER_PRETTIER)
 	}
 }
-dependencies {
-	api "com.jsoniter:jsoniter:$VER_JSONITER"
-	api "org.jsweet:jsweet-core:$VER_JSWEET_CORE"
-	testImplementation "junit:junit:$VER_JUNIT"
-	testImplementation "org.assertj:assertj-core:$VER_ASSERTJ"
-}
+
+// used only for src/main/resources
+apply plugin: 'java-library'
 
 // don't setup any of the node stuff if we're just doing the transcriptGui
 if (gradle.startParameter.taskNames == [
@@ -40,26 +29,6 @@ if (gradle.startParameter.taskNames == [
 ]) {
 	return
 }
-
-// generate typescript for the java in the java2ts folder
-def JAVA2TS = 'src/main/scripts/java2ts'
-apply plugin: 'org.mytake.gradle.jsweetcodegen'
-jsweet {
-	targetVersion = 'ES6' // should match gradle.properties VER_JSWEET_CORE
-	module = 'commonjs'
-	tsOut = file(JAVA2TS)
-	tsOnly = true
-	factoryClassName = 'org.mytake.gradle.jsweet.JSweetFactoryJsoniterAny'
-	includes= [
-		'java2ts/**'
-	]
-}
-
-//////////////
-// jsoniter //
-//////////////
-apply plugin: 'org.mytake.gradle.jsonitercodegen'
-jsoniterCodegen { codegenClass = 'java2ts.CodegenConfig' }
 
 ///////////////////////////////////////////////////////////////////////
 // node stuff - compiles sass and typescript into src/main/resources //
@@ -70,13 +39,13 @@ node {
 	setup.npmVersion = 'provided'
 
 	npmRun('test_ci') {
-		dependsOn('jsweet')
+		dependsOn(':client-interface:jsweet')
 		dependsOn(':foundation-gen:generateFoundation')
 		inputs.dir('src/main/scripts')
 		outputs.dir('build/test-results/jest')
 	}
 	npmRun('updateSnapshot') {
-		dependsOn('jsweet')
+		dependsOn(':client-interface:jsweet')
 		dependsOn(':foundation-gen:generateFoundation')
 	}
 
@@ -86,7 +55,7 @@ node {
 		inputs.dir('src/main/permanent').withPathSensitivity(PathSensitivity.RELATIVE)
 		outputs.dir('src/main/resources/assets/permanent')
 		// technically it's that scriptsDev and scriptsProd depend on jsweet, but it's easier to put it here
-		dependsOn('jsweet')
+		dependsOn(':client-interface:jsweet')
 	}
 	for (t in [
 		'styles',
@@ -132,7 +101,7 @@ tasks.register('updateSnapshot') {
 tasks.named('check') {
 	dependsOn 'test'
 }
-tasks.named('processResources') {
+tasks.named('assemble') {
 	dependsOn 'gulp_stylesDev', 'gulp_scriptsDev', 'gulp_revProd'
 }
 

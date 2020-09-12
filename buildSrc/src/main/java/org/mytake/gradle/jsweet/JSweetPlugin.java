@@ -39,7 +39,7 @@ public class JSweetPlugin implements Plugin<Project> {
 		Logger logger = project.getLogger();
 		logger.info("applying jsweet plugin");
 
-		if (!project.getPlugins().hasPlugin(JavaPlugin.class) && !project.getPlugins().hasPlugin(WarPlugin.class)) {
+		if (!project.getPlugins().hasPlugin(JavaPlugin.class)) {
 			logger.error("No java or war plugin detected. Enable java or war plugin.");
 			throw new IllegalStateException("No java or war plugin detected. Enable java or war plugin.");
 		}

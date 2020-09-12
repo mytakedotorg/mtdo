@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2017-2018 MyTake.org, Inc.
+ * Copyright (C) 2017-2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -20,8 +20,9 @@
 package java2ts;
 
 @jsweet.lang.Interface
-public class ImageProps {
-	public String dataUri;
-	public String width;
-	public String height;
+public class DocumentBlock {
+	public StringTypes.document kind;
+	public String excerptId;
+	public jsweet.util.tuple.Tuple2<Integer, Integer> highlightedRange;
+	public jsweet.util.tuple.Tuple2<Integer, Integer> viewRange;
 }

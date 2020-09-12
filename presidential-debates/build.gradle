@@ -69,6 +69,6 @@ spotless {
 
 tasks.named('spotlessFoundation-video') {
 	dependsOn ':foundation-gen:jar'
-	dependsOn ':client:jar'
+	dependsOn ':client-interface:jar'
 	dependsOn ':lucene:jar'
 }

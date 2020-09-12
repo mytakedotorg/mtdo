@@ -21,7 +21,7 @@ import { FT } from "../java2ts/FT";
 import { Foundation, isVideo } from "./foundation";
 import { decodeVideoFact } from "./video";
 
-import fs = require("fs");
+const fs = require("fs");
 
 export class FoundationHarness {
   private hashToContent: Map<

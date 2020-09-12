@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2017 MyTake.org, Inc.
+ * Copyright (C) 2018-2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -19,8 +19,23 @@
  */
 package java2ts;
 
-@jsweet.lang.Interface
-public class DraftRev implements Json {
-	public int draftid;
-	public int lastrevid;
+public interface FollowJson {
+	/** Request when a take/profile is first viewed. */
+	@jsweet.lang.Interface
+	public class FollowAskReq implements Json {
+		public String username;
+	}
+
+	/** Request to follow/unfollow a user. */
+	@jsweet.lang.Interface
+	public class FollowTellReq implements Json {
+		public String username;
+		public boolean isFollowing;
+	}
+
+	/** Response to both requests. */
+	@jsweet.lang.Interface
+	public class FollowRes implements Json {
+		public boolean isFollowing;
+	}
 }

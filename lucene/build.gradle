@@ -2,7 +2,7 @@ apply plugin: 'java'
 
 String VER_LUCENE = '8.6.0'
 dependencies {
-	implementation project(':client')
+	implementation project(':client-interface')
 	implementation 'com.diffplug.durian:durian-core:1.2.0'
 	implementation 'com.diffplug.durian:durian-collect:1.2.0'
 	implementation 'com.diffplug.durian:durian-io:1.2.0'
