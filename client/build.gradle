@@ -41,7 +41,7 @@ node {
 	npmRun('test_ci') {
 		dependsOn(':client-interface:jsweet')
 		dependsOn(':foundation-gen:generateFoundation')
-		inputs.dir('src/main/scripts')
+		inputs.dir('src/main/scripts').withPathSensitivity(PathSensitivity.RELATIVE)
 		outputs.dir('build/test-results/jest')
 	}
 	npmRun('updateSnapshot') {
