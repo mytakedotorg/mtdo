@@ -101,7 +101,7 @@ tasks.register('updateSnapshot') {
 tasks.named('check') {
 	dependsOn 'test'
 }
-tasks.named('assemble') {
+tasks.named('processResources') {
 	dependsOn 'gulp_stylesDev', 'gulp_scriptsDev', 'gulp_revProd'
 }
 
