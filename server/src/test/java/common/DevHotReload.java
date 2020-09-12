@@ -52,7 +52,7 @@ public class DevHotReload {
 					templateClassLocation,
 					new File("build/classes/java/test"),
 					new File("../lucene/build/classes/java/main"),
-					new File("../client/build/classes/java/main"),
+					new File("../client-interface/build/classes/java/main"),
 			};
 		} else {
 			templateClassLocation = new File("bin/main");
@@ -60,7 +60,7 @@ public class DevHotReload {
 					templateClassLocation,
 					new File("bin/test"),
 					new File("../lucene/bin/main"),
-					new File("../client/bin/main")
+					new File("../client-interface/bin/main")
 			};
 		}
 		// create a fresh database
