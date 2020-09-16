@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="200mm" height="100mm" version="1.1" viewBox="0 0 200 100" xmlns="http://www.w3.org/2000/svg" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+ <metadata>
+  <rdf:RDF>
+   <cc:Work rdf:about="">
+    <dc:format>image/svg+xml</dc:format>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:title/>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <g transform="translate(-330 -114.14)">
+  <path d="m330.13 114.14v99.868h199.87" fill="none" stroke="#000" stroke-width=".26458px"/>
+  <rect x="434" y="134.15" width="16" height="80" fill="#43a98e" fill-rule="evenodd" stroke-width=".26458"/>
+  <rect x="482" y="174.14" width="16" height="40" fill="#43a98e" fill-rule="evenodd" stroke-width=".26458"/>
+  <g fill="#e5815e" fill-rule="evenodd" stroke-width=".26458">
+   <rect x="498" y="194.14" width="16" height="20"/>
+   <rect x="450" y="194.14" width="16" height="20"/>
+   <rect x="402" y="194.14" width="16" height="20"/>
+   <rect x="370" y="154.14" width="16" height="60"/>
+  </g>
+  <text x="343.37225" y="126.60723" fill="#43a98e" font-family="Merriweather" font-size="10.583px" font-weight="bold" stroke-width=".26458" style="font-variant-caps:normal;font-variant-east-asian:normal;font-variant-ligatures:normal;font-variant-numeric:normal;line-height:1.25" xml:space="preserve"><tspan x="343.37225" y="126.60723" fill="#43a98e" font-family="Merriweather" font-size="10.583px" font-weight="bold" stroke-width=".26458" style="font-variant-caps:normal;font-variant-east-asian:normal;font-variant-ligatures:normal;font-variant-numeric:normal">climate change,</tspan></text>
+  <text x="428.56793" y="126.60723" fill="#e5815e" font-family="Merriweather" font-size="10.583px" font-weight="bold" stroke-width=".26458" style="font-variant-caps:normal;font-variant-east-asian:normal;font-variant-ligatures:normal;font-variant-numeric:normal;line-height:1.25" xml:space="preserve"><tspan x="428.56793" y="126.60723" fill="#e5815e" font-family="Merriweather" font-size="10.583px" font-weight="bold" stroke-width=".26458" style="font-variant-caps:normal;font-variant-east-asian:normal;font-variant-ligatures:normal;font-variant-numeric:normal"> global warming</tspan></text>
+ </g>
+</svg>

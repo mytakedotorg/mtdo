@@ -3,6 +3,11 @@
   width: 600px;
   height: 314px;
   overflow: hidden;
+  &.home {
+    border-radius: 5px;
+    width: 300px;
+    height: 150px;
+  }
 }
 
 $edgeColor: palette(social, background);
@@ -15,6 +20,13 @@ $centerColor: palette(social, background--highlight);
   bottom: 0;
   left: 0;
   z-index: 1;
+  &.home {
+    background: radial-gradient(
+      ellipse at 250px 215px,
+      $centerColor,
+      $edgeColor
+    );
+  }
 }
 .social__content {
   position: relative;
@@ -24,12 +36,15 @@ $centerColor: palette(social, background--highlight);
   justify-content: space-between;
   color: $white;
   padding: 48px;
+  &.home {
+    padding: 24px;
+  }
 }
 // "IBM Plex Serif", serif;: "IBM Plex Serif", serif;
-@mixin speaker-font {
+@mixin speaker-font($fontSize: 24px) {
   font-family: $ibm-plex-serif;
   font-weight: 600;
-  font-size: 24px;
+  font-size: $fontSize;
 }
 @mixin text-font($fontSize: 16px) {
   font-family: $ibm-plex-serif;
@@ -39,20 +54,25 @@ $centerColor: palette(social, background--highlight);
 .social__speaker {
   @include speaker-font();
   text-align: right;
+  &.home {
+    @include speaker-font(16px);
+  }
 }
 .social__quote-container {
   width: 48px;
+  &.home {
+    width: 28px;
+  }
 }
 .social__quote {
   @include speaker-font();
+  &.home {
+    @include speaker-font(16px);
+  }
 }
 .social__row--quote {
   display: flex;
   justify-content: space-around;
-}
-.social__text {
-  flex: 1;
-  margin: 0;
 }
 .social__text--a,
 .social__quote--a {
@@ -80,9 +100,23 @@ $centerColor: palette(social, background--highlight);
 .social__text--z {
   @include text-font(16px);
 }
+.social__text {
+  flex: 1;
+  margin: 0;
+  &.home {
+    @include text-font(12px);
+  }
+}
 .social__image-container {
   position: absolute;
   bottom: -6px;
   right: -22px;
   z-index: 5;
+  &.home {
+    right: -12px;
+  }
+}
+.social__image.home {
+  width: 100px;
+  height: 100px;
 }

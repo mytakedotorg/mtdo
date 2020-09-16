@@ -56,7 +56,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
     window.location.href =
       Routes.SEARCH +
       "?q=" +
-      encodeURIComponent(searchQuery || placeholder || "");
+      encodeURIComponent(searchQuery || "");
   };
 
   let searchCancelClass = `searchbar__cancel searchbar__cancel--${BEMModifier}`;

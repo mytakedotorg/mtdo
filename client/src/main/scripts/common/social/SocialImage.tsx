@@ -24,7 +24,10 @@ import { FT } from "../../java2ts/FT";
 import { abbreviate } from "../functions";
 import { FactUncut, Social, TextCut, VideoCut } from "../social/social";
 
-export async function socialImage(social: Social): Promise<React.ReactElement> {
+export async function socialImage(
+  social: Social,
+  customClass?: string
+): Promise<React.ReactElement> {
   switch (social.kind) {
     case "textCut":
       return imageTextCut(
@@ -34,7 +37,8 @@ export async function socialImage(social: Social): Promise<React.ReactElement> {
     case "videoCut":
       return imageVideoCut(
         social,
-        await FoundationFetcher.justOneVideo(social.fact)
+        await FoundationFetcher.justOneVideo(social.fact),
+        customClass
       );
     case "factUncut":
       return imageFactUncut(
@@ -53,7 +57,8 @@ function imageTextCut(
 
 function imageVideoCut(
   social: VideoCut,
-  fact: FT.VideoFactContent
+  fact: FT.VideoFactContent,
+  customClass: string = ""
 ): React.ReactElement {
   const [speaker, said] = getCut(fact, social.cut);
   let classModifier: string;
@@ -73,26 +78,30 @@ function imageVideoCut(
     classModifier = "z";
   }
   return (
-    <div className="social">
-      <div className="social__content">
-        <div className="social__row social__row--quote">
-          <div className="social__quote-container">
-            <span className={`social__quote social__quote--${classModifier}`}>
+    <div className={`social ${customClass}`}>
+      <div className={`social__content ${customClass}`}>
+        <div className={`social__row social__row--quote ${customClass}`}>
+          <div className={`social__quote-container ${customClass}`}>
+            <span
+              className={`social__quote social__quote--${classModifier} ${customClass}`}
+            >
               &ldquo;
             </span>
           </div>
-          <p className={`social__text social__text--${classModifier}`}>
+          <p
+            className={`social__text social__text--${classModifier} ${customClass}`}
+          >
             {abbreviate(said, 420)}
           </p>
         </div>
-        <div className="social__row">
-          <p className="social__speaker">{speaker.fullName}</p>
+        <div className={`social__row ${customClass}`}>
+          <p className={`social__speaker ${customClass}`}>{speaker.fullName}</p>
         </div>
       </div>
-      <div className="social__background"></div>
-      <div className="social__image-container">
+      <div className={`social__background ${customClass}`}></div>
+      <div className={`social__image-container ${customClass}`}>
         <img
-          className="social__image"
+          className={`social__image ${customClass}`}
           src="https://mytake.org/assets/permanent/square-wheat-482248dddd.png"
           width="200"
           height="200"
