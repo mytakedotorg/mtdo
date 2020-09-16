@@ -39,6 +39,7 @@ import forms.api.FormValidation;
 import forms.api.FormValidation.Sensitive;
 import forms.meta.MetaField;
 import forms.meta.PostForm;
+import java.net.URLDecoder;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Locale;
@@ -50,7 +51,6 @@ import java2ts.LoginApi;
 import java2ts.Routes;
 import javax.annotation.Nullable;
 import org.jooby.Cookie;
-import org.jooby.Mutant;
 import org.jooby.Request;
 import org.jooby.Response;
 import org.jooby.Result;
@@ -258,12 +258,13 @@ public class Accounts {
 					LoginlinkRecord link = urlCode.createRecord(req, dsl, now, Ip.get(req));
 					link.setExpiresAt(now.plus(EXPIRES_DAYS, ChronoUnit.DAYS));
 					link.setAccountId(sendLoginEmailTo.getId());
-					if (redirect != null && !redirect.isEmpty()) {
-						link.setRedirect(redirect);
-					}
 					link.insert();
+					UrlEncodedPath linkUrl = urlCode.recordToUrl(req, link);
+					if (redirect != null && !redirect.isEmpty()) {
+						linkUrl.param(REDIRECT, redirect);
+					}
 					// TODO: login vs newsletter dependent
-					htmlMsg = views.Auth.loginEmail.template(sendLoginEmailTo.getEmail(), urlCode.recordToUrl(req, link).build()).renderToString();
+					htmlMsg = views.Auth.loginEmail.template(sendLoginEmailTo.getEmail(), linkUrl.build()).renderToString();
 				}
 				req.require(EmailSender.class).send(htmlEmail -> htmlEmail
 						.setHtmlMsg(htmlMsg)
@@ -342,17 +343,16 @@ public class Accounts {
 				errorMsg = null;
 			}
 
+			String redirect = URLDecoder.decode(req.param(REDIRECT.name()).value(HomeFeed.URL), "UTF-8");
+			UrlEncodedPath path = UrlEncodedPath.path(Routes.LOGIN).param(REDIRECT, redirect);
+
 			if (errorMsg != null) {
 				// else we have no choice but to show an error
 				req.flash("error", errorMsg);
 				// and clear their login cookies
 				AuthUser.clearCookies(req, rsp);
-				UrlEncodedPath path = UrlEncodedPath.path(Routes.LOGIN);
 				if (req.param(LoginForm.EMAIL.name()).isSet()) {
 					path.param(LoginForm.EMAIL, req.param(LoginForm.EMAIL.name()).value());
-				}
-				if (req.param(REDIRECT.name()).isSet()) {
-					path.param(REDIRECT, req.param(REDIRECT.name()).value());
 				}
 				rsp.send(Results.redirect(path.build()));
 				return;
@@ -373,17 +373,8 @@ public class Accounts {
 			account.update();
 			// set the login cookies
 			AuthUser.login(account, req).forEach(rsp::cookie);
-			// redirect 
-			if (link.getRedirect() != null) {
-				rsp.redirect(link.getRedirect());
-			} else {
-				Mutant redirect = req.param(REDIRECT.name());
-				if (redirect.isSet()) {
-					rsp.redirect(redirect.value());
-				} else {
-					rsp.redirect(HomeFeed.URL);
-				}
-			}
+			// redirect
+			rsp.redirect(redirect);
 		}
 	}
 
