@@ -27,7 +27,6 @@ import forms.api.FormValidation;
 import forms.meta.MetaField;
 import forms.meta.PostForm;
 import forms.meta.Validator;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -119,17 +118,6 @@ public class UsernameForm extends PostForm<UsernameForm> {
 	}
 
 	static String validateTypoHardened(DSLContext dsl, FormValidation.Builder<UsernameForm> retry) {
-		if (!allUsernamesAreTypoHardened) {
-			List<AccountRecord> needsHardening = dsl.selectFrom(ACCOUNT)
-					.where(ACCOUNT.USERNAME.isNotNull())
-					.and(ACCOUNT.USERNAME_TYPOHARD.isNull())
-					.fetch();
-			for (AccountRecord account : needsHardening) {
-				account.setUsernameTypohard(typoHarden(account.getUsername()));
-				account.update();
-			}
-			allUsernamesAreTypoHardened = true;
-		}
 		String username = retry.value(USERNAME);
 		String typoHard = typoHarden(username);
 		String conflictUsername = DbMisc.fetchOne(dsl, ACCOUNT.USERNAME_TYPOHARD, typoHard, ACCOUNT.USERNAME);
@@ -142,8 +130,6 @@ public class UsernameForm extends PostForm<UsernameForm> {
 		}
 		return typoHard;
 	}
-
-	static boolean allUsernamesAreTypoHardened = false;
 
 	static String typoHarden(String username) {
 		String substituted = username
