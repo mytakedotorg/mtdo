@@ -17,13 +17,12 @@
  *
  * You can contact us at team@mytake.org
  *@
+@import auth.Accounts.LoginForm
+@import auth.Accounts.NewForm
 @import auth.AuthModule
-@import auth.LoginForm
 @import forms.api.FormMarkup
 
-@args(String loginReason, FormMarkup<LoginForm> loginForm)
-
-@* args(String loginReason, FormMarkup<LoginForm> loginForm, FormMarkup<CreateAccountForm> createAccount) *@
+@args(String loginReason, FormMarkup<LoginForm> formLogin, FormMarkup<NewForm> formNew)
 
 @views.base.template("Log in", "Login or create an account") -> {
 	@if (loginReason != null) {
@@ -37,31 +36,26 @@
 	<div class="section__inner section__inner--login">
 	<h2 class="section__heading">Log in</h2>
 	<div class="section__content">
-		@loginForm.formError()
-		@loginForm.openForm("class", "form form--login")
-		@loginForm.field(AuthModule.LOGIN_EMAIL).label("Email", "class", "form__label form__label--email").errorSpan("class", "form__error").input("email", "class", "form__input form__input--email")
-		@loginForm.field(AuthModule.REDIRECT).input("hidden")
+		@formLogin.formError()
+		@formLogin.openForm("class", "form form--login")
+		@formLogin.field(LoginForm.EMAIL).label("Email", "class", "form__label form__label--email").errorSpan("class", "form__error").input("email", "class", "form__input form__input--email")
+		@formLogin.field(AuthModule.REDIRECT).input("hidden")
 		<input type="submit" class="form__submit form__submit--blue" value="Log in" />
-		@loginForm.closeForm()
+		@formLogin.closeForm()
 	</div>
 	</div>
 
-	@*
 	<div class="section__inner section__inner--create">
 	<h2 class="section__heading">Create account</h2>
 	<div class="section__content">
-		@createAccount.formError()
-		@createAccount.openForm("class", "form form--create")
-		@createAccount.field(AuthModule.CREATE_USERNAME).label("Username", "class", "form__label form__label--username").errorSpan("class", "form__error").input("text", "class", "form__input form__input--username")
-		@createAccount.field(AuthModule.CREATE_EMAIL).label("Email", "class", "form__label form__label--email").errorSpan("class", "form__error").input("email", "class", "form__input form__input--email")
-		@createAccount.field(AuthModule.ACCEPT_TERMS).errorSpan("class", "form__error").input("checkbox", "id", "acceptterms", "class", "form__input form__input--terms")
-		<label for="@AuthModule.ACCEPT_TERMS.name()" class="form__label form__label--terms">I agree to the <a href="@java2ts.Routes.TOS">terms of service</a></label>
-		@createAccount.field(AuthModule.REDIRECT).input("hidden")
-		<input type="submit" class="form__submit form__submit--red" value="Claim username" />
-		@createAccount.closeForm()
+		@formNew.formError()
+		@formNew.openForm("class", "form form--create")
+		@formNew.field(NewForm.EMAIL).label("Email", "class", "form__label form__label--email").errorSpan("class", "form__error").input("email", "class", "form__input form__input--email")
+		@formNew.field(AuthModule.REDIRECT).input("hidden")
+		<input type="submit" class="form__submit form__submit--red" value="Create account" />
+		@formNew.closeForm()
 	</div>
 	</div>
-	*@
 
 </section>
 

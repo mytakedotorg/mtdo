@@ -77,6 +77,10 @@ public class AuthUser {
 		return email;
 	}
 
+	public String usernameOrEmail() {
+		return username != null ? username : email;
+	}
+
 	public boolean isConfirmed() {
 		return confirmed;
 	}

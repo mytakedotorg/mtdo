@@ -23,6 +23,7 @@ import com.diffplug.common.base.Preconditions;
 import forms.meta.MetaField;
 import forms.meta.PostForm;
 import forms.meta.TypedFormDef;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Objects;
 import java.util.function.Predicate;
@@ -130,6 +131,10 @@ public class FormValidation<F extends FormDef> {
 		}
 
 		public Builder<F> keep(MetaField<?>... fields) {
+			return keep(Arrays.asList(fields));
+		}
+
+		public Builder<F> keep(Collection<MetaField<?>> fields) {
 			return keep(fieldName -> {
 				for (MetaField<?> field : fields) {
 					if (field.name().equals(fieldName)) {

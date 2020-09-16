@@ -19,25 +19,40 @@
  */
 package auth;
 
+import static auth.AuthModule.REDIRECT;
 import static db.Tables.ACCOUNT;
+import static db.Tables.LOGINLINK;
 
 import com.diffplug.common.base.Unhandled;
 import common.DbMisc;
 import common.EmailSender;
 import common.Ip;
+import common.Text;
 import common.Time;
+import common.UrlEncodedPath;
+import common.UrlRandomCode;
+import controllers.HomeFeed;
 import db.VarChars;
 import db.tables.records.AccountRecord;
 import db.tables.records.LoginlinkRecord;
+import forms.api.FormValidation;
+import forms.api.FormValidation.Sensitive;
+import forms.meta.MetaField;
+import forms.meta.PostForm;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Locale;
+import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java2ts.LoginApi;
+import java2ts.Routes;
 import javax.annotation.Nullable;
 import org.jooby.Cookie;
+import org.jooby.Mutant;
 import org.jooby.Request;
+import org.jooby.Response;
 import org.jooby.Result;
 import org.jooby.Results;
 import org.jooq.DSLContext;
@@ -53,44 +68,50 @@ import org.jooq.DSLContext;
  * - now they have a confirmed account (can save data and receive emails), but no public username
  * - if they want to publish a take or post on the meta.mytake.org forums, they can claim a public username
  */
-class LoginJs {
+public class Accounts {
 	static Result postToApiRoute(Request req) throws Exception {
 		LoginApi.Req loginReq = req.body(LoginApi.Req.class);
-		if (loginReq.kind.equals("newsletter")) {
-			return subscribeToMailingList(loginReq.email, req).toResult(req);
+		loginReq.email = Text.lowercase(loginReq.email);
+		if (loginReq.kind.equals(KIND_NEWSLETTER)) {
+			return subscribeToMailingList(loginReq.email, req).toJsResult(req);
 		} else {
-			// @formatter:off
-			IfNoAccount ifNoAccount; 
-			switch (loginReq.kind) {
-			case "use":   ifNoAccount = IfNoAccount.CREATE; break;
-			case "login": ifNoAccount = IfNoAccount.ERROR;  break;
-			default: throw Unhandled.stringException(loginReq.kind);
-			}
-			// @formatter:on
-			return login(loginReq.email, ifNoAccount, loginReq, req).toResult(req);
+			return login(loginReq, req).toJsResult(req);
 		}
 	}
+
+	private static final String KIND_NEWSLETTER = "newsletter";
+	private static final String KIND_USE = "use";
+	private static final String KIND_LOGIN = "login";
 
 	enum IfNoAccount {
 		CREATE, ERROR;
 
-		public boolean create() {
+		public boolean isCreate() {
 			return this == CREATE;
+		}
+
+		static IfNoAccount forKind(LoginApi.Req login) {
+			// @formatter:off
+			switch (login.kind) {
+			case KIND_USE:   return IfNoAccount.CREATE;
+			case KIND_LOGIN: return IfNoAccount.ERROR;
+			default: throw Unhandled.stringException(login.kind);
+			}
+			// @formatter:on
 		}
 	}
 
 	/** Performs the server-side of a login operation. */
-	static Msg login(String emailRaw, IfNoAccount ifNoAccount, LoginApi.Req login, Request req) {
-		if (!isValidEmail(emailRaw)) {
-			return invalidEmail(emailRaw);
+	static Msg login(LoginApi.Req login, Request req) {
+		if (!isValidEmail(login.email)) {
+			return invalidEmail(login.email);
 		}
 
 		try (DSLContext dsl = req.require(DSLContext.class)) {
-			String email = emailRaw.toLowerCase(Locale.ROOT);
-			AccountRecord account = DbMisc.fetchOne(dsl, ACCOUNT.EMAIL, email);
+			AccountRecord account = DbMisc.fetchOne(dsl, ACCOUNT.EMAIL, login.email);
 			if (account == null) {
-				account = newAccount(email, req, dsl);
-				if (ifNoAccount.create()) {
+				account = newAccount(login.email, req, dsl);
+				if (IfNoAccount.forKind(login) == IfNoAccount.CREATE) {
 					return Msg.titleBodyBtn("Welcome aboard!",
 							"We sent you an email with more details about what we're building together. Keep exploring and read it when you get a chance.",
 							"Okay, I'll read it later.")
@@ -98,7 +119,7 @@ class LoginJs {
 							.andSendLoginEmailTo(account, login);
 				} else {
 					return Msg.titleBodyBtn("Not found",
-							emailRaw + " does not have an account. Check the spelling.",
+							login.email + " does not have an account. Check the spelling.",
 							"Okay, I'll try again.");
 				}
 			} else {
@@ -213,7 +234,7 @@ class LoginJs {
 			return this;
 		}
 
-		Result toResult(Request req) {
+		Result toJsResult(Request req) {
 			LoginApi.Res res = new LoginApi.Res();
 			res.title = title;
 			res.body = body;
@@ -224,27 +245,147 @@ class LoginJs {
 						.map(Cookie::encode)
 						.collect(Collectors.toList()));
 			}
+			toFormError(req);
+			return result;
+		}
+
+		@Nullable
+		String toFormError(Request req) {
 			if (sendLoginEmailTo != null) {
 				String htmlMsg;
 				try (DSLContext dsl = req.require(DSLContext.class)) {
 					LocalDateTime now = req.require(Time.class).now();
-					String requestorIp = Ip.get(req);
-					LoginlinkRecord link = LoginForm.urlCode.createRecord(req, dsl, now, requestorIp);
+					LoginlinkRecord link = urlCode.createRecord(req, dsl, now, Ip.get(req));
+					link.setExpiresAt(now.plus(EXPIRES_DAYS, ChronoUnit.DAYS));
+					link.setAccountId(sendLoginEmailTo.getId());
 					if (redirect != null && !redirect.isEmpty()) {
 						link.setRedirect(redirect);
 					}
-					// TODO: login vs newsletter dependent
-					link.setExpiresAt(now.plus(1, ChronoUnit.DAYS));
-					link.setAccountId(sendLoginEmailTo.getId());
 					link.insert();
-					htmlMsg = views.Auth.loginEmail.template(sendLoginEmailTo.getEmail(), LoginForm.urlCode.recordToUrl(req, link).build()).renderToString();
+					// TODO: login vs newsletter dependent
+					htmlMsg = views.Auth.loginEmail.template(sendLoginEmailTo.getEmail(), urlCode.recordToUrl(req, link).build()).renderToString();
 				}
 				req.require(EmailSender.class).send(htmlEmail -> htmlEmail
 						.setHtmlMsg(htmlMsg)
 						.setSubject("MyTake.org welcome")
 						.addTo(sendLoginEmailTo.getEmail()));
+				return null;
+			} else {
+				return this.body;
 			}
-			return result;
 		}
 	}
+
+	static final int EXPIRES_DAYS = 7;
+
+	static class Form<Self extends PostForm<Self>> extends PostForm<Self> {
+		protected final String kind;
+		protected final MetaField<String> emailField;
+
+		protected Form(String kind, MetaField<String> emailField) {
+			super(Routes.LOGIN, emailField, REDIRECT);
+			this.kind = Objects.requireNonNull(kind);
+			this.emailField = Objects.requireNonNull(emailField);
+		}
+
+		@Override
+		protected FormValidation<Self> initialGet(Request req, Map<String, String> params) {
+			return parseMetaFieldsSkipNulls(params)
+					.keep(this.fields)
+					.build();
+		}
+
+		@Override
+		protected ValidateResult<Self> validate(Request req, Sensitive<Self> form) {
+			LoginApi.Req login = new LoginApi.Req();
+			login.email = Text.lowercase(form.value(emailField));
+			login.kind = kind;
+			login.redirect = form.value(REDIRECT);
+
+			String error = Accounts.login(login, req).toFormError(req);
+			if (error != null) {
+				return form.keepAll().addError(emailField, error);
+			} else {
+				req.flash(AuthModule.FLASH_EMAIL, login.email);
+				return ValidateResult.redirect(AuthModule.URL_confirm_login_sent);
+			}
+		}
+	}
+
+	public static class LoginForm extends Form<LoginForm> {
+		public static final MetaField<String> EMAIL = MetaField.string("loginemail");
+
+		public LoginForm() {
+			super(KIND_LOGIN, EMAIL);
+		}
+	}
+
+	public static class NewForm extends Form<NewForm> {
+		public static final MetaField<String> EMAIL = MetaField.string("newemail");
+
+		public NewForm() {
+			super(KIND_USE, EMAIL);
+		}
+	}
+
+	public static void confirm(Request req, Response rsp) throws Throwable {
+		LocalDateTime now = req.require(Time.class).now();
+		try (DSLContext dsl = req.require(DSLContext.class)) {
+			LoginlinkRecord link = urlCode.tryGetRecord(req, dsl);
+			String ip = Ip.get(req);
+			String errorMsg;
+			if (link == null || now.isAfter(link.getExpiresAt())) {
+				errorMsg = "This link expired, try again.";
+			} else if (link != null && !ip.equals(link.getRequestorIp())) {
+				errorMsg = "Make sure to open the link from the same device you requested it from.";
+			} else {
+				errorMsg = null;
+			}
+
+			if (errorMsg != null) {
+				// else we have no choice but to show an error
+				req.flash("error", errorMsg);
+				// and clear their login cookies
+				AuthUser.clearCookies(req, rsp);
+				UrlEncodedPath path = UrlEncodedPath.path(Routes.LOGIN);
+				if (req.param(LoginForm.EMAIL.name()).isSet()) {
+					path.param(LoginForm.EMAIL, req.param(LoginForm.EMAIL.name()).value());
+				}
+				if (req.param(REDIRECT.name()).isSet()) {
+					path.param(REDIRECT, req.param(REDIRECT.name()).value());
+				}
+				rsp.send(Results.redirect(path.build()));
+				return;
+			}
+
+			// delete all login links for this account
+			dsl.deleteFrom(LOGINLINK)
+					.where(LOGINLINK.ACCOUNT_ID.eq(link.getAccountId()))
+					.execute();
+			// update the record's lastSeen
+			AccountRecord account = DbMisc.fetchOne(dsl, ACCOUNT.ID, link.getAccountId());
+			account.setLastSeenIp(ip);
+			account.setLastSeenAt(now);
+			if (account.getConfirmedAt() == null) {
+				account.setConfirmedIp(ip);
+				account.setConfirmedAt(now);
+			}
+			account.update();
+			// set the login cookies
+			AuthUser.login(account, req).forEach(rsp::cookie);
+			// redirect 
+			if (link.getRedirect() != null) {
+				rsp.redirect(link.getRedirect());
+			} else {
+				Mutant redirect = req.param(REDIRECT.name());
+				if (redirect.isSet()) {
+					rsp.redirect(redirect.value());
+				} else {
+					rsp.redirect(HomeFeed.URL);
+				}
+			}
+		}
+	}
+
+	static final UrlRandomCode<LoginlinkRecord> urlCode = new UrlRandomCode<>(AuthModule.URL_confirm_login, LOGINLINK.CODE, LOGINLINK.CREATED_AT, LOGINLINK.REQUESTOR_IP);
 }

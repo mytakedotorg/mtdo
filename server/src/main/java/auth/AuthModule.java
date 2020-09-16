@@ -44,8 +44,6 @@ public class AuthModule implements Jooby.Module {
 	static final MetaField<String> LOGIN_REASON = MetaField.string("loginreason");
 	/** Used by {@link LoginForm} and {@link CreateAccountForm}. */
 	public static final MetaField<String> REDIRECT = MetaField.string("redirect");
-	/** Used by {@link LoginForm} only. */
-	public static final MetaField<String> LOGIN_EMAIL = MetaField.string("loginemail");
 
 	/** The URLs for this. */
 	static final String URL_confirm = "/confirm";
@@ -62,25 +60,27 @@ public class AuthModule implements Jooby.Module {
 		binder.bind(Algorithm.class).toInstance(algorithm);
 
 		env.router().post(Routes.API_LOGIN, Accounts::postToApiRoute);
-		PostForm.hook(env.router(), LoginForm.class, (req, validation) -> {
+		PostForm.hookMultiple(env.router(), (req, validations) -> {
 			Optional<AuthUser> authOpt = AuthUser.authOpt(req);
 			if (authOpt.isPresent()) {
 				String redirect = REDIRECT.parseOrDefault(req, "");
 				if (redirect.isEmpty()) {
-					return views.Auth.alreadyLoggedIn.template(authOpt.get().username());
+					return views.Auth.alreadyLoggedIn.template(authOpt.get().usernameOrEmail());
 				} else {
 					throw RedirectException.temporary(redirect);
 				}
 			} else {
 				String loginReason = req.param(LOGIN_REASON.name()).value(null);
-				return views.Auth.login.template(loginReason, validation.markup());
+				return views.Auth.login.template(loginReason,
+						validations.get(Accounts.LoginForm.class).markup(),
+						validations.get(Accounts.NewForm.class).markup());
 			}
-		});
+		}, Accounts.LoginForm.class, Accounts.NewForm.class);
 		env.router().get(URL_confirm_login_sent, redirectHomeIfAlreadyVisited(email -> views.Auth.loginEmailSent.template(email, Emails.TEAM)));
 		PostForm.hook(env.router(), UsernameForm.class, (req, validation) -> {
 			return views.Auth.username.template(validation.markup());
 		});
-		LoginForm.urlCode.get(env, LoginForm::confirm);
+		Accounts.urlCode.get(env, Accounts::confirm);
 
 		env.router().get(Routes.LOGOUT, (req, rsp) -> {
 			AuthUser.clearCookies(req, rsp);
@@ -90,7 +90,7 @@ public class AuthModule implements Jooby.Module {
 		env.router().err(JWTVerificationException.class, (req, rsp, err) -> {
 			AuthUser.clearCookies(req, rsp);
 			rsp.redirect(Status.TEMPORARY_REDIRECT, UrlEncodedPath.path(Routes.LOGIN)
-					.paramIfPresent(LOGIN_EMAIL, AuthUser.usernameForError(req))
+					.paramIfPresent(Accounts.LoginForm.EMAIL, AuthUser.usernameForError(req))
 					.paramPathAndQuery(REDIRECT, req)
 					.param(LOGIN_REASON, err.getCause().getMessage())
 					.build());
