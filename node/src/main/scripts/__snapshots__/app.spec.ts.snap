@@ -5,7 +5,7 @@ exports[`videoCut headers 1`] = `"<meta property=\\"og:title\\" content=\\"Ronal
 exports[`videoCut headers 404 invalid hash 1`] = `
 "#####################
 /static/social-header/cut:!(2007.9000244140625,2046.1099853515625),fact:OZVEQzZXVzx3lM_PbszcA35XYBJxEDHwJirpx1c7hhg=,kind:videoCut
-FetchError: invalid json response body at https://mytake.org/foundation-data/OZVEQzZXVzx3lM_PbszcA35XYBJxEDHwJirpx1c7hhg=.json reason: Unexpected end of JSON input
+FetchError: invalid json response body at https://mytake.org/foundation-data/OZVEQzZXVzx3lM_PbszcA35XYBJxEDHwJirpx1c7hhg=.json reason: Unexpected token < in JSON at position 0
     at mytakedotorg/node/node_modules/minipass-fetch/lib/body.js:77:31
     at processTicksAndRejections (internal/process/task_queues.js:97:5)"
 `;

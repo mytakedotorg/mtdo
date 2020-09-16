@@ -17,31 +17,126 @@
  *
  * You can contact us at team@mytake.org
  */
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { Social } from "../common/social/social";
+import { socialImage } from "../common/social/SocialImage";
 import SearchBar from "./SearchBar";
 
-const PLACEHOLDER_SEARCH_QUERY = "wall, -wall street";
+const SOCIAL_CLINTON: Social = {
+  cut: [2879, 2891.639892578125],
+  fact: "1L4K9lUrKC8dQBxDQTZeIxNEeKIgZjMPaA7SURzBljQ=",
+  kind: "videoCut",
+};
+
+const SOCIAL_TRUMP: Social = {
+  cut: [2689.89990234375, 2702.360107421875],
+  fact: "1L4K9lUrKC8dQBxDQTZeIxNEeKIgZjMPaA7SURzBljQ=",
+  kind: "videoCut",
+};
+
+const CUSTOM_SOCIAL_CLASSNAME = "home";
 
 const Home: React.FC = () => {
+  const [leftSocial, setLeftSocial] = useState<React.ReactElement>(
+    <SocialLoading />
+  );
+  const [rightSocial, setRightSocial] = useState<React.ReactElement>(
+    <SocialLoading />
+  );
+  useEffect(() => {
+    const loadImages = async () => {
+      setLeftSocial(await socialImage(SOCIAL_CLINTON, CUSTOM_SOCIAL_CLASSNAME));
+      setRightSocial(await socialImage(SOCIAL_TRUMP, CUSTOM_SOCIAL_CLASSNAME));
+    };
+    loadImages();
+  }, []);
   return (
     <>
-      <HomeSection innerContainerClassName={"home__searchbar"}>
-        <h1 className="home__heading">Search the Foundation</h1>
-        <SearchBar
-          classModifier="home"
-          placeholder={PLACEHOLDER_SEARCH_QUERY}
-        />
+      <HomeSection>
+        <h2 className="home__h1 home__h1--center">
+          Are we lying to you? Is this out of context?
+        </h2>
+        <p className="home__body home__body--center">Click one to see</p>
+        <div className="home__social-container">
+          <a href="/foundation/presidential-debate-clinton-trump-1-of-3/cut:!(2879,2891.639892578125),fact:'1L4K9lUrKC8dQBxDQTZeIxNEeKIgZjMPaA7SURzBljQ=',kind:videoCut">
+            {leftSocial}
+          </a>
+          <a href="/foundation/presidential-debate-clinton-trump-1-of-3/cut:!(2689.89990234375,2702.360107421875),fact:'1L4K9lUrKC8dQBxDQTZeIxNEeKIgZjMPaA7SURzBljQ=',kind:videoCut">
+            {rightSocial}
+          </a>
+        </div>
+        <h2 className="home__h1 home__h1--center">
+          Don't let someone else decide for you.
+        </h2>
+        <p className="home__body home__body--center">
+          We're not tracking what you've said. We're not selling your attention.
+        </p>
       </HomeSection>
-      <HomeSection containerClassName="hero">
-        <div className="home__boxes">
-          <p>
-            Use commas between search terms. E.g. "climate change, global
-            warming".
-          </p>
-          <p>
-            Use a minus sign to exclude a search term. E.g. "wall, -wall street"
-            will include anything about a wall except for Wall Street.
-          </p>
+      <HomeSection
+        containerClassName="home__section--dark"
+        innerContainerClassName={"home__searchbar"}
+      >
+        <h1 className="home__h1">
+          Search the issues you care about for yourself
+        </h1>
+        <SearchBar classModifier="home" placeholder={"Search"} />
+        <ul className="home__ul">
+          <li className="home__li">
+            No editorializing, no filter, no algorithm
+          </li>
+          <li className="home__li">Just the facts: who said what, and when</li>
+          <li className="home__li">
+            Search every presidential debate in history (Kennedy/Nison to
+            present), more to come
+          </li>
+        </ul>
+      </HomeSection>
+      <HomeSection>
+        <h3 className="home__h3">Helpful Tips</h3>
+        <ol className="home__ol">
+          <li className="home__li">
+            Win arguments on social media.
+            <div className="home__image-row">
+              <img src="/assets/permanent/share-screenshot-ab5ba7932a.png" />
+              <img src="/assets/permanent/social-screenshot-bd2c04a8b6.png" />
+            </div>
+          </li>
+          <li className="home__li">
+            Compare multiple search terms.
+            <div className="home__image-row">
+              <a href="/search?q=climate%20change">
+                <img src="/assets/permanent/climate-change-3259792fdb.svg" />
+              </a>
+              <a href="/search?q=climate%20change%2C%20global%20warming">
+                <img src="/assets/permanent/climate-change-global-warming-9a5ca1a605.svg" />
+              </a>
+            </div>
+          </li>
+          <li className="home__li">
+            Exclude unhelpful results.
+            <div className="home__image-row">
+              <a href="/search?q=wall">
+                <img src="/assets/permanent/wall-91744a6f80.svg" />
+              </a>
+              <a href="/search?q=wall%2C%20-wall%20street">
+                <img src="/assets/permanent/wall-minus-wall-street-5b731d08ed.svg" />
+              </a>
+            </div>
+          </li>
+        </ol>
+      </HomeSection>
+      <HomeSection containerClassName="home__section--dark">
+        <h2 className="home__h2">Get involved</h2>
+        <div className="home__link-container">
+          <a className="home__link" href="https://meta.mytake.org/">
+            Resources for teachers
+          </a>
+          <a className="home__link" href="https://meta.mytake.org/">
+            Resources for developers
+          </a>
+          <a className="home__link" href="https://meta.mytake.org/">
+            Resources for everyone else
+          </a>
         </div>
       </HomeSection>
     </>
@@ -72,4 +167,8 @@ const HomeSection: React.FC<HomeSectionProps> = ({
       <div className={innerClass}>{children}</div>
     </section>
   );
+};
+
+const SocialLoading: React.FC = () => {
+  return <div className="social_loading"></div>;
 };

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="200mm" height="100mm" version="1.1" viewBox="0 0 200 100" xmlns="http://www.w3.org/2000/svg" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+ <metadata>
+  <rdf:RDF>
+   <cc:Work rdf:about="">
+    <dc:format>image/svg+xml</dc:format>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:title/>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <g transform="translate(-21.717 -114.14)">
+  <path d="m21.849 114.14v99.868h199.87" fill="none" stroke="#000" stroke-width=".26458px"/>
+  <g fill="#43a98e" stroke-width=".26458">
+   <rect x="126" y="134.15" width="16" height="80" fill-rule="evenodd"/>
+   <rect x="174" y="184.14" width="16" height="30" fill-rule="evenodd"/>
+   <text x="31.16398" y="126.60723" font-family="Merriweather" font-size="10.583px" font-weight="bold" style="font-variant-caps:normal;font-variant-east-asian:normal;font-variant-ligatures:normal;font-variant-numeric:normal;line-height:1.25" xml:space="preserve"><tspan x="31.16398" y="126.60723" fill="#43a98e" font-family="Merriweather" font-size="10.583px" font-weight="bold" stroke-width=".26458" style="font-variant-caps:normal;font-variant-east-asian:normal;font-variant-ligatures:normal;font-variant-numeric:normal">climate change</tspan></text>
+  </g>
+ </g>
+</svg>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="200mm" height="100mm" version="1.1" viewBox="0 0 200 100" xmlns="http://www.w3.org/2000/svg" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+ <metadata>
+  <rdf:RDF>
+   <cc:Work rdf:about="">
+    <dc:format>image/svg+xml</dc:format>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:title/>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <g transform="translate(-328.63 -272.89)">
+  <path d="m328.77 272.89v99.868h199.87" fill="none" stroke="#000" stroke-width=".26458px"/>
+  <g fill="#43a98e">
+   <g fill-rule="evenodd" stroke-width=".26458">
+    <rect x="480.92" y="292.89" width="32" height="80"/>
+    <rect x="400.92" y="352.89" width="32" height="20"/>
+    <rect x="360.92" y="352.89" width="32" height="20"/>
+   </g>
+   <text x="343.86835" y="284.82803" font-family="Merriweather" font-size="10.583px" font-weight="bold" stroke-width=".26458" style="font-variant-caps:normal;font-variant-east-asian:normal;font-variant-ligatures:normal;font-variant-numeric:normal;line-height:1.25" xml:space="preserve"><tspan x="343.86835" y="284.82803" fill="#43a98e" font-family="Merriweather" font-size="10.583px" font-weight="bold" stroke-width=".26458" style="font-variant-caps:normal;font-variant-east-asian:normal;font-variant-ligatures:normal;font-variant-numeric:normal">wall, -wall street</tspan></text>
+  </g>
+ </g>
+</svg>

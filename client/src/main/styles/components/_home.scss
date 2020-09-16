@@ -1,7 +1,6 @@
 .home__section {
   width: 100%;
 }
-
 .home__section-content {
   max-width: 100%;
   margin: auto;
@@ -13,25 +12,43 @@
     width: $column-width - 32px;
   }
 }
-
-.home__heading {
-  @include heading2;
+.home__section--dark {
+  background-color: palette(home, background--dark);
+  overflow: auto;
+}
+.home__h1 {
+  @include typography($sans, 700, 24px, 1.3em);
+  margin: 24px 0 0 0;
   color: palette(home, title);
   @media screen and (min-width: 480px) {
-    @include heading1;
+    @include typography($sans, 700, 34px, 1.3em);
   }
+}
+.home__h1--center {
   text-align: center;
 }
-
-.searchbar__form--home {
-  margin-bottom: 3.5rem;
+.home__body {
+  @include typography($serif, 400, 15px, 1.2em);
 }
-
+.home__body--center {
+  text-align: center;
+}
+.home__social-container {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  a {
+    text-decoration: none;
+  }
+}
+.searchbar__form--home {
+  margin-top: 16px;
+  margin-bottom: 16px;
+}
 .searchbar__input--home {
   line-height: 3.5rem;
   border-color: palette(home, searchbar-border);
 }
-
 .searchbar__button--home {
   height: 3.7rem;
   background-color: palette(home, searchbar-button);
@@ -40,16 +57,50 @@
     background-color: palette(home, searchbar-button--hover);
   }
 }
-
 .searchbar__cancel--home {
   top: 6px;
 }
-
-.home__boxes {
+.home__ul {
+  margin-bottom: 16px;
+}
+.home__li {
+  @include typography($serif, 400, 15px, 1.4em);
+}
+.home__h2 {
+  @include typography($sans, 700, 34px, 1em);
+  color: palette(home, title);
+}
+.home__h3 {
+  @include typography($sans, 700, 20px, 1.3em);
+  color: palette(home, title);
+}
+.home__ol {
+  list-style-position: inside;
+  padding: 0;
+}
+.home__image-row {
   display: flex;
-  p {
-    @include body--lead;
-    color: lighten($base-lightest, 35%);
-    margin-right: 8px;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  img {
+    margin: 16px 0;
+    width: 350px;
+    height: auto;
+  }
+}
+.home__link-container {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 16px;
+}
+.home__link {
+  @include typography($sans, 400, 13px, 1.3em);
+  color: palette(nav, text);
+  text-decoration: none;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  &:hover {
+    color: palette(nav, text--hover);
   }
 }
