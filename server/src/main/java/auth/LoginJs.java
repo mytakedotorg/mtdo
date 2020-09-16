@@ -53,7 +53,7 @@ import org.jooq.DSLContext;
  * - now they have a confirmed account (can save data and receive emails), but no public username
  * - if they want to publish a take or post on the meta.mytake.org forums, they can claim a public username
  */
-class Accounts {
+class LoginJs {
 	static Result postToApiRoute(Request req) throws Exception {
 		LoginApi.Req loginReq = req.body(LoginApi.Req.class);
 		if (loginReq.kind.equals("newsletter")) {
