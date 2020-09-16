@@ -24,7 +24,6 @@
 <meta name="description" content="Your drafts | MyTake.org">
 <meta name="author" content="MyTake.org">
 
-<meta property="fb:app_id" content="203240867180202" />
 
 <link rel="stylesheet" href="/assets-dev/styles/main.css">
 <link rel="stylesheet" href="/assets-dev/styles/vis.css">
@@ -37,24 +36,6 @@
 </head>
 
 <body>
-<script>
-	window.fbAsyncInit = function() {
-		FB.init({
-			appId            : '203240867180202',
-			autoLogAppEvents : true,
-			xfbml            : true,
-			version          : 'v3.0'
-		});
-	};
-
-	(function(d, s, id){
-			var js, fjs = d.getElementsByTagName(s)[0];
-			if (d.getElementById(id)) {return;}
-			js = d.createElement(s); js.id = id;
-			js.src = "https://connect.facebook.net/en_US/sdk.js";
-			fjs.parentNode.insertBefore(js, fjs);
-		}(document, 'script', 'facebook-jssdk'));
-</script>
 <header class="header" role="banner">
 	<a class="header__skip-link" href="#app" tabindex="1">Skip to main content</a>
 	<div class="header__top">

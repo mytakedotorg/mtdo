@@ -50,7 +50,6 @@
 @if (social != null) {
 	@social.header()
 }
-<meta property="fb:app_id" content="@fbAppId()" />
 
 @style("reactApp")
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@@0,400;0,700;1,400&family=Source+Sans+Pro:wght@@300;400;700&family=IBM+Plex+Serif:wght@@400;600&display=swap" crossorigin="anonymous">
@@ -61,24 +60,6 @@
 </head>
 
 <body>
-<script>
-	window.fbAsyncInit = function() {
-		FB.init({
-			appId            : '@fbAppId()',
-			autoLogAppEvents : true,
-			xfbml            : true,
-			version          : 'v3.0'
-		});
-	};
-
-	(function(d, s, id){
-			var js, fjs = d.getElementsByTagName(s)[0];
-			if (d.getElementById(id)) {return;}
-			js = d.createElement(s); js.id = id;
-			js.src = "https://connect.facebook.net/en_US/sdk.js";
-			fjs.parentNode.insertBefore(js, fjs);
-		}(document, 'script', 'facebook-jssdk'));
-</script>
 <header class="header" role="banner">
 	<a class="header__skip-link" href="#app" tabindex="1">Skip to main content</a>
 	<div class="header__top">

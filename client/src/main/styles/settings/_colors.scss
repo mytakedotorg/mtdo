@@ -94,13 +94,8 @@ $palettes: (
     card-border: $base-lightest,
     shadow: $base-darkest,
   ),
-  hero: (
-    background: $base,
-    title: $white,
-    text: $base-lightest,
-    text--special: $white,
-  ),
   home: (
+    background--dark: lighten($base-lightest, 35%),
     searchbar-border: $action,
     searchbar-button: $action,
     searchbar-button--hover: $action-light,
