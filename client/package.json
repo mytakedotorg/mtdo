@@ -20,7 +20,6 @@
   "author": "MyTake.org, Inc.",
   "license": "AGPL-3.0",
   "dependencies": {
-    "@types/facebook-js-sdk": "^2.8.5",
     "@types/jest": "^26.0.9",
     "@types/vis": "^4.21.5",
     "base64-arraybuffer": "^0.2.0",

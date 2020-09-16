@@ -60,13 +60,6 @@ public abstract class CustomRockerTemplate extends RequestRockerTemplate {
 		return new RockerRaw().appendRaw(scriptTags);
 	}
 
-	//Read fb app id here
-	public RockerRaw fbAppId() {
-		String fbAppId = (String) locals.get(CustomAssets.FB_APP_ID);
-		Preconditions.checkNotNull(fbAppId);
-		return new RockerRaw().appendRaw(fbAppId);
-	}
-
 	/** Returns the single or plural stream as appropriate, based on the count. */
 	public static String capitalize(String input) {
 		if (input.isEmpty()) {

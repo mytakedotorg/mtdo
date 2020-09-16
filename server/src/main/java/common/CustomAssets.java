@@ -48,7 +48,6 @@ public class CustomAssets implements Jooby.Module {
 
 	static final String _STYLES = "_styles";
 	static final String _SCRIPTS = "_scripts";
-	static final String FB_APP_ID = "fbappid";
 
 	@Override
 	public void configure(Env env, Config conf, Binder binder) throws Throwable {
@@ -56,7 +55,6 @@ public class CustomAssets implements Jooby.Module {
 
 		Config config;
 		BiFunction<String, String, String> url;
-		String fbAppId = conf.getString("application.fbAppId");
 		if (env.name().equals("dev")) {
 			config = ConfigFactory.parseResources("assets.dev.conf");
 			url = (type, raw) -> "/assets-dev/" + type + raw;
@@ -78,7 +76,6 @@ public class CustomAssets implements Jooby.Module {
 				String value = keyValue.get(2 * i + 1);
 				req.set(key, value);
 			}
-			req.set(FB_APP_ID, fbAppId);
 		});
 	}
 
