@@ -37,6 +37,9 @@
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
+  a {
+    text-decoration: none;
+  }
 }
 .searchbar__form--home {
   margin-top: 16px;

@@ -58,8 +58,12 @@ const Home: React.FC = () => {
         </h2>
         <p className="home__body home__body--center">Click one to see</p>
         <div className="home__social-container">
-          {leftSocial}
-          {rightSocial}
+          <a href="/foundation/presidential-debate-clinton-trump-1-of-3/cut:!(2879,2891.639892578125),fact:'1L4K9lUrKC8dQBxDQTZeIxNEeKIgZjMPaA7SURzBljQ=',kind:videoCut">
+            {leftSocial}
+          </a>
+          <a href="/foundation/presidential-debate-clinton-trump-1-of-3/cut:!(2689.89990234375,2702.360107421875),fact:'1L4K9lUrKC8dQBxDQTZeIxNEeKIgZjMPaA7SURzBljQ=',kind:videoCut">
+            {rightSocial}
+          </a>
         </div>
         <h2 className="home__h1 home__h1--center">
           Don't let someone else decide for you.
@@ -100,15 +104,23 @@ const Home: React.FC = () => {
           <li className="home__li">
             Compare multiple search terms.
             <div className="home__image-row">
-              <img src="/assets/permanent/climate-change-3259792fdb.svg" />
-              <img src="/assets/permanent/climate-change-global-warming-9a5ca1a605.svg" />
+              <a href="/search?q=climate%20change">
+                <img src="/assets/permanent/climate-change-3259792fdb.svg" />
+              </a>
+              <a href="/search?q=climate%20change%2C%20global%20warming">
+                <img src="/assets/permanent/climate-change-global-warming-9a5ca1a605.svg" />
+              </a>
             </div>
           </li>
           <li className="home__li">
             Exclude unhelpful results.
             <div className="home__image-row">
-              <img src="/assets/permanent/wall-91744a6f80.svg" />
-              <img src="/assets/permanent/wall-minus-wall-street-5b731d08ed.svg" />
+              <a href="/search?q=wall">
+                <img src="/assets/permanent/wall-91744a6f80.svg" />
+              </a>
+              <a href="/search?q=wall%2C%20-wall%20street">
+                <img src="/assets/permanent/wall-minus-wall-street-5b731d08ed.svg" />
+              </a>
             </div>
           </li>
         </ol>
