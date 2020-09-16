@@ -73,11 +73,13 @@
 	<div class="section__inner section__inner--login">
 	<h2 class="section__heading">Set username</h2>
 	<div class="section__content">
-		<div class="alert alert-danger">You must first confirm your email address. Check your email!</div>
-
+		
 		<form action="/username" method="post" enctype="application/x-www-form-urlencoded" class="form form--login">
 		<label for="username" class="form__label">Username</label>
+<span  class="form__error">You must first confirm your email address. Check your email!</span>
 <input name="username" type="text" class="form__input">
+		<input name="terms" type="checkbox" id="acceptterms" class="form__input form__input--terms">
+		<label for="terms" class="form__label form__label--terms">I agree to the <a href="/tos">terms of service</a></label>
 		<input name="redirect" type="hidden" value="/">
 		<input type="submit" class="form__submit form__submit--blue" value="Claim username" />
 		</form>

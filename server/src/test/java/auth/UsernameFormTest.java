@@ -67,7 +67,7 @@ public class UsernameFormTest {
 		}
 		Snapshot.match("unconfirmed", RestAssured.given().redirects().follow(false).cookies(cookiesUnconfirmed).get(Routes.USERNAME))
 				.contains("You must first confirm your email address. Check your email!")
-				.contains("alert alert-danger");
+				.contains("class=\"form__error\"");
 	}
 
 	@Test
@@ -79,10 +79,11 @@ public class UsernameFormTest {
 				.statusCode(Status.FOUND.value())
 				.extract().cookies();
 		Snapshot.match("confirmed", noRedirects().cookies(cookiesNoUsername).get(Routes.USERNAME))
-				.doesNotContain("alert alert-danger");
+				.doesNotContain("class=\"form__error\"");
 
 		Map<String, String> cookiesUsername = FormSubmit.create(UsernameForm.class)
 				.set(UsernameForm.USERNAME, "tester")
+				.set(UsernameForm.ACCEPT_TERMS, true)
 				.set(AuthModule.REDIRECT, "/")
 				.postDebugWithCookies(cookiesNoUsername)
 				.then()
@@ -110,14 +111,26 @@ public class UsernameFormTest {
 	}
 
 	@Test
-	public void _04_typoharden() {
+	public void _04_mustAcceptTerms() {
+		Map<String, String> cookies = createAndConfirm("blub@email.com");
+		Snapshot.match("must-accept-terms", FormSubmit.create(UsernameForm.class)
+				.set(UsernameForm.USERNAME, "blub")
+				.set(UsernameForm.ACCEPT_TERMS, false)
+				.set(AuthModule.REDIRECT, "/")
+				.post(noRedirects().cookies(cookies))).contains("Must accept the terms to claim a username");
+	}
+
+	@Test
+	public void _05_typoharden() {
 		Map<String, String> cookies = createAndConfirm("blub@email.com");
 		Snapshot.match("typoharden-taken", FormSubmit.create(UsernameForm.class)
 				.set(UsernameForm.USERNAME, "tester")
+				.set(UsernameForm.ACCEPT_TERMS, true)
 				.set(AuthModule.REDIRECT, "/")
 				.post(noRedirects().cookies(cookies))).contains("Already taken");
 		Snapshot.match("typoharden", FormSubmit.create(UsernameForm.class)
 				.set(UsernameForm.USERNAME, "teesterr")
+				.set(UsernameForm.ACCEPT_TERMS, true)
 				.set(AuthModule.REDIRECT, "/")
 				.post(noRedirects().cookies(cookies))).contains("Too similar to existing user tester");
 	}

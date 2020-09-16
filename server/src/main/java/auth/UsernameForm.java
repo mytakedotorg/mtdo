@@ -37,9 +37,10 @@ import org.jooq.DSLContext;
 
 public class UsernameForm extends PostForm<UsernameForm> {
 	public static final MetaField<String> USERNAME = MetaField.string("username");
+	public static final MetaField<Boolean> ACCEPT_TERMS = MetaField.bool("terms");
 
 	public UsernameForm() {
-		super(Routes.USERNAME, USERNAME, AuthModule.REDIRECT);
+		super(Routes.USERNAME, USERNAME, ACCEPT_TERMS, AuthModule.REDIRECT);
 	}
 
 	/** Populates the initial values for the given form. */
@@ -55,7 +56,7 @@ public class UsernameForm extends PostForm<UsernameForm> {
 		// set the initial username
 		AuthUser auth = AuthUser.auth(req);
 		if (!auth.confirmed) {
-			builder.formError("You must first confirm your email address. Check your email!").build();
+			builder.addError(USERNAME, "You must first confirm your email address. Check your email!").build();
 			return;
 		}
 		String alreadyHasUsername;
@@ -75,6 +76,9 @@ public class UsernameForm extends PostForm<UsernameForm> {
 	@Override
 	protected ValidateResult<UsernameForm> validate(Request req, FormValidation.Sensitive<UsernameForm> fromUser) {
 		FormValidation.Builder<UsernameForm> retry = fromUser.keepAll();
+		if (!retry.valuePresent(ACCEPT_TERMS) || !retry.value(ACCEPT_TERMS)) {
+			return retry.addError(ACCEPT_TERMS, "Must accept the terms to claim a username");
+		}
 		ensureNoChange(retry, req);
 		AuthUser auth = AuthUser.auth(req);
 		validateFormat(retry);
