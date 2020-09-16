@@ -77,7 +77,7 @@ public class UsernameForm extends PostForm<UsernameForm> {
 	protected ValidateResult<UsernameForm> validate(Request req, FormValidation.Sensitive<UsernameForm> fromUser) {
 		FormValidation.Builder<UsernameForm> retry = fromUser.keepAll();
 		if (!retry.valuePresent(ACCEPT_TERMS) || !retry.value(ACCEPT_TERMS)) {
-			return retry.addError(ACCEPT_TERMS, "Must accept the terms to claim a username");
+			return retry.set(ACCEPT_TERMS, false).addError(ACCEPT_TERMS, "Must accept the terms to claim a username");
 		}
 		ensureNoChange(retry, req);
 		AuthUser auth = AuthUser.auth(req);
