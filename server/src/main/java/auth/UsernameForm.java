@@ -27,7 +27,6 @@ import forms.api.FormValidation;
 import forms.meta.MetaField;
 import forms.meta.PostForm;
 import forms.meta.Validator;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -37,9 +36,10 @@ import org.jooq.DSLContext;
 
 public class UsernameForm extends PostForm<UsernameForm> {
 	public static final MetaField<String> USERNAME = MetaField.string("username");
+	public static final MetaField<Boolean> ACCEPT_TERMS = MetaField.bool("terms");
 
 	public UsernameForm() {
-		super(Routes.USERNAME, USERNAME, AuthModule.REDIRECT);
+		super(Routes.USERNAME, USERNAME, ACCEPT_TERMS, AuthModule.REDIRECT);
 	}
 
 	/** Populates the initial values for the given form. */
@@ -55,7 +55,7 @@ public class UsernameForm extends PostForm<UsernameForm> {
 		// set the initial username
 		AuthUser auth = AuthUser.auth(req);
 		if (!auth.confirmed) {
-			builder.formError("You must first confirm your email address. Check your email!").build();
+			builder.addError(USERNAME, "You must first confirm your email address. Check your email!").build();
 			return;
 		}
 		String alreadyHasUsername;
@@ -75,6 +75,9 @@ public class UsernameForm extends PostForm<UsernameForm> {
 	@Override
 	protected ValidateResult<UsernameForm> validate(Request req, FormValidation.Sensitive<UsernameForm> fromUser) {
 		FormValidation.Builder<UsernameForm> retry = fromUser.keepAll();
+		if (!retry.valuePresent(ACCEPT_TERMS) || !retry.value(ACCEPT_TERMS)) {
+			return retry.set(ACCEPT_TERMS, false).addError(ACCEPT_TERMS, "Must accept the terms to claim a username");
+		}
 		ensureNoChange(retry, req);
 		AuthUser auth = AuthUser.auth(req);
 		validateFormat(retry);
@@ -115,17 +118,6 @@ public class UsernameForm extends PostForm<UsernameForm> {
 	}
 
 	static String validateTypoHardened(DSLContext dsl, FormValidation.Builder<UsernameForm> retry) {
-		if (!allUsernamesAreTypoHardened) {
-			List<AccountRecord> needsHardening = dsl.selectFrom(ACCOUNT)
-					.where(ACCOUNT.USERNAME.isNotNull())
-					.and(ACCOUNT.USERNAME_TYPOHARD.isNull())
-					.fetch();
-			for (AccountRecord account : needsHardening) {
-				account.setUsernameTypohard(typoHarden(account.getUsername()));
-				account.update();
-			}
-			allUsernamesAreTypoHardened = true;
-		}
 		String username = retry.value(USERNAME);
 		String typoHard = typoHarden(username);
 		String conflictUsername = DbMisc.fetchOne(dsl, ACCOUNT.USERNAME_TYPOHARD, typoHard, ACCOUNT.USERNAME);
@@ -138,8 +130,6 @@ public class UsernameForm extends PostForm<UsernameForm> {
 		}
 		return typoHard;
 	}
-
-	static boolean allUsernamesAreTypoHardened = false;
 
 	static String typoHarden(String username) {
 		String substituted = username

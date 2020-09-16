@@ -135,13 +135,13 @@ dependencies {
 	// flyway
 	implementation "org.flywaydb:flyway-core:${VER_FLYWAY}"
 	// fetch headers from node.mytake.org
-	implementation 'com.squareup.okhttp3:okhttp:4.8.1'
+	implementation 'com.squareup.okhttp3:okhttp:4.9.0'
 	// common libs
-	implementation 'commons-validator:commons-validator:1.6'
+	implementation 'commons-validator:commons-validator:1.7'
 	implementation 'com.diffplug.durian:durian-core:1.2.0'
 	implementation 'com.diffplug.durian:durian-collect:1.2.0'
-	implementation 'commons-codec:commons-codec:1.14'
-	implementation 'org.pcollections:pcollections:3.1.3'
+	implementation 'commons-codec:commons-codec:1.15'
+	implementation 'org.pcollections:pcollections:3.1.4'
 
 	// code quality annotations, especially @Nullable
 	annotationProcessor "com.google.code.findbugs:jsr305:${VER_JSR_305}"

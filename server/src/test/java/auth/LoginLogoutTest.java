@@ -19,7 +19,6 @@
  */
 package auth;
 
-import static auth.AuthModule.LOGIN_EMAIL;
 import static auth.AuthModule.REDIRECT;
 
 import com.google.common.collect.ImmutableMap;
@@ -40,9 +39,9 @@ public class LoginLogoutTest {
 
 	@Test
 	public void login() throws MessagingException {
-		PageAssert.assertThat(FormSubmit.create(LoginForm.class)
+		PageAssert.assertThat(FormSubmit.create(Accounts.LoginForm.class)
 				.set(REDIRECT, "/redirectTarget")
-				.set(LOGIN_EMAIL, "samples@email.com")
+				.set(Accounts.LoginForm.EMAIL, "samples@email.com")
 				.post(), Status.OK)
 				.bodyAssert(asserter -> {
 					asserter.contains("A login email has been sent to <strong>samples@email.com</strong>");
@@ -52,8 +51,8 @@ public class LoginLogoutTest {
 				});
 
 		EmailAssert loginEmail = dev.waitForEmail();
-		loginEmail.subject().isEqualTo("MyTake.org login link");
-		loginEmail.body().contains("Welcome back to MyTake.org, samples!");
+		loginEmail.subject().isEqualTo("MyTake.org welcome");
+		loginEmail.body().contains("Welcome back to MyTake.org, samples@email.com!");
 		String link = loginEmail.extractLink("Visit ");
 
 		String loginCookie = AuthModuleHarness.authTokenValue(dev, "samples");
@@ -63,7 +62,7 @@ public class LoginLogoutTest {
 				.then()
 				.statusCode(Status.FOUND.value())
 				.cookie(AuthUser.LOGIN_COOKIE, loginCookie)
-				.header("Location", "%2FredirectTarget");
+				.header("Location", "/redirectTarget");
 	}
 
 	@Test

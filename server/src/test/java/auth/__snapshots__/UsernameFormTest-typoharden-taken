@@ -59,6 +59,8 @@
 		<label for="username" class="form__label">Username</label>
 <span  class="form__error">Already taken</span>
 <input name="username" type="text" class="form__input" value="tester">
+		<input name="terms" type="checkbox" id="acceptterms" class="form__input form__input--terms" checked>
+		<label for="terms" class="form__label form__label--terms">I agree to the <a href="/tos">terms of service</a></label>
 		<input name="redirect" type="hidden" value="/">
 		<input type="submit" class="form__submit form__submit--blue" value="Claim username" />
 		</form>
