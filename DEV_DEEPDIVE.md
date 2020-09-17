@@ -3,9 +3,8 @@
 MyTake.org consists of two webapps.
 
 - one is a stateless nodejs app at `node.mytake.org`, responsible exclusively for generating preview images for social embeds
-- the other is a java app at `mytake.org`, which does everything else
-
-We use cloudflare caching heavily to reduce the load on both servers.
+- the other is a java app at `mytake.org`, using Postgres as the only datastore
+- both `node.mytake.org` and `mytake.org` use content hashing to allow aggressive cache headers, so that most requests can be served straight from the CloudFlare HTTP cache
 
 ## Build description
 

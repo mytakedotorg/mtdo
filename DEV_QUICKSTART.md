@@ -61,6 +61,8 @@ Some example URLs are:
 
 ## Going deeper
 
+The instructions on this page should be enough to improve and extend the existing features of the application. If you want go deeper, and add completely new functionality, you'll need to look at [`DEV_DEEPDIVE.md`](DEV_DEEPDIVE.md).
+
 ## Common errors and their solutions
 
 ### Java server startup
@@ -79,3 +81,7 @@ Start Docker!
 > Unable to obtain connection from database: The connection attempt failed.
 
 Just try `./gradlew runDev` again.
+
+> IDE started by `gradlew ide` is broken
+
+Run `./gradlew ideClean`, and then `./gradlew ide`
