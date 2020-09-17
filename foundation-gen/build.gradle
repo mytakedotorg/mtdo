@@ -74,7 +74,7 @@ eclipse {
 tasks.register('generateFoundation', JavaExec) {
 	description = 'Generates the foundation'
 	classpath = sourceSets.main.runtimeClasspath
-	main = 'org.mytake.foundation.Index'
+	main = 'org.mytake.fact.Index'
 
 	dependsOn(tasks.classes)
 	inputs.dir('../presidential-debates').withPathSensitivity(PathSensitivity.NAME_ONLY)
@@ -102,7 +102,7 @@ spotless {
 task transcriptGui(type: JavaExec, dependsOn: testClasses) {
 	description = 'Runs the transcript GUI'
 	classpath = sourceSets.test.runtimeClasspath
-	main = 'org.mytake.foundation.transcript.gui.TranscriptFolderDialog'
+	main = 'org.mytake.fact.transcript.gui.TranscriptFolderDialog'
 	if (com.diffplug.common.swt.os.OS.getNative().isMac()) {
 		jvmArgs = [
 			'-XstartOnFirstThread'

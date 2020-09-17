@@ -58,7 +58,7 @@ spotless {
 			ByteArrayOutputStream result = new ByteArrayOutputStream()
 			javaexec {
 				classpath project.configurations.foundationGenClasspath
-				main = 'org.mytake.foundation.VideoJsonFormat'
+				main = 'org.mytake.fact.VideoJsonFormat'
 				standardInput = new ByteArrayInputStream(str.getBytes('UTF-8'))
 				standardOutput = result
 			}
