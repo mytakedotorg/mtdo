@@ -3,7 +3,7 @@
 MyTake.org consists of two webapps.
 
 - one is a stateless nodejs app at `node.mytake.org`, responsible exclusively for generating preview images for social embeds
-- the other is java app at `mytake.org`, which does everything else
+- the other is a java app at `mytake.org`, which does everything else
 
 We use cloudflare caching heavily to reduce the load on both servers.
 
@@ -21,9 +21,9 @@ We use cloudflare caching heavily to reduce the load on both servers.
 
 ### Code sharing between java and typescript (jsweet)
 
-The `:client:jsweet` task transpiles the java in [`/client/src/main/java/java2ts`](client/src/main/java/java2ts) into TypeScript that lives in `/client/src/main/typescript/java2ts`, using [jsweet](http://www.jsweet.org/).  This ensures that the structured data sent back and forth between the server and browser is typed correctly.
+The `:client-interface:jsweet` task transpiles the java in [`/client-interface/src/main/java/java2ts`](client-interface/src/main/java/java2ts) into TypeScript that lives in `/client/src/main/scripts/java2ts`, using [jsweet](http://www.jsweet.org/).  This ensures that the structured data sent back and forth between the server and browser is typed correctly.
 
-The [`/client/src/main/java/java2ts/CodegenConfig.java`](client/src/main/java/java2ts/CodegenConfig.java) file is used by the `:client:jsoniterCodegen` task to generate the java code needed to parse and decode these classes as JSON.
+The [`/client-interface/src/main/java/java2ts/CodegenConfig.java`](client-interface/src/main/java/java2ts/CodegenConfig.java) file is used by the `:client-interface:jsoniterCodegen` task to generate the java code needed to parse and decode these classes as JSON.
 
 ### Database schema management and typesafe queries (Postgres, Flyway, and jOOQ)
 
