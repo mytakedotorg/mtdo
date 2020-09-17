@@ -97,8 +97,8 @@ const Home: React.FC = () => {
           <li className="home__li">
             Win arguments on social media.
             <div className="home__image-row">
-              <img src="/assets/permanent/share-screenshot-ab5ba7932a.png" />
-              <img src="/assets/permanent/social-screenshot-bd2c04a8b6.png" />
+              <img src="/assets/permanent/share-screenshot-e59c4257e9.png" />
+              <img src="/assets/permanent/social-screenshot-f102edf99d.png" />
             </div>
           </li>
           <li className="home__li">
