@@ -22,18 +22,17 @@ If you bump into any problems, we have listed [common errors and their solutions
 
 There is a file [`Routes.java`](client/src/main/java/java2ts/Routes.java) which gets transpiled by the build into [`Routes.ts`](client/src/main/scripts/java2ts/Routes.ts). You can do symbol navigation from there to see where to start for the server and client.  Below are some of the most commonly used parts:
 
-- `/` (homepage)
-  - template
-  - [`server/src/main/rocker/views/Placeholder/home.rocker.html`](server/src/main/rocker/views/Placeholder/home.rocker.html)
-  - served by
-  - [`server/src/main/java/controllers/HomeFeed.java`](server/src/main/java/controllers/HomeFeed.java)
-  - styled in TODO, js in TODO
-- `/search?q=social%20security` (search)
-  - template
-  - [`server/src/main/rocker/views/Search/searchResults.rocker.html`](server/src/main/rocker/views/Search/searchResults.rocker.html)
+- [`/`](https://mytake.org/) (homepage)
+  - react component [`client/src/main/scripts/components/Home.tsx`](client/src/main/scripts/components/Home.tsx)
+  - styled in [`client/src/main/styles/components/_home.scss`](client/src/main/styles/components/_home.scss)
+  - server template [`server/src/main/rocker/views/Placeholder/home.rocker.html`](server/src/main/rocker/views/Placeholder/home.rocker.html)
+  - served by [`server/src/main/java/controllers/HomeFeed.java`](server/src/main/java/controllers/HomeFeed.java)
+- [`/search?q=social%20security`](https://mytake.org/search?q=social%20security) (search)
+  - react entrypoint [`client/src/main/scripts/components/search/VideoResultsLoader.tsx`](client/src/main/scripts/components/search/VideoResultsLoader.tsx)
+  - styled in [`client/src/main/styles/components/_videoResults.scss`](client/src/main/styles/components/_videoResults.scss)
+  - server template [`server/src/main/rocker/views/Search/searchResults.rocker.html`](server/src/main/rocker/views/Search/searchResults.rocker.html)
   - client code there triggers js call to `/api/search`
   - server code entrypoints are all in [`server/src/main/java/controllers/SearchModule.java`](server/src/main/java/controllers/SearchModule.java)
-  - styled in TODO, js in TODO
 - `/foundation`
 - `/foundation/presidential-debate-kennedy-nixon-1-of-4`
 - `/foundation/presidential-debate-mondale-reagan-1-of-2/cut:!(2007.9000244140625,2046.1099853515625),fact:oZVEQzZXVzx3lM_PbszcA35XYBJxEDHwJirpx1c7hhg=,kind:videoCut`
@@ -59,6 +58,8 @@ Some example URLs are:
 
 - long video cut: http://localhost:3000/devSocialEmbed#cut:!(2007.9000244140625,2046.1099853515625),fact:oZVEQzZXVzx3lM_PbszcA35XYBJxEDHwJirpx1c7hhg=,kind:videoCut
 - short video cut: http://localhost:3000/devSocialEmbed#cut:!(2551.0849609375,2560.25),fact:DChTy6FSIkZY5lXpBzEvYoH-2OAqdQ8OXmQFo31jsfQ=,kind:videoCut
+
+## Going deeper
 
 ## Common errors and their solutions
 

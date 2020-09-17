@@ -188,10 +188,10 @@ Array [
             className="home__image-row"
           >
             <img
-              src="/assets/permanent/share-screenshot-ab5ba7932a.png"
+              src="/assets/permanent/share-screenshot-e59c4257e9.png"
             />
             <img
-              src="/assets/permanent/social-screenshot-bd2c04a8b6.png"
+              src="/assets/permanent/social-screenshot-f102edf99d.png"
             />
           </div>
         </li>
@@ -260,21 +260,27 @@ Array [
       >
         <a
           className="home__link"
-          href="https://meta.mytake.org/"
+          href="https://meta.mytake.org/c/educators"
         >
-          Resources for teachers
+          Forum for teachers
         </a>
         <a
           className="home__link"
-          href="https://meta.mytake.org/"
+          href="https://github.com/mytakedotorg/mytakedotorg/blob/staging/DEV_QUICKSTART.md"
         >
-          Resources for developers
+          GitHub repo for developers
         </a>
         <a
           className="home__link"
-          href="https://meta.mytake.org/"
+          href="https://meta.mytake.org/c/our-foundation"
         >
-          Resources for everyone else
+          Help us add more facts
+        </a>
+        <a
+          className="home__link"
+          href="https://meta.mytake.org/c/governance"
+        >
+          Donate money to keep it running
         </a>
       </div>
     </div>

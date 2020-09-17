@@ -97,8 +97,8 @@ const Home: React.FC = () => {
           <li className="home__li">
             Win arguments on social media.
             <div className="home__image-row">
-              <img src="/assets/permanent/share-screenshot-ab5ba7932a.png" />
-              <img src="/assets/permanent/social-screenshot-bd2c04a8b6.png" />
+              <img src="/assets/permanent/share-screenshot-e59c4257e9.png" />
+              <img src="/assets/permanent/social-screenshot-f102edf99d.png" />
             </div>
           </li>
           <li className="home__li">
@@ -128,14 +128,23 @@ const Home: React.FC = () => {
       <HomeSection containerClassName="home__section--dark">
         <h2 className="home__h2">Get involved</h2>
         <div className="home__link-container">
-          <a className="home__link" href="https://meta.mytake.org/">
-            Resources for teachers
+          <a className="home__link" href="https://meta.mytake.org/c/educators">
+            Forum for teachers
           </a>
-          <a className="home__link" href="https://meta.mytake.org/">
-            Resources for developers
+          <a
+            className="home__link"
+            href="https://github.com/mytakedotorg/mytakedotorg/blob/staging/DEV_QUICKSTART.md"
+          >
+            GitHub repo for developers
           </a>
-          <a className="home__link" href="https://meta.mytake.org/">
-            Resources for everyone else
+          <a
+            className="home__link"
+            href="https://meta.mytake.org/c/our-foundation"
+          >
+            Help us add more facts
+          </a>
+          <a className="home__link" href="https://meta.mytake.org/c/governance">
+            Donate money to keep it running
           </a>
         </div>
       </HomeSection>
