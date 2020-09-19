@@ -1,0 +1,6 @@
+rootProject.name = 'us-presidential-debates'
+includeBuild('..') {
+	dependencySubstitution {
+		substitute(module("org.mytake.mtdo:mtdo-plugin-gradle")).with(project(":foundation-gen"))
+	}
+}
