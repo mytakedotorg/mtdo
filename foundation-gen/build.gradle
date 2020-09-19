@@ -1,8 +1,33 @@
-plugins { id 'com.diffplug.eclipse.apt' }
+plugins {
+	id 'com.diffplug.eclipse.apt'
+	id 'java-gradle-plugin'
+	id 'com.gradle.plugin-publish' version '0.12.0'
+}
+
+gradlePlugin {
+	plugins {
+		factsetPlugin {
+			id                  = 'org.mytake.factset'
+			implementationClass = 'org.mytake.fact.gradle.FactsetPlugin'
+		}
+	}
+}
+pluginBundle {
+	website = "https://mytake.org"
+	vcsUrl = "https://github.com/mytakedotorg/mytakedotorg.git"
+	description = 'A shadowboard for facts, with dedicated ratchet holder'
+	tags = [
+		'journalism'
+	]
+	plugins {
+		factsetPlugin {
+			displayName = 'MyTake.org Factset'
+		}
+	}
+}
 
 import com.diffplug.common.swt.os.OS
 
-apply plugin: 'java'
 if (OS.getNative().isWindows()) {
 	apply plugin: 'com.diffplug.p2.asmaven'
 	String VER_CEF = '0.4.0.201908130254'
@@ -38,6 +63,12 @@ dependencies {
 	implementation 'org.eclipse.jgit:org.eclipse.jgit:5.0.1.201806211838-r'
 	implementation 'com.diffplug.durian:durian-core:1.2.0'
 	implementation 'com.diffplug.durian:durian-collect:1.2.0'
+	implementation 'com.diffplug.durian:durian-io:1.2.0'
+
+	implementation 'com.diffplug.spotless-changelog:spotless-changelog-plugin-gradle:2.0.0'
+	implementation 'com.diffplug.spotless:spotless-plugin-gradle:5.5.1'
+
+	implementation 'com.diffplug.durian:durian-io:1.2.0'
 	implementation 'com.diffplug.durian:durian-io:1.2.0'
 
 	if (OS.getNative().isWindows()) {
