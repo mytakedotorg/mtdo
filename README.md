@@ -1,8 +1,8 @@
 # [MyTake.org](https://mytake.org)
 
-[![Travis CI](https://travis-ci.org/mytakedotorg/mytakedotorg.svg?branch=staging)](https://travis-ci.org/mytakedotorg/mytakedotorg)
+[![Travis CI](https://travis-ci.org/mytakedotorg/mtdo.svg?branch=staging)](https://travis-ci.org/mytakedotorg/mtdo)
 [![License AGPLv3](https://img.shields.io/badge/license-AGPLv3-brightgreen.svg)](https://tldrlegal.com/license/gnu-affero-general-public-license-v3-(agpl-3.0))
-[![Live chat](https://img.shields.io/badge/gitter-chat-brightgreen.svg)](https://gitter.im/mytakedotorg/mytakedotorg)
+[![Live chat](https://img.shields.io/badge/gitter-chat-brightgreen.svg)](https://gitter.im/mytakedotorg/mtdo)
 
 MyTake.org is a mind bicycle for politics.  It's a website for writing essays ("takes") about U.S. politics, similar to Medium.com, except that users can link only to a finite set of [undisputed facts](https://mytake.org/foundation).  By focusing on primary sources that both sides agree are accurate and fair, we make it easier to engage on substance rather than being distracted by name calling or accusations of bias.
 

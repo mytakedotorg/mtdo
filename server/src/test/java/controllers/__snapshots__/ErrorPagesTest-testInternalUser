@@ -57,8 +57,8 @@
 		<li class="about__list-item">email us at <strong><a href="mailto:tech@mytake.org">tech@mytake.org</a></strong></li>
 		<li class="about__list-item">reference the error code <strong>erjchFbCXxMlUfFXx3oY</strong></li>
 		<li class="about__list-item">and tell us a little about what you were doing before it crashed</li>
-		<li class="about__list-item">we'll reply back with with a link to an <a href="https://github.com/mytakedotorg/mytakedotorg/issues">issue</a> where we are tracking the problem</li>
-		<li class="about__list-item">and hopefully even the <a href="https://github.com/mytakedotorg/mytakedotorg/pulls">code change</a> which will fix it</li>
+		<li class="about__list-item">we'll reply back with with a link to an <a href="https://github.com/mytakedotorg/mtdo/issues">issue</a> where we are tracking the problem</li>
+		<li class="about__list-item">and hopefully even the <a href="https://github.com/mytakedotorg/mtdo/pulls">code change</a> which will fix it</li>
 	</ul>
 </div>
 
