@@ -33,11 +33,15 @@ import com.diffplug.spotless.changelog.gradle.ChangelogExtension;
 import com.diffplug.spotless.changelog.gradle.ChangelogPlugin;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
+import org.gradle.api.plugins.BasePlugin;
 
 public class FactsetPlugin implements Plugin<Project> {
 	@Override
 	public void apply(Project project) {
-		project.getExtensions().create("mtdoFactset", MtdoFactset.class, project);
+		project.getPlugins().apply(BasePlugin.class);
+
+		// setup the templating
+		TemplatePlugin.forFactset().createTasks(project);
 
 		// setup the changelog
 		project.getPlugins().apply(ChangelogPlugin.class);
@@ -46,8 +50,7 @@ public class FactsetPlugin implements Plugin<Project> {
 		changelog.ifFoundBumpAdded(NEW_EVENT);
 		changelog.ifFoundBumpBreaking(RETRACTION, INCLUSION_CRITERIA_CHANGE);
 
-		// setup the templating
-		TemplatePlugin.forFactset().createTasks(project);
+		project.getExtensions().create("mtdoFactset", MtdoFactset.class, project);
 	}
 
 	static final String NEW_EVENT = "*New event*";
