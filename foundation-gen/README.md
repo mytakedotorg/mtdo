@@ -32,7 +32,7 @@ You don't need to be a programmer to use it. If you're on Windows, double-click 
 
 ## How to use it (programmer)
 
-If you run `gradlew check`, it will tell you anything you're doing wrong, and how to fix it.  If you run 
+If you run `gradlew check`, it will tell you anything you're doing wrong, and how to fix it.  If you run
 
 ```gradle
 plugins {
@@ -64,16 +64,16 @@ mtdoFactset {
   video {
     json {
         meta ->
-      			String lastNames = meta.speakers.stream()
-					.filter(speaker -> speaker.role.contains("for President"))
-					.map(speaker -> {
-						int lastSpace = speaker.fullName.lastIndexOf(' ');
-						return speaker.fullName.substring(lastSpace + 1);
-					})
-					.sorted().collect(Collectors.joining(", "));
-			Matcher matcher = Pattern.compile("\\((\\d) of (\\d)\\)").matcher(meta.fact.title);
-			Preconditions.checkArgument(matcher.find());
-			meta.fact.title = "Presidential Debate - " + lastNames + " (" + matcher.group(1) + " of " + matcher.group(2) + ")";
+            String lastNames = meta.speakers.stream()
+          .filter(speaker -> speaker.role.contains("for President"))
+          .map(speaker -> {
+            int lastSpace = speaker.fullName.lastIndexOf(' ');
+            return speaker.fullName.substring(lastSpace + 1);
+          })
+          .sorted().collect(Collectors.joining(", "));
+      Matcher matcher = Pattern.compile("\\((\\d) of (\\d)\\)").matcher(meta.fact.title);
+      Preconditions.checkArgument(matcher.find());
+      meta.fact.title = "Presidential Debate - " + lastNames + " (" + matcher.group(1) + " of " + matcher.group(2) + ")";
     }
     said {
       transcriptDefault('en-US')
@@ -91,20 +91,24 @@ mtdoFactSet {
   title = 'U.S. Founding Documents'
   document {
     json { meta ->
-      			String lastNames = meta.speakers.stream()
-					.filter(speaker -> speaker.role.contains("for President"))
-					.map(speaker -> {
-						int lastSpace = speaker.fullName.lastIndexOf(' ');
-						return speaker.fullName.substring(lastSpace + 1);
-					})
-					.sorted().collect(Collectors.joining(", "));
-			Matcher matcher = Pattern.compile("\\((\\d) of (\\d)\\)").matcher(meta.fact.title);
-			Preconditions.checkArgument(matcher.find());
-			meta.fact.title = "Presidential Debate - " + lastNames + " (" + matcher.group(1) + " of " + matcher.group(2) + ")";
+            String lastNames = meta.speakers.stream()
+          .filter(speaker -> speaker.role.contains("for President"))
+          .map(speaker -> {
+            int lastSpace = speaker.fullName.lastIndexOf(' ');
+            return speaker.fullName.substring(lastSpace + 1);
+          })
+          .sorted().collect(Collectors.joining(", "));
+      Matcher matcher = Pattern.compile("\\((\\d) of (\\d)\\)").matcher(meta.fact.title);
+      Preconditions.checkArgument(matcher.find());
+      meta.fact.title = "Presidential Debate - " + lastNames + " (" + matcher.group(1) + " of " + matcher.group(2) + ")";
     }
     md {
-      
+
     }
   }
 }
 ```
+
+# Changelog
+
+## [Unreleased]

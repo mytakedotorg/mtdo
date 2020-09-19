@@ -1,4 +1,5 @@
 plugins {
+	id 'com.diffplug.blowdryer'
 	id 'com.diffplug.eclipse.resourcefilters'
 	id 'com.diffplug.spotless'
 }

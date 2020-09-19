@@ -1,29 +1,38 @@
 plugins {
 	id 'com.diffplug.eclipse.apt'
-	id 'java-gradle-plugin'
-	id 'com.gradle.plugin-publish' version '0.12.0'
+	id 'com.diffplug.spotless-changelog'
 }
 
-gradlePlugin {
-	plugins {
-		factsetPlugin {
-			id                  = 'org.mytake.factset'
-			implementationClass = 'org.mytake.fact.gradle.FactsetPlugin'
-		}
-	}
+ext.git_url = 'github.com/mytakedotorg/mtdo'
+ext.maven_group = 'org.mytake.mtdo'
+ext.maven_artifact = 'mtdo-plugin-gradle'
+ext.maven_name = 'MyTake.org Factset'
+ext.maven_desc = 'A shadowboard for facts, with dedicated ratchet holder'
+ext.javadoc_links = ''
+ext.license = 'agpl'
+ext.plugin_list = 'factset'
+ext.plugin_tags = 'journalism'
+ext.plugin_factset_id = 'org.mytake.factset'
+ext.plugin_factset_impl = 'org.mytake.fact.gradle.FactsetPlugin'
+ext.plugin_factset_name = 'MyTake.org Factset'
+ext.plugin_factset_desc = 'A shadowboard for facts, with dedicated ratchet holder'
+
+spotlessChangelog {
+	changelogFile 'README.md'
+	tagPrefix 'factset/'
 }
-pluginBundle {
-	website = "https://mytake.org"
-	vcsUrl = "https://github.com/mytakedotorg/mytakedotorg.git"
-	description = 'A shadowboard for facts, with dedicated ratchet holder'
-	tags = [
-		'journalism'
-	]
-	plugins {
-		factsetPlugin {
-			displayName = 'MyTake.org Factset'
-		}
-	}
+
+apply from: 干.file('base/changelog.gradle')
+apply from: 干.file('spotless/freshmark.gradle')
+
+apply from: 干.file('base/java8.gradle')
+apply from: 干.file('spotless/java.gradle')
+
+apply from: 干.file('base/gradle-plugin.gradle')
+apply from: 干.file('base/maven.gradle')
+
+spotless {
+	ratchetFrom 'origin/staging'
 }
 
 import com.diffplug.common.swt.os.OS
@@ -94,13 +103,7 @@ eclipseMavenCentral {
 	}
 }
 
-eclipse {
-	project {
-		referencedProjects = [
-			'mytake-client'
-		]
-	}
-}
+eclipse.project.referencedProjects = ['mytake-client-interface']
 
 tasks.register('generateFoundation', JavaExec) {
 	description = 'Generates the foundation'
@@ -111,23 +114,6 @@ tasks.register('generateFoundation', JavaExec) {
 	inputs.dir('../presidential-debates').withPathSensitivity(PathSensitivity.NAME_ONLY)
 	outputs.dir('../foundation/src/main/resources')
 	outputs.cacheIf { true }
-}
-
-apply plugin: 'com.diffplug.spotless'
-spotless {
-	ratchetFrom 'origin/staging'
-	java {
-		licenseHeaderFile rootProject.file('gradle/spotless-license-epl.java')
-		importOrder()
-		eclipse().configFile(rootProject.file('gradle/spotless.eclipseformat.xml'))
-		removeUnusedImports()
-	}
-	format 'foundation', {
-		target 'src/main/resources/**'
-		replace('Always use simple apostrophe', "’", "'")
-		replace('Always use simple right quote', '”', '"')
-		replace('Always use simple left quote', '“', '"')
-	}
 }
 
 task transcriptGui(type: JavaExec, dependsOn: testClasses) {
