@@ -1,0 +1,185 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`HeaderWithPage homepage 1`] = `
+<header
+  className="header"
+  role="banner"
+>
+  <a
+    className="header__skip-link"
+    href="#app"
+    tabIndex={1}
+  >
+    Skip to main content
+  </a>
+  <div
+    className="header__top"
+  >
+    <span
+      className="header__logo-link"
+    >
+      <div
+        className="header__logo-image-container"
+      >
+        <img
+          alt="MyTake.org | Fundamentals, in context."
+          className="header__logo-image"
+          height="100"
+          src="/assets/permanent/square-wheat-482248dddd.png"
+          width="100"
+        />
+      </div>
+      <em
+        className="header__logo-title"
+      >
+        <span
+          className="header__logo--mytake"
+        >
+          MyTake
+        </span>
+        <span
+          className="header__logo--org"
+        >
+          .org
+        </span>
+      </em>
+    </span>
+    <UserNav />
+  </div>
+</header>
+`;
+
+exports[`HeaderWithPage other pages 1`] = `
+<header
+  className="header"
+  role="banner"
+>
+  <a
+    className="header__skip-link"
+    href="#app"
+    tabIndex={1}
+  >
+    Skip to main content
+  </a>
+  <div
+    className="header__top"
+  >
+    <span
+      className="header__logo-link"
+      onClick={[Function]}
+    >
+      <div
+        className="header__logo-image-container"
+      >
+        <img
+          alt="MyTake.org | Fundamentals, in context."
+          className="header__logo-image"
+          height="100"
+          src="/assets/permanent/square-wheat-482248dddd.png"
+          width="100"
+        />
+      </div>
+      <em
+        className="header__logo-title"
+      >
+        <span
+          className="header__logo--mytake"
+        >
+          MyTake
+        </span>
+        <span
+          className="header__logo--org"
+        >
+          .org
+        </span>
+      </em>
+      <span
+        className="header__moreinfo-link"
+      >
+        More info
+      </span>
+      <ul
+        className="header__tabs"
+      >
+        <li
+          className="header__tab header__tab--active"
+          onClick={[Function]}
+        >
+          How to use this
+        </li>
+        <li
+          className="header__tab"
+          onClick={[Function]}
+        >
+          What is this
+        </li>
+        <li
+          className="header__tab"
+          onClick={[Function]}
+        >
+          Get involved
+        </li>
+      </ul>
+    </span>
+    <UserNav />
+  </div>
+</header>
+`;
+
+exports[`HeaderWithPage search page 1`] = `
+<header
+  className="header header--search"
+  role="banner"
+>
+  <a
+    className="header__skip-link"
+    href="#app"
+    tabIndex={1}
+  >
+    Skip to main content
+  </a>
+  <div
+    className="header__top"
+  >
+    <span
+      className="header__logo-link"
+      onClick={[Function]}
+    >
+      <div
+        className="header__logo-image-container"
+      >
+        <img
+          alt="MyTake.org | Fundamentals, in context."
+          className="header__logo-image"
+          height="100"
+          src="/assets/permanent/square-wheat-482248dddd.png"
+          width="100"
+        />
+      </div>
+      <em
+        className="header__logo-title"
+      >
+        <span
+          className="header__logo--mytake"
+        >
+          MyTake
+        </span>
+        <span
+          className="header__logo--org"
+        >
+          .org
+        </span>
+      </em>
+    </span>
+    <div
+      className="header__searchbar"
+    >
+      <SearchBar
+        classModifier="search"
+        initialSearchQuery="anything"
+      />
+    </div>
+    <UserNav />
+  </div>
+</header>
+`;
