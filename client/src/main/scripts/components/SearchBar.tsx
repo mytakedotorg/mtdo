@@ -62,36 +62,40 @@ const SearchBar: React.FC<SearchBarProps> = ({
     searchCancelClass += " searchbar__cancel--hidden";
   }
   return (
-    <form
-      className={`searchbar__form searchbar__form--${BEMModifier}`}
-      onSubmit={handleSubmit}
-      action="javascript:void(0)" // Required for iOS search keyboard
-    >
-      <div
-        className={`searchbar__input-container searchbar__input-container--${BEMModifier}`}
+    <div className="header__searchbar">
+      <form
+        className={`searchbar__form searchbar__form--${BEMModifier}`}
+        onSubmit={handleSubmit}
+        action="javascript:void(0)" // Required for iOS search keyboard
       >
-        <input
-          className={`searchbar__input searchbar__input--${BEMModifier}`}
-          type="search"
-          value={inputValue}
-          placeholder={placeholder}
-          results={5}
-          onChange={handleChange}
-        />
-        <span className={searchCancelClass} onClick={clearSearch}>
-          <XCircle />
-        </span>
-      </div>
-      <button
-        type="submit"
-        className={`searchbar__button searchbar__button--${BEMModifier}`}
-      >
-        <span className={`searchbar__text searchbar__text--${BEMModifier}`}>
-          Search
-        </span>
-        <Search className={`searchbar__icon searchbar__icon--${BEMModifier}`} />
-      </button>
-    </form>
+        <div
+          className={`searchbar__input-container searchbar__input-container--${BEMModifier}`}
+        >
+          <input
+            className={`searchbar__input searchbar__input--${BEMModifier}`}
+            type="search"
+            value={inputValue}
+            placeholder={placeholder}
+            results={5}
+            onChange={handleChange}
+          />
+          <span className={searchCancelClass} onClick={clearSearch}>
+            <XCircle />
+          </span>
+        </div>
+        <button
+          type="submit"
+          className={`searchbar__button searchbar__button--${BEMModifier}`}
+        >
+          <span className={`searchbar__text searchbar__text--${BEMModifier}`}>
+            Search
+          </span>
+          <Search
+            className={`searchbar__icon searchbar__icon--${BEMModifier}`}
+          />
+        </button>
+      </form>
+    </div>
   );
 };
 

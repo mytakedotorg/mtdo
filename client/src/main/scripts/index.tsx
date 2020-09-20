@@ -21,64 +21,21 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import Modal from "react-modal";
 import { windowUtils } from "./browser";
-import { getQueryParameterByName } from "./common/functions";
-import UserNav from "./components/auth/UserNav";
-import { TakeDocument } from "./components/BlockEditor";
 import BlockReader from "./components/BlockReader";
 import BlockWriter, {
   InitialBlockWriterState,
   initialState,
 } from "./components/BlockWriter";
-import BookmarksLoader from "./components/bookmarks/BookmarksLoader";
-import { Card } from "./components/FeedList";
 import FoundationView from "./components/FoundationView";
+import HeaderWithPage from "./components/HeaderWithPage";
 import Home from "./components/Home";
 import VideoResultsLoader from "./components/search/VideoResultsLoader";
-import SearchBar from "./components/SearchBar";
-import { Routes } from "./java2ts/Routes";
+import { MtdoArgs } from "./page";
 
 windowUtils.init();
 
-interface HomeArgs {
-  type: "home";
-  cards: Card[];
-}
-
-interface ShowTakeArgs {
-  type: "showtake";
-  takeDocument: TakeDocument;
-  takeId: number;
-}
-
-interface FoundationArgs {
-  type: "foundation";
-}
-
-interface NewTakeArgs {
-  type: "new-take";
-  blockWriterState?: InitialBlockWriterState;
-}
-
-interface SearchArgs {
-  type: "search";
-  searchTerm: string;
-}
-
-type MtdoArgs =
-  | HomeArgs
-  | ShowTakeArgs
-  | FoundationArgs
-  | NewTakeArgs
-  | SearchArgs;
-
-declare global {
-  interface Window {
-    mytake?: MtdoArgs;
-  }
-}
-
-function reactElementForPage(args: MtdoArgs): React.SFCElement<any> {
-  switch (args.type) {
+function reactElementForPage(args?: MtdoArgs): JSX.Element | undefined {
+  switch (args?.type) {
     case "foundation":
       return <FoundationView path={window.location.pathname} />;
     case "new-take":
@@ -109,38 +66,11 @@ function reactElementForPage(args: MtdoArgs): React.SFCElement<any> {
   }
 }
 
+function pageElementWithHeader(): JSX.Element {
+  return <HeaderWithPage>{reactElementForPage(window.mytake)}</HeaderWithPage>;
+}
 const app = document.getElementById("app");
 if (app) {
-  ReactDOM.render(reactElementForPage(window.mytake!), app);
+  ReactDOM.render(pageElementWithHeader(), app);
   Modal.setAppElement(app);
-}
-
-if (isSearchPage(window.mytake)) {
-  const searchBarContainer = document.getElementById("searchbar")!;
-  ReactDOM.render(
-    <SearchBar
-      initialSearchQuery={window.mytake.searchTerm}
-      classModifier="search"
-    />,
-    searchBarContainer
-  );
-  const header = document.getElementsByTagName("header")[0];
-  header.classList.add("header--search");
-}
-
-const userNavContainer = document.getElementById("usernav");
-ReactDOM.render(<UserNav />, userNavContainer!);
-
-if (isBookmarksTab()) {
-  const bookmarksContainer = document.getElementById("bookmarks");
-  ReactDOM.render(<BookmarksLoader />, bookmarksContainer);
-}
-function isSearchPage(page?: MtdoArgs): page is SearchArgs {
-  return (page as SearchArgs)?.type === "search";
-}
-
-function isBookmarksTab(): boolean {
-  return (
-    getQueryParameterByName(Routes.PROFILE_TAB) === Routes.PROFILE_TAB_BOOKMARKS
-  );
 }
