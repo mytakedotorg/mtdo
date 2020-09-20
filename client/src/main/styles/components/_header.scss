@@ -37,8 +37,7 @@ $nav-height: 35px;
 .header__logo-link {
   display: flex;
   justify-content: flex-start;
-  text-decoration: none;
-  width: 175px;
+  cursor: pointer;
   margin-right: 8px;
 }
 .header__logo-image-container {
@@ -58,6 +57,32 @@ $nav-height: 35px;
 }
 .header__logo--org {
   color: palette(header, text--red);
+}
+.header__moreinfo-link {
+  @include typography($sans, 400, 13px, 40px);
+  text-transform: uppercase;
+  color: palette(nav, text);
+  margin-left: 8px;
+  &:hover {
+    color: palette(nav, text--hover);
+  }
+}
+.header__tabs {
+  list-style-type: none;
+  font-size: 0;
+  margin-left: 8px;
+  padding: 0;
+  display: none;
+  &.header__tabs--visible {
+    display: flex;
+  }
+}
+.header__tab {
+  @include typography($sans, 400, 13px, 40px);
+  margin-right: 2px;
+  border: 1px solid black;
+  border-radius: 2px;
+  padding: 0 4px;
 }
 .header__searchbar {
   flex: 1;

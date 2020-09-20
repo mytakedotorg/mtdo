@@ -59,6 +59,10 @@ declare global {
   }
 }
 
+export function isHomePage(page?: MtdoArgs): page is HomeArgs {
+  return (page as HomeArgs)?.type === "home";
+}
+
 export function isSearchPage(page?: MtdoArgs): page is SearchArgs {
   return (page as SearchArgs)?.type === "search";
 }

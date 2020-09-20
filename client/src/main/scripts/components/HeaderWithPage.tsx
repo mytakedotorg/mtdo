@@ -17,8 +17,8 @@
  *
  * You can contact us at team@mytake.org
  */
-import React from "react";
-import { isSearchPage, MtdoArgs } from "../page";
+import React, { useState } from "react";
+import { isHomePage, isSearchPage, MtdoArgs } from "../page";
 import UserNav from "./auth/UserNav";
 import SearchBar from "./SearchBar";
 
@@ -26,7 +26,43 @@ interface HeaderProps {
   args?: MtdoArgs;
 }
 
+interface Tab {
+  title: string;
+}
+
+const HEADER_TABS = [
+  {
+    title: "How to use this",
+  },
+  {
+    title: "What is this",
+  },
+  {
+    title: "Get involved",
+  },
+];
+
 const HeaderWithPage: React.FC<HeaderProps> = (props) => {
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [activeTab, setActiveTab] = useState<Tab>(HEADER_TABS[0]);
+
+  const onLogoClick = () => {
+    setIsExpanded((prevState) => !prevState);
+  };
+
+  const onTabClick = (tab: Tab) => {
+    setActiveTab(tab);
+  };
+
+  const tabsClass = isExpanded
+    ? "header__tabs header__tabs--visible"
+    : "header__tabs";
+  const drawerClass = isExpanded
+    ? "header__drawer header__drawer--visible"
+    : "header__drawer";
+  const overlayClass = isExpanded
+    ? "header__overlay header__overlay--visible"
+    : "header__overlay";
   const headerClass = isSearchPage(props.args)
     ? "header header--search"
     : "header";
@@ -37,7 +73,10 @@ const HeaderWithPage: React.FC<HeaderProps> = (props) => {
           Skip to main content
         </a>
         <div className="header__top">
-          <a className="header__logo-link" href="/">
+          <span
+            className="header__logo-link"
+            onClick={!isHomePage(props.args) ? onLogoClick : undefined}
+          >
             <div className="header__logo-image-container">
               <img
                 className="header__logo-image"
@@ -51,12 +90,36 @@ const HeaderWithPage: React.FC<HeaderProps> = (props) => {
               <span className="header__logo--mytake">MyTake</span>
               <span className="header__logo--org">.org</span>
             </em>
-          </a>
+            {!isHomePage(props.args) && !isSearchPage(props.args) && (
+              <>
+                <span className="header__moreinfo-link">More info</span>
+                <ul className={tabsClass}>
+                  {HEADER_TABS.map((tab) => {
+                    const tabClass =
+                      tab.title === activeTab.title
+                        ? "header__tab header__tab--active"
+                        : "header__tab";
+                    return (
+                      <li
+                        key={tab.title}
+                        className={tabClass}
+                        onClick={() => onTabClick(tab)}
+                      >
+                        {tab.title}
+                      </li>
+                    );
+                  })}
+                </ul>
+              </>
+            )}
+          </span>
           {isSearchPage(props.args) && (
-            <SearchBar
-              initialSearchQuery={props.args.searchTerm}
-              classModifier="search"
-            />
+            <div className="header__searchbar">
+              <SearchBar
+                initialSearchQuery={props.args.searchTerm}
+                classModifier="search"
+              />
+            </div>
           )}
           <UserNav />
         </div>

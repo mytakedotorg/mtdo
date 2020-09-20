@@ -67,7 +67,11 @@ function reactElementForPage(args?: MtdoArgs): JSX.Element | undefined {
 }
 
 function pageElementWithHeader(): JSX.Element {
-  return <HeaderWithPage>{reactElementForPage(window.mytake)}</HeaderWithPage>;
+  return (
+    <HeaderWithPage args={window.mytake}>
+      {reactElementForPage(window.mytake)}
+    </HeaderWithPage>
+  );
 }
 const app = document.getElementById("app");
 if (app) {
