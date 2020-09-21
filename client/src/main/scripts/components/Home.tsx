@@ -77,7 +77,7 @@ const Home: React.FC = () => {
         containerClassName="home__section--dark"
         innerContainerClassName={"home__searchbar"}
       >
-        <h1 className="home__h1">
+        <h1 className="home__h1 home__body--center">
           Search the issues you care about for&nbsp;yourself
         </h1>
         <SearchBar classModifier="home" placeholder={"Search"} />
