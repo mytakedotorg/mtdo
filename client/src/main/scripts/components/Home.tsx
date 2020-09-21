@@ -54,7 +54,7 @@ const Home: React.FC = () => {
     <>
       <HomeSection>
         <h2 className="home__h1 home__h1--center">
-          Are we lying to you? Is this out of context?
+          Are we lying to you? Is&nbsp;this&nbsp;out&nbsp;of&nbsp;context?
         </h2>
         <p className="home__body home__body--center">Click one to see</p>
         <div className="home__social-container">
@@ -66,18 +66,19 @@ const Home: React.FC = () => {
           </a>
         </div>
         <h2 className="home__h1 home__h1--center">
-          Don't let someone else decide for you.
+          Don't let someone else decide&nbsp;for&nbsp;you
         </h2>
         <p className="home__body home__body--center">
-          We're not tracking what you've said. We're not selling your attention.
+          We're not tracking what you've said.
+          We're&nbsp;not&nbsp;selling&nbsp;your&nbsp;attention.
         </p>
       </HomeSection>
       <HomeSection
         containerClassName="home__section--dark"
         innerContainerClassName={"home__searchbar"}
       >
-        <h1 className="home__h1">
-          Search the issues you care about for yourself
+        <h1 className="home__h1 home__body--center">
+          Search the issues you care about for&nbsp;yourself
         </h1>
         <SearchBar classModifier="home" placeholder={"Search"} />
         <ul className="home__ul">
@@ -86,7 +87,7 @@ const Home: React.FC = () => {
           </li>
           <li className="home__li">Just the facts: who said what, and when</li>
           <li className="home__li">
-            Search every presidential debate in history (Kennedy/Nison to
+            Search every presidential debate in history (Kennedy/Nixon to
             present), more to come
           </li>
         </ul>
