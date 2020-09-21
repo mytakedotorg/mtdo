@@ -54,7 +54,7 @@ const Home: React.FC = () => {
     <>
       <HomeSection>
         <h2 className="home__h1 home__h1--center">
-          Are we lying to you?<br/>Is&nbsp;this&nbsp;out&nbsp;of&nbsp;context?
+          Are we lying to you? Is&nbsp;this&nbsp;out&nbsp;of&nbsp;context?
         </h2>
         <p className="home__body home__body--center">Click one to see</p>
         <div className="home__social-container">
@@ -87,7 +87,7 @@ const Home: React.FC = () => {
           </li>
           <li className="home__li">Just the facts: who said what, and when</li>
           <li className="home__li">
-            Search every presidential debate in history (Kennedy/Nison to
+            Search every presidential debate in history (Kennedy/Nixon to
             present), more to come
           </li>
         </ul>
