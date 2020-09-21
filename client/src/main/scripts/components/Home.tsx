@@ -66,7 +66,7 @@ const Home: React.FC = () => {
           </a>
         </div>
         <h2 className="home__h1 home__h1--center">
-          Don't let someone else decide for you.
+          Don't let someone else decide&nbsp;for&nbsp;you
         </h2>
         <p className="home__body home__body--center">
           We're not tracking what you've said.
