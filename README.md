@@ -9,13 +9,13 @@ Journalism was conceived in an era when the means of transmitting information wa
 
 When transmission was scarce and attention was abundant, lies were a bad investment. It was expensive to get a lie into the information channel, and once there it would receive attention (and criticism) from a broad audience. In this environment, journalists and audiences developed an axiomatic belief that "the truth lies somewhere in the middle".
 
-Now that attention has become scarce and information abundant, telling a lie and supporting it with a large body of manufactured evidence is a great investment. It is cheap to do, and expensive to defend.
+Now that attention has become scarce and information abundant, telling a lie and supporting it with a large body of manufactured evidence is a great investment. The lie is cheap to build, and expensive to dismantle.
 
 The scarcity of attention and abundance of information aren't just the new normal, they are accelerating. These trends will not reverse. If we can't find a way for reality to outcompete manufactured reality, then we're all going to live in somebody else's Disneyworld, worshipping the heroes and fighting the villains of their choosing. Failure isn't just an option, it is where we are now, and it is the default trajectory for the future.
 
 > Who controls the past controls the future. Who controls the present controls the past. *George Orwell, 1984*
 
-The present isn't the only thing that can control the past - merkle trees can do that job even better. And attention isn't the only thing that can control context - hyperlinks can do that too. But that's the easy part.
+So we'll just take past and secure it on the blockchain, where it will be safe! Hahahahahahahaha
 
 ## The hard part
 
