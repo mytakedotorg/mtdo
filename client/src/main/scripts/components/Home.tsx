@@ -54,7 +54,7 @@ const Home: React.FC = () => {
     <>
       <HomeSection>
         <h2 className="home__h1 home__h1--center">
-          Are we lying to you? Is this out of context?
+          Are we lying to you?<br/>Is&nbsp;this&nbsp;out&nbsp;of&nbsp;context?
         </h2>
         <p className="home__body home__body--center">Click one to see</p>
         <div className="home__social-container">
@@ -69,7 +69,8 @@ const Home: React.FC = () => {
           Don't let someone else decide for you.
         </h2>
         <p className="home__body home__body--center">
-          We're not tracking what you've said. We're not selling your attention.
+          We're not tracking what you've said.
+          We're&nbsp;not&nbsp;selling&nbsp;your&nbsp;attention.
         </p>
       </HomeSection>
       <HomeSection
@@ -77,7 +78,7 @@ const Home: React.FC = () => {
         innerContainerClassName={"home__searchbar"}
       >
         <h1 className="home__h1">
-          Search the issues you care about for yourself
+          Search the issues you care about for&nbsp;yourself
         </h1>
         <SearchBar classModifier="home" placeholder={"Search"} />
         <ul className="home__ul">
