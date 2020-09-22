@@ -15,3 +15,6 @@ buildscript {
 	}
 }
 apply plugin: 'org.mytake.factset'
+
+mtdoFactset {
+}
