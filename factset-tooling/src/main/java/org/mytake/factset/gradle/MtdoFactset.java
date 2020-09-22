@@ -31,6 +31,7 @@ package org.mytake.factset.gradle;
 
 import com.diffplug.common.base.Throwing;
 import com.diffplug.common.base.Unhandled;
+import com.diffplug.common.collect.Iterables;
 import com.diffplug.spotless.Formatter;
 import com.diffplug.spotless.FormatterStep;
 import com.diffplug.spotless.LineEnding;
@@ -66,13 +67,12 @@ import org.gradle.api.tasks.OutputDirectory;
 import org.gradle.api.tasks.PathSensitive;
 import org.gradle.api.tasks.PathSensitivity;
 import org.gradle.api.tasks.TaskAction;
-import org.gradle.internal.impldep.com.google.common.collect.Iterables;
 import org.gradle.work.FileChange;
 import org.gradle.work.Incremental;
 import org.gradle.work.InputChanges;
 import org.mytake.factset.Hashed;
 import org.mytake.factset.JsonMisc;
-import org.mytake.factset.VideoJsonFormat;
+import org.mytake.factset.VideoFormat;
 import org.mytake.factset.legacy.FactWriter;
 import org.mytake.factset.video.SaidTranscript;
 import org.mytake.factset.video.TranscriptMatch;
@@ -117,7 +117,7 @@ public class MtdoFactset {
 	}
 
 	public static class VideoCfg {
-		Action<VideoJsonFormat> perVideo = video -> {};
+		Action<FT.VideoFactMeta> perVideo = video -> {};
 	}
 
 	public class DocumentCfg {}
@@ -209,7 +209,7 @@ public class MtdoFactset {
 					}
 					cell.writeCanonicalTo(jsonFile);
 					// determine output file
-					VideoJsonFormat json = JsonMisc.fromJson(jsonFile, VideoJsonFormat.class);
+					FT.VideoFactMeta json = JsonMisc.fromJson(jsonFile, FT.VideoFactMeta.class);
 					String titleSlug = FactWriter.slugify(json.fact.title);
 					buildJson.put(path, titleSlug + ".json");
 					getLogger().info("  into " + titleSlug + ".json");
@@ -234,12 +234,12 @@ public class MtdoFactset {
 		private Formatter formatterVideoJson(VideoCfg video) {
 			return formatter(str -> {
 				// parse and sort speakers by name
-				VideoJsonFormat json = JsonMisc.fromJson(str, VideoJsonFormat.class);
+				FT.VideoFactMeta json = JsonMisc.fromJson(str, FT.VideoFactMeta.class);
 				json.speakers.sort(Comparator.comparing(speaker -> speaker.fullName));
 				// format in-place (fine to reorder speakers if they want)
 				video.perVideo.execute(json);
 				// pretty-print
-				return json.prettyPrint();
+				return VideoFormat.prettyPrint(json);
 			});
 		}
 

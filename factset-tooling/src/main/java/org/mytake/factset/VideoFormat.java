@@ -33,24 +33,21 @@ import com.diffplug.common.base.Preconditions;
 import com.diffplug.common.io.ByteStreams;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonParser;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Comparator;
-import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-import java2ts.FT.Fact;
-import java2ts.FT.Speaker;
+import java2ts.FT;
 import java2ts.FT.VideoFactMeta;
 
 /** Format-friendly version of {@link VideoFactMeta}. */
-public class VideoJsonFormat {
-	public Fact fact;
-	public String youtubeId;
-	public Number durationSeconds;
-	public List<Speaker> speakers;
+public class VideoFormat {
+	private VideoFormat() {}
 
 	public static void main(String[] args) throws IOException {
 		byte[] content = ByteStreams.toByteArray(System.in);
@@ -59,7 +56,7 @@ public class VideoJsonFormat {
 	}
 
 	static String format(String input) throws IOException {
-		VideoJsonFormat meta = JsonMisc.fromJson(input.getBytes(StandardCharsets.UTF_8), VideoJsonFormat.class);
+		FT.VideoFactMeta meta = JsonMisc.fromJson(input.getBytes(StandardCharsets.UTF_8), FT.VideoFactMeta.class);
 
 		if (meta.fact.title.startsWith("Presidential Debate - ")) {
 			String lastNames = meta.speakers.stream()
@@ -77,12 +74,18 @@ public class VideoJsonFormat {
 		}
 
 		meta.speakers.sort(Comparator.comparing(speaker -> speaker.fullName));
-		return meta.prettyPrint();
+		return prettyPrint(meta);
 	}
 
-	public String prettyPrint() {
+	public static String prettyPrint(FT.VideoFactMeta meta) {
 		Gson gson = new GsonBuilder().setPrettyPrinting().create();
-		String formatted = gson.toJson(JsonParser.parseString(JsonMisc.toJson(this)));
+		JsonObject tree = gson.toJsonTree(meta).getAsJsonObject();
+		JsonObject reordered = new JsonObject();
+		reordered.add("fact", tree.remove("fact"));
+		for (Map.Entry<String, JsonElement> entry : tree.entrySet()) {
+			reordered.add(entry.getKey(), entry.getValue());
+		}
+		String formatted = gson.toJson(reordered);
 		return SPEAKER.matcher(formatted).replaceAll("{\"fullName\": \"$1\", \"role\": \"$2\"}");
 	}
 

@@ -53,12 +53,12 @@ dependencies {
 spotless {
 	format 'foundation-video', {
 		target '**/*.json'
-		bumpThisNumberIfACustomStepChanges(3)
+		bumpThisNumberIfACustomStepChanges(6)
 		custom 'VideoJsonFormat', { str ->
 			ByteArrayOutputStream result = new ByteArrayOutputStream()
 			javaexec {
 				classpath project.configurations.foundationGenClasspath
-				main = 'org.mytake.fact.VideoJsonFormat'
+				main = 'org.mytake.factset.VideoFormat'
 				standardInput = new ByteArrayInputStream(str.getBytes('UTF-8'))
 				standardOutput = result
 			}
@@ -72,3 +72,4 @@ tasks.named('spotlessFoundation-video') {
 	dependsOn ':client-interface:jar'
 	dependsOn ':lucene:jar'
 }
+
