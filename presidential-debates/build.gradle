@@ -48,7 +48,7 @@ configurations {
 	foundationGenClasspath
 }
 dependencies {
-	foundationGenClasspath project(':foundation-gen')
+	foundationGenClasspath project(':factset-tooling')
 }
 spotless {
 	format 'foundation-video', {
@@ -68,7 +68,7 @@ spotless {
 }
 
 tasks.named('spotlessFoundation-video') {
-	dependsOn ':foundation-gen:jar'
+	dependsOn ':factset-tooling:jar'
 	dependsOn ':client-interface:jar'
 	dependsOn ':lucene:jar'
 }

@@ -23,7 +23,7 @@ plugins {
 include 'client'
 include 'client-interface'
 include 'foundation'
-include 'foundation-gen'
+include 'factset-tooling'
 include 'server'
 include 'ide'
 include 'lucene'
