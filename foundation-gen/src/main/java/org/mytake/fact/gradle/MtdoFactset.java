@@ -29,10 +29,29 @@
 package org.mytake.fact.gradle;
 
 
+import com.diffplug.common.base.Throwing;
+import com.diffplug.common.base.Unhandled;
+import com.diffplug.spotless.Formatter;
+import com.diffplug.spotless.FormatterStep;
+import com.diffplug.spotless.LineEnding;
+import com.diffplug.spotless.PaddedCell;
+import com.jsoniter.output.JsonStream;
+import com.jsoniter.spi.TypeLiteral;
+import compat.java2ts.VideoFactContentJava;
 import java.io.File;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
+import java.util.TreeSet;
+import java2ts.FT;
 import org.gradle.api.Action;
 import org.gradle.api.DefaultTask;
 import org.gradle.api.GradleException;
@@ -47,15 +66,26 @@ import org.gradle.api.tasks.OutputDirectory;
 import org.gradle.api.tasks.PathSensitive;
 import org.gradle.api.tasks.PathSensitivity;
 import org.gradle.api.tasks.TaskAction;
+import org.gradle.internal.impldep.com.google.common.collect.Iterables;
+import org.gradle.work.FileChange;
 import org.gradle.work.Incremental;
 import org.gradle.work.InputChanges;
+import org.mytake.fact.FactWriter;
+import org.mytake.fact.Hashed;
+import org.mytake.fact.JsonMisc;
+import org.mytake.fact.VideoJsonFormat;
+import org.mytake.fact.transcript.SaidTranscript;
+import org.mytake.fact.transcript.TranscriptMatch;
+import org.mytake.fact.transcript.VttTranscript;
 
 public class MtdoFactset {
+	private static final String INGREDIENTS = "ingredients";
+
 	public MtdoFactset(Project project) {
 		project.getTasks().register("grind", GrindTask.class, grindTask -> {
 			grindTask.setup = this;
 			grindTask.buildDotGradle = project.file("build.gradle");
-			grindTask.ingredients = project.fileTree("ingredients", config -> {
+			grindTask.ingredients = project.fileTree(INGREDIENTS, config -> {
 				// metadata for all
 				config.include("**/*.json");
 				// video
@@ -86,7 +116,9 @@ public class MtdoFactset {
 		this.documentCfg = documentCfg;
 	}
 
-	public class VideoCfg {}
+	public static class VideoCfg {
+		Action<VideoJsonFormat> perVideo = video -> {};
+	}
 
 	public class DocumentCfg {}
 
@@ -132,6 +164,119 @@ public class MtdoFactset {
 						.forEach(File::delete);
 				Files.createDirectories(sausageDir.toPath());
 			}
+
+			Map<String, String> buildJson = readBuildDotJson();
+
+			Set<String> changed = new TreeSet<>();
+			Set<String> removed = new TreeSet<>();
+			Iterable<FileChange> changes = inputs.getFileChanges(ingredients);
+			for (FileChange change : changes) {
+				switch (change.getChangeType()) {
+				case MODIFIED:
+				case ADDED:
+					changed.add(withoutExtension(change.getNormalizedPath()));
+					break;
+				case REMOVED:
+					removed.add(withoutExtension(change.getNormalizedPath()));
+					break;
+				default:
+					throw Unhandled.enumException(change.getChangeType());
+				}
+			}
+
+			for (String path : Iterables.concat(removed, changed)) {
+				String dest = buildJson.remove(path);
+				if (dest != null) {
+					getLogger().info("cleaning: " + path + " -> " + dest);
+					Files.deleteIfExists(sausageDir.toPath().resolve(dest));
+				} else {
+					getLogger().info("cleaning: " + path + " (already clean)");
+				}
+			}
+
+			List<Hashed> hashedLinks = new ArrayList<>();
+
+			VideoCfg video = new VideoCfg();
+			setup.videoCfg.execute(video);
+			try (Formatter formatter = formatterVideoJson(video)) {
+				for (String path : changed) {
+					getLogger().info("grinding: " + path + ".json");
+					// format according to the build.gradle
+					File jsonFile = ingredient(path, ".json");
+					PaddedCell.DirtyState cell = PaddedCell.calculateDirtyState(formatter, jsonFile);
+					if (cell.didNotConverge()) {
+						throw new GradleException("perVideo does not converge for " + path);
+					}
+					cell.writeCanonicalTo(jsonFile);
+					// determine output file
+					VideoJsonFormat json = JsonMisc.fromJson(jsonFile, VideoJsonFormat.class);
+					String titleSlug = FactWriter.slugify(json.fact.title);
+					buildJson.put(path, titleSlug + ".json");
+					getLogger().info("  into " + titleSlug + ".json");
+
+					FT.VideoFactMeta meta = JsonMisc.fromJson(ingredient(path, ".json"), FT.VideoFactMeta.class);
+					SaidTranscript said = SaidTranscript.parse(meta, ingredient(path, ".said"));
+					VttTranscript vtt = VttTranscript.parse(ingredient(path, ".vtt"), VttTranscript.Mode.STRICT);
+					TranscriptMatch match = new TranscriptMatch(meta, said, vtt);
+					VideoFactContentJava content = match.toVideoFact();
+					getLogger().info("  success");
+
+					Hashed hashed = Hashed.asJson(content);
+					Files.write(sausageDir.toPath().resolve(titleSlug + ".json"), hashed.content);
+					hashedLinks.add(hashed);
+				}
+			}
+
+			JsonMisc.toJson(hashedLinks, new File(sausageDir, "index.json"));
+			writeBuildDotJson(buildJson);
 		}
+
+		private Formatter formatterVideoJson(VideoCfg video) {
+			return formatter(str -> {
+				// parse and sort speakers by name
+				VideoJsonFormat json = JsonMisc.fromJson(str, VideoJsonFormat.class);
+				json.speakers.sort(Comparator.comparing(speaker -> speaker.fullName));
+				// format in-place (fine to reorder speakers if they want)
+				video.perVideo.execute(json);
+				// pretty-print
+				return json.prettyPrint();
+			});
+		}
+
+		private Formatter formatter(Throwing.Specific.Function<String, String, IOException> func) {
+			FormatterStep step = FormatterStep.createNeverUpToDate("json format", func::apply);
+			return Formatter.builder()
+					.encoding(StandardCharsets.UTF_8)
+					.lineEndingsPolicy(LineEnding.UNIX.createPolicy())
+					.steps(Collections.singletonList(step))
+					.rootDir(sausageDir.getParentFile().toPath())
+					.build();
+		}
+
+		private Map<String, String> readBuildDotJson() throws IOException {
+			File buildJson = new File(sausageDir, "build.json");
+			if (!buildJson.exists()) {
+				Files.createDirectory(sausageDir.toPath());
+				return new TreeMap<>();
+			}
+			return JsonMisc.fromJson(buildJson, MAP_STRING);
+		}
+
+		private static TypeLiteral<Map<String, String>> MAP_STRING = new TypeLiteral<Map<String, String>>() {};
+
+		private void writeBuildDotJson(Map<String, String> map) throws IOException {
+			File buildJson = new File(sausageDir, "build.json");
+			String toWrite = JsonStream.serialize(new TreeMap<>(map));
+			Files.write(buildJson.toPath(), toWrite.getBytes(StandardCharsets.UTF_8));
+		}
+
+		private File ingredient(String path, String ext) {
+			return new File(sausageDir.getParentFile(), INGREDIENTS + "/" + path + ext);
+		}
+	}
+
+	private static String withoutExtension(String path) {
+		int idx = path.lastIndexOf('.');
+		return path.substring(0, idx);
 	}
 }
