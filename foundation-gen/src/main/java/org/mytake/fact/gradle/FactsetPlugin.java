@@ -50,6 +50,7 @@ public class FactsetPlugin implements Plugin<Project> {
 		changelog.ifFoundBumpAdded(NEW_EVENT);
 		changelog.ifFoundBumpBreaking(RETRACTION, INCLUSION_CRITERIA_CHANGE);
 
+		// setup the factset
 		project.getExtensions().create("mtdoFactset", MtdoFactset.class, project);
 	}
 

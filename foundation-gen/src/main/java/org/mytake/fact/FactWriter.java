@@ -48,7 +48,7 @@ public class FactWriter {
 		Files.createDirectories(dstDir);
 	}
 
-	protected static String slugify(String input) {
+	public static String slugify(String input) {
 		return input.toLowerCase(Locale.ROOT)
 				.replace(' ', '-') // replace spaces with hyphens
 				.replaceAll("[-]+", "-") // replace multiple hypens with a single hyphen

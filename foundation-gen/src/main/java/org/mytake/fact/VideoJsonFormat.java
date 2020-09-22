@@ -77,10 +77,12 @@ public class VideoJsonFormat {
 		}
 
 		meta.speakers.sort(Comparator.comparing(speaker -> speaker.fullName));
-		String result = JsonMisc.toJson(meta);
+		return meta.prettyPrint();
+	}
 
+	public String prettyPrint() {
 		Gson gson = new GsonBuilder().setPrettyPrinting().create();
-		String formatted = gson.toJson(JsonParser.parseString(result));
+		String formatted = gson.toJson(JsonParser.parseString(JsonMisc.toJson(this)));
 		return SPEAKER.matcher(formatted).replaceAll("{\"fullName\": \"$1\", \"role\": \"$2\"}");
 	}
 
