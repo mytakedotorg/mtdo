@@ -37,7 +37,7 @@ We're making these facts searchable and viral, in a way which preserves historic
 
 ## Get involved
 
-The [mytake.org](https://mytake.org/) website deploys from the `prod` branch of this git repository.
+The MyTake.org website deploys from the `prod` branch of this git repository.
 
 - MyTake.org needs pull requests, see [`DEV_QUICKSTART.md`](DEV_QUICKSTART.md) to get started.
 - MyTake.org needs more facts, see [`factset-template`](https://github.com/mytakedotorg/factset-template) for the technical basis, [meta.mytake.org/c/our-foundation](https://meta.mytake.org/c/our-foundation) to coordinate our efforts.
