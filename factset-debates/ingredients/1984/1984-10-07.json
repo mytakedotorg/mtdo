@@ -1,0 +1,19 @@
+{
+  "fact": {
+    "title": "Presidential Debate - Mondale, Reagan (1 of 2)",
+    "primaryDate": "1984-10-07",
+    "primaryDateKind": "recorded",
+    "kind": "video"
+  },
+  "youtubeId": "L7MdD72ZqJ0",
+  "durationSeconds": 6027,
+  "speakers": [
+    {"fullName": "Barbara Walters", "role": "Moderator"},
+    {"fullName": "Diane Sawyer", "role": "Panelist"},
+    {"fullName": "Dorothy Ridings", "role": "Announcer"},
+    {"fullName": "Fred Barnes", "role": "Panelist"},
+    {"fullName": "James Wieghart", "role": "Panelist"},
+    {"fullName": "Ronald W Reagan", "role": "Republican nominee for President"},
+    {"fullName": "Walter F Mondale", "role": "Democratic nominee for President"}
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "fact": {
+    "title": "Presidential Debate - Bush, Gore (1 of 3)",
+    "primaryDate": "2000-10-03",
+    "primaryDateKind": "recorded",
+    "kind": "video"
+  },
+  "youtubeId": "NQFabXU_52Q",
+  "durationSeconds": 5409,
+  "speakers": [
+    {"fullName": "Al Gore", "role": "Democratic nominee for President"},
+    {"fullName": "George W Bush", "role": "Republican nominee for President"},
+    {"fullName": "Jim Lehrer", "role": "Moderator"}
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "fact": {
+    "title": "Presidential Debate - Kennedy, Nixon (3 of 4)",
+    "primaryDate": "1960-10-13",
+    "primaryDateKind": "recorded",
+    "kind": "video"
+  },
+  "youtubeId": "PdjgZ5xx42o",
+  "durationSeconds": 3516,
+  "speakers": [
+    {"fullName": "Bill Shadel", "role": "Moderator"},
+    {"fullName": "Charles Van Fremd", "role": "Panelist"},
+    {"fullName": "Douglass Cater", "role": "Panelist"},
+    {"fullName": "Frank McGee", "role": "Panelist"},
+    {"fullName": "John F Kennedy", "role": "Democratic nominee for President"},
+    {"fullName": "Richard M Nixon", "role": "Republican nominee for President"},
+    {"fullName": "Roscoe Drummond", "role": "Panelist"}
+  ]
+}

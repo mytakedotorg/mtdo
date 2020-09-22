@@ -1,0 +1,21 @@
+{
+  "fact": {
+    "title": "Presidential Debate - Mondale, Reagan (2 of 2)",
+    "primaryDate": "1984-10-21",
+    "primaryDateKind": "recorded",
+    "kind": "video"
+  },
+  "youtubeId": "v1SGZ6YM5lU",
+  "durationSeconds": 5253,
+  "speakers": [
+    {"fullName": "Audience offscreen", "role": "Audience offscreen"},
+    {"fullName": "Dorothy Ridings", "role": "Announcer"},
+    {"fullName": "Edwin Newman", "role": "Panelist"},
+    {"fullName": "Georgie Anne Geyer", "role": "Panelist"},
+    {"fullName": "Henry Trewhitt", "role": "Panelist"},
+    {"fullName": "Marvin Kalb", "role": "Panelist"},
+    {"fullName": "Morton Kondracke", "role": "Panelist"},
+    {"fullName": "Ronald W Reagan", "role": "Republican nominee for President"},
+    {"fullName": "Walter F Mondale", "role": "Democratic nominee for President"}
+  ]
+}
