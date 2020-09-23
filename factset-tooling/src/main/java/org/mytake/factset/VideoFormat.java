@@ -55,7 +55,7 @@ public class VideoFormat {
 		System.out.write(formatted.getBytes(StandardCharsets.UTF_8));
 	}
 
-	static String format(String input) throws IOException {
+	private static String format(String input) throws IOException {
 		FT.VideoFactMeta meta = JsonMisc.fromJson(input.getBytes(StandardCharsets.UTF_8), FT.VideoFactMeta.class);
 
 		if (meta.fact.title.startsWith("Presidential Debate - ")) {

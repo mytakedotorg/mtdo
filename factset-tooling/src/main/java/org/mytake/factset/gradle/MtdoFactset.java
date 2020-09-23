@@ -29,6 +29,7 @@
 package org.mytake.factset.gradle;
 
 
+import com.diffplug.common.base.Errors;
 import com.diffplug.common.base.Throwing;
 import com.diffplug.common.base.Unhandled;
 import com.diffplug.common.collect.Iterables;
@@ -36,15 +37,28 @@ import com.diffplug.spotless.Formatter;
 import com.diffplug.spotless.FormatterStep;
 import com.diffplug.spotless.LineEnding;
 import com.diffplug.spotless.PaddedCell;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.stream.JsonReader;
 import com.jsoniter.output.JsonStream;
 import com.jsoniter.spi.TypeLiteral;
 import compat.java2ts.VideoFactContentJava;
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.SimpleFileVisitor;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -53,12 +67,14 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import java2ts.FT;
+import java2ts.FT.FactLink;
 import org.gradle.api.Action;
 import org.gradle.api.DefaultTask;
 import org.gradle.api.GradleException;
 import org.gradle.api.Project;
 import org.gradle.api.file.FileCollection;
 import org.gradle.api.file.FileTree;
+import org.gradle.api.plugins.BasePlugin;
 import org.gradle.api.tasks.CacheableTask;
 import org.gradle.api.tasks.InputFile;
 import org.gradle.api.tasks.InputFiles;
@@ -67,10 +83,10 @@ import org.gradle.api.tasks.OutputDirectory;
 import org.gradle.api.tasks.PathSensitive;
 import org.gradle.api.tasks.PathSensitivity;
 import org.gradle.api.tasks.TaskAction;
+import org.gradle.api.tasks.TaskProvider;
 import org.gradle.work.FileChange;
 import org.gradle.work.Incremental;
 import org.gradle.work.InputChanges;
-import org.mytake.factset.Hashed;
 import org.mytake.factset.JsonMisc;
 import org.mytake.factset.VideoFormat;
 import org.mytake.factset.legacy.FactWriter;
@@ -82,7 +98,9 @@ public class MtdoFactset {
 	private static final String INGREDIENTS = "ingredients";
 
 	public MtdoFactset(Project project) {
-		project.getTasks().register("grind", GrindTask.class, grindTask -> {
+		TaskProvider<?> grind = project.getTasks().register("grind", GrindTask.class, grindTask -> {
+			grindTask.setGroup("Build");
+			grindTask.setDescription("Grinds the ingredients folder into the sausage folder.");
 			grindTask.setup = this;
 			grindTask.buildDotGradle = project.file("build.gradle");
 			grindTask.ingredients = project.fileTree(INGREDIENTS, config -> {
@@ -96,11 +114,12 @@ public class MtdoFactset {
 			});
 			grindTask.sausageDir = project.file("sausage");
 		});
+		project.getTasks().getByName(BasePlugin.ASSEMBLE_TASK_NAME).dependsOn(grind);
 	}
 
 	public String title;
 	public Action<VideoCfg> videoCfg;
-	public Action<DocumentCfg> documentCfg;
+	public Action<DocumentCfg> documentCfg = document -> {};
 
 	public void video(Action<VideoCfg> videoCfg) {
 		if (this.videoCfg != null) {
@@ -118,6 +137,10 @@ public class MtdoFactset {
 
 	public static class VideoCfg {
 		Action<FT.VideoFactMeta> perVideo = video -> {};
+
+		public void json(Action<FT.VideoFactMeta> perVideo) {
+			this.perVideo = perVideo;
+		}
 	}
 
 	public class DocumentCfg {}
@@ -138,11 +161,11 @@ public class MtdoFactset {
 
 		@PathSensitive(PathSensitivity.NAME_ONLY)
 		@InputFile
-		public File buildDotGradle() {
+		public File getBuildDotGradle() {
 			return buildDotGradle;
 		}
 
-		@PathSensitive(PathSensitivity.NAME_ONLY)
+		@PathSensitive(PathSensitivity.RELATIVE)
 		@Incremental
 		@InputFiles
 		public FileCollection getIngredients() {
@@ -194,40 +217,81 @@ public class MtdoFactset {
 				}
 			}
 
-			List<Hashed> hashedLinks = new ArrayList<>();
-
 			VideoCfg video = new VideoCfg();
 			setup.videoCfg.execute(video);
 			try (Formatter formatter = formatterVideoJson(video)) {
 				for (String path : changed) {
+					File jsonFile = ingredient(path, ".json");
+					if (!jsonFile.exists()) {
+						continue;
+					}
 					getLogger().info("grinding: " + path + ".json");
 					// format according to the build.gradle
-					File jsonFile = ingredient(path, ".json");
 					PaddedCell.DirtyState cell = PaddedCell.calculateDirtyState(formatter, jsonFile);
 					if (cell.didNotConverge()) {
-						throw new GradleException("perVideo does not converge for " + path);
+						throw new GradleException("'video { json {' does not converge for " + path);
+					} else if (!cell.isClean()) {
+						cell.writeCanonicalTo(jsonFile);
 					}
-					cell.writeCanonicalTo(jsonFile);
-					// determine output file
+					// determine output file, and put it into 'build.json'
 					FT.VideoFactMeta json = JsonMisc.fromJson(jsonFile, FT.VideoFactMeta.class);
 					String titleSlug = FactWriter.slugify(json.fact.title);
 					buildJson.put(path, titleSlug + ".json");
 					getLogger().info("  into " + titleSlug + ".json");
 
-					FT.VideoFactMeta meta = JsonMisc.fromJson(ingredient(path, ".json"), FT.VideoFactMeta.class);
-					SaidTranscript said = SaidTranscript.parse(meta, ingredient(path, ".said"));
-					VttTranscript vtt = VttTranscript.parse(ingredient(path, ".vtt"), VttTranscript.Mode.STRICT);
-					TranscriptMatch match = new TranscriptMatch(meta, said, vtt);
-					VideoFactContentJava content = match.toVideoFact();
+					// try to parse
+					VideoFactContentJava content;
+					try {
+						FT.VideoFactMeta meta = JsonMisc.fromJson(ingredient(path, ".json"), FT.VideoFactMeta.class);
+						SaidTranscript said = SaidTranscript.parse(meta, ingredient(path, ".said"));
+						VttTranscript vtt = VttTranscript.parse(ingredient(path, ".vtt"), VttTranscript.Mode.STRICT);
+						TranscriptMatch match = new TranscriptMatch(meta, said, vtt);
+						content = match.toVideoFact();
+					} catch (Exception e) {
+						throw new GradleException("Problem in " + path, e);
+					}
 					getLogger().info("  success");
 
-					Hashed hashed = Hashed.asJson(content);
-					Files.write(sausageDir.toPath().resolve(titleSlug + ".json"), hashed.content);
-					hashedLinks.add(hashed);
+					JsonMisc.toJson(content, sausageDir.toPath().resolve(titleSlug + ".json").toFile());
 				}
 			}
+			writeBuildDotJson(buildJson);
 
-			JsonMisc.toJson(hashedLinks, new File(sausageDir, "index.json"));
+			Gson gson = new GsonBuilder().create();
+			List<FactLink> factLinks = new ArrayList<>();
+			Files.walkFileTree(sausageDir.toPath(), new SimpleFileVisitor<Path>() {
+				@Override
+				public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+					String name = file.toFile().getName();
+					if (name.equals("build.json") || name.equals("index.json")) {
+						return FileVisitResult.CONTINUE;
+					}
+					byte[] content = Files.readAllBytes(file);
+
+					FactLink link = new FactLink();
+					try (Reader reader = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(content), StandardCharsets.UTF_8))) {
+						JsonReader jsonReader = gson.newJsonReader(reader);
+						jsonReader.beginObject();
+						while (!jsonReader.nextName().equals("fact")) {
+							jsonReader.skipValue();
+						}
+						link.fact = gson.fromJson(jsonReader, FT.Fact.class);
+
+						MessageDigest digest = MessageDigest.getInstance("SHA-1");
+						byte[] hash = digest.digest(content);
+						String hashStr = Base64.getUrlEncoder().encodeToString(hash);
+						link.hash = hashStr;
+					} catch (NoSuchAlgorithmException e) {
+						throw Errors.asRuntime(e);
+					}
+					factLinks.add(link);
+					return FileVisitResult.CONTINUE;
+				}
+			});
+
+			Comparator<FactLink> linkComparator = Comparator.comparing(factLink -> factLink.fact.primaryDate);
+			Collections.sort(factLinks, linkComparator.thenComparing(factLink -> factLink.fact.title));
+			JsonMisc.toJson(factLinks, new File(sausageDir, "index.json"));
 			writeBuildDotJson(buildJson);
 		}
 
@@ -256,7 +320,7 @@ public class MtdoFactset {
 		private Map<String, String> readBuildDotJson() throws IOException {
 			File buildJson = new File(sausageDir, "build.json");
 			if (!buildJson.exists()) {
-				Files.createDirectory(sausageDir.toPath());
+				Files.createDirectories(sausageDir.toPath());
 				return new TreeMap<>();
 			}
 			return JsonMisc.fromJson(buildJson, MAP_STRING);
@@ -266,6 +330,7 @@ public class MtdoFactset {
 
 		private void writeBuildDotJson(Map<String, String> map) throws IOException {
 			File buildJson = new File(sausageDir, "build.json");
+
 			String toWrite = JsonStream.serialize(new TreeMap<>(map));
 			Files.write(buildJson.toPath(), toWrite.getBytes(StandardCharsets.UTF_8));
 		}
@@ -277,6 +342,9 @@ public class MtdoFactset {
 
 	private static String withoutExtension(String path) {
 		int idx = path.lastIndexOf('.');
+		if (idx == -1) {
+			return path;
+		}
 		return path.substring(0, idx);
 	}
 }
