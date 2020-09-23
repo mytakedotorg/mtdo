@@ -18,8 +18,9 @@ ext.plugin_factset_desc = 'A shadowboard for facts, with dedicated ratchet holde
 ext.javadoc_links = 'https://docs.oracle.com/javase/8/docs/api/ https://docs.gradle.org/6.6/javadoc/'
 spotlessChangelog {
 	changelogFile 'README.md'
+	commitMessage 'Published factset-tooling/{version}'
 	branch 'feat/git-fact' // TODO: change to staging
-	tagPrefix 'factset/'
+	tagPrefix 'factset-tooling/'
 }
 
 apply from: 干.file('base/changelog.gradle')
