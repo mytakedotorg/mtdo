@@ -32,9 +32,6 @@ package org.mytake.factset.gradle;
 import com.diffplug.common.base.Errors;
 import com.diffplug.common.base.Unhandled;
 import com.diffplug.common.collect.Iterables;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.stream.JsonReader;
 import com.jsoniter.spi.TypeLiteral;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
@@ -213,7 +210,6 @@ public class MtdoFactset {
 
 			writeBuildDotJson(buildJson);
 
-			Gson gson = new GsonBuilder().create();
 			List<FactLink> factLinks = new ArrayList<>();
 			Files.walkFileTree(sausageDir.toPath(), new SimpleFileVisitor<Path>() {
 				@Override
@@ -226,12 +222,7 @@ public class MtdoFactset {
 
 					FactLink link = new FactLink();
 					try (Reader reader = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(content), StandardCharsets.UTF_8))) {
-						JsonReader jsonReader = gson.newJsonReader(reader);
-						jsonReader.beginObject();
-						while (!jsonReader.nextName().equals("fact")) {
-							jsonReader.skipValue();
-						}
-						link.fact = gson.fromJson(jsonReader, FT.Fact.class);
+						link.fact = GitJson.parseField(reader, "fact", FT.Fact.class);
 
 						MessageDigest digest = MessageDigest.getInstance("SHA-1");
 						byte[] hash = digest.digest(content);

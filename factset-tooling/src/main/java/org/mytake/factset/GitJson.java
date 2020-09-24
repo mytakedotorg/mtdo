@@ -32,8 +32,10 @@ package org.mytake.factset;
 import com.diffplug.common.base.Preconditions;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.stream.JsonReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.Reader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.regex.Matcher;
@@ -147,5 +149,14 @@ public class GitJson {
 
 	public static Writer write(Object obj) {
 		return new Writer(obj);
+	}
+
+	public static <T> T parseField(Reader reader, String field, Class<T> clazz) throws IOException {
+		JsonReader jsonReader = GSON.newJsonReader(reader);
+		jsonReader.beginObject();
+		while (!jsonReader.nextName().equals(field)) {
+			jsonReader.skipValue();
+		}
+		return GSON.fromJson(jsonReader, clazz);
 	}
 }
