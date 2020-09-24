@@ -53,5 +53,7 @@ public class GrindLogicTest extends ResourceHarness {
 		logic.grind(Collections.singleton("subfolder/doesnt/matter/1960-09-26"), buildJson);
 		Assertions.assertThat(buildJson).containsExactly(Maps.immutableEntry(
 				"subfolder/doesnt/matter/1960-09-26", "presidential-debate-kennedy-nixon-1-of-4"));
+
+		assertFile("sausage/presidential-debate-kennedy-nixon-1-of-4.json").sameAsResource("org/mytake/factset/gradle/kennedy-nixon-1-of-4.json");
 	}
 }

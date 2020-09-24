@@ -47,6 +47,7 @@ import java.util.logging.Logger;
 import org.assertj.core.api.AbstractCharSequenceAssert;
 import org.assertj.core.api.Assertions;
 import org.assertj.core.util.CheckReturnValue;
+import org.junit.Assert;
 import org.junit.ComparisonFailure;
 import org.junit.Rule;
 import org.junit.rules.TemporaryFolder;
@@ -182,7 +183,13 @@ public class ResourceHarness {
 		}
 
 		public void hasContent(String expected, Charset charset) {
-			Assertions.assertThat(file).usingCharset(charset).hasContent(expected);
+			try {
+				byte[] content = Files.readAllBytes(file.toPath());
+				String str = new String(content, charset);
+				Assert.assertEquals(expected, str);
+			} catch (IOException e) {
+				throw Errors.asRuntime(e);
+			}
 		}
 
 		public void hasLines(String... lines) {

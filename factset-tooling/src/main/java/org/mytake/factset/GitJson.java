@@ -50,7 +50,8 @@ import java.util.regex.Pattern;
 import java2ts.FT;
 
 public class GitJson {
-	public static final char COMMENT_OPEN = '⌊';
+	public static final String COMMENT_OPEN_STR = "⌊";
+	public static final char COMMENT_OPEN = COMMENT_OPEN_STR.charAt(0);
 	public static final char COMMENT_CLOSE = '⌋';
 
 	/**
@@ -108,19 +109,46 @@ public class GitJson {
 					int valueFirstQuote = matcher.end() - 1;
 					Preconditions.checkArgument(matcher.find(), "Expected value to end with '\"'");
 					int valueAfterSecondQuote = matcher.end();
-					buffer.append(in, lastStart, valueAfterSecondQuote + 1);
+					buffer.append(in, lastStart, firstQuote);
 					buffer.append('\n');
+					String field = in.substring(firstQuote + 1, afterSecondQuote - 1);
+					if (field.equals("plainText") || field.equals("data")) {
+						String rawValue = in.substring(valueFirstQuote + 1, valueAfterSecondQuote - 1);
+						String value;
+						if (field.equals("plainText")) {
+							value = rawValue.replace(COMMENT_OPEN_STR, "\n" + COMMENT_OPEN_STR)
+									.replace("\\u0027", "'") // not necessary to encode single quotes
+									.replace(".", ".\n") // put each sentence on its own line
+									.replace("?", "?\n")
+									.replace("!", "!\n")
+									.replaceAll(" (.{1})\\.\n", " $1.") // don't put initials on their own line (e.g. John F. Kennedy)
+									.replace("Ms.\n", "Ms.") // don't pust Ms. on its own line
+									.replace("Mr.\n", "Mr.") // don't pust Mr. on its own line
+									.replace("Mrs.\n", "Mrs.") // don't pust Mrs. on its own line
+									.replace("\n \n", " \n");
+						} else if (field.equals("data")) {
+							value = rawValue
+									.replace("/", "/\n") // split at every `111111` for content-based line-brakes
+									.replaceAll("(\\S{" + MAX_LINE_LENGTH + "})", "$1\n");
+						} else {
+							throw new IllegalArgumentException("Unhandled field " + field);
+						}
+						buffer.append(in, firstQuote, valueFirstQuote + 1);
+						buffer.append(value);
+						buffer.append(in, valueAfterSecondQuote - 1, valueAfterSecondQuote + 1);
+					} else {
+						buffer.append(in, firstQuote, valueAfterSecondQuote + 1);
+					}
 					lastStart = valueAfterSecondQuote + 1;
 					continue;
 				}
 			}
-			buffer.append(in, lastStart, afterSecondQuote);
-			buffer.append('\n');
-			lastStart = afterSecondQuote;
 		}
 		buffer.append(in, lastStart, in.length());
 		return buffer.toString();
 	}
+
+	private static final int MAX_LINE_LENGTH = 120;
 
 	private static int nextParsePaint(String in, int startFrom) {
 		for (int i = startFrom; i < in.length(); ++i) {
