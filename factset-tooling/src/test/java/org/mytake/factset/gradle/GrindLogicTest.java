@@ -33,10 +33,17 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java2ts.FT;
 import org.assertj.core.api.Assertions;
 import org.gradle.internal.impldep.com.google.common.collect.Maps;
+import org.junit.Assert;
 import org.junit.Test;
+import org.mytake.factset.GitJson;
+import org.mytake.factset.JsonMisc;
 import org.mytake.factset.gradle.MtdoFactset.VideoCfg;
+import org.mytake.factset.video.SaidTranscript;
+import org.mytake.factset.video.TranscriptMatch;
+import org.mytake.factset.video.VttTranscript;
 import org.slf4j.Logger;
 
 public class GrindLogicTest extends ResourceHarness {
@@ -55,5 +62,21 @@ public class GrindLogicTest extends ResourceHarness {
 				"subfolder/doesnt/matter/1960-09-26", "presidential-debate-kennedy-nixon-1-of-4"));
 
 		assertFile("sausage/presidential-debate-kennedy-nixon-1-of-4.json").sameAsResource("org/mytake/factset/gradle/kennedy-nixon-1-of-4.json");
+	}
+
+	@Test
+	public void gitJson() throws IOException {
+		setFile("1960-09-26.json").toResource("org/mytake/factset/gradle/1960-09-26.json");
+		setFile("1960-09-26.said").toResource("org/mytake/factset/gradle/1960-09-26.said");
+		setFile("1960-09-26.vtt").toResource("org/mytake/factset/gradle/1960-09-26.vtt");
+
+		FT.VideoFactMeta meta = JsonMisc.fromJson(newFile("1960-09-26.json"), FT.VideoFactMeta.class);
+		SaidTranscript said = SaidTranscript.parse(meta, newFile("1960-09-26.said"));
+		VttTranscript vtt = VttTranscript.parse(newFile("1960-09-26.vtt"), VttTranscript.Mode.STRICT);
+		TranscriptMatch match = new TranscriptMatch(meta, said, vtt);
+		FT.VideoFactContentEncoded encoded = match.toVideoFact().toEncoded();
+		String gitFriendly = GitJson.write(encoded).toCompactString();
+		String condensed = GitJson.write(encoded).toRecondensedForDebugging().replace("\\u0027", "'");
+		Assert.assertEquals(condensed, GitJson.recondense(gitFriendly));
 	}
 }

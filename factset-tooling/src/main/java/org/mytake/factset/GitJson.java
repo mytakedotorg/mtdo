@@ -93,7 +93,7 @@ public class GitJson {
 	/**
 	 * Makes json git-friendly, by adding newlines which will get removed by {@link #recondense(String)}.
 	 */
-	public static String gitFriendly(String in, StringBuilder buffer) {
+	private static String gitFriendly(String in, StringBuilder buffer) {
 		Matcher matcher = UNESCAPED_QUOTE.matcher(in);
 		int lastStart = 0;
 		while (matcher.find()) {
@@ -166,7 +166,7 @@ public class GitJson {
 		return recondense(in, new StringBuilder(in.length()));
 	}
 
-	public static String gitFriendly(String in) {
+	private static String gitFriendly(String in) {
 		return gitFriendly(in, new StringBuilder(in.length() * 5 / 4));
 	}
 
@@ -191,10 +191,14 @@ public class GitJson {
 		}
 
 		public String toCompactString() {
+			return gitFriendly(toRecondensedForDebugging());
+		}
+
+		public String toRecondensedForDebugging() {
 			if (obj instanceof FT.VideoFactMeta) {
-				return gitFriendly(GSON.toJson(reorder(obj, "fact", "youtubeId", "durationSeconds", "speakers")));
+				return GSON.toJson(reorder(obj, "fact", "youtubeId", "durationSeconds", "speakers"));
 			} else {
-				return gitFriendly(GSON.toJson(obj));
+				return GSON.toJson(obj);
 			}
 		}
 	}

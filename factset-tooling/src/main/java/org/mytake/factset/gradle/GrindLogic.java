@@ -46,7 +46,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java2ts.FT;
-import java2ts.FT.VideoFactContentEncoded;
 import org.gradle.api.GradleException;
 import org.mytake.factset.GitJson;
 import org.mytake.factset.JsonMisc;
@@ -94,7 +93,7 @@ class GrindLogic {
 				logger.info("  into " + titleSlug + ".json");
 
 				// try to parse
-				VideoFactContentEncoded content;
+				FT.VideoFactContentEncoded content;
 				try {
 					FT.VideoFactMeta meta = JsonMisc.fromJson(ingredient(path, ".json"), FT.VideoFactMeta.class);
 					SaidTranscript said = SaidTranscript.parse(meta, ingredient(path, ".said"));
@@ -137,7 +136,7 @@ class GrindLogic {
 				.build();
 	}
 
-	static VideoFactContentEncoded encodeSpeakersIntoComments(VideoFactContentJava content) {
+	static FT.VideoFactContentEncoded encodeSpeakersIntoComments(VideoFactContentJava content) {
 		StringBuilder builder = new StringBuilder(content.plainText.length() * 3 / 2);
 		List<String> lastNames = content.speakers.stream().map(speaker -> {
 			int lastSpace = speaker.fullName.lastIndexOf(' ');
@@ -156,7 +155,7 @@ class GrindLogic {
 			builder.append(content.plainText, turnStart, turnEnd);
 			turnStart = turnEnd;
 		}
-		VideoFactContentEncoded encoded = content.toEncoded();
+		FT.VideoFactContentEncoded encoded = content.toEncoded();
 		encoded.plainText = builder.toString();
 		return encoded;
 	}
