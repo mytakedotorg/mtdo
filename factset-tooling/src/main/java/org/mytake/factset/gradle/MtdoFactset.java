@@ -45,10 +45,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
-import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -223,11 +221,7 @@ public class MtdoFactset {
 					FactLink link = new FactLink();
 					try (Reader reader = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(content), StandardCharsets.UTF_8))) {
 						link.fact = GitJson.parseField(reader, "fact", FT.Fact.class);
-
-						MessageDigest digest = MessageDigest.getInstance("SHA-1");
-						byte[] hash = digest.digest(content);
-						String hashStr = Base64.getUrlEncoder().encodeToString(hash);
-						link.hash = hashStr;
+						link.hash = GitJson.sha1base16(content);
 					} catch (NoSuchAlgorithmException e) {
 						throw Errors.asRuntime(e);
 					}

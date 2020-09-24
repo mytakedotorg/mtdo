@@ -30,6 +30,7 @@ package org.mytake.factset;
 
 
 import com.diffplug.common.base.Preconditions;
+import com.diffplug.common.io.BaseEncoding;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.stream.JsonReader;
@@ -38,6 +39,9 @@ import java.io.IOException;
 import java.io.Reader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -158,5 +162,11 @@ public class GitJson {
 			jsonReader.skipValue();
 		}
 		return GSON.fromJson(jsonReader, clazz);
+	}
+
+	public static String sha1base16(byte[] content) throws NoSuchAlgorithmException {
+		MessageDigest digest = MessageDigest.getInstance("SHA-1");
+		byte[] hash = digest.digest(content);
+		return BaseEncoding.base16().encode(hash).toLowerCase(Locale.ROOT);
 	}
 }
