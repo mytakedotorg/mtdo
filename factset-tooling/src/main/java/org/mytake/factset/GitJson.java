@@ -36,6 +36,8 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class GitJson {
 	public static final char COMMENT_OPEN = '⌊';
@@ -113,12 +115,29 @@ public class GitJson {
 		}
 
 		public String toCompactString() {
-			return GSON.toJson(obj);
+			String str = GSON.toJson(obj);
+			StringBuilder result = new StringBuilder(str.length() * 5 / 4);
+			Matcher matcher = UNESCAPED_QUOTE.matcher(str);
+			int lastStart = 0;
+			while (matcher.find()) {
+				int firstQuote = matcher.end() - 1;
+				// we found the first quote, now we find the second one
+				Preconditions.checkArgument(matcher.find(), "Quotes are always be paired in well-formed json");
+				int afterSecondQuote = matcher.end();
+				result.append(str, lastStart, firstQuote);
+				result.append('\n');
+				result.append(str, firstQuote, afterSecondQuote);
+				lastStart = afterSecondQuote;
+			}
+			result.append(str, lastStart, str.length());
+			return result.toString();
 		}
 	}
 
 	private static final Gson GSON_PRETTY = new GsonBuilder().setPrettyPrinting().create();
 	private static final Gson GSON = new GsonBuilder().create();
+	/** https://stackoverflow.com/a/24209736/1153071 */
+	private static final Pattern UNESCAPED_QUOTE = Pattern.compile("(?<!\\\\)(?:\\\\{2})*\"");
 
 	public static Writer write(Object obj) {
 		return new Writer(obj);
