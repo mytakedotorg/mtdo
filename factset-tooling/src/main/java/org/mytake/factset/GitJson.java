@@ -85,6 +85,32 @@ public class GitJson {
 		return buffer.toString();
 	}
 
+	/**
+	 * Makes json git-friendly, by adding newlines which will get removed by {@link #recondense(String)}.
+	 */
+	public static String gitFriendly(String in, StringBuilder buffer) {
+		Matcher matcher = UNESCAPED_QUOTE.matcher(in);
+		int lastStart = 0;
+		while (matcher.find()) {
+			int firstQuote = matcher.end() - 1;
+			// we found the first quote, now we find the second one
+			Preconditions.checkArgument(matcher.find(), "Quotes are always be paired in well-formed json");
+			int afterSecondQuote = matcher.end();
+			if (in.charAt(afterSecondQuote) == ':' && in.charAt(afterSecondQuote + 1) != '"') {
+				buffer.append(in, lastStart, firstQuote);
+				buffer.append('\n');
+				lastStart = firstQuote;
+				continue;
+			}
+			buffer.append(in, lastStart, firstQuote);
+			buffer.append('\n');
+			buffer.append(in, firstQuote, afterSecondQuote);
+			lastStart = afterSecondQuote;
+		}
+		buffer.append(in, lastStart, in.length());
+		return buffer.toString();
+	}
+
 	private static int nextParsePaint(String in, int startFrom) {
 		for (int i = startFrom; i < in.length(); ++i) {
 			char c = in.charAt(i);
@@ -99,6 +125,10 @@ public class GitJson {
 
 	public static String recondense(String in) {
 		return recondense(in, new StringBuilder(in.length()));
+	}
+
+	public static String gitFriendly(String in) {
+		return gitFriendly(in, new StringBuilder(in.length() * 5 / 4));
 	}
 
 	public static class Writer {
@@ -121,28 +151,7 @@ public class GitJson {
 		}
 
 		public String toCompactString() {
-			String str = GSON.toJson(obj);
-			StringBuilder result = new StringBuilder(str.length() * 5 / 4);
-			Matcher matcher = UNESCAPED_QUOTE.matcher(str);
-			int lastStart = 0;
-			while (matcher.find()) {
-				int firstQuote = matcher.end() - 1;
-				// we found the first quote, now we find the second one
-				Preconditions.checkArgument(matcher.find(), "Quotes are always be paired in well-formed json");
-				int afterSecondQuote = matcher.end();
-				if (str.charAt(afterSecondQuote) == ':' && str.charAt(afterSecondQuote + 1) != '"') {
-					result.append(str, lastStart, firstQuote);
-					result.append('\n');
-					lastStart = firstQuote;
-					continue;
-				}
-				result.append(str, lastStart, firstQuote);
-				result.append('\n');
-				result.append(str, firstQuote, afterSecondQuote);
-				lastStart = afterSecondQuote;
-			}
-			result.append(str, lastStart, str.length());
-			return result.toString();
+			return gitFriendly(GSON.toJson(obj));
 		}
 	}
 
