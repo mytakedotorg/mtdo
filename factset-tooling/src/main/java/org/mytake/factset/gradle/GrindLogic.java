@@ -34,7 +34,6 @@ import com.diffplug.spotless.Formatter;
 import com.diffplug.spotless.FormatterStep;
 import com.diffplug.spotless.LineEnding;
 import com.diffplug.spotless.PaddedCell;
-import compat.java2ts.VideoFactContentJava;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -44,6 +43,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Map;
 import java2ts.FT;
+import java2ts.FT.VideoFactContentEncoded;
 import org.gradle.api.GradleException;
 import org.mytake.factset.GitJson;
 import org.mytake.factset.JsonMisc;
@@ -91,13 +91,13 @@ class GrindLogic {
 				logger.info("  into " + titleSlug + ".json");
 
 				// try to parse
-				VideoFactContentJava content;
+				VideoFactContentEncoded content;
 				try {
 					FT.VideoFactMeta meta = JsonMisc.fromJson(ingredient(path, ".json"), FT.VideoFactMeta.class);
 					SaidTranscript said = SaidTranscript.parse(meta, ingredient(path, ".said"));
 					VttTranscript vtt = VttTranscript.parse(ingredient(path, ".vtt"), VttTranscript.Mode.STRICT);
 					TranscriptMatch match = new TranscriptMatch(meta, said, vtt);
-					content = match.toVideoFact();
+					content = match.toVideoFact().toEncoded();
 				} catch (Exception e) {
 					throw new GradleException("Problem in " + path, e);
 				}

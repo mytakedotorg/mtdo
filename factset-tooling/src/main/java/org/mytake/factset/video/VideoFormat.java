@@ -33,17 +33,15 @@ import com.diffplug.common.base.Preconditions;
 import com.diffplug.common.io.ByteStreams;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Comparator;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java2ts.FT;
 import java2ts.FT.VideoFactMeta;
+import org.mytake.factset.GitJson;
 import org.mytake.factset.JsonMisc;
 
 /** Format-friendly version of {@link VideoFactMeta}. */
@@ -80,13 +78,7 @@ public class VideoFormat {
 
 	public static String prettyPrint(FT.VideoFactMeta meta) {
 		Gson gson = new GsonBuilder().setPrettyPrinting().create();
-		JsonObject tree = gson.toJsonTree(meta).getAsJsonObject();
-		JsonObject reordered = new JsonObject();
-		reordered.add("fact", tree.remove("fact"));
-		for (Map.Entry<String, JsonElement> entry : tree.entrySet()) {
-			reordered.add(entry.getKey(), entry.getValue());
-		}
-		String formatted = gson.toJson(reordered);
+		String formatted = gson.toJson(GitJson.reorder(meta, "fact"));
 		return SPEAKER.matcher(formatted).replaceAll("{\"fullName\": \"$1\", \"role\": \"$2\"}");
 	}
 

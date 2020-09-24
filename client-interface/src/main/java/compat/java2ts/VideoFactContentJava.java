@@ -9,15 +9,9 @@ package compat.java2ts;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.Base64;
-import java.util.List;
-import java2ts.FT.FactContent;
-import java2ts.FT.Speaker;
-import java2ts.FT.VideoFactContentEncoded;
+import java2ts.FT;
 
-public class VideoFactContentJava extends FactContent {
-	public String youtubeId;
-	public double durationSeconds;
-	public List<Speaker> speakers;
+public class VideoFactContentJava extends FT.VideoFactMeta {
 	public String plainText;
 	public int[] wordChar;
 	public double[] wordTime;
@@ -25,8 +19,8 @@ public class VideoFactContentJava extends FactContent {
 	public int[] turnWord;
 
 	/** Encode the arrays into a byte array. */
-	public VideoFactContentEncoded toEncoded() {
-		VideoFactContentEncoded encoded = new VideoFactContentEncoded();
+	public FT.VideoFactContentEncoded toEncoded() {
+		FT.VideoFactContentEncoded encoded = new FT.VideoFactContentEncoded();
 		encoded.fact = fact;
 		encoded.durationSeconds = durationSeconds;
 		encoded.youtubeId = youtubeId;
@@ -69,7 +63,7 @@ public class VideoFactContentJava extends FactContent {
 		return doubles;
 	}
 
-	public static VideoFactContentJava decode(VideoFactContentEncoded encoded) {
+	public static VideoFactContentJava decode(FT.VideoFactContentEncoded encoded) {
 		VideoFactContentJava java = new VideoFactContentJava();
 		// do the direct transfers
 		java.fact = encoded.fact;

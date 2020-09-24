@@ -33,6 +33,8 @@ import com.diffplug.common.base.Preconditions;
 import com.diffplug.common.io.BaseEncoding;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonReader;
 import java.io.File;
 import java.io.IOException;
@@ -42,8 +44,10 @@ import java.nio.file.Files;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Locale;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java2ts.FT;
 
 public class GitJson {
 	public static final char COMMENT_OPEN = '⌊';
@@ -96,10 +100,13 @@ public class GitJson {
 			// we found the first quote, now we find the second one
 			Preconditions.checkArgument(matcher.find(), "Quotes are always be paired in well-formed json");
 			int afterSecondQuote = matcher.end();
-			if (in.charAt(afterSecondQuote) == ':' && in.charAt(afterSecondQuote + 1) != '"') {
-				buffer.append(in, lastStart, firstQuote);
+			char c = in.charAt(afterSecondQuote);
+			if (c != ':') {
+				continue;
+			} else if (c == '{' || c == '}') {
 				buffer.append('\n');
-				lastStart = firstQuote;
+				buffer.append(in, lastStart, afterSecondQuote);
+				lastStart = afterSecondQuote;
 				continue;
 			}
 			buffer.append(in, lastStart, firstQuote);
@@ -152,8 +159,24 @@ public class GitJson {
 		}
 
 		public String toCompactString() {
-			return gitFriendly(GSON.toJson(obj));
+			if (obj instanceof FT.VideoFactMeta) {
+				return gitFriendly(GSON.toJson(reorder(obj, "fact", "youtubeId", "durationSeconds", "speakers")));
+			} else {
+				return gitFriendly(GSON.toJson(obj));
+			}
 		}
+	}
+
+	public static JsonObject reorder(Object object, String... topFields) {
+		JsonObject orig = GSON.toJsonTree(object).getAsJsonObject();
+		JsonObject reordered = new JsonObject();
+		for (String field : topFields) {
+			reordered.add(field, orig.remove(field));
+		}
+		for (Map.Entry<String, JsonElement> entry : orig.entrySet()) {
+			reordered.add(entry.getKey(), entry.getValue());
+		}
+		return reordered;
 	}
 
 	private static final Gson GSON_PRETTY = new GsonBuilder().setPrettyPrinting().create();
