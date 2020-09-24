@@ -40,7 +40,6 @@ import com.diffplug.spotless.PaddedCell;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.stream.JsonReader;
-import com.jsoniter.output.JsonStream;
 import com.jsoniter.spi.TypeLiteral;
 import compat.java2ts.VideoFactContentJava;
 import java.io.BufferedReader;
@@ -330,10 +329,7 @@ public class MtdoFactset {
 		private static TypeLiteral<Map<String, String>> MAP_STRING = new TypeLiteral<Map<String, String>>() {};
 
 		private void writeBuildDotJson(Map<String, String> map) throws IOException {
-			File buildJson = new File(sausageDir, "build.json");
-
-			String toWrite = JsonStream.serialize(new TreeMap<>(map));
-			Files.write(buildJson.toPath(), toWrite.getBytes(StandardCharsets.UTF_8));
+			GitJson.write(map).toPretty(new File(sausageDir, "build.json"));
 		}
 
 		private File ingredient(String path, String ext) {
