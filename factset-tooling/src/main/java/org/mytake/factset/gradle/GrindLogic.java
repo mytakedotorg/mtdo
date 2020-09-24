@@ -34,6 +34,7 @@ import com.diffplug.spotless.Formatter;
 import com.diffplug.spotless.FormatterStep;
 import com.diffplug.spotless.LineEnding;
 import com.diffplug.spotless.PaddedCell;
+import compat.java2ts.VideoFactContentJava;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -41,7 +42,9 @@ import java.nio.file.Path;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import java2ts.FT;
 import java2ts.FT.VideoFactContentEncoded;
 import org.gradle.api.GradleException;
@@ -97,7 +100,7 @@ class GrindLogic {
 					SaidTranscript said = SaidTranscript.parse(meta, ingredient(path, ".said"));
 					VttTranscript vtt = VttTranscript.parse(ingredient(path, ".vtt"), VttTranscript.Mode.STRICT);
 					TranscriptMatch match = new TranscriptMatch(meta, said, vtt);
-					content = match.toVideoFact().toEncoded();
+					content = encodeSpeakersIntoComments(match.toVideoFact());
 				} catch (Exception e) {
 					throw new GradleException("Problem in " + path, e);
 				}
@@ -132,5 +135,29 @@ class GrindLogic {
 				.steps(Collections.singletonList(step))
 				.rootDir(rootDir)
 				.build();
+	}
+
+	static VideoFactContentEncoded encodeSpeakersIntoComments(VideoFactContentJava content) {
+		StringBuilder builder = new StringBuilder(content.plainText.length() * 3 / 2);
+		List<String> lastNames = content.speakers.stream().map(speaker -> {
+			int lastSpace = speaker.fullName.lastIndexOf(' ');
+			String lastName = speaker.fullName.substring(lastSpace + 1);
+			return GitJson.COMMENT_OPEN + lastName + GitJson.COMMENT_CLOSE;
+		}).collect(Collectors.toList());
+		int turnStart = 0;
+		for (int t = 0; t < content.turnSpeaker.length; ++t) {
+			int turnEnd;
+			if (t == content.turnSpeaker.length - 1) {
+				turnEnd = content.plainText.length();
+			} else {
+				turnEnd = content.wordChar[content.turnWord[t + 1]];
+			}
+			builder.append(lastNames.get(content.turnSpeaker[t]));
+			builder.append(content.plainText, turnStart, turnEnd);
+			turnStart = turnEnd;
+		}
+		VideoFactContentEncoded encoded = content.toEncoded();
+		encoded.plainText = builder.toString();
+		return encoded;
 	}
 }

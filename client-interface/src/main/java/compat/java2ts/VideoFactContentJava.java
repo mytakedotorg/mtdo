@@ -9,6 +9,7 @@ package compat.java2ts;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.Base64;
+
 import java2ts.FT;
 
 public class VideoFactContentJava extends FT.VideoFactMeta {

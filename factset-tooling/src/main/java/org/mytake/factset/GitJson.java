@@ -100,18 +100,22 @@ public class GitJson {
 			// we found the first quote, now we find the second one
 			Preconditions.checkArgument(matcher.find(), "Quotes are always be paired in well-formed json");
 			int afterSecondQuote = matcher.end();
-			char c = in.charAt(afterSecondQuote);
-			if (c != ':') {
-				continue;
-			} else if (c == '{' || c == '}') {
-				buffer.append('\n');
-				buffer.append(in, lastStart, afterSecondQuote);
-				lastStart = afterSecondQuote;
-				continue;
+			char sep = in.charAt(afterSecondQuote);
+			if (sep == ':') {
+				char afterSep = in.charAt(afterSecondQuote + 1);
+				if (afterSep != '[' && afterSep != '{') {
+					Preconditions.checkArgument(matcher.find(), "Expected value to start with '\"'");
+					int valueFirstQuote = matcher.end() - 1;
+					Preconditions.checkArgument(matcher.find(), "Expected value to end with '\"'");
+					int valueAfterSecondQuote = matcher.end();
+					buffer.append(in, lastStart, valueAfterSecondQuote + 1);
+					buffer.append('\n');
+					lastStart = valueAfterSecondQuote + 1;
+					continue;
+				}
 			}
-			buffer.append(in, lastStart, firstQuote);
+			buffer.append(in, lastStart, afterSecondQuote);
 			buffer.append('\n');
-			buffer.append(in, firstQuote, afterSecondQuote);
 			lastStart = afterSecondQuote;
 		}
 		buffer.append(in, lastStart, in.length());
