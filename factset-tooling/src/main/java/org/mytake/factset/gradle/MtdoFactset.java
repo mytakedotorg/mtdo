@@ -194,7 +194,7 @@ public class MtdoFactset {
 				String dest = buildJson.remove(path);
 				if (dest != null) {
 					getLogger().info("cleaning: " + path + " -> " + dest);
-					Files.deleteIfExists(sausageDir.toPath().resolve(dest));
+					Files.deleteIfExists(sausageDir.toPath().resolve(dest + ".json"));
 				} else {
 					getLogger().info("cleaning: " + path + " (already clean)");
 				}

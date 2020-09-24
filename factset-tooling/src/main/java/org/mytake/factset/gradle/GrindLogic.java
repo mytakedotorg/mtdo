@@ -87,7 +87,7 @@ class GrindLogic {
 				// determine output file, and put it into 'build.json'
 				FT.VideoFactMeta json = JsonMisc.fromJson(jsonFile, FT.VideoFactMeta.class);
 				String titleSlug = FactWriter.slugify(json.fact.title);
-				buildJson.put(path, titleSlug + ".json");
+				buildJson.put(path, titleSlug);
 				logger.info("  into " + titleSlug + ".json");
 
 				// try to parse

@@ -147,6 +147,7 @@ public class GitJson {
 		}
 
 		public void toCompact(File file) throws IOException {
+			Files.createDirectories(file.toPath().getParent());
 			Files.write(file.toPath(), toCompactString().getBytes(StandardCharsets.UTF_8));
 		}
 
