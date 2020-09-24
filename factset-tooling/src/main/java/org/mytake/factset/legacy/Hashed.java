@@ -29,11 +29,16 @@
 package org.mytake.factset.legacy;
 
 
+import com.jsoniter.output.EncodingMode;
+import com.jsoniter.output.JsonStream;
+import com.jsoniter.spi.Config;
+import com.jsoniter.spi.DecodingMode;
+import com.jsoniter.spi.JsoniterSpi;
 import java.io.ByteArrayOutputStream;
+import java.io.OutputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
-import org.mytake.factset.JsonMisc;
 
 public class Hashed {
 	public final byte[] content;
@@ -46,12 +51,27 @@ public class Hashed {
 
 	public static Hashed asJson(Object content) throws NoSuchAlgorithmException {
 		ByteArrayOutputStream output = new ByteArrayOutputStream();
-		JsonMisc.toJson(content, output);
+		toJson(content, output);
 		byte[] contentBytes = output.toByteArray();
 		MessageDigest digest = MessageDigest.getInstance("SHA-256");
 		byte[] hash = digest.digest(contentBytes);
 
 		String hashStr = Base64.getUrlEncoder().encodeToString(hash);
 		return new Hashed(contentBytes, hashStr);
+	}
+
+	static {
+		JsoniterSpi.registerTypeDecoder(Number.class, iter -> iter.readInt());
+		CONFIG = new Config.Builder()
+				.escapeUnicode(false)
+				.decodingMode(DecodingMode.REFLECTION_MODE)
+				.encodingMode(EncodingMode.REFLECTION_MODE)
+				.build();
+	}
+
+	private static final Config CONFIG;
+
+	private static void toJson(Object object, OutputStream output) {
+		JsonStream.serialize(CONFIG, object, output);
 	}
 }

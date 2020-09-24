@@ -87,6 +87,7 @@ import org.gradle.api.tasks.TaskProvider;
 import org.gradle.work.FileChange;
 import org.gradle.work.Incremental;
 import org.gradle.work.InputChanges;
+import org.mytake.factset.GitJson;
 import org.mytake.factset.JsonMisc;
 import org.mytake.factset.legacy.FactWriter;
 import org.mytake.factset.video.SaidTranscript;
@@ -252,7 +253,7 @@ public class MtdoFactset {
 					}
 					getLogger().info("  success");
 
-					JsonMisc.toJson(content, sausageDir.toPath().resolve(titleSlug + ".json").toFile());
+					GitJson.write(content).toCompact(new File(sausageDir, titleSlug + ".json"));
 				}
 			}
 			writeBuildDotJson(buildJson);
@@ -291,7 +292,7 @@ public class MtdoFactset {
 
 			Comparator<FactLink> linkComparator = Comparator.comparing(factLink -> factLink.fact.primaryDate);
 			Collections.sort(factLinks, linkComparator.thenComparing(factLink -> factLink.fact.title));
-			JsonMisc.toJson(factLinks, new File(sausageDir, "index.json"));
+			GitJson.write(factLinks).toCompact(new File(sausageDir, "index.json"));
 			writeBuildDotJson(buildJson);
 		}
 

@@ -31,7 +31,7 @@ package org.mytake.factset.document;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.mytake.factset.JsonMisc;
+import org.mytake.factset.GitJson;
 
 public class FoundationParserTest {
 	@Test
@@ -53,7 +53,7 @@ public class FoundationParserTest {
 	}
 
 	private void testCase(String input, String expected) {
-		Assert.assertEquals(expected, JsonMisc.toJson(FoundationParser.toComponents(input)));
+		Assert.assertEquals(expected, GitJson.write(FoundationParser.toComponents(input)).toCompactString());
 	}
 
 	@Test(expected = IllegalArgumentException.class)

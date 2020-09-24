@@ -57,7 +57,7 @@ public class VideoFormat {
 	}
 
 	private static String format(String input) throws IOException {
-		FT.VideoFactMeta meta = JsonMisc.fromJson(input.getBytes(StandardCharsets.UTF_8), FT.VideoFactMeta.class);
+		FT.VideoFactMeta meta = JsonMisc.fromJson(input, FT.VideoFactMeta.class);
 
 		if (meta.fact.title.startsWith("Presidential Debate - ")) {
 			String lastNames = meta.speakers.stream()

@@ -30,6 +30,12 @@ package org.mytake.factset;
 
 
 import com.diffplug.common.base.Preconditions;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 
 public class GitJson {
 	public static final char COMMENT_OPEN = '⌊';
@@ -85,5 +91,36 @@ public class GitJson {
 
 	public static String recondense(String in) {
 		return recondense(in, new StringBuilder(in.length()));
+	}
+
+	public static class Writer {
+		private final Object obj;
+
+		Writer(Object obj) {
+			this.obj = obj;
+		}
+
+		public void toPretty(File file) throws IOException {
+			Files.write(file.toPath(), toPrettyString().getBytes(StandardCharsets.UTF_8));
+		}
+
+		public String toPrettyString() {
+			return GSON_PRETTY.toJson(obj);
+		}
+
+		public void toCompact(File file) throws IOException {
+			Files.write(file.toPath(), toCompactString().getBytes(StandardCharsets.UTF_8));
+		}
+
+		public String toCompactString() {
+			return GSON.toJson(obj);
+		}
+	}
+
+	private static final Gson GSON_PRETTY = new GsonBuilder().setPrettyPrinting().create();
+	private static final Gson GSON = new GsonBuilder().create();
+
+	public static Writer write(Object obj) {
+		return new Writer(obj);
 	}
 }

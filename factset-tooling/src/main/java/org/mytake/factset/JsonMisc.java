@@ -31,14 +31,12 @@ package org.mytake.factset;
 
 import com.jsoniter.JsonIterator;
 import com.jsoniter.output.EncodingMode;
-import com.jsoniter.output.JsonStream;
 import com.jsoniter.spi.Config;
 import com.jsoniter.spi.DecodingMode;
 import com.jsoniter.spi.JsoniterSpi;
 import com.jsoniter.spi.TypeLiteral;
 import java.io.File;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 
@@ -54,28 +52,12 @@ public class JsonMisc {
 
 	private static final Config CONFIG;
 
-	public static void toJson(Object object, File output) throws IOException {
-		Files.write(output.toPath(), toJson(object).getBytes(StandardCharsets.UTF_8));
-	}
-
-	public static void toJson(Object object, OutputStream output) {
-		JsonStream.serialize(CONFIG, object, output);
-	}
-
-	public static String toJson(Object object) {
-		return JsonStream.serialize(CONFIG, object);
-	}
-
 	public static <T> T fromJson(File file, TypeLiteral<T> type) throws IOException {
 		return JsonIterator.deserialize(CONFIG, Files.readAllBytes(file.toPath()), type);
 	}
 
 	public static <T> T fromJson(File file, Class<T> clazz) throws IOException {
 		return fromJson(Files.readAllBytes(file.toPath()), clazz);
-	}
-
-	public static <T> T fromJson(String content, TypeLiteral<T> type) throws IOException {
-		return JsonIterator.deserialize(CONFIG, content.getBytes(StandardCharsets.UTF_8), type);
 	}
 
 	public static <T> T fromJson(String content, Class<T> clazz) throws IOException {
