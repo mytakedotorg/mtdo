@@ -26,13 +26,14 @@
  *
  * You can contact us at team@mytake.org
  */
-package org.mytake.factset;
+package org.mytake.factset.legacy;
 
 
 import java.io.ByteArrayOutputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
+import org.mytake.factset.JsonMisc;
 
 public class Hashed {
 	public final byte[] content;

@@ -26,7 +26,7 @@
  *
  * You can contact us at team@mytake.org
  */
-package org.mytake.factset;
+package org.mytake.factset.video;
 
 
 import com.diffplug.common.base.Preconditions;
@@ -44,6 +44,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java2ts.FT;
 import java2ts.FT.VideoFactMeta;
+import org.mytake.factset.JsonMisc;
 
 /** Format-friendly version of {@link VideoFactMeta}. */
 public class VideoFormat {

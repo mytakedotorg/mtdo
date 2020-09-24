@@ -38,7 +38,6 @@ import java.util.List;
 import java.util.Locale;
 import java2ts.FT;
 import java2ts.FT.FactLink;
-import org.mytake.factset.Hashed;
 
 public class FactWriter {
 	final List<FactLink> factLinks = new ArrayList<>();

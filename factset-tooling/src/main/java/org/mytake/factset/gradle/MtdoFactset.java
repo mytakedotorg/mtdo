@@ -88,10 +88,10 @@ import org.gradle.work.FileChange;
 import org.gradle.work.Incremental;
 import org.gradle.work.InputChanges;
 import org.mytake.factset.JsonMisc;
-import org.mytake.factset.VideoFormat;
 import org.mytake.factset.legacy.FactWriter;
 import org.mytake.factset.video.SaidTranscript;
 import org.mytake.factset.video.TranscriptMatch;
+import org.mytake.factset.video.VideoFormat;
 import org.mytake.factset.video.VttTranscript;
 
 public class MtdoFactset {

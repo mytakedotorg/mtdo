@@ -34,7 +34,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java2ts.FT.IndexPointer;
 import java2ts.Routes;
-import org.mytake.factset.Hashed;
 import org.mytake.lucene.Lucene;
 import org.mytake.lucene.ZipMisc;
 
