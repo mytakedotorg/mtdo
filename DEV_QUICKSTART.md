@@ -63,6 +63,12 @@ Some example URLs are:
 
 The instructions on this page should be enough to improve and extend the existing features of the application. If you want go deeper, and add completely new functionality, you'll need to look at [`DEV_DEEPDIVE.md`](DEV_DEEPDIVE.md).
 
+## Community
+
+For general developer discussion, we have a chatroom on [gitter](https://gitter.im/mytakedotorg).
+
+If you want to help, [these](https://github.com/mytakedotorg/mtdo/projects/3) are the things we think are most important. But every open issue is important, and we welcome any contribution!
+
 ## Common errors and their solutions
 
 ### Java server startup
