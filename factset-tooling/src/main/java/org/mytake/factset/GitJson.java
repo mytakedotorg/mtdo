@@ -124,6 +124,12 @@ public class GitJson {
 				// we found the first quote, now we find the second one
 				Preconditions.checkArgument(matcher.find(), "Quotes are always be paired in well-formed json");
 				int afterSecondQuote = matcher.end();
+				if (str.charAt(afterSecondQuote) == ':' && str.charAt(afterSecondQuote + 1) != '"') {
+					result.append(str, lastStart, firstQuote);
+					result.append('\n');
+					lastStart = firstQuote;
+					continue;
+				}
 				result.append(str, lastStart, firstQuote);
 				result.append('\n');
 				result.append(str, firstQuote, afterSecondQuote);

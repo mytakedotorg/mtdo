@@ -30,18 +30,12 @@ package org.mytake.factset.gradle;
 
 
 import com.diffplug.common.base.Errors;
-import com.diffplug.common.base.Throwing;
 import com.diffplug.common.base.Unhandled;
 import com.diffplug.common.collect.Iterables;
-import com.diffplug.spotless.Formatter;
-import com.diffplug.spotless.FormatterStep;
-import com.diffplug.spotless.LineEnding;
-import com.diffplug.spotless.PaddedCell;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.stream.JsonReader;
 import com.jsoniter.spi.TypeLiteral;
-import compat.java2ts.VideoFactContentJava;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -88,14 +82,8 @@ import org.gradle.work.Incremental;
 import org.gradle.work.InputChanges;
 import org.mytake.factset.GitJson;
 import org.mytake.factset.JsonMisc;
-import org.mytake.factset.legacy.FactWriter;
-import org.mytake.factset.video.SaidTranscript;
-import org.mytake.factset.video.TranscriptMatch;
-import org.mytake.factset.video.VideoFormat;
-import org.mytake.factset.video.VttTranscript;
 
 public class MtdoFactset {
-	private static final String INGREDIENTS = "ingredients";
 
 	public MtdoFactset(Project project) {
 		TaskProvider<?> grind = project.getTasks().register("grind", GrindTask.class, grindTask -> {
@@ -103,7 +91,7 @@ public class MtdoFactset {
 			grindTask.setDescription("Grinds the ingredients folder into the sausage folder.");
 			grindTask.setup = this;
 			grindTask.buildDotGradle = project.file("build.gradle");
-			grindTask.ingredients = project.fileTree(INGREDIENTS, config -> {
+			grindTask.ingredients = project.fileTree(GrindLogic.INGREDIENTS, config -> {
 				// metadata for all
 				config.include("**/*.json");
 				// video
@@ -219,42 +207,10 @@ public class MtdoFactset {
 
 			VideoCfg video = new VideoCfg();
 			setup.videoCfg.execute(video);
-			try (Formatter formatter = formatterVideoJson(video)) {
-				for (String path : changed) {
-					File jsonFile = ingredient(path, ".json");
-					if (!jsonFile.exists()) {
-						continue;
-					}
-					getLogger().info("grinding: " + path + ".json");
-					// format according to the build.gradle
-					PaddedCell.DirtyState cell = PaddedCell.calculateDirtyState(formatter, jsonFile);
-					if (cell.didNotConverge()) {
-						throw new GradleException("'video { json {' does not converge for " + path);
-					} else if (!cell.isClean()) {
-						cell.writeCanonicalTo(jsonFile);
-					}
-					// determine output file, and put it into 'build.json'
-					FT.VideoFactMeta json = JsonMisc.fromJson(jsonFile, FT.VideoFactMeta.class);
-					String titleSlug = FactWriter.slugify(json.fact.title);
-					buildJson.put(path, titleSlug + ".json");
-					getLogger().info("  into " + titleSlug + ".json");
 
-					// try to parse
-					VideoFactContentJava content;
-					try {
-						FT.VideoFactMeta meta = JsonMisc.fromJson(ingredient(path, ".json"), FT.VideoFactMeta.class);
-						SaidTranscript said = SaidTranscript.parse(meta, ingredient(path, ".said"));
-						VttTranscript vtt = VttTranscript.parse(ingredient(path, ".vtt"), VttTranscript.Mode.STRICT);
-						TranscriptMatch match = new TranscriptMatch(meta, said, vtt);
-						content = match.toVideoFact();
-					} catch (Exception e) {
-						throw new GradleException("Problem in " + path, e);
-					}
-					getLogger().info("  success");
+			GrindLogic grind = new GrindLogic(sausageDir.getParentFile().toPath(), video, getLogger());
+			grind.grind(changed, buildJson);
 
-					GitJson.write(content).toCompact(new File(sausageDir, titleSlug + ".json"));
-				}
-			}
 			writeBuildDotJson(buildJson);
 
 			Gson gson = new GsonBuilder().create();
@@ -295,28 +251,6 @@ public class MtdoFactset {
 			writeBuildDotJson(buildJson);
 		}
 
-		private Formatter formatterVideoJson(VideoCfg video) {
-			return formatter(str -> {
-				// parse and sort speakers by name
-				FT.VideoFactMeta json = JsonMisc.fromJson(str, FT.VideoFactMeta.class);
-				json.speakers.sort(Comparator.comparing(speaker -> speaker.fullName));
-				// format in-place (fine to reorder speakers if they want)
-				video.perVideo.execute(json);
-				// pretty-print
-				return VideoFormat.prettyPrint(json);
-			});
-		}
-
-		private Formatter formatter(Throwing.Specific.Function<String, String, IOException> func) {
-			FormatterStep step = FormatterStep.createNeverUpToDate("json format", func::apply);
-			return Formatter.builder()
-					.encoding(StandardCharsets.UTF_8)
-					.lineEndingsPolicy(LineEnding.UNIX.createPolicy())
-					.steps(Collections.singletonList(step))
-					.rootDir(sausageDir.getParentFile().toPath())
-					.build();
-		}
-
 		private Map<String, String> readBuildDotJson() throws IOException {
 			File buildJson = new File(sausageDir, "build.json");
 			if (!buildJson.exists()) {
@@ -330,10 +264,6 @@ public class MtdoFactset {
 
 		private void writeBuildDotJson(Map<String, String> map) throws IOException {
 			GitJson.write(map).toPretty(new File(sausageDir, "build.json"));
-		}
-
-		private File ingredient(String path, String ext) {
-			return new File(sausageDir.getParentFile(), INGREDIENTS + "/" + path + ext);
 		}
 	}
 
