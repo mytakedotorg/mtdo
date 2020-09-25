@@ -40,13 +40,13 @@ node {
 
 	npmRun('test_ci') {
 		dependsOn(':client-interface:jsweet')
-		dependsOn(':factset-tooling:generateFoundation')
+		dependsOn(':lucene:generateFoundation')
 		inputs.dir('src/main/scripts').withPathSensitivity(PathSensitivity.RELATIVE)
 		outputs.dir('build/test-results/jest')
 	}
 	npmRun('updateSnapshot') {
 		dependsOn(':client-interface:jsweet')
-		dependsOn(':factset-tooling:generateFoundation')
+		dependsOn(':lucene:generateFoundation')
 	}
 
 	// every gulp task automatically installs from package-lock.json using 'npm ci'

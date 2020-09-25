@@ -1,4 +1,4 @@
 apply plugin: 'java'
 
 clean { delete 'src/main/resources' }
-processResources.dependsOn(':factset-tooling:generateFoundation')
+processResources.dependsOn(':lucene:generateFoundation')
