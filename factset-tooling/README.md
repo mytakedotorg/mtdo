@@ -113,5 +113,9 @@ mtdoFactSet {
 
 ## [Unreleased]
 
+## [0.2.0] - 2020-09-25
+### Added
+* Workable for demo, setup semi-fat-jar.
+
 ## [0.1.0] - 2020-09-23
 * First version.
