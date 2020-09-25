@@ -20,7 +20,6 @@
 package org.mytake.lucene;
 
 import com.diffplug.common.collect.Lists;
-import compat.java2ts.VideoFactContentJava;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Objects;
@@ -31,6 +30,8 @@ import org.assertj.core.api.Assertions;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
+import org.mytake.factset.video.VideoFactContentJava;
+import org.mytake.lucene.legacyfoundationgen.LuceneWriter;
 
 public class LuceneTest {
 	private static final String HASH = "HASH";
@@ -62,7 +63,7 @@ public class LuceneTest {
 		fact.turnSpeaker = new int[]{0, 1};
 		fact.turnWord = new int[]{0, 2};
 
-		try (Lucene.Writer writer = new Lucene.Writer(tempFolder.getRoot().toPath())) {
+		try (LuceneWriter writer = new LuceneWriter(tempFolder.getRoot().toPath())) {
 			writer.writeVideo(HASH, fact);
 		}
 

@@ -1,0 +1,130 @@
+plugins {
+	id 'com.diffplug.eclipse.apt'
+	id 'com.diffplug.spotless-changelog'
+}
+
+ext.git_url = 'github.com/mytakedotorg/mtdo'
+ext.maven_group = 'org.mytake.mtdo'
+ext.maven_artifact = 'mtdo-plugin-gradle'
+ext.maven_name = 'MyTake.org Factset'
+ext.maven_desc = 'A shadowboard for facts, with dedicated ratchet holder'
+ext.license = 'agpl'
+ext.plugin_list = 'factset'
+ext.plugin_tags = 'journalism'
+ext.plugin_factset_id = 'org.mytake.factset'
+ext.plugin_factset_impl = 'org.mytake.factset.gradle.FactsetPlugin'
+ext.plugin_factset_name = 'MyTake.org Factset'
+ext.plugin_factset_desc = 'A shadowboard for facts, with dedicated ratchet holder'
+ext.javadoc_links = 'https://docs.oracle.com/javase/8/docs/api/ https://docs.gradle.org/6.6/javadoc/'
+spotlessChangelog {
+	changelogFile 'README.md'
+	commitMessage 'Published factset-tooling/{{version}}'
+	branch 'feat/git-fact' // TODO: change to staging
+	tagPrefix 'factset-tooling/'
+}
+
+apply from: 干.file('base/changelog.gradle')
+apply from: 干.file('spotless/freshmark.gradle')
+
+apply from: 干.file('base/java8.gradle')
+apply from: 干.file('spotless/java.gradle')
+
+apply from: 干.file('base/gradle-plugin.gradle')
+apply from: 干.file('base/maven.gradle')
+
+spotless {
+	ratchetFrom 'origin/staging'
+}
+
+import com.diffplug.common.swt.os.OS
+
+if (OS.getNative().isWindows()) {
+	apply plugin: 'com.diffplug.p2.asmaven'
+	String VER_CEF = '0.4.0.201908130254'
+	String VER_CHROMIUM = '0.10.2.201908130308'
+	p2AsMaven {
+		group 'chromium-swt', {
+			repo 'http://dl.maketechnology.io/chromium-swt/rls/repository'
+			repo 'http://dl.maketechnology.io/chromium-cef/rls/repository'
+			iu "com.make.chromium.cef.win32.win32.x86_64", VER_CEF
+			iu "org.eclipse.swt.chromium", VER_CHROMIUM
+			iu "org.eclipse.swt.chromium.win32.win32.x86_64", VER_CHROMIUM
+		}
+	}
+	sourceSets.test.java.srcDirs = [
+		'src/test/java',
+		'src/test/java-win-only'
+	]
+}
+
+//////////////
+// <HACK>
+// This is terrible, but it lets us not publish client-interface, and I couldn't get shadow to work
+//////////////
+tasks.register('syncClientInterfaceJava2ts', Sync) {
+	from '../client-interface/src/main/java/java2ts'
+	into 'src/main/java/java2ts'
+}
+tasks.named('compileJava') {
+	dependsOn 'syncClientInterfaceJava2ts'
+}
+tasks.named('eclipse') {
+	dependsOn 'syncClientInterfaceJava2ts'
+}
+/////////////
+// </HACK>
+/////////////
+
+String VER_AUTOVALUE = '1.7.4'
+dependencies {
+	annotationProcessor     "com.google.auto.value:auto-value:${VER_AUTOVALUE}"
+	implementation          "com.google.auto.value:auto-value-annotations:${VER_AUTOVALUE}"
+	testAnnotationProcessor "com.google.auto.value:auto-value:${VER_AUTOVALUE}"
+	testImplementation      "com.google.auto.value:auto-value-annotations:${VER_AUTOVALUE}"
+
+	compileOnly "com.google.code.findbugs:jsr305:$VER_JSR_305"
+	implementation "org.jsweet:jsweet-core:$VER_JSWEET_CORE"
+	implementation "com.jsoniter:jsoniter:$VER_JSONITER"
+	implementation 'com.google.code.gson:gson:2.8.6'
+	implementation 'org.jsoup:jsoup:1.13.1'
+	implementation 'org.eclipse.jgit:org.eclipse.jgit:5.9.0.202009080501-r'
+	implementation 'com.diffplug.durian:durian-core:1.2.0'
+	implementation 'com.diffplug.durian:durian-collect:1.2.0'
+	implementation 'com.diffplug.durian:durian-io:1.2.0'
+
+	implementation 'com.diffplug.spotless-changelog:spotless-changelog-plugin-gradle:2.0.0'
+	implementation 'com.diffplug.spotless:spotless-plugin-gradle:5.6.1'
+
+	if (OS.getNative().isWindows()) {
+		implementation 'chromium-swt:org.eclipse.swt.chromium:+'
+		implementation 'chromium-swt:org.eclipse.swt.chromium.win32.win32.x86_64:+'
+		implementation 'chromium-swt:com.make.chromium.cef.win32.win32.x86_64:+'
+	}
+
+	testImplementation "junit:junit:$VER_JUNIT"
+	testImplementation "org.assertj:assertj-core:$VER_ASSERTJ"
+	testImplementation 'com.diffplug.durian:durian-swt:3.1.0'
+	testImplementation 'com.diffplug.durian:durian-rx:3.0.0'
+	testImplementation 'io.reactivex.rxjava2:rxjava:2.2.7'
+}
+
+apply plugin: 'com.diffplug.eclipse.mavencentral'
+eclipseMavenCentral {
+	release '4.15.0', {
+		testImplementation 'org.eclipse.swt'
+		testImplementation 'org.eclipse.jface'
+		testImplementation 'org.eclipse.jface.text'
+		useNativesForRunningPlatform()
+	}
+}
+
+task transcriptGui(type: JavaExec, dependsOn: testClasses) {
+	description = 'Runs the transcript GUI'
+	classpath = sourceSets.test.runtimeClasspath
+	main = 'org.mytake.factset.video.gui.TranscriptFolderDialog'
+	if (com.diffplug.common.swt.os.OS.getNative().isMac()) {
+		jvmArgs = [
+			'-XstartOnFirstThread'
+		]
+	}
+}

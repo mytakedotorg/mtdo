@@ -61,6 +61,14 @@ Some example URLs are:
 
 ## Going deeper
 
+The instructions on this page should be enough to improve and extend the existing features of the application. If you want go deeper, and add completely new functionality, you'll need to look at [`DEV_DEEPDIVE.md`](DEV_DEEPDIVE.md).
+
+## Community
+
+For general developer discussion, we have a chatroom on [gitter](https://gitter.im/mytakedotorg).
+
+If you want to help, [these](https://github.com/mytakedotorg/mtdo/projects/3) are the things we think are most important. But every open issue is important, and we welcome any contribution!
+
 ## Common errors and their solutions
 
 ### Java server startup
@@ -68,6 +76,10 @@ Some example URLs are:
 > Couldn't connect to Docker daemon. You might need to start Docker
 
 Start Docker!
+
+> 'docker-compose kill' returned exit code 255
+
+The Docker daemon probably isn't running. Start docker!
 
 > No container found for postgres_1
 
@@ -79,3 +91,7 @@ Start Docker!
 > Unable to obtain connection from database: The connection attempt failed.
 
 Just try `./gradlew runDev` again.
+
+> IDE started by `gradlew ide` is broken
+
+Run `./gradlew ideClean`, and then `./gradlew ide`

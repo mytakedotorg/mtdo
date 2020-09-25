@@ -134,7 +134,7 @@ const Home: React.FC = () => {
           </a>
           <a
             className="home__link"
-            href="https://github.com/mytakedotorg/mytakedotorg/blob/staging/DEV_QUICKSTART.md"
+            href="https://github.com/mytakedotorg/mtdo/blob/staging/DEV_QUICKSTART.md"
           >
             GitHub repo for developers
           </a>

@@ -103,7 +103,7 @@ public class SocialEmbed {
 					System.err.println("-----------------------");
 					System.err.println(url.toString());
 					e.printStackTrace();
-					// this ought to hook into https://github.com/mytakedotorg/mytakedotorg/issues/328
+					// this ought to hook into https://github.com/mytakedotorg/mtdo/issues/328
 					body = "<!-- temporary header failure, don't cache -->";
 				}
 			}
