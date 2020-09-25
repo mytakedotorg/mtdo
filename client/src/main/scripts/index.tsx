@@ -28,7 +28,7 @@ import BlockWriter, {
 } from "./components/BlockWriter";
 import FoundationView from "./components/FoundationView";
 import HeaderWithPage from "./components/homepage/HeaderWithPage";
-import Home from "./components/Homepage/Home";
+import Home from "./components/homepage/Home";
 import VideoResultsLoader from "./components/search/VideoResultsLoader";
 import { MtdoArgs } from "./page";
 
