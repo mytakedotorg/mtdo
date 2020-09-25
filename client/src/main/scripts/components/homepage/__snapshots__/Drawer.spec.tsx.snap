@@ -1,13 +1,27 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Drawer - collapsed 1`] = `
-<div
-  className="header__drawer"
-/>
+Array [
+  <div
+    className="header__drawer"
+  >
+    todo
+  </div>,
+  <div
+    className="header__overlay"
+  />,
+]
 `;
 
 exports[`Drawer - expanded 1`] = `
-<div
-  className="header__drawer header__drawer--visible"
-/>
+Array [
+  <div
+    className="header__drawer header__drawer--visible"
+  >
+    todo
+  </div>,
+  <div
+    className="header__overlay header__overlay--visible"
+  />,
+]
 `;

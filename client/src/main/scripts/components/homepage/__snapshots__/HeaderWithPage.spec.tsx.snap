@@ -44,17 +44,13 @@ Array [
             .org
           </span>
         </em>
-        <span
-          className="header__moreinfo-link"
-        >
-          More info
-        </span>
       </span>
       <UserNav />
     </div>
   </header>,
-  <div
-    className="header__drawer"
+  <Drawer
+    activeTab="How to use this"
+    isExpanded={false}
   />,
 ]
 `;
@@ -110,33 +106,17 @@ Array [
           More info
         </span>
       </span>
-      <ul
+      <Tabs
+        activeTab="How to use this"
         className="header__tabs"
-      >
-        <li
-          className="header__tab header__tab--active"
-          onClick={[Function]}
-        >
-          How to use this
-        </li>
-        <li
-          className="header__tab"
-          onClick={[Function]}
-        >
-          What is this
-        </li>
-        <li
-          className="header__tab"
-          onClick={[Function]}
-        >
-          Get involved
-        </li>
-      </ul>
+        onTabClick={[Function]}
+      />
       <UserNav />
     </div>
   </header>,
-  <div
-    className="header__drawer"
+  <Drawer
+    activeTab="How to use this"
+    isExpanded={false}
   />,
 ]
 `;
@@ -185,11 +165,6 @@ Array [
             .org
           </span>
         </em>
-        <span
-          className="header__moreinfo-link"
-        >
-          More info
-        </span>
       </span>
       <div
         className="header__searchbar"
@@ -202,8 +177,9 @@ Array [
       <UserNav />
     </div>
   </header>,
-  <div
-    className="header__drawer"
+  <Drawer
+    activeTab="How to use this"
+    isExpanded={false}
   />,
 ]
 `;

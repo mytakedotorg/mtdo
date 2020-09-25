@@ -21,6 +21,16 @@ import React from "react";
 import renderer from "react-test-renderer";
 import HeaderWithPage from "./HeaderWithPage";
 
+jest.mock("./Drawer", () => ({
+  __esModule: true,
+  default: "Drawer",
+}));
+
+jest.mock("./Tabs", () => ({
+  __esModule: true,
+  default: "Tabs",
+}));
+
 jest.mock("../SearchBar", () => ({
   __esModule: true,
   default: "SearchBar",
