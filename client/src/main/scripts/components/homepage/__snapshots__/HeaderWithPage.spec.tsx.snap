@@ -1,102 +1,114 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`HeaderWithPage homepage 1`] = `
-<header
-  className="header"
-  role="banner"
->
-  <a
-    className="header__skip-link"
-    href="#app"
-    tabIndex={1}
+Array [
+  <header
+    className="header"
+    role="banner"
   >
-    Skip to main content
-  </a>
-  <div
-    className="header__top"
-  >
-    <span
-      className="header__logo-link"
+    <a
+      className="header__skip-link"
+      href="#app"
+      tabIndex={1}
     >
-      <div
-        className="header__logo-image-container"
+      Skip to main content
+    </a>
+    <div
+      className="header__top"
+    >
+      <span
+        className="header__logo-link"
       >
-        <img
-          alt="MyTake.org | Fundamentals, in context."
-          className="header__logo-image"
-          height="100"
-          src="/assets/permanent/square-wheat-482248dddd.png"
-          width="100"
-        />
-      </div>
-      <em
-        className="header__logo-title"
-      >
-        <span
-          className="header__logo--mytake"
+        <div
+          className="header__logo-image-container"
         >
-          MyTake
-        </span>
-        <span
-          className="header__logo--org"
+          <img
+            alt="MyTake.org | Fundamentals, in context."
+            className="header__logo-image"
+            height="100"
+            src="/assets/permanent/square-wheat-482248dddd.png"
+            width="100"
+          />
+        </div>
+        <em
+          className="header__logo-title"
         >
-          .org
+          <span
+            className="header__logo--mytake"
+          >
+            MyTake
+          </span>
+          <span
+            className="header__logo--org"
+          >
+            .org
+          </span>
+        </em>
+        <span
+          className="header__moreinfo-link"
+        >
+          More info
         </span>
-      </em>
-    </span>
-    <UserNav />
-  </div>
-</header>
+      </span>
+      <UserNav />
+    </div>
+  </header>,
+  <div
+    className="header__drawer"
+  />,
+]
 `;
 
 exports[`HeaderWithPage other pages 1`] = `
-<header
-  className="header"
-  role="banner"
->
-  <a
-    className="header__skip-link"
-    href="#app"
-    tabIndex={1}
+Array [
+  <header
+    className="header"
+    role="banner"
   >
-    Skip to main content
-  </a>
-  <div
-    className="header__top"
-  >
-    <span
-      className="header__logo-link"
-      onClick={[Function]}
+    <a
+      className="header__skip-link"
+      href="#app"
+      tabIndex={1}
     >
-      <div
-        className="header__logo-image-container"
-      >
-        <img
-          alt="MyTake.org | Fundamentals, in context."
-          className="header__logo-image"
-          height="100"
-          src="/assets/permanent/square-wheat-482248dddd.png"
-          width="100"
-        />
-      </div>
-      <em
-        className="header__logo-title"
-      >
-        <span
-          className="header__logo--mytake"
-        >
-          MyTake
-        </span>
-        <span
-          className="header__logo--org"
-        >
-          .org
-        </span>
-      </em>
+      Skip to main content
+    </a>
+    <div
+      className="header__top"
+    >
       <span
-        className="header__moreinfo-link"
+        className="header__logo-link"
+        onClick={[Function]}
       >
-        More info
+        <div
+          className="header__logo-image-container"
+        >
+          <img
+            alt="MyTake.org | Fundamentals, in context."
+            className="header__logo-image"
+            height="100"
+            src="/assets/permanent/square-wheat-482248dddd.png"
+            width="100"
+          />
+        </div>
+        <em
+          className="header__logo-title"
+        >
+          <span
+            className="header__logo--mytake"
+          >
+            MyTake
+          </span>
+          <span
+            className="header__logo--org"
+          >
+            .org
+          </span>
+        </em>
+        <span
+          className="header__moreinfo-link"
+        >
+          More info
+        </span>
       </span>
       <ul
         className="header__tabs"
@@ -120,66 +132,78 @@ exports[`HeaderWithPage other pages 1`] = `
           Get involved
         </li>
       </ul>
-    </span>
-    <UserNav />
-  </div>
-</header>
+      <UserNav />
+    </div>
+  </header>,
+  <div
+    className="header__drawer"
+  />,
+]
 `;
 
 exports[`HeaderWithPage search page 1`] = `
-<header
-  className="header header--search"
-  role="banner"
->
-  <a
-    className="header__skip-link"
-    href="#app"
-    tabIndex={1}
+Array [
+  <header
+    className="header header--search"
+    role="banner"
   >
-    Skip to main content
-  </a>
-  <div
-    className="header__top"
-  >
-    <span
-      className="header__logo-link"
-      onClick={[Function]}
+    <a
+      className="header__skip-link"
+      href="#app"
+      tabIndex={1}
     >
-      <div
-        className="header__logo-image-container"
+      Skip to main content
+    </a>
+    <div
+      className="header__top"
+    >
+      <span
+        className="header__logo-link"
       >
-        <img
-          alt="MyTake.org | Fundamentals, in context."
-          className="header__logo-image"
-          height="100"
-          src="/assets/permanent/square-wheat-482248dddd.png"
-          width="100"
+        <div
+          className="header__logo-image-container"
+        >
+          <img
+            alt="MyTake.org | Fundamentals, in context."
+            className="header__logo-image"
+            height="100"
+            src="/assets/permanent/square-wheat-482248dddd.png"
+            width="100"
+          />
+        </div>
+        <em
+          className="header__logo-title"
+        >
+          <span
+            className="header__logo--mytake"
+          >
+            MyTake
+          </span>
+          <span
+            className="header__logo--org"
+          >
+            .org
+          </span>
+        </em>
+        <span
+          className="header__moreinfo-link"
+        >
+          More info
+        </span>
+      </span>
+      <div
+        className="header__searchbar"
+      >
+        <SearchBar
+          classModifier="search"
+          initialSearchQuery="anything"
         />
       </div>
-      <em
-        className="header__logo-title"
-      >
-        <span
-          className="header__logo--mytake"
-        >
-          MyTake
-        </span>
-        <span
-          className="header__logo--org"
-        >
-          .org
-        </span>
-      </em>
-    </span>
-    <div
-      className="header__searchbar"
-    >
-      <SearchBar
-        classModifier="search"
-        initialSearchQuery="anything"
-      />
+      <UserNav />
     </div>
-    <UserNav />
-  </div>
-</header>
+  </header>,
+  <div
+    className="header__drawer"
+  />,
+]
 `;

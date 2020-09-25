@@ -21,6 +21,21 @@ import * as React from "react";
 import * as renderer from "react-test-renderer";
 import Home from "./Home";
 
+jest.mock("./GetInvolved", () => ({
+  __esModule: true,
+  default: "GetInvolved",
+}));
+
+jest.mock("./HowToUseThis", () => ({
+  __esModule: true,
+  default: "HowToUseThis",
+}));
+
+jest.mock("./WhatIsThis", () => ({
+  __esModule: true,
+  default: "WhatIsThis",
+}));
+
 test("Home", () => {
   const tree = renderer.create(<Home />).toJSON();
   expect(tree).toMatchSnapshot();
