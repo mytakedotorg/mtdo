@@ -23,21 +23,22 @@ import { INFO_HEADER_TABS_ENUM } from "./infoHeader";
 
 interface DrawerProps {
   activeTab: INFO_HEADER_TABS_ENUM;
+  onClose(): void;
   isExpanded: boolean;
 }
 const Drawer: React.FC<DrawerProps> = (props) => {
-  const drawerClass = props.isExpanded
-    ? "header__drawer header__drawer--visible"
-    : "header__drawer";
+  const drawerClass = props.isExpanded ? "drawer drawer--visible" : "drawer";
   const overlayClass = props.isExpanded
-    ? "header__overlay header__overlay--visible"
-    : "header__overlay";
+    ? "drawer__overlay drawer__overlay--visible"
+    : "drawer__overlay";
   return (
     <>
       <div className={drawerClass}>
-        <DrawerContents activeTab={props.activeTab} />
+        <div className="drawer__contents">
+          <DrawerContents activeTab={props.activeTab} />
+        </div>
       </div>
-      <div className={overlayClass} />
+      <div className={overlayClass} onClick={props.onClose} />
     </>
   );
 };

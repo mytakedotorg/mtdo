@@ -1,0 +1,37 @@
+.drawer {
+  position: absolute;
+  top: 40px;
+  left: 0;
+  right: 0;
+  overflow: hidden;
+  height: 400px;
+  max-height: 0;
+  transition: max-height 0.1s linear;
+  z-index: 2;
+  background-color: white;
+}
+.drawer--visible {
+  max-height: 400px;
+}
+.drawer__overlay {
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: black;
+  opacity: 0;
+  transition: opacity 0.1s linear;
+}
+.drawer__overlay--visible {
+  opacity: 0.5;
+}
+.drawer__contents {
+  width: 768px;
+  max-width: 100%;
+  max-height: 100%;
+  overflow-y: scroll;
+  margin-left: auto;
+  margin-right: auto;
+}

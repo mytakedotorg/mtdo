@@ -22,7 +22,10 @@ import { INFO_HEADER_TABS_ENUM, INFO_HEADER_TAB_NAMES } from "./infoHeader";
 
 interface TabsProps {
   activeTab: INFO_HEADER_TABS_ENUM;
-  onTabClick(tab: INFO_HEADER_TABS_ENUM): void;
+  onTabClick(
+    event: React.MouseEvent<HTMLLIElement, MouseEvent>,
+    tab: INFO_HEADER_TABS_ENUM
+  ): void;
   className: string;
 }
 
@@ -38,7 +41,7 @@ const Tabs: React.FC<TabsProps> = (props) => {
           <li
             key={tab}
             className={tabClass}
-            onClick={() => props.onTabClick(tab)}
+            onClick={(e) => props.onTabClick(e, tab)}
           >
             {tab}
           </li>

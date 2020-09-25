@@ -35,14 +35,22 @@ const HeaderWithPage: React.FC<HeaderProps> = (props) => {
     INFO_HEADER_TAB_NAMES[0]
   );
 
-  const onLogoClick = () => {
+  const handleLogoClick = () => {
     setIsExpanded((prevState) => !prevState);
   };
 
-  const onTabClick = (tab: INFO_HEADER_TABS_ENUM) => {
+  const handleTabClick = (
+    event: React.MouseEvent<HTMLLIElement, MouseEvent>,
+    tab: INFO_HEADER_TABS_ENUM
+  ) => {
+    // prevent bubbling up to our other event handler
+    event.stopPropagation();
     setActiveTab(tab);
   };
 
+  const handleDrawerClose = () => {
+    setIsExpanded(false);
+  };
   const tabsClass = isExpanded
     ? "header__tabs header__tabs--visible"
     : "header__tabs";
@@ -51,7 +59,7 @@ const HeaderWithPage: React.FC<HeaderProps> = (props) => {
     ? "header header--search"
     : "header";
 
-  const showShowTabs = !isHomePage(props.args) && !isSearchPage(props.args);
+  const shouldShowTabs = !isHomePage(props.args) && !isSearchPage(props.args);
   return (
     <>
       <header className={headerClass} role="banner">
@@ -61,7 +69,7 @@ const HeaderWithPage: React.FC<HeaderProps> = (props) => {
         <div className="header__top">
           <span
             className="header__logo-link"
-            onClick={showShowTabs ? onLogoClick : undefined}
+            onClick={shouldShowTabs ? handleLogoClick : undefined}
           >
             <div className="header__logo-image-container">
               <img
@@ -76,17 +84,17 @@ const HeaderWithPage: React.FC<HeaderProps> = (props) => {
               <span className="header__logo--mytake">MyTake</span>
               <span className="header__logo--org">.org</span>
             </em>
-            {showShowTabs && (
-              <span className="header__moreinfo-link">More info</span>
+            {shouldShowTabs && (
+              <>
+                <span className="header__moreinfo-link">More info</span>
+                <Tabs
+                  activeTab={activeTab}
+                  className={tabsClass}
+                  onTabClick={handleTabClick}
+                />
+              </>
             )}
           </span>
-          {showShowTabs && (
-            <Tabs
-              activeTab={activeTab}
-              className={tabsClass}
-              onTabClick={onTabClick}
-            />
-          )}
           {isSearchPage(props.args) && (
             <div className="header__searchbar">
               <SearchBar
@@ -98,7 +106,11 @@ const HeaderWithPage: React.FC<HeaderProps> = (props) => {
           <UserNav />
         </div>
       </header>
-      <Drawer activeTab={activeTab} isExpanded={isExpanded} />
+      <Drawer
+        activeTab={activeTab}
+        isExpanded={isExpanded}
+        onClose={handleDrawerClose}
+      />
       {props.children}
     </>
   );

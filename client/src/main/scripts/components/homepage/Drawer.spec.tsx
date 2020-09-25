@@ -30,6 +30,7 @@ jest.mock("./DrawerContents", () => ({
 test("Drawer - expanded", () => {
   const props = {
     activeTab: INFO_HEADER_TABS_ENUM.HOW_TO_USE_THIS,
+    onClose: jest.fn(),
     isExpanded: true,
   };
   const tree = renderer.create(<Drawer {...props} />).toJSON();
@@ -39,6 +40,7 @@ test("Drawer - expanded", () => {
 test("Drawer - collapsed", () => {
   const props = {
     activeTab: INFO_HEADER_TABS_ENUM.HOW_TO_USE_THIS,
+    onClose: jest.fn(),
     isExpanded: false,
   };
   const tree = renderer.create(<Drawer {...props} />).toJSON();
