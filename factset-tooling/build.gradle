@@ -109,13 +109,6 @@ shadowJar {
 	]
 }
 
-tasks.register('relocateShadowJar', ConfigureShadowRelocation) {
-	target = tasks.shadowJar
-}
-tasks.named('shadowJar') {
-	dependsOn 'relocateShadowJar'
-}
-
 apply plugin: 'com.diffplug.eclipse.mavencentral'
 eclipseMavenCentral {
 	release '4.15.0', {
