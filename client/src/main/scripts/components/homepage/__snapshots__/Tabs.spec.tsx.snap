@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Tabs - expanded 1`] = `
+<ul
+  className="testclass"
+>
+  <li
+    className="header__tab header__tab--active"
+    onClick={[Function]}
+  >
+    How to use this
+  </li>
+  <li
+    className="header__tab"
+    onClick={[Function]}
+  >
+    What is this
+  </li>
+  <li
+    className="header__tab"
+    onClick={[Function]}
+  >
+    Get involved
+  </li>
+</ul>
+`;

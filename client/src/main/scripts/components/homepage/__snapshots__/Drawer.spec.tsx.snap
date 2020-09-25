@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Drawer - collapsed 1`] = `
+<div
+  className="header__drawer"
+/>
+`;
+
+exports[`Drawer - expanded 1`] = `
+<div
+  className="header__drawer header__drawer--visible"
+/>
+`;
