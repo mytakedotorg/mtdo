@@ -112,10 +112,12 @@ mtdoFactSet {
 # Changelog
 
 ## [Unreleased]
+### Fixed
+* Embed jsweet-core into the fatjar.
 
 ## [0.2.0] - 2020-09-25
 ### Added
-* Workable for demo, setup semi-fat-jar.
+* Workable for demo, setup semi-fatjar.
 
 ## [0.1.0] - 2020-09-23
 * First version.
