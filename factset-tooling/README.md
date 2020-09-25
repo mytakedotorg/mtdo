@@ -113,6 +113,10 @@ mtdoFactSet {
 
 ## [Unreleased]
 
+## [0.2.4] - 2020-09-25
+### Fixed
+* Abandon shadow, can't get it to work.
+
 ## [0.2.3] - 2020-09-25
 ### Fixed
 * No need to relocate packages.
