@@ -18,12 +18,12 @@ jobs:
       - restore_cache:
           key: gradle-wrapper-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}  
       - restore_cache:
-          key: gradle-deps-{{ checksum "settings.gradle" }}-{{ checksum "buildSrc/build.gradle" }}-{{ checksum "gradle.properties" }}-{{ checksum "client/package-lock.json" }}-{{ checksum "server/build.gradle" }}-{{ checksum "foundation-gen/build.gradle" }}
+          key: gradle-deps-{{ checksum "settings.gradle" }}-{{ checksum "buildSrc/build.gradle" }}-{{ checksum "gradle.properties" }}-{{ checksum "client/package-lock.json" }}-{{ checksum "server/build.gradle" }}-{{ checksum "factset-tooling/build.gradle" }}
       - run:
           name: 'gradlew check'
           command: './gradlew check --stacktrace'
       - save_cache:
-          key: gradle-deps-{{ checksum "settings.gradle" }}-{{ checksum "buildSrc/build.gradle" }}-{{ checksum "gradle.properties" }}-{{ checksum "client/package-lock.json" }}-{{ checksum "server/build.gradle" }}-{{ checksum "foundation-gen/build.gradle" }}
+          key: gradle-deps-{{ checksum "settings.gradle" }}-{{ checksum "buildSrc/build.gradle" }}-{{ checksum "gradle.properties" }}-{{ checksum "client/package-lock.json" }}-{{ checksum "server/build.gradle" }}-{{ checksum "factset-tooling/build.gradle" }}
           paths:
             - ~/.gradle/caches/
             - ~/.npm/
@@ -36,7 +36,7 @@ jobs:
       - store_test_results:
           path: client/build/test-results/jest
       - store_test_results:
-          path: foundation-gen/build/test-results/test
+          path: factset-tooling/build/test-results/test
       - store_test_results:
           path: lucene/build/test-results/test
       - store_test_results:
