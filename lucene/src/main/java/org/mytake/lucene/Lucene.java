@@ -22,7 +22,6 @@ package org.mytake.lucene;
 import com.diffplug.common.base.Errors;
 import com.diffplug.common.collect.ImmutableSet;
 import com.diffplug.common.io.Resources;
-import compat.java2ts.VideoFactContentJava;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -60,6 +59,7 @@ import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.MMapDirectory;
 import org.apache.lucene.util.QueryBuilder;
+import org.mytake.factset.video.VideoFactContentJava;
 
 public class Lucene implements AutoCloseable {
 	public static final String INDEX_ARCHIVE = "foundation-index.zip";

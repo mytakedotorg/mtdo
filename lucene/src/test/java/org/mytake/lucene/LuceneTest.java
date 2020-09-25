@@ -20,7 +20,6 @@
 package org.mytake.lucene;
 
 import com.diffplug.common.collect.Lists;
-import compat.java2ts.VideoFactContentJava;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Objects;
@@ -31,6 +30,7 @@ import org.assertj.core.api.Assertions;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
+import org.mytake.factset.video.VideoFactContentJava;
 
 public class LuceneTest {
 	private static final String HASH = "HASH";

@@ -71,7 +71,7 @@ public interface FT {
 		public String plainText;
 		/** Word n starts at wordChar[n]. */
 		public ArrayLike<Number> wordChar;
-		/** Word n is spoken at wordTime[n]. */
+		/** Word n is spoken at wordTime[n] (in milliseconds). */
 		public ArrayLike<Number> wordTime;
 		/**
 		 * speakers[turnSpeaker[0]] = the first person who speaks.

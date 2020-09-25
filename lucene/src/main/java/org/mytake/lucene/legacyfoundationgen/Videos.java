@@ -20,10 +20,10 @@
 package org.mytake.lucene.legacyfoundationgen;
 
 import com.diffplug.common.base.Throwing;
-import compat.java2ts.VideoFactContentJava;
 import java2ts.FT.VideoFactMeta;
 import org.mytake.factset.video.TranscriptFolder;
 import org.mytake.factset.video.TranscriptMatch;
+import org.mytake.factset.video.VideoFactContentJava;
 
 public class Videos {
 	public static void presidentialDebates(Throwing.Consumer<VideoFactContentJava> consumer) throws Throwable {

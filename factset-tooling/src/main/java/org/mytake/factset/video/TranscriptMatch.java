@@ -33,7 +33,6 @@ import com.diffplug.common.base.Either;
 import com.diffplug.common.base.Preconditions;
 import com.diffplug.common.io.ByteSource;
 import com.diffplug.common.io.Files;
-import compat.java2ts.VideoFactContentJava;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
