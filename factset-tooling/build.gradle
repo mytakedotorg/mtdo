@@ -63,7 +63,8 @@ if (OS.getNative().isWindows()) {
 configurations {
 	toShadow
 	toShadow.transitive = false
-	implementation.extendsFrom(toShadow)
+	compileClasspath.extendsFrom(toShadow)
+	runtimeClasspath.extendsFrom(toShadow)
 }
 
 String VER_AUTOVALUE = '1.7.4'
@@ -78,7 +79,6 @@ dependencies {
 	compileOnly "com.google.code.findbugs:jsr305:$VER_JSR_305"
 	toShadow project(':client-interface')
 	toShadow "org.jsweet:jsweet-core:$VER_JSWEET_CORE"
-	implementation "org.jsweet:jsweet-core:$VER_JSWEET_CORE"
 	implementation "com.jsoniter:jsoniter:$VER_JSONITER"
 	implementation 'com.google.code.gson:gson:2.8.6'
 	implementation 'org.jsoup:jsoup:1.13.1'
@@ -125,8 +125,6 @@ eclipseMavenCentral {
 		useNativesForRunningPlatform()
 	}
 }
-
-eclipse.project.referencedProjects = ['mytake-client-interface']
 
 task transcriptGui(type: JavaExec, dependsOn: testClasses) {
 	description = 'Runs the transcript GUI'
