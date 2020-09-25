@@ -4,6 +4,8 @@ plugins {
 	id 'com.github.johnrengelman.shadow' version '6.0.0'	// http://imperceptiblethoughts.com/shadow/#
 }
 
+import com.github.jengelman.gradle.plugins.shadow.tasks.ConfigureShadowRelocation
+
 ext.git_url = 'github.com/mytakedotorg/mtdo'
 ext.maven_group = 'org.mytake.mtdo'
 ext.maven_artifact = 'mtdo-plugin-gradle'
@@ -58,10 +60,15 @@ if (OS.getNative().isWindows()) {
 	]
 }
 
+configurations {
+	toShadow
+	toShadow.transitive = false
+	implementation.extendsFrom(toShadow)
+}
+
 String VER_AUTOVALUE = '1.7.4'
 dependencies {
-	shadow localGroovy()
-	shadow gradleApi()
+	compileOnly gradleApi()
 
 	annotationProcessor     "com.google.auto.value:auto-value:${VER_AUTOVALUE}"
 	implementation          "com.google.auto.value:auto-value-annotations:${VER_AUTOVALUE}"
@@ -69,17 +76,19 @@ dependencies {
 	testImplementation      "com.google.auto.value:auto-value-annotations:${VER_AUTOVALUE}"
 
 	compileOnly "com.google.code.findbugs:jsr305:$VER_JSR_305"
-	implementation project(':client-interface')
+	toShadow project(':client-interface')
+	toShadow "org.jsweet:jsweet-core:$VER_JSWEET_CORE"
+	implementation "org.jsweet:jsweet-core:$VER_JSWEET_CORE"
 	implementation "com.jsoniter:jsoniter:$VER_JSONITER"
 	implementation 'com.google.code.gson:gson:2.8.6'
 	implementation 'org.jsoup:jsoup:1.13.1'
 	implementation 'org.eclipse.jgit:org.eclipse.jgit:5.0.1.201806211838-r'
-	shadow 'com.diffplug.durian:durian-core:1.2.0'
-	shadow 'com.diffplug.durian:durian-collect:1.2.0'
-	shadow 'com.diffplug.durian:durian-io:1.2.0'
+	implementation 'com.diffplug.durian:durian-core:1.2.0'
+	implementation 'com.diffplug.durian:durian-collect:1.2.0'
+	implementation 'com.diffplug.durian:durian-io:1.2.0'
 
-	shadow 'com.diffplug.spotless-changelog:spotless-changelog-plugin-gradle:2.0.0'
-	shadow 'com.diffplug.spotless:spotless-plugin-gradle:5.6.1'
+	implementation 'com.diffplug.spotless-changelog:spotless-changelog-plugin-gradle:2.0.0'
+	implementation 'com.diffplug.spotless:spotless-plugin-gradle:5.6.1'
 
 	if (OS.getNative().isWindows()) {
 		implementation 'chromium-swt:org.eclipse.swt.chromium:+'
@@ -92,6 +101,19 @@ dependencies {
 	testImplementation 'com.diffplug.durian:durian-swt:3.1.0'
 	testImplementation 'com.diffplug.durian:durian-rx:3.0.0'
 	testImplementation 'io.reactivex.rxjava2:rxjava:2.2.7'
+}
+
+shadowJar {
+	configurations = [
+		project.configurations.toShadow
+	]
+}
+
+tasks.register('relocateShadowJar', ConfigureShadowRelocation) {
+	target = tasks.shadowJar
+}
+tasks.named('shadowJar') {
+	dependsOn 'relocateShadowJar'
 }
 
 apply plugin: 'com.diffplug.eclipse.mavencentral'
