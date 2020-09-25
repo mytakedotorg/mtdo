@@ -53,7 +53,7 @@ public class FoundationParserTest {
 	}
 
 	private void testCase(String input, String expected) {
-		Assert.assertEquals(expected, GitJson.write(FoundationParser.toComponents(input)).toCompactString());
+		Assert.assertEquals(expected, GitJson.write(FoundationParser.toComponents(input)).toRecondensedForDebugging());
 	}
 
 	@Test(expected = IllegalArgumentException.class)
