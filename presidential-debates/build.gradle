@@ -53,12 +53,12 @@ dependencies {
 spotless {
 	format 'foundation-video', {
 		target '**/*.json'
-		bumpThisNumberIfACustomStepChanges(6)
+		bumpThisNumberIfACustomStepChanges(7)
 		custom 'VideoJsonFormat', { str ->
 			ByteArrayOutputStream result = new ByteArrayOutputStream()
 			javaexec {
 				classpath project.configurations.foundationGenClasspath
-				main = 'org.mytake.factset.VideoFormat'
+				main = 'org.mytake.factset.video.VideoFormat'
 				standardInput = new ByteArrayInputStream(str.getBytes('UTF-8'))
 				standardOutput = result
 			}
