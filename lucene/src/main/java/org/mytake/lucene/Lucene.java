@@ -19,18 +19,15 @@
  */
 package org.mytake.lucene;
 
-import com.diffplug.common.base.Errors;
 import com.diffplug.common.collect.ImmutableSet;
 import com.diffplug.common.io.Resources;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.TimeZone;
 import java.util.TreeSet;
 import java2ts.Search.FactResultList;
 import java2ts.Search.VideoResult;
@@ -42,14 +39,7 @@ import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.en.EnglishAnalyzer;
 import org.apache.lucene.analysis.standard.StandardTokenizer;
 import org.apache.lucene.document.Document;
-import org.apache.lucene.document.Field.Store;
-import org.apache.lucene.document.LongPoint;
-import org.apache.lucene.document.StoredField;
-import org.apache.lucene.document.StringField;
-import org.apache.lucene.document.TextField;
 import org.apache.lucene.index.DirectoryReader;
-import org.apache.lucene.index.IndexWriter;
-import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.search.BooleanClause.Occur;
 import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.IndexSearcher;
@@ -59,7 +49,6 @@ import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.MMapDirectory;
 import org.apache.lucene.util.QueryBuilder;
-import org.mytake.factset.video.VideoFactContentJava;
 
 public class Lucene implements AutoCloseable {
 	public static final String INDEX_ARCHIVE = "foundation-index.zip";
@@ -77,64 +66,6 @@ public class Lucene implements AutoCloseable {
 				ZipMisc.deleteDir(luceneIndexDir);
 			}
 		};
-	}
-
-	public static class Writer implements AutoCloseable {
-		private final MyTakeDotOrgAnalyzer analyzer;
-		private final MMapDirectory directory;
-		private final IndexWriter iwriter;
-
-		public Writer(Path path) throws IOException {
-			analyzer = new MyTakeDotOrgAnalyzer();
-			directory = new MMapDirectory(path);
-			directory.setUseUnmap(true);
-			IndexWriterConfig config = new IndexWriterConfig(analyzer);
-			iwriter = new IndexWriter(directory, config);
-		}
-
-		public void writeVideo(String hash, VideoFactContentJava videoFact) throws IOException {
-			int end = videoFact.plainText.length();
-			for (int i = videoFact.turnWord.length - 1; i >= 0; --i) {
-				Document doc = new Document();
-				// stored but not indexed
-				doc.add(new StoredField(Lucene.HASH, hash));
-				doc.add(new StoredField(Lucene.TURN, i));
-
-				// indexed but not stored
-				String speaker = videoFact.speakers.get(videoFact.turnSpeaker[i]).fullName;
-				doc.add(new StringField(Lucene.SPEAKER, speaker, Store.NO));
-				doc.add(new LongPoint(Lucene.DATE, parseDate(videoFact.fact.primaryDate)));
-
-				// the text that we're indexing (not stored)
-				int start = videoFact.wordChar[videoFact.turnWord[i]];
-				try {
-					String sub = videoFact.plainText.substring(start, end);
-					doc.add(new TextField(Lucene.CONTENT, sub, Store.NO));
-				} catch (Exception e) {
-					System.out.println("ERROR in " + videoFact.fact.title + " at:");
-					System.out.println(videoFact.plainText.substring(start, Math.min(start + 200, videoFact.plainText.length())));
-					throw e;
-				}
-
-				// write it and get ready for the next one
-				iwriter.addDocument(doc);
-				end = start - 1;
-			}
-		}
-
-		@Override
-		public void close() throws IOException {
-			iwriter.close();
-			directory.close();
-			analyzer.close();
-		}
-
-		/** Turns yyyy-MM-dd into milliseconds since Jan 1 1970. */
-		private static long parseDate(String yyyyMMdd) {
-			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-			format.setTimeZone(TimeZone.getTimeZone("UTC"));
-			return Errors.rethrow().get(() -> format.parse(yyyyMMdd).getTime());
-		}
 	}
 
 	private final MyTakeDotOrgAnalyzer analyzer;
@@ -213,15 +144,15 @@ public class Lucene implements AutoCloseable {
 		return docs;
 	}
 
-	static final String HASH = "hash";
-	static final String TURN = "turn";
-	static final String DATE = "date";
-	static final String SPEAKER = "speaker";
-	static final String CONTENT = "content";
+	public static final String HASH = "hash";
+	public static final String TURN = "turn";
+	public static final String DATE = "date";
+	public static final String SPEAKER = "speaker";
+	public static final String CONTENT = "content";
 
 	private static final ImmutableSet<String> TO_FETCH = ImmutableSet.of(HASH, TURN);
 
-	static class MyTakeDotOrgAnalyzer extends Analyzer {
+	public static class MyTakeDotOrgAnalyzer extends Analyzer {
 		private static final int MAX_TOKEN_LENGTH = 127;
 		private static final CharArraySet STOPWORDS;
 

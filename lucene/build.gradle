@@ -3,13 +3,13 @@ apply plugin: 'java'
 String VER_LUCENE = '8.6.2'
 dependencies {
 	implementation project(':client-interface')
-	implementation project(':factset-tooling')
 	implementation 'com.diffplug.durian:durian-core:1.2.0'
 	implementation 'com.diffplug.durian:durian-collect:1.2.0'
 	implementation 'com.diffplug.durian:durian-io:1.2.0'
 	implementation "org.apache.lucene:lucene-core:${VER_LUCENE}"
 	implementation "org.apache.lucene:lucene-queryparser:${VER_LUCENE}"
 	implementation "org.apache.lucene:lucene-analyzers-common:${VER_LUCENE}"
+	testImplementation project(':factset-tooling')
 	testImplementation "junit:junit:${VER_JUNIT}"
 	testImplementation "org.assertj:assertj-core:${VER_ASSERTJ}"
 }
@@ -27,7 +27,7 @@ spotless {
 
 tasks.register('generateFoundation', JavaExec) {
 	description = 'Generates the foundation'
-	classpath = sourceSets.main.runtimeClasspath
+	classpath = sourceSets.test.runtimeClasspath
 	main = 'org.mytake.lucene.legacyfoundationgen.Index'
 
 	dependsOn(tasks.classes)

@@ -34,7 +34,7 @@ public class Index {
 
 		FactWriter factWriter = new FactWriter(Folders.DST_FOUNDATION_DATA);
 		Documents.national(factWriter);
-		try (Lucene.Writer writer = new Lucene.Writer(luceneTemp)) {
+		try (LuceneWriter writer = new LuceneWriter(luceneTemp)) {
 			Videos.presidentialDebates(factContentJava -> {
 				String hash = factWriter.writeAndReturnHash(factContentJava.toEncoded());
 				writer.writeVideo(hash, factContentJava);
