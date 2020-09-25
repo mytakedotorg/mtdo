@@ -17,13 +17,10 @@
   overflow: auto;
 }
 .home__h1 {
-  @include typography($sans, 700, 20px, 1.3em);
+  @include typography($sans, 700, 24px, 1.3em);
   margin: 24px 0 0 0;
   color: palette(home, title);
   @media screen and (min-width: 480px) {
-    @include typography($sans, 700, 22px, 1.3em);
-  }
-  @media screen and (min-width: 768px) {
     @include typography($sans, 700, 34px, 1.3em);
   }
 }

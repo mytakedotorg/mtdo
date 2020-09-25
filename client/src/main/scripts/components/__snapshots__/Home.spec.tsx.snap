@@ -11,7 +11,7 @@ Array [
       <h2
         className="home__h1 home__h1--center"
       >
-        Are we lying to you? Is this out of context?
+        Are we lying to you? Is this out of context?
       </h2>
       <p
         className="home__body home__body--center"
@@ -39,12 +39,12 @@ Array [
       <h2
         className="home__h1 home__h1--center"
       >
-        Don't let someone else decide for you.
+        Don't let someone else decide for you
       </h2>
       <p
         className="home__body home__body--center"
       >
-        We're not tracking what you've said. We're not selling your attention.
+        We're not tracking what you've said. We're not selling your attention.
       </p>
     </div>
   </section>,
@@ -55,9 +55,9 @@ Array [
       className="home__section-content home__searchbar"
     >
       <h1
-        className="home__h1"
+        className="home__h1 home__body--center"
       >
-        Search the issues you care about for yourself
+        Search the issues you care about for yourself
       </h1>
       <form
         action="javascript:void(0)"
@@ -161,7 +161,7 @@ Array [
         <li
           className="home__li"
         >
-          Search every presidential debate in history (Kennedy/Nison to present), more to come
+          Search every presidential debate in history (Kennedy/Nixon to present), more to come
         </li>
       </ul>
     </div>
