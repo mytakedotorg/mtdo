@@ -112,6 +112,8 @@ mtdoFactSet {
 # Changelog
 
 ## [Unreleased]
+
+## [0.2.2] - 2020-09-25
 ### Fixed
 * Remove jsweet-core from the POM.
 
