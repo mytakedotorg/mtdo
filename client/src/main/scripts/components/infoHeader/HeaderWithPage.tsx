@@ -18,9 +18,9 @@
  * You can contact us at team@mytake.org
  */
 import React, { useState } from "react";
-import { isHomePage, isSearchPage, MtdoArgs } from "../page";
-import UserNav from "./auth/UserNav";
-import SearchBar from "./SearchBar";
+import { isHomePage, isSearchPage, MtdoArgs } from "../../page";
+import UserNav from "../auth/UserNav";
+import SearchBar from "../SearchBar";
 
 interface HeaderProps {
   args?: MtdoArgs;

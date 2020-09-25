@@ -21,12 +21,12 @@ import React from "react";
 import renderer from "react-test-renderer";
 import HeaderWithPage from "./HeaderWithPage";
 
-jest.mock("./SearchBar", () => ({
+jest.mock("../SearchBar", () => ({
   __esModule: true,
   default: "SearchBar",
 }));
 
-jest.mock("./auth/UserNav", () => ({
+jest.mock("../auth/UserNav", () => ({
   __esModule: true,
   default: "UserNav",
 }));
