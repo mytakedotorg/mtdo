@@ -112,6 +112,8 @@ mtdoFactSet {
 # Changelog
 
 ## [Unreleased]
+
+## [0.2.3] - 2020-09-25
 ### Fixed
 * No need to relocate packages.
 
