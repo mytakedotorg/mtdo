@@ -18,10 +18,8 @@
  * You can contact us at team@mytake.org
  */
 import React from "react";
-import GetInvolved from "./GetInvolved";
-import HowToUseThis from "./HowToUseThis";
-import { INFO_HEADER_TABS_ENUM, useSocials } from "./infoHeader";
-import WhatIsThis from "./WhatIsThis";
+import DrawerContents from "./DrawerContents";
+import { INFO_HEADER_TABS_ENUM } from "./infoHeader";
 
 interface DrawerProps {
   activeTab: INFO_HEADER_TABS_ENUM;
@@ -44,18 +42,4 @@ const Drawer: React.FC<DrawerProps> = (props) => {
   );
 };
 
-interface DrawerContentsProps {
-  activeTab: INFO_HEADER_TABS_ENUM;
-}
-const DrawerContents: React.FC<DrawerContentsProps> = (props) => {
-  const { leftSocial, rightSocial } = useSocials();
-  switch (props.activeTab) {
-    case INFO_HEADER_TABS_ENUM.GET_INVOLVED:
-      return <GetInvolved />;
-    case INFO_HEADER_TABS_ENUM.HOW_TO_USE_THIS:
-      return <HowToUseThis />;
-    case INFO_HEADER_TABS_ENUM.WHAT_IS_THIS:
-      return <WhatIsThis leftSocial={leftSocial} rightSocial={rightSocial} />;
-  }
-};
 export default Drawer;

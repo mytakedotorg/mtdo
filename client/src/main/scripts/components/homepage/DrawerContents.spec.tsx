@@ -19,28 +19,43 @@
  */
 import * as React from "react";
 import * as renderer from "react-test-renderer";
-import Drawer from "./Drawer";
+import DrawerContents from "./DrawerContents";
 import { INFO_HEADER_TABS_ENUM } from "./infoHeader";
 
-jest.mock("./DrawerContents", () => ({
+jest.mock("./GetInvolved", () => ({
   __esModule: true,
-  default: "DrawerContents",
+  default: "GetInvolved",
 }));
 
-test("Drawer - expanded", () => {
-  const props = {
-    activeTab: INFO_HEADER_TABS_ENUM.HOW_TO_USE_THIS,
-    isExpanded: true,
-  };
-  const tree = renderer.create(<Drawer {...props} />).toJSON();
+jest.mock("./HowToUseThis", () => ({
+  __esModule: true,
+  default: "HowToUseThis",
+}));
+
+jest.mock("./WhatIsThis", () => ({
+  __esModule: true,
+  default: "WhatIsThis",
+}));
+
+test("DrawerContents - GetInvolved", () => {
+  const tree = renderer
+    .create(<DrawerContents activeTab={INFO_HEADER_TABS_ENUM.GET_INVOLVED} />)
+    .toJSON();
   expect(tree).toMatchSnapshot();
 });
 
-test("Drawer - collapsed", () => {
-  const props = {
-    activeTab: INFO_HEADER_TABS_ENUM.HOW_TO_USE_THIS,
-    isExpanded: false,
-  };
-  const tree = renderer.create(<Drawer {...props} />).toJSON();
+test("DrawerContents - HowToUseThis", () => {
+  const tree = renderer
+    .create(
+      <DrawerContents activeTab={INFO_HEADER_TABS_ENUM.HOW_TO_USE_THIS} />
+    )
+    .toJSON();
+  expect(tree).toMatchSnapshot();
+});
+
+test("DrawerContents - WhatIsThis", () => {
+  const tree = renderer
+    .create(<DrawerContents activeTab={INFO_HEADER_TABS_ENUM.WHAT_IS_THIS} />)
+    .toJSON();
   expect(tree).toMatchSnapshot();
 });
