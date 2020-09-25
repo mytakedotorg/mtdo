@@ -18,6 +18,8 @@
  * You can contact us at team@mytake.org
  */
 import React from "react";
+import GetInvolved from "./GetInvolved";
+import HowToUseThis from "./HowToUseThis";
 import { INFO_HEADER_TABS_ENUM } from "./infoHeader";
 
 interface DrawerProps {
@@ -33,10 +35,25 @@ const Drawer: React.FC<DrawerProps> = (props) => {
     : "header__overlay";
   return (
     <>
-      <div className={drawerClass}>todo</div>
+      <div className={drawerClass}>
+        <DrawerContents activeTab={props.activeTab} />
+      </div>
       <div className={overlayClass} />
     </>
   );
 };
 
+interface DrawerContentsProps {
+  activeTab: INFO_HEADER_TABS_ENUM;
+}
+const DrawerContents: React.FC<DrawerContentsProps> = (props) => {
+  switch (props.activeTab) {
+    case INFO_HEADER_TABS_ENUM.GET_INVOLVED:
+      return <GetInvolved />;
+    case INFO_HEADER_TABS_ENUM.HOW_TO_USE_THIS:
+      return <HowToUseThis />;
+    case INFO_HEADER_TABS_ENUM.WHAT_IS_THIS:
+      return <span>todo what is this</span>;
+  }
+};
 export default Drawer;
