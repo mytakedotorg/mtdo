@@ -22,7 +22,7 @@ import { isHomePage, isSearchPage, MtdoArgs } from "../../page";
 import UserNav from "../auth/UserNav";
 import SearchBar from "../SearchBar";
 import Drawer from "./Drawer";
-import { INFO_HEADER_TABS, Tab } from "./infoHeader";
+import { INFO_HEADER_TABS_ENUM, INFO_HEADER_TAB_NAMES } from "./infoHeader";
 import Tabs from "./Tabs";
 
 interface HeaderProps {
@@ -31,13 +31,15 @@ interface HeaderProps {
 
 const HeaderWithPage: React.FC<HeaderProps> = (props) => {
   const [isExpanded, setIsExpanded] = useState(false);
-  const [activeTab, setActiveTab] = useState<Tab>(INFO_HEADER_TABS[0]);
+  const [activeTab, setActiveTab] = useState<INFO_HEADER_TABS_ENUM>(
+    INFO_HEADER_TAB_NAMES[0]
+  );
 
   const onLogoClick = () => {
     setIsExpanded((prevState) => !prevState);
   };
 
-  const onTabClick = (tab: Tab) => {
+  const onTabClick = (tab: INFO_HEADER_TABS_ENUM) => {
     setActiveTab(tab);
   };
 
@@ -48,6 +50,8 @@ const HeaderWithPage: React.FC<HeaderProps> = (props) => {
   const headerClass = isSearchPage(props.args)
     ? "header header--search"
     : "header";
+
+  const showShowTabs = !isHomePage(props.args) && !isSearchPage(props.args);
   return (
     <>
       <header className={headerClass} role="banner">
@@ -57,11 +61,7 @@ const HeaderWithPage: React.FC<HeaderProps> = (props) => {
         <div className="header__top">
           <span
             className="header__logo-link"
-            onClick={
-              !isHomePage(props.args) && !isSearchPage(props.args)
-                ? onLogoClick
-                : undefined
-            }
+            onClick={showShowTabs ? onLogoClick : undefined}
           >
             <div className="header__logo-image-container">
               <img
@@ -76,9 +76,11 @@ const HeaderWithPage: React.FC<HeaderProps> = (props) => {
               <span className="header__logo--mytake">MyTake</span>
               <span className="header__logo--org">.org</span>
             </em>
-            <span className="header__moreinfo-link">More info</span>
+            {showShowTabs && (
+              <span className="header__moreinfo-link">More info</span>
+            )}
           </span>
-          {!isHomePage(props.args) && !isSearchPage(props.args) && (
+          {showShowTabs && (
             <Tabs
               activeTab={activeTab}
               className={tabsClass}

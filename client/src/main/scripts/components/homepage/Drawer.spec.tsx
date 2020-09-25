@@ -20,12 +20,11 @@
 import * as React from "react";
 import * as renderer from "react-test-renderer";
 import Drawer from "./Drawer";
+import { INFO_HEADER_TABS_ENUM } from "./infoHeader";
 
 test("Drawer - expanded", () => {
   const props = {
-    activeTab: {
-      tabTitle: "How to use this",
-    },
+    activeTab: INFO_HEADER_TABS_ENUM.HOW_TO_USE_THIS,
     isExpanded: true,
   };
   const tree = renderer.create(<Drawer {...props} />).toJSON();
@@ -34,9 +33,7 @@ test("Drawer - expanded", () => {
 
 test("Drawer - collapsed", () => {
   const props = {
-    activeTab: {
-      tabTitle: "How to use this",
-    },
+    activeTab: INFO_HEADER_TABS_ENUM.HOW_TO_USE_THIS,
     isExpanded: false,
   };
   const tree = renderer.create(<Drawer {...props} />).toJSON();

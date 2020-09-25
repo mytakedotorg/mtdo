@@ -18,10 +18,10 @@
  * You can contact us at team@mytake.org
  */
 import React from "react";
-import { Tab } from "./infoHeader";
+import { INFO_HEADER_TABS_ENUM } from "./infoHeader";
 
 interface DrawerProps {
-  activeTab: Tab;
+  activeTab: INFO_HEADER_TABS_ENUM;
   isExpanded: boolean;
 }
 const Drawer: React.FC<DrawerProps> = (props) => {
@@ -31,7 +31,12 @@ const Drawer: React.FC<DrawerProps> = (props) => {
   const overlayClass = props.isExpanded
     ? "header__overlay header__overlay--visible"
     : "header__overlay";
-  return <div className={drawerClass}>{props.activeTab.component}</div>;
+  return (
+    <>
+      <div className={drawerClass}>todo</div>
+      <div className={overlayClass} />
+    </>
+  );
 };
 
 export default Drawer;

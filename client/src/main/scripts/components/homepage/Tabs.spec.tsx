@@ -19,13 +19,12 @@
  */
 import * as React from "react";
 import * as renderer from "react-test-renderer";
+import { INFO_HEADER_TABS_ENUM } from "./infoHeader";
 import Tabs from "./Tabs";
 
 test("Tabs - expanded", () => {
   const props = {
-    activeTab: {
-      tabTitle: "How to use this",
-    },
+    activeTab: INFO_HEADER_TABS_ENUM.HOW_TO_USE_THIS,
     onTabClick: jest.fn(),
     className: "testclass",
   };

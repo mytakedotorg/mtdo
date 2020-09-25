@@ -18,29 +18,29 @@
  * You can contact us at team@mytake.org
  */
 import React from "react";
-import { INFO_HEADER_TABS, Tab } from "./infoHeader";
+import { INFO_HEADER_TABS_ENUM, INFO_HEADER_TAB_NAMES } from "./infoHeader";
 
 interface TabsProps {
-  activeTab: Tab;
-  onTabClick(tab: Tab): void;
+  activeTab: INFO_HEADER_TABS_ENUM;
+  onTabClick(tab: INFO_HEADER_TABS_ENUM): void;
   className: string;
 }
 
 const Tabs: React.FC<TabsProps> = (props) => {
   return (
     <ul className={props.className}>
-      {INFO_HEADER_TABS.map((tab) => {
+      {INFO_HEADER_TAB_NAMES.map((tab) => {
         const tabClass =
-          tab.tabTitle === props.activeTab.tabTitle
+          tab === props.activeTab
             ? "header__tab header__tab--active"
             : "header__tab";
         return (
           <li
-            key={tab.tabTitle}
+            key={tab}
             className={tabClass}
             onClick={() => props.onTabClick(tab)}
           >
-            {tab.tabTitle}
+            {tab}
           </li>
         );
       })}

@@ -21,22 +21,13 @@ import React, { useEffect, useState } from "react";
 import { VideoCut } from "../../common/social/social";
 import { socialImage } from "../../common/social/SocialImage";
 
-export interface Tab {
-  tabTitle: string;
-  component?: React.Component;
+export enum INFO_HEADER_TABS_ENUM {
+  HOW_TO_USE_THIS = "How to use this",
+  WHAT_IS_THIS = "What is this",
+  GET_INVOLVED = "Get involved",
 }
 
-export const INFO_HEADER_TABS: Tab[] = [
-  {
-    tabTitle: "How to use this",
-  },
-  {
-    tabTitle: "What is this",
-  },
-  {
-    tabTitle: "Get involved",
-  },
-];
+export const INFO_HEADER_TAB_NAMES = Object.values(INFO_HEADER_TABS_ENUM);
 
 export const SOCIAL_CLINTON: VideoCut = {
   cut: [2879, 2891.639892578125],
