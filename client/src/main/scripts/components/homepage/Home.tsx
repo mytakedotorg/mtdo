@@ -18,9 +18,9 @@
  * You can contact us at team@mytake.org
  */
 import React, { useEffect, useState } from "react";
-import { Social } from "../common/social/social";
-import { socialImage } from "../common/social/SocialImage";
-import SearchBar from "./SearchBar";
+import { Social } from "../../common/social/social";
+import { socialImage } from "../../common/social/SocialImage";
+import SearchBar from "../SearchBar";
 
 const SOCIAL_CLINTON: Social = {
   cut: [2879, 2891.639892578125],
