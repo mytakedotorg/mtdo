@@ -34,7 +34,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -42,7 +42,7 @@ import java.util.Set;
  * Loads every line in a file, and stuffs them into a set.
  * `;` lines are treated as comments, just like an ini.
  */
-class SetIni {
+public class SetIni {
 	public static Set<String> parse(File file) throws IOException {
 		return parse(file.toPath());
 	}
@@ -52,7 +52,7 @@ class SetIni {
 			throw new IllegalArgumentException("Does not exist: " + path);
 		}
 		List<String> lines = Files.readAllLines(path);
-		Set<String> result = new HashSet<>(lines.size());
+		Set<String> result = new LinkedHashSet<>(lines.size());
 		for (int i = 0; i < lines.size(); ++i) {
 			String line = lines.get(i);
 			if (line.startsWith(";")) {

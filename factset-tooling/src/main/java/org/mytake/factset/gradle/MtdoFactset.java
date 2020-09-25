@@ -29,25 +29,13 @@
 package org.mytake.factset.gradle;
 
 
-import com.diffplug.common.base.Errors;
 import com.diffplug.common.base.Unhandled;
 import com.diffplug.common.collect.Iterables;
 import com.jsoniter.spi.TypeLiteral;
-import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.SimpleFileVisitor;
-import java.nio.file.attribute.BasicFileAttributes;
-import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -92,6 +80,7 @@ public class MtdoFactset {
 				// video
 				config.include("**/*.said");
 				config.include("**/*.vtt");
+				config.include("*.ini");
 				// document
 				config.include("**/*.md");
 			});
@@ -162,6 +151,11 @@ public class MtdoFactset {
 
 		@TaskAction
 		public void performAction(InputChanges inputs) throws Exception {
+			// configure the video settings
+			VideoCfg video = new VideoCfg();
+			setup.videoCfg.execute(video);
+
+			// wipe the sausage dir on non-incremental builds
 			if (!inputs.isIncremental()) {
 				getLogger().info("Not incremental: removing prior outputs");
 				Files.walk(sausageDir.toPath())
@@ -171,8 +165,7 @@ public class MtdoFactset {
 				Files.createDirectories(sausageDir.toPath());
 			}
 
-			Map<String, String> buildJson = readBuildDotJson();
-
+			// find all changed and removed files
 			Set<String> changed = new TreeSet<>();
 			Set<String> removed = new TreeSet<>();
 			Iterable<FileChange> changes = inputs.getFileChanges(ingredients);
@@ -190,6 +183,8 @@ public class MtdoFactset {
 				}
 			}
 
+			// for every removed/changed file, delete it from sausage
+			Map<String, String> buildJson = readBuildDotJson();
 			for (String path : Iterables.concat(removed, changed)) {
 				String dest = buildJson.remove(path);
 				if (dest != null) {
@@ -200,40 +195,25 @@ public class MtdoFactset {
 				}
 			}
 
-			VideoCfg video = new VideoCfg();
-			setup.videoCfg.execute(video);
-
+			// configure the grinding logic
 			GrindLogic grind = new GrindLogic(sausageDir.getParentFile().toPath(), video, getLogger());
+			// grind each changed file
 			grind.grind(changed, buildJson);
-
-			writeBuildDotJson(buildJson);
-
-			List<FactLink> factLinks = new ArrayList<>();
-			Files.walkFileTree(sausageDir.toPath(), new SimpleFileVisitor<Path>() {
-				@Override
-				public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-					String name = file.toFile().getName();
-					if (name.equals("build.json") || name.equals("index.json")) {
-						return FileVisitResult.CONTINUE;
-					}
-					byte[] content = Files.readAllBytes(file);
-
-					FactLink link = new FactLink();
-					try (Reader reader = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(content), StandardCharsets.UTF_8))) {
-						link.fact = GitJson.parseField(reader, "fact", FT.Fact.class);
-						link.hash = GitJson.sha1base16(content);
-					} catch (NoSuchAlgorithmException e) {
-						throw Errors.asRuntime(e);
-					}
-					factLinks.add(link);
-					return FileVisitResult.CONTINUE;
-				}
-			});
-
-			Comparator<FactLink> linkComparator = Comparator.comparing(factLink -> factLink.fact.primaryDate);
-			Collections.sort(factLinks, linkComparator.thenComparing(factLink -> factLink.fact.title));
+			GitJson.write(buildJson).toPretty(new File(sausageDir, "build.json"));
+			// write out the index
+			List<FactLink> factLinks = grind.buildIndex(sausageDir.toPath());
 			GitJson.write(factLinks).toCompact(new File(sausageDir, "index.json"));
-			writeBuildDotJson(buildJson);
+			// generate any warnings
+			GrindLogic.Validator validator = grind.validator();
+			for (Map.Entry<String, String> entry : buildJson.entrySet()) {
+				for (String warning : validator.warningsFor(entry.getKey())) {
+					getLogger().warn(GrindLogic.INGREDIENTS + "/" + entry.getKey() + ".json: " + warning);
+				}
+			}
+			String allFound = validator.allFound();
+			if (!allFound.isEmpty()) {
+				getLogger().warn(allFound);
+			}
 		}
 
 		private Map<String, String> readBuildDotJson() throws IOException {
@@ -246,10 +226,6 @@ public class MtdoFactset {
 		}
 
 		private static TypeLiteral<Map<String, String>> MAP_STRING = new TypeLiteral<Map<String, String>>() {};
-
-		private void writeBuildDotJson(Map<String, String> map) throws IOException {
-			GitJson.write(map).toPretty(new File(sausageDir, "build.json"));
-		}
 	}
 
 	private static String withoutExtension(String path) {

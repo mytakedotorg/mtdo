@@ -29,7 +29,10 @@
 package org.mytake.factset.gradle;
 
 
+import com.diffplug.common.base.Errors;
+import com.diffplug.common.base.StringPrinter;
 import com.diffplug.common.base.Throwing;
+import com.diffplug.common.collect.Sets;
 import com.diffplug.spotless.Formatter;
 import com.diffplug.spotless.FormatterStep;
 import com.diffplug.spotless.LineEnding;
@@ -38,26 +41,36 @@ import compat.java2ts.VideoFactContentJava;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.FileVisitResult;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.SimpleFileVisitor;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java2ts.FT;
+import java2ts.FT.FactLink;
 import org.gradle.api.GradleException;
 import org.mytake.factset.GitJson;
 import org.mytake.factset.JsonMisc;
 import org.mytake.factset.gradle.MtdoFactset.VideoCfg;
 import org.mytake.factset.legacy.FactWriter;
 import org.mytake.factset.video.SaidTranscript;
+import org.mytake.factset.video.SetIni;
 import org.mytake.factset.video.TranscriptMatch;
 import org.mytake.factset.video.VideoFormat;
 import org.mytake.factset.video.VttTranscript;
 import org.slf4j.Logger;
 
-class GrindLogic {
+public class GrindLogic {
 	static final String INGREDIENTS = "ingredients";
 	static final String SAUSAGE = "sausage";
 
@@ -65,13 +78,13 @@ class GrindLogic {
 	VideoCfg video;
 	Logger logger;
 
-	GrindLogic(Path rootDir, VideoCfg video, Logger logger) {
+	public GrindLogic(Path rootDir, VideoCfg video, Logger logger) {
 		this.rootDir = rootDir;
 		this.video = video;
 		this.logger = logger;
 	}
 
-	void grind(Collection<String> changed, Map<String, String> buildJson) throws IOException {
+	public void grind(Collection<String> changed, Map<String, String> buildJson) throws IOException {
 		try (Formatter formatter = formatterVideoJson(video)) {
 			for (String path : changed) {
 				File jsonFile = ingredient(path, ".json");
@@ -108,6 +121,76 @@ class GrindLogic {
 				GitJson.write(content).toCompact(rootDir.resolve(SAUSAGE + "/" + titleSlug + ".json").toFile());
 			}
 		}
+	}
+
+	public Validator validator() throws IOException {
+		return new Validator();
+	}
+
+	public class Validator {
+		final Set<String> roles, people;
+		final Set<String> foundRoles = new HashSet<>();
+		final Set<String> foundPeople = new HashSet<>();
+
+		Validator() throws IOException {
+			roles = SetIni.parse(ingredient("all_roles", ".ini"));
+			people = SetIni.parse(ingredient("all_people", ".ini"));
+		}
+
+		public List<String> warningsFor(String path) throws IOException {
+			List<String> warnings = new ArrayList<>();
+			FT.VideoFactMeta meta = JsonMisc.fromJson(ingredient(path, ".json"), FT.VideoFactMeta.class);
+			for (FT.Speaker speaker : meta.speakers) {
+				foundRoles.add(speaker.role);
+				foundPeople.add(speaker.fullName);
+				if (!roles.contains(speaker.role)) {
+					warnings.add("No such role '" + speaker.role + "' for '" + speaker.fullName + "' in all_roles.ini");
+				}
+				if (!people.contains(speaker.fullName)) {
+					warnings.add("No such person '" + speaker.fullName + "' in all_people.ini");
+				}
+			}
+			return warnings;
+		}
+
+		/** Returns an empty string if all_people.ini and all_roles.ini were complete, or something else if they weren't. */
+		public String allFound() {
+			return StringPrinter.buildString(printer -> {
+				for (String unusedRole : Sets.difference(roles, foundRoles)) {
+					printer.println(INGREDIENTS + "/all_roles.ini: unused role '" + unusedRole + "'");
+				}
+				for (String unusedPerson : Sets.difference(people, foundPeople)) {
+					printer.println(INGREDIENTS + "/all_people.ini: unused person '" + unusedPerson + "'");
+				}
+			});
+		}
+	}
+
+	public List<FactLink> buildIndex(Path sausageDir) throws IOException {
+		List<FactLink> factLinks = new ArrayList<>();
+		Files.walkFileTree(sausageDir, new SimpleFileVisitor<Path>() {
+			@Override
+			public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+				String name = file.toFile().getName();
+				if (name.equals("build.json") || name.equals("index.json")) {
+					return FileVisitResult.CONTINUE;
+				}
+				byte[] content = Files.readAllBytes(file);
+
+				FactLink link = new FactLink();
+				try (GitJson.FieldParser parser = GitJson.parse(content)) {
+					link.fact = parser.field("fact", FT.Fact.class);
+					link.hash = GitJson.sha1base16(content);
+				} catch (NoSuchAlgorithmException e) {
+					throw Errors.asRuntime(e);
+				}
+				factLinks.add(link);
+				return FileVisitResult.CONTINUE;
+			}
+		});
+		Comparator<FactLink> linkComparator = Comparator.comparing(factLink -> factLink.fact.primaryDate);
+		Collections.sort(factLinks, linkComparator.thenComparing(factLink -> factLink.fact.title));
+		return factLinks;
 	}
 
 	private File ingredient(String path, String ext) {

@@ -36,8 +36,12 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonReader;
+import com.jsoniter.spi.TypeLiteral;
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.Reader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -224,13 +228,38 @@ public class GitJson {
 		return new Writer(obj);
 	}
 
-	public static <T> T parseField(Reader reader, String field, Class<T> clazz) throws IOException {
+	public static class FieldParser implements AutoCloseable {
+		private final JsonReader jsonReader;
+
+		public FieldParser(JsonReader jsonReader) {
+			this.jsonReader = jsonReader;
+		}
+
+		public <T> T field(String field, Class<T> clazz) throws IOException {
+			while (!jsonReader.nextName().equals(field)) {
+				jsonReader.skipValue();
+			}
+			return GSON.fromJson(jsonReader, clazz);
+		}
+
+		public <T> T field(String field, TypeLiteral<T> clazz) throws IOException {
+			while (!jsonReader.nextName().equals(field)) {
+				jsonReader.skipValue();
+			}
+			return GSON.fromJson(jsonReader, clazz.getType());
+		}
+
+		@Override
+		public void close() throws IOException {
+			jsonReader.close();
+		}
+	}
+
+	public static FieldParser parse(byte[] content) throws IOException {
+		Reader reader = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(content), StandardCharsets.UTF_8));
 		JsonReader jsonReader = GSON.newJsonReader(reader);
 		jsonReader.beginObject();
-		while (!jsonReader.nextName().equals(field)) {
-			jsonReader.skipValue();
-		}
-		return GSON.fromJson(jsonReader, clazz);
+		return new FieldParser(jsonReader);
 	}
 
 	public static String sha1base16(byte[] content) throws NoSuchAlgorithmException {
