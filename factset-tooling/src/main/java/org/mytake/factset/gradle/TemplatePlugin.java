@@ -107,6 +107,8 @@ class TemplatePlugin {
 
 	static TemplatePlugin forFactset() {
 		TemplatePlugin template = new TemplatePlugin();
+		template.mustContain(".gitignore",
+				".gradle/");
 		template.mustContain(".gitattributes",
 				"* text eol=lf",
 				"*.jar binary");
