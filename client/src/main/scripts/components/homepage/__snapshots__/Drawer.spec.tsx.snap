@@ -3,14 +3,19 @@
 exports[`Drawer - collapsed 1`] = `
 Array [
   <div
-    className="header__drawer"
+    className="drawer"
   >
-    <DrawerContents
-      activeTab="How to use this"
-    />
+    <div
+      className="drawer__contents"
+    >
+      <DrawerContents
+        activeTab="How to use this"
+      />
+    </div>
   </div>,
   <div
-    className="header__overlay"
+    className="drawer__overlay"
+    onClick={[MockFunction]}
   />,
 ]
 `;
@@ -18,14 +23,19 @@ Array [
 exports[`Drawer - expanded 1`] = `
 Array [
   <div
-    className="header__drawer header__drawer--visible"
+    className="drawer drawer--visible"
   >
-    <DrawerContents
-      activeTab="How to use this"
-    />
+    <div
+      className="drawer__contents"
+    >
+      <DrawerContents
+        activeTab="How to use this"
+      />
+    </div>
   </div>,
   <div
-    className="header__overlay header__overlay--visible"
+    className="drawer__overlay drawer__overlay--visible"
+    onClick={[MockFunction]}
   />,
 ]
 `;
