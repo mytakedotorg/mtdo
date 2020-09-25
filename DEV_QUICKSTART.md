@@ -77,6 +77,10 @@ If you want to help, [these](https://github.com/mytakedotorg/mtdo/projects/3) ar
 
 Start Docker!
 
+> 'docker-compose kill' returned exit code 255
+
+The Docker daemon probably isn't running. Start docker!
+
 > No container found for postgres_1
 
 ```
