@@ -3,6 +3,7 @@ apply plugin: 'java'
 String VER_LUCENE = '8.6.2'
 dependencies {
 	implementation project(':client-interface')
+	implementation project(':factset-tooling')
 	implementation 'com.diffplug.durian:durian-core:1.2.0'
 	implementation 'com.diffplug.durian:durian-collect:1.2.0'
 	implementation 'com.diffplug.durian:durian-io:1.2.0'
@@ -22,4 +23,15 @@ spotless {
 		eclipse().configFile(rootProject.file('gradle/spotless.eclipseformat.xml'))
 		removeUnusedImports()
 	}
+}
+
+tasks.register('generateFoundation', JavaExec) {
+	description = 'Generates the foundation'
+	classpath = sourceSets.main.runtimeClasspath
+	main = 'org.mytake.lucene.legacyfoundationgen.Index'
+
+	dependsOn(tasks.classes)
+	inputs.dir('../presidential-debates').withPathSensitivity(PathSensitivity.NAME_ONLY)
+	outputs.dir('../foundation/src/main/resources')
+	outputs.cacheIf { true }
 }

@@ -58,6 +58,14 @@ public class GitJson {
 	public static final char COMMENT_OPEN = COMMENT_OPEN_STR.charAt(0);
 	public static final char COMMENT_CLOSE = '⌋';
 
+	/** Slugifies the given string. */
+	public static String slugify(String input) {
+		return input.toLowerCase(Locale.ROOT)
+				.replace(' ', '-') // replace spaces with hyphens
+				.replaceAll("[-]+", "-") // replace multiple hypens with a single hyphen
+				.replaceAll("[^\\w-]+", ""); // replace non-alphanumerics and non-hyphens
+	}
+
 	/**
 	 * Minified json is guaranteed to have no newlines, just a long single-line string.
 	 * This makes it terrible to git diff with a standard line-based differ.

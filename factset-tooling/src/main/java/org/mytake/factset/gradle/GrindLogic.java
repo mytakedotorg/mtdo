@@ -62,7 +62,6 @@ import org.gradle.api.GradleException;
 import org.mytake.factset.GitJson;
 import org.mytake.factset.JsonMisc;
 import org.mytake.factset.gradle.MtdoFactset.VideoCfg;
-import org.mytake.factset.legacy.FactWriter;
 import org.mytake.factset.video.SaidTranscript;
 import org.mytake.factset.video.SetIni;
 import org.mytake.factset.video.TranscriptMatch;
@@ -101,7 +100,7 @@ public class GrindLogic {
 				}
 				// determine output file, and put it into 'build.json'
 				FT.VideoFactMeta json = JsonMisc.fromJson(jsonFile, FT.VideoFactMeta.class);
-				String titleSlug = FactWriter.slugify(json.fact.title);
+				String titleSlug = GitJson.slugify(json.fact.title);
 				buildJson.put(path, titleSlug);
 				logger.info("  into " + titleSlug + ".json");
 
