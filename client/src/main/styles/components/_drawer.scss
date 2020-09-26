@@ -9,6 +9,7 @@
   transition: max-height 0.1s linear;
   z-index: 2;
   background-color: white;
+  border-bottom: 1px solid black;
 }
 .drawer--visible {
   max-height: 400px;
@@ -27,11 +28,13 @@
 .drawer__overlay--visible {
   opacity: 0.5;
 }
+.drawer__scroller {
+  max-height: 100%;
+  overflow-y: scroll;
+}
 .drawer__contents {
   width: 768px;
   max-width: 100%;
-  max-height: 100%;
-  overflow-y: scroll;
   margin-left: auto;
   margin-right: auto;
 }

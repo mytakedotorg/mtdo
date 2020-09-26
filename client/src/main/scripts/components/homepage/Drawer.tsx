@@ -34,8 +34,10 @@ const Drawer: React.FC<DrawerProps> = (props) => {
   return (
     <>
       <div className={drawerClass}>
-        <div className="drawer__contents">
-          <DrawerContents activeTab={props.activeTab} />
+        <div className="drawer__scroller">
+          <div className="drawer__contents">
+            <DrawerContents activeTab={props.activeTab} />
+          </div>
         </div>
       </div>
       <div className={overlayClass} onClick={props.onClose} />

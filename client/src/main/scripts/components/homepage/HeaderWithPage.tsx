@@ -43,6 +43,7 @@ const HeaderWithPage: React.FC<HeaderProps> = (props) => {
     event: React.MouseEvent<HTMLLIElement, MouseEvent>,
     tab: INFO_HEADER_TABS_ENUM
   ) => {
+    console.log("tab clicked");
     // prevent bubbling up to our other event handler
     event.stopPropagation();
     setActiveTab(tab);
@@ -51,9 +52,6 @@ const HeaderWithPage: React.FC<HeaderProps> = (props) => {
   const handleDrawerClose = () => {
     setIsExpanded(false);
   };
-  const tabsClass = isExpanded
-    ? "header__tabs header__tabs--visible"
-    : "header__tabs";
 
   const headerClass = isSearchPage(props.args)
     ? "header header--search"
@@ -85,16 +83,16 @@ const HeaderWithPage: React.FC<HeaderProps> = (props) => {
               <span className="header__logo--org">.org</span>
             </em>
             {shouldShowTabs && (
-              <>
-                <span className="header__moreinfo-link">More info</span>
-                <Tabs
-                  activeTab={activeTab}
-                  className={tabsClass}
-                  onTabClick={handleTabClick}
-                />
-              </>
+              <span className="header__moreinfo-link">More info</span>
             )}
           </span>
+          {shouldShowTabs && (
+            <Tabs
+              activeTab={activeTab}
+              isVisible={isExpanded}
+              onTabClick={handleTabClick}
+            />
+          )}
           {isSearchPage(props.args) && (
             <div className="header__searchbar">
               <SearchBar

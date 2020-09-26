@@ -1,0 +1,28 @@
+.tabs {
+  // position: relative;
+  // transform: translateX(-150px);
+  &.tabs--visible {
+    // display: flex;
+  }
+}
+.tab__ul {
+  display: flex;
+  list-style-type: none;
+  font-size: 0;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0;
+  width: 768px;
+  max-width: 100%;
+}
+.tab {
+  @include typography($sans, 400, 13px, 40px);
+  margin-right: 2px;
+  border: 1px solid black;
+  border-radius: 2px;
+  padding: 0 4px;
+  cursor: pointer;
+}
+.tab--active {
+  border-bottom-width: 0;
+}

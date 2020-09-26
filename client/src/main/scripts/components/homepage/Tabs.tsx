@@ -22,32 +22,32 @@ import { INFO_HEADER_TABS_ENUM, INFO_HEADER_TAB_NAMES } from "./infoHeader";
 
 interface TabsProps {
   activeTab: INFO_HEADER_TABS_ENUM;
+  isVisible: boolean;
   onTabClick(
     event: React.MouseEvent<HTMLLIElement, MouseEvent>,
     tab: INFO_HEADER_TABS_ENUM
   ): void;
-  className: string;
 }
 
 const Tabs: React.FC<TabsProps> = (props) => {
+  const className = props.isVisible ? "tabs tabs--visible" : "tabs";
   return (
-    <ul className={props.className}>
-      {INFO_HEADER_TAB_NAMES.map((tab) => {
-        const tabClass =
-          tab === props.activeTab
-            ? "header__tab header__tab--active"
-            : "header__tab";
-        return (
-          <li
-            key={tab}
-            className={tabClass}
-            onClick={(e) => props.onTabClick(e, tab)}
-          >
-            {tab}
-          </li>
-        );
-      })}
-    </ul>
+    <div className={className}>
+      <ul className="tab__ul">
+        {INFO_HEADER_TAB_NAMES.map((tab) => {
+          const tabClass = tab === props.activeTab ? "tab tab--active" : "tab";
+          return (
+            <li
+              key={tab}
+              className={tabClass}
+              onClick={(e) => props.onTabClick(e, tab)}
+            >
+              {tab}
+            </li>
+          );
+        })}
+      </ul>
+    </div>
   );
 };
 

@@ -22,11 +22,21 @@ import * as renderer from "react-test-renderer";
 import { INFO_HEADER_TABS_ENUM } from "./infoHeader";
 import Tabs from "./Tabs";
 
-test("Tabs - expanded", () => {
+test("Tabs - visible", () => {
   const props = {
     activeTab: INFO_HEADER_TABS_ENUM.HOW_TO_USE_THIS,
     onTabClick: jest.fn(),
-    className: "testclass",
+    isVisible: true,
+  };
+  const tree = renderer.create(<Tabs {...props} />).toJSON();
+  expect(tree).toMatchSnapshot();
+});
+
+test("Tabs - hidden", () => {
+  const props = {
+    activeTab: INFO_HEADER_TABS_ENUM.HOW_TO_USE_THIS,
+    onTabClick: jest.fn(),
+    isVisible: false,
   };
   const tree = renderer.create(<Tabs {...props} />).toJSON();
   expect(tree).toMatchSnapshot();
