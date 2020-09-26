@@ -6,11 +6,15 @@ Array [
     className="drawer"
   >
     <div
-      className="drawer__contents"
+      className="drawer__scroller"
     >
-      <DrawerContents
-        activeTab="How to use this"
-      />
+      <div
+        className="drawer__contents"
+      >
+        <DrawerContents
+          activeTab="How to use this"
+        />
+      </div>
     </div>
   </div>,
   <div
@@ -26,11 +30,15 @@ Array [
     className="drawer drawer--visible"
   >
     <div
-      className="drawer__contents"
+      className="drawer__scroller"
     >
-      <DrawerContents
-        activeTab="How to use this"
-      />
+      <div
+        className="drawer__contents"
+      >
+        <DrawerContents
+          activeTab="How to use this"
+        />
+      </div>
     </div>
   </div>,
   <div

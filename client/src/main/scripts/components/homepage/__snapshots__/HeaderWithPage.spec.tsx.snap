@@ -106,12 +106,12 @@ Array [
         >
           More info
         </span>
-        <Tabs
-          activeTab="How to use this"
-          className="header__tabs"
-          onTabClick={[Function]}
-        />
       </span>
+      <Tabs
+        activeTab="How to use this"
+        isVisible={false}
+        onTabClick={[Function]}
+      />
       <UserNav />
     </div>
   </header>,
