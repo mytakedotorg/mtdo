@@ -5,6 +5,7 @@
   &.tabs--visible {
     transform: translateX(0);
   }
+  z-index: 1;
 }
 .tab__ul {
   display: flex;

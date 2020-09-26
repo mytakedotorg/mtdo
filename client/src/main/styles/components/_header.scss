@@ -39,6 +39,8 @@ $nav-height: 35px;
   justify-content: flex-start;
   cursor: pointer;
   margin-right: 8px;
+  position: relative;
+  z-index: 2;
 }
 .header__logo-image-container {
   height: 32px;
