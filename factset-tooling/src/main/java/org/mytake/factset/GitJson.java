@@ -73,6 +73,7 @@ public class GitJson {
 	 * - add ⌊⌋ pairs (mathematic floor) anywhere, they are treated as a comment and removed
 	 */
 	public static String recondense(String in, StringBuilder buffer) {
+		// if you change this, make sure to update FactApi.recondense in server!
 		Preconditions.checkArgument(!in.isEmpty());
 		Preconditions.checkArgument(in.charAt(0) != '\n');
 		Preconditions.checkArgument(in.charAt(0) != COMMENT_OPEN);
