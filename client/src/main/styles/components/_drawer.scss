@@ -9,10 +9,10 @@
   transition: max-height 0.1s linear;
   z-index: 2;
   background-color: white;
-  border-bottom: 1px solid black;
 }
 .drawer--visible {
   max-height: 400px;
+  border-bottom: 1px solid black;
 }
 .drawer__overlay {
   position: fixed;

@@ -1,8 +1,9 @@
 .tabs {
-  // position: relative;
-  // transform: translateX(-150px);
+  position: relative;
+  transform: translateX(-600px);
+  transition: transform 0.1s linear;
   &.tabs--visible {
-    // display: flex;
+    transform: translateX(0);
   }
 }
 .tab__ul {
@@ -16,10 +17,12 @@
   max-width: 100%;
 }
 .tab {
+  box-sizing: border-box;
+  height: 40px;
   @include typography($sans, 400, 13px, 40px);
   margin-right: 2px;
   border: 1px solid black;
-  border-radius: 2px;
+  border-radius: 2px 2px 0 0;
   padding: 0 4px;
   cursor: pointer;
 }
