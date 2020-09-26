@@ -33,6 +33,11 @@ public class FactApiTest {
 		testFactModule(new FactApi());
 	}
 
+	@Test
+	public void dev() throws Exception {
+		testFactModule(new FactApiDev());
+	}
+
 	private void testFactModule(Jooby.Module factApiModule) throws Exception {
 		try (AutoCloseable server = startServer(factApiModule)) {
 			byte[] actualBytes = RestAssured.given().get("/api/fact/1/c2a9d475e448866c48a1f7c0d5f98c6fc2bfe6a3").then()
