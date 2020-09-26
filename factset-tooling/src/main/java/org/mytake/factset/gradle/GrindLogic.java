@@ -179,7 +179,7 @@ public class GrindLogic {
 				FactLink link = new FactLink();
 				try (GitJson.FieldParser parser = GitJson.parse(content)) {
 					link.fact = parser.field("fact", FT.Fact.class);
-					link.hash = GitJson.sha1base16(content);
+					link.hash = GitJson.blobSha(content);
 				} catch (NoSuchAlgorithmException e) {
 					throw Errors.asRuntime(e);
 				}
