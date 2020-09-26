@@ -34,7 +34,7 @@ dependencies {
 	// https://jdbc.postgresql.org/documentation/changelog.html
 	implementation "org.postgresql:postgresql:${props.VER_POSTGRESQL_DRIVER}"
 	// jooq codegen
-	api 'org.jooq:jooq-codegen:3.13.1'
+	api 'org.jooq:jooq-codegen:3.13.4'
 	// db migration
 	api "org.flywaydb:flyway-core:${props.VER_FLYWAY}"
 	// jsweet ts2java
