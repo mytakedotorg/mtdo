@@ -87,7 +87,7 @@ dependencies {
 	implementation "com.jsoniter:jsoniter:$VER_JSONITER"
 	implementation 'com.google.code.gson:gson:2.8.6'
 	implementation 'org.jsoup:jsoup:1.13.1'
-	implementation 'org.eclipse.jgit:org.eclipse.jgit:5.9.0.202009080501-r'
+	implementation "org.eclipse.jgit:org.eclipse.jgit:${VER_JGIT}"
 	implementation 'com.diffplug.durian:durian-core:1.2.0'
 	implementation 'com.diffplug.durian:durian-collect:1.2.0'
 	implementation 'com.diffplug.durian:durian-io:1.2.0'

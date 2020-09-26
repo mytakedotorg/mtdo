@@ -39,23 +39,24 @@ public class CodegenConfig implements StaticCodegenConfig {
 	public TypeLiteral[] whatToCodegen() {
 		return new TypeLiteral[]{
 				TypeLiteral.create(Bookmark.class), Bookmark.LIST,
-				TypeLiteral.create(DraftRev.class),
 				TypeLiteral.create(DraftPost.class),
-				TypeLiteral.create(PublishResult.class),
+				TypeLiteral.create(DraftRev.class),
+				TypeLiteral.create(FollowJson.FollowAskReq.class),
+				TypeLiteral.create(FollowJson.FollowRes.class),
+				TypeLiteral.create(FollowJson.FollowTellReq.class),
+				TypeLiteral.create(GhBlob.class),
 				TypeLiteral.create(LoginApi.Req.class),
 				TypeLiteral.create(LoginApi.Res.class),
 				TypeLiteral.create(LoginCookie.class),
-				TypeLiteral.create(TakeReactionJson.UserState.class),
-				TypeLiteral.create(TakeReactionJson.TakeState.class),
+				TypeLiteral.create(PublishResult.class),
+				TypeLiteral.create(Search.FactResultList.class),
+				TypeLiteral.create(Search.VideoResult.class),
 				TypeLiteral.create(TakeReactionJson.ReactReq.class),
 				TypeLiteral.create(TakeReactionJson.ReactRes.class),
+				TypeLiteral.create(TakeReactionJson.TakeState.class),
+				TypeLiteral.create(TakeReactionJson.UserState.class),
 				TypeLiteral.create(TakeReactionJson.ViewReq.class),
-				TypeLiteral.create(TakeReactionJson.ViewRes.class),
-				TypeLiteral.create(FollowJson.FollowAskReq.class),
-				TypeLiteral.create(FollowJson.FollowTellReq.class),
-				TypeLiteral.create(FollowJson.FollowRes.class),
-				TypeLiteral.create(Search.VideoResult.class),
-				TypeLiteral.create(Search.FactResultList.class)
+				TypeLiteral.create(TakeReactionJson.ViewRes.class)
 		};
 	}
 

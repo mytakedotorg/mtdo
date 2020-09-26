@@ -112,6 +112,8 @@ mtdoFactSet {
 # Changelog
 
 ## [Unreleased]
+### Fixed
+* `index.json` now has correct blob sha1 (was missing blob header).
 
 ## [0.2.4] - 2020-09-25
 ### Fixed

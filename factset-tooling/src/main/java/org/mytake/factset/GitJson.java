@@ -30,7 +30,6 @@ package org.mytake.factset;
 
 
 import com.diffplug.common.base.Preconditions;
-import com.diffplug.common.io.BaseEncoding;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
@@ -45,13 +44,13 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Locale;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java2ts.FT;
+import org.eclipse.jgit.util.sha1.SHA1;
 
 public class GitJson {
 	public static final String COMMENT_OPEN_STR = "⌊";
@@ -74,6 +73,7 @@ public class GitJson {
 	 * - add ⌊⌋ pairs (mathematic floor) anywhere, they are treated as a comment and removed
 	 */
 	public static String recondense(String in, StringBuilder buffer) {
+		// if you change this, make sure to update FactApi.recondense in server!
 		Preconditions.checkArgument(!in.isEmpty());
 		Preconditions.checkArgument(in.charAt(0) != '\n');
 		Preconditions.checkArgument(in.charAt(0) != COMMENT_OPEN);
@@ -270,9 +270,14 @@ public class GitJson {
 		return new FieldParser(jsonReader);
 	}
 
-	public static String sha1base16(byte[] content) throws NoSuchAlgorithmException {
-		MessageDigest digest = MessageDigest.getInstance("SHA-1");
-		byte[] hash = digest.digest(content);
-		return BaseEncoding.base16().encode(hash).toLowerCase(Locale.ROOT);
+	public static String blobSha(byte[] content) throws NoSuchAlgorithmException {
+		SHA1 sha = SHA1.newInstance();
+		// git blob header
+		sha.update("blob ".getBytes(StandardCharsets.UTF_8));
+		sha.update(Integer.toString(content.length).getBytes(StandardCharsets.UTF_8));
+		sha.update((byte) 0);
+		// then the content
+		sha.update(content);
+		return sha.toObjectId().getName();
 	}
 }
