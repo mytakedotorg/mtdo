@@ -63,9 +63,11 @@ const HeaderWithPage: React.FC<HeaderProps> = (props) => {
           Skip to main content
         </a>
         <div className="header__top">
-          <span
+          <LinkOrSpan
             className="header__logo-link"
             onClick={shouldShowTabs ? handleLogoClick : undefined}
+            isLink={!shouldShowTabs}
+            href={!shouldShowTabs ? "/" : undefined}
           >
             <div className="header__logo-image-container">
               <img
@@ -83,7 +85,7 @@ const HeaderWithPage: React.FC<HeaderProps> = (props) => {
             {shouldShowTabs && (
               <span className="header__moreinfo-link">More info</span>
             )}
-          </span>
+          </LinkOrSpan>
           {isSearchPage(props.args) && (
             <div className="header__searchbar">
               <SearchBar
@@ -125,4 +127,21 @@ const getHeaderClass = (isSearchPage: boolean, isExpanded: boolean): string => {
     return "header header--expanded";
   }
   return "header";
+};
+
+interface LinkOrSpanProps<T>
+  extends React.DetailedHTMLProps<React.AnchorHTMLAttributes<T>, T> {
+  isLink: boolean;
+}
+
+const LinkOrSpan: React.FC<LinkOrSpanProps<
+  HTMLAnchorElement | HTMLSpanElement
+>> = (props) => {
+  return props.isLink ? (
+    <a {...(props as LinkOrSpanProps<HTMLAnchorElement>)}>{props.children}</a>
+  ) : (
+    <span {...(props as LinkOrSpanProps<HTMLSpanElement>)}>
+      {props.children}
+    </span>
+  );
 };
