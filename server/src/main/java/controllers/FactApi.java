@@ -60,12 +60,13 @@ public class FactApi implements Jooby.Module {
 	protected byte[] repoSha(String repo, String sha) throws IOException {
 		// ask github
 		OkHttpClient client = new OkHttpClient();
-		okhttp3.Response res = client.newCall(new okhttp3.Request.Builder()
+		try (okhttp3.Response res = client.newCall(new okhttp3.Request.Builder()
 				.url("https://api.github.com/repos/mytakedotorg/" + repo + "/git/blobs/" + sha)
-				.build()).execute();
-		// unpack github's wrapper
-		GhBlob blob = JsonIterator.deserialize(res.body().bytes(), GhBlob.class);
-		return Base64.getMimeDecoder().decode(blob.content);
+				.build()).execute()) {
+			// unpack github's wrapper
+			GhBlob blob = JsonIterator.deserialize(res.body().bytes(), GhBlob.class);
+			return Base64.getMimeDecoder().decode(blob.content);
+		}
 	}
 
 	// From GitJson.recondense
