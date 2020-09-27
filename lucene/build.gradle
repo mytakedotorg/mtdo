@@ -11,6 +11,7 @@ dependencies {
 	implementation "org.apache.lucene:lucene-analyzers-common:${VER_LUCENE}"
 	testImplementation project(':factset-tooling')
 	testImplementation "com.squareup.okhttp3:okhttp:${VER_OKHTTP}"
+	testImplementation "com.google.code.gson:gson:${VER_GSON}"
 	testImplementation "junit:junit:${VER_JUNIT}"
 	testImplementation "org.assertj:assertj-core:${VER_ASSERTJ}"
 }
@@ -26,7 +27,7 @@ spotless {
 	}
 }
 
-String debatesShaOrTag = 'c8833250cf42ad80565a923e0074b3c8597f915c'
+String debatesShaOrTag = 'a68e1678482f113854dd0f7f82ef50ff142bc04b'
 tasks.register('generateIndex', JavaExec) {
 	description = 'Generates the foundation'
 	classpath = sourceSets.test.runtimeClasspath

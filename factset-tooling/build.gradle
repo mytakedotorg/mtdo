@@ -85,7 +85,7 @@ dependencies {
 	compileOnly "com.google.code.findbugs:jsr305:$VER_JSR_305"
 	implementation "org.jsweet:jsweet-core:$VER_JSWEET_CORE"
 	implementation "com.jsoniter:jsoniter:$VER_JSONITER"
-	implementation 'com.google.code.gson:gson:2.8.6'
+	implementation "com.google.code.gson:gson:${VER_GSON}"
 	implementation 'org.jsoup:jsoup:1.13.1'
 	implementation "org.eclipse.jgit:org.eclipse.jgit:${VER_JGIT}"
 	implementation "com.squareup.okhttp3:okhttp:${VER_OKHTTP}"

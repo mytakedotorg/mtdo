@@ -29,7 +29,6 @@
 package org.mytake.factset.gradle;
 
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -37,7 +36,7 @@ import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-
+import java2ts.FT;
 import org.assertj.core.api.Assertions;
 import org.gradle.internal.impldep.com.google.common.collect.Maps;
 import org.junit.Assert;
@@ -49,8 +48,6 @@ import org.mytake.factset.video.SaidTranscript;
 import org.mytake.factset.video.TranscriptMatch;
 import org.mytake.factset.video.VttTranscript;
 import org.slf4j.Logger;
-
-import java2ts.FT;
 
 public class GrindLogicTest extends ResourceHarness {
 	@Test

@@ -29,35 +29,19 @@
 package org.mytake.factset;
 
 
-import com.jsoniter.JsonIterator;
-import com.jsoniter.output.EncodingMode;
-import com.jsoniter.spi.Config;
-import com.jsoniter.spi.DecodingMode;
-import com.jsoniter.spi.JsoniterSpi;
-import com.jsoniter.spi.TypeLiteral;
+import com.google.gson.reflect.TypeToken;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 
 public class JsonMisc {
-	static {
-		JsoniterSpi.registerTypeDecoder(Number.class, iter -> iter.readInt());
-		CONFIG = new Config.Builder()
-				.escapeUnicode(false)
-				.decodingMode(DecodingMode.REFLECTION_MODE)
-				.encodingMode(EncodingMode.REFLECTION_MODE)
-				.build();
-	}
-
-	private static final Config CONFIG;
-
-	public static <T> T fromJson(File file, TypeLiteral<T> type) throws IOException {
+	public static <T> T fromJson(File file, TypeToken<T> type) throws IOException {
 		return fromJson(Files.readAllBytes(file.toPath()), type);
 	}
 
-	public static <T> T fromJson(byte[] content, TypeLiteral<T> type) {
-		return JsonIterator.deserialize(CONFIG, content, type);
+	public static <T> T fromJson(byte[] content, TypeToken<T> type) {
+		return GitJson.GSON.fromJson(new String(content, StandardCharsets.UTF_8), type.getType());
 	}
 
 	public static <T> T fromJson(File file, Class<T> clazz) throws IOException {
@@ -65,10 +49,10 @@ public class JsonMisc {
 	}
 
 	public static <T> T fromJson(String content, Class<T> clazz) throws IOException {
-		return fromJson(content.getBytes(StandardCharsets.UTF_8), clazz);
+		return GitJson.GSON.fromJson(content, clazz);
 	}
 
 	public static <T> T fromJson(byte[] content, Class<T> clazz) throws IOException {
-		return JsonIterator.deserialize(CONFIG, content, clazz);
+		return fromJson(new String(content, StandardCharsets.UTF_8), clazz);
 	}
 }

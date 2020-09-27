@@ -34,8 +34,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
-import com.jsoniter.spi.TypeLiteral;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -231,7 +231,7 @@ public class GitJson {
 	}
 
 	private static final Gson GSON_PRETTY = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().create();
-	private static final Gson GSON = new GsonBuilder().disableHtmlEscaping().create();
+	static final Gson GSON = new GsonBuilder().disableHtmlEscaping().create();
 	/** https://stackoverflow.com/a/24209736/1153071 */
 	private static final Pattern UNESCAPED_QUOTE = Pattern.compile("(?<!\\\\)(?:\\\\{2})*\"");
 
@@ -253,7 +253,7 @@ public class GitJson {
 			return GSON.fromJson(jsonReader, clazz);
 		}
 
-		public <T> T field(String field, TypeLiteral<T> clazz) throws IOException {
+		public <T> T field(String field, TypeToken<T> clazz) throws IOException {
 			while (!jsonReader.nextName().equals(field)) {
 				jsonReader.skipValue();
 			}
