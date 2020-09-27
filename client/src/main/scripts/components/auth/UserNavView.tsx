@@ -41,33 +41,35 @@ const UserNavView: React.FC<UserNavViewProps> = ({ cookie }) => {
   }
 
   return (
-    <DropDown
-      classModifier="usernav"
-      disabled={!cookie}
-      dropdownPosition="BL"
-      toggleText={
-        cookie ? (
-          <>
-            <ChevronDown />
-            {cookie.username ? cookie.username : cookie.email}
-          </>
-        ) : (
-          <a href={Routes.LOGIN}>Login</a>
-        )
-      }
-    >
-      <ul className="usernav__list">
-        {navLinks.map(({ name, href }) => {
-          return (
-            <li className="usernav__list-item" key={name}>
-              <a className="usernav__link" href={href}>
-                {name}
-              </a>
-            </li>
-          );
-        })}
-      </ul>
-    </DropDown>
+    <div className="header__usernav">
+      <DropDown
+        classModifier="usernav"
+        disabled={!cookie}
+        dropdownPosition="BL"
+        toggleText={
+          cookie ? (
+            <>
+              <ChevronDown />
+              {cookie.username ? cookie.username : cookie.email}
+            </>
+          ) : (
+            <a href={Routes.LOGIN}>Login</a>
+          )
+        }
+      >
+        <ul className="usernav__list">
+          {navLinks.map(({ name, href }) => {
+            return (
+              <li className="usernav__list-item" key={name}>
+                <a className="usernav__link" href={href}>
+                  {name}
+                </a>
+              </li>
+            );
+          })}
+        </ul>
+      </DropDown>
+    </div>
   );
 };
 

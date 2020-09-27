@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Home 1`] = `
+Array [
+  <WhatIsThis
+    leftSocial={<Unknown />}
+    rightSocial={<Unknown />}
+  />,
+  <HowToUseThis />,
+  <GetInvolved />,
+]
+`;

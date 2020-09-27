@@ -1,0 +1,59 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Drawer - collapsed 1`] = `
+Array [
+  <div
+    className="drawer"
+    style={
+      Object {
+        "maxHeight": 0,
+      }
+    }
+  >
+    <div
+      className="drawer__scroller"
+    >
+      <div
+        className="drawer__contents"
+      >
+        <DrawerContents
+          activeTab="How to use this"
+        />
+      </div>
+    </div>
+  </div>,
+  <div
+    className="drawer__overlay"
+    onClick={[MockFunction]}
+  />,
+]
+`;
+
+exports[`Drawer - expanded 1`] = `
+Array [
+  <div
+    className="drawer drawer--visible"
+    style={
+      Object {
+        "maxHeight": 652.8,
+      }
+    }
+  >
+    <div
+      className="drawer__scroller"
+    >
+      <div
+        className="drawer__contents"
+      >
+        <DrawerContents
+          activeTab="How to use this"
+        />
+      </div>
+    </div>
+  </div>,
+  <div
+    className="drawer__overlay drawer__overlay--visible"
+    onClick={[MockFunction]}
+  />,
+]
+`;

@@ -1,0 +1,271 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`WhatIsThis 1`] = `
+<HomeSection>
+  <h2
+    className="home__h1 home__h1--center"
+  >
+    Are we lying to you? Is this out of context?
+  </h2>
+  <p
+    className="home__body home__body--center"
+  >
+    Click one to see
+  </p>
+  <div
+    className="home__social-container"
+  >
+    <a
+      href="/foundation/presidential-debate-clinton-trump-1-of-3/cut:!(2879,2891.639892578125),fact:'1L4K9lUrKC8dQBxDQTZeIxNEeKIgZjMPaA7SURzBljQ=',kind:videoCut"
+    >
+      <div
+        className="social home"
+      >
+        <div
+          className="social__content home"
+        >
+          <div
+            className="social__row social__row--quote home"
+          >
+            <div
+              className="social__quote-container home"
+            >
+              <span
+                className="social__quote social__quote--e home"
+              >
+                “
+              </span>
+            </div>
+            <p
+              className="social__text social__text--e home"
+            >
+              Now, I believe in community policing. And, in fact, violent crime is one-half of what it was in 1991. Property crime is down 40 percent. We just don't want to see it creep back up.
+            </p>
+          </div>
+          <div
+            className="social__row home"
+          >
+            <p
+              className="social__speaker home"
+            >
+              Hillary R Clinton
+            </p>
+          </div>
+        </div>
+        <div
+          className="social__background home"
+        />
+        <div
+          className="social__image-container home"
+        >
+          <img
+            alt="MyTake.org | Fundamentals, in context."
+            className="social__image home"
+            height="200"
+            src="https://mytake.org/assets/permanent/square-wheat-482248dddd.png"
+            width="200"
+          />
+        </div>
+      </div>
+    </a>
+    <a
+      href="/foundation/presidential-debate-clinton-trump-1-of-3/cut:!(2689.89990234375,2702.360107421875),fact:'1L4K9lUrKC8dQBxDQTZeIxNEeKIgZjMPaA7SURzBljQ=',kind:videoCut"
+    >
+      <div
+        className="social home"
+      >
+        <div
+          className="social__content home"
+        >
+          <div
+            className="social__row social__row--quote home"
+          >
+            <div
+              className="social__quote-container home"
+            >
+              <span
+                className="social__quote social__quote--e home"
+              >
+                “
+              </span>
+            </div>
+            <p
+              className="social__text social__text--e home"
+            >
+              Right now, our police, in many cases, are afraid to do anything. We have to protect our inner cities, because African-American communities are being decimated by crime, decimated.
+            </p>
+          </div>
+          <div
+            className="social__row home"
+          >
+            <p
+              className="social__speaker home"
+            >
+              Donald J Trump
+            </p>
+          </div>
+        </div>
+        <div
+          className="social__background home"
+        />
+        <div
+          className="social__image-container home"
+        >
+          <img
+            alt="MyTake.org | Fundamentals, in context."
+            className="social__image home"
+            height="200"
+            src="https://mytake.org/assets/permanent/square-wheat-482248dddd.png"
+            width="200"
+          />
+        </div>
+      </div>
+    </a>
+  </div>
+  <h2
+    className="home__h1 home__h1--center"
+  >
+    Don't let someone else decide for you
+  </h2>
+  <p
+    className="home__body home__body--center"
+  >
+    We're not tracking what you've said. We're not selling your attention.
+  </p>
+</HomeSection>
+`;
+
+exports[`WhatIsThis loading 1`] = `
+<HomeSection>
+  <h2
+    className="home__h1 home__h1--center"
+  >
+    Are we lying to you? Is this out of context?
+  </h2>
+  <p
+    className="home__body home__body--center"
+  >
+    Click one to see
+  </p>
+  <div
+    className="home__social-container"
+  >
+    <a
+      href="/foundation/presidential-debate-clinton-trump-1-of-3/cut:!(2879,2891.639892578125),fact:'1L4K9lUrKC8dQBxDQTZeIxNEeKIgZjMPaA7SURzBljQ=',kind:videoCut"
+    >
+      <div
+        className="social home"
+      >
+        <div
+          className="social__content home"
+        >
+          <div
+            className="social__row social__row--quote home"
+          >
+            <div
+              className="social__quote-container home"
+            >
+              <span
+                className="social__quote social__quote--a home"
+              >
+                “
+              </span>
+            </div>
+            <p
+              className="social__text social__text--a home"
+            >
+              ~~~~ ~~~~ ~~~~~~~~ ~~~ ~~~~~~~~ ~~~~ ~~~~ ~~~~~~~~ ~~~~ ~~ ~~~~~~~~ ~~~~ ~~~~~ ~~~~~~~~ ~~~ ~~~~~~ ~~~~~~~~~ ~~~~ ~~~~~ ~~~~~~~~ ~~~ ~~~~~~ ~~~~~~~~~
+            </p>
+          </div>
+          <div
+            className="social__row home"
+          >
+            <p
+              className="social__speaker home"
+            >
+              ~~~~~~
+            </p>
+          </div>
+        </div>
+        <div
+          className="social__background home"
+        />
+        <div
+          className="social__image-container home"
+        >
+          <img
+            alt="MyTake.org | Fundamentals, in context."
+            className="social__image home"
+            height="200"
+            src="https://mytake.org/assets/permanent/square-wheat-482248dddd.png"
+            width="200"
+          />
+        </div>
+      </div>
+    </a>
+    <a
+      href="/foundation/presidential-debate-clinton-trump-1-of-3/cut:!(2689.89990234375,2702.360107421875),fact:'1L4K9lUrKC8dQBxDQTZeIxNEeKIgZjMPaA7SURzBljQ=',kind:videoCut"
+    >
+      <div
+        className="social home"
+      >
+        <div
+          className="social__content home"
+        >
+          <div
+            className="social__row social__row--quote home"
+          >
+            <div
+              className="social__quote-container home"
+            >
+              <span
+                className="social__quote social__quote--a home"
+              >
+                “
+              </span>
+            </div>
+            <p
+              className="social__text social__text--a home"
+            >
+              ~~~~ ~~~~ ~~~~~~~~ ~~~ ~~~~~~~~ ~~~~ ~~~~ ~~~~~~~~ ~~~~ ~~ ~~~~~~~~ ~~~~ ~~~~~ ~~~~~~~~ ~~~ ~~~~~~ ~~~~~~~~~ ~~~~ ~~~~~ ~~~~~~~~ ~~~ ~~~~~~ ~~~~~~~~~
+            </p>
+          </div>
+          <div
+            className="social__row home"
+          >
+            <p
+              className="social__speaker home"
+            >
+              ~~~~~~
+            </p>
+          </div>
+        </div>
+        <div
+          className="social__background home"
+        />
+        <div
+          className="social__image-container home"
+        >
+          <img
+            alt="MyTake.org | Fundamentals, in context."
+            className="social__image home"
+            height="200"
+            src="https://mytake.org/assets/permanent/square-wheat-482248dddd.png"
+            width="200"
+          />
+        </div>
+      </div>
+    </a>
+  </div>
+  <h2
+    className="home__h1 home__h1--center"
+  >
+    Don't let someone else decide for you
+  </h2>
+  <p
+    className="home__body home__body--center"
+  >
+    We're not tracking what you've said. We're not selling your attention.
+  </p>
+</HomeSection>
+`;

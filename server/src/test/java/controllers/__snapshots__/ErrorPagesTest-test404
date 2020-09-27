@@ -36,19 +36,6 @@
 </head>
 
 <body>
-<header class="header" role="banner">
-	<a class="header__skip-link" href="#app" tabindex="1">Skip to main content</a>
-	<div class="header__top">
-		<a class="header__logo-link" href="/">
-			<div class="header__logo-image-container">
-				<img class="header__logo-image" src="/assets/permanent/square-wheat-482248dddd.png" width="100" height="100" alt="MyTake.org | Fundamentals, in context." />
-			</div>
-			<em class="header__logo-title"><span class="header__logo--mytake">MyTake</span><span class="header__logo--org">.org</span></em>
-		</a>
-		<div id="searchbar" class="header__searchbar"></div>
-		<div id="usernav" class="header__usernav"></div>
-	</div>
-</header>
 
 <div class="about">
 <p class="about__text">The requested URL</p>

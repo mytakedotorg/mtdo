@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DrawerContents - GetInvolved 1`] = `<GetInvolved />`;
+
+exports[`DrawerContents - HowToUseThis 1`] = `<HowToUseThis />`;
+
+exports[`DrawerContents - WhatIsThis 1`] = `
+<WhatIsThis
+  leftSocial={<Unknown />}
+  rightSocial={<Unknown />}
+/>
+`;
