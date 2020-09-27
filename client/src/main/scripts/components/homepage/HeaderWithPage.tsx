@@ -137,10 +137,11 @@ interface LinkOrSpanProps<T>
 const LinkOrSpan: React.FC<LinkOrSpanProps<
   HTMLAnchorElement | HTMLSpanElement
 >> = (props) => {
-  return props.isLink ? (
-    <a {...(props as LinkOrSpanProps<HTMLAnchorElement>)}>{props.children}</a>
+  const { isLink, ...rest } = props;
+  return isLink ? (
+    <a {...(rest as LinkOrSpanProps<HTMLAnchorElement>)}>{props.children}</a>
   ) : (
-    <span {...(props as LinkOrSpanProps<HTMLSpanElement>)}>
+    <span {...(rest as LinkOrSpanProps<HTMLSpanElement>)}>
       {props.children}
     </span>
   );
