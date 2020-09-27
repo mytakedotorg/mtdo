@@ -43,7 +43,6 @@ const HeaderWithPage: React.FC<HeaderProps> = (props) => {
     event: React.MouseEvent<HTMLLIElement, MouseEvent>,
     tab: INFO_HEADER_TABS_ENUM
   ) => {
-    console.log("tab clicked");
     // prevent bubbling up to our other event handler
     event.stopPropagation();
     setActiveTab(tab);
