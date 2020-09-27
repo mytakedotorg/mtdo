@@ -16,17 +16,17 @@
 }
 .drawer__overlay {
   position: fixed;
-  z-index: 1;
+  display: none;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
   background-color: black;
   opacity: 0;
-  transition: opacity 0.1s linear;
 }
 .drawer__overlay--visible {
   opacity: 0.5;
+  display: initial;
 }
 .drawer__scroller {
   max-height: 100%;
