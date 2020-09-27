@@ -1,21 +1,29 @@
 pluginManagement {
 	plugins {
-		id 'com.diffplug.spotless'                version '5.5.0'
+		id 'com.diffplug.blowdryer'               version '1.0.0'
+		id 'com.diffplug.blowdryerSetup'          version '1.0.0'
+		id 'com.diffplug.spotless'                version '5.6.1'
+		id 'com.diffplug.spotless-changelog'      version '2.0.0'
 		id 'com.diffplug.eclipse.apt'             version '3.24.0'
 		id 'com.diffplug.eclipse.resourcefilters' version '3.24.0'
+		id 'com.gradle.plugin-publish'            version '0.12.0'
+		id 'org.jdrupes.mdoclet'                  version '1.0.10'
 	}
 }
 plugins {
-	id 'com.diffplug.spotless' apply false
-	id 'com.diffplug.eclipse.apt' apply false
+	id 'com.diffplug.blowdryerSetup'
+	id 'com.diffplug.spotless'                apply false
+	id 'com.diffplug.spotless-changelog'      apply false
+	id 'com.diffplug.eclipse.apt'             apply false
 	id 'com.diffplug.eclipse.resourcefilters' apply false
+	id 'com.gradle.plugin-publish'            apply false
+	id 'org.jdrupes.mdoclet'                  apply false
 }
-
 
 include 'client'
 include 'client-interface'
 include 'foundation'
-include 'foundation-gen'
+include 'factset-tooling'
 include 'server'
 include 'ide'
 include 'lucene'
@@ -23,3 +31,9 @@ include 'node'
 include 'presidential-debates'
 
 apply from: new File(settingsDir, 'gradle/buildCacheSettings.gradle')
+
+rootProject.name = 'mtdo'
+blowdryerSetup {
+	github 'mytakedotorg/blowdryer-mtdo', 'tag', '1.0.0'
+	//devLocal '../blowdryer-mtdo'
+}

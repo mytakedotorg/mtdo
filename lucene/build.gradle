@@ -9,6 +9,7 @@ dependencies {
 	implementation "org.apache.lucene:lucene-core:${VER_LUCENE}"
 	implementation "org.apache.lucene:lucene-queryparser:${VER_LUCENE}"
 	implementation "org.apache.lucene:lucene-analyzers-common:${VER_LUCENE}"
+	testImplementation project(':factset-tooling')
 	testImplementation "junit:junit:${VER_JUNIT}"
 	testImplementation "org.assertj:assertj-core:${VER_ASSERTJ}"
 }
@@ -22,4 +23,15 @@ spotless {
 		eclipse().configFile(rootProject.file('gradle/spotless.eclipseformat.xml'))
 		removeUnusedImports()
 	}
+}
+
+tasks.register('generateFoundation', JavaExec) {
+	description = 'Generates the foundation'
+	classpath = sourceSets.test.runtimeClasspath
+	main = 'org.mytake.lucene.legacyfoundationgen.Index'
+
+	dependsOn(tasks.classes)
+	inputs.dir('../presidential-debates').withPathSensitivity(PathSensitivity.NAME_ONLY)
+	outputs.dir('../foundation/src/main/resources')
+	outputs.cacheIf { true }
 }

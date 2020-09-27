@@ -1,5 +1,5 @@
 plugins {
-	id 'nu.studer.rocker' version '3.0'						// https://github.com/etiennestuder/gradle-rocker-plugin
+	id 'nu.studer.rocker' version '3.0.1'					// https://github.com/etiennestuder/gradle-rocker-plugin
 	id 'com.github.johnrengelman.shadow' version '6.0.0'	// http://imperceptiblethoughts.com/shadow/#
 }
 
@@ -154,7 +154,8 @@ dependencies {
 	testImplementation "com.palantir.docker.compose:docker-compose-rule-core:$VER_PALANTIR_DOCKER_COMPOSE"		// https://github.com/palantir/docker-compose-rule
 	testImplementation "com.palantir.docker.compose:docker-compose-rule-junit4:$VER_PALANTIR_DOCKER_COMPOSE"	// https://github.com/palantir/docker-compose-rule
 
-	testImplementation "com.fizzed:rocker-compiler:${rockerVersion}"					// required for hotreload
+	testImplementation "com.fizzed:rocker-compiler:${rockerVersion}"	// required for hotreload
+	testImplementation "org.eclipse.jgit:org.eclipse.jgit:${VER_JGIT}"	// required for serving local repo
 
 	// dep for auth
 	implementation 'com.auth0:java-jwt:3.10.3'

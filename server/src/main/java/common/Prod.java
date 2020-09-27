@@ -24,6 +24,7 @@ import controllers.About;
 import controllers.BookmarkApi;
 import controllers.DiscourseAuth;
 import controllers.Drafts;
+import controllers.FactApi;
 import controllers.FoundationAssets;
 import controllers.HomeFeed;
 import controllers.Profile;
@@ -66,6 +67,7 @@ public class Prod extends Jooby {
 		});
 		use(new InitialData.Module());
 		controllers(this);
+		use(new FactApi());
 	}
 
 	static void flywayMigrate(Registry registry) {

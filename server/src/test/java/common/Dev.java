@@ -24,6 +24,7 @@ import com.google.inject.multibindings.Multibinder;
 import com.icegreen.greenmail.util.GreenMail;
 import com.icegreen.greenmail.util.ServerSetup;
 import com.typesafe.config.Config;
+import controllers.FactApiDev;
 import javax.mail.Address;
 import javax.mail.Message.RecipientType;
 import javax.mail.internet.MimeMessage;
@@ -58,6 +59,7 @@ public class Dev extends DevNoDB {
 		use(postgresModule);
 		Prod.commonDb(this);
 		Prod.controllers(this);
+		use(new FactApiDev());
 	}
 
 	static class JooqDebugRenderer implements Jooby.Module {

@@ -2,11 +2,11 @@
   "name": "node.mytake",
   "version": "1.0.0",
   "description": "",
-  "homepage": "https://github.com/mytakedotorg/mytakedotorg",
-  "bugs": "https://github.com/mytakedotorg/mytakedotorg/issues",
+  "homepage": "https://github.com/mytakedotorg/mtdo",
+  "bugs": "https://github.com/mytakedotorg/mtdo/issues",
   "repository": {
     "type": "git",
-    "url": "https://github.com/mytakedotorg/mytakedotorg.git"
+    "url": "https://github.com/mytakedotorg/mtdo.git"
   },
   "main": "src/main/dist/index.js",
   "scripts": {

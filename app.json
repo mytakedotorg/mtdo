@@ -2,7 +2,7 @@
   "name": "mytake.org",
   "description": "The mytake.org website.",
   "website": "https://mytake.org",
-  "repository": "https://github.com/mytakedotorg/mytakedotorg",
+  "repository": "https://github.com/mytakedotorg/mtdo",
   "scripts": {
   },
   "env": {
