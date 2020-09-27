@@ -4,6 +4,11 @@ exports[`Drawer - collapsed 1`] = `
 Array [
   <div
     className="drawer"
+    style={
+      Object {
+        "maxHeight": 0,
+      }
+    }
   >
     <div
       className="drawer__scroller"
@@ -28,6 +33,11 @@ exports[`Drawer - expanded 1`] = `
 Array [
   <div
     className="drawer drawer--visible"
+    style={
+      Object {
+        "maxHeight": 652.8,
+      }
+    }
   >
     <div
       className="drawer__scroller"
