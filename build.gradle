@@ -38,6 +38,7 @@ spotless {
 				'gradle/spotless.eclipseformat.xml',
 				'gradle/spotless.greclipse.properties'
 				)
+		toggleOffOn()
 	}
 }
 
@@ -67,7 +68,7 @@ tasks.eclipse.dependsOn(tasks.cleanEclipse)
 
 // heroku deploys fatjar (and deletes everything else)
 task stage {
-	dependsOn ':server:shadowJar'
+	dependsOn ':server:shadowJar', ':lucene:generateIndex'
 	dependsOn ':node:assemble', ':node:pruneDependencies', ':node:copyNodeExe'
 	doLast {
 		delete fileTree(dir: '.', exclude: [

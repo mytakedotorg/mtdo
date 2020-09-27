@@ -19,13 +19,16 @@
  */
 package org.mytake.factset.search;
 
+import com.diffplug.common.base.Preconditions;
 import com.diffplug.common.collect.ImmutableList;
 import com.diffplug.common.collect.ImmutableMap;
-import com.jsoniter.spi.TypeLiteral;
+import com.google.gson.reflect.TypeToken;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java2ts.FT;
@@ -40,10 +43,21 @@ public class GenerateIndex {
 	public static ImmutableList<String> REPOS = ImmutableList.of("us-founding-documents", "us-presidential-debates");
 
 	public static void main(String[] args) throws IOException {
-		ImmutableMap<String, String> repoToSha = ImmutableMap.of(
-				"us-presidential-debates",
-				"c8833250cf42ad80565a923e0074b3c8597f915c");
-		Path luceneTemp = Files.createTempDirectory("mytake-lucene");
+		Path luceneTemp;
+		Map<String, String> repoToSha;
+		if (args.length == 0) {
+			luceneTemp = Files.createTempDirectory("mytake-lucene");
+			repoToSha = ImmutableMap.of(
+					"us-presidential-debates",
+					"a68e1678482f113854dd0f7f82ef50ff142bc04b");
+		} else {
+			luceneTemp = Paths.get(args[0]);
+			Preconditions.checkArgument(args.length % 2 == 1);
+			repoToSha = new LinkedHashMap<>();
+			for (int i = 0; i < (args.length - 1) / 2; ++i) {
+				repoToSha.put(args[2 * i + 1], args[2 * i + 2]);
+			}
+		}
 		generate(luceneTemp, repoToSha);
 	}
 
@@ -78,5 +92,5 @@ public class GenerateIndex {
 		return client.newCall(new okhttp3.Request.Builder().url(url).build()).execute();
 	}
 
-	private static TypeLiteral<List<FactLink>> FACTLINKS = new TypeLiteral<List<FactLink>>() {};
+	private static final TypeToken<List<FactLink>> FACTLINKS = new TypeToken<List<FactLink>>() {};
 }

@@ -27,19 +27,22 @@ spotless {
 	}
 }
 
-String debatesShaOrTag = 'a68e1678482f113854dd0f7f82ef50ff142bc04b'
+// spotless:off
+def repoToSha = [
+	'us-presidential-debates', 'a68e1678482f113854dd0f7f82ef50ff142bc04b'
+]
+def outputDir = file('build/search-index')
 tasks.register('generateIndex', JavaExec) {
 	description = 'Generates the foundation'
 	classpath = sourceSets.test.runtimeClasspath
 	main = 'org.mytake.factset.search.GenerateIndex'
-	args = [
-		debatesShaOrTag
-	]
+	args = [outputDir.absolutePath] + repoToSha
 
 	dependsOn 'testClasses'
-	inputs.property('us-pres-debates', debatesShaOrTag)
+	inputs.property('repoToSha', args)
 	inputs.files(sourceSets.test.runtimeClasspath).withPathSensitivity(PathSensitivity.NONE)
 
-	outputs.dir('build/search-index')
+	outputs.dir(outputDir)
 	outputs.cacheIf { true }
 }
+// spotless:on
