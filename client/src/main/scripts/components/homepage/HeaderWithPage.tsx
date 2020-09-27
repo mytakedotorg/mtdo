@@ -49,13 +49,11 @@ const HeaderWithPage: React.FC<HeaderProps> = (props) => {
     setActiveTab(tab);
   };
 
-  const handleDrawerClose = () => {
+  const handleClose = () => {
     setIsExpanded(false);
   };
 
-  const headerClass = isSearchPage(props.args)
-    ? "header header--search"
-    : "header";
+  const headerClass = getHeaderClass(isSearchPage(props.args), isExpanded);
 
   const shouldShowTabs = !isHomePage(props.args) && !isSearchPage(props.args);
   return (
@@ -86,13 +84,6 @@ const HeaderWithPage: React.FC<HeaderProps> = (props) => {
               <span className="header__moreinfo-link">More info</span>
             )}
           </span>
-          {shouldShowTabs && (
-            <Tabs
-              activeTab={activeTab}
-              isVisible={isExpanded}
-              onTabClick={handleTabClick}
-            />
-          )}
           {isSearchPage(props.args) && (
             <div className="header__searchbar">
               <SearchBar
@@ -103,15 +94,35 @@ const HeaderWithPage: React.FC<HeaderProps> = (props) => {
           )}
           <UserNav />
         </div>
+        {shouldShowTabs && (
+          <Tabs
+            activeTab={activeTab}
+            isVisible={isExpanded}
+            onClose={handleClose}
+            onTabClick={handleTabClick}
+          />
+        )}
       </header>
-      <Drawer
-        activeTab={activeTab}
-        isExpanded={isExpanded}
-        onClose={handleDrawerClose}
-      />
+      {shouldShowTabs && (
+        <Drawer
+          activeTab={activeTab}
+          isExpanded={isExpanded}
+          onClose={handleClose}
+        />
+      )}
       {props.children}
     </>
   );
 };
 
 export default HeaderWithPage;
+
+const getHeaderClass = (isSearchPage: boolean, isExpanded: boolean): string => {
+  if (isSearchPage) {
+    return "header header--search";
+  }
+  if (isExpanded) {
+    return "header header--expanded";
+  }
+  return "header";
+};

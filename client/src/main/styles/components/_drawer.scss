@@ -4,10 +4,10 @@
   left: 0;
   right: 0;
   overflow: hidden;
-  height: 400px;
+  height: 4000px;
   max-height: 0;
-  transition: max-height 0.1s linear;
-  z-index: 2;
+  transition: max-height 0.2s ease;
+  z-index: 30;
   background-color: white;
 }
 .drawer--visible {

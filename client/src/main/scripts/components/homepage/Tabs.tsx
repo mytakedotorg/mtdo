@@ -18,11 +18,13 @@
  * You can contact us at team@mytake.org
  */
 import React from "react";
+import { XCircle } from "react-feather";
 import { INFO_HEADER_TABS_ENUM, INFO_HEADER_TAB_NAMES } from "./infoHeader";
 
 interface TabsProps {
   activeTab: INFO_HEADER_TABS_ENUM;
   isVisible: boolean;
+  onClose(): void;
   onTabClick(
     event: React.MouseEvent<HTMLLIElement, MouseEvent>,
     tab: INFO_HEADER_TABS_ENUM
@@ -33,20 +35,26 @@ const Tabs: React.FC<TabsProps> = (props) => {
   const className = props.isVisible ? "tabs tabs--visible" : "tabs";
   return (
     <div className={className}>
-      <ul className="tab__ul">
-        {INFO_HEADER_TAB_NAMES.map((tab) => {
-          const tabClass = tab === props.activeTab ? "tab tab--active" : "tab";
-          return (
-            <li
-              key={tab}
-              className={tabClass}
-              onClick={(e) => props.onTabClick(e, tab)}
-            >
-              {tab}
-            </li>
-          );
-        })}
-      </ul>
+      <div className="tab__column">
+        <ul className="tab__ul">
+          {INFO_HEADER_TAB_NAMES.map((tab) => {
+            const tabClass =
+              tab === props.activeTab ? "tab tab--active" : "tab";
+            return (
+              <li
+                key={tab}
+                className={tabClass}
+                onClick={(e) => props.onTabClick(e, tab)}
+              >
+                {tab}
+              </li>
+            );
+          })}
+        </ul>
+        <button className="tab__close" onClick={props.onClose}>
+          <XCircle />
+        </button>
+      </div>
     </div>
   );
 };
