@@ -11,7 +11,7 @@
   background-color: white;
 }
 .drawer--visible {
-  max-height: 400px;
+  // max-height: 400px; // defined in JS
   border-bottom: 1px solid black;
   box-shadow: 0 6px 5px 0 rgba(0, 0, 0, 0.7);
 }

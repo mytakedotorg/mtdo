@@ -29,6 +29,7 @@ interface DrawerProps {
 const Drawer: React.FC<DrawerProps> = (props) => {
   const scrollerDiv = useRef<HTMLDivElement | null>(null);
   const drawerClass = props.isExpanded ? "drawer drawer--visible" : "drawer";
+  const drawerHeight = props.isExpanded ? window.innerHeight * 0.85 : 0;
   const overlayClass = props.isExpanded
     ? "drawer__overlay drawer__overlay--visible"
     : "drawer__overlay";
@@ -37,7 +38,7 @@ const Drawer: React.FC<DrawerProps> = (props) => {
   }, [scrollerDiv, props.activeTab]);
   return (
     <>
-      <div className={drawerClass}>
+      <div className={drawerClass} style={{ maxHeight: drawerHeight }}>
         <div className="drawer__scroller" ref={scrollerDiv}>
           <div className="drawer__contents">
             <DrawerContents activeTab={props.activeTab} />
