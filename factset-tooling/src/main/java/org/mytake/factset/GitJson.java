@@ -129,7 +129,6 @@ public class GitJson {
 						String value;
 						if (field.equals("plainText")) {
 							value = rawValue.replace(COMMENT_OPEN_STR, "\n" + COMMENT_OPEN_STR)
-									.replace("\\u0027", "'") // not necessary to encode single quotes
 									.replace(".", ".\n") // put each sentence on its own line
 									.replace("?", "?\n")
 									.replace("!", "!\n")
@@ -193,10 +192,6 @@ public class GitJson {
 			Files.write(file.toPath(), toPrettyString().getBytes(StandardCharsets.UTF_8));
 		}
 
-		public String toPrettyString() {
-			return GSON_PRETTY.toJson(obj);
-		}
-
 		public void toCompact(File file) throws IOException {
 			Files.createDirectories(file.toPath().getParent());
 			Files.write(file.toPath(), toCompactString().getBytes(StandardCharsets.UTF_8));
@@ -213,6 +208,14 @@ public class GitJson {
 				return GSON.toJson(obj);
 			}
 		}
+
+		public String toPrettyString() {
+			if (obj instanceof FT.VideoFactMeta) {
+				return GSON_PRETTY.toJson(reorder(obj, "fact", "youtubeId", "durationSeconds", "speakers"));
+			} else {
+				return GSON_PRETTY.toJson(obj);
+			}
+		}
 	}
 
 	public static JsonObject reorder(Object object, String... topFields) {
@@ -227,8 +230,8 @@ public class GitJson {
 		return reordered;
 	}
 
-	private static final Gson GSON_PRETTY = new GsonBuilder().setPrettyPrinting().create();
-	private static final Gson GSON = new GsonBuilder().create();
+	private static final Gson GSON_PRETTY = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().create();
+	private static final Gson GSON = new GsonBuilder().disableHtmlEscaping().create();
 	/** https://stackoverflow.com/a/24209736/1153071 */
 	private static final Pattern UNESCAPED_QUOTE = Pattern.compile("(?<!\\\\)(?:\\\\{2})*\"");
 
