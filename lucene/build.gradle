@@ -10,6 +10,7 @@ dependencies {
 	implementation "org.apache.lucene:lucene-queryparser:${VER_LUCENE}"
 	implementation "org.apache.lucene:lucene-analyzers-common:${VER_LUCENE}"
 	testImplementation project(':factset-tooling')
+	testImplementation "com.squareup.okhttp3:okhttp:${VER_OKHTTP}"
 	testImplementation "junit:junit:${VER_JUNIT}"
 	testImplementation "org.assertj:assertj-core:${VER_ASSERTJ}"
 }
@@ -25,13 +26,19 @@ spotless {
 	}
 }
 
-tasks.register('generateFoundation', JavaExec) {
+String debatesShaOrTag = 'c8833250cf42ad80565a923e0074b3c8597f915c'
+tasks.register('generateIndex', JavaExec) {
 	description = 'Generates the foundation'
 	classpath = sourceSets.test.runtimeClasspath
-	main = 'org.mytake.lucene.legacyfoundationgen.Index'
+	main = 'org.mytake.factset.search.GenerateIndex'
+	args = [
+		debatesShaOrTag
+	]
 
-	dependsOn(tasks.classes)
-	inputs.dir('../presidential-debates').withPathSensitivity(PathSensitivity.NAME_ONLY)
-	outputs.dir('../foundation/src/main/resources')
+	dependsOn 'testClasses'
+	inputs.property('us-pres-debates', debatesShaOrTag)
+	inputs.files(sourceSets.test.runtimeClasspath).withPathSensitivity(PathSensitivity.NONE)
+
+	outputs.dir('build/search-index')
 	outputs.cacheIf { true }
 }

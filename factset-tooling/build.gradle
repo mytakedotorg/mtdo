@@ -88,6 +88,7 @@ dependencies {
 	implementation 'com.google.code.gson:gson:2.8.6'
 	implementation 'org.jsoup:jsoup:1.13.1'
 	implementation "org.eclipse.jgit:org.eclipse.jgit:${VER_JGIT}"
+	implementation "com.squareup.okhttp3:okhttp:${VER_OKHTTP}"
 	implementation 'com.diffplug.durian:durian-core:1.2.0'
 	implementation 'com.diffplug.durian:durian-collect:1.2.0'
 	implementation 'com.diffplug.durian:durian-io:1.2.0'

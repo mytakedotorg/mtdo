@@ -125,7 +125,6 @@ dependencies {
 	implementation "com.jsoniter:jsoniter:$VER_JSONITER"
 	implementation project(':client')
 	implementation project(':client-interface')
-	implementation project(':foundation')
 	implementation project(':lucene')
 
 	// jooq (version is set by jooq DSL)
@@ -135,7 +134,7 @@ dependencies {
 	// flyway
 	implementation "org.flywaydb:flyway-core:${VER_FLYWAY}"
 	// fetch headers from node.mytake.org
-	implementation 'com.squareup.okhttp3:okhttp:4.9.0'
+	implementation "com.squareup.okhttp3:okhttp:${VER_OKHTTP}"
 	// common libs
 	implementation 'commons-validator:commons-validator:1.7'
 	implementation 'com.diffplug.durian:durian-core:1.2.0'

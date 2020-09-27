@@ -26,7 +26,7 @@ import org.mytake.lucene.Lucene;
 
 public class LucenePlayground {
 	public static void main(String[] args) throws IOException {
-		try (Lucene lucene = Lucene.openFromArchive()) {
+		try (Lucene lucene = Lucene.loadFromDefaultFolder()) {
 			// this prints something to the console
 			// which is used by VideoResultsList.spec.tsx
 			FactResultList resultList = lucene.searchDebate("social security");
