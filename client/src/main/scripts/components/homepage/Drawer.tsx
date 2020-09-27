@@ -17,7 +17,7 @@
  *
  * You can contact us at team@mytake.org
  */
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import DrawerContents from "./DrawerContents";
 import { INFO_HEADER_TABS_ENUM } from "./infoHeader";
 
@@ -27,14 +27,18 @@ interface DrawerProps {
   isExpanded: boolean;
 }
 const Drawer: React.FC<DrawerProps> = (props) => {
+  const scrollerDiv = useRef<HTMLDivElement | null>(null);
   const drawerClass = props.isExpanded ? "drawer drawer--visible" : "drawer";
   const overlayClass = props.isExpanded
     ? "drawer__overlay drawer__overlay--visible"
     : "drawer__overlay";
+  useEffect(() => {
+    scrollerDiv.current && (scrollerDiv.current.scrollTop = 0);
+  }, [scrollerDiv, props.activeTab]);
   return (
     <>
       <div className={drawerClass}>
-        <div className="drawer__scroller">
+        <div className="drawer__scroller" ref={scrollerDiv}>
           <div className="drawer__contents">
             <DrawerContents activeTab={props.activeTab} />
           </div>
