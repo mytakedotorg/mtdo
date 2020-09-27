@@ -66,5 +66,35 @@ export const useSocials = (): HomeSocials => {
 };
 
 export const SocialLoading: React.FC = () => {
-  return <div className="social_loading"></div>;
+  return (
+    <div className="social home">
+      <div className="social__content home">
+        <div className={`social__row social__row--quote home`}>
+          <div className={`social__quote-container home`}>
+            <span className={`social__quote social__quote--a home`}>
+              &ldquo;
+            </span>
+          </div>
+          <p className={`social__text social__text--a home`}>
+            ~~~~ ~~~~ ~~~~~~~~ ~~~ ~~~~~~~~ ~~~~ ~~~~ ~~~~~~~~ ~~~~ ~~ ~~~~~~~~
+            ~~~~ ~~~~~ ~~~~~~~~ ~~~ ~~~~~~ ~~~~~~~~~ ~~~~ ~~~~~ ~~~~~~~~ ~~~
+            ~~~~~~ ~~~~~~~~~
+          </p>
+        </div>
+        <div className={`social__row home`}>
+          <p className={`social__speaker home`}>~~~~~~</p>
+        </div>
+      </div>
+      <div className={`social__background home`}></div>
+      <div className={`social__image-container home`}>
+        <img
+          className={`social__image home`}
+          src="https://mytake.org/assets/permanent/square-wheat-482248dddd.png"
+          width="200"
+          height="200"
+          alt="MyTake.org | Fundamentals, in context."
+        />
+      </div>
+    </div>
+  );
 };
