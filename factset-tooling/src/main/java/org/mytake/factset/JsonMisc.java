@@ -53,7 +53,11 @@ public class JsonMisc {
 	private static final Config CONFIG;
 
 	public static <T> T fromJson(File file, TypeLiteral<T> type) throws IOException {
-		return JsonIterator.deserialize(CONFIG, Files.readAllBytes(file.toPath()), type);
+		return fromJson(Files.readAllBytes(file.toPath()), type);
+	}
+
+	public static <T> T fromJson(byte[] content, TypeLiteral<T> type) {
+		return JsonIterator.deserialize(CONFIG, content, type);
 	}
 
 	public static <T> T fromJson(File file, Class<T> clazz) throws IOException {
