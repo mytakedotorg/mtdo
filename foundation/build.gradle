@@ -1,4 +1,0 @@
-apply plugin: 'java'
-
-clean { delete 'src/main/resources' }
-processResources.dependsOn(':lucene:generateFoundation')

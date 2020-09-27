@@ -22,7 +22,6 @@ plugins {
 
 include 'client'
 include 'client-interface'
-include 'foundation'
 include 'factset-tooling'
 include 'server'
 include 'ide'
