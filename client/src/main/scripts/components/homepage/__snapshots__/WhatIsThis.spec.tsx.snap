@@ -154,15 +154,107 @@ exports[`WhatIsThis loading 1`] = `
       href="/foundation/presidential-debate-clinton-trump-1-of-3/cut:!(2879,2891.639892578125),fact:'1L4K9lUrKC8dQBxDQTZeIxNEeKIgZjMPaA7SURzBljQ=',kind:videoCut"
     >
       <div
-        className="social_loading"
-      />
+        className="social home"
+      >
+        <div
+          className="social__content home"
+        >
+          <div
+            className="social__row social__row--quote home"
+          >
+            <div
+              className="social__quote-container home"
+            >
+              <span
+                className="social__quote social__quote--a home"
+              >
+                “
+              </span>
+            </div>
+            <p
+              className="social__text social__text--a home"
+            >
+              ~~~~ ~~~~ ~~~~~~~~ ~~~ ~~~~~~~~ ~~~~ ~~~~ ~~~~~~~~ ~~~~ ~~ ~~~~~~~~ ~~~~ ~~~~~ ~~~~~~~~ ~~~ ~~~~~~ ~~~~~~~~~ ~~~~ ~~~~~ ~~~~~~~~ ~~~ ~~~~~~ ~~~~~~~~~
+            </p>
+          </div>
+          <div
+            className="social__row home"
+          >
+            <p
+              className="social__speaker home"
+            >
+              ~~~~~~
+            </p>
+          </div>
+        </div>
+        <div
+          className="social__background home"
+        />
+        <div
+          className="social__image-container home"
+        >
+          <img
+            alt="MyTake.org | Fundamentals, in context."
+            className="social__image home"
+            height="200"
+            src="https://mytake.org/assets/permanent/square-wheat-482248dddd.png"
+            width="200"
+          />
+        </div>
+      </div>
     </a>
     <a
       href="/foundation/presidential-debate-clinton-trump-1-of-3/cut:!(2689.89990234375,2702.360107421875),fact:'1L4K9lUrKC8dQBxDQTZeIxNEeKIgZjMPaA7SURzBljQ=',kind:videoCut"
     >
       <div
-        className="social_loading"
-      />
+        className="social home"
+      >
+        <div
+          className="social__content home"
+        >
+          <div
+            className="social__row social__row--quote home"
+          >
+            <div
+              className="social__quote-container home"
+            >
+              <span
+                className="social__quote social__quote--a home"
+              >
+                “
+              </span>
+            </div>
+            <p
+              className="social__text social__text--a home"
+            >
+              ~~~~ ~~~~ ~~~~~~~~ ~~~ ~~~~~~~~ ~~~~ ~~~~ ~~~~~~~~ ~~~~ ~~ ~~~~~~~~ ~~~~ ~~~~~ ~~~~~~~~ ~~~ ~~~~~~ ~~~~~~~~~ ~~~~ ~~~~~ ~~~~~~~~ ~~~ ~~~~~~ ~~~~~~~~~
+            </p>
+          </div>
+          <div
+            className="social__row home"
+          >
+            <p
+              className="social__speaker home"
+            >
+              ~~~~~~
+            </p>
+          </div>
+        </div>
+        <div
+          className="social__background home"
+        />
+        <div
+          className="social__image-container home"
+        >
+          <img
+            alt="MyTake.org | Fundamentals, in context."
+            className="social__image home"
+            height="200"
+            src="https://mytake.org/assets/permanent/square-wheat-482248dddd.png"
+            width="200"
+          />
+        </div>
+      </div>
     </a>
   </div>
   <h2

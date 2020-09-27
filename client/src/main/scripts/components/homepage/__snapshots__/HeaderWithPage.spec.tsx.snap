@@ -1,59 +1,53 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`HeaderWithPage homepage 1`] = `
-Array [
-  <header
-    className="header"
-    role="banner"
+<header
+  className="header"
+  role="banner"
+>
+  <a
+    className="header__skip-link"
+    href="#app"
+    tabIndex={1}
+  >
+    Skip to main content
+  </a>
+  <div
+    className="header__top"
   >
     <a
-      className="header__skip-link"
-      href="#app"
-      tabIndex={1}
+      className="header__logo-link"
+      href="/"
     >
-      Skip to main content
-    </a>
-    <div
-      className="header__top"
-    >
-      <span
-        className="header__logo-link"
+      <div
+        className="header__logo-image-container"
       >
-        <div
-          className="header__logo-image-container"
+        <img
+          alt="MyTake.org | Fundamentals, in context."
+          className="header__logo-image"
+          height="100"
+          src="/assets/permanent/square-wheat-482248dddd.png"
+          width="100"
+        />
+      </div>
+      <em
+        className="header__logo-title"
+      >
+        <span
+          className="header__logo--mytake"
         >
-          <img
-            alt="MyTake.org | Fundamentals, in context."
-            className="header__logo-image"
-            height="100"
-            src="/assets/permanent/square-wheat-482248dddd.png"
-            width="100"
-          />
-        </div>
-        <em
-          className="header__logo-title"
+          MyTake
+        </span>
+        <span
+          className="header__logo--org"
         >
-          <span
-            className="header__logo--mytake"
-          >
-            MyTake
-          </span>
-          <span
-            className="header__logo--org"
-          >
-            .org
-          </span>
-        </em>
-      </span>
-      <UserNav />
-    </div>
-  </header>,
-  <Drawer
-    activeTab="How to use this"
-    isExpanded={false}
-    onClose={[Function]}
-  />,
-]
+          .org
+        </span>
+      </em>
+    </a>
+    <UserNav />
+  </div>
+</header>
 `;
 
 exports[`HeaderWithPage other pages 1`] = `
@@ -107,13 +101,14 @@ Array [
           More info
         </span>
       </span>
-      <Tabs
-        activeTab="How to use this"
-        isVisible={false}
-        onTabClick={[Function]}
-      />
       <UserNav />
     </div>
+    <Tabs
+      activeTab="How to use this"
+      isVisible={false}
+      onClose={[Function]}
+      onTabClick={[Function]}
+    />
   </header>,
   <Drawer
     activeTab="How to use this"
@@ -124,65 +119,59 @@ Array [
 `;
 
 exports[`HeaderWithPage search page 1`] = `
-Array [
-  <header
-    className="header header--search"
-    role="banner"
+<header
+  className="header header--search"
+  role="banner"
+>
+  <a
+    className="header__skip-link"
+    href="#app"
+    tabIndex={1}
+  >
+    Skip to main content
+  </a>
+  <div
+    className="header__top"
   >
     <a
-      className="header__skip-link"
-      href="#app"
-      tabIndex={1}
+      className="header__logo-link"
+      href="/"
     >
-      Skip to main content
-    </a>
-    <div
-      className="header__top"
-    >
-      <span
-        className="header__logo-link"
-      >
-        <div
-          className="header__logo-image-container"
-        >
-          <img
-            alt="MyTake.org | Fundamentals, in context."
-            className="header__logo-image"
-            height="100"
-            src="/assets/permanent/square-wheat-482248dddd.png"
-            width="100"
-          />
-        </div>
-        <em
-          className="header__logo-title"
-        >
-          <span
-            className="header__logo--mytake"
-          >
-            MyTake
-          </span>
-          <span
-            className="header__logo--org"
-          >
-            .org
-          </span>
-        </em>
-      </span>
       <div
-        className="header__searchbar"
+        className="header__logo-image-container"
       >
-        <SearchBar
-          classModifier="search"
-          initialSearchQuery="anything"
+        <img
+          alt="MyTake.org | Fundamentals, in context."
+          className="header__logo-image"
+          height="100"
+          src="/assets/permanent/square-wheat-482248dddd.png"
+          width="100"
         />
       </div>
-      <UserNav />
+      <em
+        className="header__logo-title"
+      >
+        <span
+          className="header__logo--mytake"
+        >
+          MyTake
+        </span>
+        <span
+          className="header__logo--org"
+        >
+          .org
+        </span>
+      </em>
+    </a>
+    <div
+      className="header__searchbar"
+    >
+      <SearchBar
+        classModifier="search"
+        initialSearchQuery="anything"
+      />
     </div>
-  </header>,
-  <Drawer
-    activeTab="How to use this"
-    isExpanded={false}
-    onClose={[Function]}
-  />,
-]
+    <UserNav />
+  </div>
+</header>
 `;
