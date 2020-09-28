@@ -112,10 +112,6 @@ export class FoundationFetcher {
     }
   }
 
-  static async index(): Promise<FT.FactLink[]> {
-    throw "Not implemented";
-  }
-
   static async justOneDocument(
     factHash: string
   ): Promise<FT.DocumentFactContent> {
