@@ -1,98 +1,110 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`UserNavView logged in - no username 1`] = `
-<DropDown
-  classModifier="usernav"
-  disabled={false}
-  dropdownPosition="BL"
-  toggleText={
-    <React.Fragment>
-      <ChevronDown />
-      samples@email.com
-    </React.Fragment>
-  }
+<div
+  className="header__usernav"
 >
-  <ul
-    className="usernav__list"
+  <DropDown
+    classModifier="usernav"
+    disabled={false}
+    dropdownPosition="BL"
+    toggleText={
+      <React.Fragment>
+        <ChevronDown />
+        samples@email.com
+      </React.Fragment>
+    }
   >
-    <li
-      className="usernav__list-item"
+    <ul
+      className="usernav__list"
     >
-      <a
-        className="usernav__link"
-        href="/my?tab=bookmarks"
+      <li
+        className="usernav__list-item"
       >
-        Bookmarks
-      </a>
-    </li>
-    <li
-      className="usernav__list-item"
-    >
-      <a
-        className="usernav__link"
-        href="/logout"
+        <a
+          className="usernav__link"
+          href="/my?tab=bookmarks"
+        >
+          Bookmarks
+        </a>
+      </li>
+      <li
+        className="usernav__list-item"
       >
-        Logout
-      </a>
-    </li>
-  </ul>
-</DropDown>
+        <a
+          className="usernav__link"
+          href="/logout"
+        >
+          Logout
+        </a>
+      </li>
+    </ul>
+  </DropDown>
+</div>
 `;
 
 exports[`UserNavView logged in 1`] = `
-<DropDown
-  classModifier="usernav"
-  disabled={false}
-  dropdownPosition="BL"
-  toggleText={
-    <React.Fragment>
-      <ChevronDown />
-      samples
-    </React.Fragment>
-  }
+<div
+  className="header__usernav"
 >
-  <ul
-    className="usernav__list"
+  <DropDown
+    classModifier="usernav"
+    disabled={false}
+    dropdownPosition="BL"
+    toggleText={
+      <React.Fragment>
+        <ChevronDown />
+        samples
+      </React.Fragment>
+    }
   >
-    <li
-      className="usernav__list-item"
+    <ul
+      className="usernav__list"
     >
-      <a
-        className="usernav__link"
-        href="/samples?tab=bookmarks"
+      <li
+        className="usernav__list-item"
       >
-        Bookmarks
-      </a>
-    </li>
-    <li
-      className="usernav__list-item"
-    >
-      <a
-        className="usernav__link"
-        href="/logout"
+        <a
+          className="usernav__link"
+          href="/samples?tab=bookmarks"
+        >
+          Bookmarks
+        </a>
+      </li>
+      <li
+        className="usernav__list-item"
       >
-        Logout
-      </a>
-    </li>
-  </ul>
-</DropDown>
+        <a
+          className="usernav__link"
+          href="/logout"
+        >
+          Logout
+        </a>
+      </li>
+    </ul>
+  </DropDown>
+</div>
 `;
 
 exports[`UserNavView logged out 1`] = `
-<DropDown
-  classModifier="usernav"
-  disabled={true}
-  dropdownPosition="BL"
-  toggleText={
-    <a
-      href="/login"
-    >
-      Login
-    </a>
-  }
+<div
+  className="header__usernav"
 >
-  <ul
-    className="usernav__list"
-  />
-</DropDown>
+  <DropDown
+    classModifier="usernav"
+    disabled={true}
+    dropdownPosition="BL"
+    toggleText={
+      <a
+        href="/login"
+      >
+        Login
+      </a>
+    }
+  >
+    <ul
+      className="usernav__list"
+    />
+  </DropDown>
+</div>
 `;

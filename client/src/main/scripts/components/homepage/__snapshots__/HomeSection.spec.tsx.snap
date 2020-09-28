@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`HomeSection 1`] = `
+<section
+  className="home__section"
+>
+  <div
+    className="home__section-content"
+  />
+</section>
+`;

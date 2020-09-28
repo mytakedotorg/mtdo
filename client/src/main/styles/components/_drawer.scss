@@ -1,0 +1,42 @@
+.drawer {
+  position: absolute;
+  top: 40px;
+  left: 0;
+  right: 0;
+  overflow: hidden;
+  height: 4000px;
+  max-height: 0;
+  transition: max-height 0.2s ease;
+  z-index: 30;
+  background-color: white;
+}
+.drawer--visible {
+  // max-height: 400px; // defined in JS
+  border-bottom: 1px solid black;
+  box-shadow: 0 6px 5px 0 rgba(0, 0, 0, 0.7);
+}
+.drawer__overlay {
+  position: fixed;
+  display: none;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: black;
+  opacity: 0;
+  z-index: 5;
+}
+.drawer__overlay--visible {
+  opacity: 0.5;
+  display: initial;
+}
+.drawer__scroller {
+  max-height: 100%;
+  overflow-y: scroll;
+}
+.drawer__contents {
+  width: 768px;
+  max-width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}

@@ -34,16 +34,18 @@ import com.diffplug.common.collect.Iterables;
 import com.google.gson.reflect.TypeToken;
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Arrays;
+import java.util.Base64;
 import java.util.Comparator;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import java2ts.FT;
-import java2ts.FT.FactLink;
+import org.eclipse.jgit.util.sha1.SHA1;
 import org.gradle.api.Action;
 import org.gradle.api.DefaultTask;
 import org.gradle.api.GradleException;
@@ -90,6 +92,7 @@ public class MtdoFactset {
 	}
 
 	public String title;
+	public String id;
 	public Action<VideoCfg> videoCfg;
 	public Action<DocumentCfg> documentCfg = document -> {};
 
@@ -151,6 +154,12 @@ public class MtdoFactset {
 
 		@TaskAction
 		public void performAction(InputChanges inputs) throws Exception {
+			if (setup.id == null) {
+				throw new IllegalArgumentException("id must not be null, recommend https://github.com/mytakedotorg/<id>");
+			}
+			if (setup.title == null) {
+				throw new IllegalArgumentException("title must not be null, recommend something like 'U.S. Presidential Debates'");
+			}
 			// configure the video settings
 			VideoCfg video = new VideoCfg();
 			setup.videoCfg.execute(video);
@@ -201,8 +210,12 @@ public class MtdoFactset {
 			grind.grind(changed, buildJson);
 			GitJson.write(buildJson).toPretty(new File(sausageDir, "build.json"));
 			// write out the index
-			List<FactLink> factLinks = grind.buildIndex(sausageDir.toPath());
-			GitJson.write(factLinks).toCompact(new File(sausageDir, "index.json"));
+			FT.FactsetIndex index = new FT.FactsetIndex();
+			index.title = setup.title;
+			index.id = setup.id;
+
+			grind.buildIndex(index, sausageDir.toPath());
+			GitJson.write(index).toCompact(new File(sausageDir, "index.json"));
 			// generate any warnings
 			GrindLogic.Validator validator = grind.validator();
 			for (Map.Entry<String, String> entry : buildJson.entrySet()) {
@@ -234,5 +247,24 @@ public class MtdoFactset {
 			return path;
 		}
 		return path.substring(0, idx);
+	}
+
+	/**
+	 * Takes the SHA1 hash of the 'id' field of the factset,
+	 * then truncates to only the first 5 bytes, then calls
+	 * `Base64.getUrlEncoder().encodeToString` which returns
+	 * something that looks like `E74aoUY=` (always ends in an equals).
+	 */
+	static String factsetIdHash(FT.FactsetIndex index) {
+		SHA1 sha = SHA1.newInstance();
+		sha.update(index.id.getBytes(StandardCharsets.UTF_8));
+		byte[] bytes = sha.digest();
+		// base64 encodes 3 bytes into 4 ascii characters
+		// and if you have 2 bytes leftover, then it pads an `=`
+		// so with 5 bytes, you have 40 bits, and 1e12 is plenty,
+		// and `=` is a nice human-friendly separator
+		int numBlocks = 1;
+		byte[] trimmed = Arrays.copyOf(bytes, numBlocks * 3 + 2);
+		return Base64.getUrlEncoder().encodeToString(trimmed);
 	}
 }

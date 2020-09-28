@@ -38,10 +38,6 @@ body {
   background-color: #fff;
   position: relative;
   z-index: 1;
-  float: left;
-  @include clearfix;
-  margin-left: auto;
-  margin-right: auto;
   width: 100%;
 }
 html {

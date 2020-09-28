@@ -55,7 +55,7 @@ function imageTextCut(
   return <div className="todo"></div>;
 }
 
-function imageVideoCut(
+export function imageVideoCut(
   social: VideoCut,
   fact: FT.VideoFactContent,
   customClass: string = ""
