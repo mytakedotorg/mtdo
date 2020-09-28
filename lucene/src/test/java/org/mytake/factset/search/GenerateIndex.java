@@ -23,6 +23,7 @@ import com.diffplug.common.base.Preconditions;
 import com.diffplug.common.collect.ImmutableMap;
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -69,7 +70,12 @@ public class GenerateIndex {
 				String sha = factset.getValue();
 				FT.FactsetIndex index;
 				try (Response res = get(client, "https://raw.githubusercontent.com/mytakedotorg/" + repo + "/" + sha + "/sausage/index.json")) {
-					index = JsonMisc.fromJson(res.body().bytes(), FT.FactsetIndex.class);
+					byte[] body = res.body().bytes();
+					try {
+						index = JsonMisc.fromJson(body, FT.FactsetIndex.class);
+					} catch (Exception e) {
+						throw new IllegalArgumentException(new String(body, StandardCharsets.UTF_8), e);
+					}
 				}
 				for (FactLink factLink : index.facts) {
 					try (Response res = get(client, "https://mytake.org/api/fact/" + factLink.hash)) {
