@@ -4,9 +4,11 @@
   left: 0;
   right: 0;
   height: 40px;
+  max-height: 0px;
   transform: translateY(40px);
   transition: transform 0.2s linear;
   &.tabs--visible {
+    max-height: 40px;
     transform: translateY(0);
   }
   z-index: 20;
