@@ -20,7 +20,6 @@
 package org.mytake.factset.search;
 
 import com.diffplug.common.base.Preconditions;
-import com.diffplug.common.collect.ImmutableList;
 import com.diffplug.common.collect.ImmutableMap;
 import com.google.gson.reflect.TypeToken;
 import java.io.File;
@@ -40,8 +39,6 @@ import org.mytake.factset.JsonMisc;
 import org.mytake.factset.video.VideoFactContentJava;
 
 public class GenerateIndex {
-	public static ImmutableList<String> REPOS = ImmutableList.of("us-founding-documents", "us-presidential-debates");
-
 	public static void main(String[] args) throws IOException {
 		Path luceneTemp;
 		Map<String, String> repoToSha;
@@ -49,7 +46,7 @@ public class GenerateIndex {
 			luceneTemp = Files.createTempDirectory("mytake-lucene");
 			repoToSha = ImmutableMap.of(
 					"us-presidential-debates",
-					"a68e1678482f113854dd0f7f82ef50ff142bc04b");
+					"a3ce5d43ce931858345b22d25d35344e0228e123");
 		} else {
 			luceneTemp = Paths.get(args[0]);
 			Preconditions.checkArgument(args.length % 2 == 1);
@@ -72,14 +69,12 @@ public class GenerateIndex {
 			for (Map.Entry<String, String> factset : repoToSha.entrySet()) {
 				String repo = factset.getKey();
 				String sha = factset.getValue();
-				List<FactLink> factLinks;
+				FT.FactsetIndex index;
 				try (Response res = get(client, "https://raw.githubusercontent.com/mytakedotorg/" + repo + "/" + sha + "/sausage/index.json")) {
-					factLinks = JsonMisc.fromJson(res.body().bytes(), FACTLINKS);
+					index = JsonMisc.fromJson(res.body().bytes(), FT.FactsetIndex.class);
 				}
-				int id = REPOS.indexOf(repo);
-				for (FactLink factLink : factLinks) {
-					try (Response res = get(client, "https://mytake.org/api/fact/" + id + "/" + factLink.hash)) {
-						System.out.println("for " + factLink.fact.title);
+				for (FactLink factLink : index.facts) {
+					try (Response res = get(client, "https://mytake.org/api/fact/" + factLink.hash)) {
 						FT.VideoFactContentEncoded encoded = JsonMisc.fromJson(res.body().bytes(), FT.VideoFactContentEncoded.class);
 						writer.writeVideo(factLink.hash, VideoFactContentJava.decode(encoded));
 					}
