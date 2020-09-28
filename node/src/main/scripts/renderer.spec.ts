@@ -25,7 +25,7 @@ expect.extend({ toMatchImageSnapshot });
 
 test("render single videoCut", async (done) => {
   const buffer = await RenderQueue.render(
-    "cut:!(2007.9000244140625,2046.1099853515625),fact:oZVEQzZXVzx3lM_PbszcA35XYBJxEDHwJirpx1c7hhg=,kind:videoCut",
+    "cut:!(2007.9000244140625,2046.1099853515625),fact:E74aoUY=31c55b20cc10bdfe9b10ce1fbc3d9b3f3bf01098,kind:videoCut",
     "facebook"
   );
   expect(buffer).toMatchImageSnapshot(imgDiffCfg);
@@ -36,7 +36,7 @@ test("render bad videoCut", async (done) => {
   expect.assertions(1);
   try {
     await RenderQueue.render(
-      "cut:!(2007.9000244140625,2046.1099853515625),fact:OZVEQzZXVzx3lM_PbszcA35XYBJxEDHwJirpx1c7hhg=,kind:videoCut",
+      "cut:!(2007.9000244140625,2046.1099853515625),fact:E74aoUY=31c75b20cc10bdfe9b10ce1fbc3d9b3f3bf01098,kind:videoCut",
       "facebook"
     );
   } catch (err) {
@@ -48,13 +48,13 @@ test("render bad videoCut", async (done) => {
 test("render multiple videoCut", async (done) => {
   // search cuba, and grab the first clip from each debate
   const toRender = [
-    "cut:!(126.6500015258789,143.9080047607422),fact:MBVzjTZAKHFuPK9SuhQsgLAr2lRRfy-rViIro-44yuw=,kind:videoCut",
-    "cut:!(1160.0799560546875,1171.5899658203125),fact:'9cFc_25JugYqu19HfSQdfgadl0LX4Qg_WcXOH9zBoAo=',kind:videoCut",
-    "cut:!(666.4299926757812,679.3599853515625),fact:tF28zRtglq6ZSgnYjC4oDfx8Ld68kK8cs6CfX6xukkI=,kind:videoCut",
-    "cut:!(4725.0498046875,4796.17919921875),fact:YWNE_-DOv-dDMrppTEm9eeGmfhAbcrBMDMXUe3aWU7A=,kind:videoCut",
-    "cut:!(322.2699890136719,344.3800048828125),fact:O_X9UPU_D3q1UbQ1EdlfzL1QytBu6BAA2lNaYwLwjM0=,kind:videoCut",
-    "cut:!(2409.35009765625,2416.639892578125),fact:KIrlje7ZKQM8ujNt-ikGEW_goD_c3Yz1zWwMsKGsipk=,kind:videoCut",
-    "cut:!(80.46900177001953,113.04000091552734),fact:HTRxrXaUzuW1NNhfUVCi9Gwl_VZWzSAudlXjqny6udM=,kind:videoCut",
+    "cut:!(126.6500015258789,143.9080047607422),fact:E74aoUY=a474ae4ad13f23d65adfe1dab1b08dbad93aaca9,kind:videoCut",
+    "cut:!(1160.0799560546875,1171.5899658203125),fact:E74aoUY=2800243f94261dc6b850e78e05e139c64b590c39,kind:videoCut",
+    "cut:!(666.4299926757812,679.3599853515625),fact:E74aoUY=44e8653d9041525dc9300dec6ec3a0842bd8151c,kind:videoCut",
+    "cut:!(4725.0498046875,4796.17919921875),fact:E74aoUY=5d6720abf4fb5e1e6d2d6ff48e0b5b8103096d84,kind:videoCut",
+    "cut:!(322.2699890136719,344.3800048828125),fact:E74aoUY=7bacba0463e8d70c604704bbb4f1a44110bffc0a,kind:videoCut",
+    "cut:!(2409.35009765625,2416.639892578125),fact:E74aoUY=822ad8fc57b4a1591bac01adbd68996e1ee9ba77,kind:videoCut",
+    "cut:!(80.46900177001953,113.04000091552734),fact:E74aoUY=38881d91c3201cbfe89f4f3be3ffee3dcc62d4a8,kind:videoCut"
   ];
   const promises = toRender.map((rison) =>
     RenderQueue.render(rison, "facebook")

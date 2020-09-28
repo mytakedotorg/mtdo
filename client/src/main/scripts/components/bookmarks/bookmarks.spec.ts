@@ -28,7 +28,7 @@ import { cutToTurn, turnToCut } from "../../common/video";
 
 const turn: VideoTurn = {
   cut: [0, 13],
-  fact: "GbeeimPkwH38zIwu7kYGmQ6NyE9PgBVYVKfYoiVilFI=",
+  fact: "E74aoUY=e57bb551092196eedf8c157d000f26660084e1c2",
   kind: "videoTurn",
   turn: 45,
 };

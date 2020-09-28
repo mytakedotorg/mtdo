@@ -27,7 +27,7 @@ expect.extend({ toMatchImageSnapshot });
 
 test("videoCut headers", async (done) => {
   const response = await request(underTest).get(
-    "/static/social-header/cut:!(2007.9000244140625,2046.1099853515625),fact:oZVEQzZXVzx3lM_PbszcA35XYBJxEDHwJirpx1c7hhg=,kind:videoCut"
+    "/static/social-header/cut:!(2007.9000244140625,2046.1099853515625),fact:E74aoUY=31c55b20cc10bdfe9b10ce1fbc3d9b3f3bf01098,kind:videoCut"
   );
   expect(response.statusCode).toBe(200);
   expect(response.type).toBe("text/plain");
@@ -37,14 +37,14 @@ test("videoCut headers", async (done) => {
 
 test("videoCut headers 404 invalid hash", async (done) => {
   expect404(
-    "/static/social-header/cut:!(2007.9000244140625,2046.1099853515625),fact:OZVEQzZXVzx3lM_PbszcA35XYBJxEDHwJirpx1c7hhg=,kind:videoCut",
+    "/static/social-header/cut:!(2007.9000244140625,2046.1099853515625),fact:E74aoUY=31c55b20dc10bdfe9b10ce1fbc3d9b3f3bf01098,kind:videoCut",
     done
   );
 });
 
 test("videoCut image", async (done) => {
   const response = await request(underTest).get(
-    "/static/social-image/cut:!(2007.9000244140625,2046.1099853515625),fact:oZVEQzZXVzx3lM_PbszcA35XYBJxEDHwJirpx1c7hhg=,kind:videoCut.png"
+    "/static/social-image/cut:!(2007.9000244140625,2046.1099853515625),fact:E74aoUY=31c55b20cc10bdfe9b10ce1fbc3d9b3f3bf01098,kind:videoCut.png"
   );
   expect(response.statusCode).toBe(200);
   expect(response.type).toBe("image/png");
@@ -54,7 +54,7 @@ test("videoCut image", async (done) => {
 
 test("videoCut image twitter", async (done) => {
   const response = await request(underTest).get(
-    "/static/social-image-twitter/cut:!(2007.9000244140625,2046.1099853515625),fact:oZVEQzZXVzx3lM_PbszcA35XYBJxEDHwJirpx1c7hhg=,kind:videoCut.png"
+    "/static/social-image-twitter/cut:!(2007.9000244140625,2046.1099853515625),fact:E74aoUY=31c55b20cc10bdfe9b10ce1fbc3d9b3f3bf01098,kind:videoCut.png"
   );
   expect(response.statusCode).toBe(200);
   expect(response.type).toBe("image/png");
@@ -64,7 +64,7 @@ test("videoCut image twitter", async (done) => {
 
 test("videoCut image 404 invalid hash", async (done) => {
   expect404(
-    "/static/social-image/cut:!(2007.9000244140625,2046.1099853515625),fact:OZVEQzZXVzx3lM_PbszcA35XYBJxEDHwJirpx1c7hhg=,kind:videoCut.png",
+    "/static/social-image/cut:!(2007.9000244140625,2046.1099853515625),fact:E74aoUY=31h5b20cc10bdfe9b10ce1fbc3d9b3f3bf01098,kind:videoCut.png",
     done
   );
 });

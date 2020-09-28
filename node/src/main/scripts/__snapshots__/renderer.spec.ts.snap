@@ -1,3 +1,3 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`render bad videoCut 1`] = `"Expected cut:!(2007.9000244140625,2046.1099853515625),fact:OZVEQzZXVzx3lM_PbszcA35XYBJxEDHwJirpx1c7hhg=,kind:videoCut but was Failed to load resource: the server responded with a status of 404 ()"`;
+exports[`render bad videoCut 1`] = `"Expected cut:!(2007.9000244140625,2046.1099853515625),fact:E74aoUY=31c75b20cc10bdfe9b10ce1fbc3d9b3f3bf01098,kind:videoCut but was Failed to load resource: the server responded with a status of 500 ()"`;
