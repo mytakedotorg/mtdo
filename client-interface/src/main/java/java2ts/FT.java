@@ -36,11 +36,6 @@ public interface FT {
 	}
 
 	@jsweet.lang.Interface
-	public class IndexPointer {
-		public String hash;
-	}
-
-	@jsweet.lang.Interface
 	public class FactsetIndex {
 		/** The headline-friendly title. */
 		public String title;

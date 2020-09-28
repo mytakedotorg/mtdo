@@ -21,14 +21,12 @@ package org.mytake.factset.search;
 
 import com.diffplug.common.base.Preconditions;
 import com.diffplug.common.collect.ImmutableMap;
-import com.google.gson.reflect.TypeToken;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import java2ts.FT;
 import java2ts.FT.FactLink;
@@ -86,6 +84,4 @@ public class GenerateIndex {
 	private static okhttp3.Response get(OkHttpClient client, String url) throws IOException {
 		return client.newCall(new okhttp3.Request.Builder().url(url).build()).execute();
 	}
-
-	private static final TypeToken<List<FactLink>> FACTLINKS = new TypeToken<List<FactLink>>() {};
 }
