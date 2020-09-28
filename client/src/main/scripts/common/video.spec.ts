@@ -17,7 +17,7 @@
  *
  * You can contact us at team@mytake.org
  */
-import { FoundationFetcher } from "./foundation";
+import { Foundation } from "./foundation";
 import { VideoTurn } from "./social/social";
 import { cutToTurn, turnToCut } from "./video";
 
@@ -29,7 +29,7 @@ const turn: VideoTurn = {
 };
 
 test("turnToCut then cutToTurn", async () => {
-  const videoFact = await FoundationFetcher.justOneVideo(turn.fact);
+  const videoFact = await Foundation.justOneVideo(turn.fact);
   const cut = turnToCut(turn, videoFact);
   expect(cutToTurn(cut, videoFact)).toEqual(turn);
 });

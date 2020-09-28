@@ -22,7 +22,7 @@ import {
   bookmarkToIntermediate,
   intermediateToBookmark,
 } from "./bookmarks";
-import { FoundationFetcher } from "../../common/foundation";
+import { Foundation } from "../../common/foundation";
 import { ClipRange, VideoTurn } from "../../common/social/social";
 import { cutToTurn, turnToCut } from "../../common/video";
 
@@ -34,7 +34,7 @@ const turn: VideoTurn = {
 };
 
 test("bookmarkToIntermediate then intermediateToBookmark", async () => {
-  const videoFact = await FoundationFetcher.justOneVideo(turn.fact);
+  const videoFact = await Foundation.justOneVideo(turn.fact);
   const bookmark: Bookmark = {
     content: turnToCut(turn, videoFact),
     savedAt: new Date(),
@@ -50,7 +50,7 @@ test("bookmarkToIntermediate then intermediateToBookmark", async () => {
 });
 
 test("turnToCut then cutToTurn with bookmark", async () => {
-  const videoFact = await FoundationFetcher.justOneVideo(turn.fact);
+  const videoFact = await Foundation.justOneVideo(turn.fact);
   const bookmark = {
     content: turnToCut(turn, videoFact),
     savedAt: new Date(),

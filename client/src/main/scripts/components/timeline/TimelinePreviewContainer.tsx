@@ -18,7 +18,7 @@
  * You can contact us at team@mytake.org
  */
 import React, { useEffect, useState } from "react";
-import { FoundationFetcher } from "../../common/foundation";
+import { Foundation } from "../../common/foundation";
 import { PreviewSocial } from "../../common/social/social";
 import { FT } from "../../java2ts/FT";
 import { SetFactHandlers } from "./TimelinePreview";
@@ -45,7 +45,7 @@ const TimelinePreviewContainer: React.FC<TimelinePreviewContainerProps> = ({
 
   useEffect(() => {
     const getFact = async (factHash: string) => {
-      const factContent = await FoundationFetcher.justOneFact(factHash);
+      const factContent = await Foundation.justOneFact(factHash);
       setState({
         loading: false,
         factContent,

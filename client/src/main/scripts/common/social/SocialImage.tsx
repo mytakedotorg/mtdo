@@ -18,7 +18,7 @@
  * You can contact us at team@mytake.org
  */
 import * as React from "react";
-import { FoundationFetcher } from "../../common/foundation";
+import { Foundation } from "../../common/foundation";
 import { getCut } from "../../common/video";
 import { FT } from "../../java2ts/FT";
 import { abbreviate } from "../functions";
@@ -32,19 +32,16 @@ export async function socialImage(
     case "textCut":
       return imageTextCut(
         social,
-        await FoundationFetcher.justOneDocument(social.fact)
+        await Foundation.justOneDocument(social.fact)
       );
     case "videoCut":
       return imageVideoCut(
         social,
-        await FoundationFetcher.justOneVideo(social.fact),
+        await Foundation.justOneVideo(social.fact),
         customClass
       );
     case "factUncut":
-      return imageFactUncut(
-        social,
-        await FoundationFetcher.justOneFact(social.fact)
-      );
+      return imageFactUncut(social, await Foundation.justOneFact(social.fact));
   }
 }
 

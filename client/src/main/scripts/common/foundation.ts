@@ -53,6 +53,28 @@ export class Foundation {
     }
     throw `Content of hash ${hash} is not loaded.`;
   }
+
+  static async justOneDocument(
+    factHash: string
+  ): Promise<FT.DocumentFactContent> {
+    const builder = new FoundationFetcher();
+    builder.add(factHash);
+    return (await builder.build()).getDocument(factHash);
+  }
+
+  static async justOneFact(
+    factHash: string
+  ): Promise<FT.VideoFactContent | FT.DocumentFactContent> {
+    const builder = new FoundationFetcher();
+    builder.add(factHash);
+    return (await builder.build()).getFactContent(factHash);
+  }
+
+  static async justOneVideo(factHash: string): Promise<FT.VideoFactContent> {
+    const builder = new FoundationFetcher();
+    builder.add(factHash);
+    return (await builder.build()).getVideo(factHash);
+  }
 }
 
 type VideoContent = FT.VideoFactContent | FT.VideoFactContentEncoded;
@@ -110,27 +132,5 @@ export class FoundationFetcher {
     } else {
       return factContent as FT.DocumentFactContent;
     }
-  }
-
-  static async justOneDocument(
-    factHash: string
-  ): Promise<FT.DocumentFactContent> {
-    const builder = new FoundationFetcher();
-    builder.add(factHash);
-    return (await builder.build()).getDocument(factHash);
-  }
-
-  static async justOneFact(
-    factHash: string
-  ): Promise<FT.VideoFactContent | FT.DocumentFactContent> {
-    const builder = new FoundationFetcher();
-    builder.add(factHash);
-    return (await builder.build()).getFactContent(factHash);
-  }
-
-  static async justOneVideo(factHash: string): Promise<FT.VideoFactContent> {
-    const builder = new FoundationFetcher();
-    builder.add(factHash);
-    return (await builder.build()).getVideo(factHash);
   }
 }

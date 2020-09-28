@@ -18,7 +18,7 @@
  * You can contact us at team@mytake.org
  */
 import * as React from "react";
-import { FoundationFetcher } from "../common/foundation";
+import { Foundation } from "../common/foundation";
 import { slugify } from "../common/functions";
 import { DraftPost } from "../java2ts/DraftPost";
 import { DraftRev } from "../java2ts/DraftRev";
@@ -374,7 +374,7 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
           let imageUrl: string;
           if (firstFact) {
             if (firstFact.kind === "document") {
-              const fact = await FoundationFetcher.justOneDocument(
+              const fact = await Foundation.justOneDocument(
                 firstFact.excerptId
               );
               const hRange = firstFact.highlightedRange;
@@ -384,9 +384,7 @@ class BlockWriter extends React.Component<BlockWriterProps, BlockWriterState> {
               }_${vRange[0]}-${vRange[1]}.png`;
               this.publishTake(draftPost);
             } else if (firstFact.kind === "video") {
-              const fact = await FoundationFetcher.justOneDocument(
-                firstFact.videoId
-              );
+              const fact = await Foundation.justOneDocument(firstFact.videoId);
               const rangeUrl = firstFact.range
                 ? `_${firstFact.range[0]}-${firstFact.range[1]}`
                 : "";

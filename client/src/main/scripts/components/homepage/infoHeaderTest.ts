@@ -17,19 +17,19 @@
  *
  * You can contact us at team@mytake.org
  */
-import { FoundationFetcher } from "../../common/foundation";
+import { Foundation } from "../../common/foundation";
 import { imageVideoCut } from "../../common/social/SocialImage";
 import { HomeSocials, SOCIAL_CLINTON, SOCIAL_TRUMP } from "./infoHeader";
 
 export const useSocialsMock = async (): Promise<HomeSocials> => ({
   leftSocial: imageVideoCut(
     SOCIAL_CLINTON,
-    await FoundationFetcher.justOneVideo(SOCIAL_CLINTON.fact),
+    await Foundation.justOneVideo(SOCIAL_CLINTON.fact),
     "home"
   ),
   rightSocial: imageVideoCut(
     SOCIAL_TRUMP,
-    await FoundationFetcher.justOneVideo(SOCIAL_TRUMP.fact),
+    await Foundation.justOneVideo(SOCIAL_TRUMP.fact),
     "home"
   ),
 });
