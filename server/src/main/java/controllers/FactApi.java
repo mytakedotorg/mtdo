@@ -55,11 +55,13 @@ public class FactApi implements Jooby.Module {
 			byte[] contentGitFriendly = repoSha(repo, sha);
 			// recondense the json
 			String content = recondense(new String(contentGitFriendly, StandardCharsets.UTF_8));
-			return Results.json(content).header("Cache-Control",
-					"max-age=31536000", // one year https://stackoverflow.com/a/25201898/1153071
-					"public", // any cache may store the response
-					"no-transform", // don't muck with it at all
-					"immutable" // it will never change at all for sure
+			return Results.json(content)
+					.header("Access-Control-Allow-Origin", "*")
+					.header("Cache-Control",
+							"max-age=31536000", // one year https://stackoverflow.com/a/25201898/1153071
+							"public", // any cache may store the response
+							"no-transform", // don't muck with it at all
+							"immutable" // it will never change at all for sure
 			);
 		});
 	}
