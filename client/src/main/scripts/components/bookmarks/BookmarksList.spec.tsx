@@ -19,7 +19,7 @@
  */
 import React from "react";
 import renderer from "react-test-renderer";
-import { FoundationHarness } from "../../common/foundationTest";
+import { Foundation, FoundationFetcher } from "../../common/foundation";
 import {
   Bookmark,
   BookmarksMode,
@@ -29,6 +29,14 @@ import {
 import BookmarksList, { BookmarksListEventHandlers } from "./BookmarksList";
 import { BookmarksResultListProps } from "./BookmarksResultList";
 import samplebookmarks from "./testData/samplebookmarks.json";
+
+async function getFacts(): Promise<Foundation> {
+  const fetcher = new FoundationFetcher();
+  samplebookmarks.bookmarks.forEach((element) => {
+    fetcher.add(element.fact);
+  });
+  return fetcher.build();
+}
 
 jest.mock("./BookmarksSortBy", () => ({
   __esModule: true,
@@ -52,10 +60,10 @@ const eventHandlers: BookmarksListEventHandlers = {
   onConfirmRemoval: jest.fn(),
 };
 
-test("BookmarksList date happened", () => {
+test("BookmarksList date happened", async () => {
   const result = _bookmarksImpl(
     new _BookmarksWithData(
-      FoundationHarness.loadAllFromDisk(),
+      await getFacts(),
       BookmarksMode.DateHappened,
       samplebookmarks.bookmarks
     )
@@ -74,10 +82,10 @@ test("BookmarksList date happened", () => {
   expect(tree).toMatchSnapshot();
 });
 
-test("BookmarksList date bookmarked", () => {
+test("BookmarksList date bookmarked", async () => {
   const result = _bookmarksImpl(
     new _BookmarksWithData(
-      FoundationHarness.loadAllFromDisk(),
+      await getFacts(),
       BookmarksMode.DateBookmarked,
       samplebookmarks.bookmarks
     )
@@ -96,10 +104,10 @@ test("BookmarksList date bookmarked", () => {
   expect(tree).toMatchSnapshot();
 });
 
-test("BookmarksList no results", () => {
+test("BookmarksList no results", async () => {
   const result = _bookmarksImpl(
     new _BookmarksWithData(
-      FoundationHarness.loadAllFromDisk(),
+      await new FoundationFetcher().build(),
       BookmarksMode.DateHappened,
       []
     )
@@ -118,10 +126,10 @@ test("BookmarksList no results", () => {
   expect(tree).toMatchSnapshot();
 });
 
-test("BookmarksList date happened - one marked for removal", () => {
+test("BookmarksList date happened - one marked for removal", async () => {
   const result = _bookmarksImpl(
     new _BookmarksWithData(
-      FoundationHarness.loadAllFromDisk(),
+      await getFacts(),
       BookmarksMode.DateHappened,
       samplebookmarks.bookmarks
     )

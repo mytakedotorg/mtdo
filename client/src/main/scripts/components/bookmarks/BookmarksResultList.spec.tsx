@@ -19,7 +19,7 @@
  */
 import React from "react";
 import renderer from "react-test-renderer";
-import { FoundationHarness } from "../../common/foundationTest";
+import { Foundation, FoundationFetcher } from "../../common/foundation";
 import { VideoResultProps } from "../shared/VideoResult";
 import { BookmarksMode, _bookmarksImpl, _BookmarksWithData } from "./bookmarks";
 import BookmarksResultList, {
@@ -45,10 +45,18 @@ const eventHandlers: BookmarksResultListEventHandlers = {
   onUndoRemoveBookmark: jest.fn(),
 };
 
-test("BookmarksResultList DateHappened", () => {
+async function getFacts(): Promise<Foundation> {
+  const fetcher = new FoundationFetcher();
+  samplebookmarks.bookmarks.forEach((element) => {
+    fetcher.add(element.fact);
+  });
+  return fetcher.build();
+}
+
+test("BookmarksResultList DateHappened", async () => {
   const result = _bookmarksImpl(
     new _BookmarksWithData(
-      FoundationHarness.loadAllFromDisk(),
+      await getFacts(),
       BookmarksMode.DateHappened,
       samplebookmarks.bookmarks
     )
@@ -66,10 +74,10 @@ test("BookmarksResultList DateHappened", () => {
   expect(tree).toMatchSnapshot();
 });
 
-test("BookmarksResultList DateBookmarked", () => {
+test("BookmarksResultList DateBookmarked", async () => {
   const result = _bookmarksImpl(
     new _BookmarksWithData(
-      FoundationHarness.loadAllFromDisk(),
+      await getFacts(),
       BookmarksMode.DateBookmarked,
       samplebookmarks.bookmarks
     )
@@ -87,13 +95,9 @@ test("BookmarksResultList DateBookmarked", () => {
   expect(tree).toMatchSnapshot();
 });
 
-test("BookmarksResultList no results", () => {
+test("BookmarksResultList no results", async () => {
   const result = _bookmarksImpl(
-    new _BookmarksWithData(
-      FoundationHarness.loadAllFromDisk(),
-      BookmarksMode.DateHappened,
-      []
-    )
+    new _BookmarksWithData(await getFacts(), BookmarksMode.DateHappened, [])
   );
 
   const tree = renderer

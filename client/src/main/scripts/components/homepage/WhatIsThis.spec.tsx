@@ -28,8 +28,8 @@ jest.mock("./HomeSection", () => ({
   default: "HomeSection",
 }));
 
-test("WhatIsThis", () => {
-  const { leftSocial, rightSocial } = useSocialsMock();
+test("WhatIsThis", async () => {
+  const { leftSocial, rightSocial } = await useSocialsMock();
   const tree = renderer
     .create(<WhatIsThis leftSocial={leftSocial} rightSocial={rightSocial} />)
     .toJSON();
