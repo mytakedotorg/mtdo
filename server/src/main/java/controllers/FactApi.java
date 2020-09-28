@@ -29,6 +29,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java2ts.GhBlob;
 import java2ts.Routes;
+import okhttp3.Credentials;
 import okhttp3.OkHttpClient;
 import org.jooby.Env;
 import org.jooby.Jooby;
@@ -39,8 +40,18 @@ public class FactApi implements Jooby.Module {
 	/** Requests are allowed for only the given factsets. */
 	protected static ImmutableMap<String, String> ALLOWED_FACTSETS = ImmutableMap.of("E74aoUY", "us-presidential-debates");
 
+	private String githubAuth;
+
 	@Override
 	public void configure(Env env, Config conf, Binder binder) throws Throwable {
+		String githubUser = System.getProperty("GITHUB_USER");
+		if (githubUser != null) {
+			String githubSecret = System.getProperty("GITHUB_SECRET");
+			if (githubSecret != null) {
+				githubAuth = Credentials.basic(githubUser, githubSecret);
+			}
+		}
+
 		env.router().get(Routes.API_FACT + "/**", req -> {
 			String factHash = req.rawPath().substring(Routes.API_FACT.length() + 1);
 			if (factHash.length() != 48) {
@@ -68,10 +79,14 @@ public class FactApi implements Jooby.Module {
 	}
 
 	protected byte[] repoSha(String repo, String sha) throws IOException {
+		okhttp3.Request.Builder request = new okhttp3.Request.Builder()
+				.url("https://api.github.com/repos/mytakedotorg/" + repo + "/git/blobs/" + sha);
+		if (githubAuth != null) {
+			request = request.addHeader("Authorization", githubAuth);
+		}
+
 		OkHttpClient client = new OkHttpClient();
-		try (okhttp3.Response res = client.newCall(new okhttp3.Request.Builder()
-				.url("https://api.github.com/repos/mytakedotorg/" + repo + "/git/blobs/" + sha)
-				.build()).execute()) {
+		try (okhttp3.Response res = client.newCall(request.build()).execute()) {
 			if (res.code() == Status.NOT_FOUND.value()) {
 				throw RedirectException.notFoundError();
 			}
