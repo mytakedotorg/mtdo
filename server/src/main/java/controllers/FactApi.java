@@ -33,6 +33,7 @@ import okhttp3.OkHttpClient;
 import org.jooby.Env;
 import org.jooby.Jooby;
 import org.jooby.Results;
+import org.jooby.Status;
 
 public class FactApi implements Jooby.Module {
 	/** Requests are allowed for only the given factsets. */
@@ -67,11 +68,13 @@ public class FactApi implements Jooby.Module {
 	}
 
 	protected byte[] repoSha(String repo, String sha) throws IOException {
-		// ask github
 		OkHttpClient client = new OkHttpClient();
 		try (okhttp3.Response res = client.newCall(new okhttp3.Request.Builder()
 				.url("https://api.github.com/repos/mytakedotorg/" + repo + "/git/blobs/" + sha)
 				.build()).execute()) {
+			if (res.code() == Status.NOT_FOUND.value()) {
+				throw RedirectException.notFoundError();
+			}
 			byte[] body = res.body().bytes();
 			try {
 				GhBlob blob = JsonIterator.deserialize(body, GhBlob.class);
@@ -80,7 +83,6 @@ public class FactApi implements Jooby.Module {
 				throw new IllegalArgumentException("Bad GitHub resoonse to: " + "https://api.github.com/repos/mytakedotorg/" + repo + "/git/blobs/" + sha + "\n\n" + new String(body, StandardCharsets.UTF_8), e);
 			}
 		}
-		// unpack github's wrapper
 	}
 
 	// From GitJson.recondense
