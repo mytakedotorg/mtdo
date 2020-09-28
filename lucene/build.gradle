@@ -46,3 +46,7 @@ tasks.register('generateIndex', JavaExec) {
 	outputs.cacheIf { true }
 }
 // spotless:on
+
+tasks.named('assemble') {
+	dependsOn('generateIndex')
+}
