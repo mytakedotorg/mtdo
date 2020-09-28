@@ -32,7 +32,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Bookmark extends TableImpl<BookmarkRecord> {
 
-    private static final long serialVersionUID = -73688440;
+    private static final long serialVersionUID = -876228604;
 
     /**
      * The reference instance of <code>public.bookmark</code>
@@ -60,7 +60,7 @@ public class Bookmark extends TableImpl<BookmarkRecord> {
     /**
      * The column <code>public.bookmark.fact</code>.
      */
-    public final TableField<BookmarkRecord, String> FACT = createField(DSL.name("fact"), org.jooq.impl.SQLDataType.CHAR(44).nullable(false), this, "");
+    public final TableField<BookmarkRecord, String> FACT = createField(DSL.name("fact"), org.jooq.impl.SQLDataType.CHAR(48).nullable(false), this, "");
 
     /**
      * The column <code>public.bookmark.cut_start</code>.
