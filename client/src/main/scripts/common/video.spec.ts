@@ -17,7 +17,7 @@
  *
  * You can contact us at team@mytake.org
  */
-import { FoundationHarness } from "./foundationTest";
+import { FoundationFetcher } from "./foundation";
 import { VideoTurn } from "./social/social";
 import { cutToTurn, turnToCut } from "./video";
 
@@ -27,10 +27,9 @@ const turn: VideoTurn = {
   kind: "videoTurn",
   turn: 45,
 };
-const foundation = FoundationHarness.loadAllFromDisk();
-const videoFact = foundation.getVideo(turn.fact);
 
-test("turnToCut then cutToTurn", () => {
+test("turnToCut then cutToTurn", async () => {
+  const videoFact = await FoundationFetcher.justOneVideo(turn.fact);
   const cut = turnToCut(turn, videoFact);
   expect(cutToTurn(cut, videoFact)).toEqual(turn);
 });

@@ -54,7 +54,7 @@ test("render multiple videoCut", async (done) => {
     "cut:!(4725.0498046875,4796.17919921875),fact:E74aoUY=5d6720abf4fb5e1e6d2d6ff48e0b5b8103096d84,kind:videoCut",
     "cut:!(322.2699890136719,344.3800048828125),fact:E74aoUY=7bacba0463e8d70c604704bbb4f1a44110bffc0a,kind:videoCut",
     "cut:!(2409.35009765625,2416.639892578125),fact:E74aoUY=822ad8fc57b4a1591bac01adbd68996e1ee9ba77,kind:videoCut",
-    "cut:!(80.46900177001953,113.04000091552734),fact:E74aoUY=38881d91c3201cbfe89f4f3be3ffee3dcc62d4a8,kind:videoCut"
+    "cut:!(80.46900177001953,113.04000091552734),fact:E74aoUY=38881d91c3201cbfe89f4f3be3ffee3dcc62d4a8,kind:videoCut",
   ];
   const promises = toRender.map((rison) =>
     RenderQueue.render(rison, "facebook")
