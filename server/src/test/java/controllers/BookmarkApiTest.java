@@ -64,8 +64,8 @@ public class BookmarkApiTest {
 		dev.givenUser("samples")
 				.contentType(ContentType.JSON)
 				.body("["
-						+ "{\"savedAt\":\"1970-01-01T00:00Z\",\"fact\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"start\":2,\"end\":718},"
-						+ "{\"savedAt\":\"1970-01-01T00:00Z\",\"fact\":\"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\",\"start\":3,\"end\":14159}"
+						+ "{\"savedAt\":\"1970-01-01T00:00Z\",\"fact\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"start\":2,\"end\":718},"
+						+ "{\"savedAt\":\"1970-01-01T00:00Z\",\"fact\":\"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\",\"start\":3,\"end\":14159}"
 						+ "]")
 				.put(Routes.API_BOOKMARKS).then()
 				.statusCode(Status.CREATED.getStatusCode())
@@ -79,8 +79,8 @@ public class BookmarkApiTest {
 				.statusCode(Status.OK.getStatusCode())
 				.contentType(ContentType.JSON)
 				.body(hasToString("["
-						+ "{\"savedAt\":\"1980-01-01T00:00Z\",\"fact\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"start\":2,\"end\":718},"
-						+ "{\"savedAt\":\"1980-01-01T00:00Z\",\"fact\":\"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\",\"start\":3,\"end\":14159}"
+						+ "{\"savedAt\":\"1980-01-01T00:00Z\",\"fact\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"start\":2,\"end\":718},"
+						+ "{\"savedAt\":\"1980-01-01T00:00Z\",\"fact\":\"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\",\"start\":3,\"end\":14159}"
 						+ "]"))
 				.header("Last-Modified", Matchers.equalTo("Tue, 1 Jan 1980 00:00:00 GMT"));
 	}
@@ -92,8 +92,8 @@ public class BookmarkApiTest {
 		dev.givenUser("samples")
 				.contentType(ContentType.JSON)
 				.body("["
-						+ "{\"savedAt\":\"1970-01-01T00:00Z\",\"fact\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"start\":2,\"end\":718},"
-						+ "{\"savedAt\":\"1970-01-01T00:00Z\",\"fact\":\"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\",\"start\":3,\"end\":14159}"
+						+ "{\"savedAt\":\"1970-01-01T00:00Z\",\"fact\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"start\":2,\"end\":718},"
+						+ "{\"savedAt\":\"1970-01-01T00:00Z\",\"fact\":\"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\",\"start\":3,\"end\":14159}"
 						+ "]")
 				.put(Routes.API_BOOKMARKS).then()
 				.statusCode(Status.CREATED.getStatusCode())
@@ -105,8 +105,8 @@ public class BookmarkApiTest {
 				.statusCode(Status.OK.getStatusCode())
 				.contentType(ContentType.JSON)
 				.body(hasToString("["
-						+ "{\"savedAt\":\"1981-01-01T00:00Z\",\"fact\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"start\":2,\"end\":718},"
-						+ "{\"savedAt\":\"1981-01-01T00:00Z\",\"fact\":\"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\",\"start\":3,\"end\":14159}"
+						+ "{\"savedAt\":\"1981-01-01T00:00Z\",\"fact\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"start\":2,\"end\":718},"
+						+ "{\"savedAt\":\"1981-01-01T00:00Z\",\"fact\":\"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\",\"start\":3,\"end\":14159}"
 						+ "]"))
 				.header("Last-Modified", Matchers.equalTo("Thu, 1 Jan 1981 00:00:00 GMT"));
 	}
@@ -117,7 +117,7 @@ public class BookmarkApiTest {
 		dev.time().setYear(1982);
 		dev.givenUser("samples")
 				.contentType(ContentType.JSON)
-				.body("[{\"savedAt\":\"1970-01-01T00:00Z\",\"fact\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"start\":2,\"end\":718}]")
+				.body("[{\"savedAt\":\"1970-01-01T00:00Z\",\"fact\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"start\":2,\"end\":718}]")
 				.delete(Routes.API_BOOKMARKS).then()
 				.statusCode(Status.OK.getStatusCode())
 				// so the last modified does too
@@ -130,7 +130,7 @@ public class BookmarkApiTest {
 		dev.givenUser("samples").get(Routes.API_BOOKMARKS).then()
 				.statusCode(Status.OK.getStatusCode())
 				.contentType(ContentType.JSON)
-				.body(hasToString("[{\"savedAt\":\"1981-01-01T00:00Z\",\"fact\":\"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\",\"start\":3,\"end\":14159}]"))
+				.body(hasToString("[{\"savedAt\":\"1981-01-01T00:00Z\",\"fact\":\"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\",\"start\":3,\"end\":14159}]"))
 				.header("Last-Modified", Matchers.equalTo("Fri, 1 Jan 1982 00:00:00 GMT"));
 	}
 
@@ -155,7 +155,7 @@ public class BookmarkApiTest {
 				.get(Routes.API_BOOKMARKS)
 				.then()
 				.statusCode(Status.OK.getStatusCode())
-				.body(hasToString("[{\"savedAt\":\"1981-01-01T00:00Z\",\"fact\":\"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\",\"start\":3,\"end\":14159}]"))
+				.body(hasToString("[{\"savedAt\":\"1981-01-01T00:00Z\",\"fact\":\"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\",\"start\":3,\"end\":14159}]"))
 				.header("Last-Modified", Matchers.equalTo("Fri, 1 Jan 1982 00:00:00 GMT"));
 	}
 
