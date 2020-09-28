@@ -36,7 +36,7 @@ public class FactApiDev extends FactApi {
 	private Set<String> localRepos = new HashSet<>();
 
 	public FactApiDev() {
-		for (String repo : REPOS) {
+		for (String repo : ALLOWED_FACTSETS.values()) {
 			if (localRepo(repo).exists()) {
 				localRepos.add(repo);
 			}

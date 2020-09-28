@@ -40,7 +40,7 @@ public class FactApiTest {
 
 	private void testFactModule(Jooby.Module factApiModule) throws Exception {
 		try (AutoCloseable server = startServer(factApiModule)) {
-			byte[] actualBytes = RestAssured.given().get("/api/fact/1/c2a9d475e448866c48a1f7c0d5f98c6fc2bfe6a3").then()
+			byte[] actualBytes = RestAssured.given().urlEncodingEnabled(false).get("/api/fact/E74aoUY=6876d0b1c2b7743a024becd3605e2e8ff9d08352").then()
 					.contentType("application/json")
 					.extract().body().asByteArray();
 			String actual = new String(actualBytes, StandardCharsets.UTF_8);
