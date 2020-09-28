@@ -41,6 +41,16 @@ public interface FT {
 	}
 
 	@jsweet.lang.Interface
+	public class FactsetIndex {
+		/** The headline-friendly title. */
+		public String title;
+		/** The string id (probably repo name) which is used for addressing facts globally. */
+		public String id;
+		/** The facts in this factset. */
+		public List<FactLink> facts;
+	}
+
+	@jsweet.lang.Interface
 	public class FactLink {
 		public Fact fact;
 		public String hash;

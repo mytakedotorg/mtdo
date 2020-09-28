@@ -165,8 +165,9 @@ public class GrindLogic {
 		}
 	}
 
-	public List<FactLink> buildIndex(Path sausageDir) throws IOException {
-		List<FactLink> factLinks = new ArrayList<>();
+	public void buildIndex(FT.FactsetIndex index, Path sausageDir) throws IOException {
+		String factsetIdHash = MtdoFactset.factsetIdHash(index);
+		index.facts = new ArrayList<>();
 		Files.walkFileTree(sausageDir, new SimpleFileVisitor<Path>() {
 			@Override
 			public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
@@ -179,17 +180,16 @@ public class GrindLogic {
 				FactLink link = new FactLink();
 				try (GitJson.FieldParser parser = GitJson.parse(content)) {
 					link.fact = parser.field("fact", FT.Fact.class);
-					link.hash = GitJson.blobSha(content);
+					link.hash = factsetIdHash + GitJson.blobSha(content);
 				} catch (NoSuchAlgorithmException e) {
 					throw Errors.asRuntime(e);
 				}
-				factLinks.add(link);
+				index.facts.add(link);
 				return FileVisitResult.CONTINUE;
 			}
 		});
 		Comparator<FactLink> linkComparator = Comparator.comparing(factLink -> factLink.fact.primaryDate);
-		Collections.sort(factLinks, linkComparator.thenComparing(factLink -> factLink.fact.title));
-		return factLinks;
+		Collections.sort(index.facts, linkComparator.thenComparing(factLink -> factLink.fact.title));
 	}
 
 	private File ingredient(String path, String ext) {

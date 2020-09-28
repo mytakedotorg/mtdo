@@ -19,7 +19,7 @@
  */
 package controllers;
 
-import com.google.common.collect.ImmutableList;
+import com.diffplug.common.collect.ImmutableMap;
 import com.google.inject.Binder;
 import com.jsoniter.JsonIterator;
 import com.typesafe.config.Config;
@@ -35,17 +35,24 @@ import org.jooby.Jooby;
 import org.jooby.Results;
 
 public class FactApi implements Jooby.Module {
-	public static ImmutableList<String> REPOS = ImmutableList.of("us-founding-documents", "us-presidential-debates");
+	/** Requests are allowed for only the given factsets. */
+	protected static ImmutableMap<String, String> ALLOWED_FACTSETS = ImmutableMap.of("E74aoUY", "us-presidential-debates");
 
 	@Override
 	public void configure(Env env, Config conf, Binder binder) throws Throwable {
-		env.router().get(Routes.API_FACT + "/:repoIdx/:sha", req -> {
-			int repoIdx = req.param("repoIdx").intValue();
-			String sha = req.param("sha").value();
-			if (repoIdx < 0 || repoIdx >= REPOS.size()) {
+		env.router().get(Routes.API_FACT + "/**", req -> {
+			String factHash = req.rawPath().substring(Routes.API_FACT.length() + 1);
+			if (factHash.length() != 48) {
 				throw RedirectException.notFoundError();
 			}
-			byte[] contentGitFriendly = repoSha(REPOS.get(repoIdx), sha);
+
+			String factsetId = factHash.substring(0, 7);
+			String sha = factHash.substring(8);
+			String repo = ALLOWED_FACTSETS.get(factsetId);
+			if (repo == null) {
+				throw RedirectException.notFoundError();
+			}
+			byte[] contentGitFriendly = repoSha(repo, sha);
 			// recondense the json
 			String content = recondense(new String(contentGitFriendly, StandardCharsets.UTF_8));
 			return Results.json(content).header("Cache-Control",

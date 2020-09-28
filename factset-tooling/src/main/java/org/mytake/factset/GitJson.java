@@ -227,8 +227,8 @@ public class GitJson {
 		return reordered;
 	}
 
-	private static final Gson GSON_PRETTY = new GsonBuilder().setPrettyPrinting().create();
-	private static final Gson GSON = new GsonBuilder().create();
+	private static final Gson GSON_PRETTY = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().create();
+	private static final Gson GSON = new GsonBuilder().disableHtmlEscaping().create();
 	/** https://stackoverflow.com/a/24209736/1153071 */
 	private static final Pattern UNESCAPED_QUOTE = Pattern.compile("(?<!\\\\)(?:\\\\{2})*\"");
 

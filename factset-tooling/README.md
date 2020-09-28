@@ -114,6 +114,9 @@ mtdoFactSet {
 ## [Unreleased]
 ### Fixed
 * `index.json` now has correct blob sha1 (was missing blob header).
+* include `.DS_Store` in `.gitignore`
+### Added
+* `index.json` now has `id` and `title` fields, and the SHA1 of the `id` is prepended to every fact hash
 
 ## [0.2.4] - 2020-09-25
 ### Fixed
