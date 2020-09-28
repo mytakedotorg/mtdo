@@ -8,7 +8,7 @@ fetch.configure({
 })
 
 async function get(path, cache) {
-  if (!path.startsWith('http')) {
+  if (path.startsWith('/')) {
     path = 'https://mytake.org' + path;
   }
   const res = await fetch(path);
