@@ -21,6 +21,7 @@ package org.mytake.lucene;
 
 import com.diffplug.common.collect.ImmutableSet;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -43,7 +44,15 @@ import org.apache.lucene.util.QueryBuilder;
 
 public class Lucene implements AutoCloseable {
 	public static Lucene loadFromDefaultFolder() throws IOException {
-		return new Lucene(Paths.get("../lucene/build/search-index"));
+		Path runDev = Paths.get("../lucene/build/search-index");
+		if (Files.exists(runDev)) {
+			return new Lucene(runDev);
+		}
+		Path runServer = Paths.get("lucene/build/search-index");
+		if (Files.exists(runServer)) {
+			return new Lucene(runServer);
+		}
+		throw new IllegalStateException("Couldn't find the lucene search index.");
 	}
 
 	private final MyTakeDotOrgAnalyzer analyzer;
