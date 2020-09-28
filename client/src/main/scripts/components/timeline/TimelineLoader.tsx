@@ -18,7 +18,6 @@
  * You can contact us at team@mytake.org
  */
 import React, { useEffect, useState } from "react";
-import { FoundationFetcher } from "../../common/foundation";
 import { decodeSocial, PreviewSocial } from "../../common/social/social";
 import { FT } from "../../java2ts/FT";
 import { Routes } from "../../java2ts/Routes";

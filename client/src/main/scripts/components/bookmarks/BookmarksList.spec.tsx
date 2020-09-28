@@ -19,7 +19,7 @@
  */
 import React from "react";
 import renderer from "react-test-renderer";
-import { Foundation, FoundationFetcher } from "../../common/foundation";
+import { Foundation } from "../../common/foundation";
 import {
   Bookmark,
   BookmarksMode,
@@ -31,11 +31,7 @@ import { BookmarksResultListProps } from "./BookmarksResultList";
 import samplebookmarks from "./testData/samplebookmarks.json";
 
 async function getFacts(): Promise<Foundation> {
-  const fetcher = new FoundationFetcher();
-  samplebookmarks.bookmarks.forEach((element) => {
-    fetcher.add(element.fact);
-  });
-  return fetcher.build();
+  return Foundation.fetchAll(samplebookmarks.bookmarks.map((b) => b.fact));
 }
 
 jest.mock("./BookmarksSortBy", () => ({
@@ -107,7 +103,7 @@ test("BookmarksList date bookmarked", async () => {
 test("BookmarksList no results", async () => {
   const result = _bookmarksImpl(
     new _BookmarksWithData(
-      await new FoundationFetcher().build(),
+      await Foundation.fetchAll([]),
       BookmarksMode.DateHappened,
       []
     )

@@ -17,7 +17,7 @@
  *
  * You can contact us at team@mytake.org
  */
-import { Foundation, FoundationFetcher } from "../../common/foundation";
+import { Foundation } from "../../common/foundation";
 import { groupBy } from "../../common/functions";
 import { VideoCut } from "../../common/social/social";
 import { FT } from "../../java2ts/FT";
@@ -49,12 +49,8 @@ export async function getBookmarks(
   mode: BookmarksMode
 ): Promise<BookmarksResult> {
   const bookmarks = await BookmarksClient.getInstance().getRaw();
-  const builder = new FoundationFetcher();
-  bookmarks.forEach((b) => builder.add(b.fact));
-  const foundationData = await builder.build();
-  return _bookmarksImpl(
-    new _BookmarksWithData(foundationData, mode, bookmarks)
-  );
+  const facts = await Foundation.fetchAll(bookmarks.map((b) => b.fact));
+  return _bookmarksImpl(new _BookmarksWithData(facts, mode, bookmarks));
 }
 
 export function _bookmarksImpl(

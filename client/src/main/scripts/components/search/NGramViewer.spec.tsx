@@ -19,7 +19,7 @@
  */
 import React from "react";
 import renderer from "react-test-renderer";
-import { FoundationFetcher } from "../../common/foundation";
+import { Foundation } from "../../common/foundation";
 import NGramViewer, { _getSearchTerms } from "./NGramViewer";
 import { SearchMode, _searchImpl, _SearchWithData } from "./search";
 // this is created by LucenePlayground
@@ -39,14 +39,13 @@ test("NGramViewer parses search terms", () => {
 });
 
 test("NGramViewer social security", async () => {
-  const fetcher = new FoundationFetcher();
-  socialSecuritySearchResults.facts.forEach((f) => fetcher.add(f.hash));
-  const foundation = await fetcher.build();
   const result = _searchImpl(
     new _SearchWithData(
       "social security",
       socialSecuritySearchResults.facts,
-      foundation,
+      await Foundation.fetchAll(
+        socialSecuritySearchResults.facts.map((f) => f.hash)
+      ),
       SearchMode.BeforeAndAfter
     )
   );

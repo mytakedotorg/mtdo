@@ -19,7 +19,7 @@
  */
 import React from "react";
 import renderer from "react-test-renderer";
-import { Foundation, FoundationFetcher } from "../../common/foundation";
+import { Foundation } from "../../common/foundation";
 import {
   SearchMode,
   SearchResult,
@@ -69,12 +69,6 @@ jest.mock("./VideoResultsList", () => ({
   },
 }));
 
-async function getFacts(facts: string[]): Promise<Foundation> {
-  const fetcher = new FoundationFetcher();
-  facts.forEach((fact) => fetcher.add(fact));
-  return fetcher.build();
-}
-
 const eventHandlers: SearchContainerEventHandlers = {
   onModeChange: jest.fn(),
   onAddBookmark: jest.fn(),
@@ -86,7 +80,7 @@ test("SearchContainer social security", async () => {
     new _SearchWithData(
       "social security",
       socialSecuritySearchResults.facts,
-      await getFacts(
+      await Foundation.fetchAll(
         socialSecuritySearchResults.facts.map((fact) => fact.hash)
       ),
       SearchMode.BeforeAndAfter
@@ -111,7 +105,7 @@ test("SearchContainer social security before and after", async () => {
     new _SearchWithData(
       "social security",
       socialSecuritySearchResults.facts,
-      await getFacts(
+      await Foundation.fetchAll(
         socialSecuritySearchResults.facts.map((fact) => fact.hash)
       ),
       SearchMode.BeforeAndAfter
@@ -136,7 +130,7 @@ test("SearchContainer no results", async () => {
     new _SearchWithData(
       "gibberish",
       [],
-      await getFacts([]),
+      await Foundation.fetchAll([]),
       SearchMode.BeforeAndAfter
     )
   );
@@ -158,7 +152,9 @@ test("SearchContainer wall, -wall street", async () => {
     new _SearchWithData(
       "wall, -wall street",
       wallSearchResults.facts,
-      await getFacts(wallSearchResults.facts.map((fact) => fact.hash)),
+      await Foundation.fetchAll(
+        wallSearchResults.facts.map((fact) => fact.hash)
+      ),
       SearchMode.BeforeAndAfter
     )
   );

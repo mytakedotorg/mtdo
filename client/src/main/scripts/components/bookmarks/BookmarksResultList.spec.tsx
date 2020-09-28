@@ -19,7 +19,7 @@
  */
 import React from "react";
 import renderer from "react-test-renderer";
-import { Foundation, FoundationFetcher } from "../../common/foundation";
+import { Foundation } from "../../common/foundation";
 import { VideoResultProps } from "../shared/VideoResult";
 import { BookmarksMode, _bookmarksImpl, _BookmarksWithData } from "./bookmarks";
 import BookmarksResultList, {
@@ -46,11 +46,7 @@ const eventHandlers: BookmarksResultListEventHandlers = {
 };
 
 async function getFacts(): Promise<Foundation> {
-  const fetcher = new FoundationFetcher();
-  samplebookmarks.bookmarks.forEach((element) => {
-    fetcher.add(element.fact);
-  });
-  return fetcher.build();
+  return Foundation.fetchAll(samplebookmarks.bookmarks.map((b) => b.fact));
 }
 
 test("BookmarksResultList DateHappened", async () => {

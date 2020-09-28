@@ -75,6 +75,12 @@ export class Foundation {
     builder.add(factHash);
     return (await builder.build()).getVideo(factHash);
   }
+
+  static async fetchAll(facts: ReadonlyArray<string>): Promise<Foundation> {
+    const builder = new FoundationFetcher();
+    facts.forEach((fact) => builder.add(fact));
+    return builder.build();
+  }
 }
 
 type VideoContent = FT.VideoFactContent | FT.VideoFactContentEncoded;
@@ -104,7 +110,7 @@ function url(hash: string): string {
   return `${protoHost}${Routes.API_FACT}/${hash}`;
 }
 
-export class FoundationFetcher {
+class FoundationFetcher {
   requestedFacts: string[] = [];
 
   add(hash: string): void {
