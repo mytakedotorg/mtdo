@@ -73,11 +73,11 @@ public class FactApi implements Jooby.Module {
 				.url("https://api.github.com/repos/mytakedotorg/" + repo + "/git/blobs/" + sha)
 				.build()).execute()) {
 			byte[] body = res.body().bytes();
-			GhBlob blob = JsonIterator.deserialize(res.body().bytes(), GhBlob.class);
-			if (blob.content != null) {
+			try {
+				GhBlob blob = JsonIterator.deserialize(body, GhBlob.class);
 				return Base64.getMimeDecoder().decode(blob.content);
-			} else {
-				throw new IllegalArgumentException("Bad GitHub resoonse to: " + "https://api.github.com/repos/mytakedotorg/" + repo + "/git/blobs/" + sha + "\n\n" + new String(body, StandardCharsets.UTF_8));
+			} catch (Exception e) {
+				throw new IllegalArgumentException("Bad GitHub resoonse to: " + "https://api.github.com/repos/mytakedotorg/" + repo + "/git/blobs/" + sha + "\n\n" + new String(body, StandardCharsets.UTF_8), e);
 			}
 		}
 		// unpack github's wrapper
