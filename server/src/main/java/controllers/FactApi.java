@@ -29,17 +29,29 @@ import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java2ts.GhBlob;
 import java2ts.Routes;
+import okhttp3.Credentials;
 import okhttp3.OkHttpClient;
 import org.jooby.Env;
 import org.jooby.Jooby;
 import org.jooby.Results;
+import org.jooby.Status;
 
 public class FactApi implements Jooby.Module {
 	/** Requests are allowed for only the given factsets. */
 	protected static ImmutableMap<String, String> ALLOWED_FACTSETS = ImmutableMap.of("E74aoUY", "us-presidential-debates");
 
+	private String githubAuth;
+
 	@Override
 	public void configure(Env env, Config conf, Binder binder) throws Throwable {
+		String githubUser = System.getProperty("GITHUB_USER");
+		if (githubUser != null) {
+			String githubSecret = System.getProperty("GITHUB_SECRET");
+			if (githubSecret != null) {
+				githubAuth = Credentials.basic(githubUser, githubSecret);
+			}
+		}
+
 		env.router().get(Routes.API_FACT + "/**", req -> {
 			String factHash = req.rawPath().substring(Routes.API_FACT.length() + 1);
 			if (factHash.length() != 48) {
@@ -55,24 +67,36 @@ public class FactApi implements Jooby.Module {
 			byte[] contentGitFriendly = repoSha(repo, sha);
 			// recondense the json
 			String content = recondense(new String(contentGitFriendly, StandardCharsets.UTF_8));
-			return Results.json(content).header("Cache-Control",
-					"max-age=31536000", // one year https://stackoverflow.com/a/25201898/1153071
-					"public", // any cache may store the response
-					"no-transform", // don't muck with it at all
-					"immutable" // it will never change at all for sure
+			return Results.json(content)
+					.header("Access-Control-Allow-Origin", "*")
+					.header("Cache-Control",
+							"max-age=31536000", // one year https://stackoverflow.com/a/25201898/1153071
+							"public", // any cache may store the response
+							"no-transform", // don't muck with it at all
+							"immutable" // it will never change at all for sure
 			);
 		});
 	}
 
 	protected byte[] repoSha(String repo, String sha) throws IOException {
-		// ask github
+		okhttp3.Request.Builder request = new okhttp3.Request.Builder()
+				.url("https://api.github.com/repos/mytakedotorg/" + repo + "/git/blobs/" + sha);
+		if (githubAuth != null) {
+			request = request.addHeader("Authorization", githubAuth);
+		}
+
 		OkHttpClient client = new OkHttpClient();
-		try (okhttp3.Response res = client.newCall(new okhttp3.Request.Builder()
-				.url("https://api.github.com/repos/mytakedotorg/" + repo + "/git/blobs/" + sha)
-				.build()).execute()) {
-			// unpack github's wrapper
-			GhBlob blob = JsonIterator.deserialize(res.body().bytes(), GhBlob.class);
-			return Base64.getMimeDecoder().decode(blob.content);
+		try (okhttp3.Response res = client.newCall(request.build()).execute()) {
+			if (res.code() == Status.NOT_FOUND.value()) {
+				throw RedirectException.notFoundError();
+			}
+			byte[] body = res.body().bytes();
+			try {
+				GhBlob blob = JsonIterator.deserialize(body, GhBlob.class);
+				return Base64.getMimeDecoder().decode(blob.content);
+			} catch (Exception e) {
+				throw new IllegalArgumentException("Bad GitHub resoonse to: " + "https://api.github.com/repos/mytakedotorg/" + repo + "/git/blobs/" + sha + "\n\n" + new String(body, StandardCharsets.UTF_8), e);
+			}
 		}
 	}
 
