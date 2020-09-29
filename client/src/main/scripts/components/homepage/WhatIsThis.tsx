@@ -32,10 +32,10 @@ const WhatIsThis: React.FC<WhatIsThisProps> = (props) => {
       </h2>
       <p className="home__body home__body--center">Click one to see</p>
       <div className="home__social-container">
-        <a href="/foundation/presidential-debate-clinton-trump-1-of-3/cut:!(2879,2891.639892578125),fact:E74aoUY=887eb256a26aa4be39a9d849804b8e6e418222ae,kind:videoCut">
+        <a href="/foundation/presidential-debate-clinton-trump-1-of-3/~cut:(2879,2891.639892578125),fact:E74aoUY=887eb256a26aa4be39a9d849804b8e6e418222ae,kind:videoCut">
           {props.leftSocial}
         </a>
-        <a href="/foundation/presidential-debate-clinton-trump-1-of-3/cut:!(2689.89990234375,2702.360107421875),fact:E74aoUY=887eb256a26aa4be39a9d849804b8e6e418222ae,kind:videoCut">
+        <a href="/foundation/presidential-debate-clinton-trump-1-of-3/~cut:(2689.89990234375,2702.360107421875),fact:E74aoUY=887eb256a26aa4be39a9d849804b8e6e418222ae,kind:videoCut">
           {props.rightSocial}
         </a>
       </div>
