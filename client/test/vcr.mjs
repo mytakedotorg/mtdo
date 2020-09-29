@@ -1,11 +1,6 @@
-const fetch = require('fetch-vcr');
- 
-// Configure where the recordings should be loaded/saved to.
-// The path is relative to `process.cwd()` but can be absolute.
-fetch.configure({
-  fixturePath: './build',
-  mode: 'cache'
-})
+const fetch = require("make-fetch-happen").defaults({
+  cacheManager: "./build/fetch-cache", // path where cache will be written (and read)
+});
 
 async function get(path, cache) {
   if (path.startsWith('/')) {
