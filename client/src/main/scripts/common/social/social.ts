@@ -58,9 +58,16 @@ export type PreviewSocial = VideoCut | TextCut | FactUncut;
 export function encodeSocial(embed: Social) {
   // TODO: limit floating point precision
   // https://github.com/w33ble/rison-node/issues/4
-  return rison.encode_object(embed);
+  // TODO: durable rison https://github.com/mytakedotorg/mtdo/issues/355
+  const raw = rison.encode_object(embed) as string;
+  return '~' + raw.replace(/:!\(/gi, ':(')
 }
 
 export function decodeSocial(encoded: string): Social {
-  return rison.decode_object(encoded);
+  if (encoded.startsWith('~')) {
+    const sub = encoded.substring(1).replace(/:\(/gi, ':!(');
+    return rison.decode_object(sub);
+  } else {
+    throw 'All rison starts with ~ as workaround for https://github.com/mytakedotorg/mtdo/issues/355';
+  }
 }
