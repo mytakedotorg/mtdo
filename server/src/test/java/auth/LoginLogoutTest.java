@@ -51,7 +51,7 @@ public class LoginLogoutTest {
 				});
 
 		EmailAssert loginEmail = dev.waitForEmail();
-		loginEmail.subject().isEqualTo("MyTake.org welcome");
+		loginEmail.subject().isEqualTo("Welcome to MyTake.org");
 		loginEmail.body().contains("Welcome back to MyTake.org, samples@email.com!");
 		String link = loginEmail.extractLink("Visit ");
 
