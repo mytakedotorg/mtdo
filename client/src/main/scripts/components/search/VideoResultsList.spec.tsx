@@ -53,7 +53,7 @@ const eventHandlers: VideoResultsListEventHandlers = {
   onPlayClick: jest.fn(),
 };
 
-test("VideoResultsList social security", async (done) => {
+test("VideoResultsList social security", async () => {
   const result = _searchImpl(
     new _SearchWithData(
       "social security",
@@ -76,10 +76,9 @@ test("VideoResultsList social security", async (done) => {
     )
     .toJSON();
   expect(tree).toMatchSnapshot();
-  done();
 });
 
-test("VideoResultsList no results", async (done) => {
+test("VideoResultsList no results", async () => {
   const result = _searchImpl(
     new _SearchWithData(
       "gibberish",
@@ -99,10 +98,9 @@ test("VideoResultsList no results", async (done) => {
     )
     .toJSON();
   expect(tree).toMatchSnapshot();
-  done();
 });
 
-test("VideoResultsList wall, -wall street", async (done) => {
+test("VideoResultsList wall, -wall street", async () => {
   const result = _searchImpl(
     new _SearchWithData(
       "wall, -wall street",
@@ -125,5 +123,4 @@ test("VideoResultsList wall, -wall street", async (done) => {
     )
     .toJSON();
   expect(tree).toMatchSnapshot();
-  done();
 });

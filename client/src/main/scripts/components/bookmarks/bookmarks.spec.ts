@@ -33,7 +33,7 @@ const turn: VideoTurn = {
   turn: 45,
 };
 
-test("bookmarkToIntermediate then intermediateToBookmark", async (done) => {
+test("bookmarkToIntermediate then intermediateToBookmark", async () => {
   const videoFact = await Foundation.justOneVideo(turn.fact);
   const bookmark: Bookmark = {
     content: turnToCut(turn, videoFact),
@@ -47,10 +47,9 @@ test("bookmarkToIntermediate then intermediateToBookmark", async (done) => {
   expect(pluckedBookmark.rest).toEqual(pluckedConvertedBookmark.rest);
   expect(pluckedBookmark.cut[0]).toBeCloseTo(pluckedConvertedBookmark.cut[0]);
   expect(pluckedBookmark.cut[1]).toBeCloseTo(pluckedConvertedBookmark.cut[1]);
-  done();
 });
 
-test("turnToCut then cutToTurn with bookmark", async (done) => {
+test("turnToCut then cutToTurn with bookmark", async () => {
   const videoFact = await Foundation.justOneVideo(turn.fact);
   const bookmark = {
     content: turnToCut(turn, videoFact),
@@ -60,7 +59,6 @@ test("turnToCut then cutToTurn with bookmark", async (done) => {
   const bookmark2 = intermediateToBookmark(intermediateBookmark);
   const turn2 = cutToTurn(bookmark2.content, videoFact);
   expect(turn2).toEqual(turn);
-  done();
 });
 
 interface PluckedBookmark {

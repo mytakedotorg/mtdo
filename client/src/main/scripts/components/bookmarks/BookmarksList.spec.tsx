@@ -56,7 +56,7 @@ const eventHandlers: BookmarksListEventHandlers = {
   onConfirmRemoval: jest.fn(),
 };
 
-test("BookmarksList date happened", async (done) => {
+test("BookmarksList date happened", async () => {
   const result = _bookmarksImpl(
     new _BookmarksWithData(
       await getFacts(),
@@ -76,10 +76,9 @@ test("BookmarksList date happened", async (done) => {
     )
     .toJSON();
   expect(tree).toMatchSnapshot();
-  done();
 });
 
-test("BookmarksList date bookmarked", async (done) => {
+test("BookmarksList date bookmarked", async () => {
   const result = _bookmarksImpl(
     new _BookmarksWithData(
       await getFacts(),
@@ -99,10 +98,9 @@ test("BookmarksList date bookmarked", async (done) => {
     )
     .toJSON();
   expect(tree).toMatchSnapshot();
-  done();
 });
 
-test("BookmarksList no results", async (done) => {
+test("BookmarksList no results", async () => {
   const result = _bookmarksImpl(
     new _BookmarksWithData(
       await Foundation.fetchAll([]),
@@ -122,10 +120,9 @@ test("BookmarksList no results", async (done) => {
     )
     .toJSON();
   expect(tree).toMatchSnapshot();
-  done();
 });
 
-test("BookmarksList date happened - one marked for removal", async (done) => {
+test("BookmarksList date happened - one marked for removal", async () => {
   const result = _bookmarksImpl(
     new _BookmarksWithData(
       await getFacts(),
@@ -149,5 +146,4 @@ test("BookmarksList date happened - one marked for removal", async (done) => {
     )
     .toJSON();
   expect(tree).toMatchSnapshot();
-  done();
 });
