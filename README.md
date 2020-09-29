@@ -15,7 +15,7 @@ The scarcity of attention and abundance of information aren't just the new norma
 
 > Who controls the past controls the future. Who controls the present controls the past. *George Orwell, 1984*
 
-So we'll just take past and secure it on the blockchain, where it will be safe! Hahahahahahahaha
+Luckily, we can put history on the blockchain, where it will be safe! Hahahahahahahaha
 
 ## The hard part
 
@@ -26,7 +26,8 @@ We are building a small library of facts, where every fact must meet all of the 
 - must be a primary source (because primary sources aren't subjective opinions, they really happened)
 - must be official (because it's easy to verify that they are authentic and not forged)
 - complete and unedited (to make sure it can't be taken out of context)
-- part of a large and complete set (to prevent selection bias)
+- part of a large and complete set (to counter selection bias)
+- which goes back at least 20 years (to counter recency bias)
 
 Here's what we have in our library so far:
 
