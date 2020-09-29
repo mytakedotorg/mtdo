@@ -78,7 +78,7 @@ public class GenerateIndex {
 					}
 				}
 				for (FactLink factLink : index.facts) {
-					try (Response res = get(client, "https://mytake.org/api/fact/" + factLink.hash)) {
+					try (Response res = get(client, "https://mytake.org/api/static/fact/" + factLink.hash + ".json")) {
 						FT.VideoFactContentEncoded encoded = JsonMisc.fromJson(res.body().bytes(), FT.VideoFactContentEncoded.class);
 						writer.writeVideo(factLink.hash, VideoFactContentJava.decode(encoded));
 					}
