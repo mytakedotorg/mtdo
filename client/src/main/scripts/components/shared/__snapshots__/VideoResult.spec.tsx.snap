@@ -71,7 +71,7 @@ exports[`VideoResultPreview before and after 1`] = `
           <div>
             SharePreview
             : 
-            {"contextUrl":"/foundation/presidential-debate-kennedy-nixon-1-of-4/cut:!(1.5199999809265137,17.100000381469727),fact:factHash,kind:videoCut"}
+            {"contextUrl":"/foundation/presidential-debate-kennedy-nixon-1-of-4/~cut:(1.5199999809265137,17.100000381469727),fact:factHash,kind:videoCut"}
              
             Presidential Debate - Kennedy, Nixon (1 of 4)
              
@@ -211,7 +211,7 @@ exports[`VideoResultPreview containing - not bookmarked 1`] = `
           <div>
             SharePreview
             : 
-            {"contextUrl":"/foundation/presidential-debate-kennedy-nixon-1-of-4/cut:!(2.700000047683716,15.149999618530273),fact:factHash,kind:videoCut"}
+            {"contextUrl":"/foundation/presidential-debate-kennedy-nixon-1-of-4/~cut:(2.700000047683716,15.149999618530273),fact:factHash,kind:videoCut"}
              
             Presidential Debate - Kennedy, Nixon (1 of 4)
              
@@ -351,7 +351,7 @@ exports[`VideoResultPreview containing 1`] = `
           <div>
             SharePreview
             : 
-            {"contextUrl":"/foundation/presidential-debate-kennedy-nixon-1-of-4/cut:!(2.700000047683716,15.149999618530273),fact:factHash,kind:videoCut"}
+            {"contextUrl":"/foundation/presidential-debate-kennedy-nixon-1-of-4/~cut:(2.700000047683716,15.149999618530273),fact:factHash,kind:videoCut"}
              
             Presidential Debate - Kennedy, Nixon (1 of 4)
              

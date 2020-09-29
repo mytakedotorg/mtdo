@@ -99,7 +99,7 @@ public class FactApi implements Jooby.Module {
 				GhBlob blob = JsonIterator.deserialize(body, GhBlob.class);
 				return Base64.getMimeDecoder().decode(blob.content);
 			} catch (Exception e) {
-				throw new IllegalArgumentException("Bad GitHub resoonse to: " + "https://api.github.com/repos/mytakedotorg/" + repo + "/git/blobs/" + sha + "\n\n" + new String(body, StandardCharsets.UTF_8), e);
+				throw new IllegalArgumentException("Bad GitHub response to: " + "https://api.github.com/repos/mytakedotorg/" + repo + "/git/blobs/" + sha + "\n\n" + new String(body, StandardCharsets.UTF_8), e);
 			}
 		}
 	}

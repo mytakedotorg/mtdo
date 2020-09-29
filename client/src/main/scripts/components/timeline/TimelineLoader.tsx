@@ -42,7 +42,7 @@ const TimelineLoader: React.FC<TimelineLoaderProps> = (props) => {
     async function getAllFacts() {
       const index: FT.FactsetIndex = await get(
         // `git hash-object BLAH` for https://github.com/mytakedotorg/us-presidential-debates/blob/staging/sausage/index.json
-        "https://mytake.org/api/fact/E74aoUY=0f4ae6f0a789891c41ec3372cde46a89ee3b57cb"
+        `https://mytake.org${Routes.API_FACT}/E74aoUY=0f4ae6f0a789891c41ec3372cde46a89ee3b57cb.json`
       );
       setState({
         facts: index.facts,
