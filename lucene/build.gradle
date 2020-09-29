@@ -44,8 +44,6 @@ tasks.register('generateIndex', JavaExec) {
 
 	outputs.dir(outputDir)
 	outputs.cacheIf { true }
-
-	enabled = false
 }
 // spotless:on
 

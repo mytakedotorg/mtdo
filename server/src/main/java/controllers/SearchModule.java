@@ -34,28 +34,24 @@ public class SearchModule implements Jooby.Module {
 
 	@Override
 	public void configure(Env env, Config conf, Binder binder) throws Throwable {
-		try {
-			Lucene lucene = Lucene.loadFromDefaultFolder();
-			// warmup
-			lucene.searchDebate("cuba");
-			lucene.searchDebate("wall,-wall street");
-			// clean exit
-			env.onStop(() -> {
-				lucene.close();
-			});
-			env.router().get(Routes.API_SEARCH, req -> {
-				return lucene.searchDebate(Q.parse(req));
-			});
-			env.router().get(Routes.SEARCH, req -> {
-				String query = Q.parseOrDefault(req, "");
-				if (query.isEmpty()) {
-					return Results.redirect(Routes.FOUNDATION);
-				} else {
-					return views.Search.searchResults.template(query, SocialEmbed.todo());
-				}
-			});
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		Lucene lucene = Lucene.loadFromDefaultFolder();
+		// warmup
+		lucene.searchDebate("cuba");
+		lucene.searchDebate("wall,-wall street");
+		// clean exit
+		env.onStop(() -> {
+			lucene.close();
+		});
+		env.router().get(Routes.API_SEARCH, req -> {
+			return lucene.searchDebate(Q.parse(req));
+		});
+		env.router().get(Routes.SEARCH, req -> {
+			String query = Q.parseOrDefault(req, "");
+			if (query.isEmpty()) {
+				return Results.redirect(Routes.FOUNDATION);
+			} else {
+				return views.Search.searchResults.template(query, SocialEmbed.todo());
+			}
+		});
 	}
 }
