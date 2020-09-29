@@ -19,6 +19,7 @@
  */
 import * as React from "react";
 import { Corpus } from "../../common/social/social";
+import { ExternalLink } from "react-feather";
 
 interface TimelineRadioButtonsProps {
   onChange: (ev: React.ChangeEvent<HTMLInputElement>) => any;
@@ -41,8 +42,15 @@ const TimelineRadioButtons: React.StatelessComponent<TimelineRadioButtonsProps> 
           checked={props.selectedOption === Corpus.Debates}
         />
         <label htmlFor="radio--debates" className="timeline__radio-label">
-          Debates
+          U.S. Presidential Debates
+          <a
+            href="https://github.com/mytakedotorg/us-presidential-debates"
+            className="timeline__radio-link-icon"
+          >
+            <ExternalLink size={18} />
+          </a>
         </label>
+        {/*
         <input
           type="radio"
           id="radio--documents"
@@ -52,8 +60,10 @@ const TimelineRadioButtons: React.StatelessComponent<TimelineRadioButtonsProps> 
           onChange={props.onChange}
           checked={props.selectedOption === Corpus.Documents}
         />
+        */}
+        &nbsp;
         <label htmlFor="radio--documents" className="timeline__radio-label">
-          Founding Documents
+          <a href="https://github.com/mytakedotorg/mtdo">More to come...</a>
         </label>
       </div>
     </div>
