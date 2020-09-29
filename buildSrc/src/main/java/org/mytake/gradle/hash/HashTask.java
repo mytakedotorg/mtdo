@@ -65,7 +65,8 @@ public class HashTask extends DefaultTask {
 			buffer.update(string.getBytes(StandardCharsets.UTF_8));
 		}
 		Files.createDirectories(destination.toPath().getParent());
-		Files.write(destination.toPath(), buffer.toObjectId().name().getBytes(StandardCharsets.UTF_8));
+		String content = "{\"hash\":\"" + buffer.toObjectId().name() + "\"}"; 
+		Files.write(destination.toPath(), content.getBytes(StandardCharsets.UTF_8));
 	}
 
 	/** Hashes the given folder. */
