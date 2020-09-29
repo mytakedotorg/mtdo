@@ -37,6 +37,7 @@
 
 <body>
 
+<div id="app"></div>
 <div class="profile">
 	<div class="profile__usercard">
 		<div class="profile__image-container">
