@@ -14,7 +14,9 @@
     "deploy": "npx gulp buildProd",
     "test": "npx jest",
     "test_ci": "npx jest --env=jsdom --maxWorkers=2 --ci --reporters=jest-junit",
-    "updateSnapshot": "npx jest --updateSnapshot"
+    "updateSnapshot": "npx jest --updateSnapshot",
+    "proxyStaging": "npx gulp proxyStaging",
+    "proxyProd": "npx gulp proxyProd"
   },
   "author": "MyTake.org, Inc.",
   "license": "AGPL-3.0",
