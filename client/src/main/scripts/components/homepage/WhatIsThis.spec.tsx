@@ -27,6 +27,7 @@ jest.mock("./HomeSection", () => ({
   __esModule: true,
   default: "HomeSection",
 }));
+jest.retryTimes(3);
 
 test("WhatIsThis", async () => {
   const { leftSocial, rightSocial } = await useSocialsMock();
