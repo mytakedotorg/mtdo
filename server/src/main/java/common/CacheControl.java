@@ -19,18 +19,16 @@
  */
 package common;
 
-import org.jooby.Result;
-import org.jooby.Results;
+import org.jooby.Response;
 
-/** Sends a response with cache-headers which guarantee forever-immutability. */
-public class Cloudflare {
-	public static Result json(Object toSend) {
-		return Results.json(toSend)
-				.header("Cache-Control",
-						"max-age=31536000", // one year https://stackoverflow.com/a/25201898/1153071
-						"public", // any cache may store the response
-						"no-transform", // don't muck with it at all
-						"immutable" // it will never change at all for sure
-				);
+public class CacheControl {
+	public static Response forever(Response res) {
+		// https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control
+		return res.header("Cache-Control", "public, max-age=31536000, immutable");
+	}
+
+	public static Response bypass(Response res) {
+		// https://support.cloudflare.com/hc/en-us/articles/202775670-Customizing-Cloudflare-s-cache#:~:text=Cache%20additional%20content%20at%20Cloudflare,-Caching%20additional%20content&text=Do%20not%20use%20Cache%20Everything,Cache%20Level%20set%20to%20Bypass.
+		return res.header("Cache-Control", "no-cache");
 	}
 }
