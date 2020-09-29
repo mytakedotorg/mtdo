@@ -20,7 +20,10 @@
 package org.mytake.lucene;
 
 import com.diffplug.common.collect.Lists;
+import com.diffplug.common.io.Files;
+import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Objects;
 import java2ts.FT;
@@ -66,6 +69,8 @@ public class LuceneTest {
 		try (LuceneWriter writer = new LuceneWriter(tempFolder.getRoot().toPath())) {
 			writer.writeVideo(HASH, fact);
 		}
+		File hashJson = new File(tempFolder.getRoot(), "../search-index-hash.json");
+		Files.write("{\"hash\":\"nope\"}".getBytes(StandardCharsets.UTF_8), hashJson);
 
 		try (Lucene lucene = new Lucene(tempFolder.getRoot().toPath())) {
 			// both people say common

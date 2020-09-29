@@ -35,7 +35,8 @@ import org.junit.ClassRule;
 import org.junit.Test;
 
 public class AuthUserTest {
-	static class App extends Jooby {
+	@ClassRule
+	public static JoobyDevRule app = new JoobyDevRule(new Jooby() {
 		{
 			CustomAssets.initTemplates(this);
 			use(new DevTime.Module());
@@ -53,10 +54,7 @@ public class AuthUserTest {
 				}
 			});
 		}
-	}
-
-	@ClassRule
-	public static JoobyDevRule app = new JoobyDevRule(new App());
+	});
 
 	private static RequestSpecification givenUser(String username) {
 		AccountRecord account = new AccountRecord();
