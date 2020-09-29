@@ -16,6 +16,7 @@ spotless {
 	}
 	format 'js', {
 		target 'gulpfile.js'
+		toggleOffOn()
 		prettier(VER_PRETTIER)
 	}
 }

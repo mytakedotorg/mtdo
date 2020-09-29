@@ -1,20 +1,22 @@
 # Dev quickstart
 
-You will need these installed on your system:
+You will need [`nvm`](https://github.com/nvm-sh/nvm#installing-and-updating) and Java 8+ installed on your system. If you want to run the full application, you will also need [Docker](https://docs.docker.com/get-docker/).
 
-- Java 8+
-- Docker
-- nvm (only if working on frontend)
+## Frontend only
 
-When you run `./gradlew runDev`, you will get a server running at `localhost:8080` with hot reload for templates.  If you then `cd` into the `client` directory, you can run:
+First, run `./gradlew :client:assemble`. This one-time step does code-generation into the `java2ts` folder. After that, `cd` into the `client` directory, and run
 
 ```
-nvm use   // get correct version of node & npm
-npm ci    // get dependencies
-npm start // start proxy server
+nvm use
+npm ci
+npm run proxyProd
 ```
 
-and you will have a browsersync proxy running at `localhost:3000` with hot reload for the react components and sass styles.
+and you will have dev environment which is proxying againg https://mytake.org, which is always deployed against the `prod` branch. Likewise, you can also run `npm run proxyStaging`, which proxies against https://mtdo-naked-staging.herokuapp.com, which is always deployed against the `staging` branch (which is where we accept PRs).
+
+## Full stack
+
+If you run `./gradlew runDev`, you will get a server running at `localhost:8080` with hot reload for server templates. You can then use the frontend instructions above with `npm run proxyDev` to get a local frontend environment.
 
 If you bump into any problems, we have listed [common errors and their solutions](#common-errors-and-their-solutions) below.
 
