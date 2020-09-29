@@ -27,6 +27,11 @@ public class CacheControl {
 		return res.header("Cache-Control", "public, max-age=31536000, immutable");
 	}
 
+	public static Response hour(Response res) {
+		// https://support.cloudflare.com/hc/en-us/articles/202775670-Customizing-Cloudflare-s-cache#:~:text=Cache%20additional%20content%20at%20Cloudflare,-Caching%20additional%20content&text=Do%20not%20use%20Cache%20Everything,Cache%20Level%20set%20to%20Bypass.
+		return res.header("Cache-Control", "public, max-age=3600, immutable");
+	}
+
 	public static Response bypass(Response res) {
 		// https://support.cloudflare.com/hc/en-us/articles/202775670-Customizing-Cloudflare-s-cache#:~:text=Cache%20additional%20content%20at%20Cloudflare,-Caching%20additional%20content&text=Do%20not%20use%20Cache%20Everything,Cache%20Level%20set%20to%20Bypass.
 		return res.header("Cache-Control", "no-cache");

@@ -25,7 +25,10 @@ const GetInvolved: React.FC = () => {
     <HomeSection containerClassName="home__section--dark">
       <h2 className="home__h2">Get involved</h2>
       <div className="home__link-container">
-        <a className="home__link" href="https://meta.mytake.org/c/educators">
+        <a
+          className="home__link"
+          href="https://meta.mytake.org/t/using-mytake-org-to-teach-about-the-environment/157"
+        >
           Forum for teachers
         </a>
         <a
@@ -36,11 +39,14 @@ const GetInvolved: React.FC = () => {
         </a>
         <a
           className="home__link"
-          href="https://meta.mytake.org/c/our-foundation"
+          href="https://meta.mytake.org/t/seeking-help-transcribing-debates/160"
         >
           Help us add more facts
         </a>
-        <a className="home__link" href="https://meta.mytake.org/c/governance">
+        <a
+          className="home__link"
+          href="https://docs.google.com/spreadsheets/d/1SZtK9ajcQAs8la1dqnHtc9yAWJK7j-26HBrAx-gtUDY/edit#gid=1674413579"
+        >
           Donate money to keep it running
         </a>
       </div>

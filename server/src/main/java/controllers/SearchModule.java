@@ -28,7 +28,6 @@ import java2ts.Routes;
 import java2ts.Search;
 import org.jooby.Env;
 import org.jooby.Jooby;
-import org.jooby.Results;
 import org.mytake.lucene.Lucene;
 
 public class SearchModule implements Jooby.Module {
@@ -53,12 +52,12 @@ public class SearchModule implements Jooby.Module {
 			}
 			res.send(lucene.searchDebate(Q.parse(req)));
 		});
-		env.router().get(Routes.SEARCH, req -> {
+		env.router().get(Routes.SEARCH, (req, res) -> {
 			String query = Q.parseOrDefault(req, "");
 			if (query.isEmpty()) {
-				return Results.redirect(Routes.FOUNDATION);
+				CacheControl.forever(res).redirect(Routes.FOUNDATION);
 			} else {
-				return views.Search.searchResults.template(query, SocialEmbed.todo());
+				CacheControl.hour(res).send(views.Search.searchResults.template(query, SocialEmbed.todo()));
 			}
 		});
 	}

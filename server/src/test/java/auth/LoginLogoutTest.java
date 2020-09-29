@@ -51,8 +51,8 @@ public class LoginLogoutTest {
 				});
 
 		EmailAssert loginEmail = dev.waitForEmail();
-		loginEmail.subject().isEqualTo("MyTake.org welcome");
-		loginEmail.body().contains("Welcome back to MyTake.org, samples@email.com!");
+		loginEmail.subject().isEqualTo("Welcome to MyTake.org");
+		loginEmail.body().contains("Welcome to MyTake.org, samples@email.com!");
 		String link = loginEmail.extractLink("Visit ");
 
 		String loginCookie = AuthModuleHarness.authTokenValue(dev, "samples");

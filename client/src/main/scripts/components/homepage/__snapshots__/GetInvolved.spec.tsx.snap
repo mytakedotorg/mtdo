@@ -14,7 +14,7 @@ exports[`GetInvolved 1`] = `
   >
     <a
       className="home__link"
-      href="https://meta.mytake.org/c/educators"
+      href="https://meta.mytake.org/t/using-mytake-org-to-teach-about-the-environment/157"
     >
       Forum for teachers
     </a>
@@ -26,13 +26,13 @@ exports[`GetInvolved 1`] = `
     </a>
     <a
       className="home__link"
-      href="https://meta.mytake.org/c/our-foundation"
+      href="https://meta.mytake.org/t/seeking-help-transcribing-debates/160"
     >
       Help us add more facts
     </a>
     <a
       className="home__link"
-      href="https://meta.mytake.org/c/governance"
+      href="https://docs.google.com/spreadsheets/d/1SZtK9ajcQAs8la1dqnHtc9yAWJK7j-26HBrAx-gtUDY/edit#gid=1674413579"
     >
       Donate money to keep it running
     </a>
