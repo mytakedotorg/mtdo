@@ -64,7 +64,7 @@ function setupPipeline(mode) {
         .pipe(gulp.dest(config.distProd));
     });
   } else {
-    gulp.task("proxy" + mode, proxyTask(mode));
+    gulp.task("proxy" + mode, proxyTask(mode, "localhost:8080"));
   }
 }
 
@@ -204,12 +204,12 @@ function scriptsTask(mode, type) {
   };
 }
 
-function proxyTask(mode) {
+function proxyTask(mode, hostToProxy) {
   if (mode !== DEV) throw "proxyCfg is a dev-only task";
   return () => {
     const bundler = webpack(webpackCfg(mode));
     browserSync.init({
-      proxy: "localhost:8080",
+      proxy: hostToProxy,
       middleware: [
         webpackDevMiddleware(bundler, {
           publicPath: "/assets-dev/" + SCRIPTS,
