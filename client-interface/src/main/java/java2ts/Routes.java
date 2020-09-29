@@ -30,7 +30,7 @@ public class Routes {
 	public static final String API_SEARCH = "/api/search";
 	public static final String API_BOOKMARKS = "/api/bookmarks";
 	public static final String API_LOGIN = "/api/login";
-	public static final String API_FACT = "/api/fact";
+	public static final String API_FACT = "/api/static/fact";
 
 	public static final String MODS = "/mods";
 	public static final String MODS_DRAFTS = "/mods/drafts/";

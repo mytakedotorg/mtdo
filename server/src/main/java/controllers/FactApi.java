@@ -42,6 +42,10 @@ public class FactApi implements Jooby.Module {
 
 	private String githubAuth;
 
+	private static final int START_IDX = Routes.API_FACT.length() + 1;
+	private static final int END_IDX = START_IDX + 48;
+	private static final int LENGTH = END_IDX + ".json".length();
+
 	@Override
 	public void configure(Env env, Config conf, Binder binder) throws Throwable {
 		String githubUser = System.getProperty("GITHUB_USER");
@@ -53,10 +57,10 @@ public class FactApi implements Jooby.Module {
 		}
 
 		env.router().get(Routes.API_FACT + "/**", req -> {
-			String factHash = req.rawPath().substring(Routes.API_FACT.length() + 1);
-			if (factHash.length() != 48) {
+			if (!req.rawPath().endsWith(".json") || req.rawPath().length() != LENGTH) {
 				throw RedirectException.notFoundError();
 			}
+			String factHash = req.rawPath().substring(START_IDX, END_IDX);
 
 			String factsetId = factHash.substring(0, 7);
 			String sha = factHash.substring(8);
