@@ -9,14 +9,14 @@
     "url": "https://github.com/mytakedotorg/mtdo.git"
   },
   "scripts": {
-    "start": "npx gulp proxyDev",
     "clean": "npx gulp clean",
     "deploy": "npx gulp buildProd",
     "test": "npx jest",
     "test_ci": "npx jest --env=jsdom --maxWorkers=2 --ci --reporters=jest-junit",
     "updateSnapshot": "npx jest --updateSnapshot",
     "proxyStaging": "npx gulp proxyStaging",
-    "proxyProd": "npx gulp proxyProd"
+    "proxyProd": "npx gulp proxyProd",
+    "proxyDev": "npx gulp proxyDev"
   },
   "author": "MyTake.org, Inc.",
   "license": "AGPL-3.0",
