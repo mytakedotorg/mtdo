@@ -21,6 +21,7 @@ package org.mytake.lucene;
 
 import com.diffplug.common.collect.ImmutableSet;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -59,12 +60,14 @@ public class Lucene implements AutoCloseable {
 	private final Directory directory;
 	private final DirectoryReader reader;
 	private final IndexSearcher searcher;
+	private final String indexHash;
 
 	public Lucene(Path indexPath) throws IOException {
 		analyzer = new MyTakeDotOrgAnalyzer();
 		directory = new MMapDirectory(indexPath);
 		reader = DirectoryReader.open(directory);
 		searcher = new IndexSearcher(reader);
+		indexHash = new String(Files.readAllBytes(indexPath.getParent().resolve("search-index-hash")), StandardCharsets.UTF_8);
 	}
 
 	@Override

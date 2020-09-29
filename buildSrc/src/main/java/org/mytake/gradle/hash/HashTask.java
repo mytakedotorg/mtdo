@@ -9,18 +9,20 @@ import java.nio.file.Path;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.TreeMap;
 
 import org.eclipse.jgit.util.sha1.SHA1;
 import org.gradle.api.DefaultTask;
-import org.gradle.api.tasks.OutputDirectory;
+import org.gradle.api.tasks.Input;
 import org.gradle.api.tasks.OutputFile;
 import org.gradle.api.tasks.PathSensitivity;
 import org.gradle.api.tasks.TaskAction;
 
 public class HashTask extends DefaultTask {
 	private List<File> folders = new ArrayList<>();
+	private List<String> strings = new ArrayList<>();
 	private File destination;
 
 	public void addFolder(Object folderObj) {
@@ -29,8 +31,23 @@ public class HashTask extends DefaultTask {
 		folders.add(folder);
 	}
 
+	public void addStrings(String... strings) {
+		addStrings(Arrays.asList(strings));
+	}
+
+	public void addStrings(Iterable<String> strings) {
+		for (String string : strings) {
+			this.strings.add(string);
+		}
+	}
+
 	public void destination(Object destination) {
 		this.destination = getProject().file(destination);
+	}
+
+	@Input
+	public List<String> getStrings() {
+		return strings;
 	}
 
 	@OutputFile
@@ -44,8 +61,11 @@ public class HashTask extends DefaultTask {
 		for (File folder : folders) {
 			buffer.update(hashTree(folder.toPath()));
 		}
+		for (String string : strings) {
+			buffer.update(string.getBytes(StandardCharsets.UTF_8));
+		}
 		Files.createDirectories(destination.toPath().getParent());
-		Files.write(destination.toPath(), buffer.digest());
+		Files.write(destination.toPath(), buffer.toObjectId().name().getBytes(StandardCharsets.UTF_8));
 	}
 
 	/** Hashes the given folder. */

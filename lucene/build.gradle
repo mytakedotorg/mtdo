@@ -48,8 +48,8 @@ tasks.register('indexGenerate', JavaExec) {
 
 tasks.register('indexHash', org.mytake.gradle.hash.HashTask) {
 	dependsOn 'indexGenerate'
-	addFolder searchIndex
 	addFolder 'src/main/java/org/mytake/lucene'
+	addStrings repoToSha
 	destination 'build/search-index-hash'
 }
 
