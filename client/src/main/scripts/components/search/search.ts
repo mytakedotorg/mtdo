@@ -26,6 +26,7 @@ import { Routes } from "../../java2ts/Routes";
 import { Search } from "../../java2ts/Search";
 import { get } from "../../network";
 import { TurnFinder } from "./searchUtils";
+import { hash } from "./search-index.json";
 
 export class SearchResult {
   constructor(
@@ -53,7 +54,9 @@ export async function search(
   mode: SearchMode
 ): Promise<SearchResult> {
   const factResults = await get<Search.FactResultList>(
-    `${Routes.API_SEARCH}?${Search.QUERY}=${encodeURIComponent(searchQuery)}`
+    `${Routes.API_SEARCH}?${Search.QUERY}=${encodeURIComponent(searchQuery)}&${
+      Search.HASH
+    }=${hash}`
   );
   const facts = await Foundation.fetchAll(
     factResults.facts.map((fact) => fact.hash)

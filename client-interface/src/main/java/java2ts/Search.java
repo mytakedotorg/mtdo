@@ -23,6 +23,7 @@ import java.util.List;
 
 public interface Search {
 	public static final String QUERY = "q";
+	public static final String HASH = "h";
 
 	@jsweet.lang.Interface
 	public class FactResult implements Json {
