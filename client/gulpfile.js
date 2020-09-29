@@ -40,10 +40,12 @@ const STYLES = "styles";
 const SCRIPTS = "scripts";
 const PERMANENT = "permanent";
 
+// spotless:off
 setupPipeline(DEV);
 setupPipeline(PROD);
 gulp.task("proxyStaging", proxyTask(DEV, "https://mtdo-naked-staging.herokuapp.com"));
 gulp.task("proxyProd", proxyTask(DEV, "https://mytake.org"));
+// spotless:on
 
 function setupPipeline(mode) {
   const styles = STYLES + mode;
