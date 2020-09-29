@@ -54,7 +54,7 @@ const BookmarksList: React.FC<BookmarksListProps> = ({
   return (
     <div className="results">
       <div className="results__row">
-        {bookmarksResult.factHits.length && (
+        {bookmarksResult.factHits.length > 0 && (
           <BookmarksSortBy
             onChange={eventHandlers.onModeChange}
             selectedOption={mode}
