@@ -18,13 +18,13 @@
  * You can contact us at team@mytake.org
  */
 import React, { useEffect, useState } from "react";
-import { FoundationFetcher } from "../../common/foundation";
 import { decodeSocial, PreviewSocial } from "../../common/social/social";
 import { FT } from "../../java2ts/FT";
 import { Routes } from "../../java2ts/Routes";
 import TimelineLoadingView from "./TimelineLoadingView";
 import { SetFactHandlers } from "./TimelinePreview";
 import TimelineView from "./TimelineView";
+import { get } from "../../network";
 
 interface TimelineLoaderProps {
   path: string;
@@ -40,9 +40,12 @@ const TimelineLoader: React.FC<TimelineLoaderProps> = (props) => {
 
   useEffect(() => {
     async function getAllFacts() {
-      const allFacts: FT.FactLink[] = await FoundationFetcher.index();
+      const index: FT.FactsetIndex = await get(
+        // `git hash-object BLAH` for https://github.com/mytakedotorg/us-presidential-debates/blob/staging/sausage/index.json
+        "https://mytake.org/api/fact/E74aoUY=0f4ae6f0a789891c41ec3372cde46a89ee3b57cb"
+      );
       setState({
-        facts: allFacts,
+        facts: index.facts,
       });
     }
     getAllFacts();

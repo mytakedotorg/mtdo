@@ -38,6 +38,7 @@ spotless {
 				'gradle/spotless.eclipseformat.xml',
 				'gradle/spotless.greclipse.properties'
 				)
+		toggleOffOn()
 	}
 }
 
@@ -54,20 +55,17 @@ eclipseResourceFilters {
 	exclude().folders().name('buildSrc')
 	exclude().folders().name('client')
 	exclude().folders().name('client-interface')
-	exclude().folders().name('factset-debates')
 	exclude().folders().name('factset-tooling')
-	exclude().folders().name('foundation')
 	exclude().folders().name('ide')
 	exclude().folders().name('lucene')
 	exclude().folders().name('node')
-	exclude().folders().name('presidential-debates')
 	exclude().folders().name('server')
 }
 tasks.eclipse.dependsOn(tasks.cleanEclipse)
 
 // heroku deploys fatjar (and deletes everything else)
 task stage {
-	dependsOn ':server:shadowJar'
+	dependsOn ':server:shadowJar', ':lucene:generateIndex'
 	dependsOn ':node:assemble', ':node:pruneDependencies', ':node:copyNodeExe'
 	doLast {
 		delete fileTree(dir: '.', exclude: [
@@ -78,6 +76,7 @@ task stage {
 			'.jdk/**',
 			'.heroku/**',
 			'server/build/libs/server-all.jar',
+			'lucene/build/search-index',
 			'node/build/dist/**',
 			'node/build/dist-client/**',
 			'node/node',

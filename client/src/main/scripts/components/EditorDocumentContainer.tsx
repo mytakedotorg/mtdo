@@ -20,7 +20,7 @@
 import keycode from "keycode";
 import * as React from "react";
 import { FoundationNode, getHighlightedNodes } from "../common/CaptionNodes";
-import { FoundationFetcher } from "../common/foundation";
+import { Foundation } from "../common/foundation";
 import { DocumentBlock } from "../java2ts/DocumentBlock";
 import { FT } from "../java2ts/FT";
 import {
@@ -57,7 +57,7 @@ class EditorDocumentContainer extends React.Component<
     };
   }
   getFact = async (factHash: string) => {
-    const factContent = await FoundationFetcher.justOneDocument(factHash);
+    const factContent = await Foundation.justOneDocument(factHash);
     const nodes: FoundationNode[] = factContent.components.map(
       (documentComponent) => {
         return {

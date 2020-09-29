@@ -30,8 +30,8 @@ import org.assertj.core.api.Assertions;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
+import org.mytake.factset.search.LuceneWriter;
 import org.mytake.factset.video.VideoFactContentJava;
-import org.mytake.lucene.legacyfoundationgen.LuceneWriter;
 
 public class LuceneTest {
 	private static final String HASH = "HASH";

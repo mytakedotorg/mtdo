@@ -17,7 +17,7 @@
  *
  * You can contact us at team@mytake.org
  */
-import { Foundation, FoundationFetcher } from "../../common/foundation";
+import { Foundation } from "../../common/foundation";
 import { groupBy } from "../../common/functions";
 import { VideoTurn } from "../../common/social/social";
 import { getTurnContent } from "../../common/video";
@@ -55,11 +55,11 @@ export async function search(
   const factResults = await get<Search.FactResultList>(
     `${Routes.API_SEARCH}?${Search.QUERY}=${encodeURIComponent(searchQuery)}`
   );
-  const builder = new FoundationFetcher();
-  factResults.facts.forEach((fact) => builder.add(fact.hash));
-  const foundationData = await builder.build();
+  const facts = await Foundation.fetchAll(
+    factResults.facts.map((fact) => fact.hash)
+  );
   return _searchImpl(
-    new _SearchWithData(searchQuery, factResults.facts, foundationData, mode)
+    new _SearchWithData(searchQuery, factResults.facts, facts, mode)
   );
 }
 

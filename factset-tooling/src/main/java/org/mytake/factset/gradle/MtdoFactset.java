@@ -31,7 +31,7 @@ package org.mytake.factset.gradle;
 
 import com.diffplug.common.base.Unhandled;
 import com.diffplug.common.collect.Iterables;
-import com.jsoniter.spi.TypeLiteral;
+import com.google.gson.reflect.TypeToken;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -238,7 +238,7 @@ public class MtdoFactset {
 			return JsonMisc.fromJson(buildJson, MAP_STRING);
 		}
 
-		private static TypeLiteral<Map<String, String>> MAP_STRING = new TypeLiteral<Map<String, String>>() {};
+		private static final TypeToken<Map<String, String>> MAP_STRING = new TypeToken<Map<String, String>>() {};
 	}
 
 	private static String withoutExtension(String path) {

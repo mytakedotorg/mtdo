@@ -26,7 +26,6 @@ import common.SocialEmbed;
 import java2ts.Routes;
 import org.jooby.Env;
 import org.jooby.Jooby;
-import org.jooby.handlers.AssetHandler;
 
 public class FoundationAssets implements Jooby.Module {
 	@Override
@@ -42,7 +41,5 @@ public class FoundationAssets implements Jooby.Module {
 			}
 			return views.Placeholder.foundation.template(SocialEmbed.get(req, embedRison));
 		});
-		env.router().assets(Routes.FOUNDATION_INDEX_HASH, new AssetHandler(Routes.FOUNDATION_INDEX_HASH).etag(false).maxAge(0));
-		env.router().assets(Routes.FOUNDATION_DATA + "/*");
 	}
 }

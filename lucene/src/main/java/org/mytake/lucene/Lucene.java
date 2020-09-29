@@ -20,24 +20,16 @@
 package org.mytake.lucene;
 
 import com.diffplug.common.collect.ImmutableSet;
-import com.diffplug.common.io.Resources;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.TreeSet;
 import java2ts.Search.FactResultList;
 import java2ts.Search.VideoResult;
-import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.analysis.CharArraySet;
-import org.apache.lucene.analysis.LowerCaseFilter;
-import org.apache.lucene.analysis.StopFilter;
-import org.apache.lucene.analysis.TokenStream;
-import org.apache.lucene.analysis.en.EnglishAnalyzer;
-import org.apache.lucene.analysis.standard.StandardTokenizer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.search.BooleanClause.Occur;
@@ -51,21 +43,16 @@ import org.apache.lucene.store.MMapDirectory;
 import org.apache.lucene.util.QueryBuilder;
 
 public class Lucene implements AutoCloseable {
-	public static final String INDEX_ARCHIVE = "foundation-index.zip";
-
-	/** Extracts the index from an archive, then instantiates Lucene on top of that. */
-	public static Lucene openFromArchive() throws IOException {
-		Path luceneIndexDir = Files.createTempDirectory("lucene-index");
-		try (InputStream input = Resources.asByteSource(Lucene.class.getResource("/" + INDEX_ARCHIVE)).openBufferedStream()) {
-			ZipMisc.unzip(input, luceneIndexDir);
+	public static Lucene loadFromDefaultFolder() throws IOException {
+		Path runDev = Paths.get("../lucene/build/search-index");
+		if (Files.exists(runDev)) {
+			return new Lucene(runDev);
 		}
-		return new Lucene(luceneIndexDir) {
-			@Override
-			public void close() throws IOException {
-				super.close();
-				ZipMisc.deleteDir(luceneIndexDir);
-			}
-		};
+		Path runServer = Paths.get("lucene/build/search-index");
+		if (Files.exists(runServer)) {
+			return new Lucene(runServer);
+		}
+		throw new IllegalStateException("Couldn't find the lucene search index.");
 	}
 
 	private final MyTakeDotOrgAnalyzer analyzer;
@@ -73,9 +60,9 @@ public class Lucene implements AutoCloseable {
 	private final DirectoryReader reader;
 	private final IndexSearcher searcher;
 
-	public Lucene(Path path) throws IOException {
+	public Lucene(Path indexPath) throws IOException {
 		analyzer = new MyTakeDotOrgAnalyzer();
-		directory = new MMapDirectory(path);
+		directory = new MMapDirectory(indexPath);
 		reader = DirectoryReader.open(directory);
 		searcher = new IndexSearcher(reader);
 	}
@@ -151,36 +138,4 @@ public class Lucene implements AutoCloseable {
 	public static final String CONTENT = "content";
 
 	private static final ImmutableSet<String> TO_FETCH = ImmutableSet.of(HASH, TURN);
-
-	public static class MyTakeDotOrgAnalyzer extends Analyzer {
-		private static final int MAX_TOKEN_LENGTH = 127;
-		private static final CharArraySet STOPWORDS;
-
-		static {
-			boolean ignoreCase = true;
-			STOPWORDS = new CharArraySet(EnglishAnalyzer.ENGLISH_STOP_WORDS_SET, ignoreCase);
-			STOPWORDS.add("uh");
-			STOPWORDS.add("eh");
-		}
-
-		@Override
-		protected TokenStreamComponents createComponents(final String fieldName) {
-			StandardTokenizer src = new StandardTokenizer();
-			src.setMaxTokenLength(MAX_TOKEN_LENGTH);
-			TokenStream tok = src;
-			tok = new LowerCaseFilter(tok);
-			tok = new StopFilter(tok, STOPWORDS);
-			return new TokenStreamComponents(reader -> {
-				// So that if maxTokenLength was changed, the change takes
-				// effect next time tokenStream is called:
-				src.setMaxTokenLength(MAX_TOKEN_LENGTH);
-				src.setReader(reader);
-			}, tok);
-		}
-
-		@Override
-		protected TokenStream normalize(String fieldName, TokenStream in) {
-			return new LowerCaseFilter(in);
-		}
-	}
 }

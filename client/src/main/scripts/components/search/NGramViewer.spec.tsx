@@ -19,9 +19,10 @@
  */
 import React from "react";
 import renderer from "react-test-renderer";
-import { FoundationHarness } from "../../common/foundationTest";
+import { Foundation } from "../../common/foundation";
 import NGramViewer, { _getSearchTerms } from "./NGramViewer";
 import { SearchMode, _searchImpl, _SearchWithData } from "./search";
+// this is created by LucenePlayground
 import socialSecuritySearchResults from "./testData/socialSecuritySearchResults.json";
 
 test("NGramViewer parses search terms", () => {
@@ -37,12 +38,14 @@ test("NGramViewer parses search terms", () => {
   });
 });
 
-test("NGramViewer social security", () => {
+test("NGramViewer social security", async () => {
   const result = _searchImpl(
     new _SearchWithData(
       "social security",
       socialSecuritySearchResults.facts,
-      FoundationHarness.loadAllFromDisk(),
+      await Foundation.fetchAll(
+        socialSecuritySearchResults.facts.map((f) => f.hash)
+      ),
       SearchMode.BeforeAndAfter
     )
   );

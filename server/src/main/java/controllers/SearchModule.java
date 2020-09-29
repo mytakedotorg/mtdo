@@ -34,7 +34,7 @@ public class SearchModule implements Jooby.Module {
 
 	@Override
 	public void configure(Env env, Config conf, Binder binder) throws Throwable {
-		Lucene lucene = Lucene.openFromArchive();
+		Lucene lucene = Lucene.loadFromDefaultFolder();
 		// warmup
 		lucene.searchDebate("cuba");
 		lucene.searchDebate("wall,-wall street");

@@ -18,7 +18,7 @@
  * You can contact us at team@mytake.org
  */
 import * as React from "react";
-import { FoundationFetcher } from "../../common/foundation";
+import { Foundation } from "../../common/foundation";
 import { getCut } from "../../common/video";
 import { FT } from "../../java2ts/FT";
 import { Routes } from "../../java2ts/Routes";
@@ -34,19 +34,19 @@ export async function socialHeader(
       return headerTextCut(
         social,
         socialRison,
-        await FoundationFetcher.justOneDocument(social.fact)
+        await Foundation.justOneDocument(social.fact)
       );
     case "videoCut":
       return headerVideoCut(
         social,
         socialRison,
-        await FoundationFetcher.justOneVideo(social.fact)
+        await Foundation.justOneVideo(social.fact)
       );
     case "factUncut":
       return headerFactUncut(
         social,
         socialRison,
-        await FoundationFetcher.justOneFact(social.fact)
+        await Foundation.justOneFact(social.fact)
       );
   }
 }

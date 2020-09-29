@@ -36,3 +36,10 @@
   }
   @include body("sans");
 }
+.timeline__radio-link-icon {
+  @include button--borderless;
+  background: transparent;
+}
+.timeline__radio-link-icon > svg {
+  margin-bottom: -2px;
+}

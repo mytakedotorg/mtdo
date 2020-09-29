@@ -31,13 +31,13 @@ export const INFO_HEADER_TAB_NAMES = Object.values(INFO_HEADER_TABS_ENUM);
 
 export const SOCIAL_CLINTON: VideoCut = {
   cut: [2879, 2891.639892578125],
-  fact: "1L4K9lUrKC8dQBxDQTZeIxNEeKIgZjMPaA7SURzBljQ=",
+  fact: "E74aoUY=887eb256a26aa4be39a9d849804b8e6e418222ae",
   kind: "videoCut",
 };
 
 export const SOCIAL_TRUMP: VideoCut = {
   cut: [2689.89990234375, 2702.360107421875],
-  fact: "1L4K9lUrKC8dQBxDQTZeIxNEeKIgZjMPaA7SURzBljQ=",
+  fact: "E74aoUY=887eb256a26aa4be39a9d849804b8e6e418222ae",
   kind: "videoCut",
 };
 

@@ -2,7 +2,6 @@
 /client/src/main/scripts/java2ts/
 /client/src/main/resources/
 /client-interface/src/main/java/jsoniter_codegen/
-/foundation/src/main/resources/
 # have to commit this because only because heroku can't run docker-compose
 #/server/src/main/jooq-generated/
 /server/src/main/rocker-generated/

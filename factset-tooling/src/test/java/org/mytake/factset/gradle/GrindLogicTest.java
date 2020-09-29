@@ -30,6 +30,9 @@ package org.mytake.factset.gradle;
 
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -78,5 +81,9 @@ public class GrindLogicTest extends ResourceHarness {
 		String gitFriendly = GitJson.write(encoded).toCompactString();
 		String condensed = GitJson.write(encoded).toRecondensedForDebugging().replace("\\u0027", "'");
 		Assert.assertEquals(condensed, GitJson.recondense(gitFriendly));
+
+		String expectedCondensed = new String(Files.readAllBytes(Paths.get("src/test/resources/org/mytake/factset/gradle/kennedy-nixon-1-of-4-condensed.json")), StandardCharsets.UTF_8);
+		Assert.assertEquals(expectedCondensed, condensed);
+		// Files.write(Paths.get("src/test/resources/org/mytake/factset/gradle/kennedy-nixon-1-of-4-condensed.json"), condensed.getBytes(StandardCharsets.UTF_8));
 	}
 }

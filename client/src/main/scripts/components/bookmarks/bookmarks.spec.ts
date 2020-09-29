@@ -22,20 +22,19 @@ import {
   bookmarkToIntermediate,
   intermediateToBookmark,
 } from "./bookmarks";
-import { FoundationHarness } from "../../common/foundationTest";
+import { Foundation } from "../../common/foundation";
 import { ClipRange, VideoTurn } from "../../common/social/social";
 import { cutToTurn, turnToCut } from "../../common/video";
 
 const turn: VideoTurn = {
   cut: [0, 13],
-  fact: "GbeeimPkwH38zIwu7kYGmQ6NyE9PgBVYVKfYoiVilFI=",
+  fact: "E74aoUY=e57bb551092196eedf8c157d000f26660084e1c2",
   kind: "videoTurn",
   turn: 45,
 };
-const foundation = FoundationHarness.loadAllFromDisk();
-const videoFact = foundation.getVideo(turn.fact);
 
-test("bookmarkToIntermediate then intermediateToBookmark", () => {
+test("bookmarkToIntermediate then intermediateToBookmark", async () => {
+  const videoFact = await Foundation.justOneVideo(turn.fact);
   const bookmark: Bookmark = {
     content: turnToCut(turn, videoFact),
     savedAt: new Date(),
@@ -50,7 +49,8 @@ test("bookmarkToIntermediate then intermediateToBookmark", () => {
   expect(pluckedBookmark.cut[1]).toBeCloseTo(pluckedConvertedBookmark.cut[1]);
 });
 
-test("turnToCut then cutToTurn with bookmark", () => {
+test("turnToCut then cutToTurn with bookmark", async () => {
+  const videoFact = await Foundation.justOneVideo(turn.fact);
   const bookmark = {
     content: turnToCut(turn, videoFact),
     savedAt: new Date(),

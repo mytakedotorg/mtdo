@@ -48,9 +48,9 @@ public class FactApi implements Jooby.Module {
 
 	@Override
 	public void configure(Env env, Config conf, Binder binder) throws Throwable {
-		String githubUser = System.getProperty("GITHUB_USER");
+		String githubUser = System.getenv("GITHUB_USER");
 		if (githubUser != null) {
-			String githubSecret = System.getProperty("GITHUB_SECRET");
+			String githubSecret = System.getenv("GITHUB_SECRET");
 			if (githubSecret != null) {
 				githubAuth = Credentials.basic(githubUser, githubSecret);
 			}

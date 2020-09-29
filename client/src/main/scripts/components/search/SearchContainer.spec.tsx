@@ -19,7 +19,7 @@
  */
 import React from "react";
 import renderer from "react-test-renderer";
-import { FoundationHarness } from "../../common/foundationTest";
+import { Foundation } from "../../common/foundation";
 import {
   SearchMode,
   SearchResult,
@@ -75,12 +75,14 @@ const eventHandlers: SearchContainerEventHandlers = {
   onRemoveBookmark: jest.fn(),
 };
 
-test("SearchContainer social security", () => {
+test("SearchContainer social security", async () => {
   const result = _searchImpl(
     new _SearchWithData(
       "social security",
       socialSecuritySearchResults.facts,
-      FoundationHarness.loadAllFromDisk(),
+      await Foundation.fetchAll(
+        socialSecuritySearchResults.facts.map((fact) => fact.hash)
+      ),
       SearchMode.BeforeAndAfter
     )
   );
@@ -98,12 +100,14 @@ test("SearchContainer social security", () => {
   expect(tree).toMatchSnapshot();
 });
 
-test("SearchContainer social security before and after", () => {
+test("SearchContainer social security before and after", async () => {
   const result = _searchImpl(
     new _SearchWithData(
       "social security",
       socialSecuritySearchResults.facts,
-      FoundationHarness.loadAllFromDisk(),
+      await Foundation.fetchAll(
+        socialSecuritySearchResults.facts.map((fact) => fact.hash)
+      ),
       SearchMode.BeforeAndAfter
     )
   );
@@ -121,12 +125,12 @@ test("SearchContainer social security before and after", () => {
   expect(tree).toMatchSnapshot();
 });
 
-test("SearchContainer no results", () => {
+test("SearchContainer no results", async () => {
   const result = _searchImpl(
     new _SearchWithData(
       "gibberish",
       [],
-      FoundationHarness.loadAllFromDisk(),
+      await Foundation.fetchAll([]),
       SearchMode.BeforeAndAfter
     )
   );
@@ -143,12 +147,14 @@ test("SearchContainer no results", () => {
   expect(tree).toMatchSnapshot();
 });
 
-test("SearchContainer wall, -wall street", () => {
+test("SearchContainer wall, -wall street", async () => {
   const result = _searchImpl(
     new _SearchWithData(
       "wall, -wall street",
       wallSearchResults.facts,
-      FoundationHarness.loadAllFromDisk(),
+      await Foundation.fetchAll(
+        wallSearchResults.facts.map((fact) => fact.hash)
+      ),
       SearchMode.BeforeAndAfter
     )
   );

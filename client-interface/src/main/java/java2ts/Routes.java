@@ -57,8 +57,6 @@ public class Routes {
 	public static final String SEARCH = "/search";
 	public static final String TIMELINE = "/timeline";
 	public static final String FOUNDATION = "/foundation";
-	public static final String FOUNDATION_DATA = "/foundation-data";
-	public static final String FOUNDATION_INDEX_HASH = "/foundation-index-hash.json";
 
 	public static final String ABOUT = "/about";
 	public static final String ABOUTUS = "/aboutus";

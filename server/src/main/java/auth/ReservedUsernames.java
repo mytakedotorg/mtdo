@@ -50,7 +50,7 @@ class ReservedUsernames {
 			url(Routes.SEARCH),
 			url(Routes.TIMELINE),
 			url(Routes.FOUNDATION),
-			url(Routes.FOUNDATION_DATA),
+			url("foundation-data"),
 
 			url(Routes.ABOUT),
 			url(Routes.PRIVACY),

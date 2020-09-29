@@ -31,8 +31,6 @@ package org.mytake.factset.video;
 
 import com.diffplug.common.base.Preconditions;
 import com.diffplug.common.io.ByteStreams;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Comparator;
@@ -77,8 +75,7 @@ public class VideoFormat {
 	}
 
 	public static String prettyPrint(FT.VideoFactMeta meta) {
-		Gson gson = new GsonBuilder().setPrettyPrinting().create();
-		String formatted = gson.toJson(GitJson.reorder(meta, "fact"));
+		String formatted = GitJson.write(meta).toPrettyString();
 		return SPEAKER.matcher(formatted).replaceAll("{\"fullName\": \"$1\", \"role\": \"$2\"}");
 	}
 

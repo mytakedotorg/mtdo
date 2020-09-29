@@ -38,9 +38,12 @@ interface TimelineViewProps {
 }
 
 function getUrlFromSocial(
-  social: PreviewSocial,
+  social: PreviewSocial | null,
   factLinks: FT.FactLink[]
 ): string {
+  if (!social) {
+    return `/foundation/presidential-debate-kennedy-nixon-1-of-4`;
+  }
   const title = factLinks.find((fl) => fl.hash === social.fact)?.fact.title;
   if (title) {
     const slugTitle = slugify(title);
@@ -112,7 +115,7 @@ const TimelineView: React.FC<TimelineViewProps> = ({
     window.history.pushState(
       {},
       "UnusedTitle",
-      getUrlFromSocial(social!, factLinks)
+      getUrlFromSocial(social, factLinks)
     );
   }, [social]);
 
