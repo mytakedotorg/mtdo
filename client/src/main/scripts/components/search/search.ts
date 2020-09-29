@@ -49,14 +49,13 @@ export enum SearchMode {
   BeforeAndAfter,
 }
 
+const SEARCH_ROUTE = `${Routes.API_SEARCH}?${Search.HASH}=${hash}&${Search.QUERY}=`;
 export async function search(
   searchQuery: string,
   mode: SearchMode
 ): Promise<SearchResult> {
   const factResults = await get<Search.FactResultList>(
-    `${Routes.API_SEARCH}?${Search.QUERY}=${encodeURIComponent(searchQuery)}&${
-      Search.HASH
-    }=${hash}`
+    `${SEARCH_ROUTE}${encodeURIComponent(searchQuery)}`
   );
   const facts = await Foundation.fetchAll(
     factResults.facts.map((fact) => fact.hash)
