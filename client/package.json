@@ -13,7 +13,7 @@
     "clean": "npx gulp clean",
     "deploy": "npx gulp buildProd",
     "test": "npx jest",
-    "test_ci": "npx jest --env=jsdom --ci --reporters=jest-junit",
+    "test_ci": "npx jest --env=jsdom --maxWorkers=1 --ci --reporters=jest-junit",
     "updateSnapshot": "npx jest --updateSnapshot"
   },
   "author": "MyTake.org, Inc.",
