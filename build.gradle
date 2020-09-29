@@ -65,7 +65,7 @@ tasks.eclipse.dependsOn(tasks.cleanEclipse)
 
 // heroku deploys fatjar (and deletes everything else)
 task stage {
-	dependsOn ':server:shadowJar', ':lucene:generateIndex'
+	dependsOn ':server:shadowJar', ':lucene:assemble'
 	dependsOn ':node:assemble', ':node:pruneDependencies', ':node:copyNodeExe'
 	doLast {
 		delete fileTree(dir: '.', exclude: [
@@ -77,6 +77,7 @@ task stage {
 			'.heroku/**',
 			'server/build/libs/server-all.jar',
 			'lucene/build/search-index',
+			'lucene/build/search-index.hash',
 			'node/build/dist/**',
 			'node/build/dist-client/**',
 			'node/node',
