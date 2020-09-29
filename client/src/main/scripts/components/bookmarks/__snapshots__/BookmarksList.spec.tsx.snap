@@ -72,9 +72,7 @@ exports[`BookmarksList no results 1`] = `
 >
   <div
     className="results__row"
-  >
-    0
-  </div>
+  />
   <div>
     BookmarksResultList: 
     0

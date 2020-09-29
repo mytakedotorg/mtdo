@@ -26,11 +26,12 @@ import BlockWriter, {
   InitialBlockWriterState,
   initialState,
 } from "./components/BlockWriter";
+import BookmarksLoader from "./components/bookmarks/BookmarksLoader";
 import FoundationView from "./components/FoundationView";
 import HeaderWithPage from "./components/homepage/HeaderWithPage";
 import Home from "./components/homepage/Home";
 import VideoResultsLoader from "./components/search/VideoResultsLoader";
-import { MtdoArgs } from "./page";
+import { isBookmarksTab, MtdoArgs } from "./page";
 
 windowUtils.init();
 
@@ -77,4 +78,9 @@ const app = document.getElementById("app");
 if (app) {
   ReactDOM.render(pageElementWithHeader(), app);
   Modal.setAppElement(app);
+}
+
+if (isBookmarksTab()) {
+  const bookmarksContainer = document.getElementById("bookmarks");
+  ReactDOM.render(<BookmarksLoader />, bookmarksContainer);
 }

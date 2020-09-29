@@ -244,4 +244,10 @@ Array [
 ]
 `;
 
-exports[`BookmarksResultList no results 1`] = `null`;
+exports[`BookmarksResultList no results 1`] = `
+<p
+  className="results__text"
+>
+  You haven't bookmarked anything yet.
+</p>
+`;

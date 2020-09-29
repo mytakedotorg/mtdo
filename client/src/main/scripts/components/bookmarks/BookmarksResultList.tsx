@@ -50,6 +50,11 @@ const BookmarksResultList: React.FC<BookmarksResultListProps> = ({
       ? eventHandlers.onRemoveBookmark(bookmark)
       : eventHandlers.onUndoRemoveBookmark(bookmark);
   };
+  if (bookmarksResult.factHits.length === 0) {
+    return (
+      <p className="results__text">You haven't bookmarked anything yet.</p>
+    );
+  }
   return (
     <>
       {bookmarksResult.factHits.map((f, idx) => {
