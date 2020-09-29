@@ -75,7 +75,7 @@ const eventHandlers: SearchContainerEventHandlers = {
   onRemoveBookmark: jest.fn(),
 };
 
-test("SearchContainer social security", async () => {
+test("SearchContainer social security", async (done) => {
   const result = _searchImpl(
     new _SearchWithData(
       "social security",
@@ -98,9 +98,10 @@ test("SearchContainer social security", async () => {
     )
     .toJSON();
   expect(tree).toMatchSnapshot();
+  done();
 });
 
-test("SearchContainer social security before and after", async () => {
+test("SearchContainer social security before and after", async (done) => {
   const result = _searchImpl(
     new _SearchWithData(
       "social security",
@@ -123,9 +124,10 @@ test("SearchContainer social security before and after", async () => {
     )
     .toJSON();
   expect(tree).toMatchSnapshot();
+  done();
 });
 
-test("SearchContainer no results", async () => {
+test("SearchContainer no results", async (done) => {
   const result = _searchImpl(
     new _SearchWithData(
       "gibberish",
@@ -145,9 +147,10 @@ test("SearchContainer no results", async () => {
     )
     .toJSON();
   expect(tree).toMatchSnapshot();
+  done();
 });
 
-test("SearchContainer wall, -wall street", async () => {
+test("SearchContainer wall, -wall street", async (done) => {
   const result = _searchImpl(
     new _SearchWithData(
       "wall, -wall street",
@@ -170,4 +173,5 @@ test("SearchContainer wall, -wall street", async () => {
     )
     .toJSON();
   expect(tree).toMatchSnapshot();
+  done();
 });

@@ -49,7 +49,7 @@ async function getFacts(): Promise<Foundation> {
   return Foundation.fetchAll(samplebookmarks.bookmarks.map((b) => b.fact));
 }
 
-test("BookmarksResultList DateHappened", async () => {
+test("BookmarksResultList DateHappened", async (done) => {
   const result = _bookmarksImpl(
     new _BookmarksWithData(
       await getFacts(),
@@ -68,9 +68,10 @@ test("BookmarksResultList DateHappened", async () => {
     )
     .toJSON();
   expect(tree).toMatchSnapshot();
+  done();
 });
 
-test("BookmarksResultList DateBookmarked", async () => {
+test("BookmarksResultList DateBookmarked", async (done) => {
   const result = _bookmarksImpl(
     new _BookmarksWithData(
       await getFacts(),
@@ -89,9 +90,10 @@ test("BookmarksResultList DateBookmarked", async () => {
     )
     .toJSON();
   expect(tree).toMatchSnapshot();
+  done();
 });
 
-test("BookmarksResultList no results", async () => {
+test("BookmarksResultList no results", async (done) => {
   const result = _bookmarksImpl(
     new _BookmarksWithData(await getFacts(), BookmarksMode.DateHappened, [])
   );
@@ -106,4 +108,5 @@ test("BookmarksResultList no results", async () => {
     )
     .toJSON();
   expect(tree).toMatchSnapshot();
+  done();
 });

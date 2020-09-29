@@ -25,7 +25,7 @@ import { SearchMode, _searchImpl, _SearchWithData } from "./search";
 // this is created by LucenePlayground
 import socialSecuritySearchResults from "./testData/socialSecuritySearchResults.json";
 
-test("NGramViewer parses search terms", () => {
+test("NGramViewer parses search terms", (done) => {
   const searchQueries = [
     "Wall, -Wall Street",
     "global warming, climate change",
@@ -36,9 +36,10 @@ test("NGramViewer parses search terms", () => {
     const terms = _getSearchTerms(q);
     expect(terms).toEqual(expectedTerms[idx]);
   });
+  done();
 });
 
-test("NGramViewer social security", async () => {
+test("NGramViewer social security", async (done) => {
   const result = _searchImpl(
     new _SearchWithData(
       "social security",
@@ -55,4 +56,5 @@ test("NGramViewer social security", async () => {
     .toJSON();
 
   expect(tree).toMatchSnapshot();
+  done();
 });

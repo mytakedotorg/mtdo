@@ -28,8 +28,9 @@ const turn: VideoTurn = {
   turn: 45,
 };
 
-test("turnToCut then cutToTurn", async () => {
+test("turnToCut then cutToTurn", async (done) => {
   const videoFact = await Foundation.justOneVideo(turn.fact);
   const cut = turnToCut(turn, videoFact);
   expect(cutToTurn(cut, videoFact)).toEqual(turn);
+  done();
 });
