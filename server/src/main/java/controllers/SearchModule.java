@@ -21,16 +21,19 @@ package controllers;
 
 import com.google.inject.Binder;
 import com.typesafe.config.Config;
+import common.CacheControl;
 import common.SocialEmbed;
 import forms.meta.MetaField;
 import java2ts.Routes;
+import java2ts.Search;
 import org.jooby.Env;
 import org.jooby.Jooby;
 import org.jooby.Results;
 import org.mytake.lucene.Lucene;
 
 public class SearchModule implements Jooby.Module {
-	private static final MetaField<String> Q = MetaField.string("q");
+	private static final MetaField<String> Q = MetaField.string(Search.QUERY);
+	private static final MetaField<String> H = MetaField.string(Search.HASH);
 
 	@Override
 	public void configure(Env env, Config conf, Binder binder) throws Throwable {
@@ -42,8 +45,13 @@ public class SearchModule implements Jooby.Module {
 		env.onStop(() -> {
 			lucene.close();
 		});
-		env.router().get(Routes.API_SEARCH, req -> {
-			return lucene.searchDebate(Q.parse(req));
+		env.router().get(Routes.API_SEARCH, (req, res) -> {
+			if (lucene.hash().equals(H.parse(req))) {
+				CacheControl.forever(res);
+			} else {
+				CacheControl.bypass(res);
+			}
+			res.send(lucene.searchDebate(Q.parse(req)));
 		});
 		env.router().get(Routes.SEARCH, req -> {
 			String query = Q.parseOrDefault(req, "");

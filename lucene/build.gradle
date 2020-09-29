@@ -31,22 +31,28 @@ spotless {
 def repoToSha = [
 	'us-presidential-debates', 'a3ce5d43ce931858345b22d25d35344e0228e123'
 ]
-def outputDir = file('build/search-index')
-tasks.register('generateIndex', JavaExec) {
-	description = 'Generates the foundation'
+def searchIndex = file('build/search-index')
+tasks.register('indexGenerate', JavaExec) {
 	classpath = sourceSets.test.runtimeClasspath
 	main = 'org.mytake.factset.search.GenerateIndex'
-	args = [outputDir.absolutePath] + repoToSha
+	args = [searchIndex.absolutePath] + repoToSha
 
 	dependsOn 'testClasses'
 	inputs.property('repoToSha', args)
 	inputs.files(sourceSets.test.runtimeClasspath).withPathSensitivity(PathSensitivity.NONE)
 
-	outputs.dir(outputDir)
+	outputs.dir(searchIndex)
 	outputs.cacheIf { true }
 }
 // spotless:on
 
+tasks.register('indexHash', org.mytake.gradle.hash.HashTask) {
+	dependsOn 'indexGenerate'
+	addFolder 'src/main/java/org/mytake/lucene'
+	addStrings repoToSha
+	destination 'build/search-index-hash.json', '../client/src/main/scripts/components/search/search-index.json'
+}
+
 tasks.named('assemble') {
-	dependsOn('generateIndex')
+	dependsOn('indexHash')
 }

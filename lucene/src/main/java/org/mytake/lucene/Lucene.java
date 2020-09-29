@@ -20,6 +20,7 @@
 package org.mytake.lucene;
 
 import com.diffplug.common.collect.ImmutableSet;
+import com.jsoniter.JsonIterator;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -59,12 +60,19 @@ public class Lucene implements AutoCloseable {
 	private final Directory directory;
 	private final DirectoryReader reader;
 	private final IndexSearcher searcher;
+	private final String hash;
 
 	public Lucene(Path indexPath) throws IOException {
 		analyzer = new MyTakeDotOrgAnalyzer();
 		directory = new MMapDirectory(indexPath);
 		reader = DirectoryReader.open(directory);
 		searcher = new IndexSearcher(reader);
+		byte[] hashJson = Files.readAllBytes(indexPath.getParent().resolve("search-index-hash.json"));
+		hash = JsonIterator.deserialize(hashJson).get("hash").toString();
+	}
+
+	public String hash() {
+		return hash;
 	}
 
 	@Override

@@ -172,7 +172,7 @@ tasks.register('renderSocialTemplate', JavaExec) {
 
 // see common.DevHotReload in an IDE for faster dev
 tasks.register('runDev', JavaExec) {
-	dependsOn 'testClasses', ':lucene:generateIndex'
+	dependsOn 'testClasses', ':lucene:assemble'
 	description = 'Run app in dev mode'
 	classpath = sourceSets.test.runtimeClasspath
 	main = 'common.DevHotReload'
@@ -187,7 +187,7 @@ tasks.register('updateSnapshot', Test) {
 }
 tasks.named('test') {
 	flywayJooq.neededBy(it)
-	dependsOn ':node:assemble', ':lucene:generateIndex'
+	dependsOn ':node:assemble', ':lucene:assemble'
 }
 
 /////////////

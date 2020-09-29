@@ -19,15 +19,24 @@
  */
 package controllers;
 
+import common.CustomAssets;
 import common.JoobyDevRule;
 import common.Snapshot;
 import io.restassured.RestAssured;
+import json.JsoniterModule;
+import org.jooby.Jooby;
 import org.junit.ClassRule;
 import org.junit.Test;
 
 public class SearchModuleTest {
 	@ClassRule
-	public static JoobyDevRule dev = JoobyDevRule.empty();
+	public static JoobyDevRule app = new JoobyDevRule(new Jooby() {
+		{
+			CustomAssets.initTemplates(this);
+			use(new JsoniterModule());
+			use(new SearchModule());
+		}
+	});
 
 	@Test
 	public void html() {
@@ -36,6 +45,10 @@ public class SearchModuleTest {
 
 	@Test
 	public void api() {
-		Snapshot.match("api", RestAssured.get("/api/search?q=cuba"));
+		Snapshot.match("api", RestAssured.get("/api/static/search?q=cuba&h=e37375809df9dd1259b247ea7ee094b60dfd88cc"));
+		RestAssured.get("/api/static/search?q=cuba&h=hashdoesntmatch").then()
+				.header("Cache-Control", "no-cache");
+		RestAssured.get("/api/static/search?q=cuba&h=0e3b208baaaf58a032a24251a34748634d46ecb6").then()
+				.header("Cache-Control", "public, max-age=31536000, immutable");
 	}
 }

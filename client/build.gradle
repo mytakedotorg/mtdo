@@ -61,7 +61,7 @@ node {
 	]) {
 		final String taskName = t
 		gulp "${taskName}Dev", {
-			dependsOn 'gulp_permanent'
+			dependsOn 'gulp_permanent', ':lucene:indexHash'
 			inputs.dir("src/main/${taskName}").withPathSensitivity(PathSensitivity.RELATIVE)
 			if (taskName == 'scripts') {
 				inputs.file('tsconfig.json').withPathSensitivity(PathSensitivity.RELATIVE)
@@ -69,7 +69,7 @@ node {
 			outputs.dir("src/main/resources/assets-dev/${taskName}")
 		}
 		gulp "${taskName}Prod", {
-			dependsOn 'gulp_permanent'
+			dependsOn 'gulp_permanent', ':lucene:indexHash'
 			inputs.dir("src/main/${taskName}").withPathSensitivity(PathSensitivity.RELATIVE)
 			if (taskName == 'scripts') {
 				inputs.file('tsconfig.json').withPathSensitivity(PathSensitivity.RELATIVE)

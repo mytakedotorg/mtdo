@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2018-2020 MyTake.org, Inc.
+ * Copyright (C) 2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -17,26 +17,18 @@
  *
  * You can contact us at team@mytake.org
  */
-package java2ts;
+package common;
 
-import java.util.List;
+import org.jooby.Response;
 
-public interface Search {
-	public static final String QUERY = "q";
-	public static final String HASH = "h";
-
-	@jsweet.lang.Interface
-	public class FactResult implements Json {
-		public String hash;
+public class CacheControl {
+	public static Response forever(Response res) {
+		// https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control
+		return res.header("Cache-Control", "public, max-age=31536000, immutable");
 	}
 
-	@jsweet.lang.Interface
-	public class VideoResult extends FactResult {
-		public int turn;
-	}
-
-	@jsweet.lang.Interface
-	public class FactResultList implements Json {
-		public List<VideoResult> facts;
+	public static Response bypass(Response res) {
+		// https://support.cloudflare.com/hc/en-us/articles/202775670-Customizing-Cloudflare-s-cache#:~:text=Cache%20additional%20content%20at%20Cloudflare,-Caching%20additional%20content&text=Do%20not%20use%20Cache%20Everything,Cache%20Level%20set%20to%20Bypass.
+		return res.header("Cache-Control", "no-cache");
 	}
 }

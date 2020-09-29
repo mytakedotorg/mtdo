@@ -42,6 +42,7 @@ public class FactApiTest {
 		try (AutoCloseable server = startServer(factApiModule)) {
 			byte[] actualBytes = RestAssured.given().urlEncodingEnabled(false).get("/api/static/fact/E74aoUY=6876d0b1c2b7743a024becd3605e2e8ff9d08352.json").then()
 					.contentType("application/json")
+					.header("Cache-Control", "public, max-age=31536000, immutable")
 					.extract().body().asByteArray();
 			String actual = new String(actualBytes, StandardCharsets.UTF_8);
 			byte[] expectedBytes = Files.readAllBytes(Paths.get("../factset-tooling/src/test/resources/org/mytake/factset/gradle/kennedy-nixon-1-of-4.json"));

@@ -23,6 +23,7 @@ import com.diffplug.common.collect.ImmutableMap;
 import com.google.inject.Binder;
 import com.jsoniter.JsonIterator;
 import com.typesafe.config.Config;
+import common.CacheControl;
 import common.RedirectException;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -33,7 +34,7 @@ import okhttp3.Credentials;
 import okhttp3.OkHttpClient;
 import org.jooby.Env;
 import org.jooby.Jooby;
-import org.jooby.Results;
+import org.jooby.MediaType;
 import org.jooby.Status;
 
 public class FactApi implements Jooby.Module {
@@ -56,7 +57,7 @@ public class FactApi implements Jooby.Module {
 			}
 		}
 
-		env.router().get(Routes.API_FACT + "/**", req -> {
+		env.router().get(Routes.API_FACT + "/**", (req, res) -> {
 			if (!req.rawPath().endsWith(".json") || req.rawPath().length() != LENGTH) {
 				throw RedirectException.notFoundError();
 			}
@@ -71,14 +72,10 @@ public class FactApi implements Jooby.Module {
 			byte[] contentGitFriendly = repoSha(repo, sha);
 			// recondense the json
 			String content = recondense(new String(contentGitFriendly, StandardCharsets.UTF_8));
-			return Results.json(content)
+			CacheControl.forever(res)
 					.header("Access-Control-Allow-Origin", "*")
-					.header("Cache-Control",
-							"max-age=31536000", // one year https://stackoverflow.com/a/25201898/1153071
-							"public", // any cache may store the response
-							"no-transform", // don't muck with it at all
-							"immutable" // it will never change at all for sure
-			);
+					.type(MediaType.json)
+					.send(content);
 		});
 	}
 
