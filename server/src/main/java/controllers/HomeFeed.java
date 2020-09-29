@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2017 MyTake.org, Inc.
+ * Copyright (C) 2017-2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -21,6 +21,7 @@ package controllers;
 
 import com.google.inject.Binder;
 import com.typesafe.config.Config;
+import common.CacheControl;
 import org.jooby.Env;
 import org.jooby.Jooby;
 
@@ -29,6 +30,8 @@ public class HomeFeed implements Jooby.Module {
 
 	@Override
 	public void configure(Env env, Config conf, Binder binder) throws Throwable {
-		env.router().get(URL, () -> views.Placeholder.home.template());
+		env.router().get(URL, (req, res) -> {
+			CacheControl.hour(res).send(views.Placeholder.home.template());
+		});
 	}
 }
