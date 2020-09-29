@@ -42,6 +42,8 @@ const PERMANENT = "permanent";
 
 setupPipeline(DEV);
 setupPipeline(PROD);
+gulp.task("proxyStaging", proxyTask(DEV, "https://mtdo-naked-staging.herokuapp.com"));
+gulp.task("proxyProd", proxyTask(DEV, "https://mytake.org"));
 
 function setupPipeline(mode) {
   const styles = STYLES + mode;
