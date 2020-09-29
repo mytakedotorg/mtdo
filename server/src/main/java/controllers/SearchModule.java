@@ -21,6 +21,7 @@ package controllers;
 
 import com.google.inject.Binder;
 import com.typesafe.config.Config;
+import common.Cloudflare;
 import common.SocialEmbed;
 import forms.meta.MetaField;
 import java2ts.Routes;
@@ -43,7 +44,7 @@ public class SearchModule implements Jooby.Module {
 			lucene.close();
 		});
 		env.router().get(Routes.API_SEARCH, req -> {
-			return lucene.searchDebate(Q.parse(req));
+			return Cloudflare.json(lucene.searchDebate(Q.parse(req)));
 		});
 		env.router().get(Routes.SEARCH, req -> {
 			String query = Q.parseOrDefault(req, "");

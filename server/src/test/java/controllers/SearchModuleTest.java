@@ -36,6 +36,6 @@ public class SearchModuleTest {
 
 	@Test
 	public void api() {
-		Snapshot.match("api", RestAssured.get("/api/search?q=cuba"));
+		Snapshot.match("api", RestAssured.get("/api/static/search?q=cuba&h=e37375809df9dd1259b247ea7ee094b60dfd88cc"));
 	}
 }
