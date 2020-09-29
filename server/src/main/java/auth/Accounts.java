@@ -268,7 +268,7 @@ public class Accounts {
 				}
 				req.require(EmailSender.class).send(htmlEmail -> htmlEmail
 						.setHtmlMsg(htmlMsg)
-						.setSubject("MyTake.org welcome")
+						.setSubject("Welcome to MyTake.org")
 						.addTo(sendLoginEmailTo.getEmail()));
 				return null;
 			} else {
