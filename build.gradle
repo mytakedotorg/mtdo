@@ -77,7 +77,6 @@ task stage {
 			'.heroku/**',
 			'server/build/libs/server-all.jar',
 			'lucene/build/search-index',
-			'lucene/build/search-index.hash',
 			'node/build/dist/**',
 			'node/build/dist-client/**',
 			'node/node',
