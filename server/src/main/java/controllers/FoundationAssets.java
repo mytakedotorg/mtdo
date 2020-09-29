@@ -21,6 +21,7 @@ package controllers;
 
 import com.google.inject.Binder;
 import com.typesafe.config.Config;
+import common.CacheControl;
 import common.RedirectException;
 import common.SocialEmbed;
 import java2ts.Routes;
@@ -30,8 +31,10 @@ import org.jooby.Jooby;
 public class FoundationAssets implements Jooby.Module {
 	@Override
 	public void configure(Env env, Config conf, Binder binder) throws Throwable {
-		env.router().get(Routes.FOUNDATION, () -> views.Placeholder.foundation.template(SocialEmbed.todo()));
-		env.router().get(Routes.FOUNDATION + "/**", req -> {
+		env.router().get(Routes.FOUNDATION, (req, res) -> {
+			CacheControl.hour(res).send(views.Placeholder.foundation.template(SocialEmbed.todo()));
+		});
+		env.router().get(Routes.FOUNDATION + "/**", (req, res) -> {
 			String path = req.rawPath();
 			int embedSlash = path.lastIndexOf('/');
 			String embedRison = path.substring(embedSlash + 1);
@@ -39,7 +42,13 @@ public class FoundationAssets implements Jooby.Module {
 				// trailing slash
 				throw RedirectException.permanent(Routes.FOUNDATION);
 			}
-			return views.Placeholder.foundation.template(SocialEmbed.get(req, embedRison));
+			SocialEmbed social = SocialEmbed.get(req, embedRison);
+			if (social == null) {
+				CacheControl.hour(res);
+			} else {
+				CacheControl.bypass(res);
+			}
+			res.send(views.Placeholder.foundation.template(social));
 		});
 	}
 }
