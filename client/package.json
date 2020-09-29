@@ -61,6 +61,7 @@
     "gulp-sass": "^4.1.0",
     "gulp-task-listing": "^1.1.0",
     "jest": "^26.4.2",
+    "jest-circus": "^26.4.2",
     "jest-junit": "^11.1.0",
     "make-fetch-happen": "^8.0.9",
     "node-sass": "^4.14.1",
@@ -79,6 +80,7 @@
     "webpack-stream": "^6.1.0"
   },
   "jest": {
+    "testRunner": "jest-circus/runner",
     "transform": {
       "^.+\\.(ts|tsx)$": "ts-jest"
     },
