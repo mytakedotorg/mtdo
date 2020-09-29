@@ -15,15 +15,16 @@ import java.util.TreeMap;
 
 import org.eclipse.jgit.util.sha1.SHA1;
 import org.gradle.api.DefaultTask;
+import org.gradle.api.file.FileCollection;
 import org.gradle.api.tasks.Input;
-import org.gradle.api.tasks.OutputFile;
+import org.gradle.api.tasks.OutputFiles;
 import org.gradle.api.tasks.PathSensitivity;
 import org.gradle.api.tasks.TaskAction;
 
 public class HashTask extends DefaultTask {
 	private List<File> folders = new ArrayList<>();
 	private List<String> strings = new ArrayList<>();
-	private File destination;
+	private FileCollection destinations;
 
 	public void addFolder(Object folderObj) {
 		File folder = getProject().file(folderObj);
@@ -41,8 +42,8 @@ public class HashTask extends DefaultTask {
 		}
 	}
 
-	public void destination(Object destination) {
-		this.destination = getProject().file(destination);
+	public void destination(Object... destinations) {
+		this.destinations = getProject().files(destinations);
 	}
 
 	@Input
@@ -50,9 +51,9 @@ public class HashTask extends DefaultTask {
 		return strings;
 	}
 
-	@OutputFile
-	public File getDestination() {
-		return destination;
+	@OutputFiles
+	public FileCollection getDestination() {
+		return destinations;
 	}
 
 	@TaskAction
@@ -64,9 +65,11 @@ public class HashTask extends DefaultTask {
 		for (String string : strings) {
 			buffer.update(string.getBytes(StandardCharsets.UTF_8));
 		}
-		Files.createDirectories(destination.toPath().getParent());
-		String content = "{\"hash\":\"" + buffer.toObjectId().name() + "\"}"; 
-		Files.write(destination.toPath(), content.getBytes(StandardCharsets.UTF_8));
+		byte[] content = ("{\"hash\":\"" + buffer.toObjectId().name() + "\"}").getBytes(StandardCharsets.UTF_8);
+		for (File file : destinations) {
+			Files.createDirectories(file.toPath().getParent());
+			Files.write(file.toPath(), content);
+		}
 	}
 
 	/** Hashes the given folder. */

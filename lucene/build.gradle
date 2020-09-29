@@ -50,7 +50,7 @@ tasks.register('indexHash', org.mytake.gradle.hash.HashTask) {
 	dependsOn 'indexGenerate'
 	addFolder 'src/main/java/org/mytake/lucene'
 	addStrings repoToSha
-	destination '../client/src/main/scripts/components/search/search-index.json'
+	destination 'build/search-index-hash.json', '../client/src/main/scripts/components/search/search-index.json'
 }
 
 tasks.named('assemble') {
