@@ -107,7 +107,7 @@ function url(hash: string): string {
     typeof window === "undefined" || window.location.protocol === "file:"
       ? "https://mytake.org" // node.mytake.org
       : ""; // user browser
-  return `${protoHost}${Routes.API_FACT}/${hash}`;
+  return `${protoHost}${Routes.API_FACT}/${hash}.json`;
 }
 
 class FoundationFetcher {
