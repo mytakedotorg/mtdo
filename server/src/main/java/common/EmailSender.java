@@ -46,7 +46,7 @@ public class EmailSender {
 	public void send(Throwing.Consumer<HtmlEmail> sender) {
 		try {
 			HtmlEmail htmlEmail = registry.require(HtmlEmail.class);
-			htmlEmail.setFrom(Emails.TEAM.email(), Emails.TEAM.name());
+			htmlEmail.setFrom(Emails.TEAM.email(), Emails.TEAM.title());
 			sender.accept(htmlEmail);
 			executor.execute(() -> {
 				Errors.log().run(htmlEmail::send);
