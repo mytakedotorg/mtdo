@@ -31,6 +31,8 @@ package org.mytake.factset.gradle;
 
 import com.diffplug.common.base.Errors;
 import com.diffplug.common.base.StringPrinter;
+import com.diffplug.common.collect.Sets;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -49,11 +51,16 @@ class TemplatePlugin {
 	static final String TASK_CHECK = "templateCheck";
 
 	Map<String, List<String>> mustContain = new HashMap<>();
+	Map<String, String> mustBeExactly = new HashMap<>();
 
 	TemplatePlugin() {}
 
 	public void mustContain(String path, String... toContain) {
 		mustContain.put(path, Arrays.asList(toContain));
+	}
+
+	public void mustBeExactly(String path, String... toContain) {
+		mustBeExactly.put(path, StringPrinter.buildStringFromLines(toContain));
 	}
 
 	public void createTasks(Project project) {
@@ -72,35 +79,51 @@ class TemplatePlugin {
 			task.setGroup("Build Setup");
 			task.setDescription("Initializes the MyTake.org factset template");
 			Path rootDir = project.getProjectDir().toPath();
-			task.doLast(unused -> apply(rootDir));
+			task.doLast(unused -> Errors.rethrow().run(() -> apply(rootDir)));
 		});
 	}
 
+	private static final String bar = "+------------------------------\n";
+
 	public void check(Path rootDir) {
-		for (String p : mustContain.keySet()) {
+		for (String p : Sets.union(mustContain.keySet(), mustBeExactly.keySet())) {
 			Path path = rootDir.resolve(p);
 			if (!Files.exists(path)) {
 				throw new GradleException("'" + p + "' does not exist, run `" + TASK_APPLY + "` to create it.");
 			}
 			String content = Errors.rethrow().get(() -> new String(Files.readAllBytes(path), StandardCharsets.UTF_8));
-			for (String value : mustContain.get(p)) {
-				if (!content.contains(value)) {
-					String bar = "+------------------------------\n";
-					throw new GradleException("You must add the following to " + p + "\n\n"
-							+ bar
-							+ Arrays.stream(value.split("\n")).map(str -> "|" + str + "\n").collect(Collectors.joining())
-							+ bar);
+			String mustBe = mustBeExactly.get(p);
+			if (mustBe != null) {
+				if (!content.equals(mustBe)) {
+					throw new GradleException("'" + p + "' has the wrong content, run `" + TASK_APPLY + "` to fix it.");
+				}
+			} else {
+				for (String value : mustContain.get(p)) {
+					if (!content.contains(value)) {
+						throw new GradleException("You must add the following to " + p + "\n\n"
+								+ bar
+								+ Arrays.stream(value.split("\n")).map(str -> "|" + str + "\n").collect(Collectors.joining())
+								+ bar);
+					}
 				}
 			}
 		}
 	}
 
-	private void apply(Path rootDir) {
-		for (String p : mustContain.keySet()) {
+	private void apply(Path rootDir) throws IOException {
+		for (String p : Sets.union(mustContain.keySet(), mustBeExactly.keySet())) {
 			Path path = rootDir.resolve(p);
 			if (!Files.exists(path)) {
-				String content = mustContain.get(p).stream().collect(Collectors.joining("\n")) + "\n";
-				Errors.rethrow().run(() -> Files.write(path, content.getBytes(StandardCharsets.UTF_8)));
+				String content = mustBeExactly.get(p);
+				if (content == null) {
+					content = mustContain.get(p).stream().collect(Collectors.joining("\n")) + "\n";
+				}
+				Files.write(path, content.getBytes(StandardCharsets.UTF_8));
+			} else {
+				String mustBe = mustBeExactly.get(p);
+				if (mustBe != null) {
+					Files.write(path, mustBe.getBytes(StandardCharsets.UTF_8));
+				}
 			}
 		}
 	}
@@ -128,6 +151,10 @@ class TemplatePlugin {
 				NOTES,
 				CHANGELOG_HEADER,
 				ACKNOWLEDGEMENTS);
+		template.mustBeExactly("GUI_mac_osx.command",
+				"#!/bin/bash",
+				"cd `dirname $0`",
+				"./gradlew gui");
 		return template;
 	}
 
