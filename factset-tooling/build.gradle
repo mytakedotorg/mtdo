@@ -101,10 +101,10 @@ dependencies {
 		implementation 'chromium-swt:org.eclipse.swt.chromium.win32.win32.x86_64:+'
 		implementation 'chromium-swt:com.make.chromium.cef.win32.win32.x86_64:+'
 	}
+	implementation 'com.diffplug.durian:durian-swt:3.1.0'
 
 	testImplementation "junit:junit:$VER_JUNIT"
 	testImplementation "org.assertj:assertj-core:$VER_ASSERTJ"
-	testImplementation 'com.diffplug.durian:durian-swt:3.1.0'
 	testImplementation 'com.diffplug.durian:durian-rx:3.0.0'
 	testImplementation 'io.reactivex.rxjava2:rxjava:2.2.7'
 }
@@ -112,9 +112,9 @@ dependencies {
 apply plugin: 'com.diffplug.eclipse.mavencentral'
 eclipseMavenCentral {
 	release '4.15.0', {
-		testImplementation 'org.eclipse.swt'
-		testImplementation 'org.eclipse.jface'
-		testImplementation 'org.eclipse.jface.text'
+		implementation 'org.eclipse.swt'
+		implementation 'org.eclipse.jface'
+		implementation 'org.eclipse.jface.text'
 		useNativesForRunningPlatform()
 	}
 }
