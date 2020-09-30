@@ -48,7 +48,6 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import java2ts.FT;
-import javax.inject.Inject;
 import org.eclipse.jgit.util.sha1.SHA1;
 import org.gradle.api.Action;
 import org.gradle.api.DefaultTask;
@@ -75,7 +74,7 @@ import org.mytake.factset.JsonMisc;
 
 public class MtdoFactset {
 
-	public MtdoFactset(Project project) {
+	public MtdoFactset(Project project) throws IOException {
 		TaskProvider<?> grind = project.getTasks().register("grind", GrindTask.class, grindTask -> {
 			grindTask.setGroup("Build");
 			grindTask.setDescription("Grinds the ingredients folder into the sausage folder.");
@@ -94,50 +93,41 @@ public class MtdoFactset {
 			grindTask.sausageDir = project.file("sausage");
 		});
 		project.getTasks().getByName(BasePlugin.ASSEMBLE_TASK_NAME).dependsOn(grind);
-		project.getTasks().register("gui", GuiTask.class);
+		createGuiTask(project);
 	}
 
-	public static class GuiTask extends DefaultTask {
-		private static final String CONFIGURATION_NAME = "gui";
+	private void createGuiTask(Project p) throws IOException {
+		p.getRepositories().mavenCentral();
+		Configuration guiConfig = p.getConfigurations().create(GUI_CONFIG, cfg -> {
+			cfg.setTransitive(true);
+			cfg.setCanBeResolved(true);
+			cfg.setCanBeConsumed(false);
+		});
 
-		private Configuration guiConfig;
+		p.getPlugins().apply(MavenCentralPlugin.class);
+		MavenCentralExtension ext = p.getExtensions().getByType(MavenCentralExtension.class);
+		ext.release("4.15.0", release -> {
+			release.dep(GUI_CONFIG, "org.eclipse.swt");
+			release.dep(GUI_CONFIG, "org.eclipse.jface");
+			release.dep(GUI_CONFIG, "org.eclipse.jface.text");
+			release.useNativesForRunningPlatform();
+		});
+		p.getDependencies().add(GUI_CONFIG, "com.diffplug.durian:durian-swt:3.3.1");
 
-		@Inject
-		public GuiTask() throws IOException {
-			setGroup("GUI");
-			setDescription("Launches a gui for the factset");
+		p.getTasks().register("gui", org.gradle.api.tasks.JavaExec.class, task -> {
+			task.setGroup("GUI");
+			task.setDescription("Launches a gui for the factset");
 
-			getProject().getRepositories().mavenCentral();
-			guiConfig = getProject().getConfigurations().create(CONFIGURATION_NAME, cfg -> {
-				cfg.setTransitive(true);
-				cfg.setCanBeResolved(true);
-				cfg.setCanBeConsumed(false);
-			});
-
-			// add the swt jars
-			getProject().getPlugins().apply(MavenCentralPlugin.class);
-			MavenCentralExtension ext = getProject().getExtensions().getByType(MavenCentralExtension.class);
-			ext.release("4.15.0", release -> {
-				release.dep(CONFIGURATION_NAME, "org.eclipse.swt");
-				release.dep(CONFIGURATION_NAME, "org.eclipse.jface");
-				release.dep(CONFIGURATION_NAME, "org.eclipse.jface.text");
-				release.useNativesForRunningPlatform();
-			});
-			getProject().getDependencies().add(CONFIGURATION_NAME, "com.diffplug.durian:durian-swt:3.3.1");
-		}
-
-		@TaskAction
-		public void start() {
-			FileCollection classpath = getProject().getBuildscript().getConfigurations().getByName("classpath").plus(guiConfig);
-			getProject().javaexec(exec -> {
-				exec.setClasspath(classpath);
-				if (OS.getNative().isMac()) {
-					exec.jvmArgs("-XstartOnFirstThread");
-				}
-				exec.setMain("org.mytake.factset.video.gui.TranscriptFolderDialog");
-			});
-		}
+			task.setMain("org.mytake.factset.video.gui.TranscriptFolderDialog");
+			if (OS.getNative().isMac()) {
+				task.jvmArgs("-XstartOnFirstThread");
+			}
+			FileCollection buildscript = p.getBuildscript().getConfigurations().getByName("classpath");
+			task.setClasspath(buildscript.plus(guiConfig));
+		});
 	}
+
+	private static final String GUI_CONFIG = "gui";
 
 	public String title;
 	public String id;
