@@ -50,6 +50,37 @@ import org.gradle.api.plugins.JavaBasePlugin;
 import org.gradle.api.tasks.TaskProvider;
 
 class TemplatePlugin {
+	static TemplatePlugin forFactset() {
+		TemplatePlugin template = new TemplatePlugin();
+		template.mustContain(".gitignore",
+				".gradle/",
+				".DS_Store");
+		template.mustContain(".gitattributes",
+				"* text eol=lf",
+				"*.jar binary");
+		template.mustContain(".editorconfig",
+				"root = true",
+				"end_of_line = lf",
+				"insert_final_newline = true",
+				"trim_trailing_whitespace = true",
+				"charset = utf-8",
+				"indent_style = space",
+				"indent_size = 2");
+		template.mustContain("gradle.properties",
+				"org.gradle.caching=true");
+		template.mustContain("README.md",
+				INCLUSION_CRITERIA,
+				NOTES,
+				CHANGELOG_HEADER,
+				ACKNOWLEDGEMENTS);
+		template.mustBeExecutable("GUI_mac_osx.command");
+		template.mustBeExactly("GUI_mac_osx.command",
+				"#!/bin/bash",
+				"cd `dirname $0`",
+				"./gradlew gui");
+		return template;
+	}
+
 	static final String TASK_APPLY = "templateApply";
 	static final String TASK_CHECK = "templateCheck";
 
@@ -155,37 +186,6 @@ class TemplatePlugin {
 				rootDir.resolve(p).toFile().setExecutable(true);
 			}
 		}
-	}
-
-	static TemplatePlugin forFactset() {
-		TemplatePlugin template = new TemplatePlugin();
-		template.mustContain(".gitignore",
-				".gradle/",
-				".DS_Store");
-		template.mustContain(".gitattributes",
-				"* text eol=lf",
-				"*.jar binary");
-		template.mustContain(".editorconfig",
-				"root = true",
-				"end_of_line = lf",
-				"insert_final_newline = true",
-				"trim_trailing_whitespace = true",
-				"charset = utf-8",
-				"indent_style = space",
-				"indent_size = 2");
-		template.mustContain("gradle.properties",
-				"org.gradle.caching=true");
-		template.mustContain("README.md",
-				INCLUSION_CRITERIA,
-				NOTES,
-				CHANGELOG_HEADER,
-				ACKNOWLEDGEMENTS);
-		template.mustBeExecutable("GUI_mac_osx.command");
-		template.mustBeExactly("GUI_mac_osx.command",
-				"#!/bin/bash",
-				"cd `dirname $0`",
-				"./gradlew gui");
-		return template;
 	}
 
 	private static final String INCLUSION_CRITERIA = "## Inclusion criteria";
