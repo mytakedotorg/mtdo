@@ -32,14 +32,17 @@ package org.mytake.factset.gradle;
 import com.diffplug.common.base.Errors;
 import com.diffplug.common.base.StringPrinter;
 import com.diffplug.common.collect.Sets;
+import com.diffplug.common.swt.os.OS;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 import org.gradle.api.GradleException;
 import org.gradle.api.Project;
@@ -52,6 +55,7 @@ class TemplatePlugin {
 
 	Map<String, List<String>> mustContain = new HashMap<>();
 	Map<String, String> mustBeExactly = new HashMap<>();
+	Set<String> mustBeExecutable = new HashSet<>();
 
 	TemplatePlugin() {}
 
@@ -61,6 +65,10 @@ class TemplatePlugin {
 
 	public void mustBeExactly(String path, String... toContain) {
 		mustBeExactly.put(path, StringPrinter.buildStringFromLines(toContain));
+	}
+
+	public void mustBeExecutable(String path) {
+		mustBeExecutable.add(path);
 	}
 
 	public void createTasks(Project project) {
@@ -85,17 +93,17 @@ class TemplatePlugin {
 
 	private static final String bar = "+------------------------------\n";
 
-	public void check(Path rootDir) {
+	private void check(Path rootDir) {
 		for (String p : Sets.union(mustContain.keySet(), mustBeExactly.keySet())) {
 			Path path = rootDir.resolve(p);
 			if (!Files.exists(path)) {
-				throw new GradleException("'" + p + "' does not exist, run `" + TASK_APPLY + "` to create it.");
+				throw new GradleException("'" + p + "' does not exist, run " + gradlew(TASK_APPLY) + " to create it.");
 			}
 			String content = Errors.rethrow().get(() -> new String(Files.readAllBytes(path), StandardCharsets.UTF_8));
 			String mustBe = mustBeExactly.get(p);
 			if (mustBe != null) {
 				if (!content.equals(mustBe)) {
-					throw new GradleException("'" + p + "' has the wrong content, run `" + TASK_APPLY + "` to fix it.");
+					throw new GradleException("'" + p + "' has the wrong content, run " + gradlew(TASK_APPLY) + " to fix it.");
 				}
 			} else {
 				for (String value : mustContain.get(p)) {
@@ -107,6 +115,22 @@ class TemplatePlugin {
 					}
 				}
 			}
+		}
+		if (OS.getNative().isMacOrLinux()) {
+			for (String p : mustBeExecutable) {
+				Path path = rootDir.resolve(p);
+				if (!Files.isExecutable(path)) {
+					throw new GradleException("'" + p + "' must be executable, run " + gradlew(TASK_APPLY) + " to fix it.");
+				}
+			}
+		}
+	}
+
+	private static String gradlew(String cmd) {
+		if (OS.getNative().isWindows()) {
+			return "`gradlew " + TASK_APPLY + "`";
+		} else {
+			return "`./gradlew " + TASK_APPLY + "`";
 		}
 	}
 
@@ -124,6 +148,11 @@ class TemplatePlugin {
 				if (mustBe != null) {
 					Files.write(path, mustBe.getBytes(StandardCharsets.UTF_8));
 				}
+			}
+		}
+		if (OS.getNative().isMacOrLinux()) {
+			for (String p : mustBeExecutable) {
+				rootDir.resolve(p).toFile().setExecutable(true);
 			}
 		}
 	}
@@ -151,6 +180,7 @@ class TemplatePlugin {
 				NOTES,
 				CHANGELOG_HEADER,
 				ACKNOWLEDGEMENTS);
+		template.mustBeExecutable("GUI_mac_osx.command");
 		template.mustBeExactly("GUI_mac_osx.command",
 				"#!/bin/bash",
 				"cd `dirname $0`",
