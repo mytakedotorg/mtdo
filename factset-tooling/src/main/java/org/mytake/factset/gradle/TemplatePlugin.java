@@ -59,7 +59,7 @@ class TemplatePlugin {
 	public void createTasks(Project project) {
 		TaskProvider<?> templateCheck = project.getTasks().register(TASK_CHECK);
 		templateCheck.configure(task -> {
-			task.setGroup("Build Setup");
+			task.setGroup("Verification");
 			task.setDescription("Ensures that the MyTake.org factset template is properly configured");
 			Path rootDir = project.getProjectDir().toPath();
 			task.doLast(unused -> check(rootDir));
@@ -69,7 +69,7 @@ class TemplatePlugin {
 		});
 
 		project.getTasks().register(TASK_APPLY).configure(task -> {
-			task.setGroup("Verification");
+			task.setGroup("Build Setup");
 			task.setDescription("Initializes the MyTake.org factset template");
 			Path rootDir = project.getProjectDir().toPath();
 			task.doLast(unused -> apply(rootDir));
