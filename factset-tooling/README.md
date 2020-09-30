@@ -117,6 +117,8 @@ mtdoFactSet {
 * include `.DS_Store` in `.gitignore`
 ### Added
 * `index.json` now has `id` and `title` fields, and the SHA1 of the `id` is prepended to every fact hash
+### Changed
+* Default branch is now assumed to be `staging`, just like for this repo.
 
 ## [0.2.4] - 2020-09-25
 ### Fixed
