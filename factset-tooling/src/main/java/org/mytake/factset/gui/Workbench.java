@@ -32,7 +32,6 @@ package org.mytake.factset.gui;
 import com.diffplug.common.base.Errors;
 import com.diffplug.common.base.StringPrinter;
 import com.diffplug.common.rx.Rx;
-import com.diffplug.common.swt.Fonts;
 import com.diffplug.common.swt.Layouts;
 import com.diffplug.common.swt.SwtMisc;
 import java.nio.charset.StandardCharsets;
@@ -40,13 +39,13 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
+import org.eclipse.jface.text.Document;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Text;
 import org.mytake.factset.video.gui.Labels;
 
 public class Workbench {
@@ -118,9 +117,8 @@ public class Workbench {
 	private void populateTab(Composite cmp, Path path) {
 		String content = Errors.rethrow().get(() -> new String(Files.readAllBytes(path), StandardCharsets.UTF_8));
 		Layouts.setFill(cmp).margin(0);
-		Text txt = new Text(cmp, SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL);
-		txt.setFont(Fonts.systemMonospace());
-		txt.setText(content);
+		TextViewCtl ctl = new TextViewCtl(cmp);
+		ctl.setup(new Document(content));
 
 		String filename = path.getFileName().toString();
 		if (filename.endsWith(".json")) {
