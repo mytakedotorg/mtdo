@@ -106,7 +106,7 @@ public class MtdoFactset {
 
 		p.getPlugins().apply(MavenCentralPlugin.class);
 		MavenCentralExtension ext = p.getExtensions().getByType(MavenCentralExtension.class);
-		ext.release("4.15.0", release -> {
+		ext.release("4.17.0", release -> {
 			release.dep(GUI_CONFIG, "org.eclipse.swt");
 			release.dep(GUI_CONFIG, "org.eclipse.jface");
 			release.dep(GUI_CONFIG, "org.eclipse.jface.text");

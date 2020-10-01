@@ -115,7 +115,7 @@ dependencies {
 
 apply plugin: 'com.diffplug.eclipse.mavencentral'
 eclipseMavenCentral {
-	release '4.15.0', {
+	release '4.17.0', {
 		compileOnly 'org.eclipse.swt'
 		compileOnly 'org.eclipse.jface'
 		compileOnly 'org.eclipse.jface.text'
