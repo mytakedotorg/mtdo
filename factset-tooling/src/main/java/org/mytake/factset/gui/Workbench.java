@@ -37,7 +37,6 @@ import com.diffplug.common.swt.ControlWrapper;
 import com.diffplug.common.swt.Layouts;
 import com.diffplug.common.swt.SwtExec;
 import com.diffplug.common.swt.SwtMisc;
-import io.reactivex.Observable;
 import io.reactivex.subjects.PublishSubject;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -139,6 +138,7 @@ public class Workbench {
 		final ControlWrapper control;
 		final RxBox<Boolean> isDirty = RxBox.of(false);
 		final PublishSubject<Pane> save = PublishSubject.create();
+		final SwtExec.Guarded exec;
 
 		private Pane(Path path) {
 			tab = new CTabItem(tabFolder, SWT.CLOSE);
@@ -149,14 +149,18 @@ public class Workbench {
 			tab.addListener(SWT.Dispose, e -> {
 				pathToTab.remove(path);
 			});
-			Runnable makeDirty = () -> isDirty.set(true);
 
-			control = createTab(tabFolder, path, makeDirty, save);
+			control = createTab(tabFolder, path, this);
 			tab.setControl(control.getRootControl());
 
-			SwtExec.immediate().guardOn(tab).subscribe(isDirty, dirty -> {
+			exec = SwtExec.immediate().guardOn(tab);
+			exec.subscribe(isDirty, dirty -> {
 				tab.setText(path.getFileName().toString() + (dirty ? "*" : ""));
 			});
+		}
+
+		public void makeDirty() {
+			isDirty.set(true);
 		}
 
 		private void save() {
@@ -165,7 +169,7 @@ public class Workbench {
 		}
 	}
 
-	private ControlWrapper createTab(Composite cmp, Path path, Runnable makeDirty, Observable<Pane> save) {
+	private ControlWrapper createTab(Composite cmp, Path path, Pane pane) {
 		String content = Errors.rethrow().get(() -> new String(Files.readAllBytes(path), StandardCharsets.UTF_8));
 
 		SyntaxHighlighter highlighter = SyntaxHighlighter.none();
@@ -179,11 +183,9 @@ public class Workbench {
 		Document doc = new Document(content);
 		TextViewCtl ctl = new TextViewCtl(cmp);
 		ctl.setup(doc, highlighter);
-		ctl.getSourceViewer().getTextWidget().addListener(SWT.Modify, e -> {
-			makeDirty.run();
-		});
+		ctl.getSourceViewer().getTextWidget().addListener(SWT.Modify, e -> pane.makeDirty());
 
-		SwtExec.immediate().guardOn(ctl).subscribe(save, s -> {
+		pane.exec.subscribe(pane.save, s -> {
 			Errors.dialog().run(() -> {
 				Files.write(path, doc.get().replace("\r", "").getBytes(StandardCharsets.UTF_8));
 			});
