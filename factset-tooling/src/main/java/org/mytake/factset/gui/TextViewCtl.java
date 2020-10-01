@@ -66,7 +66,7 @@ public class TextViewCtl extends ControlWrapper.AroundControl<Composite> {
 		sourceViewer = new SourceViewer(wrapped, verticalRuler, SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL);
 		Layouts.setGridData(sourceViewer.getControl()).grabAll();
 		sourceViewer.getTextWidget().setFont(font);
-		sourceViewer.setEditable(false);
+		sourceViewer.setEditable(true);
 
 		// bracket matching
 		addBracketMatching(sourceViewer);
@@ -82,10 +82,6 @@ public class TextViewCtl extends ControlWrapper.AroundControl<Composite> {
 
 	private static final RGB RGB_HIGHLIGHT = new RGB(232, 242, 254);
 
-	public void setEditable(boolean editable) {
-		sourceViewer.setEditable(editable);
-	}
-
 	public static void setLineNumberColors(LineNumberRulerColumn column, Font font) {
 		column.setFont(font);
 		column.setForeground(SwtMisc.getSystemColor(SWT.COLOR_BLACK));
@@ -96,6 +92,10 @@ public class TextViewCtl extends ControlWrapper.AroundControl<Composite> {
 		viewer.getTextWidget().addListener(SWT.KeyDown, event -> {
 			if (Accelerators.checkKey(event, Accelerators.SELECT_ALL)) {
 				viewer.getTextWidget().selectAll();
+			} else if (Accelerators.checkKey(event, Accelerators.REDO)) {
+				viewer.getUndoManager().redo();
+			} else if (Accelerators.checkKey(event, Accelerators.UNDO)) {
+				viewer.getUndoManager().undo();
 			}
 		});
 	}
