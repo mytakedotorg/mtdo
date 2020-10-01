@@ -161,6 +161,8 @@ public class Workbench {
 		Pane pane = pathToTab.get(path);
 		if (pane == null) {
 			pane = new Pane(path);
+		} else {
+			pane.takeoverToolbar();
 		}
 		tabFolder.setSelection(pane.tab);
 		return pane;
