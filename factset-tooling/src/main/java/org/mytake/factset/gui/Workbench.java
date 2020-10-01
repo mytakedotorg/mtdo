@@ -29,29 +29,110 @@
 package org.mytake.factset.gui;
 
 
+import com.diffplug.common.base.Errors;
+import com.diffplug.common.base.StringPrinter;
+import com.diffplug.common.rx.Rx;
+import com.diffplug.common.swt.Fonts;
 import com.diffplug.common.swt.Layouts;
+import com.diffplug.common.swt.SwtMisc;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.HashMap;
+import java.util.Map;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabFolder;
+import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Text;
 import org.mytake.factset.video.gui.Labels;
 
 public class Workbench {
 	private final FileTreeCtl fileTree;
 	private final CTabFolder tabs;
+	private final Map<Path, CTabItem> items = new HashMap<>();
+	private final Console console;
 
 	public Workbench(Composite parent, Path folder) {
+		Display display = parent.getDisplay();
+		display.setErrorHandler(this::logError);
+		display.setRuntimeExceptionHandler(this::logError);
+
 		Layouts.setFill(parent);
 		SashForm form = new SashForm(parent, SWT.HORIZONTAL);
 
-		Composite fileeTreeCmp = new Composite(form, SWT.NONE);
-		Layouts.setGrid(fileeTreeCmp).margin(0);
-		Labels.createBold(fileeTreeCmp, "Ingredients");
-		fileTree = new FileTreeCtl(fileeTreeCmp, folder.resolve("ingredients"));
+		Composite fileTreeCmp = new Composite(form, SWT.NONE);
+		Layouts.setGrid(fileTreeCmp).margin(0).spacing(3);
+		Labels.createBold(fileTreeCmp, "Ingredients");
+		fileTree = new FileTreeCtl(fileTreeCmp, folder.resolve("ingredients"));
 		Layouts.setGridData(fileTree).grabAll();
 
-		tabs = new CTabFolder(form, SWT.NONE);
+		SashForm folderSash = new SashForm(form, SWT.VERTICAL);
+
+		tabs = new CTabFolder(folderSash, SWT.BORDER | SWT.FLAT);
+		tabs.setSelectionBackground(SwtMisc.getSystemColor(SWT.COLOR_LIST_SELECTION));
+		tabs.setSimple(true);
 		form.setWeights(new int[]{1, 3});
+
+		console = Console.nonWrapping(folderSash);
+		console.wipeAndCreateNewStream().println("Console (events will be printed here)");
+		folderSash.setWeights(new int[]{3, 1});
+
+		Rx.subscribe(fileTree.doubleClick(), paths -> {
+			for (Path path : paths) {
+				if (Files.isRegularFile(path)) {
+					openFile(path);
+				}
+			}
+		});
+
+	}
+
+	private void logError(Throwable e) {
+		if (console == null) {
+			e.printStackTrace();
+		}
+		StringPrinter printer = console.wipeAndCreateNewStream();
+		e.printStackTrace(printer.toPrintWriter());
+		printer.println("");
+	}
+
+	private void openFile(Path path) {
+		CTabItem item = items.get(path);
+		if (item == null) {
+			item = new CTabItem(tabs, SWT.CLOSE);
+			items.put(path, item);
+			item.addListener(SWT.Dispose, e -> {
+				items.remove(path);
+			});
+			item.setText(path.getFileName().toString());
+			Composite cmp = new Composite(tabs, SWT.NONE);
+			item.setControl(cmp);
+			populateTab(cmp, path);
+		}
+		tabs.setSelection(item);
+	}
+
+	private void populateTab(Composite cmp, Path path) {
+		String content = Errors.rethrow().get(() -> new String(Files.readAllBytes(path), StandardCharsets.UTF_8));
+		Layouts.setFill(cmp).margin(0);
+		Text txt = new Text(cmp, SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL);
+		txt.setFont(Fonts.systemMonospace());
+		txt.setText(content);
+
+		String filename = path.getFileName().toString();
+		if (filename.endsWith(".json")) {
+
+		} else if (filename.endsWith(".said")) {
+
+		} else if (filename.endsWith(".vtt")) {
+
+		} else if (filename.endsWith(".ini")) {
+
+		} else {
+
+		}
 	}
 }

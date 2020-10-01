@@ -30,10 +30,14 @@ package org.mytake.factset.gui;
 
 
 import com.diffplug.common.base.Errors;
+import com.diffplug.common.collect.ImmutableList;
+import com.diffplug.common.rx.RxBox;
 import com.diffplug.common.swt.ControlWrapper;
 import com.diffplug.common.swt.jface.ColumnViewerFormat;
 import com.diffplug.common.swt.jface.ViewerMisc;
 import com.diffplug.common.tree.TreeDef;
+import io.reactivex.Observable;
+import io.reactivex.subjects.PublishSubject;
 import java.io.IOException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
@@ -47,13 +51,16 @@ import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 
-public class FileTreeCtl extends ControlWrapper.AroundControl<Composite> {
+class FileTreeCtl extends ControlWrapper.AroundControl<Composite> {
+	private final RxBox<ImmutableList<Path>> selection;
+	private final PublishSubject<ImmutableList<Path>> doubleClick = PublishSubject.create();
+
 	public FileTreeCtl(Composite parent, Path folder) {
 		super(new Composite(parent, SWT.BORDER));
 
 		// define the format of the tree
 		ColumnViewerFormat<Path> format = ColumnViewerFormat.builder();
-		format.setStyle(SWT.VIRTUAL).setHeaderVisible(false);
+		format.setStyle(SWT.VIRTUAL | SWT.MULTI).setHeaderVisible(false);
 		format.addColumn().setText("Name").setLabelProviderText(path -> path.getFileName().toString());
 
 		// create the tree viewer
@@ -81,6 +88,18 @@ public class FileTreeCtl extends ControlWrapper.AroundControl<Composite> {
 			}
 		});
 		viewer.setInput(folder);
+		selection = ViewerMisc.multiSelectionList(viewer);
+		viewer.getTree().addListener(SWT.DefaultSelection, e -> {
+			doubleClick.onNext(selection.get());
+		});
+	}
+
+	public RxBox<ImmutableList<Path>> selection() {
+		return selection;
+	}
+
+	public Observable<ImmutableList<Path>> doubleClick() {
+		return doubleClick;
 	}
 
 	// files at top, folders at bottom, most-recent dates first

@@ -35,6 +35,6 @@ import java.nio.file.Paths;
 
 public class TestCfg {
 	public static Path rootFolder() throws IOException {
-		return Paths.get("../../mtdo-us-presidential-debates");
+		return Paths.get("../../mtdo-us-presidential-debates").toFile().getCanonicalFile().toPath();
 	}
 }
