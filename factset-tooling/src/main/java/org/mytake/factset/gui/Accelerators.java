@@ -29,7 +29,9 @@
 package org.mytake.factset.gui;
 
 
+import com.diffplug.common.swt.SwtMisc;
 import com.diffplug.common.swt.os.OS;
+import java.util.Locale;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Event;
 
@@ -64,4 +66,63 @@ public class Accelerators {
 	public static boolean checkKey(Event e, int code) {
 		return (e.keyCode | e.stateMask) == code;
 	}
+
+	public static String uiStringFor(int accelerator) {
+		if (accelerator == SWT.NONE) {
+			return "<none>";
+		}
+
+		StringBuilder builder = new StringBuilder(16);
+		if (SwtMisc.flagIsSet(SWT.CTRL, accelerator)) {
+			builder.append("Ctrl ");
+			accelerator -= SWT.CTRL;
+		}
+
+		if (SwtMisc.flagIsSet(SWT.COMMAND, accelerator)) {
+			builder.append(UC_CMD + " ");
+			accelerator -= SWT.COMMAND;
+		}
+
+		if (SwtMisc.flagIsSet(SWT.ALT, accelerator)) {
+			builder.append("Alt ");
+			accelerator -= SWT.ALT;
+		}
+
+		if (SwtMisc.flagIsSet(SWT.SHIFT, accelerator)) {
+			builder.append("Shift ");
+			accelerator -= SWT.SHIFT;
+		}
+
+		final String end;
+
+		if (SWT.F1 <= accelerator && accelerator <= SWT.F20) {
+			int num = 1 + accelerator - SWT.F1;
+			end = "F" + Integer.toString(num);
+		} else {
+			// spotless:off
+			switch (accelerator) {
+			case SWT.ARROW_UP:		end = UC_ARROW_UP;		break;
+			case SWT.ARROW_DOWN:	end = UC_ARROW_DOWN;	break;
+			case SWT.ARROW_LEFT:	end = UC_ARROW_LEFT;	break;
+			case SWT.ARROW_RIGHT:	end = UC_ARROW_RIGHT;	break;
+			case SWT.ESC:			end = "Esc";			break;
+			case SWT.SPACE:			end = "Spacebar";		break;
+			default:
+				end = Character.toString((char) accelerator).toUpperCase(Locale.ROOT);
+				break;
+			}
+			// spotless:on
+		}
+		builder.append(end);
+
+		return builder.toString();
+	}
+
+	/** Unicode for arrows. */
+	private static final String UC_ARROW_UP = "\u2191";
+	private static final String UC_ARROW_DOWN = "\u2193";
+	private static final String UC_ARROW_LEFT = "\u2190";
+	private static final String UC_ARROW_RIGHT = "\u2192";
+	/** Unicode for the Mac cmd icon. */
+	private static final String UC_CMD = "\u2318";
 }

@@ -32,6 +32,6 @@ apply from: new File(settingsDir, 'gradle/buildCacheSettings.gradle')
 
 rootProject.name = 'mtdo'
 blowdryerSetup {
-	github 'mytakedotorg/blowdryer-mtdo', 'tag', '1.0.0'
+	github 'mytakedotorg/blowdryer-mtdo', 'tag', '1.1.0'
 	//devLocal '../blowdryer-mtdo'
 }
