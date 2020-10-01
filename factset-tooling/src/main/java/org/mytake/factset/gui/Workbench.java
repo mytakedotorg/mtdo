@@ -47,6 +47,8 @@ import java.util.Map;
 import org.eclipse.jface.text.Document;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabFolder;
+import org.eclipse.swt.custom.CTabFolder2Adapter;
+import org.eclipse.swt.custom.CTabFolderEvent;
 import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.widgets.Composite;
@@ -77,6 +79,17 @@ public class Workbench {
 		tabFolder = new CTabFolder(folderSash, SWT.BORDER | SWT.FLAT);
 		tabFolder.setSelectionBackground(SwtMisc.getSystemColor(SWT.COLOR_LIST_SELECTION));
 		tabFolder.setSimple(true);
+		tabFolder.addCTabFolder2Listener(new CTabFolder2Adapter() {
+			@Override
+			public void close(CTabFolderEvent event) {
+				Pane pane = (Pane) event.item.getData();
+				if (pane.isDirty.get()) {
+					if (!SwtMisc.blockForOkCancel("Lose unsaved changes", "Do you want to lose your changes?")) {
+						event.doit = false;
+					}
+				}
+			}
+		});
 		form.setWeights(new int[]{1, 3});
 
 		console = Console.nonWrapping(folderSash);
@@ -134,13 +147,6 @@ public class Workbench {
 
 			pathToTab.put(path, this);
 			tab.addListener(SWT.Dispose, e -> {
-				if (isDirty.get()) {
-					boolean ok = SwtMisc.blockForOkCancel("Lose unsaved changes", "Do you want to lose your changes?");
-					if (!ok) {
-						e.doit = false;
-						return;
-					}
-				}
 				pathToTab.remove(path);
 			});
 			Runnable makeDirty = () -> isDirty.set(true);
