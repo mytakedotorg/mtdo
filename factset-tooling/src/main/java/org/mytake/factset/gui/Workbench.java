@@ -32,6 +32,7 @@ package org.mytake.factset.gui;
 import com.diffplug.common.base.Errors;
 import com.diffplug.common.base.StringPrinter;
 import com.diffplug.common.rx.Rx;
+import com.diffplug.common.swt.ControlWrapper;
 import com.diffplug.common.swt.Layouts;
 import com.diffplug.common.swt.SwtMisc;
 import java.nio.charset.StandardCharsets;
@@ -49,8 +50,8 @@ import org.eclipse.swt.widgets.Display;
 
 public class Workbench {
 	private final FileTreeCtl fileTree;
-	private final CTabFolder tabs;
-	private final Map<Path, CTabItem> items = new HashMap<>();
+	private final CTabFolder tabFolder;
+	private final Map<Path, Pane> pathToTab = new HashMap<>();
 	private final Console console;
 
 	public Workbench(Composite parent, Path folder) {
@@ -69,9 +70,9 @@ public class Workbench {
 
 		SashForm folderSash = new SashForm(form, SWT.VERTICAL);
 
-		tabs = new CTabFolder(folderSash, SWT.BORDER | SWT.FLAT);
-		tabs.setSelectionBackground(SwtMisc.getSystemColor(SWT.COLOR_LIST_SELECTION));
-		tabs.setSimple(true);
+		tabFolder = new CTabFolder(folderSash, SWT.BORDER | SWT.FLAT);
+		tabFolder.setSelectionBackground(SwtMisc.getSystemColor(SWT.COLOR_LIST_SELECTION));
+		tabFolder.setSimple(true);
 		form.setWeights(new int[]{1, 3});
 
 		console = Console.nonWrapping(folderSash);
@@ -85,7 +86,6 @@ public class Workbench {
 				}
 			}
 		});
-
 	}
 
 	private void logError(Throwable e) {
@@ -98,24 +98,32 @@ public class Workbench {
 	}
 
 	private void openFile(Path path) {
-		CTabItem item = items.get(path);
-		if (item == null) {
-			item = new CTabItem(tabs, SWT.CLOSE);
-			items.put(path, item);
-			item.addListener(SWT.Dispose, e -> {
-				items.remove(path);
+		Pane pane = pathToTab.get(path);
+		if (pane == null) {
+			pane = new Pane(path);
+			pathToTab.put(path, pane);
+			pane.tab.addListener(SWT.Dispose, e -> {
+				pathToTab.remove(path);
 			});
-			item.setText(path.getFileName().toString());
-			Composite cmp = new Composite(tabs, SWT.NONE);
-			item.setControl(cmp);
-			populateTab(cmp, path);
 		}
-		tabs.setSelection(item);
+		tabFolder.setSelection(pane.tab);
 	}
 
-	private void populateTab(Composite cmp, Path path) {
+	public class Pane {
+		CTabItem tab;
+		ControlWrapper control;
+
+		private Pane(Path path) {
+			tab = new CTabItem(tabFolder, SWT.CLOSE);
+			tab.setText(path.getFileName().toString());
+			control = createTab(tabFolder, path);
+			tab.setControl(control.getRootControl());
+		}
+	}
+
+	private ControlWrapper createTab(Composite cmp, Path path) {
 		String content = Errors.rethrow().get(() -> new String(Files.readAllBytes(path), StandardCharsets.UTF_8));
-		Layouts.setFill(cmp).margin(0);
+
 		TextViewCtl ctl = new TextViewCtl(cmp);
 		ctl.setup(new Document(content));
 
@@ -131,5 +139,6 @@ public class Workbench {
 		} else {
 
 		}
+		return ctl;
 	}
 }

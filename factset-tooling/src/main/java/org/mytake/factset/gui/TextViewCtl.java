@@ -52,7 +52,7 @@ public class TextViewCtl extends ControlWrapper.AroundControl<Composite> {
 	private final CompositeRuler verticalRuler;
 
 	public TextViewCtl(Composite parent) {
-		super(new Composite(parent, SWT.BORDER));
+		super(new Composite(parent, SWT.NONE));
 		Layouts.setGrid(wrapped).margin(0).spacing(0);
 
 		// make the vertical line number thing
