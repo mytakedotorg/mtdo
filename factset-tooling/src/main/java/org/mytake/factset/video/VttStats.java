@@ -38,7 +38,7 @@ import org.eclipse.jgit.diff.Edit;
 
 public class VttStats {
 	public static void main(String[] args) throws IOException {
-		TranscriptFolder folder = new TranscriptFolder(new File("../presidential-debates"));
+		Ingredients folder = new Ingredients(new File("../../mtdo-us-presidential-debates/ingredients"));
 		for (String name : folder.transcripts()) {
 			TranscriptMatch match = folder.loadTranscript(name);
 			for (Edit edit : match.edits()) {

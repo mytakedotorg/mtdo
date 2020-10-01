@@ -32,7 +32,7 @@ package org.mytake.factset.video;
 import com.diffplug.common.base.Preconditions;
 import com.diffplug.common.base.StringPrinter;
 import com.diffplug.common.collect.Immutables;
-import com.diffplug.common.io.ByteSource;
+import com.diffplug.common.io.CharSource;
 import com.diffplug.common.io.Files;
 import com.google.auto.value.AutoValue;
 import java.io.BufferedReader;
@@ -108,14 +108,14 @@ public abstract class SaidTranscript {
 	}
 
 	public static SaidTranscript parse(VideoFactMeta meta, File file) throws IOException {
-		return parse(meta, Files.asByteSource(file));
+		return parse(meta, Files.asByteSource(file).asCharSource(StandardCharsets.UTF_8));
 	}
 
-	public static SaidTranscript parse(VideoFactMeta meta, ByteSource source) throws IOException {
+	public static SaidTranscript parse(VideoFactMeta meta, CharSource source) throws IOException {
 		Set<String> people = meta.speakers.stream().map(s -> s.fullName).collect(Immutables.toSet());
 
 		int lineCount = 1;
-		try (BufferedReader reader = source.asCharSource(StandardCharsets.UTF_8).openBufferedStream()) {
+		try (BufferedReader reader = source.openBufferedStream()) {
 			List<Turn> turns = new ArrayList<>();
 			String line;
 			while (true) {

@@ -42,7 +42,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.widgets.Composite;
 import org.mytake.factset.gui.Labels;
-import org.mytake.factset.video.TranscriptFolder;
+import org.mytake.factset.video.Ingredients;
 import org.mytake.factset.video.TranscriptMatch;
 
 public class TranscriptCtl extends ControlWrapper.AroundControl<Composite> {
@@ -81,7 +81,7 @@ public class TranscriptCtl extends ControlWrapper.AroundControl<Composite> {
 		mismatchCtl.setMatch(match);
 	}
 
-	public void save(TranscriptFolder folder, String transcript) throws IOException {
+	public void save(Ingredients folder, String transcript) throws IOException {
 		int sizeBefore = match.vtt().lines().size();
 		String before = match.vtt().asString();
 		match = match.save(folder, transcript, vttCtl.getWords(), saidCtl.getText());

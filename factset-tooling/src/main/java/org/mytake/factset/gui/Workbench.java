@@ -38,6 +38,7 @@ import com.diffplug.common.swt.Layouts;
 import com.diffplug.common.swt.SwtExec;
 import com.diffplug.common.swt.SwtMisc;
 import io.reactivex.subjects.PublishSubject;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -57,8 +58,10 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
+import org.mytake.factset.video.Ingredients;
 
 public class Workbench {
+	private final Path rootFolder;
 	private final FileTreeCtl fileTree;
 	private final CTabFolder tabFolder;
 	private final Map<Path, Pane> pathToTab = new HashMap<>();
@@ -68,6 +71,7 @@ public class Workbench {
 	private final ExecutorService executor = Executors.newSingleThreadExecutor();
 
 	public Workbench(Composite parent, Path folder) {
+		this.rootFolder = folder;
 		Display display = parent.getDisplay();
 		display.setErrorHandler(this::logError);
 		display.setRuntimeExceptionHandler(this::logError);
@@ -165,6 +169,7 @@ public class Workbench {
 	}
 
 	public class Pane {
+		final Path path;
 		final CTabItem tab;
 		final ControlWrapper control;
 		final RxBox<Boolean> isDirty = RxBox.of(false);
@@ -173,6 +178,7 @@ public class Workbench {
 		final List<Btn> buttons = new ArrayList<>();
 
 		private Pane(Path path) {
+			this.path = path;
 			tab = new CTabItem(tabFolder, SWT.CLOSE);
 			tab.setData(this);
 			tab.setText(path.getFileName().toString());
@@ -206,6 +212,7 @@ public class Workbench {
 				item.addListener(SWT.Selection, event -> {
 					StringPrinter printer = console.wipeAndCreateNewStream();
 					try {
+						printer.println(btn.name + " " + path);
 						btn.log.accept(printer);
 					} catch (Throwable e) {
 						try (PrintWriter p = printer.toPrintWriter()) {
@@ -243,6 +250,10 @@ public class Workbench {
 					}
 				}
 			});
+		}
+
+		public Ingredients factsetFolder() throws IOException {
+			return new Ingredients(rootFolder.resolve("ingredients").toFile());
 		}
 	}
 }

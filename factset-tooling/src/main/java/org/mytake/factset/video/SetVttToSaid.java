@@ -40,7 +40,7 @@ import org.mytake.factset.video.Word.Vtt;
 
 public class SetVttToSaid {
 	public static void main(String[] args) throws IOException {
-		TranscriptFolder folder = new TranscriptFolder(new File("../presidential-debates"));
+		Ingredients folder = new Ingredients(new File("../presidential-debates"));
 		List<Vtt> newVtt = new ArrayList<>();
 		for (String name : folder.transcriptsWithMeta()) {
 			// excludes go here

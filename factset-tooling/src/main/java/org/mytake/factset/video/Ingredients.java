@@ -35,6 +35,7 @@ import com.diffplug.common.collect.SetMultimap;
 import com.diffplug.common.collect.TreeMultimap;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -54,12 +55,12 @@ import org.mytake.factset.video.VttTranscript.Mode;
  * `all_roles.ini`. Next, `name.said` is loaded, which checks that every
  * person named in the transcript is listed in the json file.
  */
-public class TranscriptFolder {
+public class Ingredients {
 	private final File root;
 	private final Set<String> people;
 	private final Set<String> roles;
 
-	public TranscriptFolder(File root) throws IOException {
+	public Ingredients(File root) throws IOException {
 		this.root = Objects.requireNonNull(root);
 		this.people = SetStoredAsIni.parse(new File(root, "all_people.ini"));
 		this.roles = SetStoredAsIni.parse(new File(root, "all_roles.ini"));
@@ -148,5 +149,12 @@ public class TranscriptFolder {
 
 	public File fileVtt(String name) {
 		return new File(root, name + ".vtt");
+	}
+
+	/** Given a json/said/vtt/anything, this returns the name appropriate for the methods fileXXX() */
+	public String name(Path source) {
+		String name = root.toPath().relativize(source).toString();
+		int lastDot = name.lastIndexOf('.');
+		return lastDot == -1 ? name : name.substring(0, lastDot);
 	}
 }

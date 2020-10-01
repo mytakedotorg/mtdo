@@ -50,7 +50,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Link;
 import org.eclipse.swt.widgets.Text;
 import org.mytake.factset.gui.Labels;
-import org.mytake.factset.video.TranscriptFolder;
+import org.mytake.factset.video.Ingredients;
 import org.mytake.factset.video.TranscriptMatch;
 
 public class TranscriptFolderDialog {
@@ -172,13 +172,13 @@ public class TranscriptFolderDialog {
 
 	private static final int CTRL = OS.getNative().isMac() ? SWT.COMMAND : SWT.CTRL;
 
-	private TranscriptFolder folder;
+	private Ingredients folder;
 	private String transcript;
 
 	private void setFolder(File folder) {
 		Errors.dialog().run(() -> {
 			File canonical = folder.getCanonicalFile();
-			this.folder = new TranscriptFolder(canonical);
+			this.folder = new Ingredients(canonical);
 			this.folderTxt.setText(canonical.getAbsolutePath());
 		});
 	}
@@ -186,7 +186,7 @@ public class TranscriptFolderDialog {
 	private void setTranscript(String transcript) {
 		this.transcript = transcript;
 		Errors.dialog().run(() -> {
-			folder = new TranscriptFolder(new File(folderTxt.getText()));
+			folder = new Ingredients(new File(folderTxt.getText()));
 			TranscriptMatch match = folder.loadTranscript(transcript);
 			transcriptCtl.setTo(match);
 			transcriptTxt.setText(transcript);
