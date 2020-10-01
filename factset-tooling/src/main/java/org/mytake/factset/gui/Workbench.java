@@ -32,9 +32,13 @@ package org.mytake.factset.gui;
 import com.diffplug.common.base.Errors;
 import com.diffplug.common.base.StringPrinter;
 import com.diffplug.common.rx.Rx;
+import com.diffplug.common.rx.RxBox;
 import com.diffplug.common.swt.ControlWrapper;
 import com.diffplug.common.swt.Layouts;
+import com.diffplug.common.swt.SwtExec;
 import com.diffplug.common.swt.SwtMisc;
+import io.reactivex.Observable;
+import io.reactivex.subjects.PublishSubject;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -79,11 +83,23 @@ public class Workbench {
 		console.wipeAndCreateNewStream().println("Console (events will be printed here)");
 		folderSash.setWeights(new int[]{3, 1});
 
+		// open files on double-click
 		Rx.subscribe(fileTree.doubleClick(), paths -> {
 			for (Path path : paths) {
 				if (Files.isRegularFile(path)) {
 					openFile(path);
 				}
+			}
+		});
+		// app-global shortcuts
+		parent.getDisplay().addFilter(SWT.KeyDown, e -> {
+			if (Accelerators.checkKey(e, Accelerators.SAVE)) {
+				CTabItem item = tabFolder.getSelection();
+				if (item == null) {
+					return;
+				}
+				Pane pane = (Pane) item.getData();
+				pane.save();
 			}
 		});
 	}
@@ -101,45 +117,71 @@ public class Workbench {
 		Pane pane = pathToTab.get(path);
 		if (pane == null) {
 			pane = new Pane(path);
-			pathToTab.put(path, pane);
-			pane.tab.addListener(SWT.Dispose, e -> {
-				pathToTab.remove(path);
-			});
 		}
 		tabFolder.setSelection(pane.tab);
 	}
 
 	public class Pane {
-		CTabItem tab;
-		ControlWrapper control;
+		final CTabItem tab;
+		final ControlWrapper control;
+		final RxBox<Boolean> isDirty = RxBox.of(false);
+		final PublishSubject<Pane> save = PublishSubject.create();
 
 		private Pane(Path path) {
 			tab = new CTabItem(tabFolder, SWT.CLOSE);
+			tab.setData(this);
 			tab.setText(path.getFileName().toString());
-			control = createTab(tabFolder, path);
+
+			pathToTab.put(path, this);
+			tab.addListener(SWT.Dispose, e -> {
+				if (isDirty.get()) {
+					boolean ok = SwtMisc.blockForOkCancel("Lose unsaved changes", "Do you want to lose your changes?");
+					if (!ok) {
+						e.doit = false;
+						return;
+					}
+				}
+				pathToTab.remove(path);
+			});
+			Runnable makeDirty = () -> isDirty.set(true);
+
+			control = createTab(tabFolder, path, makeDirty, save);
 			tab.setControl(control.getRootControl());
+
+			SwtExec.immediate().guardOn(tab).subscribe(isDirty, dirty -> {
+				tab.setText(path.getFileName().toString() + (dirty ? "*" : ""));
+			});
+		}
+
+		private void save() {
+			save.onNext(this);
+			isDirty.set(false);
 		}
 	}
 
-	private ControlWrapper createTab(Composite cmp, Path path) {
+	private ControlWrapper createTab(Composite cmp, Path path, Runnable makeDirty, Observable<Pane> save) {
 		String content = Errors.rethrow().get(() -> new String(Files.readAllBytes(path), StandardCharsets.UTF_8));
 
 		SyntaxHighlighter highlighter = SyntaxHighlighter.none();
 		String filename = path.getFileName().toString();
 		if (filename.endsWith(".json")) {
 			highlighter = SyntaxHighlighter.json();
-		} else if (filename.endsWith(".said")) {
-
-		} else if (filename.endsWith(".vtt")) {
-
 		} else if (filename.endsWith(".ini")) {
 			highlighter = SyntaxHighlighter.ini();
-		} else {
-
 		}
 
+		Document doc = new Document(content);
 		TextViewCtl ctl = new TextViewCtl(cmp);
-		ctl.setup(new Document(content), highlighter);
+		ctl.setup(doc, highlighter);
+		ctl.getSourceViewer().getTextWidget().addListener(SWT.Modify, e -> {
+			makeDirty.run();
+		});
+
+		SwtExec.immediate().guardOn(ctl).subscribe(save, s -> {
+			Errors.dialog().run(() -> {
+				Files.write(path, doc.get().replace("\r", "").getBytes(StandardCharsets.UTF_8));
+			});
+		});
 		return ctl;
 	}
 }
