@@ -30,6 +30,7 @@ package org.mytake.factset.gui;
 
 
 import com.diffplug.common.base.Errors;
+import com.diffplug.common.base.Throwing;
 import com.diffplug.common.swt.ControlWrapper;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -41,7 +42,6 @@ import org.eclipse.swt.custom.TextChangedEvent;
 import org.eclipse.swt.custom.TextChangingEvent;
 import org.eclipse.swt.widgets.Composite;
 import org.mytake.factset.gui.Workbench.Pane;
-import org.mytake.factset.video.Ingredients;
 import org.mytake.factset.video.SaidCleanup;
 import org.mytake.factset.video.SetStoredAsIni;
 import org.mytake.factset.video.VttCleanup;
@@ -69,6 +69,7 @@ class ContentTypes {
 			// spotless:on
 		});
 
+		// save
 		pane.exec.subscribe(pane.save, printer -> {
 			try {
 				printer.println("Saving " + path);
@@ -79,6 +80,31 @@ class ContentTypes {
 				printer.println("");
 			}
 		});
+		// highlight errors
+		pane.exec.subscribe(pane.highlight, highlight -> {
+			try {
+				int lineOffset = doc.getLineOffset(highlight.line - 1);
+				int colStart, colEnd;
+				if (highlight.colStart == -1) {
+					colStart = lineOffset;
+					colEnd = doc.getLineOffset(highlight.line);
+				} else {
+					colStart = lineOffset + highlight.colStart;
+					colEnd = lineOffset + highlight.colEnd;
+				}
+				ctl.getSourceViewer().setSelectedRange(colStart, colEnd);
+			} catch (Exception e) {
+				Errors.dialog().accept(e);
+			}
+		});
+
+		Throwing.Consumer<Throwing.Function<String, String>> setDoc = operator -> {
+			String before = doc.get();
+			String after = operator.apply(before);
+			if (!before.equals(after)) {
+				doc.set(after);
+			}
+		};
 
 		if (filename.endsWith(".ini")) {
 			pane.logOpDontBlock(printer -> {
@@ -86,14 +112,11 @@ class ContentTypes {
 			});
 		} else if (filename.endsWith(".vtt")) {
 			pane.addButton("Cleanup VTT", printer -> {
-				String clean = VttCleanup.apply(doc.get());
-				doc.set(clean);
+				setDoc.accept(VttCleanup::apply);
 			});
 		} else if (filename.endsWith(".said")) {
-			pane.addButton("Cleanup said", printer -> {
-				Ingredients folder = pane.factsetFolder();
-				String clean = SaidCleanup.cleanup(folder, path, doc.get());
-				doc.set(clean);
+			pane.addButton("Merge consecutive speakers", printer -> {
+				setDoc.accept(in -> SaidCleanup.cleanup(pane.factsetFolder(), path, in));
 			});
 		}
 		return ctl;

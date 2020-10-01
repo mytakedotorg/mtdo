@@ -37,6 +37,7 @@ import com.diffplug.common.swt.ControlWrapper;
 import com.diffplug.common.swt.Layouts;
 import com.diffplug.common.swt.SwtExec;
 import com.diffplug.common.swt.SwtMisc;
+import io.reactivex.Observable;
 import io.reactivex.subjects.PublishSubject;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -58,6 +59,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
+import org.mytake.factset.LocatedException;
 import org.mytake.factset.video.Ingredients;
 
 public class Workbench {
@@ -155,12 +157,13 @@ public class Workbench {
 		printer.println("");
 	}
 
-	private void openFile(Path path) {
+	private Pane openFile(Path path) {
 		Pane pane = pathToTab.get(path);
 		if (pane == null) {
 			pane = new Pane(path);
 		}
 		tabFolder.setSelection(pane.tab);
+		return pane;
 	}
 
 	static class Btn {
@@ -174,6 +177,7 @@ public class Workbench {
 		final ControlWrapper control;
 		final RxBox<Boolean> isDirty = RxBox.of(false);
 		final PublishSubject<StringPrinter> save = PublishSubject.create();
+		final PublishSubject<LocatedException> highlight = PublishSubject.create();
 		final SwtExec.Guarded exec;
 		final List<Btn> buttons = new ArrayList<>();
 
@@ -215,9 +219,7 @@ public class Workbench {
 						printer.println(btn.name + " " + path);
 						btn.log.accept(printer);
 					} catch (Throwable e) {
-						try (PrintWriter p = printer.toPrintWriter()) {
-							e.printStackTrace(p);
-						}
+						handleException(e, printer);
 					}
 				});
 			}
@@ -228,6 +230,10 @@ public class Workbench {
 			btn.name = name;
 			btn.log = log;
 			buttons.add(btn);
+		}
+
+		public Observable<LocatedException> highlight() {
+			return highlight;
 		}
 
 		public void makeDirty() {
@@ -245,11 +251,28 @@ public class Workbench {
 				try {
 					op.accept(printer);
 				} catch (Throwable e) {
-					try (PrintWriter p = printer.toPrintWriter()) {
-						e.printStackTrace(p);
-					}
+					handleException(e, printer);
 				}
 			});
+		}
+
+		private void handleException(Throwable e, StringPrinter printer) {
+			if (e instanceof LocatedException) {
+				// makes sure that highlight always triggers on the UI thread
+				LocatedException located = (LocatedException) e;
+				if (located.file == null || located.file.equals(path)) {
+					exec.execute(() -> highlight.onNext(located));
+				} else {
+					Pane pane = openFile(located.file);
+					SwtExec.async().execute(() -> {
+						// let the file open, then highlight it there
+						pane.highlight.onNext(located);
+					});
+				}
+			}
+			try (PrintWriter p = printer.toPrintWriter()) {
+				e.printStackTrace(p);
+			}
 		}
 
 		public Ingredients factsetFolder() throws IOException {

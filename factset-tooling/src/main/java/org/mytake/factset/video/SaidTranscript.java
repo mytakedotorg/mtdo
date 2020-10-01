@@ -45,6 +45,7 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Set;
 import java2ts.FT.VideoFactMeta;
+import org.mytake.factset.LocatedException;
 
 /**
  * Format is:
@@ -140,7 +141,7 @@ public abstract class SaidTranscript {
 			}
 			return create(turns);
 		} catch (Exception e) {
-			throw new RuntimeException("On line " + lineCount, e);
+			throw LocatedException.atLine(lineCount).message(e);
 		}
 	}
 
