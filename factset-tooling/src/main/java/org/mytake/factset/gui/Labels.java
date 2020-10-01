@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2020 MyTake.org, Inc.
+ * Copyright (C) 2018-2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -26,49 +26,35 @@
  *
  * You can contact us at team@mytake.org
  */
-package org.mytake.factset.video.gui;
+package org.mytake.factset.gui;
 
 
-import com.diffplug.common.base.Errors;
-import com.diffplug.common.swt.ControlWrapper;
-import com.diffplug.common.swt.os.OS;
-import org.eclipse.swt.browser.Browser;
+import com.diffplug.common.swt.Fonts;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
 
-/** Shim for the few browser APIs we need. */
-public interface BrowserShim extends ControlWrapper {
-	public static BrowserShim create(Composite parent, int style) {
-		if (OS.getNative().isWindows()) {
-			try {
-				@SuppressWarnings("unchecked")
-				Class<? extends BrowserShim> clazz = (Class<? extends BrowserShim>) Class.forName("org.mytake.foundation.transcript.gui.ChromiumShim");
-				return clazz.getConstructor(Composite.class, int.class).newInstance(parent, style);
-			} catch (Exception e) {
-				throw Errors.asRuntime(e);
-			}
-		} else {
-			return new SwtShim(parent, style);
-		}
+public class Labels {
+	/** Creates a label with the given text. */
+	public static Label create(Composite parent, String text) {
+		Label lbl = new Label(parent, SWT.WRAP);
+		lbl.setText(text);
+		return lbl;
 	}
 
-	void setText(String content);
+	/** Creates a label with the given text. */
+	public static Label createVSep(Composite parent) {
+		return new Label(parent, SWT.SEPARATOR | SWT.VERTICAL);
+	}
 
-	void evaluate(String string);
+	/** Creates a label with the given text. */
+	public static Label createHSep(Composite parent) {
+		return new Label(parent, SWT.SEPARATOR | SWT.HORIZONTAL);
+	}
 
-	/** The built-in SWT browser (IE on windows, which is terribly broken). */
-	static class SwtShim extends ControlWrapper.AroundControl<Browser> implements BrowserShim {
-		public SwtShim(Composite parent, int style) {
-			super(new Browser(parent, style));
-		}
-
-		@Override
-		public void setText(String content) {
-			wrapped.setText(content);
-		}
-
-		@Override
-		public void evaluate(String script) {
-			wrapped.evaluate(script);
-		}
+	/** Creates a bold label with the given text. */
+	public static void createBold(Composite parent, String text) {
+		Label lbl = create(parent, text);
+		lbl.setFont(Fonts.systemBold());
 	}
 }

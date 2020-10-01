@@ -26,7 +26,7 @@
  *
  * You can contact us at team@mytake.org
  */
-package org.mytake.factset.video.gui;
+package org.mytake.factset.gui.video;
 
 
 import com.diffplug.common.io.Files;
@@ -41,6 +41,7 @@ import java.text.SimpleDateFormat;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.widgets.Composite;
+import org.mytake.factset.gui.Labels;
 import org.mytake.factset.video.TranscriptFolder;
 import org.mytake.factset.video.TranscriptMatch;
 

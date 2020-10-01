@@ -26,7 +26,7 @@
  *
  * You can contact us at team@mytake.org
  */
-package org.mytake.factset.video.gui;
+package org.mytake.factset.gui.video;
 
 
 import com.diffplug.common.base.Errors;

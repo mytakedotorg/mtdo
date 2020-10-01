@@ -46,7 +46,6 @@ import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
-import org.mytake.factset.video.gui.Labels;
 
 public class Workbench {
 	private final FileTreeCtl fileTree;

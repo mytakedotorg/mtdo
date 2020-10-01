@@ -26,7 +26,7 @@
  *
  * You can contact us at team@mytake.org
  */
-package org.mytake.factset.video.gui;
+package org.mytake.factset.gui.video;
 
 
 import com.diffplug.common.swt.ControlWrapper;
@@ -41,6 +41,7 @@ import org.eclipse.jface.text.TextViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
+import org.mytake.factset.gui.Labels;
 import org.mytake.factset.video.SaidTranscript;
 import org.mytake.factset.video.Word;
 import org.mytake.factset.video.Word.Vtt;

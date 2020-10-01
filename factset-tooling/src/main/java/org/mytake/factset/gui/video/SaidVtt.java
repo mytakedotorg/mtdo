@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2020 MyTake.org, Inc.
+ * Copyright (C) 2018-2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -26,25 +26,22 @@
  *
  * You can contact us at team@mytake.org
  */
-package org.mytake.factset.video.gui;
+package org.mytake.factset.gui.video;
 
 
-import com.diffplug.common.io.Files;
-import java.io.File;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.util.List;
-import java.util.stream.Collectors;
-import org.mytake.factset.video.VttTranscript;
-import org.mytake.factset.video.VttTranscript.Mode;
-import org.mytake.factset.video.Word;
+import com.diffplug.common.base.Unhandled;
 
-public class VttEdit {
-	public static void main(String[] args) throws IOException {
-		VttTranscript transcript = VttTranscript.parse(new File("../presidential-debates/2000-10-17.backup"), Mode.STRICT);
-		List<Word.Vtt> newWords = transcript.words().stream()
-				.map(vtt -> vtt.time() < 3498.389 ? vtt : new Word.Vtt(vtt.lowercase(), vtt.time() + 10))
-				.collect(Collectors.toList());
-		transcript.save(newWords, Files.asCharSink(new File("../presidential-debates/2000-10-17.vtt"), StandardCharsets.UTF_8));
+public enum SaidVtt {
+	SAID, VTT;
+
+	public <T> T saidVtt(T said, T vtt) {
+		switch (this) {
+		case SAID:
+			return said;
+		case VTT:
+			return vtt;
+		default:
+			throw Unhandled.enumException(this);
+		}
 	}
 }

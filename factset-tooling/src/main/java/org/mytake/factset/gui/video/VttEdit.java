@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2018-2020 MyTake.org, Inc.
+ * Copyright (C) 2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -26,35 +26,25 @@
  *
  * You can contact us at team@mytake.org
  */
-package org.mytake.factset.video.gui;
+package org.mytake.factset.gui.video;
 
 
-import com.diffplug.common.swt.Fonts;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
+import com.diffplug.common.io.Files;
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.util.List;
+import java.util.stream.Collectors;
+import org.mytake.factset.video.VttTranscript;
+import org.mytake.factset.video.VttTranscript.Mode;
+import org.mytake.factset.video.Word;
 
-public class Labels {
-	/** Creates a label with the given text. */
-	public static Label create(Composite parent, String text) {
-		Label lbl = new Label(parent, SWT.WRAP);
-		lbl.setText(text);
-		return lbl;
-	}
-
-	/** Creates a label with the given text. */
-	public static Label createVSep(Composite parent) {
-		return new Label(parent, SWT.SEPARATOR | SWT.VERTICAL);
-	}
-
-	/** Creates a label with the given text. */
-	public static Label createHSep(Composite parent) {
-		return new Label(parent, SWT.SEPARATOR | SWT.HORIZONTAL);
-	}
-
-	/** Creates a bold label with the given text. */
-	public static void createBold(Composite parent, String text) {
-		Label lbl = create(parent, text);
-		lbl.setFont(Fonts.systemBold());
+public class VttEdit {
+	public static void main(String[] args) throws IOException {
+		VttTranscript transcript = VttTranscript.parse(new File("../presidential-debates/2000-10-17.backup"), Mode.STRICT);
+		List<Word.Vtt> newWords = transcript.words().stream()
+				.map(vtt -> vtt.time() < 3498.389 ? vtt : new Word.Vtt(vtt.lowercase(), vtt.time() + 10))
+				.collect(Collectors.toList());
+		transcript.save(newWords, Files.asCharSink(new File("../presidential-debates/2000-10-17.vtt"), StandardCharsets.UTF_8));
 	}
 }
