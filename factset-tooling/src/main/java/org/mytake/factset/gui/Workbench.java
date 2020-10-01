@@ -67,7 +67,7 @@ public class Workbench {
 	private final Path rootFolder;
 	private final FileTreeCtl fileTree;
 	private final CTabFolder tabFolder;
-	private final Map<Path, Pane> pathToTab = new HashMap<>();
+	private final Map<WorkbenchInput, Pane> pathToTab = new HashMap<>();
 	private final ToolBar toolbar;
 	private final Console console;
 
@@ -158,10 +158,14 @@ public class Workbench {
 		printer.println("");
 	}
 
-	private Pane openFile(Path path) {
-		Pane pane = pathToTab.get(path);
+	public Pane openFile(Path path) {
+		return open(WorkbenchInput.path(path));
+	}
+
+	public Pane open(WorkbenchInput input) {
+		Pane pane = pathToTab.get(input);
 		if (pane == null) {
-			pane = new Pane(path);
+			pane = new Pane(input);
 		} else {
 			pane.takeoverToolbar();
 		}
@@ -175,36 +179,35 @@ public class Workbench {
 	}
 
 	public class Pane {
-		final Path path;
+		final WorkbenchInput input;
 		final CTabItem tab;
-		final ControlWrapper control;
 		final RxBox<Boolean> isDirty = RxBox.of(false);
 		final PublishSubject<StringPrinter> save = PublishSubject.create();
 		final PublishSubject<Loc> highlight = PublishSubject.create();
 		final SwtExec.Guarded exec;
 		final List<Btn> buttons = new ArrayList<>();
 
-		private Pane(Path path) {
-			this.path = path;
+		private Pane(WorkbenchInput input) {
+			this.input = input;
 			tab = new CTabItem(tabFolder, SWT.CLOSE);
 			tab.setData(this);
-			tab.setText(path.getFileName().toString());
+			tab.setText(input.tabTxt());
 
-			pathToTab.put(path, this);
+			pathToTab.put(input, this);
 			tab.addListener(SWT.Dispose, e -> {
-				pathToTab.remove(path);
+				pathToTab.remove(input);
 			});
 
 			exec = SwtExec.immediate().guardOn(tab);
 			exec.subscribe(isDirty, dirty -> {
-				tab.setText(path.getFileName().toString() + (dirty ? "*" : ""));
+				tab.setText(input.tabTxt() + (dirty ? "*" : ""));
 			});
 
 			addButton("Save " + Accelerators.uiStringFor(Accelerators.SAVE), printer -> {
 				save(printer);
 			});
 
-			control = ContentTypes.createPane(tabFolder, path, this);
+			ControlWrapper control = input.createPane(tabFolder, this);
 			tab.setControl(control.getRootControl());
 			takeoverToolbar();
 		}
@@ -219,13 +222,17 @@ public class Workbench {
 				item.addListener(SWT.Selection, event -> {
 					StringPrinter printer = console.wipeAndCreateNewStream();
 					try {
-						printer.println(btn.name + " " + path);
+						printer.println(btn.name + " " + input.tabTxt());
 						btn.log.accept(printer);
 					} catch (Throwable e) {
 						handleException(e, printer);
 					}
 				});
 			}
+		}
+
+		public Workbench workbench() {
+			return Workbench.this;
 		}
 
 		public void addButton(String name, Throwing.Consumer<StringPrinter> log) {
@@ -263,7 +270,7 @@ public class Workbench {
 			if (e instanceof LocatedException) {
 				// makes sure that highlight always triggers on the UI thread
 				LocatedException located = (LocatedException) e;
-				if (located.file == null || located.file.equals(path)) {
+				if (located.file == null || WorkbenchInput.path(located.file).equals(input)) {
 					exec.execute(() -> highlight.onNext(located.loc));
 				} else {
 					Pane pane = openFile(located.file);

@@ -114,11 +114,19 @@ class ContentTypes {
 			pane.addButton("Cleanup VTT", printer -> {
 				setDoc.accept(VttCleanup::apply);
 			});
+			pane.addButton(SYNC, printer -> sync(path, pane));
 		} else if (filename.endsWith(".said")) {
 			pane.addButton("Cleanup SAID", printer -> {
 				setDoc.accept(in -> SaidCleanup.cleanup(pane.factsetFolder(), path, in));
 			});
+			pane.addButton(SYNC, printer -> sync(path, pane));
 		}
 		return ctl;
+	}
+
+	private static final String SYNC = "Sync";
+
+	private static void sync(Path path, Pane pane) {
+		// TODO
 	}
 }
