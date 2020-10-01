@@ -61,8 +61,8 @@ public class TranscriptFolder {
 
 	public TranscriptFolder(File root) throws IOException {
 		this.root = Objects.requireNonNull(root);
-		this.people = SetIni.parse(new File(root, "all_people.ini"));
-		this.roles = SetIni.parse(new File(root, "all_roles.ini"));
+		this.people = SetStoredAsIni.parse(new File(root, "all_people.ini"));
+		this.roles = SetStoredAsIni.parse(new File(root, "all_roles.ini"));
 	}
 
 	public static final ImmutableSet<String> VIDEO_EXTENSIONS = ImmutableSet.of("json", "said", "vtt");

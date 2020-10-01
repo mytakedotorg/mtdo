@@ -41,6 +41,7 @@ import org.eclipse.swt.custom.TextChangedEvent;
 import org.eclipse.swt.custom.TextChangingEvent;
 import org.eclipse.swt.widgets.Composite;
 import org.mytake.factset.gui.Workbench.Pane;
+import org.mytake.factset.video.SetStoredAsIni;
 
 class ContentTypes {
 	static ControlWrapper createPane(Composite cmp, Path path, Pane pane) {
@@ -52,6 +53,11 @@ class ContentTypes {
 			highlighter = SyntaxHighlighter.json();
 		} else if (filename.endsWith(".ini")) {
 			highlighter = SyntaxHighlighter.ini();
+			pane.logOpDontBlock(printer -> {
+				printer.println("Parsing ini " + path);
+				SetStoredAsIni.parse(path, content);
+				printer.println("\rParsed ini " + path);
+			});
 		}
 
 		Document doc = new Document(content);
@@ -67,9 +73,9 @@ class ContentTypes {
 
 		pane.exec.subscribe(pane.save, printer -> {
 			try {
-				printer.println("Saving...");
+				printer.println("Saving " + path);
 				Files.write(path, doc.get().replace("\r", "").getBytes(StandardCharsets.UTF_8));
-				printer.println("\rSaved.");
+				printer.println("\rSaved " + path);
 			} catch (IOException e) {
 				e.printStackTrace(printer.toPrintWriter());
 				printer.println("");

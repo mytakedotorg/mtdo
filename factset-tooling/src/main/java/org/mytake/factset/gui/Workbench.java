@@ -30,6 +30,7 @@ package org.mytake.factset.gui;
 
 
 import com.diffplug.common.base.StringPrinter;
+import com.diffplug.common.base.Throwing;
 import com.diffplug.common.rx.Rx;
 import com.diffplug.common.rx.RxBox;
 import com.diffplug.common.swt.ControlWrapper;
@@ -37,12 +38,15 @@ import com.diffplug.common.swt.Layouts;
 import com.diffplug.common.swt.SwtExec;
 import com.diffplug.common.swt.SwtMisc;
 import io.reactivex.subjects.PublishSubject;
+import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.function.Consumer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabFolder;
@@ -62,6 +66,8 @@ public class Workbench {
 	private final ToolBar toolbar;
 	private final Console console;
 
+	private final ExecutorService executor = Executors.newSingleThreadExecutor();
+
 	public Workbench(Composite parent, Path folder) {
 		Display display = parent.getDisplay();
 		display.setErrorHandler(this::logError);
@@ -69,6 +75,7 @@ public class Workbench {
 
 		Layouts.setFill(parent);
 		SashForm form = new SashForm(parent, SWT.HORIZONTAL);
+		form.addListener(SWT.Dispose, e -> executor.shutdown());
 
 		Composite fileTreeCmp = new Composite(form, SWT.NONE);
 		Layouts.setGrid(fileTreeCmp).margin(0).spacing(3);
@@ -217,6 +224,19 @@ public class Workbench {
 		private void save(StringPrinter printer) {
 			save.onNext(printer);
 			isDirty.set(false);
+		}
+
+		public void logOpDontBlock(Throwing.Consumer<StringPrinter> op) {
+			StringPrinter printer = console.wipeAndCreateNewStream();
+			executor.submit(() -> {
+				try {
+					op.accept(printer);
+				} catch (Throwable e) {
+					try (PrintWriter p = printer.toPrintWriter()) {
+						e.printStackTrace(p);
+					}
+				}
+			});
 		}
 	}
 }

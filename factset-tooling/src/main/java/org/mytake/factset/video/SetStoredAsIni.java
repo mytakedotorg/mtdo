@@ -32,8 +32,10 @@ package org.mytake.factset.video;
 import com.diffplug.common.base.Preconditions;
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -42,7 +44,7 @@ import java.util.Set;
  * Loads every line in a file, and stuffs them into a set.
  * `;` lines are treated as comments, just like an ini.
  */
-public class SetIni {
+public class SetStoredAsIni {
 	public static Set<String> parse(File file) throws IOException {
 		return parse(file.toPath());
 	}
@@ -51,7 +53,11 @@ public class SetIni {
 		if (!Files.exists(path)) {
 			throw new IllegalArgumentException("Does not exist: " + path);
 		}
-		List<String> lines = Files.readAllLines(path);
+		return parse(path, new String(Files.readAllBytes(path), StandardCharsets.UTF_8));
+	}
+
+	public static Set<String> parse(Path path, String content) throws IOException {
+		List<String> lines = Arrays.asList(content.replace("\r", "").split("\n"));
 		Set<String> result = new LinkedHashSet<>(lines.size());
 		for (int i = 0; i < lines.size(); ++i) {
 			String line = lines.get(i);

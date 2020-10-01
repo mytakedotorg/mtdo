@@ -62,7 +62,7 @@ import org.mytake.factset.GitJson;
 import org.mytake.factset.JsonMisc;
 import org.mytake.factset.gradle.MtdoFactset.VideoCfg;
 import org.mytake.factset.video.SaidTranscript;
-import org.mytake.factset.video.SetIni;
+import org.mytake.factset.video.SetStoredAsIni;
 import org.mytake.factset.video.TranscriptMatch;
 import org.mytake.factset.video.VideoFactContentJava;
 import org.mytake.factset.video.VideoFormat;
@@ -132,8 +132,8 @@ public class GrindLogic {
 		final Set<String> foundPeople = new HashSet<>();
 
 		Validator() throws IOException {
-			roles = SetIni.parse(ingredient("all_roles", ".ini"));
-			people = SetIni.parse(ingredient("all_people", ".ini"));
+			roles = SetStoredAsIni.parse(ingredient("all_roles", ".ini"));
+			people = SetStoredAsIni.parse(ingredient("all_people", ".ini"));
 		}
 
 		public List<String> warningsFor(String path) throws IOException {
