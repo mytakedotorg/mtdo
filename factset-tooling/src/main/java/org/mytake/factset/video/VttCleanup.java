@@ -29,11 +29,9 @@
 package org.mytake.factset.video;
 
 
-import com.diffplug.common.io.Files;
+import com.diffplug.common.io.CharSource;
 import com.diffplug.common.math.DoubleMath;
-import java.io.File;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import org.mytake.factset.video.VttTranscript.Mode;
@@ -46,20 +44,11 @@ import org.mytake.factset.video.VttTranscript.Mode;
  * - makes all tokens lowercase
  */
 public class VttCleanup {
-	public static void main(String[] args) throws IOException {
-		TranscriptFolder folder = new TranscriptFolder(new File("../presidential-debates"));
-		for (String name : folder.transcriptsWithMeta()) {
-			try {
-				VttTranscript vtt = VttTranscript.parse(folder.fileVtt(name), Mode.PERMISSIVE);
-				normalizeLines(vtt);
-				normalizeLines(vtt);
-				Files.write(vtt.asString().getBytes(StandardCharsets.UTF_8), folder.fileVtt(name));
-				System.out.println(name + " SUCCESS");
-			} catch (Exception e) {
-				System.out.println(name + " " + e.getMessage());
-				e.printStackTrace();
-			}
-		}
+	public static String apply(String input) throws IOException {
+		VttTranscript vtt = VttTranscript.parse(CharSource.wrap(input), Mode.PERMISSIVE);
+		normalizeLines(vtt);
+		normalizeLines(vtt);
+		return vtt.asString();
 	}
 
 	private static void normalizeLines(VttTranscript vtt) {

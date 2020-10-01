@@ -42,6 +42,7 @@ import org.eclipse.swt.custom.TextChangingEvent;
 import org.eclipse.swt.widgets.Composite;
 import org.mytake.factset.gui.Workbench.Pane;
 import org.mytake.factset.video.SetStoredAsIni;
+import org.mytake.factset.video.VttCleanup;
 
 class ContentTypes {
 	static ControlWrapper createPane(Composite cmp, Path path, Pane pane) {
@@ -53,11 +54,6 @@ class ContentTypes {
 			highlighter = SyntaxHighlighter.json();
 		} else if (filename.endsWith(".ini")) {
 			highlighter = SyntaxHighlighter.ini();
-			pane.logOpDontBlock(printer -> {
-				printer.println("Parsing ini " + path);
-				SetStoredAsIni.parse(path, content);
-				printer.println("\rParsed ini " + path);
-			});
 		}
 
 		Document doc = new Document(content);
@@ -81,6 +77,22 @@ class ContentTypes {
 				printer.println("");
 			}
 		});
+
+		if (filename.endsWith(".ini")) {
+			pane.logOpDontBlock(printer -> {
+				printer.println("Parsing ini " + path);
+				SetStoredAsIni.parse(path, content);
+				printer.println("\rParsed ini " + path);
+			});
+		} else if (filename.endsWith(".vtt")) {
+			pane.addButton("Cleanup VTT", printer -> {
+				printer.println("Cleaning VTT " + path);
+				String clean = VttCleanup.apply(doc.get());
+				doc.set(clean);
+				printer.println("Cleaned VTT " + path);
+			});
+		}
+
 		return ctl;
 	}
 }

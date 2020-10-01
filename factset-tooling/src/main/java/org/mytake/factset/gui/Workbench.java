@@ -47,7 +47,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.function.Consumer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabFolder2Adapter;
@@ -162,7 +161,7 @@ public class Workbench {
 
 	static class Btn {
 		String name;
-		Consumer<StringPrinter> log;
+		Throwing.Consumer<StringPrinter> log;
 	}
 
 	public class Pane {
@@ -204,13 +203,20 @@ public class Workbench {
 			for (Btn btn : buttons) {
 				ToolItem item = new ToolItem(toolbar, SWT.PUSH);
 				item.setText(btn.name);
-				item.addListener(SWT.Selection, e -> {
-					btn.log.accept(console.wipeAndCreateNewStream());
+				item.addListener(SWT.Selection, event -> {
+					StringPrinter printer = console.wipeAndCreateNewStream();
+					try {
+						btn.log.accept(printer);
+					} catch (Throwable e) {
+						try (PrintWriter p = printer.toPrintWriter()) {
+							e.printStackTrace(p);
+						}
+					}
 				});
 			}
 		}
 
-		public void addButton(String name, Consumer<StringPrinter> log) {
+		public void addButton(String name, Throwing.Consumer<StringPrinter> log) {
 			Btn btn = new Btn();
 			btn.name = name;
 			btn.log = log;
