@@ -29,7 +29,6 @@
 package org.mytake.factset.gui;
 
 
-import com.diffplug.common.swt.jface.Actions;
 import com.diffplug.common.swt.os.OS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Event;
@@ -52,47 +51,6 @@ public class Accelerators {
 
 	public static final int SELECT_ALL = CTRL | 'a';
 	public static final int SAVE = CTRL | 's';
-
-	/** An action which automatically appends the accelerator code to the tooltip text. */
-	public static class Action extends org.eclipse.jface.action.Action {
-		private final int accelerator;
-
-		/** Make an action with the given type. */
-		public Action(String name, int style, int accelerator) {
-			super(name, style);
-			this.accelerator = accelerator;
-			init();
-		}
-
-		/** Make an action with the default pushbutton type. */
-		public Action(String name, int accelerator) {
-			this(name, AS_PUSH_BUTTON, accelerator);
-		}
-
-		/** Sets the text for this Action. */
-		@Override
-		public void setText(String text) {
-			super.setText(text);
-			init();
-		}
-
-		private void init() {
-			super.setAccelerator(accelerator);
-			super.setToolTipText(getText() + " [" + Actions.getAcceleratorString(accelerator) + "]");
-		}
-
-		/** Automatically add the accelerator text. */
-		@Override
-		public void setToolTipText(String text) {
-			super.setToolTipText(text + " [" + Actions.getAcceleratorString(accelerator) + "]");
-		}
-
-		/** Disable changing the accelerator after the fact. */
-		@Override
-		public void setAccelerator(int accelerator) {
-			throw new UnsupportedOperationException();
-		}
-	}
 
 	public static boolean isDelete(Event e) {
 		return e.keyCode == SWT.DEL || e.keyCode == SWT.BS;
