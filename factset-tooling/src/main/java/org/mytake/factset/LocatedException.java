@@ -31,6 +31,8 @@ package org.mytake.factset;
 
 import com.diffplug.common.base.Preconditions;
 import java.nio.file.Path;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.annotation.Nullable;
 
 public class LocatedException extends RuntimeException {
@@ -84,8 +86,19 @@ public class LocatedException extends RuntimeException {
 	LocatedException(String message, Throwable cause, Builder builder) {
 		super(message, cause);
 		line = builder.line;
-		colStart = builder.colStart;
-		colEnd = builder.colEnd;
+		if (builder.colStart == -1) {
+			Matcher matcher = Pattern.compile("(\\d+),(\\d+):").matcher(message);
+			if (matcher.find()) {
+				colStart = Integer.parseInt(matcher.group(1));
+				colEnd = Integer.parseInt(matcher.group(2));
+			} else {
+				colStart = -1;
+				colEnd = -1;
+			}
+		} else {
+			colStart = builder.colStart;
+			colEnd = builder.colEnd;
+		}
 		file = builder.file;
 	}
 }

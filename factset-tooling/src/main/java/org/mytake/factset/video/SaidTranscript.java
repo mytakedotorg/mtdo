@@ -126,7 +126,7 @@ public abstract class SaidTranscript {
 				}
 				int firstColon = line.indexOf(':');
 				String speaker = line.substring(0, firstColon);
-				Preconditions.checkArgument(people.contains(speaker), "No such person %s, available: %s", speaker, people);
+				Preconditions.checkArgument(people.contains(speaker), "0," + firstColon + ": No such person %s, available: %s", speaker, people);
 				String words = line.substring(firstColon + 1).trim();
 				turns.add(Turn.turnWords(speaker, words));
 

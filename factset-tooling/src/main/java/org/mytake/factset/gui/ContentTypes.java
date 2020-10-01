@@ -92,7 +92,7 @@ class ContentTypes {
 					colStart = lineOffset + highlight.colStart;
 					colEnd = lineOffset + highlight.colEnd;
 				}
-				ctl.getSourceViewer().setSelectedRange(colStart, colEnd);
+				ctl.getSourceViewer().setSelectedRange(colStart, colEnd - colStart);
 			} catch (Exception e) {
 				Errors.dialog().accept(e);
 			}
@@ -115,7 +115,7 @@ class ContentTypes {
 				setDoc.accept(VttCleanup::apply);
 			});
 		} else if (filename.endsWith(".said")) {
-			pane.addButton("Merge consecutive speakers", printer -> {
+			pane.addButton("Cleanup SAID", printer -> {
 				setDoc.accept(in -> SaidCleanup.cleanup(pane.factsetFolder(), path, in));
 			});
 		}
