@@ -127,7 +127,7 @@ public class Workbench {
 		SyntaxHighlighter highlighter = SyntaxHighlighter.none();
 		String filename = path.getFileName().toString();
 		if (filename.endsWith(".json")) {
-
+			highlighter = SyntaxHighlighter.json();
 		} else if (filename.endsWith(".said")) {
 
 		} else if (filename.endsWith(".vtt")) {
@@ -139,7 +139,7 @@ public class Workbench {
 		}
 
 		TextViewCtl ctl = new TextViewCtl(cmp);
-		highlighter.setup(ctl.getSourceViewer(), new Document(content));
+		ctl.setup(new Document(content), highlighter);
 		return ctl;
 	}
 }

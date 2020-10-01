@@ -41,6 +41,7 @@ import org.eclipse.jface.text.rules.DefaultDamagerRepairer;
 import org.eclipse.jface.text.rules.EndOfLineRule;
 import org.eclipse.jface.text.rules.FastPartitioner;
 import org.eclipse.jface.text.rules.IPredicateRule;
+import org.eclipse.jface.text.rules.MultiLineRule;
 import org.eclipse.jface.text.rules.RuleBasedPartitionScanner;
 import org.eclipse.jface.text.rules.Token;
 import org.eclipse.jface.text.source.ISourceViewer;
@@ -61,6 +62,10 @@ public interface SyntaxHighlighter {
 		return RuleBasedHighlighter.INI;
 	}
 
+	public static SyntaxHighlighter json() {
+		return RuleBasedHighlighter.JSON;
+	}
+
 	static class Rule {
 		final String contentType;
 		final IPredicateRule predicateRule;
@@ -76,8 +81,13 @@ public interface SyntaxHighlighter {
 	static class RuleBasedHighlighter implements SyntaxHighlighter {
 		private static String COMMENT = "__comment_type";
 		private static Color COMMENT_COLOR = new Color(63, 127, 95);
+		private static String STRING = "__string_type";
+		private static Color STRING_COLOR = new Color(0, 0, 192);
+
 		private static final SyntaxHighlighter INI = new RuleBasedHighlighter(
 				new Rule(COMMENT, new EndOfLineRule(";", new Token(COMMENT)), new TextAttribute(COMMENT_COLOR)));
+		private static final SyntaxHighlighter JSON = new RuleBasedHighlighter(
+				new Rule(STRING, new MultiLineRule("\"", "\"", new Token(STRING), '\\'), new TextAttribute(STRING_COLOR)));
 
 		public static final String NONE = "None";
 

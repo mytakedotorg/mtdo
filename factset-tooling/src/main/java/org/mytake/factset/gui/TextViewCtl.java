@@ -107,34 +107,9 @@ public class TextViewCtl extends ControlWrapper.AroundControl<Composite> {
 
 	/** Sets the contents of the TextViewerCmp to view the given file and syntax highlighting rules. */
 	public void setup(IDocument doc, SyntaxHighlighter highlighter) {
+		sourceViewer.getTextWidget().setWordWrap(true);
+		sourceViewer.addPainter(new WhitespacePainter(sourceViewer, false));
 		highlighter.setup(sourceViewer, doc);
-
-		setShowWhitespace(true);
-		setTabSize(4);
-		getSourceViewer().getTextWidget().setWordWrap(true);
-	}
-
-	// by default, there we do not show whitespace
-	private WhitespacePainter whitespacePainter = null;
-
-	/** Changes the TextViewerCmp so that it shows whitespace correctly. */
-	public void setShowWhitespace(boolean showWhitespace) {
-		// add a whitespace painter
-		if (showWhitespace && whitespacePainter == null) {
-			whitespacePainter = new WhitespacePainter(sourceViewer, false);
-			sourceViewer.addPainter(whitespacePainter);
-		}
-
-		// removes a whitespace painter
-		if (!showWhitespace && whitespacePainter != null) {
-			sourceViewer.removePainter(whitespacePainter);
-			whitespacePainter = null;
-		}
-	}
-
-	/** Sets the tab spacing. */
-	public void setTabSize(int tabSize) {
-		sourceViewer.getTextWidget().setTabs(tabSize);
 	}
 
 	public SourceViewer getSourceViewer() {
@@ -146,7 +121,7 @@ public class TextViewCtl extends ControlWrapper.AroundControl<Composite> {
 	}
 
 	/** Adds bracket-matching capabilities to the given SourceViewer. */
-	public static void addBracketMatching(SourceViewer viewer) {
+	private static void addBracketMatching(SourceViewer viewer) {
 		DefaultCharacterPairMatcher bracketMatcher = new DefaultCharacterPairMatcher(new char[]{'{', '}', '(', ')', '<', '>', '[', ']'});
 		MatchingCharacterPainter bracketPainter = new MatchingCharacterPainter(viewer, bracketMatcher);
 		bracketPainter.setColor(viewer.getTextWidget().getDisplay().getSystemColor(SWT.COLOR_DARK_GRAY));
