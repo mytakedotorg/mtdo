@@ -29,7 +29,6 @@
 package org.mytake.factset.gui;
 
 
-import com.diffplug.common.base.Errors;
 import com.diffplug.common.base.StringPrinter;
 import com.diffplug.common.rx.Rx;
 import com.diffplug.common.rx.RxBox;
@@ -38,12 +37,10 @@ import com.diffplug.common.swt.Layouts;
 import com.diffplug.common.swt.SwtExec;
 import com.diffplug.common.swt.SwtMisc;
 import io.reactivex.subjects.PublishSubject;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
-import org.eclipse.jface.text.Document;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabFolder2Adapter;
@@ -150,7 +147,7 @@ public class Workbench {
 				pathToTab.remove(path);
 			});
 
-			control = createTab(tabFolder, path, this);
+			control = ContentTypes.createPane(tabFolder, path, this);
 			tab.setControl(control.getRootControl());
 
 			exec = SwtExec.immediate().guardOn(tab);
@@ -167,29 +164,5 @@ public class Workbench {
 			save.onNext(this);
 			isDirty.set(false);
 		}
-	}
-
-	private ControlWrapper createTab(Composite cmp, Path path, Pane pane) {
-		String content = Errors.rethrow().get(() -> new String(Files.readAllBytes(path), StandardCharsets.UTF_8));
-
-		SyntaxHighlighter highlighter = SyntaxHighlighter.none();
-		String filename = path.getFileName().toString();
-		if (filename.endsWith(".json")) {
-			highlighter = SyntaxHighlighter.json();
-		} else if (filename.endsWith(".ini")) {
-			highlighter = SyntaxHighlighter.ini();
-		}
-
-		Document doc = new Document(content);
-		TextViewCtl ctl = new TextViewCtl(cmp);
-		ctl.setup(doc, highlighter);
-		ctl.getSourceViewer().getTextWidget().addListener(SWT.Modify, e -> pane.makeDirty());
-
-		pane.exec.subscribe(pane.save, s -> {
-			Errors.dialog().run(() -> {
-				Files.write(path, doc.get().replace("\r", "").getBytes(StandardCharsets.UTF_8));
-			});
-		});
-		return ctl;
 	}
 }
