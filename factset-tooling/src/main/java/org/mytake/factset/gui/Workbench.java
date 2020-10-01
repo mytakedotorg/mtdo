@@ -39,8 +39,11 @@ import com.diffplug.common.swt.SwtMisc;
 import io.reactivex.subjects.PublishSubject;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabFolder2Adapter;
@@ -49,11 +52,14 @@ import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.ToolBar;
+import org.eclipse.swt.widgets.ToolItem;
 
 public class Workbench {
 	private final FileTreeCtl fileTree;
 	private final CTabFolder tabFolder;
 	private final Map<Path, Pane> pathToTab = new HashMap<>();
+	private final ToolBar toolbar;
 	private final Console console;
 
 	public Workbench(Composite parent, Path folder) {
@@ -86,9 +92,26 @@ public class Workbench {
 				}
 			}
 		});
+		tabFolder.addListener(SWT.Selection, e -> {
+			CTabItem item = tabFolder.getSelection();
+			if (item != null) {
+				((Pane) item.getData()).takeoverToolbar();
+			}
+		});
 		form.setWeights(new int[]{1, 3});
 
-		console = Console.nonWrapping(folderSash);
+		Composite consoleCmp = new Composite(folderSash, SWT.NONE);
+		Layouts.setGrid(consoleCmp).margin(0).spacing(0);
+
+		toolbar = new ToolBar(consoleCmp, SWT.NONE);
+		ToolItem toolbarItem = new ToolItem(toolbar, SWT.PUSH);
+		toolbarItem.setText("(Actions will go here)");
+		toolbarItem.setEnabled(false);
+
+		Layouts.setGridData(toolbar).grabHorizontal();
+
+		console = Console.nonWrapping(consoleCmp);
+		Layouts.setGridData(console).grabAll();
 		console.wipeAndCreateNewStream().println("Console (events will be printed here)");
 		folderSash.setWeights(new int[]{3, 1});
 
@@ -108,7 +131,7 @@ public class Workbench {
 					return;
 				}
 				Pane pane = (Pane) item.getData();
-				pane.save();
+				pane.save(console.wipeAndCreateNewStream());
 			}
 		});
 	}
@@ -130,12 +153,18 @@ public class Workbench {
 		tabFolder.setSelection(pane.tab);
 	}
 
+	static class Btn {
+		String name;
+		Consumer<StringPrinter> log;
+	}
+
 	public class Pane {
 		final CTabItem tab;
 		final ControlWrapper control;
 		final RxBox<Boolean> isDirty = RxBox.of(false);
-		final PublishSubject<Pane> save = PublishSubject.create();
+		final PublishSubject<StringPrinter> save = PublishSubject.create();
 		final SwtExec.Guarded exec;
+		final List<Btn> buttons = new ArrayList<>();
 
 		private Pane(Path path) {
 			tab = new CTabItem(tabFolder, SWT.CLOSE);
@@ -147,21 +176,46 @@ public class Workbench {
 				pathToTab.remove(path);
 			});
 
-			control = ContentTypes.createPane(tabFolder, path, this);
-			tab.setControl(control.getRootControl());
-
 			exec = SwtExec.immediate().guardOn(tab);
 			exec.subscribe(isDirty, dirty -> {
 				tab.setText(path.getFileName().toString() + (dirty ? "*" : ""));
 			});
+
+			addButton("Save " + Accelerators.uiStringFor(Accelerators.SAVE), printer -> {
+				save(printer);
+			});
+
+			control = ContentTypes.createPane(tabFolder, path, this);
+			tab.setControl(control.getRootControl());
+			takeoverToolbar();
+		}
+
+		private void takeoverToolbar() {
+			for (ToolItem item : toolbar.getItems()) {
+				item.dispose();
+			}
+			for (Btn btn : buttons) {
+				ToolItem item = new ToolItem(toolbar, SWT.PUSH);
+				item.setText(btn.name);
+				item.addListener(SWT.Selection, e -> {
+					btn.log.accept(console.wipeAndCreateNewStream());
+				});
+			}
+		}
+
+		public void addButton(String name, Consumer<StringPrinter> log) {
+			Btn btn = new Btn();
+			btn.name = name;
+			btn.log = log;
+			buttons.add(btn);
 		}
 
 		public void makeDirty() {
 			isDirty.set(true);
 		}
 
-		private void save() {
-			save.onNext(this);
+		private void save(StringPrinter printer) {
+			save.onNext(printer);
 			isDirty.set(false);
 		}
 	}

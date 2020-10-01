@@ -31,11 +31,14 @@ package org.mytake.factset.gui;
 
 import com.diffplug.common.base.Errors;
 import com.diffplug.common.swt.ControlWrapper;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import org.eclipse.jface.text.Document;
-import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.TextChangeListener;
+import org.eclipse.swt.custom.TextChangedEvent;
+import org.eclipse.swt.custom.TextChangingEvent;
 import org.eclipse.swt.widgets.Composite;
 import org.mytake.factset.gui.Workbench.Pane;
 
@@ -54,14 +57,24 @@ class ContentTypes {
 		Document doc = new Document(content);
 		TextViewCtl ctl = new TextViewCtl(cmp);
 		ctl.setup(doc, highlighter);
-		ctl.getSourceViewer().getTextWidget().addListener(SWT.Modify, e -> pane.makeDirty());
+		ctl.getSourceViewer().getTextWidget().getContent().addTextChangeListener(new TextChangeListener() {
+			// spotless:off
+			@Override public void textChanging(TextChangingEvent e) {	pane.makeDirty();	}
+			@Override public void textChanged(TextChangedEvent e) {		pane.makeDirty();	}
+			@Override public void textSet(TextChangedEvent e) {			pane.makeDirty();	}
+			// spotless:on
+		});
 
-		pane.exec.subscribe(pane.save, s -> {
-			Errors.dialog().run(() -> {
+		pane.exec.subscribe(pane.save, printer -> {
+			try {
+				printer.println("Saving...");
 				Files.write(path, doc.get().replace("\r", "").getBytes(StandardCharsets.UTF_8));
-			});
+				printer.println("\rSaved.");
+			} catch (IOException e) {
+				e.printStackTrace(printer.toPrintWriter());
+				printer.println("");
+			}
 		});
 		return ctl;
 	}
-
 }
