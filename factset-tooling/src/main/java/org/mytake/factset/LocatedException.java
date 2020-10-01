@@ -78,26 +78,20 @@ public class LocatedException extends RuntimeException {
 		}
 	}
 
-	public final int line;
-	public final int colStart;
-	public final int colEnd;
 	public final @Nullable Path file;
+	public final Loc loc;
 
 	LocatedException(String message, Throwable cause, Builder builder) {
 		super(message, cause);
-		line = builder.line;
 		if (builder.colStart == -1) {
 			Matcher matcher = Pattern.compile("(\\d+),(\\d+):").matcher(message);
 			if (matcher.find()) {
-				colStart = Integer.parseInt(matcher.group(1));
-				colEnd = Integer.parseInt(matcher.group(2));
+				loc = new Loc(builder.line, Integer.parseInt(matcher.group(1)), Integer.parseInt(matcher.group(2)));
 			} else {
-				colStart = -1;
-				colEnd = -1;
+				loc = new Loc(builder.line);
 			}
 		} else {
-			colStart = builder.colStart;
-			colEnd = builder.colEnd;
+			loc = new Loc(builder.line, builder.colStart, builder.colEnd);
 		}
 		file = builder.file;
 	}

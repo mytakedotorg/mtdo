@@ -59,6 +59,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
+import org.mytake.factset.Loc;
 import org.mytake.factset.LocatedException;
 import org.mytake.factset.video.Ingredients;
 
@@ -179,7 +180,7 @@ public class Workbench {
 		final ControlWrapper control;
 		final RxBox<Boolean> isDirty = RxBox.of(false);
 		final PublishSubject<StringPrinter> save = PublishSubject.create();
-		final PublishSubject<LocatedException> highlight = PublishSubject.create();
+		final PublishSubject<Loc> highlight = PublishSubject.create();
 		final SwtExec.Guarded exec;
 		final List<Btn> buttons = new ArrayList<>();
 
@@ -234,7 +235,7 @@ public class Workbench {
 			buttons.add(btn);
 		}
 
-		public Observable<LocatedException> highlight() {
+		public Observable<Loc> highlight() {
 			return highlight;
 		}
 
@@ -263,12 +264,12 @@ public class Workbench {
 				// makes sure that highlight always triggers on the UI thread
 				LocatedException located = (LocatedException) e;
 				if (located.file == null || located.file.equals(path)) {
-					exec.execute(() -> highlight.onNext(located));
+					exec.execute(() -> highlight.onNext(located.loc));
 				} else {
 					Pane pane = openFile(located.file);
 					SwtExec.async().execute(() -> {
 						// let the file open, then highlight it there
-						pane.highlight.onNext(located);
+						pane.highlight.onNext(located.loc);
 					});
 				}
 			}
