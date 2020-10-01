@@ -106,12 +106,8 @@ public class TextViewCtl extends ControlWrapper.AroundControl<Composite> {
 	}
 
 	/** Sets the contents of the TextViewerCmp to view the given file and syntax highlighting rules. */
-	public void setup(IDocument doc) {
-		//		if (highlighter != null) {
-		//			highlighter.setupHighlighting(getSourceViewer(), doc);
-		//		} else {
-		getSourceViewer().setDocument(doc);
-		//		}
+	public void setup(IDocument doc, SyntaxHighlighter highlighter) {
+		highlighter.setup(sourceViewer, doc);
 
 		setShowWhitespace(true);
 		setTabSize(4);

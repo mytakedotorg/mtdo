@@ -124,9 +124,7 @@ public class Workbench {
 	private ControlWrapper createTab(Composite cmp, Path path) {
 		String content = Errors.rethrow().get(() -> new String(Files.readAllBytes(path), StandardCharsets.UTF_8));
 
-		TextViewCtl ctl = new TextViewCtl(cmp);
-		ctl.setup(new Document(content));
-
+		SyntaxHighlighter highlighter = SyntaxHighlighter.none();
 		String filename = path.getFileName().toString();
 		if (filename.endsWith(".json")) {
 
@@ -135,10 +133,13 @@ public class Workbench {
 		} else if (filename.endsWith(".vtt")) {
 
 		} else if (filename.endsWith(".ini")) {
-
+			highlighter = SyntaxHighlighter.ini();
 		} else {
 
 		}
+
+		TextViewCtl ctl = new TextViewCtl(cmp);
+		highlighter.setup(ctl.getSourceViewer(), new Document(content));
 		return ctl;
 	}
 }
