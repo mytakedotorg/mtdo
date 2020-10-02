@@ -37,7 +37,6 @@ import com.diffplug.common.swt.Layouts;
 import com.diffplug.common.swt.Shells;
 import com.diffplug.common.swt.SwtMisc;
 import com.diffplug.common.swt.jface.ColumnViewerFormat;
-import io.reactivex.subjects.PublishSubject;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -55,12 +54,12 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import org.mytake.factset.gui.Labels;
+import org.mytake.factset.gui.Workbench;
 import org.mytake.factset.video.TranscriptMatch;
 import org.mytake.factset.video.Word;
 
-public class VttCtl extends ControlWrapper.AroundControl<Composite> {
-	private PublishSubject<Boolean> changed;
-
+class VttCtl extends ControlWrapper.AroundControl<Composite> {
+	private final Workbench.Pane pane;
 	private final TableViewer viewer;
 
 	private static String formatTime(double time) {
@@ -82,9 +81,9 @@ public class VttCtl extends ControlWrapper.AroundControl<Composite> {
 	}
 
 	@SuppressWarnings("unchecked")
-	public VttCtl(Composite parent, YoutubeCtl youtube, PublishSubject<Boolean> changed) {
+	public VttCtl(Composite parent, YoutubeCtl youtube, Workbench.Pane pane) {
 		super(new Composite(parent, SWT.NONE));
-		this.changed = changed;
+		this.pane = pane;
 		Layouts.setGrid(wrapped).margin(0).spacing(0);
 
 		Composite tableCmp = new Composite(wrapped, SWT.BORDER);
@@ -225,20 +224,20 @@ public class VttCtl extends ControlWrapper.AroundControl<Composite> {
 	}
 
 	public void delete(List<Word.Vtt> vttWords) {
-		changed.onNext(true);
+		pane.makeDirty();
 		words.removeAll(vttWords);
 		viewer.remove(vttWords.toArray());
 	}
 
 	public void replace(Word.Vtt vttOld, Word.Vtt vttNew) {
-		changed.onNext(true);
+		pane.makeDirty();
 		int idx = words.indexOf(vttOld);
 		words.set(idx, vttNew);
 		viewer.replace(vttNew, idx);
 	}
 
 	public List<Word.Vtt> insert(int insertionPoint, List<Word.Said> said) {
-		changed.onNext(true);
+		pane.makeDirty();
 		double before = insertionPoint == 0 ? 0 : words.get(insertionPoint - 1).time();
 		double after = words.get(insertionPoint).time();
 

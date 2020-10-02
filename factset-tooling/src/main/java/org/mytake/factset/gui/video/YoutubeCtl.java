@@ -39,7 +39,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTException;
 import org.eclipse.swt.widgets.Composite;
 
-public class YoutubeCtl extends ControlWrapper.AroundControl<Composite> {
+class YoutubeCtl extends ControlWrapper.AroundControl<Composite> {
 	private final BrowserShim browser;
 
 	public YoutubeCtl(Composite parent) {

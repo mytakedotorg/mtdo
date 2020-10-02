@@ -35,6 +35,7 @@ import com.diffplug.common.collect.SetMultimap;
 import com.diffplug.common.collect.TreeMultimap;
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -55,10 +56,12 @@ import org.mytake.factset.video.VttTranscript.Mode;
  * `all_roles.ini`. Next, `name.said` is loaded, which checks that every
  * person named in the transcript is listed in the json file.
  */
-public class Ingredients {
+public class Ingredients implements Serializable {
+	private static final long serialVersionUID = -3307101650905334494L;
+
 	private final File root;
-	private final Set<String> people;
-	private final Set<String> roles;
+	private final transient Set<String> people;
+	private final transient Set<String> roles;
 
 	public Ingredients(File root) throws IOException {
 		this.root = Objects.requireNonNull(root);

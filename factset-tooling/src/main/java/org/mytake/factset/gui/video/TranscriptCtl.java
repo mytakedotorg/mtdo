@@ -33,7 +33,6 @@ import com.diffplug.common.io.Files;
 import com.diffplug.common.swt.ControlWrapper;
 import com.diffplug.common.swt.Layouts;
 import com.diffplug.common.swt.SwtMisc;
-import io.reactivex.subjects.PublishSubject;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -42,6 +41,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.widgets.Composite;
 import org.mytake.factset.gui.Labels;
+import org.mytake.factset.gui.Workbench;
 import org.mytake.factset.video.Ingredients;
 import org.mytake.factset.video.TranscriptMatch;
 
@@ -51,12 +51,16 @@ public class TranscriptCtl extends ControlWrapper.AroundControl<Composite> {
 	private final YoutubeCtl youtubeCtl;
 	private final MismatchCtl mismatchCtl;
 
-	public TranscriptCtl(Composite parent, PublishSubject<Boolean> changed, Runnable save) {
+	public static TranscriptCtl createPane(Composite parent, Workbench.Pane pane) {
+		return new TranscriptCtl(parent, pane);
+	}
+
+	TranscriptCtl(Composite parent, Workbench.Pane pane) {
 		super(new Composite(parent, SWT.NONE));
 		Layouts.setGrid(wrapped);
 		SashForm horizontalForm = new SashForm(wrapped, SWT.HORIZONTAL);
 		Layouts.setGridData(horizontalForm).grabAll();
-		saidCtl = new SaidCtl(horizontalForm, changed);
+		saidCtl = new SaidCtl(horizontalForm);
 
 		Composite rightSide = new Composite(horizontalForm, SWT.NONE);
 		Layouts.setGrid(rightSide).margin(0).spacing(0);
@@ -65,9 +69,9 @@ public class TranscriptCtl extends ControlWrapper.AroundControl<Composite> {
 		SashForm verticalForm = new SashForm(rightSide, SWT.VERTICAL);
 		Layouts.setGridData(verticalForm).grabAll();
 		youtubeCtl = new YoutubeCtl(verticalForm);
-		vttCtl = new VttCtl(verticalForm, youtubeCtl, changed);
+		vttCtl = new VttCtl(verticalForm, youtubeCtl, pane);
 
-		mismatchCtl = new MismatchCtl(wrapped, saidCtl, vttCtl, youtubeCtl, changed, save);
+		mismatchCtl = new MismatchCtl(wrapped, saidCtl, vttCtl, youtubeCtl, pane);
 		Layouts.setGridData(mismatchCtl).grabHorizontal();
 	}
 

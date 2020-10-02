@@ -31,7 +31,7 @@ package org.mytake.factset.gui.video;
 
 import com.diffplug.common.base.Unhandled;
 
-public enum SaidVtt {
+enum SaidVtt {
 	SAID, VTT;
 
 	public <T> T saidVtt(T said, T vtt) {

@@ -36,7 +36,7 @@ import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.widgets.Composite;
 
 /** Shim for the few browser APIs we need. */
-public interface BrowserShim extends ControlWrapper {
+interface BrowserShim extends ControlWrapper {
 	public static BrowserShim create(Composite parent, int style) {
 		if (OS.getNative().isWindows()) {
 			try {

@@ -35,7 +35,6 @@ import com.diffplug.common.swt.ControlWrapper;
 import com.diffplug.common.swt.Layouts;
 import com.diffplug.common.swt.SwtMisc;
 import com.diffplug.common.util.concurrent.Runnables;
-import io.reactivex.subjects.PublishSubject;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -47,10 +46,11 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.mytake.factset.gui.Labels;
+import org.mytake.factset.gui.Workbench;
 import org.mytake.factset.video.TranscriptMatch;
 import org.mytake.factset.video.Word;
 
-public class MismatchCtl extends ControlWrapper.AroundControl<Composite> {
+class MismatchCtl extends ControlWrapper.AroundControl<Composite> {
 	private final SaidCtl saidCtl;
 	private final VttCtl vttCtl;
 	private final YoutubeCtl youtubeCtl;
@@ -62,7 +62,7 @@ public class MismatchCtl extends ControlWrapper.AroundControl<Composite> {
 	private final Text saidTxt, vttTxt;
 	private final Button takeSaidBtn, takeVttBtn;
 
-	public MismatchCtl(Composite parent, SaidCtl saidCtl, VttCtl vttCtl, YoutubeCtl youtubeCtl, PublishSubject<Boolean> saveEnabled, Runnable save) {
+	public MismatchCtl(Composite parent, SaidCtl saidCtl, VttCtl vttCtl, YoutubeCtl youtubeCtl, Workbench.Pane pane) {
 		super(new Composite(parent, SWT.NONE));
 		this.saidCtl = saidCtl;
 		this.vttCtl = vttCtl;
@@ -115,13 +115,13 @@ public class MismatchCtl extends ControlWrapper.AroundControl<Composite> {
 
 		takeSaidBtn.addListener(SWT.Selection, e -> {
 			takeSaid.run();
-			save.run();
+			pane.triggerSave();
 		});
 		takeVttBtn.addListener(SWT.Selection, e -> {
 			takeVtt.run();
-			save.run();
+			pane.triggerSave();
 		});
-		Rx.subscribe(saveEnabled, enabled -> {
+		Rx.subscribe(pane.isDirty(), enabled -> {
 			takeSaidBtn.setEnabled(!enabled);
 			takeVttBtn.setEnabled(!enabled);
 		});
@@ -138,7 +138,7 @@ public class MismatchCtl extends ControlWrapper.AroundControl<Composite> {
 				}
 			}
 			delete.run();
-			save.run();
+			pane.triggerSave();
 		});
 	}
 

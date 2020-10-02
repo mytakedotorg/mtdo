@@ -31,7 +31,6 @@ package org.mytake.factset.gui.video;
 
 import com.diffplug.common.swt.ControlWrapper;
 import com.diffplug.common.swt.Layouts;
-import io.reactivex.subjects.PublishSubject;
 import java.util.List;
 import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
@@ -46,10 +45,10 @@ import org.mytake.factset.video.SaidTranscript;
 import org.mytake.factset.video.Word;
 import org.mytake.factset.video.Word.Vtt;
 
-public class SaidCtl extends ControlWrapper.AroundControl<Composite> {
+class SaidCtl extends ControlWrapper.AroundControl<Composite> {
 	private final TextViewer styled;
 
-	public SaidCtl(Composite parent, PublishSubject<Boolean> changed) {
+	public SaidCtl(Composite parent) {
 		super(new Composite(parent, SWT.NONE));
 		Layouts.setGrid(wrapped).margin(0).spacing(0);
 
