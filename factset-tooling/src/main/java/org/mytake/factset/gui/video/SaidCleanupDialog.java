@@ -38,30 +38,73 @@ import com.diffplug.common.swt.SwtExec;
 import com.diffplug.common.swt.widgets.ButtonPanel;
 import com.diffplug.common.swt.widgets.RadioGroup;
 import java.io.PrintWriter;
+import java.nio.file.Paths;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.gradle.internal.impldep.com.google.api.client.repackaged.com.google.common.base.Throwables;
 import org.mytake.factset.gui.Labels;
 import org.mytake.factset.gui.TextEditor;
 import org.mytake.factset.gui.TextViewCtl;
 import org.mytake.factset.gui.Workbench;
+import org.mytake.factset.video.SaidTranscript;
 
 public class SaidCleanupDialog {
 	public static void attemptCleanup(Workbench.Pane pane, TextViewCtl ctl, Exception e) {
 		Shells.builder(SWT.APPLICATION_MODAL | SWT.TITLE | SWT.CLOSE | SWT.RESIZE, cmp -> {
-			new CleanupCoat(cmp, pane, ctl.getSourceViewer().getDocument(), e);
+			Throwable root = Throwables.getRootCause(e);
+			if (root instanceof SaidTranscript.InvalidSpeakerException) {
+				SaidTranscript.InvalidSpeakerException invalidSpeaker = (SaidTranscript.InvalidSpeakerException) root;
+				new ChangeNameCoat(cmp, pane, ctl.getSourceViewer().getDocument(), invalidSpeaker);
+			} else {
+				new AdjustFormatCoat(cmp, pane, ctl.getSourceViewer().getDocument(), e);
+			}
 		}).setLocation(Corner.BOTTOM_RIGHT, Corner.BOTTOM_RIGHT.getPosition(ctl))
 				.openOn(ctl.getShell());
 	}
 
-	private static class CleanupCoat {
+	private static class ChangeNameCoat {
+		ChangeNameCoat(Composite cmp, Workbench.Pane pane, IDocument doc, SaidTranscript.InvalidSpeakerException exc) {
+			Layouts.setGrid(cmp);
+			Layouts.setGridData(Labels.createBold(cmp, "Replace speaker '" + exc.speaker + "'")).grabHorizontal();
+
+			for (String candidate : exc.people) {
+				Button btn = new Button(cmp, SWT.PUSH);
+				btn.setText(candidate);
+				btn.addListener(SWT.Selection, e -> {
+					cmp.getShell().dispose();
+					// fix the speaker and run again
+					Matcher matcher = Pattern.compile("^" + Pattern.quote(exc.speaker + ": "), Pattern.MULTILINE).matcher(doc.get());
+					doc.set(matcher.replaceAll(candidate + ": "));
+					pane.runButton(TextEditor.CLEANUP_SAID);
+				});
+				Layouts.setGridData(btn).grabHorizontal();
+			}
+
+			Labels.createHSep(cmp);
+
+			Button openJson = new Button(cmp, SWT.PUSH);
+			openJson.setText("Open the .json to add a speaker");
+			openJson.addListener(SWT.Selection, e -> {
+				cmp.getShell().dispose();
+				// close and open the json
+				String path = pane.input().assertPath().toString();
+				int lastDot = path.lastIndexOf('.');
+				pane.workbench().openFile(Paths.get(path.substring(0, lastDot) + ".json"));
+			});
+			Layouts.setGridData(openJson).grabHorizontal();
+		}
+	}
+
+	private static class AdjustFormatCoat {
 		private final String orig;
 		private final RadioGroup<StrBox> options;
 
-		CleanupCoat(Composite cmp, Workbench.Pane pane, IDocument doc, Exception e) {
+		AdjustFormatCoat(Composite cmp, Workbench.Pane pane, IDocument doc, Exception e) {
 			Layouts.setGrid(cmp);
 			Layouts.setGridData(Labels.createBold(cmp, e.getMessage())).grabHorizontal();
 

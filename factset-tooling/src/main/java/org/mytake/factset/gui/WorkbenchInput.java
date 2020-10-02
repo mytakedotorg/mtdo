@@ -117,6 +117,10 @@ public abstract class WorkbenchInput implements Serializable {
 		return new ForPath(path);
 	}
 
+	public Path assertPath() {
+		return ((ForPath) this).file.toPath();
+	}
+
 	private static class ForPath extends WorkbenchInput {
 		private final File file;
 

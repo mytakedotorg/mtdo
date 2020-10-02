@@ -249,6 +249,10 @@ public class Workbench {
 			}
 		}
 
+		public WorkbenchInput input() {
+			return input;
+		}
+
 		public Workbench workbench() {
 			return Workbench.this;
 		}

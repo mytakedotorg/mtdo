@@ -126,7 +126,9 @@ public abstract class SaidTranscript {
 				}
 				int firstColon = line.indexOf(':');
 				String speaker = line.substring(0, firstColon);
-				Preconditions.checkArgument(people.contains(speaker), "0," + firstColon + ": No such person %s, available: %s", speaker, people);
+				if (!people.contains(speaker)) {
+					throw LocatedException.atLine(lineCount).colRange(0, firstColon).message(new InvalidSpeakerException(speaker, people));
+				}
 				String words = line.substring(firstColon + 1).trim();
 				turns.add(Turn.turnWords(speaker, words));
 
@@ -142,6 +144,23 @@ public abstract class SaidTranscript {
 			return create(turns);
 		} catch (Exception e) {
 			throw LocatedException.atLine(lineCount).message(e);
+		}
+	}
+
+	public static class InvalidSpeakerException extends RuntimeException {
+		private static final long serialVersionUID = -7931115870370823696L;
+
+		public final String speaker;
+		public final Set<String> people;
+
+		InvalidSpeakerException(String speaker, Set<String> people) {
+			this.speaker = speaker;
+			this.people = people;
+		}
+
+		@Override
+		public String getMessage() {
+			return "No such person '" + speaker + "', available: " + people;
 		}
 	}
 
