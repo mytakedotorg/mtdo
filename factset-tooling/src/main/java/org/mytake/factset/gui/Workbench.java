@@ -334,6 +334,7 @@ public class Workbench {
 			title = args[0];
 			path = new File("").getCanonicalFile().toPath();
 		}
+		Display.setAppName(title);
 		Image image = ImageDescriptor.createFromFile(Workbench.class, "/icon/logo_leaves_256.png").createImage();
 		Shells.builder(SWT.SHELL_TRIM, cmp -> {
 			new Workbench(cmp, path);
