@@ -72,15 +72,16 @@ public class TextEditor {
 		pane.exec.subscribe(pane.highlight, highlight -> {
 			try {
 				int lineOffset = doc.getLineOffset(highlight.line - 1);
-				int colStart, colEnd;
+				int start, end;
 				if (highlight.colStart == -1) {
-					colStart = lineOffset;
-					colEnd = doc.getLineOffset(highlight.line);
+					start = lineOffset;
+					end = doc.getLineOffset(highlight.line);
 				} else {
-					colStart = lineOffset + highlight.colStart;
-					colEnd = lineOffset + highlight.colEnd;
+					start = lineOffset + highlight.colStart;
+					end = lineOffset + highlight.colEnd;
 				}
-				ctl.getSourceViewer().setSelectedRange(colStart, colEnd - colStart);
+				ctl.getSourceViewer().revealRange(start, end - start);
+				ctl.getSourceViewer().setSelectedRange(start, end - start);
 			} catch (Exception e) {
 				Errors.dialog().accept(e);
 			}
@@ -113,7 +114,7 @@ public class TextEditor {
 						return out;
 					} catch (Exception e) {
 						SaidCleanupDialog.attemptCleanup(pane, ctl, e);
-						return in;
+						throw e;
 					}
 				});
 			});

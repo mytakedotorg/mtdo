@@ -32,11 +32,14 @@ package org.mytake.factset.gui.video;
 import com.diffplug.common.base.StringPrinter;
 import com.diffplug.common.rx.RxBox;
 import com.diffplug.common.swt.Corner;
+import com.diffplug.common.swt.Fonts;
 import com.diffplug.common.swt.Layouts;
 import com.diffplug.common.swt.Shells;
 import com.diffplug.common.swt.SwtExec;
+import com.diffplug.common.swt.SwtMisc;
 import com.diffplug.common.swt.widgets.ButtonPanel;
 import com.diffplug.common.swt.widgets.RadioGroup;
+import com.diffplug.common.tree.TreeStream;
 import java.io.PrintWriter;
 import java.nio.file.Paths;
 import java.util.function.Function;
@@ -104,17 +107,18 @@ public class SaidCleanupDialog {
 		private final String orig;
 		private final RadioGroup<StrBox> options;
 
+		private static final String ORIGINAL = "Original";
+
 		AdjustFormatCoat(Composite cmp, Workbench.Pane pane, IDocument doc, Exception e) {
 			Layouts.setGrid(cmp);
 			Layouts.setGridData(Labels.createBold(cmp, e.getMessage())).grabHorizontal();
 
+			Layouts.setGridData(Labels.create(cmp, "One of the following find-replace actions might help."));
+
 			orig = doc.get();
 			options = RadioGroup.create();
-			options.addOption(new StrBox(orig), "Original");
-			addMessage("Rev.com", in -> {
-				Matcher matcher = Pattern.compile("^(.+): \\([\\d:]+\\)\\n", Pattern.MULTILINE).matcher(in);
-				return matcher.replaceAll("$1: ");
-			});
+			options.addOption(new StrBox(orig), ORIGINAL);
+			addRegex("^(.+): \\([\\d:]+\\)\\n", "$1: ");
 
 			RxBox<StrBox> theString = options.buildOn(cmp);
 			ButtonPanel panel = ButtonPanel.builder()
@@ -129,10 +133,22 @@ public class SaidCleanupDialog {
 					.build(cmp);
 			Layouts.setGridData(panel).grabHorizontal();
 
+			TreeStream.depthFirst(SwtMisc.treeDefControl(), cmp)
+					.filter(ctl -> ctl instanceof Button && SwtMisc.flagIsSet(SWT.RADIO, ctl))
+					.map(ctl -> (Button) ctl)
+					.filter(btn -> !btn.getText().equals(ORIGINAL))
+					.forEach(btn -> btn.setFont(Fonts.systemMonospace()));
+
 			SwtExec.immediate().guardOn(cmp).subscribe(theString, strBox -> {
 				String str = strBox.content;
 				panel.getButtons().get(0).setEnabled(!str.equals(orig));
 				doc.set(str);
+			});
+		}
+
+		void addRegex(String pattern, String replacement) {
+			addMessage("s/" + pattern + "/" + replacement + "/gm", in -> {
+				return Pattern.compile(pattern, Pattern.MULTILINE).matcher(in).replaceAll(replacement);
 			});
 		}
 

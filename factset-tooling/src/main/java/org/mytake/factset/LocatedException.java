@@ -69,12 +69,12 @@ public class LocatedException extends RuntimeException {
 			return message(message, null);
 		}
 
-		public LocatedException message(String message, Throwable cause) {
-			return new LocatedException(message, cause, this);
+		public LocatedException message(Throwable cause) {
+			return message(cause.getMessage(), cause);
 		}
 
-		public LocatedException message(Throwable cause) {
-			return new LocatedException(cause.getMessage(), cause, this);
+		public LocatedException message(String message, Throwable cause) {
+			return new LocatedException(message, cause, this);
 		}
 	}
 

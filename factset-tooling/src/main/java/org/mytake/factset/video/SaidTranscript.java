@@ -29,7 +29,6 @@
 package org.mytake.factset.video;
 
 
-import com.diffplug.common.base.Preconditions;
 import com.diffplug.common.base.StringPrinter;
 import com.diffplug.common.collect.Immutables;
 import com.diffplug.common.io.CharSource;
@@ -125,6 +124,9 @@ public abstract class SaidTranscript {
 					break;
 				}
 				int firstColon = line.indexOf(':');
+				if (firstColon == -1) {
+					throw LocatedException.atLine(lineCount).message("Every paragraph should start with a speaker");
+				}
 				String speaker = line.substring(0, firstColon);
 				if (!people.contains(speaker)) {
 					throw LocatedException.atLine(lineCount).colRange(0, firstColon).message(new InvalidSpeakerException(speaker, people));
@@ -136,14 +138,12 @@ public abstract class SaidTranscript {
 				String emptyLine = reader.readLine();
 				if (emptyLine == null) {
 					break;
-				} else {
-					Preconditions.checkArgument(emptyLine.isEmpty(), "Must be a single empty line between speaker turns.");
+				} else if (!emptyLine.isEmpty()) {
+					throw LocatedException.atLine(lineCount).message("Must be a single empty line between speaker turns");
 				}
 				++lineCount;
 			}
 			return create(turns);
-		} catch (Exception e) {
-			throw LocatedException.atLine(lineCount).message(e);
 		}
 	}
 
