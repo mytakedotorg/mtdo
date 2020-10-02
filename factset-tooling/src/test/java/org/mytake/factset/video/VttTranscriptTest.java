@@ -76,7 +76,7 @@ public class VttTranscriptTest {
 
 	@Test
 	public void testSaveWithRemove() throws IOException {
-		File folder = new File("src/test/resources/org/mytake/foundation/transcript");
+		File folder = new File("src/test/resources/org/mytake/factset/video");
 		File after = new File(folder, "afterRemove.vtt");
 		File before = new File(folder, "beforeRemove.vtt");
 
