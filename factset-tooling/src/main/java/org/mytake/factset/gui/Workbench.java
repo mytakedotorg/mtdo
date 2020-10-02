@@ -69,7 +69,7 @@ public class Workbench {
 	private final Path rootFolder;
 	private final FileTreeCtl fileTree;
 	private final CTabFolder tabFolder;
-	private final Map<WorkbenchInput, Pane> pathToTab = new HashMap<>();
+	private final Map<PaneInput, Pane> pathToTab = new HashMap<>();
 	private final ToolBar toolbar;
 	private final Console console;
 
@@ -161,10 +161,10 @@ public class Workbench {
 	}
 
 	public Pane openFile(Path path) {
-		return open(WorkbenchInput.path(path));
+		return open(PaneInput.path(path));
 	}
 
-	public Pane open(WorkbenchInput input) {
+	public Pane open(PaneInput input) {
 		Pane pane = pathToTab.get(input);
 		if (pane == null) {
 			pane = new Pane(input);
@@ -181,7 +181,7 @@ public class Workbench {
 	}
 
 	public class Pane {
-		final WorkbenchInput input;
+		final PaneInput input;
 		final CTabItem tab;
 		final RxBox<Boolean> isDirty = RxBox.of(false);
 		final PublishSubject<StringPrinter> save = PublishSubject.create();
@@ -189,7 +189,7 @@ public class Workbench {
 		final SwtExec.Guarded exec;
 		final List<Btn> buttons = new ArrayList<>();
 
-		private Pane(WorkbenchInput input) {
+		private Pane(PaneInput input) {
 			this.input = input;
 			tab = new CTabItem(tabFolder, SWT.CLOSE);
 			tab.setData(this);
@@ -249,7 +249,7 @@ public class Workbench {
 			}
 		}
 
-		public WorkbenchInput input() {
+		public PaneInput input() {
 			return input;
 		}
 
@@ -298,7 +298,7 @@ public class Workbench {
 			if (e instanceof LocatedException) {
 				// makes sure that highlight always triggers on the UI thread
 				LocatedException located = (LocatedException) e;
-				if (located.file == null || WorkbenchInput.path(located.file).equals(input)) {
+				if (located.file == null || PaneInput.path(located.file).equals(input)) {
 					exec.execute(() -> highlight.onNext(located.loc));
 				} else {
 					Pane pane = openFile(located.file);

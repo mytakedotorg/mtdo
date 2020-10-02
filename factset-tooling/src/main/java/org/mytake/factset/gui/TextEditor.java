@@ -128,6 +128,6 @@ public class TextEditor {
 	private static final String SYNC = "Sync";
 
 	private static void sync(Path path, Pane pane) throws IOException {
-		pane.workbench().open(WorkbenchInput.syncVideo(pane.ingredients(), path));
+		pane.workbench().open(PaneInput.syncVideo(pane.ingredients(), path));
 	}
 }

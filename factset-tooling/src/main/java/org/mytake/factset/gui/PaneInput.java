@@ -52,7 +52,7 @@ import org.mytake.factset.video.TranscriptMatch;
 
 /** The universe of allowed workbench parts. */
 @SuppressWarnings("serial")
-public abstract class WorkbenchInput implements Serializable {
+public abstract class PaneInput implements Serializable {
 	private final transient String tabTxt;
 	private transient byte[] content;
 
@@ -78,15 +78,15 @@ public abstract class WorkbenchInput implements Serializable {
 	public boolean equals(Object obj) {
 		if (this == obj) {
 			return true;
-		} else if (obj instanceof WorkbenchInput) {
-			WorkbenchInput o = (WorkbenchInput) obj;
+		} else if (obj instanceof PaneInput) {
+			PaneInput o = (PaneInput) obj;
 			return Arrays.equals(content(), o.content());
 		} else {
 			return false;
 		}
 	}
 
-	WorkbenchInput(String tabTxt) {
+	PaneInput(String tabTxt) {
 		this.tabTxt = Objects.requireNonNull(tabTxt);
 	}
 
@@ -113,7 +113,7 @@ public abstract class WorkbenchInput implements Serializable {
 		});
 	}
 
-	public static WorkbenchInput path(Path path) {
+	public static PaneInput path(Path path) {
 		return new ForPath(path);
 	}
 
@@ -121,7 +121,7 @@ public abstract class WorkbenchInput implements Serializable {
 		return ((ForPath) this).file.toPath();
 	}
 
-	private static class ForPath extends WorkbenchInput {
+	private static class ForPath extends PaneInput {
 		private final File file;
 
 		ForPath(Path path) {
@@ -140,11 +140,11 @@ public abstract class WorkbenchInput implements Serializable {
 		}
 	}
 
-	public static WorkbenchInput syncVideo(Ingredients ingredients, Path path) {
+	public static PaneInput syncVideo(Ingredients ingredients, Path path) {
 		return new ForSyncVideo(ingredients, ingredients.name(path));
 	}
 
-	private static class ForSyncVideo extends WorkbenchInput {
+	private static class ForSyncVideo extends PaneInput {
 		private final Ingredients ingredients;
 		private final String name;
 
