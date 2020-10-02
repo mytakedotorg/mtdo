@@ -45,12 +45,14 @@ import org.eclipse.jface.text.IDocument;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.mytake.factset.gui.Labels;
+import org.mytake.factset.gui.TextEditor;
 import org.mytake.factset.gui.TextViewCtl;
+import org.mytake.factset.gui.Workbench;
 
 public class SaidCleanupDialog {
-	public static void attemptCleanup(TextViewCtl ctl, Exception e) {
+	public static void attemptCleanup(Workbench.Pane pane, TextViewCtl ctl, Exception e) {
 		Shells.builder(SWT.APPLICATION_MODAL | SWT.TITLE | SWT.CLOSE | SWT.RESIZE, cmp -> {
-			new CleanupCoat(cmp, ctl.getSourceViewer().getDocument(), e);
+			new CleanupCoat(cmp, pane, ctl.getSourceViewer().getDocument(), e);
 		}).setLocation(Corner.BOTTOM_RIGHT, Corner.BOTTOM_RIGHT.getPosition(ctl))
 				.openOn(ctl.getShell());
 	}
@@ -59,7 +61,7 @@ public class SaidCleanupDialog {
 		private final String orig;
 		private final RadioGroup<StrBox> options;
 
-		CleanupCoat(Composite cmp, IDocument doc, Exception e) {
+		CleanupCoat(Composite cmp, Workbench.Pane pane, IDocument doc, Exception e) {
 			Layouts.setGrid(cmp);
 			Layouts.setGridData(Labels.createBold(cmp, e.getMessage())).grabHorizontal();
 
@@ -75,8 +77,10 @@ public class SaidCleanupDialog {
 			ButtonPanel panel = ButtonPanel.builder()
 					.add("Take", () -> {
 						cmp.getShell().dispose();
+						pane.runButton(TextEditor.CLEANUP_SAID);
 					})
 					.add("Cancel", () -> {
+						doc.set(orig);
 						cmp.getShell().dispose();
 					})
 					.build(cmp);

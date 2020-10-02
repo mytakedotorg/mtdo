@@ -260,6 +260,13 @@ public class Workbench {
 			buttons.add(btn);
 		}
 
+		public void runButton(String name) {
+			Btn btn = buttons.stream()
+					.filter(b -> b.name.equals(name))
+					.findAny().get();
+			runBtn(btn);
+		}
+
 		public Observable<Loc> highlight() {
 			return highlight;
 		}

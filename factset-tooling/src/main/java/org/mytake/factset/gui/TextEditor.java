@@ -46,7 +46,7 @@ import org.mytake.factset.video.SaidCleanup;
 import org.mytake.factset.video.SetStoredAsIni;
 import org.mytake.factset.video.VttCleanup;
 
-class TextEditor {
+public class TextEditor {
 	static TextViewCtl createPane(Composite cmp, Path path, Pane pane) {
 		String content = Errors.rethrow().get(() -> new String(Files.readAllBytes(path), StandardCharsets.UTF_8));
 
@@ -105,14 +105,14 @@ class TextEditor {
 			});
 			pane.addButton(SYNC, printer -> sync(path, pane));
 		} else if (filename.endsWith(".said")) {
-			pane.addButton("Cleanup SAID", printer -> {
+			pane.addButton(CLEANUP_SAID, printer -> {
 				setDoc.accept(in -> {
 					try {
 						String out = SaidCleanup.cleanup(pane.ingredients(), path, in);
 						printer.println("Success.");
 						return out;
 					} catch (Exception e) {
-						SaidCleanupDialog.attemptCleanup(ctl, e);
+						SaidCleanupDialog.attemptCleanup(pane, ctl, e);
 						return in;
 					}
 				});
@@ -121,6 +121,8 @@ class TextEditor {
 		}
 		return ctl;
 	}
+
+	public static String CLEANUP_SAID = "Cleanup SAID";
 
 	private static final String SYNC = "Sync";
 
