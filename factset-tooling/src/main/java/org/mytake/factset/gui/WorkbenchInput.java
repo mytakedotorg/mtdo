@@ -29,43 +29,47 @@
 package org.mytake.factset.gui;
 
 
-import com.diffplug.common.base.Unhandled;
+import com.diffplug.common.base.StringPrinter;
+import com.diffplug.common.base.Throwing;
 import com.diffplug.common.swt.ControlWrapper;
+import com.diffplug.spotless.ThrowingEx;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.PrintWriter;
+import java.io.Serializable;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.Objects;
 import org.eclipse.swt.widgets.Composite;
+import org.mytake.factset.gui.video.TranscriptCtl;
+import org.mytake.factset.video.Ingredients;
 
 /** The universe of allowed workbench parts. */
-public class WorkbenchInput {
-	public static WorkbenchInput path(Path path) {
-		return new WorkbenchInput(path);
-	}
+@SuppressWarnings("serial")
+public abstract class WorkbenchInput implements Serializable {
+	private final transient String tabTxt;
+	private transient byte[] content;
 
-	private final Object target;
-
-	private WorkbenchInput(Object object) {
-		this.target = Objects.requireNonNull(object);
-	}
-
-	public String tabTxt() {
-		if (target instanceof Path) {
-			return ((Path) target).getFileName().toString();
-		} else {
-			throw Unhandled.classException(target);
+	private byte[] content() {
+		if (content == null) {
+			ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+			try (ObjectOutputStream objectOutput = new ObjectOutputStream(byteStream)) {
+				objectOutput.writeObject(this);
+			} catch (IOException e) {
+				throw ThrowingEx.asRuntime(e);
+			}
+			content = byteStream.toByteArray();
 		}
-	}
-
-	public ControlWrapper createPane(Composite parent, Workbench.Pane pane) {
-		if (target instanceof Path) {
-			return ContentTypes.createPane(parent, (Path) target, pane);
-		} else {
-			throw Unhandled.classException(target);
-		}
+		return content;
 	}
 
 	@Override
 	public int hashCode() {
-		return target.hashCode();
+		return Arrays.hashCode(content());
 	}
 
 	@Override
@@ -73,9 +77,85 @@ public class WorkbenchInput {
 		if (this == obj) {
 			return true;
 		} else if (obj instanceof WorkbenchInput) {
-			return ((WorkbenchInput) obj).equals(target);
+			WorkbenchInput o = (WorkbenchInput) obj;
+			return Arrays.equals(content(), o.content());
 		} else {
 			return false;
+		}
+	}
+
+	WorkbenchInput(String tabTxt) {
+		this.tabTxt = Objects.requireNonNull(tabTxt);
+	}
+
+	/** The name of the tab. */
+	public final String tabTxt() {
+		return tabTxt;
+	}
+
+	/** Creates the control on the save. */
+	public abstract ControlWrapper createPane(Composite parent, Workbench.Pane pane) throws IOException;
+
+	/** Helper function for saving the the content that they opened. */
+	protected void hookSave(Workbench.Pane pane, Throwing.Consumer<StringPrinter> saveAction) {
+		pane.exec.subscribe(pane.save, printer -> {
+			try {
+				printer.println("Saving " + tabTxt());
+				saveAction.accept(printer);
+				printer.println("\rSaved " + tabTxt());
+			} catch (Throwable e) {
+				try (PrintWriter writer = printer.toPrintWriter()) {
+					e.printStackTrace(writer);
+				}
+			}
+		});
+	}
+
+	public static WorkbenchInput path(Path path) {
+		return new ForPath(path);
+	}
+
+	private static class ForPath extends WorkbenchInput {
+		private final File file;
+
+		ForPath(Path path) {
+			super(path.toFile().getName());
+			this.file = path.toFile();
+		}
+
+		@Override
+		public ControlWrapper createPane(Composite parent, Workbench.Pane pane) throws IOException {
+			TextViewCtl ctl = ContentTypes.createPane(parent, file.toPath(), pane);
+			hookSave(pane, printer -> {
+				String content = ctl.getSourceViewer().getDocument().get().replace("\r", "");
+				Files.write(file.toPath(), content.getBytes(StandardCharsets.UTF_8));
+			});
+			return ctl;
+		}
+	}
+
+	public static WorkbenchInput syncVideo(Ingredients ingredients, Path path) {
+		return new ForSyncVideo(ingredients, ingredients.name(path));
+	}
+
+	private static class ForSyncVideo extends WorkbenchInput {
+		private final Ingredients ingredients;
+		private final String name;
+
+		ForSyncVideo(Ingredients ingredients, String name) {
+			super(name);
+			this.ingredients = ingredients;
+			this.name = name;
+		}
+
+		@Override
+		public ControlWrapper createPane(Composite parent, Workbench.Pane pane) throws IOException {
+			TranscriptCtl ctl = TranscriptCtl.createPane(parent, pane);
+			ctl.setTo(ingredients.loadTranscript(name));
+			hookSave(pane, printer -> {
+				ctl.save(ingredients, name);
+			});
+			return ctl;
 		}
 	}
 }

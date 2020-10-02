@@ -31,7 +31,6 @@ package org.mytake.factset.gui;
 
 import com.diffplug.common.base.Errors;
 import com.diffplug.common.base.Throwing;
-import com.diffplug.common.swt.ControlWrapper;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -47,7 +46,7 @@ import org.mytake.factset.video.SetStoredAsIni;
 import org.mytake.factset.video.VttCleanup;
 
 class ContentTypes {
-	static ControlWrapper createPane(Composite cmp, Path path, Pane pane) {
+	static TextViewCtl createPane(Composite cmp, Path path, Pane pane) {
 		String content = Errors.rethrow().get(() -> new String(Files.readAllBytes(path), StandardCharsets.UTF_8));
 
 		SyntaxHighlighter highlighter = SyntaxHighlighter.none();
@@ -67,18 +66,6 @@ class ContentTypes {
 			@Override public void textChanged(TextChangedEvent e) {		pane.makeDirty();	}
 			@Override public void textSet(TextChangedEvent e) {			pane.makeDirty();	}
 			// spotless:on
-		});
-
-		// save
-		pane.exec.subscribe(pane.save, printer -> {
-			try {
-				printer.println("Saving " + path);
-				Files.write(path, doc.get().replace("\r", "").getBytes(StandardCharsets.UTF_8));
-				printer.println("\rSaved " + path);
-			} catch (IOException e) {
-				e.printStackTrace(printer.toPrintWriter());
-				printer.println("");
-			}
 		});
 		// highlight errors
 		pane.exec.subscribe(pane.highlight, highlight -> {
@@ -126,7 +113,7 @@ class ContentTypes {
 
 	private static final String SYNC = "Sync";
 
-	private static void sync(Path path, Pane pane) {
-		// TODO
+	private static void sync(Path path, Pane pane) throws IOException {
+		pane.workbench().open(WorkbenchInput.syncVideo(pane.factsetFolder(), path));
 	}
 }

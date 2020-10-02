@@ -29,10 +29,12 @@
 package org.mytake.factset.gui;
 
 
+import com.diffplug.common.base.Preconditions;
 import com.diffplug.common.base.StringPrinter;
 import com.diffplug.common.base.Throwing;
 import com.diffplug.common.rx.Rx;
 import com.diffplug.common.rx.RxBox;
+import com.diffplug.common.rx.RxGetter;
 import com.diffplug.common.swt.ControlWrapper;
 import com.diffplug.common.swt.Layouts;
 import com.diffplug.common.swt.SwtExec;
@@ -144,7 +146,7 @@ public class Workbench {
 					return;
 				}
 				Pane pane = (Pane) item.getData();
-				pane.save(console.wipeAndCreateNewStream());
+				pane.triggerSave();
 			}
 		});
 	}
@@ -204,12 +206,26 @@ public class Workbench {
 			});
 
 			addButton("Save " + Accelerators.uiStringFor(Accelerators.SAVE), printer -> {
-				save(printer);
+				save.onNext(printer);
+				isDirty.set(false);
 			});
 
-			ControlWrapper control = input.createPane(tabFolder, this);
-			tab.setControl(control.getRootControl());
-			takeoverToolbar();
+			try {
+				ControlWrapper control = input.createPane(tabFolder, this);
+				tab.setControl(control.getRootControl());
+				takeoverToolbar();
+			} catch (Exception e) {
+				try (PrintWriter writer = console.wipeAndCreateNewStream().toPrintWriter()) {
+					e.printStackTrace(writer);
+				}
+				tab.dispose();
+			}
+		}
+
+		public void triggerSave() {
+			Btn saveBtn = buttons.get(0);
+			Preconditions.checkArgument(saveBtn.name.contains("Save"));
+			runBtn(saveBtn);
 		}
 
 		private void takeoverToolbar() {
@@ -219,15 +235,17 @@ public class Workbench {
 			for (Btn btn : buttons) {
 				ToolItem item = new ToolItem(toolbar, SWT.PUSH);
 				item.setText(btn.name);
-				item.addListener(SWT.Selection, event -> {
-					StringPrinter printer = console.wipeAndCreateNewStream();
-					try {
-						printer.println(btn.name + " " + input.tabTxt());
-						btn.log.accept(printer);
-					} catch (Throwable e) {
-						handleException(e, printer);
-					}
-				});
+				item.addListener(SWT.Selection, event -> runBtn(btn));
+			}
+		}
+
+		private void runBtn(Btn btn) {
+			StringPrinter printer = console.wipeAndCreateNewStream();
+			try {
+				printer.println(btn.name + " " + input.tabTxt());
+				btn.log.accept(printer);
+			} catch (Throwable e) {
+				handleException(e, printer);
 			}
 		}
 
@@ -250,9 +268,8 @@ public class Workbench {
 			isDirty.set(true);
 		}
 
-		private void save(StringPrinter printer) {
-			save.onNext(printer);
-			isDirty.set(false);
+		public RxGetter<Boolean> isDirty() {
+			return isDirty.readOnly();
 		}
 
 		public void logOpDontBlock(Throwing.Consumer<StringPrinter> op) {
