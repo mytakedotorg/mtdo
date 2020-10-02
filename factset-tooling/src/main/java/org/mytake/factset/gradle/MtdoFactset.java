@@ -121,10 +121,11 @@ public class MtdoFactset {
 			task.setGroup("GUI");
 			task.setDescription("Launches a gui for the factset");
 
-			task.setMain("org.mytake.factset.video.gui.TranscriptFolderDialog");
+			task.setMain("org.mytake.factset.gui.Workbench");
 			if (OS.getNative().isMac()) {
 				task.jvmArgs("-XstartOnFirstThread");
 			}
+			task.args(title);
 			FileCollection buildscript = p.getBuildscript().getConfigurations().getByName("classpath");
 			task.setClasspath(buildscript.plus(guiConfig));
 		});

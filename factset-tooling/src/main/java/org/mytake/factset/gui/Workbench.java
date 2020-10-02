@@ -37,26 +37,32 @@ import com.diffplug.common.rx.RxBox;
 import com.diffplug.common.rx.RxGetter;
 import com.diffplug.common.swt.ControlWrapper;
 import com.diffplug.common.swt.Layouts;
+import com.diffplug.common.swt.Shells;
 import com.diffplug.common.swt.SwtExec;
 import com.diffplug.common.swt.SwtMisc;
+import com.diffplug.common.swt.os.OS;
 import io.reactivex.Observable;
 import io.reactivex.subjects.PublishSubject;
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabFolder2Adapter;
 import org.eclipse.swt.custom.CTabFolderEvent;
 import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.custom.SashForm;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.ToolBar;
@@ -86,7 +92,7 @@ public class Workbench {
 		form.addListener(SWT.Dispose, e -> executor.shutdown());
 
 		Composite fileTreeCmp = new Composite(form, SWT.NONE);
-		Layouts.setGrid(fileTreeCmp).margin(0).spacing(3);
+		Layouts.setGrid(fileTreeCmp).margin(0).spacing(OS.getNative().winMacLinux(4, 3, 3));
 		Labels.createBold(fileTreeCmp, "Ingredients");
 		fileTree = new FileTreeCtl(fileTreeCmp, folder.resolve("ingredients"));
 		Layouts.setGridData(fileTree).grabAll();
@@ -316,5 +322,24 @@ public class Workbench {
 		public Ingredients ingredients() throws IOException {
 			return new Ingredients(rootFolder.resolve("ingredients").toFile());
 		}
+	}
+
+	public static void main(String[] args) throws IOException {
+		String title;
+		Path path;
+		if (args.length == 0) {
+			title = "U.S. Presidential Debates";
+			path = Paths.get("../../mtdo-us-presidential-debates");
+		} else {
+			title = args[0];
+			path = new File("").getCanonicalFile().toPath();
+		}
+		Image image = ImageDescriptor.createFromFile(Workbench.class, "/icon/logo_leaves_256.png").createImage();
+		Shells.builder(SWT.SHELL_TRIM, cmp -> {
+			new Workbench(cmp, path);
+		}).setTitle(title)
+				.setImage(image)
+				.setSize(SwtMisc.scaleByFontHeight(80, 60))
+				.openOnDisplayBlocking();
 	}
 }
