@@ -32,6 +32,7 @@ package org.mytake.factset.gui;
 import com.diffplug.common.base.StringPrinter;
 import com.diffplug.common.base.Throwing;
 import com.diffplug.common.swt.ControlWrapper;
+import com.diffplug.common.swt.SwtExec;
 import com.diffplug.spotless.ThrowingEx;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -47,6 +48,7 @@ import java.util.Objects;
 import org.eclipse.swt.widgets.Composite;
 import org.mytake.factset.gui.video.TranscriptCtl;
 import org.mytake.factset.video.Ingredients;
+import org.mytake.factset.video.TranscriptMatch;
 
 /** The universe of allowed workbench parts. */
 @SuppressWarnings("serial")
@@ -151,7 +153,10 @@ public abstract class WorkbenchInput implements Serializable {
 		@Override
 		public ControlWrapper createPane(Composite parent, Workbench.Pane pane) throws IOException {
 			TranscriptCtl ctl = TranscriptCtl.createPane(parent, pane);
-			ctl.setTo(ingredients.loadTranscript(name));
+			pane.logOpDontBlock(printer -> {
+				TranscriptMatch match = ingredients.loadTranscript(name, printer);
+				SwtExec.async().guardOn(ctl).execute(() -> ctl.setTo(match));
+			});
 			hookSave(pane, printer -> {
 				ctl.save(ingredients, name);
 			});

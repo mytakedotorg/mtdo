@@ -29,7 +29,7 @@
 package org.mytake.factset.video;
 
 
-import com.diffplug.common.base.Preconditions;
+import com.diffplug.common.base.StringPrinter;
 import com.diffplug.common.collect.ImmutableSet;
 import com.diffplug.common.collect.SetMultimap;
 import com.diffplug.common.collect.TreeMultimap;
@@ -67,6 +67,8 @@ public class Ingredients implements Serializable {
 		this.root = Objects.requireNonNull(root);
 		this.people = SetStoredAsIni.parse(new File(root, "all_people.ini"));
 		this.roles = SetStoredAsIni.parse(new File(root, "all_roles.ini"));
+		System.out.println("people=" + people);
+		System.out.println("roles=" + roles);
 	}
 
 	public static final ImmutableSet<String> VIDEO_EXTENSIONS = ImmutableSet.of("json", "said", "vtt");
@@ -125,16 +127,44 @@ public class Ingredients implements Serializable {
 
 	/** Loads the given transcript. */
 	public TranscriptMatch loadTranscript(String name) throws IOException {
+		return loadTranscript(name, new StringPrinter(line -> {}));
+	}
+
+	public TranscriptMatch loadTranscript(String name, StringPrinter printer) throws IOException {
 		// load and validate the json speakers
+		printer.print("Loading " + name + ".json  ...  ");
 		FT.VideoFactMeta meta = loadMetaNoValidation(name);
-		for (FT.Speaker speaker : meta.speakers) {
-			Preconditions.checkArgument(people.contains(speaker.fullName), "Unknown person: %s", speaker.fullName);
-			Preconditions.checkArgument(roles.contains(speaker.role), "Unknown role: %s", speaker.role);
+		printer.println("Success.");
+		printer.print("Validating speakers  ...  ");
+		String errorMessage = StringPrinter.buildString(e -> {
+			for (FT.Speaker speaker : meta.speakers) {
+				if (!people.contains(speaker.fullName)) {
+					e.println("Unknown person '" + speaker.fullName + "'");
+				}
+				if (!roles.contains(speaker.role)) {
+					e.println("Unknown role '" + speaker.role + "' for person '" + speaker.fullName + "'");
+				}
+			}
+		});
+		if (!errorMessage.isEmpty()) {
+			printer.println(errorMessage);
+			throw new IllegalArgumentException(errorMessage);
 		}
-		// load the transcripts
+		printer.println("Success.");
+
+		// load the said
+		printer.print("Loading " + name + ".said  ...  ");
 		SaidTranscript said = SaidTranscript.parse(meta, fileSaid(name));
+		printer.println("Success.");
+
+		printer.print("Loading " + name + ".vtt  ...  ");
 		VttTranscript vtt = VttTranscript.parse(fileVtt(name), Mode.STRICT);
-		return new TranscriptMatch(meta, said, vtt);
+		printer.println("Success.");
+
+		printer.print("Syncing  ...  ");
+		TranscriptMatch match = new TranscriptMatch(meta, said, vtt);
+		printer.println("Success.");
+		return match;
 	}
 
 	/** Loads transcript metadata without any validation. */

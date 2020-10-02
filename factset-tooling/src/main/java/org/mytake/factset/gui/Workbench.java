@@ -302,7 +302,7 @@ public class Workbench {
 			}
 		}
 
-		public Ingredients factsetFolder() throws IOException {
+		public Ingredients ingredients() throws IOException {
 			return new Ingredients(rootFolder.resolve("ingredients").toFile());
 		}
 	}

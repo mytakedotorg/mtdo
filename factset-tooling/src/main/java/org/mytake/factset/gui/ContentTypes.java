@@ -104,7 +104,7 @@ class ContentTypes {
 			pane.addButton(SYNC, printer -> sync(path, pane));
 		} else if (filename.endsWith(".said")) {
 			pane.addButton("Cleanup SAID", printer -> {
-				setDoc.accept(in -> SaidCleanup.cleanup(pane.factsetFolder(), path, in));
+				setDoc.accept(in -> SaidCleanup.cleanup(pane.ingredients(), path, in));
 			});
 			pane.addButton(SYNC, printer -> sync(path, pane));
 		}
@@ -114,6 +114,6 @@ class ContentTypes {
 	private static final String SYNC = "Sync";
 
 	private static void sync(Path path, Pane pane) throws IOException {
-		pane.workbench().open(WorkbenchInput.syncVideo(pane.factsetFolder(), path));
+		pane.workbench().open(WorkbenchInput.syncVideo(pane.ingredients(), path));
 	}
 }
