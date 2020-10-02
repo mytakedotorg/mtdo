@@ -78,6 +78,8 @@ class TemplatePlugin {
 				"#!/bin/bash",
 				"cd `dirname $0`",
 				"./gradlew gui");
+		template.mustBeExactly("GUI_windows.bat",
+				"gradlew gui");
 		return template;
 	}
 
