@@ -53,7 +53,7 @@ class YoutubeCtl extends ControlWrapper.AroundControl<Composite> {
 	public void setToYoutubeId(String youtubeId) {
 		loadBeganAt = System.currentTimeMillis();
 		try {
-			URL url = YoutubeCtl.class.getResource("/org/mytake/foundation/transcript/youtubectl.html");
+			URL url = YoutubeCtl.class.getResource("/org/mytake/factset/gui/video/youtubectl.html");
 			String tempate = Resources.toString(url, StandardCharsets.UTF_8);
 			String content = tempate.replace("HZ_r26R-cUo", youtubeId);
 			browser.setText(content);
