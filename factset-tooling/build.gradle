@@ -80,6 +80,7 @@ dependencies {
 
 	compileOnly 'io.reactivex.rxjava2:rxjava:2.2.19'
 	compileOnly 'com.diffplug.durian:durian-swt:3.3.1'
+	testImplementation 'com.diffplug.durian:durian-swt:3.3.1'
 
 	testImplementation "junit:junit:$VER_JUNIT"
 	testImplementation "org.assertj:assertj-core:$VER_ASSERTJ"
@@ -91,11 +92,21 @@ apply plugin: 'com.diffplug.eclipse.mavencentral'
 eclipseMavenCentral {
 	release '4.17.0', {
 		compileOnly 'org.eclipse.swt'
+		testImplementation 'org.eclipse.swt'
 		compileOnly 'org.eclipse.jface'
+		testImplementation 'org.eclipse.jface'
 		compileOnly 'org.eclipse.jface.text'
+		testImplementation 'org.eclipse.jface.text'
 		if (OS.getNative().isWindows()) {
 			compileOnly 'org.eclipse.swt.browser.chromium.win32.win32.x86_64'
+			testImplementation 'org.eclipse.swt.browser.chromium.win32.win32.x86_64'
 		}
 		useNativesForRunningPlatform()
+	}
+}
+
+test {
+	useJUnit {
+		excludeCategories 'com.diffplug.common.swt.InteractiveTest'
 	}
 }
