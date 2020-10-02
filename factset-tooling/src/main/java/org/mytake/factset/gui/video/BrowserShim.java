@@ -29,9 +29,9 @@
 package org.mytake.factset.gui.video;
 
 
-import com.diffplug.common.base.Errors;
 import com.diffplug.common.swt.ControlWrapper;
 import com.diffplug.common.swt.os.OS;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.widgets.Composite;
 
@@ -39,13 +39,7 @@ import org.eclipse.swt.widgets.Composite;
 interface BrowserShim extends ControlWrapper {
 	public static BrowserShim create(Composite parent, int style) {
 		if (OS.getNative().isWindows()) {
-			try {
-				@SuppressWarnings("unchecked")
-				Class<? extends BrowserShim> clazz = (Class<? extends BrowserShim>) Class.forName("org.mytake.foundation.transcript.gui.ChromiumShim");
-				return clazz.getConstructor(Composite.class, int.class).newInstance(parent, style);
-			} catch (Exception e) {
-				throw Errors.asRuntime(e);
-			}
+			return new SwtShim(parent, SWT.CHROMIUM | style);
 		} else {
 			return new SwtShim(parent, style);
 		}

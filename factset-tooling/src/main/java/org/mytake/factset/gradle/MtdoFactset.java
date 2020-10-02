@@ -110,6 +110,9 @@ public class MtdoFactset {
 			release.dep(GUI_CONFIG, "org.eclipse.swt");
 			release.dep(GUI_CONFIG, "org.eclipse.jface");
 			release.dep(GUI_CONFIG, "org.eclipse.jface.text");
+			if (OS.getNative().isWindows()) {
+				release.dep(GUI_CONFIG, "org.eclipse.swt.browser.chromium.win32.win32.x86_64");
+			}
 			release.useNativesForRunningPlatform();
 		});
 		p.getDependencies().add(GUI_CONFIG, "com.diffplug.durian:durian-swt:3.3.1");

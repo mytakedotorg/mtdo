@@ -23,13 +23,6 @@ spotless {
 // used only for src/main/resources
 apply plugin: 'java-library'
 
-// don't setup any of the node stuff if we're just doing the transcriptGui
-if (gradle.startParameter.taskNames == [
-	'transcriptGui'
-]) {
-	return
-}
-
 ///////////////////////////////////////////////////////////////////////
 // node stuff - compiles sass and typescript into src/main/resources //
 ///////////////////////////////////////////////////////////////////////
