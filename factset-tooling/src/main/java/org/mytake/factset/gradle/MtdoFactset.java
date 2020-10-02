@@ -29,17 +29,21 @@
 package org.mytake.factset.gradle;
 
 
+import com.diffplug.common.base.Errors;
 import com.diffplug.common.base.Unhandled;
 import com.diffplug.common.collect.Iterables;
+import com.diffplug.common.io.Resources;
 import com.diffplug.common.swt.os.OS;
 import com.diffplug.gradle.eclipse.MavenCentralExtension;
 import com.diffplug.gradle.eclipse.MavenCentralPlugin;
 import com.google.gson.reflect.TypeToken;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.Comparator;
@@ -123,7 +127,14 @@ public class MtdoFactset {
 
 			task.setMain("org.mytake.factset.gui.Workbench");
 			if (OS.getNative().isMac()) {
-				task.jvmArgs("-XstartOnFirstThread");
+				File icon;
+				try (InputStream input = Resources.asByteSource(MtdoFactset.class.getResource("/icon/logo_leaves_256.png")).openBufferedStream()) {
+					icon = new File(".gradle/icon.png").getCanonicalFile();
+					Files.copy(input, icon.toPath(), StandardCopyOption.REPLACE_EXISTING);
+				} catch (IOException e) {
+					throw Errors.asRuntime(e);
+				}
+				task.jvmArgs("-XstartOnFirstThread", "-Xdock:icon=" + icon.getAbsolutePath());
 			}
 			task.args(title);
 			FileCollection buildscript = p.getBuildscript().getConfigurations().getByName("classpath");
