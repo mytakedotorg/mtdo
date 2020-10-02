@@ -41,6 +41,7 @@ import org.eclipse.swt.custom.TextChangedEvent;
 import org.eclipse.swt.custom.TextChangingEvent;
 import org.eclipse.swt.widgets.Composite;
 import org.mytake.factset.gui.Workbench.Pane;
+import org.mytake.factset.gui.video.SaidCleanupDialog;
 import org.mytake.factset.video.SaidCleanup;
 import org.mytake.factset.video.SetStoredAsIni;
 import org.mytake.factset.video.VttCleanup;
@@ -100,11 +101,21 @@ class TextEditor {
 		} else if (filename.endsWith(".vtt")) {
 			pane.addButton("Cleanup VTT", printer -> {
 				setDoc.accept(VttCleanup::apply);
+				printer.println("Success.");
 			});
 			pane.addButton(SYNC, printer -> sync(path, pane));
 		} else if (filename.endsWith(".said")) {
 			pane.addButton("Cleanup SAID", printer -> {
-				setDoc.accept(in -> SaidCleanup.cleanup(pane.ingredients(), path, in));
+				setDoc.accept(in -> {
+					try {
+						String out = SaidCleanup.cleanup(pane.ingredients(), path, in);
+						printer.println("Success.");
+						return out;
+					} catch (Exception e) {
+						SaidCleanupDialog.attemptCleanup(ctl, e);
+						return in;
+					}
+				});
 			});
 			pane.addButton(SYNC, printer -> sync(path, pane));
 		}

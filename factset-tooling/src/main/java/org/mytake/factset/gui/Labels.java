@@ -53,8 +53,9 @@ public class Labels {
 	}
 
 	/** Creates a bold label with the given text. */
-	public static void createBold(Composite parent, String text) {
+	public static Label createBold(Composite parent, String text) {
 		Label lbl = create(parent, text);
 		lbl.setFont(Fonts.systemBold());
+		return lbl;
 	}
 }

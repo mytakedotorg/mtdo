@@ -67,8 +67,6 @@ public class Ingredients implements Serializable {
 		this.root = Objects.requireNonNull(root);
 		this.people = SetStoredAsIni.parse(new File(root, "all_people.ini"));
 		this.roles = SetStoredAsIni.parse(new File(root, "all_roles.ini"));
-		System.out.println("people=" + people);
-		System.out.println("roles=" + roles);
 	}
 
 	public static final ImmutableSet<String> VIDEO_EXTENSIONS = ImmutableSet.of("json", "said", "vtt");

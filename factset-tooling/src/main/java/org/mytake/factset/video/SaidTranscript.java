@@ -135,7 +135,7 @@ public abstract class SaidTranscript {
 				if (emptyLine == null) {
 					break;
 				} else {
-					Preconditions.checkArgument(emptyLine.isEmpty(), "Must be empty, but was %s", emptyLine);
+					Preconditions.checkArgument(emptyLine.isEmpty(), "Must be a single empty line between speaker turns.");
 				}
 				++lineCount;
 			}
