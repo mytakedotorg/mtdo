@@ -38,13 +38,13 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 import org.mytake.factset.gui.Labels;
 
-/** Tool to play back videos with an offset. */
-public class MultiVideoSync {
+/** One-off tool to play back videos with an offset. */
+public class _MiscMultiVideoSync {
 	final YoutubeCtl before, after;
 	final Text beforeTxt, afterTxt;
 	final Text offsetTxt, playAtTxt, playDurTxt;
 
-	private MultiVideoSync(Composite parent) {
+	private _MiscMultiVideoSync(Composite parent) {
 		Layouts.setGrid(parent).numColumns(2);
 		before = new YoutubeCtl(parent);
 		after = new YoutubeCtl(parent);
@@ -102,7 +102,7 @@ public class MultiVideoSync {
 
 	public static void main(String[] args) {
 		Shells.builder(SWT.SHELL_TRIM, cmp -> {
-			MultiVideoSync sync = new MultiVideoSync(cmp);
+			_MiscMultiVideoSync sync = new _MiscMultiVideoSync(cmp);
 			sync.setYoutubeIds("hb1AvG18H30", "CsurHThBBkk");
 		}).setTitle("Sync videos")
 				.setSize(SwtMisc.scaleByFontHeight(70, 25))

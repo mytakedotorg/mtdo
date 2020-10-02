@@ -39,7 +39,8 @@ import org.mytake.factset.video.VttTranscript;
 import org.mytake.factset.video.VttTranscript.Mode;
 import org.mytake.factset.video.Word;
 
-public class VttEdit {
+/** One-off tool to edit the timestamps of a video because of tape glitch. */
+public class _MiscVttEdit {
 	public static void main(String[] args) throws IOException {
 		VttTranscript transcript = VttTranscript.parse(new File("../presidential-debates/2000-10-17.backup"), Mode.STRICT);
 		List<Word.Vtt> newWords = transcript.words().stream()
