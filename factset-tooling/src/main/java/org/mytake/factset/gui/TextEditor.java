@@ -69,23 +69,19 @@ public class TextEditor {
 			// spotless:on
 		});
 		// highlight errors
-		pane.exec.subscribe(pane.highlight, highlight -> {
-			try {
-				int lineOffset = doc.getLineOffset(highlight.line - 1);
-				int start, end;
-				if (highlight.colStart == -1) {
-					start = lineOffset;
-					end = doc.getLineOffset(highlight.line);
-				} else {
-					start = lineOffset + highlight.colStart;
-					end = lineOffset + highlight.colEnd;
-				}
-				ctl.getSourceViewer().revealRange(start, end - start);
-				ctl.getSourceViewer().setSelectedRange(start, end - start);
-			} catch (Exception e) {
-				Errors.dialog().accept(e);
+		pane.exec.subscribe(pane.highlight, Errors.dialog().wrap(highlight -> {
+			int lineOffset = doc.getLineOffset(highlight.line - 1);
+			int start, end;
+			if (highlight.colStart == -1) {
+				start = lineOffset;
+				end = doc.getLineOffset(highlight.line);
+			} else {
+				start = lineOffset + highlight.colStart;
+				end = lineOffset + highlight.colEnd;
 			}
-		});
+			ctl.getSourceViewer().revealRange(start, end - start);
+			ctl.getSourceViewer().setSelectedRange(start, end - start);
+		}));
 
 		Throwing.Consumer<Throwing.Function<String, String>> setDoc = operator -> {
 			String before = doc.get();
