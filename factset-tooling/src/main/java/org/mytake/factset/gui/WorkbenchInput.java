@@ -127,7 +127,7 @@ public abstract class WorkbenchInput implements Serializable {
 
 		@Override
 		public ControlWrapper createPane(Composite parent, Workbench.Pane pane) throws IOException {
-			TextViewCtl ctl = ContentTypes.createPane(parent, file.toPath(), pane);
+			TextViewCtl ctl = TextEditor.createPane(parent, file.toPath(), pane);
 			hookSave(pane, printer -> {
 				String content = ctl.getSourceViewer().getDocument().get().replace("\r", "");
 				Files.write(file.toPath(), content.getBytes(StandardCharsets.UTF_8));

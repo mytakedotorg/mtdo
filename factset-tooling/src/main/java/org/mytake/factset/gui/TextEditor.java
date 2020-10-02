@@ -45,7 +45,7 @@ import org.mytake.factset.video.SaidCleanup;
 import org.mytake.factset.video.SetStoredAsIni;
 import org.mytake.factset.video.VttCleanup;
 
-class ContentTypes {
+class TextEditor {
 	static TextViewCtl createPane(Composite cmp, Path path, Pane pane) {
 		String content = Errors.rethrow().get(() -> new String(Files.readAllBytes(path), StandardCharsets.UTF_8));
 
