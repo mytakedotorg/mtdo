@@ -29,6 +29,7 @@
 package org.mytake.factset;
 
 
+import com.diffplug.common.base.Box;
 import com.diffplug.common.base.Preconditions;
 import com.diffplug.common.base.StringPrinter;
 import info.debatty.java.stringsimilarity.Levenshtein;
@@ -36,9 +37,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Set;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import org.eclipse.jface.text.IDocument;
 
 @SuppressWarnings("serial")
 public abstract class DisallowedValueException extends RuntimeException {
@@ -69,7 +68,7 @@ public abstract class DisallowedValueException extends RuntimeException {
 
 	public abstract String kind();
 
-	public abstract void replaceValueWithAllowed(String newValue, IDocument doc);
+	public abstract void replaceValueWithAllowed(String newValue, Box<String> doc);
 
 	public static DisallowedValueException peopleInSaid(String speaker, Set<String> allowed, File fileWhichSpecifies) {
 		return new DisallowedValueException(speaker, allowed, fileWhichSpecifies) {
@@ -79,10 +78,12 @@ public abstract class DisallowedValueException extends RuntimeException {
 			}
 
 			@Override
-			public void replaceValueWithAllowed(String newValue, IDocument doc) {
+			public void replaceValueWithAllowed(String newValue, Box<String> doc) {
 				Preconditions.checkArgument(allowed.contains(newValue));
-				Matcher matcher = Pattern.compile("^" + Pattern.quote(value + ": "), Pattern.MULTILINE).matcher(doc.get());
-				doc.set(matcher.replaceAll(newValue + ": "));
+				doc.modify(in -> {
+					return Pattern.compile("^" + Pattern.quote(value + ": "), Pattern.MULTILINE)
+							.matcher(in).replaceAll(newValue + ": ");
+				});
 			}
 		};
 	}
@@ -103,9 +104,9 @@ public abstract class DisallowedValueException extends RuntimeException {
 			}
 
 			@Override
-			public void replaceValueWithAllowed(String newValue, IDocument doc) {
+			public void replaceValueWithAllowed(String newValue, Box<String> doc) {
 				Preconditions.checkArgument(allowed.contains(newValue));
-				doc.set(doc.get().replace("\"" + value + "\"", "\"" + newValue + "\""));
+				doc.modify(in -> in.replace("\"" + value + "\"", "\"" + newValue + "\""));
 			}
 		};
 	}

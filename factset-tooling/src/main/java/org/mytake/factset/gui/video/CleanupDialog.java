@@ -29,6 +29,7 @@
 package org.mytake.factset.gui.video;
 
 
+import com.diffplug.common.base.Box;
 import com.diffplug.common.base.StringPrinter;
 import com.diffplug.common.rx.RxBox;
 import com.diffplug.common.swt.Coat;
@@ -102,7 +103,7 @@ public class CleanupDialog {
 				btn.addListener(SWT.Selection, e -> {
 					cmp.getShell().dispose();
 					// fix the speaker and run again
-					exc.replaceValueWithAllowed(candidate, doc);
+					exc.replaceValueWithAllowed(candidate, Box.from(doc::get, doc::set));
 					pane.triggerSave();
 				});
 				Layouts.setGridData(btn).grabHorizontal();
