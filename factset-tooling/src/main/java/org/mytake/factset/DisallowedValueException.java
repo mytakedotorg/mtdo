@@ -31,7 +31,10 @@ package org.mytake.factset;
 
 import com.diffplug.common.base.Preconditions;
 import com.diffplug.common.base.StringPrinter;
+import info.debatty.java.stringsimilarity.Levenshtein;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -40,12 +43,16 @@ import org.eclipse.jface.text.IDocument;
 @SuppressWarnings("serial")
 public abstract class DisallowedValueException extends RuntimeException {
 	public final String value;
-	public final Set<String> allowed;
+	public final ArrayList<String> allowed;
 	public final File fileWhichSpecifies;
 
 	protected DisallowedValueException(String value, Set<String> allowed, File fileWhichSpecifies) {
 		this.value = value;
-		this.allowed = allowed;
+		this.allowed = new ArrayList<>(allowed);
+		Levenshtein l = new Levenshtein();
+		this.allowed.sort(Comparator.comparingDouble(str -> {
+			return l.distance(value, str);
+		}));
 		this.fileWhichSpecifies = fileWhichSpecifies;
 	}
 
