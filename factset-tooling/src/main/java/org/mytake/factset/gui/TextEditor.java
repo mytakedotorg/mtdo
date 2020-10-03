@@ -84,23 +84,25 @@ public class TextEditor {
 		}));
 
 		Throwing.Consumer<Throwing.Function<String, String>> setDoc = operator -> {
-			String before = doc.get();
-			String after = operator.apply(before);
+			String before = doc.get().replace("\r", "");
+			String after = operator.apply(before).replace("\r", "");
 			if (!before.equals(after)) {
 				doc.set(after);
 			}
 		};
 
 		if (filename.endsWith(".ini")) {
-			pane.hackPathCleanup = (log, content) -> {
+			pane.hackPathCleanup = log -> {
 				log.println("Trim unnecessary whitespace.");
-				String trimmed = Arrays.stream(content.split("\n"))
+				setDoc.accept(in -> Arrays.stream(in.split("\n"))
 						.map(str -> str.trim())
 						.filter(str -> !str.isEmpty())
-						.collect(Collectors.joining("\n"));
+						.collect(Collectors.joining("\n")));
 				log.println("Parse ini and confirm no duplicates.");
-				IniAsSet.parse(path, trimmed);
-				return trimmed;
+				setDoc.accept(in -> {
+					IniAsSet.parse(path, in);
+					return in;
+				});
 			};
 		} else if (filename.endsWith(".json")) {
 

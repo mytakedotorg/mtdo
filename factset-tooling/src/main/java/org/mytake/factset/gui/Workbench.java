@@ -195,7 +195,7 @@ public class Workbench {
 		final SwtExec.Guarded exec;
 		final List<Btn> buttons = new ArrayList<>();
 
-		Throwing.BiFunction<StringPrinter, String, String> hackPathCleanup;
+		Throwing.Consumer<StringPrinter> hackPathCleanup;
 
 		private Pane(PaneInput input) {
 			this.input = input;
@@ -302,7 +302,7 @@ public class Workbench {
 			});
 		}
 
-		private void handleException(Throwable e, StringPrinter printer) {
+		void handleException(Throwable e, StringPrinter log) {
 			if (e instanceof LocatedException) {
 				// makes sure that highlight always triggers on the UI thread
 				LocatedException located = (LocatedException) e;
@@ -316,7 +316,8 @@ public class Workbench {
 					});
 				}
 			}
-			printer.println(e.getMessage());
+			log.println(e.getMessage());
+
 			// print the stacktrace to the IDE console, for easier debugging
 			// it doesn't do much good to the end user, so don't need it in their console
 			e.printStackTrace();

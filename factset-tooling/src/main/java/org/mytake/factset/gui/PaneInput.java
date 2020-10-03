@@ -38,7 +38,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
-import java.io.PrintWriter;
 import java.io.Serializable;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -100,15 +99,13 @@ public abstract class PaneInput implements Serializable {
 
 	/** Helper function for saving the the content that they opened. */
 	protected void hookSave(Workbench.Pane pane, Throwing.Consumer<StringPrinter> saveAction) {
-		pane.exec.subscribe(pane.save, printer -> {
+		pane.exec.subscribe(pane.save, log -> {
+			log.println("Saving " + tabTxt());
 			try {
-				printer.println("Saving " + tabTxt());
-				saveAction.accept(printer);
-				printer.println("\rSaved " + tabTxt());
+				saveAction.accept(log);
+				log.println("Saved " + tabTxt());
 			} catch (Throwable e) {
-				try (PrintWriter writer = printer.toPrintWriter()) {
-					e.printStackTrace(writer);
-				}
+				pane.handleException(e, log);
 			}
 		});
 	}
@@ -132,12 +129,15 @@ public abstract class PaneInput implements Serializable {
 		@Override
 		public ControlWrapper createPane(Composite parent, Workbench.Pane pane) throws IOException {
 			TextViewCtl ctl = TextEditor.createPane(parent, file.toPath(), pane);
-			hookSave(pane, printer -> {
-				String content = ctl.getSourceViewer().getDocument().get().replace("\r", "");
+			hookSave(pane, log -> {
 				if (pane.hackPathCleanup != null) {
-					content = pane.hackPathCleanup.apply(printer, content);
+					try {
+						pane.hackPathCleanup.accept(log);
+					} catch (Throwable e) {
+						pane.handleException(e, log);
+					}
 				}
-				Files.write(file.toPath(), content.getBytes(StandardCharsets.UTF_8));
+				Files.write(file.toPath(), ctl.getSourceViewer().getDocument().get().getBytes(StandardCharsets.UTF_8));
 			});
 			return ctl;
 		}
