@@ -48,7 +48,7 @@ public class SaidCleanup {
 	public static String cleanup(Ingredients folder, Path source, String saidString) throws IOException {
 		String name = folder.name(source);
 		VideoFactMeta meta = folder.loadMetaNoValidation(name);
-		SaidTranscript said = SaidTranscript.parse(meta, CharSource.wrap(saidString));
+		SaidTranscript said = SaidTranscript.parse(folder.fileMeta(name), meta, CharSource.wrap(saidString));
 		Iterator<Turn> turns = said.turns().iterator();
 
 		Turn last = turns.next();

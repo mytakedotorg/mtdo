@@ -69,6 +69,14 @@ public class Ingredients implements Serializable {
 		this.roles = IniAsSet.parse(new File(root, "all_roles.ini"));
 	}
 
+	public Set<String> people() {
+		return people;
+	}
+
+	public Set<String> roles() {
+		return roles;
+	}
+
 	public static final ImmutableSet<String> VIDEO_EXTENSIONS = ImmutableSet.of("json", "said", "vtt");
 
 	private SetMultimap<String, String> possibleTitles() {
@@ -152,7 +160,7 @@ public class Ingredients implements Serializable {
 
 		// load the said
 		printer.print("Loading " + name + ".said  ...  ");
-		SaidTranscript said = SaidTranscript.parse(meta, fileSaid(name));
+		SaidTranscript said = SaidTranscript.parse(fileMeta(name), meta, fileSaid(name));
 		printer.println("Success.");
 
 		printer.print("Loading " + name + ".vtt  ...  ");
@@ -170,7 +178,7 @@ public class Ingredients implements Serializable {
 		return JsonMisc.fromJson(fileMeta(name), FT.VideoFactMeta.class);
 	}
 
-	File fileMeta(String name) {
+	public File fileMeta(String name) {
 		return new File(root, name + ".json");
 	}
 

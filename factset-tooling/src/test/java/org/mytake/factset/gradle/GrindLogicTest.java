@@ -74,7 +74,7 @@ public class GrindLogicTest extends ResourceHarness {
 		setFile("1960-09-26.vtt").toResource("org/mytake/factset/gradle/1960-09-26.vtt");
 
 		FT.VideoFactMeta meta = JsonMisc.fromJson(newFile("1960-09-26.json"), FT.VideoFactMeta.class);
-		SaidTranscript said = SaidTranscript.parse(meta, newFile("1960-09-26.said"));
+		SaidTranscript said = SaidTranscript.parse(newFile("1960-09-26.json"), meta, newFile("1960-09-26.said"));
 		VttTranscript vtt = VttTranscript.parse(newFile("1960-09-26.vtt"), VttTranscript.Mode.STRICT);
 		TranscriptMatch match = new TranscriptMatch(meta, said, vtt);
 		FT.VideoFactContentEncoded encoded = match.toVideoFact().toEncoded();

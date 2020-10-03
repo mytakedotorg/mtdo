@@ -77,7 +77,7 @@ public class TranscriptMatch {
 	public TranscriptMatch save(Ingredients folder, String name, @Nullable List<Word.Vtt> newVtt, @Nullable String newSaid) throws IOException {
 		SaidTranscript said;
 		if (newSaid != null) {
-			said = SaidTranscript.parse(meta, CharSource.wrap(newSaid));
+			said = SaidTranscript.parse(folder.fileMeta(name), meta, CharSource.wrap(newSaid));
 			Files.asByteSink(folder.fileSaid(name)).asCharSink(StandardCharsets.UTF_8).write(newSaid);
 		} else {
 			said = this.said;
