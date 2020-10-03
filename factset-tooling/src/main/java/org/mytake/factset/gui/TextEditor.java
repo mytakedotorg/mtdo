@@ -37,6 +37,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.stream.Collectors;
+import java2ts.FT;
 import org.eclipse.jface.text.Document;
 import org.eclipse.swt.custom.TextChangeListener;
 import org.eclipse.swt.custom.TextChangedEvent;
@@ -44,6 +45,7 @@ import org.eclipse.swt.custom.TextChangingEvent;
 import org.eclipse.swt.widgets.Composite;
 import org.mytake.factset.gui.Workbench.Pane;
 import org.mytake.factset.gui.video.SaidCleanupDialog;
+import org.mytake.factset.video.Ingredients;
 import org.mytake.factset.video.IniAsSet;
 import org.mytake.factset.video.SaidCleanup;
 import org.mytake.factset.video.VttCleanup;
@@ -105,26 +107,29 @@ public class TextEditor {
 				});
 			};
 		} else if (filename.endsWith(".json")) {
-
+			pane.hackPathCleanup = log -> {
+				log.println("Validate speakers.");
+				Ingredients ingredients = pane.ingredients();
+				String name = ingredients.name(path);
+				FT.VideoFactMeta meta = ingredients.loadMetaNoValidation(name);
+				ingredients.validateMeta(meta);
+			};
 		} else if (filename.endsWith(".vtt")) {
-			pane.addButton("Cleanup VTT", printer -> {
+			pane.hackPathCleanup = log -> {
 				setDoc.accept(VttCleanup::apply);
-				printer.println("Success.");
-			});
+			};
 			pane.addButton(SYNC, printer -> sync(path, pane));
 		} else if (filename.endsWith(".said")) {
-			pane.addButton(CLEANUP_SAID, printer -> {
+			pane.hackPathCleanup = log -> {
 				setDoc.accept(in -> {
 					try {
-						String out = SaidCleanup.cleanup(pane.ingredients(), path, in);
-						printer.println("Success.");
-						return out;
+						return SaidCleanup.cleanup(pane.ingredients(), path, in);
 					} catch (Exception e) {
 						SaidCleanupDialog.attemptCleanup(pane, ctl, e);
 						throw e;
 					}
 				});
-			});
+			};
 			pane.addButton(SYNC, printer -> sync(path, pane));
 		}
 		return ctl;

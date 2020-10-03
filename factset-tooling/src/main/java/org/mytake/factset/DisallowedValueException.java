@@ -79,4 +79,27 @@ public abstract class DisallowedValueException extends RuntimeException {
 			}
 		};
 	}
+
+	public static DisallowedValueException peopleInJson(String speaker, Set<String> allowed, File fileWhichSpecifies) {
+		return replaceJsonString(speaker, allowed, fileWhichSpecifies, "speaker");
+	}
+
+	public static DisallowedValueException rolesInJson(String role, Set<String> allowed, File fileWhichSpecifies) {
+		return replaceJsonString(role, allowed, fileWhichSpecifies, "role");
+	}
+
+	private static DisallowedValueException replaceJsonString(String value, Set<String> allowed, File fileWhichSpecifies, String kind) {
+		return new DisallowedValueException(value, allowed, fileWhichSpecifies) {
+			@Override
+			public String kind() {
+				return kind;
+			}
+
+			@Override
+			public void replaceValueWithAllowed(String newValue, IDocument doc) {
+				Preconditions.checkArgument(allowed.contains(newValue));
+				doc.set(doc.get().replace("\"" + value + "\"", "\"" + newValue + "\""));
+			}
+		};
+	}
 }

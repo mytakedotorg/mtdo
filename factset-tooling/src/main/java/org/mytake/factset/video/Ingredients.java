@@ -44,6 +44,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java2ts.FT;
+import org.mytake.factset.DisallowedValueException;
 import org.mytake.factset.JsonMisc;
 import org.mytake.factset.video.VttTranscript.Mode;
 
@@ -65,8 +66,16 @@ public class Ingredients implements Serializable {
 
 	public Ingredients(File root) throws IOException {
 		this.root = Objects.requireNonNull(root);
-		this.people = IniAsSet.parse(new File(root, "all_people.ini"));
-		this.roles = IniAsSet.parse(new File(root, "all_roles.ini"));
+		this.people = IniAsSet.parse(filePeople());
+		this.roles = IniAsSet.parse(fileRoles());
+	}
+
+	private File filePeople() {
+		return new File(root, "all_people.ini");
+	}
+
+	private File fileRoles() {
+		return new File(root, "all_roles.ini");
 	}
 
 	public Set<String> people() {
@@ -142,20 +151,7 @@ public class Ingredients implements Serializable {
 		FT.VideoFactMeta meta = loadMetaNoValidation(name);
 		printer.println("Success.");
 		printer.print("Validating speakers  ...  ");
-		String errorMessage = StringPrinter.buildString(e -> {
-			for (FT.Speaker speaker : meta.speakers) {
-				if (!people.contains(speaker.fullName)) {
-					e.println("Unknown person '" + speaker.fullName + "'");
-				}
-				if (!roles.contains(speaker.role)) {
-					e.println("Unknown role '" + speaker.role + "' for person '" + speaker.fullName + "'");
-				}
-			}
-		});
-		if (!errorMessage.isEmpty()) {
-			printer.println(errorMessage);
-			throw new IllegalArgumentException(errorMessage);
-		}
+		validateMeta(meta);
 		printer.println("Success.");
 
 		// load the said
@@ -171,6 +167,17 @@ public class Ingredients implements Serializable {
 		TranscriptMatch match = new TranscriptMatch(meta, said, vtt);
 		printer.println("Success.");
 		return match;
+	}
+
+	public void validateMeta(FT.VideoFactMeta meta) {
+		for (FT.Speaker speaker : meta.speakers) {
+			if (!people.contains(speaker.fullName)) {
+				throw DisallowedValueException.peopleInJson(speaker.fullName, people, filePeople());
+			}
+			if (!roles.contains(speaker.role)) {
+				throw DisallowedValueException.rolesInJson(speaker.role, roles, fileRoles());
+			}
+		}
 	}
 
 	/** Loads transcript metadata without any validation. */
