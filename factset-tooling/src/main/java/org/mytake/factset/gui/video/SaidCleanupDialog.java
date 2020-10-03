@@ -41,28 +41,26 @@ import com.diffplug.common.swt.widgets.ButtonPanel;
 import com.diffplug.common.swt.widgets.RadioGroup;
 import com.diffplug.common.tree.TreeStream;
 import java.io.PrintWriter;
-import java.nio.file.Paths;
 import java.util.function.Function;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.gradle.internal.impldep.com.google.api.client.repackaged.com.google.common.base.Throwables;
+import org.mytake.factset.DisallowedValueException;
 import org.mytake.factset.gui.Labels;
 import org.mytake.factset.gui.TextEditor;
 import org.mytake.factset.gui.TextViewCtl;
 import org.mytake.factset.gui.Workbench;
-import org.mytake.factset.video.SaidTranscript;
 
 public class SaidCleanupDialog {
 	public static void attemptCleanup(Workbench.Pane pane, TextViewCtl ctl, Exception e) {
 		Shells.builder(SWT.APPLICATION_MODAL | SWT.TITLE | SWT.CLOSE | SWT.RESIZE, cmp -> {
 			Throwable root = Throwables.getRootCause(e);
-			if (root instanceof SaidTranscript.InvalidSpeakerException) {
-				SaidTranscript.InvalidSpeakerException invalidSpeaker = (SaidTranscript.InvalidSpeakerException) root;
-				new ChangeNameCoat(cmp, pane, ctl.getSourceViewer().getDocument(), invalidSpeaker);
+			if (root instanceof DisallowedValueException) {
+				DisallowedValueException invalidSpeaker = (DisallowedValueException) root;
+				new ChangeValueCoat(cmp, pane, ctl.getSourceViewer().getDocument(), invalidSpeaker);
 			} else {
 				new AdjustFormatCoat(cmp, pane, ctl.getSourceViewer().getDocument(), e);
 			}
@@ -70,20 +68,19 @@ public class SaidCleanupDialog {
 				.openOn(ctl.getShell());
 	}
 
-	private static class ChangeNameCoat {
-		ChangeNameCoat(Composite cmp, Workbench.Pane pane, IDocument doc, SaidTranscript.InvalidSpeakerException exc) {
+	private static class ChangeValueCoat {
+		ChangeValueCoat(Composite cmp, Workbench.Pane pane, IDocument doc, DisallowedValueException exc) {
 			Layouts.setGrid(cmp);
-			Layouts.setGridData(Labels.createBold(cmp, "Replace speaker '" + exc.speaker + "'")).grabHorizontal();
+			Layouts.setGridData(Labels.createBold(cmp, "Replace " + exc.kind() + " '" + exc.value + "'")).grabHorizontal();
 
-			for (String candidate : exc.people) {
+			for (String candidate : exc.allowed) {
 				Button btn = new Button(cmp, SWT.PUSH);
 				btn.setText(candidate);
 				btn.addListener(SWT.Selection, e -> {
 					cmp.getShell().dispose();
 					// fix the speaker and run again
-					Matcher matcher = Pattern.compile("^" + Pattern.quote(exc.speaker + ": "), Pattern.MULTILINE).matcher(doc.get());
-					doc.set(matcher.replaceAll(candidate + ": "));
-					pane.runButton(TextEditor.CLEANUP_SAID);
+					exc.replaceValueWithAllowed(candidate, doc);
+					pane.triggerSave();
 				});
 				Layouts.setGridData(btn).grabHorizontal();
 			}
@@ -94,10 +91,10 @@ public class SaidCleanupDialog {
 			openJson.setText("Open the .json to add a speaker");
 			openJson.addListener(SWT.Selection, e -> {
 				cmp.getShell().dispose();
-				// close and open the json
-				String path = pane.input().assertPath().toString();
-				int lastDot = path.lastIndexOf('.');
-				pane.workbench().openFile(Paths.get(path.substring(0, lastDot) + ".json"));
+				pane.workbench().openFile(exc.fileWhichSpecifies.toPath());
+				pane.logOpDontBlock(printer -> {
+					printer.println(exc.value);
+				});
 			});
 			Layouts.setGridData(openJson).grabHorizontal();
 		}

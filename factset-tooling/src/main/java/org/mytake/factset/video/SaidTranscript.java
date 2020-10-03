@@ -44,6 +44,7 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Set;
 import java2ts.FT.VideoFactMeta;
+import org.mytake.factset.DisallowedValueException;
 import org.mytake.factset.LocatedException;
 
 /**
@@ -107,11 +108,11 @@ public abstract class SaidTranscript {
 		}
 	}
 
-	public static SaidTranscript parse(VideoFactMeta meta, File file) throws IOException {
-		return parse(meta, Files.asByteSource(file).asCharSource(StandardCharsets.UTF_8));
+	public static SaidTranscript parse(File videoJson, VideoFactMeta meta, File file) throws IOException {
+		return parse(videoJson, meta, Files.asByteSource(file).asCharSource(StandardCharsets.UTF_8));
 	}
 
-	public static SaidTranscript parse(VideoFactMeta meta, CharSource source) throws IOException {
+	public static SaidTranscript parse(File videoJson, VideoFactMeta meta, CharSource source) throws IOException {
 		Set<String> people = meta.speakers.stream().map(s -> s.fullName).collect(Immutables.toSet());
 
 		int lineCount = 1;
@@ -129,7 +130,7 @@ public abstract class SaidTranscript {
 				}
 				String speaker = line.substring(0, firstColon);
 				if (!people.contains(speaker)) {
-					throw LocatedException.atLine(lineCount).colRange(0, firstColon).message(new InvalidSpeakerException(speaker, people));
+					throw LocatedException.atLine(lineCount).colRange(0, firstColon).message(DisallowedValueException.peopleInSaid(speaker, people, videoJson));
 				}
 				String words = line.substring(firstColon + 1).trim();
 				turns.add(Turn.turnWords(speaker, words));
@@ -144,23 +145,6 @@ public abstract class SaidTranscript {
 				++lineCount;
 			}
 			return create(turns);
-		}
-	}
-
-	public static class InvalidSpeakerException extends RuntimeException {
-		private static final long serialVersionUID = -7931115870370823696L;
-
-		public final String speaker;
-		public final Set<String> people;
-
-		InvalidSpeakerException(String speaker, Set<String> people) {
-			this.speaker = speaker;
-			this.people = people;
-		}
-
-		@Override
-		public String getMessage() {
-			return "No such person '" + speaker + "', available: " + people;
 		}
 	}
 
