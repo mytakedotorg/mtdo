@@ -41,7 +41,12 @@ import com.diffplug.common.swt.SwtMisc;
 import com.diffplug.common.swt.widgets.ButtonPanel;
 import com.diffplug.common.swt.widgets.RadioGroup;
 import com.diffplug.common.tree.TreeStream;
+import info.debatty.java.stringsimilarity.Levenshtein;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 import java.util.function.Function;
 import java.util.regex.Pattern;
 import org.eclipse.jface.text.IDocument;
@@ -53,6 +58,7 @@ import org.mytake.factset.DisallowedValueException;
 import org.mytake.factset.gui.Labels;
 import org.mytake.factset.gui.TextEditor;
 import org.mytake.factset.gui.TextViewCtl;
+import org.mytake.factset.gui.VScrollCtl;
 import org.mytake.factset.gui.Workbench;
 
 public class CleanupDialog {
@@ -85,8 +91,23 @@ public class CleanupDialog {
 			Layouts.setGrid(cmp);
 			Layouts.setGridData(Labels.createBold(cmp, "Replace " + exc.kind() + " '" + exc.value + "'")).grabHorizontal();
 
-			for (String candidate : exc.allowed) {
-				Button btn = new Button(cmp, SWT.PUSH);
+			List<String> allowedSorted = new ArrayList<>(exc.allowed);
+			Levenshtein l = new Levenshtein();
+			Collections.sort(allowedSorted, Comparator.comparingDouble(str -> {
+				return l.distance(exc.value, str);
+			}));
+			Composite btnCmp;
+			if (allowedSorted.size() > 5) {
+				VScrollCtl vscroll = new VScrollCtl(cmp, SWT.BOLD);
+				Layouts.setGridData(vscroll).grabHorizontal().heightHint(SwtMisc.systemFontHeight() * 9);
+				btnCmp = new Composite(vscroll.getParentForContent(), SWT.NONE);
+				vscroll.setContent(btnCmp);
+				Layouts.setGrid(btnCmp);
+			} else {
+				btnCmp = cmp;
+			}
+			for (String candidate : allowedSorted) {
+				Button btn = new Button(btnCmp, SWT.PUSH);
 				btn.setText(candidate);
 				btn.addListener(SWT.Selection, e -> {
 					cmp.getShell().dispose();
@@ -100,7 +121,7 @@ public class CleanupDialog {
 			Labels.createHSep(cmp);
 
 			Button openJson = new Button(cmp, SWT.PUSH);
-			openJson.setText("Open the .json to add a speaker");
+			openJson.setText("OR open " + exc.fileWhichSpecifies.getName() + " to add");
 			openJson.addListener(SWT.Selection, e -> {
 				cmp.getShell().dispose();
 				pane.workbench().openFile(exc.fileWhichSpecifies.toPath());
