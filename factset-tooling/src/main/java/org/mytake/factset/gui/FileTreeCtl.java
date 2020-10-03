@@ -50,12 +50,18 @@ import java.util.stream.StreamSupport;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Tree;
 
 class FileTreeCtl extends ControlWrapper.AroundControl<Composite> {
+	private final TreeViewer viewer;
 	private final RxBox<ImmutableList<Path>> selection;
 	private final PublishSubject<ImmutableList<Path>> doubleClick = PublishSubject.create();
 
 	public FileTreeCtl(Composite parent, Path folder) {
+		this(parent, folder, path -> !path.getFileName().toString().startsWith("."));
+	}
+
+	public FileTreeCtl(Composite parent, Path folder, DirectoryStream.Filter<Path> include) {
 		super(new Composite(parent, SWT.BORDER));
 
 		// define the format of the tree
@@ -64,7 +70,7 @@ class FileTreeCtl extends ControlWrapper.AroundControl<Composite> {
 		format.addColumn().setText("Name").setLabelProviderText(path -> path.getFileName().toString());
 
 		// create the tree viewer
-		TreeViewer viewer = format.buildTree(wrapped);
+		viewer = format.buildTree(wrapped);
 		// define the structure of the tree's contents
 		ViewerMisc.setLazyTreeContentProvider(viewer, new TreeDef.Parented<Path>() {
 			@Override
@@ -72,7 +78,7 @@ class FileTreeCtl extends ControlWrapper.AroundControl<Composite> {
 				if (!Files.isDirectory(node)) {
 					return Collections.emptyList();
 				}
-				try (DirectoryStream<Path> stream = Files.newDirectoryStream(node, path -> !path.getFileName().toString().startsWith("."))) {
+				try (DirectoryStream<Path> stream = Files.newDirectoryStream(node, include)) {
 					return StreamSupport.stream(stream.spliterator(), false)
 							.sorted(ORDER)
 							.collect(Collectors.toList());
@@ -100,6 +106,11 @@ class FileTreeCtl extends ControlWrapper.AroundControl<Composite> {
 
 	public Observable<ImmutableList<Path>> doubleClick() {
 		return doubleClick;
+	}
+
+	public int suggestedHeight() {
+		Tree tree = (Tree) viewer.getControl();
+		return tree.getItemCount() * tree.getItemHeight();
 	}
 
 	// files at top, folders at bottom, most-recent dates first

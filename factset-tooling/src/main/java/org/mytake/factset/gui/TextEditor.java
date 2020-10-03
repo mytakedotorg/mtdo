@@ -59,6 +59,10 @@ public class TextEditor {
 			highlighter = SyntaxHighlighter.json();
 		} else if (filename.endsWith(".ini")) {
 			highlighter = SyntaxHighlighter.ini();
+		} else if (filename.endsWith(".gradle")) {
+			highlighter = SyntaxHighlighter.gradle();
+		} else if (filename.endsWith(".md")) {
+			highlighter = SyntaxHighlighter.markdown();
 		}
 
 		Document doc = new Document(new String(Files.readAllBytes(path), StandardCharsets.UTF_8));

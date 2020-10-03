@@ -110,7 +110,7 @@ public class GrindLogic {
 					TranscriptMatch match = ingredients.loadTranscript(name);
 					content = encodeSpeakersIntoComments(match.toVideoFact());
 				} catch (Exception e) {
-					throw new GradleException("Problem in " + name, e);
+					throw new GradleException("Problem in '" + name + "': " + e.getMessage(), e);
 				}
 				logger.info("  success");
 

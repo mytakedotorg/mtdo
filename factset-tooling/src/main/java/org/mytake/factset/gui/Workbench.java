@@ -73,7 +73,7 @@ import org.mytake.factset.video.Ingredients;
 
 public class Workbench {
 	private final Path rootFolder;
-	private final FileTreeCtl fileTree;
+	private final FileTreeCtl ingredientFiles;
 	private final CTabFolder tabFolder;
 	private final Map<PaneInput, Pane> pathToTab = new HashMap<>();
 	private final ToolBar toolbar;
@@ -94,8 +94,24 @@ public class Workbench {
 		Composite fileTreeCmp = new Composite(form, SWT.NONE);
 		Layouts.setGrid(fileTreeCmp).margin(0).spacing(OS.getNative().winMacLinux(4, 3, 3));
 		Labels.createBold(fileTreeCmp, "Ingredients");
-		fileTree = new FileTreeCtl(fileTreeCmp, folder.resolve("ingredients"));
-		Layouts.setGridData(fileTree).grabAll();
+		ingredientFiles = new FileTreeCtl(fileTreeCmp, folder.resolve("ingredients"));
+		Layouts.setGridData(ingredientFiles).grabAll();
+
+		Labels.createBold(fileTreeCmp, "Project");
+		FileTreeCtl root = new FileTreeCtl(fileTreeCmp, folder, path -> {
+			if (Files.isDirectory(path)) {
+				return false;
+			}
+			String name = path.getFileName().toString();
+			if (name.equals("settings.gradle") || name.equals("gradle.properties")
+					|| name.startsWith("gradlew")
+					|| name.startsWith(".")
+					|| name.startsWith("GUI_")) {
+				return false;
+			}
+			return true;
+		});
+		Layouts.setGridData(root).grabHorizontal().heightHint(root.suggestedHeight());
 
 		SashForm folderSash = new SashForm(form, SWT.VERTICAL);
 
@@ -137,7 +153,7 @@ public class Workbench {
 		folderSash.setWeights(new int[]{3, 1});
 
 		// open files on double-click
-		Rx.subscribe(fileTree.doubleClick(), paths -> {
+		Rx.subscribe(Observable.merge(ingredientFiles.doubleClick(), root.doubleClick()), paths -> {
 			for (Path path : paths) {
 				if (Files.isRegularFile(path)) {
 					openFile(path);
