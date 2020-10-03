@@ -31,6 +31,7 @@ package org.mytake.factset.gui.video;
 
 import com.diffplug.common.base.StringPrinter;
 import com.diffplug.common.rx.RxBox;
+import com.diffplug.common.swt.Coat;
 import com.diffplug.common.swt.Corner;
 import com.diffplug.common.swt.Fonts;
 import com.diffplug.common.swt.Layouts;
@@ -54,9 +55,9 @@ import org.mytake.factset.gui.TextEditor;
 import org.mytake.factset.gui.TextViewCtl;
 import org.mytake.factset.gui.Workbench;
 
-public class SaidCleanupDialog {
-	public static void attemptCleanup(Workbench.Pane pane, TextViewCtl ctl, Exception e) {
-		Shells.builder(SWT.APPLICATION_MODAL | SWT.TITLE | SWT.CLOSE | SWT.RESIZE, cmp -> {
+public class CleanupDialog {
+	public static Exception forSaid(Workbench.Pane pane, TextViewCtl ctl, Exception e) {
+		open(ctl, cmp -> {
 			Throwable root = Throwables.getRootCause(e);
 			if (root instanceof DisallowedValueException) {
 				DisallowedValueException invalidSpeaker = (DisallowedValueException) root;
@@ -64,7 +65,18 @@ public class SaidCleanupDialog {
 			} else {
 				new AdjustFormatCoat(cmp, pane, ctl.getSourceViewer().getDocument(), e);
 			}
-		}).setLocation(Corner.BOTTOM_RIGHT, Corner.BOTTOM_RIGHT.getPosition(ctl))
+		});
+		return e;
+	}
+
+	public static DisallowedValueException forDisallowedValue(Workbench.Pane pane, TextViewCtl ctl, DisallowedValueException e) {
+		open(ctl, cmp -> new ChangeValueCoat(cmp, pane, ctl.getSourceViewer().getDocument(), e));
+		return e;
+	}
+
+	private static void open(TextViewCtl ctl, Coat coat) {
+		Shells.builder(SWT.APPLICATION_MODAL | SWT.TITLE | SWT.CLOSE | SWT.RESIZE, coat)
+				.setLocation(Corner.BOTTOM_RIGHT, Corner.BOTTOM_RIGHT.getPosition(ctl))
 				.openOn(ctl.getShell());
 	}
 

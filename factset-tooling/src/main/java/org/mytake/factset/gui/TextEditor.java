@@ -43,9 +43,10 @@ import org.eclipse.swt.custom.TextChangeListener;
 import org.eclipse.swt.custom.TextChangedEvent;
 import org.eclipse.swt.custom.TextChangingEvent;
 import org.eclipse.swt.widgets.Composite;
+import org.mytake.factset.DisallowedValueException;
+import org.mytake.factset.JsonMisc;
 import org.mytake.factset.gui.Workbench.Pane;
-import org.mytake.factset.gui.video.SaidCleanupDialog;
-import org.mytake.factset.video.Ingredients;
+import org.mytake.factset.gui.video.CleanupDialog;
 import org.mytake.factset.video.IniAsSet;
 import org.mytake.factset.video.SaidCleanup;
 import org.mytake.factset.video.VttCleanup;
@@ -76,7 +77,11 @@ public class TextEditor {
 			int start, end;
 			if (highlight.colStart == -1) {
 				start = lineOffset;
-				end = doc.getLineOffset(highlight.line);
+				if (doc.getNumberOfLines() > highlight.line) {
+					end = doc.getLineOffset(highlight.line);
+				} else {
+					end = doc.getLength();
+				}
 			} else {
 				start = lineOffset + highlight.colStart;
 				end = lineOffset + highlight.colEnd;
@@ -109,10 +114,12 @@ public class TextEditor {
 		} else if (filename.endsWith(".json")) {
 			pane.hackPathCleanup = log -> {
 				log.println("Validate speakers.");
-				Ingredients ingredients = pane.ingredients();
-				String name = ingredients.name(path);
-				FT.VideoFactMeta meta = ingredients.loadMetaNoValidation(name);
-				ingredients.validateMeta(meta);
+				FT.VideoFactMeta meta = JsonMisc.fromJson(doc.get(), FT.VideoFactMeta.class);
+				try {
+					pane.ingredients().validateMeta(meta);
+				} catch (DisallowedValueException e) {
+					throw CleanupDialog.forDisallowedValue(pane, ctl, e);
+				}
 			};
 		} else if (filename.endsWith(".vtt")) {
 			pane.hackPathCleanup = log -> {
@@ -125,8 +132,7 @@ public class TextEditor {
 					try {
 						return SaidCleanup.cleanup(pane.ingredients(), path, in);
 					} catch (Exception e) {
-						SaidCleanupDialog.attemptCleanup(pane, ctl, e);
-						throw e;
+						throw CleanupDialog.forSaid(pane, ctl, e);
 					}
 				});
 			};

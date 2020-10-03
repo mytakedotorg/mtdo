@@ -317,10 +317,14 @@ public class Workbench {
 				}
 			}
 			log.println(e.getMessage());
-
 			// print the stacktrace to the IDE console, for easier debugging
 			// it doesn't do much good to the end user, so don't need it in their console
 			e.printStackTrace();
+
+			if (tabFolder.getShell() == SwtMisc.assertUI().getActiveShell()) {
+				// there isn't an error dialog, so we need to open one
+				SwtMisc.blockForError(e.getMessage(), e.getMessage());
+			}
 		}
 
 		public Ingredients ingredients() throws IOException {
