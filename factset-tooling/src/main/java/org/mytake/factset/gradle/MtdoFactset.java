@@ -147,20 +147,12 @@ public class MtdoFactset {
 	public String title;
 	public String id;
 	public Action<VideoCfg> videoCfg;
-	public Action<DocumentCfg> documentCfg = document -> {};
 
 	public void video(Action<VideoCfg> videoCfg) {
 		if (this.videoCfg != null) {
 			throw new GradleException("You can only call `video {` once.");
 		}
 		this.videoCfg = videoCfg;
-	}
-
-	public void document(Action<DocumentCfg> documentCfg) {
-		if (this.documentCfg != null) {
-			throw new GradleException("You can only call `document {` once.");
-		}
-		this.documentCfg = documentCfg;
 	}
 
 	public static class VideoCfg {
@@ -170,8 +162,6 @@ public class MtdoFactset {
 			this.perVideo = perVideo;
 		}
 	}
-
-	public class DocumentCfg {}
 
 	@CacheableTask
 	public static class GrindTask extends DefaultTask {
