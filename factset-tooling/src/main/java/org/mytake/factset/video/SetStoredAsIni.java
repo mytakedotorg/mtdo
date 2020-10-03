@@ -29,7 +29,6 @@
 package org.mytake.factset.video;
 
 
-import com.diffplug.common.base.Preconditions;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -39,6 +38,7 @@ import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
+import org.mytake.factset.LocatedException;
 
 /**
  * Loads every line in a file, and stuffs them into a set.
@@ -70,9 +70,11 @@ public class SetStoredAsIni {
 					line = line.substring(1, line.length() - 1);
 				}
 				boolean wasAdded = result.add(line);
-				Preconditions.checkArgument(wasAdded, "On line " + (i + 1) + " of " + path + ": duplicate");
+				if (!wasAdded) {
+					throw LocatedException.atLine(i + 1).message("Can't have duplicate entries");
+				}
 			} else {
-				throw new IllegalArgumentException("On line " + (i + 1) + " of " + path + ": illegal whitespace, probably trailing");
+				throw LocatedException.atLine(i + 1).message("Illegal whitespace, probably trailing whitespace");
 			}
 		}
 		return result;

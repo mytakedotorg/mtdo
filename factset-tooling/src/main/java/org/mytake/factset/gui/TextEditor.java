@@ -35,6 +35,8 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 import org.eclipse.jface.text.Document;
 import org.eclipse.swt.custom.TextChangeListener;
 import org.eclipse.swt.custom.TextChangedEvent;
@@ -48,8 +50,6 @@ import org.mytake.factset.video.VttCleanup;
 
 public class TextEditor {
 	static TextViewCtl createPane(Composite cmp, Path path, Pane pane) {
-		String content = Errors.rethrow().get(() -> new String(Files.readAllBytes(path), StandardCharsets.UTF_8));
-
 		SyntaxHighlighter highlighter = SyntaxHighlighter.none();
 		String filename = path.getFileName().toString();
 		if (filename.endsWith(".json")) {
@@ -58,7 +58,7 @@ public class TextEditor {
 			highlighter = SyntaxHighlighter.ini();
 		}
 
-		Document doc = new Document(content);
+		Document doc = new Document(new String(Files.readAllBytes(path), StandardCharsets.UTF_8));
 		TextViewCtl ctl = new TextViewCtl(cmp);
 		ctl.setup(doc, highlighter);
 		ctl.getSourceViewer().getTextWidget().getContent().addTextChangeListener(new TextChangeListener() {
@@ -92,9 +92,18 @@ public class TextEditor {
 		};
 
 		if (filename.endsWith(".ini")) {
-			pane.logOpDontBlock(printer -> {
-				SetStoredAsIni.parse(path, content);
-			});
+			pane.hackPathCleanup = (log, content) -> {
+				log.println("Trim unnecessary whitespace.");
+				String trimmed = Arrays.stream(content.split("\n"))
+						.map(str -> str.trim())
+						.filter(str -> !str.isEmpty())
+						.collect(Collectors.joining("\n"));
+				log.println("Parse ini and confirm no duplicates.");
+				SetStoredAsIni.parse(path, trimmed);
+				return trimmed;
+			};
+		} else if (filename.endsWith(".json")) {
+
 		} else if (filename.endsWith(".vtt")) {
 			pane.addButton("Cleanup VTT", printer -> {
 				setDoc.accept(VttCleanup::apply);

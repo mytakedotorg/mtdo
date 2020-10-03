@@ -195,6 +195,8 @@ public class Workbench {
 		final SwtExec.Guarded exec;
 		final List<Btn> buttons = new ArrayList<>();
 
+		Throwing.BiFunction<StringPrinter, String, String> hackPathCleanup;
+
 		private Pane(PaneInput input) {
 			this.input = input;
 			tab = new CTabItem(tabFolder, SWT.CLOSE);
@@ -211,7 +213,7 @@ public class Workbench {
 				tab.setText(input.tabTxt() + (dirty ? "*" : ""));
 			});
 
-			addButton("Save " + Accelerators.uiStringFor(Accelerators.SAVE), printer -> {
+			addButton("Clean and Save (" + Accelerators.uiStringFor(Accelerators.SAVE) + ")", printer -> {
 				save.onNext(printer);
 				isDirty.set(false);
 			});
@@ -314,9 +316,10 @@ public class Workbench {
 					});
 				}
 			}
-			try (PrintWriter p = printer.toPrintWriter()) {
-				e.printStackTrace(p);
-			}
+			printer.println(e.getMessage());
+			// print the stacktrace to the IDE console, for easier debugging
+			// it doesn't do much good to the end user, so don't need it in their console
+			e.printStackTrace();
 		}
 
 		public Ingredients ingredients() throws IOException {

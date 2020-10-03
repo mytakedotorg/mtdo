@@ -134,6 +134,9 @@ public abstract class PaneInput implements Serializable {
 			TextViewCtl ctl = TextEditor.createPane(parent, file.toPath(), pane);
 			hookSave(pane, printer -> {
 				String content = ctl.getSourceViewer().getDocument().get().replace("\r", "");
+				if (pane.hackPathCleanup != null) {
+					content = pane.hackPathCleanup.apply(printer, content);
+				}
 				Files.write(file.toPath(), content.getBytes(StandardCharsets.UTF_8));
 			});
 			return ctl;
