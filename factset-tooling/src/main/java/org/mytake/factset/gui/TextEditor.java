@@ -111,6 +111,9 @@ public class TextEditor {
 					return in;
 				});
 			};
+			pane.addButton("gradlew assemble", logUnused -> {
+				pane.logOpDontBlock(ShellExec.gradlew(pane.ingredients(), "assemble"));
+			});
 		} else if (filename.endsWith(".json")) {
 			pane.hackPathCleanup = log -> {
 				log.println("Validate speakers.");

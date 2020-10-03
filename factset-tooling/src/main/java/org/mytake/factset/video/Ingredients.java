@@ -70,6 +70,10 @@ public class Ingredients implements Serializable {
 		this.roles = IniAsSet.parse(fileRoles());
 	}
 
+	public File folder() {
+		return root;
+	}
+
 	private File filePeople() {
 		return new File(root, "all_people.ini");
 	}
