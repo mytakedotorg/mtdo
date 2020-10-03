@@ -44,7 +44,7 @@ import org.mytake.factset.LocatedException;
  * Loads every line in a file, and stuffs them into a set.
  * `;` lines are treated as comments, just like an ini.
  */
-public class SetStoredAsIni {
+public class IniAsSet {
 	public static Set<String> parse(File file) throws IOException {
 		return parse(file.toPath());
 	}

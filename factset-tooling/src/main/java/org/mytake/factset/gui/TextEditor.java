@@ -44,12 +44,12 @@ import org.eclipse.swt.custom.TextChangingEvent;
 import org.eclipse.swt.widgets.Composite;
 import org.mytake.factset.gui.Workbench.Pane;
 import org.mytake.factset.gui.video.SaidCleanupDialog;
+import org.mytake.factset.video.IniAsSet;
 import org.mytake.factset.video.SaidCleanup;
-import org.mytake.factset.video.SetStoredAsIni;
 import org.mytake.factset.video.VttCleanup;
 
 public class TextEditor {
-	static TextViewCtl createPane(Composite cmp, Path path, Pane pane) {
+	static TextViewCtl createPane(Composite cmp, Path path, Pane pane) throws IOException {
 		SyntaxHighlighter highlighter = SyntaxHighlighter.none();
 		String filename = path.getFileName().toString();
 		if (filename.endsWith(".json")) {
@@ -99,7 +99,7 @@ public class TextEditor {
 						.filter(str -> !str.isEmpty())
 						.collect(Collectors.joining("\n"));
 				log.println("Parse ini and confirm no duplicates.");
-				SetStoredAsIni.parse(path, trimmed);
+				IniAsSet.parse(path, trimmed);
 				return trimmed;
 			};
 		} else if (filename.endsWith(".json")) {
