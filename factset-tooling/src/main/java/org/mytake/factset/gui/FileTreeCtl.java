@@ -35,6 +35,7 @@ import com.diffplug.common.collect.ImmutableList;
 import com.diffplug.common.collect.Iterables;
 import com.diffplug.common.rx.RxBox;
 import com.diffplug.common.swt.ControlWrapper;
+import com.diffplug.common.swt.Corner;
 import com.diffplug.common.swt.Layouts;
 import com.diffplug.common.swt.MouseClick;
 import com.diffplug.common.swt.Shells;
@@ -46,6 +47,7 @@ import com.diffplug.common.swt.widgets.ButtonPanel;
 import com.diffplug.common.tree.TreeDef;
 import io.reactivex.Observable;
 import io.reactivex.subjects.PublishSubject;
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
@@ -61,10 +63,12 @@ import java.util.stream.StreamSupport;
 import javax.annotation.Nullable;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.swt.widgets.TreeItem;
 
 class FileTreeCtl extends ControlWrapper.AroundControl<Composite> {
 	// files at top, folders at bottom, most-recent dates first
@@ -121,7 +125,14 @@ class FileTreeCtl extends ControlWrapper.AroundControl<Composite> {
 		viewer.getTree().addListener(MouseClick.RIGHT_CLICK_EVENT, e -> {
 			if (MouseClick.RIGHT.test(e)) {
 				Menu menu = new Menu(viewer.getTree());
-				menu.setLocation(e.x, e.y);
+				TreeItem item = viewer.getTree().getItem(new Point(e.x, e.y));
+				if (item != null) {
+					Point bottomLeft = Corner.BOTTOM_LEFT.getPosition(SwtMisc.toDisplay(viewer.getTree(), item.getBounds()));
+					bottomLeft.y += Layouts.defaultMargin();
+					menu.setLocation(bottomLeft);
+				} else {
+					menu.setLocation(viewer.getTree().toDisplay(e.x, e.y));
+				}
 				rightClick(menu, selection.get());
 				menu.setVisible(true);
 			}
@@ -172,19 +183,30 @@ class FileTreeCtl extends ControlWrapper.AroundControl<Composite> {
 	}
 
 	private void delete(Collection<Path> paths) {
-		if (!SwtMisc.blockForQuestion("Confirm delete", "Are you sure you want to delete:\n" +
+		if (SwtMisc.blockForQuestion("Confirm delete", "Are you sure you want to delete:\n" +
 				paths.stream().map(p -> root.relativize(p).toString()).collect(Collectors.joining("\n")))) {
 			Errors.dialog().run(() -> {
 				for (Path path : paths) {
-					Files.delete(path);
+					doDelete(path);
 				}
 				refresh();
 			});
 		}
 	}
 
+	private static void doDelete(Path path) throws IOException {
+		if (Files.isDirectory(path)) {
+			Files.walk(path)
+					.sorted(Comparator.reverseOrder())
+					.map(Path::toFile)
+					.forEach(File::delete);
+		} else {
+			Files.delete(path);
+		}
+	}
+
 	private void rename(Path path) {
-		String name = nameDialog("Rename " + path.getFileName(), path.getFileName().toString());
+		String name = nameDialog("Rename", path.getFileName().toString());
 		if (name != null) {
 			Errors.dialog().run(() -> {
 				Path newName = path.getParent().resolve(name);
@@ -195,7 +217,7 @@ class FileTreeCtl extends ControlWrapper.AroundControl<Composite> {
 	}
 
 	private void renameAll(Collection<Path> paths, String commonName) {
-		String name = nameDialog("Rename " + commonName, commonName);
+		String name = nameDialog("Rename", commonName);
 		if (name == null) {
 			return;
 		}
@@ -241,13 +263,23 @@ class FileTreeCtl extends ControlWrapper.AroundControl<Composite> {
 			txt.setText(start);
 			RxBox<String> txtStr = SwtRx.textImmediate(txt);
 
+			Runnable ok = () -> {
+				result.set(txtStr.get());
+				cmp.getShell().dispose();
+			};
+			Runnable cancel = cmp.getShell()::dispose;
+			txt.addListener(SWT.KeyDown, e -> {
+				if (Accelerators.isEnter(e)) {
+					ok.run();
+				} else if (e.keyCode == SWT.ESC) {
+					cancel.run();
+				}
+			});
+
 			ButtonPanel panel = ButtonPanel.builder()
-					.add(operation, () -> {
-						result.set(txtStr.get());
-						cmp.getShell().dispose();
-					}).add("Cancel", () -> {
-						cmp.getShell().dispose();
-					}).build(cmp);
+					.add(operation, ok)
+					.add("Cancel", cancel)
+					.build(cmp);
 			Layouts.setGridData(panel).grabHorizontal();
 		})
 				.setSize(SwtMisc.defaultDialogWidth(), SWT.DEFAULT)
