@@ -30,6 +30,7 @@ package org.mytake.factset.gui;
 
 
 import com.diffplug.common.swt.Fonts;
+import com.diffplug.common.swt.widgets.LinkBtn;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
@@ -57,5 +58,13 @@ public class Labels {
 		Label lbl = create(parent, text);
 		lbl.setFont(Fonts.systemBold());
 		return lbl;
+	}
+
+	/** Quick method to create a LinkBtn. */
+	public static LinkBtn createBtn(Composite parent, String txt, Runnable action) {
+		LinkBtn btn = new LinkBtn(parent, SWT.PUSH);
+		btn.setText(txt);
+		btn.addListener(SWT.Selection, e -> action.run());
+		return btn;
 	}
 }

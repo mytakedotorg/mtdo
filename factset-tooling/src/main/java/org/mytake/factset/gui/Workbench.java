@@ -69,9 +69,8 @@ import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.ToolBar;
-import org.eclipse.swt.widgets.ToolItem;
 import org.mytake.factset.Loc;
 import org.mytake.factset.LocatedException;
 import org.mytake.factset.video.Ingredients;
@@ -81,7 +80,7 @@ public class Workbench {
 	private final FileTreeCtl rootFiles, ingredientFiles;
 	private final CTabFolder tabFolder;
 	private final Map<PaneInput, Pane> pathToTab = new HashMap<>();
-	private final ToolBar toolbar;
+	private final Composite toolbar;
 	private final Console console;
 
 	private final ExecutorService executor = Executors.newSingleThreadExecutor();
@@ -98,8 +97,10 @@ public class Workbench {
 
 		Composite fileTreeCmp = new Composite(form, SWT.NONE);
 		{
-			Layouts.setGrid(fileTreeCmp).margin(0).spacing(OS.getNative().winMacLinux(4, 3, 3));
-			Labels.createBold(fileTreeCmp, "Factset");
+			int spacing = OS.getNative().winMacLinux(4, 3, 3);
+
+			Layouts.setGrid(fileTreeCmp).margin(0).spacing(0);
+			Layouts.setGridData(Labels.createBold(fileTreeCmp, "Factset")).verticalIndent(spacing);
 			rootFiles = new FileTreeCtl(fileTreeCmp, folder, path -> {
 				if (Files.isDirectory(path)) {
 					return false;
@@ -115,16 +116,13 @@ public class Workbench {
 			});
 			Layouts.setGridData(rootFiles).grabHorizontal().heightHint(rootFiles.suggestedHeight());
 
-			Layouts.newGridRow(fileTreeCmp, row -> {
+			Layouts.setGridData(Layouts.newGridRow(fileTreeCmp, row -> {
 				Layouts.setGrid(row).numColumns(2).spacing(0).margin(0);
 				Layouts.setGridData(Labels.createBold(row, "Ingredients")).grabHorizontal().verticalAlignment(SWT.BOTTOM);
-				ToolBar toolbar = new ToolBar(row, SWT.FLAT);
-				ToolItem grind = new ToolItem(toolbar, SWT.PUSH);
-				grind.setText("Grind all");
-				grind.addListener(SWT.Selection, e -> {
-					// do grind
+				Labels.createBtn(row, "grind (" + Accelerators.uiStringFor(Accelerators.GRIND) + ")", () -> {
+
 				});
-			});
+			})).grabHorizontal().verticalIndent(spacing);
 			ingredientFiles = new FileTreeCtl(fileTreeCmp, folder.resolve("ingredients"));
 			Layouts.setGridData(ingredientFiles).grabAll();
 		}
@@ -175,10 +173,9 @@ public class Workbench {
 		{
 			Layouts.setGrid(consoleCmp).margin(0).spacing(0);
 
-			toolbar = new ToolBar(consoleCmp, SWT.NONE);
-			ToolItem toolbarItem = new ToolItem(toolbar, SWT.PUSH);
-			toolbarItem.setText("(Actions will go here)");
-			toolbarItem.setEnabled(false);
+			toolbar = new Composite(consoleCmp, SWT.NONE);
+			Layouts.setRow(toolbar).margin(0);
+			Labels.create(toolbar, "(Actions will go here)");
 
 			Layouts.setGridData(toolbar).grabHorizontal();
 
@@ -289,14 +286,11 @@ public class Workbench {
 		}
 
 		private void takeoverToolbar() {
-			for (ToolItem item : toolbar.getItems()) {
-				item.dispose();
-			}
+			Arrays.stream(toolbar.getChildren()).forEach(Control::dispose);
 			for (Btn btn : buttons) {
-				ToolItem item = new ToolItem(toolbar, SWT.PUSH);
-				item.setText(btn.name);
-				item.addListener(SWT.Selection, event -> runBtn(btn));
+				Labels.createBtn(toolbar, btn.name, () -> runBtn(btn));
 			}
+			toolbar.requestLayout();
 		}
 
 		private void runBtn(Btn btn) {
