@@ -115,7 +115,16 @@ public class Workbench {
 			});
 			Layouts.setGridData(rootFiles).grabHorizontal().heightHint(rootFiles.suggestedHeight());
 
-			Labels.createBold(fileTreeCmp, "Ingredients");
+			Layouts.newGridRow(fileTreeCmp, row -> {
+				Layouts.setGrid(row).numColumns(2).spacing(0).margin(0);
+				Layouts.setGridData(Labels.createBold(row, "Ingredients")).grabHorizontal().verticalAlignment(SWT.BOTTOM);
+				ToolBar toolbar = new ToolBar(row, SWT.FLAT);
+				ToolItem grind = new ToolItem(toolbar, SWT.PUSH);
+				grind.setText("Grind all");
+				grind.addListener(SWT.Selection, e -> {
+					// do grind
+				});
+			});
 			ingredientFiles = new FileTreeCtl(fileTreeCmp, folder.resolve("ingredients"));
 			Layouts.setGridData(ingredientFiles).grabAll();
 		}
