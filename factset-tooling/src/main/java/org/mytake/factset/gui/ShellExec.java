@@ -31,7 +31,6 @@ package org.mytake.factset.gui;
 
 import com.diffplug.common.base.Errors;
 import com.diffplug.common.base.StringPrinter;
-import com.diffplug.common.base.Throwing;
 import com.diffplug.spotless.FileSignature;
 import java.io.File;
 import java.io.IOException;
@@ -44,37 +43,35 @@ import java.util.concurrent.Executors;
 import org.mytake.factset.video.Ingredients;
 
 public class ShellExec {
-	public static Throwing.Consumer<StringPrinter> gradlew(Ingredients folder, String cmd) {
-		return winUnix(folder.folder().getParentFile(), "gradlew " + cmd, "./gradlew " + cmd);
+	public static void gradlew(StringPrinter printer, Ingredients folder, String cmd) throws IOException {
+		winUnix(printer, folder.folder().getParentFile(), "gradlew " + cmd, "./gradlew " + cmd);
 	}
 
-	public static Throwing.Consumer<StringPrinter> winUnix(File cwd, String win, String unix) {
-		return printer -> {
-			ExecutorService threadStdOut = Executors.newSingleThreadExecutor();
-			ExecutorService threadStdErr = Executors.newSingleThreadExecutor();
-			OutputStream output = printer.toOutputStream();
+	public static void winUnix(StringPrinter printer, File cwd, String win, String unix) throws IOException {
+		ExecutorService threadStdOut = Executors.newSingleThreadExecutor();
+		ExecutorService threadStdErr = Executors.newSingleThreadExecutor();
+		OutputStream output = printer.toOutputStream();
 
-			List<String> args;
-			if (FileSignature.machineIsWin()) {
-				args = Arrays.asList("cmd", "/c", win);
-			} else {
-				args = Arrays.asList("sh", "-c", unix);
+		List<String> args;
+		if (FileSignature.machineIsWin()) {
+			args = Arrays.asList("cmd", "/c", win);
+		} else {
+			args = Arrays.asList("sh", "-c", unix);
+		}
+		Process process = new ProcessBuilder(args)
+				.directory(cwd)
+				.start();
+		threadStdOut.submit(() -> drain(process.getInputStream(), output));
+		threadStdErr.submit(() -> drain(process.getErrorStream(), output));
+		// wait for the process to finish
+		try {
+			int exitCode = process.waitFor();
+			if (exitCode != 0) {
+				throw new IllegalArgumentException("Exit code " + exitCode);
 			}
-			Process process = new ProcessBuilder(args)
-					.directory(cwd)
-					.start();
-			threadStdOut.submit(() -> drain(process.getInputStream(), output));
-			threadStdErr.submit(() -> drain(process.getErrorStream(), output));
-			// wait for the process to finish
-			try {
-				int exitCode = process.waitFor();
-				if (exitCode != 0) {
-					throw new IllegalArgumentException("Exit code " + exitCode);
-				}
-			} catch (InterruptedException e) {
-				throw Errors.asRuntime(e);
-			}
-		};
+		} catch (InterruptedException e) {
+			throw Errors.asRuntime(e);
+		}
 	}
 
 	private static void drain(InputStream input, OutputStream output) {

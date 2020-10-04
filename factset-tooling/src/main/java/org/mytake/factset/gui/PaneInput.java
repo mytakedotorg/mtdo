@@ -130,16 +130,19 @@ public abstract class PaneInput implements Serializable {
 		public ControlWrapper createPane(Composite parent, Workbench.Pane pane) throws IOException {
 			TextViewCtl ctl = TextEditor.createPane(parent, file.toPath(), pane);
 			hookSave(pane, log -> {
-				if (pane.hackPathCleanup != null) {
-					try {
-						pane.hackPathCleanup.accept(log);
-					} catch (Throwable e) {
-						pane.workbench().handleException(pane, e, log);
-					}
+				try {
+					pane.hackPathCleanup.accept(log);
+				} catch (Throwable e) {
+					pane.workbench().handleException(pane, e, log);
 				}
 				Files.write(file.toPath(), ctl.getSourceViewer().getDocument().get().getBytes(StandardCharsets.UTF_8));
 			});
 			return ctl;
+		}
+
+		@Override
+		public String toString() {
+			return file.getAbsolutePath();
 		}
 	}
 
@@ -168,6 +171,11 @@ public abstract class PaneInput implements Serializable {
 				ctl.save(ingredients, name);
 			});
 			return ctl;
+		}
+
+		@Override
+		public String toString() {
+			return "Match " + name;
 		}
 	}
 }

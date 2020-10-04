@@ -120,7 +120,7 @@ public class TextEditor {
 				log.println("Validate speakers.");
 				FT.VideoFactMeta meta = JsonMisc.fromJson(doc.get(), FT.VideoFactMeta.class);
 				try {
-					pane.ingredients().validateMeta(meta);
+					pane.workbench().ingredients().validateMeta(meta);
 				} catch (DisallowedValueException e) {
 					throw CleanupDialog.forDisallowedValue(pane, ctl, e);
 				}
@@ -134,7 +134,7 @@ public class TextEditor {
 			pane.hackPathCleanup = log -> {
 				setDoc.accept(in -> {
 					try {
-						return SaidCleanup.cleanup(pane.ingredients(), path, in);
+						return SaidCleanup.cleanup(pane.workbench().ingredients(), path, in);
 					} catch (Exception e) {
 						throw CleanupDialog.forSaid(pane, ctl, e);
 					}
@@ -150,6 +150,6 @@ public class TextEditor {
 	private static final String SYNC = "Sync";
 
 	private static void sync(Path path, Pane pane) throws IOException {
-		pane.workbench().open(PaneInput.syncVideo(pane.ingredients(), path));
+		pane.workbench().open(PaneInput.syncVideo(pane.workbench().ingredients(), path));
 	}
 }

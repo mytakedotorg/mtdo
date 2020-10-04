@@ -120,9 +120,7 @@ public class Workbench {
 			Layouts.setGridData(Layouts.newGridRow(fileTreeCmp, row -> {
 				Layouts.setGrid(row).numColumns(2).spacing(0).margin(0);
 				Layouts.setGridData(Labels.createBold(row, "Ingredients")).grabHorizontal().verticalAlignment(SWT.BOTTOM);
-				Labels.createBtn(row, "save all and grind " + Accelerators.uiStringFor(Accelerators.GRIND), () -> {
-
-				});
+				Labels.createBtn(row, "save all and grind " + Accelerators.uiStringFor(Accelerators.GRIND), this::saveAllAndGrind);
 			})).grabHorizontal().verticalIndent(spacing);
 			ingredientFiles = new FileTreeCtl(fileTreeCmp, folder.resolve("ingredients"));
 			Layouts.setGridData(ingredientFiles).grabAll();
@@ -203,6 +201,8 @@ public class Workbench {
 				}
 				Pane pane = (Pane) item.getData();
 				pane.triggerSave();
+			} else if (Accelerators.checkKey(e, Accelerators.GRIND)) {
+				saveAllAndGrind();
 			}
 		});
 	}
@@ -285,7 +285,7 @@ public class Workbench {
 		final SwtExec.Guarded exec;
 		final List<Btn> buttons = new ArrayList<>();
 
-		Throwing.Consumer<StringPrinter> hackPathCleanup;
+		Throwing.Consumer<StringPrinter> hackPathCleanup = printer -> {};
 
 		private Pane(PaneInput input) {
 			this.input = input;
@@ -372,10 +372,33 @@ public class Workbench {
 		public RxGetter<Boolean> isDirty() {
 			return isDirty.readOnly();
 		}
+	}
 
-		public Ingredients ingredients() throws IOException {
-			return new Ingredients(rootFolder.resolve("ingredients").toFile());
-		}
+	public Ingredients ingredients() throws IOException {
+		return new Ingredients(rootFolder.resolve("ingredients").toFile());
+	}
+
+	private void saveAllAndGrind() {
+		logOpBlocking(null, printer -> {
+			// save all files
+			pathToTab.values().forEach(pane -> {
+				if (pane.isDirty.get()) {
+					try {
+						pane.save.onNext(printer);
+					} catch (Throwable e) {
+						printer.println("ERROR when saving " + pane.input() + ": " + e.getMessage());
+					}
+				}
+			});
+			// do the grind
+			executor.submit(() -> {
+				try {
+					ShellExec.gradlew(printer, ingredients(), "assemble");
+				} catch (Throwable e) {
+					SwtExec.async().execute(() -> handleException(null, e, printer));
+				}
+			});
+		});
 	}
 
 	public static void main(String[] args) throws IOException {
