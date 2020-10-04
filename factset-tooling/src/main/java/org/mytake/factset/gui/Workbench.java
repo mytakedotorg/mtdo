@@ -37,6 +37,7 @@ import com.diffplug.common.rx.RxBox;
 import com.diffplug.common.rx.RxGetter;
 import com.diffplug.common.swt.ControlWrapper;
 import com.diffplug.common.swt.Layouts;
+import com.diffplug.common.swt.MouseClick;
 import com.diffplug.common.swt.Shells;
 import com.diffplug.common.swt.SwtExec;
 import com.diffplug.common.swt.SwtMisc;
@@ -50,11 +51,14 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.function.Function;
+import java.util.function.Predicate;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabFolder;
@@ -63,6 +67,7 @@ import org.eclipse.swt.custom.CTabFolderEvent;
 import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.ToolBar;
@@ -131,6 +136,24 @@ public class Workbench {
 				}
 			}
 		});
+		tabFolder.addListener(MouseClick.RIGHT_CLICK_EVENT, e -> {
+			if (MouseClick.RIGHT.test(e)) {
+				CTabItem item = tabFolder.getItem(new Point(e.x, e.y));
+				if (item != null) {
+					ContextMenu menu = new ContextMenu();
+					Function<Predicate<CTabItem>, Runnable> closeIf = predicate -> () -> {
+						Arrays.stream(tabFolder.getItems()).filter(predicate).forEach(CTabItem::dispose);
+					};
+					// spotless:off
+					menu.addItem("Close",        closeIf.apply(tab -> tab == item));
+					menu.addItem("Close others", closeIf.apply(tab -> tab != item));
+					menu.addItem("Close all",    closeIf.apply(tab -> true));
+					// spotless:on
+					menu.openAt(e);
+				}
+			}
+		});
+
 		tabFolder.addListener(SWT.Selection, e -> {
 			CTabItem item = tabFolder.getSelection();
 			if (item != null) {

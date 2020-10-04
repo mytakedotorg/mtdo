@@ -35,7 +35,10 @@ import com.diffplug.common.swt.SwtMisc;
 import java.util.ArrayList;
 import java.util.List;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.CTabFolder;
+import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Menu;
@@ -53,14 +56,25 @@ public class ContextMenu {
 	}
 
 	public void openAt(Event e) {
+		Control parent = (Control) e.widget;
+		Rectangle itemBounds = null;
 		if (e.widget instanceof Tree) {
 			Tree tree = (Tree) e.widget;
 			TreeItem item = tree.getItem(new Point(e.x, e.y));
-			if (item == null) {
-				openAt(tree, e.x, e.y);
-			} else {
-				openOnItem(item);
+			if (item != null) {
+				itemBounds = item.getBounds();
 			}
+		} else if (e.widget instanceof CTabFolder) {
+			CTabFolder folder = (CTabFolder) e.widget;
+			CTabItem item = folder.getItem(new Point(e.x, e.y));
+			if (item != null) {
+				itemBounds = item.getBounds();
+			}
+		}
+		if (itemBounds == null) {
+			openAt(parent, e.x, e.y);
+		} else {
+			openOnItem(parent, itemBounds);
 		}
 	}
 
@@ -70,10 +84,10 @@ public class ContextMenu {
 		menu.setVisible(true);
 	}
 
-	private void openOnItem(TreeItem item) {
-		Point bottomLeft = Corner.BOTTOM_LEFT.getPosition(SwtMisc.toDisplay(item.getParent(), item.getBounds()));
+	private void openOnItem(Control ctl, Rectangle bounds) {
+		Point bottomLeft = Corner.BOTTOM_LEFT.getPosition(SwtMisc.toDisplay(ctl, bounds));
 		bottomLeft.y += Layouts.defaultMargin();
-		Menu menu = create(item.getParent());
+		Menu menu = create(ctl);
 		menu.setLocation(bottomLeft);
 		menu.setVisible(true);
 	}
