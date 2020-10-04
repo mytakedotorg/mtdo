@@ -73,7 +73,7 @@ import org.mytake.factset.video.Ingredients;
 
 public class Workbench {
 	private final Path rootFolder;
-	private final FileTreeCtl ingredientFiles;
+	private final FileTreeCtl rootFiles, ingredientFiles;
 	private final CTabFolder tabFolder;
 	private final Map<PaneInput, Pane> pathToTab = new HashMap<>();
 	private final ToolBar toolbar;
@@ -92,26 +92,28 @@ public class Workbench {
 		form.addListener(SWT.Dispose, e -> executor.shutdown());
 
 		Composite fileTreeCmp = new Composite(form, SWT.NONE);
-		Layouts.setGrid(fileTreeCmp).margin(0).spacing(OS.getNative().winMacLinux(4, 3, 3));
-		Labels.createBold(fileTreeCmp, "Ingredients");
-		ingredientFiles = new FileTreeCtl(fileTreeCmp, folder.resolve("ingredients"));
-		Layouts.setGridData(ingredientFiles).grabAll();
+		{
+			Layouts.setGrid(fileTreeCmp).margin(0).spacing(OS.getNative().winMacLinux(4, 3, 3));
+			Labels.createBold(fileTreeCmp, "Factset");
+			rootFiles = new FileTreeCtl(fileTreeCmp, folder, path -> {
+				if (Files.isDirectory(path)) {
+					return false;
+				}
+				String name = path.getFileName().toString();
+				if (name.equals("settings.gradle") || name.equals("gradle.properties")
+						|| name.startsWith("gradlew")
+						|| name.startsWith(".")
+						|| name.startsWith("GUI_")) {
+					return false;
+				}
+				return true;
+			});
+			Layouts.setGridData(rootFiles).grabHorizontal().heightHint(rootFiles.suggestedHeight());
 
-		Labels.createBold(fileTreeCmp, "Project");
-		FileTreeCtl root = new FileTreeCtl(fileTreeCmp, folder, path -> {
-			if (Files.isDirectory(path)) {
-				return false;
-			}
-			String name = path.getFileName().toString();
-			if (name.equals("settings.gradle") || name.equals("gradle.properties")
-					|| name.startsWith("gradlew")
-					|| name.startsWith(".")
-					|| name.startsWith("GUI_")) {
-				return false;
-			}
-			return true;
-		});
-		Layouts.setGridData(root).grabHorizontal().heightHint(root.suggestedHeight());
+			Labels.createBold(fileTreeCmp, "Ingredients");
+			ingredientFiles = new FileTreeCtl(fileTreeCmp, folder.resolve("ingredients"));
+			Layouts.setGridData(ingredientFiles).grabAll();
+		}
 
 		SashForm folderSash = new SashForm(form, SWT.VERTICAL);
 
@@ -138,22 +140,24 @@ public class Workbench {
 		form.setWeights(new int[]{1, 3});
 
 		Composite consoleCmp = new Composite(folderSash, SWT.NONE);
-		Layouts.setGrid(consoleCmp).margin(0).spacing(0);
+		{
+			Layouts.setGrid(consoleCmp).margin(0).spacing(0);
 
-		toolbar = new ToolBar(consoleCmp, SWT.NONE);
-		ToolItem toolbarItem = new ToolItem(toolbar, SWT.PUSH);
-		toolbarItem.setText("(Actions will go here)");
-		toolbarItem.setEnabled(false);
+			toolbar = new ToolBar(consoleCmp, SWT.NONE);
+			ToolItem toolbarItem = new ToolItem(toolbar, SWT.PUSH);
+			toolbarItem.setText("(Actions will go here)");
+			toolbarItem.setEnabled(false);
 
-		Layouts.setGridData(toolbar).grabHorizontal();
+			Layouts.setGridData(toolbar).grabHorizontal();
 
-		console = Console.nonWrapping(consoleCmp);
-		Layouts.setGridData(console).grabAll();
-		console.wipeAndCreateNewStream().println("Console (events will be printed here)");
+			console = Console.nonWrapping(consoleCmp);
+			Layouts.setGridData(console).grabAll();
+			console.wipeAndCreateNewStream().println("Console (events will be printed here)");
+		}
 		folderSash.setWeights(new int[]{3, 1});
 
 		// open files on double-click
-		Rx.subscribe(Observable.merge(ingredientFiles.doubleClick(), root.doubleClick()), paths -> {
+		Rx.subscribe(Observable.merge(ingredientFiles.doubleClick(), rootFiles.doubleClick()), paths -> {
 			for (Path path : paths) {
 				if (Files.isRegularFile(path)) {
 					openFile(path);
