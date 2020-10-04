@@ -29,6 +29,7 @@
 package org.mytake.factset.gui;
 
 
+import com.diffplug.common.base.Errors;
 import com.diffplug.common.base.Preconditions;
 import com.diffplug.common.base.StringPrinter;
 import com.diffplug.common.base.Throwing;
@@ -81,15 +82,15 @@ public class Workbench {
 	private final CTabFolder tabFolder;
 	private final Map<PaneInput, Pane> pathToTab = new HashMap<>();
 	private final Composite toolbar;
-	private final Console console;
+	private final Console _console;
 
 	private final ExecutorService executor = Executors.newSingleThreadExecutor();
 
 	public Workbench(Composite parent, Path folder) {
 		this.rootFolder = folder;
 		Display display = parent.getDisplay();
-		display.setErrorHandler(this::logError);
-		display.setRuntimeExceptionHandler(this::logError);
+		display.setErrorHandler(Errors.dialog()::accept);
+		display.setRuntimeExceptionHandler(Errors.dialog()::accept);
 
 		Layouts.setFill(parent);
 		SashForm form = new SashForm(parent, SWT.HORIZONTAL);
@@ -119,7 +120,7 @@ public class Workbench {
 			Layouts.setGridData(Layouts.newGridRow(fileTreeCmp, row -> {
 				Layouts.setGrid(row).numColumns(2).spacing(0).margin(0);
 				Layouts.setGridData(Labels.createBold(row, "Ingredients")).grabHorizontal().verticalAlignment(SWT.BOTTOM);
-				Labels.createBtn(row, "grind " + Accelerators.uiStringFor(Accelerators.GRIND), () -> {
+				Labels.createBtn(row, "save all and grind " + Accelerators.uiStringFor(Accelerators.GRIND), () -> {
 
 				});
 			})).grabHorizontal().verticalIndent(spacing);
@@ -179,9 +180,9 @@ public class Workbench {
 
 			Layouts.setGridData(toolbar).grabHorizontal();
 
-			console = Console.nonWrapping(consoleCmp);
-			Layouts.setGridData(console).grabAll();
-			console.wipeAndCreateNewStream().println("Console (events will be printed here)");
+			_console = Console.nonWrapping(consoleCmp);
+			Layouts.setGridData(_console).grabAll();
+			_console.wipeAndCreateNewStream().println("Console (events will be printed here)");
 		}
 		folderSash.setWeights(new int[]{3, 1});
 
@@ -206,15 +207,6 @@ public class Workbench {
 		});
 	}
 
-	private void logError(Throwable e) {
-		if (console == null) {
-			e.printStackTrace();
-		}
-		StringPrinter printer = console.wipeAndCreateNewStream();
-		e.printStackTrace(printer.toPrintWriter());
-		printer.println("");
-	}
-
 	public Pane openFile(Path path) {
 		return open(PaneInput.path(path));
 	}
@@ -231,14 +223,27 @@ public class Workbench {
 	}
 
 	public void logOpDontBlock(Throwing.Consumer<StringPrinter> op) {
-		StringPrinter printer = console.wipeAndCreateNewStream();
+		logOpDontBlock(null, op);
+	}
+
+	private void logOpDontBlock(Pane pane, Throwing.Consumer<StringPrinter> op) {
+		StringPrinter log = _console.wipeAndCreateNewStream();
 		executor.submit(() -> {
 			try {
-				op.accept(printer);
+				op.accept(log);
 			} catch (Throwable e) {
-				handleException(null, e, printer);
+				SwtExec.async().execute(() -> handleException(pane, e, log));
 			}
 		});
+	}
+
+	private void logOpBlocking(Pane pane, Throwing.Consumer<StringPrinter> op) {
+		StringPrinter log = _console.wipeAndCreateNewStream();
+		try {
+			op.accept(log);
+		} catch (Throwable e) {
+			handleException(pane, e, log);
+		}
 	}
 
 	void handleException(Pane pane, Throwable e, StringPrinter log) {
@@ -291,6 +296,7 @@ public class Workbench {
 			pathToTab.put(input, this);
 			tab.addListener(SWT.Dispose, e -> {
 				pathToTab.remove(input);
+				Arrays.stream(toolbar.getChildren()).filter(btn -> btn.getData() == this).forEach(Control::dispose);
 			});
 
 			exec = SwtExec.immediate().guardOn(tab);
@@ -298,7 +304,7 @@ public class Workbench {
 				tab.setText(input.tabTxt() + (dirty ? "*" : ""));
 			});
 
-			addButton("Clean and Save " + Accelerators.uiStringFor(Accelerators.SAVE), printer -> {
+			addButton("clean and save " + Accelerators.uiStringFor(Accelerators.SAVE), printer -> {
 				save.onNext(printer);
 				isDirty.set(false);
 			});
@@ -308,35 +314,32 @@ public class Workbench {
 				tab.setControl(control.getRootControl());
 				takeoverToolbar();
 			} catch (Exception e) {
-				try (PrintWriter writer = console.wipeAndCreateNewStream().toPrintWriter()) {
-					e.printStackTrace(writer);
-				}
+				workbench().logOpDontBlock(printer -> {
+					try (PrintWriter writer = printer.toPrintWriter()) {
+						e.printStackTrace(writer);
+					}
+				});
 				tab.dispose();
 			}
 		}
 
 		public void triggerSave() {
 			Btn saveBtn = buttons.get(0);
-			Preconditions.checkArgument(saveBtn.name.contains("Save"));
+			Preconditions.checkArgument(saveBtn.name.contains("save"));
 			runBtn(saveBtn);
 		}
 
 		private void takeoverToolbar() {
 			Arrays.stream(toolbar.getChildren()).forEach(Control::dispose);
 			for (Btn btn : buttons) {
-				Labels.createBtn(toolbar, btn.name, () -> runBtn(btn));
+				ControlWrapper ctl = Labels.createBtn(toolbar, btn.name, () -> runBtn(btn));
+				ctl.getRootControl().setData(this);
 			}
 			toolbar.requestLayout();
 		}
 
 		private void runBtn(Btn btn) {
-			StringPrinter printer = console.wipeAndCreateNewStream();
-			try {
-				printer.println(btn.name + " " + input.tabTxt());
-				btn.log.accept(printer);
-			} catch (Throwable e) {
-				handleException(this, e, printer);
-			}
+			workbench().logOpBlocking(this, btn.log);
 		}
 
 		public PaneInput input() {
@@ -355,14 +358,7 @@ public class Workbench {
 		}
 
 		public void logOpDontBlock(Throwing.Consumer<StringPrinter> op) {
-			StringPrinter printer = console.wipeAndCreateNewStream();
-			executor.submit(() -> {
-				try {
-					op.accept(printer);
-				} catch (Throwable e) {
-					handleException(this, e, printer);
-				}
-			});
+			workbench().logOpDontBlock(this, op);
 		}
 
 		public Observable<Loc> highlight() {
