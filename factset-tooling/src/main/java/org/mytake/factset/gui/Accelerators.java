@@ -53,6 +53,7 @@ public class Accelerators {
 
 	public static final int SELECT_ALL = CTRL | 'a';
 	public static final int SAVE = CTRL | 's';
+	public static final int GRIND = CTRL | 'g';
 
 	public static boolean isDelete(Event e) {
 		return e.keyCode == SWT.DEL || e.keyCode == SWT.BS;
@@ -73,6 +74,7 @@ public class Accelerators {
 		}
 
 		StringBuilder builder = new StringBuilder(16);
+		builder.append('[');
 		if (SwtMisc.flagIsSet(SWT.CTRL, accelerator)) {
 			builder.append("Ctrl ");
 			accelerator -= SWT.CTRL;
@@ -114,7 +116,7 @@ public class Accelerators {
 			// spotless:on
 		}
 		builder.append(end);
-
+		builder.append(']');
 		return builder.toString();
 	}
 

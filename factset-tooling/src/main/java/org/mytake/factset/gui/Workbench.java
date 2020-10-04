@@ -119,8 +119,8 @@ public class Workbench {
 			Layouts.setGridData(Layouts.newGridRow(fileTreeCmp, row -> {
 				Layouts.setGrid(row).numColumns(2).spacing(0).margin(0);
 				Layouts.setGridData(Labels.createBold(row, "Ingredients")).grabHorizontal().verticalAlignment(SWT.BOTTOM);
-				Labels.createBtn(row, "grind (" + Accelerators.uiStringFor(Accelerators.GRIND) + ")", () -> {
-
+				Labels.createBtn(row, "grind " + Accelerators.uiStringFor(Accelerators.GRIND), () -> {
+					
 				});
 			})).grabHorizontal().verticalIndent(spacing);
 			ingredientFiles = new FileTreeCtl(fileTreeCmp, folder.resolve("ingredients"));
@@ -262,7 +262,7 @@ public class Workbench {
 				tab.setText(input.tabTxt() + (dirty ? "*" : ""));
 			});
 
-			addButton("Clean and Save (" + Accelerators.uiStringFor(Accelerators.SAVE) + ")", printer -> {
+			addButton("Clean and Save " + Accelerators.uiStringFor(Accelerators.SAVE), printer -> {
 				save.onNext(printer);
 				isDirty.set(false);
 			});
