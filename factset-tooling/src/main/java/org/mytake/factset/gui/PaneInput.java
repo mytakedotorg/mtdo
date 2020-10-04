@@ -105,7 +105,7 @@ public abstract class PaneInput implements Serializable {
 				saveAction.accept(log);
 				log.println("Saved " + tabTxt());
 			} catch (Throwable e) {
-				pane.handleException(e, log);
+				pane.workbench().handleException(pane, e, log);
 			}
 		});
 	}
@@ -134,7 +134,7 @@ public abstract class PaneInput implements Serializable {
 					try {
 						pane.hackPathCleanup.accept(log);
 					} catch (Throwable e) {
-						pane.handleException(e, log);
+						pane.workbench().handleException(pane, e, log);
 					}
 				}
 				Files.write(file.toPath(), ctl.getSourceViewer().getDocument().get().getBytes(StandardCharsets.UTF_8));

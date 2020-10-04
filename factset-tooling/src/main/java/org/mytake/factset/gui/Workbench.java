@@ -120,7 +120,7 @@ public class Workbench {
 				Layouts.setGrid(row).numColumns(2).spacing(0).margin(0);
 				Layouts.setGridData(Labels.createBold(row, "Ingredients")).grabHorizontal().verticalAlignment(SWT.BOTTOM);
 				Labels.createBtn(row, "grind " + Accelerators.uiStringFor(Accelerators.GRIND), () -> {
-					
+
 				});
 			})).grabHorizontal().verticalIndent(spacing);
 			ingredientFiles = new FileTreeCtl(fileTreeCmp, folder.resolve("ingredients"));
@@ -230,6 +230,42 @@ public class Workbench {
 		return pane;
 	}
 
+	public void logOpDontBlock(Throwing.Consumer<StringPrinter> op) {
+		StringPrinter printer = console.wipeAndCreateNewStream();
+		executor.submit(() -> {
+			try {
+				op.accept(printer);
+			} catch (Throwable e) {
+				handleException(null, e, printer);
+			}
+		});
+	}
+
+	void handleException(Pane pane, Throwable e, StringPrinter log) {
+		if (e instanceof LocatedException) {
+			// makes sure that highlight always triggers on the UI thread
+			LocatedException located = (LocatedException) e;
+			if (pane != null && (located.file == null || PaneInput.path(located.file).equals(pane.input))) {
+				pane.exec.execute(() -> pane.highlight.onNext(located.loc));
+			} else {
+				Pane newPane = openFile(located.file);
+				SwtExec.async().execute(() -> {
+					// let the file open, then highlight it there
+					newPane.highlight.onNext(located.loc);
+				});
+			}
+		}
+		log.println(e.getMessage());
+		// print the stacktrace to the IDE console, for easier debugging
+		// it doesn't do much good to the end user, so don't need it in their console
+		e.printStackTrace();
+
+		if (tabFolder.getShell() == SwtMisc.assertUI().getActiveShell()) {
+			// there isn't an error dialog, so we need to open one
+			SwtMisc.blockForError(e.getMessage(), e.getMessage());
+		}
+	}
+
 	static class Btn {
 		String name;
 		Throwing.Consumer<StringPrinter> log;
@@ -299,7 +335,7 @@ public class Workbench {
 				printer.println(btn.name + " " + input.tabTxt());
 				btn.log.accept(printer);
 			} catch (Throwable e) {
-				handleException(e, printer);
+				handleException(this, e, printer);
 			}
 		}
 
@@ -318,11 +354,15 @@ public class Workbench {
 			buttons.add(btn);
 		}
 
-		public void runButton(String name) {
-			Btn btn = buttons.stream()
-					.filter(b -> b.name.equals(name))
-					.findAny().get();
-			runBtn(btn);
+		public void logOpDontBlock(Throwing.Consumer<StringPrinter> op) {
+			StringPrinter printer = console.wipeAndCreateNewStream();
+			executor.submit(() -> {
+				try {
+					op.accept(printer);
+				} catch (Throwable e) {
+					handleException(this, e, printer);
+				}
+			});
 		}
 
 		public Observable<Loc> highlight() {
@@ -335,42 +375,6 @@ public class Workbench {
 
 		public RxGetter<Boolean> isDirty() {
 			return isDirty.readOnly();
-		}
-
-		public void logOpDontBlock(Throwing.Consumer<StringPrinter> op) {
-			StringPrinter printer = console.wipeAndCreateNewStream();
-			executor.submit(() -> {
-				try {
-					op.accept(printer);
-				} catch (Throwable e) {
-					handleException(e, printer);
-				}
-			});
-		}
-
-		void handleException(Throwable e, StringPrinter log) {
-			if (e instanceof LocatedException) {
-				// makes sure that highlight always triggers on the UI thread
-				LocatedException located = (LocatedException) e;
-				if (located.file == null || PaneInput.path(located.file).equals(input)) {
-					exec.execute(() -> highlight.onNext(located.loc));
-				} else {
-					Pane pane = openFile(located.file);
-					SwtExec.async().execute(() -> {
-						// let the file open, then highlight it there
-						pane.highlight.onNext(located.loc);
-					});
-				}
-			}
-			log.println(e.getMessage());
-			// print the stacktrace to the IDE console, for easier debugging
-			// it doesn't do much good to the end user, so don't need it in their console
-			e.printStackTrace();
-
-			if (tabFolder.getShell() == SwtMisc.assertUI().getActiveShell()) {
-				// there isn't an error dialog, so we need to open one
-				SwtMisc.blockForError(e.getMessage(), e.getMessage());
-			}
 		}
 
 		public Ingredients ingredients() throws IOException {

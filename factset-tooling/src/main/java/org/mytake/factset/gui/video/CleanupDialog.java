@@ -52,7 +52,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.gradle.internal.impldep.com.google.api.client.repackaged.com.google.common.base.Throwables;
 import org.mytake.factset.DisallowedValueException;
 import org.mytake.factset.gui.Labels;
-import org.mytake.factset.gui.TextEditor;
 import org.mytake.factset.gui.TextViewCtl;
 import org.mytake.factset.gui.VScrollCtl;
 import org.mytake.factset.gui.Workbench;
@@ -145,7 +144,7 @@ public class CleanupDialog {
 			ButtonPanel panel = ButtonPanel.builder()
 					.add("Take", () -> {
 						cmp.getShell().dispose();
-						pane.runButton(TextEditor.CLEANUP_SAID);
+						pane.triggerSave();
 					})
 					.add("Cancel", () -> {
 						doc.set(orig);
