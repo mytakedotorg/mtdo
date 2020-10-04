@@ -148,6 +148,7 @@ class FileTreeCtl extends ControlWrapper.AroundControl<Composite> {
 			menu.addItem("Create folder", () -> Kind.FOLDER.createChild(this, root));
 		} else if (paths.size() == 1) {
 			Path path = paths.get(0);
+			menu.addItem("Open", () -> doubleClick.onNext(paths));
 			if (Files.isDirectory(path)) {
 				menu.addItem("Create child file", () -> Kind.FILE.createChild(this, path));
 				menu.addItem("Create child folder", () -> Kind.FOLDER.createChild(this, path));
@@ -155,7 +156,8 @@ class FileTreeCtl extends ControlWrapper.AroundControl<Composite> {
 			menu.addItem("Delete", () -> delete(Collections.singleton(path)));
 			menu.addItem("Rename", () -> rename(path));
 		} else {
-			menu.addItem("Delete", () -> delete(paths));
+			menu.addItem("Open all", () -> doubleClick.onNext(paths));
+			menu.addItem("Delete all", () -> delete(paths));
 			if (paths.stream().allMatch(Files::isRegularFile)) {
 				Set<String> commonNames = paths.stream()
 						.map(path -> {
