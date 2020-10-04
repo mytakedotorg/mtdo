@@ -65,10 +65,7 @@ import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Menu;
-import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.swt.widgets.TreeItem;
 
 class FileTreeCtl extends ControlWrapper.AroundControl<Composite> {
 	// files at top, folders at bottom, most-recent dates first
@@ -124,17 +121,7 @@ class FileTreeCtl extends ControlWrapper.AroundControl<Composite> {
 		});
 		viewer.getTree().addListener(MouseClick.RIGHT_CLICK_EVENT, e -> {
 			if (MouseClick.RIGHT.test(e)) {
-				Menu menu = new Menu(viewer.getTree());
-				TreeItem item = viewer.getTree().getItem(new Point(e.x, e.y));
-				if (item != null) {
-					Point bottomLeft = Corner.BOTTOM_LEFT.getPosition(SwtMisc.toDisplay(viewer.getTree(), item.getBounds()));
-					bottomLeft.y += Layouts.defaultMargin();
-					menu.setLocation(bottomLeft);
-				} else {
-					menu.setLocation(viewer.getTree().toDisplay(e.x, e.y));
-				}
-				rightClick(menu, selection.get());
-				menu.setVisible(true);
+				rightClick(selection.get()).openAt(e);
 			}
 		});
 	}
@@ -154,20 +141,21 @@ class FileTreeCtl extends ControlWrapper.AroundControl<Composite> {
 	////////////////////////////////////////
 	// right-click file manipulation menu //
 	////////////////////////////////////////
-	private void rightClick(Menu menu, ImmutableList<Path> paths) {
+	private ContextMenu rightClick(ImmutableList<Path> paths) {
+		ContextMenu menu = new ContextMenu();
 		if (paths.isEmpty()) {
-			addItem(menu, "Create file", () -> Kind.FILE.createChild(this, root));
-			addItem(menu, "Create folder", () -> Kind.FOLDER.createChild(this, root));
+			menu.addItem("Create file", () -> Kind.FILE.createChild(this, root));
+			menu.addItem("Create folder", () -> Kind.FOLDER.createChild(this, root));
 		} else if (paths.size() == 1) {
 			Path path = paths.get(0);
 			if (Files.isDirectory(path)) {
-				addItem(menu, "Create child file", () -> Kind.FILE.createChild(this, path));
-				addItem(menu, "Create child folder", () -> Kind.FOLDER.createChild(this, path));
+				menu.addItem("Create child file", () -> Kind.FILE.createChild(this, path));
+				menu.addItem("Create child folder", () -> Kind.FOLDER.createChild(this, path));
 			}
-			addItem(menu, "Delete", () -> delete(Collections.singleton(path)));
-			addItem(menu, "Rename", () -> rename(path));
+			menu.addItem("Delete", () -> delete(Collections.singleton(path)));
+			menu.addItem("Rename", () -> rename(path));
 		} else {
-			addItem(menu, "Delete", () -> delete(paths));
+			menu.addItem("Delete", () -> delete(paths));
 			if (paths.stream().allMatch(Files::isRegularFile)) {
 				Set<String> commonNames = paths.stream()
 						.map(path -> {
@@ -176,10 +164,11 @@ class FileTreeCtl extends ControlWrapper.AroundControl<Composite> {
 							return lastDot == -1 ? filename : filename.substring(0, lastDot);
 						}).collect(Collectors.toSet());
 				if (commonNames.size() == 1) {
-					addItem(menu, "Rename all", () -> renameAll(paths, Iterables.getOnlyElement(commonNames)));
+					menu.addItem("Rename all", () -> renameAll(paths, Iterables.getOnlyElement(commonNames)));
 				}
 			}
 		}
+		return menu;
 	}
 
 	private void delete(Collection<Path> paths) {
@@ -237,7 +226,7 @@ class FileTreeCtl extends ControlWrapper.AroundControl<Composite> {
 		FILE, FOLDER;
 
 		void createChild(FileTreeCtl ctl, Path parent) {
-			String name = nameDialog("New " + name().toLowerCase(Locale.ROOT), "");
+			String name = ctl.nameDialog("New " + name().toLowerCase(Locale.ROOT), "");
 			if (name == null) {
 				return;
 			}
@@ -253,7 +242,11 @@ class FileTreeCtl extends ControlWrapper.AroundControl<Composite> {
 		}
 	}
 
-	private static @Nullable String nameDialog(String operation, String start) {
+	private @Nullable String nameDialog(String operation, String start) {
+		int width = viewer.getTree().getSize().x;
+		int left = viewer.getTree().toDisplay(viewer.getTree().getLocation()).x;
+		int centerY = SwtMisc.assertUI().getCursorLocation().y;
+		int centerX = left + width / 2;
 		Box.Nullable<String> result = Box.Nullable.ofNull();
 		Shells.builder(SWT.APPLICATION_MODAL, cmp -> {
 			Layouts.setGrid(cmp);
@@ -282,15 +275,10 @@ class FileTreeCtl extends ControlWrapper.AroundControl<Composite> {
 					.build(cmp);
 			Layouts.setGridData(panel).grabHorizontal();
 		})
-				.setSize(SwtMisc.defaultDialogWidth(), SWT.DEFAULT)
+				.setSize(width, SWT.DEFAULT)
+				.setLocation(Corner.CENTER, new Point(centerX, centerY))
 				.openOnActiveBlocking();
 		return result.get();
-	}
-
-	private void addItem(Menu menu, String txt, Runnable onClick) {
-		MenuItem add = new MenuItem(menu, SWT.PUSH);
-		add.setText(txt);
-		add.addListener(SWT.Selection, e -> onClick.run());
 	}
 
 	private void refresh() {
