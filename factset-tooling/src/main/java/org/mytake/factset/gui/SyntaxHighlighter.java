@@ -91,6 +91,8 @@ public interface SyntaxHighlighter {
 		private static Color COMMENT_COLOR = new Color(63, 127, 95);
 		private static String STRING = "__string_type";
 		private static Color STRING_COLOR = new Color(0, 0, 192);
+		private static String REGEX = "__regex_type";
+		private static Color REGEX_COLOR = new Color(192, 0, 0);
 		private static String HEADER = "__header_type";
 		private static Color HEADER_COLOR = new Color(0, 0, 192);
 
@@ -101,7 +103,8 @@ public interface SyntaxHighlighter {
 		private static final SyntaxHighlighter GRADLE = new RuleBasedHighlighter(
 				new Rule(COMMENT, new EndOfLineRule("//", new Token(COMMENT)), new TextAttribute(COMMENT_COLOR)),
 				new Rule(STRING, new SingleLineRule("\"", "\"", new Token(STRING), '\\'), new TextAttribute(STRING_COLOR)),
-				new Rule(STRING, new SingleLineRule("\'", "\'", new Token(STRING), '\\'), new TextAttribute(STRING_COLOR)));
+				new Rule(STRING, new SingleLineRule("\'", "\'", new Token(STRING), '\\'), new TextAttribute(STRING_COLOR)),
+				new Rule(REGEX, new SingleLineRule("/", "/", new Token(REGEX), '\\'), new TextAttribute(REGEX_COLOR)));
 		private static final SyntaxHighlighter MARKDOWN = new RuleBasedHighlighter(
 				new Rule(HEADER, new EndOfLineRule("#", new Token(HEADER)), new TextAttribute(HEADER_COLOR)));
 
