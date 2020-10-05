@@ -36,10 +36,14 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import javax.annotation.Nullable;
 import org.mytake.factset.video.Ingredients;
 
 public class ShellExec {
@@ -50,27 +54,68 @@ public class ShellExec {
 	public static void winUnix(StringPrinter printer, File cwd, String win, String unix) throws IOException {
 		ExecutorService threadStdOut = Executors.newSingleThreadExecutor();
 		ExecutorService threadStdErr = Executors.newSingleThreadExecutor();
-		OutputStream output = printer.toOutputStream();
-
-		List<String> args;
-		if (FileSignature.machineIsWin()) {
-			args = Arrays.asList("cmd", "/c", win);
-		} else {
-			args = Arrays.asList("sh", "-c", unix);
-		}
-		Process process = new ProcessBuilder(args)
-				.directory(cwd)
-				.start();
-		threadStdOut.submit(() -> drain(process.getInputStream(), output));
-		threadStdErr.submit(() -> drain(process.getErrorStream(), output));
-		// wait for the process to finish
-		try {
+		// create a StringPrinter which stores output **and** forwards to the parent printer 
+		StringBuilder builder = new StringBuilder();
+		StringPrinter tee = new StringPrinter(str -> {
+			synchronized (builder) {
+				builder.append(str);
+			}
+			printer.print(str);
+		});
+		try (OutputStream output = tee.toOutputStream()) {
+			List<String> args;
+			if (FileSignature.machineIsWin()) {
+				args = Arrays.asList("cmd", "/c", win);
+			} else {
+				args = Arrays.asList("sh", "-c", unix);
+			}
+			Process process = new ProcessBuilder(args)
+					.directory(cwd)
+					.start();
+			threadStdOut.submit(() -> drain(process.getInputStream(), output));
+			threadStdErr.submit(() -> drain(process.getErrorStream(), output));
+			// wait for the process to finish
 			int exitCode = process.waitFor();
 			if (exitCode != 0) {
-				throw new IllegalArgumentException("Exit code " + exitCode);
+				output.close();
+				throw new ExitCodeNotZeroException(exitCode, builder.toString());
 			}
 		} catch (InterruptedException e) {
 			throw Errors.asRuntime(e);
+		}
+	}
+
+	@SuppressWarnings("serial")
+	public static class ExitCodeNotZeroException extends RuntimeException {
+		public final int exitCode;
+		public final String consoleOutput;
+
+		public ExitCodeNotZeroException(int exitCode, String consoleOutput) {
+			this.exitCode = exitCode;
+			this.consoleOutput = consoleOutput;
+		}
+
+		public @Nullable Path fileToOpen(Path rootFolder) {
+			int start = consoleOutput.indexOf(Ingredients.PROBLEM_IN_START);
+			if (start == -1) {
+				return null;
+			} else {
+				int end = consoleOutput.indexOf(Ingredients.PROBLEM_IN_END, start + Ingredients.PROBLEM_IN_START.length());
+				if (end == -1) {
+					return null;
+				}
+				Path path = Paths.get(consoleOutput.substring(start + Ingredients.PROBLEM_IN_START.length(), end));
+				if (Files.exists(path)) {
+					return path;
+				} else {
+					path = rootFolder.resolve(path);
+					if (Files.exists(path)) {
+						return path;
+					} else {
+						return null;
+					}
+				}
+			}
 		}
 	}
 

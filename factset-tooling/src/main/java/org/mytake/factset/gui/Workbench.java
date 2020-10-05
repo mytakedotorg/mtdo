@@ -394,8 +394,15 @@ public class Workbench {
 			executor.submit(() -> {
 				try {
 					ShellExec.gradlew(printer, ingredients(), "assemble");
-				} catch (Throwable e) {
-					SwtExec.async().execute(() -> handleException(null, e, printer));
+				} catch (ShellExec.ExitCodeNotZeroException e) {
+					Path toOpen = e.fileToOpen(rootFolder.resolve("ingredients"));
+					if (toOpen != null) {
+						SwtExec.async().execute(() -> openFile(toOpen));
+					} else {
+						Errors.dialog().accept(e);
+					}
+				} catch (IOException e) {
+					Errors.dialog().accept(e);
 				}
 			});
 		});

@@ -104,16 +104,9 @@ public class GrindLogic {
 				buildJson.put(name, titleSlug);
 				logger.info("  into " + titleSlug + ".json");
 
-				// try to parse
-				FT.VideoFactContentEncoded content;
-				try {
-					TranscriptMatch match = ingredients.loadTranscript(name);
-					content = encodeSpeakersIntoComments(match.toVideoFact());
-				} catch (Exception e) {
-					throw new GradleException("Problem in '" + name + "': " + e.getMessage(), e);
-				}
-				logger.info("  success");
-
+				// try to match
+				TranscriptMatch match = ingredients.loadTranscript(name);
+				FT.VideoFactContentEncoded content = encodeSpeakersIntoComments(match.toVideoFact());
 				GitJson.write(content).toCompact(rootDir.resolve(SAUSAGE + "/" + titleSlug + ".json").toFile());
 			}
 		}

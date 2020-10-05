@@ -44,6 +44,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java2ts.FT;
+import org.gradle.api.GradleException;
 import org.mytake.factset.DisallowedValueException;
 import org.mytake.factset.JsonMisc;
 import org.mytake.factset.video.VttTranscript.Mode;
@@ -151,27 +152,50 @@ public class Ingredients implements Serializable {
 
 	public TranscriptMatch loadTranscript(String name, StringPrinter printer) throws IOException {
 		// load and validate the json speakers
-		printer.print("Loading " + name + ".json  ...  ");
-		FT.VideoFactMeta meta = loadMetaNoValidation(name);
-		printer.println("Success.");
-		printer.print("Validating speakers  ...  ");
-		validateMeta(meta);
-		printer.println("Success.");
+		FT.VideoFactMeta meta;
+		try {
+			printer.print("Loading " + name + ".json  ...  ");
+			meta = loadMetaNoValidation(name);
+			printer.println("Success.");
+			printer.print("Validating speakers  ...  ");
+			validateMeta(meta);
+			printer.println("Success.");
+		} catch (Exception e) {
+			throw problemInFile(name + ".json", e);
+		}
 
 		// load the said
-		printer.print("Loading " + name + ".said  ...  ");
-		SaidTranscript said = SaidTranscript.parse(fileMeta(name), meta, fileSaid(name));
-		printer.println("Success.");
+		SaidTranscript said;
+		try {
+			printer.print("Loading " + name + ".said  ...  ");
+			said = SaidTranscript.parse(fileMeta(name), meta, fileSaid(name));
+			printer.println("Success.");
+		} catch (Exception e) {
+			throw problemInFile(name + ".said", e);
+		}
 
-		printer.print("Loading " + name + ".vtt  ...  ");
-		VttTranscript vtt = VttTranscript.parse(fileVtt(name), Mode.STRICT);
-		printer.println("Success.");
+		// load the vtt
+		VttTranscript vtt;
+		try {
+			printer.print("Loading " + name + ".vtt  ...  ");
+			vtt = VttTranscript.parse(fileVtt(name), Mode.STRICT);
+			printer.println("Success.");
+		} catch (Exception e) {
+			throw problemInFile(name + ".vtt", e);
+		}
 
 		printer.print("Syncing  ...  ");
 		TranscriptMatch match = new TranscriptMatch(meta, said, vtt);
 		printer.println("Success.");
 		return match;
 	}
+
+	private GradleException problemInFile(String path, Throwable cause) {
+		return new GradleException(PROBLEM_IN_START + path + PROBLEM_IN_END + cause.getMessage(), cause);
+	}
+
+	public static final String PROBLEM_IN_START = "Problem in '";
+	public static final String PROBLEM_IN_END = "': ";
 
 	public void validateMeta(FT.VideoFactMeta meta) {
 		for (FT.Speaker speaker : meta.speakers) {
