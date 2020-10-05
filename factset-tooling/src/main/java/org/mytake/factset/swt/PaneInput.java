@@ -32,7 +32,6 @@ package org.mytake.factset.swt;
 import com.diffplug.common.base.StringPrinter;
 import com.diffplug.common.base.Throwing;
 import com.diffplug.common.swt.ControlWrapper;
-import com.diffplug.common.swt.SwtExec;
 import com.diffplug.spotless.ThrowingEx;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -158,8 +157,11 @@ public abstract class PaneInput implements Serializable {
 		public ControlWrapper createPane(Composite parent, Workbench.Pane pane) throws IOException {
 			TranscriptCtl ctl = TranscriptCtl.createPane(parent, pane);
 			pane.logOpDontBlock(toString(), printer -> {
+				// do spotlessApply
+				ShellExec.gradlew(printer, ingredients, "spotlessApply");
+				// then do the match
 				TranscriptMatch match = ingredients.loadTranscript(name, printer);
-				SwtExec.async().guardOn(ctl).execute(() -> ctl.setTo(match));
+				pane.exec.execute(() -> ctl.setTo(match));
 			});
 			onSave = printer -> ctl.save(ingredients, name);
 			return ctl;
