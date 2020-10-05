@@ -67,7 +67,8 @@ class TemplatePlugin {
 				"indent_style = space",
 				"indent_size = 2");
 		template.mustContain("gradle.properties",
-				"org.gradle.caching=true");
+				"org.gradle.caching=true",
+				"buildDir=.gradle/build");
 		template.mustContain("README.md",
 				INCLUSION_CRITERIA,
 				NOTES,
