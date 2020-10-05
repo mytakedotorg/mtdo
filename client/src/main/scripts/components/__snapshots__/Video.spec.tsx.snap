@@ -129,6 +129,10 @@ exports[`Video 1`] = `
             "primaryDateKind": "recorded",
             "title": "Donald Trump - Hillary Clinton (2/3)",
           },
+          "factset": Object {
+            "id": "us-presidential-debates",
+            "title": "U.S. Presidential Debates",
+          },
           "plainText": "Good evening I'm Martha Raddatz from ABC News. And I'm Anderson Cooper from CNN. We want to welcome you to Washington University in St. Louis for the second presidential debate between Hillary Clinton and Donald Trump sponsored by the Commission on Presidential Debates. tonight's debate is a Town Hall format, which gives voters a chance to directly ask the candidates questions. Martha and I will ask follow-up questions but the night really belongs to the people in this room and to people across the country who have submitted questions online.",
           "speakers": Array [
             Object {
@@ -493,6 +497,10 @@ exports[`Video with highlights 1`] = `
             "primaryDate": "2016-10-09",
             "primaryDateKind": "recorded",
             "title": "Donald Trump - Hillary Clinton (2/3)",
+          },
+          "factset": Object {
+            "id": "us-presidential-debates",
+            "title": "U.S. Presidential Debates",
           },
           "plainText": "Good evening I'm Martha Raddatz from ABC News. And I'm Anderson Cooper from CNN. We want to welcome you to Washington University in St. Louis for the second presidential debate between Hillary Clinton and Donald Trump sponsored by the Commission on Presidential Debates. tonight's debate is a Town Hall format, which gives voters a chance to directly ask the candidates questions. Martha and I will ask follow-up questions but the night really belongs to the people in this room and to people across the country who have submitted questions online.",
           "speakers": Array [

@@ -30,6 +30,10 @@ const videoFactFast: FT.VideoFactContent = {
     primaryDateKind: "recorded",
     kind: "video",
   },
+  factset: {
+    id: "us-presidential-debates",
+    title: "U.S. Presidential Debates",
+  },
   youtubeId: "ApTLB76Nmdg",
   durationSeconds: 5624,
   speakers: [
@@ -545,6 +549,10 @@ const kennedyNixon: FT.VideoFactContent = {
     primaryDate: "1960-09-26",
     primaryDateKind: "recorded",
     kind: "video",
+  },
+  factset: {
+    id: "us-presidential-debates",
+    title: "U.S. Presidential Debates",
   },
   youtubeId: "CsurHThBBkk",
   durationSeconds: 3536,
