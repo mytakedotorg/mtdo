@@ -26,46 +26,45 @@
  *
  * You can contact us at team@mytake.org
  */
-package org.mytake.factset.gui;
+package org.mytake.factset.swt;
 
 
-import com.diffplug.common.swt.ControlWrapper;
+import com.diffplug.common.swt.Fonts;
+import com.diffplug.common.swt.widgets.LinkBtn;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.ScrolledComposite;
-import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Label;
 
-/**
- * SWT provides {@link ScrolledComposite} which provides a wealth of
- * scrolling behavior ([google](https://www.google.com/search?q=SWT+ScrolledComposite)).
- * However, the most common case is that you only want to scroll vertically.  This class
- * makes that easy.  Just create your content with {@link #getParentForContent()} as the
- * parent, and then set it to be the content with {@link #setContent(Control)}.  Easy!
- */
-public class VScrollCtl extends ControlWrapper.AroundControl<ScrolledComposite> {
-	public VScrollCtl(Composite parent, int style) {
-		super(new ScrolledComposite(parent, SWT.VERTICAL | style));
+public class Labels {
+	/** Creates a label with the given text. */
+	public static Label create(Composite parent, String text) {
+		Label lbl = new Label(parent, SWT.WRAP);
+		lbl.setText(text);
+		return lbl;
 	}
 
-	public ScrolledComposite getParentForContent() {
-		return wrapped;
+	/** Creates a label with the given text. */
+	public static Label createVSep(Composite parent) {
+		return new Label(parent, SWT.SEPARATOR | SWT.VERTICAL);
 	}
 
-	public void setContent(ControlWrapper wrapper) {
-		setContent(wrapper.getRootControl());
+	/** Creates a label with the given text. */
+	public static Label createHSep(Composite parent) {
+		return new Label(parent, SWT.SEPARATOR | SWT.HORIZONTAL);
 	}
 
-	public void setContent(Control content) {
-		wrapped.setContent(content);
-		wrapped.setExpandHorizontal(true);
-		wrapped.setExpandVertical(true);
-		wrapped.addListener(SWT.Resize, e -> {
-			int scrollWidth = wrapped.getVerticalBar().getSize().x;
-			Point size = wrapped.getSize();
-			Point contentSize = content.computeSize(size.x - scrollWidth, SWT.DEFAULT);
-			content.setSize(contentSize);
-			wrapped.setMinSize(contentSize);
-		});
+	/** Creates a bold label with the given text. */
+	public static Label createBold(Composite parent, String text) {
+		Label lbl = create(parent, text);
+		lbl.setFont(Fonts.systemBold());
+		return lbl;
+	}
+
+	/** Quick method to create a LinkBtn. */
+	public static LinkBtn createBtn(Composite parent, String txt, Runnable action) {
+		LinkBtn btn = new LinkBtn(parent, SWT.PUSH);
+		btn.setText(txt);
+		btn.addListener(SWT.Selection, e -> action.run());
+		return btn;
 	}
 }

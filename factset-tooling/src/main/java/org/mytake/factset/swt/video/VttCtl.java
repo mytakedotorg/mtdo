@@ -26,7 +26,7 @@
  *
  * You can contact us at team@mytake.org
  */
-package org.mytake.factset.gui.video;
+package org.mytake.factset.swt.video;
 
 
 import com.diffplug.common.base.Errors;
@@ -53,8 +53,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
-import org.mytake.factset.gui.Labels;
-import org.mytake.factset.gui.Workbench;
+import org.mytake.factset.swt.Labels;
+import org.mytake.factset.swt.Workbench;
 import org.mytake.factset.video.TranscriptMatch;
 import org.mytake.factset.video.Word;
 

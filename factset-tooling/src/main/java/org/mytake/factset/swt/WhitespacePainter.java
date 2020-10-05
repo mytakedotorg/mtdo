@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2020 MyTake.org, Inc.
+ * Copyright (C) 2012-2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -26,22 +26,18 @@
  *
  * You can contact us at team@mytake.org
  */
-package org.mytake.factset.gui;
+package org.mytake.factset.swt;
 
 
-import com.diffplug.common.base.Errors;
-import com.diffplug.common.swt.InteractiveTest;
-import com.diffplug.common.swt.Layouts;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
+import org.eclipse.jface.text.ITextViewer;
+import org.eclipse.jface.text.WhitespaceCharacterPainter;
 
-@Category(InteractiveTest.class)
-public class WorkbenchTest {
-	@Test
-	public void open() {
-		InteractiveTest.testCoat("A dialog with ingredients on the left, and tabs on the right.", cmp -> {
-			Layouts.setFill(cmp);
-			new Workbench(cmp, Errors.rethrow().get(() -> TestCfg.rootFolder()));
-		});
+/** Wraps the WhitespaceCharacterPainter's overly complicated constructor. */
+class WhitespacePainter extends WhitespaceCharacterPainter {
+	private static final int ALPHA = 200;
+
+	WhitespacePainter(ITextViewer textViewer, boolean showLineEndings) {
+		super(textViewer, true, true, true, true, true, true, true, true, true, showLineEndings, showLineEndings,
+				ALPHA);
 	}
 }

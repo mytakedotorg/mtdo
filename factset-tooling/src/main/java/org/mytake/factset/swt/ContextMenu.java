@@ -26,7 +26,7 @@
  *
  * You can contact us at team@mytake.org
  */
-package org.mytake.factset.gui;
+package org.mytake.factset.swt;
 
 
 import com.diffplug.common.swt.Corner;

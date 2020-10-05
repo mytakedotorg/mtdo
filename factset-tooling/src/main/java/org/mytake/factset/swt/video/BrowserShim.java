@@ -26,15 +26,43 @@
  *
  * You can contact us at team@mytake.org
  */
-package org.mytake.factset.gui;
+package org.mytake.factset.swt.video;
 
 
-import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import com.diffplug.common.swt.ControlWrapper;
+import com.diffplug.common.swt.os.OS;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.browser.Browser;
+import org.eclipse.swt.widgets.Composite;
 
-public class TestCfg {
-	public static Path rootFolder() throws IOException {
-		return Paths.get("../../mtdo-us-presidential-debates").toFile().getCanonicalFile().toPath();
+/** Shim for the few browser APIs we need. */
+interface BrowserShim extends ControlWrapper {
+	public static BrowserShim create(Composite parent, int style) {
+		if (OS.getNative().isWindows()) {
+			return new SwtShim(parent, SWT.CHROMIUM | style);
+		} else {
+			return new SwtShim(parent, style);
+		}
+	}
+
+	void setText(String content);
+
+	void evaluate(String string);
+
+	/** The built-in SWT browser (IE on windows, which is terribly broken). */
+	static class SwtShim extends ControlWrapper.AroundControl<Browser> implements BrowserShim {
+		public SwtShim(Composite parent, int style) {
+			super(new Browser(parent, style));
+		}
+
+		@Override
+		public void setText(String content) {
+			wrapped.setText(content);
+		}
+
+		@Override
+		public void evaluate(String script) {
+			wrapped.evaluate(script);
+		}
 	}
 }

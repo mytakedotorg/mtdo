@@ -26,7 +26,7 @@
  *
  * You can contact us at team@mytake.org
  */
-package org.mytake.factset.gui.video;
+package org.mytake.factset.swt.video;
 
 
 import com.diffplug.common.base.Unhandled;

@@ -26,7 +26,7 @@
  *
  * You can contact us at team@mytake.org
  */
-package org.mytake.factset.gui.video;
+package org.mytake.factset.swt.video;
 
 
 import com.diffplug.common.base.Box;
@@ -51,10 +51,10 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.gradle.internal.impldep.com.google.api.client.repackaged.com.google.common.base.Throwables;
 import org.mytake.factset.DisallowedValueException;
-import org.mytake.factset.gui.Labels;
-import org.mytake.factset.gui.TextViewCtl;
-import org.mytake.factset.gui.VScrollCtl;
-import org.mytake.factset.gui.Workbench;
+import org.mytake.factset.swt.Labels;
+import org.mytake.factset.swt.TextViewCtl;
+import org.mytake.factset.swt.VScrollCtl;
+import org.mytake.factset.swt.Workbench;
 
 public class CleanupDialog {
 	public static Exception forSaid(Workbench.Pane pane, TextViewCtl ctl, Exception e) {

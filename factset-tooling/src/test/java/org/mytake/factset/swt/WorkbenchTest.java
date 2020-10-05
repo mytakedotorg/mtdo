@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2018-2020 MyTake.org, Inc.
+ * Copyright (C) 2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -26,45 +26,22 @@
  *
  * You can contact us at team@mytake.org
  */
-package org.mytake.factset.gui;
+package org.mytake.factset.swt;
 
 
-import com.diffplug.common.swt.Fonts;
-import com.diffplug.common.swt.widgets.LinkBtn;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
+import com.diffplug.common.base.Errors;
+import com.diffplug.common.swt.InteractiveTest;
+import com.diffplug.common.swt.Layouts;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
-public class Labels {
-	/** Creates a label with the given text. */
-	public static Label create(Composite parent, String text) {
-		Label lbl = new Label(parent, SWT.WRAP);
-		lbl.setText(text);
-		return lbl;
-	}
-
-	/** Creates a label with the given text. */
-	public static Label createVSep(Composite parent) {
-		return new Label(parent, SWT.SEPARATOR | SWT.VERTICAL);
-	}
-
-	/** Creates a label with the given text. */
-	public static Label createHSep(Composite parent) {
-		return new Label(parent, SWT.SEPARATOR | SWT.HORIZONTAL);
-	}
-
-	/** Creates a bold label with the given text. */
-	public static Label createBold(Composite parent, String text) {
-		Label lbl = create(parent, text);
-		lbl.setFont(Fonts.systemBold());
-		return lbl;
-	}
-
-	/** Quick method to create a LinkBtn. */
-	public static LinkBtn createBtn(Composite parent, String txt, Runnable action) {
-		LinkBtn btn = new LinkBtn(parent, SWT.PUSH);
-		btn.setText(txt);
-		btn.addListener(SWT.Selection, e -> action.run());
-		return btn;
+@Category(InteractiveTest.class)
+public class WorkbenchTest {
+	@Test
+	public void open() {
+		InteractiveTest.testCoat("A dialog with ingredients on the left, and tabs on the right.", cmp -> {
+			Layouts.setFill(cmp);
+			new Workbench(cmp, Errors.rethrow().get(() -> TestCfg.rootFolder()));
+		});
 	}
 }

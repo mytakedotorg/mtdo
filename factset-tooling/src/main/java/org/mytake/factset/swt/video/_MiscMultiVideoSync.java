@@ -26,7 +26,7 @@
  *
  * You can contact us at team@mytake.org
  */
-package org.mytake.factset.gui.video;
+package org.mytake.factset.swt.video;
 
 
 import com.diffplug.common.swt.Layouts;
@@ -36,7 +36,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
-import org.mytake.factset.gui.Labels;
+import org.mytake.factset.swt.Labels;
 
 /** One-off tool to play back videos with an offset. */
 public class _MiscMultiVideoSync {

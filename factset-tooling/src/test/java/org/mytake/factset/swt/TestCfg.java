@@ -26,26 +26,15 @@
  *
  * You can contact us at team@mytake.org
  */
-package org.mytake.factset.gui.video;
+package org.mytake.factset.swt;
 
 
-import com.diffplug.common.io.Files;
-import java.io.File;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.util.List;
-import java.util.stream.Collectors;
-import org.mytake.factset.video.VttTranscript;
-import org.mytake.factset.video.VttTranscript.Mode;
-import org.mytake.factset.video.Word;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
-/** One-off tool to edit the timestamps of a video because of tape glitch. */
-public class _MiscVttEdit {
-	public static void main(String[] args) throws IOException {
-		VttTranscript transcript = VttTranscript.parse(new File("../presidential-debates/2000-10-17.backup"), Mode.STRICT);
-		List<Word.Vtt> newWords = transcript.words().stream()
-				.map(vtt -> vtt.time() < 3498.389 ? vtt : new Word.Vtt(vtt.lowercase(), vtt.time() + 10))
-				.collect(Collectors.toList());
-		transcript.save(newWords, Files.asCharSink(new File("../presidential-debates/2000-10-17.vtt"), StandardCharsets.UTF_8));
+public class TestCfg {
+	public static Path rootFolder() throws IOException {
+		return Paths.get("../../mtdo-us-presidential-debates").toFile().getCanonicalFile().toPath();
 	}
 }

@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2020 MyTake.org, Inc.
+ * Copyright (C) 2018-2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -26,43 +26,46 @@
  *
  * You can contact us at team@mytake.org
  */
-package org.mytake.factset.gui.video;
+package org.mytake.factset.swt;
 
 
 import com.diffplug.common.swt.ControlWrapper;
-import com.diffplug.common.swt.os.OS;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.browser.Browser;
+import org.eclipse.swt.custom.ScrolledComposite;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 
-/** Shim for the few browser APIs we need. */
-interface BrowserShim extends ControlWrapper {
-	public static BrowserShim create(Composite parent, int style) {
-		if (OS.getNative().isWindows()) {
-			return new SwtShim(parent, SWT.CHROMIUM | style);
-		} else {
-			return new SwtShim(parent, style);
-		}
+/**
+ * SWT provides {@link ScrolledComposite} which provides a wealth of
+ * scrolling behavior ([google](https://www.google.com/search?q=SWT+ScrolledComposite)).
+ * However, the most common case is that you only want to scroll vertically.  This class
+ * makes that easy.  Just create your content with {@link #getParentForContent()} as the
+ * parent, and then set it to be the content with {@link #setContent(Control)}.  Easy!
+ */
+public class VScrollCtl extends ControlWrapper.AroundControl<ScrolledComposite> {
+	public VScrollCtl(Composite parent, int style) {
+		super(new ScrolledComposite(parent, SWT.VERTICAL | style));
 	}
 
-	void setText(String content);
+	public ScrolledComposite getParentForContent() {
+		return wrapped;
+	}
 
-	void evaluate(String string);
+	public void setContent(ControlWrapper wrapper) {
+		setContent(wrapper.getRootControl());
+	}
 
-	/** The built-in SWT browser (IE on windows, which is terribly broken). */
-	static class SwtShim extends ControlWrapper.AroundControl<Browser> implements BrowserShim {
-		public SwtShim(Composite parent, int style) {
-			super(new Browser(parent, style));
-		}
-
-		@Override
-		public void setText(String content) {
-			wrapped.setText(content);
-		}
-
-		@Override
-		public void evaluate(String script) {
-			wrapped.evaluate(script);
-		}
+	public void setContent(Control content) {
+		wrapped.setContent(content);
+		wrapped.setExpandHorizontal(true);
+		wrapped.setExpandVertical(true);
+		wrapped.addListener(SWT.Resize, e -> {
+			int scrollWidth = wrapped.getVerticalBar().getSize().x;
+			Point size = wrapped.getSize();
+			Point contentSize = content.computeSize(size.x - scrollWidth, SWT.DEFAULT);
+			content.setSize(contentSize);
+			wrapped.setMinSize(contentSize);
+		});
 	}
 }

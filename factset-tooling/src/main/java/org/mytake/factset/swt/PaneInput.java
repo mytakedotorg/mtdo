@@ -26,7 +26,7 @@
  *
  * You can contact us at team@mytake.org
  */
-package org.mytake.factset.gui;
+package org.mytake.factset.swt;
 
 
 import com.diffplug.common.base.StringPrinter;
@@ -45,7 +45,7 @@ import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Objects;
 import org.eclipse.swt.widgets.Composite;
-import org.mytake.factset.gui.video.TranscriptCtl;
+import org.mytake.factset.swt.video.TranscriptCtl;
 import org.mytake.factset.video.Ingredients;
 import org.mytake.factset.video.TranscriptMatch;
 

@@ -26,7 +26,7 @@
  *
  * You can contact us at team@mytake.org
  */
-package org.mytake.factset.gui;
+package org.mytake.factset.swt;
 
 
 import com.diffplug.common.base.Errors;
@@ -45,8 +45,8 @@ import org.eclipse.swt.custom.TextChangingEvent;
 import org.eclipse.swt.widgets.Composite;
 import org.mytake.factset.DisallowedValueException;
 import org.mytake.factset.JsonMisc;
-import org.mytake.factset.gui.Workbench.Pane;
-import org.mytake.factset.gui.video.CleanupDialog;
+import org.mytake.factset.swt.Workbench.Pane;
+import org.mytake.factset.swt.video.CleanupDialog;
 import org.mytake.factset.video.IniAsSet;
 import org.mytake.factset.video.SaidCleanup;
 import org.mytake.factset.video.VttCleanup;

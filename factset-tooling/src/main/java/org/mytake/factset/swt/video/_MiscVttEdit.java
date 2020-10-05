@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2012-2020 MyTake.org, Inc.
+ * Copyright (C) 2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -26,18 +26,26 @@
  *
  * You can contact us at team@mytake.org
  */
-package org.mytake.factset.gui;
+package org.mytake.factset.swt.video;
 
 
-import org.eclipse.jface.text.ITextViewer;
-import org.eclipse.jface.text.WhitespaceCharacterPainter;
+import com.diffplug.common.io.Files;
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.util.List;
+import java.util.stream.Collectors;
+import org.mytake.factset.video.VttTranscript;
+import org.mytake.factset.video.VttTranscript.Mode;
+import org.mytake.factset.video.Word;
 
-/** Wraps the WhitespaceCharacterPainter's overly complicated constructor. */
-class WhitespacePainter extends WhitespaceCharacterPainter {
-	private static final int ALPHA = 200;
-
-	WhitespacePainter(ITextViewer textViewer, boolean showLineEndings) {
-		super(textViewer, true, true, true, true, true, true, true, true, true, showLineEndings, showLineEndings,
-				ALPHA);
+/** One-off tool to edit the timestamps of a video because of tape glitch. */
+public class _MiscVttEdit {
+	public static void main(String[] args) throws IOException {
+		VttTranscript transcript = VttTranscript.parse(new File("../presidential-debates/2000-10-17.backup"), Mode.STRICT);
+		List<Word.Vtt> newWords = transcript.words().stream()
+				.map(vtt -> vtt.time() < 3498.389 ? vtt : new Word.Vtt(vtt.lowercase(), vtt.time() + 10))
+				.collect(Collectors.toList());
+		transcript.save(newWords, Files.asCharSink(new File("../presidential-debates/2000-10-17.vtt"), StandardCharsets.UTF_8));
 	}
 }
