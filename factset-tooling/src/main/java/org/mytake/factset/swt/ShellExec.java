@@ -36,22 +36,15 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import javax.annotation.Nullable;
+import java.util.function.Function;
 import org.mytake.factset.video.Ingredients;
 
 public class ShellExec {
-	public static void gradlew(StringPrinter printer, Ingredients folder, String cmd) throws IOException {
-		winUnix(printer, folder.folder().getParentFile(), "gradlew " + cmd, "./gradlew " + cmd);
-	}
-
-	public static void winUnix(StringPrinter printer, File cwd, String win, String unix) throws IOException {
+	public static void winUnix(StringPrinter printer, File cwd, String win, String unix, Function<String, PaneInput> onBadExitCode) throws IOException {
 		ExecutorService threadStdOut = Executors.newSingleThreadExecutor();
 		ExecutorService threadStdErr = Executors.newSingleThreadExecutor();
 		// create a StringPrinter which stores output **and** forwards to the parent printer 
@@ -78,43 +71,51 @@ public class ShellExec {
 			int exitCode = process.waitFor();
 			if (exitCode != 0) {
 				output.close();
-				throw new ExitCodeNotZeroException(exitCode, builder.toString());
+				String str = builder.toString();
+				throw new ExitCodeNotZeroException(exitCode, str, onBadExitCode.apply(str));
 			}
 		} catch (InterruptedException e) {
 			throw Errors.asRuntime(e);
 		}
 	}
 
+	public static void gradlew(StringPrinter printer, Ingredients folder, String cmd) throws IOException {
+		winUnix(printer, folder.folder().getParentFile(), "gradlew " + cmd, "./gradlew " + cmd, consoleOutput -> {
+			int start = consoleOutput.indexOf(Ingredients.PROBLEM_IN_START);
+			if (start == -1) {
+				return null;
+			}
+			int end = consoleOutput.indexOf(Ingredients.PROBLEM_IN_END, start + Ingredients.PROBLEM_IN_START.length());
+			if (end == -1) {
+				return null;
+			}
+			String result = consoleOutput.substring(start + Ingredients.PROBLEM_IN_START.length(), end);
+			if (result.startsWith(Ingredients.VIDEO_MATCH)) {
+				return PaneInput.syncVideo(folder, result.substring(Ingredients.VIDEO_MATCH.length()));
+			} else {
+				return PaneInput.path(folder.folder().toPath().resolve(result));
+			}
+		});
+	}
+
 	@SuppressWarnings("serial")
 	public static class ExitCodeNotZeroException extends RuntimeException {
 		public final int exitCode;
 		public final String consoleOutput;
+		public final PaneInput paneInput;
 
-		public ExitCodeNotZeroException(int exitCode, String consoleOutput) {
+		public ExitCodeNotZeroException(int exitCode, String consoleOutput, PaneInput paneInput) {
 			this.exitCode = exitCode;
 			this.consoleOutput = consoleOutput;
+			this.paneInput = paneInput;
 		}
 
-		public @Nullable Path fileToOpen(Path rootFolder) {
-			int start = consoleOutput.indexOf(Ingredients.PROBLEM_IN_START);
-			if (start == -1) {
-				return null;
+		@Override
+		public String getMessage() {
+			if (paneInput != null) {
+				return "Error in " + paneInput.tabTxt();
 			} else {
-				int end = consoleOutput.indexOf(Ingredients.PROBLEM_IN_END, start + Ingredients.PROBLEM_IN_START.length());
-				if (end == -1) {
-					return null;
-				}
-				Path path = Paths.get(consoleOutput.substring(start + Ingredients.PROBLEM_IN_START.length(), end));
-				if (Files.exists(path)) {
-					return path;
-				} else {
-					path = rootFolder.resolve(path);
-					if (Files.exists(path)) {
-						return path;
-					} else {
-						return null;
-					}
-				}
+				return "Error";
 			}
 		}
 	}
