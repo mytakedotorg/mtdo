@@ -37,6 +37,7 @@ import com.diffplug.common.swt.os.OS;
 import com.diffplug.gradle.eclipse.MavenCentralExtension;
 import com.diffplug.gradle.eclipse.MavenCentralPlugin;
 import com.diffplug.gradle.spotless.FormatExtension;
+import com.diffplug.gradle.spotless.GroovyExtension;
 import com.diffplug.gradle.spotless.SpotlessExtension;
 import com.diffplug.gradle.spotless.SpotlessPlugin;
 import com.diffplug.spotless.LineEnding;
@@ -97,6 +98,11 @@ public class MtdoFactset {
 		spotlessExt.format(VTT, vttFmt -> {
 			vttFmt.target(GrindLogic.INGREDIENTS + "/**/*.vtt");
 			SpotlessTranscriptPunctuation.saidAndVtt(vttFmt);
+		});
+		spotlessExt.format("groovyGradle", GroovyExtension.class, ext -> {
+			ext.target("build.gradle");
+			ext.toggleOffOn();
+			ext.greclipse();
 		});
 		TaskProvider<?> grind = project.getTasks().register("grind", GrindTask.class, grindTask -> {
 			grindTask.setGroup("Build");
