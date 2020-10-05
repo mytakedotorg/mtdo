@@ -29,6 +29,7 @@
 package org.mytake.factset.swt;
 
 
+import com.diffplug.common.base.Box;
 import com.diffplug.common.swt.ControlWrapper;
 import com.diffplug.common.swt.Fonts;
 import com.diffplug.common.swt.Layouts;
@@ -118,6 +119,20 @@ public class TextViewCtl extends ControlWrapper.AroundControl<Composite> {
 
 	public IFindReplaceTarget getFindReplaceTarget() {
 		return sourceViewer.getFindReplaceTarget();
+	}
+
+	public String getTxt() {
+		return sourceViewer.getDocument().get();
+	}
+
+	public void setTxt(String txt) {
+		int topIdx = sourceViewer.getTopIndex();
+		sourceViewer.getDocument().set(txt);
+		sourceViewer.setTopIndex(topIdx);
+	}
+
+	public Box<String> txtBox() {
+		return Box.from(this::getTxt, this::setTxt);
 	}
 
 	/** Adds bracket-matching capabilities to the given SourceViewer. */

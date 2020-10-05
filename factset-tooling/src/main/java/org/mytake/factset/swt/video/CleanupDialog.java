@@ -45,10 +45,10 @@ import com.diffplug.common.tree.TreeStream;
 import java.io.PrintWriter;
 import java.util.function.Function;
 import java.util.regex.Pattern;
-import org.eclipse.jface.text.IDocument;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Listener;
 import org.gradle.internal.impldep.com.google.api.client.repackaged.com.google.common.base.Throwables;
 import org.mytake.factset.DisallowedValueException;
 import org.mytake.factset.swt.Labels;
@@ -62,27 +62,36 @@ public class CleanupDialog {
 			Throwable root = Throwables.getRootCause(e);
 			if (root instanceof DisallowedValueException) {
 				DisallowedValueException invalidSpeaker = (DisallowedValueException) root;
-				new ChangeValueCoat(cmp, pane, ctl.getSourceViewer().getDocument(), invalidSpeaker);
+				new ChangeValueCoat(cmp, pane, ctl.txtBox(), invalidSpeaker);
 			} else {
-				new AdjustFormatCoat(cmp, pane, ctl.getSourceViewer().getDocument(), e);
+				new AdjustFormatCoat(cmp, pane, ctl.txtBox(), e);
 			}
 		});
 		return e;
 	}
 
 	public static DisallowedValueException forDisallowedValue(Workbench.Pane pane, TextViewCtl ctl, DisallowedValueException e) {
-		open(ctl, cmp -> new ChangeValueCoat(cmp, pane, ctl.getSourceViewer().getDocument(), e));
+		open(ctl, cmp -> new ChangeValueCoat(cmp, pane, ctl.txtBox(), e));
 		return e;
 	}
 
 	private static void open(TextViewCtl ctl, Coat coat) {
-		Shells.builder(SWT.APPLICATION_MODAL | SWT.TITLE | SWT.CLOSE | SWT.RESIZE, coat)
+		Shells.builder(SWT.APPLICATION_MODAL, cmp -> {
+			coat.putOn(cmp);
+			Listener closeOnEsc = e -> {
+				if (e.keyCode == SWT.ESC) {
+					cmp.getShell().dispose();
+				}
+			};
+			cmp.getDisplay().addFilter(SWT.KeyDown, closeOnEsc);
+			cmp.getShell().addListener(SWT.Dispose, e -> cmp.getDisplay().removeFilter(SWT.KeyDown, closeOnEsc));
+		})
 				.setLocation(Corner.BOTTOM_RIGHT, Corner.BOTTOM_RIGHT.getPosition(ctl))
 				.openOn(ctl.getShell());
 	}
 
 	private static class ChangeValueCoat {
-		ChangeValueCoat(Composite cmp, Workbench.Pane pane, IDocument doc, DisallowedValueException exc) {
+		ChangeValueCoat(Composite cmp, Workbench.Pane pane, Box<String> doc, DisallowedValueException exc) {
 			Layouts.setGrid(cmp);
 			Layouts.setGridData(Labels.createBold(cmp, "Replace " + exc.kind() + " '" + exc.value + "'")).grabHorizontal();
 
@@ -102,7 +111,7 @@ public class CleanupDialog {
 				btn.addListener(SWT.Selection, e -> {
 					cmp.getShell().dispose();
 					// fix the speaker and run again
-					exc.replaceValueWithAllowed(candidate, Box.from(doc::get, doc::set));
+					exc.replaceValueWithAllowed(candidate, doc);
 					pane.triggerSave();
 				});
 				Layouts.setGridData(btn).grabHorizontal();
@@ -115,7 +124,7 @@ public class CleanupDialog {
 			openJson.addListener(SWT.Selection, e -> {
 				cmp.getShell().dispose();
 				pane.workbench().openFile(exc.fileWhichSpecifies.toPath());
-				pane.logOpDontBlock(printer -> {
+				pane.logOpDontBlock("Missing " + exc.kind(), printer -> {
 					printer.println(exc.value);
 				});
 			});
@@ -129,7 +138,7 @@ public class CleanupDialog {
 
 		private static final String ORIGINAL = "Original";
 
-		AdjustFormatCoat(Composite cmp, Workbench.Pane pane, IDocument doc, Exception e) {
+		AdjustFormatCoat(Composite cmp, Workbench.Pane pane, Box<String> doc, Exception e) {
 			Layouts.setGrid(cmp);
 			Layouts.setGridData(Labels.createBold(cmp, e.getMessage())).grabHorizontal();
 
