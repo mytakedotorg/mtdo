@@ -265,7 +265,7 @@ public class MtdoFactset {
 			}
 
 			// configure the grinding logic
-			GrindLogic grind = new GrindLogic(sausageDir.getParentFile().toPath(), setup.videoJson, getLogger());
+			GrindLogic grind = new GrindLogic(sausageDir.getParentFile().toPath(), setup, getLogger());
 			// grind each changed file
 			grind.grind(changed, buildJson);
 			GitJson.write(buildJson).toPretty(new File(sausageDir, "build.json"));

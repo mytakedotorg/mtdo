@@ -72,19 +72,19 @@ public class GrindLogic {
 	static final String SAUSAGE = "sausage";
 
 	final Path rootDir;
-	final Action<FT.VideoFactMeta> videoJson;
+	final MtdoFactset factset;
 	final Logger logger;
 	final Ingredients ingredients;
 
-	public GrindLogic(Path rootDir, Action<FT.VideoFactMeta> videoJson, Logger logger) throws IOException {
+	public GrindLogic(Path rootDir, MtdoFactset factset, Logger logger) throws IOException {
 		this.rootDir = rootDir;
-		this.videoJson = videoJson;
+		this.factset = factset;
 		this.logger = logger;
 		this.ingredients = new Ingredients(rootDir.resolve(INGREDIENTS).toFile());
 	}
 
 	public void grind(Collection<String> changed, Map<String, String> buildJson) throws IOException {
-		try (Formatter formatter = formatterVideoJson(videoJson)) {
+		try (Formatter formatter = formatterVideoJson(factset.videoJson)) {
 			for (String name : changed) {
 				File jsonFile = ingredients.fileMeta(name);
 				if (!jsonFile.exists()) {
@@ -108,6 +108,9 @@ public class GrindLogic {
 				try {
 					TranscriptMatch match = ingredients.loadTranscript(name);
 					FT.VideoFactContentEncoded content = encodeSpeakersIntoComments(match.toVideoFact());
+					content.factset = new FT.Factset();
+					content.factset.id = factset.id;
+					content.factset.title = factset.title;
 					GitJson.write(content).toCompact(rootDir.resolve(SAUSAGE + "/" + titleSlug + ".json").toFile());
 				} catch (GradleException e) {
 					throw e;

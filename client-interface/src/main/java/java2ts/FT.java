@@ -52,8 +52,15 @@ public interface FT {
 	}
 
 	@jsweet.lang.Interface
+	public class Factset {
+		public String id;
+		public String title;
+	}
+
+	@jsweet.lang.Interface
 	public class FactContent {
 		public Fact fact;
+		public Factset factset;
 	}
 
 	@jsweet.lang.Interface
