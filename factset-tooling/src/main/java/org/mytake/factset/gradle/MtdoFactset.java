@@ -36,6 +36,10 @@ import com.diffplug.common.io.Resources;
 import com.diffplug.common.swt.os.OS;
 import com.diffplug.gradle.eclipse.MavenCentralExtension;
 import com.diffplug.gradle.eclipse.MavenCentralPlugin;
+import com.diffplug.gradle.spotless.FormatExtension;
+import com.diffplug.gradle.spotless.SpotlessExtension;
+import com.diffplug.gradle.spotless.SpotlessPlugin;
+import com.diffplug.spotless.LineEnding;
 import com.google.gson.reflect.TypeToken;
 import java.io.File;
 import java.io.IOException;
@@ -55,7 +59,6 @@ import java2ts.FT;
 import org.eclipse.jgit.util.sha1.SHA1;
 import org.gradle.api.Action;
 import org.gradle.api.DefaultTask;
-import org.gradle.api.GradleException;
 import org.gradle.api.Project;
 import org.gradle.api.artifacts.Configuration;
 import org.gradle.api.file.FileCollection;
@@ -77,11 +80,28 @@ import org.mytake.factset.GitJson;
 import org.mytake.factset.JsonMisc;
 
 public class MtdoFactset {
+	private final SpotlessExtension spotlessExt;
+
+	private static final String SAID = "said";
+	private static final String VTT = "vtt";
 
 	public MtdoFactset(Project project) throws IOException {
+		project.getPlugins().apply(SpotlessPlugin.class);
+		spotlessExt = project.getExtensions().getByType(SpotlessExtension.class);
+		spotlessExt.setLineEndings(LineEnding.UNIX);
+		spotlessExt.format(SAID, saidFmt -> {
+			saidFmt.target(GrindLogic.INGREDIENTS + "/**/*.said");
+			SpotlessTranscriptPunctuation.saidAndVtt(saidFmt);
+			SpotlessTranscriptPunctuation.saidOnly(saidFmt);
+		});
+		spotlessExt.format(VTT, vttFmt -> {
+			vttFmt.target(GrindLogic.INGREDIENTS + "/**/*.vtt");
+			SpotlessTranscriptPunctuation.saidAndVtt(vttFmt);
+		});
 		TaskProvider<?> grind = project.getTasks().register("grind", GrindTask.class, grindTask -> {
 			grindTask.setGroup("Build");
 			grindTask.setDescription("Grinds the ingredients folder into the sausage folder.");
+			grindTask.dependsOn("spotlessApply");
 			grindTask.setup = this;
 			grindTask.buildDotGradle = project.file("build.gradle");
 			grindTask.ingredients = project.fileTree(GrindLogic.INGREDIENTS, config -> {
@@ -146,21 +166,15 @@ public class MtdoFactset {
 
 	public String title;
 	public String id;
-	public Action<VideoCfg> videoCfg;
+	public Action<FT.VideoFactMeta> videoJson = unused -> {};
 
-	public void video(Action<VideoCfg> videoCfg) {
-		if (this.videoCfg != null) {
-			throw new GradleException("You can only call `video {` once.");
-		}
-		this.videoCfg = videoCfg;
+	public void videoJson(Action<FT.VideoFactMeta> videoJson) {
+		this.videoJson = videoJson;
 	}
 
-	public static class VideoCfg {
-		Action<FT.VideoFactMeta> perVideo = video -> {};
-
-		public void json(Action<FT.VideoFactMeta> perVideo) {
-			this.perVideo = perVideo;
-		}
+	public void videoTranscript(Action<FormatExtension> saidAndVtt) {
+		spotlessExt.format(SAID, saidAndVtt);
+		spotlessExt.format(VTT, saidAndVtt);
 	}
 
 	@CacheableTask
@@ -203,9 +217,6 @@ public class MtdoFactset {
 			if (setup.title == null) {
 				throw new IllegalArgumentException("title must not be null, recommend something like 'U.S. Presidential Debates'");
 			}
-			// configure the video settings
-			VideoCfg video = new VideoCfg();
-			setup.videoCfg.execute(video);
 
 			// wipe the sausage dir on non-incremental builds
 			if (!inputs.isIncremental()) {
@@ -248,7 +259,7 @@ public class MtdoFactset {
 			}
 
 			// configure the grinding logic
-			GrindLogic grind = new GrindLogic(sausageDir.getParentFile().toPath(), video, getLogger());
+			GrindLogic grind = new GrindLogic(sausageDir.getParentFile().toPath(), setup.videoJson, getLogger());
 			// grind each changed file
 			grind.grind(changed, buildJson);
 			GitJson.write(buildJson).toPretty(new File(sausageDir, "build.json"));

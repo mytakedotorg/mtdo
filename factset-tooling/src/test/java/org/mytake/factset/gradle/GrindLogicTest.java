@@ -29,6 +29,7 @@
 package org.mytake.factset.gradle;
 
 
+import com.diffplug.common.collect.Maps;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -38,12 +39,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java2ts.FT;
 import org.assertj.core.api.Assertions;
-import org.gradle.internal.impldep.com.google.common.collect.Maps;
+import org.gradle.api.Action;
 import org.junit.Assert;
 import org.junit.Test;
 import org.mytake.factset.GitJson;
 import org.mytake.factset.JsonMisc;
-import org.mytake.factset.gradle.MtdoFactset.VideoCfg;
 import org.mytake.factset.video.SaidTranscript;
 import org.mytake.factset.video.TranscriptMatch;
 import org.mytake.factset.video.VttTranscript;
@@ -52,12 +52,12 @@ import org.slf4j.Logger;
 public class GrindLogicTest extends ResourceHarness {
 	@Test
 	public void video() throws IOException {
-		VideoCfg config = new VideoCfg();
+		Action<FT.VideoFactMeta> videoJson = meta -> {};
 		Logger logger = new org.slf4j.helpers.NOPLoggerFactory().getLogger("noop");
 
 		setFile("ingredients/all_people.ini").toResource("org/mytake/factset/gradle/all_people.ini");
 		setFile("ingredients/all_roles.ini").toResource("org/mytake/factset/gradle/all_roles.ini");
-		GrindLogic logic = new GrindLogic(rootFolder().toPath(), config, logger);
+		GrindLogic logic = new GrindLogic(rootFolder().toPath(), videoJson, logger);
 
 		setFile("ingredients/subfolder/doesnt/matter/1960-09-26.json").toResource("org/mytake/factset/gradle/1960-09-26.json");
 		setFile("ingredients/subfolder/doesnt/matter/1960-09-26.said").toResource("org/mytake/factset/gradle/1960-09-26.said");
