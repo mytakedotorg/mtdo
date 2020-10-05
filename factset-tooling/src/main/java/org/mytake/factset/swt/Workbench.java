@@ -74,6 +74,7 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Listener;
 import org.mytake.factset.Loc;
 import org.mytake.factset.video.Ingredients;
 
@@ -212,6 +213,14 @@ public class Workbench {
 				saveAllAndGrind();
 			}
 		});
+		Listener checkLastModified = e -> {
+			CTabItem item = tabFolder.getSelection();
+			if (item != null) {
+				((Pane) item.getData()).checkLastModified();
+			}
+		};
+		parent.getDisplay().addFilter(SWT.Activate, checkLastModified);
+		parent.getDisplay().addFilter(SWT.FocusIn, checkLastModified);
 	}
 
 	public Pane openFile(Path path) {
@@ -267,8 +276,10 @@ public class Workbench {
 		final CTabItem tab;
 		final RxBox<Boolean> isDirty = RxBox.of(false);
 		final PublishSubject<Loc> highlight = PublishSubject.create();
+		final PublishSubject<Pane> reload = PublishSubject.create();
 		final SwtExec.Guarded exec;
 		final List<Btn> buttons = new ArrayList<>();
+		Map<File, Long> lastModified;
 
 		Throwing.Consumer<StringPrinter> hackPathCleanup = printer -> {};
 
@@ -298,6 +309,7 @@ public class Workbench {
 				ControlWrapper control = input.createPane(tabFolder, this);
 				tab.setControl(control.getRootControl());
 				takeoverToolbar();
+				lastModified = input.lastModified();
 			} catch (Exception e) {
 				workbench().logOpBlocking("Opening " + input.tabTxt(), this, printer -> {
 					throw e;
@@ -306,9 +318,22 @@ public class Workbench {
 			}
 		}
 
+		void checkLastModified() {
+			if (lastModified == null) {
+				return;
+			}
+			Map<File, Long> newLastModified = input.lastModified();
+			if (!newLastModified.equals(lastModified)) {
+				reload.onNext(this);
+				lastModified = newLastModified;
+			}
+		}
+
+		private static final String save = "save";
+
 		public void triggerSave() {
 			Btn saveBtn = buttons.get(0);
-			Preconditions.checkArgument(saveBtn.name.contains("save"));
+			Preconditions.checkArgument(saveBtn.name.contains(save));
 			runBtn(saveBtn);
 		}
 
@@ -319,10 +344,14 @@ public class Workbench {
 				ctl.getRootControl().setData(this);
 			}
 			toolbar.requestLayout();
+			checkLastModified();
 		}
 
 		private void runBtn(Btn btn) {
 			workbench().logOpBlocking(input.tabTxt() + " " + btn.name, this, btn.log);
+			if (btn.name.contains(save)) {
+				lastModified = input.lastModified();
+			}
 		}
 
 		public PaneInput input() {

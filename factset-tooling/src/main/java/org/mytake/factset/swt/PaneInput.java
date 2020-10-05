@@ -42,8 +42,12 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import org.eclipse.swt.widgets.Composite;
+import org.gradle.internal.impldep.com.google.common.collect.ImmutableSet;
 import org.mytake.factset.swt.video.TranscriptCtl;
 import org.mytake.factset.video.Ingredients;
 import org.mytake.factset.video.TranscriptMatch;
@@ -65,6 +69,16 @@ public abstract class PaneInput implements Serializable {
 			content = byteStream.toByteArray();
 		}
 		return content;
+	}
+
+	protected abstract Set<File> files();
+
+	public Map<File, Long> lastModified() {
+		Map<File, Long> map = new HashMap<>();
+		for (File file : files()) {
+			map.put(file, file.lastModified());
+		}
+		return map;
 	}
 
 	@Override
@@ -115,6 +129,11 @@ public abstract class PaneInput implements Serializable {
 	private static class ForPath extends PaneInput {
 		private final File file;
 
+		@Override
+		protected Set<File> files() {
+			return ImmutableSet.of(file);
+		}
+
 		ForPath(Path path) {
 			super(path.toFile().getName());
 			this.file = path.toFile();
@@ -130,6 +149,15 @@ public abstract class PaneInput implements Serializable {
 					Files.write(file.toPath(), ctl.getSourceViewer().getDocument().get().getBytes(StandardCharsets.UTF_8));
 				}
 			};
+			pane.exec.subscribe(pane.reload, unused -> {
+				pane.logOpDontBlock("Reload", printer -> {
+					String content = new String(Files.readAllBytes(file.toPath()), StandardCharsets.UTF_8);
+					pane.exec.execute(() -> {
+						ctl.setTxt(content.replace("\r", ""));
+						pane.isDirty.set(false);
+					});
+				});
+			});
 			return ctl;
 		}
 
@@ -147,6 +175,14 @@ public abstract class PaneInput implements Serializable {
 		private final Ingredients ingredients;
 		private final String name;
 
+		@Override
+		protected Set<File> files() {
+			return ImmutableSet.of(
+					ingredients.fileMeta(name),
+					ingredients.fileVtt(name),
+					ingredients.fileSaid(name));
+		}
+
 		ForVideoMatch(Ingredients ingredients, String name) {
 			super(name);
 			this.ingredients = ingredients;
@@ -156,14 +192,22 @@ public abstract class PaneInput implements Serializable {
 		@Override
 		public ControlWrapper createPane(Composite parent, Workbench.Pane pane) throws IOException {
 			TranscriptCtl ctl = TranscriptCtl.createPane(parent, pane);
-			pane.logOpDontBlock(toString(), printer -> {
+			Throwing.Consumer<StringPrinter> load = printer -> {
 				// do spotlessApply
 				ShellExec.gradlew(printer, ingredients, "spotlessApply");
+				pane.lastModified = lastModified();
 				// then do the match
 				TranscriptMatch match = ingredients.loadTranscript(name, printer);
-				pane.exec.execute(() -> ctl.setTo(match));
-			});
+				pane.exec.execute(() -> {
+					ctl.setTo(match);
+					pane.isDirty.set(false);
+				});
+			};
+			pane.logOpDontBlock(toString(), load);
 			onSave = printer -> ctl.save(ingredients, name);
+			pane.exec.subscribe(pane.reload, unused -> {
+				pane.logOpDontBlock("Reload", load);
+			});
 			return ctl;
 		}
 

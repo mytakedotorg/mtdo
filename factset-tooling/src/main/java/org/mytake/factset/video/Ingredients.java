@@ -218,7 +218,7 @@ public class Ingredients implements Serializable {
 		return new File(root, name + ".json");
 	}
 
-	File fileSaid(String name) {
+	public File fileSaid(String name) {
 		return new File(root, name + ".said");
 	}
 
