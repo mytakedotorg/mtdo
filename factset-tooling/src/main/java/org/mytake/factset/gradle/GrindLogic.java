@@ -105,9 +105,15 @@ public class GrindLogic {
 				logger.info("  into " + titleSlug + ".json");
 
 				// try to match
-				TranscriptMatch match = ingredients.loadTranscript(name);
-				FT.VideoFactContentEncoded content = encodeSpeakersIntoComments(match.toVideoFact());
-				GitJson.write(content).toCompact(rootDir.resolve(SAUSAGE + "/" + titleSlug + ".json").toFile());
+				try {
+					TranscriptMatch match = ingredients.loadTranscript(name);
+					FT.VideoFactContentEncoded content = encodeSpeakersIntoComments(match.toVideoFact());
+					GitJson.write(content).toCompact(rootDir.resolve(SAUSAGE + "/" + titleSlug + ".json").toFile());
+				} catch (GradleException e) {
+					throw e;
+				} catch (Exception e) {
+					throw ingredients.problemInFile(Ingredients.VIDEO_MATCH + name, e);
+				}
 			}
 		}
 	}

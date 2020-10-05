@@ -184,18 +184,19 @@ public class Ingredients implements Serializable {
 			throw problemInFile(name + ".vtt", e);
 		}
 
-		printer.print("Syncing  ...  ");
+		printer.print("Matching  ...  ");
 		TranscriptMatch match = new TranscriptMatch(meta, said, vtt);
 		printer.println("Success.");
 		return match;
 	}
 
-	private GradleException problemInFile(String path, Throwable cause) {
+	public GradleException problemInFile(String path, Throwable cause) {
 		return new GradleException(PROBLEM_IN_START + path + PROBLEM_IN_END + cause.getMessage(), cause);
 	}
 
 	public static final String PROBLEM_IN_START = "Problem in '";
 	public static final String PROBLEM_IN_END = "': ";
+	public static final String VIDEO_MATCH = "video match ";
 
 	public void validateMeta(FT.VideoFactMeta meta) {
 		for (FT.Speaker speaker : meta.speakers) {
