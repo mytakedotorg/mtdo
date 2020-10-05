@@ -97,17 +97,12 @@ public abstract class PaneInput implements Serializable {
 	/** Creates the control on the save. */
 	public abstract ControlWrapper createPane(Composite parent, Workbench.Pane pane) throws IOException;
 
-	/** Helper function for saving the the content that they opened. */
-	protected void hookSave(Workbench.Pane pane, Throwing.Consumer<StringPrinter> saveAction) {
-		pane.exec.subscribe(pane.save, log -> {
-			log.println("Saving " + tabTxt());
-			try {
-				saveAction.accept(log);
-				log.println("Saved " + tabTxt());
-			} catch (Throwable e) {
-				pane.workbench().handleException(pane, e, log);
-			}
-		});
+	transient protected Throwing.Consumer<StringPrinter> onSave = printer -> {};
+
+	public void save(StringPrinter log) throws Throwable {
+		log.println("Saving " + tabTxt());
+		onSave.accept(log);
+		log.println("Saved " + tabTxt());
 	}
 
 	public static PaneInput path(Path path) {
@@ -129,14 +124,13 @@ public abstract class PaneInput implements Serializable {
 		@Override
 		public ControlWrapper createPane(Composite parent, Workbench.Pane pane) throws IOException {
 			TextViewCtl ctl = TextEditor.createPane(parent, file.toPath(), pane);
-			hookSave(pane, log -> {
+			onSave = log -> {
 				try {
 					pane.hackPathCleanup.accept(log);
-				} catch (Throwable e) {
-					pane.workbench().handleException(pane, e, log);
+				} finally {
+					Files.write(file.toPath(), ctl.getSourceViewer().getDocument().get().getBytes(StandardCharsets.UTF_8));
 				}
-				Files.write(file.toPath(), ctl.getSourceViewer().getDocument().get().getBytes(StandardCharsets.UTF_8));
-			});
+			};
 			return ctl;
 		}
 
@@ -146,15 +140,15 @@ public abstract class PaneInput implements Serializable {
 		}
 	}
 
-	public static PaneInput syncVideo(Ingredients ingredients, Path path) {
-		return new ForSyncVideo(ingredients, ingredients.name(path));
+	public static PaneInput videoMatch(Ingredients ingredients, String name) {
+		return new ForVideoMatch(ingredients, name);
 	}
 
-	private static class ForSyncVideo extends PaneInput {
+	private static class ForVideoMatch extends PaneInput {
 		private final Ingredients ingredients;
 		private final String name;
 
-		ForSyncVideo(Ingredients ingredients, String name) {
+		ForVideoMatch(Ingredients ingredients, String name) {
 			super(name);
 			this.ingredients = ingredients;
 			this.name = name;
@@ -163,13 +157,11 @@ public abstract class PaneInput implements Serializable {
 		@Override
 		public ControlWrapper createPane(Composite parent, Workbench.Pane pane) throws IOException {
 			TranscriptCtl ctl = TranscriptCtl.createPane(parent, pane);
-			pane.logOpDontBlock(printer -> {
+			pane.logOpDontBlock(toString(), printer -> {
 				TranscriptMatch match = ingredients.loadTranscript(name, printer);
 				SwtExec.async().guardOn(ctl).execute(() -> ctl.setTo(match));
 			});
-			hookSave(pane, printer -> {
-				ctl.save(ingredients, name);
-			});
+			onSave = printer -> ctl.save(ingredients, name);
 			return ctl;
 		}
 

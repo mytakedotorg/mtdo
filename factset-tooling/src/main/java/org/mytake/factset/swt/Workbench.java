@@ -47,7 +47,6 @@ import io.reactivex.Observable;
 import io.reactivex.subjects.PublishSubject;
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -56,10 +55,13 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import javax.annotation.Nullable;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabFolder;
@@ -73,16 +75,16 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.mytake.factset.Loc;
-import org.mytake.factset.LocatedException;
 import org.mytake.factset.video.Ingredients;
 
 public class Workbench {
-	private final Path rootFolder;
+	final Path rootFolder;
 	private final FileTreeCtl rootFiles, ingredientFiles;
 	private final CTabFolder tabFolder;
 	private final Map<PaneInput, Pane> pathToTab = new HashMap<>();
 	private final Composite toolbar;
-	private final Console _console;
+	private final ProgressCtl progress;
+	private final Console console;
 
 	private final ExecutorService executor = Executors.newSingleThreadExecutor();
 
@@ -171,16 +173,21 @@ public class Workbench {
 		Composite consoleCmp = new Composite(folderSash, SWT.NONE);
 		{
 			Layouts.setGrid(consoleCmp).margin(0).spacing(0);
+			Composite toolbarCmp = new Composite(consoleCmp, SWT.NONE);
+			Layouts.setGridData(toolbarCmp).grabHorizontal();
+			{
+				Layouts.setGrid(toolbarCmp).margin(0).numColumns(2);
+				toolbar = new Composite(toolbarCmp, SWT.NONE);
+				Layouts.setGridData(toolbar).grabHorizontal();
+				Layouts.setRow(toolbar).margin(0);
+				Labels.create(toolbar, "(Actions will go here)");
 
-			toolbar = new Composite(consoleCmp, SWT.NONE);
-			Layouts.setRow(toolbar).margin(0);
-			Labels.create(toolbar, "(Actions will go here)");
+				progress = new ProgressCtl(toolbarCmp, this);
+			}
 
-			Layouts.setGridData(toolbar).grabHorizontal();
-
-			_console = Console.nonWrapping(consoleCmp);
-			Layouts.setGridData(_console).grabAll();
-			_console.wipeAndCreateNewStream().println("Console (events will be printed here)");
+			console = Console.nonWrapping(consoleCmp);
+			Layouts.setGridData(console).grabAll();
+			console.wipeAndCreateNewStream().println("Console (events will be printed here)");
 		}
 		folderSash.setWeights(new int[]{3, 1});
 
@@ -222,52 +229,31 @@ public class Workbench {
 		return pane;
 	}
 
-	public void logOpDontBlock(Throwing.Consumer<StringPrinter> op) {
-		logOpDontBlock(null, op);
+	public void logOpDontBlock(String operationTitle, Throwing.Consumer<StringPrinter> op) {
+		logOpDontBlock(operationTitle, null, op);
 	}
 
-	private void logOpDontBlock(Pane pane, Throwing.Consumer<StringPrinter> op) {
-		StringPrinter log = _console.wipeAndCreateNewStream();
+	private void logOpDontBlock(String operationTitle, @Nullable Pane pane, Throwing.Consumer<StringPrinter> op) {
+		Consumer<Optional<Throwable>> consoleFinalizer = progress.begin(pane, operationTitle);
+		StringPrinter log = console.wipeAndCreateNewStream();
 		executor.submit(() -> {
 			try {
 				op.accept(log);
+				consoleFinalizer.accept(Optional.empty());
 			} catch (Throwable e) {
-				SwtExec.async().execute(() -> handleException(pane, e, log));
+				consoleFinalizer.accept(Optional.of(e));
 			}
 		});
 	}
 
-	private void logOpBlocking(Pane pane, Throwing.Consumer<StringPrinter> op) {
-		StringPrinter log = _console.wipeAndCreateNewStream();
+	private void logOpBlocking(String operationTitle, @Nullable Pane pane, Throwing.Consumer<StringPrinter> op) {
+		Consumer<Optional<Throwable>> consoleFinalizer = progress.begin(pane, operationTitle);
+		StringPrinter log = console.wipeAndCreateNewStream();
 		try {
 			op.accept(log);
+			consoleFinalizer.accept(Optional.empty());
 		} catch (Throwable e) {
-			handleException(pane, e, log);
-		}
-	}
-
-	void handleException(Pane pane, Throwable e, StringPrinter log) {
-		if (e instanceof LocatedException) {
-			// makes sure that highlight always triggers on the UI thread
-			LocatedException located = (LocatedException) e;
-			if (pane != null && (located.file == null || PaneInput.path(located.file).equals(pane.input))) {
-				pane.exec.execute(() -> pane.highlight.onNext(located.loc));
-			} else {
-				Pane newPane = openFile(located.file);
-				SwtExec.async().execute(() -> {
-					// let the file open, then highlight it there
-					newPane.highlight.onNext(located.loc);
-				});
-			}
-		}
-		log.println(e.getMessage());
-		// print the stacktrace to the IDE console, for easier debugging
-		// it doesn't do much good to the end user, so don't need it in their console
-		e.printStackTrace();
-
-		if (tabFolder.getShell() == SwtMisc.assertUI().getActiveShell()) {
-			// there isn't an error dialog, so we need to open one
-			SwtMisc.blockForError(e.getMessage(), e.getMessage());
+			consoleFinalizer.accept(Optional.of(e));
 		}
 	}
 
@@ -280,7 +266,6 @@ public class Workbench {
 		final PaneInput input;
 		final CTabItem tab;
 		final RxBox<Boolean> isDirty = RxBox.of(false);
-		final PublishSubject<StringPrinter> save = PublishSubject.create();
 		final PublishSubject<Loc> highlight = PublishSubject.create();
 		final SwtExec.Guarded exec;
 		final List<Btn> buttons = new ArrayList<>();
@@ -305,7 +290,7 @@ public class Workbench {
 			});
 
 			addButton("clean and save " + Accelerators.uiStringFor(Accelerators.SAVE), printer -> {
-				save.onNext(printer);
+				input.save(printer);
 				isDirty.set(false);
 			});
 
@@ -314,10 +299,8 @@ public class Workbench {
 				tab.setControl(control.getRootControl());
 				takeoverToolbar();
 			} catch (Exception e) {
-				workbench().logOpDontBlock(printer -> {
-					try (PrintWriter writer = printer.toPrintWriter()) {
-						e.printStackTrace(writer);
-					}
+				workbench().logOpBlocking("Opening " + input.tabTxt(), this, printer -> {
+					throw e;
 				});
 				tab.dispose();
 			}
@@ -339,7 +322,7 @@ public class Workbench {
 		}
 
 		private void runBtn(Btn btn) {
-			workbench().logOpBlocking(this, btn.log);
+			workbench().logOpBlocking(input.tabTxt() + " " + btn.name, this, btn.log);
 		}
 
 		public PaneInput input() {
@@ -357,8 +340,8 @@ public class Workbench {
 			buttons.add(btn);
 		}
 
-		public void logOpDontBlock(Throwing.Consumer<StringPrinter> op) {
-			workbench().logOpDontBlock(this, op);
+		public void logOpDontBlock(String operationName, Throwing.Consumer<StringPrinter> op) {
+			workbench().logOpDontBlock(input.tabTxt() + " " + operationName, this, op);
 		}
 
 		public Observable<Loc> highlight() {
@@ -379,32 +362,17 @@ public class Workbench {
 	}
 
 	private void saveAllAndGrind() {
-		logOpBlocking(null, printer -> {
+		logOpDontBlock("gradlew assemble", printer -> {
 			// save all files
-			pathToTab.values().forEach(pane -> {
-				if (pane.isDirty.get()) {
-					try {
-						pane.save.onNext(printer);
-					} catch (Throwable e) {
-						printer.println("ERROR when saving " + pane.input() + ": " + e.getMessage());
+			SwtExec.blocking().execute(() -> {
+				pathToTab.values().forEach(pane -> {
+					if (pane.isDirty.get()) {
+						Errors.rethrow().run(() -> pane.input().save(printer));
 					}
-				}
+				});
 			});
 			// do the grind
-			executor.submit(() -> {
-				try {
-					ShellExec.gradlew(printer, ingredients(), "assemble");
-				} catch (ShellExec.ExitCodeNotZeroException e) {
-					Path toOpen = e.fileToOpen(rootFolder.resolve("ingredients"));
-					if (toOpen != null) {
-						SwtExec.async().execute(() -> openFile(toOpen));
-					} else {
-						Errors.dialog().accept(e);
-					}
-				} catch (IOException e) {
-					Errors.dialog().accept(e);
-				}
-			});
+			ShellExec.gradlew(printer, ingredients(), "assemble");
 		});
 	}
 

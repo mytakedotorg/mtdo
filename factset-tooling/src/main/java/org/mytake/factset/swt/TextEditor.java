@@ -47,6 +47,7 @@ import org.mytake.factset.DisallowedValueException;
 import org.mytake.factset.JsonMisc;
 import org.mytake.factset.swt.Workbench.Pane;
 import org.mytake.factset.swt.video.CleanupDialog;
+import org.mytake.factset.video.Ingredients;
 import org.mytake.factset.video.IniAsSet;
 import org.mytake.factset.video.SaidCleanup;
 import org.mytake.factset.video.VttCleanup;
@@ -129,7 +130,7 @@ public class TextEditor {
 			pane.hackPathCleanup = log -> {
 				setDoc.accept(VttCleanup::apply);
 			};
-			pane.addButton(SYNC, printer -> sync(path, pane));
+			pane.addButton(MATCH, printer -> match(path, pane));
 		} else if (filename.endsWith(".said")) {
 			pane.hackPathCleanup = log -> {
 				setDoc.accept(in -> {
@@ -140,16 +141,15 @@ public class TextEditor {
 					}
 				});
 			};
-			pane.addButton(SYNC, printer -> sync(path, pane));
+			pane.addButton(MATCH, printer -> match(path, pane));
 		}
 		return ctl;
 	}
 
-	public static String CLEANUP_SAID = "Cleanup SAID";
+	private static final String MATCH = "Match transcript";
 
-	private static final String SYNC = "Sync";
-
-	private static void sync(Path path, Pane pane) throws IOException {
-		pane.workbench().open(PaneInput.syncVideo(pane.workbench().ingredients(), path));
+	private static void match(Path path, Pane pane) throws IOException {
+		Ingredients ingredients = pane.workbench().ingredients();
+		pane.workbench().open(PaneInput.videoMatch(ingredients, ingredients.name(path)));
 	}
 }

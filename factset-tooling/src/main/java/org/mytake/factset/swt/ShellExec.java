@@ -91,7 +91,7 @@ public class ShellExec {
 			}
 			String result = consoleOutput.substring(start + Ingredients.PROBLEM_IN_START.length(), end);
 			if (result.startsWith(Ingredients.VIDEO_MATCH)) {
-				return PaneInput.syncVideo(folder, result.substring(Ingredients.VIDEO_MATCH.length()));
+				return PaneInput.videoMatch(folder, result.substring(Ingredients.VIDEO_MATCH.length()));
 			} else {
 				return PaneInput.path(folder.folder().toPath().resolve(result));
 			}
