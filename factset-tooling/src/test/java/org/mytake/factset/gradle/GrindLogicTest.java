@@ -54,6 +54,9 @@ public class GrindLogicTest extends ResourceHarness {
 	public void video() throws IOException {
 		VideoCfg config = new VideoCfg();
 		Logger logger = new org.slf4j.helpers.NOPLoggerFactory().getLogger("noop");
+
+		setFile("ingredients/all_people.ini").toResource("org/mytake/factset/gradle/all_people.ini");
+		setFile("ingredients/all_roles.ini").toResource("org/mytake/factset/gradle/all_roles.ini");
 		GrindLogic logic = new GrindLogic(rootFolder().toPath(), config, logger);
 
 		setFile("ingredients/subfolder/doesnt/matter/1960-09-26.json").toResource("org/mytake/factset/gradle/1960-09-26.json");
