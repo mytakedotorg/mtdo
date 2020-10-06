@@ -29,26 +29,16 @@
 package org.mytake.factset.gradle;
 
 
-import com.diffplug.common.base.Errors;
 import com.diffplug.common.base.Unhandled;
 import com.diffplug.common.collect.Iterables;
-import com.diffplug.common.io.Resources;
-import com.diffplug.common.swt.os.OS;
-import com.diffplug.gradle.eclipse.MavenCentralExtension;
-import com.diffplug.gradle.eclipse.MavenCentralPlugin;
 import com.diffplug.gradle.spotless.FormatExtension;
-import com.diffplug.gradle.spotless.GroovyExtension;
 import com.diffplug.gradle.spotless.SpotlessExtension;
-import com.diffplug.gradle.spotless.SpotlessPlugin;
-import com.diffplug.spotless.LineEnding;
 import com.google.gson.reflect.TypeToken;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.Comparator;
@@ -60,11 +50,8 @@ import java2ts.FT;
 import org.eclipse.jgit.util.sha1.SHA1;
 import org.gradle.api.Action;
 import org.gradle.api.DefaultTask;
-import org.gradle.api.Project;
-import org.gradle.api.artifacts.Configuration;
 import org.gradle.api.file.FileCollection;
 import org.gradle.api.file.FileTree;
-import org.gradle.api.plugins.BasePlugin;
 import org.gradle.api.tasks.CacheableTask;
 import org.gradle.api.tasks.InputFile;
 import org.gradle.api.tasks.InputFiles;
@@ -73,102 +60,22 @@ import org.gradle.api.tasks.OutputDirectory;
 import org.gradle.api.tasks.PathSensitive;
 import org.gradle.api.tasks.PathSensitivity;
 import org.gradle.api.tasks.TaskAction;
-import org.gradle.api.tasks.TaskProvider;
 import org.gradle.work.FileChange;
 import org.gradle.work.Incremental;
 import org.gradle.work.InputChanges;
 import org.mytake.factset.GitJson;
 import org.mytake.factset.JsonMisc;
+import org.mytake.factset.video.Ingredients;
 
 public class MtdoFactset {
 	private final SpotlessExtension spotlessExt;
 
-	private static final String SAID = "said";
-	private static final String VTT = "vtt";
+	static final String SAID = "said";
+	static final String VTT = "vtt";
 
-	public MtdoFactset(Project project) throws IOException {
-		project.getPlugins().apply(SpotlessPlugin.class);
-		spotlessExt = project.getExtensions().getByType(SpotlessExtension.class);
-		spotlessExt.setLineEndings(LineEnding.UNIX);
-		spotlessExt.format(SAID, saidFmt -> {
-			saidFmt.target(GrindLogic.INGREDIENTS + "/**/*.said");
-			SpotlessTranscriptPunctuation.saidAndVtt(saidFmt);
-			SpotlessTranscriptPunctuation.saidOnly(saidFmt);
-		});
-		spotlessExt.format(VTT, vttFmt -> {
-			vttFmt.target(GrindLogic.INGREDIENTS + "/**/*.vtt");
-			SpotlessTranscriptPunctuation.saidAndVtt(vttFmt);
-		});
-		spotlessExt.format("groovyGradle", GroovyExtension.class, ext -> {
-			ext.target("build.gradle");
-			ext.toggleOffOn();
-			ext.greclipse();
-		});
-		TaskProvider<?> grind = project.getTasks().register("grind", GrindTask.class, grindTask -> {
-			grindTask.setGroup("Build");
-			grindTask.setDescription("Grinds the ingredients folder into the sausage folder.");
-			grindTask.dependsOn("spotlessApply");
-			grindTask.setup = this;
-			grindTask.buildDotGradle = project.file("build.gradle");
-			grindTask.ingredients = project.fileTree(GrindLogic.INGREDIENTS, config -> {
-				// metadata for all
-				config.include("**/*.json");
-				// video
-				config.include("**/*.said");
-				config.include("**/*.vtt");
-				config.include("*.ini");
-				// document
-				config.include("**/*.md");
-			});
-			grindTask.sausageDir = project.file("sausage");
-		});
-		project.getTasks().getByName(BasePlugin.ASSEMBLE_TASK_NAME).dependsOn(grind);
-		createGuiTask(project);
+	public MtdoFactset(SpotlessExtension spotlessExt) throws IOException {
+		this.spotlessExt = spotlessExt;
 	}
-
-	private void createGuiTask(Project p) throws IOException {
-		p.getRepositories().mavenCentral();
-		Configuration guiConfig = p.getConfigurations().create(GUI_CONFIG, cfg -> {
-			cfg.setTransitive(true);
-			cfg.setCanBeResolved(true);
-			cfg.setCanBeConsumed(false);
-		});
-
-		p.getPlugins().apply(MavenCentralPlugin.class);
-		MavenCentralExtension ext = p.getExtensions().getByType(MavenCentralExtension.class);
-		ext.release("4.17.0", release -> {
-			release.dep(GUI_CONFIG, "org.eclipse.swt");
-			release.dep(GUI_CONFIG, "org.eclipse.jface");
-			release.dep(GUI_CONFIG, "org.eclipse.jface.text");
-			if (OS.getNative().isWindows()) {
-				release.dep(GUI_CONFIG, "org.eclipse.swt.browser.chromium.win32.win32.x86_64");
-			}
-			release.useNativesForRunningPlatform();
-		});
-		p.getDependencies().add(GUI_CONFIG, "com.diffplug.durian:durian-swt:3.3.1");
-
-		p.getTasks().register("gui", org.gradle.api.tasks.JavaExec.class, task -> {
-			task.setGroup("GUI");
-			task.setDescription("Launches a gui for the factset");
-
-			task.setMain("org.mytake.factset.gui.Workbench");
-			if (OS.getNative().isMac()) {
-				File icon;
-				try (InputStream input = Resources.asByteSource(MtdoFactset.class.getResource("/icon/logo_leaves_256.png")).openBufferedStream()) {
-					icon = new File(".gradle/icon.png").getCanonicalFile();
-					Files.copy(input, icon.toPath(), StandardCopyOption.REPLACE_EXISTING);
-				} catch (IOException e) {
-					throw Errors.asRuntime(e);
-				}
-				task.jvmArgs("-XstartOnFirstThread", "-Xdock:icon=" + icon.getAbsolutePath());
-			}
-			task.args(title);
-			FileCollection buildscript = p.getBuildscript().getConfigurations().getByName("classpath");
-			task.setClasspath(buildscript.plus(guiConfig));
-		});
-	}
-
-	private static final String GUI_CONFIG = "gui";
 
 	public String title;
 	public String id;
@@ -186,11 +93,11 @@ public class MtdoFactset {
 	@CacheableTask
 	public static class GrindTask extends DefaultTask {
 		/** Configures the grinding (ignored for up-to-date). */
-		private MtdoFactset setup;
+		MtdoFactset setup;
 		/** Used as an up-to-date proxy for setup. */
-		private File buildDotGradle;
-		private FileTree ingredients;
-		private File sausageDir;
+		File buildDotGradle;
+		FileTree ingredients;
+		File sausageDir;
 
 		@Internal
 		public MtdoFactset getSetup() {
@@ -242,10 +149,10 @@ public class MtdoFactset {
 				switch (change.getChangeType()) {
 				case MODIFIED:
 				case ADDED:
-					changed.add(withoutExtension(change.getNormalizedPath()));
+					changed.add(Ingredients.withoutExtension(change.getNormalizedPath()));
 					break;
 				case REMOVED:
-					removed.add(withoutExtension(change.getNormalizedPath()));
+					removed.add(Ingredients.withoutExtension(change.getNormalizedPath()));
 					break;
 				default:
 					throw Unhandled.enumException(change.getChangeType());
@@ -299,14 +206,6 @@ public class MtdoFactset {
 		}
 
 		private static final TypeToken<Map<String, String>> MAP_STRING = new TypeToken<Map<String, String>>() {};
-	}
-
-	private static String withoutExtension(String path) {
-		int idx = path.lastIndexOf('.');
-		if (idx == -1) {
-			return path;
-		}
-		return path.substring(0, idx);
 	}
 
 	/**

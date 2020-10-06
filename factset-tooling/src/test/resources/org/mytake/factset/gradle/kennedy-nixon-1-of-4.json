@@ -2,7 +2,9 @@
 "title":"Presidential Debate - Kennedy, Nixon (1 of 4)",
 "primaryDate":"1960-09-26",
 "primaryDateKind":"recorded",
-"kind":"video"},
+"kind":"video"},"factset":{
+"id":"us-presidential-debates",
+"title":"U.S. Presidential Debates"},
 "youtubeId":"CsurHThBBkk",
 "durationSeconds":3536.0,"speakers":[{
 "fullName":"Announcer offscreen",

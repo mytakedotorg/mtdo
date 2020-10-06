@@ -232,4 +232,13 @@ public class Ingredients implements Serializable {
 		int lastDot = name.lastIndexOf('.');
 		return lastDot == -1 ? name : name.substring(0, lastDot);
 	}
+
+	/** Removes the last ".blah" off of whatever gets passed in. */
+	public static String withoutExtension(String path) {
+		int idx = path.lastIndexOf('.');
+		if (idx == -1) {
+			return path;
+		}
+		return path.substring(0, idx);
+	}
 }

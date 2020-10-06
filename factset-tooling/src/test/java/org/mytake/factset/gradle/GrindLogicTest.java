@@ -39,7 +39,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java2ts.FT;
 import org.assertj.core.api.Assertions;
-import org.gradle.api.Action;
 import org.junit.Assert;
 import org.junit.Test;
 import org.mytake.factset.GitJson;
@@ -52,12 +51,14 @@ import org.slf4j.Logger;
 public class GrindLogicTest extends ResourceHarness {
 	@Test
 	public void video() throws IOException {
-		Action<FT.VideoFactMeta> videoJson = meta -> {};
+		MtdoFactset factset = new MtdoFactset(null);
+		factset.id = "us-presidential-debates";
+		factset.title = "U.S. Presidential Debates";
 		Logger logger = new org.slf4j.helpers.NOPLoggerFactory().getLogger("noop");
 
 		setFile("ingredients/all_people.ini").toResource("org/mytake/factset/gradle/all_people.ini");
 		setFile("ingredients/all_roles.ini").toResource("org/mytake/factset/gradle/all_roles.ini");
-		GrindLogic logic = new GrindLogic(rootFolder().toPath(), videoJson, logger);
+		GrindLogic logic = new GrindLogic(rootFolder().toPath(), factset, logger);
 
 		setFile("ingredients/subfolder/doesnt/matter/1960-09-26.json").toResource("org/mytake/factset/gradle/1960-09-26.json");
 		setFile("ingredients/subfolder/doesnt/matter/1960-09-26.said").toResource("org/mytake/factset/gradle/1960-09-26.said");
