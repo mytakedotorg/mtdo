@@ -29,7 +29,7 @@ const HowToUseThis: React.FC = () => {
         innerContainerClassName={"home__searchbar"}
       >
         <h1 className="home__h1 home__body--center">
-          Search the issues you care about for&nbsp;yourself
+          The <em>unbiased</em> political&nbsp;search&nbsp;engine
         </h1>
         <SearchBar classModifier="home" placeholder={"Search"} />
         <ul className="home__ul">
@@ -38,8 +38,11 @@ const HowToUseThis: React.FC = () => {
           </li>
           <li className="home__li">Just the facts: who said what, and when</li>
           <li className="home__li">
-            Search every presidential debate in history (Kennedy/Nixon to
-            present), more to come
+            Search every{" "}
+            <a href="https://github.com/mytakedotorg/us-presidential-debates">
+              presidential debate in history
+            </a>
+            , more to come
           </li>
         </ul>
       </HomeSection>

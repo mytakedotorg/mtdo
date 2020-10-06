@@ -117,13 +117,17 @@ export default class Timeline extends React.Component<
 
     if (this.props.selectedOption === Corpus.Debates) {
       if (width < 480) {
-        start = new Date(2013, 0, 1);
-      } else if (width < 768) {
         start = new Date(2011, 0, 1);
+      } else if (width < 768) {
+        start = new Date(2005, 0, 1);
       } else if (width < 1020) {
-        start = new Date(2003, 0, 1);
+        start = new Date(1996, 0, 1);
+      } else if (width < 1440) {
+        start = new Date(1992, 0, 1);
+      } else if (width < 1920) {
+        start = new Date(1980, 0, 1);
       } else {
-        start = new Date(2000, 0, 1);
+        start = new Date(1960, 0, 1);
       }
       end = new Date(2021, 0, 1);
     }
