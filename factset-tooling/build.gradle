@@ -21,7 +21,6 @@ spotlessChangelog {
 	commitMessage 'Published factset-tooling/{{version}}'
 	branch 'staging'
 	tagPrefix 'factset-tooling/'
-	forceNextVersion '1.0.0'
 }
 
 apply from: 干.file('base/changelog.gradle')
