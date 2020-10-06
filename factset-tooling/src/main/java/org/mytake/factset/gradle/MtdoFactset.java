@@ -202,7 +202,7 @@ public class MtdoFactset {
 				Files.createDirectories(sausageDir.toPath());
 				return new TreeMap<>();
 			}
-			return JsonMisc.fromJson(buildJson, MAP_STRING);
+			return new TreeMap<>(JsonMisc.fromJson(buildJson, MAP_STRING));
 		}
 
 		private static final TypeToken<Map<String, String>> MAP_STRING = new TypeToken<Map<String, String>>() {};
