@@ -43,6 +43,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Set;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
 import java2ts.FT.VideoFactMeta;
 import org.mytake.factset.DisallowedValueException;
 import org.mytake.factset.LocatedException;
@@ -106,6 +108,38 @@ public abstract class SaidTranscript {
 		public static Turn turnWords(String speaker, String words) {
 			return new AutoValue_SaidTranscript_Turn(speaker, words);
 		}
+	}
+
+	/** Merges unspeakered-paragraphs into the previous paragraph. */
+	public static String mergeParagraphs(String in) {
+		List<Turn> turns = new ArrayList<>();
+		Supplier<Turn> lastTurn = () -> {
+			return turns.isEmpty() ? null : turns.get(turns.size() - 1);
+		};
+		for (String piece : in.split("\n")) {
+			if (piece.trim().isEmpty()) {
+				continue;
+			}
+			int splitComma = piece.indexOf(": ");
+			if (splitComma > 0 && splitComma < 40) {
+				String speaker = piece.substring(0, splitComma);
+				String said = piece.substring(splitComma + 2);
+				Turn last = lastTurn.get();
+				if (last == null) {
+					turns.add(Turn.turnWords(speaker, said));
+				} else if (last.speaker().equals(speaker)) {
+					turns.set(turns.size() - 1, Turn.turnWords(speaker, last.said() + " " + said));
+				} else {
+					turns.add(Turn.turnWords(speaker, said));
+				}
+			} else {
+				Turn last = lastTurn.get();
+				if (last != null) {
+					turns.set(turns.size() - 1, Turn.turnWords(last.speaker(), last.said() + " " + piece));
+				}
+			}
+		}
+		return turns.stream().map(t -> t.speaker() + ": " + t.said()).collect(Collectors.joining("\n\n"));
 	}
 
 	public static SaidTranscript parse(File videoJson, VideoFactMeta meta, File file) throws IOException {

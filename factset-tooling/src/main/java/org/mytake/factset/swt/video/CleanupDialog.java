@@ -56,6 +56,7 @@ import org.mytake.factset.swt.Labels;
 import org.mytake.factset.swt.TextViewCtl;
 import org.mytake.factset.swt.VScrollCtl;
 import org.mytake.factset.swt.Workbench;
+import org.mytake.factset.video.SaidTranscript;
 
 public class CleanupDialog {
 	public static Exception forSaid(Workbench.Pane pane, TextViewCtl ctl, Exception e) {
@@ -158,6 +159,7 @@ public class CleanupDialog {
 			orig = doc.get();
 			options = RadioGroup.create();
 			options.addOption(new StrBox(orig), ORIGINAL);
+			options.addOption(new StrBox(SaidTranscript.mergeParagraphs(orig)), "Rollup paragraphs without speaker");
 			addRegex("^(.+): \\([\\d:]+\\)\\n", "$1: ");
 
 			RxBox<StrBox> theString = options.buildOn(cmp);
