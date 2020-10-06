@@ -33,7 +33,6 @@ import com.diffplug.common.base.Box;
 import com.diffplug.common.base.Preconditions;
 import com.diffplug.common.base.StringPrinter;
 import info.debatty.java.stringsimilarity.Levenshtein;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -57,9 +56,9 @@ public abstract class DisallowedValueException extends RuntimeException {
 			this.allowed.sort(Comparator.comparingDouble(str -> {
 				// so match it against each part of the candidates, and take the best one
 				return Arrays.stream(str.split(" "))
-					.filter(s -> s.length() >= 3)
-					.mapToDouble(s -> l.distance(value.toLowerCase(Locale.ROOT), s.toLowerCase(Locale.ROOT)))
-					.min().getAsDouble();
+						.filter(s -> s.length() >= 3)
+						.mapToDouble(s -> l.distance(value.toLowerCase(Locale.ROOT), s.toLowerCase(Locale.ROOT)))
+						.min().getAsDouble();
 			}));
 		} else {
 			// if the incoming has spaces, match it against all our possibilities

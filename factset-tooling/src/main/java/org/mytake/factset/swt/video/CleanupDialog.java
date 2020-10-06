@@ -42,7 +42,6 @@ import com.diffplug.common.swt.SwtMisc;
 import com.diffplug.common.swt.widgets.ButtonPanel;
 import com.diffplug.common.swt.widgets.RadioGroup;
 import com.diffplug.common.tree.TreeStream;
-
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.function.Function;
