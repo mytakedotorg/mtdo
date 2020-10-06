@@ -9,7 +9,11 @@ Array [
     <h1
       className="home__h1 home__body--center"
     >
-      Search the issues you care about for yourself
+      The 
+      <em>
+        unbiased
+      </em>
+       political search engine
     </h1>
     <form
       action="javascript:void(0)"
@@ -113,7 +117,14 @@ Array [
       <li
         className="home__li"
       >
-        Search every presidential debate in history (Kennedy/Nixon to present), more to come
+        Search every
+         
+        <a
+          href="https://github.com/mytakedotorg/us-presidential-debates"
+        >
+          presidential debate in history
+        </a>
+        , more to come
       </li>
     </ul>
   </HomeSection>,
