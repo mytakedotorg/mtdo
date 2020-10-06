@@ -70,6 +70,7 @@ class TemplatePlugin {
 				"org.gradle.caching=true",
 				"buildDir=.gradle/build");
 		template.mustContain("README.md",
+				MISSION_STATEMENT,
 				INCLUSION_CRITERIA,
 				NOTES,
 				CHANGELOG_HEADER,
@@ -191,20 +192,16 @@ class TemplatePlugin {
 		}
 	}
 
+	private static final String MISSION_STATEMENT = "\n*Reaching for " +
+			"[these ideals](https://github.com/mytakedotorg/mtdo/blob/staging/factset-tooling/FACTSET_PHILOSOPHY.md)" +
+			" by following " +
+			"[these steps](https://github.com/mytakedotorg/mtdo/blob/staging/factset-tooling/FACTSET_HOWTO.md)" +
+			".*\n";
 	private static final String INCLUSION_CRITERIA = "## Inclusion criteria";
 	private static final String NOTES = "## Notes";
 	private static final String ACKNOWLEDGEMENTS = "<!-- END CHANGELOG -->\n\n# Acknowledgements";
 	private static final String CHANGELOG_HEADER = StringPrinter.buildStringFromLines(
 			"# Changelog",
-			"All changes to this factset are categorized as either:",
-			"",
-			"- Minor correction: corrected typo in blah",
-			"- " + FactsetPlugin.NEW_EVENT + ": a new event took place on date blah",
-			"- " + FactsetPlugin.RETRACTION + ": we have removed blah, we made a mistake about blah",
-			"- " + FactsetPlugin.INCLUSION_CRITERIA_CHANGE + ": we made the following change to the inclusion criteria",
-			"  - ~~removed this~~ this part is the same **this part was added**",
-			"  - here is why we made this change",
-			"Version number is \"**retractions + inclusion criteria changes**.*new events*.minor corrections\"",
 			"",
 			"## [Unreleased]");
 }
