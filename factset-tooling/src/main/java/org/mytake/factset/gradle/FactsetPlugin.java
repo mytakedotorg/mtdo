@@ -55,8 +55,8 @@ public class FactsetPlugin implements Plugin<Project> {
 		ChangelogExtension changelog = project.getExtensions().getByType(ChangelogExtension.class);
 		changelog.branch("staging");
 		changelog.changelogFile(project.file("README.md"));
-		changelog.ifFoundBumpAdded(NEW_EVENT);
-		changelog.ifFoundBumpBreaking(RETRACTION, INCLUSION_CRITERIA_CHANGE);
+		changelog.ifFoundBumpAdded(NEW_EVENT, ADDED_DETAIL);
+		changelog.ifFoundBumpBreaking(CHANGED_TITLE, RETRACTION, INCLUSION_CRITERIA_CHANGE);
 
 		// setup the text formatting
 		project.getPlugins().apply(SpotlessPlugin.class);
@@ -104,6 +104,8 @@ public class FactsetPlugin implements Plugin<Project> {
 	}
 
 	static final String NEW_EVENT = "*New event*";
+	static final String ADDED_DETAIL = "*Added detail*";
+	static final String CHANGED_TITLE = "**Changed title of published fact**";
 	static final String RETRACTION = "**Retraction**";
 	static final String INCLUSION_CRITERIA_CHANGE = "**Inclusion criteria change**";
 }

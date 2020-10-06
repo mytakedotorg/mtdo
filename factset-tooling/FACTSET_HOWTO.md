@@ -23,12 +23,14 @@ Anytime the factset changes in any way, it should be noted here in the changelog
 
 - Minor correction: corrected typo in blah
 - *New event*: a new event took place on date blah
+- *Added detail*: added more information to previously entered facts
+- **Changed title of published fact**: changed the name of an existing fact
 - **Retraction**: we have removed blah, we made a mistake about blah
 - **Inclusion criteria change**: we made the following change to the inclusion criteria
   - ~~removed this~~ this part is the same **this part was added**
   - here is why we made this change
 
-Work-in-progress is collected in the "Unreleased" section.  Once it is pushed live to MyTake.org, we put a version number on it according to "**retractions + inclusion criteria changes**.*new events*.minor corrections".
+Work-in-progress is collected in the "Unreleased" section.  Once it is pushed live to MyTake.org, we put a version number on it according to "**bold changes**.*italic additions*.minor corrections".
 
 ### `README.md`: Acknowledgments
 
