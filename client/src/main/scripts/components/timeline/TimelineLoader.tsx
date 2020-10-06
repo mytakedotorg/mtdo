@@ -41,8 +41,9 @@ const TimelineLoader: React.FC<TimelineLoaderProps> = (props) => {
   useEffect(() => {
     async function getAllFacts() {
       const index: FT.FactsetIndex = await get(
-        // `git hash-object BLAH` for https://github.com/mytakedotorg/us-presidential-debates/blob/staging/sausage/index.json
-        `https://mytake.org${Routes.API_FACT}/E74aoUY=0f4ae6f0a789891c41ec3372cde46a89ee3b57cb.json`
+        // the current git commit is v1.0.0 877ede3aea28a202c94bd169a8d1376624c3397a
+        // `git hash-object sausage/index.json ` for at that tag is:
+        `https://mytake.org${Routes.API_FACT}/E74aoUY=25fa9ed941ace2d7af5bab3e6aaab9ab82b18b9f.json`
       );
       setState({
         facts: index.facts,
