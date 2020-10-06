@@ -98,6 +98,7 @@ dependencies {
 	testImplementation "org.assertj:assertj-core:$VER_ASSERTJ"
 
 	guiRuntime 'com.diffplug.durian:durian-swt:3.3.1'
+	guiRuntime 'io.reactivex.rxjava2:rxjava:2.2.19'
 	guiRuntime 'com.ibm.icu:icu4j:67.1'
 	implementation 'info.debatty:java-string-similarity:2.0.0'
 }
