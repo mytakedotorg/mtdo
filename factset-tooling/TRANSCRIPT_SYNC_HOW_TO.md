@@ -1,5 +1,7 @@
 # How to sync a transcript
 
+## Deprecated - has been moved to a new plugin, these docs have not been updated yet
+
 When you upload a video to YouTube, YouTube will automatically create a millisecond-accurate transcript of the content.  As of March 2020, you can see this at `studio.youtube.com`:
 
 ![How to get transcripts from YouTube](TRANSCRIPT_HOW_TO_youtube.png)

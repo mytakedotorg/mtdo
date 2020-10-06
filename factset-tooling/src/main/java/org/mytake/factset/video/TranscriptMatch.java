@@ -31,7 +31,7 @@ package org.mytake.factset.video;
 
 import com.diffplug.common.base.Either;
 import com.diffplug.common.base.Preconditions;
-import com.diffplug.common.io.ByteSource;
+import com.diffplug.common.io.CharSource;
 import com.diffplug.common.io.Files;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -74,12 +74,11 @@ public class TranscriptMatch {
 		return MyersDiff.INSTANCE.diff(new WordTimeMatcher(), new ListSequence(a), new ListSequence(b));
 	}
 
-	public TranscriptMatch save(TranscriptFolder folder, String name, @Nullable List<Word.Vtt> newVtt, @Nullable String newSaid) throws IOException {
+	public TranscriptMatch save(Ingredients folder, String name, @Nullable List<Word.Vtt> newVtt, @Nullable String newSaid) throws IOException {
 		SaidTranscript said;
 		if (newSaid != null) {
-			byte[] newSaidBytes = newSaid.getBytes();
-			said = SaidTranscript.parse(meta, ByteSource.wrap(newSaidBytes));
-			Files.asByteSink(folder.fileSaid(name)).write(newSaidBytes);
+			said = SaidTranscript.parse(folder.fileMeta(name), meta, CharSource.wrap(newSaid));
+			Files.asByteSink(folder.fileSaid(name)).asCharSink(StandardCharsets.UTF_8).write(newSaid);
 		} else {
 			said = this.said;
 		}
@@ -147,6 +146,8 @@ public class TranscriptMatch {
 		java.fact = meta.fact;
 		java.youtubeId = meta.youtubeId;
 		java.durationSeconds = meta.durationSeconds.doubleValue();
+		java.location = meta.location;
+		java.notes = meta.notes;
 		java.speakers = meta.speakers;
 		java.plainText = said.turns().stream().map(Turn::said).collect(Collectors.joining(" "));
 		java.wordTime = vttWords.stream().mapToDouble(Word.Vtt::time).toArray();

@@ -30,27 +30,42 @@ import {
 export function decodeVideoFact(
   encoded: FT.VideoFactContentEncoded
 ): FT.VideoFactContent {
-  const data: ArrayBuffer = base64toArrayBuffer.decode(encoded.data);
-  // TODO: data is little-endian.  If the user's browser is big-endian,
-  // the decoding will be invalid.  Someday we should detect if the
-  // browser is big-endian, and do an endian-swap if it is.  No point
-  // doing this until/if we actually have a big-endian device to test
-  // with.
+  var wordChar, wordTime, turnSpeaker, turnWord: ArrayLike<number>;
+  var factset: FT.Factset;
+  if (encoded.fact.kind === "video") {
+    const data: ArrayBuffer = base64toArrayBuffer.decode(encoded.data);
+    // TODO: data is little-endian.  If the user's browser is big-endian,
+    // the decoding will be invalid.  Someday we should detect if the
+    // browser is big-endian, and do an endian-swap if it is.  No point
+    // doing this until/if we actually have a big-endian device to test
+    // with.
 
-  var offset = 0;
-  const wordChar = new Int32Array(data, offset, encoded.totalWords);
-  offset += encoded.totalWords * Int32Array.BYTES_PER_ELEMENT;
-  const wordTime = new Float32Array(data, offset, encoded.totalWords);
-  offset += encoded.totalWords * Float32Array.BYTES_PER_ELEMENT;
-  const turnSpeaker = new Int32Array(data, offset, encoded.totalTurns);
-  offset += encoded.totalTurns * Int32Array.BYTES_PER_ELEMENT;
-  const turnWord = new Int32Array(data, offset, encoded.totalTurns);
-  offset += encoded.totalTurns * Int32Array.BYTES_PER_ELEMENT;
-  if (offset != data.byteLength) {
-    throw Error("Sizes don't match");
+    var offset = 0;
+    wordChar = new Int32Array(data, offset, encoded.totalWords);
+    offset += encoded.totalWords * Int32Array.BYTES_PER_ELEMENT;
+    wordTime = new Float32Array(data, offset, encoded.totalWords);
+    offset += encoded.totalWords * Float32Array.BYTES_PER_ELEMENT;
+    turnSpeaker = new Int32Array(data, offset, encoded.totalTurns);
+    offset += encoded.totalTurns * Int32Array.BYTES_PER_ELEMENT;
+    turnWord = new Int32Array(data, offset, encoded.totalTurns);
+    offset += encoded.totalTurns * Int32Array.BYTES_PER_ELEMENT;
+    if (offset != data.byteLength) {
+      throw Error("Sizes don't match");
+    }
+    if (encoded.factset) {
+      factset = encoded.factset;
+    } else {
+      factset = {
+        id: "us-presidential-debates",
+        title: "U.S. Presidential Debates",
+      };
+    }
+  } else {
+    throw `Unhandled video encoding ${encoded.fact.kind}`;
   }
   return {
     fact: encoded.fact,
+    factset: encoded.factset,
     durationSeconds: encoded.durationSeconds,
     youtubeId: encoded.youtubeId,
     speakers: encoded.speakers,

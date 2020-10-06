@@ -38,25 +38,6 @@ spotless {
 
 import com.diffplug.common.swt.os.OS
 
-if (OS.getNative().isWindows()) {
-	apply plugin: 'com.diffplug.p2.asmaven'
-	String VER_CEF = '0.4.0.201908130254'
-	String VER_CHROMIUM = '0.10.2.201908130308'
-	p2AsMaven {
-		group 'chromium-swt', {
-			repo 'http://dl.maketechnology.io/chromium-swt/rls/repository'
-			repo 'http://dl.maketechnology.io/chromium-cef/rls/repository'
-			iu "com.make.chromium.cef.win32.win32.x86_64", VER_CEF
-			iu "org.eclipse.swt.chromium", VER_CHROMIUM
-			iu "org.eclipse.swt.chromium.win32.win32.x86_64", VER_CHROMIUM
-		}
-	}
-	sourceSets.test.java.srcDirs = [
-		'src/test/java',
-		'src/test/java-win-only'
-	]
-}
-
 //////////////
 // <HACK>
 // This is terrible, but it lets us not publish client-interface, and I couldn't get shadow to work
@@ -74,6 +55,22 @@ tasks.named('eclipse') {
 /////////////
 // </HACK>
 /////////////
+
+configurations {
+	guiRuntime {
+		// used to declare dependencies needed at runtime by the "gui" task,
+		// but they can't be declared by this module because they are platform-specific,
+		// and maven can't handle the logic for that so we do it ourselves in the plugin
+		canBeResolved = false
+		canBeConsumed = true
+	}
+	compileOnly {
+		extendsFrom guiRuntime
+	}
+	testImplementation {
+		extendsFrom guiRuntime
+	}
+}
 
 String VER_AUTOVALUE = '1.7.4'
 dependencies {
@@ -95,37 +92,32 @@ dependencies {
 
 	implementation 'com.diffplug.spotless-changelog:spotless-changelog-plugin-gradle:2.0.0'
 	implementation 'com.diffplug.spotless:spotless-plugin-gradle:5.6.1'
-
-	if (OS.getNative().isWindows()) {
-		implementation 'chromium-swt:org.eclipse.swt.chromium:+'
-		implementation 'chromium-swt:org.eclipse.swt.chromium.win32.win32.x86_64:+'
-		implementation 'chromium-swt:com.make.chromium.cef.win32.win32.x86_64:+'
-	}
+	implementation 'com.diffplug.gradle:goomph:3.25.0'
 
 	testImplementation "junit:junit:$VER_JUNIT"
 	testImplementation "org.assertj:assertj-core:$VER_ASSERTJ"
-	testImplementation 'com.diffplug.durian:durian-swt:3.1.0'
-	testImplementation 'com.diffplug.durian:durian-rx:3.0.0'
-	testImplementation 'io.reactivex.rxjava2:rxjava:2.2.7'
+
+	guiRuntime 'com.diffplug.durian:durian-swt:3.3.1'
+	guiRuntime 'io.reactivex.rxjava2:rxjava:2.2.19'
+	guiRuntime 'com.ibm.icu:icu4j:67.1'
+	implementation 'info.debatty:java-string-similarity:2.0.0'
 }
 
 apply plugin: 'com.diffplug.eclipse.mavencentral'
 eclipseMavenCentral {
-	release '4.15.0', {
-		testImplementation 'org.eclipse.swt'
-		testImplementation 'org.eclipse.jface'
-		testImplementation 'org.eclipse.jface.text'
+	release '4.17.0', {
+		dep 'guiRuntime', 'org.eclipse.swt'
+		dep 'guiRuntime', 'org.eclipse.jface'
+		dep 'guiRuntime','org.eclipse.jface.text'
+		if (OS.getNative().isWindows()) {
+			dep 'guiRuntime', 'org.eclipse.swt.browser.chromium.win32.win32.x86_64'
+		}
 		useNativesForRunningPlatform()
 	}
 }
 
-task transcriptGui(type: JavaExec, dependsOn: testClasses) {
-	description = 'Runs the transcript GUI'
-	classpath = sourceSets.test.runtimeClasspath
-	main = 'org.mytake.factset.video.gui.TranscriptFolderDialog'
-	if (com.diffplug.common.swt.os.OS.getNative().isMac()) {
-		jvmArgs = [
-			'-XstartOnFirstThread'
-		]
+test {
+	useJUnit {
+		excludeCategories 'com.diffplug.common.swt.InteractiveTest'
 	}
 }

@@ -31,13 +31,18 @@ package org.mytake.factset.gradle;
 
 import com.diffplug.common.base.Errors;
 import com.diffplug.common.base.StringPrinter;
+import com.diffplug.common.collect.Sets;
+import com.diffplug.common.swt.os.OS;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 import org.gradle.api.GradleException;
 import org.gradle.api.Project;
@@ -45,66 +50,6 @@ import org.gradle.api.plugins.JavaBasePlugin;
 import org.gradle.api.tasks.TaskProvider;
 
 class TemplatePlugin {
-	static final String TASK_APPLY = "templateApply";
-	static final String TASK_CHECK = "templateCheck";
-
-	Map<String, List<String>> mustContain = new HashMap<>();
-
-	TemplatePlugin() {}
-
-	public void mustContain(String path, String... toContain) {
-		mustContain.put(path, Arrays.asList(toContain));
-	}
-
-	public void createTasks(Project project) {
-		TaskProvider<?> templateCheck = project.getTasks().register(TASK_CHECK);
-		templateCheck.configure(task -> {
-			task.setGroup("Build Setup");
-			task.setDescription("Ensures that the MyTake.org factset template is properly configured");
-			Path rootDir = project.getProjectDir().toPath();
-			task.doLast(unused -> check(rootDir));
-		});
-		project.getTasks().named(JavaBasePlugin.CHECK_TASK_NAME).configure(check -> {
-			check.dependsOn(templateCheck);
-		});
-
-		project.getTasks().register(TASK_APPLY).configure(task -> {
-			task.setGroup("Verification");
-			task.setDescription("Initializes the MyTake.org factset template");
-			Path rootDir = project.getProjectDir().toPath();
-			task.doLast(unused -> apply(rootDir));
-		});
-	}
-
-	public void check(Path rootDir) {
-		for (String p : mustContain.keySet()) {
-			Path path = rootDir.resolve(p);
-			if (!Files.exists(path)) {
-				throw new GradleException("'" + p + "' does not exist, run `" + TASK_APPLY + "` to create it.");
-			}
-			String content = Errors.rethrow().get(() -> new String(Files.readAllBytes(path), StandardCharsets.UTF_8));
-			for (String value : mustContain.get(p)) {
-				if (!content.contains(value)) {
-					String bar = "+------------------------------\n";
-					throw new GradleException("You must add the following to " + p + "\n\n"
-							+ bar
-							+ Arrays.stream(value.split("\n")).map(str -> "|" + str + "\n").collect(Collectors.joining())
-							+ bar);
-				}
-			}
-		}
-	}
-
-	private void apply(Path rootDir) {
-		for (String p : mustContain.keySet()) {
-			Path path = rootDir.resolve(p);
-			if (!Files.exists(path)) {
-				String content = mustContain.get(p).stream().collect(Collectors.joining("\n")) + "\n";
-				Errors.rethrow().run(() -> Files.write(path, content.getBytes(StandardCharsets.UTF_8)));
-			}
-		}
-	}
-
 	static TemplatePlugin forFactset() {
 		TemplatePlugin template = new TemplatePlugin();
 		template.mustContain(".gitignore",
@@ -122,13 +67,128 @@ class TemplatePlugin {
 				"indent_style = space",
 				"indent_size = 2");
 		template.mustContain("gradle.properties",
-				"org.gradle.caching=true");
+				"org.gradle.caching=true",
+				"buildDir=.gradle/build");
 		template.mustContain("README.md",
 				INCLUSION_CRITERIA,
 				NOTES,
 				CHANGELOG_HEADER,
 				ACKNOWLEDGEMENTS);
+		template.mustBeExecutable("GUI_mac_osx.command");
+		template.mustBeExactly("GUI_mac_osx.command",
+				"#!/bin/bash",
+				"cd `dirname $0`",
+				"./gradlew gui");
+		template.mustBeExactly("GUI_windows.bat",
+				"gradlew gui");
 		return template;
+	}
+
+	static final String TASK_APPLY = "templateApply";
+	static final String TASK_CHECK = "templateCheck";
+
+	Map<String, List<String>> mustContain = new HashMap<>();
+	Map<String, String> mustBeExactly = new HashMap<>();
+	Set<String> mustBeExecutable = new HashSet<>();
+
+	TemplatePlugin() {}
+
+	public void mustContain(String path, String... toContain) {
+		mustContain.put(path, Arrays.asList(toContain));
+	}
+
+	public void mustBeExactly(String path, String... toContain) {
+		mustBeExactly.put(path, StringPrinter.buildStringFromLines(toContain));
+	}
+
+	public void mustBeExecutable(String path) {
+		mustBeExecutable.add(path);
+	}
+
+	public void createTasks(Project project) {
+		TaskProvider<?> templateCheck = project.getTasks().register(TASK_CHECK);
+		templateCheck.configure(task -> {
+			task.setGroup("Verification");
+			task.setDescription("Ensures that the MyTake.org factset template is properly configured");
+			Path rootDir = project.getProjectDir().toPath();
+			task.doLast(unused -> check(rootDir));
+		});
+		project.getTasks().named(JavaBasePlugin.CHECK_TASK_NAME).configure(check -> {
+			check.dependsOn(templateCheck);
+		});
+
+		project.getTasks().register(TASK_APPLY).configure(task -> {
+			task.setGroup("Build Setup");
+			task.setDescription("Initializes the MyTake.org factset template");
+			Path rootDir = project.getProjectDir().toPath();
+			task.doLast(unused -> Errors.rethrow().run(() -> apply(rootDir)));
+		});
+	}
+
+	private static final String bar = "+------------------------------\n";
+
+	private void check(Path rootDir) {
+		for (String p : Sets.union(mustContain.keySet(), mustBeExactly.keySet())) {
+			Path path = rootDir.resolve(p);
+			if (!Files.exists(path)) {
+				throw new GradleException("'" + p + "' does not exist, run " + gradlew(TASK_APPLY) + " to create it.");
+			}
+			String content = Errors.rethrow().get(() -> new String(Files.readAllBytes(path), StandardCharsets.UTF_8));
+			String mustBe = mustBeExactly.get(p);
+			if (mustBe != null) {
+				if (!content.equals(mustBe)) {
+					throw new GradleException("'" + p + "' has the wrong content, run " + gradlew(TASK_APPLY) + " to fix it.");
+				}
+			} else {
+				for (String value : mustContain.get(p)) {
+					if (!content.contains(value)) {
+						throw new GradleException("You must add the following to " + p + "\n\n"
+								+ bar
+								+ Arrays.stream(value.split("\n")).map(str -> "|" + str + "\n").collect(Collectors.joining())
+								+ bar);
+					}
+				}
+			}
+		}
+		if (OS.getNative().isMacOrLinux()) {
+			for (String p : mustBeExecutable) {
+				Path path = rootDir.resolve(p);
+				if (!Files.isExecutable(path)) {
+					throw new GradleException("'" + p + "' must be executable, run " + gradlew(TASK_APPLY) + " to fix it.");
+				}
+			}
+		}
+	}
+
+	private static String gradlew(String cmd) {
+		if (OS.getNative().isWindows()) {
+			return "`gradlew " + TASK_APPLY + "`";
+		} else {
+			return "`./gradlew " + TASK_APPLY + "`";
+		}
+	}
+
+	private void apply(Path rootDir) throws IOException {
+		for (String p : Sets.union(mustContain.keySet(), mustBeExactly.keySet())) {
+			Path path = rootDir.resolve(p);
+			if (!Files.exists(path)) {
+				String content = mustBeExactly.get(p);
+				if (content == null) {
+					content = mustContain.get(p).stream().collect(Collectors.joining("\n")) + "\n";
+				}
+				Files.write(path, content.getBytes(StandardCharsets.UTF_8));
+			} else {
+				String mustBe = mustBeExactly.get(p);
+				if (mustBe != null) {
+					Files.write(path, mustBe.getBytes(StandardCharsets.UTF_8));
+				}
+			}
+		}
+		if (OS.getNative().isMacOrLinux()) {
+			for (String p : mustBeExecutable) {
+				rootDir.resolve(p).toFile().setExecutable(true);
+			}
+		}
 	}
 
 	private static final String INCLUSION_CRITERIA = "## Inclusion criteria";

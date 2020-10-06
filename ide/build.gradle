@@ -1,7 +1,7 @@
 if (!buildsrc.Env.isHeroku()) {
 	apply plugin: 'com.diffplug.oomph.ide'
 	oomphIde {
-		repoEclipseLatest()
+		repoEclipse('4.16.0')
 		jdt {}
 		splash rootProject.file('_imgs/logo_leaves.png')
 		style {
@@ -10,8 +10,5 @@ if (!buildsrc.Env.isHeroku()) {
 		}
 
 		addAllProjects()	// we want a project for *everything*
-
-		repo 'https://download.eclipse.org/wildwebdeveloper/releases/0.7.1/'
-		feature 'org.eclipse.wildwebdeveloper.feature'
 	}
 }

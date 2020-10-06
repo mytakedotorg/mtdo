@@ -29,11 +29,18 @@
 package org.mytake.factset.gradle;
 
 
+import com.diffplug.common.base.Errors;
+import com.diffplug.gradle.spotless.GroovyExtension;
+import com.diffplug.gradle.spotless.SpotlessExtension;
+import com.diffplug.gradle.spotless.SpotlessPlugin;
+import com.diffplug.spotless.LineEnding;
 import com.diffplug.spotless.changelog.gradle.ChangelogExtension;
 import com.diffplug.spotless.changelog.gradle.ChangelogPlugin;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
 import org.gradle.api.plugins.BasePlugin;
+import org.gradle.api.tasks.TaskProvider;
+import org.mytake.factset.gradle.MtdoFactset.GrindTask;
 
 public class FactsetPlugin implements Plugin<Project> {
 	@Override
@@ -46,12 +53,54 @@ public class FactsetPlugin implements Plugin<Project> {
 		// setup the changelog
 		project.getPlugins().apply(ChangelogPlugin.class);
 		ChangelogExtension changelog = project.getExtensions().getByType(ChangelogExtension.class);
+		changelog.branch("staging");
 		changelog.changelogFile(project.file("README.md"));
 		changelog.ifFoundBumpAdded(NEW_EVENT);
 		changelog.ifFoundBumpBreaking(RETRACTION, INCLUSION_CRITERIA_CHANGE);
 
+		// setup the text formatting
+		project.getPlugins().apply(SpotlessPlugin.class);
+		SpotlessExtension spotlessExt = project.getExtensions().getByType(SpotlessExtension.class);
+		spotlessExt.setLineEndings(LineEnding.UNIX);
+		spotlessExt.format(MtdoFactset.SAID, saidFmt -> {
+			saidFmt.target(GrindLogic.INGREDIENTS + "/**/*.said");
+			SpotlessTranscriptPunctuation.saidAndVtt(saidFmt);
+			SpotlessTranscriptPunctuation.saidOnly(saidFmt);
+		});
+		spotlessExt.format(MtdoFactset.VTT, vttFmt -> {
+			vttFmt.target(GrindLogic.INGREDIENTS + "/**/*.vtt");
+			SpotlessTranscriptPunctuation.saidAndVtt(vttFmt);
+		});
+		spotlessExt.format("groovyGradle", GroovyExtension.class, ext -> {
+			ext.target("build.gradle");
+			ext.toggleOffOn();
+			ext.greclipse();
+		});
+
 		// setup the factset
-		project.getExtensions().create("mtdoFactset", MtdoFactset.class, project);
+		MtdoFactset factset = project.getExtensions().create("mtdoFactset", MtdoFactset.class, spotlessExt);
+
+		TaskProvider<?> grind = project.getTasks().register("grind", GrindTask.class, grindTask -> {
+			grindTask.setGroup("Build");
+			grindTask.setDescription("Grinds the ingredients folder into the sausage folder.");
+			grindTask.dependsOn("spotlessApply");
+			grindTask.setup = factset;
+			grindTask.buildDotGradle = project.file("build.gradle");
+			grindTask.ingredients = project.fileTree(GrindLogic.INGREDIENTS, config -> {
+				// metadata for all
+				config.include("**/*.json");
+				// video
+				config.include("**/*.said");
+				config.include("**/*.vtt");
+				config.include("*.ini");
+				// document
+				config.include("**/*.md");
+			});
+			grindTask.sausageDir = project.file("sausage");
+		});
+		project.getTasks().getByName(BasePlugin.ASSEMBLE_TASK_NAME).dependsOn(grind);
+		// setup the gui task
+		Errors.rethrow().run(() -> GuiTask.setup(project, factset));
 	}
 
 	static final String NEW_EVENT = "*New event*";

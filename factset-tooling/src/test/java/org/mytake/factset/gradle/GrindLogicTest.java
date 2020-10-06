@@ -29,6 +29,7 @@
 package org.mytake.factset.gradle;
 
 
+import com.diffplug.common.collect.Maps;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -38,12 +39,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java2ts.FT;
 import org.assertj.core.api.Assertions;
-import org.gradle.internal.impldep.com.google.common.collect.Maps;
 import org.junit.Assert;
 import org.junit.Test;
 import org.mytake.factset.GitJson;
 import org.mytake.factset.JsonMisc;
-import org.mytake.factset.gradle.MtdoFactset.VideoCfg;
 import org.mytake.factset.video.SaidTranscript;
 import org.mytake.factset.video.TranscriptMatch;
 import org.mytake.factset.video.VttTranscript;
@@ -52,9 +51,14 @@ import org.slf4j.Logger;
 public class GrindLogicTest extends ResourceHarness {
 	@Test
 	public void video() throws IOException {
-		VideoCfg config = new VideoCfg();
+		MtdoFactset factset = new MtdoFactset(null);
+		factset.id = "us-presidential-debates";
+		factset.title = "U.S. Presidential Debates";
 		Logger logger = new org.slf4j.helpers.NOPLoggerFactory().getLogger("noop");
-		GrindLogic logic = new GrindLogic(rootFolder().toPath(), config, logger);
+
+		setFile("ingredients/all_people.ini").toResource("org/mytake/factset/gradle/all_people.ini");
+		setFile("ingredients/all_roles.ini").toResource("org/mytake/factset/gradle/all_roles.ini");
+		GrindLogic logic = new GrindLogic(rootFolder().toPath(), factset, logger);
 
 		setFile("ingredients/subfolder/doesnt/matter/1960-09-26.json").toResource("org/mytake/factset/gradle/1960-09-26.json");
 		setFile("ingredients/subfolder/doesnt/matter/1960-09-26.said").toResource("org/mytake/factset/gradle/1960-09-26.said");
@@ -74,7 +78,7 @@ public class GrindLogicTest extends ResourceHarness {
 		setFile("1960-09-26.vtt").toResource("org/mytake/factset/gradle/1960-09-26.vtt");
 
 		FT.VideoFactMeta meta = JsonMisc.fromJson(newFile("1960-09-26.json"), FT.VideoFactMeta.class);
-		SaidTranscript said = SaidTranscript.parse(meta, newFile("1960-09-26.said"));
+		SaidTranscript said = SaidTranscript.parse(newFile("1960-09-26.json"), meta, newFile("1960-09-26.said"));
 		VttTranscript vtt = VttTranscript.parse(newFile("1960-09-26.vtt"), VttTranscript.Mode.STRICT);
 		TranscriptMatch match = new TranscriptMatch(meta, said, vtt);
 		FT.VideoFactContentEncoded encoded = match.toVideoFact().toEncoded();

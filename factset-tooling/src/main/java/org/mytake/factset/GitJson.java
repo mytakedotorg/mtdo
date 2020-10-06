@@ -203,7 +203,7 @@ public class GitJson {
 
 		public String toRecondensedForDebugging() {
 			if (obj instanceof FT.VideoFactMeta) {
-				return GSON.toJson(reorder(obj, "fact", "youtubeId", "durationSeconds", "speakers"));
+				return GSON.toJson(reorder(obj, "fact", "factset", "youtubeId", "durationSeconds", "location", "notes", "speakers"));
 			} else {
 				return GSON.toJson(obj);
 			}
@@ -211,7 +211,7 @@ public class GitJson {
 
 		public String toPrettyString() {
 			if (obj instanceof FT.VideoFactMeta) {
-				return GSON_PRETTY.toJson(reorder(obj, "fact", "youtubeId", "durationSeconds", "speakers"));
+				return GSON_PRETTY.toJson(reorder(obj, "fact", "factset", "youtubeId", "durationSeconds", "location", "notes", "speakers"));
 			} else {
 				return GSON_PRETTY.toJson(obj);
 			}

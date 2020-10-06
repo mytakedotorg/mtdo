@@ -48,6 +48,8 @@ public class VideoFactContentJava extends FT.VideoFactMeta {
 		encoded.durationSeconds = durationSeconds;
 		encoded.youtubeId = youtubeId;
 		encoded.speakers = speakers;
+		encoded.location = location;
+		encoded.notes = notes;
 		encoded.plainText = plainText;
 		encoded.totalWords = wordChar.length;
 		encoded.totalTurns = turnSpeaker.length;
@@ -93,6 +95,8 @@ public class VideoFactContentJava extends FT.VideoFactMeta {
 		java.youtubeId = encoded.youtubeId;
 		java.durationSeconds = encoded.durationSeconds.intValue();
 		java.speakers = encoded.speakers;
+		java.location = encoded.location;
+		java.notes = encoded.notes;
 		java.plainText = encoded.plainText;
 		// create the new arrays
 		java.wordChar = new int[encoded.totalWords];

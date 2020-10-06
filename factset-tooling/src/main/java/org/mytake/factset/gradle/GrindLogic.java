@@ -57,67 +57,66 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java2ts.FT;
 import java2ts.FT.FactLink;
+import org.gradle.api.Action;
 import org.gradle.api.GradleException;
 import org.mytake.factset.GitJson;
 import org.mytake.factset.JsonMisc;
-import org.mytake.factset.gradle.MtdoFactset.VideoCfg;
-import org.mytake.factset.video.SaidTranscript;
-import org.mytake.factset.video.SetIni;
+import org.mytake.factset.video.Ingredients;
 import org.mytake.factset.video.TranscriptMatch;
 import org.mytake.factset.video.VideoFactContentJava;
 import org.mytake.factset.video.VideoFormat;
-import org.mytake.factset.video.VttTranscript;
 import org.slf4j.Logger;
 
 public class GrindLogic {
 	static final String INGREDIENTS = "ingredients";
 	static final String SAUSAGE = "sausage";
 
-	Path rootDir;
-	VideoCfg video;
-	Logger logger;
+	final Path rootDir;
+	final MtdoFactset factset;
+	final Logger logger;
+	final Ingredients ingredients;
 
-	public GrindLogic(Path rootDir, VideoCfg video, Logger logger) {
+	public GrindLogic(Path rootDir, MtdoFactset factset, Logger logger) throws IOException {
 		this.rootDir = rootDir;
-		this.video = video;
+		this.factset = factset;
 		this.logger = logger;
+		this.ingredients = new Ingredients(rootDir.resolve(INGREDIENTS).toFile());
 	}
 
 	public void grind(Collection<String> changed, Map<String, String> buildJson) throws IOException {
-		try (Formatter formatter = formatterVideoJson(video)) {
-			for (String path : changed) {
-				File jsonFile = ingredient(path, ".json");
+		try (Formatter formatter = formatterVideoJson(factset.videoJson)) {
+			for (String name : changed) {
+				File jsonFile = ingredients.fileMeta(name);
 				if (!jsonFile.exists()) {
 					continue;
 				}
-				logger.info("grinding: " + path + ".json");
+				logger.info("grinding: " + name + ".json");
 				// format according to the build.gradle
 				PaddedCell.DirtyState cell = PaddedCell.calculateDirtyState(formatter, jsonFile);
 				if (cell.didNotConverge()) {
-					throw new GradleException("'video { json {' does not converge for " + path);
+					throw new GradleException("'video { json {' does not converge for " + name);
 				} else if (!cell.isClean()) {
 					cell.writeCanonicalTo(jsonFile);
 				}
 				// determine output file, and put it into 'build.json'
 				FT.VideoFactMeta json = JsonMisc.fromJson(jsonFile, FT.VideoFactMeta.class);
 				String titleSlug = GitJson.slugify(json.fact.title);
-				buildJson.put(path, titleSlug);
+				buildJson.put(name, titleSlug);
 				logger.info("  into " + titleSlug + ".json");
 
-				// try to parse
-				FT.VideoFactContentEncoded content;
+				// try to match
 				try {
-					FT.VideoFactMeta meta = JsonMisc.fromJson(ingredient(path, ".json"), FT.VideoFactMeta.class);
-					SaidTranscript said = SaidTranscript.parse(meta, ingredient(path, ".said"));
-					VttTranscript vtt = VttTranscript.parse(ingredient(path, ".vtt"), VttTranscript.Mode.STRICT);
-					TranscriptMatch match = new TranscriptMatch(meta, said, vtt);
-					content = encodeSpeakersIntoComments(match.toVideoFact());
+					TranscriptMatch match = ingredients.loadTranscript(name);
+					FT.VideoFactContentEncoded content = encodeSpeakersIntoComments(match.toVideoFact());
+					content.factset = new FT.Factset();
+					content.factset.id = factset.id;
+					content.factset.title = factset.title;
+					GitJson.write(content).toCompact(rootDir.resolve(SAUSAGE + "/" + titleSlug + ".json").toFile());
+				} catch (GradleException e) {
+					throw e;
 				} catch (Exception e) {
-					throw new GradleException("Problem in " + path, e);
+					throw ingredients.problemInFile(Ingredients.VIDEO_MATCH + name, e);
 				}
-				logger.info("  success");
-
-				GitJson.write(content).toCompact(rootDir.resolve(SAUSAGE + "/" + titleSlug + ".json").toFile());
 			}
 		}
 	}
@@ -127,25 +126,21 @@ public class GrindLogic {
 	}
 
 	public class Validator {
-		final Set<String> roles, people;
 		final Set<String> foundRoles = new HashSet<>();
 		final Set<String> foundPeople = new HashSet<>();
 
-		Validator() throws IOException {
-			roles = SetIni.parse(ingredient("all_roles", ".ini"));
-			people = SetIni.parse(ingredient("all_people", ".ini"));
-		}
+		Validator() throws IOException {}
 
 		public List<String> warningsFor(String path) throws IOException {
 			List<String> warnings = new ArrayList<>();
-			FT.VideoFactMeta meta = JsonMisc.fromJson(ingredient(path, ".json"), FT.VideoFactMeta.class);
+			FT.VideoFactMeta meta = ingredients.loadMetaNoValidation(path);
 			for (FT.Speaker speaker : meta.speakers) {
 				foundRoles.add(speaker.role);
 				foundPeople.add(speaker.fullName);
-				if (!roles.contains(speaker.role)) {
+				if (!ingredients.roles().contains(speaker.role)) {
 					warnings.add("No such role '" + speaker.role + "' for '" + speaker.fullName + "' in all_roles.ini");
 				}
-				if (!people.contains(speaker.fullName)) {
+				if (!ingredients.people().contains(speaker.fullName)) {
 					warnings.add("No such person '" + speaker.fullName + "' in all_people.ini");
 				}
 			}
@@ -155,10 +150,10 @@ public class GrindLogic {
 		/** Returns an empty string if all_people.ini and all_roles.ini were complete, or something else if they weren't. */
 		public String allFound() {
 			return StringPrinter.buildString(printer -> {
-				for (String unusedRole : Sets.difference(roles, foundRoles)) {
+				for (String unusedRole : Sets.difference(ingredients.roles(), foundRoles)) {
 					printer.println(INGREDIENTS + "/all_roles.ini: unused role '" + unusedRole + "'");
 				}
-				for (String unusedPerson : Sets.difference(people, foundPeople)) {
+				for (String unusedPerson : Sets.difference(ingredients.people(), foundPeople)) {
 					printer.println(INGREDIENTS + "/all_people.ini: unused person '" + unusedPerson + "'");
 				}
 			});
@@ -192,17 +187,13 @@ public class GrindLogic {
 		Collections.sort(index.facts, linkComparator.thenComparing(factLink -> factLink.fact.title));
 	}
 
-	private File ingredient(String path, String ext) {
-		return rootDir.resolve(INGREDIENTS + "/" + path + ext).toFile();
-	}
-
-	private Formatter formatterVideoJson(VideoCfg video) {
+	private Formatter formatterVideoJson(Action<FT.VideoFactMeta> videoJson) {
 		return formatter(str -> {
 			// parse and sort speakers by name
 			FT.VideoFactMeta json = JsonMisc.fromJson(str, FT.VideoFactMeta.class);
 			json.speakers.sort(Comparator.comparing(speaker -> speaker.fullName));
 			// format in-place (fine to reorder speakers if they want)
-			video.perVideo.execute(json);
+			videoJson.execute(json);
 			// pretty-print
 			return VideoFormat.prettyPrint(json);
 		});

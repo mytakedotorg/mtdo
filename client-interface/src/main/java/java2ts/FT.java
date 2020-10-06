@@ -52,8 +52,15 @@ public interface FT {
 	}
 
 	@jsweet.lang.Interface
+	public class Factset {
+		public String id;
+		public String title;
+	}
+
+	@jsweet.lang.Interface
 	public class FactContent {
 		public Fact fact;
+		public Factset factset;
 	}
 
 	@jsweet.lang.Interface
@@ -62,11 +69,20 @@ public interface FT {
 		public String role;
 	}
 
+	@jsweet.lang.Interface
+	public class Location {
+		public String placename; // name of the place in the local parlance according to countryCode
+		public String cityState; // name of the city in the local parlance according to countryCode
+		public String country; // ISO 3166 Alpha-3
+	}
+
 	/** Metadata about a video. */
 	@jsweet.lang.Interface
 	public class VideoFactMeta extends FactContent {
 		public String youtubeId;
 		public Number durationSeconds;
+		public @jsweet.lang.Optional Location location;
+		public @jsweet.lang.Optional String notes;
 		public List<Speaker> speakers;
 	}
 

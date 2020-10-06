@@ -25,8 +25,10 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import org.jooby.Jooby;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
+@Ignore
 public class FactApiTest {
 	@Test
 	public void prod() throws Exception {

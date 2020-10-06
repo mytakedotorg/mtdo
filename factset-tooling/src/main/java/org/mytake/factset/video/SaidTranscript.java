@@ -29,10 +29,9 @@
 package org.mytake.factset.video;
 
 
-import com.diffplug.common.base.Preconditions;
 import com.diffplug.common.base.StringPrinter;
 import com.diffplug.common.collect.Immutables;
-import com.diffplug.common.io.ByteSource;
+import com.diffplug.common.io.CharSource;
 import com.diffplug.common.io.Files;
 import com.google.auto.value.AutoValue;
 import java.io.BufferedReader;
@@ -44,7 +43,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Set;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
 import java2ts.FT.VideoFactMeta;
+import org.mytake.factset.DisallowedValueException;
+import org.mytake.factset.LocatedException;
 
 /**
  * Format is:
@@ -107,15 +110,47 @@ public abstract class SaidTranscript {
 		}
 	}
 
-	public static SaidTranscript parse(VideoFactMeta meta, File file) throws IOException {
-		return parse(meta, Files.asByteSource(file));
+	/** Merges unspeakered-paragraphs into the previous paragraph. */
+	public static String mergeParagraphs(String in) {
+		List<Turn> turns = new ArrayList<>();
+		Supplier<Turn> lastTurn = () -> {
+			return turns.isEmpty() ? null : turns.get(turns.size() - 1);
+		};
+		for (String piece : in.split("\n")) {
+			if (piece.trim().isEmpty()) {
+				continue;
+			}
+			int splitComma = piece.indexOf(": ");
+			if (splitComma > 0 && splitComma < 40) {
+				String speaker = piece.substring(0, splitComma);
+				String said = piece.substring(splitComma + 2);
+				Turn last = lastTurn.get();
+				if (last == null) {
+					turns.add(Turn.turnWords(speaker, said));
+				} else if (last.speaker().equals(speaker)) {
+					turns.set(turns.size() - 1, Turn.turnWords(speaker, last.said() + " " + said));
+				} else {
+					turns.add(Turn.turnWords(speaker, said));
+				}
+			} else {
+				Turn last = lastTurn.get();
+				if (last != null) {
+					turns.set(turns.size() - 1, Turn.turnWords(last.speaker(), last.said() + " " + piece));
+				}
+			}
+		}
+		return turns.stream().map(t -> t.speaker() + ": " + t.said()).collect(Collectors.joining("\n\n"));
 	}
 
-	public static SaidTranscript parse(VideoFactMeta meta, ByteSource source) throws IOException {
+	public static SaidTranscript parse(File videoJson, VideoFactMeta meta, File file) throws IOException {
+		return parse(videoJson, meta, Files.asByteSource(file).asCharSource(StandardCharsets.UTF_8));
+	}
+
+	public static SaidTranscript parse(File videoJson, VideoFactMeta meta, CharSource source) throws IOException {
 		Set<String> people = meta.speakers.stream().map(s -> s.fullName).collect(Immutables.toSet());
 
 		int lineCount = 1;
-		try (BufferedReader reader = source.asCharSource(StandardCharsets.UTF_8).openBufferedStream()) {
+		try (BufferedReader reader = source.openBufferedStream()) {
 			List<Turn> turns = new ArrayList<>();
 			String line;
 			while (true) {
@@ -124,8 +159,13 @@ public abstract class SaidTranscript {
 					break;
 				}
 				int firstColon = line.indexOf(':');
+				if (firstColon == -1) {
+					throw LocatedException.atLine(lineCount).message("Every paragraph should start with a speaker");
+				}
 				String speaker = line.substring(0, firstColon);
-				Preconditions.checkArgument(people.contains(speaker), "No such person %s, available: %s", speaker, people);
+				if (!people.contains(speaker)) {
+					throw LocatedException.atLine(lineCount).colRange(0, firstColon).message(DisallowedValueException.peopleInSaid(speaker, people, videoJson));
+				}
 				String words = line.substring(firstColon + 1).trim();
 				turns.add(Turn.turnWords(speaker, words));
 
@@ -133,14 +173,12 @@ public abstract class SaidTranscript {
 				String emptyLine = reader.readLine();
 				if (emptyLine == null) {
 					break;
-				} else {
-					Preconditions.checkArgument(emptyLine.isEmpty(), "Must be empty, but was %s", emptyLine);
+				} else if (!emptyLine.isEmpty()) {
+					throw LocatedException.atLine(lineCount).message("Must be a single empty line between speaker turns");
 				}
 				++lineCount;
 			}
 			return create(turns);
-		} catch (Exception e) {
-			throw new RuntimeException("On line " + lineCount, e);
 		}
 	}
 
