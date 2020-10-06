@@ -81,7 +81,9 @@ public class ProgressCtl extends ControlWrapper.AroundControl<Label> {
 
 	private String errorMaxLength(Throwable e) {
 		String msg = e.getMessage();
-		if (msg.length() > 15) {
+		if (msg == null) {
+			return e.getClass().toString();
+		} else if (msg.length() > 15) {
 			return msg.substring(0, 15) + "...";
 		} else {
 			return msg;

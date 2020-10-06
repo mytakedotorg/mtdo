@@ -147,6 +147,9 @@ public class CleanupDialog {
 				message = "File not found: " + e.getMessage().substring(lastSlash);
 			} else {
 				message = e.getMessage();
+				if (message == null) {
+					message = e.getClass().toString();
+				}
 			}
 			Layouts.setGridData(Labels.createBold(cmp, message)).grabHorizontal();
 
