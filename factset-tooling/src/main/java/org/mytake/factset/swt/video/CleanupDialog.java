@@ -42,6 +42,8 @@ import com.diffplug.common.swt.SwtMisc;
 import com.diffplug.common.swt.widgets.ButtonPanel;
 import com.diffplug.common.swt.widgets.RadioGroup;
 import com.diffplug.common.tree.TreeStream;
+
+import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.function.Function;
 import java.util.regex.Pattern;
@@ -140,7 +142,14 @@ public class CleanupDialog {
 
 		AdjustFormatCoat(Composite cmp, Workbench.Pane pane, Box<String> doc, Exception e) {
 			Layouts.setGrid(cmp);
-			Layouts.setGridData(Labels.createBold(cmp, e.getMessage())).grabHorizontal();
+			String message;
+			if (e instanceof FileNotFoundException) {
+				int lastSlash = e.getMessage().replace('\\', '/').lastIndexOf('/');
+				message = "File not found: " + e.getMessage().substring(lastSlash);
+			} else {
+				message = e.getMessage();
+			}
+			Layouts.setGridData(Labels.createBold(cmp, message)).grabHorizontal();
 
 			Layouts.setGridData(Labels.create(cmp, "One of the following find-replace actions might help."));
 
