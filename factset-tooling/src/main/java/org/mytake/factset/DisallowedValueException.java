@@ -33,9 +33,12 @@ import com.diffplug.common.base.Box;
 import com.diffplug.common.base.Preconditions;
 import com.diffplug.common.base.StringPrinter;
 import info.debatty.java.stringsimilarity.Levenshtein;
+
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
+import java.util.Locale;
 import java.util.Set;
 import java.util.regex.Pattern;
 
@@ -49,9 +52,21 @@ public abstract class DisallowedValueException extends RuntimeException {
 		this.value = value;
 		this.allowed = new ArrayList<>(allowed);
 		Levenshtein l = new Levenshtein();
-		this.allowed.sort(Comparator.comparingDouble(str -> {
-			return l.distance(value, str);
-		}));
+		if (value.indexOf(' ') == -1) {
+			// the thing coming in has no spaces, it might be a last name
+			this.allowed.sort(Comparator.comparingDouble(str -> {
+				// so match it against each part of the candidates, and take the best one
+				return Arrays.stream(str.split(" "))
+					.filter(s -> s.length() >= 3)
+					.mapToDouble(s -> l.distance(value.toLowerCase(Locale.ROOT), s.toLowerCase(Locale.ROOT)))
+					.min().getAsDouble();
+			}));
+		} else {
+			// if the incoming has spaces, match it against all our possibilities
+			this.allowed.sort(Comparator.comparingDouble(str -> {
+				return l.distance(value.toLowerCase(Locale.ROOT), str.toLowerCase(Locale.ROOT));
+			}));
+		}
 		this.fileWhichSpecifies = fileWhichSpecifies;
 	}
 
