@@ -146,6 +146,8 @@ public class TranscriptMatch {
 		java.fact = meta.fact;
 		java.youtubeId = meta.youtubeId;
 		java.durationSeconds = meta.durationSeconds.doubleValue();
+		java.location = meta.location;
+		java.notes = meta.notes;
 		java.speakers = meta.speakers;
 		java.plainText = said.turns().stream().map(Turn::said).collect(Collectors.joining(" "));
 		java.wordTime = vttWords.stream().mapToDouble(Word.Vtt::time).toArray();
