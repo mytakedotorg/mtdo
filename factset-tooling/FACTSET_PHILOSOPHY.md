@@ -3,7 +3,7 @@
 - **must be a primary source** (because primary sources aren't subjective opinions, they really happened)
 - **must be official** (because it's easy to verify that they are authentic and not forged)
 - **complete and unedited** (to make sure it can't be taken out of context)
-- **part of a large and complete set** (to counter selection bias)
+- **part of a large and complete set** (to counter selection bias, e.g. targeted leaks)
 - **which goes back at least 20 years** (to counter recency bias)
 
 ## What is a Fact
@@ -66,11 +66,6 @@ MyTake.org lets you bookmark pieces of these documents, and also publish essays 
 
 If you link to "We the people", when we realize our mistake, we will automatically update the link to "We the People" in the future.  If we had a terrible mistake, like "Us the Folks", and you linked to that, then we would change your links to say "Oops, we at MyTake.org made a mistake. This linked to 'Us the Folks', but it turned out the Constitution really starts with 'We the People', so here is what the original link was, here is what it should have been, and here is how we made our mistake: ..."
 
-## Changelog convention
-## How did you make these files
+## How do I build a factset?
 
-[Like this!](https://github.com/mytakedotorg/mtdo/tree/master/factset-tooling)
-
-## Can I make my own foundation?
-
-Yes, [please do](https://meta.mytake.org/c/other-foundations/8)!
+[Like this!](https://github.com/mytakedotorg/mtdo/blob/staging/factset-tooling/FACTSET_HOWTO.md)

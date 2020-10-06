@@ -15,7 +15,7 @@ Changelog for the `org.mytake.factset` plugin, in keepachangelog format.
 * `index.json` now has correct blob sha1 (was missing blob header).
 * include `.DS_Store` in `.gitignore`
 ### Added
-* A `gui` task, which involved a huge amount of work.
+* A `gui` task, which involved a huge amount of work ([#405](https://github.com/mytakedotorg/mtdo/pull/405))
 * `index.json` now has `id` and `title` fields, and the SHA1 of the `id` is prepended to every fact hash
 ### Changed
 * Default branch is now assumed to be `staging`, just like for this repo.
