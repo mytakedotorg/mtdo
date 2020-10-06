@@ -78,7 +78,7 @@ public class FactsetPlugin implements Plugin<Project> {
 		});
 
 		// setup the factset
-		MtdoFactset factset = project.getExtensions().create("mtdoFactset", MtdoFactset.class, project);
+		MtdoFactset factset = project.getExtensions().create("mtdoFactset", MtdoFactset.class, spotlessExt);
 
 		TaskProvider<?> grind = project.getTasks().register("grind", GrindTask.class, grindTask -> {
 			grindTask.setGroup("Build");
