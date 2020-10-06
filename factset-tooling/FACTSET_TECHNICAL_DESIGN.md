@@ -1,8 +1,10 @@
-# Foundation design
+# Factset design
+
+THIS DOCUMENT IS OUT OF DATE
 
 ## Fundamental principles
 
-1. The Foundation must be immutable from the user's perspective.
+1. The factset must be immutable from the user's perspective.
 2. It is okay if the Foundation's *technical* implementation changes, so long as these changes *never change meaning*.
     - e.g. improved transcript encoding, higher-resolution video.
 3. Cryptographic trust (e.g. digital signing of the foundation) does not translate into user trust, and is an explicit non-goal.
