@@ -31,6 +31,7 @@ package org.mytake.factset.swt;
 
 import com.diffplug.common.base.StringPrinter;
 import com.diffplug.common.base.Throwing;
+import com.diffplug.common.collect.ImmutableSet;
 import com.diffplug.common.swt.ControlWrapper;
 import com.diffplug.spotless.ThrowingEx;
 import java.io.ByteArrayOutputStream;
@@ -47,7 +48,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import org.eclipse.swt.widgets.Composite;
-import org.gradle.internal.impldep.com.google.common.collect.ImmutableSet;
 import org.mytake.factset.swt.video.TranscriptCtl;
 import org.mytake.factset.video.Ingredients;
 import org.mytake.factset.video.TranscriptMatch;

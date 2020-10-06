@@ -31,6 +31,7 @@ package org.mytake.factset.swt.video;
 
 import com.diffplug.common.base.Box;
 import com.diffplug.common.base.StringPrinter;
+import com.diffplug.common.base.Throwables;
 import com.diffplug.common.rx.RxBox;
 import com.diffplug.common.swt.Coat;
 import com.diffplug.common.swt.Corner;
@@ -50,7 +51,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Listener;
-import org.gradle.internal.impldep.com.google.api.client.repackaged.com.google.common.base.Throwables;
 import org.mytake.factset.DisallowedValueException;
 import org.mytake.factset.swt.Labels;
 import org.mytake.factset.swt.TextViewCtl;
