@@ -11,6 +11,8 @@ This folder contains the sourcecode to the `org.mytake.factset` gradle plugin, w
 Changelog for the `org.mytake.factset` plugin, in keepachangelog format.
 
 ## [Unreleased]
+### Fixed
+* Changelog tag is now `v`.
 
 ## [1.0.2] - 2020-10-06
 ### Fixed

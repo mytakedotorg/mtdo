@@ -54,6 +54,7 @@ public class FactsetPlugin implements Plugin<Project> {
 		project.getPlugins().apply(ChangelogPlugin.class);
 		ChangelogExtension changelog = project.getExtensions().getByType(ChangelogExtension.class);
 		changelog.branch("staging");
+		changelog.tagPrefix("v");
 		changelog.changelogFile(project.file("README.md"));
 		changelog.ifFoundBumpAdded(NEW_EVENT, ADDED_DETAIL);
 		changelog.ifFoundBumpBreaking(CHANGED_TITLE, RETRACTION, INCLUSION_CRITERIA_CHANGE);
