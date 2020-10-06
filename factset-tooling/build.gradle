@@ -19,7 +19,7 @@ ext.javadoc_links = 'https://docs.oracle.com/javase/8/docs/api/ https://docs.gra
 spotlessChangelog {
 	changelogFile 'README.md'
 	commitMessage 'Published factset-tooling/{{version}}'
-	branch 'origin/staging'
+	branch 'staging'
 	tagPrefix 'factset-tooling/'
 	forceNextVersion '1.0.0'
 }
