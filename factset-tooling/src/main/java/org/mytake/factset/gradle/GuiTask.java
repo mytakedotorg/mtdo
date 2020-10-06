@@ -66,12 +66,13 @@ class GuiTask {
 			release.useNativesForRunningPlatform();
 		});
 		p.getDependencies().add(GUI_CONFIG, "com.diffplug.durian:durian-swt:3.3.1");
+		p.getDependencies().add(GUI_CONFIG, "com.ibm.icu:icu4j:67.1");
 
 		p.getTasks().register("gui", org.gradle.api.tasks.JavaExec.class, task -> {
 			task.setGroup("GUI");
 			task.setDescription("Launches a gui for the factset");
 
-			task.setMain("org.mytake.factset.gui.Workbench");
+			task.setMain("org.mytake.factset.swt.Workbench");
 			if (OS.getNative().isMac()) {
 				File icon;
 				try (InputStream input = Resources.asByteSource(MtdoFactset.class.getResource("/icon/logo_leaves_256.png")).openBufferedStream()) {
