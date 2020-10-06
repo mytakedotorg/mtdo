@@ -90,6 +90,7 @@ public class Workbench {
 	private final ExecutorService executor = Executors.newSingleThreadExecutor();
 
 	public Workbench(Composite parent, Path folder) {
+		parent.getShell().addListener(SWT.Close, e -> System.exit(0));
 		this.rootFolder = folder;
 		Display display = parent.getDisplay();
 		display.setErrorHandler(Errors.dialog()::accept);
