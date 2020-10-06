@@ -211,7 +211,9 @@ public class Ingredients implements Serializable {
 
 	/** Loads transcript metadata without any validation. */
 	public FT.VideoFactMeta loadMetaNoValidation(String name) throws IOException {
-		return JsonMisc.fromJson(fileMeta(name), FT.VideoFactMeta.class);
+		FT.VideoFactMeta meta = JsonMisc.fromJson(fileMeta(name), FT.VideoFactMeta.class);
+		meta.speakers.removeIf(s -> s == null || s.role == null || s.fullName == null);
+		return meta;
 	}
 
 	public File fileMeta(String name) {
