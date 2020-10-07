@@ -73,6 +73,7 @@ class GuiTask {
 		});
 		p.getDependencies().add(GUI_CONFIG, "com.diffplug.durian:durian-swt:3.3.1");
 		p.getDependencies().add(GUI_CONFIG, "com.ibm.icu:icu4j:67.1");
+		p.getDependencies().add(GUI_CONFIG, p.getDependencies().gradleApi());
 
 		p.getTasks().register("gui", org.gradle.api.tasks.JavaExec.class, task -> {
 			task.setGroup("GUI");
@@ -91,23 +92,23 @@ class GuiTask {
 			}
 			task.args(factset.title);
 			FileCollection buildscript = p.getBuildscript().getConfigurations().getByName("classpath");
-			task.setClasspath(buildscript.plus(guiConfig).plus(p.files(fromLocalClassloader())));
+			task.setClasspath(buildscript.plus(guiConfig));
 		});
 	}
 
-	static Set<File> fromLocalClassloader() {
-		Set<File> files = new LinkedHashSet<>();
-		Consumer<Class<?>> addPeerClasses = clazz -> {
-			URLClassLoader urlClassloader = (URLClassLoader) clazz.getClassLoader();
-			for (URL url : urlClassloader.getURLs()) {
-				String name = url.getFile();
-				if (name != null) {
-					files.add(new File(name));
-				}
-			}
-		};
-		// add the gradle API
-		addPeerClasses.accept(JavaExec.class);
-		return files;
-	}
+//	static Set<File> fromLocalClassloader() {
+//		Set<File> files = new LinkedHashSet<>();
+//		Consumer<Class<?>> addPeerClasses = clazz -> {
+//			URLClassLoader urlClassloader = (URLClassLoader) clazz.getClassLoader();
+//			for (URL url : urlClassloader.getURLs()) {
+//				String name = url.getFile();
+//				if (name != null) {
+//					files.add(new File(name));
+//				}
+//			}
+//		};
+//		// add the gradle API
+//		addPeerClasses.accept(JavaExec.class);
+//		return files;
+//	}
 }
