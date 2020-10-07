@@ -37,11 +37,17 @@ import com.diffplug.gradle.eclipse.MavenCentralPlugin;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
+import java.util.LinkedHashSet;
+import java.util.Set;
+import java.util.function.Consumer;
 import org.gradle.api.Project;
 import org.gradle.api.artifacts.Configuration;
 import org.gradle.api.file.FileCollection;
+import org.gradle.api.tasks.JavaExec;
 
 class GuiTask {
 	private static final String GUI_CONFIG = "gui";
@@ -85,7 +91,23 @@ class GuiTask {
 			}
 			task.args(factset.title);
 			FileCollection buildscript = p.getBuildscript().getConfigurations().getByName("classpath");
-			task.setClasspath(buildscript.plus(guiConfig));
+			task.setClasspath(buildscript.plus(guiConfig).plus(p.files(fromLocalClassloader())));
 		});
+	}
+
+	static Set<File> fromLocalClassloader() {
+		Set<File> files = new LinkedHashSet<>();
+		Consumer<Class<?>> addPeerClasses = clazz -> {
+			URLClassLoader urlClassloader = (URLClassLoader) clazz.getClassLoader();
+			for (URL url : urlClassloader.getURLs()) {
+				String name = url.getFile();
+				if (name != null) {
+					files.add(new File(name));
+				}
+			}
+		};
+		// add the gradle API
+		addPeerClasses.accept(JavaExec.class);
+		return files;
 	}
 }
