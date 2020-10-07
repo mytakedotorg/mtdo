@@ -59,11 +59,11 @@ const HowToUseThis: React.FC = () => {
           <li className="home__li">
             Compare multiple search terms.
             <div className="home__image-row">
-              <a href="/search?q=climate%20change">
-                <img src="/assets/permanent/climate-change-3259792fdb.svg" />
+              <a href="/search?q=second%20amendment">
+                <img src="/assets/permanent/second-amendment-f5f7f5a517.svg" />
               </a>
-              <a href="/search?q=climate%20change%2C%20global%20warming">
-                <img src="/assets/permanent/climate-change-global-warming-9a5ca1a605.svg" />
+              <a href="/search?q=second%20amendment%2C%20gun%20control">
+                <img src="/assets/permanent/second-amendment-gun-control-80e7e6fada.svg" />
               </a>
             </div>
           </li>
