@@ -17,23 +17,23 @@
  *
  * You can contact us at team@mytake.org
  */
+import isEqual from "lodash/isEqual";
 import * as React from "react";
 import {
   CaptionNodeArr,
   getCaptionNodeArray,
-  highlightCaption,
   getSimpleRangesFromHTMLRange,
   getWordRangeFromCharRange,
+  highlightCaption,
   SimpleRanges,
 } from "../common/CaptionNodes";
+import { encodeSocial } from "../common/social/social";
 import { FT } from "../java2ts/FT";
-import { Routes } from "../java2ts/Routes";
 import CaptionTextNodeListContainer, {
   CaptionTextNodeListContainerEventHandlers,
 } from "./CaptionTextNodeListContainer";
 import ClipEditor, { ClipEditorEventHandlers } from "./ClipEditor";
 import { RangeType, StateAuthority, TimeRange } from "./Video";
-import isEqual from "lodash/isEqual";
 
 export interface CaptionViewEventHandlers {
   onAfterRangeChange: (
@@ -172,6 +172,22 @@ class CaptionView extends React.Component<CaptionViewProps, CaptionViewState> {
           // Must clear existing highlights before adding new ones
           // Store the ranges for use in next componentDidUpdate
           this.simpleRanges = (Object as any).assign({}, newSimpleRanges);
+
+          const newUrl =
+            window.location.href.substring(
+              0,
+              window.location.href.lastIndexOf("/") + 1
+            ) +
+            encodeSocial({
+              cut: [
+                this.props.videoFact.wordTime[newSimpleRanges.wordRange[0]],
+                this.props.videoFact.wordTime[newSimpleRanges.wordRange[1]],
+              ],
+              fact: this.props.videoFactHash,
+              kind: "videoCut",
+            });
+
+          window.history.pushState({}, "UnusedTitle", newUrl);
           // Clear all highlights
           this.setState({
             highlightedNodes: [...this.unhighlightedNodes],
