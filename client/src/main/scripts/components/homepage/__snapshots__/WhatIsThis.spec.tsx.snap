@@ -3,9 +3,11 @@
 exports[`WhatIsThis 1`] = `
 <HomeSection>
   <h2
-    className="home__h1 home__h1--center"
+    className="home__h1 home__h1--animated"
   >
-    Are we lying to you? Is this out of context?
+    Are we lying to you? 
+    <AnimatedHeading />
+    <BlinkingCursor />
   </h2>
   <p
     className="home__body home__body--center"
@@ -138,9 +140,11 @@ exports[`WhatIsThis 1`] = `
 exports[`WhatIsThis loading 1`] = `
 <HomeSection>
   <h2
-    className="home__h1 home__h1--center"
+    className="home__h1 home__h1--animated"
   >
-    Are we lying to you? Is this out of context?
+    Are we lying to you? 
+    <AnimatedHeading />
+    <BlinkingCursor />
   </h2>
   <p
     className="home__body home__body--center"

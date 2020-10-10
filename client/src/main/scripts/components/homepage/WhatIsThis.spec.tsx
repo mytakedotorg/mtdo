@@ -27,6 +27,14 @@ jest.mock("./HomeSection", () => ({
   __esModule: true,
   default: "HomeSection",
 }));
+jest.mock("./BlinkingCursor", () => ({
+  __esModule: true,
+  default: "BlinkingCursor",
+}));
+jest.mock("./AnimatedHeading", () => ({
+  __esModule: true,
+  default: "AnimatedHeading",
+}));
 jest.retryTimes(3);
 
 test("WhatIsThis", async () => {
