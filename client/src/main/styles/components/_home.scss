@@ -104,3 +104,16 @@
     color: palette(nav, text--hover);
   }
 }
+.home__h1--animated {
+  position: relative;
+  width: 640px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.home__cursor {
+  position: relative;
+  top: -3px;
+}
+.home__cursor--hide {
+  opacity: 0;
+}

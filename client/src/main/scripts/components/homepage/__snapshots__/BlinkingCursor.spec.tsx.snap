@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`BlinkingCursor 1`] = `
+<span
+  className="home__cursor"
+>
+  |
+</span>
+`;
