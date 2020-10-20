@@ -29,7 +29,11 @@ const HowToUseThis: React.FC = () => {
         innerContainerClassName={"home__searchbar"}
       >
         <h1 className="home__h1 home__body--center">
-          The <em>unbiased</em> political&nbsp;search&nbsp;engine
+          The{" "}
+          <a href="https://github.com/mytakedotorg/mtdo/blob/staging/DEV_QUICKSTART.md">
+            open source
+          </a>{" "}
+          political&nbsp;search&nbsp;engine
         </h1>
         <SearchBar classModifier="home" placeholder={"Search"} />
         <ul className="home__ul">
