@@ -9,13 +9,15 @@ Array [
     <h1
       className="home__h1 home__body--center"
     >
-      The 
+      The
+       
       <a
         href="https://github.com/mytakedotorg/mtdo/blob/staging/DEV_QUICKSTART.md"
       >
         open source
       </a>
-       political search engine
+       
+      political search engine
     </h1>
     <form
       action="javascript:void(0)"
