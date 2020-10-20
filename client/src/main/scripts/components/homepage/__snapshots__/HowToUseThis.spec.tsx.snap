@@ -10,9 +10,11 @@ Array [
       className="home__h1 home__body--center"
     >
       The 
-      <em>
-        unbiased
-      </em>
+      <a
+        href="https://github.com/mytakedotorg/mtdo/blob/staging/DEV_QUICKSTART.md"
+      >
+        open source
+      </a>
        political search engine
     </h1>
     <form
