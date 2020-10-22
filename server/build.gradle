@@ -1,6 +1,6 @@
 plugins {
 	id 'nu.studer.rocker' version '3.0.2'					// https://github.com/etiennestuder/gradle-rocker-plugin
-	id 'com.github.johnrengelman.shadow' version '6.0.0'	// http://imperceptiblethoughts.com/shadow/#
+	id 'com.github.johnrengelman.shadow' version '6.1.0'	// http://imperceptiblethoughts.com/shadow/#
 }
 
 apply plugin: 'java'
