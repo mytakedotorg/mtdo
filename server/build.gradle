@@ -157,7 +157,7 @@ dependencies {
 	testImplementation "org.eclipse.jgit:org.eclipse.jgit:${VER_JGIT}"	// required for serving local repo
 
 	// dep for auth
-	implementation 'com.auth0:java-jwt:3.10.3'
+	implementation 'com.auth0:java-jwt:3.11.0'
 }
 
 // renders the socialEmbed template to disk for node
