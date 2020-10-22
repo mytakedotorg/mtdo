@@ -29,7 +29,7 @@ spotless {
 
 // spotless:off
 def repoToSha = [
-	'us-presidential-debates', '877ede3aea28a202c94bd169a8d1376624c3397a'
+	'us-presidential-debates', 'f091d9e759f18def9807cc2a310dbb2f3bb5ea6b'
 ]
 def searchIndex = file('build/search-index')
 tasks.register('indexGenerate', JavaExec) {

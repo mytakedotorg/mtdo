@@ -43,7 +43,7 @@ const TimelineLoader: React.FC<TimelineLoaderProps> = (props) => {
       const index: FT.FactsetIndex = await get(
         // the current git commit is v1.0.0 877ede3aea28a202c94bd169a8d1376624c3397a
         // `git hash-object sausage/index.json ` for at that tag is:
-        `https://mytake.org${Routes.API_FACT}/E74aoUY=25fa9ed941ace2d7af5bab3e6aaab9ab82b18b9f.json`
+        `https://mytake.org${Routes.API_FACT}/E74aoUY=654ccb51a3f480f7d3ab98d741583471f21309f7.json`
       );
       setState({
         facts: index.facts,
