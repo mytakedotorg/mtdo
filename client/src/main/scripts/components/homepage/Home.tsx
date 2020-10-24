@@ -20,14 +20,12 @@
 import React from "react";
 import GetInvolved from "./GetInvolved";
 import HowToUseThis from "./HowToUseThis";
-import { useSocials } from "./infoHeader";
 import WhatIsThis from "./WhatIsThis";
 
 const Home: React.FC = () => {
-  const { leftSocial, rightSocial } = useSocials();
   return (
     <>
-      <WhatIsThis leftSocial={leftSocial} rightSocial={rightSocial} />
+      <WhatIsThis />
       <HowToUseThis />
       <GetInvolved />
     </>

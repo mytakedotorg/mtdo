@@ -36,8 +36,6 @@ jest.mock("./AnimatedHeading", () => ({
 jest.retryTimes(3);
 
 test("WhatIsThis", async () => {
-  const tree = renderer
-    .create(<WhatIsThis  />)
-    .toJSON();
+  const tree = renderer.create(<WhatIsThis />).toJSON();
   expect(tree).toMatchSnapshot();
 });
