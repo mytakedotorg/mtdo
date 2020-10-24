@@ -17,33 +17,19 @@
  *
  * You can contact us at team@mytake.org
  */
-import React, { FC, useEffect, useState } from "react";
+import React, { FC } from "react";
 import {
   HitsPerYearList,
   NGramViewerPresentation,
 } from "../search/NGramViewer";
-import { searchForCounts } from "./ngramData";
 
 interface NGramLoaderProps {
   searchQuery: string;
+  results: HitsPerYearList;
 }
 
 const NGramLoader: FC<NGramLoaderProps> = (props) => {
-  const [hitsPerYearList, setHitsPerYearList] = useState<HitsPerYearList>({
-    hitsPerYear: [],
-    allSearchTerms: [],
-  });
-
-  useEffect(() => {
-    async function connectSearchDatabase() {
-      const counts = await searchForCounts(props.searchQuery);
-      setHitsPerYearList(counts);
-    }
-
-    props.searchQuery && connectSearchDatabase();
-  }, [props.searchQuery]);
-
-  return <NGramViewerPresentation hitsPerYearList={hitsPerYearList} />;
+  return <NGramViewerPresentation hitsPerYearList={props.results} />;
 };
 
 export default NGramLoader;

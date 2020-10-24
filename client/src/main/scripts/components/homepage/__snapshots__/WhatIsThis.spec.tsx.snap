@@ -9,7 +9,86 @@ exports[`WhatIsThis 1`] = `
       onFinishTyping={[Function]}
     />
     <NGramLoader
-      searchQuery=""
+      results={
+        Object {
+          "allSearchTerms": Array [
+            "election",
+          ],
+          "hitsPerYear": Array [
+            Object {
+              "hitCount": 6,
+              "searchTerm": "election",
+              "year": "1960",
+            },
+            Object {
+              "hitCount": 0,
+              "searchTerm": "election",
+              "year": ",",
+            },
+            Object {
+              "hitCount": 14,
+              "searchTerm": "election",
+              "year": "1976",
+            },
+            Object {
+              "hitCount": 3,
+              "searchTerm": "election",
+              "year": "1980",
+            },
+            Object {
+              "hitCount": 7,
+              "searchTerm": "election",
+              "year": "1984",
+            },
+            Object {
+              "hitCount": 6,
+              "searchTerm": "election",
+              "year": "1988",
+            },
+            Object {
+              "hitCount": 10,
+              "searchTerm": "election",
+              "year": "1992",
+            },
+            Object {
+              "hitCount": 11,
+              "searchTerm": "election",
+              "year": "1996",
+            },
+            Object {
+              "hitCount": 16,
+              "searchTerm": "election",
+              "year": "2000",
+            },
+            Object {
+              "hitCount": 2,
+              "searchTerm": "election",
+              "year": "2004",
+            },
+            Object {
+              "hitCount": 3,
+              "searchTerm": "election",
+              "year": "2008",
+            },
+            Object {
+              "hitCount": 9,
+              "searchTerm": "election",
+              "year": "2012",
+            },
+            Object {
+              "hitCount": 33,
+              "searchTerm": "election",
+              "year": "2016",
+            },
+            Object {
+              "hitCount": 40,
+              "searchTerm": "election",
+              "year": "2020",
+            },
+          ],
+        }
+      }
+      searchQuery="election"
     />
   </h2>
 </HomeSection>

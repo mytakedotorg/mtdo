@@ -18,13 +18,10 @@
  * You can contact us at team@mytake.org
  */
 import { slugify } from "../../common/functions";
-import { HOMEPAGE_SEARCHES, searchForCounts } from "./ngramData";
+import { HOMEPAGE_SEARCHES, NgramData } from "./ngramData";
+import { search } from "../search/search";
 import * as fs from "fs";
-import { HitsPerYearList } from "../search/NGramViewer";
-
-interface NgramData {
-  [index: string]: HitsPerYearList;
-}
+import { getNumberOfHitsPerYear, HitsPerYearList } from "../search/NGramViewer";
 
 // This test writes out `ngramDataGen.json`. When the production dataset
 // changes, then that .json file will change. It's messy, because here is
@@ -38,7 +35,8 @@ interface NgramData {
 test("generateSearchData", async () => {
   var searches: NgramData = {};
   for (let searchQuery of HOMEPAGE_SEARCHES) {
-    searches[searchQuery] = await searchForCounts(searchQuery);
+    const searchResult = await search(searchQuery);
+    searches[searchQuery] = await getNumberOfHitsPerYear(searchResult);
   }
   fs.writeFileSync(
     "src/main/scripts/components/homepage/ngramDataGen.json",

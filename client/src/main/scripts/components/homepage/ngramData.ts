@@ -17,8 +17,7 @@
  *
  * You can contact us at team@mytake.org
  */
-import { getNumberOfHitsPerYear, HitsPerYearList } from "../search/NGramViewer";
-import { search } from "../search/search";
+import { HitsPerYearList } from "../search/NGramViewer";
 
 export const HOMEPAGE_SEARCHES = [
   "election",
@@ -28,9 +27,6 @@ export const HOMEPAGE_SEARCHES = [
   "wall, -wall street",
 ];
 
-export async function searchForCounts(
-  searchQuery: string
-): Promise<HitsPerYearList> {
-  const searchResult = await search(searchQuery);
-  return getNumberOfHitsPerYear(searchResult);
+export interface NgramData {
+  [index: string]: HitsPerYearList;
 }

@@ -20,6 +20,7 @@
 import React, { useEffect, useState } from "react";
 import BlinkingCursor from "./BlinkingCursor";
 import { HOMEPAGE_SEARCHES } from "./ngramData";
+import ngramData from "./ngramDataGen.json";
 
 interface HeadingContent {
   start: string;
