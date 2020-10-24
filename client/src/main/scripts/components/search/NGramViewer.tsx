@@ -155,8 +155,8 @@ function drawChart(
           xScale(d.year)! +
           (xScale.bandwidth() / hitsPerYearList.allSearchTerms.length) * idx
       )
-      .attr("y", (d) => yScale(d.hitCount))
-      .attr("height", (d) => yScale(0) - yScale(d.hitCount))
+      .attr("y", (d) => yScale(d.hitCount)!)
+      .attr("height", (d) => yScale(0)! - yScale(d.hitCount)!)
       .attr("width", xScale.bandwidth() / hitsPerYearList.allSearchTerms.length)
       .on("click", function (d) {
         onBarClick && onBarClick(d.year);

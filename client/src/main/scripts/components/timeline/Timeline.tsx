@@ -116,20 +116,23 @@ export default class Timeline extends React.Component<
     let width = document.body.getBoundingClientRect().width;
 
     if (this.props.selectedOption === Corpus.Debates) {
+      // delta slides timeline dates for all screen-widths
+      // it should be adjusted when we add new events to our timeline
+      const delta = 1;
       if (width < 480) {
-        start = new Date(2011, 0, 1);
+        start = new Date(delta + 2011, 0, 1);
       } else if (width < 768) {
-        start = new Date(2005, 0, 1);
+        start = new Date(delta + 2005, 0, 1);
       } else if (width < 1020) {
-        start = new Date(1996, 0, 1);
+        start = new Date(delta + 1996, 0, 1);
       } else if (width < 1440) {
-        start = new Date(1992, 0, 1);
+        start = new Date(delta + 1992, 0, 1);
       } else if (width < 1920) {
-        start = new Date(1980, 0, 1);
+        start = new Date(delta + 1980, 0, 1);
       } else {
-        start = new Date(1960, 0, 1);
+        start = new Date(delta + 1960, 0, 1);
       }
-      end = new Date(2021, 0, 1);
+      end = new Date(delta + 2021, 0, 1);
     }
 
     if (this.props.selectedOption === Corpus.Documents) {
