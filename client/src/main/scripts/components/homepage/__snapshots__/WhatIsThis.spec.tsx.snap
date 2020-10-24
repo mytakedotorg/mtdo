@@ -5,17 +5,12 @@ exports[`WhatIsThis 1`] = `
   <h2
     className="home__h1 home__h1--animated"
   >
-    <AnimatedHeading />
-  </h2>
-</HomeSection>
-`;
-
-exports[`WhatIsThis loading 1`] = `
-<HomeSection>
-  <h2
-    className="home__h1 home__h1--animated"
-  >
-    <AnimatedHeading />
+    <AnimatedHeading
+      onFinishTyping={[Function]}
+    />
+    <NGramLoader
+      searchQuery=""
+    />
   </h2>
 </HomeSection>
 `;

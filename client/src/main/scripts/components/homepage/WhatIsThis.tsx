@@ -22,12 +22,7 @@ import AnimatedHeading from "./AnimatedHeading";
 import HomeSection from "./HomeSection";
 import NGramLoader from "./NGramLoader";
 
-interface WhatIsThisProps {
-  leftSocial: React.ReactElement;
-  rightSocial: React.ReactElement;
-}
-
-const WhatIsThis: React.FC<WhatIsThisProps> = (props) => {
+const WhatIsThis: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState("");
 
   const handleFinish = (query: string) => {
