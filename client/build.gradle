@@ -48,13 +48,15 @@ node {
 		// technically it's that scriptsDev and scriptsProd depend on jsweet, but it's easier to put it here
 		dependsOn(':client-interface:jsweet')
 	}
+	// pre-generates ngram data for the homepage
+	npmRun('ngramDataGen') {}
 	for (t in [
 		'styles',
 		'scripts'
 	]) {
 		final String taskName = t
 		gulp "${taskName}Dev", {
-			dependsOn 'gulp_permanent', ':lucene:indexHash'
+			dependsOn 'gulp_permanent', ':lucene:indexHash', 'npm_run_ngramDataGen'
 			inputs.dir("src/main/${taskName}").withPathSensitivity(PathSensitivity.RELATIVE)
 			if (taskName == 'scripts') {
 				inputs.file('tsconfig.json').withPathSensitivity(PathSensitivity.RELATIVE)

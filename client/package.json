@@ -11,6 +11,7 @@
   "scripts": {
     "start": "npx gulp proxyDev",
     "clean": "npx gulp clean",
+    "ngramDataGen": "npx jest src/main/scripts/components/homepage/ngramDataGen.spec.ts",
     "deploy": "npx gulp buildProd",
     "test": "npx jest",
     "test_ci": "npx jest --env=jsdom --maxWorkers=2 --ci --reporters=jest-junit",
