@@ -17,31 +17,12 @@
  *
  * You can contact us at team@mytake.org
  */
-import React, { useState } from "react";
-import AnimatedHeading from "./AnimatedHeading";
-import HomeSection from "./HomeSection";
-import NGramLoader from "./NGramLoader";
+import { getNumberOfHitsPerYear, HitsPerYearList } from "../search/NGramViewer";
+import { search } from "../search/search";
 
-interface WhatIsThisProps {
-  leftSocial: React.ReactElement;
-  rightSocial: React.ReactElement;
+export async function searchForCounts(
+  searchQuery: string
+): Promise<HitsPerYearList> {
+  const searchResult = await search(searchQuery);
+  return getNumberOfHitsPerYear(searchResult);
 }
-
-const WhatIsThis: React.FC<WhatIsThisProps> = (props) => {
-  const [searchQuery, setSearchQuery] = useState("");
-
-  const handleFinish = (query: string) => {
-    setSearchQuery(query);
-  };
-
-  return (
-    <HomeSection>
-      <h2 className="home__h1 home__h1--animated">
-        <AnimatedHeading onFinishTyping={handleFinish} />
-        <NGramLoader searchQuery={searchQuery} />
-      </h2>
-    </HomeSection>
-  );
-};
-
-export default WhatIsThis;

@@ -52,7 +52,7 @@ export enum SearchMode {
 const SEARCH_ROUTE = `${Routes.API_SEARCH}?${Search.HASH}=${hash}&${Search.QUERY}=`;
 export async function search(
   searchQuery: string,
-  mode: SearchMode
+  mode?: SearchMode
 ): Promise<SearchResult> {
   const factResults = await get<Search.FactResultList>(
     `${SEARCH_ROUTE}${encodeURIComponent(searchQuery)}`
@@ -61,7 +61,12 @@ export async function search(
     factResults.facts.map((fact) => fact.hash)
   );
   return _searchImpl(
-    new _SearchWithData(searchQuery, factResults.facts, facts, mode)
+    new _SearchWithData(
+      searchQuery,
+      factResults.facts,
+      facts,
+      mode || SearchMode.Containing
+    )
   );
 }
 

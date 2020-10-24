@@ -27,41 +27,36 @@ interface HeadingContent {
 }
 type TypingState = "TYPING" | "STATIC" | "DELETING";
 
-
 const HEADING_TEXT: HeadingContent = {
   start: "When was ",
   middles: ["election", "global warming"],
-  end: "said in a debate?"
+  end: "said in a debate?",
 };
 const TYPING_DELAY = 100;
-const STATIC_DELAY = 2000;
+const STATIC_DELAY = 5000;
 const DELETING_DELAY = 10;
 
-const AnimatedHeading: React.FC = () => {
+interface AnimatedHeadingProps {
+  onFinishTyping(text: string): void;
+}
+
+const AnimatedHeading: React.FC<AnimatedHeadingProps> = (props) => {
   const [headingText, setHeadingText] = useState("");
   const [middleIndex, setMiddleIndex] = useState(0);
   const [typingState, setTypingState] = useState<TypingState>("TYPING");
 
   const continueTyping = (currentEndingIndex: number) => {
     setTimeout(() => {
-      setHeadingText(
-        (prevText) =>
-          HEADING_TEXT.middles[currentEndingIndex].substr(
-            0,
-            prevText.length + 1
-          )
+      setHeadingText((prevText) =>
+        HEADING_TEXT.middles[currentEndingIndex].substr(0, prevText.length + 1)
       );
     }, TYPING_DELAY);
   };
 
   const continueDeleting = (currentEndingIndex: number) => {
     setTimeout(() => {
-      setHeadingText(
-        (prevText) =>
-          HEADING_TEXT.middles[currentEndingIndex].substr(
-            0,
-            prevText.length - 1
-          )
+      setHeadingText((prevText) =>
+        HEADING_TEXT.middles[currentEndingIndex].substr(0, prevText.length - 1)
       );
     }, DELETING_DELAY);
   };
@@ -69,16 +64,14 @@ const AnimatedHeading: React.FC = () => {
   useEffect(() => {
     switch (typingState) {
       case "TYPING":
-        if (
-          headingText !==
-          HEADING_TEXT.middles[middleIndex]
-        ) {
+        if (headingText !== HEADING_TEXT.middles[middleIndex]) {
           continueTyping(middleIndex);
         } else {
           setTypingState("STATIC");
         }
         break;
       case "STATIC":
+        props.onFinishTyping(HEADING_TEXT.middles[middleIndex]);
         setTimeout(() => {
           setTypingState("DELETING");
         }, STATIC_DELAY);
@@ -96,7 +89,14 @@ const AnimatedHeading: React.FC = () => {
     }
   }, [middleIndex, headingText, typingState]);
 
-  return <p>{HEADING_TEXT.start}{headingText}<BlinkingCursor />{HEADING_TEXT.end}</p>;
+  return (
+    <p>
+      {HEADING_TEXT.start}
+      {headingText}
+      <BlinkingCursor />
+      {HEADING_TEXT.end}
+    </p>
+  );
 };
 
 export default AnimatedHeading;
