@@ -19,14 +19,15 @@
  */
 import { slugify } from "../../common/functions";
 import { HOMEPAGE_SEARCHES, searchForCounts } from "./ngramData";
-var fs = require("fs");
+import * as fs from "fs";
 
-HOMEPAGE_SEARCHES.forEach((searchQuery) => {
-  searchForCounts(searchQuery).then((hitsPerYearList) => {
-    fs.writeFile(
+test("generateSearchData", async () => {
+  for (let searchQuery of HOMEPAGE_SEARCHES) {
+    const hitsPerYearList = await searchForCounts(searchQuery);
+    fs.writeFileSync(
       `${slugify(searchQuery)}.json`,
       JSON.stringify(hitsPerYearList),
       "utf8"
     );
-  });
+  }
 });
