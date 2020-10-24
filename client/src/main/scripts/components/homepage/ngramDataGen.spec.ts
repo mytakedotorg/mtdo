@@ -20,14 +20,20 @@
 import { slugify } from "../../common/functions";
 import { HOMEPAGE_SEARCHES, searchForCounts } from "./ngramData";
 import * as fs from "fs";
+import { HitsPerYearList } from "../search/NGramViewer";
+
+interface NgramData {
+  [index: string]: HitsPerYearList;
+}
 
 test("generateSearchData", async () => {
+  var searches: NgramData = {};
   for (let searchQuery of HOMEPAGE_SEARCHES) {
-    const hitsPerYearList = await searchForCounts(searchQuery);
-    fs.writeFileSync(
-      `${slugify(searchQuery)}.json`,
-      JSON.stringify(hitsPerYearList),
-      "utf8"
-    );
+    searches[searchQuery] = await searchForCounts(searchQuery);
   }
+  fs.writeFileSync(
+    "src/main/scripts/components/homepage/ngramDataGen.json",
+    JSON.stringify(searches),
+    "utf8"
+  );
 });
