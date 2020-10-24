@@ -20,6 +20,14 @@
 import { getNumberOfHitsPerYear, HitsPerYearList } from "../search/NGramViewer";
 import { search } from "../search/search";
 
+export const HOMEPAGE_SEARCHES = [
+  "election",
+  "second amendment",
+  "second amendment, gun control",
+  "wall",
+  "wall, -wall street",
+];
+
 export async function searchForCounts(
   searchQuery: string
 ): Promise<HitsPerYearList> {

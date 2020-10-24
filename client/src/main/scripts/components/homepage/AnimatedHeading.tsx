@@ -19,6 +19,7 @@
  */
 import React, { useEffect, useState } from "react";
 import BlinkingCursor from "./BlinkingCursor";
+import { HOMEPAGE_SEARCHES } from "./ngramData";
 
 interface HeadingContent {
   start: string;
@@ -29,13 +30,7 @@ type TypingState = "TYPING" | "STATIC" | "DELETING";
 
 const HEADING_TEXT: HeadingContent = {
   start: "When was ",
-  middles: [
-    "election",
-    "second amendment",
-    "second amendment, gun control",
-    "wall",
-    "wall, -wall street",
-  ],
+  middles: HOMEPAGE_SEARCHES,
   end: "said in a debate?",
 };
 const TYPING_DELAY = 100;
