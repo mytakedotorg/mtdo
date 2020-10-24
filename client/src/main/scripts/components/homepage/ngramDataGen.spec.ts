@@ -26,6 +26,15 @@ interface NgramData {
   [index: string]: HitsPerYearList;
 }
 
+// This test writes out `ngramDataGen.json`. When the production dataset
+// changes, then that .json file will change. It's messy, because here is
+// how deploying a new rev of a factset works:
+// 1) deploy the new factset to prod
+// 2) now, when this test runs, `ngramDataGen.json` will be a little different
+// 3) commit that change
+// 4) deploy the new homepage to production
+// That feedback loop isn't great, but deploying new facts is already messy,
+// we'll just add this to the manual checklist for now.
 test("generateSearchData", async () => {
   var searches: NgramData = {};
   for (let searchQuery of HOMEPAGE_SEARCHES) {
