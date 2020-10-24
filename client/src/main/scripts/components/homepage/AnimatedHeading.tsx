@@ -29,7 +29,13 @@ type TypingState = "TYPING" | "STATIC" | "DELETING";
 
 const HEADING_TEXT: HeadingContent = {
   start: "When was ",
-  middles: ["election", "global warming"],
+  middles: [
+    "election",
+    "second amendment",
+    "second amendment, gun control",
+    "wall",
+    "wall, -wall street",
+  ],
   end: "said in a debate?",
 };
 const TYPING_DELAY = 100;
