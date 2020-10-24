@@ -24,22 +24,11 @@
     @include typography($sans, 700, 34px, 1.3em);
   }
 }
-.home__h1--center {
-  text-align: center;
-}
 .home__body {
   @include typography($serif, 400, 15px, 1.2em);
 }
 .home__body--center {
   text-align: center;
-}
-.home__social-container {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  a {
-    text-decoration: none;
-  }
 }
 .searchbar__form--home {
   margin-top: 16px;

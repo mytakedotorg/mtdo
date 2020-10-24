@@ -18,34 +18,37 @@
  * You can contact us at team@mytake.org
  */
 import React, { useEffect, useState } from "react";
+import BlinkingCursor from "./BlinkingCursor";
 
 interface HeadingContent {
   start: string;
-  endings: string[];
+  middles: string[];
+  end: string;
 }
 type TypingState = "TYPING" | "STATIC" | "DELETING";
 
+
 const HEADING_TEXT: HeadingContent = {
-  start: "Is this ",
-  endings: ["out of context?", "what was said?"],
+  start: "When was ",
+  middles: ["election", "global warming"],
+  end: "said in a debate?"
 };
 const TYPING_DELAY = 100;
 const STATIC_DELAY = 2000;
 const DELETING_DELAY = 10;
 
 const AnimatedHeading: React.FC = () => {
-  const [headingText, setHeadingText] = useState(HEADING_TEXT.start);
-  const [endingIndex, setEndingIndex] = useState(0);
+  const [headingText, setHeadingText] = useState("");
+  const [middleIndex, setMiddleIndex] = useState(0);
   const [typingState, setTypingState] = useState<TypingState>("TYPING");
 
   const continueTyping = (currentEndingIndex: number) => {
     setTimeout(() => {
       setHeadingText(
         (prevText) =>
-          HEADING_TEXT.start +
-          HEADING_TEXT.endings[currentEndingIndex].substr(
+          HEADING_TEXT.middles[currentEndingIndex].substr(
             0,
-            prevText.length + 1 - HEADING_TEXT.start.length
+            prevText.length + 1
           )
       );
     }, TYPING_DELAY);
@@ -55,10 +58,9 @@ const AnimatedHeading: React.FC = () => {
     setTimeout(() => {
       setHeadingText(
         (prevText) =>
-          HEADING_TEXT.start +
-          HEADING_TEXT.endings[currentEndingIndex].substr(
+          HEADING_TEXT.middles[currentEndingIndex].substr(
             0,
-            prevText.length - 1 - HEADING_TEXT.start.length
+            prevText.length - 1
           )
       );
     }, DELETING_DELAY);
@@ -69,9 +71,9 @@ const AnimatedHeading: React.FC = () => {
       case "TYPING":
         if (
           headingText !==
-          HEADING_TEXT.start + HEADING_TEXT.endings[endingIndex]
+          HEADING_TEXT.middles[middleIndex]
         ) {
-          continueTyping(endingIndex);
+          continueTyping(middleIndex);
         } else {
           setTypingState("STATIC");
         }
@@ -82,19 +84,19 @@ const AnimatedHeading: React.FC = () => {
         }, STATIC_DELAY);
         break;
       case "DELETING":
-        if (headingText !== HEADING_TEXT.start) {
-          continueDeleting(endingIndex);
+        if (headingText !== "") {
+          continueDeleting(middleIndex);
         } else {
           setTypingState("TYPING");
-          setEndingIndex((prevIndex) =>
-            prevIndex >= HEADING_TEXT.endings.length - 1 ? 0 : prevIndex + 1
+          setMiddleIndex((prevIndex) =>
+            prevIndex >= HEADING_TEXT.middles.length - 1 ? 0 : prevIndex + 1
           );
         }
         break;
     }
-  }, [endingIndex, headingText, typingState]);
+  }, [middleIndex, headingText, typingState]);
 
-  return <span>{headingText}</span>;
+  return <p>{HEADING_TEXT.start}{headingText}<BlinkingCursor />{HEADING_TEXT.end}</p>;
 };
 
 export default AnimatedHeading;
