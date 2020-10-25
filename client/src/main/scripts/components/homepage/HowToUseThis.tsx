@@ -50,40 +50,6 @@ const HowToUseThis: React.FC = () => {
           </li>
         </ul>
       </HomeSection>
-      <HomeSection>
-        <h3 className="home__h3">Helpful Tips</h3>
-        <ol className="home__ol">
-          <li className="home__li">
-            Win arguments on social media.
-            <div className="home__image-row">
-              <img src="/assets/permanent/share-screenshot-e59c4257e9.png" />
-              <img src="/assets/permanent/social-screenshot-f102edf99d.png" />
-            </div>
-          </li>
-          <li className="home__li">
-            Compare multiple search terms.
-            <div className="home__image-row">
-              <a href="/search?q=second%20amendment">
-                <img src="/assets/permanent/second-amendment-f5f7f5a517.svg" />
-              </a>
-              <a href="/search?q=second%20amendment%2C%20gun%20control">
-                <img src="/assets/permanent/second-amendment-gun-control-80e7e6fada.svg" />
-              </a>
-            </div>
-          </li>
-          <li className="home__li">
-            Exclude unhelpful results.
-            <div className="home__image-row">
-              <a href="/search?q=wall">
-                <img src="/assets/permanent/wall-91744a6f80.svg" />
-              </a>
-              <a href="/search?q=wall%2C%20-wall%20street">
-                <img src="/assets/permanent/wall-minus-wall-street-5b731d08ed.svg" />
-              </a>
-            </div>
-          </li>
-        </ol>
-      </HomeSection>
     </>
   );
 };

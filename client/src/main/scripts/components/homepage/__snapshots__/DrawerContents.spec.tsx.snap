@@ -4,4 +4,9 @@ exports[`DrawerContents - GetInvolved 1`] = `<GetInvolved />`;
 
 exports[`DrawerContents - HowToUseThis 1`] = `<HowToUseThis />`;
 
-exports[`DrawerContents - WhatIsThis 1`] = `<WhatIsThis />`;
+exports[`DrawerContents - WhatIsThis 1`] = `
+Array [
+  <WhatIsThis />,
+  <HowToUseThis />,
+]
+`;

@@ -31,10 +31,13 @@ const DrawerContents: React.FC<DrawerContentsProps> = (props) => {
   switch (props.activeTab) {
     case INFO_HEADER_TABS_ENUM.GET_INVOLVED:
       return <GetInvolved />;
-    case INFO_HEADER_TABS_ENUM.HOW_TO_USE_THIS:
-      return <HowToUseThis />;
     case INFO_HEADER_TABS_ENUM.WHAT_IS_THIS:
-      return <WhatIsThis />;
+      return (
+        <>
+          <WhatIsThis />
+          <HowToUseThis />
+        </>
+      );
   }
 };
 

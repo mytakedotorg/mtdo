@@ -18,7 +18,6 @@
  * You can contact us at team@mytake.org
  */
 export enum INFO_HEADER_TABS_ENUM {
-  HOW_TO_USE_THIS = "How to use this",
   WHAT_IS_THIS = "What is this",
   GET_INVOLVED = "Get involved",
 }

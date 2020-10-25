@@ -104,14 +104,14 @@ Array [
       <UserNav />
     </div>
     <Tabs
-      activeTab="How to use this"
+      activeTab="What is this"
       isVisible={false}
       onClose={[Function]}
       onTabClick={[Function]}
     />
   </header>,
   <Drawer
-    activeTab="How to use this"
+    activeTab="What is this"
     isExpanded={false}
     onClose={[Function]}
   />,
