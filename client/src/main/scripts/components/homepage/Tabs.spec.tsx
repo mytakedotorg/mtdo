@@ -24,7 +24,7 @@ import Tabs from "./Tabs";
 
 test("Tabs - visible", () => {
   const props = {
-    activeTab: INFO_HEADER_TABS_ENUM.HOW_TO_USE_THIS,
+    activeTab: INFO_HEADER_TABS_ENUM.WHAT_IS_THIS,
     onClose: jest.fn(),
     onTabClick: jest.fn(),
     isVisible: true,
@@ -35,7 +35,7 @@ test("Tabs - visible", () => {
 
 test("Tabs - hidden", () => {
   const props = {
-    activeTab: INFO_HEADER_TABS_ENUM.HOW_TO_USE_THIS,
+    activeTab: INFO_HEADER_TABS_ENUM.WHAT_IS_THIS,
     onClose: jest.fn(),
     onTabClick: jest.fn(),
     isVisible: false,

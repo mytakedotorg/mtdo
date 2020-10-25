@@ -16,7 +16,9 @@ Array [
       <div
         className="drawer__contents"
       >
-        <DrawerContents />
+        <DrawerContents
+          activeTab="What is this"
+        />
       </div>
     </div>
   </div>,
@@ -43,7 +45,9 @@ Array [
       <div
         className="drawer__contents"
       >
-        <DrawerContents />
+        <DrawerContents
+          activeTab="What is this"
+        />
       </div>
     </div>
   </div>,
