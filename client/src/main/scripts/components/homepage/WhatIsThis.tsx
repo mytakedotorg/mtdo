@@ -36,10 +36,15 @@ const WhatIsThis: React.FC = () => {
       <h2 className="home__h1">
         <AnimatedHeading onFinishTyping={handleFinish} />
       </h2>
-      <NGramLoader
-        searchQuery={searchQuery}
-        results={(data as NgramData)[searchQuery]}
-      />
+      <a
+        className="home__ngram-link"
+        href={`/search?q=${encodeURIComponent(searchQuery)}`}
+      >
+        <NGramLoader
+          searchQuery={searchQuery}
+          results={(data as NgramData)[searchQuery]}
+        />
+      </a>
     </HomeSection>
   );
 };
