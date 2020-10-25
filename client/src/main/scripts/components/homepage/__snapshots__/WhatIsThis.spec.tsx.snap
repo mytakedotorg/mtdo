@@ -3,11 +3,16 @@
 exports[`WhatIsThis 1`] = `
 <HomeSection>
   <h2
-    className="home__h1 home__h1--animated"
+    className="home__h1"
   >
     <AnimatedHeading
       onFinishTyping={[Function]}
     />
+  </h2>
+  <a
+    className="home__ngram-link"
+    href="/search?q=election"
+  >
     <NGramLoader
       results={
         Object {
@@ -90,6 +95,6 @@ exports[`WhatIsThis 1`] = `
       }
       searchQuery="election"
     />
-  </h2>
+  </a>
 </HomeSection>
 `;

@@ -7,7 +7,7 @@ Array [
     innerContainerClassName="home__searchbar"
   >
     <h1
-      className="home__h1 home__body--center"
+      className="home__h1 home__h1--search"
     >
       The
        
