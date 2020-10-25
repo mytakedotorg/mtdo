@@ -44,15 +44,6 @@ test("DrawerContents - GetInvolved", () => {
   expect(tree).toMatchSnapshot();
 });
 
-test("DrawerContents - HowToUseThis", () => {
-  const tree = renderer
-    .create(
-      <DrawerContents activeTab={INFO_HEADER_TABS_ENUM.HOW_TO_USE_THIS} />
-    )
-    .toJSON();
-  expect(tree).toMatchSnapshot();
-});
-
 test("DrawerContents - WhatIsThis", () => {
   const tree = renderer
     .create(<DrawerContents activeTab={INFO_HEADER_TABS_ENUM.WHAT_IS_THIS} />)
