@@ -60,6 +60,7 @@ const NGramViewer: React.FC<NGramViewerProps> = (props) => {
 interface NGramViewerPresentationProps {
   onBarClick?(year: string): void;
   hitsPerYearList: HitsPerYearList;
+  classModifier?: string;
 }
 export const NGramViewerPresentation: React.FC<NGramViewerPresentationProps> = (
   props
@@ -70,8 +71,12 @@ export const NGramViewerPresentation: React.FC<NGramViewerPresentationProps> = (
       drawChart(svgEl.current, props.hitsPerYearList, props.onBarClick);
     }
   }, [svgEl, props.hitsPerYearList]);
+  let className = "ngram__outer-container";
+  if (props.classModifier) {
+    className += ` ${className}--${props.classModifier}`;
+  }
   return (
-    <div className="ngram__outer-container">
+    <div className={className}>
       <div className="ngram__inner-container">
         <svg ref={svgEl} width={SVG_WIDTH} height={SVG_HEIGHT}></svg>
         <div className="ngram__legend">

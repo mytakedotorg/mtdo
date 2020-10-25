@@ -17,11 +17,17 @@
   overflow: auto;
 }
 .home__h1 {
-  @include typography($sans, 700, 24px, 1.3em);
+  font-family: $sans;
+  font-weight: 700;
+  line-height: 1.3em;
   margin: 0;
   color: palette(home, title);
+  font-size: 24px;
   @media screen and (min-width: 480px) {
-    @include typography($sans, 700, 34px, 1.3em);
+    font-size: 26px;
+  }
+  @media screen and (min-width: 768px) {
+    font-size: 34px;
   }
 }
 .home__h1--search {
@@ -109,4 +115,5 @@
 }
 .animated__span--fixed {
   color: palette(home, title--light);
+  font-weight: 400;
 }

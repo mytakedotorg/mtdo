@@ -29,7 +29,12 @@ interface NGramLoaderProps {
 }
 
 const NGramLoader: FC<NGramLoaderProps> = (props) => {
-  return <NGramViewerPresentation hitsPerYearList={props.results} />;
+  return (
+    <NGramViewerPresentation
+      hitsPerYearList={props.results}
+      classModifier={"home"}
+    />
+  );
 };
 
 export default NGramLoader;
