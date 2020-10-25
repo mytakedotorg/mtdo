@@ -20,7 +20,6 @@
 import React, { useEffect, useState } from "react";
 import BlinkingCursor from "./BlinkingCursor";
 import { HOMEPAGE_SEARCHES } from "./ngramData";
-import ngramData from "./ngramDataGen.json";
 
 interface HeadingContent {
   start: string;
@@ -30,9 +29,9 @@ interface HeadingContent {
 type TypingState = "TYPING" | "STATIC" | "DELETING";
 
 const HEADING_TEXT: HeadingContent = {
-  start: "When was ",
+  start: "How many times was ",
   middles: HOMEPAGE_SEARCHES,
-  end: "said in a debate?",
+  end: "said in a presidential debate?",
 };
 const TYPING_DELAY = 100;
 const STATIC_DELAY = 5000;
@@ -92,12 +91,18 @@ const AnimatedHeading: React.FC<AnimatedHeadingProps> = (props) => {
   }, [middleIndex, headingText, typingState]);
 
   return (
-    <p>
-      {HEADING_TEXT.start}
-      {headingText}
-      <BlinkingCursor />
-      {HEADING_TEXT.end}
-    </p>
+    <>
+      <span className="animated__span animated__span--fixed">
+        {HEADING_TEXT.start}
+      </span>
+      <span className="animated__span animated__span--typed">
+        {headingText}
+        <BlinkingCursor />
+      </span>
+      <span className="animated__span animated__span--fixed">
+        {HEADING_TEXT.end}
+      </span>
+    </>
   );
 };
 

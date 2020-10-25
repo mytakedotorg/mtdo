@@ -101,6 +101,7 @@ $palettes: (
     searchbar-button--hover: $action-light,
     searchbar-button-text: $white,
     title: $base-darkest,
+    title--light: lighten($base-lightest, 10%),
   ),
   button: (
     background--action: $action,

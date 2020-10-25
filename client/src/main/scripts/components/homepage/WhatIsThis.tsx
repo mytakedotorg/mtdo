@@ -20,9 +20,9 @@
 import React, { useState } from "react";
 import AnimatedHeading from "./AnimatedHeading";
 import HomeSection from "./HomeSection";
-import NGramLoader from "./NGramLoader";
-import { NgramData, HOMEPAGE_SEARCHES } from "./ngramData";
+import { HOMEPAGE_SEARCHES, NgramData } from "./ngramData";
 import data from "./ngramDataGen.json";
+import NGramLoader from "./NGramLoader";
 
 const WhatIsThis: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState(HOMEPAGE_SEARCHES[0]);
@@ -33,13 +33,13 @@ const WhatIsThis: React.FC = () => {
 
   return (
     <HomeSection>
-      <h2 className="home__h1 home__h1--animated">
+      <h2 className="home__h1">
         <AnimatedHeading onFinishTyping={handleFinish} />
-        <NGramLoader
-          searchQuery={searchQuery}
-          results={(data as NgramData)[searchQuery]}
-        />
       </h2>
+      <NGramLoader
+        searchQuery={searchQuery}
+        results={(data as NgramData)[searchQuery]}
+      />
     </HomeSection>
   );
 };

@@ -18,11 +18,15 @@
 }
 .home__h1 {
   @include typography($sans, 700, 24px, 1.3em);
-  margin: 24px 0 0 0;
+  margin: 0;
   color: palette(home, title);
   @media screen and (min-width: 480px) {
     @include typography($sans, 700, 34px, 1.3em);
   }
+}
+.home__h1--search {
+  margin: 24px 0 0 0;
+  text-align: center;
 }
 .home__body {
   @include typography($serif, 400, 15px, 1.2em);
@@ -93,16 +97,16 @@
     color: palette(nav, text--hover);
   }
 }
-.home__h1--animated {
-  position: relative;
-  width: 640px;
-  margin-left: auto;
-  margin-right: auto;
-}
 .home__cursor {
   position: relative;
   top: -3px;
 }
 .home__cursor--hide {
   opacity: 0;
+}
+.animated__span {
+  display: block;
+}
+.animated__span--fixed {
+  color: palette(home, title--light);
 }

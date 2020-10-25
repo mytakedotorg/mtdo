@@ -28,7 +28,7 @@ const HowToUseThis: React.FC = () => {
         containerClassName="home__section--dark"
         innerContainerClassName={"home__searchbar"}
       >
-        <h1 className="home__h1 home__body--center">
+        <h1 className="home__h1 home__h1--search">
           The{" "}
           <a href="https://github.com/mytakedotorg/mtdo/blob/staging/DEV_QUICKSTART.md">
             open source
