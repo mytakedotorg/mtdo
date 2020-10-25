@@ -1,9 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`GetInvolved 1`] = `
-<HomeSection
-  containerClassName="home__section--dark"
->
+<HomeSection>
   <h2
     className="home__h2"
   >
