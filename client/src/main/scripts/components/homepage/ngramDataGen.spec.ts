@@ -17,11 +17,10 @@
  *
  * You can contact us at team@mytake.org
  */
-import { slugify } from "../../common/functions";
 import { HOMEPAGE_SEARCHES, NgramData } from "./ngramData";
 import { search } from "../search/search";
 import * as fs from "fs";
-import { getNumberOfHitsPerYear, HitsPerYearList } from "../search/NGramViewer";
+import { getNumberOfHitsPerYear } from "../search/NGramViewer";
 
 // This test writes out `ngramDataGen.json`. When the production dataset
 // changes, then that .json file will change. It's messy, because here is

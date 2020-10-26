@@ -28,7 +28,6 @@ const BlinkingCursor: React.FC = () => {
       setIsCursorVisible((prevValue) => !prevValue);
     }, CURSOR_DELAY);
     return () => {
-      console.log("here");
       clearInterval(id);
     };
   }, []);
