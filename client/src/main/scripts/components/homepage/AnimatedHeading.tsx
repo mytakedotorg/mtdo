@@ -41,54 +41,92 @@ interface AnimatedHeadingProps {
   onFinishTyping(text: string): void;
 }
 
+interface HeadingState {
+  text: string;
+  middleIndex: number;
+  typingState: TypingState;
+}
 const AnimatedHeading: React.FC<AnimatedHeadingProps> = (props) => {
-  const [headingText, setHeadingText] = useState("");
-  const [middleIndex, setMiddleIndex] = useState(0);
-  const [typingState, setTypingState] = useState<TypingState>("TYPING");
+  const [state, setState] = useState<HeadingState>({
+    text: "",
+    middleIndex: 0,
+    typingState: "TYPING",
+  });
 
   const continueTyping = (currentEndingIndex: number) => {
     setTimeout(() => {
-      setHeadingText((prevText) =>
-        HEADING_TEXT.middles[currentEndingIndex].substr(0, prevText.length + 1)
-      );
+      setState((prevState) => ({
+        ...prevState,
+        text: HEADING_TEXT.middles[currentEndingIndex].substr(
+          0,
+          prevState.text.length + 1
+        ),
+      }));
     }, TYPING_DELAY);
   };
 
   const continueDeleting = (currentEndingIndex: number) => {
     setTimeout(() => {
-      setHeadingText((prevText) =>
-        HEADING_TEXT.middles[currentEndingIndex].substr(0, prevText.length - 1)
-      );
+      setState((prevState) => ({
+        ...prevState,
+        text: HEADING_TEXT.middles[currentEndingIndex].substr(
+          0,
+          prevState.text.length - 1
+        ),
+      }));
     }, DELETING_DELAY);
   };
 
   useEffect(() => {
-    switch (typingState) {
+    switch (state.typingState) {
       case "TYPING":
-        if (headingText !== HEADING_TEXT.middles[middleIndex]) {
-          continueTyping(middleIndex);
+        if (
+          state.text.length < HEADING_TEXT.middles[state.middleIndex].length
+        ) {
+          continueTyping(state.middleIndex);
         } else {
-          setTypingState("STATIC");
+          setState((prevState) => ({
+            ...prevState,
+            typingState: "STATIC",
+          }));
         }
         break;
       case "STATIC":
-        props.onFinishTyping(HEADING_TEXT.middles[middleIndex]);
+        props.onFinishTyping(HEADING_TEXT.middles[state.middleIndex]);
+        const staticDelay = isNextSimilar(state.text, state.middleIndex)
+          ? STATIC_DELAY / 2
+          : STATIC_DELAY;
         setTimeout(() => {
-          setTypingState("DELETING");
-        }, STATIC_DELAY);
+          if (isNextSimilar(state.text, state.middleIndex)) {
+            setState((prevState) => ({
+              ...prevState,
+              middleIndex: prevState.middleIndex + 1,
+              typingState: "TYPING",
+            }));
+          } else {
+            setState((prevState) => ({
+              ...prevState,
+              typingState: "DELETING",
+            }));
+          }
+        }, staticDelay);
         break;
       case "DELETING":
-        if (headingText !== "") {
-          continueDeleting(middleIndex);
+        if (state.text !== "") {
+          continueDeleting(state.middleIndex);
         } else {
-          setTypingState("TYPING");
-          setMiddleIndex((prevIndex) =>
-            prevIndex >= HEADING_TEXT.middles.length - 1 ? 0 : prevIndex + 1
-          );
+          setState((prevState) => ({
+            ...prevState,
+            middleIndex:
+              prevState.middleIndex >= HEADING_TEXT.middles.length - 1
+                ? 0
+                : prevState.middleIndex + 1,
+            typingState: "TYPING",
+          }));
         }
         break;
     }
-  }, [middleIndex, headingText, typingState]);
+  }, [state]);
 
   return (
     <>
@@ -96,7 +134,7 @@ const AnimatedHeading: React.FC<AnimatedHeadingProps> = (props) => {
         {HEADING_TEXT.start}
       </span>
       <span className="animated__span animated__span--typed">
-        {headingText}
+        {state.text}
         <BlinkingCursor />
       </span>
       <span className="animated__span animated__span--fixed">
@@ -105,5 +143,15 @@ const AnimatedHeading: React.FC<AnimatedHeadingProps> = (props) => {
     </>
   );
 };
+
+function isNextSimilar(headingText: string, middleIndex: number): boolean {
+  if (HEADING_TEXT.middles.length > middleIndex + 1) {
+    const nextHeading = HEADING_TEXT.middles[middleIndex + 1];
+    if (nextHeading.indexOf(headingText) !== -1) {
+      return true;
+    }
+  }
+  return false;
+}
 
 export default AnimatedHeading;
