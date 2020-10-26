@@ -33,6 +33,7 @@ const NGramLoader: FC<NGramLoaderProps> = (props) => {
     <NGramViewerPresentation
       hitsPerYearList={props.results}
       classModifier={"home"}
+      showHelpText={false}
     />
   );
 };
