@@ -2,10 +2,7 @@
 
 exports[`Home 1`] = `
 Array [
-  <WhatIsThis
-    leftSocial={<Unknown />}
-    rightSocial={<Unknown />}
-  />,
+  <WhatIsThis />,
   <HowToUseThis />,
   <GetInvolved />,
 ]

@@ -3,269 +3,98 @@
 exports[`WhatIsThis 1`] = `
 <HomeSection>
   <h2
-    className="home__h1 home__h1--center"
+    className="home__h1"
   >
-    Are we lying to you? Is this out of context?
+    <AnimatedHeading
+      onFinishTyping={[Function]}
+    />
   </h2>
-  <p
-    className="home__body home__body--center"
+  <a
+    className="home__ngram-link"
+    href="/search?q=election"
   >
-    Click one to see
-  </p>
-  <div
-    className="home__social-container"
-  >
-    <a
-      href="/foundation/presidential-debate-clinton-trump-1-of-3/~cut:(2879,2891.639892578125),fact:E74aoUY=887eb256a26aa4be39a9d849804b8e6e418222ae,kind:videoCut"
-    >
-      <div
-        className="social home"
-      >
-        <div
-          className="social__content home"
-        >
-          <div
-            className="social__row social__row--quote home"
-          >
-            <div
-              className="social__quote-container home"
-            >
-              <span
-                className="social__quote social__quote--e home"
-              >
-                “
-              </span>
-            </div>
-            <p
-              className="social__text social__text--e home"
-            >
-              Now, I believe in community policing. And, in fact, violent crime is one-half of what it was in 1991. Property crime is down 40 percent. We just don't want to see it creep back up.
-            </p>
-          </div>
-          <div
-            className="social__row home"
-          >
-            <p
-              className="social__speaker home"
-            >
-              Hillary R Clinton
-            </p>
-          </div>
-        </div>
-        <div
-          className="social__background home"
-        />
-        <div
-          className="social__image-container home"
-        >
-          <img
-            alt="MyTake.org | Fundamentals, in context."
-            className="social__image home"
-            height="200"
-            src="https://mytake.org/assets/permanent/square-wheat-482248dddd.png"
-            width="200"
-          />
-        </div>
-      </div>
-    </a>
-    <a
-      href="/foundation/presidential-debate-clinton-trump-1-of-3/~cut:(2689.89990234375,2702.360107421875),fact:E74aoUY=887eb256a26aa4be39a9d849804b8e6e418222ae,kind:videoCut"
-    >
-      <div
-        className="social home"
-      >
-        <div
-          className="social__content home"
-        >
-          <div
-            className="social__row social__row--quote home"
-          >
-            <div
-              className="social__quote-container home"
-            >
-              <span
-                className="social__quote social__quote--e home"
-              >
-                “
-              </span>
-            </div>
-            <p
-              className="social__text social__text--e home"
-            >
-              Right now, our police, in many cases, are afraid to do anything. We have to protect our inner cities, because African-American communities are being decimated by crime, decimated.
-            </p>
-          </div>
-          <div
-            className="social__row home"
-          >
-            <p
-              className="social__speaker home"
-            >
-              Donald J Trump
-            </p>
-          </div>
-        </div>
-        <div
-          className="social__background home"
-        />
-        <div
-          className="social__image-container home"
-        >
-          <img
-            alt="MyTake.org | Fundamentals, in context."
-            className="social__image home"
-            height="200"
-            src="https://mytake.org/assets/permanent/square-wheat-482248dddd.png"
-            width="200"
-          />
-        </div>
-      </div>
-    </a>
-  </div>
-  <h2
-    className="home__h1 home__h1--center"
-  >
-    Don't let someone else decide for you
-  </h2>
-  <p
-    className="home__body home__body--center"
-  >
-    We're not tracking what you've said. We're not selling your attention.
-  </p>
-</HomeSection>
-`;
-
-exports[`WhatIsThis loading 1`] = `
-<HomeSection>
-  <h2
-    className="home__h1 home__h1--center"
-  >
-    Are we lying to you? Is this out of context?
-  </h2>
-  <p
-    className="home__body home__body--center"
-  >
-    Click one to see
-  </p>
-  <div
-    className="home__social-container"
-  >
-    <a
-      href="/foundation/presidential-debate-clinton-trump-1-of-3/~cut:(2879,2891.639892578125),fact:E74aoUY=887eb256a26aa4be39a9d849804b8e6e418222ae,kind:videoCut"
-    >
-      <div
-        className="social home"
-      >
-        <div
-          className="social__content home"
-        >
-          <div
-            className="social__row social__row--quote home"
-          >
-            <div
-              className="social__quote-container home"
-            >
-              <span
-                className="social__quote social__quote--a home"
-              >
-                “
-              </span>
-            </div>
-            <p
-              className="social__text social__text--a home"
-            >
-              ~~~~ ~~~~ ~~~~~~~~ ~~~ ~~~~~~~~ ~~~~ ~~~~ ~~~~~~~~ ~~~~ ~~ ~~~~~~~~ ~~~~ ~~~~~ ~~~~~~~~ ~~~ ~~~~~~ ~~~~~~~~~ ~~~~ ~~~~~ ~~~~~~~~ ~~~ ~~~~~~ ~~~~~~~~~
-            </p>
-          </div>
-          <div
-            className="social__row home"
-          >
-            <p
-              className="social__speaker home"
-            >
-              ~~~~~~
-            </p>
-          </div>
-        </div>
-        <div
-          className="social__background home"
-        />
-        <div
-          className="social__image-container home"
-        >
-          <img
-            alt="MyTake.org | Fundamentals, in context."
-            className="social__image home"
-            height="200"
-            src="https://mytake.org/assets/permanent/square-wheat-482248dddd.png"
-            width="200"
-          />
-        </div>
-      </div>
-    </a>
-    <a
-      href="/foundation/presidential-debate-clinton-trump-1-of-3/~cut:(2689.89990234375,2702.360107421875),fact:E74aoUY=887eb256a26aa4be39a9d849804b8e6e418222ae,kind:videoCut"
-    >
-      <div
-        className="social home"
-      >
-        <div
-          className="social__content home"
-        >
-          <div
-            className="social__row social__row--quote home"
-          >
-            <div
-              className="social__quote-container home"
-            >
-              <span
-                className="social__quote social__quote--a home"
-              >
-                “
-              </span>
-            </div>
-            <p
-              className="social__text social__text--a home"
-            >
-              ~~~~ ~~~~ ~~~~~~~~ ~~~ ~~~~~~~~ ~~~~ ~~~~ ~~~~~~~~ ~~~~ ~~ ~~~~~~~~ ~~~~ ~~~~~ ~~~~~~~~ ~~~ ~~~~~~ ~~~~~~~~~ ~~~~ ~~~~~ ~~~~~~~~ ~~~ ~~~~~~ ~~~~~~~~~
-            </p>
-          </div>
-          <div
-            className="social__row home"
-          >
-            <p
-              className="social__speaker home"
-            >
-              ~~~~~~
-            </p>
-          </div>
-        </div>
-        <div
-          className="social__background home"
-        />
-        <div
-          className="social__image-container home"
-        >
-          <img
-            alt="MyTake.org | Fundamentals, in context."
-            className="social__image home"
-            height="200"
-            src="https://mytake.org/assets/permanent/square-wheat-482248dddd.png"
-            width="200"
-          />
-        </div>
-      </div>
-    </a>
-  </div>
-  <h2
-    className="home__h1 home__h1--center"
-  >
-    Don't let someone else decide for you
-  </h2>
-  <p
-    className="home__body home__body--center"
-  >
-    We're not tracking what you've said. We're not selling your attention.
-  </p>
+    <NGramLoader
+      results={
+        Object {
+          "allSearchTerms": Array [
+            "election",
+          ],
+          "hitsPerYear": Array [
+            Object {
+              "hitCount": 6,
+              "searchTerm": "election",
+              "year": "1960",
+            },
+            Object {
+              "hitCount": 0,
+              "searchTerm": "election",
+              "year": ",",
+            },
+            Object {
+              "hitCount": 14,
+              "searchTerm": "election",
+              "year": "1976",
+            },
+            Object {
+              "hitCount": 3,
+              "searchTerm": "election",
+              "year": "1980",
+            },
+            Object {
+              "hitCount": 7,
+              "searchTerm": "election",
+              "year": "1984",
+            },
+            Object {
+              "hitCount": 6,
+              "searchTerm": "election",
+              "year": "1988",
+            },
+            Object {
+              "hitCount": 10,
+              "searchTerm": "election",
+              "year": "1992",
+            },
+            Object {
+              "hitCount": 11,
+              "searchTerm": "election",
+              "year": "1996",
+            },
+            Object {
+              "hitCount": 16,
+              "searchTerm": "election",
+              "year": "2000",
+            },
+            Object {
+              "hitCount": 2,
+              "searchTerm": "election",
+              "year": "2004",
+            },
+            Object {
+              "hitCount": 3,
+              "searchTerm": "election",
+              "year": "2008",
+            },
+            Object {
+              "hitCount": 9,
+              "searchTerm": "election",
+              "year": "2012",
+            },
+            Object {
+              "hitCount": 33,
+              "searchTerm": "election",
+              "year": "2016",
+            },
+            Object {
+              "hitCount": 40,
+              "searchTerm": "election",
+              "year": "2020",
+            },
+          ],
+        }
+      }
+      searchQuery="election"
+    />
+  </a>
 </HomeSection>
 `;

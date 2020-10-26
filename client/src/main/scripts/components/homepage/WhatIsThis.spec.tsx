@@ -19,33 +19,23 @@
  */
 import * as React from "react";
 import * as renderer from "react-test-renderer";
-import { SocialLoading } from "./infoHeader";
-import { useSocialsMock } from "./infoHeaderTest";
 import WhatIsThis from "./WhatIsThis";
 
 jest.mock("./HomeSection", () => ({
   __esModule: true,
   default: "HomeSection",
 }));
+jest.mock("./NGramLoader", () => ({
+  __esModule: true,
+  default: "NGramLoader",
+}));
+jest.mock("./AnimatedHeading", () => ({
+  __esModule: true,
+  default: "AnimatedHeading",
+}));
 jest.retryTimes(3);
 
 test("WhatIsThis", async () => {
-  const { leftSocial, rightSocial } = await useSocialsMock();
-  const tree = renderer
-    .create(<WhatIsThis leftSocial={leftSocial} rightSocial={rightSocial} />)
-    .toJSON();
-  expect(tree).toMatchSnapshot();
-});
-
-test("WhatIsThis loading", () => {
-  const loadingComponent = SocialLoading({})!;
-  const tree = renderer
-    .create(
-      <WhatIsThis
-        leftSocial={loadingComponent}
-        rightSocial={loadingComponent}
-      />
-    )
-    .toJSON();
+  const tree = renderer.create(<WhatIsThis />).toJSON();
   expect(tree).toMatchSnapshot();
 });

@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2020 MyTake.org, Inc.
+ * Copyright (C) 2018-2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -17,19 +17,24 @@
  *
  * You can contact us at team@mytake.org
  */
-import { Foundation } from "../../common/foundation";
-import { imageVideoCut } from "../../common/social/SocialImage";
-import { HomeSocials, SOCIAL_CLINTON, SOCIAL_TRUMP } from "./infoHeader";
+import React, { FC } from "react";
+import {
+  HitsPerYearList,
+  NGramViewerPresentation,
+} from "../search/NGramViewer";
 
-export const useSocialsMock = async (): Promise<HomeSocials> => ({
-  leftSocial: imageVideoCut(
-    SOCIAL_CLINTON,
-    await Foundation.justOneVideo(SOCIAL_CLINTON.fact),
-    "home"
-  ),
-  rightSocial: imageVideoCut(
-    SOCIAL_TRUMP,
-    await Foundation.justOneVideo(SOCIAL_TRUMP.fact),
-    "home"
-  ),
-});
+interface NGramLoaderProps {
+  searchQuery: string;
+  results: HitsPerYearList;
+}
+
+const NGramLoader: FC<NGramLoaderProps> = (props) => {
+  return (
+    <NGramViewerPresentation
+      hitsPerYearList={props.results}
+      classModifier={"home"}
+    />
+  );
+};
+
+export default NGramLoader;

@@ -14,12 +14,6 @@ exports[`Tabs - hidden 1`] = `
         className="tab tab--active"
         onClick={[Function]}
       >
-        How to use this
-      </li>
-      <li
-        className="tab"
-        onClick={[Function]}
-      >
         What is this
       </li>
       <li
@@ -79,12 +73,6 @@ exports[`Tabs - visible 1`] = `
     >
       <li
         className="tab tab--active"
-        onClick={[Function]}
-      >
-        How to use this
-      </li>
-      <li
-        className="tab"
         onClick={[Function]}
       >
         What is this

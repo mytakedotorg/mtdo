@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2018-2020 MyTake.org, Inc.
+ * Copyright (C) 2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -17,19 +17,11 @@
  *
  * You can contact us at team@mytake.org
  */
-import React from "react";
-import GetInvolved from "./GetInvolved";
-import HowToUseThis from "./HowToUseThis";
-import WhatIsThis from "./WhatIsThis";
+import * as React from "react";
+import * as renderer from "react-test-renderer";
+import BlinkingCursor from "./BlinkingCursor";
 
-const Home: React.FC = () => {
-  return (
-    <>
-      <WhatIsThis />
-      <HowToUseThis />
-      <GetInvolved />
-    </>
-  );
-};
-
-export default Home;
+test("BlinkingCursor", () => {
+  const tree = renderer.create(<BlinkingCursor />).toJSON();
+  expect(tree).toMatchSnapshot();
+});

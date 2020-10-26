@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2018-2020 MyTake.org, Inc.
+ * Copyright (C) 2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -17,19 +17,16 @@
  *
  * You can contact us at team@mytake.org
  */
-import React from "react";
-import GetInvolved from "./GetInvolved";
-import HowToUseThis from "./HowToUseThis";
-import WhatIsThis from "./WhatIsThis";
+import { HitsPerYearList } from "../search/NGramViewer";
 
-const Home: React.FC = () => {
-  return (
-    <>
-      <WhatIsThis />
-      <HowToUseThis />
-      <GetInvolved />
-    </>
-  );
-};
+export const HOMEPAGE_SEARCHES = [
+  "election",
+  "second amendment",
+  "second amendment, gun control",
+  "wall",
+  "wall, -wall street",
+];
 
-export default Home;
+export interface NgramData {
+  [index: string]: HitsPerYearList;
+}

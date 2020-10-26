@@ -29,7 +29,7 @@ jest.mock("./DrawerContents", () => ({
 
 test("Drawer - expanded", () => {
   const props = {
-    activeTab: INFO_HEADER_TABS_ENUM.HOW_TO_USE_THIS,
+    activeTab: INFO_HEADER_TABS_ENUM.WHAT_IS_THIS,
     onClose: jest.fn(),
     isExpanded: true,
   };
@@ -39,7 +39,7 @@ test("Drawer - expanded", () => {
 
 test("Drawer - collapsed", () => {
   const props = {
-    activeTab: INFO_HEADER_TABS_ENUM.HOW_TO_USE_THIS,
+    activeTab: INFO_HEADER_TABS_ENUM.WHAT_IS_THIS,
     onClose: jest.fn(),
     isExpanded: false,
   };

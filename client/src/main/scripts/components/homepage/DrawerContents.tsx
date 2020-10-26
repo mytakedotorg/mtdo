@@ -20,7 +20,7 @@
 import React from "react";
 import GetInvolved from "./GetInvolved";
 import HowToUseThis from "./HowToUseThis";
-import { INFO_HEADER_TABS_ENUM, useSocials } from "./infoHeader";
+import { INFO_HEADER_TABS_ENUM } from "./infoHeader";
 import WhatIsThis from "./WhatIsThis";
 
 interface DrawerContentsProps {
@@ -28,14 +28,16 @@ interface DrawerContentsProps {
 }
 
 const DrawerContents: React.FC<DrawerContentsProps> = (props) => {
-  const { leftSocial, rightSocial } = useSocials();
   switch (props.activeTab) {
     case INFO_HEADER_TABS_ENUM.GET_INVOLVED:
       return <GetInvolved />;
-    case INFO_HEADER_TABS_ENUM.HOW_TO_USE_THIS:
-      return <HowToUseThis />;
     case INFO_HEADER_TABS_ENUM.WHAT_IS_THIS:
-      return <WhatIsThis leftSocial={leftSocial} rightSocial={rightSocial} />;
+      return (
+        <>
+          <WhatIsThis />
+          <HowToUseThis />
+        </>
+      );
   }
 };
 

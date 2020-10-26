@@ -18,7 +18,7 @@
  * You can contact us at team@mytake.org
  */
 import * as d3 from "d3";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { CornerLeftUp } from "react-feather";
 import { FT } from "../../java2ts/FT";
 import { SearchResult } from "./search";
@@ -34,27 +34,54 @@ const colors = d3
 
 interface NGramViewerProps {
   searchResult: SearchResult;
-  onBarClick(year: string): void;
+  onBarClick?(year: string): void;
 }
 
-const NGramViewer: React.FC<NGramViewerProps> = ({
-  onBarClick,
-  searchResult,
-}) => {
+const NGramViewer: React.FC<NGramViewerProps> = (props) => {
+  const [hitsPerYearList, setHitsPerYearList] = useState<HitsPerYearList>(
+    getNumberOfHitsPerYear(props.searchResult)
+  );
+  const firstRender = useRef(true);
+  useEffect(() => {
+    if (firstRender) {
+      firstRender.current = false;
+    } else {
+      setHitsPerYearList(getNumberOfHitsPerYear(props.searchResult));
+    }
+  }, [props.searchResult.searchQuery]);
+  return (
+    <NGramViewerPresentation
+      hitsPerYearList={hitsPerYearList}
+      onBarClick={props.onBarClick}
+    />
+  );
+};
+
+interface NGramViewerPresentationProps {
+  onBarClick?(year: string): void;
+  hitsPerYearList: HitsPerYearList;
+  classModifier?: string;
+}
+export const NGramViewerPresentation: React.FC<NGramViewerPresentationProps> = (
+  props
+) => {
   const svgEl = useRef<SVGSVGElement>(null);
-  const searchTerms = getSearchTerms(searchResult.searchQuery);
   useEffect(() => {
     if (svgEl.current) {
-      drawChart(svgEl.current, searchResult, onBarClick);
+      drawChart(svgEl.current, props.hitsPerYearList, props.onBarClick);
     }
-  }, [svgEl]);
+  }, [svgEl, props.hitsPerYearList]);
+  let className = "ngram__outer-container";
+  if (props.classModifier) {
+    className += ` ${className}--${props.classModifier}`;
+  }
   return (
-    <div className="ngram__outer-container">
+    <div className={className}>
       <div className="ngram__inner-container">
         <svg ref={svgEl} width={SVG_WIDTH} height={SVG_HEIGHT}></svg>
         <div className="ngram__legend">
           <div className="ngram__term-list">
-            {searchTerms.map((term, idx) => {
+            {props.hitsPerYearList.allSearchTerms.map((term, idx) => {
               return (
                 <span
                   key={term}
@@ -78,9 +105,10 @@ const NGramViewer: React.FC<NGramViewerProps> = ({
 
 function drawChart(
   svgElement: SVGSVGElement,
-  searchResult: SearchResult,
-  onBarClick: (year: string) => void
+  hitsPerYearList: HitsPerYearList,
+  onBarClick?: (year: string) => void
 ) {
+  d3.select(svgElement).selectAll("*").remove();
   const svg = d3
     .select(svgElement)
     .append("g")
@@ -88,7 +116,6 @@ function drawChart(
       "transform",
       "translate(" + SVG_PADDING_LEFT + "," + SVG_PADDING_TOP / 3 + ")"
     );
-  const { hitsPerYear, allSearchTerms } = getNumberOfHitsPerYear(searchResult);
   // X-Axis
   const xScale = d3
     .scaleBand()
@@ -105,10 +132,10 @@ function drawChart(
     .attr("transform", "translate(10, 5)rotate(45)")
     .style("cursor", "pointer")
     .on("click", function (year: string) {
-      onBarClick(year);
+      onBarClick && onBarClick(year);
     });
   xAxis.selectAll(".tick line").attr("visibility", "hidden");
-  const hitMax = d3.max(hitsPerYear, (h) => h.hitCount)!;
+  const hitMax = d3.max(hitsPerYearList.hitsPerYear, (h) => h.hitCount)!;
   // Y-Axis
   const yScale = d3
     .scaleLinear()
@@ -117,8 +144,8 @@ function drawChart(
   const yAxisGenerator = d3.axisLeft(yScale).ticks(Math.min(hitMax, 5), "d");
   svg.append("g").call(yAxisGenerator);
 
-  allSearchTerms.forEach((term, idx) => {
-    const hitsPerYearForTerm = hitsPerYear.filter(
+  hitsPerYearList.allSearchTerms.forEach((term, idx) => {
+    const hitsPerYearForTerm = hitsPerYearList.hitsPerYear.filter(
       (hpy) => hpy.searchTerm === term
     );
     svg
@@ -130,13 +157,14 @@ function drawChart(
       .attr(
         "x",
         (d) =>
-          xScale(d.year)! + (xScale.bandwidth() / allSearchTerms.length) * idx
+          xScale(d.year)! +
+          (xScale.bandwidth() / hitsPerYearList.allSearchTerms.length) * idx
       )
       .attr("y", (d) => yScale(d.hitCount)!)
       .attr("height", (d) => yScale(0)! - yScale(d.hitCount)!)
-      .attr("width", xScale.bandwidth() / allSearchTerms.length)
+      .attr("width", xScale.bandwidth() / hitsPerYearList.allSearchTerms.length)
       .on("click", function (d) {
-        onBarClick(d.year);
+        onBarClick && onBarClick(d.year);
       })
       .style("cursor", "pointer");
   });
@@ -151,7 +179,7 @@ interface HitsPerYear {
   hitCount: number;
   searchTerm: string;
 }
-interface HitsPerYearList {
+export interface HitsPerYearList {
   hitsPerYear: HitsPerYear[];
   allSearchTerms: string[];
 }
@@ -171,7 +199,9 @@ const ALL_DEBATE_YEARS = [
   "2016",
   "2020",
 ];
-function getNumberOfHitsPerYear(searchResult: SearchResult): HitsPerYearList {
+export function getNumberOfHitsPerYear(
+  searchResult: SearchResult
+): HitsPerYearList {
   const terms = getSearchTerms(searchResult.searchQuery);
   const hitsPerYear: HitsPerYear[] = ALL_DEBATE_YEARS.flatMap((year) =>
     terms.map((searchTerm) => ({

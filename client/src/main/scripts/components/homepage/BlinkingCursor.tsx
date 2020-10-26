@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2018-2020 MyTake.org, Inc.
+ * Copyright (C) 2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -17,19 +17,25 @@
  *
  * You can contact us at team@mytake.org
  */
-import React from "react";
-import GetInvolved from "./GetInvolved";
-import HowToUseThis from "./HowToUseThis";
-import WhatIsThis from "./WhatIsThis";
+import React, { useEffect, useState } from "react";
 
-const Home: React.FC = () => {
-  return (
-    <>
-      <WhatIsThis />
-      <HowToUseThis />
-      <GetInvolved />
-    </>
-  );
+const CURSOR_DELAY = 500;
+
+const BlinkingCursor: React.FC = () => {
+  const [isCursorVisible, setIsCursorVisible] = useState(true);
+  useEffect(() => {
+    const id = setInterval(() => {
+      setIsCursorVisible((prevValue) => !prevValue);
+    }, CURSOR_DELAY);
+    return () => {
+      console.log("here");
+      clearInterval(id);
+    };
+  }, []);
+  const cursorClass = isCursorVisible
+    ? "home__cursor"
+    : "home__cursor home__cursor--hide";
+  return <span className={cursorClass}>|</span>;
 };
 
-export default Home;
+export default BlinkingCursor;

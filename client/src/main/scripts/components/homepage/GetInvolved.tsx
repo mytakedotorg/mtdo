@@ -22,7 +22,7 @@ import HomeSection from "./HomeSection";
 
 const GetInvolved: React.FC = () => {
   return (
-    <HomeSection containerClassName="home__section--dark">
+    <HomeSection>
       <h2 className="home__h2">Get involved</h2>
       <div className="home__link-container">
         <a
