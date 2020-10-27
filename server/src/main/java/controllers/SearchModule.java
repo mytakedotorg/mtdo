@@ -57,7 +57,7 @@ public class SearchModule implements Jooby.Module {
 			if (query.isEmpty()) {
 				CacheControl.forever(res).redirect(Routes.FOUNDATION);
 			} else {
-				CacheControl.hour(res).send(views.Search.searchResults.template(query, SocialEmbed.todo()));
+				CacheControl.hour(res).send(views.Search.searchResults.template(query, SocialEmbed.search(query)));
 			}
 		});
 	}
