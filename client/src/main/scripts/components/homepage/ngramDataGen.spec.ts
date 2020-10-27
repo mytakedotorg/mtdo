@@ -17,7 +17,7 @@
  *
  * You can contact us at team@mytake.org
  */
-import { HOMEPAGE_SEARCHES, NgramData } from "./ngramData";
+import { HOMEPAGE_SEARCHES, NgramData } from "./AnimatedHeading";
 import { search } from "../search/search";
 import * as fs from "fs";
 import { getNumberOfHitsPerYear } from "../search/NGramViewer";

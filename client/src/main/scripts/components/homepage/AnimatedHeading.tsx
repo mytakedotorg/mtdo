@@ -19,7 +19,19 @@
  */
 import React, { useEffect, useState } from "react";
 import BlinkingCursor from "./BlinkingCursor";
-import { HOMEPAGE_SEARCHES } from "./ngramData";
+import { HitsPerYearList } from "../search/NGramViewer";
+
+export const HOMEPAGE_SEARCHES = [
+  "election",
+  "second amendment",
+  "second amendment, gun control",
+  "wall",
+  "wall, -wall street",
+];
+
+export interface NgramData {
+  [index: string]: HitsPerYearList;
+}
 
 interface HeadingContent {
   start: string;
