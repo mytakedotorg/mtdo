@@ -30,15 +30,27 @@ package org.mytake.factset.gradle;
 
 
 import com.diffplug.common.base.Errors;
+import com.diffplug.common.base.StringPrinter;
 import com.diffplug.gradle.spotless.GroovyExtension;
 import com.diffplug.gradle.spotless.SpotlessExtension;
 import com.diffplug.gradle.spotless.SpotlessPlugin;
 import com.diffplug.spotless.LineEnding;
 import com.diffplug.spotless.changelog.gradle.ChangelogExtension;
 import com.diffplug.spotless.changelog.gradle.ChangelogPlugin;
+import java.io.File;
+import java.io.IOException;
+import org.eclipse.jgit.api.Git;
+import org.eclipse.jgit.api.Status;
+import org.eclipse.jgit.api.errors.GitAPIException;
+import org.eclipse.jgit.errors.NoWorkTreeException;
+import org.gradle.api.DefaultTask;
+import org.gradle.api.GradleException;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
 import org.gradle.api.plugins.BasePlugin;
+import org.gradle.api.plugins.JavaBasePlugin;
+import org.gradle.api.tasks.Internal;
+import org.gradle.api.tasks.TaskAction;
 import org.gradle.api.tasks.TaskProvider;
 import org.mytake.factset.gradle.MtdoFactset.GrindTask;
 
@@ -100,6 +112,13 @@ public class FactsetPlugin implements Plugin<Project> {
 			grindTask.sausageDir = project.file("sausage");
 		});
 		project.getTasks().getByName(BasePlugin.ASSEMBLE_TASK_NAME).dependsOn(grind);
+
+		TaskProvider<?> grindCheck = project.getTasks().register("grindCheck", GrindCheckTask.class, check -> {
+			check.dependsOn(grind);
+			check.projectDir = project.getProjectDir();
+		});
+		project.getTasks().getByName(JavaBasePlugin.CHECK_TASK_NAME).dependsOn(grindCheck);
+
 		// setup the gui task
 		Errors.rethrow().run(() -> GuiTask.setup(project, factset));
 	}
@@ -109,4 +128,26 @@ public class FactsetPlugin implements Plugin<Project> {
 	static final String CHANGED_TITLE = "**Changed title of published fact**";
 	static final String RETRACTION = "**Retraction**";
 	static final String INCLUSION_CRITERIA_CHANGE = "**Inclusion criteria change**";
+
+	public static class GrindCheckTask extends DefaultTask {
+		private File projectDir;
+
+		@Internal
+		public File getProjectDir() {
+			return projectDir;
+		}
+
+		@TaskAction
+		public void check() throws IOException, NoWorkTreeException, GitAPIException {
+			try (Git git = Git.open(projectDir)) {
+				Status status = git.status().call();
+				if (!status.isClean()) {
+					throw new GradleException(StringPrinter.buildString(printer -> {
+						printer.println("Uncommitted changes in:");
+						status.getUncommittedChanges().forEach(printer::println);
+					}));
+				}
+			}
+		}
+	}
 }
