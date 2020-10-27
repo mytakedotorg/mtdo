@@ -93,11 +93,12 @@ const AnimatedHeading: React.FC<AnimatedHeadingProps> = (props) => {
         break;
       case "STATIC":
         props.onFinishTyping(HEADING_TEXT.middles[state.middleIndex]);
-        const staticDelay = isNextSimilar(state.text, state.middleIndex)
-          ? STATIC_DELAY / 2
-          : STATIC_DELAY;
+        const staticDelay =
+          isNextSimilar(state.middleIndex) || isPrevSimilar(state.middleIndex)
+            ? STATIC_DELAY / 2
+            : STATIC_DELAY;
         setTimeout(() => {
-          if (isNextSimilar(state.text, state.middleIndex)) {
+          if (isNextSimilar(state.middleIndex)) {
             setState((prevState) => ({
               ...prevState,
               middleIndex: prevState.middleIndex + 1,
@@ -144,12 +145,20 @@ const AnimatedHeading: React.FC<AnimatedHeadingProps> = (props) => {
   );
 };
 
-function isNextSimilar(headingText: string, middleIndex: number): boolean {
-  if (HEADING_TEXT.middles.length > middleIndex + 1) {
-    const nextHeading = HEADING_TEXT.middles[middleIndex + 1];
-    if (nextHeading.indexOf(headingText) !== -1) {
-      return true;
-    }
+function isNextSimilar(middleIndex: number): boolean {
+  if (middleIndex + 1 < HEADING_TEXT.middles.length) {
+    const thisText = HEADING_TEXT.middles[middleIndex];
+    const nextText = HEADING_TEXT.middles[middleIndex + 1];
+    return nextText.startsWith(thisText);
+  }
+  return false;
+}
+
+function isPrevSimilar(middleIndex: number): boolean {
+  if (middleIndex > 0) {
+    const prevText = HEADING_TEXT.middles[middleIndex - 1];
+    const thisText = HEADING_TEXT.middles[middleIndex];
+    return thisText.startsWith(prevText);
   }
   return false;
 }
