@@ -23,8 +23,13 @@ import { HitsPerYearList } from "../search/NGramViewer";
 
 export const SEARCHES = [
   "election",
-  "second amendment",
-  "second amendment, gun control",
+  "election, rigged",
+  "supreme court",
+  "global warming",
+  "saddam",
+  "saddam, bin laden",
+  "gun control",
+  "gun control, second amendment",
   "wall",
   "wall, -wall street",
 ];
