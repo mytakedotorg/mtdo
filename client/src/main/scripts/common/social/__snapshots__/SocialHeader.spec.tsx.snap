@@ -1,0 +1,70 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`BlinkingCursor 1`] = `
+Array [
+  <meta
+    content="\\"saddam, bin laden\\" in presidential debates"
+    property="og:title"
+  />,
+  <meta
+    content="Every single time that \\"saddam, bin laden\\" was said in a presidential debate, ever."
+    property="og:description"
+  />,
+  <meta
+    content="article"
+    property="og:type"
+  />,
+  <meta
+    content="https://mytake.org/search?q=saddam%2C%20bin%20laden"
+    property="og:url"
+  />,
+  <meta
+    content="https://node.mytake.org/static/social-image/~kind:searchResults,query:'saddam, bin laden'.png"
+    property="og:image"
+  />,
+  <meta
+    content="https://node.mytake.org/static/social-image/~kind:searchResults,query:'saddam, bin laden'.png"
+    property="og:image:secure_url"
+  />,
+  <meta
+    content="image/png"
+    property="og:image:type"
+  />,
+  <meta
+    content="1200"
+    property="og:image:width"
+  />,
+  <meta
+    content="628"
+    property="og:image:height"
+  />,
+  <meta
+    content="A bar graph of how many times \\"saddam, bin laden\\" was said in a presidential debate."
+    property="og:image:alt"
+  />,
+  <meta
+    content="summary_large_image"
+    name="twitter:card"
+  />,
+  <meta
+    content="@mytakedotorg"
+    name="twitter:site"
+  />,
+  <meta
+    content="\\"saddam, bin laden\\" in presidential debates"
+    name="twitter:title"
+  />,
+  <meta
+    content="Every single time that \\"saddam, bin laden\\" was said in a presidential debate, ever."
+    name="twitter:description"
+  />,
+  <meta
+    content="https://node.mytake.org/static/social-image-twitter/~kind:searchResults,query:'saddam, bin laden'.png"
+    name="twitter:image"
+  />,
+  <meta
+    content="A bar graph of how many times \\"saddam, bin laden\\" was said in a presidential debate."
+    name="twitter:image:alt"
+  />,
+]
+`;
