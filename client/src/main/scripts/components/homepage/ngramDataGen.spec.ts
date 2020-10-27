@@ -17,7 +17,7 @@
  *
  * You can contact us at team@mytake.org
  */
-import { HOMEPAGE_SEARCHES, NgramData } from "./AnimatedHeading";
+import { SEARCHES, NgramData } from "./AnimatedHeading";
 import { search } from "../search/search";
 import * as fs from "fs";
 import { getNumberOfHitsPerYear } from "../search/NGramViewer";
@@ -33,7 +33,7 @@ import { getNumberOfHitsPerYear } from "../search/NGramViewer";
 // we'll just add this to the manual checklist for now.
 test("generateSearchData", async () => {
   var searches: NgramData = {};
-  for (let searchQuery of HOMEPAGE_SEARCHES) {
+  for (let searchQuery of SEARCHES) {
     const searchResult = await search(searchQuery);
     searches[searchQuery] = await getNumberOfHitsPerYear(searchResult);
   }
