@@ -20,12 +20,12 @@
 import React, { useState } from "react";
 import AnimatedHeading from "./AnimatedHeading";
 import HomeSection from "./HomeSection";
-import { HOMEPAGE_SEARCHES, NgramData } from "./ngramData";
+import { SEARCHES, NgramData } from "./AnimatedHeading";
 import data from "./ngramDataGen.json";
 import NGramLoader from "./NGramLoader";
 
 const WhatIsThis: React.FC = () => {
-  const [searchQuery, setSearchQuery] = useState(HOMEPAGE_SEARCHES[0]);
+  const [searchQuery, setSearchQuery] = useState(SEARCHES[0]);
 
   const handleFinish = (query: string) => {
     setSearchQuery(query);

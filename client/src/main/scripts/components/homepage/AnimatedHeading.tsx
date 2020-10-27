@@ -19,76 +19,128 @@
  */
 import React, { useEffect, useState } from "react";
 import BlinkingCursor from "./BlinkingCursor";
-import { HOMEPAGE_SEARCHES } from "./ngramData";
+import { HitsPerYearList } from "../search/NGramViewer";
+
+export const SEARCHES = [
+  "election",
+  "election, rigged",
+  "supreme court",
+  "global warming",
+  "saddam",
+  "saddam, bin laden",
+  "gun control",
+  "gun control, second amendment",
+  "wall",
+  "wall, -wall street",
+];
+
+export interface NgramData {
+  [index: string]: HitsPerYearList;
+}
 
 interface HeadingContent {
   start: string;
-  middles: string[];
   end: string;
 }
 type TypingState = "TYPING" | "STATIC" | "DELETING";
 
 const HEADING_TEXT: HeadingContent = {
   start: "How many times was ",
-  middles: HOMEPAGE_SEARCHES,
   end: "said in a presidential debate?",
 };
 const TYPING_DELAY = 100;
-const STATIC_DELAY = 5000;
+const STATIC_DELAY = 3000;
 const DELETING_DELAY = 10;
 
 interface AnimatedHeadingProps {
   onFinishTyping(text: string): void;
 }
 
+interface HeadingState {
+  searchTxt: string;
+  searchIdx: number;
+  typingState: TypingState;
+}
 const AnimatedHeading: React.FC<AnimatedHeadingProps> = (props) => {
-  const [headingText, setHeadingText] = useState("");
-  const [middleIndex, setMiddleIndex] = useState(0);
-  const [typingState, setTypingState] = useState<TypingState>("TYPING");
+  const [state, setState] = useState<HeadingState>({
+    searchTxt: "",
+    searchIdx: 0,
+    typingState: "TYPING",
+  });
 
   const continueTyping = (currentEndingIndex: number) => {
     setTimeout(() => {
-      setHeadingText((prevText) =>
-        HEADING_TEXT.middles[currentEndingIndex].substr(0, prevText.length + 1)
-      );
+      setState((prevState) => ({
+        ...prevState,
+        searchTxt: SEARCHES[currentEndingIndex].substr(
+          0,
+          prevState.searchTxt.length + 1
+        ),
+      }));
     }, TYPING_DELAY);
   };
 
   const continueDeleting = (currentEndingIndex: number) => {
     setTimeout(() => {
-      setHeadingText((prevText) =>
-        HEADING_TEXT.middles[currentEndingIndex].substr(0, prevText.length - 1)
-      );
+      setState((prevState) => ({
+        ...prevState,
+        searchTxt: SEARCHES[currentEndingIndex].substr(
+          0,
+          prevState.searchTxt.length - 1
+        ),
+      }));
     }, DELETING_DELAY);
   };
 
   useEffect(() => {
-    switch (typingState) {
+    switch (state.typingState) {
       case "TYPING":
-        if (headingText !== HEADING_TEXT.middles[middleIndex]) {
-          continueTyping(middleIndex);
+        if (state.searchTxt.length < SEARCHES[state.searchIdx].length) {
+          continueTyping(state.searchIdx);
         } else {
-          setTypingState("STATIC");
+          setState((prevState) => ({
+            ...prevState,
+            typingState: "STATIC",
+          }));
         }
         break;
       case "STATIC":
-        props.onFinishTyping(HEADING_TEXT.middles[middleIndex]);
+        props.onFinishTyping(SEARCHES[state.searchIdx]);
+        const staticDelay =
+          isNextSimilar(state.searchIdx) || isPrevSimilar(state.searchIdx)
+            ? STATIC_DELAY / 2
+            : STATIC_DELAY;
         setTimeout(() => {
-          setTypingState("DELETING");
-        }, STATIC_DELAY);
+          if (isNextSimilar(state.searchIdx)) {
+            setState((prevState) => ({
+              ...prevState,
+              searchIdx: prevState.searchIdx + 1,
+              typingState: "TYPING",
+            }));
+          } else {
+            setState((prevState) => ({
+              ...prevState,
+              typingState: "DELETING",
+            }));
+          }
+        }, staticDelay);
         break;
       case "DELETING":
-        if (headingText !== "") {
-          continueDeleting(middleIndex);
+        if (state.searchTxt !== "") {
+          continueDeleting(state.searchIdx);
         } else {
-          setTypingState("TYPING");
-          setMiddleIndex((prevIndex) =>
-            prevIndex >= HEADING_TEXT.middles.length - 1 ? 0 : prevIndex + 1
-          );
+          setState((prevState) => ({
+            ...prevState,
+            searchIdx:
+              prevState.searchIdx >= SEARCHES.length - 1
+                ? 0
+                : prevState.searchIdx + 1,
+            typingState: "TYPING",
+          }));
         }
         break;
     }
-  }, [middleIndex, headingText, typingState]);
+  }, [state]);
 
   return (
     <>
@@ -96,7 +148,7 @@ const AnimatedHeading: React.FC<AnimatedHeadingProps> = (props) => {
         {HEADING_TEXT.start}
       </span>
       <span className="animated__span animated__span--typed">
-        {headingText}
+        {state.searchTxt}
         <BlinkingCursor />
       </span>
       <span className="animated__span animated__span--fixed">
@@ -105,5 +157,23 @@ const AnimatedHeading: React.FC<AnimatedHeadingProps> = (props) => {
     </>
   );
 };
+
+function isNextSimilar(searchIdx: number): boolean {
+  if (searchIdx + 1 < SEARCHES.length) {
+    const thisText = SEARCHES[searchIdx];
+    const nextText = SEARCHES[searchIdx + 1];
+    return nextText.startsWith(thisText);
+  }
+  return false;
+}
+
+function isPrevSimilar(searchIdx: number): boolean {
+  if (searchIdx > 0) {
+    const prevText = SEARCHES[searchIdx - 1];
+    const thisText = SEARCHES[searchIdx];
+    return thisText.startsWith(prevText);
+  }
+  return false;
+}
 
 export default AnimatedHeading;

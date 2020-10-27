@@ -33,6 +33,12 @@
 .home__h1--search {
   margin: 24px 0 0 0;
 }
+.home__h1 a {
+  color: black;
+}
+.home__li a {
+  color: black;
+}
 .home__body {
   @include typography($serif, 400, 15px, 1.2em);
 }

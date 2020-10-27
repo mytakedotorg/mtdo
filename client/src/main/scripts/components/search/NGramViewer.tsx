@@ -53,6 +53,7 @@ const NGramViewer: React.FC<NGramViewerProps> = (props) => {
     <NGramViewerPresentation
       hitsPerYearList={hitsPerYearList}
       onBarClick={props.onBarClick}
+      showHelpText={true}
     />
   );
 };
@@ -61,6 +62,7 @@ interface NGramViewerPresentationProps {
   onBarClick?(year: string): void;
   hitsPerYearList: HitsPerYearList;
   classModifier?: string;
+  showHelpText: boolean;
 }
 export const NGramViewerPresentation: React.FC<NGramViewerPresentationProps> = (
   props
@@ -93,10 +95,12 @@ export const NGramViewerPresentation: React.FC<NGramViewerPresentationProps> = (
               );
             })}
           </div>
-          <div className="ngram__term-list">
-            <CornerLeftUp />
-            <span className="ngram__text">click any year to scroll</span>
-          </div>
+          {props.showHelpText && (
+            <div className="ngram__term-list">
+              <CornerLeftUp />
+              <span className="ngram__text">click any year to scroll</span>
+            </div>
+          )}
         </div>
       </div>
     </div>

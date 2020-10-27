@@ -16,7 +16,12 @@ exports[`HowToUseThis 1`] = `
       open source
     </a>
      
-    political search engine
+    search engine for 
+    <a
+      href="https://github.com/mytakedotorg/mtdo/blob/staging/factset-tooling/FACTSET_PHILOSOPHY.md"
+    >
+      unbiased primary sources
+    </a>
   </h1>
   <form
     action="javascript:void(0)"
@@ -127,7 +132,13 @@ exports[`HowToUseThis 1`] = `
       >
         presidential debate in history
       </a>
-      , more to come
+      , more
+       
+      <a
+        href="https://meta.mytake.org/c/our-foundation/"
+      >
+        to come
+      </a>
     </li>
   </ul>
 </HomeSection>

@@ -33,7 +33,10 @@ const HowToUseThis: React.FC = () => {
           <a href="https://github.com/mytakedotorg/mtdo/blob/staging/DEV_QUICKSTART.md">
             open source
           </a>{" "}
-          political&nbsp;search&nbsp;engine
+          search&nbsp;engine for&nbsp;
+          <a href="https://github.com/mytakedotorg/mtdo/blob/staging/factset-tooling/FACTSET_PHILOSOPHY.md">
+            unbiased&nbsp;primary&nbsp;sources
+          </a>
         </h1>
         <SearchBar classModifier="home" placeholder={"Search"} />
         <ul className="home__ul">
@@ -46,7 +49,8 @@ const HowToUseThis: React.FC = () => {
             <a href="https://github.com/mytakedotorg/us-presidential-debates">
               presidential debate in history
             </a>
-            , more to come
+            , more{" "}
+            <a href="https://meta.mytake.org/c/our-foundation/">to come</a>
           </li>
         </ul>
       </HomeSection>

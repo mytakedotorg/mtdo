@@ -17,11 +17,10 @@
  *
  * You can contact us at team@mytake.org
  */
-import { slugify } from "../../common/functions";
-import { HOMEPAGE_SEARCHES, NgramData } from "./ngramData";
+import { SEARCHES, NgramData } from "./AnimatedHeading";
 import { search } from "../search/search";
 import * as fs from "fs";
-import { getNumberOfHitsPerYear, HitsPerYearList } from "../search/NGramViewer";
+import { getNumberOfHitsPerYear } from "../search/NGramViewer";
 
 // This test writes out `ngramDataGen.json`. When the production dataset
 // changes, then that .json file will change. It's messy, because here is
@@ -34,7 +33,7 @@ import { getNumberOfHitsPerYear, HitsPerYearList } from "../search/NGramViewer";
 // we'll just add this to the manual checklist for now.
 test("generateSearchData", async () => {
   var searches: NgramData = {};
-  for (let searchQuery of HOMEPAGE_SEARCHES) {
+  for (let searchQuery of SEARCHES) {
     const searchResult = await search(searchQuery);
     searches[searchQuery] = await getNumberOfHitsPerYear(searchResult);
   }
