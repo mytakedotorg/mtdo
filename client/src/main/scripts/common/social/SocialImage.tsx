@@ -22,7 +22,18 @@ import { Foundation } from "../../common/foundation";
 import { getCut } from "../../common/video";
 import { FT } from "../../java2ts/FT";
 import { abbreviate } from "../functions";
-import { FactUncut, Social, TextCut, VideoCut } from "../social/social";
+import {
+  FactUncut,
+  Social,
+  TextCut,
+  VideoCut,
+  SearchResults,
+} from "../social/social";
+import { search } from "../../components/search/search";
+import {
+  getNumberOfHitsPerYear,
+  NGramViewerPresentation,
+} from "../../components/search/NGramViewer";
 
 export async function socialImage(
   social: Social,
@@ -42,6 +53,8 @@ export async function socialImage(
       );
     case "factUncut":
       return imageFactUncut(social, await Foundation.justOneFact(social.fact));
+    case "searchResults":
+      return imageSearchResults(social);
   }
 }
 
@@ -114,4 +127,36 @@ function imageFactUncut(
   fact: FT.DocumentFactContent | FT.VideoFactContent
 ): React.ReactElement {
   return <div className="todo"></div>;
+}
+
+async function imageSearchResults(
+  social: SearchResults,
+  customClass: string = ""
+): Promise<React.ReactElement> {
+  const result = await search(social.query);
+  const hitsPerYear = await getNumberOfHitsPerYear(result);
+  return (
+    <div className={`social ${customClass}`}>
+      <div className={`social__content ${customClass}`}>
+        <NGramViewerPresentation
+          hitsPerYearList={hitsPerYear}
+          classModifier={"home"}
+          showHelpText={false}
+        />
+      </div>
+      <div className={`social__row ${customClass}`}>
+        <p className={`social__speaker ${customClass}`}>{social.query}</p>
+      </div>
+      <div className={`social__background ${customClass}`}></div>
+      <div className={`social__image-container ${customClass}`}>
+        <img
+          className={`social__image ${customClass}`}
+          src="https://mytake.org/assets/permanent/square-wheat-482248dddd.png"
+          width="200"
+          height="200"
+          alt="MyTake.org | Fundamentals, in context."
+        />
+      </div>
+    </div>
+  );
 }
