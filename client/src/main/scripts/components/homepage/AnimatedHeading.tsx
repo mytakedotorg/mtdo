@@ -34,7 +34,7 @@ const HEADING_TEXT: HeadingContent = {
   end: "said in a presidential debate?",
 };
 const TYPING_DELAY = 100;
-const STATIC_DELAY = 5000;
+const STATIC_DELAY = 3000;
 const DELETING_DELAY = 10;
 
 interface AnimatedHeadingProps {
