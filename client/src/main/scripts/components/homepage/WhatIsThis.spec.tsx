@@ -32,6 +32,7 @@ jest.mock("./NGramLoader", () => ({
 jest.mock("./AnimatedHeading", () => ({
   __esModule: true,
   default: "AnimatedHeading",
+  SEARCHES: ["election"],
 }));
 jest.retryTimes(3);
 
