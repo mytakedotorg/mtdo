@@ -11,6 +11,8 @@ This folder contains the sourcecode to the `org.mytake.factset` gradle plugin, w
 Changelog for the `org.mytake.factset` plugin, in keepachangelog format.
 
 ## [Unreleased]
+
+## [1.1.0] - 2020-10-27
 ### Added
 * `grindCheck` task for running CI on a factset. `check` automatically depends on `grindCheck`.
 
