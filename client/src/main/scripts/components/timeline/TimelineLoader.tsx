@@ -59,7 +59,7 @@ const TimelineLoader: React.FC<TimelineLoaderProps> = (props) => {
     }
     const embedRison = path.substring(embedSlash + 1);
     try {
-      return decodeSocial(embedRison);
+      return decodeSocial(embedRison) as PreviewSocial;
     } catch (err) {
       console.log(err);
       return null;

@@ -47,12 +47,17 @@ export type TextCut = {
   kind: "textCut";
 };
 
+export type SearchResults = {
+  query: string;
+  kind: "searchResults";
+};
+
 export enum Corpus {
   "Debates" = "Debates",
   "Documents" = "Documents",
 }
 
-export type Social = VideoCut | TextCut | FactUncut;
+export type Social = VideoCut | TextCut | FactUncut | SearchResults;
 export type PreviewSocial = VideoCut | TextCut | FactUncut;
 
 export function encodeSocial(embed: Social) {
@@ -60,14 +65,14 @@ export function encodeSocial(embed: Social) {
   // https://github.com/w33ble/rison-node/issues/4
   // TODO: durable rison https://github.com/mytakedotorg/mtdo/issues/355
   const raw = rison.encode_object(embed) as string;
-  return '~' + raw.replace(/:!\(/gi, ':(')
+  return "~" + raw.replace(/:!\(/gi, ":(");
 }
 
 export function decodeSocial(encoded: string): Social {
-  if (encoded.startsWith('~')) {
-    const sub = encoded.substring(1).replace(/:\(/gi, ':!(');
+  if (encoded.startsWith("~")) {
+    const sub = encoded.substring(1).replace(/:\(/gi, ":!(");
     return rison.decode_object(sub);
   } else {
-    throw 'All rison starts with ~ as workaround for https://github.com/mytakedotorg/mtdo/issues/355';
+    throw "All rison starts with ~ as workaround for https://github.com/mytakedotorg/mtdo/issues/355";
   }
 }
