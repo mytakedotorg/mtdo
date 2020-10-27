@@ -20,6 +20,7 @@
 package common;
 
 import com.diffplug.common.base.Unhandled;
+import com.google.common.net.UrlEscapers;
 import forms.api.RockerRaw;
 import java.io.IOException;
 import java.net.BindException;
@@ -149,4 +150,25 @@ public class SocialEmbed {
 
 	private static final String HTTPS_NODE = "https://node.mytake.org";
 	private static final String HTTP_LOCAL_DEV = "http://localhost:" + NODE_DEV_PORT;
+
+	public static SocialEmbed search(String query) {
+		// copied from SocialHeader.spec.tsx
+		return new SocialEmbed(
+				"<meta content=\"" + query + "\" in presidential debates\" property=\"og:title\">\n" +
+						"<meta content=\"Every single time that \"" + query + "\" was said in a presidential debate, ever.\" property=\"og:description\">\n" +
+						"<meta content=\"article\" property=\"og:type\">\n" +
+						"<meta content=\"https://mytake.org/search?q=" + UrlEscapers.urlFormParameterEscaper().escape(query) + "\" property=\"og:url\">\n" +
+						"<meta content=\"https://node.mytake.org/static/social-image/~kind:searchResults,query:'" + query + "'.png\" property=\"og:image\">\n" +
+						"<meta content=\"https://node.mytake.org/static/social-image/~kind:searchResults,query:'" + query + "'.png\" property=\"og:image:secure_url\">\n" +
+						"<meta content=\"image/png\" property=\"og:image:type\">\n" +
+						"<meta content=\"1200\" property=\"og:image:width\">\n" +
+						"<meta content=\"628\" property=\"og:image:height\">\n" +
+						"<meta content=\"A bar graph of how many times \"" + query + "\" was said in a presidential debate.\" property=\"og:image:alt\">\n" +
+						"<meta content=\"summary_large_image\" name=\"twitter:card\">\n" +
+						"<meta content=\"@mytakedotorg\" name=\"twitter:site\">\n" +
+						"<meta content=\"" + query + "\" in presidential debates\" name=\"twitter:title\">\n" +
+						"<meta content=\"Every single time that \"" + query + "\" was said in a presidential debate, ever.\" name=\"twitter:description\">\n" +
+						"<meta content=\"https://node.mytake.org/static/social-image-twitter/~kind:searchResults,query:'" + query + "'.png\" name=\"twitter:image\">\n" +
+						"<meta content=\"A bar graph of how many times \"" + query + "\" was said in a presidential debate.\" name=\"twitter:image:alt\">\n");
+	}
 }
