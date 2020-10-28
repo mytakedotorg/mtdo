@@ -48,7 +48,7 @@ public class SearchModuleTest {
 		Snapshot.match("api", RestAssured.get("/api/static/search?q=cuba&h=e37375809df9dd1259b247ea7ee094b60dfd88cc"));
 		RestAssured.get("/api/static/search?q=cuba&h=hashdoesntmatch").then()
 				.header("Cache-Control", "no-cache");
-		RestAssured.get("/api/static/search?q=cuba&h=b538d128b59ff2e5e81046eaf28c316dd4077a91").then()
+		RestAssured.get("/api/static/search?q=cuba&h=a73c274d4e7be5881000e02f64458ab0fe95d5d7").then()
 				.header("Cache-Control", "public, max-age=31536000, immutable");
 	}
 }
