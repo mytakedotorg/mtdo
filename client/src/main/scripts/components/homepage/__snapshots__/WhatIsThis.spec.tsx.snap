@@ -21,7 +21,7 @@ exports[`WhatIsThis 1`] = `
           ],
           "hitsPerYear": Array [
             Object {
-              "hitCount": 6,
+              "hitCount": 19,
               "searchTerm": "election",
               "year": "1960",
             },
@@ -31,62 +31,62 @@ exports[`WhatIsThis 1`] = `
               "year": ",",
             },
             Object {
-              "hitCount": 14,
+              "hitCount": 20,
               "searchTerm": "election",
               "year": "1976",
             },
             Object {
-              "hitCount": 3,
+              "hitCount": 10,
               "searchTerm": "election",
               "year": "1980",
             },
             Object {
-              "hitCount": 5,
+              "hitCount": 13,
               "searchTerm": "election",
               "year": "1984",
             },
             Object {
-              "hitCount": 6,
+              "hitCount": 13,
               "searchTerm": "election",
               "year": "1988",
             },
             Object {
-              "hitCount": 9,
+              "hitCount": 20,
               "searchTerm": "election",
               "year": "1992",
             },
             Object {
-              "hitCount": 11,
+              "hitCount": 20,
               "searchTerm": "election",
               "year": "1996",
             },
             Object {
-              "hitCount": 14,
+              "hitCount": 23,
               "searchTerm": "election",
               "year": "2000",
             },
             Object {
-              "hitCount": 2,
+              "hitCount": 21,
               "searchTerm": "election",
               "year": "2004",
             },
             Object {
-              "hitCount": 3,
+              "hitCount": 6,
               "searchTerm": "election",
               "year": "2008",
             },
             Object {
-              "hitCount": 9,
+              "hitCount": 15,
               "searchTerm": "election",
               "year": "2012",
             },
             Object {
-              "hitCount": 32,
+              "hitCount": 38,
               "searchTerm": "election",
               "year": "2016",
             },
             Object {
-              "hitCount": 51,
+              "hitCount": 55,
               "searchTerm": "election",
               "year": "2020",
             },
