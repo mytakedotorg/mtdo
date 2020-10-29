@@ -45,7 +45,7 @@ public class GenerateIndex {
 			luceneTemp = Files.createTempDirectory("mytake-lucene");
 			repoToSha = ImmutableMap.of(
 					"us-presidential-debates",
-					"a3ce5d43ce931858345b22d25d35344e0228e123");
+					"cc20c1b17f8cc70f894139514512924044f2f3bf");
 		} else {
 			luceneTemp = Paths.get(args[0]);
 			Preconditions.checkArgument(args.length % 2 == 1);
@@ -61,7 +61,7 @@ public class GenerateIndex {
 		OkHttpClient client = new OkHttpClient.Builder()
 				.cache(new Cache(
 						new File("build/fact-cache"),
-						10L * 1024L * 1024L // 100 MiB
+						100L * 1024L * 1024L // 100 MiB
 				))
 				.build();
 		try (LuceneWriter writer = new LuceneWriter(luceneIndex)) {

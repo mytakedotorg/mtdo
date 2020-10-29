@@ -38,5 +38,7 @@ public interface Search {
 	@jsweet.lang.Interface
 	public class FactResultList implements Json {
 		public List<VideoResult> facts;
+		@jsweet.lang.Optional
+		public String errorMessage;
 	}
 }

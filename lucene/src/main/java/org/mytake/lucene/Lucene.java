@@ -128,15 +128,27 @@ public class Lucene implements AutoCloseable {
 		return resultList;
 	}
 
-	private static final int MAX_RESULTS = 100;
+	private static final int MAX_RESULTS = 1000;
 
 	private List<Document> runQuery(Query query) throws IOException {
 		TopDocs topDocs = searcher.search(query, MAX_RESULTS);
+		if (topDocs.scoreDocs.length >= MAX_RESULTS) {
+			throw new TooManyResultsException();
+		}
 		List<Document> docs = new ArrayList<>();
 		for (ScoreDoc scoreDoc : topDocs.scoreDocs) {
 			docs.add(searcher.doc(scoreDoc.doc, TO_FETCH));
 		}
 		return docs;
+	}
+
+	public static class TooManyResultsException extends RuntimeException {
+		private static final long serialVersionUID = 4404606177992970930L;
+
+		@Override
+		public String getMessage() {
+			return "Too many results (max is " + MAX_RESULTS + ")";
+		}
 	}
 
 	public static final String HASH = "hash";
