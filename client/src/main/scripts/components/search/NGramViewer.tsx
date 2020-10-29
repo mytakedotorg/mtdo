@@ -112,6 +112,20 @@ function drawChart(
   hitsPerYearList: HitsPerYearList,
   onBarClick?: (year: string) => void
 ) {
+  let data = [];
+  for (let year of ALL_DEBATE_YEARS) {
+    let yearEntry = { "year": year } as any;
+    for (let searchTerm of hitsPerYearList.allSearchTerms) {
+      for (let hit of hitsPerYearList.hitsPerYear) {
+        if (hit.year === year) {
+          yearEntry[hit.searchTerm] = hit.hitCount;
+        }
+      }
+    }
+    data.push(yearEntry);
+  }
+  const series = d3.stack().keys(hitsPerYearList.allSearchTerms)(data);
+
   d3.select(svgElement).selectAll("*").remove();
   const svg = d3
     .select(svgElement)
