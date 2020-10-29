@@ -24,8 +24,10 @@ import com.typesafe.config.Config;
 import common.CacheControl;
 import common.SocialEmbed;
 import forms.meta.MetaField;
+import java.util.ArrayList;
 import java2ts.Routes;
 import java2ts.Search;
+import java2ts.Search.FactResultList;
 import org.jooby.Env;
 import org.jooby.Jooby;
 import org.mytake.lucene.Lucene;
@@ -50,7 +52,15 @@ public class SearchModule implements Jooby.Module {
 			} else {
 				CacheControl.bypass(res);
 			}
-			res.send(lucene.searchDebate(Q.parse(req)));
+			FactResultList result;
+			try {
+				result = lucene.searchDebate(Q.parse(req));
+			} catch (Lucene.TooManyResultsException e) {
+				result = new FactResultList();
+				result.facts = new ArrayList<>();
+				result.errorMessage = e.getMessage();
+			}
+			res.send(result);
 		});
 		env.router().get(Routes.SEARCH, (req, res) -> {
 			String query = Q.parseOrDefault(req, "");
