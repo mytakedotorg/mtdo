@@ -12,6 +12,10 @@ Changelog for the `org.mytake.factset` plugin, in keepachangelog format.
 
 ## [Unreleased]
 
+## [1.1.0] - 2020-10-27
+### Added
+* `grindCheck` task for running CI on a factset. `check` automatically depends on `grindCheck`.
+
 ## [1.0.5] - 2020-10-07
 ### Fixed
 * Another attempt to fix classpath problems with the match gui.

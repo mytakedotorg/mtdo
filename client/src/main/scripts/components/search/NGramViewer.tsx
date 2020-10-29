@@ -112,6 +112,20 @@ function drawChart(
   hitsPerYearList: HitsPerYearList,
   onBarClick?: (year: string) => void
 ) {
+  let data = [];
+  for (let year of ALL_DEBATE_YEARS) {
+    let yearEntry = { year: year } as any;
+    for (let searchTerm of hitsPerYearList.allSearchTerms) {
+      for (let hit of hitsPerYearList.hitsPerYear) {
+        if (hit.year === year) {
+          yearEntry[hit.searchTerm] = hit.hitCount;
+        }
+      }
+    }
+    data.push(yearEntry);
+  }
+  const series = d3.stack().keys(hitsPerYearList.allSearchTerms)(data);
+
   d3.select(svgElement).selectAll("*").remove();
   const svg = d3
     .select(svgElement)
@@ -120,17 +134,21 @@ function drawChart(
       "transform",
       "translate(" + SVG_PADDING_LEFT + "," + SVG_PADDING_TOP / 3 + ")"
     );
-  // X-Axis
-  const xScale = d3
+  // NEW COLOR
+  const color = d3
+    .scaleOrdinal()
+    .domain(series.map((d) => d.key))
+    .range(colors);
+  // NEW X
+  const x = d3
     .scaleBand()
     .domain(ALL_DEBATE_YEARS)
     .range([0, SVG_WIDTH - SVG_PADDING_LEFT * 2])
     .padding(0.1);
-  const xAxisGenerator = d3.axisBottom(xScale);
   const xAxis = svg
     .append("g")
     .attr("transform", "translate(0," + (SVG_HEIGHT - SVG_PADDING_TOP) + ")")
-    .call(xAxisGenerator);
+    .call(d3.axisBottom(x).tickSizeOuter(0));
   xAxis
     .selectAll(".tick text")
     .attr("transform", "translate(10, 5)rotate(45)")
@@ -139,39 +157,39 @@ function drawChart(
       onBarClick && onBarClick(year);
     });
   xAxis.selectAll(".tick line").attr("visibility", "hidden");
-  const hitMax = d3.max(hitsPerYearList.hitsPerYear, (h) => h.hitCount)!;
-  // Y-Axis
-  const yScale = d3
-    .scaleLinear()
-    .domain([0, hitMax + Math.round(hitMax * 0.1)])
-    .range([SVG_HEIGHT - SVG_PADDING_TOP, 0]);
-  const yAxisGenerator = d3.axisLeft(yScale).ticks(Math.min(hitMax, 5), "d");
-  svg.append("g").call(yAxisGenerator);
 
-  hitsPerYearList.allSearchTerms.forEach((term, idx) => {
-    const hitsPerYearForTerm = hitsPerYearList.hitsPerYear.filter(
-      (hpy) => hpy.searchTerm === term
-    );
-    svg
-      .append("g")
-      .attr("fill", colors[idx])
-      .selectAll("rect")
-      .data(hitsPerYearForTerm)
-      .join("rect")
-      .attr(
-        "x",
-        (d) =>
-          xScale(d.year)! +
-          (xScale.bandwidth() / hitsPerYearList.allSearchTerms.length) * idx
-      )
-      .attr("y", (d) => yScale(d.hitCount)!)
-      .attr("height", (d) => yScale(0)! - yScale(d.hitCount)!)
-      .attr("width", xScale.bandwidth() / hitsPerYearList.allSearchTerms.length)
-      .on("click", function (d) {
-        onBarClick && onBarClick(d.year);
-      })
-      .style("cursor", "pointer");
-  });
+  // NEW Y
+  const y = d3
+    .scaleLinear()
+    .domain([0, d3.max(series, (d) => d3.max(d, (d) => d[1])!)!])
+    .rangeRound([SVG_HEIGHT - SVG_PADDING_TOP, 0]);
+  svg.append("g").call(d3.axisLeft(y).ticks(null, "s"));
+
+  // NEW DATA
+  svg
+    .append("g")
+    .selectAll("g")
+    .data(series)
+    .join("g")
+    .attr("fill", (d) => color(d.key) as string)
+    .selectAll("rect")
+    .data((d) => d)
+    .join("rect")
+    .attr("x", (d, i) => x((d.data as any).year)!)
+    .attr("y", (d) => y(d[1])!)
+    .attr("height", (d) => y(d[0])! - y(d[1])!)
+    .attr("width", x.bandwidth())
+    .on("click", function (d) {
+      console.log(d);
+      onBarClick && onBarClick((d.data as any).year);
+    })
+    .on("mouseover", function (d, i) {
+      d3.select(this).transition().duration(50).attr("opacity", ".85");
+    })
+    .on("mouseout", function (d, i) {
+      d3.select(this).transition().duration(50).attr("opacity", "1");
+    })
+    .style("cursor", "pointer");
 }
 
 const getYearFromVideoFact = (videoFact: FT.VideoFactContent): string => {

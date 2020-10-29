@@ -24,14 +24,16 @@ import { HitsPerYearList } from "../search/NGramViewer";
 export const SEARCHES = [
   "election",
   "election, rigged",
-  "supreme court",
   "global warming",
+  "global warming, climate change",
+  "supreme court",
+  "supreme court, our country",
   "saddam",
   "saddam, bin laden",
-  "gun control",
-  "gun control, second amendment",
   "wall",
   "wall, -wall street",
+  "gun control",
+  "gun control, second amendment",
 ];
 
 export interface NgramData {

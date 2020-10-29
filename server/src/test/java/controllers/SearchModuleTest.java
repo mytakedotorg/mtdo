@@ -19,10 +19,15 @@
  */
 package controllers;
 
+import com.jsoniter.JsonIterator;
 import common.CustomAssets;
 import common.JoobyDevRule;
 import common.Snapshot;
 import io.restassured.RestAssured;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import json.JsoniterModule;
 import org.jooby.Jooby;
 import org.junit.ClassRule;
@@ -44,11 +49,13 @@ public class SearchModuleTest {
 	}
 
 	@Test
-	public void api() {
+	public void api() throws IOException {
+		Path hashFile = Paths.get("../client/src/main/scripts/components/search/search-index.json");
+		String hash = JsonIterator.deserialize(Files.readAllBytes(hashFile)).toString("hash");
 		Snapshot.match("api", RestAssured.get("/api/static/search?q=cuba&h=e37375809df9dd1259b247ea7ee094b60dfd88cc"));
 		RestAssured.get("/api/static/search?q=cuba&h=hashdoesntmatch").then()
 				.header("Cache-Control", "no-cache");
-		RestAssured.get("/api/static/search?q=cuba&h=b538d128b59ff2e5e81046eaf28c316dd4077a91").then()
+		RestAssured.get("/api/static/search?q=cuba&h=" + hash).then()
 				.header("Cache-Control", "public, max-age=31536000, immutable");
 	}
 }
