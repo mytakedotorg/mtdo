@@ -19,14 +19,22 @@
  */
 package controllers;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
+import org.jooby.Jooby;
+import org.junit.ClassRule;
+import org.junit.Test;
+
+import com.jsoniter.JsonIterator;
+
 import common.CustomAssets;
 import common.JoobyDevRule;
 import common.Snapshot;
 import io.restassured.RestAssured;
 import json.JsoniterModule;
-import org.jooby.Jooby;
-import org.junit.ClassRule;
-import org.junit.Test;
 
 public class SearchModuleTest {
 	@ClassRule
@@ -44,11 +52,13 @@ public class SearchModuleTest {
 	}
 
 	@Test
-	public void api() {
+	public void api() throws IOException {
+		Path hashFile = Paths.get("../client/src/main/scripts/components/search/search-index.json");
+		String hash = JsonIterator.deserialize(Files.readAllBytes(hashFile)).toString("hash");
 		Snapshot.match("api", RestAssured.get("/api/static/search?q=cuba&h=e37375809df9dd1259b247ea7ee094b60dfd88cc"));
 		RestAssured.get("/api/static/search?q=cuba&h=hashdoesntmatch").then()
 				.header("Cache-Control", "no-cache");
-		RestAssured.get("/api/static/search?q=cuba&h=a73c274d4e7be5881000e02f64458ab0fe95d5d7").then()
+		RestAssured.get("/api/static/search?q=cuba&h=" + hash).then()
 				.header("Cache-Control", "public, max-age=31536000, immutable");
 	}
 }
