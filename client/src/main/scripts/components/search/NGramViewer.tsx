@@ -114,7 +114,7 @@ function drawChart(
 ) {
   let data = [];
   for (let year of ALL_DEBATE_YEARS) {
-    let yearEntry = { "year": year } as any;
+    let yearEntry = { year: year } as any;
     for (let searchTerm of hitsPerYearList.allSearchTerms) {
       for (let hit of hitsPerYearList.hitsPerYear) {
         if (hit.year === year) {
@@ -134,6 +134,44 @@ function drawChart(
       "transform",
       "translate(" + SVG_PADDING_LEFT + "," + SVG_PADDING_TOP / 3 + ")"
     );
+  // NEW COLOR
+  const color = d3
+    .scaleOrdinal()
+    .domain(series.map((d) => d.key))
+    .range(d3.schemeSet2);
+  // NEW X
+  const x = d3
+    .scaleBand()
+    .domain(ALL_DEBATE_YEARS)
+    .range([0, SVG_WIDTH - SVG_PADDING_LEFT * 2])
+    .padding(0.1);
+  svg
+    .append("g")
+    .attr("transform", `translate(0,${SVG_HEIGHT - SVG_PADDING_TOP})`)
+    .call(d3.axisBottom(x).tickSizeOuter(0))
+    .call((g) => g.selectAll(".domain").remove());
+  // NEW Y
+  const y = d3
+    .scaleLinear()
+    .domain([0, d3.max(series, (d) => d3.max(d, (d) => d[1])!)!])
+    .rangeRound([SVG_HEIGHT - SVG_PADDING_TOP, 0]);
+  svg.append("g").call(d3.axisLeft(y).ticks(null, "s"));
+
+  // NEW DATA
+  svg
+    .append("g")
+    .selectAll("g")
+    .data(series)
+    .join("g")
+    .attr("fill", (d) => color(d.key) as string)
+    .selectAll("rect")
+    .data((d) => d)
+    .join("rect")
+    .attr("x", (d, i) => x((d.data as any).year)!)
+    .attr("y", (d) => y(d[1])!)
+    .attr("height", (d) => y(d[0])! - y(d[1])!)
+    .attr("width", x.bandwidth());
+  /*
   // X-Axis
   const xScale = d3
     .scaleBand()
@@ -186,6 +224,7 @@ function drawChart(
       })
       .style("cursor", "pointer");
   });
+  */
 }
 
 const getYearFromVideoFact = (videoFact: FT.VideoFactContent): string => {
