@@ -25,6 +25,7 @@ import org.apache.lucene.analysis.LowerCaseFilter;
 import org.apache.lucene.analysis.StopFilter;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.en.EnglishAnalyzer;
+import org.apache.lucene.analysis.en.EnglishPossessiveFilter;
 import org.apache.lucene.analysis.standard.StandardTokenizer;
 
 public class MyTakeDotOrgAnalyzer extends Analyzer {
@@ -44,6 +45,7 @@ public class MyTakeDotOrgAnalyzer extends Analyzer {
 		src.setMaxTokenLength(MAX_TOKEN_LENGTH);
 		TokenStream tok = src;
 		tok = new LowerCaseFilter(tok);
+		tok = new EnglishPossessiveFilter(tok);
 		tok = new StopFilter(tok, STOPWORDS);
 		return new TokenStreamComponents(reader -> {
 			// So that if maxTokenLength was changed, the change takes
