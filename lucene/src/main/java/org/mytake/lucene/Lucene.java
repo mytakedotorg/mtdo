@@ -128,7 +128,7 @@ public class Lucene implements AutoCloseable {
 		return resultList;
 	}
 
-	private static final int MAX_RESULTS = 100;
+	private static final int MAX_RESULTS = 1000;
 
 	private List<Document> runQuery(Query query) throws IOException {
 		TopDocs topDocs = searcher.search(query, MAX_RESULTS);
