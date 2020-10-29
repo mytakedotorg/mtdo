@@ -138,7 +138,7 @@ function drawChart(
   const color = d3
     .scaleOrdinal()
     .domain(series.map((d) => d.key))
-    .range(d3.schemeSet2);
+    .range(colors);
   // NEW X
   const x = d3
     .scaleBand()
