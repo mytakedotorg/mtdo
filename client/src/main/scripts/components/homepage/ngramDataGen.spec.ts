@@ -18,28 +18,30 @@
  * You can contact us at team@mytake.org
  */
 import { SEARCHES, NgramData } from "./AnimatedHeading";
-import { search } from "../search/search";
+import { search, SearchMode } from "../search/search";
 import * as fs from "fs";
 import { getNumberOfHitsPerYear } from "../search/NGramViewer";
 
-// This test writes out `ngramDataGen.json`. When the production dataset
-// changes, then that .json file will change. It's messy, because here is
-// how deploying a new rev of a factset works:
-// 1) deploy the new factset to prod
-// 2) now, when this test runs, `ngramDataGen.json` will be a little different
-// 3) commit that change
-// 4) deploy the new homepage to production
-// That feedback loop isn't great, but deploying new facts is already messy,
-// we'll just add this to the manual checklist for now.
+// This isn't really a "test", it's just a typescript-module runner.
+// It needs runDev to be up and running, and if it is, then it will output
+// a new ngramDataGen.json
 test("generateSearchData", async () => {
-  var searches: NgramData = {};
-  for (let searchQuery of SEARCHES) {
-    const searchResult = await search(searchQuery);
-    searches[searchQuery] = await getNumberOfHitsPerYear(searchResult);
+  try {
+    var searches: NgramData = {};
+    for (let searchQuery of SEARCHES) {
+      const searchResult = await search(
+        searchQuery,
+        SearchMode.Containing,
+        "http://localhost:8080"
+      );
+      searches[searchQuery] = await getNumberOfHitsPerYear(searchResult);
+    }
+    fs.writeFileSync(
+      "src/main/scripts/components/homepage/ngramDataGen.json",
+      JSON.stringify(searches),
+      "utf8"
+    );
+  } catch (err) {
+    // suppress failures
   }
-  fs.writeFileSync(
-    "src/main/scripts/components/homepage/ngramDataGen.json",
-    JSON.stringify(searches),
-    "utf8"
-  );
 });
