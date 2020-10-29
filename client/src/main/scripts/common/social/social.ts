@@ -58,6 +58,12 @@ export enum Corpus {
 }
 
 export type Social = VideoCut | TextCut | FactUncut | SearchResults;
+const socialKindRuntime = new Set([
+  "videoCut",
+  "textCut",
+  "factUncut",
+  "searchResults",
+]);
 export type PreviewSocial = VideoCut | TextCut | FactUncut;
 
 export function encodeSocial(embed: Social) {
@@ -71,7 +77,11 @@ export function encodeSocial(embed: Social) {
 export function decodeSocial(encoded: string): Social {
   if (encoded.startsWith("~")) {
     const sub = encoded.substring(1).replace(/:\(/gi, ":!(");
-    return rison.decode_object(sub);
+    const social: Social = rison.decode_object(sub);
+    if (!socialKindRuntime.has(social.kind)) {
+      throw `Unknown social kind ${social.kind}`;
+    }
+    return social;
   } else {
     throw "All rison starts with ~ as workaround for https://github.com/mytakedotorg/mtdo/issues/355";
   }
