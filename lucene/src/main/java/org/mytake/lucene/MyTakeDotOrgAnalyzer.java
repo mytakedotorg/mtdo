@@ -25,6 +25,7 @@ import org.apache.lucene.analysis.LowerCaseFilter;
 import org.apache.lucene.analysis.StopFilter;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.en.EnglishAnalyzer;
+import org.apache.lucene.analysis.en.EnglishMinimalStemFilter;
 import org.apache.lucene.analysis.en.EnglishPossessiveFilter;
 import org.apache.lucene.analysis.standard.StandardTokenizer;
 
@@ -37,6 +38,8 @@ public class MyTakeDotOrgAnalyzer extends Analyzer {
 		STOPWORDS = new CharArraySet(EnglishAnalyzer.ENGLISH_STOP_WORDS_SET, ignoreCase);
 		STOPWORDS.add("uh");
 		STOPWORDS.add("eh");
+		STOPWORDS.add("er");
+		STOPWORDS.add("erm");
 	}
 
 	@Override
@@ -46,6 +49,7 @@ public class MyTakeDotOrgAnalyzer extends Analyzer {
 		TokenStream tok = src;
 		tok = new LowerCaseFilter(tok);
 		tok = new EnglishPossessiveFilter(tok);
+		tok = new EnglishMinimalStemFilter(tok);
 		tok = new StopFilter(tok, STOPWORDS);
 		return new TokenStreamComponents(reader -> {
 			// So that if maxTokenLength was changed, the change takes
