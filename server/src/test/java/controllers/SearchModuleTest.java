@@ -19,22 +19,19 @@
  */
 package controllers;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-
-import org.jooby.Jooby;
-import org.junit.ClassRule;
-import org.junit.Test;
-
 import com.jsoniter.JsonIterator;
-
 import common.CustomAssets;
 import common.JoobyDevRule;
 import common.Snapshot;
 import io.restassured.RestAssured;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import json.JsoniterModule;
+import org.jooby.Jooby;
+import org.junit.ClassRule;
+import org.junit.Test;
 
 public class SearchModuleTest {
 	@ClassRule
