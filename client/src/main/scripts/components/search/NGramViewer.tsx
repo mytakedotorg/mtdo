@@ -145,11 +145,19 @@ function drawChart(
     .domain(ALL_DEBATE_YEARS)
     .range([0, SVG_WIDTH - SVG_PADDING_LEFT * 2])
     .padding(0.1);
-  svg
+  const xAxis = svg
     .append("g")
-    .attr("transform", `translate(0,${SVG_HEIGHT - SVG_PADDING_TOP})`)
-    .call(d3.axisBottom(x).tickSizeOuter(0))
-    .call((g) => g.selectAll(".domain").remove());
+    .attr("transform", "translate(0," + (SVG_HEIGHT - SVG_PADDING_TOP) + ")")
+    .call(d3.axisBottom(x).tickSizeOuter(0));
+  xAxis
+    .selectAll(".tick text")
+    .attr("transform", "translate(10, 5)rotate(45)")
+    .style("cursor", "pointer")
+    .on("click", function (year: string) {
+      onBarClick && onBarClick(year);
+    });
+  xAxis.selectAll(".tick line").attr("visibility", "hidden");
+
   // NEW Y
   const y = d3
     .scaleLinear()
@@ -170,61 +178,18 @@ function drawChart(
     .attr("x", (d, i) => x((d.data as any).year)!)
     .attr("y", (d) => y(d[1])!)
     .attr("height", (d) => y(d[0])! - y(d[1])!)
-    .attr("width", x.bandwidth());
-  /*
-  // X-Axis
-  const xScale = d3
-    .scaleBand()
-    .domain(ALL_DEBATE_YEARS)
-    .range([0, SVG_WIDTH - SVG_PADDING_LEFT * 2])
-    .padding(0.1);
-  const xAxisGenerator = d3.axisBottom(xScale);
-  const xAxis = svg
-    .append("g")
-    .attr("transform", "translate(0," + (SVG_HEIGHT - SVG_PADDING_TOP) + ")")
-    .call(xAxisGenerator);
-  xAxis
-    .selectAll(".tick text")
-    .attr("transform", "translate(10, 5)rotate(45)")
-    .style("cursor", "pointer")
-    .on("click", function (year: string) {
-      onBarClick && onBarClick(year);
-    });
-  xAxis.selectAll(".tick line").attr("visibility", "hidden");
-  const hitMax = d3.max(hitsPerYearList.hitsPerYear, (h) => h.hitCount)!;
-  // Y-Axis
-  const yScale = d3
-    .scaleLinear()
-    .domain([0, hitMax + Math.round(hitMax * 0.1)])
-    .range([SVG_HEIGHT - SVG_PADDING_TOP, 0]);
-  const yAxisGenerator = d3.axisLeft(yScale).ticks(Math.min(hitMax, 5), "d");
-  svg.append("g").call(yAxisGenerator);
-
-  hitsPerYearList.allSearchTerms.forEach((term, idx) => {
-    const hitsPerYearForTerm = hitsPerYearList.hitsPerYear.filter(
-      (hpy) => hpy.searchTerm === term
-    );
-    svg
-      .append("g")
-      .attr("fill", colors[idx])
-      .selectAll("rect")
-      .data(hitsPerYearForTerm)
-      .join("rect")
-      .attr(
-        "x",
-        (d) =>
-          xScale(d.year)! +
-          (xScale.bandwidth() / hitsPerYearList.allSearchTerms.length) * idx
-      )
-      .attr("y", (d) => yScale(d.hitCount)!)
-      .attr("height", (d) => yScale(0)! - yScale(d.hitCount)!)
-      .attr("width", xScale.bandwidth() / hitsPerYearList.allSearchTerms.length)
-      .on("click", function (d) {
-        onBarClick && onBarClick(d.year);
-      })
-      .style("cursor", "pointer");
-  });
-  */
+    .attr("width", x.bandwidth())
+    .on("click", function (d) {
+      console.log(d);
+      onBarClick && onBarClick((d.data as any).year);
+    })
+    .on("mouseover", function (d, i) {
+      d3.select(this).transition().duration(50).attr("opacity", ".85");
+    })
+    .on("mouseout", function (d, i) {
+      d3.select(this).transition().duration(50).attr("opacity", "1");
+    })
+    .style("cursor", "pointer");
 }
 
 const getYearFromVideoFact = (videoFact: FT.VideoFactContent): string => {
