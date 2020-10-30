@@ -97,12 +97,20 @@ function headerVideoCut(
   fact: FT.VideoFactContent
 ): React.ReactElement {
   const [speaker, said] = getCut(fact, social.cut);
+  let factDesc;
+  if (fact.location) {
+    factDesc = `${fact.location.placename}, in ${fact.location.cityState}`;
+  } else if (fact.notes) {
+    factDesc = fact.notes;
+  } else {
+    factDesc = `Unknown location`;
+  }
   return (
     <HeaderTags
       url={`https://mytake.org/foundation/${socialRison}`}
       rison={socialRison}
       title={`${speaker.fullName} in ${fact.fact.primaryDate.slice(0, 4)}`}
-      desc={fact.fact.title}
+      desc={factDesc}
       imageAlt={said}
     />
   );
