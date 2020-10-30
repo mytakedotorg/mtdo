@@ -49,6 +49,7 @@ export type TextCut = {
 
 export type SearchResults = {
   query: string;
+  factsetHash: string;
   kind: "searchResults";
 };
 

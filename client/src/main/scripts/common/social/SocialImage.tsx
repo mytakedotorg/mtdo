@@ -32,6 +32,7 @@ import {
 import { search } from "../../components/search/search";
 import {
   getNumberOfHitsPerYear,
+  NGramKind,
   NGramViewerPresentation,
 } from "../../components/search/NGramViewer";
 
@@ -178,18 +179,17 @@ function imageFactUncut(
 }
 
 async function imageSearchResults(
-  social: SearchResults,
-  customClass: string = ""
+  social: SearchResults
 ): Promise<React.ReactElement> {
   const result = await search(social.query);
   const hitsPerYear = await getNumberOfHitsPerYear(result);
+  const customClass = undefined;
   return (
     <div className={`social ${customClass}`}>
-      <div className={`social__content ${customClass}`}>
+      <div className={`social__ngram ${customClass}`}>
         <NGramViewerPresentation
           hitsPerYearList={hitsPerYear}
-          classModifier={"home"}
-          showHelpText={false}
+          kind={NGramKind.SOCIAL}
         />
       </div>
       <div className={`social__row ${customClass}`}>

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`BlinkingCursor 1`] = `
+exports[`headerSearchResults 1`] = `
 Array [
   <meta
     content="\\"saddam, bin laden\\" in presidential debates"
@@ -19,11 +19,11 @@ Array [
     property="og:url"
   />,
   <meta
-    content="https://node.mytake.org/static/social-image/~kind:searchResults,query:'saddam, bin laden'.png"
+    content="https://node.mytake.org/static/social-image/~factsetHash:E74aoUY,kind:searchResults,query:'saddam, bin laden'.png"
     property="og:image"
   />,
   <meta
-    content="https://node.mytake.org/static/social-image/~kind:searchResults,query:'saddam, bin laden'.png"
+    content="https://node.mytake.org/static/social-image/~factsetHash:E74aoUY,kind:searchResults,query:'saddam, bin laden'.png"
     property="og:image:secure_url"
   />,
   <meta
@@ -59,7 +59,7 @@ Array [
     name="twitter:description"
   />,
   <meta
-    content="https://node.mytake.org/static/social-image-twitter/~kind:searchResults,query:'saddam, bin laden'.png"
+    content="https://node.mytake.org/static/social-image-twitter/~factsetHash:E74aoUY,kind:searchResults,query:'saddam, bin laden'.png"
     name="twitter:image"
   />,
   <meta

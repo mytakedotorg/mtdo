@@ -26,6 +26,7 @@ import { headerSearchResults } from "./SocialHeader";
 test("headerSearchResults", () => {
   const testSearch: SearchResults = {
     kind: "searchResults",
+    factsetHash: "E74aoUY",
     query: "saddam, bin laden",
   };
   const tree = renderer
