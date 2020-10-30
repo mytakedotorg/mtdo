@@ -65,6 +65,50 @@ function imageTextCut(
   return <div className="todo"></div>;
 }
 
+const months = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
+const ths = ["th", "st", "nd", "rd", "th", "th", "th", "th", "th", "th"];
+function dateIsoToFormal(fact: FT.VideoFactContent): string {
+  const matcher = fact.fact.primaryDate.match(/(\d+)-(\d+)-(\d+)/)!;
+  const year = matcher[1];
+  const month = parseInt(matcher[2]) - 1;
+  const day = parseInt(matcher[3]);
+  return `${months[month]} ${ordinal(day)}, ${year}`;
+}
+
+function ordinal(number: number): string {
+  if (number <= 0) {
+    throw "only supports positive integers";
+  }
+  if (number > 3 && number < 21) {
+    // special handling for the teens
+    return number + "th";
+  }
+  const lastDigit = number % 10;
+  switch (lastDigit) {
+    case 1:
+      return number + "st";
+    case 2:
+      return number + "nd";
+    case 3:
+      return number + "rd";
+    default:
+      return number + "th";
+  }
+}
+
 export function imageVideoCut(
   social: VideoCut,
   fact: FT.VideoFactContent,
@@ -87,6 +131,7 @@ export function imageVideoCut(
   } else {
     classModifier = "z";
   }
+  const date = new Date(fact.fact.primaryDate);
   return (
     <div className={`social ${customClass}`}>
       <div className={`social__content ${customClass}`}>
@@ -106,6 +151,9 @@ export function imageVideoCut(
         </div>
         <div className={`social__row ${customClass}`}>
           <p className={`social__speaker ${customClass}`}>{speaker.fullName}</p>
+          <p className={`social__date ${customClass}`}>
+            {dateIsoToFormal(fact)}
+          </p>
         </div>
       </div>
       <div className={`social__background ${customClass}`}></div>

@@ -59,12 +59,17 @@ $centerColor: palette(social, background--highlight);
   &.home {
     @include speaker-font(16px);
   }
+  margin-bottom: 0;
+}
+.social__date {
+  @include speaker-font();
+  text-align: right;
+  font-style: italic;
+  font-weight: 400;
+  margin-top: 0;
 }
 .social__quote-container {
-  width: 48px;
-  &.home {
-    width: 28px;
-  }
+  width: 28px;
 }
 .social__quote {
   @include speaker-font();
@@ -117,6 +122,7 @@ $centerColor: palette(social, background--highlight);
   &.home {
     right: -12px;
   }
+  opacity: 0.7;
 }
 .social__image.home {
   width: 100px;
