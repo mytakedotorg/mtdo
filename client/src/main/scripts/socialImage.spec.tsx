@@ -20,8 +20,8 @@
 import * as React from "react";
 import * as renderer from "react-test-renderer";
 
-import { SearchResults, encodeSocial } from "./social";
-import { headerSearchResults } from "./SocialHeader";
+import { SearchResults, encodeSocial } from "./common/social/social";
+import { headerSearchResults } from "./common/social/SocialHeader";
 
 test("headerSearchResults", () => {
   const testSearch: SearchResults = {

@@ -18,23 +18,23 @@
  * You can contact us at team@mytake.org
  */
 import * as React from "react";
-import { Foundation } from "../../common/foundation";
-import { getCut } from "../../common/video";
-import { FT } from "../../java2ts/FT";
-import { abbreviate } from "../functions";
+import { Foundation } from "./common/foundation";
+import { getCut } from "./common/video";
+import { FT } from "./java2ts/FT";
+import { abbreviate } from "./common/functions";
 import {
   FactUncut,
   Social,
   TextCut,
   VideoCut,
   SearchResults,
-} from "../social/social";
-import { search } from "../../components/search/search";
+} from "./common/social/social";
+import { search } from "./components/search/search";
 import {
   getNumberOfHitsPerYear,
   NGramKind,
   NGramViewerPresentation,
-} from "../../components/search/NGramViewer";
+} from "./components/search/NGramViewer";
 
 export async function socialImage(
   social: Social,
