@@ -20,6 +20,7 @@
 import React, { FC } from "react";
 import {
   HitsPerYearList,
+  NGramKind,
   NGramViewerPresentation,
 } from "../search/NGramViewer";
 
@@ -32,8 +33,7 @@ const NGramLoader: FC<NGramLoaderProps> = (props) => {
   return (
     <NGramViewerPresentation
       hitsPerYearList={props.results}
-      classModifier={"home"}
-      showHelpText={false}
+      kind={NGramKind.HOMEPAGE}
     />
   );
 };
