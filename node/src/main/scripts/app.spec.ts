@@ -69,6 +69,26 @@ test("videoCut image 404 invalid hash", async (done) => {
   );
 });
 
+test("searchResults image", async (done) => {
+  const response = await request(underTest).get(
+    "/static/social-image/~kind:searchResults,factsetHash:E74aoUY,query:'climate%20change,%20global%20warming'.png"
+  );
+  expect(response.statusCode).toBe(200);
+  expect(response.type).toBe("image/png");
+  expect(response.body).toMatchImageSnapshot(imgDiffCfg);
+  done();
+});
+
+test("searchResults image twitter", async (done) => {
+  const response = await request(underTest).get(
+    "/static/social-image-twitter/~kind:searchResults,factsetHash:E74aoUY,query:'climate%20change,%20global%20warming'.png"
+  );
+  expect(response.statusCode).toBe(200);
+  expect(response.type).toBe("image/png");
+  expect(response.body).toMatchImageSnapshot(imgDiffCfg);
+  done();
+});
+
 afterAll(() => {
   RenderQueue.shutdown();
 });
