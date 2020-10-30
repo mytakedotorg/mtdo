@@ -33,8 +33,3 @@ export const FACTSET_BY_HASH: FactsetByHash = {
     indexBlobSha: "eda4841851a8236ed4ae534eb6b44c421f5a80bf",
   },
 };
-
-export function factsetTitleFor(factHash: string): string {
-  const factsetHash = factHash.slice(0, factHash.indexOf("="));
-  return FACTSET_BY_HASH[factsetHash].title;
-}
