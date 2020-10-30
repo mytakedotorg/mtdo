@@ -192,16 +192,22 @@ async function imageSearchResults(
           kind={NGramKind.SOCIAL}
         />
       </div>
-      <div className={`social__row ${customClass}`}>
-        <p className={`social__speaker ${customClass}`}>{social.query}</p>
+      <div className={`social__row social__row--query-terms ${customClass}`}>
+        {social.query.split(",").map((term, index) => {
+          return <span className={`ngram-term-${index}`}>{term}</span>;
+        })}
       </div>
-      <div className={`social__background ${customClass}`}></div>
-      <div className={`social__image-container ${customClass}`}>
+      <div
+        className={`social__background social__background__ngram ${customClass}`}
+      ></div>
+      <div
+        className={`social__image-container social__image-container__ngram ${customClass}`}
+      >
         <img
           className={`social__image ${customClass}`}
           src="https://mytake.org/assets/permanent/square-wheat-482248dddd.png"
-          width="200"
-          height="200"
+          width="100"
+          height="100"
           alt="MyTake.org | Fundamentals, in context."
         />
       </div>

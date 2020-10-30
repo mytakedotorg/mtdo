@@ -30,6 +30,23 @@
   font-size: 16px;
 }
 .ngram__text--term {
-  font-weight: 600;
+  font-weight: 800;
   margin-right: 8px;
+}
+
+$term-darken: 0%;
+.ngram-term-0 {
+  color: darken(rgb(110, 180, 149), $term-darken);
+}
+.ngram-term-1 {
+  color: darken(rgb(217, 137, 91), $term-darken);
+}
+.ngram-term-3 {
+  color: darken(rgb(138, 138, 187), $term-darken);
+}
+.ngram-term-4 {
+  color: darken(rgb(202, 117, 181), $term-darken);
+}
+.ngram-term-5 {
+  color: darken(rgb(151, 210, 66), $term-darken);
 }
