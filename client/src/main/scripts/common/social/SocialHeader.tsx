@@ -99,7 +99,7 @@ function headerVideoCut(
   const [speaker, said] = getCut(fact, social.cut);
   let factDesc;
   if (fact.location) {
-    factDesc = `${fact.location.placename}, in ${fact.location.cityState}`;
+    factDesc = `${fact.location.placename} in ${fact.location.cityState}`;
   } else if (fact.notes) {
     factDesc = fact.notes;
   } else {
@@ -109,7 +109,7 @@ function headerVideoCut(
     <HeaderTags
       url={`https://mytake.org/foundation/${socialRison}`}
       rison={socialRison}
-      title={`${speaker.fullName} in ${fact.fact.primaryDate.slice(0, 4)}`}
+      title={`${fact.factset.title} | ${fact.fact.title}`}
       desc={factDesc}
       imageAlt={said}
     />
