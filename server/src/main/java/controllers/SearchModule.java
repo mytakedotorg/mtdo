@@ -47,6 +47,7 @@ public class SearchModule implements Jooby.Module {
 			lucene.close();
 		});
 		env.router().get(Routes.API_SEARCH, (req, res) -> {
+			CacheControl.corsAllowAll(res);
 			if (lucene.hash().equals(H.parse(req))) {
 				CacheControl.forever(res);
 			} else {

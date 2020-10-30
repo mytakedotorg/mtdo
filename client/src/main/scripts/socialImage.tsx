@@ -29,7 +29,7 @@ import {
   VideoCut,
   SearchResults,
 } from "./common/social/social";
-import { search } from "./components/search/search";
+import { search, SearchMode } from "./components/search/search";
 import {
   getNumberOfHitsPerYear,
   NGramKind,
@@ -181,7 +181,11 @@ function imageFactUncut(
 async function imageSearchResults(
   social: SearchResults
 ): Promise<React.ReactElement> {
-  const result = await search(social.query);
+  const result = await search(
+    social.query,
+    SearchMode.Containing,
+    "https://mytake.org"
+  );
   const hitsPerYear = await getNumberOfHitsPerYear(result);
   const customClass = undefined;
   return (
@@ -194,7 +198,7 @@ async function imageSearchResults(
       </div>
       <div className={`social__row social__row--query-terms ${customClass}`}>
         {social.query.split(",").map((term, index) => {
-          return <span className={`ngram-term-${index}`}>{term}</span>;
+          return <span className={`ngram-term-${index}`}>{term.trim()}</span>;
         })}
       </div>
       <div
