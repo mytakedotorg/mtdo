@@ -245,7 +245,7 @@ export interface HitsPerYearList {
 }
 const ALL_DEBATE_YEARS = [
   "1960",
-  ",",
+  "-gap-",
   "1976",
   "1980",
   "1984",

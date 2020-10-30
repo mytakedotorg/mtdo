@@ -28,7 +28,7 @@ exports[`WhatIsThis 1`] = `
             Object {
               "hitCount": 0,
               "searchTerm": "election",
-              "year": ",",
+              "year": "-gap-",
             },
             Object {
               "hitCount": 20,
