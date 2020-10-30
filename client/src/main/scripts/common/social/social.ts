@@ -77,7 +77,9 @@ export function encodeSocial(embed: Social) {
 
 export function decodeSocial(encoded: string): Social {
   if (encoded.startsWith("~")) {
-    const sub = encoded.substring(1).replace(/:\(/gi, ":!(");
+    const sub = decodeURIComponent(
+      encoded.substring(1).replace(/:\(/gi, ":!(")
+    );
     const social: Social = rison.decode_object(sub);
     if (!socialKindRuntime.has(social.kind)) {
       throw `Unknown social kind ${social.kind}`;

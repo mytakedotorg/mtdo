@@ -156,7 +156,7 @@ public class SocialEmbed {
 		String title = "\"" + query + "\" in presidential debates";
 		String desc = "Every single time that \"" + query + "\" was said in a presidential debate, ever.";
 		String imageAlt = desc;
-		String risonQuery = query;
+		String risonQuery = "'" + UrlEscapers.urlFragmentEscaper().escape(query) + "'";
 		// copied from SocialHeader.spec.tsx
 		return new SocialEmbed(
 				"<meta content=\"article\" property=\"og:type\">\n" +
