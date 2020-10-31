@@ -25,6 +25,7 @@ import TimelineLoadingView from "./TimelineLoadingView";
 import { SetFactHandlers } from "./TimelinePreview";
 import TimelineView from "./TimelineView";
 import { get } from "../../network";
+import { FACTSET_BY_HASH } from "../../common/factsets";
 
 interface TimelineLoaderProps {
   path: string;
@@ -32,20 +33,24 @@ interface TimelineLoaderProps {
 }
 
 interface TimelineLoaderState {
+  factsetHash: string;
   facts?: FT.FactLink[];
 }
 
 const TimelineLoader: React.FC<TimelineLoaderProps> = (props) => {
-  const [state, setState] = useState<TimelineLoaderState>({});
+  const [state, setState] = useState<TimelineLoaderState>({
+    factsetHash: Object.keys(FACTSET_BY_HASH)[0], // start with the first factset
+  });
 
   useEffect(() => {
     async function getAllFacts() {
       const index: FT.FactsetIndex = await get(
-        // the current git commit is v1.0.0 877ede3aea28a202c94bd169a8d1376624c3397a
-        // `git hash-object sausage/index.json ` for at that tag is:
-        `https://mytake.org${Routes.API_FACT}/E74aoUY=eda4841851a8236ed4ae534eb6b44c421f5a80bf.json`
+        `https://mytake.org${Routes.API_FACT}/${state.factsetHash}=${
+          FACTSET_BY_HASH[state.factsetHash].indexBlobSha
+        }.json`
       );
       setState({
+        factsetHash: state.factsetHash,
         facts: index.facts,
       });
     }
@@ -59,7 +64,7 @@ const TimelineLoader: React.FC<TimelineLoaderProps> = (props) => {
     }
     const embedRison = path.substring(embedSlash + 1);
     try {
-      return decodeSocial(embedRison);
+      return decodeSocial(embedRison) as PreviewSocial;
     } catch (err) {
       console.log(err);
       return null;

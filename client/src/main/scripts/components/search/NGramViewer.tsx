@@ -25,8 +25,6 @@ import { SearchResult } from "./search";
 
 const SVG_PADDING_LEFT = 25;
 const SVG_PADDING_TOP = 40;
-const SVG_WIDTH = Math.min(700, window.innerWidth);
-const SVG_HEIGHT = 200;
 const colors = d3
   .scaleOrdinal(d3.schemeSet2)
   .range()
@@ -35,6 +33,12 @@ const colors = d3
 interface NGramViewerProps {
   searchResult: SearchResult;
   onBarClick?(year: string): void;
+}
+
+export enum NGramKind {
+  SEARCH,
+  HOMEPAGE,
+  SOCIAL,
 }
 
 const NGramViewer: React.FC<NGramViewerProps> = (props) => {
@@ -53,16 +57,39 @@ const NGramViewer: React.FC<NGramViewerProps> = (props) => {
     <NGramViewerPresentation
       hitsPerYearList={hitsPerYearList}
       onBarClick={props.onBarClick}
-      showHelpText={true}
+      kind={NGramKind.SEARCH}
     />
   );
 };
 
+function classModifier(kind: NGramKind): string | undefined {
+  return kind === NGramKind.HOMEPAGE ? "home" : undefined;
+}
+
+function showHelpText(kind: NGramKind): boolean {
+  return kind === NGramKind.SEARCH;
+}
+
+function showLegend(kind: NGramKind): boolean {
+  return kind === NGramKind.SEARCH;
+}
+
+function width(kind: NGramKind): number {
+  if (kind === NGramKind.SOCIAL) {
+    return 550;
+  } else {
+    return Math.min(700, window.innerWidth);
+  }
+}
+
+function height(kind: NGramKind): number {
+  return kind == NGramKind.SOCIAL ? 250 : 200;
+}
+
 interface NGramViewerPresentationProps {
   onBarClick?(year: string): void;
   hitsPerYearList: HitsPerYearList;
-  classModifier?: string;
-  showHelpText: boolean;
+  kind: NGramKind;
 }
 export const NGramViewerPresentation: React.FC<NGramViewerPresentationProps> = (
   props
@@ -70,32 +97,42 @@ export const NGramViewerPresentation: React.FC<NGramViewerPresentationProps> = (
   const svgEl = useRef<SVGSVGElement>(null);
   useEffect(() => {
     if (svgEl.current) {
-      drawChart(svgEl.current, props.hitsPerYearList, props.onBarClick);
+      drawChart(
+        props.kind,
+        svgEl.current,
+        props.hitsPerYearList,
+        props.onBarClick
+      );
     }
   }, [svgEl, props.hitsPerYearList]);
   let className = "ngram__outer-container";
-  if (props.classModifier) {
-    className += ` ${className}--${props.classModifier}`;
+  if (classModifier(props.kind)) {
+    className += ` ${className}--${classModifier(props.kind)}`;
   }
   return (
     <div className={className}>
       <div className="ngram__inner-container">
-        <svg ref={svgEl} width={SVG_WIDTH} height={SVG_HEIGHT}></svg>
+        <svg
+          ref={svgEl}
+          width={width(props.kind)}
+          height={height(props.kind)}
+        ></svg>
         <div className="ngram__legend">
           <div className="ngram__term-list">
-            {props.hitsPerYearList.allSearchTerms.map((term, idx) => {
-              return (
-                <span
-                  key={term}
-                  style={{ color: colors[idx] }}
-                  className="ngram__text ngram__text--term"
-                >
-                  {term}
-                </span>
-              );
-            })}
+            {showLegend(props.kind) &&
+              props.hitsPerYearList.allSearchTerms.map((term, idx) => {
+                return (
+                  <span
+                    key={term}
+                    style={{ color: colors[idx] }}
+                    className="ngram__text ngram__text--term"
+                  >
+                    {term}
+                  </span>
+                );
+              })}
           </div>
-          {props.showHelpText && (
+          {showHelpText(props.kind) && (
             <div className="ngram__term-list">
               <CornerLeftUp />
               <span className="ngram__text">click any year to scroll</span>
@@ -108,6 +145,7 @@ export const NGramViewerPresentation: React.FC<NGramViewerPresentationProps> = (
 };
 
 function drawChart(
+  kind: NGramKind,
   svgElement: SVGSVGElement,
   hitsPerYearList: HitsPerYearList,
   onBarClick?: (year: string) => void
@@ -143,11 +181,11 @@ function drawChart(
   const x = d3
     .scaleBand()
     .domain(ALL_DEBATE_YEARS)
-    .range([0, SVG_WIDTH - SVG_PADDING_LEFT * 2])
+    .range([0, width(kind) - SVG_PADDING_LEFT * 2])
     .padding(0.1);
   const xAxis = svg
     .append("g")
-    .attr("transform", "translate(0," + (SVG_HEIGHT - SVG_PADDING_TOP) + ")")
+    .attr("transform", "translate(0," + (height(kind) - SVG_PADDING_TOP) + ")")
     .call(d3.axisBottom(x).tickSizeOuter(0));
   xAxis
     .selectAll(".tick text")
@@ -162,7 +200,7 @@ function drawChart(
   const y = d3
     .scaleLinear()
     .domain([0, d3.max(series, (d) => d3.max(d, (d) => d[1])!)!])
-    .rangeRound([SVG_HEIGHT - SVG_PADDING_TOP, 0]);
+    .rangeRound([height(kind) - SVG_PADDING_TOP, 0]);
   svg.append("g").call(d3.axisLeft(y).ticks(null, "s"));
 
   // NEW DATA
@@ -207,7 +245,7 @@ export interface HitsPerYearList {
 }
 const ALL_DEBATE_YEARS = [
   "1960",
-  ",",
+  "-gap-",
   "1976",
   "1980",
   "1984",

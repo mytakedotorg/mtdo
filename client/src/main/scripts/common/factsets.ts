@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2018-2020 MyTake.org, Inc.
+ * Copyright (C) 2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -17,25 +17,19 @@
  *
  * You can contact us at team@mytake.org
  */
-import React, { FC } from "react";
-import {
-  HitsPerYearList,
-  NGramKind,
-  NGramViewerPresentation,
-} from "../search/NGramViewer";
-
-interface NGramLoaderProps {
-  searchQuery: string;
-  results: HitsPerYearList;
+export interface Factset {
+  title: string;
+  indexBlobSha: string;
 }
 
-const NGramLoader: FC<NGramLoaderProps> = (props) => {
-  return (
-    <NGramViewerPresentation
-      hitsPerYearList={props.results}
-      kind={NGramKind.HOMEPAGE}
-    />
-  );
-};
+export interface FactsetByHash {
+  [hash: string]: Factset;
+}
 
-export default NGramLoader;
+export const FACTSET_BY_HASH: FactsetByHash = {
+  E74aoUY: {
+    title: "U.S. Presidential Debates",
+    // git hash-object sausage/index.json
+    indexBlobSha: "eda4841851a8236ed4ae534eb6b44c421f5a80bf",
+  },
+};

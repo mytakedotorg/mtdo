@@ -72,8 +72,8 @@ public class FactApi implements Jooby.Module {
 			byte[] contentGitFriendly = repoSha(repo, sha);
 			// recondense the json
 			String content = recondense(new String(contentGitFriendly, StandardCharsets.UTF_8));
-			CacheControl.forever(res)
-					.header("Access-Control-Allow-Origin", "*")
+			CacheControl.forever(res);
+			CacheControl.corsAllowAll(res)
 					.type(MediaType.json)
 					.send(content);
 		});

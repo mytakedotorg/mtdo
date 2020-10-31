@@ -150,7 +150,14 @@ const AnimatedHeading: React.FC<AnimatedHeadingProps> = (props) => {
         {HEADING_TEXT.start}
       </span>
       <span className="animated__span animated__span--typed">
-        {state.searchTxt}
+        {state.searchTxt.split(",").map((value, idx) => {
+          return (
+            <>
+              {idx > 0 && <span>, </span>}
+              <span className={`ngram-term-${idx}`}>{value}</span>
+            </>
+          );
+        })}
         <BlinkingCursor />
       </span>
       <span className="animated__span animated__span--fixed">

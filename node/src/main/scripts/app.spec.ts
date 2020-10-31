@@ -27,7 +27,7 @@ expect.extend({ toMatchImageSnapshot });
 
 test("videoCut headers", async (done) => {
   const response = await request(underTest).get(
-    "/static/social-header/~cut:(2007.9000244140625,2046.1099853515625),fact:E74aoUY=31c55b20cc10bdfe9b10ce1fbc3d9b3f3bf01098,kind:videoCut"
+    "/static/social-header/~cut:(548.906982421875,551.8199951171875),fact:E74aoUY=8ab2602f03abece68fb5d9cc97e48e2b84b568c1,kind:videoCut"
   );
   expect(response.statusCode).toBe(200);
   expect(response.type).toBe("text/plain");
@@ -67,6 +67,26 @@ test("videoCut image 404 invalid hash", async (done) => {
     "/static/social-image/~cut:(2007.9000244140625,2046.1099853515625),fact:E74aoUY=31h5b20cc10bdfe9b10ce1fbc3d9b3f3bf01098,kind:videoCut.png",
     done
   );
+});
+
+test("searchResults image", async (done) => {
+  const response = await request(underTest).get(
+    "/static/social-image/~kind:searchResults,factsetHash:E74aoUY,query:'climate%20change,%20global%20warming'.png"
+  );
+  expect(response.statusCode).toBe(200);
+  expect(response.type).toBe("image/png");
+  expect(response.body).toMatchImageSnapshot(imgDiffCfg);
+  done();
+});
+
+test("searchResults image twitter", async (done) => {
+  const response = await request(underTest).get(
+    "/static/social-image-twitter/~kind:searchResults,factsetHash:E74aoUY,query:'climate%20change,%20global%20warming'.png"
+  );
+  expect(response.statusCode).toBe(200);
+  expect(response.type).toBe("image/png");
+  expect(response.body).toMatchImageSnapshot(imgDiffCfg);
+  done();
 });
 
 afterAll(() => {

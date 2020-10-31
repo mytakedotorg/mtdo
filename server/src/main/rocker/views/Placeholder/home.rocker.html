@@ -17,9 +17,11 @@
  *
  * You can contact us at team@mytake.org
  *@
-@args()
+@import common.SocialEmbed
 
-@views.reactApp.template("MyTake.org", "Your bicycle for politics", null) -> {
+@args(SocialEmbed social)
+
+@views.reactApp.template("MyTake.org", "Your bicycle for politics", social) -> {
 <div id="app"></div>
 <script type="text/javascript">
 window.mytake = {

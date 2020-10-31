@@ -66,6 +66,8 @@ export function decodeVideoFact(
   return {
     fact: encoded.fact,
     factset: encoded.factset,
+    location: encoded.location,
+    notes: encoded.notes,
     durationSeconds: encoded.durationSeconds,
     youtubeId: encoded.youtubeId,
     speakers: encoded.speakers,

@@ -24,6 +24,23 @@
 <meta name="description" content="Your bicycle for politics | MyTake.org">
 <meta name="author" content="MyTake.org">
 
+	<meta content="article" property="og:type">
+<meta content="&quot;cuba&quot; in presidential debates" property="og:title">
+<meta content="Every single time that &quot;cuba&quot; was said in a presidential debate, ever." property="og:description">
+<meta content="Every single time that &quot;cuba&quot; was said in a presidential debate, ever." property="og:image:alt">
+<meta content="https://mytake.org/search?q=cuba" property="og:url">
+<meta content="https://node.mytake.org/static/social-image/~kind:searchResults,factsetHash:E74aoUY,query:'cuba'.png" property="og:image">
+<meta content="https://node.mytake.org/static/social-image/~kind:searchResults,factsetHash:E74aoUY,query:'cuba'.png" property="og:image:secure_url">
+<meta content="image/png" property="og:image:type">
+<meta content="1200" property="og:image:width">
+<meta content="628" property="og:image:height">
+<meta content="summary_large_image" name="twitter:card">
+<meta content="@mytakedotorg" name="twitter:site">
+<meta content="&quot;cuba&quot; in presidential debates" property="twitter:title">
+<meta content="Every single time that &quot;cuba&quot; was said in a presidential debate, ever." property="twitter:description">
+<meta content="Every single time that &quot;cuba&quot; was said in a presidential debate, ever." property="twitter:image:alt">
+<meta content="https://node.mytake.org/static/social-image-twitter/~kind:searchResults,factsetHash:E74aoUY,query:cuba.png" name="twitter:image">
+
 
 <link rel="stylesheet" href="/assets-dev/styles/main.css">
 <link rel="stylesheet" href="/assets-dev/styles/vis.css">

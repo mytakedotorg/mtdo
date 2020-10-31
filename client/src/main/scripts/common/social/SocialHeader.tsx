@@ -22,7 +22,13 @@ import { Foundation } from "../../common/foundation";
 import { getCut } from "../../common/video";
 import { FT } from "../../java2ts/FT";
 import { Routes } from "../../java2ts/Routes";
-import { FactUncut, Social, TextCut, VideoCut } from "../social/social";
+import {
+  FactUncut,
+  Social,
+  TextCut,
+  VideoCut,
+  SearchResults,
+} from "../social/social";
 import { HeaderTags } from "./SocialHeaderTemplate";
 
 export async function socialHeader(
@@ -48,6 +54,8 @@ export async function socialHeader(
         socialRison,
         await Foundation.justOneFact(social.fact)
       );
+    case "searchResults":
+      return headerSearchResults(social, socialRison);
   }
 }
 
@@ -89,13 +97,36 @@ function headerVideoCut(
   fact: FT.VideoFactContent
 ): React.ReactElement {
   const [speaker, said] = getCut(fact, social.cut);
+  let factDesc;
+  if (fact.location) {
+    factDesc = `${fact.location.placename} in ${fact.location.cityState}`;
+  } else if (fact.notes) {
+    factDesc = fact.notes;
+  } else {
+    factDesc = `Unknown location`;
+  }
   return (
     <HeaderTags
       url={`https://mytake.org/foundation/${socialRison}`}
       rison={socialRison}
-      title={`${speaker.fullName} in ${fact.fact.primaryDate.slice(0, 4)}`}
-      desc={fact.fact.title}
+      title={`${fact.factset.title} | ${fact.fact.title}`}
+      desc={factDesc}
       imageAlt={said}
+    />
+  );
+}
+
+export function headerSearchResults(
+  social: SearchResults,
+  socialRison: string
+): React.ReactElement {
+  return (
+    <HeaderTags
+      url={`https://mytake.org/search?q=${encodeURIComponent(social.query)}`}
+      rison={socialRison}
+      title={`"${social.query}" in presidential debates`}
+      desc={`Every single time that "${social.query}" was said in a presidential debate, ever.`}
+      imageAlt={`A bar graph of how many times "${social.query}" was said in a presidential debate.`}
     />
   );
 }

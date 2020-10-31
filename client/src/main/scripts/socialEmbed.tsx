@@ -21,7 +21,7 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { renderToString } from "react-dom/server";
 import { decodeSocial } from "./common/social/social";
-import { socialImage } from "./common/social/SocialImage";
+import { socialImage } from "./socialImage";
 import { socialHeader } from "./common/social/SocialHeader";
 
 (window as any).render = (args: string) => {

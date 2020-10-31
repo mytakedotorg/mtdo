@@ -29,6 +29,13 @@ $centerColor: palette(social, background--highlight);
       $edgeColor
     );
   }
+  &.social__background__ngram {
+    background: radial-gradient(
+      ellipse at 550px 400px,
+      #fff,
+      rgb(222, 222, 241)
+    );
+  }
 }
 .social__content {
   position: relative;
@@ -41,6 +48,14 @@ $centerColor: palette(social, background--highlight);
   &.home {
     padding: 24px;
   }
+}
+.social__ngram {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  padding-left: 30px;
+  padding-top: 15px;
 }
 // "IBM Plex Serif", serif;: "IBM Plex Serif", serif;
 @mixin speaker-font($fontSize: 24px) {
@@ -59,12 +74,17 @@ $centerColor: palette(social, background--highlight);
   &.home {
     @include speaker-font(16px);
   }
+  margin-bottom: 0;
+}
+.social__date {
+  @include speaker-font();
+  text-align: right;
+  font-style: italic;
+  font-weight: 400;
+  margin-top: 0;
 }
 .social__quote-container {
-  width: 48px;
-  &.home {
-    width: 28px;
-  }
+  width: 28px;
 }
 .social__quote {
   @include speaker-font();
@@ -114,11 +134,32 @@ $centerColor: palette(social, background--highlight);
   bottom: -6px;
   right: -22px;
   z-index: 5;
+  opacity: 0.7;
   &.home {
     right: -12px;
+  }
+  &.social__image-container__ngram {
+    opacity: 0.2;
+    left: 0px;
+    bottom: -5px;
   }
 }
 .social__image.home {
   width: 100px;
   height: 100px;
+}
+.social__row--query-terms {
+  display: flex;
+  justify-content: space-around;
+  position: absolute;
+  bottom: 20px;
+  right: 45px;
+  z-index: 100;
+
+  span {
+    font-size: 24px;
+    margin-left: 10px;
+    font-weight: 600;
+    font-family: $sans;
+  }
 }

@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2018-2020 MyTake.org, Inc.
+ * Copyright (C) 2020 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -17,25 +17,20 @@
  *
  * You can contact us at team@mytake.org
  */
-import React, { FC } from "react";
-import {
-  HitsPerYearList,
-  NGramKind,
-  NGramViewerPresentation,
-} from "../search/NGramViewer";
+import * as React from "react";
+import * as renderer from "react-test-renderer";
 
-interface NGramLoaderProps {
-  searchQuery: string;
-  results: HitsPerYearList;
-}
+import { SearchResults, encodeSocial } from "./common/social/social";
+import { headerSearchResults } from "./common/social/SocialHeader";
 
-const NGramLoader: FC<NGramLoaderProps> = (props) => {
-  return (
-    <NGramViewerPresentation
-      hitsPerYearList={props.results}
-      kind={NGramKind.HOMEPAGE}
-    />
-  );
-};
-
-export default NGramLoader;
+test("headerSearchResults", () => {
+  const testSearch: SearchResults = {
+    kind: "searchResults",
+    factsetHash: "E74aoUY",
+    query: "saddam, bin laden",
+  };
+  const tree = renderer
+    .create(headerSearchResults(testSearch, encodeSocial(testSearch)))
+    .toJSON();
+  expect(tree).toMatchSnapshot();
+});

@@ -18,11 +18,23 @@
  * You can contact us at team@mytake.org
  */
 import * as React from "react";
-import { Foundation } from "../../common/foundation";
-import { getCut } from "../../common/video";
-import { FT } from "../../java2ts/FT";
-import { abbreviate } from "../functions";
-import { FactUncut, Social, TextCut, VideoCut } from "../social/social";
+import { Foundation } from "./common/foundation";
+import { getCut } from "./common/video";
+import { FT } from "./java2ts/FT";
+import { abbreviate } from "./common/functions";
+import {
+  FactUncut,
+  Social,
+  TextCut,
+  VideoCut,
+  SearchResults,
+} from "./common/social/social";
+import { search, SearchMode } from "./components/search/search";
+import {
+  getNumberOfHitsPerYear,
+  NGramKind,
+  NGramViewerPresentation,
+} from "./components/search/NGramViewer";
 
 export async function socialImage(
   social: Social,
@@ -42,6 +54,8 @@ export async function socialImage(
       );
     case "factUncut":
       return imageFactUncut(social, await Foundation.justOneFact(social.fact));
+    case "searchResults":
+      return imageSearchResults(social);
   }
 }
 
@@ -50,6 +64,50 @@ function imageTextCut(
   fact: FT.DocumentFactContent
 ): React.ReactElement {
   return <div className="todo"></div>;
+}
+
+const months = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
+const ths = ["th", "st", "nd", "rd", "th", "th", "th", "th", "th", "th"];
+function dateIsoToFormal(fact: FT.VideoFactContent): string {
+  const matcher = fact.fact.primaryDate.match(/(\d+)-(\d+)-(\d+)/)!;
+  const year = matcher[1];
+  const month = parseInt(matcher[2]) - 1;
+  const day = parseInt(matcher[3]);
+  return `${months[month]} ${ordinal(day)}, ${year}`;
+}
+
+function ordinal(number: number): string {
+  if (number <= 0) {
+    throw "only supports positive integers";
+  }
+  if (number > 3 && number < 21) {
+    // special handling for the teens
+    return number + "th";
+  }
+  const lastDigit = number % 10;
+  switch (lastDigit) {
+    case 1:
+      return number + "st";
+    case 2:
+      return number + "nd";
+    case 3:
+      return number + "rd";
+    default:
+      return number + "th";
+  }
 }
 
 export function imageVideoCut(
@@ -74,6 +132,7 @@ export function imageVideoCut(
   } else {
     classModifier = "z";
   }
+  const date = new Date(fact.fact.primaryDate);
   return (
     <div className={`social ${customClass}`}>
       <div className={`social__content ${customClass}`}>
@@ -93,6 +152,9 @@ export function imageVideoCut(
         </div>
         <div className={`social__row ${customClass}`}>
           <p className={`social__speaker ${customClass}`}>{speaker.fullName}</p>
+          <p className={`social__date ${customClass}`}>
+            {dateIsoToFormal(fact)}
+          </p>
         </div>
       </div>
       <div className={`social__background ${customClass}`}></div>
@@ -114,4 +176,45 @@ function imageFactUncut(
   fact: FT.DocumentFactContent | FT.VideoFactContent
 ): React.ReactElement {
   return <div className="todo"></div>;
+}
+
+async function imageSearchResults(
+  social: SearchResults
+): Promise<React.ReactElement> {
+  const result = await search(
+    social.query,
+    SearchMode.Containing,
+    "https://mytake.org"
+  );
+  const hitsPerYear = await getNumberOfHitsPerYear(result);
+  const customClass = undefined;
+  return (
+    <div className={`social ${customClass}`}>
+      <div className={`social__ngram ${customClass}`}>
+        <NGramViewerPresentation
+          hitsPerYearList={hitsPerYear}
+          kind={NGramKind.SOCIAL}
+        />
+      </div>
+      <div className={`social__row social__row--query-terms ${customClass}`}>
+        {social.query.split(",").map((term, index) => {
+          return <span className={`ngram-term-${index}`}>{term.trim()}</span>;
+        })}
+      </div>
+      <div
+        className={`social__background social__background__ngram ${customClass}`}
+      ></div>
+      <div
+        className={`social__image-container social__image-container__ngram ${customClass}`}
+      >
+        <img
+          className={`social__image ${customClass}`}
+          src="https://mytake.org/assets/permanent/square-wheat-482248dddd.png"
+          width="100"
+          height="100"
+          alt="MyTake.org | Fundamentals, in context."
+        />
+      </div>
+    </div>
+  );
 }
