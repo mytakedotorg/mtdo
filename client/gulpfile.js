@@ -181,8 +181,7 @@ function webpackCfg(mode) {
     externals: {
       react: "React",
       "react-dom": "ReactDOM",
-      vis: "vis",
-      d3: "d3",
+      vis: "vis"
     },
   };
 }
