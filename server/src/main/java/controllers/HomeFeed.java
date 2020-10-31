@@ -22,6 +22,7 @@ package controllers;
 import com.google.inject.Binder;
 import com.typesafe.config.Config;
 import common.CacheControl;
+import common.SocialEmbed;
 import org.jooby.Env;
 import org.jooby.Jooby;
 
@@ -31,7 +32,7 @@ public class HomeFeed implements Jooby.Module {
 	@Override
 	public void configure(Env env, Config conf, Binder binder) throws Throwable {
 		env.router().get(URL, (req, res) -> {
-			CacheControl.hour(res).send(views.Placeholder.home.template());
+			CacheControl.hour(res).send(views.Placeholder.home.template(SocialEmbed.search("election,rigged")));
 		});
 	}
 }
