@@ -71,7 +71,7 @@ function showHelpText(kind: NGramKind): boolean {
 }
 
 function showLegend(kind: NGramKind): boolean {
-  return kind === NGramKind.SEARCH || kind == NGramKind.HOMEPAGE;
+  return kind === NGramKind.SEARCH;
 }
 
 function width(kind: NGramKind): number {
