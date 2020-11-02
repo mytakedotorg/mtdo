@@ -163,8 +163,8 @@ public class SocialEmbed {
 
 	public static SocialEmbed homepage() {
 		SearchImage img = new SearchImage("election,rigged");
-		img.title = "MyTake.org";
-		img.desc = "The open source search engine for unbiased primary sources";
+		img.title = "MyTake.org | True, unbiased, and in context.";
+		img.desc = "An open source search engine for unbiased primary sources";
 		img.imageAlt = "A graph over time of how many times \"election\" and \"rigged\" have been said in the presidential debates";
 		img.url = "https://mytake.org";
 		return img.result();
