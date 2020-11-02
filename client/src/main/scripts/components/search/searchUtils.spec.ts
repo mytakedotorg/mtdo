@@ -45,7 +45,7 @@ test("turnfinder-negative-clause", () => {
   const highlightedOffset = withResults.foundOffsets[0];
   expect(highlightedOffset[0]).toBe(23);
   expect(highlightedOffset[1]).toBe(27);
-  expect(highlightedOffset[2]).toBe("wall");
+  expect(highlightedOffset[2]).toBe(0);
 });
 
 test("turnfinder-negative-clause-2", () => {
@@ -59,7 +59,7 @@ test("turnfinder-negative-clause-2", () => {
   const highlightedOffset = withResults.foundOffsets[0];
   expect(highlightedOffset[0]).toBe(23);
   expect(highlightedOffset[1]).toBe(27);
-  expect(highlightedOffset[2]).toBe("wall");
+  expect(highlightedOffset[2]).toBe(0);
 });
 
 test("turnfinder-negative-clause-3", () => {
@@ -73,10 +73,10 @@ test("turnfinder-negative-clause-3", () => {
   const firstOffset = withResults.foundOffsets[0];
   expect(firstOffset[0]).toBe(8);
   expect(firstOffset[1]).toBe(14);
-  expect(firstOffset[2]).toBe("states");
+  expect(firstOffset[2]).toBe(0);
 
   const secondOffset = withResults.foundOffsets[1];
   expect(secondOffset[0]).toBe(100);
   expect(secondOffset[1]).toBe(106);
-  expect(secondOffset[2]).toBe("states");
+  expect(secondOffset[2]).toBe(0);
 });

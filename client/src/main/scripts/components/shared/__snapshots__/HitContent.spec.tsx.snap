@@ -4,10 +4,16 @@ exports[`HitContent renders 1`] = `
 <p
   className="testClass"
 >
-  The 
-  <strong>
+  <span>
+    The 
+  </span>
+  <span
+    className="ngram-term-bg-0"
+  >
     television
-  </strong>
-   and radio stations of the United States and their affiliated stations are proud to provide facilities for a discussion of issues in the current political campaign by the two major candidates for the presidency.
+  </span>
+  <span>
+     and radio stations of the United States and their affiliated stations are proud to provide facilities for a discussion of issues in the current political campaign by the two major candidates for the presidency.
+  </span>
 </p>
 `;

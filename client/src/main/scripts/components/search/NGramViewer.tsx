@@ -209,7 +209,7 @@ function drawChart(
     .select("body")
     .append("div")
     .attr("class", "ngram__tooltip")
-    .style("opacity", 1);
+    .style("opacity", 0);
 
   // NEW DATA
   svg
@@ -226,7 +226,6 @@ function drawChart(
     .attr("height", (d) => y(d[0])! - y(d[1])!)
     .attr("width", x.bandwidth())
     .on("click", function (d) {
-      console.log(d);
       onBarClick && onBarClick((d.data as any).year);
     })
     .on("mouseover", function (d) {
@@ -235,7 +234,8 @@ function drawChart(
         .html(`${d[1] - d[0]} times`)
         .style("left", d3.event.pageX + 10 + "px")
         .style("top", d3.event.pageY - 15 + "px");
-      tooltip.transition().duration(50).style("opacity", 1);
+      // TODO: make a meaningful tooltip
+      //tooltip.transition().duration(50).style("opacity", 1);
     })
     .on("mouseout", function (d) {
       d3.select(this).transition().duration(50).attr("opacity", "1");
@@ -278,7 +278,7 @@ export function getNumberOfHitsPerYear(
 ): HitsPerYearList {
   const terms = getSearchTerms(searchResult.searchQuery);
   const hitsPerYear: HitsPerYear[] = ALL_DEBATE_YEARS.flatMap((year) =>
-    terms.map((searchTerm) => ({
+    terms.map((searchTerm, index) => ({
       year,
       hitCount: searchResult.factHits.flatMap((hit) => {
         return hit.searchHits
@@ -287,7 +287,7 @@ export function getNumberOfHitsPerYear(
           })
           .flatMap((sh) => {
             return sh.highlightOffsets.filter((ho) => {
-              return ho[2] === searchTerm.toLowerCase();
+              return ho[2] === index;
             });
           });
       }).length,

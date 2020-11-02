@@ -137,7 +137,7 @@ export function _searchImpl(searchWithData: _SearchWithData): SearchResult {
               fact: hash,
               turn: v.turn,
               cut: m.cut,
-              bold: m.highlights.map((h) => [h[0], h[1]]),
+              highlight: m.highlights,
             })
         );
       });

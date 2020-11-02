@@ -37,7 +37,7 @@ export const HitMock = (componentName: string) => ({
   return (
     <div>
       {componentName}: {JSON.stringify(rest)} {videoFact.fact.title}{" "}
-      {videoTurn.turn} {videoTurn.cut} {videoTurn.bold}
+      {videoTurn.turn} {videoTurn.cut} {videoTurn.highlight}
     </div>
   );
 };
@@ -48,7 +48,7 @@ test("HitContent renders", () => {
     fact: "factHash",
     turn: 0,
     cut: [14, 239],
-    bold: [[18, 28]],
+    highlight: [[18, 28, 0]],
   };
   const tree = renderer
     .create(

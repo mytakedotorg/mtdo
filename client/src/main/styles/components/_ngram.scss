@@ -39,9 +39,10 @@
   text-align: center;
   padding: 0.5rem;
   background: #ffffff;
+  opacity: 0.5;
   color: #313639;
   border: 1px solid #313639;
-  border-radius: 8px;
+  border-radius: 4px;
   pointer-events: none;
   font-size: 1.3rem;
   z-index: 1;
@@ -54,12 +55,29 @@ $term-darken: 0%;
 .ngram-term-1 {
   color: darken(rgb(217, 133, 98), $term-darken);
 }
-.ngram-term-3 {
+.ngram-term-2 {
   color: darken(rgb(132, 146, 183), $term-darken);
 }
-.ngram-term-4 {
+.ngram-term-3 {
   color: darken(rgb(199, 131, 176), $term-darken);
 }
-.ngram-term-5 {
+.ngram-term-4 {
   color: darken(rgb(161, 196, 95), $term-darken);
+}
+
+$term-lighten: 20%;
+.ngram-term-bg-0 {
+  background: lighten(rgb(114, 175, 152), $term-lighten);
+}
+.ngram-term-bg-1 {
+  background: lighten(rgb(217, 133, 98), $term-lighten);
+}
+.ngram-term-bg-2 {
+  background: lighten(rgb(132, 146, 183), $term-lighten);
+}
+.ngram-term-bg-3 {
+  background: lighten(rgb(199, 131, 176), $term-lighten);
+}
+.ngram-term-bg-4 {
+  background: lighten(rgb(161, 196, 95), $term-lighten);
 }

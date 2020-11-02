@@ -25,7 +25,7 @@ export type VideoTurn = {
   fact: string;
   turn: number;
   cut: CharOffsetRange;
-  bold?: Array<[number, number]>;
+  highlight?: Array<[number, number, number]>;
 };
 
 export type ClipRange = [startTime: number, endTime: number];
