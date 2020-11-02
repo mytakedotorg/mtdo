@@ -154,8 +154,8 @@ public class SocialEmbed {
 
 	public static SocialEmbed search(String query) {
 		SearchImage img = new SearchImage(query);
-		img.title = "\"" + query + "\" in U.S. Presidential Debates";
-		img.desc = "Every single time it was said in a televised presidential debate, ever.";
+		img.title = "U.S. Presidential Debates | " + query;
+		img.desc = "Every time it was said in a televised presidential debate, ever.";
 		img.imageAlt = img.desc;
 		img.url = "https://mytake.org/search?q=" + UrlEscapers.urlFormParameterEscaper().escape(query);
 		return img.result();
@@ -164,8 +164,8 @@ public class SocialEmbed {
 	public static SocialEmbed homepage() {
 		SearchImage img = new SearchImage("gun control, second amendment");
 		img.title = "MyTake.org | True, unbiased, and in context.";
-		img.desc = "An open source search engine for unbiased primary sources";
-		img.imageAlt = "A graph over time of how many times \"gun control\" and \"second amendment\" have been said in the presidential debates";
+		img.desc = "An open source search engine for unbiased primary sources.";
+		img.imageAlt = "A graph over time of how many times \"gun control\" and \"second amendment\" have been said in the presidential debates.";
 		img.url = "https://mytake.org";
 		return img.result();
 	}
