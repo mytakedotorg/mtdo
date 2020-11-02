@@ -165,10 +165,12 @@ interface VideoFactsToSearchHits {
   searchHits: SearchHit[];
 }
 
+export type WordHit = [start: number, end: number, searchterm: string]
+
 export class SearchHit {
   // Offsets are relative to the beginning of the turn
   constructor(
-    readonly highlightOffsets: Array<[number, number, string]>,
+    readonly highlightOffsets: Array<WordHit>,
     readonly videoFact: FT.VideoFactContent,
     readonly videoTurn: VideoTurn
   ) {}
