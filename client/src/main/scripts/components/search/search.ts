@@ -25,7 +25,7 @@ import { FT } from "../../java2ts/FT";
 import { Routes } from "../../java2ts/Routes";
 import { Search } from "../../java2ts/Search";
 import { get } from "../../network";
-import { TurnFinder } from "./searchUtils";
+import { TurnFinder, Highlight } from "./searchUtils";
 import { hash } from "./search-index.json";
 import {
   FACTSET_BY_HASH,
@@ -165,12 +165,10 @@ interface VideoFactsToSearchHits {
   searchHits: SearchHit[];
 }
 
-export type WordHit = [start: number, end: number, searchterm: string]
-
 export class SearchHit {
   // Offsets are relative to the beginning of the turn
   constructor(
-    readonly highlightOffsets: Array<WordHit>,
+    readonly highlightOffsets: Array<Highlight>,
     readonly videoFact: FT.VideoFactContent,
     readonly videoTurn: VideoTurn
   ) {}

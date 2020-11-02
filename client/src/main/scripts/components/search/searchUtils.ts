@@ -17,9 +17,11 @@
  *
  * You can contact us at team@mytake.org
  */
+export type Highlight = [start: number, end: number, searchterm: string];
+
 export interface MultiHighlight {
   cut: [number, number];
-  highlights: Array<[number, number, string]>;
+  highlights: Array<Highlight>;
 }
 /**
  * Offsets to cut out of the turn content, along with all the offsets
@@ -63,7 +65,7 @@ export class TurnFinder {
   /** Finds all the results in the given turnContent. */
   findResults(turnContent: string): TurnWithResults {
     this.regexInclude.lastIndex = 0;
-    let foundOffsets: Array<[number, number, string]> = [];
+    let foundOffsets: Array<Highlight> = [];
     let found = this.regexInclude.exec(turnContent);
     while (found != null) {
       const foundHunk = found[0];
@@ -106,12 +108,9 @@ export class TurnFinder {
  */
 class TurnWithResults {
   turnContent: string;
-  foundOffsets: Array<[number, number, string]>;
+  foundOffsets: Array<Highlight>;
 
-  constructor(
-    turnContent: string,
-    foundOffsets: Array<[number, number, string]>
-  ) {
+  constructor(turnContent: string, foundOffsets: Array<Highlight>) {
     this.turnContent = turnContent;
     this.foundOffsets = foundOffsets;
   }
