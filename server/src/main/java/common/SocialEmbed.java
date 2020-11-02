@@ -183,14 +183,16 @@ public class SocialEmbed {
 
 		public SocialEmbed result() {
 			String risonQuery = "'" + UrlEscapers.urlFragmentEscaper().escape(query) + "'";
+			String imageUrl = "https://node.mytake.org/static/social-image/~kind:searchResults,factsetHash:E74aoUY,query:" + risonQuery + ".png";
+			String imageTwitterUrl = "https://node.mytake.org/static/social-image-twitter/~kind:searchResults,factsetHash:E74aoUY,query:" + risonQuery + ".png";
 			return new SocialEmbed(
 					"<meta content=\"article\" property=\"og:type\">\n" +
 							"<meta property=\"og:title\" content=\"" + XmlEscapers.xmlAttributeEscaper().escape(title) + "\">\n" +
 							"<meta property=\"og:description\" content=\"" + XmlEscapers.xmlAttributeEscaper().escape(desc) + "\">\n" +
 							"<meta property=\"og:image:alt\" content=\"" + XmlEscapers.xmlAttributeEscaper().escape(imageAlt) + "\">\n" +
 							"<meta property=\"og:url\" content=\"" + url + "\">\n" +
-							"<meta property=\"og:image\" content=\"https://node.mytake.org/static/social-image/~kind:searchResults,factsetHash:E74aoUY,query:" + risonQuery + ".png\">\n" +
-							"<meta property=\"og:image:secure_url\" content=\"https://node.mytake.org/static/social-image/~kind:searchResults,factsetHash:E74aoUY,query:" + risonQuery + ".png\">\n" +
+							"<meta property=\"og:image\" content=\"" + XmlEscapers.xmlAttributeEscaper().escape(imageUrl) + "\">\n" +
+							"<meta property=\"og:image:secure_url\" content=\"" + XmlEscapers.xmlAttributeEscaper().escape(imageUrl) + "\">\n" +
 							"<meta property=\"og:image:type\" content=\"image/png\">\n" +
 							"<meta property=\"og:image:width\" content=\"1200\">\n" +
 							"<meta property=\"og:image:height\" content=\"628\">\n" +
@@ -199,8 +201,7 @@ public class SocialEmbed {
 							"<meta name=\"twitter:title\" content=\"" + XmlEscapers.xmlAttributeEscaper().escape(title) + "\">\n" +
 							"<meta name=\"twitter:description\" content=\"" + XmlEscapers.xmlAttributeEscaper().escape(desc) + "\">\n" +
 							"<meta name=\"twitter:image:alt\" content=\"" + XmlEscapers.xmlAttributeEscaper().escape(imageAlt) + "\">\n" +
-							"<meta name=\"twitter:image\" content=\"https://node.mytake.org/static/social-image-twitter/~kind:searchResults,factsetHash:E74aoUY,query:" + query + ".png\">\n");
-
+							"<meta name=\"twitter:image\" content=\"" + XmlEscapers.xmlAttributeEscaper().escape(imageTwitterUrl) + "\">\n");
 		}
 	}
 }

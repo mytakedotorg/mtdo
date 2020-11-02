@@ -29,8 +29,8 @@
 <meta property="og:description" content="The open source search engine for unbiased primary sources">
 <meta property="og:image:alt" content="A graph over time of how many times &quot;election&quot; and &quot;rigged&quot; have been said in the presidential debates">
 <meta property="og:url" content="https://mytake.org">
-<meta property="og:image" content="https://node.mytake.org/static/social-image/~kind:searchResults,factsetHash:E74aoUY,query:'election,rigged'.png">
-<meta property="og:image:secure_url" content="https://node.mytake.org/static/social-image/~kind:searchResults,factsetHash:E74aoUY,query:'election,rigged'.png">
+<meta property="og:image" content="https://node.mytake.org/static/social-image/~kind:searchResults,factsetHash:E74aoUY,query:&apos;election,rigged&apos;.png">
+<meta property="og:image:secure_url" content="https://node.mytake.org/static/social-image/~kind:searchResults,factsetHash:E74aoUY,query:&apos;election,rigged&apos;.png">
 <meta property="og:image:type" content="image/png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="628">
@@ -39,7 +39,7 @@
 <meta name="twitter:title" content="MyTake.org">
 <meta name="twitter:description" content="The open source search engine for unbiased primary sources">
 <meta name="twitter:image:alt" content="A graph over time of how many times &quot;election&quot; and &quot;rigged&quot; have been said in the presidential debates">
-<meta name="twitter:image" content="https://node.mytake.org/static/social-image-twitter/~kind:searchResults,factsetHash:E74aoUY,query:election,rigged.png">
+<meta name="twitter:image" content="https://node.mytake.org/static/social-image-twitter/~kind:searchResults,factsetHash:E74aoUY,query:&apos;election,rigged&apos;.png">
 
 
 <link rel="stylesheet" href="/assets-dev/styles/main.css">
