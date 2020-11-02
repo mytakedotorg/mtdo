@@ -84,8 +84,7 @@ $document-margin-top: 0px;
   width: 100%;
 }
 .document__text--selected {
-  color: palette(document, text--highlight);
-  font-weight: 700;
+  background: palette(document, text--highlight-bg);
 }
 .document__button {
   @include button;
