@@ -204,7 +204,7 @@ export function turnToCut(
 
 interface SeachHitContent {
   text: string;
-  isHighlighted: boolean;
+  highlightIdx: number;
 }
 
 export function getHighlightedContent(
@@ -218,7 +218,7 @@ export function getHighlightedContent(
   if (maxLength && videoTurn.cut[1] - videoTurn.cut[0] > maxLength) {
     turnContent = abbreviate(turnContent, maxLength + contentStartIdx);
   }
-  videoTurn.bold?.forEach((highlight) => {
+  videoTurn.highlight?.forEach((highlight) => {
     const textBeforeHighlight = turnContent.substring(
       contentStartIdx,
       highlight[0]
@@ -227,13 +227,13 @@ export function getHighlightedContent(
     if (textBeforeHighlight) {
       searchHitContents.push({
         text: textBeforeHighlight,
-        isHighlighted: false,
+        highlightIdx: -1,
       });
     }
     if (textOfHighlight) {
       searchHitContents.push({
         text: textOfHighlight,
-        isHighlighted: true,
+        highlightIdx: highlight[2],
       });
     }
     contentStartIdx = highlight[1];
@@ -245,7 +245,7 @@ export function getHighlightedContent(
   if (textAfterAllHighlights) {
     searchHitContents.push({
       text: textAfterAllHighlights,
-      isHighlighted: false,
+      highlightIdx: -1,
     });
   }
   return searchHitContents;

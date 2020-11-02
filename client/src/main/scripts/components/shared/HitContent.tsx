@@ -39,11 +39,18 @@ const HitContent: React.FC<HitContentProps> = ({
     <p className={className}>
       {getHighlightedContent(videoTurn, videoFact, maxLength).map(
         (hitContent, index) => {
-          return hitContent.isHighlighted ? (
-            <strong key={index}>{hitContent.text}</strong>
-          ) : (
-            hitContent.text
-          );
+          if (hitContent.highlightIdx >= 0) {
+            return (
+              <span
+                key={index}
+                className={`ngram-term-bg-${hitContent.highlightIdx}`}
+              >
+                {hitContent.text}
+              </span>
+            );
+          } else {
+            return <span key={index}>{hitContent.text}</span>;
+          }
         }
       )}
     </p>
