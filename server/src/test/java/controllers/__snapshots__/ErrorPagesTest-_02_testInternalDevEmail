@@ -15,12 +15,10 @@
   env.locals.contextPath=
   env.locals.socialEmbed_scripts=&lt;script type=&quot;text/javascript&quot; src=&quot;https://unpkg.com/react@16.14.0/umd/react.development.js&quot; integrity=&quot;sha384-ZHBAhj6mPF2wke1Ie6UN+ozxCHBXIuRrcszqkblgAqCrZtYGI3zZYn4SsU+ozss4&quot; crossorigin=&quot;anonymous&quot;&gt;&lt;/script&gt;
 &lt;script type=&quot;text/javascript&quot; src=&quot;https://unpkg.com/react-dom@16.14.0/umd/react-dom.development.js&quot; integrity=&quot;sha384-UF3Y7EPKNtk5UdDfdOsYkTveq+O88MpRjzgK/+0lX4OwcOigCaCVGBJJJ86i/6dc&quot; crossorigin=&quot;anonymous&quot;&gt;&lt;/script&gt;
-&lt;script type=&quot;text/javascript&quot; src=&quot;https://unpkg.com/d3@5.16.0/dist/d3.js&quot; integrity=&quot;sha384-qbNa7U27VV0Cghe/43y8zEMkmA5M4VxV6MI0k0vdVJKTrBoT2SnBqwccpD0vX+Is&quot; crossorigin=&quot;anonymous&quot;&gt;&lt;/script&gt;
 &lt;script type=&quot;text/javascript&quot; src=&quot;/assets-dev/scripts/socialEmbed.bundle.js&quot;&gt;&lt;/script&gt;
   env.locals.reactApp_scripts=&lt;script type=&quot;text/javascript&quot; src=&quot;https://unpkg.com/react@16.14.0/umd/react.development.js&quot; integrity=&quot;sha384-ZHBAhj6mPF2wke1Ie6UN+ozxCHBXIuRrcszqkblgAqCrZtYGI3zZYn4SsU+ozss4&quot; crossorigin=&quot;anonymous&quot;&gt;&lt;/script&gt;
 &lt;script type=&quot;text/javascript&quot; src=&quot;https://unpkg.com/react-dom@16.14.0/umd/react-dom.development.js&quot; integrity=&quot;sha384-UF3Y7EPKNtk5UdDfdOsYkTveq+O88MpRjzgK/+0lX4OwcOigCaCVGBJJJ86i/6dc&quot; crossorigin=&quot;anonymous&quot;&gt;&lt;/script&gt;
 &lt;script type=&quot;text/javascript&quot; src=&quot;https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.js&quot; integrity=&quot;sha384-2SbSbzJpoRtEf9BFT5KZAulTQs1JBK0XiQr38Mh0w8+wH0Ubuam+p5csoi5zCV7T&quot; crossorigin=&quot;anonymous&quot;&gt;&lt;/script&gt;
-&lt;script type=&quot;text/javascript&quot; src=&quot;https://unpkg.com/d3@5.16.0/dist/d3.js&quot; integrity=&quot;sha384-qbNa7U27VV0Cghe/43y8zEMkmA5M4VxV6MI0k0vdVJKTrBoT2SnBqwccpD0vX+Is&quot; crossorigin=&quot;anonymous&quot;&gt;&lt;/script&gt;
 &lt;script type=&quot;text/javascript&quot; src=&quot;/assets-dev/scripts/app.bundle.js&quot;&gt;&lt;/script&gt;
   env.locals.base_styles=&lt;link rel=&quot;stylesheet&quot; href=&quot;/assets-dev/styles/main.css&quot;&gt;
   env.locals.reactApp_styles=&lt;link rel=&quot;stylesheet&quot; href=&quot;/assets-dev/styles/main.css&quot;&gt;

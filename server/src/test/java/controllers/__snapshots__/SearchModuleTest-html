@@ -25,21 +25,21 @@
 <meta name="author" content="MyTake.org">
 
 	<meta content="article" property="og:type">
-<meta content="&quot;cuba&quot; in presidential debates" property="og:title">
-<meta content="Every single time that &quot;cuba&quot; was said in a presidential debate, ever." property="og:description">
-<meta content="Every single time that &quot;cuba&quot; was said in a presidential debate, ever." property="og:image:alt">
-<meta content="https://mytake.org/search?q=cuba" property="og:url">
-<meta content="https://node.mytake.org/static/social-image/~kind:searchResults,factsetHash:E74aoUY,query:'cuba'.png" property="og:image">
-<meta content="https://node.mytake.org/static/social-image/~kind:searchResults,factsetHash:E74aoUY,query:'cuba'.png" property="og:image:secure_url">
-<meta content="image/png" property="og:image:type">
-<meta content="1200" property="og:image:width">
-<meta content="628" property="og:image:height">
-<meta content="summary_large_image" name="twitter:card">
-<meta content="@mytakedotorg" name="twitter:site">
-<meta content="&quot;cuba&quot; in presidential debates" property="twitter:title">
-<meta content="Every single time that &quot;cuba&quot; was said in a presidential debate, ever." property="twitter:description">
-<meta content="Every single time that &quot;cuba&quot; was said in a presidential debate, ever." property="twitter:image:alt">
-<meta content="https://node.mytake.org/static/social-image-twitter/~kind:searchResults,factsetHash:E74aoUY,query:cuba.png" name="twitter:image">
+<meta property="og:title" content="U.S. Presidential Debates | cuba">
+<meta property="og:description" content="Every time it was said in a televised presidential debate, ever.">
+<meta property="og:image:alt" content="Every time it was said in a televised presidential debate, ever.">
+<meta property="og:url" content="https://mytake.org/search?q=cuba">
+<meta property="og:image" content="https://node.mytake.org/static/social-image/~kind:searchResults,factsetHash:E74aoUY,query:&apos;cuba&apos;.png">
+<meta property="og:image:secure_url" content="https://node.mytake.org/static/social-image/~kind:searchResults,factsetHash:E74aoUY,query:&apos;cuba&apos;.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="628">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@mytakedotorg">
+<meta name="twitter:title" content="U.S. Presidential Debates | cuba">
+<meta name="twitter:description" content="Every time it was said in a televised presidential debate, ever.">
+<meta name="twitter:image:alt" content="Every time it was said in a televised presidential debate, ever.">
+<meta name="twitter:image" content="https://node.mytake.org/static/social-image-twitter/~kind:searchResults,factsetHash:E74aoUY,query:&apos;cuba&apos;.png">
 
 
 <link rel="stylesheet" href="/assets-dev/styles/main.css">
@@ -91,7 +91,6 @@ window.mytake = {
 <script type="text/javascript" src="https://unpkg.com/react@16.14.0/umd/react.development.js" integrity="sha384-ZHBAhj6mPF2wke1Ie6UN+ozxCHBXIuRrcszqkblgAqCrZtYGI3zZYn4SsU+ozss4" crossorigin="anonymous"></script>
 <script type="text/javascript" src="https://unpkg.com/react-dom@16.14.0/umd/react-dom.development.js" integrity="sha384-UF3Y7EPKNtk5UdDfdOsYkTveq+O88MpRjzgK/+0lX4OwcOigCaCVGBJJJ86i/6dc" crossorigin="anonymous"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.js" integrity="sha384-2SbSbzJpoRtEf9BFT5KZAulTQs1JBK0XiQr38Mh0w8+wH0Ubuam+p5csoi5zCV7T" crossorigin="anonymous"></script>
-<script type="text/javascript" src="https://unpkg.com/d3@5.16.0/dist/d3.js" integrity="sha384-qbNa7U27VV0Cghe/43y8zEMkmA5M4VxV6MI0k0vdVJKTrBoT2SnBqwccpD0vX+Is" crossorigin="anonymous"></script>
 <script type="text/javascript" src="/assets-dev/scripts/app.bundle.js"></script>
 </body>
 </html>

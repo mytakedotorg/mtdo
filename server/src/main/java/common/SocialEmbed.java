@@ -153,27 +153,55 @@ public class SocialEmbed {
 	private static final String HTTP_LOCAL_DEV = "http://localhost:" + NODE_DEV_PORT;
 
 	public static SocialEmbed search(String query) {
-		String title = "\"" + query + "\" in presidential debates";
-		String desc = "Every single time that \"" + query + "\" was said in a presidential debate, ever.";
-		String imageAlt = desc;
-		String risonQuery = "'" + UrlEscapers.urlFragmentEscaper().escape(query) + "'";
-		// copied from SocialHeader.spec.tsx
-		return new SocialEmbed(
-				"<meta content=\"article\" property=\"og:type\">\n" +
-						"<meta content=\"" + XmlEscapers.xmlAttributeEscaper().escape(title) + "\" property=\"og:title\">\n" +
-						"<meta content=\"" + XmlEscapers.xmlAttributeEscaper().escape(desc) + "\" property=\"og:description\">\n" +
-						"<meta content=\"" + XmlEscapers.xmlAttributeEscaper().escape(imageAlt) + "\" property=\"og:image:alt\">\n" +
-						"<meta content=\"https://mytake.org/search?q=" + UrlEscapers.urlFormParameterEscaper().escape(query) + "\" property=\"og:url\">\n" +
-						"<meta content=\"https://node.mytake.org/static/social-image/~kind:searchResults,factsetHash:E74aoUY,query:" + risonQuery + ".png\" property=\"og:image\">\n" +
-						"<meta content=\"https://node.mytake.org/static/social-image/~kind:searchResults,factsetHash:E74aoUY,query:" + risonQuery + ".png\" property=\"og:image:secure_url\">\n" +
-						"<meta content=\"image/png\" property=\"og:image:type\">\n" +
-						"<meta content=\"1200\" property=\"og:image:width\">\n" +
-						"<meta content=\"628\" property=\"og:image:height\">\n" +
-						"<meta content=\"summary_large_image\" name=\"twitter:card\">\n" +
-						"<meta content=\"@mytakedotorg\" name=\"twitter:site\">\n" +
-						"<meta content=\"" + XmlEscapers.xmlAttributeEscaper().escape(title) + "\" property=\"twitter:title\">\n" +
-						"<meta content=\"" + XmlEscapers.xmlAttributeEscaper().escape(desc) + "\" property=\"twitter:description\">\n" +
-						"<meta content=\"" + XmlEscapers.xmlAttributeEscaper().escape(imageAlt) + "\" property=\"twitter:image:alt\">\n" +
-						"<meta content=\"https://node.mytake.org/static/social-image-twitter/~kind:searchResults,factsetHash:E74aoUY,query:" + query + ".png\" name=\"twitter:image\">\n");
+		SearchImage img = new SearchImage(query);
+		img.title = "U.S. Presidential Debates | " + query;
+		img.desc = "Every time it was said in a televised presidential debate, ever.";
+		img.imageAlt = img.desc;
+		img.url = "https://mytake.org/search?q=" + UrlEscapers.urlFormParameterEscaper().escape(query);
+		return img.result();
+	}
+
+	public static SocialEmbed homepage() {
+		SearchImage img = new SearchImage("gun control, second amendment");
+		img.title = "MyTake.org | True, unbiased, and in context.";
+		img.desc = "An open source search engine for unbiased primary sources.";
+		img.imageAlt = "A graph over time of how many times \"gun control\" and \"second amendment\" have been said in the presidential debates.";
+		img.url = "https://mytake.org";
+		return img.result();
+	}
+
+	private static class SearchImage {
+		private String url;
+		private String title;
+		private String desc;
+		private String imageAlt;
+		private final String query;
+
+		public SearchImage(String query) {
+			this.query = query;
+		}
+
+		public SocialEmbed result() {
+			String risonQuery = "'" + UrlEscapers.urlFragmentEscaper().escape(query) + "'";
+			String imageUrl = "https://node.mytake.org/static/social-image/~kind:searchResults,factsetHash:E74aoUY,query:" + risonQuery + ".png";
+			String imageTwitterUrl = "https://node.mytake.org/static/social-image-twitter/~kind:searchResults,factsetHash:E74aoUY,query:" + risonQuery + ".png";
+			return new SocialEmbed(
+					"<meta content=\"article\" property=\"og:type\">\n" +
+							"<meta property=\"og:title\" content=\"" + XmlEscapers.xmlAttributeEscaper().escape(title) + "\">\n" +
+							"<meta property=\"og:description\" content=\"" + XmlEscapers.xmlAttributeEscaper().escape(desc) + "\">\n" +
+							"<meta property=\"og:image:alt\" content=\"" + XmlEscapers.xmlAttributeEscaper().escape(imageAlt) + "\">\n" +
+							"<meta property=\"og:url\" content=\"" + url + "\">\n" +
+							"<meta property=\"og:image\" content=\"" + XmlEscapers.xmlAttributeEscaper().escape(imageUrl) + "\">\n" +
+							"<meta property=\"og:image:secure_url\" content=\"" + XmlEscapers.xmlAttributeEscaper().escape(imageUrl) + "\">\n" +
+							"<meta property=\"og:image:type\" content=\"image/png\">\n" +
+							"<meta property=\"og:image:width\" content=\"1200\">\n" +
+							"<meta property=\"og:image:height\" content=\"628\">\n" +
+							"<meta name=\"twitter:card\" content=\"summary_large_image\">\n" +
+							"<meta name=\"twitter:site\" content=\"@mytakedotorg\">\n" +
+							"<meta name=\"twitter:title\" content=\"" + XmlEscapers.xmlAttributeEscaper().escape(title) + "\">\n" +
+							"<meta name=\"twitter:description\" content=\"" + XmlEscapers.xmlAttributeEscaper().escape(desc) + "\">\n" +
+							"<meta name=\"twitter:image:alt\" content=\"" + XmlEscapers.xmlAttributeEscaper().escape(imageAlt) + "\">\n" +
+							"<meta name=\"twitter:image\" content=\"" + XmlEscapers.xmlAttributeEscaper().escape(imageTwitterUrl) + "\">\n");
+		}
 	}
 }

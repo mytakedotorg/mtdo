@@ -182,7 +182,6 @@ function webpackCfg(mode) {
       react: "React",
       "react-dom": "ReactDOM",
       vis: "vis",
-      d3: "d3",
     },
   };
 }
