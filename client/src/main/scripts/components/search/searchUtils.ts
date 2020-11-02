@@ -17,7 +17,7 @@
  *
  * You can contact us at team@mytake.org
  */
-export type Highlight = [start: number, end: number, searchterm: string];
+export type Highlight = [start: number, end: number, searchterm: number];
 
 export interface MultiHighlight {
   cut: [number, number];
@@ -36,6 +36,7 @@ function cleanupRegex(str: string): string {
 
 /** This class finds matches within a turn, returning them as TurnWithResults. */
 export class TurnFinder {
+  terms: string[];
   regexInclude: RegExp;
   regexIncludePerTerm: [RegExp, string][] = [];
   regexExclude?: RegExp;
@@ -43,16 +44,17 @@ export class TurnFinder {
   constructor(searchQuery: string) {
     let include = "";
     let exclude = "";
-    for (const clause of searchQuery.toLowerCase().split(",")) {
-      const trimmed = clause.trim();
-      if (trimmed.length == 0) {
-        continue;
-      }
-      if (trimmed.charAt(0) === "-") {
-        exclude = exclude + "|" + cleanupRegex(trimmed.substr(1));
+    this.terms = searchQuery
+      .toLowerCase()
+      .split(",")
+      .map((str) => str.trim())
+      .filter((str) => str.length > 0);
+    for (const term of this.terms) {
+      if (term.charAt(0) === "-") {
+        exclude = exclude + "|" + cleanupRegex(term.substr(1));
       } else {
-        const toInclude = cleanupRegex(trimmed);
-        this.regexIncludePerTerm.push([new RegExp(toInclude, "ig"), trimmed]);
+        const toInclude = cleanupRegex(term);
+        this.regexIncludePerTerm.push([new RegExp(toInclude, "ig"), term]);
         include = include + "|" + toInclude;
       }
     }
@@ -74,9 +76,12 @@ export class TurnFinder {
         return regexAndTerm[0].test(foundHunk);
       });
       if (foundTerm) {
+        const termIdx = this.terms.indexOf(foundTerm[1]);
+        if (termIdx == -1) {
+          console.error("Unexpected term " + foundTerm[1]);
+        }
         const lastIndex = found.index + foundHunk.length;
-
-        foundOffsets.push([found.index, lastIndex, foundTerm[1]]);
+        foundOffsets.push([found.index, lastIndex, termIdx]);
         this.regexInclude.lastIndex = lastIndex + 1;
         found = this.regexInclude.exec(turnContent);
       }

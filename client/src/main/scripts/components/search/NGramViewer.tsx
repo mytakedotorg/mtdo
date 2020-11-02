@@ -278,7 +278,7 @@ export function getNumberOfHitsPerYear(
 ): HitsPerYearList {
   const terms = getSearchTerms(searchResult.searchQuery);
   const hitsPerYear: HitsPerYear[] = ALL_DEBATE_YEARS.flatMap((year) =>
-    terms.map((searchTerm) => ({
+    terms.map((searchTerm, index) => ({
       year,
       hitCount: searchResult.factHits.flatMap((hit) => {
         return hit.searchHits
@@ -287,7 +287,7 @@ export function getNumberOfHitsPerYear(
           })
           .flatMap((sh) => {
             return sh.highlightOffsets.filter((ho) => {
-              return ho[2] === searchTerm.toLowerCase();
+              return ho[2] === index;
             });
           });
       }).length,
