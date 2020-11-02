@@ -83,7 +83,7 @@ const SharePreview: React.FC<SharePreviewProps> = ({
               <HitContent
                 className="share-preview__text share-preview__text--app"
                 maxLength={200}
-                videoTurn={{...videoTurn, highlight: undefined}}
+                videoTurn={{ ...videoTurn, highlight: undefined }}
                 videoFact={videoFact}
               />
             </div>

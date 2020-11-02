@@ -64,15 +64,7 @@ exports[`SharePreview renders 1`] = `
             className="share-preview__text share-preview__text--app"
           >
             <span>
-              The 
-            </span>
-            <span
-              className="ngram-term-bg-0"
-            >
-              television
-            </span>
-            <span>
-               and radio stations of the United States and their affiliated stations are proud to provide facilities for a discussion of issues in the current political campaign by the two major...
+              The television and radio stations of the United States and their affiliated stations are proud to provide facilities for a discussion of issues in the current political campaign by the two major...
             </span>
           </p>
         </div>
