@@ -33,3 +33,10 @@ export const FACTSET_BY_HASH: FactsetByHash = {
     indexBlobSha: "eda4841851a8236ed4ae534eb6b44c421f5a80bf",
   },
 };
+
+export const DEBATES_HASH = "E74aoUY";
+
+export function factsetHash(factHash: string): string {
+  const idx = factHash.indexOf("=");
+  return factHash.substr(0, idx);
+}

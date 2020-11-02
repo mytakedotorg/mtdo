@@ -27,6 +27,11 @@ import { Search } from "../../java2ts/Search";
 import { get } from "../../network";
 import { TurnFinder } from "./searchUtils";
 import { hash } from "./search-index.json";
+import {
+  FACTSET_BY_HASH,
+  factsetHash,
+  DEBATES_HASH,
+} from "../../common/factsets";
 
 export class SearchResult {
   constructor(
@@ -58,8 +63,11 @@ export async function search(
   const factResults = await get<Search.FactResultList>(
     `${searchDomain}${SEARCH_ROUTE}${encodeURIComponent(searchQuery)}`
   );
+  const byFactset = groupBy(factResults.facts, (fact) =>
+    factsetHash(fact.hash)
+  );
   const facts = await Foundation.fetchAll(
-    factResults.facts.map((fact) => fact.hash)
+    byFactset.get(DEBATES_HASH)!.map((fact) => fact.hash)
   );
   return _searchImpl(
     new _SearchWithData(searchQuery, factResults.facts, facts, mode)
