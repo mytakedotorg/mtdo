@@ -48,7 +48,7 @@ test("VideoResultPreview containing", () => {
     fact: "factHash",
     turn: 0,
     cut: [14, 239],
-    bold: [[18, 28]],
+    highlight: [[18, 28, 0]],
   };
   const bookmark: Bookmark = {
     savedAt: new Date(),
@@ -74,7 +74,7 @@ test("VideoResultPreview containing - not bookmarked", () => {
     fact: "factHash",
     turn: 0,
     cut: [14, 239],
-    bold: [[18, 28]],
+    highlight: [[18, 28, 0]],
   };
   const bookmark: Bookmark = {
     savedAt: new Date(),
@@ -100,7 +100,7 @@ test("VideoResultPreview before and after", () => {
     fact: "factHash",
     turn: 0,
     cut: [0, 276],
-    bold: [[18, 28]],
+    highlight: [[18, 28, 0]],
   };
   const bookmark: Bookmark = {
     savedAt: new Date(),

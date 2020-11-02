@@ -29,7 +29,7 @@ test("SharePreview renders", () => {
     fact: "factHash",
     turn: 0,
     cut: [14, 239],
-    bold: [[18, 28]],
+    highlight: [[18, 28, 0]],
   };
   const tree = renderer
     .create(
