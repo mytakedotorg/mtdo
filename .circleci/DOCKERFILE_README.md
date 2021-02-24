@@ -9,6 +9,10 @@ sudo docker push nedtwigg/testrunner:${VERSION}
 ```
 
 # Changelog
+## [1.4.0] - 2021-02-23
+### Changed
+- from `cimg/openjdk:8.0.262-node` to `15.0.1-node`
+
 ## [1.3.1] - 2020-08-20
 ### Fixed
 - headless Chrome was missing `libgbm1`
