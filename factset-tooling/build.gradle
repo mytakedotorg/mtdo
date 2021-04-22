@@ -51,6 +51,9 @@ tasks.register('syncClientInterfaceJava2ts', Sync) {
 tasks.named('compileJava') {
 	dependsOn 'syncClientInterfaceJava2ts'
 }
+tasks.named('spotlessJava') {
+	dependsOn 'syncClientInterfaceJava2ts'
+}
 tasks.named('eclipse') {
 	dependsOn 'syncClientInterfaceJava2ts'
 }
