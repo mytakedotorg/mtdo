@@ -25,7 +25,7 @@
       }
     }
   ],
-  "stack": "heroku-18",
+  "stack": "heroku-20",
   "buildpacks": [
     { "url": "heroku/jvm" },
     { "url": "https://github.com/heroku/heroku-buildpack-gradle.git" }
