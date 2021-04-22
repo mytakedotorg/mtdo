@@ -2,12 +2,6 @@ package org.mytake.gradle.flywayjooq;
 
 import java.io.File;
 
-import javax.xml.XMLConstants;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.Marshaller;
-import javax.xml.validation.Schema;
-import javax.xml.validation.SchemaFactory;
-
 import org.gradle.api.DefaultTask;
 import org.gradle.api.tasks.CacheableTask;
 import org.gradle.api.tasks.Input;
@@ -15,7 +9,6 @@ import org.gradle.api.tasks.Internal;
 import org.gradle.api.tasks.OutputDirectory;
 import org.gradle.api.tasks.OutputFile;
 import org.gradle.api.tasks.TaskAction;
-import org.jooq.Constants;
 import org.jooq.codegen.GenerationTool;
 import org.jooq.meta.jaxb.Configuration;
 import org.jooq.meta.jaxb.Generator;
@@ -68,18 +61,6 @@ public class JooqTask extends DefaultTask {
 		} finally {
 			generatorConfig.getTarget().setDirectory(targetDir);
 		}
-	}
-
-	static void writeConfig(Configuration jooqConfig, File configFile) throws Exception {
-		SchemaFactory sf = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-		Schema schema = sf.newSchema(GenerationTool.class.getResource("/xsd/" + Constants.XSD_CODEGEN));
-
-		JAXBContext ctx = JAXBContext.newInstance(Configuration.class);
-		Marshaller marshaller = ctx.createMarshaller();
-		marshaller.setSchema(schema);
-
-		configFile.getParentFile().mkdirs();
-		marshaller.marshal(jooqConfig, configFile);
 	}
 }
 
