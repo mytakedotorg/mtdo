@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2017-2020 MyTake.org, Inc.
+ * Copyright (C) 2017-2021 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -65,7 +65,7 @@ public abstract class CustomRockerTemplate extends RequestRockerTemplate {
 		if (input.isEmpty()) {
 			return input;
 		} else {
-			return input.substring(0, 1).toUpperCase(Locale.ROOT) + input.substring(1);
+			return input.substring(0, 1).toUpperCase(Locale.US) + input.substring(1);
 		}
 	}
 }

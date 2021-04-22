@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2018-2020 MyTake.org, Inc.
+ * Copyright (C) 2018-2021 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -88,7 +88,7 @@ public class Lucene implements AutoCloseable {
 		NextRequest(String q) {
 			String[] clausesRaw = q.split(",", -1);
 			for (String clause : clausesRaw) {
-				String trimmed = clause.trim().toLowerCase(Locale.ROOT);
+				String trimmed = clause.trim().toLowerCase(Locale.US);
 				if (trimmed.isEmpty()) {
 					continue;
 				}

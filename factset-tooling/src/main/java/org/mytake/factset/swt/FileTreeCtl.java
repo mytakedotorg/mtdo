@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2020 MyTake.org, Inc.
+ * Copyright (C) 2020-2021 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -228,7 +228,7 @@ class FileTreeCtl extends ControlWrapper.AroundControl<Composite> {
 		FILE, FOLDER;
 
 		void createChild(FileTreeCtl ctl, Path parent) {
-			String name = ctl.nameDialog("New " + name().toLowerCase(Locale.ROOT), "");
+			String name = ctl.nameDialog("New " + name().toLowerCase(Locale.US), "");
 			if (name == null) {
 				return;
 			}

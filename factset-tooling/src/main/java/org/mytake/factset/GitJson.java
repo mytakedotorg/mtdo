@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2020 MyTake.org, Inc.
+ * Copyright (C) 2020-2021 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -59,7 +59,7 @@ public class GitJson {
 
 	/** Slugifies the given string. */
 	public static String slugify(String input) {
-		return input.toLowerCase(Locale.ROOT)
+		return input.toLowerCase(Locale.US)
 				.replace(' ', '-') // replace spaces with hyphens
 				.replaceAll("[-]+", "-") // replace multiple hypens with a single hyphen
 				.replaceAll("[^\\w-]+", ""); // replace non-alphanumerics and non-hyphens

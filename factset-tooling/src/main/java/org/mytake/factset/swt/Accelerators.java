@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2011-2020 MyTake.org, Inc.
+ * Copyright (C) 2011-2021 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -110,7 +110,7 @@ public class Accelerators {
 			case SWT.ESC:			end = "Esc";			break;
 			case SWT.SPACE:			end = "Spacebar";		break;
 			default:
-				end = Character.toString((char) accelerator).toUpperCase(Locale.ROOT);
+				end = Character.toString((char) accelerator).toUpperCase(Locale.US);
 				break;
 			}
 			// spotless:on
