@@ -48,11 +48,19 @@ tasks.register('syncClientInterfaceJava2ts', Sync) {
 	from '../client-interface/src/main/java/java2ts'
 	into 'src/main/java/java2ts'
 }
-tasks.named('compileJava') {
-	dependsOn 'syncClientInterfaceJava2ts'
+for (name in [
+	'compileJava',
+	'spotlessJava',
+	'sourcesJar'
+]) {
+	tasks.named(name) {
+		dependsOn 'syncClientInterfaceJava2ts'
+	}
 }
-tasks.named('spotlessJava') {
-	dependsOn 'syncClientInterfaceJava2ts'
+afterEvaluate {
+	tasks.named('publishPluginJar') {
+		dependsOn 'syncClientInterfaceJava2ts'
+	}
 }
 tasks.named('eclipse') {
 	dependsOn 'syncClientInterfaceJava2ts'
