@@ -32,6 +32,8 @@ apply from: 干.file('spotless/java.gradle')
 apply from: 干.file('base/gradle-plugin.gradle')
 apply from: 干.file('base/maven.gradle')
 
+tasks.javadoc.enabled = false // due to Java 11
+
 spotless {
 	ratchetFrom 'origin/staging'
 }
