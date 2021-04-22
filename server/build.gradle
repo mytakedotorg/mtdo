@@ -4,6 +4,9 @@ plugins {
 }
 
 apply plugin: 'java'
+sourceCompatibility = 11
+targetCompatibility = 11
+
 apply plugin: 'com.diffplug.spotless'
 spotless {
 	ratchetFrom 'origin/staging'
