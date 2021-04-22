@@ -1,7 +1,7 @@
 if (!buildsrc.Env.isHeroku()) {
 	apply plugin: 'com.diffplug.oomph.ide'
 	oomphIde {
-		repoEclipse('4.16.0')
+		repoEclipseLatest()
 		jdt {}
 		splash rootProject.file('_imgs/logo_leaves.png')
 		style {
