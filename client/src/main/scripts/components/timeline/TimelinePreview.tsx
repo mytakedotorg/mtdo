@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2017-2020 MyTake.org, Inc.
+ * Copyright (C) 2017-2021 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -130,7 +130,7 @@ export default class TimelinePreview extends React.Component<
 
         const simpleRanges = getSimpleRangesFromHTMLRange(range, childNodes);
         const newNodes = highlightText(
-          [...this.props.nodes],
+          [...(this.props.nodes ?? [])],
           simpleRanges.charRange,
           this.handleSetClick
         );
