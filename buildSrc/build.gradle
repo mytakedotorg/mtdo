@@ -10,8 +10,7 @@ repositories {
 		}
 	}
 	maven {
-		url 'http://repository.jsweet.org/artifactory/libs-release-local'
-		allowInsecureProtocol true
+		url 'https://repository.jsweet.org/artifactory/libs-release-local'
 		content {
 			includeGroup 'org.jsweet'
 			includeGroup 'org.jsweet.ext'
@@ -27,7 +26,7 @@ new File(projectDir.parentFile, 'gradle.properties').withInputStream {
 
 dependencies {
 	// node.js
-	api 'com.github.eirslett:frontend-maven-plugin:1.10.0' // JitPack HEAD as of 04/23/2020
+	api 'com.github.eirslett:frontend-maven-plugin:1.11.3' // JitPack HEAD as of 04/23/2020
 	// https://github.com/palantir/docker-compose-rule
 	api "com.palantir.docker.compose:docker-compose-rule-core:${props.VER_PALANTIR_DOCKER_COMPOSE}"
 	api "com.palantir.docker.compose:docker-compose-rule-junit4:${props.VER_PALANTIR_DOCKER_COMPOSE}"
@@ -39,8 +38,8 @@ dependencies {
 	api "org.flywaydb:flyway-core:${props.VER_FLYWAY}"
 	// jsweet ts2java
 	implementation "com.jsoniter:jsoniter:${props.VER_JSONITER}"
-	implementation 'org.jsweet:jsweet-transpiler:2.3.9'
-	implementation files("${System.properties['java.home']}/../lib/tools.jar")
+	implementation 'org.jsweet:jsweet-transpiler:3.1.0'
+	//implementation files("${System.properties['java.home']}/../lib/tools.jar")
 	// java8 utilities
 	implementation 'com.diffplug.durian:durian-core:1.2.0'
 	// hashes folders into a single ObjectId

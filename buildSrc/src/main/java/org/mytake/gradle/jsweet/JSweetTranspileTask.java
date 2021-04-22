@@ -35,7 +35,6 @@ import org.gradle.api.tasks.Nested;
 import org.gradle.api.tasks.PathSensitive;
 import org.gradle.api.tasks.PathSensitivity;
 import org.gradle.api.tasks.TaskAction;
-import org.jsweet.JSweetConfig;
 import org.jsweet.transpiler.JSweetFactory;
 import org.jsweet.transpiler.JSweetProblem;
 import org.jsweet.transpiler.JSweetTranspiler;
@@ -78,7 +77,6 @@ public class JSweetTranspileTask extends DefaultTask {
 	@TaskAction
 	protected void transpile() throws IOException {
 		FileMisc.cleanDir(configuration.getTsOut());
-		JSweetConfig.initClassPath(System.getProperty("java.home"));
 
 		File tsOutputDir = configuration.getTsOut();
 		File jsOutputDir = null;
@@ -112,28 +110,28 @@ public class JSweetTranspileTask extends DefaultTask {
 
 			SourceFile[] sourceFiles = collectSourceFiles();
 
-			JSweetTranspiler transpiler = new JSweetTranspiler(baseDirectory, null, factory, workingDir, tsOutputDir,
-					jsOutputDir, null, classpath.getAsPath());
-			transpiler.setTscWatchMode(false);
+			try(JSweetTranspiler transpiler = new JSweetTranspiler(baseDirectory, null, factory, workingDir, tsOutputDir,
+					jsOutputDir, null, classpath.getAsPath())) {
+				transpiler.setTscWatchMode(false);
 
-			if (configuration.getTargetVersion() != null) {
-				transpiler.setEcmaTargetVersion(configuration.getTargetVersion());
-			}
-			if (configuration.getModule() != null) {
-				transpiler.setModuleKind(configuration.getModule());
-			}
-			if (configuration.isTsOnly() != null) {
-				transpiler.setGenerateJsFiles(!configuration.isTsOnly());
-			}
+				if (configuration.getTargetVersion() != null) {
+					transpiler.setEcmaTargetVersion(configuration.getTargetVersion());
+				}
+				if (configuration.getModule() != null) {
+					transpiler.setModuleKind(configuration.getModule());
+				}
+				if (configuration.isTsOnly() != null) {
+					transpiler.setGenerateJsFiles(!configuration.isTsOnly());
+				}
 
-			// make sure we use the npm that we intend
-			Project root = getProject().getRootProject();
-			Project client = root.project("client");
-			NodePlugin.Extension node = client.getExtensions().getByType(NodePlugin.Extension.class);
-			node.setup.start(client);
-			ProcessUtil.addExtraPath(new File(root.getBuildDir(), "node-install/node").getAbsolutePath());
-			transpiler.transpile(transpilationHandler, sourceFiles);
-
+				// make sure we use the npm that we intend
+				Project root = getProject().getRootProject();
+				Project client = root.project("client");
+				NodePlugin.Extension node = client.getExtensions().getByType(NodePlugin.Extension.class);
+				node.setup.start(client);
+				ProcessUtil.addExtraPath(new File(root.getBuildDir(), "node-install/node").getAbsolutePath());
+				transpiler.transpile(transpilationHandler, sourceFiles);
+			}
 			FileMisc.flatten(new File(configuration.getTsOut(), configuration.getTsOut().getName()));
 		} catch (NoClassDefFoundError e) {
 			transpilationHandler.report(JSweetProblem.JAVA_COMPILER_NOT_FOUND, null, JSweetProblem.JAVA_COMPILER_NOT_FOUND.getMessage());
