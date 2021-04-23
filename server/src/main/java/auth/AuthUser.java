@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2017-2020 MyTake.org, Inc.
+ * Copyright (C) 2017-2021 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -42,7 +42,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 import java2ts.LoginCookie;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import org.jooby.Cookie;
 import org.jooby.Mutant;
 import org.jooby.Registry;

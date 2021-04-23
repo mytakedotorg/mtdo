@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2020 MyTake.org, Inc.
+ * Copyright (C) 2020-2021 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -33,7 +33,7 @@ import com.diffplug.common.base.Preconditions;
 import java.nio.file.Path;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 public class LocatedException extends RuntimeException {
 	private static final long serialVersionUID = -275116929627441350L;

@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2017-2020 MyTake.org, Inc.
+ * Copyright (C) 2017-2021 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -38,7 +38,7 @@ import java2ts.DraftPost;
 import java2ts.DraftRev;
 import java2ts.PublishResult;
 import java2ts.Routes;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import org.jooby.Env;
 import org.jooby.Jooby;
 import org.jooby.Status;

@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2017 MyTake.org, Inc.
+ * Copyright (C) 2017-2021 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -28,8 +28,8 @@ import java.util.Set;
 import java2ts.Routes;
 import java2ts.TakeReactionJson;
 import java2ts.TakeReactionJson.UserState;
-import javax.annotation.Nullable;
 import org.assertj.core.api.Assertions;
+import org.jetbrains.annotations.Nullable;
 import org.junit.ClassRule;
 import org.junit.FixMethodOrder;
 import org.junit.Test;

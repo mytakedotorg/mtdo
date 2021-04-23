@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2020 MyTake.org, Inc.
+ * Copyright (C) 2020-2021 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -28,11 +28,11 @@ import java.net.BindException;
 import java.net.ServerSocket;
 import java.util.concurrent.TimeUnit;
 import java2ts.Routes;
-import javax.annotation.Nullable;
 import okhttp3.ConnectionPool;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Response;
+import org.jetbrains.annotations.Nullable;
 import org.jooby.Env;
 import org.jooby.Jooby;
 import views.SocialEmbed.socialImage;

@@ -49,7 +49,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java2ts.LoginApi;
 import java2ts.Routes;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import org.jooby.Cookie;
 import org.jooby.Request;
 import org.jooby.Response;
