@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2017-2020 MyTake.org, Inc.
+ * Copyright (C) 2017-2021 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -69,10 +69,9 @@ public class DiscourseAuth implements Jooby.Module {
 					.paramPathAndQuery(AuthModule.REDIRECT, req)
 					.build());
 		}
-		AccountRecord account;
-		try (DSLContext dsl = req.require(DSLContext.class)) {
-			account = DbMisc.fetchOne(dsl, ACCOUNT.ID, auth.id());
-		}
+
+		DSLContext dsl = req.require(DSLContext.class);
+		AccountRecord account = DbMisc.fetchOne(dsl, ACCOUNT.ID, auth.id());
 		// return the logged-in user
 		String name = Optional.ofNullable(account.getName()).orElse(account.getUsername());
 		return nonce

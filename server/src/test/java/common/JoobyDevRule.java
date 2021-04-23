@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2017-2020 MyTake.org, Inc.
+ * Copyright (C) 2017-2021 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -45,19 +45,17 @@ public class JoobyDevRule extends ExternalResource {
 
 	public static JoobyDevRule initialData() {
 		return new JoobyDevRule(Dev.unitTest(), app -> {
-			try (DSLContext dsl = app.dsl()) {
-				InitialData.init(dsl, app.app().require(Time.class));
-			}
+			DSLContext dsl = app.dsl();
+			InitialData.init(dsl, app.app().require(Time.class));
 		});
 	}
 
 	/** To prevent noise from moderator emails. */
 	public static JoobyDevRule initialDataNoMods() {
 		return new JoobyDevRule(Dev.unitTest(), app -> {
-			try (DSLContext dsl = app.dsl()) {
-				InitialData.init(dsl, app.app().require(Time.class));
-				dsl.deleteFrom(db.Tables.MODERATOR).execute();
-			}
+			DSLContext dsl = app.dsl();
+			InitialData.init(dsl, app.app().require(Time.class));
+			dsl.deleteFrom(db.Tables.MODERATOR).execute();
 		});
 	}
 
@@ -93,9 +91,7 @@ public class JoobyDevRule extends ExternalResource {
 	}
 
 	public <R extends TableRecord<R>> void insertRecord(R record) {
-		try (DSLContext dsl = dsl()) {
-			dsl.executeInsert(record);
-		}
+		dsl().executeInsert(record);
 	}
 
 	/** The count is the number of *sent* emails - one email sent to two people is still just one email. */

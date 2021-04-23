@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2017-2020 MyTake.org, Inc.
+ * Copyright (C) 2017-2021 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -41,20 +41,19 @@ public class Takes implements Jooby.Module {
 		env.router().get(USER_TITLE.pattern(), req -> {
 			String user = Text.lowercase(req, "user");
 			String title = Text.lowercase(req, "title");
-			try (DSLContext dsl = req.require(DSLContext.class)) {
-				TakepublishedRecord take = dsl.selectFrom(TAKEPUBLISHED)
-						// needs to be titleslug then userid for the postgres index to work
-						.where(TAKEPUBLISHED.TITLE_SLUG.eq(title))
-						.and(TAKEPUBLISHED.USER_ID.eq(dsl.select(ACCOUNT.ID)
-								.from(ACCOUNT)
-								.where(ACCOUNT.USERNAME.eq(user))))
-						.fetchOne();
-				if (take == null) {
-					throw RedirectException.notFoundError();
-				}
-				String imageUrl = take.getImageUrl();
-				return views.Takes.showTake.template(take, SocialEmbed.todo(imageUrl));
+			DSLContext dsl = req.require(DSLContext.class);
+			TakepublishedRecord take = dsl.selectFrom(TAKEPUBLISHED)
+					// needs to be titleslug then userid for the postgres index to work
+					.where(TAKEPUBLISHED.TITLE_SLUG.eq(title))
+					.and(TAKEPUBLISHED.USER_ID.eq(dsl.select(ACCOUNT.ID)
+							.from(ACCOUNT)
+							.where(ACCOUNT.USERNAME.eq(user))))
+					.fetchOne();
+			if (take == null) {
+				throw RedirectException.notFoundError();
 			}
+			String imageUrl = take.getImageUrl();
+			return views.Takes.showTake.template(take, SocialEmbed.todo(imageUrl));
 		});
 	}
 

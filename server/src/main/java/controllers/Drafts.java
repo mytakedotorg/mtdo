@@ -74,127 +74,122 @@ public class Drafts implements Jooby.Module {
 		// list drafts for the logged-in user
 		env.router().get(Routes.DRAFTS, req -> {
 			AuthUser user = AuthUser.auth(req);
-			try (DSLContext dsl = req.require(DSLContext.class)) {
-				// draftid, timestamp, title
-				Result<?> drafts = dsl.select(TAKEDRAFT.ID, TAKEREVISION.CREATED_AT, TAKEREVISION.TITLE)
-						.from(TAKEREVISION)
-						.join(TAKEDRAFT).on(TAKEDRAFT.LAST_REVISION.eq(TAKEREVISION.ID))
-						.where(TAKEDRAFT.USER_ID.eq(user.id()))
-						.orderBy(TAKEREVISION.CREATED_AT.desc(), TAKEDRAFT.ID.asc())
-						.fetch();
-				return views.Drafts.listDrafts.template(drafts);
-			}
+			DSLContext dsl = req.require(DSLContext.class);
+			// draftid, timestamp, title
+			Result<?> drafts = dsl.select(TAKEDRAFT.ID, TAKEREVISION.CREATED_AT, TAKEREVISION.TITLE)
+					.from(TAKEREVISION)
+					.join(TAKEDRAFT).on(TAKEDRAFT.LAST_REVISION.eq(TAKEREVISION.ID))
+					.where(TAKEDRAFT.USER_ID.eq(user.id()))
+					.orderBy(TAKEREVISION.CREATED_AT.desc(), TAKEDRAFT.ID.asc())
+					.fetch();
+			return views.Drafts.listDrafts.template(drafts);
 		});
 		env.router().post(Routes.DRAFTS_DELETE, req -> {
 			AuthUser user = AuthUser.auth(req);
 			DraftRev rev = req.body(DraftRev.class);
-			try (DSLContext dsl = req.require(DSLContext.class)) {
-				TakedraftRecord draft = draft(dsl, user, rev);
-				if (draft.getLastRevision().intValue() == rev.lastrevid) {
-					deleteDraft(dsl, draft);
-					return Status.OK;
-				} else {
-					throw RedirectException.notFoundError();
-				}
+			DSLContext dsl = req.require(DSLContext.class);
+			TakedraftRecord draft = draft(dsl, user, rev);
+			if (draft.getLastRevision().intValue() == rev.lastrevid) {
+				deleteDraft(dsl, draft);
+				return Status.OK;
+			} else {
+				throw RedirectException.notFoundError();
 			}
 		});
 		env.router().post(Routes.DRAFTS_SAVE, req -> {
 			AuthUser user = AuthUser.auth(req);
 			DraftPost post = req.body(DraftPost.class);
-			try (DSLContext dsl = req.require(DSLContext.class)) {
-				TakedraftRecord draft = draft(dsl, user, post.parentRev);
+			DSLContext dsl = req.require(DSLContext.class);
+			TakedraftRecord draft = draft(dsl, user, post.parentRev);
 
-				TakerevisionRecord rev = dsl.newRecord(TAKEREVISION);
-				rev.setTitle(post.title);
-				rev.setBlocks(JSONB.valueOf(post.blocks.toString()));
-				rev.setCreatedAt(req.require(Time.class).now());
-				rev.setCreatedIp(Ip.get(req));
+			TakerevisionRecord rev = dsl.newRecord(TAKEREVISION);
+			rev.setTitle(post.title);
+			rev.setBlocks(JSONB.valueOf(post.blocks.toString()));
+			rev.setCreatedAt(req.require(Time.class).now());
+			rev.setCreatedIp(Ip.get(req));
 
-				if (draft != null && draft.getLastRevision().intValue() == post.parentRev.lastrevid) {
-					// update an existing draft
-					rev.setParentId(draft.getLastRevision());
-					rev.insert();
-					draft.setLastRevision(rev.getId());
-					draft.update();
-					return postResponse(draft);
-				} else {
-					// insert a new draft, perhaps because of a conflict
-					// if there was a conflict, we can't maintain history
-					// because we would have problems when those revs are deleted
-					// when the article gets published
-					rev.insert();
-					TakedraftRecord newdraft = dsl.newRecord(TAKEDRAFT);
-					newdraft.setUserId(user.id());
-					newdraft.setLastRevision(rev.getId());
-					newdraft.insert();
-					return postResponse(newdraft);
-				}
+			if (draft != null && draft.getLastRevision().intValue() == post.parentRev.lastrevid) {
+				// update an existing draft
+				rev.setParentId(draft.getLastRevision());
+				rev.insert();
+				draft.setLastRevision(rev.getId());
+				draft.update();
+				return postResponse(draft);
+			} else {
+				// insert a new draft, perhaps because of a conflict
+				// if there was a conflict, we can't maintain history
+				// because we would have problems when those revs are deleted
+				// when the article gets published
+				rev.insert();
+				TakedraftRecord newdraft = dsl.newRecord(TAKEDRAFT);
+				newdraft.setUserId(user.id());
+				newdraft.setLastRevision(rev.getId());
+				newdraft.insert();
+				return postResponse(newdraft);
 			}
 		});
 		env.router().post(Routes.DRAFTS_PUBLISH, req -> {
 			// the user has to be logged-in
 			AuthUser user = AuthUser.auth(req);
 			DraftPost post = req.body(DraftPost.class);
-			try (DSLContext dsl = req.require(DSLContext.class)) {
-				String titleSlug = Text.slugify(post.title);
-				int numAlreadyPublished = dsl.fetchCount(dsl.selectFrom(TAKEPUBLISHED)
-						// needs to be titleslug then userid for the postgres index to work
-						.where(TAKEPUBLISHED.TITLE_SLUG.eq(titleSlug))
-						.and(TAKEPUBLISHED.USER_ID.eq(user.id())));
+			DSLContext dsl = req.require(DSLContext.class);
+			String titleSlug = Text.slugify(post.title);
+			int numAlreadyPublished = dsl.fetchCount(dsl.selectFrom(TAKEPUBLISHED)
+					// needs to be titleslug then userid for the postgres index to work
+					.where(TAKEPUBLISHED.TITLE_SLUG.eq(titleSlug))
+					.and(TAKEPUBLISHED.USER_ID.eq(user.id())));
 
-				PublishResult result = new PublishResult();
-				result.publishedUrl = Takes.userTitleSlug(user.username(), titleSlug);
-				if (numAlreadyPublished > 0) {
-					result.conflict = true;
-					return result;
-				} else {
-					result.conflict = false;
-				}
-
-				TakedraftRecord draft = draft(dsl, user, post.parentRev);
-				if (draft != null) {
-					deleteDraft(dsl, draft);
-				}
-
-				// create a published take
-				TakepublishedRecord published = dsl.newRecord(TAKEPUBLISHED);
-				published.setUserId(user.id());
-				published.setTitle(post.title);
-				published.setTitleSlug(titleSlug);
-				published.setBlocks(JSONB.valueOf(post.blocks.toString()));
-				published.setPublishedAt(req.require(Time.class).now());
-				published.setPublishedIp(Ip.get(req));
-				published.setImageUrl(post.imageUrl);
-				published.insert();
-
-				req.require(Mods.class).send(email -> email
-						.setSubject("New take '" + post.title + "' by " + user.username())
-						.setMsg(Mods.table(
-								"Username", user.username(),
-								"User id", Integer.toString(user.id()),
-								"Title", post.title,
-								"Take id", published.getId().toString(),
-								"Link", "https://mytake.org/" + user.username() + "/" + titleSlug)));
+			PublishResult result = new PublishResult();
+			result.publishedUrl = Takes.userTitleSlug(user.username(), titleSlug);
+			if (numAlreadyPublished > 0) {
+				result.conflict = true;
 				return result;
+			} else {
+				result.conflict = false;
 			}
+
+			TakedraftRecord draft = draft(dsl, user, post.parentRev);
+			if (draft != null) {
+				deleteDraft(dsl, draft);
+			}
+
+			// create a published take
+			TakepublishedRecord published = dsl.newRecord(TAKEPUBLISHED);
+			published.setUserId(user.id());
+			published.setTitle(post.title);
+			published.setTitleSlug(titleSlug);
+			published.setBlocks(JSONB.valueOf(post.blocks.toString()));
+			published.setPublishedAt(req.require(Time.class).now());
+			published.setPublishedIp(Ip.get(req));
+			published.setImageUrl(post.imageUrl);
+			published.insert();
+
+			req.require(Mods.class).send(email -> email
+					.setSubject("New take '" + post.title + "' by " + user.username())
+					.setMsg(Mods.table(
+							"Username", user.username(),
+							"User id", Integer.toString(user.id()),
+							"Title", post.title,
+							"Take id", published.getId().toString(),
+							"Link", "https://mytake.org/" + user.username() + "/" + titleSlug)));
+			return result;
 		});
 		// reopen an existing draft (MUST BE LAST so ":id" doesn't clobber other routes)
 		env.router().get(Routes.DRAFTS + "/:id", req -> {
 			AuthUser user = AuthUser.auth(req);
 			int draftId = req.param("id").intValue();
-			try (DSLContext dsl = req.require(DSLContext.class)) {
-				TakerevisionRecord rev = dsl.selectFrom(TAKEREVISION)
-						.where(TAKEREVISION.ID.eq(
-								dsl.select(TAKEDRAFT.LAST_REVISION)
-										.from(TAKEDRAFT)
-										.where(TAKEDRAFT.ID.eq(draftId))
-										.and(TAKEDRAFT.USER_ID.eq(user.id()))))
-						.fetchOne();
-				if (rev == null) {
-					throw RedirectException.notFoundError();
-				} else {
-					return views.Drafts.editTake.template(rev.getTitle(), rev.getBlocks(), draftId, rev.getId());
-				}
+			DSLContext dsl = req.require(DSLContext.class);
+			TakerevisionRecord rev = dsl.selectFrom(TAKEREVISION)
+					.where(TAKEREVISION.ID.eq(
+							dsl.select(TAKEDRAFT.LAST_REVISION)
+									.from(TAKEDRAFT)
+									.where(TAKEDRAFT.ID.eq(draftId))
+									.and(TAKEDRAFT.USER_ID.eq(user.id()))))
+					.fetchOne();
+			if (rev == null) {
+				throw RedirectException.notFoundError();
+			} else {
+				return views.Drafts.editTake.template(rev.getTitle(), rev.getBlocks(), draftId, rev.getId());
 			}
 		});
 	}

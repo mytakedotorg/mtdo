@@ -62,9 +62,8 @@ public class UsernameForm extends PostForm<UsernameForm> {
 		if (auth.username() != null) {
 			alreadyHasUsername = auth.username();
 		} else {
-			try (DSLContext dsl = req.require(DSLContext.class)) {
-				alreadyHasUsername = DbMisc.fetchOne(dsl, ACCOUNT.ID, auth.id(), ACCOUNT.USERNAME);
-			}
+			DSLContext dsl = req.require(DSLContext.class);
+			alreadyHasUsername = DbMisc.fetchOne(dsl, ACCOUNT.ID, auth.id(), ACCOUNT.USERNAME);
 		}
 		if (alreadyHasUsername != null) {
 			builder.addError(USERNAME, "You already have a username.");
@@ -82,19 +81,18 @@ public class UsernameForm extends PostForm<UsernameForm> {
 		AuthUser auth = AuthUser.auth(req);
 		validateFormat(retry);
 		if (retry.noErrors()) {
-			try (DSLContext dsl = req.require(DSLContext.class)) {
-				String typoHard = validateTypoHardened(dsl, retry);
-				if (retry.noErrors()) {
-					dsl.update(ACCOUNT)
-							.set(ACCOUNT.USERNAME, retry.value(USERNAME))
-							.set(ACCOUNT.USERNAME_TYPOHARD, typoHard)
-							// ACCOUNT.USERNAME.isNull() functions to make this atomic
-							.where(ACCOUNT.ID.eq(auth.id()).and(ACCOUNT.USERNAME.isNull()))
-							.execute();
-					String redirect = AuthModule.REDIRECT.parseOrDefault(req, REDIRECT_DEFAULT);
-					AccountRecord account = DbMisc.fetchOne(dsl, ACCOUNT.ID, auth.id());
-					return ValidateResult.redirect(redirect, AuthUser.login(account, req));
-				}
+			DSLContext dsl = req.require(DSLContext.class);
+			String typoHard = validateTypoHardened(dsl, retry);
+			if (retry.noErrors()) {
+				dsl.update(ACCOUNT)
+						.set(ACCOUNT.USERNAME, retry.value(USERNAME))
+						.set(ACCOUNT.USERNAME_TYPOHARD, typoHard)
+						// ACCOUNT.USERNAME.isNull() functions to make this atomic
+						.where(ACCOUNT.ID.eq(auth.id()).and(ACCOUNT.USERNAME.isNull()))
+						.execute();
+				String redirect = AuthModule.REDIRECT.parseOrDefault(req, REDIRECT_DEFAULT);
+				AccountRecord account = DbMisc.fetchOne(dsl, ACCOUNT.ID, auth.id());
+				return ValidateResult.redirect(redirect, AuthUser.login(account, req));
 			}
 		}
 		return retry;

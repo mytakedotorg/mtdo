@@ -173,11 +173,10 @@ public class AuthUser {
 		if (!user.confirmed) {
 			// if a user has an unconfirmed auth cookie, and the user in question
 			// authenticates then we need to kick the unauthenticated user out
-			try (DSLContext dsl = req.require(DSLContext.class)) {
-				boolean isConfirmedNow = DbMisc.fetchOne(dsl, ACCOUNT.ID, userId, ACCOUNT.CONFIRMED_AT) != null;
-				if (isConfirmedNow) {
-					throw new RefreshMightFix("Your login timed out.");
-				}
+			DSLContext dsl = req.require(DSLContext.class);
+			boolean isConfirmedNow = DbMisc.fetchOne(dsl, ACCOUNT.ID, userId, ACCOUNT.CONFIRMED_AT) != null;
+			if (isConfirmedNow) {
+				throw new RefreshMightFix("Your login timed out.");
 			}
 		}
 		return user;

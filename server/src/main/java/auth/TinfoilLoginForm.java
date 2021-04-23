@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2018-2020 MyTake.org, Inc.
+ * Copyright (C) 2018-2021 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -47,23 +47,23 @@ public class TinfoilLoginForm extends PostForm<TinfoilLoginForm> {
 	@Override
 	protected ValidateResult<TinfoilLoginForm> validate(Request req, Sensitive<TinfoilLoginForm> fromUser) {
 		String username = fromUser.value(USERNAME);
-		try (DSLContext dsl = req.require(DSLContext.class)) {
-			AccountRecord account = dsl.selectFrom(ACCOUNT)
-					.where(ACCOUNT.USERNAME.eq(username))
-					.fetchOne();
-			if (account == null) {
-				throw RedirectException.notFoundError();
-			}
-			Algorithm algorithm = req.require(Algorithm.class);
-			byte[] content = (username + "|" + account.getEmail()).getBytes(StandardCharsets.UTF_8);
-			@SuppressWarnings("deprecation")
-			byte[] signature = algorithm.sign(content);
-			String password = Base64.getEncoder().encodeToString(signature);
-			if (fromUser.value(PASSWORD).equals(password)) {
-				return ValidateResult.redirect(HomeFeed.URL, AuthUser.login(account, req));
-			} else {
-				throw RedirectException.notFoundError();
-			}
+		DSLContext dsl = req.require(DSLContext.class);
+		AccountRecord account = dsl.selectFrom(ACCOUNT)
+				.where(ACCOUNT.USERNAME.eq(username))
+				.fetchOne();
+		if (account == null) {
+			throw RedirectException.notFoundError();
+		}
+		Algorithm algorithm = req.require(Algorithm.class);
+		byte[] content = (username + "|" + account.getEmail()).getBytes(StandardCharsets.UTF_8);
+		@SuppressWarnings("deprecation")
+		byte[] signature = algorithm.sign(content);
+		String password = Base64.getEncoder().encodeToString(signature);
+		if (fromUser.value(PASSWORD).equals(password)) {
+			return ValidateResult.redirect(HomeFeed.URL, AuthUser.login(account, req));
+		} else {
+			throw RedirectException.notFoundError();
 		}
 	}
+
 }

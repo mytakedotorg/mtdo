@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2020 MyTake.org, Inc.
+ * Copyright (C) 2020-2021 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -28,19 +28,15 @@ import org.jooq.TableRecord;
 
 public class DbMisc {
 	public static <T> T transactionFunc(Request req, Throwing.Function<DSLContext, T> transaction) {
-		try (DSLContext dslOuter = req.require(DSLContext.class)) {
-			return dslOuter.transactionResult(conf -> {
-				return transaction.apply(conf.dsl());
-			});
-		}
+		return req.require(DSLContext.class).transactionResult(conf -> {
+			return transaction.apply(conf.dsl());
+		});
 	}
 
 	public static void transaction(Request req, Throwing.Consumer<DSLContext> transaction) {
-		try (DSLContext dslOuter = req.require(DSLContext.class)) {
-			dslOuter.transaction(conf -> {
-				transaction.accept(conf.dsl());
-			});
-		}
+		req.require(DSLContext.class).transaction(conf -> {
+			transaction.accept(conf.dsl());
+		});
 	}
 
 	public static <K, R extends TableRecord<R>> R fetchOne(DSLContext dsl, TableField<R, K> keyField, K key) {

@@ -153,8 +153,6 @@ public class ErrorPages implements Jooby.Module {
 				});
 				AuthUser auth = null;
 				emailSupportAndGetCode(random, email, auth, kind, debug, err);
-			} finally {
-				dsl.close();
 			}
 		}
 	}

@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2020 MyTake.org, Inc.
+ * Copyright (C) 2020-2021 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -132,13 +132,12 @@ public class Crud<R extends UpdatableRecord<R>> extends PostForm<Crud<R>> {
 	@Override
 	protected ValidateResult<Crud<R>> validate(Request req, Sensitive<Crud<R>> fromUser) {
 		// store from post
-		try (DSLContext dsl = req.require(DSLContext.class)) {
-			R record = rowGetter.apply(dsl, req);
-			for (Field<?> field : fields) {
-				field.setDbToForm(fromUser, record);
-			}
-			record.store();
+		DSLContext dsl = req.require(DSLContext.class);
+		R record = rowGetter.apply(dsl, req);
+		for (Field<?> field : fields) {
+			field.setDbToForm(fromUser, record);
 		}
+		record.store();
 		return ValidateResult.redirectToSelf(req);
 	}
 
@@ -146,14 +145,13 @@ public class Crud<R extends UpdatableRecord<R>> extends PostForm<Crud<R>> {
 	protected FormValidation<Crud<R>> initialGet(Request req, Map<String, String> params) {
 		// init form from db
 		FormValidation.Builder<Crud<R>> validation = FormValidation.emptyBuilder(this);
-		try (DSLContext dsl = req.require(DSLContext.class)) {
-			R record = rowGetter.apply(dsl, req);
-			if (record == null) {
-				return validation.build();
-			}
-			for (Field<?> field : fields) {
-				field.setFormToDb(validation, record);
-			}
+		DSLContext dsl = req.require(DSLContext.class);
+		R record = rowGetter.apply(dsl, req);
+		if (record == null) {
+			return validation.build();
+		}
+		for (Field<?> field : fields) {
+			field.setFormToDb(validation, record);
 		}
 		return validation.build();
 	}

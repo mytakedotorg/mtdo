@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2018-2020 MyTake.org, Inc.
+ * Copyright (C) 2018-2021 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -39,7 +39,6 @@ import java2ts.FollowJson;
 import java2ts.Routes;
 import org.assertj.core.api.Assertions;
 import org.jooby.Status;
-import org.jooq.DSLContext;
 import org.junit.ClassRule;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
@@ -55,15 +54,13 @@ public class ProfileTest {
 	public void stars() {
 		TakepublishedRecord take = DbMisc.fetchOne(dev.dsl(), TAKEPUBLISHED.TITLE, "Why it's so hard to have peace");
 		// make other star somebody else's take
-		try (DSLContext dsl = dev.dsl()) {
-			TakereactionRecord reaction = dsl.newRecord(TAKEREACTION);
-			reaction.setUserId(other.getId());
-			reaction.setTakeId(take.getId());
-			reaction.setKind(Reaction.like);
-			reaction.setReactedIp("127.0.0.1");
-			reaction.setReactedAt(dev.time().now());
-			reaction.insert();
-		}
+		TakereactionRecord reaction = dev.dsl().newRecord(TAKEREACTION);
+		reaction.setUserId(other.getId());
+		reaction.setTakeId(take.getId());
+		reaction.setKind(Reaction.like);
+		reaction.setReactedIp("127.0.0.1");
+		reaction.setReactedAt(dev.time().now());
+		reaction.insert();
 		// look at other's stars
 		Snapshot.match("stars", dev.givenUser("other").get("other?tab=stars"));
 	}
@@ -71,14 +68,12 @@ public class ProfileTest {
 	@Test
 	public void _01_followers() {
 		AccountRecord samples = DbMisc.fetchOne(dev.dsl(), ACCOUNT.USERNAME, "samples");
-		try (DSLContext dsl = dev.dsl()) {
-			// make "samples" follow "other"
-			FollowRecord follow = dsl.newRecord(FOLLOW);
-			follow.setAuthor(other.getId());
-			follow.setFollower(samples.getId());
-			follow.setFollowedAt(dev.time().now());
-			follow.insert();
-		}
+		// make "samples" follow "other"
+		FollowRecord follow = dev.dsl().newRecord(FOLLOW);
+		follow.setAuthor(other.getId());
+		follow.setFollower(samples.getId());
+		follow.setFollowedAt(dev.time().now());
+		follow.insert();
 		Snapshot.match("/followers", dev.givenUser("other").get("other?tab=followers"));
 		Snapshot.match("/following", dev.givenUser("samples").get("samples?tab=following"));
 	}

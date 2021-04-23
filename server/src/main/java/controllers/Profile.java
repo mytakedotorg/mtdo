@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2017-2020 MyTake.org, Inc.
+ * Copyright (C) 2017-2021 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -86,119 +86,116 @@ public class Profile implements Jooby.Module {
 					}
 				}
 			}
-			try (DSLContext dsl = req.require(DSLContext.class)) {
-				AccountRecord account;
-				if (username == null) {
-					account = DbMisc.fetchOne(dsl, ACCOUNT.EMAIL, authOpt.get().email());
-				} else {
-					account = DbMisc.fetchOne(dsl, ACCOUNT.USERNAME, username);
-				}
-				if (account == null) {
-					throw RedirectException.notFoundError("Unknown user " + username);
-				}
-				// figure out if the user is logged-in
-				int userId = account.getId();
-				boolean isLoggedIn = authOpt.isPresent() && authOpt.get().id() == userId;
-				// and what tab they're opening
-				Mutant tab = req.param(Routes.PROFILE_TAB);
-				Mode mode = !tab.isSet() ? Mode.bookmarks : Mode.valueOf(tab.value());
-				if (mode.requiresLogin() && !isLoggedIn) {
-					throw RedirectException.notFoundError();
-				}
-				// then find the right record and render it
-				switch (mode) {
-				case published:
-					Result<?> published = dsl
-							.select(TAKEPUBLISHED.TITLE, TAKEPUBLISHED.TITLE_SLUG, TAKEPUBLISHED.PUBLISHED_AT)
-							.from(TAKEPUBLISHED)
-							.where(TAKEPUBLISHED.USER_ID.eq(userId))
-							.orderBy(TAKEPUBLISHED.PUBLISHED_AT.desc(), TAKEPUBLISHED.TITLE_SLUG.asc())
-							.fetch();
-					return views.Profile.profilePublished.template(account, isLoggedIn, published);
-				case stars:
-					Result<?> likes = dsl.select(TAKEPUBLISHED.TITLE, TAKEPUBLISHED.TITLE_SLUG, TAKEREACTION.REACTED_AT, ACCOUNT.USERNAME)
-							.from(TAKEPUBLISHED)
-							.innerJoin(TAKEREACTION)
-							.on(TAKEPUBLISHED.ID.eq(TAKEREACTION.TAKE_ID))
-							.innerJoin(ACCOUNT)
-							.on(TAKEPUBLISHED.USER_ID.eq(ACCOUNT.ID))
-							.where(TAKEREACTION.USER_ID.eq(userId).and(TAKEREACTION.KIND.eq(Reaction.like)))
-							.orderBy(TAKEREACTION.REACTED_AT.desc(), TAKEPUBLISHED.TITLE_SLUG.asc())
-							.fetch();
-					return views.Profile.profileStars.template(account, isLoggedIn, likes);
-				case followers:
-					Result<?> followers = dsl
-							.select(FOLLOW.AUTHOR, FOLLOW.FOLLOWER, FOLLOW.FOLLOWED_AT, ACCOUNT.USERNAME)
-							.from(ACCOUNT)
-							.innerJoin(FOLLOW)
-							.on(ACCOUNT.ID.eq(FOLLOW.FOLLOWER))
-							.where(FOLLOW.AUTHOR.eq(userId))
-							.orderBy(FOLLOW.FOLLOWED_AT.desc())
-							.fetch();
-					return views.Profile.profileFollowers.template(account, isLoggedIn, followers);
-				case following:
-					Result<?> following = dsl
-							.select(FOLLOW.AUTHOR, FOLLOW.FOLLOWER, FOLLOW.FOLLOWED_AT, ACCOUNT.USERNAME)
-							.from(ACCOUNT)
-							.innerJoin(FOLLOW)
-							.on(ACCOUNT.ID.eq(FOLLOW.AUTHOR))
-							.where(FOLLOW.FOLLOWER.eq(userId))
-							.orderBy(FOLLOW.FOLLOWED_AT.desc())
-							.fetch();
-					return views.Profile.profileFollowing.template(account, isLoggedIn, following);
-				case profile:
-					return views.Profile.profileTodo.template(account, isLoggedIn, mode);
-				case drafts:
-					return Results.redirect(Routes.DRAFTS);
-				case bookmarks:
-					return views.Profile.profileBookmarks.template(account, isLoggedIn);
-				default:
-					throw new IllegalArgumentException("Unhandled tab mode");
-				}
+			DSLContext dsl = req.require(DSLContext.class);
+			AccountRecord account;
+			if (username == null) {
+				account = DbMisc.fetchOne(dsl, ACCOUNT.EMAIL, authOpt.get().email());
+			} else {
+				account = DbMisc.fetchOne(dsl, ACCOUNT.USERNAME, username);
+			}
+			if (account == null) {
+				throw RedirectException.notFoundError("Unknown user " + username);
+			}
+			// figure out if the user is logged-in
+			int userId = account.getId();
+			boolean isLoggedIn = authOpt.isPresent() && authOpt.get().id() == userId;
+			// and what tab they're opening
+			Mutant tab = req.param(Routes.PROFILE_TAB);
+			Mode mode = !tab.isSet() ? Mode.bookmarks : Mode.valueOf(tab.value());
+			if (mode.requiresLogin() && !isLoggedIn) {
+				throw RedirectException.notFoundError();
+			}
+			// then find the right record and render it
+			switch (mode) {
+			case published:
+				Result<?> published = dsl
+						.select(TAKEPUBLISHED.TITLE, TAKEPUBLISHED.TITLE_SLUG, TAKEPUBLISHED.PUBLISHED_AT)
+						.from(TAKEPUBLISHED)
+						.where(TAKEPUBLISHED.USER_ID.eq(userId))
+						.orderBy(TAKEPUBLISHED.PUBLISHED_AT.desc(), TAKEPUBLISHED.TITLE_SLUG.asc())
+						.fetch();
+				return views.Profile.profilePublished.template(account, isLoggedIn, published);
+			case stars:
+				Result<?> likes = dsl.select(TAKEPUBLISHED.TITLE, TAKEPUBLISHED.TITLE_SLUG, TAKEREACTION.REACTED_AT, ACCOUNT.USERNAME)
+						.from(TAKEPUBLISHED)
+						.innerJoin(TAKEREACTION)
+						.on(TAKEPUBLISHED.ID.eq(TAKEREACTION.TAKE_ID))
+						.innerJoin(ACCOUNT)
+						.on(TAKEPUBLISHED.USER_ID.eq(ACCOUNT.ID))
+						.where(TAKEREACTION.USER_ID.eq(userId).and(TAKEREACTION.KIND.eq(Reaction.like)))
+						.orderBy(TAKEREACTION.REACTED_AT.desc(), TAKEPUBLISHED.TITLE_SLUG.asc())
+						.fetch();
+				return views.Profile.profileStars.template(account, isLoggedIn, likes);
+			case followers:
+				Result<?> followers = dsl
+						.select(FOLLOW.AUTHOR, FOLLOW.FOLLOWER, FOLLOW.FOLLOWED_AT, ACCOUNT.USERNAME)
+						.from(ACCOUNT)
+						.innerJoin(FOLLOW)
+						.on(ACCOUNT.ID.eq(FOLLOW.FOLLOWER))
+						.where(FOLLOW.AUTHOR.eq(userId))
+						.orderBy(FOLLOW.FOLLOWED_AT.desc())
+						.fetch();
+				return views.Profile.profileFollowers.template(account, isLoggedIn, followers);
+			case following:
+				Result<?> following = dsl
+						.select(FOLLOW.AUTHOR, FOLLOW.FOLLOWER, FOLLOW.FOLLOWED_AT, ACCOUNT.USERNAME)
+						.from(ACCOUNT)
+						.innerJoin(FOLLOW)
+						.on(ACCOUNT.ID.eq(FOLLOW.AUTHOR))
+						.where(FOLLOW.FOLLOWER.eq(userId))
+						.orderBy(FOLLOW.FOLLOWED_AT.desc())
+						.fetch();
+				return views.Profile.profileFollowing.template(account, isLoggedIn, following);
+			case profile:
+				return views.Profile.profileTodo.template(account, isLoggedIn, mode);
+			case drafts:
+				return Results.redirect(Routes.DRAFTS);
+			case bookmarks:
+				return views.Profile.profileBookmarks.template(account, isLoggedIn);
+			default:
+				throw new IllegalArgumentException("Unhandled tab mode");
 			}
 		});
 		env.router().post(Routes.API_FOLLOW_ASK, req -> {
 			AuthUser user = AuthUser.auth(req);
 			FollowJson.FollowRes followRes = new FollowJson.FollowRes();
 			FollowJson.FollowAskReq followReq = req.body(FollowJson.FollowAskReq.class);
-			try (DSLContext dsl = req.require(DSLContext.class)) {
-				// Return true if the record exists, false otherwise
-				followRes.isFollowing = dsl.fetchExists(
-						dsl.select(FOLLOW.AUTHOR, FOLLOW.FOLLOWER)
-								.from(FOLLOW)
-								.innerJoin(ACCOUNT)
-								.on(ACCOUNT.USERNAME.eq(followReq.username))
-								.where(FOLLOW.AUTHOR.eq(ACCOUNT.ID))
-								.and(FOLLOW.FOLLOWER.eq(user.id())));
-				return followRes;
-			}
+			DSLContext dsl = req.require(DSLContext.class);
+			// Return true if the record exists, false otherwise
+			followRes.isFollowing = dsl.fetchExists(
+					dsl.select(FOLLOW.AUTHOR, FOLLOW.FOLLOWER)
+							.from(FOLLOW)
+							.innerJoin(ACCOUNT)
+							.on(ACCOUNT.USERNAME.eq(followReq.username))
+							.where(FOLLOW.AUTHOR.eq(ACCOUNT.ID))
+							.and(FOLLOW.FOLLOWER.eq(user.id())));
+			return followRes;
 		});
 		env.router().post(Routes.API_FOLLOW_TELL, req -> {
 			AuthUser user = AuthUser.auth(req);
 			FollowJson.FollowRes followRes = new FollowJson.FollowRes();
 			FollowJson.FollowTellReq followReq = req.body(FollowJson.FollowTellReq.class);
-			try (DSLContext dsl = req.require(DSLContext.class)) {
-				int authorId = dsl.selectFrom(ACCOUNT)
-						.where(ACCOUNT.USERNAME.eq(followReq.username))
-						.fetchOne(ACCOUNT.ID);
-				if (followReq.isFollowing) {
-					// User wants to follow author
-					FollowRecord followRecord = dsl.newRecord(FOLLOW);
-					followRecord.setAuthor(authorId);
-					followRecord.setFollower(user.id());
-					followRecord.setFollowedAt(req.require(Time.class).now());
-					followRecord.insert();
-					followRes.isFollowing = true;
-				} else {
-					// Delete the record
-					dsl.deleteFrom(FOLLOW)
-							.where(FOLLOW.AUTHOR.eq(authorId))
-							.and(FOLLOW.FOLLOWER.eq(user.id()))
-							.execute();
-					followRes.isFollowing = false;
-				}
-				return followRes;
+			DSLContext dsl = req.require(DSLContext.class);
+			int authorId = dsl.selectFrom(ACCOUNT)
+					.where(ACCOUNT.USERNAME.eq(followReq.username))
+					.fetchOne(ACCOUNT.ID);
+			if (followReq.isFollowing) {
+				// User wants to follow author
+				FollowRecord followRecord = dsl.newRecord(FOLLOW);
+				followRecord.setAuthor(authorId);
+				followRecord.setFollower(user.id());
+				followRecord.setFollowedAt(req.require(Time.class).now());
+				followRecord.insert();
+				followRes.isFollowing = true;
+			} else {
+				// Delete the record
+				dsl.deleteFrom(FOLLOW)
+						.where(FOLLOW.AUTHOR.eq(authorId))
+						.and(FOLLOW.FOLLOWER.eq(user.id()))
+						.execute();
+				followRes.isFollowing = false;
 			}
+			return followRes;
 		});
 	}
 }

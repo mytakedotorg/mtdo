@@ -51,23 +51,22 @@ public class BookmarkApi implements Jooby.Module {
 	public void configure(Env env, Config conf, Binder binder) {
 		env.router().get(Routes.API_BOOKMARKS, req -> {
 			AuthUser auth = AuthUser.authApi(req);
-			try (DSLContext dsl = req.require(DSLContext.class)) {
-				LocalDateTime lastSaved = DbMisc.fetchOne(dsl, BOOKMARKS_MOD.SAVED_BY, auth.id(), BOOKMARKS_MOD.LAST_MOD);
-				if (lastSaved == null) {
-					// user has never had bookmarks 
-					return ImmutableList.of();
+			DSLContext dsl = req.require(DSLContext.class);
+			LocalDateTime lastSaved = DbMisc.fetchOne(dsl, BOOKMARKS_MOD.SAVED_BY, auth.id(), BOOKMARKS_MOD.LAST_MOD);
+			if (lastSaved == null) {
+				// user has never had bookmarks 
+				return ImmutableList.of();
+			} else {
+				LocalDateTime ifModifiedSince = ifModifiedSince(req);
+				if (ifModifiedSince != null && lastSaved.compareTo(ifModifiedSince) >= 0) {
+					return new Result().status(Status.NOT_MODIFIED);
 				} else {
-					LocalDateTime ifModifiedSince = ifModifiedSince(req);
-					if (ifModifiedSince != null && lastSaved.compareTo(ifModifiedSince) >= 0) {
-						return new Result().status(Status.NOT_MODIFIED);
-					} else {
-						List<BookmarkRecord> records = DbMisc.selectWhere(dsl, BOOKMARK.SAVED_BY, auth.id()).fetch();
-						List<Bookmark> pojos = new JsonList<>(Bookmark.LIST, records.size());
-						for (BookmarkRecord record : records) {
-							pojos.add(toPojo(record));
-						}
-						return lastModified(lastSaved).set(pojos);
+					List<BookmarkRecord> records = DbMisc.selectWhere(dsl, BOOKMARK.SAVED_BY, auth.id()).fetch();
+					List<Bookmark> pojos = new JsonList<>(Bookmark.LIST, records.size());
+					for (BookmarkRecord record : records) {
+						pojos.add(toPojo(record));
 					}
+					return lastModified(lastSaved).set(pojos);
 				}
 			}
 		});
@@ -77,18 +76,17 @@ public class BookmarkApi implements Jooby.Module {
 			if (bookmarks.isEmpty()) {
 				return new Result().status(Status.OK);
 			}
-			try (DSLContext dsl = req.require(DSLContext.class)) {
-				LocalDateTime now = req.require(Time.class).now();
-				InsertValuesStep5<BookmarkRecord, Integer, LocalDateTime, String, Integer, Integer> insert = dsl.insertInto(BOOKMARK,
-						BOOKMARK.SAVED_BY, BOOKMARK.SAVED_ON, BOOKMARK.FACT, BOOKMARK.CUT_START, BOOKMARK.CUT_END);
-				for (Bookmark bookmark : bookmarks) {
-					insert = insert.values(auth.id(), now, bookmark.fact, bookmark.start, bookmark.end);
-				}
-				// because we update timestamps on duplicate keys, there will always be an update
-				insert.onDuplicateKeyUpdate().set(BOOKMARK.SAVED_ON, now).execute();
-				setLastModified(dsl, auth, now);
-				return lastModified(now).status(Status.CREATED);
+			DSLContext dsl = req.require(DSLContext.class);
+			LocalDateTime now = req.require(Time.class).now();
+			InsertValuesStep5<BookmarkRecord, Integer, LocalDateTime, String, Integer, Integer> insert = dsl.insertInto(BOOKMARK,
+					BOOKMARK.SAVED_BY, BOOKMARK.SAVED_ON, BOOKMARK.FACT, BOOKMARK.CUT_START, BOOKMARK.CUT_END);
+			for (Bookmark bookmark : bookmarks) {
+				insert = insert.values(auth.id(), now, bookmark.fact, bookmark.start, bookmark.end);
 			}
+			// because we update timestamps on duplicate keys, there will always be an update
+			insert.onDuplicateKeyUpdate().set(BOOKMARK.SAVED_ON, now).execute();
+			setLastModified(dsl, auth, now);
+			return lastModified(now).status(Status.CREATED);
 		});
 		env.router().delete(Routes.API_BOOKMARKS, req -> {
 			AuthUser auth = AuthUser.authApi(req);
@@ -96,22 +94,21 @@ public class BookmarkApi implements Jooby.Module {
 			if (bookmarks.isEmpty()) {
 				return new Result().status(Status.OK);
 			}
-			try (DSLContext dsl = req.require(DSLContext.class)) {
-				for (Bookmark bookmark : bookmarks) {
-					dsl.deleteFrom(BOOKMARK)
-							.where(BOOKMARK.SAVED_BY.eq(auth.id())
-									.and(BOOKMARK.FACT.eq(bookmark.fact))
-									.and(BOOKMARK.CUT_START.eq(bookmark.start))
-									.and(BOOKMARK.CUT_END.eq(bookmark.end)))
-							.execute();
-				}
-				LocalDateTime now = req.require(Time.class).now();
-				dsl.update(BOOKMARKS_MOD)
-						.set(BOOKMARKS_MOD.LAST_MOD, now)
-						.where(BOOKMARKS_MOD.SAVED_BY.eq(auth.id()))
+			DSLContext dsl = req.require(DSLContext.class);
+			for (Bookmark bookmark : bookmarks) {
+				dsl.deleteFrom(BOOKMARK)
+						.where(BOOKMARK.SAVED_BY.eq(auth.id())
+								.and(BOOKMARK.FACT.eq(bookmark.fact))
+								.and(BOOKMARK.CUT_START.eq(bookmark.start))
+								.and(BOOKMARK.CUT_END.eq(bookmark.end)))
 						.execute();
-				return lastModified(now).status(Status.OK);
 			}
+			LocalDateTime now = req.require(Time.class).now();
+			dsl.update(BOOKMARKS_MOD)
+					.set(BOOKMARKS_MOD.LAST_MOD, now)
+					.where(BOOKMARKS_MOD.SAVED_BY.eq(auth.id()))
+					.execute();
+			return lastModified(now).status(Status.OK);
 		});
 	}
 
