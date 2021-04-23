@@ -124,6 +124,9 @@ dependencies {
 	implementation "org.jooby:jooby-quartz:$JOOBY_VER"
 	testImplementation "org.jooby:jooby-whoops:$JOOBY_VER"
 
+	// workaround to get Java 11 guice, Jooby 2 probably fixes
+	implementation 'com.google.inject:guice:5.0.1'
+
 	// json
 	implementation "com.jsoniter:jsoniter:$VER_JSONITER"
 	implementation project(':client')
@@ -159,8 +162,8 @@ dependencies {
 	testImplementation "com.fizzed:rocker-compiler:${rockerVersion}"	// required for hotreload
 	testImplementation "org.eclipse.jgit:org.eclipse.jgit:${VER_JGIT}"	// required for serving local repo
 
-	// dep for auth
-	implementation 'com.auth0:java-jwt:3.15.0'
+	// dep for auth (3.15.0 breaks docker-compose 1.5.0)
+	implementation 'com.auth0:java-jwt:3.11.0'
 }
 
 // renders the socialEmbed template to disk for node
