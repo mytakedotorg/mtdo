@@ -60,12 +60,12 @@ import java.util.Locale;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
-import javax.annotation.Nullable;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
+import org.jetbrains.annotations.Nullable;
 
 class FileTreeCtl extends ControlWrapper.AroundControl<Composite> {
 	// files at top, folders at bottom, most-recent dates first

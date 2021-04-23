@@ -49,7 +49,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java2ts.LoginApi;
 import java2ts.Routes;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import org.jooby.Cookie;
 import org.jooby.Request;
 import org.jooby.Response;
@@ -107,27 +107,26 @@ public class Accounts {
 			return invalidEmail(login.email);
 		}
 
-		try (DSLContext dsl = req.require(DSLContext.class)) {
-			AccountRecord account = DbMisc.fetchOne(dsl, ACCOUNT.EMAIL, login.email);
-			if (account == null) {
-				account = newAccount(login.email, req, dsl);
-				if (IfNoAccount.forKind(login) == IfNoAccount.CREATE) {
-					return Msg.titleBodyBtn("Welcome aboard!",
-							"We sent you an email with more details about what we're building together. Keep exploring and read it when you get a chance.",
-							"Okay, I'll read it later.")
-							.andLoginCookieFor(account)
-							.andSendLoginEmailTo(account, login);
-				} else {
-					return Msg.titleBodyBtn("Not found",
-							login.email + " does not have an account. Check the spelling.",
-							"Okay, I'll try again.");
-				}
-			} else {
-				return Msg.titleBodyBtn("Welcome back!",
-						"We sent you an email with a login link.",
-						"Okay, I'll check my email.")
+		DSLContext dsl = req.require(DSLContext.class);
+		AccountRecord account = DbMisc.fetchOne(dsl, ACCOUNT.EMAIL, login.email);
+		if (account == null) {
+			account = newAccount(login.email, req, dsl);
+			if (IfNoAccount.forKind(login) == IfNoAccount.CREATE) {
+				return Msg.titleBodyBtn("Welcome aboard!",
+						"We sent you an email with more details about what we're building together. Keep exploring and read it when you get a chance.",
+						"Okay, I'll read it later.")
+						.andLoginCookieFor(account)
 						.andSendLoginEmailTo(account, login);
+			} else {
+				return Msg.titleBodyBtn("Not found",
+						login.email + " does not have an account. Check the spelling.",
+						"Okay, I'll try again.");
 			}
+		} else {
+			return Msg.titleBodyBtn("Welcome back!",
+					"We sent you an email with a login link.",
+					"Okay, I'll check my email.")
+					.andSendLoginEmailTo(account, login);
 		}
 	}
 
@@ -144,28 +143,27 @@ public class Accounts {
 		} else if (!isValidEmail(emailRaw)) {
 			return invalidEmail(emailRaw);
 		}
-		try (DSLContext dsl = req.require(DSLContext.class)) {
-			AccountRecord account = DbMisc.fetchOne(dsl, ACCOUNT.EMAIL, email);
-			if (account == null) {
-				account = newAccount(email, req, dsl);
-				return Msg.titleBodyBtn("Welcome aboard!",
-						"We sent you an email with more details about what we're building together. Keep exploring and read it when you get a chance.",
-						"Okay, I'll read it later.")
+		DSLContext dsl = req.require(DSLContext.class);
+		AccountRecord account = DbMisc.fetchOne(dsl, ACCOUNT.EMAIL, email);
+		if (account == null) {
+			account = newAccount(email, req, dsl);
+			return Msg.titleBodyBtn("Welcome aboard!",
+					"We sent you an email with more details about what we're building together. Keep exploring and read it when you get a chance.",
+					"Okay, I'll read it later.")
+					.andSendLoginEmailTo(account, null);
+		} else {
+			account.setNewsletter(true);
+			if (account.getConfirmedAt() != null) {
+				return Msg.titleBodyBtn("We'll be in touch!",
+						"You're signed up for our newsletter, and we'll keep you up to date on what we're building together.",
+						"Okay, I look forward to it.")
 						.andSendLoginEmailTo(account, null);
-			} else {
-				account.setNewsletter(true);
-				if (account.getConfirmedAt() != null) {
-					return Msg.titleBodyBtn("We'll be in touch!",
-							"You're signed up for our newsletter, and we'll keep you up to date on what we're building together.",
-							"Okay, I look forward to it.")
-							.andSendLoginEmailTo(account, null);
 
-				} else {
-					return Msg.titleBodyBtn("Check your email!",
-							"We sent you a message to confirm that you want to hear from us. If you don't click the confirm link, you won't get our newsletter.",
-							"Okay, I'll check my email.")
-							.andSendLoginEmailTo(account, null);
-				}
+			} else {
+				return Msg.titleBodyBtn("Check your email!",
+						"We sent you a message to confirm that you want to hear from us. If you don't click the confirm link, you won't get our newsletter.",
+						"Okay, I'll check my email.")
+						.andSendLoginEmailTo(account, null);
 			}
 		}
 	}
@@ -253,19 +251,18 @@ public class Accounts {
 		String toFormError(Request req) {
 			if (sendLoginEmailTo != null) {
 				String htmlMsg;
-				try (DSLContext dsl = req.require(DSLContext.class)) {
-					LocalDateTime now = req.require(Time.class).now();
-					LoginlinkRecord link = urlCode.createRecord(req, dsl, now, Ip.get(req));
-					link.setExpiresAt(now.plus(EXPIRES_DAYS, ChronoUnit.DAYS));
-					link.setAccountId(sendLoginEmailTo.getId());
-					link.insert();
-					UrlEncodedPath linkUrl = urlCode.recordToUrl(req, link);
-					if (redirect != null && !redirect.isEmpty()) {
-						linkUrl.param(REDIRECT, redirect);
-					}
-					// TODO: login vs newsletter dependent
-					htmlMsg = views.Auth.loginEmail.template(sendLoginEmailTo.getEmail(), linkUrl.build()).renderToString();
+				DSLContext dsl = req.require(DSLContext.class);
+				LocalDateTime now = req.require(Time.class).now();
+				LoginlinkRecord link = urlCode.createRecord(req, dsl, now, Ip.get(req));
+				link.setExpiresAt(now.plus(EXPIRES_DAYS, ChronoUnit.DAYS));
+				link.setAccountId(sendLoginEmailTo.getId());
+				link.insert();
+				UrlEncodedPath linkUrl = urlCode.recordToUrl(req, link);
+				if (redirect != null && !redirect.isEmpty()) {
+					linkUrl.param(REDIRECT, redirect);
 				}
+				// TODO: login vs newsletter dependent
+				htmlMsg = views.Auth.loginEmail.template(sendLoginEmailTo.getEmail(), linkUrl.build()).renderToString();
 				req.require(EmailSender.class).send(htmlEmail -> htmlEmail
 						.setHtmlMsg(htmlMsg)
 						.setSubject("Welcome to MyTake.org")
@@ -331,51 +328,50 @@ public class Accounts {
 
 	public static void confirm(Request req, Response rsp) throws Throwable {
 		LocalDateTime now = req.require(Time.class).now();
-		try (DSLContext dsl = req.require(DSLContext.class)) {
-			LoginlinkRecord link = urlCode.tryGetRecord(req, dsl);
-			String ip = Ip.get(req);
-			String errorMsg;
-			if (link == null || now.isAfter(link.getExpiresAt())) {
-				errorMsg = "This link expired, try again.";
-			} else if (link != null && !ip.equals(link.getRequestorIp())) {
-				errorMsg = "Make sure to open the link from the same device you requested it from.";
-			} else {
-				errorMsg = null;
-			}
-
-			String redirect = URLDecoder.decode(req.param(REDIRECT.name()).value(HomeFeed.URL), "UTF-8");
-			UrlEncodedPath path = UrlEncodedPath.path(Routes.LOGIN).param(REDIRECT, redirect);
-
-			if (errorMsg != null) {
-				// else we have no choice but to show an error
-				req.flash("error", errorMsg);
-				// and clear their login cookies
-				AuthUser.clearCookies(req, rsp);
-				if (req.param(LoginForm.EMAIL.name()).isSet()) {
-					path.param(LoginForm.EMAIL, req.param(LoginForm.EMAIL.name()).value());
-				}
-				rsp.send(Results.redirect(path.build()));
-				return;
-			}
-
-			// delete all login links for this account
-			dsl.deleteFrom(LOGINLINK)
-					.where(LOGINLINK.ACCOUNT_ID.eq(link.getAccountId()))
-					.execute();
-			// update the record's lastSeen
-			AccountRecord account = DbMisc.fetchOne(dsl, ACCOUNT.ID, link.getAccountId());
-			account.setLastSeenIp(ip);
-			account.setLastSeenAt(now);
-			if (account.getConfirmedAt() == null) {
-				account.setConfirmedIp(ip);
-				account.setConfirmedAt(now);
-			}
-			account.update();
-			// set the login cookies
-			AuthUser.login(account, req).forEach(rsp::cookie);
-			// redirect
-			rsp.redirect(redirect);
+		DSLContext dsl = req.require(DSLContext.class);
+		LoginlinkRecord link = urlCode.tryGetRecord(req, dsl);
+		String ip = Ip.get(req);
+		String errorMsg;
+		if (link == null || now.isAfter(link.getExpiresAt())) {
+			errorMsg = "This link expired, try again.";
+		} else if (link != null && !ip.equals(link.getRequestorIp())) {
+			errorMsg = "Make sure to open the link from the same device you requested it from.";
+		} else {
+			errorMsg = null;
 		}
+
+		String redirect = URLDecoder.decode(req.param(REDIRECT.name()).value(HomeFeed.URL), "UTF-8");
+		UrlEncodedPath path = UrlEncodedPath.path(Routes.LOGIN).param(REDIRECT, redirect);
+
+		if (errorMsg != null) {
+			// else we have no choice but to show an error
+			req.flash("error", errorMsg);
+			// and clear their login cookies
+			AuthUser.clearCookies(req, rsp);
+			if (req.param(LoginForm.EMAIL.name()).isSet()) {
+				path.param(LoginForm.EMAIL, req.param(LoginForm.EMAIL.name()).value());
+			}
+			rsp.send(Results.redirect(path.build()));
+			return;
+		}
+
+		// delete all login links for this account
+		dsl.deleteFrom(LOGINLINK)
+				.where(LOGINLINK.ACCOUNT_ID.eq(link.getAccountId()))
+				.execute();
+		// update the record's lastSeen
+		AccountRecord account = DbMisc.fetchOne(dsl, ACCOUNT.ID, link.getAccountId());
+		account.setLastSeenIp(ip);
+		account.setLastSeenAt(now);
+		if (account.getConfirmedAt() == null) {
+			account.setConfirmedIp(ip);
+			account.setConfirmedAt(now);
+		}
+		account.update();
+		// set the login cookies
+		AuthUser.login(account, req).forEach(rsp::cookie);
+		// redirect
+		rsp.redirect(redirect);
 	}
 
 	static final UrlRandomCode<LoginlinkRecord> urlCode = new UrlRandomCode<>(AuthModule.URL_confirm_login, LOGINLINK.CODE, LOGINLINK.CREATED_AT, LOGINLINK.REQUESTOR_IP);

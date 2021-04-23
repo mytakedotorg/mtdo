@@ -24,6 +24,7 @@ import org.jooq.TableField;
 import org.jooq.TableOptions;
 import org.jooq.UniqueKey;
 import org.jooq.impl.DSL;
+import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
 
 
@@ -33,7 +34,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Loginlink extends TableImpl<LoginlinkRecord> {
 
-    private static final long serialVersionUID = 1624401786;
+    private static final long serialVersionUID = 1L;
 
     /**
      * The reference instance of <code>public.loginlink</code>
@@ -51,17 +52,17 @@ public class Loginlink extends TableImpl<LoginlinkRecord> {
     /**
      * The column <code>public.loginlink.code</code>.
      */
-    public final TableField<LoginlinkRecord, String> CODE = createField(DSL.name("code"), org.jooq.impl.SQLDataType.CHAR(44).nullable(false), this, "");
+    public final TableField<LoginlinkRecord, String> CODE = createField(DSL.name("code"), SQLDataType.CHAR(44).nullable(false), this, "");
 
     /**
      * The column <code>public.loginlink.created_at</code>.
      */
-    public final TableField<LoginlinkRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), org.jooq.impl.SQLDataType.LOCALDATETIME.nullable(false), this, "");
+    public final TableField<LoginlinkRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(6).nullable(false), this, "");
 
     /**
      * The column <code>public.loginlink.expires_at</code>.
      */
-    public final TableField<LoginlinkRecord, LocalDateTime> EXPIRES_AT = createField(DSL.name("expires_at"), org.jooq.impl.SQLDataType.LOCALDATETIME.nullable(false), this, "");
+    public final TableField<LoginlinkRecord, LocalDateTime> EXPIRES_AT = createField(DSL.name("expires_at"), SQLDataType.LOCALDATETIME(6).nullable(false), this, "");
 
     /**
      * The column <code>public.loginlink.requestor_ip</code>.
@@ -71,13 +72,14 @@ public class Loginlink extends TableImpl<LoginlinkRecord> {
     /**
      * The column <code>public.loginlink.account_id</code>.
      */
-    public final TableField<LoginlinkRecord, Integer> ACCOUNT_ID = createField(DSL.name("account_id"), org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
+    public final TableField<LoginlinkRecord, Integer> ACCOUNT_ID = createField(DSL.name("account_id"), SQLDataType.INTEGER.nullable(false), this, "");
 
-    /**
-     * Create a <code>public.loginlink</code> table reference
-     */
-    public Loginlink() {
-        this(DSL.name("loginlink"), null);
+    private Loginlink(Name alias, Table<LoginlinkRecord> aliased) {
+        this(alias, aliased, null);
+    }
+
+    private Loginlink(Name alias, Table<LoginlinkRecord> aliased, Field<?>[] parameters) {
+        super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.table());
     }
 
     /**
@@ -94,12 +96,11 @@ public class Loginlink extends TableImpl<LoginlinkRecord> {
         this(alias, LOGINLINK);
     }
 
-    private Loginlink(Name alias, Table<LoginlinkRecord> aliased) {
-        this(alias, aliased, null);
-    }
-
-    private Loginlink(Name alias, Table<LoginlinkRecord> aliased, Field<?>[] parameters) {
-        super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.table());
+    /**
+     * Create a <code>public.loginlink</code> table reference
+     */
+    public Loginlink() {
+        this(DSL.name("loginlink"), null);
     }
 
     public <O extends Record> Loginlink(Table<O> child, ForeignKey<O, LoginlinkRecord> key) {
@@ -126,8 +127,13 @@ public class Loginlink extends TableImpl<LoginlinkRecord> {
         return Arrays.<ForeignKey<LoginlinkRecord, ?>>asList(Keys.LOGINLINK__LOGINLINK_ACCOUNT_ID_FKEY);
     }
 
+    private transient Account _account;
+
     public Account account() {
-        return new Account(this, Keys.LOGINLINK__LOGINLINK_ACCOUNT_ID_FKEY);
+        if (_account == null)
+            _account = new Account(this, Keys.LOGINLINK__LOGINLINK_ACCOUNT_ID_FKEY);
+
+        return _account;
     }
 
     @Override

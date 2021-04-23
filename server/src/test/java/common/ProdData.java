@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2020 MyTake.org, Inc.
+ * Copyright (C) 2020-2021 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -68,7 +68,8 @@ public class ProdData {
 		app.use(postgresModule);
 		Prod.commonDb(app);
 		app.start("server.join=false");
-		try (DSLContext dsl = app.require(DSLContext.class)) {
+		try {
+			DSLContext dsl = app.require(DSLContext.class);
 			action(dsl);
 			//cleanPasswords(dsl);
 			postgresModule.pgDump("no-passwords");

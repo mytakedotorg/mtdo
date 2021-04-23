@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2017-2020 MyTake.org, Inc.
+ * Copyright (C) 2017-2021 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -53,56 +53,54 @@ public class TakeReaction implements Jooby.Module {
 		env.router().post(Routes.API_TAKE_VIEW, req -> {
 			AuthUser user = AuthUser.authOpt(req).orElse(null);
 			TakeReactionJson.ViewReq viewReq = req.body(TakeReactionJson.ViewReq.class);
-			try (DSLContext dsl = req.require(DSLContext.class)) {
-				TakeReactionJson.ViewRes viewRes = new TakeReactionJson.ViewRes();
-				if (user != null) {
-					List<Reaction> reactions = reactionsForUser(dsl, viewReq.take_id, user);
-					viewRes.userState = userState(reactions);
-					if (!reactions.contains(Reaction.view)) {
-						setReaction(dsl, req, viewReq.take_id, user, Reaction.view, true);
-					}
+			DSLContext dsl = req.require(DSLContext.class);
+			TakeReactionJson.ViewRes viewRes = new TakeReactionJson.ViewRes();
+			if (user != null) {
+				List<Reaction> reactions = reactionsForUser(dsl, viewReq.take_id, user);
+				viewRes.userState = userState(reactions);
+				if (!reactions.contains(Reaction.view)) {
+					setReaction(dsl, req, viewReq.take_id, user, Reaction.view, true);
 				}
-				viewRes.takeState = takeState(dsl, viewReq.take_id);
-				return viewRes;
 			}
+			viewRes.takeState = takeState(dsl, viewReq.take_id);
+			return viewRes;
 		});
 		// when a take is reacted to (liked, bookmarked, etc)
 		env.router().post(Routes.API_TAKE_REACT, req -> {
 			AuthUser user = AuthUser.auth(req);
 			TakeReactionJson.ReactReq reactReq = req.body(TakeReactionJson.ReactReq.class);
-			try (DSLContext dsl = req.require(DSLContext.class)) {
-				String email = dsl.selectFrom(ACCOUNT)
-						.where(ACCOUNT.ID.eq(user.id()))
-						.fetchOne(ACCOUNT.EMAIL);
-				Record titleRecord = dsl.select(TAKEPUBLISHED.TITLE, TAKEPUBLISHED.TITLE_SLUG, TAKEPUBLISHED.USER_ID)
-						.from(TAKEPUBLISHED)
-						.where(TAKEPUBLISHED.ID.eq(reactReq.take_id))
-						.fetchOne();
-				String authorUsername = dsl.selectFrom(ACCOUNT)
-						.where(ACCOUNT.ID.eq(titleRecord.get(TAKEPUBLISHED.USER_ID)))
-						.fetchOne(ACCOUNT.USERNAME);
+			DSLContext dsl = req.require(DSLContext.class);
+			String email = dsl.selectFrom(ACCOUNT)
+					.where(ACCOUNT.ID.eq(user.id()))
+					.fetchOne(ACCOUNT.EMAIL);
+			Record titleRecord = dsl.select(TAKEPUBLISHED.TITLE, TAKEPUBLISHED.TITLE_SLUG, TAKEPUBLISHED.USER_ID)
+					.from(TAKEPUBLISHED)
+					.where(TAKEPUBLISHED.ID.eq(reactReq.take_id))
+					.fetchOne();
+			String authorUsername = dsl.selectFrom(ACCOUNT)
+					.where(ACCOUNT.ID.eq(titleRecord.get(TAKEPUBLISHED.USER_ID)))
+					.fetchOne(ACCOUNT.USERNAME);
 
-				TakeReactionJson.ReactRes reactRes = new TakeReactionJson.ReactRes();
-				List<Reaction> reactions = reactionsForUser(dsl, reactReq.take_id, user);
-				for (Reaction reaction : REACTIONS_NON_VIEW) {
-					boolean command = getReaction(reactReq.userState, reaction);
-					if (command != reactions.contains(reaction)) {
-						if (ABUSE.contains(reaction)) {
-							req.require(Mods.class).send(htmlEmail -> htmlEmail
-									.setSubject(user.username() + " " + (command ? "marked" : "unmarked") + " '" + titleRecord.get(TAKEPUBLISHED.TITLE) + "' as " + reaction)
-									.setMsg(Mods.table(
-											"user", user.username(),
-											"email", email,
-											"reaction", reaction.toString(),
-											"link", "https://mytake.org/" + authorUsername + "/" + titleRecord.get(TAKEPUBLISHED.TITLE_SLUG))));
-						}
-						setReaction(dsl, req, reactReq.take_id, user, reaction, command);
+			TakeReactionJson.ReactRes reactRes = new TakeReactionJson.ReactRes();
+			List<Reaction> reactions = reactionsForUser(dsl, reactReq.take_id, user);
+			for (Reaction reaction : REACTIONS_NON_VIEW) {
+				boolean command = getReaction(reactReq.userState, reaction);
+				if (command != reactions.contains(reaction)) {
+					if (ABUSE.contains(reaction)) {
+						req.require(Mods.class).send(htmlEmail -> htmlEmail
+								.setSubject(user.username() + " " + (command ? "marked" : "unmarked") + " '" + titleRecord.get(TAKEPUBLISHED.TITLE) + "' as " + reaction)
+								.setMsg(Mods.table(
+										"user", user.username(),
+										"email", email,
+										"reaction", reaction.toString(),
+										"link", "https://mytake.org/" + authorUsername + "/" + titleRecord.get(TAKEPUBLISHED.TITLE_SLUG))));
 					}
+					setReaction(dsl, req, reactReq.take_id, user, reaction, command);
 				}
-				reactRes.takeState = takeState(dsl, reactReq.take_id);
-				reactRes.userState = reactReq.userState;
-				return reactRes;
 			}
+			reactRes.takeState = takeState(dsl, reactReq.take_id);
+			reactRes.userState = reactReq.userState;
+			return reactRes;
 		});
 	}
 

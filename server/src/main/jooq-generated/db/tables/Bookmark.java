@@ -23,6 +23,7 @@ import org.jooq.TableField;
 import org.jooq.TableOptions;
 import org.jooq.UniqueKey;
 import org.jooq.impl.DSL;
+import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
 
 
@@ -32,7 +33,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Bookmark extends TableImpl<BookmarkRecord> {
 
-    private static final long serialVersionUID = -876228604;
+    private static final long serialVersionUID = 1L;
 
     /**
      * The reference instance of <code>public.bookmark</code>
@@ -50,33 +51,34 @@ public class Bookmark extends TableImpl<BookmarkRecord> {
     /**
      * The column <code>public.bookmark.saved_by</code>.
      */
-    public final TableField<BookmarkRecord, Integer> SAVED_BY = createField(DSL.name("saved_by"), org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
+    public final TableField<BookmarkRecord, Integer> SAVED_BY = createField(DSL.name("saved_by"), SQLDataType.INTEGER.nullable(false), this, "");
 
     /**
      * The column <code>public.bookmark.saved_on</code>.
      */
-    public final TableField<BookmarkRecord, LocalDateTime> SAVED_ON = createField(DSL.name("saved_on"), org.jooq.impl.SQLDataType.LOCALDATETIME.nullable(false), this, "");
+    public final TableField<BookmarkRecord, LocalDateTime> SAVED_ON = createField(DSL.name("saved_on"), SQLDataType.LOCALDATETIME(6).nullable(false), this, "");
 
     /**
      * The column <code>public.bookmark.fact</code>.
      */
-    public final TableField<BookmarkRecord, String> FACT = createField(DSL.name("fact"), org.jooq.impl.SQLDataType.CHAR(48).nullable(false), this, "");
+    public final TableField<BookmarkRecord, String> FACT = createField(DSL.name("fact"), SQLDataType.CHAR(48).nullable(false), this, "");
 
     /**
      * The column <code>public.bookmark.cut_start</code>.
      */
-    public final TableField<BookmarkRecord, Integer> CUT_START = createField(DSL.name("cut_start"), org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
+    public final TableField<BookmarkRecord, Integer> CUT_START = createField(DSL.name("cut_start"), SQLDataType.INTEGER.nullable(false), this, "");
 
     /**
      * The column <code>public.bookmark.cut_end</code>.
      */
-    public final TableField<BookmarkRecord, Integer> CUT_END = createField(DSL.name("cut_end"), org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
+    public final TableField<BookmarkRecord, Integer> CUT_END = createField(DSL.name("cut_end"), SQLDataType.INTEGER.nullable(false), this, "");
 
-    /**
-     * Create a <code>public.bookmark</code> table reference
-     */
-    public Bookmark() {
-        this(DSL.name("bookmark"), null);
+    private Bookmark(Name alias, Table<BookmarkRecord> aliased) {
+        this(alias, aliased, null);
+    }
+
+    private Bookmark(Name alias, Table<BookmarkRecord> aliased, Field<?>[] parameters) {
+        super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.table());
     }
 
     /**
@@ -93,12 +95,11 @@ public class Bookmark extends TableImpl<BookmarkRecord> {
         this(alias, BOOKMARK);
     }
 
-    private Bookmark(Name alias, Table<BookmarkRecord> aliased) {
-        this(alias, aliased, null);
-    }
-
-    private Bookmark(Name alias, Table<BookmarkRecord> aliased, Field<?>[] parameters) {
-        super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.table());
+    /**
+     * Create a <code>public.bookmark</code> table reference
+     */
+    public Bookmark() {
+        this(DSL.name("bookmark"), null);
     }
 
     public <O extends Record> Bookmark(Table<O> child, ForeignKey<O, BookmarkRecord> key) {
@@ -125,8 +126,13 @@ public class Bookmark extends TableImpl<BookmarkRecord> {
         return Arrays.<ForeignKey<BookmarkRecord, ?>>asList(Keys.BOOKMARK__BOOKMARK_SAVED_BY_FKEY);
     }
 
+    private transient Account _account;
+
     public Account account() {
-        return new Account(this, Keys.BOOKMARK__BOOKMARK_SAVED_BY_FKEY);
+        if (_account == null)
+            _account = new Account(this, Keys.BOOKMARK__BOOKMARK_SAVED_BY_FKEY);
+
+        return _account;
     }
 
     @Override

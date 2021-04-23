@@ -21,7 +21,7 @@ import org.jooq.impl.UpdatableRecordImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class AccountRecord extends UpdatableRecordImpl<AccountRecord> implements Record15<Integer, String, String, String, LocalDateTime, String, LocalDateTime, String, LocalDateTime, String, LocalDateTime, LocalDateTime, String, Boolean, String> {
 
-    private static final long serialVersionUID = -196125820;
+    private static final long serialVersionUID = 1L;
 
     /**
      * Setter for <code>public.account.id</code>.
@@ -623,20 +623,20 @@ public class AccountRecord extends UpdatableRecordImpl<AccountRecord> implements
     public AccountRecord(Integer id, String username, String email, String name, LocalDateTime createdAt, String createdIp, LocalDateTime updatedAt, String updatedIp, LocalDateTime lastSeenAt, String lastSeenIp, LocalDateTime lastEmailedAt, LocalDateTime confirmedAt, String confirmedIp, Boolean newsletter, String usernameTypohard) {
         super(Account.ACCOUNT);
 
-        set(0, id);
-        set(1, username);
-        set(2, email);
-        set(3, name);
-        set(4, createdAt);
-        set(5, createdIp);
-        set(6, updatedAt);
-        set(7, updatedIp);
-        set(8, lastSeenAt);
-        set(9, lastSeenIp);
-        set(10, lastEmailedAt);
-        set(11, confirmedAt);
-        set(12, confirmedIp);
-        set(13, newsletter);
-        set(14, usernameTypohard);
+        setId(id);
+        setUsername(username);
+        setEmail(email);
+        setName(name);
+        setCreatedAt(createdAt);
+        setCreatedIp(createdIp);
+        setUpdatedAt(updatedAt);
+        setUpdatedIp(updatedIp);
+        setLastSeenAt(lastSeenAt);
+        setLastSeenIp(lastSeenIp);
+        setLastEmailedAt(lastEmailedAt);
+        setConfirmedAt(confirmedAt);
+        setConfirmedIp(confirmedIp);
+        setNewsletter(newsletter);
+        setUsernameTypohard(usernameTypohard);
     }
 }

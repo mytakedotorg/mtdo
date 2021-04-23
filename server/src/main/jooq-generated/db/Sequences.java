@@ -6,10 +6,11 @@ package db;
 
 import org.jooq.Sequence;
 import org.jooq.impl.Internal;
+import org.jooq.impl.SQLDataType;
 
 
 /**
- * Convenience access to all sequences in public
+ * Convenience access to all sequences in public.
  */
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Sequences {
@@ -17,20 +18,20 @@ public class Sequences {
     /**
      * The sequence <code>public.account_id_seq</code>
      */
-    public static final Sequence<Integer> ACCOUNT_ID_SEQ = Internal.createSequence("account_id_seq", Public.PUBLIC, org.jooq.impl.SQLDataType.INTEGER.nullable(false), null, null, null, null, false, null);
+    public static final Sequence<Integer> ACCOUNT_ID_SEQ = Internal.createSequence("account_id_seq", Public.PUBLIC, SQLDataType.INTEGER.nullable(false), null, null, null, null, false, null);
 
     /**
      * The sequence <code>public.takedraft_id_seq</code>
      */
-    public static final Sequence<Integer> TAKEDRAFT_ID_SEQ = Internal.createSequence("takedraft_id_seq", Public.PUBLIC, org.jooq.impl.SQLDataType.INTEGER.nullable(false), null, null, null, null, false, null);
+    public static final Sequence<Integer> TAKEDRAFT_ID_SEQ = Internal.createSequence("takedraft_id_seq", Public.PUBLIC, SQLDataType.INTEGER.nullable(false), null, null, null, null, false, null);
 
     /**
      * The sequence <code>public.takepublished_id_seq</code>
      */
-    public static final Sequence<Integer> TAKEPUBLISHED_ID_SEQ = Internal.createSequence("takepublished_id_seq", Public.PUBLIC, org.jooq.impl.SQLDataType.INTEGER.nullable(false), null, null, null, null, false, null);
+    public static final Sequence<Integer> TAKEPUBLISHED_ID_SEQ = Internal.createSequence("takepublished_id_seq", Public.PUBLIC, SQLDataType.INTEGER.nullable(false), null, null, null, null, false, null);
 
     /**
      * The sequence <code>public.takerevision_id_seq</code>
      */
-    public static final Sequence<Integer> TAKEREVISION_ID_SEQ = Internal.createSequence("takerevision_id_seq", Public.PUBLIC, org.jooq.impl.SQLDataType.INTEGER.nullable(false), null, null, null, null, false, null);
+    public static final Sequence<Integer> TAKEREVISION_ID_SEQ = Internal.createSequence("takerevision_id_seq", Public.PUBLIC, SQLDataType.INTEGER.nullable(false), null, null, null, null, false, null);
 }

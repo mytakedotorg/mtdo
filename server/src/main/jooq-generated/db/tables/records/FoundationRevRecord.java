@@ -21,7 +21,7 @@ import org.jooq.impl.UpdatableRecordImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class FoundationRevRecord extends UpdatableRecordImpl<FoundationRevRecord> implements Record4<Integer, String, LocalDateTime, Integer> {
 
-    private static final long serialVersionUID = -1928423936;
+    private static final long serialVersionUID = 1L;
 
     /**
      * Setter for <code>public.foundation_rev.version</code>.
@@ -216,9 +216,9 @@ public class FoundationRevRecord extends UpdatableRecordImpl<FoundationRevRecord
     public FoundationRevRecord(Integer version, String description, LocalDateTime migratedOn, Integer executionTimeSec) {
         super(FoundationRev.FOUNDATION_REV);
 
-        set(0, version);
-        set(1, description);
-        set(2, migratedOn);
-        set(3, executionTimeSec);
+        setVersion(version);
+        setDescription(description);
+        setMigratedOn(migratedOn);
+        setExecutionTimeSec(executionTimeSec);
     }
 }

@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2017-2020 MyTake.org, Inc.
+ * Copyright (C) 2017-2021 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -50,11 +50,10 @@ public class InitialData {
 		@Override
 		public void configure(Env env, Config conf, Binder binder) throws Throwable {
 			env.onStart(registry -> {
-				try (DSLContext dsl = registry.require(DSLContext.class)) {
-					int numAccounts = dsl.fetchCount(Tables.ACCOUNT);
-					if (numAccounts == 0) {
-						init(dsl, registry.require(Time.class));
-					}
+				DSLContext dsl = registry.require(DSLContext.class);
+				int numAccounts = dsl.fetchCount(Tables.ACCOUNT);
+				if (numAccounts == 0) {
+					init(dsl, registry.require(Time.class));
 				}
 			});
 		}

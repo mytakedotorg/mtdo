@@ -23,6 +23,7 @@ import org.jooq.TableField;
 import org.jooq.TableOptions;
 import org.jooq.UniqueKey;
 import org.jooq.impl.DSL;
+import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
 
 
@@ -32,7 +33,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class BookmarksMod extends TableImpl<BookmarksModRecord> {
 
-    private static final long serialVersionUID = -541865704;
+    private static final long serialVersionUID = 1L;
 
     /**
      * The reference instance of <code>public.bookmarks_mod</code>
@@ -50,18 +51,19 @@ public class BookmarksMod extends TableImpl<BookmarksModRecord> {
     /**
      * The column <code>public.bookmarks_mod.saved_by</code>.
      */
-    public final TableField<BookmarksModRecord, Integer> SAVED_BY = createField(DSL.name("saved_by"), org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
+    public final TableField<BookmarksModRecord, Integer> SAVED_BY = createField(DSL.name("saved_by"), SQLDataType.INTEGER.nullable(false), this, "");
 
     /**
      * The column <code>public.bookmarks_mod.last_mod</code>.
      */
-    public final TableField<BookmarksModRecord, LocalDateTime> LAST_MOD = createField(DSL.name("last_mod"), org.jooq.impl.SQLDataType.LOCALDATETIME.nullable(false), this, "");
+    public final TableField<BookmarksModRecord, LocalDateTime> LAST_MOD = createField(DSL.name("last_mod"), SQLDataType.LOCALDATETIME(6).nullable(false), this, "");
 
-    /**
-     * Create a <code>public.bookmarks_mod</code> table reference
-     */
-    public BookmarksMod() {
-        this(DSL.name("bookmarks_mod"), null);
+    private BookmarksMod(Name alias, Table<BookmarksModRecord> aliased) {
+        this(alias, aliased, null);
+    }
+
+    private BookmarksMod(Name alias, Table<BookmarksModRecord> aliased, Field<?>[] parameters) {
+        super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.table());
     }
 
     /**
@@ -78,12 +80,11 @@ public class BookmarksMod extends TableImpl<BookmarksModRecord> {
         this(alias, BOOKMARKS_MOD);
     }
 
-    private BookmarksMod(Name alias, Table<BookmarksModRecord> aliased) {
-        this(alias, aliased, null);
-    }
-
-    private BookmarksMod(Name alias, Table<BookmarksModRecord> aliased, Field<?>[] parameters) {
-        super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.table());
+    /**
+     * Create a <code>public.bookmarks_mod</code> table reference
+     */
+    public BookmarksMod() {
+        this(DSL.name("bookmarks_mod"), null);
     }
 
     public <O extends Record> BookmarksMod(Table<O> child, ForeignKey<O, BookmarksModRecord> key) {
@@ -110,8 +111,13 @@ public class BookmarksMod extends TableImpl<BookmarksModRecord> {
         return Arrays.<ForeignKey<BookmarksModRecord, ?>>asList(Keys.BOOKMARKS_MOD__BOOKMARKS_MOD_SAVED_BY_FKEY);
     }
 
+    private transient Account _account;
+
     public Account account() {
-        return new Account(this, Keys.BOOKMARKS_MOD__BOOKMARKS_MOD_SAVED_BY_FKEY);
+        if (_account == null)
+            _account = new Account(this, Keys.BOOKMARKS_MOD__BOOKMARKS_MOD_SAVED_BY_FKEY);
+
+        return _account;
     }
 
     @Override

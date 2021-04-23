@@ -18,7 +18,7 @@ import org.jooq.impl.UpdatableRecordImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class ModeratorRecord extends UpdatableRecordImpl<ModeratorRecord> implements Record1<Integer> {
 
-    private static final long serialVersionUID = 1283739480;
+    private static final long serialVersionUID = 1L;
 
     /**
      * Setter for <code>public.moderator.id</code>.
@@ -102,6 +102,6 @@ public class ModeratorRecord extends UpdatableRecordImpl<ModeratorRecord> implem
     public ModeratorRecord(Integer id) {
         super(Moderator.MODERATOR);
 
-        set(0, id);
+        setId(id);
     }
 }

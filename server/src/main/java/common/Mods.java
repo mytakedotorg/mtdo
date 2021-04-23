@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2017-2020 MyTake.org, Inc.
+ * Copyright (C) 2017-2021 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -64,12 +64,11 @@ public class Mods {
 	/** Sends an email to all of the moderators.  Don't need to set "to" or "from", and subject will automatically have [MyTake.org mod] prepended. */
 	public void send(Throwing.Consumer<HtmlEmail> sender) throws Throwable {
 		List<String> moderatorEmails;
-		try (DSLContext dsl = registry.require(DSLContext.class)) {
-			moderatorEmails = dsl.select()
-					.from(ACCOUNT.join(MODERATOR)
-							.on(ACCOUNT.ID.eq(MODERATOR.ID)))
-					.fetch(ACCOUNT.EMAIL);
-		}
+		DSLContext dsl = registry.require(DSLContext.class);
+		moderatorEmails = dsl.select()
+				.from(ACCOUNT.join(MODERATOR)
+						.on(ACCOUNT.ID.eq(MODERATOR.ID)))
+				.fetch(ACCOUNT.EMAIL);
 		if (moderatorEmails.isEmpty()) {
 			return;
 		}
@@ -95,19 +94,18 @@ public class Mods {
 			env.router().get(Routes.MODS_DRAFTS + ":id", req -> {
 				int draftId = req.param("id").intValue();
 				AuthUser user = AuthUser.auth(req);
-				try (DSLContext dsl = req.require(DSLContext.class)) {
-					user.requireMod(dsl);
-					TakerevisionRecord rev = dsl.selectFrom(TAKEREVISION)
-							.where(TAKEREVISION.ID.eq(
-									dsl.select(TAKEDRAFT.LAST_REVISION)
-											.from(TAKEDRAFT)
-											.where(TAKEDRAFT.ID.eq(draftId))))
-							.fetchOne();
-					if (rev == null) {
-						throw RedirectException.notFoundError();
-					}
-					return views.Drafts.editTake.template(rev.getTitle(), rev.getBlocks(), draftId, rev.getId());
+				DSLContext dsl = req.require(DSLContext.class);
+				user.requireMod(dsl);
+				TakerevisionRecord rev = dsl.selectFrom(TAKEREVISION)
+						.where(TAKEREVISION.ID.eq(
+								dsl.select(TAKEDRAFT.LAST_REVISION)
+										.from(TAKEDRAFT)
+										.where(TAKEDRAFT.ID.eq(draftId))))
+						.fetchOne();
+				if (rev == null) {
+					throw RedirectException.notFoundError();
 				}
+				return views.Drafts.editTake.template(rev.getTitle(), rev.getBlocks(), draftId, rev.getId());
 			});
 		}
 	}
@@ -172,57 +170,56 @@ public class Mods {
 		}
 
 		String generateSummaryHtml() {
-			try (DSLContext dsl = registry.require(DSLContext.class)) {
-				LocalDateTime now = registry.require(Time.class).now();
+			DSLContext dsl = registry.require(DSLContext.class);
+			LocalDateTime now = registry.require(Time.class).now();
 
-				Table<?> table = dsl.select(DSL.count().as("likecount"), TAKEREACTION.TAKE_ID, TAKEREACTION.KIND)
-						.from(TAKEREACTION)
-						.where(last24hrs(now, TAKEREACTION.REACTED_AT).and(TAKEREACTION.KIND.in(Reaction.view, Reaction.like)))
-						.groupBy(TAKEREACTION.TAKE_ID, TAKEREACTION.KIND)
-						.asTable();
-				@SuppressWarnings("unchecked")
-				Field<Integer> _count = (Field<Integer>) table.fields()[0];
-				Field<Integer> _takeId = table.field(TAKEREACTION.TAKE_ID);
-				Field<Reaction> _kind = table.field(TAKEREACTION.KIND);
-				Result<?> viewsAndLikes = dsl.select(_count, ACCOUNT.USERNAME, TAKEPUBLISHED.TITLE_SLUG, _kind)
-						.from(table)
-						.join(TAKEPUBLISHED).on(_takeId.eq(TAKEPUBLISHED.ID))
-						.join(ACCOUNT).on(TAKEPUBLISHED.USER_ID.eq(ACCOUNT.ID))
-						.fetch();
-				Map<String, ViewsStars> map = new HashMap<>();
-				for (Record record : viewsAndLikes) {
-					String userSlug = record.get(ACCOUNT.USERNAME) + "/" + record.get(TAKEPUBLISHED.TITLE_SLUG);
-					map.compute(userSlug, (us, viewsStars) -> {
-						if (viewsStars == null) {
-							viewsStars = new ViewsStars();
-							viewsStars.userSlug = us;
-						}
-						Reaction kind = record.get(_kind);
-						int count = record.get(_count);
-						// @formatter:off
+			Table<?> table = dsl.select(DSL.count().as("likecount"), TAKEREACTION.TAKE_ID, TAKEREACTION.KIND)
+					.from(TAKEREACTION)
+					.where(last24hrs(now, TAKEREACTION.REACTED_AT).and(TAKEREACTION.KIND.in(Reaction.view, Reaction.like)))
+					.groupBy(TAKEREACTION.TAKE_ID, TAKEREACTION.KIND)
+					.asTable();
+			@SuppressWarnings("unchecked")
+			Field<Integer> _count = (Field<Integer>) table.fields()[0];
+			Field<Integer> _takeId = table.field(TAKEREACTION.TAKE_ID);
+			Field<Reaction> _kind = table.field(TAKEREACTION.KIND);
+			Result<?> viewsAndLikes = dsl.select(_count, ACCOUNT.USERNAME, TAKEPUBLISHED.TITLE_SLUG, _kind)
+					.from(table)
+					.join(TAKEPUBLISHED).on(_takeId.eq(TAKEPUBLISHED.ID))
+					.join(ACCOUNT).on(TAKEPUBLISHED.USER_ID.eq(ACCOUNT.ID))
+					.fetch();
+			Map<String, ViewsStars> map = new HashMap<>();
+			for (Record record : viewsAndLikes) {
+				String userSlug = record.get(ACCOUNT.USERNAME) + "/" + record.get(TAKEPUBLISHED.TITLE_SLUG);
+				map.compute(userSlug, (us, viewsStars) -> {
+					if (viewsStars == null) {
+						viewsStars = new ViewsStars();
+						viewsStars.userSlug = us;
+					}
+					Reaction kind = record.get(_kind);
+					int count = record.get(_count);
+					// @formatter:off
 						switch (kind) {
 						case view: viewsStars.views = count; break;
 						case like: viewsStars.stars = count; break;
 						default:   throw Unhandled.enumException(kind);
 						}
 						// @formatter:on
-						return viewsStars;
-					});
-				}
-				List<ViewsStars> viewsStars = new ArrayList<ViewsStars>(map.values());
-				Collections.sort(viewsStars, Comparator.<ViewsStars> comparingInt(v -> v.views)
-						.thenComparing(v -> v.stars)
-						.thenComparing(v -> v.userSlug));
-
-				Result<?> recentDrafts = dsl.select(TAKEDRAFT.ID, TAKEREVISION.TITLE, ACCOUNT.USERNAME)
-						.from(TAKEDRAFT
-								.join(ACCOUNT).on(ACCOUNT.ID.eq(TAKEDRAFT.USER_ID))
-								.join(TAKEREVISION).on(TAKEREVISION.ID.eq(TAKEDRAFT.LAST_REVISION)))
-						.where(last24hrs(now, TAKEREVISION.CREATED_AT))
-						.orderBy(TAKEREVISION.CREATED_AT.desc(), TAKEREVISION.ID.desc())
-						.fetch();
-				return views.Mods.dailySummary.template(viewsStars, recentDrafts).renderToString();
+					return viewsStars;
+				});
 			}
+			List<ViewsStars> viewsStars = new ArrayList<ViewsStars>(map.values());
+			Collections.sort(viewsStars, Comparator.<ViewsStars> comparingInt(v -> v.views)
+					.thenComparing(v -> v.stars)
+					.thenComparing(v -> v.userSlug));
+
+			Result<?> recentDrafts = dsl.select(TAKEDRAFT.ID, TAKEREVISION.TITLE, ACCOUNT.USERNAME)
+					.from(TAKEDRAFT
+							.join(ACCOUNT).on(ACCOUNT.ID.eq(TAKEDRAFT.USER_ID))
+							.join(TAKEREVISION).on(TAKEREVISION.ID.eq(TAKEDRAFT.LAST_REVISION)))
+					.where(last24hrs(now, TAKEREVISION.CREATED_AT))
+					.orderBy(TAKEREVISION.CREATED_AT.desc(), TAKEREVISION.ID.desc())
+					.fetch();
+			return views.Mods.dailySummary.template(viewsStars, recentDrafts).renderToString();
 		}
 
 		private Condition last24hrs(LocalDateTime now, TableField<?, LocalDateTime> field) {

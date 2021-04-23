@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2020 MyTake.org, Inc.
+ * Copyright (C) 2020-2021 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -35,7 +35,7 @@ import java.security.SecureRandom;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import org.jooby.Env;
 import org.jooby.Err;
 import org.jooby.Jooby;
@@ -153,8 +153,6 @@ public class ErrorPages implements Jooby.Module {
 				});
 				AuthUser auth = null;
 				emailSupportAndGetCode(random, email, auth, kind, debug, err);
-			} finally {
-				dsl.close();
 			}
 		}
 	}

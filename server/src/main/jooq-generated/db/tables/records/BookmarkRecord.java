@@ -21,7 +21,7 @@ import org.jooq.impl.UpdatableRecordImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class BookmarkRecord extends UpdatableRecordImpl<BookmarkRecord> implements Record5<Integer, LocalDateTime, String, Integer, Integer> {
 
-    private static final long serialVersionUID = -1723588572;
+    private static final long serialVersionUID = 1L;
 
     /**
      * Setter for <code>public.bookmark.saved_by</code>.
@@ -253,10 +253,10 @@ public class BookmarkRecord extends UpdatableRecordImpl<BookmarkRecord> implemen
     public BookmarkRecord(Integer savedBy, LocalDateTime savedOn, String fact, Integer cutStart, Integer cutEnd) {
         super(Bookmark.BOOKMARK);
 
-        set(0, savedBy);
-        set(1, savedOn);
-        set(2, fact);
-        set(3, cutStart);
-        set(4, cutEnd);
+        setSavedBy(savedBy);
+        setSavedOn(savedOn);
+        setFact(fact);
+        setCutStart(cutStart);
+        setCutEnd(cutEnd);
     }
 }

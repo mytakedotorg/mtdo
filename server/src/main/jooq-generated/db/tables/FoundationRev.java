@@ -23,6 +23,7 @@ import org.jooq.TableField;
 import org.jooq.TableOptions;
 import org.jooq.UniqueKey;
 import org.jooq.impl.DSL;
+import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
 
 
@@ -32,7 +33,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class FoundationRev extends TableImpl<FoundationRevRecord> {
 
-    private static final long serialVersionUID = 1534768364;
+    private static final long serialVersionUID = 1L;
 
     /**
      * The reference instance of <code>public.foundation_rev</code>
@@ -50,28 +51,29 @@ public class FoundationRev extends TableImpl<FoundationRevRecord> {
     /**
      * The column <code>public.foundation_rev.version</code>.
      */
-    public final TableField<FoundationRevRecord, Integer> VERSION = createField(DSL.name("version"), org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
+    public final TableField<FoundationRevRecord, Integer> VERSION = createField(DSL.name("version"), SQLDataType.INTEGER.nullable(false), this, "");
 
     /**
      * The column <code>public.foundation_rev.description</code>.
      */
-    public final TableField<FoundationRevRecord, String> DESCRIPTION = createField(DSL.name("description"), org.jooq.impl.SQLDataType.VARCHAR(255).nullable(false), this, "");
+    public final TableField<FoundationRevRecord, String> DESCRIPTION = createField(DSL.name("description"), SQLDataType.VARCHAR(255).nullable(false), this, "");
 
     /**
      * The column <code>public.foundation_rev.migrated_on</code>.
      */
-    public final TableField<FoundationRevRecord, LocalDateTime> MIGRATED_ON = createField(DSL.name("migrated_on"), org.jooq.impl.SQLDataType.LOCALDATETIME.nullable(false), this, "");
+    public final TableField<FoundationRevRecord, LocalDateTime> MIGRATED_ON = createField(DSL.name("migrated_on"), SQLDataType.LOCALDATETIME(6).nullable(false), this, "");
 
     /**
      * The column <code>public.foundation_rev.execution_time_sec</code>.
      */
-    public final TableField<FoundationRevRecord, Integer> EXECUTION_TIME_SEC = createField(DSL.name("execution_time_sec"), org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
+    public final TableField<FoundationRevRecord, Integer> EXECUTION_TIME_SEC = createField(DSL.name("execution_time_sec"), SQLDataType.INTEGER.nullable(false), this, "");
 
-    /**
-     * Create a <code>public.foundation_rev</code> table reference
-     */
-    public FoundationRev() {
-        this(DSL.name("foundation_rev"), null);
+    private FoundationRev(Name alias, Table<FoundationRevRecord> aliased) {
+        this(alias, aliased, null);
+    }
+
+    private FoundationRev(Name alias, Table<FoundationRevRecord> aliased, Field<?>[] parameters) {
+        super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.table());
     }
 
     /**
@@ -88,12 +90,11 @@ public class FoundationRev extends TableImpl<FoundationRevRecord> {
         this(alias, FOUNDATION_REV);
     }
 
-    private FoundationRev(Name alias, Table<FoundationRevRecord> aliased) {
-        this(alias, aliased, null);
-    }
-
-    private FoundationRev(Name alias, Table<FoundationRevRecord> aliased, Field<?>[] parameters) {
-        super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.table());
+    /**
+     * Create a <code>public.foundation_rev</code> table reference
+     */
+    public FoundationRev() {
+        this(DSL.name("foundation_rev"), null);
     }
 
     public <O extends Record> FoundationRev(Table<O> child, ForeignKey<O, FoundationRevRecord> key) {
