@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2018-2020 MyTake.org, Inc.
+ * Copyright (C) 2018-2021 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -226,19 +226,22 @@ public class DevHotReload {
 		private final ClassLoader parent = CleanPostgresModule.class.getClassLoader();
 
 		@Override
-		public Class<?> loadClass(String nameRaw, boolean resolve) throws ClassNotFoundException {
-			return loadedClasses.computeIfAbsent(nameRaw, Errors.rethrow().wrapFunction(name -> {
-				byte[] newClassData = loadNewClass(name);
+		public Class<?> loadClass(String name, boolean resolve) throws ClassNotFoundException {
+			Class<?> result = loadedClasses.get(name);
+			if (result == null) {
+				byte[] newClassData = Errors.rethrow().get(() -> loadNewClass(name));
 				if (newClassData != null) {
 					Class<?> clazz = defineClass(name, newClassData, 0, newClassData.length);
 					if (resolve) {
 						resolveClass(clazz);
 					}
-					return clazz;
+					result = clazz;
 				} else {
-					return parent.loadClass(name);
+					result = parent.loadClass(name);
 				}
-			}));
+				loadedClasses.put(name, result);
+			}
+			return result;
 		}
 
 		@Nullable

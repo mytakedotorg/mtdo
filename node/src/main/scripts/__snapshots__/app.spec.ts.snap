@@ -7,7 +7,7 @@ exports[`videoCut headers 404 invalid hash 1`] = `
 /static/social-header/~cut:(2007.9000244140625,2046.1099853515625),fact:E74aoUY=31c55b20dc10bdfe9b10ce1fbc3d9b3f3bf01098,kind:videoCut
 FetchError: invalid json response body at https://mytake.org/api/static/fact/E74aoUY=31c55b20dc10bdfe9b10ce1fbc3d9b3f3bf01098.json reason: Unexpected token < in JSON at position 0
     at mytakedotorg/node/node_modules/minipass-fetch/lib/body.js:77:31
-    at processTicksAndRejections (internal/process/task_queues.js:97:5)"
+    at processTicksAndRejections (internal/process/task_queues.js:93:5)"
 `;
 
 exports[`videoCut image 404 invalid hash 1`] = `

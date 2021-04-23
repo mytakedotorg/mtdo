@@ -32,6 +32,8 @@ apply from: 干.file('spotless/java.gradle')
 apply from: 干.file('base/gradle-plugin.gradle')
 apply from: 干.file('base/maven.gradle')
 
+tasks.javadoc.enabled = false // due to Java 11
+
 spotless {
 	ratchetFrom 'origin/staging'
 }
@@ -46,8 +48,19 @@ tasks.register('syncClientInterfaceJava2ts', Sync) {
 	from '../client-interface/src/main/java/java2ts'
 	into 'src/main/java/java2ts'
 }
-tasks.named('compileJava') {
-	dependsOn 'syncClientInterfaceJava2ts'
+for (name in [
+	'compileJava',
+	'spotlessJava',
+	'sourcesJar'
+]) {
+	tasks.named(name) {
+		dependsOn 'syncClientInterfaceJava2ts'
+	}
+}
+afterEvaluate {
+	tasks.named('publishPluginJar') {
+		dependsOn 'syncClientInterfaceJava2ts'
+	}
 }
 tasks.named('eclipse') {
 	dependsOn 'syncClientInterfaceJava2ts'
@@ -72,7 +85,7 @@ configurations {
 	}
 }
 
-String VER_AUTOVALUE = '1.7.4'
+String VER_AUTOVALUE = '1.8.1'
 dependencies {
 	annotationProcessor     "com.google.auto.value:auto-value:${VER_AUTOVALUE}"
 	implementation          "com.google.auto.value:auto-value-annotations:${VER_AUTOVALUE}"
@@ -90,16 +103,16 @@ dependencies {
 	implementation 'com.diffplug.durian:durian-collect:1.2.0'
 	implementation 'com.diffplug.durian:durian-io:1.2.0'
 
-	implementation 'com.diffplug.spotless-changelog:spotless-changelog-plugin-gradle:2.0.0'
-	implementation 'com.diffplug.spotless:spotless-plugin-gradle:5.6.1'
-	implementation 'com.diffplug.gradle:goomph:3.25.0'
+	implementation 'com.diffplug.spotless-changelog:spotless-changelog-plugin-gradle:2.1.2'
+	implementation 'com.diffplug.spotless:spotless-plugin-gradle:5.12.4'
+	implementation 'com.diffplug.gradle:goomph:3.29.1'
 
 	testImplementation "junit:junit:$VER_JUNIT"
 	testImplementation "org.assertj:assertj-core:$VER_ASSERTJ"
 
 	guiRuntime 'com.diffplug.durian:durian-swt:3.3.1'
-	guiRuntime 'io.reactivex.rxjava2:rxjava:2.2.20'
-	guiRuntime 'com.ibm.icu:icu4j:67.1'
+	guiRuntime 'io.reactivex.rxjava2:rxjava:2.2.21'
+	guiRuntime 'com.ibm.icu:icu4j:69.1'
 	implementation 'info.debatty:java-string-similarity:2.0.0'
 }
 

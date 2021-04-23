@@ -48,6 +48,21 @@ allprojects { proj ->
 	eclipse { project { name = "mytake-$proj.name" } }
 	apply plugin: 'com.diffplug.eclipse.excludebuildfolder'
 	tasks.eclipse.dependsOn(tasks.cleanEclipse)
+
+	apply plugin: 'com.diffplug.eclipse.resourcefilters'
+	eclipseResourceFilters {
+		exclude().folders().name('bin/main')
+		exclude().folders().name('bin/test')
+		exclude().folders().name('build')
+	}
+	if (buildsrc.Env.isHeroku()) {
+		afterEvaluate {
+			def spotless = getProject().getExtensions().findByType(com.diffplug.gradle.spotless.SpotlessExtension)
+			if (spotless != null) {
+				spotless.ratchetFrom(null)
+			}
+		}
+	}
 }
 
 // root eclipse project

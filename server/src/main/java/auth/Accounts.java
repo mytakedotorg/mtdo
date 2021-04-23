@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2020 MyTake.org, Inc.
+ * Copyright (C) 2020-2021 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -133,7 +133,7 @@ public class Accounts {
 
 	/** Performs the server-side of a "subscribe to mailing list" operation. */
 	static Msg subscribeToMailingList(String emailRaw, Request req) {
-		String email = emailRaw.toLowerCase(Locale.ROOT);
+		String email = emailRaw.toLowerCase(Locale.US);
 		Optional<AuthUser> authOpt = AuthUser.authOpt(req);
 		if (authOpt.isPresent()) {
 			if (!authOpt.get().email().equals(email)) {

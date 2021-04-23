@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2017-2020 MyTake.org, Inc.
+ * Copyright (C) 2017-2021 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -128,7 +128,7 @@ public class MetaMap {
 	// Interact with POJOs via reflection //
 	////////////////////////////////////////
 	static String cap(String input) {
-		return input.substring(0, 1).toUpperCase(Locale.ROOT) + input.substring(1);
+		return input.substring(0, 1).toUpperCase(Locale.US) + input.substring(1);
 	}
 
 	public static MetaMap buildFrom(Object value, Iterable<MetaField<?>> fields) {

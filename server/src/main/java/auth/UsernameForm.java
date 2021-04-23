@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2020 MyTake.org, Inc.
+ * Copyright (C) 2020-2021 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -133,7 +133,7 @@ public class UsernameForm extends PostForm<UsernameForm> {
 
 	static String typoHarden(String username) {
 		String substituted = username
-				.toLowerCase(Locale.ROOT)
+				.toLowerCase(Locale.US)
 				.replace("-", "")   // george-washington
 				.replace('a', '4')  // alex4nder-hamilton
 				.replace('b', '8')  // 8en-franklin

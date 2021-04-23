@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2020 MyTake.org, Inc.
+ * Copyright (C) 2020-2021 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -124,7 +124,7 @@ public abstract class TypedFormDef<Self extends TypedFormDef<Self>> implements F
 	@SuppressWarnings("unchecked")
 	public static <T extends TypedFormDef<T>> T create(Class<T> clazz) {
 		return (T) instantiated.computeIfAbsent(clazz, c -> {
-			return Errors.rethrow().get(clazz::newInstance);
+			return (T) Errors.rethrow().get(() -> c.getDeclaredConstructor().newInstance());
 		});
 	}
 

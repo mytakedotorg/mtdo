@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2020 MyTake.org, Inc.
+ * Copyright (C) 2020-2021 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -57,13 +57,13 @@ public abstract class DisallowedValueException extends RuntimeException {
 				// so match it against each part of the candidates, and take the best one
 				return Arrays.stream(str.split(" "))
 						.filter(s -> s.length() >= 3)
-						.mapToDouble(s -> l.distance(value.toLowerCase(Locale.ROOT), s.toLowerCase(Locale.ROOT)))
+						.mapToDouble(s -> l.distance(value.toLowerCase(Locale.US), s.toLowerCase(Locale.US)))
 						.min().getAsDouble();
 			}));
 		} else {
 			// if the incoming has spaces, match it against all our possibilities
 			this.allowed.sort(Comparator.comparingDouble(str -> {
-				return l.distance(value.toLowerCase(Locale.ROOT), str.toLowerCase(Locale.ROOT));
+				return l.distance(value.toLowerCase(Locale.US), str.toLowerCase(Locale.US));
 			}));
 		}
 		this.fileWhichSpecifies = fileWhichSpecifies;
