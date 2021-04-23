@@ -26,6 +26,7 @@ import org.jooq.TableField;
 import org.jooq.TableOptions;
 import org.jooq.UniqueKey;
 import org.jooq.impl.DSL;
+import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
 
 
@@ -35,7 +36,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Takerevision extends TableImpl<TakerevisionRecord> {
 
-    private static final long serialVersionUID = -768771438;
+    private static final long serialVersionUID = 1L;
 
     /**
      * The reference instance of <code>public.takerevision</code>
@@ -53,17 +54,17 @@ public class Takerevision extends TableImpl<TakerevisionRecord> {
     /**
      * The column <code>public.takerevision.id</code>.
      */
-    public final TableField<TakerevisionRecord, Integer> ID = createField(DSL.name("id"), org.jooq.impl.SQLDataType.INTEGER.nullable(false).defaultValue(org.jooq.impl.DSL.field("nextval('takerevision_id_seq'::regclass)", org.jooq.impl.SQLDataType.INTEGER)), this, "");
+    public final TableField<TakerevisionRecord, Integer> ID = createField(DSL.name("id"), SQLDataType.INTEGER.nullable(false).identity(true), this, "");
 
     /**
      * The column <code>public.takerevision.parent_id</code>.
      */
-    public final TableField<TakerevisionRecord, Integer> PARENT_ID = createField(DSL.name("parent_id"), org.jooq.impl.SQLDataType.INTEGER, this, "");
+    public final TableField<TakerevisionRecord, Integer> PARENT_ID = createField(DSL.name("parent_id"), SQLDataType.INTEGER, this, "");
 
     /**
      * The column <code>public.takerevision.created_at</code>.
      */
-    public final TableField<TakerevisionRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), org.jooq.impl.SQLDataType.LOCALDATETIME.nullable(false), this, "");
+    public final TableField<TakerevisionRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(6).nullable(false), this, "");
 
     /**
      * The column <code>public.takerevision.created_ip</code>.
@@ -73,18 +74,19 @@ public class Takerevision extends TableImpl<TakerevisionRecord> {
     /**
      * The column <code>public.takerevision.title</code>.
      */
-    public final TableField<TakerevisionRecord, String> TITLE = createField(DSL.name("title"), org.jooq.impl.SQLDataType.VARCHAR(255).nullable(false), this, "");
+    public final TableField<TakerevisionRecord, String> TITLE = createField(DSL.name("title"), SQLDataType.VARCHAR(255).nullable(false), this, "");
 
     /**
      * The column <code>public.takerevision.blocks</code>.
      */
-    public final TableField<TakerevisionRecord, JSONB> BLOCKS = createField(DSL.name("blocks"), org.jooq.impl.SQLDataType.JSONB.nullable(false), this, "");
+    public final TableField<TakerevisionRecord, JSONB> BLOCKS = createField(DSL.name("blocks"), SQLDataType.JSONB.nullable(false), this, "");
 
-    /**
-     * Create a <code>public.takerevision</code> table reference
-     */
-    public Takerevision() {
-        this(DSL.name("takerevision"), null);
+    private Takerevision(Name alias, Table<TakerevisionRecord> aliased) {
+        this(alias, aliased, null);
+    }
+
+    private Takerevision(Name alias, Table<TakerevisionRecord> aliased, Field<?>[] parameters) {
+        super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.table());
     }
 
     /**
@@ -101,12 +103,11 @@ public class Takerevision extends TableImpl<TakerevisionRecord> {
         this(alias, TAKEREVISION);
     }
 
-    private Takerevision(Name alias, Table<TakerevisionRecord> aliased) {
-        this(alias, aliased, null);
-    }
-
-    private Takerevision(Name alias, Table<TakerevisionRecord> aliased, Field<?>[] parameters) {
-        super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.table());
+    /**
+     * Create a <code>public.takerevision</code> table reference
+     */
+    public Takerevision() {
+        this(DSL.name("takerevision"), null);
     }
 
     public <O extends Record> Takerevision(Table<O> child, ForeignKey<O, TakerevisionRecord> key) {
@@ -120,7 +121,7 @@ public class Takerevision extends TableImpl<TakerevisionRecord> {
 
     @Override
     public Identity<TakerevisionRecord, Integer> getIdentity() {
-        return Keys.IDENTITY_TAKEREVISION;
+        return (Identity<TakerevisionRecord, Integer>) super.getIdentity();
     }
 
     @Override
@@ -138,8 +139,13 @@ public class Takerevision extends TableImpl<TakerevisionRecord> {
         return Arrays.<ForeignKey<TakerevisionRecord, ?>>asList(Keys.TAKEREVISION__TAKEREVISION_PARENT_ID_FKEY);
     }
 
+    private transient Takerevision _takerevision;
+
     public Takerevision takerevision() {
-        return new Takerevision(this, Keys.TAKEREVISION__TAKEREVISION_PARENT_ID_FKEY);
+        if (_takerevision == null)
+            _takerevision = new Takerevision(this, Keys.TAKEREVISION__TAKEREVISION_PARENT_ID_FKEY);
+
+        return _takerevision;
     }
 
     @Override

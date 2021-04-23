@@ -22,7 +22,7 @@ import org.jooq.impl.UpdatableRecordImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class TakerevisionRecord extends UpdatableRecordImpl<TakerevisionRecord> implements Record6<Integer, Integer, LocalDateTime, String, String, JSONB> {
 
-    private static final long serialVersionUID = -1967168339;
+    private static final long serialVersionUID = 1L;
 
     /**
      * Setter for <code>public.takerevision.id</code>.
@@ -291,11 +291,11 @@ public class TakerevisionRecord extends UpdatableRecordImpl<TakerevisionRecord> 
     public TakerevisionRecord(Integer id, Integer parentId, LocalDateTime createdAt, String createdIp, String title, JSONB blocks) {
         super(Takerevision.TAKEREVISION);
 
-        set(0, id);
-        set(1, parentId);
-        set(2, createdAt);
-        set(3, createdIp);
-        set(4, title);
-        set(5, blocks);
+        setId(id);
+        setParentId(parentId);
+        setCreatedAt(createdAt);
+        setCreatedIp(createdIp);
+        setTitle(title);
+        setBlocks(blocks);
     }
 }

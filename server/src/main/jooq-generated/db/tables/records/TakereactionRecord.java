@@ -22,7 +22,7 @@ import org.jooq.impl.UpdatableRecordImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class TakereactionRecord extends UpdatableRecordImpl<TakereactionRecord> implements Record5<Integer, Integer, Reaction, LocalDateTime, String> {
 
-    private static final long serialVersionUID = 1590781326;
+    private static final long serialVersionUID = 1L;
 
     /**
      * Setter for <code>public.takereaction.take_id</code>.
@@ -254,10 +254,10 @@ public class TakereactionRecord extends UpdatableRecordImpl<TakereactionRecord> 
     public TakereactionRecord(Integer takeId, Integer userId, Reaction kind, LocalDateTime reactedAt, String reactedIp) {
         super(Takereaction.TAKEREACTION);
 
-        set(0, takeId);
-        set(1, userId);
-        set(2, kind);
-        set(3, reactedAt);
-        set(4, reactedIp);
+        setTakeId(takeId);
+        setUserId(userId);
+        setKind(kind);
+        setReactedAt(reactedAt);
+        setReactedIp(reactedIp);
     }
 }

@@ -22,7 +22,7 @@ import org.jooq.impl.UpdatableRecordImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class TakepublishedRecord extends UpdatableRecordImpl<TakepublishedRecord> implements Record15<Integer, Integer, String, String, JSONB, LocalDateTime, String, LocalDateTime, String, Integer, Integer, Integer, Integer, Integer, String> {
 
-    private static final long serialVersionUID = -1155421396;
+    private static final long serialVersionUID = 1L;
 
     /**
      * Setter for <code>public.takepublished.id</code>.
@@ -624,20 +624,20 @@ public class TakepublishedRecord extends UpdatableRecordImpl<TakepublishedRecord
     public TakepublishedRecord(Integer id, Integer userId, String title, String titleSlug, JSONB blocks, LocalDateTime publishedAt, String publishedIp, LocalDateTime deletedAt, String deletedIp, Integer countView, Integer countLike, Integer countBookmark, Integer countSpam, Integer countIllegal, String imageUrl) {
         super(Takepublished.TAKEPUBLISHED);
 
-        set(0, id);
-        set(1, userId);
-        set(2, title);
-        set(3, titleSlug);
-        set(4, blocks);
-        set(5, publishedAt);
-        set(6, publishedIp);
-        set(7, deletedAt);
-        set(8, deletedIp);
-        set(9, countView);
-        set(10, countLike);
-        set(11, countBookmark);
-        set(12, countSpam);
-        set(13, countIllegal);
-        set(14, imageUrl);
+        setId(id);
+        setUserId(userId);
+        setTitle(title);
+        setTitleSlug(titleSlug);
+        setBlocks(blocks);
+        setPublishedAt(publishedAt);
+        setPublishedIp(publishedIp);
+        setDeletedAt(deletedAt);
+        setDeletedIp(deletedIp);
+        setCountView(countView);
+        setCountLike(countLike);
+        setCountBookmark(countBookmark);
+        setCountSpam(countSpam);
+        setCountIllegal(countIllegal);
+        setImageUrl(imageUrl);
     }
 }

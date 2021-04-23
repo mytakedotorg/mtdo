@@ -23,6 +23,7 @@ import org.jooq.TableField;
 import org.jooq.TableOptions;
 import org.jooq.UniqueKey;
 import org.jooq.impl.DSL;
+import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
 
 
@@ -32,7 +33,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Follow extends TableImpl<FollowRecord> {
 
-    private static final long serialVersionUID = 831167033;
+    private static final long serialVersionUID = 1L;
 
     /**
      * The reference instance of <code>public.follow</code>
@@ -50,23 +51,24 @@ public class Follow extends TableImpl<FollowRecord> {
     /**
      * The column <code>public.follow.author</code>.
      */
-    public final TableField<FollowRecord, Integer> AUTHOR = createField(DSL.name("author"), org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
+    public final TableField<FollowRecord, Integer> AUTHOR = createField(DSL.name("author"), SQLDataType.INTEGER.nullable(false), this, "");
 
     /**
      * The column <code>public.follow.follower</code>.
      */
-    public final TableField<FollowRecord, Integer> FOLLOWER = createField(DSL.name("follower"), org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
+    public final TableField<FollowRecord, Integer> FOLLOWER = createField(DSL.name("follower"), SQLDataType.INTEGER.nullable(false), this, "");
 
     /**
      * The column <code>public.follow.followed_at</code>.
      */
-    public final TableField<FollowRecord, LocalDateTime> FOLLOWED_AT = createField(DSL.name("followed_at"), org.jooq.impl.SQLDataType.LOCALDATETIME.nullable(false), this, "");
+    public final TableField<FollowRecord, LocalDateTime> FOLLOWED_AT = createField(DSL.name("followed_at"), SQLDataType.LOCALDATETIME(6).nullable(false), this, "");
 
-    /**
-     * Create a <code>public.follow</code> table reference
-     */
-    public Follow() {
-        this(DSL.name("follow"), null);
+    private Follow(Name alias, Table<FollowRecord> aliased) {
+        this(alias, aliased, null);
+    }
+
+    private Follow(Name alias, Table<FollowRecord> aliased, Field<?>[] parameters) {
+        super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.table());
     }
 
     /**
@@ -83,12 +85,11 @@ public class Follow extends TableImpl<FollowRecord> {
         this(alias, FOLLOW);
     }
 
-    private Follow(Name alias, Table<FollowRecord> aliased) {
-        this(alias, aliased, null);
-    }
-
-    private Follow(Name alias, Table<FollowRecord> aliased, Field<?>[] parameters) {
-        super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.table());
+    /**
+     * Create a <code>public.follow</code> table reference
+     */
+    public Follow() {
+        this(DSL.name("follow"), null);
     }
 
     public <O extends Record> Follow(Table<O> child, ForeignKey<O, FollowRecord> key) {
@@ -115,12 +116,21 @@ public class Follow extends TableImpl<FollowRecord> {
         return Arrays.<ForeignKey<FollowRecord, ?>>asList(Keys.FOLLOW__FOLLOW_AUTHOR_FKEY, Keys.FOLLOW__FOLLOW_FOLLOWER_FKEY);
     }
 
+    private transient Account _followAuthorFkey;
+    private transient Account _followFollowerFkey;
+
     public Account followAuthorFkey() {
-        return new Account(this, Keys.FOLLOW__FOLLOW_AUTHOR_FKEY);
+        if (_followAuthorFkey == null)
+            _followAuthorFkey = new Account(this, Keys.FOLLOW__FOLLOW_AUTHOR_FKEY);
+
+        return _followAuthorFkey;
     }
 
     public Account followFollowerFkey() {
-        return new Account(this, Keys.FOLLOW__FOLLOW_FOLLOWER_FKEY);
+        if (_followFollowerFkey == null)
+            _followFollowerFkey = new Account(this, Keys.FOLLOW__FOLLOW_FOLLOWER_FKEY);
+
+        return _followFollowerFkey;
     }
 
     @Override

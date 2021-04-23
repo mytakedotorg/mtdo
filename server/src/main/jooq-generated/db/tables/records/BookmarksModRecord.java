@@ -21,7 +21,7 @@ import org.jooq.impl.UpdatableRecordImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class BookmarksModRecord extends UpdatableRecordImpl<BookmarksModRecord> implements Record2<Integer, LocalDateTime> {
 
-    private static final long serialVersionUID = -496374119;
+    private static final long serialVersionUID = 1L;
 
     /**
      * Setter for <code>public.bookmarks_mod.saved_by</code>.
@@ -142,7 +142,7 @@ public class BookmarksModRecord extends UpdatableRecordImpl<BookmarksModRecord> 
     public BookmarksModRecord(Integer savedBy, LocalDateTime lastMod) {
         super(BookmarksMod.BOOKMARKS_MOD);
 
-        set(0, savedBy);
-        set(1, lastMod);
+        setSavedBy(savedBy);
+        setLastMod(lastMod);
     }
 }

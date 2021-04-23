@@ -22,6 +22,7 @@ import org.jooq.TableField;
 import org.jooq.TableOptions;
 import org.jooq.UniqueKey;
 import org.jooq.impl.DSL;
+import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
 
 
@@ -31,7 +32,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Moderator extends TableImpl<ModeratorRecord> {
 
-    private static final long serialVersionUID = -1633586759;
+    private static final long serialVersionUID = 1L;
 
     /**
      * The reference instance of <code>public.moderator</code>
@@ -49,13 +50,14 @@ public class Moderator extends TableImpl<ModeratorRecord> {
     /**
      * The column <code>public.moderator.id</code>.
      */
-    public final TableField<ModeratorRecord, Integer> ID = createField(DSL.name("id"), org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
+    public final TableField<ModeratorRecord, Integer> ID = createField(DSL.name("id"), SQLDataType.INTEGER.nullable(false), this, "");
 
-    /**
-     * Create a <code>public.moderator</code> table reference
-     */
-    public Moderator() {
-        this(DSL.name("moderator"), null);
+    private Moderator(Name alias, Table<ModeratorRecord> aliased) {
+        this(alias, aliased, null);
+    }
+
+    private Moderator(Name alias, Table<ModeratorRecord> aliased, Field<?>[] parameters) {
+        super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.table());
     }
 
     /**
@@ -72,12 +74,11 @@ public class Moderator extends TableImpl<ModeratorRecord> {
         this(alias, MODERATOR);
     }
 
-    private Moderator(Name alias, Table<ModeratorRecord> aliased) {
-        this(alias, aliased, null);
-    }
-
-    private Moderator(Name alias, Table<ModeratorRecord> aliased, Field<?>[] parameters) {
-        super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.table());
+    /**
+     * Create a <code>public.moderator</code> table reference
+     */
+    public Moderator() {
+        this(DSL.name("moderator"), null);
     }
 
     public <O extends Record> Moderator(Table<O> child, ForeignKey<O, ModeratorRecord> key) {

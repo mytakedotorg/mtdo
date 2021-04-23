@@ -30,104 +30,52 @@ import db.tables.records.TakereactionRecord;
 import db.tables.records.TakerevisionRecord;
 
 import org.jooq.ForeignKey;
-import org.jooq.Identity;
 import org.jooq.TableField;
 import org.jooq.UniqueKey;
+import org.jooq.impl.DSL;
 import org.jooq.impl.Internal;
 
 
 /**
- * A class modelling foreign key relationships and constraints of tables of 
- * the <code>public</code> schema.
+ * A class modelling foreign key relationships and constraints of tables in 
+ * public.
  */
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Keys {
 
     // -------------------------------------------------------------------------
-    // IDENTITY definitions
-    // -------------------------------------------------------------------------
-
-    public static final Identity<AccountRecord, Integer> IDENTITY_ACCOUNT = Identities0.IDENTITY_ACCOUNT;
-    public static final Identity<TakedraftRecord, Integer> IDENTITY_TAKEDRAFT = Identities0.IDENTITY_TAKEDRAFT;
-    public static final Identity<TakepublishedRecord, Integer> IDENTITY_TAKEPUBLISHED = Identities0.IDENTITY_TAKEPUBLISHED;
-    public static final Identity<TakerevisionRecord, Integer> IDENTITY_TAKEREVISION = Identities0.IDENTITY_TAKEREVISION;
-
-    // -------------------------------------------------------------------------
     // UNIQUE and PRIMARY KEY definitions
     // -------------------------------------------------------------------------
 
-    public static final UniqueKey<AccountRecord> ACCOUNT_PKEY = UniqueKeys0.ACCOUNT_PKEY;
-    public static final UniqueKey<AccountRecord> ACCOUNT_USERNAME_KEY = UniqueKeys0.ACCOUNT_USERNAME_KEY;
-    public static final UniqueKey<AccountRecord> ACCOUNT_EMAIL_KEY = UniqueKeys0.ACCOUNT_EMAIL_KEY;
-    public static final UniqueKey<AccountRecord> ACCOUNT_USERNAME_TYPOHARD_KEY = UniqueKeys0.ACCOUNT_USERNAME_TYPOHARD_KEY;
-    public static final UniqueKey<BookmarkRecord> BOOKMARK_PKEY = UniqueKeys0.BOOKMARK_PKEY;
-    public static final UniqueKey<BookmarksModRecord> BOOKMARKS_MOD_PKEY = UniqueKeys0.BOOKMARKS_MOD_PKEY;
-    public static final UniqueKey<FlywaySchemaHistoryRecord> FLYWAY_SCHEMA_HISTORY_PK = UniqueKeys0.FLYWAY_SCHEMA_HISTORY_PK;
-    public static final UniqueKey<FollowRecord> FOLLOW_PKEY = UniqueKeys0.FOLLOW_PKEY;
-    public static final UniqueKey<FoundationRevRecord> FOUNDATION_REV_PKEY = UniqueKeys0.FOUNDATION_REV_PKEY;
-    public static final UniqueKey<LoginlinkRecord> LOGINLINK_PKEY = UniqueKeys0.LOGINLINK_PKEY;
-    public static final UniqueKey<ModeratorRecord> MODERATOR_PKEY = UniqueKeys0.MODERATOR_PKEY;
-    public static final UniqueKey<TakedraftRecord> TAKEDRAFT_PKEY = UniqueKeys0.TAKEDRAFT_PKEY;
-    public static final UniqueKey<TakepublishedRecord> TAKEPUBLISHED_PKEY = UniqueKeys0.TAKEPUBLISHED_PKEY;
-    public static final UniqueKey<TakereactionRecord> TAKEREACTION_PKEY = UniqueKeys0.TAKEREACTION_PKEY;
-    public static final UniqueKey<TakerevisionRecord> TAKEREVISION_PKEY = UniqueKeys0.TAKEREVISION_PKEY;
+    public static final UniqueKey<AccountRecord> ACCOUNT_EMAIL_KEY = Internal.createUniqueKey(Account.ACCOUNT, DSL.name("account_email_key"), new TableField[] { Account.ACCOUNT.EMAIL }, true);
+    public static final UniqueKey<AccountRecord> ACCOUNT_PKEY = Internal.createUniqueKey(Account.ACCOUNT, DSL.name("account_pkey"), new TableField[] { Account.ACCOUNT.ID }, true);
+    public static final UniqueKey<AccountRecord> ACCOUNT_USERNAME_KEY = Internal.createUniqueKey(Account.ACCOUNT, DSL.name("account_username_key"), new TableField[] { Account.ACCOUNT.USERNAME }, true);
+    public static final UniqueKey<AccountRecord> ACCOUNT_USERNAME_TYPOHARD_KEY = Internal.createUniqueKey(Account.ACCOUNT, DSL.name("account_username_typohard_key"), new TableField[] { Account.ACCOUNT.USERNAME_TYPOHARD }, true);
+    public static final UniqueKey<BookmarkRecord> BOOKMARK_PKEY = Internal.createUniqueKey(Bookmark.BOOKMARK, DSL.name("bookmark_pkey"), new TableField[] { Bookmark.BOOKMARK.SAVED_BY, Bookmark.BOOKMARK.FACT, Bookmark.BOOKMARK.CUT_START, Bookmark.BOOKMARK.CUT_END }, true);
+    public static final UniqueKey<BookmarksModRecord> BOOKMARKS_MOD_PKEY = Internal.createUniqueKey(BookmarksMod.BOOKMARKS_MOD, DSL.name("bookmarks_mod_pkey"), new TableField[] { BookmarksMod.BOOKMARKS_MOD.SAVED_BY }, true);
+    public static final UniqueKey<FlywaySchemaHistoryRecord> FLYWAY_SCHEMA_HISTORY_PK = Internal.createUniqueKey(FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY, DSL.name("flyway_schema_history_pk"), new TableField[] { FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY.INSTALLED_RANK }, true);
+    public static final UniqueKey<FollowRecord> FOLLOW_PKEY = Internal.createUniqueKey(Follow.FOLLOW, DSL.name("follow_pkey"), new TableField[] { Follow.FOLLOW.AUTHOR, Follow.FOLLOW.FOLLOWER }, true);
+    public static final UniqueKey<FoundationRevRecord> FOUNDATION_REV_PKEY = Internal.createUniqueKey(FoundationRev.FOUNDATION_REV, DSL.name("foundation_rev_pkey"), new TableField[] { FoundationRev.FOUNDATION_REV.VERSION }, true);
+    public static final UniqueKey<LoginlinkRecord> LOGINLINK_PKEY = Internal.createUniqueKey(Loginlink.LOGINLINK, DSL.name("loginlink_pkey"), new TableField[] { Loginlink.LOGINLINK.CODE }, true);
+    public static final UniqueKey<ModeratorRecord> MODERATOR_PKEY = Internal.createUniqueKey(Moderator.MODERATOR, DSL.name("moderator_pkey"), new TableField[] { Moderator.MODERATOR.ID }, true);
+    public static final UniqueKey<TakedraftRecord> TAKEDRAFT_PKEY = Internal.createUniqueKey(Takedraft.TAKEDRAFT, DSL.name("takedraft_pkey"), new TableField[] { Takedraft.TAKEDRAFT.ID }, true);
+    public static final UniqueKey<TakepublishedRecord> TAKEPUBLISHED_PKEY = Internal.createUniqueKey(Takepublished.TAKEPUBLISHED, DSL.name("takepublished_pkey"), new TableField[] { Takepublished.TAKEPUBLISHED.ID }, true);
+    public static final UniqueKey<TakereactionRecord> TAKEREACTION_PKEY = Internal.createUniqueKey(Takereaction.TAKEREACTION, DSL.name("takereaction_pkey"), new TableField[] { Takereaction.TAKEREACTION.TAKE_ID, Takereaction.TAKEREACTION.USER_ID, Takereaction.TAKEREACTION.KIND }, true);
+    public static final UniqueKey<TakerevisionRecord> TAKEREVISION_PKEY = Internal.createUniqueKey(Takerevision.TAKEREVISION, DSL.name("takerevision_pkey"), new TableField[] { Takerevision.TAKEREVISION.ID }, true);
 
     // -------------------------------------------------------------------------
     // FOREIGN KEY definitions
     // -------------------------------------------------------------------------
 
-    public static final ForeignKey<BookmarkRecord, AccountRecord> BOOKMARK__BOOKMARK_SAVED_BY_FKEY = ForeignKeys0.BOOKMARK__BOOKMARK_SAVED_BY_FKEY;
-    public static final ForeignKey<BookmarksModRecord, AccountRecord> BOOKMARKS_MOD__BOOKMARKS_MOD_SAVED_BY_FKEY = ForeignKeys0.BOOKMARKS_MOD__BOOKMARKS_MOD_SAVED_BY_FKEY;
-    public static final ForeignKey<FollowRecord, AccountRecord> FOLLOW__FOLLOW_AUTHOR_FKEY = ForeignKeys0.FOLLOW__FOLLOW_AUTHOR_FKEY;
-    public static final ForeignKey<FollowRecord, AccountRecord> FOLLOW__FOLLOW_FOLLOWER_FKEY = ForeignKeys0.FOLLOW__FOLLOW_FOLLOWER_FKEY;
-    public static final ForeignKey<LoginlinkRecord, AccountRecord> LOGINLINK__LOGINLINK_ACCOUNT_ID_FKEY = ForeignKeys0.LOGINLINK__LOGINLINK_ACCOUNT_ID_FKEY;
-    public static final ForeignKey<TakedraftRecord, AccountRecord> TAKEDRAFT__TAKEDRAFT_USER_ID_FKEY = ForeignKeys0.TAKEDRAFT__TAKEDRAFT_USER_ID_FKEY;
-    public static final ForeignKey<TakedraftRecord, TakerevisionRecord> TAKEDRAFT__TAKEDRAFT_LAST_REVISION_FKEY = ForeignKeys0.TAKEDRAFT__TAKEDRAFT_LAST_REVISION_FKEY;
-    public static final ForeignKey<TakepublishedRecord, AccountRecord> TAKEPUBLISHED__TAKEPUBLISHED_USER_ID_FKEY = ForeignKeys0.TAKEPUBLISHED__TAKEPUBLISHED_USER_ID_FKEY;
-    public static final ForeignKey<TakereactionRecord, TakepublishedRecord> TAKEREACTION__TAKEREACTION_TAKE_ID_FKEY = ForeignKeys0.TAKEREACTION__TAKEREACTION_TAKE_ID_FKEY;
-    public static final ForeignKey<TakereactionRecord, AccountRecord> TAKEREACTION__TAKEREACTION_USER_ID_FKEY = ForeignKeys0.TAKEREACTION__TAKEREACTION_USER_ID_FKEY;
-    public static final ForeignKey<TakerevisionRecord, TakerevisionRecord> TAKEREVISION__TAKEREVISION_PARENT_ID_FKEY = ForeignKeys0.TAKEREVISION__TAKEREVISION_PARENT_ID_FKEY;
-
-    // -------------------------------------------------------------------------
-    // [#1459] distribute members to avoid static initialisers > 64kb
-    // -------------------------------------------------------------------------
-
-    private static class Identities0 {
-        public static Identity<AccountRecord, Integer> IDENTITY_ACCOUNT = Internal.createIdentity(Account.ACCOUNT, Account.ACCOUNT.ID);
-        public static Identity<TakedraftRecord, Integer> IDENTITY_TAKEDRAFT = Internal.createIdentity(Takedraft.TAKEDRAFT, Takedraft.TAKEDRAFT.ID);
-        public static Identity<TakepublishedRecord, Integer> IDENTITY_TAKEPUBLISHED = Internal.createIdentity(Takepublished.TAKEPUBLISHED, Takepublished.TAKEPUBLISHED.ID);
-        public static Identity<TakerevisionRecord, Integer> IDENTITY_TAKEREVISION = Internal.createIdentity(Takerevision.TAKEREVISION, Takerevision.TAKEREVISION.ID);
-    }
-
-    private static class UniqueKeys0 {
-        public static final UniqueKey<AccountRecord> ACCOUNT_PKEY = Internal.createUniqueKey(Account.ACCOUNT, "account_pkey", new TableField[] { Account.ACCOUNT.ID }, true);
-        public static final UniqueKey<AccountRecord> ACCOUNT_USERNAME_KEY = Internal.createUniqueKey(Account.ACCOUNT, "account_username_key", new TableField[] { Account.ACCOUNT.USERNAME }, true);
-        public static final UniqueKey<AccountRecord> ACCOUNT_EMAIL_KEY = Internal.createUniqueKey(Account.ACCOUNT, "account_email_key", new TableField[] { Account.ACCOUNT.EMAIL }, true);
-        public static final UniqueKey<AccountRecord> ACCOUNT_USERNAME_TYPOHARD_KEY = Internal.createUniqueKey(Account.ACCOUNT, "account_username_typohard_key", new TableField[] { Account.ACCOUNT.USERNAME_TYPOHARD }, true);
-        public static final UniqueKey<BookmarkRecord> BOOKMARK_PKEY = Internal.createUniqueKey(Bookmark.BOOKMARK, "bookmark_pkey", new TableField[] { Bookmark.BOOKMARK.SAVED_BY, Bookmark.BOOKMARK.FACT, Bookmark.BOOKMARK.CUT_START, Bookmark.BOOKMARK.CUT_END }, true);
-        public static final UniqueKey<BookmarksModRecord> BOOKMARKS_MOD_PKEY = Internal.createUniqueKey(BookmarksMod.BOOKMARKS_MOD, "bookmarks_mod_pkey", new TableField[] { BookmarksMod.BOOKMARKS_MOD.SAVED_BY }, true);
-        public static final UniqueKey<FlywaySchemaHistoryRecord> FLYWAY_SCHEMA_HISTORY_PK = Internal.createUniqueKey(FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY, "flyway_schema_history_pk", new TableField[] { FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY.INSTALLED_RANK }, true);
-        public static final UniqueKey<FollowRecord> FOLLOW_PKEY = Internal.createUniqueKey(Follow.FOLLOW, "follow_pkey", new TableField[] { Follow.FOLLOW.AUTHOR, Follow.FOLLOW.FOLLOWER }, true);
-        public static final UniqueKey<FoundationRevRecord> FOUNDATION_REV_PKEY = Internal.createUniqueKey(FoundationRev.FOUNDATION_REV, "foundation_rev_pkey", new TableField[] { FoundationRev.FOUNDATION_REV.VERSION }, true);
-        public static final UniqueKey<LoginlinkRecord> LOGINLINK_PKEY = Internal.createUniqueKey(Loginlink.LOGINLINK, "loginlink_pkey", new TableField[] { Loginlink.LOGINLINK.CODE }, true);
-        public static final UniqueKey<ModeratorRecord> MODERATOR_PKEY = Internal.createUniqueKey(Moderator.MODERATOR, "moderator_pkey", new TableField[] { Moderator.MODERATOR.ID }, true);
-        public static final UniqueKey<TakedraftRecord> TAKEDRAFT_PKEY = Internal.createUniqueKey(Takedraft.TAKEDRAFT, "takedraft_pkey", new TableField[] { Takedraft.TAKEDRAFT.ID }, true);
-        public static final UniqueKey<TakepublishedRecord> TAKEPUBLISHED_PKEY = Internal.createUniqueKey(Takepublished.TAKEPUBLISHED, "takepublished_pkey", new TableField[] { Takepublished.TAKEPUBLISHED.ID }, true);
-        public static final UniqueKey<TakereactionRecord> TAKEREACTION_PKEY = Internal.createUniqueKey(Takereaction.TAKEREACTION, "takereaction_pkey", new TableField[] { Takereaction.TAKEREACTION.TAKE_ID, Takereaction.TAKEREACTION.USER_ID, Takereaction.TAKEREACTION.KIND }, true);
-        public static final UniqueKey<TakerevisionRecord> TAKEREVISION_PKEY = Internal.createUniqueKey(Takerevision.TAKEREVISION, "takerevision_pkey", new TableField[] { Takerevision.TAKEREVISION.ID }, true);
-    }
-
-    private static class ForeignKeys0 {
-        public static final ForeignKey<BookmarkRecord, AccountRecord> BOOKMARK__BOOKMARK_SAVED_BY_FKEY = Internal.createForeignKey(Keys.ACCOUNT_PKEY, Bookmark.BOOKMARK, "bookmark_saved_by_fkey", new TableField[] { Bookmark.BOOKMARK.SAVED_BY }, true);
-        public static final ForeignKey<BookmarksModRecord, AccountRecord> BOOKMARKS_MOD__BOOKMARKS_MOD_SAVED_BY_FKEY = Internal.createForeignKey(Keys.ACCOUNT_PKEY, BookmarksMod.BOOKMARKS_MOD, "bookmarks_mod_saved_by_fkey", new TableField[] { BookmarksMod.BOOKMARKS_MOD.SAVED_BY }, true);
-        public static final ForeignKey<FollowRecord, AccountRecord> FOLLOW__FOLLOW_AUTHOR_FKEY = Internal.createForeignKey(Keys.ACCOUNT_PKEY, Follow.FOLLOW, "follow_author_fkey", new TableField[] { Follow.FOLLOW.AUTHOR }, true);
-        public static final ForeignKey<FollowRecord, AccountRecord> FOLLOW__FOLLOW_FOLLOWER_FKEY = Internal.createForeignKey(Keys.ACCOUNT_PKEY, Follow.FOLLOW, "follow_follower_fkey", new TableField[] { Follow.FOLLOW.FOLLOWER }, true);
-        public static final ForeignKey<LoginlinkRecord, AccountRecord> LOGINLINK__LOGINLINK_ACCOUNT_ID_FKEY = Internal.createForeignKey(Keys.ACCOUNT_PKEY, Loginlink.LOGINLINK, "loginlink_account_id_fkey", new TableField[] { Loginlink.LOGINLINK.ACCOUNT_ID }, true);
-        public static final ForeignKey<TakedraftRecord, AccountRecord> TAKEDRAFT__TAKEDRAFT_USER_ID_FKEY = Internal.createForeignKey(Keys.ACCOUNT_PKEY, Takedraft.TAKEDRAFT, "takedraft_user_id_fkey", new TableField[] { Takedraft.TAKEDRAFT.USER_ID }, true);
-        public static final ForeignKey<TakedraftRecord, TakerevisionRecord> TAKEDRAFT__TAKEDRAFT_LAST_REVISION_FKEY = Internal.createForeignKey(Keys.TAKEREVISION_PKEY, Takedraft.TAKEDRAFT, "takedraft_last_revision_fkey", new TableField[] { Takedraft.TAKEDRAFT.LAST_REVISION }, true);
-        public static final ForeignKey<TakepublishedRecord, AccountRecord> TAKEPUBLISHED__TAKEPUBLISHED_USER_ID_FKEY = Internal.createForeignKey(Keys.ACCOUNT_PKEY, Takepublished.TAKEPUBLISHED, "takepublished_user_id_fkey", new TableField[] { Takepublished.TAKEPUBLISHED.USER_ID }, true);
-        public static final ForeignKey<TakereactionRecord, TakepublishedRecord> TAKEREACTION__TAKEREACTION_TAKE_ID_FKEY = Internal.createForeignKey(Keys.TAKEPUBLISHED_PKEY, Takereaction.TAKEREACTION, "takereaction_take_id_fkey", new TableField[] { Takereaction.TAKEREACTION.TAKE_ID }, true);
-        public static final ForeignKey<TakereactionRecord, AccountRecord> TAKEREACTION__TAKEREACTION_USER_ID_FKEY = Internal.createForeignKey(Keys.ACCOUNT_PKEY, Takereaction.TAKEREACTION, "takereaction_user_id_fkey", new TableField[] { Takereaction.TAKEREACTION.USER_ID }, true);
-        public static final ForeignKey<TakerevisionRecord, TakerevisionRecord> TAKEREVISION__TAKEREVISION_PARENT_ID_FKEY = Internal.createForeignKey(Keys.TAKEREVISION_PKEY, Takerevision.TAKEREVISION, "takerevision_parent_id_fkey", new TableField[] { Takerevision.TAKEREVISION.PARENT_ID }, true);
-    }
+    public static final ForeignKey<BookmarkRecord, AccountRecord> BOOKMARK__BOOKMARK_SAVED_BY_FKEY = Internal.createForeignKey(Bookmark.BOOKMARK, DSL.name("bookmark_saved_by_fkey"), new TableField[] { Bookmark.BOOKMARK.SAVED_BY }, Keys.ACCOUNT_PKEY, new TableField[] { Account.ACCOUNT.ID }, true);
+    public static final ForeignKey<BookmarksModRecord, AccountRecord> BOOKMARKS_MOD__BOOKMARKS_MOD_SAVED_BY_FKEY = Internal.createForeignKey(BookmarksMod.BOOKMARKS_MOD, DSL.name("bookmarks_mod_saved_by_fkey"), new TableField[] { BookmarksMod.BOOKMARKS_MOD.SAVED_BY }, Keys.ACCOUNT_PKEY, new TableField[] { Account.ACCOUNT.ID }, true);
+    public static final ForeignKey<FollowRecord, AccountRecord> FOLLOW__FOLLOW_AUTHOR_FKEY = Internal.createForeignKey(Follow.FOLLOW, DSL.name("follow_author_fkey"), new TableField[] { Follow.FOLLOW.AUTHOR }, Keys.ACCOUNT_PKEY, new TableField[] { Account.ACCOUNT.ID }, true);
+    public static final ForeignKey<FollowRecord, AccountRecord> FOLLOW__FOLLOW_FOLLOWER_FKEY = Internal.createForeignKey(Follow.FOLLOW, DSL.name("follow_follower_fkey"), new TableField[] { Follow.FOLLOW.FOLLOWER }, Keys.ACCOUNT_PKEY, new TableField[] { Account.ACCOUNT.ID }, true);
+    public static final ForeignKey<LoginlinkRecord, AccountRecord> LOGINLINK__LOGINLINK_ACCOUNT_ID_FKEY = Internal.createForeignKey(Loginlink.LOGINLINK, DSL.name("loginlink_account_id_fkey"), new TableField[] { Loginlink.LOGINLINK.ACCOUNT_ID }, Keys.ACCOUNT_PKEY, new TableField[] { Account.ACCOUNT.ID }, true);
+    public static final ForeignKey<TakedraftRecord, TakerevisionRecord> TAKEDRAFT__TAKEDRAFT_LAST_REVISION_FKEY = Internal.createForeignKey(Takedraft.TAKEDRAFT, DSL.name("takedraft_last_revision_fkey"), new TableField[] { Takedraft.TAKEDRAFT.LAST_REVISION }, Keys.TAKEREVISION_PKEY, new TableField[] { Takerevision.TAKEREVISION.ID }, true);
+    public static final ForeignKey<TakedraftRecord, AccountRecord> TAKEDRAFT__TAKEDRAFT_USER_ID_FKEY = Internal.createForeignKey(Takedraft.TAKEDRAFT, DSL.name("takedraft_user_id_fkey"), new TableField[] { Takedraft.TAKEDRAFT.USER_ID }, Keys.ACCOUNT_PKEY, new TableField[] { Account.ACCOUNT.ID }, true);
+    public static final ForeignKey<TakepublishedRecord, AccountRecord> TAKEPUBLISHED__TAKEPUBLISHED_USER_ID_FKEY = Internal.createForeignKey(Takepublished.TAKEPUBLISHED, DSL.name("takepublished_user_id_fkey"), new TableField[] { Takepublished.TAKEPUBLISHED.USER_ID }, Keys.ACCOUNT_PKEY, new TableField[] { Account.ACCOUNT.ID }, true);
+    public static final ForeignKey<TakereactionRecord, TakepublishedRecord> TAKEREACTION__TAKEREACTION_TAKE_ID_FKEY = Internal.createForeignKey(Takereaction.TAKEREACTION, DSL.name("takereaction_take_id_fkey"), new TableField[] { Takereaction.TAKEREACTION.TAKE_ID }, Keys.TAKEPUBLISHED_PKEY, new TableField[] { Takepublished.TAKEPUBLISHED.ID }, true);
+    public static final ForeignKey<TakereactionRecord, AccountRecord> TAKEREACTION__TAKEREACTION_USER_ID_FKEY = Internal.createForeignKey(Takereaction.TAKEREACTION, DSL.name("takereaction_user_id_fkey"), new TableField[] { Takereaction.TAKEREACTION.USER_ID }, Keys.ACCOUNT_PKEY, new TableField[] { Account.ACCOUNT.ID }, true);
+    public static final ForeignKey<TakerevisionRecord, TakerevisionRecord> TAKEREVISION__TAKEREVISION_PARENT_ID_FKEY = Internal.createForeignKey(Takerevision.TAKEREVISION, DSL.name("takerevision_parent_id_fkey"), new TableField[] { Takerevision.TAKEREVISION.PARENT_ID }, Keys.TAKEREVISION_PKEY, new TableField[] { Takerevision.TAKEREVISION.ID }, true);
 }

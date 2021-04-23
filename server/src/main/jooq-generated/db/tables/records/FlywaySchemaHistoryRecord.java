@@ -21,7 +21,7 @@ import org.jooq.impl.UpdatableRecordImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class FlywaySchemaHistoryRecord extends UpdatableRecordImpl<FlywaySchemaHistoryRecord> implements Record10<Integer, String, String, String, String, Integer, String, LocalDateTime, Integer, Boolean> {
 
-    private static final long serialVersionUID = 1598372338;
+    private static final long serialVersionUID = 1L;
 
     /**
      * Setter for <code>public.flyway_schema_history.installed_rank</code>.
@@ -438,15 +438,15 @@ public class FlywaySchemaHistoryRecord extends UpdatableRecordImpl<FlywaySchemaH
     public FlywaySchemaHistoryRecord(Integer installedRank, String version, String description, String type, String script, Integer checksum, String installedBy, LocalDateTime installedOn, Integer executionTime, Boolean success) {
         super(FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY);
 
-        set(0, installedRank);
-        set(1, version);
-        set(2, description);
-        set(3, type);
-        set(4, script);
-        set(5, checksum);
-        set(6, installedBy);
-        set(7, installedOn);
-        set(8, executionTime);
-        set(9, success);
+        setInstalledRank(installedRank);
+        setVersion(version);
+        setDescription(description);
+        setType(type);
+        setScript(script);
+        setChecksum(checksum);
+        setInstalledBy(installedBy);
+        setInstalledOn(installedOn);
+        setExecutionTime(executionTime);
+        setSuccess(success);
     }
 }

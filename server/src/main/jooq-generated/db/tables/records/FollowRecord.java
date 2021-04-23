@@ -21,7 +21,7 @@ import org.jooq.impl.UpdatableRecordImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class FollowRecord extends UpdatableRecordImpl<FollowRecord> implements Record3<Integer, Integer, LocalDateTime> {
 
-    private static final long serialVersionUID = 606182094;
+    private static final long serialVersionUID = 1L;
 
     /**
      * Setter for <code>public.follow.author</code>.
@@ -179,8 +179,8 @@ public class FollowRecord extends UpdatableRecordImpl<FollowRecord> implements R
     public FollowRecord(Integer author, Integer follower, LocalDateTime followedAt) {
         super(Follow.FOLLOW);
 
-        set(0, author);
-        set(1, follower);
-        set(2, followedAt);
+        setAuthor(author);
+        setFollower(follower);
+        setFollowedAt(followedAt);
     }
 }

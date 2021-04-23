@@ -19,7 +19,7 @@ import org.jooq.impl.UpdatableRecordImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class TakedraftRecord extends UpdatableRecordImpl<TakedraftRecord> implements Record3<Integer, Integer, Integer> {
 
-    private static final long serialVersionUID = 158595095;
+    private static final long serialVersionUID = 1L;
 
     /**
      * Setter for <code>public.takedraft.id</code>.
@@ -177,8 +177,8 @@ public class TakedraftRecord extends UpdatableRecordImpl<TakedraftRecord> implem
     public TakedraftRecord(Integer id, Integer userId, Integer lastRevision) {
         super(Takedraft.TAKEDRAFT);
 
-        set(0, id);
-        set(1, userId);
-        set(2, lastRevision);
+        setId(id);
+        setUserId(userId);
+        setLastRevision(lastRevision);
     }
 }

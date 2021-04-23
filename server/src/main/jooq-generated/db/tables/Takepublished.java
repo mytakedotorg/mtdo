@@ -28,6 +28,7 @@ import org.jooq.TableField;
 import org.jooq.TableOptions;
 import org.jooq.UniqueKey;
 import org.jooq.impl.DSL;
+import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
 
 
@@ -37,7 +38,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Takepublished extends TableImpl<TakepublishedRecord> {
 
-    private static final long serialVersionUID = 2130555728;
+    private static final long serialVersionUID = 1L;
 
     /**
      * The reference instance of <code>public.takepublished</code>
@@ -55,32 +56,32 @@ public class Takepublished extends TableImpl<TakepublishedRecord> {
     /**
      * The column <code>public.takepublished.id</code>.
      */
-    public final TableField<TakepublishedRecord, Integer> ID = createField(DSL.name("id"), org.jooq.impl.SQLDataType.INTEGER.nullable(false).defaultValue(org.jooq.impl.DSL.field("nextval('takepublished_id_seq'::regclass)", org.jooq.impl.SQLDataType.INTEGER)), this, "");
+    public final TableField<TakepublishedRecord, Integer> ID = createField(DSL.name("id"), SQLDataType.INTEGER.nullable(false).identity(true), this, "");
 
     /**
      * The column <code>public.takepublished.user_id</code>.
      */
-    public final TableField<TakepublishedRecord, Integer> USER_ID = createField(DSL.name("user_id"), org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
+    public final TableField<TakepublishedRecord, Integer> USER_ID = createField(DSL.name("user_id"), SQLDataType.INTEGER.nullable(false), this, "");
 
     /**
      * The column <code>public.takepublished.title</code>.
      */
-    public final TableField<TakepublishedRecord, String> TITLE = createField(DSL.name("title"), org.jooq.impl.SQLDataType.VARCHAR(255).nullable(false), this, "");
+    public final TableField<TakepublishedRecord, String> TITLE = createField(DSL.name("title"), SQLDataType.VARCHAR(255).nullable(false), this, "");
 
     /**
      * The column <code>public.takepublished.title_slug</code>.
      */
-    public final TableField<TakepublishedRecord, String> TITLE_SLUG = createField(DSL.name("title_slug"), org.jooq.impl.SQLDataType.VARCHAR(255).nullable(false), this, "");
+    public final TableField<TakepublishedRecord, String> TITLE_SLUG = createField(DSL.name("title_slug"), SQLDataType.VARCHAR(255).nullable(false), this, "");
 
     /**
      * The column <code>public.takepublished.blocks</code>.
      */
-    public final TableField<TakepublishedRecord, JSONB> BLOCKS = createField(DSL.name("blocks"), org.jooq.impl.SQLDataType.JSONB.nullable(false), this, "");
+    public final TableField<TakepublishedRecord, JSONB> BLOCKS = createField(DSL.name("blocks"), SQLDataType.JSONB.nullable(false), this, "");
 
     /**
      * The column <code>public.takepublished.published_at</code>.
      */
-    public final TableField<TakepublishedRecord, LocalDateTime> PUBLISHED_AT = createField(DSL.name("published_at"), org.jooq.impl.SQLDataType.LOCALDATETIME.nullable(false), this, "");
+    public final TableField<TakepublishedRecord, LocalDateTime> PUBLISHED_AT = createField(DSL.name("published_at"), SQLDataType.LOCALDATETIME(6).nullable(false), this, "");
 
     /**
      * The column <code>public.takepublished.published_ip</code>.
@@ -90,7 +91,7 @@ public class Takepublished extends TableImpl<TakepublishedRecord> {
     /**
      * The column <code>public.takepublished.deleted_at</code>.
      */
-    public final TableField<TakepublishedRecord, LocalDateTime> DELETED_AT = createField(DSL.name("deleted_at"), org.jooq.impl.SQLDataType.LOCALDATETIME, this, "");
+    public final TableField<TakepublishedRecord, LocalDateTime> DELETED_AT = createField(DSL.name("deleted_at"), SQLDataType.LOCALDATETIME(6), this, "");
 
     /**
      * The column <code>public.takepublished.deleted_ip</code>.
@@ -100,38 +101,39 @@ public class Takepublished extends TableImpl<TakepublishedRecord> {
     /**
      * The column <code>public.takepublished.count_view</code>.
      */
-    public final TableField<TakepublishedRecord, Integer> COUNT_VIEW = createField(DSL.name("count_view"), org.jooq.impl.SQLDataType.INTEGER.nullable(false).defaultValue(org.jooq.impl.DSL.field("0", org.jooq.impl.SQLDataType.INTEGER)), this, "");
+    public final TableField<TakepublishedRecord, Integer> COUNT_VIEW = createField(DSL.name("count_view"), SQLDataType.INTEGER.nullable(false).defaultValue(DSL.field("0", SQLDataType.INTEGER)), this, "");
 
     /**
      * The column <code>public.takepublished.count_like</code>.
      */
-    public final TableField<TakepublishedRecord, Integer> COUNT_LIKE = createField(DSL.name("count_like"), org.jooq.impl.SQLDataType.INTEGER.nullable(false).defaultValue(org.jooq.impl.DSL.field("0", org.jooq.impl.SQLDataType.INTEGER)), this, "");
+    public final TableField<TakepublishedRecord, Integer> COUNT_LIKE = createField(DSL.name("count_like"), SQLDataType.INTEGER.nullable(false).defaultValue(DSL.field("0", SQLDataType.INTEGER)), this, "");
 
     /**
      * The column <code>public.takepublished.count_bookmark</code>.
      */
-    public final TableField<TakepublishedRecord, Integer> COUNT_BOOKMARK = createField(DSL.name("count_bookmark"), org.jooq.impl.SQLDataType.INTEGER.nullable(false).defaultValue(org.jooq.impl.DSL.field("0", org.jooq.impl.SQLDataType.INTEGER)), this, "");
+    public final TableField<TakepublishedRecord, Integer> COUNT_BOOKMARK = createField(DSL.name("count_bookmark"), SQLDataType.INTEGER.nullable(false).defaultValue(DSL.field("0", SQLDataType.INTEGER)), this, "");
 
     /**
      * The column <code>public.takepublished.count_spam</code>.
      */
-    public final TableField<TakepublishedRecord, Integer> COUNT_SPAM = createField(DSL.name("count_spam"), org.jooq.impl.SQLDataType.INTEGER.nullable(false).defaultValue(org.jooq.impl.DSL.field("0", org.jooq.impl.SQLDataType.INTEGER)), this, "");
+    public final TableField<TakepublishedRecord, Integer> COUNT_SPAM = createField(DSL.name("count_spam"), SQLDataType.INTEGER.nullable(false).defaultValue(DSL.field("0", SQLDataType.INTEGER)), this, "");
 
     /**
      * The column <code>public.takepublished.count_illegal</code>.
      */
-    public final TableField<TakepublishedRecord, Integer> COUNT_ILLEGAL = createField(DSL.name("count_illegal"), org.jooq.impl.SQLDataType.INTEGER.nullable(false).defaultValue(org.jooq.impl.DSL.field("0", org.jooq.impl.SQLDataType.INTEGER)), this, "");
+    public final TableField<TakepublishedRecord, Integer> COUNT_ILLEGAL = createField(DSL.name("count_illegal"), SQLDataType.INTEGER.nullable(false).defaultValue(DSL.field("0", SQLDataType.INTEGER)), this, "");
 
     /**
      * The column <code>public.takepublished.image_url</code>.
      */
-    public final TableField<TakepublishedRecord, String> IMAGE_URL = createField(DSL.name("image_url"), org.jooq.impl.SQLDataType.CLOB.nullable(false).defaultValue(org.jooq.impl.DSL.field("''::text", org.jooq.impl.SQLDataType.CLOB)), this, "");
+    public final TableField<TakepublishedRecord, String> IMAGE_URL = createField(DSL.name("image_url"), SQLDataType.CLOB.nullable(false).defaultValue(DSL.field("''::text", SQLDataType.CLOB)), this, "");
 
-    /**
-     * Create a <code>public.takepublished</code> table reference
-     */
-    public Takepublished() {
-        this(DSL.name("takepublished"), null);
+    private Takepublished(Name alias, Table<TakepublishedRecord> aliased) {
+        this(alias, aliased, null);
+    }
+
+    private Takepublished(Name alias, Table<TakepublishedRecord> aliased, Field<?>[] parameters) {
+        super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.table());
     }
 
     /**
@@ -148,12 +150,11 @@ public class Takepublished extends TableImpl<TakepublishedRecord> {
         this(alias, TAKEPUBLISHED);
     }
 
-    private Takepublished(Name alias, Table<TakepublishedRecord> aliased) {
-        this(alias, aliased, null);
-    }
-
-    private Takepublished(Name alias, Table<TakepublishedRecord> aliased, Field<?>[] parameters) {
-        super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.table());
+    /**
+     * Create a <code>public.takepublished</code> table reference
+     */
+    public Takepublished() {
+        this(DSL.name("takepublished"), null);
     }
 
     public <O extends Record> Takepublished(Table<O> child, ForeignKey<O, TakepublishedRecord> key) {
@@ -172,7 +173,7 @@ public class Takepublished extends TableImpl<TakepublishedRecord> {
 
     @Override
     public Identity<TakepublishedRecord, Integer> getIdentity() {
-        return Keys.IDENTITY_TAKEPUBLISHED;
+        return (Identity<TakepublishedRecord, Integer>) super.getIdentity();
     }
 
     @Override
@@ -190,8 +191,13 @@ public class Takepublished extends TableImpl<TakepublishedRecord> {
         return Arrays.<ForeignKey<TakepublishedRecord, ?>>asList(Keys.TAKEPUBLISHED__TAKEPUBLISHED_USER_ID_FKEY);
     }
 
+    private transient Account _account;
+
     public Account account() {
-        return new Account(this, Keys.TAKEPUBLISHED__TAKEPUBLISHED_USER_ID_FKEY);
+        if (_account == null)
+            _account = new Account(this, Keys.TAKEPUBLISHED__TAKEPUBLISHED_USER_ID_FKEY);
+
+        return _account;
     }
 
     @Override

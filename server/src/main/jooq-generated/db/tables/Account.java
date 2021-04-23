@@ -25,6 +25,7 @@ import org.jooq.TableField;
 import org.jooq.TableOptions;
 import org.jooq.UniqueKey;
 import org.jooq.impl.DSL;
+import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
 
 
@@ -34,7 +35,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Account extends TableImpl<AccountRecord> {
 
-    private static final long serialVersionUID = -1834422089;
+    private static final long serialVersionUID = 1L;
 
     /**
      * The reference instance of <code>public.account</code>
@@ -52,27 +53,27 @@ public class Account extends TableImpl<AccountRecord> {
     /**
      * The column <code>public.account.id</code>.
      */
-    public final TableField<AccountRecord, Integer> ID = createField(DSL.name("id"), org.jooq.impl.SQLDataType.INTEGER.nullable(false).defaultValue(org.jooq.impl.DSL.field("nextval('account_id_seq'::regclass)", org.jooq.impl.SQLDataType.INTEGER)), this, "");
+    public final TableField<AccountRecord, Integer> ID = createField(DSL.name("id"), SQLDataType.INTEGER.nullable(false).identity(true), this, "");
 
     /**
      * The column <code>public.account.username</code>.
      */
-    public final TableField<AccountRecord, String> USERNAME = createField(DSL.name("username"), org.jooq.impl.SQLDataType.VARCHAR(60), this, "");
+    public final TableField<AccountRecord, String> USERNAME = createField(DSL.name("username"), SQLDataType.VARCHAR(60), this, "");
 
     /**
      * The column <code>public.account.email</code>.
      */
-    public final TableField<AccountRecord, String> EMAIL = createField(DSL.name("email"), org.jooq.impl.SQLDataType.VARCHAR(513).nullable(false), this, "");
+    public final TableField<AccountRecord, String> EMAIL = createField(DSL.name("email"), SQLDataType.VARCHAR(513).nullable(false), this, "");
 
     /**
      * The column <code>public.account.name</code>.
      */
-    public final TableField<AccountRecord, String> NAME = createField(DSL.name("name"), org.jooq.impl.SQLDataType.VARCHAR(255), this, "");
+    public final TableField<AccountRecord, String> NAME = createField(DSL.name("name"), SQLDataType.VARCHAR(255), this, "");
 
     /**
      * The column <code>public.account.created_at</code>.
      */
-    public final TableField<AccountRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), org.jooq.impl.SQLDataType.LOCALDATETIME.nullable(false), this, "");
+    public final TableField<AccountRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(6).nullable(false), this, "");
 
     /**
      * The column <code>public.account.created_ip</code>.
@@ -82,7 +83,7 @@ public class Account extends TableImpl<AccountRecord> {
     /**
      * The column <code>public.account.updated_at</code>.
      */
-    public final TableField<AccountRecord, LocalDateTime> UPDATED_AT = createField(DSL.name("updated_at"), org.jooq.impl.SQLDataType.LOCALDATETIME.nullable(false), this, "");
+    public final TableField<AccountRecord, LocalDateTime> UPDATED_AT = createField(DSL.name("updated_at"), SQLDataType.LOCALDATETIME(6).nullable(false), this, "");
 
     /**
      * The column <code>public.account.updated_ip</code>.
@@ -92,7 +93,7 @@ public class Account extends TableImpl<AccountRecord> {
     /**
      * The column <code>public.account.last_seen_at</code>.
      */
-    public final TableField<AccountRecord, LocalDateTime> LAST_SEEN_AT = createField(DSL.name("last_seen_at"), org.jooq.impl.SQLDataType.LOCALDATETIME.nullable(false), this, "");
+    public final TableField<AccountRecord, LocalDateTime> LAST_SEEN_AT = createField(DSL.name("last_seen_at"), SQLDataType.LOCALDATETIME(6).nullable(false), this, "");
 
     /**
      * The column <code>public.account.last_seen_ip</code>.
@@ -102,12 +103,12 @@ public class Account extends TableImpl<AccountRecord> {
     /**
      * The column <code>public.account.last_emailed_at</code>.
      */
-    public final TableField<AccountRecord, LocalDateTime> LAST_EMAILED_AT = createField(DSL.name("last_emailed_at"), org.jooq.impl.SQLDataType.LOCALDATETIME.nullable(false), this, "");
+    public final TableField<AccountRecord, LocalDateTime> LAST_EMAILED_AT = createField(DSL.name("last_emailed_at"), SQLDataType.LOCALDATETIME(6).nullable(false), this, "");
 
     /**
      * The column <code>public.account.confirmed_at</code>.
      */
-    public final TableField<AccountRecord, LocalDateTime> CONFIRMED_AT = createField(DSL.name("confirmed_at"), org.jooq.impl.SQLDataType.LOCALDATETIME, this, "");
+    public final TableField<AccountRecord, LocalDateTime> CONFIRMED_AT = createField(DSL.name("confirmed_at"), SQLDataType.LOCALDATETIME(6), this, "");
 
     /**
      * The column <code>public.account.confirmed_ip</code>.
@@ -117,18 +118,19 @@ public class Account extends TableImpl<AccountRecord> {
     /**
      * The column <code>public.account.newsletter</code>.
      */
-    public final TableField<AccountRecord, Boolean> NEWSLETTER = createField(DSL.name("newsletter"), org.jooq.impl.SQLDataType.BOOLEAN.nullable(false).defaultValue(org.jooq.impl.DSL.field("true", org.jooq.impl.SQLDataType.BOOLEAN)), this, "");
+    public final TableField<AccountRecord, Boolean> NEWSLETTER = createField(DSL.name("newsletter"), SQLDataType.BOOLEAN.nullable(false).defaultValue(DSL.field("true", SQLDataType.BOOLEAN)), this, "");
 
     /**
      * The column <code>public.account.username_typohard</code>.
      */
-    public final TableField<AccountRecord, String> USERNAME_TYPOHARD = createField(DSL.name("username_typohard"), org.jooq.impl.SQLDataType.VARCHAR(100), this, "");
+    public final TableField<AccountRecord, String> USERNAME_TYPOHARD = createField(DSL.name("username_typohard"), SQLDataType.VARCHAR(100), this, "");
 
-    /**
-     * Create a <code>public.account</code> table reference
-     */
-    public Account() {
-        this(DSL.name("account"), null);
+    private Account(Name alias, Table<AccountRecord> aliased) {
+        this(alias, aliased, null);
+    }
+
+    private Account(Name alias, Table<AccountRecord> aliased, Field<?>[] parameters) {
+        super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.table());
     }
 
     /**
@@ -145,12 +147,11 @@ public class Account extends TableImpl<AccountRecord> {
         this(alias, ACCOUNT);
     }
 
-    private Account(Name alias, Table<AccountRecord> aliased) {
-        this(alias, aliased, null);
-    }
-
-    private Account(Name alias, Table<AccountRecord> aliased, Field<?>[] parameters) {
-        super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.table());
+    /**
+     * Create a <code>public.account</code> table reference
+     */
+    public Account() {
+        this(DSL.name("account"), null);
     }
 
     public <O extends Record> Account(Table<O> child, ForeignKey<O, AccountRecord> key) {
@@ -164,7 +165,7 @@ public class Account extends TableImpl<AccountRecord> {
 
     @Override
     public Identity<AccountRecord, Integer> getIdentity() {
-        return Keys.IDENTITY_ACCOUNT;
+        return (Identity<AccountRecord, Integer>) super.getIdentity();
     }
 
     @Override

@@ -21,7 +21,7 @@ import org.jooq.impl.UpdatableRecordImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class LoginlinkRecord extends UpdatableRecordImpl<LoginlinkRecord> implements Record5<String, LocalDateTime, LocalDateTime, String, Integer> {
 
-    private static final long serialVersionUID = 165461073;
+    private static final long serialVersionUID = 1L;
 
     /**
      * Setter for <code>public.loginlink.code</code>.
@@ -253,10 +253,10 @@ public class LoginlinkRecord extends UpdatableRecordImpl<LoginlinkRecord> implem
     public LoginlinkRecord(String code, LocalDateTime createdAt, LocalDateTime expiresAt, String requestorIp, Integer accountId) {
         super(Loginlink.LOGINLINK);
 
-        set(0, code);
-        set(1, createdAt);
-        set(2, expiresAt);
-        set(3, requestorIp);
-        set(4, accountId);
+        setCode(code);
+        setCreatedAt(createdAt);
+        setExpiresAt(expiresAt);
+        setRequestorIp(requestorIp);
+        setAccountId(accountId);
     }
 }

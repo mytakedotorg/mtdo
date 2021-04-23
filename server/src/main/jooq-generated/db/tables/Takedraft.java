@@ -23,6 +23,7 @@ import org.jooq.TableField;
 import org.jooq.TableOptions;
 import org.jooq.UniqueKey;
 import org.jooq.impl.DSL;
+import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
 
 
@@ -32,7 +33,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Takedraft extends TableImpl<TakedraftRecord> {
 
-    private static final long serialVersionUID = 1916414479;
+    private static final long serialVersionUID = 1L;
 
     /**
      * The reference instance of <code>public.takedraft</code>
@@ -50,23 +51,24 @@ public class Takedraft extends TableImpl<TakedraftRecord> {
     /**
      * The column <code>public.takedraft.id</code>.
      */
-    public final TableField<TakedraftRecord, Integer> ID = createField(DSL.name("id"), org.jooq.impl.SQLDataType.INTEGER.nullable(false).defaultValue(org.jooq.impl.DSL.field("nextval('takedraft_id_seq'::regclass)", org.jooq.impl.SQLDataType.INTEGER)), this, "");
+    public final TableField<TakedraftRecord, Integer> ID = createField(DSL.name("id"), SQLDataType.INTEGER.nullable(false).identity(true), this, "");
 
     /**
      * The column <code>public.takedraft.user_id</code>.
      */
-    public final TableField<TakedraftRecord, Integer> USER_ID = createField(DSL.name("user_id"), org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
+    public final TableField<TakedraftRecord, Integer> USER_ID = createField(DSL.name("user_id"), SQLDataType.INTEGER.nullable(false), this, "");
 
     /**
      * The column <code>public.takedraft.last_revision</code>.
      */
-    public final TableField<TakedraftRecord, Integer> LAST_REVISION = createField(DSL.name("last_revision"), org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
+    public final TableField<TakedraftRecord, Integer> LAST_REVISION = createField(DSL.name("last_revision"), SQLDataType.INTEGER.nullable(false), this, "");
 
-    /**
-     * Create a <code>public.takedraft</code> table reference
-     */
-    public Takedraft() {
-        this(DSL.name("takedraft"), null);
+    private Takedraft(Name alias, Table<TakedraftRecord> aliased) {
+        this(alias, aliased, null);
+    }
+
+    private Takedraft(Name alias, Table<TakedraftRecord> aliased, Field<?>[] parameters) {
+        super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.table());
     }
 
     /**
@@ -83,12 +85,11 @@ public class Takedraft extends TableImpl<TakedraftRecord> {
         this(alias, TAKEDRAFT);
     }
 
-    private Takedraft(Name alias, Table<TakedraftRecord> aliased) {
-        this(alias, aliased, null);
-    }
-
-    private Takedraft(Name alias, Table<TakedraftRecord> aliased, Field<?>[] parameters) {
-        super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.table());
+    /**
+     * Create a <code>public.takedraft</code> table reference
+     */
+    public Takedraft() {
+        this(DSL.name("takedraft"), null);
     }
 
     public <O extends Record> Takedraft(Table<O> child, ForeignKey<O, TakedraftRecord> key) {
@@ -102,7 +103,7 @@ public class Takedraft extends TableImpl<TakedraftRecord> {
 
     @Override
     public Identity<TakedraftRecord, Integer> getIdentity() {
-        return Keys.IDENTITY_TAKEDRAFT;
+        return (Identity<TakedraftRecord, Integer>) super.getIdentity();
     }
 
     @Override
@@ -120,12 +121,21 @@ public class Takedraft extends TableImpl<TakedraftRecord> {
         return Arrays.<ForeignKey<TakedraftRecord, ?>>asList(Keys.TAKEDRAFT__TAKEDRAFT_USER_ID_FKEY, Keys.TAKEDRAFT__TAKEDRAFT_LAST_REVISION_FKEY);
     }
 
+    private transient Account _account;
+    private transient Takerevision _takerevision;
+
     public Account account() {
-        return new Account(this, Keys.TAKEDRAFT__TAKEDRAFT_USER_ID_FKEY);
+        if (_account == null)
+            _account = new Account(this, Keys.TAKEDRAFT__TAKEDRAFT_USER_ID_FKEY);
+
+        return _account;
     }
 
     public Takerevision takerevision() {
-        return new Takerevision(this, Keys.TAKEDRAFT__TAKEDRAFT_LAST_REVISION_FKEY);
+        if (_takerevision == null)
+            _takerevision = new Takerevision(this, Keys.TAKEDRAFT__TAKEDRAFT_LAST_REVISION_FKEY);
+
+        return _takerevision;
     }
 
     @Override

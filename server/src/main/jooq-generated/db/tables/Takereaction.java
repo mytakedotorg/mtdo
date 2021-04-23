@@ -25,6 +25,7 @@ import org.jooq.TableField;
 import org.jooq.TableOptions;
 import org.jooq.UniqueKey;
 import org.jooq.impl.DSL;
+import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
 
 
@@ -34,7 +35,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Takereaction extends TableImpl<TakereactionRecord> {
 
-    private static final long serialVersionUID = -513712585;
+    private static final long serialVersionUID = 1L;
 
     /**
      * The reference instance of <code>public.takereaction</code>
@@ -52,33 +53,34 @@ public class Takereaction extends TableImpl<TakereactionRecord> {
     /**
      * The column <code>public.takereaction.take_id</code>.
      */
-    public final TableField<TakereactionRecord, Integer> TAKE_ID = createField(DSL.name("take_id"), org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
+    public final TableField<TakereactionRecord, Integer> TAKE_ID = createField(DSL.name("take_id"), SQLDataType.INTEGER.nullable(false), this, "");
 
     /**
      * The column <code>public.takereaction.user_id</code>.
      */
-    public final TableField<TakereactionRecord, Integer> USER_ID = createField(DSL.name("user_id"), org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
+    public final TableField<TakereactionRecord, Integer> USER_ID = createField(DSL.name("user_id"), SQLDataType.INTEGER.nullable(false), this, "");
 
     /**
      * The column <code>public.takereaction.kind</code>.
      */
-    public final TableField<TakereactionRecord, Reaction> KIND = createField(DSL.name("kind"), org.jooq.impl.SQLDataType.VARCHAR.nullable(false).asEnumDataType(db.enums.Reaction.class), this, "");
+    public final TableField<TakereactionRecord, Reaction> KIND = createField(DSL.name("kind"), SQLDataType.VARCHAR.nullable(false).asEnumDataType(db.enums.Reaction.class), this, "");
 
     /**
      * The column <code>public.takereaction.reacted_at</code>.
      */
-    public final TableField<TakereactionRecord, LocalDateTime> REACTED_AT = createField(DSL.name("reacted_at"), org.jooq.impl.SQLDataType.LOCALDATETIME.nullable(false), this, "");
+    public final TableField<TakereactionRecord, LocalDateTime> REACTED_AT = createField(DSL.name("reacted_at"), SQLDataType.LOCALDATETIME(6).nullable(false), this, "");
 
     /**
      * The column <code>public.takereaction.reacted_ip</code>.
      */
     public final TableField<TakereactionRecord, String> REACTED_IP = createField(DSL.name("reacted_ip"), org.jooq.impl.DefaultDataType.getDefaultDataType("\"pg_catalog\".\"inet\"").nullable(false), this, "", new PostgresInetBinding());
 
-    /**
-     * Create a <code>public.takereaction</code> table reference
-     */
-    public Takereaction() {
-        this(DSL.name("takereaction"), null);
+    private Takereaction(Name alias, Table<TakereactionRecord> aliased) {
+        this(alias, aliased, null);
+    }
+
+    private Takereaction(Name alias, Table<TakereactionRecord> aliased, Field<?>[] parameters) {
+        super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.table());
     }
 
     /**
@@ -95,12 +97,11 @@ public class Takereaction extends TableImpl<TakereactionRecord> {
         this(alias, TAKEREACTION);
     }
 
-    private Takereaction(Name alias, Table<TakereactionRecord> aliased) {
-        this(alias, aliased, null);
-    }
-
-    private Takereaction(Name alias, Table<TakereactionRecord> aliased, Field<?>[] parameters) {
-        super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.table());
+    /**
+     * Create a <code>public.takereaction</code> table reference
+     */
+    public Takereaction() {
+        this(DSL.name("takereaction"), null);
     }
 
     public <O extends Record> Takereaction(Table<O> child, ForeignKey<O, TakereactionRecord> key) {
@@ -127,12 +128,21 @@ public class Takereaction extends TableImpl<TakereactionRecord> {
         return Arrays.<ForeignKey<TakereactionRecord, ?>>asList(Keys.TAKEREACTION__TAKEREACTION_TAKE_ID_FKEY, Keys.TAKEREACTION__TAKEREACTION_USER_ID_FKEY);
     }
 
+    private transient Takepublished _takepublished;
+    private transient Account _account;
+
     public Takepublished takepublished() {
-        return new Takepublished(this, Keys.TAKEREACTION__TAKEREACTION_TAKE_ID_FKEY);
+        if (_takepublished == null)
+            _takepublished = new Takepublished(this, Keys.TAKEREACTION__TAKEREACTION_TAKE_ID_FKEY);
+
+        return _takepublished;
     }
 
     public Account account() {
-        return new Account(this, Keys.TAKEREACTION__TAKEREACTION_USER_ID_FKEY);
+        if (_account == null)
+            _account = new Account(this, Keys.TAKEREACTION__TAKEREACTION_USER_ID_FKEY);
+
+        return _account;
     }
 
     @Override
