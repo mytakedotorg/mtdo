@@ -126,6 +126,8 @@ dependencies {
 
 	// workaround to get Java 11 guice, Jooby 2 probably fixes
 	implementation 'com.google.inject:guice:5.0.1'
+	// fixes heroku-only problem: ClassNotFoundException: javax.annotation.PostConstruct
+	implementation 'javax.annotation:javax.annotation-api:1.3.2'
 
 	// json
 	implementation "com.jsoniter:jsoniter:$VER_JSONITER"
