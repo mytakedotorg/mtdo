@@ -57,7 +57,7 @@ allprojects { proj ->
 	}
 	if (buildsrc.Env.isHeroku()) {
 		afterEvaluate {
-			def spotless = getProject().getExtensions().findByType(SpotlessExtension)
+			def spotless = getProject().getExtensions().findByType(com.diffplug.gradle.spotless.SpotlessExtension)
 			if (spotless != null) {
 				spotless.ratchetFrom(null)
 			}
