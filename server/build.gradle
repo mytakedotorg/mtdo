@@ -147,11 +147,11 @@ dependencies {
 
 	// code quality annotations, especially @Nullable
 	annotationProcessor "com.google.code.findbugs:jsr305:${VER_JSR_305}"
-	annotationProcessor 'com.google.errorprone:error_prone_annotations:2.4.0'
+	annotationProcessor 'com.google.errorprone:error_prone_annotations:2.6.0'
 
 	testImplementation "junit:junit:$VER_JUNIT"
 	testImplementation "org.assertj:assertj-core:$VER_ASSERTJ"
-	testImplementation 'io.rest-assured:rest-assured:4.3.1'
+	testImplementation 'io.rest-assured:rest-assured:4.3.3'
 	testImplementation 'com.icegreen:greenmail:1.5.7'									// http://www.icegreen.com/greenmail/
 	testImplementation "com.palantir.docker.compose:docker-compose-rule-core:$VER_PALANTIR_DOCKER_COMPOSE"		// https://github.com/palantir/docker-compose-rule
 	testImplementation "com.palantir.docker.compose:docker-compose-rule-junit4:$VER_PALANTIR_DOCKER_COMPOSE"	// https://github.com/palantir/docker-compose-rule
@@ -160,7 +160,7 @@ dependencies {
 	testImplementation "org.eclipse.jgit:org.eclipse.jgit:${VER_JGIT}"	// required for serving local repo
 
 	// dep for auth
-	implementation 'com.auth0:java-jwt:3.11.0'
+	implementation 'com.auth0:java-jwt:3.15.0'
 }
 
 // renders the socialEmbed template to disk for node

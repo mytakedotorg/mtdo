@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2020 MyTake.org, Inc.
+ * Copyright (C) 2020-2021 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -66,7 +66,7 @@ class GuiTask {
 			release.useNativesForRunningPlatform();
 		});
 		p.getDependencies().add(GUI_CONFIG, "com.diffplug.durian:durian-swt:3.3.1");
-		p.getDependencies().add(GUI_CONFIG, "com.ibm.icu:icu4j:67.1");
+		p.getDependencies().add(GUI_CONFIG, "com.ibm.icu:icu4j:69.1");
 		p.getDependencies().add(GUI_CONFIG, p.getDependencies().gradleApi());
 
 		p.getTasks().register("gui", org.gradle.api.tasks.JavaExec.class, task -> {

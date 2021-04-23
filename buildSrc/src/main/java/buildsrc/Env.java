@@ -20,7 +20,7 @@ public class Env {
 		return System.getenv().containsKey(ENV_VAR_HEROKU);
 	}
 
-public static boolean isCircleCI() {
+	public static boolean isCircleCI() {
 		return System.getenv().containsKey(ENV_VAR_CIRCLE_CI);
 	}
 }
