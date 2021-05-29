@@ -256,7 +256,7 @@ public class FormValidation<F extends FormDef> {
 		}
 
 		public boolean noErrors() {
-			return errors.isEmpty();
+			return errors.isEmpty() && formError == null;
 		}
 
 		public Self formError(String formError) {
