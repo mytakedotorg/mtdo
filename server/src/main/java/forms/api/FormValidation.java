@@ -164,9 +164,21 @@ public class FormValidation<F extends FormDef> {
 		if (map.isEmpty()) {
 			return ImmutableMap.of(key, value);
 		} else {
-			ImmutableMap.Builder<K, V> builder = ImmutableMap.builder(map.size() + 1);
-			builder.putAll(map);
-			builder.put(key, value);
+			ImmutableMap.Builder<K, V> builder;
+			if (map.containsKey(key)) {
+				builder = ImmutableMap.builder(map.size());
+				for (Map.Entry<K, V> entry : map.entrySet()) {
+					if (entry.getKey().equals(key)) {
+						builder.put(key, value);
+					} else {
+						builder.put(entry);
+					}
+				}
+			} else {
+				builder = ImmutableMap.builder(map.size() + 1);
+				builder.putAll(map);
+				builder.put(key, value);
+			}
 			return builder.build();
 		}
 	}
