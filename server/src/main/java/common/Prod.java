@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2017-2020 MyTake.org, Inc.
+ * Copyright (C) 2017-2021 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -42,6 +42,7 @@ import org.jooby.Jooby;
 import org.jooby.Registry;
 import org.jooby.jdbc.Jdbc;
 import org.jooby.jooq.jOOQ;
+import org.jooby.quartz.Quartz;
 
 /**
  * The app that we run in production.  See {@link Dev} in the test
@@ -112,6 +113,10 @@ public class Prod extends Jooby {
 		jooby.use(new Drafts());
 		jooby.use(new AuthModule());
 		jooby.use(new TakeReaction());
+		// scheduled stuff
+		jooby.use(new Quartz()
+				.with(Mods.ModJobs.class)
+				.with(controllers.ForceGc.class));
 		// These controllers need to be last, because otherwise
 		// they will swallow every `/user/take` and `/user` URL.
 		jooby.use(new Takes());

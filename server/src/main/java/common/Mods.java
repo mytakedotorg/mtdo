@@ -47,7 +47,6 @@ import org.apache.commons.mail.HtmlEmail;
 import org.jooby.Env;
 import org.jooby.Jooby;
 import org.jooby.Registry;
-import org.jooby.quartz.Quartz;
 import org.jooby.quartz.Scheduled;
 import org.jooq.Condition;
 import org.jooq.DSLContext;
@@ -112,7 +111,6 @@ public class Mods {
 
 	public static void init(Jooby jooby) {
 		jooby.use(new Mods.Module());
-		jooby.use(new Quartz().with(ModJobs.class));
 	}
 
 	public static String table(String... keyValue) {
