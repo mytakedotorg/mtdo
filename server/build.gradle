@@ -150,7 +150,6 @@ dependencies {
 	implementation 'com.diffplug.durian:durian-core:1.2.0'
 	implementation 'com.diffplug.durian:durian-collect:1.2.0'
 	implementation 'commons-codec:commons-codec:1.15'
-	implementation 'org.pcollections:pcollections:3.1.4'
 
 	// code quality annotations, especially @Nullable
 	annotationProcessor 'com.google.errorprone:error_prone_annotations:2.6.0'

@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2020-2021 MyTake.org, Inc.
+ * Copyright (C) 2017-2021 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -20,17 +20,17 @@
 package forms.api;
 
 import com.diffplug.common.base.Preconditions;
+import com.diffplug.common.collect.ImmutableMap;
 import forms.meta.MetaField;
 import forms.meta.PostForm;
 import forms.meta.TypedFormDef;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Map;
 import java.util.Objects;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import org.jetbrains.annotations.Nullable;
-import org.pcollections.HashPMap;
-import org.pcollections.IntTreePMap;
 
 /**
  * Maintains per-field errors, along with an error for the entire
@@ -39,10 +39,10 @@ import org.pcollections.IntTreePMap;
 public class FormValidation<F extends FormDef> {
 	private final F def;
 	private final String formError;
-	private final HashPMap<String, String> values, errors;
+	private final ImmutableMap<String, String> values, errors;
 
 	private FormValidation(F def, @Nullable String formError,
-			HashPMap<String, String> values, HashPMap<String, String> errors) {
+			ImmutableMap<String, String> values, ImmutableMap<String, String> errors) {
 		this.def = def;
 		this.formError = formError;
 		this.values = values;
@@ -58,11 +58,11 @@ public class FormValidation<F extends FormDef> {
 		return formError;
 	}
 
-	public HashPMap<String, String> values() {
+	public ImmutableMap<String, String> values() {
 		return values;
 	}
 
-	public HashPMap<String, String> errors() {
+	public ImmutableMap<String, String> errors() {
 		return errors;
 	}
 
@@ -80,24 +80,22 @@ public class FormValidation<F extends FormDef> {
 		return new FormMarkup<>(def, this);
 	}
 
-	private static HashPMap<String, String> EMPTY = HashPMap.empty(IntTreePMap.empty());
-
 	/////////////
 	// BUILDER //
 	/////////////
 	@SuppressWarnings("unchecked")
 	public static <F extends TypedFormDef<F>> Builder<F> emptyBuilder(TypedFormDef<F> def) {
-		return new Builder<F>((F) def, null, EMPTY, EMPTY);
+		return new Builder<F>((F) def, null, ImmutableMap.of(), ImmutableMap.of());
 	}
 
 	@SuppressWarnings("unchecked")
 	public static <F extends TypedFormDef<F>> Sensitive<F> emptySensitive(TypedFormDef<F> def) {
-		return new Sensitive<F>((F) def, null, EMPTY, EMPTY);
+		return new Sensitive<F>((F) def, null, ImmutableMap.of(), ImmutableMap.of());
 	}
 
 	/** Builds a form valiation. */
 	public static class Builder<F extends FormDef> extends AbstractBuilder<F, Builder<F>> implements PostForm.ValidateResult<F> {
-		private Builder(F def, String formError, HashPMap<String, String> values, HashPMap<String, String> errors) {
+		private Builder(F def, String formError, ImmutableMap<String, String> values, ImmutableMap<String, String> errors) {
 			super(def, formError, values, errors);
 		}
 
@@ -108,7 +106,7 @@ public class FormValidation<F extends FormDef> {
 
 	/** Represents a form valiation containing sensitive information, indicating that the programmer needs to call a keep() method. */
 	public static class Sensitive<F extends FormDef> extends AbstractBuilder<F, Sensitive<F>> {
-		private Sensitive(F def, String formError, HashPMap<String, String> values, HashPMap<String, String> errors) {
+		private Sensitive(F def, String formError, ImmutableMap<String, String> values, ImmutableMap<String, String> errors) {
 			super(def, formError, values, errors);
 		}
 
@@ -117,24 +115,24 @@ public class FormValidation<F extends FormDef> {
 		}
 
 		public Builder<F> keepNone() {
-			return new Builder<>(def, formError, EMPTY, errors);
+			return new Builder<>(def, formError, ImmutableMap.of(), errors);
 		}
 
 		private Builder<F> keep(Predicate<String> toKeep) {
-			HashPMap<String, String> values = this.values;
-			for (String key : values.keySet()) {
-				if (!toKeep.test(key)) {
-					values = values.minus(key);
+			ImmutableMap.Builder<String, String> builder = ImmutableMap.builder();
+			for (Map.Entry<String, String> entry : values.entrySet()) {
+				if (toKeep.test(entry.getKey())) {
+					builder.put(entry);
 				}
 			}
-			return new Builder<>(def, formError, values, errors);
+			return new Builder<>(def, formError, builder.build(), errors);
 		}
 
 		public Builder<F> keep(MetaField<?>... fields) {
 			return keep(Arrays.asList(fields));
 		}
 
-		public Builder<F> keep(Collection<MetaField<?>> fields) {
+		public Builder<F> keep(Iterable<MetaField<?>> fields) {
 			return keep(fieldName -> {
 				for (MetaField<?> field : fields) {
 					if (field.name().equals(fieldName)) {
@@ -146,14 +144,53 @@ public class FormValidation<F extends FormDef> {
 		}
 	}
 
+	private static <K, V> ImmutableMap<K, V> minus(ImmutableMap<K, V> map, K toRemove) {
+		if (!map.containsKey(toRemove)) {
+			return map;
+		}
+		if (map.size() == 1) {
+			return ImmutableMap.of();
+		}
+		ImmutableMap.Builder<K, V> builder = ImmutableMap.builder(map.size() - 1);
+		for (Map.Entry<K, V> entry : map.entrySet()) {
+			if (!entry.getKey().equals(toRemove)) {
+				builder.put(entry);
+			}
+		}
+		return builder.build();
+	}
+
+	private static <K, V> ImmutableMap<K, V> plus(ImmutableMap<K, V> map, K key, V value) {
+		if (map.isEmpty()) {
+			return ImmutableMap.of(key, value);
+		} else {
+			ImmutableMap.Builder<K, V> builder;
+			if (map.containsKey(key)) {
+				builder = ImmutableMap.builder(map.size());
+				for (Map.Entry<K, V> entry : map.entrySet()) {
+					if (entry.getKey().equals(key)) {
+						builder.put(key, value);
+					} else {
+						builder.put(entry);
+					}
+				}
+			} else {
+				builder = ImmutableMap.builder(map.size() + 1);
+				builder.putAll(map);
+				builder.put(key, value);
+			}
+			return builder.build();
+		}
+	}
+
 	public abstract static class AbstractBuilder<F extends FormDef, Self extends AbstractBuilder<F, Self>> {
 		protected final F def;
 		@Nullable
 		protected String formError;
-		protected HashPMap<String, String> values, errors;
+		protected ImmutableMap<String, String> values, errors;
 
 		protected AbstractBuilder(F def, @Nullable String formError,
-				HashPMap<String, String> values, HashPMap<String, String> errors) {
+				ImmutableMap<String, String> values, ImmutableMap<String, String> errors) {
 			this.def = Objects.requireNonNull(def);
 			this.formError = formError;
 			this.values = Objects.requireNonNull(values);
@@ -184,7 +221,7 @@ public class FormValidation<F extends FormDef> {
 		public Self set(String field, String value) {
 			Objects.requireNonNull(field, "field");
 			Objects.requireNonNull(value, "value");
-			values = values.plus(field, value);
+			values = plus(values, field, value);
 			return returnThis();
 		}
 
@@ -192,7 +229,7 @@ public class FormValidation<F extends FormDef> {
 			Objects.requireNonNull(field, "field");
 			Objects.requireNonNull(value, "value");
 			if (values.get(field) == null) {
-				values = values.plus(field, value);
+				values = plus(values, field, value);
 			}
 			return returnThis();
 		}
@@ -203,15 +240,15 @@ public class FormValidation<F extends FormDef> {
 			Objects.requireNonNull(error, "error");
 			String existingError = errors.get(field);
 			if (existingError == null) {
-				errors = errors.plus(field, error);
+				errors = plus(errors, field, error);
 			} else {
-				errors = errors.plus(field, existingError + "\n" + error);
+				errors = plus(errors, field, existingError + "\n" + error);
 			}
 			return returnThis();
 		}
 
 		public <T> Self clearErrors(String field) {
-			errors = errors.minus(field);
+			errors = minus(errors, field);
 			return returnThis();
 		}
 
