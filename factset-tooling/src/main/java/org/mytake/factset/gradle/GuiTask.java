@@ -65,7 +65,7 @@ class GuiTask {
 			}
 			release.useNativesForRunningPlatform();
 		});
-		p.getDependencies().add(GUI_CONFIG, "com.diffplug.durian:durian-swt:3.3.1");
+		p.getDependencies().add(GUI_CONFIG, "com.diffplug.durian:durian-swt:3.5.0");
 		p.getDependencies().add(GUI_CONFIG, "com.ibm.icu:icu4j:69.1");
 		p.getDependencies().add(GUI_CONFIG, p.getDependencies().gradleApi());
 
