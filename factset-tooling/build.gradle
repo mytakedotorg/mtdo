@@ -85,7 +85,7 @@ configurations {
 	}
 }
 
-String VER_AUTOVALUE = '1.8.1'
+String VER_AUTOVALUE = '1.8.2'
 dependencies {
 	annotationProcessor     "com.google.auto.value:auto-value:${VER_AUTOVALUE}"
 	implementation          "com.google.auto.value:auto-value-annotations:${VER_AUTOVALUE}"
@@ -96,7 +96,7 @@ dependencies {
 	implementation "org.jsweet:jsweet-core:$VER_JSWEET_CORE"
 	implementation "com.jsoniter:jsoniter:$VER_JSONITER"
 	implementation "com.google.code.gson:gson:${VER_GSON}"
-	implementation 'org.jsoup:jsoup:1.13.1'
+	implementation 'org.jsoup:jsoup:1.14.3'
 	implementation "org.eclipse.jgit:org.eclipse.jgit:${VER_JGIT}"
 	implementation "com.squareup.okhttp3:okhttp:${VER_OKHTTP}"
 	implementation 'com.diffplug.durian:durian-core:1.2.0'
