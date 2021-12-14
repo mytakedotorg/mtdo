@@ -39,7 +39,7 @@ dependencies {
 	// hashes folders into a single ObjectId
 	implementation "org.eclipse.jgit:org.eclipse.jgit:${props.VER_JGIT}"
 	// gradle utilities
-	implementation 'com.diffplug.gradle:goomph:3.29.1'
+	implementation 'com.diffplug.gradle:goomph:3.33.3'
 
 	testImplementation "junit:junit:${props.VER_JUNIT}"
 	testImplementation "org.assertj:assertj-core:${props.VER_ASSERTJ}"
