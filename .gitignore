@@ -24,6 +24,9 @@ yarn-error.log
 .gradle/
 build/
 
+# idea
+.idea/
+
 # eclipse
 .classpath
 .factorypath
