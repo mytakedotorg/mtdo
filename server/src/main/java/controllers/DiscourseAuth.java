@@ -35,6 +35,7 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.util.Base64;
 import java.util.Optional;
 import java2ts.Routes;
 import javax.crypto.Mac;
@@ -45,7 +46,6 @@ import org.jooby.Jooby;
 import org.jooby.Request;
 import org.jooby.Results;
 import org.jooq.DSLContext;
-import org.postgresql.util.Base64;
 
 /**
  * SSO for Discourse, the spec is here: https://meta.discourse.org/t/official-single-sign-on-for-discourse-sso/13045
@@ -121,11 +121,11 @@ public class DiscourseAuth implements Jooby.Module {
 		return Hex.encodeHexString(doFinal);
 	}
 
-	private static String decodeBase64(String input) throws UnsupportedEncodingException {
-		return new String(Base64.decode(input), StandardCharsets.UTF_8);
+	private static String decodeBase64(String input) {
+		return new String(Base64.getMimeDecoder().decode(input), StandardCharsets.UTF_8);
 	}
 
-	private static String encodeBase64(String input) throws UnsupportedEncodingException {
-		return Base64.encodeBytes(input.getBytes(StandardCharsets.UTF_8));
+	private static String encodeBase64(String input) {
+		return Base64.getMimeEncoder().encodeToString(input.getBytes(StandardCharsets.UTF_8)).replace("\r", "");
 	}
 }
