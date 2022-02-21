@@ -105,7 +105,7 @@ dependencies {
 
 	implementation 'com.diffplug.spotless-changelog:spotless-changelog-plugin-gradle:2.3.2'
 	implementation 'com.diffplug.spotless:spotless-plugin-gradle:6.0.4'
-	implementation 'com.diffplug.gradle:goomph:3.33.3'
+	implementation 'com.diffplug.gradle:goomph:3.35.0'
 
 	testImplementation "junit:junit:$VER_JUNIT"
 	testImplementation "org.assertj:assertj-core:$VER_ASSERTJ"
