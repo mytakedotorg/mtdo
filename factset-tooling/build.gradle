@@ -49,10 +49,10 @@ tasks.register('syncClientInterfaceJava2ts', Sync) {
 	into 'src/main/java/java2ts'
 }
 for (name in [
-	'compileJava',
-	'spotlessJava',
-	'sourcesJar'
-]) {
+			'compileJava',
+			'spotlessJava',
+			'sourcesJar'
+		]) {
 	tasks.named(name) {
 		dependsOn 'syncClientInterfaceJava2ts'
 	}
@@ -85,7 +85,7 @@ configurations {
 	}
 }
 
-String VER_AUTOVALUE = '1.8.2'
+String VER_AUTOVALUE = '1.9'
 dependencies {
 	annotationProcessor     "com.google.auto.value:auto-value:${VER_AUTOVALUE}"
 	implementation          "com.google.auto.value:auto-value-annotations:${VER_AUTOVALUE}"

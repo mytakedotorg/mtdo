@@ -1,6 +1,6 @@
 plugins {
 	id 'nu.studer.rocker' version '3.0.4'					// https://github.com/etiennestuder/gradle-rocker-plugin
-	id 'com.github.johnrengelman.shadow' version '7.1.0'	// http://imperceptiblethoughts.com/shadow/#
+	id 'com.github.johnrengelman.shadow' version '7.1.2'	// http://imperceptiblethoughts.com/shadow/#
 }
 
 apply plugin: 'java'
@@ -144,11 +144,11 @@ dependencies {
 	implementation 'commons-codec:commons-codec:1.15'
 
 	// code quality annotations, especially @Nullable
-	annotationProcessor 'com.google.errorprone:error_prone_annotations:2.10.0'
+	annotationProcessor 'com.google.errorprone:error_prone_annotations:2.11.0'
 
 	testImplementation "junit:junit:$VER_JUNIT"
 	testImplementation "org.assertj:assertj-core:$VER_ASSERTJ"
-	testImplementation 'io.rest-assured:rest-assured:4.4.0'
+	testImplementation 'io.rest-assured:rest-assured:4.5.1'
 	testImplementation 'com.icegreen:greenmail:1.5.7'									// http://www.icegreen.com/greenmail/
 	testImplementation "com.palantir.docker.compose:docker-compose-rule-core:$VER_PALANTIR_DOCKER_COMPOSE"		// https://github.com/palantir/docker-compose-rule
 	testImplementation "com.palantir.docker.compose:docker-compose-rule-junit4:$VER_PALANTIR_DOCKER_COMPOSE"	// https://github.com/palantir/docker-compose-rule
@@ -156,7 +156,7 @@ dependencies {
 	testImplementation "com.fizzed:rocker-compiler:${rockerVersion}"	// required for hotreload
 	testImplementation "org.eclipse.jgit:org.eclipse.jgit:${VER_JGIT}"	// required for serving local repo
 
-	implementation 'com.auth0:java-jwt:3.18.2'
+	implementation 'com.auth0:java-jwt:3.18.3'
 }
 
 // renders the socialEmbed template to disk for node
