@@ -103,8 +103,8 @@ dependencies {
 	implementation 'com.diffplug.durian:durian-collect:1.2.0'
 	implementation 'com.diffplug.durian:durian-io:1.2.0'
 
-	implementation 'com.diffplug.spotless-changelog:spotless-changelog-plugin-gradle:2.3.2'
-	implementation 'com.diffplug.spotless:spotless-plugin-gradle:6.0.4'
+	implementation 'com.diffplug.spotless-changelog:spotless-changelog-plugin-gradle:2.4.0'
+	implementation 'com.diffplug.spotless:spotless-plugin-gradle:6.3.0'
 	implementation 'com.diffplug.gradle:goomph:3.35.0'
 
 	testImplementation "junit:junit:$VER_JUNIT"
