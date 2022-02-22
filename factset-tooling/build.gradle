@@ -118,7 +118,7 @@ dependencies {
 
 apply plugin: 'com.diffplug.eclipse.mavencentral'
 eclipseMavenCentral {
-	release '4.17.0', {
+	release '4.22.0', {
 		dep 'guiRuntime', 'org.eclipse.swt'
 		dep 'guiRuntime', 'org.eclipse.jface'
 		dep 'guiRuntime','org.eclipse.jface.text'
