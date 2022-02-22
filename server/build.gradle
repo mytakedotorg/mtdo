@@ -192,4 +192,6 @@ tasks.named('test') {
 /////////////
 // fat jar //
 /////////////
-shadowJar {}
+shadowJar {
+	mergeServiceFiles()
+}
