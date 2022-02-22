@@ -50,9 +50,9 @@ node {
 		dependsOn(':client-interface:jsweet')
 	}
 	for (t in [
-		'styles',
-		'scripts'
-	]) {
+				'styles',
+				'scripts'
+			]) {
 		final String taskName = t
 		gulp "${taskName}Dev", {
 			dependsOn 'gulp_permanent', ':lucene:indexHash'

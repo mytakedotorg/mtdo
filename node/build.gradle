@@ -73,9 +73,9 @@ tasks.register('test') {
 tasks.register('updateSnapshot') {
 	dependsOn 'npm_run_updateSnapshot'
 }
-tasks.named('check') {
+tasks.register('check') {
 	dependsOn 'test'
 }
-tasks.named('assemble') {
+tasks.register('assemble') {
 	dependsOn 'gulp_build'
 }

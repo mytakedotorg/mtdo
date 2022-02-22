@@ -1,12 +1,12 @@
 pluginManagement {
 	plugins {
-		id 'com.diffplug.blowdryer'               version '1.1.1'
-		id 'com.diffplug.blowdryerSetup'          version '1.1.1'
-		id 'com.diffplug.spotless'                version '5.12.4'
-		id 'com.diffplug.spotless-changelog'      version '2.3.2'
-		id 'com.diffplug.eclipse.apt'             version '3.33.3'
-		id 'com.diffplug.eclipse.resourcefilters' version '3.33.3'
-		id 'com.gradle.plugin-publish'            version '0.14.0'
+		id 'com.diffplug.blowdryer'               version '1.5.1'
+		id 'com.diffplug.blowdryerSetup'          version '1.5.1'
+		id 'com.diffplug.spotless'                version '6.3.0'
+		id 'com.diffplug.spotless-changelog'      version '2.4.0'
+		id 'com.diffplug.eclipse.apt'             version '3.35.0'
+		id 'com.diffplug.eclipse.resourcefilters' version '3.35.0'
+		id 'com.gradle.plugin-publish'            version '0.20.0'
 		id 'org.jdrupes.mdoclet'                  version '1.0.10'
 	}
 }

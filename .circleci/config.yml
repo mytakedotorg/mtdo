@@ -6,7 +6,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: nedtwigg/testrunner:1.5.0
+      - image: nedtwigg/testrunner:1.6.0
         auth:
           username: $dockerhubuser
           password: $dockerhubpass

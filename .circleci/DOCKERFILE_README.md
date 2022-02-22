@@ -9,6 +9,10 @@ sudo docker push nedtwigg/testrunner:${VERSION}
 ```
 
 # Changelog
+## [1.6.0] - 2022-02-22
+### Changed
+- from `cimg/openjdk:11.0.9-node` to `17.0.2-node`
+
 ## [1.5.0] - 2021-02-24
 ### Changed
 - from `cimg/openjdk:15.0.1-node` to `11.0.9-node`
