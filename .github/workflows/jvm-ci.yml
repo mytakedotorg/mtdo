@@ -1,0 +1,110 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: circleci/postgres:10.3-alpine-ram
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Docker login
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USER }}
+          password: ${{ secrets.DOCKERHUB_PASS }}
+
+      - name: Set up Docker image
+        run: docker pull nedtwigg/testrunner:1.6.0
+
+      - name: Cache Gradle wrapper
+        id: gradle-wrapper-cache
+        uses: actions/cache@v3
+        with:
+          path: ~/.gradle/wrapper
+          key: gradle-wrapper-${{ hashFiles('gradle/wrapper/gradle-wrapper.properties') }}
+
+      - name: Cache Gradle dependencies
+        id: gradle-deps-cache
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle/caches/
+            ~/.npm/
+          key: gradle-deps-${{ hashFiles('settings.gradle', 'buildSrc/build.gradle', 'gradle.properties', 'client/package-lock.json', 'node/package-lock.json', 'server/build.gradle', 'factset-tooling/build.gradle') }}
+          restore-keys: |
+            gradle-deps-
+
+      - name: Assemble
+        run: ./gradlew assemble --stacktrace
+
+      - name: Run checks
+        run: ./gradlew check --stacktrace
+
+      - name: Store test results for client
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: client-test-results
+          path: client/build/test-results/test
+
+      - name: Store Jest results for client
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: client-jest-results
+          path: client/build/test-results/jest
+
+      - name: Store test results for factset-tooling
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: factset-tooling-test-results
+          path: factset-tooling/build/test-results/test
+
+      - name: Store test results for lucene
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: lucene-test-results
+          path: lucene/build/test-results/test
+
+      - name: Store test results for server
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: server-test-results
+          path: server/build/test-results/test
+
+      - name: Store Jest results for node
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: node-jest-results
+          path: node/build/test-results/jest
+
+      - name: Store image snapshot diffs
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: image-snapshot-diffs
+          path: node/src/main/scripts/__image_snapshots__/__diff_output__/
