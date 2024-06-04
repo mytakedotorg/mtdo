@@ -34,8 +34,16 @@ jobs:
         uses: gradle/gradle-build-action@v2
         with:
           gradle-home-cache-cleanup: true
-      - name: gradlew :client:npm_run_test_ci
-        run: ./gradlew :client:npm_run_test_ci --build-cache
+      - name: Install node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 14
+      - name: npm install
+        run: npm install
+        working-directory: ./client
+      - name: npm test
+        run: npm run test_ci
+        working-directory: ./client
       - name: gradlew check
         run: ./gradlew check --build-cache
       - name: junit result
