@@ -91,7 +91,3 @@ The Docker daemon probably isn't running. Start docker!
 > Unable to obtain connection from database: The connection attempt failed.
 
 Just try `./gradlew runDev` again.
-
-> IDE started by `gradlew ide` is broken
-
-Run `./gradlew ideClean`, and then `./gradlew ide`
