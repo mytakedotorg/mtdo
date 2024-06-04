@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2018-2021 MyTake.org, Inc.
+ * Copyright (C) 2018-2024 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -79,7 +79,7 @@ final class CleanPostgresModule implements Jooby.Module {
 
 	void exec(String... args) {
 		try {
-			if (CircleCi.isCircle()) {
+			if (GitHubCI.isGitHubCI()) {
 				List<String> argsCopy = new ArrayList<>(Arrays.asList(args));
 				argsCopy.add(1, "-h");
 				argsCopy.add(2, "localhost");
