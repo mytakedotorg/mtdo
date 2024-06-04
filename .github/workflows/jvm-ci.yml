@@ -34,6 +34,8 @@ jobs:
         uses: gradle/gradle-build-action@v2
         with:
           gradle-home-cache-cleanup: true
+      - name: gradlew :client:npm_run_test_ci
+        run: ./gradlew :client:npm_run_test_ci --build-cache
       - name: gradlew check
         run: ./gradlew check --build-cache
       - name: junit result
