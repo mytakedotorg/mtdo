@@ -1,5 +1,4 @@
 apply plugin: 'java-library'
-apply plugin: 'eclipse'
 apply plugin: 'java-gradle-plugin'
 
 repositories {
@@ -20,7 +19,7 @@ new File(projectDir.parentFile, 'gradle.properties').withInputStream {
 
 dependencies {
 	// node.js
-	api 'com.github.eirslett:frontend-maven-plugin:1.12.1' // JitPack HEAD as of 04/23/2020
+	api 'com.github.eirslett:frontend-maven-plugin:1.15.0' // JitPack HEAD as of 04/23/2020
 	// https://github.com/palantir/docker-compose-rule
 	api "com.palantir.docker.compose:docker-compose-rule-core:${props.VER_PALANTIR_DOCKER_COMPOSE}"
 	api "com.palantir.docker.compose:docker-compose-rule-junit4:${props.VER_PALANTIR_DOCKER_COMPOSE}"
@@ -44,19 +43,6 @@ dependencies {
 	testImplementation "junit:junit:${props.VER_JUNIT}"
 	testImplementation "org.assertj:assertj-core:${props.VER_ASSERTJ}"
 }
-
-// if we're not in CI, grab all source
-String HEROKU_ENV_VAR = 'STACK'  // https://devcenter.heroku.com/articles/buildpack-api#stacks
-String CI_ENV_VAR = 'CI'  // https://circleci.com/docs/1.0/environment-variables/#basics
-def keys = System.getenv().keySet()
-
-if (!keys.contains(HEROKU_ENV_VAR) && !keys.contains(CI_ENV_VAR)) {
-	// uncomment to generate eclipse project
-	// (adds tons of noise to continuous build)
-	compileJava.dependsOn(tasks.getByName('eclipse'))
-}
-
-eclipse { project { name = 'mytake-buildSrc' } }
 
 gradlePlugin {
 	plugins {

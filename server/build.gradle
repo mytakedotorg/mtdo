@@ -101,10 +101,6 @@ spotless {
 //////////////////
 // normal stuff //
 //////////////////
-tasks.named('eclipse') {
-	dependsOn 'cleanEclipse', 'jooq', 'compileRocker'
-}
-
 dependencies {
 	String JOOBY_VER = '1.6.9'
 	// jooby
