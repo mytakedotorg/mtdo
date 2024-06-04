@@ -14,7 +14,10 @@ jobs:
 
     services:
       postgres:
-        image: circleci/postgres:10.3-alpine-ram
+        image: cimg/postgres:11.2
+        env:
+          POSTGRES_USER: root
+          POSTGRES_PASSWORD: password
         ports:
           - 5432:5432
     steps:
