@@ -77,10 +77,6 @@ class VideoLite extends React.Component<VideoLiteProps, VideoLiteState> {
       endSeconds: props.clipRange[1],
       suggestedQuality: "default",
     });
-    this.player.seekTo(props.clipRange[0]);
-    this.player.playVideo();
-    this.playerVars.start = props.clipRange[0];
-    this.playerVars.end = props.clipRange[1];
   };
   handlePause = (event: any) => {
     // Player was paused with player controls
@@ -128,6 +124,11 @@ class VideoLite extends React.Component<VideoLiteProps, VideoLiteState> {
         currentTime: Math.round(event.target.getCurrentTime()),
         isPaused: false,
       });
+    } else if (event.data === 5) {
+      // Video cued
+      this.player.playVideo();
+      this.playerVars.start = this.props.clipRange[0];
+      this.playerVars.end = this.props.clipRange[1];
     }
   };
   startTimer = () => {
