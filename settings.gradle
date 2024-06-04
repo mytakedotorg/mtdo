@@ -22,7 +22,6 @@ include 'client'
 include 'client-interface'
 include 'factset-tooling'
 include 'server'
-include 'ide'
 include 'lucene'
 include 'node'
 

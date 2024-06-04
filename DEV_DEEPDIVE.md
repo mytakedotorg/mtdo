@@ -14,8 +14,7 @@ MyTake.org consists of two webapps.
     + Changes to sass files in [`/client/src/main/styles`](client/src/main/styles) will be pushed to the browser instantly. 
     + Changes to typescript files in [`/client/src/main/scripts`](client/src/main/scripts) will be compiled by webpack hot reload, but require a browser refresh to see their effects.
 - We use [VSCode](https://code.visualstudio.com/) for client-side development.
-- For server development, run `./gradlew ide`, and it will launch an Eclipse IDE preconfigured for the MyTake.org project.
-    + Run the main in `DevHotReload` for fast server development.
+- We use IntelliJ IDEA for server-side development.
 - You can see the full task dependencies in [gradleTaskGraph.pdf](gradleTaskGraph.pdf).
 
 ### Code sharing between java and typescript (jsweet)
