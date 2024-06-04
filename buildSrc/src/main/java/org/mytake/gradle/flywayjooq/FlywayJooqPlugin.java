@@ -82,7 +82,7 @@ public class FlywayJooqPlugin implements Plugin<Project> {
 			task.getInputs().dir(setup.flywayMigrations).withPathSensitivity(PathSensitivity.RELATIVE);
 		}
 
-		private Set<String> tasksFqn = new HashSet<>();
+		private final Set<String> tasksFqn = new HashSet<>();
 	}
 
 	@Override
@@ -111,6 +111,7 @@ public class FlywayJooqPlugin implements Plugin<Project> {
 		TaskProvider<JooqTask> jooqTask = project.getTasks().register("jooq", JooqTask.class, task -> {
 			task.setup = extension.setup;
 			task.generatorConfig = extension.generator;
+			task.getGeneratedSource().set(project.file(extension.generator.getTarget().getDirectory()));
 		});
 		extension.neededBy(jooqTask);
 		project.getTasks().named(JavaPlugin.COMPILE_JAVA_TASK_NAME).configure(task -> {
