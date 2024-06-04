@@ -242,7 +242,7 @@ export default class TimelinePreview extends React.Component<
         scrollTop -= props.offset;
       }
 
-      window.scrollTo(0, scrollTop);
+      //window.scrollTo(0, scrollTop);
 
       this.setState({
         highlightedNodes: initialHighlightedNodes,
