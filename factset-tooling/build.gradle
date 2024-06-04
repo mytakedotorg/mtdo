@@ -114,6 +114,7 @@ dependencies {
 
 apply plugin: 'com.diffplug.eclipse.mavencentral'
 eclipseMavenCentral {
+	silenceEquoIDE()
 	release '4.22.0', {
 		dep 'guiRuntime', 'org.eclipse.swt'
 		dep 'guiRuntime', 'org.eclipse.jface'
