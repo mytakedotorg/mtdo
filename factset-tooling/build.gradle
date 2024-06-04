@@ -1,5 +1,4 @@
 plugins {
-	id 'com.diffplug.eclipse.apt'
 	id 'com.diffplug.spotless-changelog'
 }
 
@@ -61,9 +60,6 @@ afterEvaluate {
 	tasks.named('publishPluginJar') {
 		dependsOn 'syncClientInterfaceJava2ts'
 	}
-}
-tasks.named('eclipse') {
-	dependsOn 'syncClientInterfaceJava2ts'
 }
 /////////////
 // </HACK>

@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2017-2021 MyTake.org, Inc.
+ * Copyright (C) 2017-2024 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -242,7 +242,7 @@ export default class TimelinePreview extends React.Component<
         scrollTop -= props.offset;
       }
 
-      window.scrollTo(0, scrollTop);
+      //window.scrollTo(0, scrollTop);
 
       this.setState({
         highlightedNodes: initialHighlightedNodes,

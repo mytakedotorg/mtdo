@@ -1,0 +1,50 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - staging
+  pull_request:
+    branches:
+      - staging
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: cimg/postgres:11.21
+        env:
+          POSTGRES_USER: root
+          POSTGRES_PASSWORD: password
+        ports:
+          - 5432:5432
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Install JDK 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: "temurin"
+          java-version: 17
+      - name: gradle caching
+        uses: gradle/gradle-build-action@v2
+        with:
+          gradle-home-cache-cleanup: true
+      - name: gradlew check
+        run: ./gradlew check --build-cache
+      - name: junit result
+        uses: mikepenz/action-junit-report@v3
+        if: always() # always run even if the previous step fails
+        with:
+          check_name: JUnit
+          report_paths: '*/build/test-results/*/TEST-*.xml'
+      - name: Store image snapshot diffs
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: image-snapshot-diffs
+          path: node/src/main/scripts/__image_snapshots__/__diff_output__/

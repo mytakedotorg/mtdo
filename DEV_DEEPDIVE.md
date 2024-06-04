@@ -36,7 +36,7 @@ The `:server:jooq` task:
 
 The `:server:compileRocker` task transpiles the [rocker templates](https://github.com/fizzed/rocker) in [`/server/src/main/rocker`](server/src/main/rocker) into java code in `/server/src/main/rocker-generated`.
 
-## Travis CI
+## GitHub CI
 
 Travis runs `./gradlew check`
 

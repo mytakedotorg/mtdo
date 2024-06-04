@@ -1,5 +1,3 @@
-version: "2.1"
-
 services:
   postgres:
     image: circleci/postgres:10.3-alpine-ram

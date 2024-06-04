@@ -18,7 +18,9 @@ import java.util.Properties;
 import java.util.TreeMap;
 import java.util.concurrent.TimeUnit;
 
+import com.diffplug.common.base.Throwables;
 import org.flywaydb.core.Flyway;
+import org.gradle.api.GradleException;
 import org.gradle.api.Project;
 import org.postgresql.ds.PGSimpleDataSource;
 
@@ -47,25 +49,37 @@ public class SetupCleanupDockerFlyway implements Serializable {
 
 	public File dockerComposeFile;
 	public File dockerConnectionParams;
-	public transient boolean dockerPullOnStartup = true; 
+	public transient boolean dockerPullOnStartup = true;
 
 	public transient File flywayMigrations;
 	public transient File flywaySchemaDump;
 	private TreeMap<String, byte[]> flywaySnapshot;
+	private File buildDir;
 
 	/** Saves the flywayMigrations, then starts docker (if necessary) and runs flyway. */
 	void start(Project project) throws Exception {
-		flywaySnapshot = new TreeMap<>();
-		Path root = flywayMigrations.toPath();
-		java.nio.file.Files.walkFileTree(root, new SimpleFileVisitor<Path>() {
-			@Override
-			public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-				String path = root.relativize(file).toString();
-				flywaySnapshot.put(path, java.nio.file.Files.readAllBytes(file));
-				return FileVisitResult.CONTINUE;
+		try {
+			buildDir = project.getBuildDir();
+			flywaySnapshot = new TreeMap<>();
+			Path root = flywayMigrations.toPath();
+			java.nio.file.Files.walkFileTree(root, new SimpleFileVisitor<Path>() {
+				@Override
+				public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+					String path = root.relativize(file).toString();
+					flywaySnapshot.put(path, java.nio.file.Files.readAllBytes(file));
+					return FileVisitResult.CONTINUE;
+				}
+			});
+			new Impl().start(keyFile(project), this);
+		} catch (Exception e) {
+			var rootCause = Throwables.getRootCause(e);
+			if (rootCause != null && rootCause.getMessage() != null) {
+				if (rootCause.getMessage().contains("Connection refused")) {
+					throw new GradleException("Unable to connect to docker.  Is it running?", e);
+				}
 			}
-		});
-		new Impl().start(keyFile(project), this);
+			throw e;
+		}
 	}
 
 	void forceStop(Project project) throws Exception {
@@ -75,11 +89,11 @@ public class SetupCleanupDockerFlyway implements Serializable {
 	PGSimpleDataSource getConnection() throws IOException {
 		String ip;
 		int port;
-		if (Env.isCircleCI()) {
+		if (Env.isGithubCI()) {
 			ip = CIRCLECI_IP;
 			port = CIRCLECI_PORT;
 		} else {
-			// read the connection properties 
+			// read the connection properties
 			Properties connectionProps = new Properties();
 			try (Reader reader = Files.asCharSource(dockerConnectionParams, StandardCharsets.UTF_8).openBufferedStream()) {
 				connectionProps.load(reader);
@@ -90,9 +104,10 @@ public class SetupCleanupDockerFlyway implements Serializable {
 			port = Integer.parseInt(connectionProps.getProperty("port"));
 		}
 		PGSimpleDataSource dataSource = new PGSimpleDataSource();
-		dataSource.setServerName(ip);
-		dataSource.setPortNumber(port);
+		dataSource.setServerNames(new String[] {ip});
+		dataSource.setPortNumbers(new int[] {port});
 		dataSource.setUser("root");
+		dataSource.setPassword("password");
 		dataSource.setDatabaseName("template1");
 		dataSource.setConnectTimeout(20);
 		return dataSource;
@@ -109,7 +124,7 @@ public class SetupCleanupDockerFlyway implements Serializable {
 				.waitingForService("postgres", HealthChecks.toHaveAllPortsOpen())
 				.pullOnStartup(dockerPullOnStartup)
 				.removeConflictingContainersOnStartup(true)
-				.saveLogsTo("build/tmp/docker")
+				.saveLogsTo(new File(buildDir, "tmp/docker").getAbsolutePath())
 				.shutdownStrategy(ShutdownStrategy.SKIP)
 				.build();
 	}
@@ -120,7 +135,7 @@ public class SetupCleanupDockerFlyway implements Serializable {
 			DockerComposeRule rule;
 			String ip;
 			int port;
-			if (Env.isCircleCI()) {
+			if (Env.isGithubCI()) {
 				// circle provides the container for us
 				rule = null;
 				ip = CIRCLECI_IP;
@@ -142,20 +157,22 @@ public class SetupCleanupDockerFlyway implements Serializable {
 
 			// run flyway
 			PGSimpleDataSource postgres = key.getConnection();
-			Flyway.configure()
-			.dataSource(postgres)
-			.locations("filesystem:" + key.flywayMigrations.getAbsolutePath())
-			.schemas("public")
-			.load()
-			.migrate();
+			SetupCleanup.keepTrying(() -> {
+				Flyway.configure()
+						.dataSource(postgres)
+						.locations("filesystem:" + key.flywayMigrations.getAbsolutePath())
+						.schemas("public")
+						.load()
+						.migrate();
+			});
 
 			// write out the schema to disk
 			String schema;
 			List<String> pg_dump_args = Arrays.asList("-d", "template1", "-U", postgres.getUser(), "--schema-only");
 			if (rule == null) {
 				Process process = Runtime.getRuntime().exec(ImmutableList.<String>builder().add(
-						"pg_dump", 
-						"-h", CIRCLECI_IP, "-p", Integer.toString(CIRCLECI_PORT))
+								"pg_dump",
+								"-h", CIRCLECI_IP, "-p", Integer.toString(CIRCLECI_PORT))
 						.addAll(pg_dump_args).build().toArray(new String[0]));
 				// swallow errors (not great...)
 				new InputStreamCollector(process.getErrorStream());
@@ -174,7 +191,7 @@ public class SetupCleanupDockerFlyway implements Serializable {
 
 		@Override
 		protected void doStop(SetupCleanupDockerFlyway key) throws IOException, InterruptedException {
-			if (!Env.isCircleCI()) {
+			if (!Env.isGithubCI()) {
 				DockerCompose compose = key.rule().dockerCompose();
 				compose.kill();
 				compose.rm();

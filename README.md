@@ -1,7 +1,6 @@
 # <img align="left" width="90px" height="90px" src="_imgs/logo_leaves.png"> [MyTake.org](https://mytake.org)
 *The truth is out there.*  ***Defend it.***
 
-[![<CircleCI>](https://circleci.com/gh/mytakedotorg/mtdo.svg?style=shield)](https://app.circleci.com/pipelines/github/mytakedotorg/mtdo?branch=staging)
 [![License AGPLv3](https://img.shields.io/badge/license-AGPLv3-brightgreen.svg)](https://tldrlegal.com/license/gnu-affero-general-public-license-v3-(agpl-3.0))
 [![Live chat](https://img.shields.io/badge/gitter-chat-brightgreen.svg)](https://gitter.im/mytakedotorg/mtdo)
 
