@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2017-2020 MyTake.org, Inc.
+ * Copyright (C) 2017-2024 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -19,8 +19,8 @@
  */
 package common;
 
-public class CircleCi {
-	public static boolean isCircle() {
-		return System.getenv().containsKey("CIRCLECI");
+public class GitHubCI {
+	public static boolean isGitHubCI() {
+		return System.getenv().containsKey("GITHUB_ACTION");
 	}
 }
