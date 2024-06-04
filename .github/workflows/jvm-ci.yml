@@ -41,6 +41,8 @@ jobs:
       - name: npm install
         run: npm install
         working-directory: ./client
+      - name: gradlew jsweet
+        run: ./gradlew :client-interface:jsweet :lucene:indexHash
       - name: npm test
         run: npm run test_ci
         working-directory: ./client
