@@ -40,7 +40,20 @@ spotless {
 				)
 		toggleOffOn()
 	}
+	predeclareDeps()
 }
+
+spotlessPredeclare {
+	groovyGradle {
+		greclipse()
+	}
+	java {
+		eclipse()
+		removeUnusedImports()
+	}
+	freshmark {}
+}
+
 
 // create eclipse project for all projects
 allprojects { proj ->
