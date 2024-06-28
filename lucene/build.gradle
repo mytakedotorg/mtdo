@@ -29,7 +29,7 @@ spotless {
 
 // spotless:off
 def repoToSha = [
-	'us-presidential-debates', 'cc20c1b17f8cc70f894139514512924044f2f3bf'
+	'us-presidential-debates', 'ecec2f7a2a14e0e822ea42c9eeb286181fac772d'
 ]
 def searchIndex = file('build/search-index')
 tasks.register('indexGenerate', JavaExec) {
@@ -38,7 +38,7 @@ tasks.register('indexGenerate', JavaExec) {
 	args = [searchIndex.absolutePath] + repoToSha
 
 	dependsOn 'testClasses'
-	inputs.property('repoToSha', args)
+	inputs.property('repoTo Sha', args)
 	inputs.files(sourceSets.test.runtimeClasspath).withPathSensitivity(PathSensitivity.NONE)
 
 	outputs.dir(searchIndex)
