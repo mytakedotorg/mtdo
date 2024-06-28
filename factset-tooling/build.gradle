@@ -126,7 +126,7 @@ eclipseMavenCentral {
 	}
 }
 tasks.named('generateMetadataFileForPluginMavenPublication') {
-	dependsOn 'publishPluginJar'
+	dependsOn 'publishPluginJar', 'publishPluginJavaDocsJar'
 }
 test {
 	useJUnit {
