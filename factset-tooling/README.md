@@ -11,6 +11,11 @@ This folder contains the sourcecode to the `org.mytake.factset` gradle plugin, w
 Changelog for the `org.mytake.factset` plugin, in keepachangelog format.
 
 ## [Unreleased]
+### Fixed
+* Bumped many versions, particularly eclipse from `4.22` -> `4.30`.
+  * Now supports Macs with Arm M1 chips.
+  * Now supports modern versions of Java.
+  * Now supports Gradle 8+
 
 ## [1.1.0] - 2020-10-27
 ### Added
