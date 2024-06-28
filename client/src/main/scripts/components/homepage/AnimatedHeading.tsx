@@ -22,6 +22,10 @@ import BlinkingCursor from "./BlinkingCursor";
 import { HitsPerYearList } from "../search/NGramViewer";
 
 export const SEARCHES = [
+  "russia",
+  "russia, ukraine",
+  "handicap",
+  "handicap, golf",
   "election",
   "election, rigged",
   "global warming",
