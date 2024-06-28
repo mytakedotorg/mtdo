@@ -12,6 +12,13 @@ Changelog for the `org.mytake.factset` plugin, in keepachangelog format.
 
 ## [Unreleased]
 
+## [1.1.1] - 2024-06-28
+### Fixed
+* Bumped many versions, particularly eclipse from `4.22` -> `4.30`.
+  * Now supports Macs with Arm M1 chips.
+  * Now supports modern versions of Java.
+  * Now supports Gradle 8+
+
 ## [1.1.0] - 2020-10-27
 ### Added
 * `grindCheck` task for running CI on a factset. `check` automatically depends on `grindCheck`.
