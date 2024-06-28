@@ -73,7 +73,7 @@ class GuiTask {
 			task.setGroup("GUI");
 			task.setDescription("Launches a gui for the factset");
 
-			task.setMain("org.mytake.factset.swt.Workbench");
+			task.getMainClass().set("org.mytake.factset.swt.Workbench");
 			if (OS.getNative().isMac()) {
 				File icon;
 				try (InputStream input = Resources.asByteSource(MtdoFactset.class.getResource("/icon/logo_leaves_256.png")).openBufferedStream()) {
