@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2020 MyTake.org, Inc.
+ * Copyright (C) 2020-2024 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -272,6 +272,7 @@ const ALL_DEBATE_YEARS = [
   "2012",
   "2016",
   "2020",
+  "2024",
 ];
 export function getNumberOfHitsPerYear(
   searchResult: SearchResult

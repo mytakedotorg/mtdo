@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2020 MyTake.org, Inc.
+ * Copyright (C) 2020-2024 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -22,6 +22,10 @@ import BlinkingCursor from "./BlinkingCursor";
 import { HitsPerYearList } from "../search/NGramViewer";
 
 export const SEARCHES = [
+  "russia",
+  "russia, ukraine",
+  "handicap",
+  "handicap, golf",
   "election",
   "election, rigged",
   "global warming",

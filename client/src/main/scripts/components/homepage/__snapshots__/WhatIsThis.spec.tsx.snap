@@ -90,6 +90,11 @@ exports[`WhatIsThis 1`] = `
               "searchTerm": "election",
               "year": "2020",
             },
+            Object {
+              "hitCount": 10,
+              "searchTerm": "election",
+              "year": "2024",
+            },
           ],
         }
       }
