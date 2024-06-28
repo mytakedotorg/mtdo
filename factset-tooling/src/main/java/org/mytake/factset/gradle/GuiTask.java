@@ -1,6 +1,6 @@
 /*
  * MyTake.org website and tooling.
- * Copyright (C) 2020-2022 MyTake.org, Inc.
+ * Copyright (C) 2020-2024 MyTake.org, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -27,7 +27,6 @@
  * You can contact us at team@mytake.org
  */
 package org.mytake.factset.gradle;
-
 
 import com.diffplug.common.base.Errors;
 import com.diffplug.common.io.Resources;
@@ -56,7 +55,8 @@ class GuiTask {
 
 		p.getPlugins().apply(MavenCentralPlugin.class);
 		MavenCentralExtension ext = p.getExtensions().getByType(MavenCentralExtension.class);
-		ext.release("4.22.0", release -> {
+		ext.silenceEquoIDE();
+		ext.release("4.30.0", release -> {
 			release.dep(GUI_CONFIG, "org.eclipse.swt");
 			release.dep(GUI_CONFIG, "org.eclipse.jface");
 			release.dep(GUI_CONFIG, "org.eclipse.jface.text");
@@ -65,7 +65,7 @@ class GuiTask {
 			}
 			release.useNativesForRunningPlatform();
 		});
-		p.getDependencies().add(GUI_CONFIG, "com.diffplug.durian:durian-swt:3.6.1");
+		p.getDependencies().add(GUI_CONFIG, "com.diffplug.durian:durian-swt:4.3.0");
 		p.getDependencies().add(GUI_CONFIG, "com.ibm.icu:icu4j:69.1");
 		p.getDependencies().add(GUI_CONFIG, p.getDependencies().gradleApi());
 
@@ -78,6 +78,7 @@ class GuiTask {
 				File icon;
 				try (InputStream input = Resources.asByteSource(MtdoFactset.class.getResource("/icon/logo_leaves_256.png")).openBufferedStream()) {
 					icon = new File(".gradle/icon.png").getCanonicalFile();
+					icon.getParentFile().mkdirs();
 					Files.copy(input, icon.toPath(), StandardCopyOption.REPLACE_EXISTING);
 				} catch (IOException e) {
 					throw Errors.asRuntime(e);
