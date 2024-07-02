@@ -19,6 +19,7 @@
  */
 import * as React from "react";
 import YouTube from "react-youtube";
+import { convertSecondsToTimestamp } from "../common/video"
 
 interface YTPlayerParameters {
   rel: number;
@@ -71,6 +72,7 @@ class VideoLite extends React.Component<VideoLiteProps, VideoLiteState> {
     };
   }
   cueVideo = (props: VideoLiteProps) => {
+    console.log(`cueVideo videoId=${props.videoId} clipRange=${convertSecondsToTimestamp(props.clipRange[0])} -> ${convertSecondsToTimestamp(props.clipRange[1])}`)
     this.player.cueVideoById({
       videoId: props.videoId,
       startSeconds: props.clipRange[0],
@@ -91,6 +93,7 @@ class VideoLite extends React.Component<VideoLiteProps, VideoLiteState> {
   handleStateChange = (event: any) => {
     if (event.data === 0) {
       // Video ended
+      console.log(`handleStateChange video ended`)
       this.stopTimer();
       this.cueVideo(this.props);
       this.setState({
@@ -99,6 +102,7 @@ class VideoLite extends React.Component<VideoLiteProps, VideoLiteState> {
       this.props.onClipEnd();
     } else if (event.data === 1) {
       // Video playing
+      console.log(`handleStateChange video playing clipRange=${convertSecondsToTimestamp(this.props.clipRange[0])} -> ${convertSecondsToTimestamp(this.props.clipRange[1])}`)
       if (this.props.clipRange) {
         const expectedStartTime = this.props.clipRange[0];
         if (this.player.getCurrentTime() < expectedStartTime) {
@@ -112,6 +116,7 @@ class VideoLite extends React.Component<VideoLiteProps, VideoLiteState> {
       });
     } else if (event.data === 2) {
       // Video paused
+      console.log(`handleStateChange video paused`)
       this.stopTimer();
       this.setState({
         currentTime: Math.round(event.target.getCurrentTime()),
@@ -119,6 +124,7 @@ class VideoLite extends React.Component<VideoLiteProps, VideoLiteState> {
       });
     } else if (event.data === 3) {
       // Video buffering
+      console.log(`handleStateChange video buffering`)
       this.stopTimer();
       this.setState({
         currentTime: Math.round(event.target.getCurrentTime()),
@@ -126,7 +132,9 @@ class VideoLite extends React.Component<VideoLiteProps, VideoLiteState> {
       });
     } else if (event.data === 5) {
       // Video cued
+      console.log(`handleStateChange video cued (beforePlay) clipRange=${convertSecondsToTimestamp(this.props.clipRange[0])} -> ${convertSecondsToTimestamp(this.props.clipRange[1])}`)
       this.player.playVideo();
+      console.log(`handleStateChange video cued (afterPlay) clipRange=${convertSecondsToTimestamp(this.props.clipRange[0])} -> ${convertSecondsToTimestamp(this.props.clipRange[1])}`)
       this.playerVars.start = this.props.clipRange[0];
       this.playerVars.end = this.props.clipRange[1];
     }
