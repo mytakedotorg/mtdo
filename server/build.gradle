@@ -170,11 +170,13 @@ tasks.register('runDev', JavaExec) {
 	dependsOn 'testClasses', ':lucene:assemble'
 	description = 'Run app in dev mode'
 	classpath = sourceSets.test.runtimeClasspath
-	main = 'common.DevHotReload'
+	mainClass = 'common.DevHotReload'
 	args = [
 		'dev',
 		'gradle'
 	]
+	//	environment('GITHUB_USER', 'USER')
+	//	environment('GITHUB_SECRET', 'TOKEN')
 }
 
 tasks.register('updateSnapshot', Test) {
