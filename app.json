@@ -21,11 +21,11 @@
     {
       "plan": "heroku-postgresql:mini",
       "options": {
-        "version": "14"
+        "version": "16"
       }
     }
   ],
-  "stack": "heroku-20",
+  "stack": "heroku-24",
   "buildpacks": [
     { "url": "heroku/jvm" },
     { "url": "https://github.com/heroku/heroku-buildpack-gradle.git" }
